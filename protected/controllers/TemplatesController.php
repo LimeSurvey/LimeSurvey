@@ -15,9 +15,12 @@ class TemplatesController extends Controller
     public $layout = 'main';
     public function actionIndex($name = 'default', $screen = 'welcome')
     {
+        if (!\Template::templateNameFilter($name)) {
+            throw new \CHttpException(404, "Template not found.");
+        }
         $template = [
-            'name' => \Template::templateNameFilter($name),
-            'writable' => \Template::isStandardTemplate(\Template::templateNameFilter($name))
+            'name' => $name,
+            'writable' => \Template::isStandardTemplate($name)
         ];
         $screen = Hash::get(Hash::extract($this->screens(), "{n}[id=$screen]"), 0, null);
 //        $this->menus['template'] = [
@@ -130,6 +133,9 @@ class TemplatesController extends Controller
 
     public function actionPreview($name, $page) {
         App()->disableWebLogRoutes();
+        if (!\Template::templateNameFilter($name)) {
+            throw new \CHttpException(404, "Template not found.");
+        }
 
 
         $search = Hash::extract($this->screens(), "{n}[id=$page]");
@@ -138,12 +144,6 @@ class TemplatesController extends Controller
 
         }
         $screen = $search[0];
-
-
-        // Some global data
-        $aData['sitename'] = App()->name;
-        $siteadminname = Yii::app()->getConfig('siteadminname');
-        $siteadminemail = Yii::app()->getConfig('siteadminemail');
 
 
         $survey = $this->createSurvey($name);
@@ -173,29 +173,12 @@ class TemplatesController extends Controller
         $languageSettings->url = "http://www.limesurvey.org/";
         $languageSettings->urldescription = gT("Some URL description");
         $survey->usecaptcha = "A";
-        $percentcomplete = \ls\helpers\FrontEnd::makegraph(6, 10);
 
         $replacements['GROUPNAME'] = gT("Group 1: The first lot of questions");
         $replacements['GROUPDESCRIPTION'] = gT("This group description is fairly vacuous, but quite important.");
 
-        $totalquestions = '10';
-        $surveyformat = 'Format';
-        $notanswered = '5';
-        $privacy = '';
-        $surveyid = '1295';
-        $token = 1234567;
 
 
-        // Save these variables in an array
-        $aData['percentcomplete'] = $percentcomplete;
-        $aData['help'] = gT("This is some help text.");
-        $aData['surveyformat'] = $surveyformat;
-        $aData['totalquestions'] = $totalquestions;
-        $aData['notanswered'] = $notanswered;
-        $aData['privacy'] = $privacy;
-        $aData['surveyid'] = $surveyid;
-        $aData['sid'] = $surveyid;
-        $aData['token'] = $token;
 
 
         switch ($screen['id'])
@@ -255,7 +238,7 @@ class TemplatesController extends Controller
                 }
             } else {
                 $myoutput[] = \ls\helpers\Replacements::templatereplace(
-                    file_get_contents($session->templateDir . "/$file"), $replacements, $aData, null, $session);
+                    file_get_contents($session->templateDir . "/$file"), $replacements, [], null, $session);
             }
         }
 
@@ -263,10 +246,7 @@ class TemplatesController extends Controller
         ob_start();
         doHeader();
         $cs = App()->getClientScript();
-        $cs->registerPackage('jqueryui');
-        $cs->registerPackage('jquery-touch-punch');
-        $cs->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
-        $cs->registerCoreScript('ExpressionManager');
+        $cs->registerPackage('SurveyRuntime');
         $cs->registerScript('ls', \LimeExpressionManager::getScript($survey), \CClientScript::POS_END);
         echo implode("\n", $myoutput);
         doFooter();
@@ -308,7 +288,7 @@ class TemplatesController extends Controller
 
         $survey->questions = $group->questions = [$question1, $question2];
         $survey->groups = [$group];
-        $survey->template = \Template::templateNameFilter($name);
+        $survey->template = $name;
         return $survey;
     }
 }

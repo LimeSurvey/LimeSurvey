@@ -14,6 +14,7 @@
             
             $data = array();
             $data['baseUrl']                    = Yii::app()->getBaseUrl(true);
+            $data['public']                     = Yii::getPathOfAlias('public');
             $data['showScriptName']             = Yii::app()->urlManager->showScriptName;
             $data['urlFormat']                  = Yii::app()->urlManager->urlFormat;
             $data['adminImageUrl']              = Yii::app()->getConfig('adminimageurl');

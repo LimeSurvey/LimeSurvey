@@ -4,6 +4,7 @@
  * This file contains configuration parameters for the Yii framework.
  * Do not change these unless you know what you are doing.
  *
+ *
  */
 if (file_exists(__DIR__ . '/config.php')) {
     $userConfig = require(__DIR__ . '/config.php');
@@ -18,12 +19,22 @@ $internalConfig = array(
     'supportedLanguages' => include('locales.php'),
     'theme' => 'default',
 	'name' => 'LimeSurvey',
+    'loader' => $loader,
     'localeClass' =>  \ls\core\Locale::class,
 	'defaultController' => 'surveys',
 	'aliases' => array(
 		'vendor' => __DIR__ . '/../vendor',
         'bootstrap' => __DIR__ . '/../vendor/crisu83/yiistrap/widgets',
-        'yiiwheels' => __DIR__ . '/../vendor/2amigos/yiiwheels'
+        'yiiwheels' => __DIR__ . '/../vendor/2amigos/yiiwheels',
+
+        'coreTemplates' => $public . '/templates',
+        'userTemplates' => $public . '/upload/templates',
+        'bower' => $bowerAssetPath,
+
+        // A relative URL for the public folder.
+        'public' => str_replace($webroot, '', $public),
+        'publicPath' => $public
+
 	),
 	'import' => array(
 		'application.core.*',
@@ -51,12 +62,8 @@ $internalConfig = array(
             'class' => 'LocalizedFormatter'
         ],
         'clientScript'=> [
-//            'class' => 'ext.ExtendedClientScript.ExtendedClientScript',
-//            'combineCss' => false,
-//            'compressCss' => false,
-//            'combineJs'=> YII_DEBUG,
-//            'compressJs'=>false,
-            'packages' => require('third_party.php'),
+            'class' => CClientScript::class,
+            'packages' => require('packages.php'),
         ],
 
 
@@ -67,8 +74,8 @@ $internalConfig = array(
         ],
         'assetManager' => [
             'class' => \AssetManager::class,
-            'basePath'=> __DIR__ . '/../../public/tmp/assets',
-            'relativeUrl' => 'tmp/assets'
+            'basePath' => __DIR__ . '/../../public/tmp/assets',
+            'baseUrl' => str_replace($webroot . '/', '', realpath(__DIR__ . '/../../public/tmp/assets'))
 
         ],
         'request' => [
@@ -117,7 +124,7 @@ $internalConfig = array(
             ],
         ],
         'messages' => [
-            'class' => 'CGettextMessageSource',
+            'class' => CGettextMessageSource::class,
             'cachingDuration' => 3600,
             'forceTranslation' => true,
             'useMoFile' => true,
@@ -151,7 +158,6 @@ $internalConfig = array(
     'params' => [
         'version' => require __DIR__ . '/version.php',
         'updateServer' => 'http://lsupdate.befound.nl/updates/',
-        'bower-asset' => 'components'
     ]
 
 );

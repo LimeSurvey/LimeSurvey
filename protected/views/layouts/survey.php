@@ -11,17 +11,20 @@
         $this->widget('ext.LimeScript.LimeScript');
 			$this->widget('ext.LimeDebug.LimeDebug');
 			$cs = App()->clientScript;
+            /** @var CAssetManager $am */
+            $am = App()->assetManager;
+            $public = App()->getBaseUrl() . Yii::getPathOfAlias('public');
             $cs->registerCssFile(App()->theme->baseUrl . '/css/style.css');
 
-            $cs->registerCssFile(App()->params['bower-asset'] . '/select2-bootstrap-css/select2-bootstrap.min.css');
-            $cs->registerScriptFile(App()->getBaseUrl().'/scripts/ajax.js');
-            $cs->registerScriptFile(App()->getBaseUrl().'/scripts/unobtrusive.js');
+            $cs->registerCssFile($am->publish(Yii::getPathOfAlias('bower.select2-bootstrap-css') . '/select2-bootstrap.min.css'));
+            $cs->registerScriptFile("$public/scripts/ajax.js");
+            $cs->registerScriptFile("$public/scripts/unobtrusive.js");
 
-            $cs->registerScriptFile(App()->params['bower-asset'] . '/remarkable-bootstrap-notify/bootstrap-notify.min.js');
-            $cs->registerScriptFile(App()->params['bower-asset'] . '/jquery-ui/jquery-ui.min.js');
+            $cs->registerScriptFile($am->publish(Yii::getPathOfAlias('bower.remarkable-bootstrap-notify') . '/bootstrap-notify.min.js'));
+            $cs->registerPackage('jqueryui');
             App()->getComponent('yiiwheels')->registerAssetJs('bootstrap-bootbox.min.js');
-            $cs->registerScriptFile(App()->params['bower-asset'] . '/tinymce/tinymce.js');
-            $cs->registerScriptFile(App()->getBaseUrl().'/scripts/htmleditor.js');
+            $cs->registerScriptFile($am->publish(Yii::getPathOfAlias('bower.tinymce')) . '/tinymce.js');
+            $cs->registerScriptFile("$public/scripts/htmleditor.js");
             $cs->registerScript('links', "$('body').on('click', '.disabled a', function (e) { e.preventDefault(); });");
 
         ?>
@@ -47,7 +50,7 @@
                 </div>
             </div>
             <div id="ajaxprogress" title="Ajax request in progress" style="text-align: center;">
-                <img src="<?php echo Yii::app()->getConfig('adminstyleurl');?>/images/ajax-loader.gif"/>
+                <?=CHtml::image(App()->theme->baseUrl . '/images/ajax-loader.gif'); ?>
             </div>
             <?php $this->renderPartial('/global/footer'); ?>
         </div>

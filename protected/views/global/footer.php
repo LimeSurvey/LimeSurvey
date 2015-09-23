@@ -15,6 +15,6 @@
          
     </ul>
     <div style='display: inline-block; width: 33%; text-align: right;'>
-        <a href='http://donate.limesurvey.org'><img alt='<?php eT("Support this project - Donate to "); ?>LimeSurvey' title='<?php eT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo Yii::app()->getConfig('adminimageurl'); ?>donate.png'/></a>
+        <a href='http://donate.limesurvey.org'><img alt='<?php eT("Support this project - Donate to "); ?>LimeSurvey' title='<?php eT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo App()->theme->baseUrl ?>/images/donate.png'/></a>
     </div>
 </div>

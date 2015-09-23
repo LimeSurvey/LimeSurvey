@@ -110,10 +110,6 @@ class Statistics_userController extends Controller {
         //False -> forget about charts
         if (isset($publicgraphs) && $publicgraphs == 1)
         {
-            require_once(APPPATH.'third_party/pchart/pchart/pChart.class');
-            require_once(APPPATH.'third_party/pchart/pchart/pData.class');
-            require_once(APPPATH.'third_party/pchart/pchart/pCache.class');
-
             $MyCache = new pCache(Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR);
             //$currentuser is created as prefix for pchart files
             if (isset($_SERVER['REDIRECT_REMOTE_USER']))

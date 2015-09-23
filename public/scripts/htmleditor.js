@@ -41,7 +41,7 @@
             //    { token: "{Click to edit expression}" },
             //],
             "content_css" : [
-                LS.getBaseUrl() + "/styles/expressions.css?" + new Date().getTime()
+                LS.getPublicUrl() + "/styles/expressions.css?" + new Date().getTime()
             ],
             'setup': function (editor) {
 

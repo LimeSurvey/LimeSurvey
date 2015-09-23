@@ -1605,10 +1605,6 @@ class statistics_helper {
 
         if ($usegraph==1)
         {
-            //for creating graphs we need some more scripts which are included here
-            require_once(APPPATH.'/third_party/pchart/pchart/pChart.class');
-            require_once(APPPATH.'/third_party/pchart/pchart/pData.class');
-            require_once(APPPATH.'/third_party/pchart/pchart/pCache.class');
             $MyCache = new pCache($tempdir.'/');
         }
 
@@ -2943,11 +2939,6 @@ class statistics_helper {
         }
         if($outputType=='xls')
         {
-            /**
-            * Initiate the Spreadsheet_Excel_Writer
-            */
-            require_once(APPPATH.'/third_party/pear/Spreadsheet/Excel/Xlswriter.php');
-
             if($pdfOutput=='F')
             {
                 $sFileName = $sTempDir.'/statistic-survey'.$surveyid.'.xls';

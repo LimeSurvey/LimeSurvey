@@ -84,3 +84,23 @@ function eP($key = false) {
 
     }
 }
+
+/**
+ * Requires a file in a separate context.
+ * - Prevents namespace pollution
+ * @param [] $context The context to pass to require.
+ * @param string $file The file name to require
+ * @return array The result of requiring the php file.
+ */
+function require_config(array $context = []) {
+    extract($context);
+    if (!isset($context['context'])) {
+        unset($context);
+    }
+    // We must use func_get_arg to guarantee a clean environment (ie no variables defined).
+    $result = require func_get_arg(1);
+    if (!is_array($result)) {
+        throw new \Exception("Config files must return an array when included.");
+    }
+    return $result;
+}

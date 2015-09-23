@@ -1,7 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-
-// This should use app->params[bower-asset] but that's not yet avialable at this point.
-$bowerAssetPath = 'components';
+<?php
 /**
  * This file contains package definition for third party libraries.
  * Defining them here allows for easy inclusion in views.
@@ -16,13 +13,13 @@ return [
         'depends' => ['jquery']
     ],
     'jquery' => [
-        'baseUrl' => $bowerAssetPath . '/jquery/dist',
+        'basePath' => 'bower.jquery.dist',
         'js' => [
             'jquery.min.js'
         ]
     ],
     'jqgrid' => [
-        'baseUrl' => $bowerAssetPath . '/jqgrid/',
+        'basePath' => 'bower.jqgrid',
         'js' => [
             'js/minified/jquery.jqGrid.min.js',
             'js/minified/i18n/grid.locale-en.js',
@@ -36,7 +33,7 @@ return [
         ]
     ],
     'jqgrid.addons' => [
-        'baseUrl' => $bowerAssetPath . '/jqgrid/plugins/',
+        'basePath' => 'bower.jqgrid.plugins',
         'js' => [
             'grid.addons.js'
         ],
@@ -46,7 +43,7 @@ return [
 
     ],
     'jqueryui' => [
-        'baseUrl' => $bowerAssetPath . '/jquery-ui/',
+        'basePath' => 'bower.jquery-ui',
         'js' => [
             'jquery-ui.min.js'
         ],
@@ -57,7 +54,7 @@ return [
 
 
     'qTip2' => [
-        'baseUrl' => $bowerAssetPath. '/qtip2',
+        'basePath' => 'bower.qtip2',
         'js' => [
             'jquery.qtip.min.js'
         ],
@@ -70,7 +67,7 @@ return [
 
     ],
     'jquery-tablesorter' => [
-        'baseUrl' => $bowerAssetPath . '/tablesorter',
+        'basePath' => 'bower.tablesorter',
         'js' => [
             'jquery.tablesorter.min.js'
         ],
@@ -79,13 +76,13 @@ return [
         ]
     ],
     'ace' => [
-        'baseUrl' => $bowerAssetPath . '/ace-builds-bower-patched/src',
+        'basePath' => 'bower.ace-builds.src-min',
         'js' => [
             'ace.js'
         ],
     ],
      'jquery-ace' => [
-        'baseUrl' => 'third_party/jquery-ace',
+        'basePath' => 'bower.jquery-ace',
         'js' => [
             'jquery.ace.js',
         ],
@@ -95,7 +92,7 @@ return [
         ]
      ],
     'jquery-actual' => [
-        'baseUrl' => $bowerAssetPath . '/jquery.actual/',
+        'basePath' => 'bower.jquery.actual',
         'js' => [
             'jquery.actual.min.js'
         ],
@@ -104,7 +101,7 @@ return [
         ]
     ],
     'jquery-touch-punch' => [
-        'baseUrl' => $bowerAssetPath . '/jqueryui-touch-punch/',
+        'basePath' => 'bower.jqueryui-touch-punch',
         'js' => [
             'jquery.ui.touch-punch.min.js'
         ],
@@ -113,7 +110,7 @@ return [
         ]
     ],
     'jqueryui-timepicker' => [
-        'baseUrl' => $bowerAssetPath . '/jqueryui-timepicker-addon/dist/',
+        'basePath' => 'bower.jqueryui-timepicker-addon.dist',
         'js' => [
             'jquery-ui-timepicker-addon.js'
         ],
@@ -131,7 +128,7 @@ return [
         ),
     ),
     'leaflet' => [
-        'baseUrl' => $bowerAssetPath . '/leaflet/dist/',
+        'basePath' => 'bower.leaflet.dist',
         'js' => [
             'leaflet.js'
         ],
@@ -139,4 +136,20 @@ return [
             'leaflet.css'
         ],
     ],
+    'SurveyRuntime' => [
+        'baseUrl' => 'scripts/',
+        'js' => [
+            'survey_runtime.js'
+        ],
+        'depends' => [
+            'jquery-touch-punch',
+            'ExpressionManager'
+        ]
+    ],
+    'bootstrap-notify' => [
+        'basePath' => 'bower.remarkable-bootstrap-notify',
+        'js' => [
+            'bootstrap-notify.min.js'
+        ]
+    ]
 ];

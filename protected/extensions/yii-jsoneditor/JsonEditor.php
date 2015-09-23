@@ -17,7 +17,7 @@
 
         public function init()
 		{
-			$this->baseUrl = \Yii::getPathOfAlias(App()->params['bower-asset']) . '/jsoneditor/dist/';
+			$this->baseUrl = \Yii::getPathOfAlias(App()->params['bowerAssetPath']) . '/jsoneditor/dist/';
             $this->registerClientScript();
             
 		}

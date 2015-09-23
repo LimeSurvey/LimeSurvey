@@ -9,9 +9,9 @@
 			App()->bootstrap->register();
             $cs = App()->clientScript;
             App()->getComponent('yiiwheels')->registerAssetJs('bootstrap-bootbox.min.js');
-            $cs->registerScriptFile(App()->params['bower-asset'] . '/jquery-ui/jquery-ui.min.js');
-            $cs->registerScriptFile(App()->params['bower-asset'] . '/remarkable-bootstrap-notify/bootstrap-notify.min.js');
-            $cs->registerScriptFile('/scripts/unobtrusive.js');
+            $cs->registerPackage('jqueryui');
+            $cs->registerPackage('bootstrap-notify');
+            $cs->registerScriptFile(App()->getBaseUrl() . Yii::getPathOfAlias('public'). '/scripts/unobtrusive.js');
             $cs->registerCssFile(App()->theme->baseUrl . '/css/style.css');
 
         ?>
@@ -29,7 +29,7 @@
             <?php echo $content; ?>
             </div>
             <div id="ajaxprogress" title="Ajax request in progress" style="text-align: center;">
-                <img src="<?php echo Yii::app()->getConfig('adminstyleurl');?>/images/ajax-loader.gif"/>
+                <?=CHtml::image(App()->theme->baseUrl . '/images/ajax-loader.gif'); ?>
             </div>
             <?php $this->renderPartial('/global/footer'); ?>
         </div>

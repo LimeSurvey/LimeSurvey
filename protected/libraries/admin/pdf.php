@@ -17,7 +17,7 @@ if(!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 }
 
 # include TCPDF
-require(APPPATH.'config/tcpdf'.EXT);
+require(Yii::getPathOfAlias('application.config') . '/tcpdf.php');
 
 /**
  * page format
@@ -236,7 +236,6 @@ class pdf extends TCPDF {
   function __construct() {
 
     # load the config file
-    require(APPPATH.'config/tcpdf'.EXT);
     $this->_config = $tcpdf;
     unset($tcpdf);
 

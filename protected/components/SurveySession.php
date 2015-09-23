@@ -348,6 +348,9 @@ class SurveySession extends CComponent {
      * @param string $value
      */
     public function setTemplateDir($value) {
+        if (!is_dir($value)) {
+            throw new \InvalidArgumentException("Invalid directory given: $value");
+        }
         $this->_templateDir = $value;
     }
 

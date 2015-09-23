@@ -57,4 +57,8 @@ function LimeSurvey(data) {
     this.getBaseUrl = function () {
         return data.baseUrl;
     }
+
+    this.getPublicUrl= function() {
+        return data.baseUrl + data.public;
+    }
 }

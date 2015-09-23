@@ -21,10 +21,10 @@ $menu = [[ // Left side
     [
         'label' => gT('Template') . ': ' . $template['name'],
 //        'url' => ['templates/index'],
-        'items' => array_map(function($directory) {
+        'items' => array_map(function($template) {
             return [
-                'url' => App()->createUrl('templates/index', ['name' => basename($directory)]),
-                'label' => basename($directory)
+                'url' => App()->createUrl('templates/index', ['name' => $template]),
+                'label' => $template
             ];
 
         }, \Template::getTemplateList()),

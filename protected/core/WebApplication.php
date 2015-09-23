@@ -12,11 +12,6 @@
 */
 
 /**
- * Load the globals helper as early as possible. Only earlier solution is to use
- * index.php
- */
-require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
-/**
  * Implements global  config
  * @property CLogRouter $log Log router component.
  * @property LocalizedFormatter $format
@@ -30,6 +25,7 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
  * @property CClientScript $clientScript
  * @property MigrationManager $migrationManager
  * @property CSecurityManager $securityManager
+ * @property CTheme $theme
  */
 class WebApplication extends CWebApplication
 {
@@ -119,6 +115,7 @@ class WebApplication extends CWebApplication
     }
 
 
+
 	public function init() {
 		parent::init();
         $this->name = SettingGlobal::get('sitename', 'LimeSurvey');
@@ -206,7 +203,7 @@ class WebApplication extends CWebApplication
     */
     public function loadConfig($file)
     {
-        $config = require_once(APPPATH . '/config/' . $file . '.php');
+        $config = require_once(Yii::getPathOfAlias('application.config') . "/$file.php");
         if(is_array($config))
         {
             foreach ($config as $k => $v)

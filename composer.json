@@ -24,7 +24,6 @@
 
         "zendframework/zend-diactoros": "^1.0@dev",
         "bower-asset/ajaxq": "^0.0.3@dev",
-        "bower-asset/jquery": "2.*",
         "bower-asset/jquery.actual": "1.*",
         "bower-asset/papaparse": "4.1",
         "bower-asset/tinymce": "~4.1@dev",
@@ -38,13 +37,14 @@
         "bower-asset/TinyMCE-Placeholder": "^1.0@dev",
         "bower-asset/qtip2": "^2.2@dev",
         "bower-asset/jqueryui-touch-punch": "^0.2.3@dev",
-        "bower-asset/ace-builds-bower-patched": "^1.2@dev",
         "bower-asset/font-awesome": "dev-master",
         "bower-asset/jqGrid" : "5.*",
         "bower-asset/js-cookie" : "2.*",
         "bower-asset/tablesorter" : "2.*",
         "bower-asset/leaflet": "0.7.3",
-        "sam-it/yii1-bootstrap-treeview": "0.*"
+        "sam-it/yii1-bootstrap-treeview": "0.*",
+        "bower-asset/jquery-ace": "1.*",
+        "bower-asset/jquery": "2.*"
     },
     "autoload" : {
         "classmap" : [
@@ -56,7 +56,8 @@
             "protected/vendor/crisu83/yiistrap/widgets",
             "protected/vendor/yiisoft/yii/framework/cli/commands",
             "protected/components",
-            "protected/helpers"
+            "protected/helpers",
+            "protected/models"
         ],
         "psr-4" : {
             "ls\\" : [
@@ -78,10 +79,6 @@
         }
     },
     "extra" : {
-        "asset-installer-paths": {
-            "bower-asset-library" : "public/components",
-            "npm-asset-library" : "public/components"
-        }
     }
 
 }

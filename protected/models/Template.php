@@ -30,134 +30,93 @@ class Template extends ActiveRecord
     /**
     * Filter the template name : test if template if exist
     *
-    * @param string $sTemplateName
-    * @return string existing $sTemplateName
+    * @param string $name
+    * @return boolean True if the name is valid false otherwise.
     */
-    public static function templateNameFilter($sTemplateName)
+    public static function templateNameFilter($name)
     {
-        $sDefaulttemplate=Yii::app()->getConfig('defaulttemplate','default');
-        $sTemplateName=empty($sTemplateName) ? $sDefaulttemplate : $sTemplateName;
-
-        /* Validate it's a real dir included in template allowed dir 
+        /* Validate it's a real dir included in template allowed dir
         *  Alternative : use realpath("$dir/$sTemplateName")=="$dir/$sTemplateName" and is_dir
         */
-        if(array_key_exists($sTemplateName,self::getTemplateList()))
-            return $sTemplateName;
-
-        // If needed recall the function with default template
-        if($sTemplateName!=$sDefaulttemplate)
-            return self::templateNameFilter($sDefaulttemplate);
-
-        // Last solution is default
-        return 'default';
+        return in_array($name,self::getTemplateList());
     }
 
     /**
     * Get the template path for any template : test if template if exist
     *
-    * @param string $sTemplateName
-    * @return string template path
+    * @param string $name
+    * @return string Path of the template files.
     */
-    public static function getTemplatePath($sTemplateName = "")
+    public static function getTemplatePath($name)
     {
-        static $aTemplatePath=array();
-        if(isset($aTemplatePath[$sTemplateName]))
-            return $aTemplatePath[$sTemplateName];
+        if (!self::templateNameFilter($name)) {
+            throw new \Exception("Invalid template name $name");
+        }
 
-        $sFilteredTemplateName=self::templateNameFilter($sTemplateName);
-        if (self::isStandardTemplate($sFilteredTemplateName))
-        {
-            return $aTemplatePath[$sTemplateName]=Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$sFilteredTemplateName;
+        if (self::isStandardTemplate($name)) {
+            return Yii::getPathOfAlias("coreTemplates.$name");
         }
         else
         {
-            return $aTemplatePath[$sTemplateName]=Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sFilteredTemplateName;
+            return Yii::getPathOfAlias("userTemplates.$name");
         }
     }
 
     /**
     * This function returns the complete URL path to a given template name
     *
-    * @param string $sTemplateName
+    * @param string $name
     * @return string template url
     */
-    public static function getTemplateURL($sTemplateName="")
+    public static function getTemplateURL($name)
     {
-        static $aTemplateUrl=array();
-        if(isset($aTemplateUrl[$sTemplateName]))
-            return $aTemplateUrl[$sTemplateName];
-
-        $sFiteredTemplateName=self::templateNameFilter($sTemplateName);
-        if (self::isStandardTemplate($sFiteredTemplateName))
+        if (self::isStandardTemplate($name))
         {
-            return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("standardtemplaterooturl").'/'.$sFiteredTemplateName;
+//            vd(App()->getBaseUrl(true));
+//            vdd(str_replace(Yii::getPathOfAlias('webroot'), App()->baseUrl, realpath(Yii::getPathOfAlias("coreTemplates.$name"))));
+            return str_replace(Yii::getPathOfAlias('webroot'), App()->baseUrl, realpath(Yii::getPathOfAlias("coreTemplates.$name")));
         }
         else
         {
-            return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("usertemplaterooturl").'/'.$sFiteredTemplateName;
+            return str_replace(Yii::getPathOfAlias('webroot'), App()->baseUrl, realpath(Yii::getPathOfAlias("userTemplates.$name")));
         }
     }
 
     public static function getTemplateList()
     {
-        $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
-        $standardtemplaterootdir=Yii::app()->getConfig("standardtemplaterootdir");
+        $result = array_merge(self::coreTemplates(), array_map(function(self $template) {
+            return basename($template->folder);
+        }, self::model()->findAll()));
 
-        $aTemplateList=array();
-
-        if ($handle = opendir($standardtemplaterootdir))
-        {
-            while (false !== ($file = readdir($handle)))
-            {
-                // Why not return directly standardTemplate list ?
-                if (!is_file("$standardtemplaterootdir/$file") && self::isStandardTemplate($file))
-                {
-                    $aTemplateList[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
-                }
-            }
-            closedir($handle);
-        }
-
-        if ($usertemplaterootdir && $handle = opendir($usertemplaterootdir))
-        {
-            while (false !== ($file = readdir($handle)))
-            {
-                // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
-                {
-                    $aTemplateList[$file] = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
-                }
-            }
-            closedir($handle);
-        }
-        ksort($aTemplateList);
-
-        return $aTemplateList;
+        sort($result);
+        return $result;
     }
 
     /**
     * isStandardTemplate returns true if a template is a standard template
     * This function does not check if a template actually exists
     *
-    * @param mixed $sTemplateName template name to look for
+    * @param string $template template name to look for
     * @return bool True if standard template, otherwise false
     */
-    public static function isStandardTemplate($sTemplateName)
+    public static function isStandardTemplate($template)
     {
-        return in_array($sTemplateName,
-            array(
-                'basic',
-                'bluengrey',
-                'business_grey',
-                'citronade',
-                'clear_logo',
-                'default',
-                'eirenicon',
-                'limespired',
-                'mint_idea',
-                'sherpa',
-                'vallendar',
-            )
-        );
+        return in_array($template, self::coreTemplates());
+    }
+
+    public static function coreTemplates() {
+        return [
+            'basic',
+            'bluengrey',
+            'business_grey',
+            'citronade',
+            'clear_logo',
+            'default',
+            'eirenicon',
+            'limespired',
+            'mint_idea',
+            'sherpa',
+            'vallendar',
+        ];
     }
 }

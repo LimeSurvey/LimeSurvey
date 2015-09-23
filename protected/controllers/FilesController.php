@@ -72,7 +72,7 @@ class FilesController extends Controller
     protected function getRootForSurvey($surveyId) {
 
         $relative = "/upload/surveys/$surveyId";
-        $dir = Yii::getPathOfAlias('webroot') . $relative;
+        $dir = Yii::getPathOfAlias('publicPath') . $relative;
         if (!is_dir($dir)) {
             mkdir($dir);
         }
@@ -80,7 +80,7 @@ class FilesController extends Controller
             'alias' => "Survey ({$surveyId})",
             'driver' => 'LocalFileSystem',
             'path'   => $dir,
-            'URL' => App()->baseUrl . $relative,
+            'URL' => App()->baseUrl . Yii::getPathOfAlias('public') , $relative,
             'icon' => "{$this->getAssetsUrl()}/img/volume_icon_local.png",
             'accessControl' => 'access',
             'attributes' => [

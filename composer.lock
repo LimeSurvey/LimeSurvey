@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "69e9a634100beeba852b5d7090175f9f",
+    "hash": "56b6f7b11606b4ce7577090845a7653e",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -109,36 +109,20 @@
             "type": "bower-asset-library"
         },
         {
-            "name": "bower-asset/ace-builds-bower-patched",
-            "version": "v1.2.2",
+            "name": "bower-asset/ace-builds",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/echoAlexey/ace-builds.git",
-                "reference": "96719409198fd5599ffbd131096c2fdc5086e17e"
+                "url": "https://github.com/ajaxorg/ace-builds.git",
+                "reference": "0982db4853e3c967756b83b70638b9761d7f801d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/echoAlexey/ace-builds/zipball/96719409198fd5599ffbd131096c2fdc5086e17e",
-                "reference": "96719409198fd5599ffbd131096c2fdc5086e17e",
+                "url": "https://api.github.com/repos/ajaxorg/ace-builds/zipball/0982db4853e3c967756b83b70638b9761d7f801d",
+                "reference": "0982db4853e3c967756b83b70638b9761d7f801d",
                 "shasum": ""
             },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "./src/ace.js",
-                    "./src/mode-xml.js",
-                    "./src/theme-eclipse.js",
-                    "./src/ext-language_tools.js",
-                    "./src/snippets/xml.js"
-                ],
-                "bower-asset-ignore": [
-                    "**/.*"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Patched Ace Builds with Bower.json"
+            "type": "bower-asset-library"
         },
         {
             "name": "bower-asset/ajaxq",
@@ -383,6 +367,36 @@
                 "javascript",
                 "jquery",
                 "library"
+            ]
+        },
+        {
+            "name": "bower-asset/jquery-ace",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SamMousa/jquery-ace.git",
+                "reference": "ece8360e6027ead853bde01244d652de8488bba7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SamMousa/jquery-ace/zipball/ece8360e6027ead853bde01244d652de8488bba7",
+                "reference": "ece8360e6027ead853bde01244d652de8488bba7",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/ace-builds": "~1.2.0"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "jquery.ace.js"
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "jQuery wrapper for Ace Editor",
+            "keywords": [
+                "ace",
+                "jquery"
             ]
         },
         {
@@ -2168,7 +2182,6 @@
         "bower-asset/tinymce-placeholder": 20,
         "bower-asset/qtip2": 20,
         "bower-asset/jqueryui-touch-punch": 20,
-        "bower-asset/ace-builds-bower-patched": 20,
         "bower-asset/font-awesome": 20
     },
     "prefer-stable": false,

@@ -6,5 +6,6 @@
  * - Cannot configure their server
  * - Are stuck on preconfigured hosting platforms.
  */
-    $_SERVER['SCRIPT_NAME'] = 'public/index.php';
-    include __DIR__ . '/protected/entry.php';
+// We do this to not have to depend on $_SERVER, ever.
+$webroot = __DIR__;
+require __DIR__ . '/protected/entry.php';
