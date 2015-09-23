@@ -42,7 +42,7 @@
         "bower-asset/js-cookie" : "2.*",
         "bower-asset/tablesorter" : "2.*",
         "bower-asset/leaflet": "0.7.3",
-        "sam-it/yii1-bootstrap-treeview": "0.*",
+        "sam-it/yii1-bootstrap-treeview": "1.*",
         "bower-asset/jquery-ace": "1.*",
         "bower-asset/jquery": "2.*"
     },

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "56b6f7b11606b4ce7577090845a7653e",
+    "hash": "fff4afe49e4510f3a8bc7c3fe17a1af8",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -1742,16 +1742,16 @@
         },
         {
             "name": "sam-it/yii1-bootstrap-treeview",
-            "version": "v0.1.0",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SAM-IT/yii1-bootstrap-treeview.git",
-                "reference": "b667a080fad91faa461ff5235e03310377c4a259"
+                "reference": "d3682e1fbb62ca379252d4db9909880a7980597f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SAM-IT/yii1-bootstrap-treeview/zipball/b667a080fad91faa461ff5235e03310377c4a259",
-                "reference": "b667a080fad91faa461ff5235e03310377c4a259",
+                "url": "https://api.github.com/repos/SAM-IT/yii1-bootstrap-treeview/zipball/d3682e1fbb62ca379252d4db9909880a7980597f",
+                "reference": "d3682e1fbb62ca379252d4db9909880a7980597f",
                 "shasum": ""
             },
             "require": {
@@ -1776,7 +1776,7 @@
                 }
             ],
             "description": "Yii1 widget wrapper for Bootstrap-TreeView",
-            "time": "2015-09-17 10:46:36"
+            "time": "2015-09-23 15:46:19"
         },
         {
             "name": "sam-it/yii1-json-behavior",
