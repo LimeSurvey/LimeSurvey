@@ -1177,6 +1177,22 @@ class SurveyAdmin extends Survey_Common_Action
         }
     }
 
+
+    /**
+     * Called via ajax request from survey summary quick action "Show questions group by group"
+     * 
+     */
+    public function changeFormat($iSurveyID)
+    {
+        if ( Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update') )
+        {
+            $survey = Survey::model()->findByPk($iSurveyID);
+            $survey->format = ($survey->format == 'G')? 'S' : 'G';
+            $survey->save();
+            echo $survey->format;
+        }
+    }
+
     private function _showReorderForm($iSurveyID)
     {
         // Prepare data for the view

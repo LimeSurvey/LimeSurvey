@@ -1466,6 +1466,23 @@ $('#collapseOne').on('hide.bs.collapse', function () {
   $('#questionTypeContainer').css("overflow","hidden")
 })
 	
+
+/* Switch format group */
+$('#switchchangeformat').on('switchChange.bootstrapSwitch', function(event, state) {
+    $.ajax({
+        url : '<?php echo $this->createUrl("admin/survey/sa/changeFormat/surveyid/23627".$surveyinfo['sid']); ?>',
+        type : 'GET',
+        dataType : 'html', 
+        
+        // html contains the buttons
+        success : function(html, statut){
+        },
+        error :  function(html, statut){
+            alert('error');
+        }
+    });
+   
+});
     
 });	
 

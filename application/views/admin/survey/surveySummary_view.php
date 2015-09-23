@@ -1,44 +1,67 @@
+<?php
+/**
+ * Survey default view
+ * 
+ */
+?>
 <div class="side-body">
-
+    
+    <!-- Quick Actions -->
     <h3><?php eT('Survey quick actions'); ?></h3>
         <div class="row welcome survey-action">
             <div class="col-lg-12 content-right">
+                
+                <!-- Alerts, infos... -->
                 <div class="row">
                     <div class="col-lg-12">
+                        
+                        <!-- While survey is activated, you can't add or remove group or question -->
                         <?php if ($activated == "Y"): ?>
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <strong><?php eT('Warning!');?></strong> <?php eT('While survey is activated, you can\'t add or remove group or question');?>
-                            </div>                                
+                            </div>
+                        
                         <?php elseif(!$groups_count > 0):?>
+                            
+                            <!-- To add questions, first, you must add a question group -->
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <strong><?php eT('Warning!');?></strong> <?php eT('To add questions, first, you must add a question group.');?>
                             </div>
-                                                        
+                            
+                            <!-- If you want a single page survey, just add a single group, and switch on "Show questions group by group -->                            
                             <div class="alert alert-info alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;
                                 <?php eT('If you want a single page survey, just add a single group, and switch on "Show questions group by group"');?>
                             </div>                                                                                                           
                         <?php endif;?>
-                        
                     </div>
                 </div>
 
+                <!-- Switch : Show questions group by group -->
+                <?php $switchvalue = ($surveyinfo['format']=='G') ? 1 : 0 ; ?>
                 <div class="row">
                     <div class="col-lg-4">
                         <label for="groupbygroup"><?php eT('Show questions group by group :');?></label>
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => 'groupbygroup'
+                            'name' => 'groupbygroup',
+                            'id'=>'switchchangeformat',
+                            'value'=>$switchvalue,
                         ));?>
                         <br/><br/>
                     </div>
                 </div>
                 
+                
+                <!-- Add group / questions -->
                 <div class="row">
+                    
+                    <!-- Survey active, so it's impossible to add new group/question -->
                     <?php if ($activated == "Y"): ?>
-
+                        
+                            <!-- Can't add new group to survey  -->
                             <div class="col-lg-2">
                                 <div class="panel panel-primary disabled" id="pannel-1">
                                 <div class="panel-heading">
@@ -48,11 +71,12 @@
                                     <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
                                         <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/big/328637/add.png" class="responsive"/>
                                     </a>
-                                    <p><a href="#"><?php eT('Add new group to survey');?></a></p>
+                                    <p><a href="#"><?php eT('Add new group');?></a></p>
                                 </div>          
                                 </div>
                             </div>                        
                 
+                            <!-- Can't add a new question -->
                             <div class="col-lg-2" >
                                 <div class="panel panel-primary disabled" id="pannel-2">
                                     <div class="panel-heading">
@@ -70,9 +94,11 @@
                                     </div>          
                                 </div>
                             </div>            
-                                  
+                    
+                    <!-- survey is not active, and user has permissions, so buttons are shown and active -->              
                     <?php elseif(Permission::model()->hasSurveyPermission($surveyinfo['sid'],'surveycontent','create')): ?>
 
+                        <!-- Add group -->
                         <div class="col-lg-2">
                             <div class="panel panel-primary panel-clickable" id="pannel-1" aria-data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>">
                             <div class="panel-heading">
@@ -82,13 +108,13 @@
                                 <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>" >
                                     <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/big/328637/add.png" class="responsive"/>
                                 </a>
-                                <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>"><?php eT('Add new group to survey');?></a></p>
+                                <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>"><?php eT('Add new group');?></a></p>
                             </div>          
                             </div>
                         </div>
-                        
+
+                        <!-- Survey has no group, so can't add a question -->                        
                         <?php if(!$groups_count > 0): ?>
-                            
                             <div class="col-lg-2" >
                                 <div class="panel panel-primary disabled" id="pannel-2">
                                     <div class="panel-heading">
@@ -107,7 +133,7 @@
                                 </div>
                             </div>
                     
-                                   
+                        <!-- Survey has a group, so can add a question -->                                   
                         <?php else:?>
                             <div class="col-lg-2">
                                 <div class="panel panel-primary panel-clickable" id="pannel-2" aria-data-url="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>">
@@ -122,19 +148,13 @@
                                 </div>          
                                 </div>
                             </div>
-                
                         <?php endif; ?>
-                                
                     <?php endif; ?>
                 </div>
-        
-        
-                        
-                        
             </div>
         </div>
      
-	
+	<!-- Survey summary -->
 	<h3><?php eT('Survey summary'); ?></h3>
 		<div class="row">
 			<div class="col-lg-12 content-right">
