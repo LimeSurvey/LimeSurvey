@@ -1,8 +1,20 @@
-<div class='header ui-widget-header'>" . gT("Token file upload") . "</div>\n"
-    <div class='messagebox ui-corner-all'>
-        <?php if (!empty($sError)) { ?>
-            <div class='warningheader'>" . gT("Error") . "</div>
-            <p>" . echo $sError .</p>
-        <?php } ?>
+<!-- Import.php -->
+<div class="side-body">
+    <h3><?php eT("Import tokens from CSV file"); ?></h3>
+
+    <div class="row">
+        <div class="col-lg-12 content-right">
+            <?php if (empty($sError)) : ?>
+                <div class="jumbotron message-box">
+                    <h2>gT("Token file upload")</h2>
+                </div>
+            <?php else:?>
+                <div class="jumbotron message-box message-box-error">
+                    <h2>gT("Token file upload")</h2>
+                    <p class="lead danger"><?php gT("Error"); ?></p>
+                    <p><?php echo $sError; ?></p>
+                </div>                
+            <?php endif;?>
+        </div>
     </div>
-</div>
+</div>    

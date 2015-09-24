@@ -27,7 +27,6 @@ class Survey_Common_Action extends CAction
     public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
-
         // Make sure viewHelper can be autoloaded
         Yii::import('application.helpers.viewHelper');
     }

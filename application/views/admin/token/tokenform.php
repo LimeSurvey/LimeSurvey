@@ -33,13 +33,9 @@
                     <div class="col-sm-10">
                         <p class="form-control-static">
                             <?php if ($subaction == "edit")
-                                {
                                     echo $tokenid;
-                                }
                                 else
-                                {
                                     eT("Auto");
-                                } 
                             ?>
                         </p>
                     </div>

@@ -1,4 +1,7 @@
-<div class='header ui-widget-header'><?php eT("Bounce settings"); ?></div>
+<div class="side-body">                           
+    <h3><?php eT("Bounce settings"); ?></h3>        
+    <div class="row">                             
+        <div class="col-lg-12 content-right">
 <div id='bouncesettingsdiv'>
 <?php
     /* Script for disable some setting */
@@ -95,3 +98,8 @@
         )
     ));
 ?>
+
+        </div>
+    </div>
+</div>
+    
