@@ -219,12 +219,12 @@ class SurveyRuntime {
             // jump to current step using new language, processing POST values
             $moveResult = LimeExpressionManager::JumpTo($session->getStep(), true, true, true);  // do process the POST data
         }
-        if (isset($move) && isNumericInt($move) && $session->survey->questionindex == Survey::INDEX_INCREMENTAL) {
+        if (isset($move) && is_numeric($move) && $session->survey->questionindex == Survey::INDEX_INCREMENTAL) {
             $move = (int)$move;
             if ($move > 0 && ($move <= $session->getStep() || $move <= $session->getMaxStep())) {
                 $moveResult = LimeExpressionManager::JumpTo($move);
             }
-        } elseif (isset($move) && isNumericInt($move) && $session->survey->questionindex == Survey::INDEX_FULL) {
+        } elseif (isset($move) && is_numeric($move) && $session->survey->questionindex == Survey::INDEX_FULL) {
             $moveResult = LimeExpressionManager::JumpTo($move, true, true);
             $session->setStep($moveResult['seq'] + 1);
         }

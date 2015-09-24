@@ -693,8 +693,6 @@ class remotecontrol_handle
                 try
                 {
                     $oSurvey->save(); // save the change to database
-                    SurveyLanguageSetting::model()->deleteByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLanguage));
-                    cleanLanguagesFromSurvey($iSurveyID,$oSurvey->additional_languages);
                     return array('status' => 'OK');
                 }
                 catch(Exception $e)

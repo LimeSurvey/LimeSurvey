@@ -1,4 +1,5 @@
 <?php
+/** @var \ls\controllers\Controller $this */
 /* @var Survey $model */
 if (!isset($model) || !$model instanceof Survey) {
     throw new Exception("Survey must be set for survey menu.");

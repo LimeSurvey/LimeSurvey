@@ -88,19 +88,33 @@ function eP($key = false) {
 /**
  * Requires a file in a separate context.
  * - Prevents namespace pollution
- * @param [] $context The context to pass to require.
  * @param string $file The file name to require
+ * @param array $context
+ * @param Object The "this" object for the closure.
  * @return array The result of requiring the php file.
+ * @throws \Exception if config file does not return an array.
  */
-function require_config(array $context = []) {
-    extract($context);
-    if (!isset($context['context'])) {
-        unset($context);
-    }
-    // We must use func_get_arg to guarantee a clean environment (ie no variables defined).
-    $result = require func_get_arg(1);
-    if (!is_array($result)) {
-        throw new \Exception("Config files must return an array when included.");
-    }
-    return $result;
+function require_config($file, array $context = [], $thisObject = null)
+{
+    static $closure;
+
+    if (!isset($closure)) {
+        $closure = function () use ($thisObject) {
+            extract(func_get_arg(1));
+            $result = require func_get_arg(0);
+            if (!is_array($result)) {
+                throw new \Exception("Config files must return an array when included.");
+            }
+            return $result;
+        };
+    };
+
+    /**
+     * @todo Use this in PHP7!
+     */
+    //return $closure->call($thisObject, $file, $context);
+
+    $copy = $closure->bindTo($thisObject);
+
+    return $copy($file, $context);
 }

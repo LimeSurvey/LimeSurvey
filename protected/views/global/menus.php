@@ -22,7 +22,7 @@ foreach (array_reverse($this->menus) as $name => $data) {
         if (!is_array($data)) {
          $data = ['model' => $data];
         }
-        $menu = requireFile($file, $data, $this);
+        $menu = require_config($file, $data, $this);
         $this->widget(\TbNavBar::class, [
             'brandLabel' => isset($menu['brandLabel']) ? $menu['brandLabel'] :  false,
             'display' => null,

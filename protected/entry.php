@@ -46,6 +46,6 @@ Yii::$enableIncludePath = false;
 require_once(__DIR__ . '/helpers/globals.php');
 
 
-$config = require_config($context, __DIR__ . '/config/internal.php');
+$config = require_config(__DIR__ . '/config/internal.php', $context);
 unset($context);
 Yii::createApplication(WebApplication::class, $config)->run();

@@ -12,8 +12,6 @@
 */
 use ls\components\SurveySession;
 
-Yii::import('application.helpers.sanitize_helper', true);
-
 /**
  * Translation helper function
  * @param string $sToTranslate
@@ -57,22 +55,6 @@ function egT($sToTranslate, $iCount, $sEscapeMode = 'html')
 {
     echo ngT($sToTranslate,$iCount,$sEscapeMode);
 }
-
-/**
- * @param String $file
- * @param Array $context
- */
-function requireFile($file, $context = [], $thisObject = null) {
-    // Clean up scope.
-
-    $closure = function() {
-        extract(func_get_arg(1));
-        return require func_get_arg(0);
-    };
-    $require = $closure->bindTo($thisObject);
-    return $require($file, $context);
-}
-
 
 /**
 * Quotes a translation according to purpose
@@ -186,27 +168,6 @@ function getGroupOrder($surveyid,$gid)
     }
     else return $group_order ;
 }
-
-/**
-* getMaxQuestionOrder($gid) queries the database for the maximum sortorder of a question.
-*
-*/
-function getMaxQuestionOrder($gid,$surveyid)
-{
-    $gid=\ls\helpers\Sanitize::int($gid);
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $max_sql = "SELECT max( question_order ) AS max FROM {{questions}} WHERE gid='$gid' AND language='$s_lang'";
-
-    $max_result = Yii::app()->db->createCommand($max_sql)->query(); //Checked
-    $maxrow = $max_result->read() ;
-    $current_max = $maxrow['max'];
-    if($current_max=="")
-    {
-        return "0" ;
-    }
-    else return $current_max ;
-}
-
 
 /**
 * setupColumns() defines all the html tags to be wrapped around
@@ -440,99 +401,6 @@ function longestString( $new_string , $longest_length )
 
 
 
-/**
-* getGroupList() queries the database for a list of all groups matching the current survey sid
-*
-*
-* @param string $gid - the currently selected gid/group
-*
-* @return This string is returned containing <option></option> formatted list of groups to current survey
-*/
-function getGroupList($gid,$surveyid)
-{
-
-    $groupselecter="";
-    $gid=\ls\helpers\Sanitize::int($gid);
-    $surveyid=\ls\helpers\Sanitize::int($surveyid);
-    if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-
-    $gidquery = "SELECT gid, group_name FROM {{groups}} WHERE sid='{$surveyid}' AND  language='{$s_lang}' ORDER BY group_order";
-    $gidresult = Yii::app()->db->createCommand($gidquery)->query(); //Checked
-    foreach ($gidresult->readAll() as $gv)
-    {
-        $groupselecter .= "<option";
-        if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
-        $groupselecter .= " value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid=".$gv['gid']."'>".htmlspecialchars($gv['group_name'])."</option>\n";
-    }
-    if ($groupselecter)
-    {
-        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$groupselecter;}
-        else {$groupselecter .= "<option value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid='>".gT("None")."</option>\n";}
-    }
-    return $groupselecter;
-}
-
-
-
-/**
-* put your comment there...
-*
-* @param mixed $gid
-* @param mixed $language
-*/
-function getGroupListLang($gid, $language, $surveyid)
-{
-
-
-
-    $groupselecter="";
-    if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
-
-    $gidresult = QuestionGroup::model()->findAll(array('condition'=>'sid=:surveyid AND language=:language',
-    'order'=>'group_order',
-    'params'=>array(':surveyid'=>$surveyid,':language'=>$language)));   //Checked)
-    foreach ($gidresult as $gv)
-    {
-        $gv = $gv->attributes;
-        $groupselecter .= "<option";
-        if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
-        $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gv['gid']);
-        $groupselecter .= " value='{$link}'>";
-        if (strip_tags($gv['group_name']))
-        {
-            $groupselecter .= htmlspecialchars(strip_tags($gv['group_name']));
-        } else {
-            $groupselecter .= htmlspecialchars($gv['group_name']);
-        }
-        $groupselecter .= "</option>\n";
-    }
-    if ($groupselecter)
-    {
-        $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid);
-        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$groupselecter;}
-        else {$groupselecter .= "<option value='{$link}'>".gT("None")."</option>\n";}
-    }
-    return $groupselecter;
-}
-
-/**
-* Gets all survey infos in one big array including the language specific settings
-*
-* @param int $surveyId  The survey ID
-* @param string $language The language code - if not given the base language of the particular survey is used
-* @return array Returns array with survey info or false, if survey does not exist
- * @deprecated
-*/
-function getSurveyInfo($surveyId, $language = null)
-{
-    throw new \Exception('deprecated');
-    if (!is_numeric($surveyId)) {
-        throw new Exception("Survey ids must be numerical.");
-    }
-    $session = App()->surveySessionManager->current;
-    return $session->survey->getInfo($language);
-}
 
 /**
 * Returns the default email template texts as array
@@ -629,17 +497,6 @@ function groupOrderThenQuestionOrder($a, $b)
     }
     return $GroupResult;
 }
-
-function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites the cfieldname for a question after group change
-{
-    $surveyid = Yii::app()->getConfig('sid');
-    $qid=\ls\helpers\Sanitize::int($qid);
-    $oldgid=\ls\helpers\Sanitize::int($oldgid);
-    $newgid=\ls\helpers\Sanitize::int($newgid);
-    Condition::model()->updateCFieldName($surveyid,$qid,$oldgid,$newgid);
-    // TMSW Condition->Relevance:  Call LEM->ConvertConditionsToRelevance() when done
-}
-
 
 /**
 * This function returns POST/REQUEST vars, for some vars like SID and others they are also sanitized
@@ -4239,21 +4096,6 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
 }
 
 /**
-* Check if $str is an integer, or string representation of an integer
-*
-* @param mixed $mStr
-*/
-function isNumericInt($mStr)
-{
-    if(is_int($mStr))
-        return true;
-    elseif(is_string($mStr))
-        return preg_match("/^[0-9]+$/", $mStr);
-    return false;
-}
-
-
-/**
 * getQuotaInformation() returns quota information for the current survey
 * @param string $surveyid - Survey identification number
 * @param string $language - Language of the quota
@@ -4385,60 +4227,6 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
    }
 }
 
-
-/**
-* cleanLanguagesFromSurvey() removes any languages from survey tables that are not in the passed list
-* @param string $sid - the currently selected survey
-* @param string $availlangs - space separated list of additional languages in survey
-* @return bool - always returns true
-*/
-function cleanLanguagesFromSurvey($sid, $availlangs)
-{
-
-    Yii::app()->loadHelper('database');
-    //
-    $sid=\ls\helpers\Sanitize::int($sid);
-    $baselang = Survey::model()->findByPk($sid)->language;
-
-    if (!empty($availlangs) && $availlangs != " ")
-    {
-        $availlangs=sanitize_languagecodeS($availlangs);
-        $langs = explode(" ",$availlangs);
-        if($langs[count($langs)-1] == "") array_pop($langs);
-    }
-
-    $sqllang = "language <> '".$baselang."' ";
-
-    if (!empty($availlangs) && $availlangs != " ")
-    {
-        foreach ($langs as $lang)
-        {
-            $sqllang .= "AND language <> '".$lang."' ";
-        }
-    }
-
-    // Remove From Answer Table
-    $query = "SELECT qid FROM {{questions}} WHERE sid='{$sid}' AND $sqllang";
-    $qidresult = dbExecuteAssoc($query);
-
-    foreach ($qidresult->readAll() as $qrow)
-    {
-
-        $myqid = $qrow['qid'];
-        $query = "DELETE FROM {{answers}} WHERE qid='$myqid' AND $sqllang";
-        dbExecuteAssoc($query);
-    }
-
-    // Remove From Questions Table
-    $query = "DELETE FROM {{questions}} WHERE sid='{$sid}' AND $sqllang";
-    dbExecuteAssoc($query);
-
-    // Remove From QuestionGroup Table
-    $query = "DELETE FROM {{groups}} WHERE sid='{$sid}' AND $sqllang";
-    dbExecuteAssoc($query);
-
-    return true;
-}
 
 /**
 * This function switches identity insert on/off for the MSSQL database
@@ -4609,291 +4397,6 @@ function getQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
         return $condarray;
     }
     return null;
-}
-
-// TMSW Condition->Relevance:  This function is not needed - could replace with a message from EM output.
-/**
-* checkMoveQuestionConstraintsForConditions()
-* @param string $sid - the currently selected survey
-* @param string $qid - qid of the question you want to check possible moves
-* @param string $newgid - (optionnal) get only constraints when trying to move to this particular GroupId
-*                                     otherwise, get all moves constraints for this question
-*
-* @return array - returns an array describing the conditions
-*                 Array
-*                 (
-*                   ['notAbove'] = null | Array
-*                       (
-*                         Array ( gid1, group_order1, qid1, cid1 )
-*                       )
-*                   ['notBelow'] = null | Array
-*                       (
-*                         Array ( gid2, group_order2, qid2, cid2 )
-*                       )
-*                 )
-*
-* This should be read as:
-*    - this question can't be move above group gid1 in position group_order1 because of the condition cid1 on question qid1
-*    - this question can't be move below group gid2 in position group_order2 because of the condition cid2 on question qid2
-*
-*/
-function checkMoveQuestionConstraintsForConditions($sid,$qid,$newgid="all")
-{
-
-    $resarray=Array();
-    $resarray['notAbove']=null; // defaults to no constraint
-    $resarray['notBelow']=null; // defaults to no constraint
-    $sid=\ls\helpers\Sanitize::int($sid);
-    $qid=\ls\helpers\Sanitize::int($qid);
-
-    if ($newgid != "all")
-    {
-        $newgid=\ls\helpers\Sanitize::int($newgid);
-        $newgorder=getGroupOrder($sid,$newgid);
-    }
-    else
-    {
-        $neworder=""; // Not used in this case
-    }
-
-    $baselang = Survey::model()->findByPk($sid)->language;
-
-    // First look for 'my dependencies': questions on which I have set conditions
-    $condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
-    . "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
-    . "tc.cid FROM "
-    . "{{conditions}} AS tc, "
-    . "{{questions}} AS tq, "
-    . "{{questions}} AS tq2, "
-    . "{{groups}} AS tg, "
-    . "{{groups}} AS tg2 "
-    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
-    . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq.qid=$qid ORDER BY tg2.group_order DESC";
-
-    $condresult=Yii::app()->db->createCommand($condquery)->query();
-
-    foreach ($condresult->readAll() as $condrow )
-    {
-        // This Question can go up to the minimum GID on the 1st row
-        $depqid=$condrow['depqid'];
-        $depgid=$condrow['depgid'];
-        $depgorder=$condrow['depgorder'];
-        $targetqid=$condrow['targqid'];
-        $targetgid=$condrow['targgid'];
-        $targetgorder=$condrow['targgorder'];
-        $condid=$condrow['cid'];
-        //echo "This question can't go above to GID=$targetgid/order=$targetgorder because of CID=$condid";
-        if ($newgid != "all")
-        { // Get only constraints when trying to move to this group
-            if ($newgorder < $targetgorder)
-            {
-                $resarray['notAbove'][]=Array($targetgid,$targetgorder,$depqid,$condid);
-            }
-        }
-        else
-        { // get all moves constraints
-            $resarray['notAbove'][]=Array($targetgid,$targetgorder,$depqid,$condid);
-        }
-    }
-
-    // Secondly look for 'questions dependent on me': questions that have conditions on my answers
-    $condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
-    . "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
-    . "tc.cid FROM {{conditions}} AS tc, "
-    . "{{questions}} AS tq, "
-    . "{{questions}} AS tq2, "
-    . "{{groups}} AS tg, "
-    . "{{groups}} AS tg2 "
-    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
-    . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq2.qid=$qid ORDER BY tg.group_order";
-
-    $condresult=Yii::app()->db->createCommand($condquery)->query();
-
-    foreach ($condresult->readAll() as $condrow)
-    {
-        // This Question can go down to the maximum GID on the 1st row
-        $depqid=$condrow['depqid'];
-        $depgid=$condrow['depgid'];
-        $depgorder=$condrow['depgorder'];
-        $targetqid=$condrow['targqid'];
-        $targetgid=$condrow['targgid'];
-        $targetgorder=$condrow['targgorder'];
-        $condid=$condrow['cid'];
-        //echo "This question can't go below to GID=$depgid/order=$depgorder because of CID=$condid";
-        if ($newgid != "all")
-        { // Get only constraints when trying to move to this group
-            if ($newgorder > $depgorder)
-            {
-                $resarray['notBelow'][]=Array($depgid,$depgorder,$depqid,$condid);
-            }
-        }
-        else
-        { // get all moves constraints
-            $resarray['notBelow'][]=Array($depgid,$depgorder,$depqid,$condid);
-        }
-    }
-    return $resarray;
-}
-
-function getUserGroupList($ugid=NULL,$outputformat='optionlist')
-{
-
-    //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {App()->user->id} ORDER BY name";
-    $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
-    if (!App()->user->checkAccess('superadmin'))
-    {
-        $sQuery .="AND uid = ".App()->user->id;
-    }
-    $sQuery .=  " ORDER BY name";
-
-    $sresult = Yii::app()->db->createCommand($sQuery)->query(); //Checked
-    if (!$sresult) {return "Database Error";}
-    $selecter = "";
-    foreach ($sresult->readAll() as $row)
-    {
-        $groupnames[] = $row;
-    }
-
-
-    $simplegidarray=array();
-    if (isset($groupnames))
-    {
-        foreach($groupnames as $gn)
-        {
-            $selecter .= "<option ";
-            if(App()->user->id == $gn['owner_id']) {$selecter .= " style=\"font-weight: bold;\"";}
-            //if (isset($_GET['ugid']) && $gn['ugid'] == $_GET['ugid']) {$selecter .= " selected='selected'"; $svexist = 1;}
-
-            if ($gn['ugid'] == $ugid) {$selecter .= " selected='selected'"; $svexist = 1;}
-            $link = Yii::app()->getController()->createUrl("/admin/usergroups/sa/view/ugid/".$gn['ugid']);
-            $selecter .=" value='{$link}'>{$gn['name']}</option>\n";
-            $simplegidarray[] = $gn['ugid'];
-        }
-    }
-
-    if (!isset($svexist)) {$selecter = "<option value='-1' selected='selected'>".gT("Please choose...")."</option>\n".$selecter;}
-    //else {$selecter = "<option value='-1'>".gT("None")."</option>\n".$selecter;}
-
-    if ($outputformat == 'simplegidarray')
-    {
-        return $simplegidarray;
-    }
-    else
-    {
-        return $selecter;
-    }
-}
-
-function getGroupUserList($ugid)
-{
-    Yii::app()->loadHelper('database');
-
-
-    $ugid=\ls\helpers\Sanitize::int($ugid);
-    $surveyidquery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
-
-    $surveyidresult = dbExecuteAssoc($surveyidquery);  //Checked
-    if (!$surveyidresult) {return "Database Error";}
-    $surveyselecter = "";
-    foreach ($surveyidresult->readAll() as $row)
-    {
-        $surveynames[] = $row;
-    }
-    //$surveynames = $surveyidresult->GetRows();
-    if (isset($surveynames))
-    {
-        foreach($surveynames as $sv)
-        {
-            $surveyselecter .= "<option";
-            $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
-        }
-    }
-    $surveyselecter = "<option value='-1' selected='selected'>".gT("Please choose...")."</option>\n".$surveyselecter;
-    return $surveyselecter;
-}
-
-/**
-* Run an arbitrary sequence of semicolon-delimited SQL commands
-*
-* Assumes that the input text (file or string) consists of
-* a number of SQL statements ENDING WITH SEMICOLONS.  The
-* semicolons MUST be the last character in a line.
-* Lines that are blank or that start with "#" or "--" (postgres) are ignored.
-* Only tested with mysql dump files (mysqldump -p -d limesurvey)
-* Function kindly borrowed by Moodle
-* @param string $sqlfile The path where a file with sql commands can be found on the server.
-* @param string $sqlstring If no path is supplied then a string with semicolon delimited sql
-* commands can be supplied in this argument.
-* @return bool Returns true if database was modified successfully.
-*/
-function modifyDatabase($sqlfile='', $sqlstring='')
-{
-    Yii::app()->loadHelper('database');
-
-
-    global $siteadminemail;
-    global $siteadminname;
-    global $codeString;
-    global $modifyoutput;
-
-    $success = true;  // Let's be optimistic
-    $modifyoutput='';
-
-    if (!empty($sqlfile)) {
-        if (!is_readable($sqlfile)) {
-            $success = false;
-            echo '<p>Tried to modify database, but "'. $sqlfile .'" doesn\'t exist!</p>';
-            return $success;
-        } else {
-            $lines = file($sqlfile);
-        }
-    } else {
-        $sqlstring = trim($sqlstring);
-        if ($sqlstring{strlen($sqlstring)-1} != ";") {
-            $sqlstring .= ";"; // add it in if it's not there.
-        }
-        $lines[] = $sqlstring;
-    }
-
-    $command = '';
-
-    foreach ($lines as $line) {
-        $line = rtrim($line);
-        $length = strlen($line);
-
-        if ($length and $line[0] <> '#' and substr($line,0,2) <> '--') {
-            if (substr($line, $length-1, 1) == ';') {
-                $line = substr($line, 0, $length-1);   // strip ;
-                $command .= $line;
-                $command = str_replace('prefix_', Yii::app()->db->tablePrefix, $command); // Table prefixes
-                $command = str_replace('$defaultuser', Yii::app()->getConfig('defaultuser'), $command);
-                $command = str_replace('$defaultpass', hash('sha256',Yii::app()->getConfig('defaultpass')), $command);
-                $command = str_replace('$siteadminname', $siteadminname, $command);
-                $command = str_replace('$siteadminemail', $siteadminemail, $command);
-                $command = str_replace('$defaultlang', Yii::app()->getConfig('defaultlang'), $command);
-                $command = str_replace('$databasetabletype', Yii::app()->db->getDriverName(), $command);
-
-                try
-                {   Yii::app()->db->createCommand($command)->query(); //Checked
-                    $command=htmlspecialchars($command);
-                    $modifyoutput .=". ";
-                }
-                catch(CDbException $e)
-                {
-                    $command=htmlspecialchars($command);
-                    $modifyoutput .="<br />".sprintf(gT("SQL command failed: %s"),"<span style='font-size:10px;'>".$command."</span>","<span style='color:#ee0000;font-size:10px;'></span><br/>");
-                    $success = false;
-                }
-
-                $command = '';
-            } else {
-                $command .= $line;
-            }
-        }
-    }
-
-    return $success;
-
 }
 
 /**
@@ -5256,44 +4759,6 @@ function array_diff_assoc_recursive($array1, $array2) {
     {
         return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));
     }
-
-    /**
-    * Decodes token attribute data because due to bugs in the past it can be written in JSON or be serialized - future format should be JSON as serialized data can be exploited
-    *
-    * @param string $oTokenAttributeData  The original token attributes as stored in the database
-    * @param boolean $bAllowSerialized If serialized data is accepted and properly read - with DBVersion 179 this should only be allowed on survey import
-    */
-    function decodeTokenAttributes($oTokenAttributeData){
-        if (trim($oTokenAttributeData)=='') return array();
-        if (substr($oTokenAttributeData,0,1)!='{' && substr($oTokenAttributeData,0,1)!='[')
-        {
-            $sSerialType=getSerialClass($oTokenAttributeData);
-            if ($sSerialType=='array') // Safe to decode
-            {
-                $aReturnData=@unserialize($oTokenAttributeData);
-            }
-            else // Something else, might be unsafe
-            {
-                return array();
-            }
-        }
-        else
-        {
-             $aReturnData=@json_decode($oTokenAttributeData,true);
-        }
-        if ($aReturnData===false || $aReturnData===null) return array();
-        return $aReturnData;
-    }
-
-    function getSerialClass($sSerial) {
-        $aTypes = array('s' => 'string', 'a' => 'array', 'b' => 'bool', 'i' => 'int', 'd' => 'float', 'N;' => 'NULL');
-
-        $aParts = explode(':', $sSerial, 4);
-        return isset($aTypes[$aParts[0]]) ? $aTypes[$aParts[0]] : (isset($aParts[2]) ? trim($aParts[2], '"') : null);
-    }
-
-
-
     function renderOldTemplate($fileName, $data = [], $replacements = [], SurveySession $session = null) {
         bP();
         try {
@@ -5303,6 +4768,3 @@ function array_diff_assoc_recursive($array1, $array2) {
         }
 
     }
-// Closing PHP tag intentionally omitted - yes, it is okay
-
-
