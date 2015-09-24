@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bc2977994b9f595604f8ae82fef3133b",
+    "hash": "9f7af97fed041af1105c1785d9e7009a",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -1225,50 +1225,6 @@
             "time": "2015-01-22 00:01:34"
         },
         {
-            "name": "hafriedlander/php-peg",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/hafriedlander/php-peg.git",
-                "reference": "819c7185a18c2afc06f939762d638987f044b01d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/hafriedlander/php-peg/zipball/819c7185a18c2afc06f939762d638987f044b01d",
-                "reference": "819c7185a18c2afc06f939762d638987f044b01d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "bin": [
-                "cli.php"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT",
-                "GPLv2",
-                "BSD-3"
-            ],
-            "authors": [
-                {
-                    "name": "Hamish Friedlander",
-                    "email": "hamish@silverstripe.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "PEG (parsing expression grammar) compiler for PHP",
-            "homepage": "https://github.com/hafriedlander/php-peg",
-            "keywords": [
-                "DSL",
-                "compiler",
-                "parser",
-                "peg"
-            ],
-            "time": "2014-05-22 03:21:34"
-        },
-        {
             "name": "icecave/parity",
             "version": "dev-develop",
             "source": {
@@ -1381,16 +1337,16 @@
         },
         {
             "name": "icecave/semver",
-            "version": "dev-master",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IcecaveStudios/semver.git",
-                "reference": "ca4277fb4000019e0cb50e72b272904d9e3d4557"
+                "reference": "813d27102dcb2bf1115b57ad48d67065036dfd22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/IcecaveStudios/semver/zipball/ca4277fb4000019e0cb50e72b272904d9e3d4557",
-                "reference": "ca4277fb4000019e0cb50e72b272904d9e3d4557",
+                "url": "https://api.github.com/repos/IcecaveStudios/semver/zipball/813d27102dcb2bf1115b57ad48d67065036dfd22",
+                "reference": "813d27102dcb2bf1115b57ad48d67065036dfd22",
                 "shasum": ""
             },
             "require": {
@@ -1431,20 +1387,20 @@
                 "semver",
                 "version"
             ],
-            "time": "2015-03-09 04:51:38"
+            "time": "2015-03-09 04:51:43"
         },
         {
             "name": "jsonrpc/jsonrpc",
-            "version": "dev-master",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnstevenson/jsonrpc.git",
-                "reference": "8cd385ae8b10bfe74d52a22661c8a0511b04fd48"
+                "reference": "0fcc660ca211a871fe656066e8921406a4c3a2ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnstevenson/jsonrpc/zipball/8cd385ae8b10bfe74d52a22661c8a0511b04fd48",
-                "reference": "8cd385ae8b10bfe74d52a22661c8a0511b04fd48",
+                "url": "https://api.github.com/repos/johnstevenson/jsonrpc/zipball/0fcc660ca211a871fe656066e8921406a4c3a2ae",
+                "reference": "0fcc660ca211a871fe656066e8921406a4c3a2ae",
                 "shasum": ""
             },
             "require": {
@@ -1474,7 +1430,7 @@
                 "json-rpc",
                 "rpc"
             ],
-            "time": "2013-04-12 10:33:44"
+            "time": "2012-11-30 21:43:30"
         },
         {
             "name": "mk-j/php_xlsxwriter",
@@ -1516,16 +1472,16 @@
         },
         {
             "name": "phpmailer/phpmailer",
-            "version": "dev-master",
+            "version": "v5.2.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "b6f421c5ff02531390d6cb1e4d9780d765b664cc"
+                "reference": "45df3a88f7f46071e10d0b600f228d19f95911b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/b6f421c5ff02531390d6cb1e4d9780d765b664cc",
-                "reference": "b6f421c5ff02531390d6cb1e4d9780d765b664cc",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/45df3a88f7f46071e10d0b600f228d19f95911b3",
+                "reference": "45df3a88f7f46071e10d0b600f228d19f95911b3",
                 "shasum": ""
             },
             "require": {
@@ -1572,7 +1528,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-09-22 06:16:40"
+            "time": "2015-09-14 09:18:12"
         },
         {
             "name": "psr/http-message",
@@ -1669,7 +1625,7 @@
         },
         {
             "name": "sam-it/forms",
-            "version": "dev-master",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SAM-IT/php-form.git",
@@ -1907,17 +1863,17 @@
             "time": "2015-09-13 11:22:08"
         },
         {
-            "name": "tecnick.com/tcpdf",
-            "version": "dev-master",
+            "name": "tecnickcom/tcpdf",
+            "version": "6.2.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "354433a33946ae7497c3eab291eaaf814bccbfab"
+                "reference": "2f732eaa91b5665274689b1d40b285a7bacdc37f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/354433a33946ae7497c3eab291eaaf814bccbfab",
-                "reference": "354433a33946ae7497c3eab291eaaf814bccbfab",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/2f732eaa91b5665274689b1d40b285a7bacdc37f",
+                "reference": "2f732eaa91b5665274689b1d40b285a7bacdc37f",
                 "shasum": ""
             },
             "require": {
@@ -1967,7 +1923,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2015-08-02 12:30:27"
+            "time": "2015-09-12 10:08:34"
         },
         {
             "name": "twbs/bootstrap",
@@ -2373,12 +2329,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "b8436b000263f6d72fbad1d36890e247ce84857e"
+                "reference": "12259bb1352612df9ec24048714a3bedafe79674"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/b8436b000263f6d72fbad1d36890e247ce84857e",
-                "reference": "b8436b000263f6d72fbad1d36890e247ce84857e",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/12259bb1352612df9ec24048714a3bedafe79674",
+                "reference": "12259bb1352612df9ec24048714a3bedafe79674",
                 "shasum": ""
             },
             "require": {
@@ -2427,7 +2383,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-09-14 06:55:19"
+            "time": "2015-09-24 07:56:07"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -2613,12 +2569,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "97cf98979d0862af9c5d932ad1e73fa33d00f2ce"
+                "reference": "f5a53874bacceb3c865fd05fe0c86c52a774a44a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/97cf98979d0862af9c5d932ad1e73fa33d00f2ce",
-                "reference": "97cf98979d0862af9c5d932ad1e73fa33d00f2ce",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/f5a53874bacceb3c865fd05fe0c86c52a774a44a",
+                "reference": "f5a53874bacceb3c865fd05fe0c86c52a774a44a",
                 "shasum": ""
             },
             "require": {
@@ -2679,7 +2635,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-09-20 12:59:51"
+            "time": "2015-09-24 07:27:12"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -3204,24 +3160,15 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "tecnick.com/tcpdf": 20,
-        "phpmailer/phpmailer": 20,
-        "jsonrpc/jsonrpc": 20,
         "ar-php/ar-php": 20,
         "guzzlehttp/guzzle": 20,
         "sam-it/php-auto-update": 20,
-        "icecave/semver": 20,
-        "hafriedlander/php-peg": 20,
         "sam-it/yii1-translate": 20,
-        "sam-it/forms": 20,
-        "zendframework/zend-diactoros": 20,
+        "studio-42/elfinder": 20,
         "bower-asset/ajaxq": 20,
         "bower-asset/tinymce": 20,
-        "studio-42/elfinder": 20,
         "bower-asset/tinymce-placeholder": 20,
-        "bower-asset/qtip2": 20,
-        "bower-asset/jqueryui-touch-punch": 20,
-        "bower-asset/font-awesome": 20
+        "bower-asset/jqueryui-touch-punch": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

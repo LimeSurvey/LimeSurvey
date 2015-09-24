@@ -1,4 +1,6 @@
 <?php
+use ls\components\UserIdentity;
+
 /**
 * This class handles all methods of the RPCs
 */

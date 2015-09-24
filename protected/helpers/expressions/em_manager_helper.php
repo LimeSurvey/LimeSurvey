@@ -4700,7 +4700,6 @@ use ls\components\SurveySession;
                 }
             }
 
-            $qtypes = getQuestionTypeList('', 'array');
 
             if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
                 return array(
@@ -4784,7 +4783,6 @@ use ls\components\SurveySession;
                 //////
                 $mandatory = (($q['info']['mandatory'] == 'Y') ? "<span class='mandatory'>*</span>" : '');
                 $question->type = $q['info']['type'];
-                $question->typedesc = $qtypes[$question->type]['description'];
 
                 $sgqas = explode('|', $q['sgqa']);
                 if (count($sgqas) == 1 && !is_null($q['info']['default'])) {

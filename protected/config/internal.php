@@ -152,7 +152,7 @@ $internalConfig = array(
             'class' => \ls\components\AuthManager::class
         ],
         'themeManager' => [
-            'class' => ThemeManager::class,
+            'class' => \ls\components\ThemeManager::class,
             'basePath' => __DIR__ . '/../themes'
         ]
     ],

@@ -200,16 +200,13 @@ class Settings extends \CFormModel
 
     public function getDefaultTemplateOptions()
     {
-        $values = array_keys(getTemplateList());
-
+        $values = \Template::getTemplateList();
         return array_combine($values, $values);
     }
 
     public function getAdminThemeOptions()
     {
-        $values = array_keys(getAdminThemeList());
-
-        return array_combine($values, $values);
+        return App()->themeManager->getThemeNames();
     }
 
     public function getDefaultHtmlEditorModeOptions()

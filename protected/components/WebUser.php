@@ -1,17 +1,20 @@
 <?php
 namespace ls\components;
 
+use ls\pluginmanager\iAuthenticationPlugin;
+use ls\pluginmanager\iUser;
+
 /**
- * @property-read ls\pluginmanager\iUser $model;
+ * @property-read iUser $model;
  */
-class WebUser extends CWebUser
+class WebUser extends \CWebUser
 {
     private $_access = [];
     protected $_authManager;
 
     /**
      * Returns the plugin responsible for authenticating the current user.
-     * @return ls\pluginmanager\iAuthenticationPlugin
+     * @return iAuthenticationPlugin
      */
     public function getPlugin()
     {

@@ -53,14 +53,6 @@ abstract class Controller extends \CController
 
 	protected function _init()
 	{
-		//Every 50th time clean up the temp directory of old files (older than 1 day)
-		//depending on the load the  probability might be set higher or lower
-		if (rand(1,50)==1)
-		{
-			cleanTempDirectory();
-		}
-
-
 		enforceSSLMode();// This really should be at the top but for it to utilise \SettingGlobal::get() it has to be here
 
         

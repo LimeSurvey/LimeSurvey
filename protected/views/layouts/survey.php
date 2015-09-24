@@ -13,7 +13,7 @@
 			$cs = App()->clientScript;
             /** @var CAssetManager $am */
             $am = App()->assetManager;
-            $public = App()->getBaseUrl() . Yii::getPathOfAlias('public');
+            $public = App()->baseUrl . Yii::getPathOfAlias('public');
             $cs->registerCssFile(App()->theme->baseUrl . '/css/style.css');
 
             $cs->registerCssFile($am->publish(Yii::getPathOfAlias('bower.select2-bootstrap-css') . '/select2-bootstrap.min.css'));

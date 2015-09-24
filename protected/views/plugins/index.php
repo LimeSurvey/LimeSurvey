@@ -4,39 +4,40 @@
     /* @var $dataProvider CActiveDataProvider */
 
     
-    $gridColumns = array(
-        array(// display the activation link
+    $gridColumns = [
+        [// display the activation link
             'class' => 'CLinkColumn',
             'header' => gT('Status'),
-            'labelExpression' => function(\ls\pluginmanager\PluginConfig $config) { return ($config->active ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Active'), array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Inactive'), array('width' => 32, 'height' => 32))); },
+            'labelExpression' => function(\ls\pluginmanager\PluginConfig $config) { return ($config->active ? CHtml::image(App()->getTheme()->baseUrl . '/images/active.png', gT('Active'), ['width' => 32, 'height' => 32]) : CHtml::image(App()->getTheme()->baseUrl . '/images/inactive.png', gT('Inactive'), ['width' => 32, 'height' => 32])); },
             'url' => '#'
-        ),
-        array(// display the activation link
+        ],
+        [// display the activation link
             'class' => 'CDataColumn',
             'type' => 'raw',
             'header' => gT('Action'),
             'value' => function(\ls\pluginmanager\PluginConfig $data) {
-                if (!$data->active) { 
-                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Activate'), array('width' => 16, 'height' => 16)), array("/plugins/activate", "id" => $data['id']));
+                if (!$data->active) {
+
+                    $output = CHtml::link(CHtml::image(App()->getTheme()->baseUrl . '/images/active.png', gT('Activate'), ['width' => 16, 'height' => 16]), ["/plugins/activate", "id" => $data['id']]);
                 } else {
-                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Deactivate'), array('width' => 16, 'height' => 16)), array("/plugins/deactivate", "id" => $data['id'])); 
+                    $output = CHtml::link(CHtml::image(App()->getTheme()->baseUrl . '/images/inactive.png', gT('Deactivate'), ['width' => 16, 'height' => 16]), ["/plugins/deactivate", "id" => $data['id']]);
                     if ($data->getPlugin() != null && count($data->getPlugin()->getPluginSettings()) > 0) {
-                        $output .= CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'survey_settings_30.png', gT('Configure'), array('width' => 16, 'height' => 16, 'style' => 'margin-left: 8px;')), array("/plugins/configure", "id" => $data['id'])); 
+                        $output .= CHtml::link(App()->getTheme()->baseUrl . '/images/survey_settings_30.png', gT('Configure'), ['width' => 16, 'height' => 16, 'style' => 'margin-left: 8px;'], ["/plugins/configure", "id" => $data['id']]);
                     }
                 }
                 return $output;
             }
-        ),
-        array(// display the 'name' attribute
+        ],
+        [// display the 'name' attribute
             'class' => 'CDataColumn',
             'header' => gT('Plugin'),
             'name' => 'name'
-        ),
-        array(// display the 'name' attribute
+        ],
+        [// display the 'name' attribute
             'class' => 'CDataColumn',
             'header' => gT('Description'),
             'name' => 'description'
-        ),
+        ],
         [
             'type' => 'raw',
             'header' => gT('Errors in limesurvey.json'),
@@ -51,7 +52,7 @@
                 return $result;
             }
         ],
-    ); 
+    ];
         
         /*
             array(            // display a column with "view", "update" and "delete" buttons
@@ -61,12 +62,12 @@
         )
     );
         */
-    $this->widget('TbGridView', array(
+    $this->widget('TbGridView', [
         'dataProvider'=> $plugins,
         'columns'=>$gridColumns,
 //        'rowCssClassExpression'=> function ($index, $data) { return ($index % 2 ? 'even' : 'odd') . ' ' . ($data['new']==1 ? "new" : "old"); },
 //        'itemsCssClass' => 'items table-condensed table-bordered'
-    ));
+    ]);
 
 ?>
 </div>

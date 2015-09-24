@@ -103,92 +103,10 @@ function quoteText($sText, $sEscapeMode = 'html')
     }
 }
 
-/**
-* getQuestionTypeList() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
-*    question type
-*
-* @param string $SelectedCode Value of the Question Type (defaults to "T")
-* @param string $ReturnType Type of output from this function (defaults to selector)
-*
-* @return depending on $ReturnType param, returns a straight "array" of question types, or an <option></option> list
-*
-* Explanation of questiontype array:
-*
-* description : Question description
-* subquestions : 0= Does not support subquestions x=Number of subquestion scales
-* answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
-* assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
-*/
-function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
-{
-    $publicurl = Yii::app()->getConfig('publicurl');
-
-    $qtypes = Question::typeList();
-    if ($ReturnType == "array")
-        return $qtypes;
-
-    if ($ReturnType == "group")
-    {
-        foreach ($qtypes as $qkey => $qtype)
-        {
-            $newqType[$qtype['group']][$qkey] = $qtype;
-        }
-
-
-        $qtypeselecter = "";
-        foreach ($newqType as $group => $members)
-        {
-            $qtypeselecter .= '<optgroup label="' . $group . '">';
-            foreach ($members as $TypeCode => $TypeProperties)
-            {
-                $qtypeselecter .= "<option value='$TypeCode'";
-                if ($SelectedCode == $TypeCode)
-                {
-                    $qtypeselecter .= " selected='selected'";
-                }
-                $qtypeselecter .= ">{$TypeProperties['description']}</option>\n";
-            }
-            $qtypeselecter .= '</optgroup>';
-        }
-
-        return $qtypeselecter;
-    };
-    $qtypeselecter = "";
-    foreach ($qtypes as $TypeCode => $TypeProperties)
-    {
-        $qtypeselecter .= "<option value='$TypeCode'";
-        if ($SelectedCode == $TypeCode)
-        {
-            $qtypeselecter .= " selected='selected'";
-        }
-        $qtypeselecter .= ">{$TypeProperties['description']}</option>\n";
-    }
-    return $qtypeselecter;
-}
 
 
 
-function getAdminThemeList()
-{
-    $standardtemplaterootdir=Yii::app()->getConfig("styledir");
 
-    if ($standardtemplaterootdir && $handle = opendir($standardtemplaterootdir))
-    {
-        while (false !== ($file = readdir($handle)))
-        {
-            if (!is_file("$standardtemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
-            {
-                $list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
-            }
-        }
-        closedir($handle);
-    }
-
-
-    ksort($list_of_files);
-
-    return $list_of_files;
-}
 
 
 
@@ -4084,31 +4002,6 @@ function showJavaScript($sContent){
     return $text;
 }
 
-/**
-* This function cleans files from the temporary directory being older than 1 day
-* @todo Make the days configurable
-*/
-function cleanTempDirectory()
-{
-
-    $dir =  Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR;
-    if (is_dir($dir)) {
-        $dp = opendir($dir) or show_error('Could not open temporary directory');
-        while ($file = readdir($dp)) {
-            if (is_file($dir . $file) && (filemtime($dir . $file)) < (strtotime('-1 days')) && $file != 'index.html' && $file != '.gitignore' && $file != 'readme.txt') {
-                @unlink($dir . $file);
-            }
-        }
-        $dir = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
-        $dp = opendir($dir) or die ('Could not open temporary upload directory');
-        while ($file = readdir($dp)) {
-            if (is_file($dir . $file) && (filemtime($dir . $file)) < (strtotime('-1 days')) && $file != 'index.html' && $file != '.gitignore' && $file != 'readme.txt') {
-                @unlink($dir . $file);
-            }
-        }
-        closedir($dp);
-    }
-}
 
 /**
 * This is a convenience function for the coversion of datetime values
@@ -4125,18 +4018,6 @@ function convertDateTimeFormat($value, $fromdateformat, $todateformat)
     return $date->convert($todateformat);
 }
 
-/**
-* This function removes the UTF-8 Byte Order Mark from a string
-*
-* @param string $str
-* @return string
-*/
-function removeBOM($str=""){
-    if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
-        $str=substr($str, 3);
-    }
-    return $str;
-}
 
 
 /**

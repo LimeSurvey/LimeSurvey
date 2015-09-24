@@ -580,35 +580,6 @@ $config['proxy_host_port'] = 80;
 // and report them to the new config-defaults.php file (Do not simply overwrite the new
 // config-defaults file with your old one
 
-$config['homeurl']                 = $config['publicurl'].'admin';          // The website location (url) of the admin scripts
-$config['tempurl']                 = $config['publicurl'].'tmp';
-$config['imageurl']                = $config['publicurl'].'images';         // Location of button bar files for admin script
-$config['uploadurl']               = $config['publicurl'].'upload';
-$config['standardtemplaterooturl'] = $config['publicurl'].'templates';      // Location of the standard templates
-$config['adminscripts']            = $config['publicurl'].'scripts/admin/';
-$config['generalscripts']          = $config['publicurl'].'scripts/';
-$config['third_party']                 = $config['publicurl'].'third_party/';
-$config['styleurl']                = $config['publicurl'].'styles/';
-$config['publicstyleurl']          = $config['publicurl'].'styles-public/';
-$config['sCKEditorURL']            = $config['third_party'].'ckeditor';
-//$config['sCKEditorURL']            = '/scripts/admin/ckeditor.36';
-$config['usertemplaterooturl']     = $config['uploadurl'].'/templates';     // Location of the user templates
-$config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'/images/';         // Location of button bar files for admin script
-$config['adminstyleurl']           = $config['styleurl'].$config['admintheme'].'/';         // Location of button bar files for admin script
-
-
-$config['publicdir']               = \Yii::getPathOfAlias('webroot');                                   // The directory path of the public scripts
-$config['homedir']                 = \Yii::getPathOfAlias('webroot');       // The directory path of the admin scripts
-$config['tempdir']                 = \Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
-$config['imagedir']                = \Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
-$config['uploaddir']               = \Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR."upload";
-$config['standardtemplaterootdir'] = \Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
-$config['usertemplaterootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
-$config['styledir']                = \Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR.'styles';
-
-// Use alias notation, we should move to this format everywhere.
-$config['plugindir']               = 'webroot.plugins';
-
 // (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric caracters; 0 : leave all caracters
 $config['bFixNumAuto']             = 1;
 // (javascript) Send real value entered when using Numeric question type in Expression Manager : 0 : {NUMERIC} with bad caracters send '', 1 : {NUMERIC} send all caracters entered

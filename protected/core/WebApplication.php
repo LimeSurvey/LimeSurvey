@@ -29,6 +29,7 @@ use ls\components\WebUser;
  * @property CClientScript $clientScript
  * @property MigrationManager $migrationManager
  * @property CSecurityManager $securityManager
+ * @property \ls\components\ThemeManager $themeManager
  * @property CTheme $theme
  */
 class WebApplication extends CWebApplication
