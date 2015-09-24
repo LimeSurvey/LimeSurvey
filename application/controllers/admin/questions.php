@@ -123,7 +123,31 @@ class questions extends Survey_Common_Action
 		
 		$this->_renderWrappedTemplate('survey/Question', 'question_view', $aData);
 	}
-	
+
+    /**
+     * Display import view
+     */
+    public function importView($surveyid)
+    {
+        $iSurveyID = $surveyid = sanitize_int($surveyid);
+        if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
+        {
+            $aData['sidebar']['state'] = "close";
+            $aData['sidebar']['questiongroups'] = true;
+            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;           
+            $aData['surveybar']['savebutton']['form'] = true;
+            $aData['surveyid'] = $surveyid;
+            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+            
+            $this->_renderWrappedTemplate('survey/Question', 'importQuestion_view', $aData);
+        }
+        else
+        {
+            Yii::app()->session['flashmessage'] = gT("You don't have enough permissions.");
+            $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid));
+        }                     
+    }	
 
     /**
     * Function responsible to import a question.
@@ -134,7 +158,7 @@ class questions extends Survey_Common_Action
     public function import()
     {
         $action = returnGlobal('action');
-        $surveyid = returnGlobal('sid');
+        $surveyid = $iSurveyID = returnGlobal('sid');
         $gid = returnGlobal('gid');
         $aViewUrls = array();
 
@@ -159,7 +183,14 @@ class questions extends Survey_Common_Action
             if (isset($fatalerror))
             {
                 unlink($sFullFilepath);
-                $this->getController()->error($fatalerror);
+                //echo htmlentities($aImportResults['fatalerror']); die();
+                $message = $fatalerror;
+                $message .= '<p>
+                                <a class="btn btn-default btn-lg" 
+                                   href="'.$this->getController()->createUrl('admin/survey/sa/listquestions/surveyid/').'/'.$surveyid.'">'
+                                   .gT("Return to question list").'</a></p>'; 
+                $this->_renderWrappedTemplate('super', 'messagebox', array('title'=>gT('Error'), 'message'=>$message));
+                die();                
             }
 
             // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
@@ -174,8 +205,14 @@ class questions extends Survey_Common_Action
 
             if (isset($aImportResults['fatalerror']))
             {
-                unlink($sFullFilepath);
-                $this->getController()->error($aImportResults['fatalerror']);
+                //echo htmlentities($aImportResults['fatalerror']); die();
+                $message = $aImportResults['fatalerror'];
+                $message .= '<p>
+                                <a class="btn btn-default btn-lg" 
+                                   href="'.$this->getController()->createUrl('admin/survey/sa/listquestions/surveyid/').'/'.$surveyid.'">'
+                                   .gT("Return to question list").'</a></p>'; 
+                $this->_renderWrappedTemplate('super', 'messagebox', array('title'=>gT('Error'), 'message'=>$message));
+                die();
             }
 
             unlink($sFullFilepath);
@@ -187,6 +224,12 @@ class questions extends Survey_Common_Action
             $aViewUrls[] = 'import_view';
         }
 
+        /////
+        $aData['sidebar']['state'] = "close";
+        $aData['surveyid'] = $iSurveyID;
+        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+        
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 

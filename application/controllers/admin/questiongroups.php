@@ -36,7 +36,7 @@ class questiongroups extends Survey_Common_Action
     function import()
     {
         $action = $_POST['action'];
-        $iSurveyID = (int)$_POST['sid'];
+        $iSurveyID = $surveyid =  $aData['surveyid'] = (int)$_POST['sid'];
 
         if ($action == 'importgroup')
         {
@@ -80,15 +80,50 @@ class questiongroups extends Survey_Common_Action
 
             unlink($sFullFilepath);
 
-            $aData['display'] = $importgroup;
+           $aData['display'] = $importgroup;
             $aData['surveyid'] = $iSurveyID;
             $aData['aImportResults'] = $aImportResults;
             $aData['sExtension'] = $sExtension;
             //$aData['display']['menu_bars']['surveysummary'] = 'importgroup';
-
+            $aData['sidebar']['state'] = "close";
+            
+            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+            
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'import_view', $aData);
-            // TMSW Condition->Relevance:  call LEM->ConvertConditionsToRelevance() after import
         }
+    }
+
+    /**
+     * Import a question group
+     * 
+     */
+    function importView($surveyid)
+    {
+        $iSurveyID = $surveyid = sanitize_int($surveyid);
+        if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
+        {
+
+            $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'addgroup';
+            $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
+            $aData['sidebar']['state'] = "close";
+            $aData['sidebar']['questiongroups'] = true;
+            
+            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;           
+            $aData['surveybar']['savebutton']['form'] = true;
+            $aData['surveyid'] = $surveyid;
+            
+            
+            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+                    
+            $this->_renderWrappedTemplate('survey/QuestionGroups', 'importGroup_view', $aData);
+        }   
+        else
+        {
+            Yii::app()->session['flashmessage'] = gT("You don't have enough permissions.");
+            $this->getController()->redirect(array('admin/survey/sa/listquestiongroups/surveyid/' . $surveyid));
+        }     
     }
 
     /**
@@ -105,7 +140,6 @@ class questiongroups extends Survey_Common_Action
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             Yii::app()->session['FileManagerContext'] = "create:group:{$surveyid}";
-
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');
             $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;

@@ -1,9 +1,10 @@
 <?php
 /**
  * Display error messages
+ * @var $title string
+ * @var $message html
  */
 ?>
-<br/>
 <div class="side-body">
     <div class="row">                             
         <div class="col-lg-12 content-right">

@@ -14,14 +14,18 @@
                 <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                     <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                         <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/add.png" />
-                        <?php eT("Add new group to survey"); ?>
+                        <?php eT("Add new group"); ?>
                     </button>
                 </span>                
             <?php elseif(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create')): ?>            
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/$surveyid"); ?>" role="button">
                     <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/add.png" />
-                    <?php eT("Add new group to survey");?>
+                    <?php eT("Add new group");?>
                 </a>
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/questiongroups/sa/importview/surveyid/$surveyid"); ?>" role="button">
+                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/import.png" />
+                    <?php eT("Import a group");?>
+                </a>                
             <?php endif;?>                
         <?php endif;?>            
 
@@ -47,6 +51,10 @@
                     <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/add.png" />
                     <?php eT("Add new question"); ?>
                 </a>
+                <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questions/sa/importview/surveyid/".$surveyid); ?>' role="button">
+                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/import.png" />
+                    <?php eT("Import a question"); ?>
+                </a>                
                 <?php endif; ?>
             <?php endif; ?>
         <?php endif;?>
