@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 8/20/15
- * Time: 11:30 AM
- */
-
 namespace ls\models\questions;
 
 

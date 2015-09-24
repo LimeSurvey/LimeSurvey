@@ -40,7 +40,7 @@
         ]);
 
         echo TbHtml::numberFieldControlGroup('batchSize', 5000, [
-            'label' => gT("Batch size for uploading"),
+            'label' => gT("ls\components\Batch size for uploading"),
             'required' => true,
             'formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
             'labelWidthClass' => 'col-sm-6',
@@ -49,7 +49,7 @@
 
         ]);
         echo TbHtml::numberFieldControlGroup('querySize', 2500, [
-            'label' => gT("Batch size for queries"),
+            'label' => gT("ls\components\Batch size for queries"),
             'required' => true,
             'formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
             'labelWidthClass' => 'col-sm-6',

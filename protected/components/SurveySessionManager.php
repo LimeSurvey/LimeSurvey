@@ -1,7 +1,12 @@
 <?php
+namespace ls\components;
+
+use CApplicationComponent;
+use CTypedMap;
+use ls\components\SurveySession;
 
 /**
- * Class SurveySessionManager
+ * Class ls\components\SurveySessionManager
  * @property SurveySession $current
  * @property-read boolean $active
  * @property-read \CTypedMap $sessions
@@ -23,14 +28,15 @@ class SurveySessionManager extends CApplicationComponent
         $session = App()->session;
         $this->sessions = $session->get('SSM', null);
         if (!isset($this->sessions)) {
-            $session->add('SSM', $this->sessions = new CTypedMap('SurveySession'));
+            $session->add('SSM', $this->sessions = new CTypedMap('ls\components\SurveySession'));
         }
         if ((null !== $current = App()->request->getParam('SSM')) && isset($this->sessions[$current])) {
             $this->_current = $this->sessions[$current];
         }
     }
 
-    public function getActive() {
+    public function getActive()
+    {
         return isset($this->_current);
     }
 
@@ -40,32 +46,38 @@ class SurveySessionManager extends CApplicationComponent
      * @param $params
      * @return string
      */
-    public function createUrl($route, $params = []) {
+    public function createUrl($route, $params = [])
+    {
         if ($this->active) {
             $params['SSM'] = array_search($this->_current, $this->sessions->toArray());
         }
+
         return App()->createUrl($route, $params);
     }
 
     /**
      * @return SurveySession
      */
-    public function getCurrent() {
+    public function getCurrent()
+    {
         if (is_object($this->_current) && !$this->_current instanceof SurveySession) {
             throw new \Exception("Invalid session object of type: '" . get_class($this->_current));
         }
+
         return $this->_current;
     }
 
 
-    public function setCurrent(SurveySession $session) {
+    public function setCurrent(SurveySession $session)
+    {
         $this->_current = $session;
     }
 
     /**
      * @return SurveySession[]
      */
-    public function getSessions() {
+    public function getSessions()
+    {
         return $this->sessions;
     }
 
@@ -78,7 +90,7 @@ class SurveySessionManager extends CApplicationComponent
     {
         /** @var SurveySession $session */
 
-        foreach($this->sessions as $session) {
+        foreach ($this->sessions as $session) {
             if ($session->getSurveyId() == $surveyId && $session->getResponseId() == $response->getId()) {
                 throw new \Exception("Duplicate session detected.");
             }
@@ -87,6 +99,7 @@ class SurveySessionManager extends CApplicationComponent
         $sessionId = rand(1, 1000);
         $this->_current = new SurveySession($surveyId, $response, $sessionId);
         $this->sessions->add($sessionId, $this->_current);
+
         return $this->current;
     }
 
@@ -94,7 +107,8 @@ class SurveySessionManager extends CApplicationComponent
      * Destroys a survey session, if no id is given the currently active session is destroyed.
      * @param int $id
      */
-    public function destroySession($id = null) {
+    public function destroySession($id = null)
+    {
         if (isset($id)) {
             if ($this->_current == $this->sessions[$id]) {
                 $this->_current = null;

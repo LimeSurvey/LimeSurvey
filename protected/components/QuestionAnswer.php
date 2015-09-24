@@ -1,5 +1,7 @@
 <?php
 
+namespace ls\components;
+
 /**
  * This class represents a possible answer to a question.
  *

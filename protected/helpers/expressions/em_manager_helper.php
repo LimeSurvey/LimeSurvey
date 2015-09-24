@@ -11,7 +11,12 @@
     * See COPYRIGHT.php for copyright notices and details.
     *
     */
-    /**
+use ls\components\QuestionResponseField;
+use ls\components\QuestionValidationResult;
+use ls\components\QuestionValidationResultCollection;
+use ls\components\SurveySession;
+
+/**
     * LimeExpressionManager
     * This is a wrapper class around ExpressionManager that implements a Singleton and eases
     * passing of LimeSurvey variable values into ExpressionManager
@@ -4160,7 +4165,7 @@
                 foreach($survey->questions as $question) {
                     foreach($question->getFields() as $field) {
                         if (!$field instanceof QuestionResponseField) {
-                            throw new \Exception("getFields() must return an array of QuestionResponseField");
+                            throw new \Exception("getFields() must return an array of ls\components\QuestionResponseField");
                         }
                         $fields[$field->code] = $field;
                         if (YII_DEBUG) {

@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 8/27/15
- * Time: 2:18 PM
- */
-
 namespace ls\models\questions;
 
 
@@ -16,10 +9,10 @@ class DisplayQuestion extends \Question
      * It MUST NOT produce any output.
      * It should return a string or an object that can be converted to string.
      * @param \ls\interfaces\Response $response
-     * @param \SurveySession $session
-     * @return \RenderedQuestion
+     * @param \ls\components\SurveySession $session
+     * @return \ls\components\RenderedQuestion
      */
-    public function render(\ls\interfaces\iResponse $response, \SurveySession $session)
+    public function render(\ls\interfaces\iResponse $response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
         $result->setHtml(' ');

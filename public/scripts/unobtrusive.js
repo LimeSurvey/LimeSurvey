@@ -1,6 +1,5 @@
 /**
  * This file adds support for unobtrusive javascript.
- * Created by sam on 6/16/15.
  */
 (function($) {
 

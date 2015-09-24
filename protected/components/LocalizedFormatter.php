@@ -1,26 +1,37 @@
 <?php
-class LocalizedFormatter extends CLocalizedFormatter {
-    
-    public function formatSurveyStatus($value) {
+namespace ls\components;
+
+use CLocalizedFormatter;
+use TbHtml;
+
+class LocalizedFormatter extends CLocalizedFormatter
+{
+
+    public function formatSurveyStatus($value)
+    {
         switch ($value) {
             case 'active':
                 $icon = TbHtml::ICON_PLAY;
                 break;
-            case 'inactive': 
+            case 'inactive':
                 $icon = TbHtml::ICON_STOP;
                 break;
             case 'expired':
                 $icon = TbHtml::ICON_PAUSE;
                 break;
-                
+
         }
+
         return TbHtml::icon($icon);
     }
 
-    public function formatBooleanIcon($value) {
+    public function formatBooleanIcon($value)
+    {
         return TbHtml::icon($value ? TbHtml::ICON_CHECK : TbHtml::ICON_UNCHECKED);
     }
-    public function formatPercentage($factor) {
+
+    public function formatPercentage($factor)
+    {
         return number_format($factor * 100, 1) . '%';
     }
     /**
@@ -36,5 +47,5 @@ class LocalizedFormatter extends CLocalizedFormatter {
 //        }
 //        return parent::formatEmail($encoded);
 //    }
-    
+
 }

@@ -4,7 +4,7 @@ namespace ls\controllers;
 use ls\models\questions\RadioListQuestion;
 use ls\models\questions\ShortTextQuestion;
 use \Yii;
-use \SurveySession;
+use ls\components\SurveySession;
 use \DummyResponse;
 use \Survey;
 use SurveyLanguageSetting;

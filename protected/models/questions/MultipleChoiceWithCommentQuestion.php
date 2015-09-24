@@ -57,7 +57,7 @@ class MultipleChoiceWithCommentQuestion extends MultipleChoiceQuestion
     }
 
 
-    public function renderSubQuestion(\Question $question, iResponse $response, \SurveySession $session) {
+    public function renderSubQuestion(\Question $question, iResponse $response, \ls\components\SurveySession $session) {
 
         $result = parent::renderSubQuestion($question, $response, $session);
         // Render a line in the multiple choice question.

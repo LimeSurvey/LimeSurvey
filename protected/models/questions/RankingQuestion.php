@@ -25,7 +25,7 @@ class RankingQuestion extends \Question
     public function getSubQuestions($scale = null) {
         $result = [];
         for ($i = 1; $i <= count($this->answers); $i++) {
-            $result[] = new \SubQuestion("{$this->title}$i", $i);
+            $result[] = new \ls\components\SubQuestion("{$this->title}$i", $i);
         }
         return $result;
     }
@@ -63,7 +63,7 @@ class RankingQuestion extends \Question
     {
         $result = [];
         for ($i = 1; $i <= count($this->answers); $i++) {
-            $result[] = $field = new \QuestionResponseField($this->sgqa . $i, "{$this->title}_{$i}", $this);
+            $result[] = $field = new \ls\components\QuestionResponseField($this->sgqa . $i, "{$this->title}_{$i}", $this);
             $field->setRelevanceScript($this->getRelevanceScript());
         }
         return $result;
@@ -87,10 +87,10 @@ class RankingQuestion extends \Question
      * It MUST NOT produce any output.
      * It should return a string or an object that can be converted to string.
      * @param \ls\interfaces\Response $response
-     * @param \SurveySession $session
-     * @return \RenderedQuestion
+     * @param \ls\components\SurveySession $session
+     * @return \ls\components\RenderedQuestion
      */
-    public function render(\ls\interfaces\iResponse $response, \SurveySession $session)
+    public function render(\ls\interfaces\iResponse $response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
         $imageurl = App()->getConfig("imageurl");

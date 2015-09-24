@@ -12,6 +12,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+use ls\components\UuidDefaultValidator;
 
 /**
  * This is the model class for table "{{participants}}".

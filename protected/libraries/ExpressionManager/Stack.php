@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 4/12/15
- * Time: 5:10 PM
- */
-
 namespace ls\expressionmanager;
 
 

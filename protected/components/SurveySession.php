@@ -1,7 +1,9 @@
 <?php
 
+namespace ls\components;
+
 /**
- * Class SurveySession
+ * Class ls\components\SurveySession
  * IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT
  *
  * If you build caches for the getters, make sure to exclude them from serialization (__sleep).
@@ -19,7 +21,8 @@
  * @property \ls\interfaces\iResponse $response;
  * @property string $templateDir;
  */
-class SurveySession extends CComponent {
+class SurveySession extends CComponent
+{
     /**
      * These variables are not serialized.
      */
@@ -54,6 +57,7 @@ class SurveySession extends CComponent {
      */
     protected $_viewCount = 0;
     protected $_token;
+
     /**
      * @param int $surveyId
      * @param int $responseId
@@ -68,55 +72,68 @@ class SurveySession extends CComponent {
         $this->id = $id;
     }
 
-    public function getSurveyId() {
+    public function getSurveyId()
+    {
         return $this->surveyId;
     }
 
     /**
      * @return integer
      */
-    public function getResponseId() {
+    public function getResponseId()
+    {
         return $this->_responseId;
     }
 
-    public function getIsFinished() {
+    public function getIsFinished()
+    {
         return $this->_finished;
     }
 
-    public function setIsFinished($value) {
+    public function setIsFinished($value)
+    {
         $this->_finished = $value;
     }
 
-    public function getToken() {
+    public function getToken()
+    {
         return $this->_response->getToken();
     }
 
-    public function setToken($value) {
+    public function setToken($value)
+    {
         $this->_token = $value;
     }
-    public function getLanguage() {
+
+    public function getLanguage()
+    {
         return $this->_language;
     }
 
-    public function setLanguage($value) {
+    public function setLanguage($value)
+    {
         $this->_language = $value;
     }
+
     /**
      * Returns the session id for this session.
      * The session id is unique per browser session and does not need to be unguessable.
      * In fact it is just an auto incremented number.
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
 
-    public function getResponse() {
+    public function getResponse()
+    {
 
         if (!isset($this->_response)) {
             $responseClass = $this->_responseClass;
             $this->_response = $responseClass::loadById($this->_responseId);
         }
+
         return $this->_response;
     }
 
@@ -126,7 +143,8 @@ class SurveySession extends CComponent {
      * @todo Improve performance. Query takes a short time but AR object creation takes ~4s for large surveys.
      * @param $id
      */
-    protected function loadSurvey($id) {
+    protected function loadSurvey($id)
+    {
         bP();
         $cache = App()->cache;
         $cacheKey = __CLASS__ . "loadSurvey{$this->id}-$id";
@@ -184,40 +202,50 @@ class SurveySession extends CComponent {
         if (!$result instanceof Survey) {
             throw new \Exception("Something went wrong in loadSurvey.");
         }
+
         return $result;
     }
+
     /**
      * This function gets the survey active record model for this survey session.
      * @return Survey The survey for this session.
      */
-    public function getSurvey() {
+    public function getSurvey()
+    {
         if (!isset($this->_survey)) {
             $this->_survey = $this->loadSurvey($this->surveyId);
         }
+
         return $this->_survey;
     }
 
-    public function setSurvey(\Survey $survey) {
+    public function setSurvey(\Survey $survey)
+    {
         $this->_survey = $survey;
     }
+
     /**
      * Wrapper function that returns the question given by qid to make sure we always get the same object.
      * @param int $id The primary key of the question.
      * @return Question
      */
-    public function getQuestion($id) {
+    public function getQuestion($id)
+    {
         bP();
         $result = isset($this->survey->questions[$id]) ? $this->survey->questions[$id] : null;
         eP();
+
         return $result;
     }
 
-    public function getQuestionIndex($id) {
+    public function getQuestionIndex($id)
+    {
         \Yii::beginProfile(__CLASS__ . "::" . __FUNCTION__);
         $questions = $this->survey->questions;
         $question = $questions[$id];
         $result = array_search($question, array_values($questions), true);
         \Yii::endProfile(__CLASS__ . "::" . __FUNCTION__);
+
         return $result;
     }
 
@@ -225,11 +253,12 @@ class SurveySession extends CComponent {
      * @param $index
      * @return Question
      */
-    public function getQuestionByIndex($index) {
+    public function getQuestionByIndex($index)
+    {
         $i = 0;
         // Get groups in order.
-        foreach($this->getGroups() as $group) {
-            foreach($this->getQuestions($group) as $question) {
+        foreach ($this->getGroups() as $group) {
+            foreach ($this->getQuestions($group) as $question) {
                 if ($index == $i) {
                     $result = $question;
                     break 2;
@@ -240,14 +269,16 @@ class SurveySession extends CComponent {
         if (!isset($result)) {
             throw new \Exception("Invalid step index: $index");
         }
+
         return $result;
     }
 
-    public function getQuestionByCode($code) {
+    public function getQuestionByCode($code)
+    {
         $i = 0;
         // Get groups in order.
-        foreach($this->getGroups() as $group) {
-            foreach($this->getQuestions($group) as $question) {
+        foreach ($this->getGroups() as $group) {
+            foreach ($this->getQuestions($group) as $question) {
                 if ($code == $question->title) {
                     $result = $question;
                     break 2;
@@ -258,10 +289,12 @@ class SurveySession extends CComponent {
         if (!isset($result)) {
             throw new \Exception("Unknown code: $code");
         }
+
         return $result;
     }
 
-    public function getStepCount() {
+    public function getStepCount()
+    {
         switch ($this->format) {
             case Survey::FORMAT_ALL_IN_ONE:
                 $result = 1;
@@ -270,23 +303,27 @@ class SurveySession extends CComponent {
                 $result = count($this->getGroups());
                 break;
             case Survey::FORMAT_QUESTION:
-                $result = array_sum(array_map(function(QuestionGroup $group) {
+                $result = array_sum(array_map(function (QuestionGroup $group) {
                     return count($this->getQuestions($group));
                 }, $this->getGroups()));
                 break;
             default:
                 throw new \Exception("Unknown survey format.");
         }
+
         return $result;
     }
+
     /**
      * @return int
      */
-    public function getStep() {
+    public function getStep()
+    {
         return $this->_step;
     }
 
-    public function setStep($value) {
+    public function setStep($value)
+    {
         if (!is_int($value)) {
             throw new \InvalidArgumentException('Parameter $value must be an integer.');
         }
@@ -303,30 +340,36 @@ class SurveySession extends CComponent {
     }
 
 
-    public function getMaxStep() {
+    public function getMaxStep()
+    {
         return $this->_maxStep;
     }
 
     /**
      * @return int The number of times the current page has been viewed.
      */
-    public function getViewCount() {
+    public function getViewCount()
+    {
         return $this->_viewCount;
     }
 
-    public function getPrevStep() {
+    public function getPrevStep()
+    {
         return $this->_prevStep;
     }
 
-    public function setPrevStep($value) {
+    public function setPrevStep($value)
+    {
         $this->_prevStep = $value;
     }
 
-    public function __wakeup() {
+    public function __wakeup()
+    {
         $this->_viewCount++;
     }
 
-    public function __sleep() {
+    public function __sleep()
+    {
         return [
             'surveyId',
             'id',
@@ -347,21 +390,25 @@ class SurveySession extends CComponent {
      * Sets the template dir to use for this session.
      * @param string $value
      */
-    public function setTemplateDir($value) {
+    public function setTemplateDir($value)
+    {
         if (!is_dir($value)) {
             throw new \InvalidArgumentException("Invalid directory given: $value");
         }
         $this->_templateDir = $value;
     }
 
-    public function getTemplateDir() {
+    public function getTemplateDir()
+    {
         if (!isset($this->_templateDir)) {
             $this->_templateDir = \Template::getTemplatePath($this->survey->template) . '/';
         };
+
         return $this->_templateDir;
     }
 
-    public function getTemplateUrl() {
+    public function getTemplateUrl()
+    {
         return \Template::getTemplateURL($this->survey->template) . '/';
     }
 
@@ -369,7 +416,8 @@ class SurveySession extends CComponent {
      * @param int $id The group id.
      * @return QuestionGroup
      */
-    public function getGroup($id) {
+    public function getGroup($id)
+    {
         if (!is_numeric($id) || $id < 0) {
             throw new \InvalidArgumentException("\$id must of type integer and > 0");
         }
@@ -381,22 +429,27 @@ class SurveySession extends CComponent {
      * Get the group by index.
      * @return QuestionGroup
      */
-    public function getGroupByIndex($index) {
+    public function getGroupByIndex($index)
+    {
         if (!is_numeric($index)) {
             throw new \InvalidArgumentException("\$index must of type integer");
         }
+
         return $this->getGroups()[$index];
 
     }
 
-    public function getGroupIndex($id) {
+    public function getGroupIndex($id)
+    {
         bP();
         $groups = $this->groups;
         $group = $this->getGroup($id);
         $result = array_search($group, array_values($groups), true);
         eP();
+
         return $result;
     }
+
     /**
      * Returns the list of question groups.
      * Ordered according to the randomization groups.
@@ -440,6 +493,7 @@ class SurveySession extends CComponent {
             }
         }
         eP();
+
         return $order;
     }
 
@@ -447,10 +501,10 @@ class SurveySession extends CComponent {
      * Getter for the format. In the future we could allow override per session.
      * @return FORMAT_QUESTION|FORMAT_GROUP|FORMAT_SURVEY;
      */
-    public function getFormat() {
+    public function getFormat()
+    {
         return $this->survey->format;
     }
-
 
 
     /**
@@ -459,7 +513,8 @@ class SurveySession extends CComponent {
      * @param QuestionGroup $group
      * @return Question[]
      */
-    public function getQuestions(QuestionGroup $group) {
+    public function getQuestions(QuestionGroup $group)
+    {
         return $group->questions;
 
         $questions = $group->questions;
@@ -470,7 +525,7 @@ class SurveySession extends CComponent {
         foreach ($questions as $question) {
             if (empty($question->randomization_group)) {
                 $order[] = $question->randomization_group;
-                $randomizationGroups[$question->randomization_group][] =$question;
+                $randomizationGroups[$question->randomization_group][] = $question;
             } else {
                 $order[] = $group;
             }
@@ -493,21 +548,26 @@ class SurveySession extends CComponent {
                 $randomizationGroups[$question] = array_values($randomizationGroups[$question]);
             }
         }
+
         return $order;
     }
 
-    public function getPostKey() {
+    public function getPostKey()
+    {
         if (!isset($this->_postKey)) {
             $this->_postKey = \Cake\Utility\Text::uuid();
         }
+
         return $this->_postKey;
     }
 
-    public function setPostKey($value) {
+    public function setPostKey($value)
+    {
         $this->_postKey = $value;
     }
 
-    public function getCurrentGroup() {
+    public function getCurrentGroup()
+    {
         switch ($this->format) {
             case Survey::FORMAT_ALL_IN_ONE:
                 throw new \UnexpectedValueException("An all in one survey does not have a current group.");
@@ -519,6 +579,7 @@ class SurveySession extends CComponent {
                 $result = $this->getGroup($this->getQuestionByIndex($this->getStep())->gid);
                 break;
         }
+
         return $result;
     }
 

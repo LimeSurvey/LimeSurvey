@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 8/20/15
- * Time: 11:17 AM
- */
-
 namespace ls\models\questions;
-
 
 use Response;
 
@@ -20,7 +12,7 @@ class LanguageQuestion extends FixedChoiceQuestion {
     public function getAnswers($scale = null)
     {
         return array_map(function($language) {
-            return new \QuestionAnswer($language, $language);
+            return new \ls\components\QuestionAnswer($language, $language);
         }, $this->survey->getAllLanguages());
     }
 

@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 8/11/15
- * Time: 1:39 PM
- */
-
 namespace ls\models\questions;
 
 
@@ -77,10 +70,10 @@ class DateTimeQuestion extends TextQuestion
      * It MUST NOT produce any output.
      * It should return a string or an object that can be converted to string.
      * @param iResponse $response
-     * @param \SurveySession $session
-     * @return \RenderedQuestion
+     * @param \ls\components\SurveySession $session
+     * @return \ls\components\RenderedQuestion
      */
-    public function render(iResponse $response, \SurveySession $session)
+    public function render(iResponse $response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
         $result->setHtml(\TbHtml::dateField($this->sgqa, $response->{$this->sgqa}));

@@ -119,7 +119,7 @@ class ParticipantsController extends Controller
         $fields = array_flip($participant->safeAttributeNames);
 
 
-        $batchInserter = new \Batch(function(array $batch, $category = null) {
+        $batchInserter = new \ls\components\Batch(function(array $batch, $category = null) {
             if (!empty($batch)) {
                 \Yii::beginProfile('query');
                 try {

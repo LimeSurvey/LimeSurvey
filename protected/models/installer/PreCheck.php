@@ -72,12 +72,12 @@ class PreCheck extends CFormModel
     public function rules() 
     {
         return [
-            ['version', 'VersionValidator', 'min' => $this->getRequiredValue('version'), 'on' => ['required']],
-            ['memoryLimit', 'MemoryValidator', 'min' => $this->getRequiredValue('memoryLimit'), 'on' => ['required']],
+            ['version', 'ls\components\VersionValidator', 'min' => $this->getRequiredValue('version'), 'on' => ['required']],
+            ['memoryLimit', 'ls\components\MemoryValidator', 'min' => $this->getRequiredValue('memoryLimit'), 'on' => ['required']],
             ['pdoSupport', 'required', 'requiredValue' => true, 'on' => ['required']],
             ['multibyteSupport', 'required', 'requiredValue' => true, 'on' => ['required']],
             ['sessionSupport', 'required', 'requiredValue' => true, 'on' => ['required']],
-            [['configPath', 'uploadPath', 'tempPath'], 'WritableValidator', 'forceDirectory' => true, 'recursive' => false, 'on' => ['required']],
+            [['configPath', 'uploadPath', 'tempPath'], 'ls\components\WritableValidator', 'forceDirectory' => true, 'recursive' => false, 'on' => ['required']],
             // Optional modules that Limesurvey can use.
             ['gdSupport', 'required', 'requiredValue' => true, 'on' => ['optional']],
             ['ldapSupport', 'required', 'requiredValue' => true, 'on' => ['optional']],

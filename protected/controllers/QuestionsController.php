@@ -185,7 +185,7 @@ class QuestionsController extends Controller
         $question = $this->loadModel($id);
         $this->layout = 'showsurvey';
         $dummy = new \DummyResponse($question->survey);
-        $session = new \SurveySession($question->sid, $dummy, null);
+        $session = new \ls\components\SurveySession($question->sid, $dummy, null);
         App()->surveySessionManager->setCurrent($session);
         $renderedQuestion = $question->render($dummy, $session);
         $path = \Template::getTemplatePath($question->survey->template);

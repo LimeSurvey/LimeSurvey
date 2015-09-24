@@ -1,5 +1,13 @@
 <?php
 
+
+namespace ls\components;
+
+use JsonSerializable;
+use Question;
+use ls\components\ResponseField;
+use TbArray;
+
 /**
  * This class contains a fields' details for a field that is part of a response to a question.
  * It replaces some of the arrays with informal structure.
@@ -21,43 +29,53 @@ class QuestionResponseField extends ResponseField implements JsonSerializable
 
     private $_relevanceScript;
 
-    public function __construct($name, $code, Question $question) {
+    public function __construct($name, $code, Question $question)
+    {
         parent::__construct($name, $code);
         $this->_question = $question;
     }
 
-    public function getValue() {
+    public function getValue()
+    {
         if (!isset($this->_value)) {
             throw new \Exception("Value not set.");
         }
     }
 
-    public function setValue($value) {
+    public function setValue($value)
+    {
         $this->_value = $value;
     }
-    public function getQuestion() {
+
+    public function getQuestion()
+    {
         return $this->_question;
     }
 
-    public function getRelevanceScript() {
+    public function getRelevanceScript()
+    {
         if (!isset($this->_relevanceScript)) {
             throw new \Exception("Relevance must be set for every field.");
         }
+
         return $this->_relevanceScript;
     }
 
-    public function setRelevanceScript($value) {
+    public function setRelevanceScript($value)
+    {
         $this->_relevanceScript = $value;
     }
 
     /**
      * Check if this field only takes numerical values.
      */
-    public function getIsNumerical() {
+    public function getIsNumerical()
+    {
         return $this->_numerical;
     }
 
-    public function setIsNumerical($value) {
+    public function setIsNumerical($value)
+    {
         return $this->_numerical = $value;
     }
 
@@ -71,25 +89,28 @@ class QuestionResponseField extends ResponseField implements JsonSerializable
      */
     function jsonSerialize()
     {
-            return [
-                'code' => $this->_code,
-                'numerical' => $this->isNumerical,
-                'value' => $this->_value,
-                'name' => $this->_name,
-                'relevance' => $this->getRelevanceScript(),
-                'labels' => $this->getLabels()
-            ];
+        return [
+            'code' => $this->_code,
+            'numerical' => $this->isNumerical,
+            'value' => $this->_value,
+            'name' => $this->_name,
+            'relevance' => $this->getRelevanceScript(),
+            'labels' => $this->getLabels()
+        ];
     }
 
-    public function getLabels() {
+    public function getLabels()
+    {
         return $this->_labels;
     }
 
-    public function setLabels(array $labels) {
+    public function setLabels(array $labels)
+    {
         $this->_labels = $labels;
     }
 
-    public function getLabel($answer) {
+    public function getLabel($answer)
+    {
         return TbArray::getValue($answer, $this->getLabels(), null);
     }
 

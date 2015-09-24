@@ -17,9 +17,12 @@ class AdminController extends Controller
 {
     public $layout = false;
     protected $user_id = 0;
-    
-    public function actionIndex() {
+
+    public function actionIndex()
+    {
         $this->redirect(['surveys/index']);
+
+
     }
 
     /**

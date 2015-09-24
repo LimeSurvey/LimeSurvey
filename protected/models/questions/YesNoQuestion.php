@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 7/23/15
- * Time: 9:48 AM
- */
-
 namespace ls\models\questions;
-
 
 class YesNoQuestion extends FixedChoiceQuestion
 {
@@ -19,12 +11,12 @@ class YesNoQuestion extends FixedChoiceQuestion
     public function getAnswers($scale = null)
     {
         $result = [
-            new \QuestionAnswer('N', gT('No')),
-            new \QuestionAnswer('Y', gT('Yes')),
+            new \ls\components\QuestionAnswer('N', gT('No')),
+            new \ls\components\QuestionAnswer('Y', gT('Yes')),
         ];
 
         if (!$this->bool_mandatory) {
-            $result[] = new \QuestionAnswer("", gT('No answer'));
+            $result[] = new \ls\components\QuestionAnswer("", gT('No answer'));
         }
 
         return $result;

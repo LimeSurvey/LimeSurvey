@@ -16,8 +16,8 @@ class MultipleChoiceQuestion extends ChoiceQuestion
     public function getAnswers($scale = null)
     {
         $result = [
-            new \QuestionAnswer('N', gT('No')),
-            new \QuestionAnswer('Y', gT('Yes')),
+            new \ls\components\QuestionAnswer('N', gT('No')),
+            new \ls\components\QuestionAnswer('Y', gT('Yes')),
         ];
 
         return $result;
@@ -69,7 +69,7 @@ class MultipleChoiceQuestion extends ChoiceQuestion
     public function getFields() {
         $result = [];
         foreach ($this->subQuestions as $subQuestion) {
-            $result[] = $field = new \QuestionResponseField($this->sgqa . $subQuestion->title, "{$this->title}_{$subQuestion->title}", $this);
+            $result[] = $field = new \ls\components\QuestionResponseField($this->sgqa . $subQuestion->title, "{$this->title}_{$subQuestion->title}", $this);
             /**
              * @todo Include subquestion relevance.
              */
@@ -86,10 +86,10 @@ class MultipleChoiceQuestion extends ChoiceQuestion
      * It MUST NOT produce any output.
      * It should return a string or an object that can be converted to string.
      * @param \ls\interfaces\Response $response
-     * @param \SurveySession $session
-     * @return \RenderedQuestion
+     * @param \ls\components\SurveySession $session
+     * @return \ls\components\RenderedQuestion
      */
-    public function render(iResponse $response, \SurveySession $session)
+    public function render(iResponse $response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
 
@@ -105,7 +105,7 @@ class MultipleChoiceQuestion extends ChoiceQuestion
         return $result;
     }
 
-    public function renderSubQuestion(\Question $question, iResponse $response, \SurveySession $session) {
+    public function renderSubQuestion(\Question $question, iResponse $response, \ls\components\SurveySession $session) {
         // Render a line in the multiple choice question.
         $result = '';
         $field = $this->sgqa . $question->title;

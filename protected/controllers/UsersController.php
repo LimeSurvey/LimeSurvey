@@ -4,7 +4,7 @@ use ls\pluginmanager\iAuthenticationPlugin;
 use ls\pluginmanager\iAuthorizationPlugin;
 use ls\pluginmanager\PluginEvent;
 use Yii;
-use PluginIdentity;
+use ls\components\PluginIdentity;
 class UsersController extends Controller
 {
 

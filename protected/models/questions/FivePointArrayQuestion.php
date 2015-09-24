@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 8/20/15
- * Time: 11:56 AM
- */
-
 namespace ls\models\questions;
 
 
@@ -15,16 +8,16 @@ class FivePointArrayQuestion extends FixedArrayQuestion
     protected function createAnswers($count = 5) {
         $answers = [];
         for ($i = 1; $i <= $count; $i++) {
-            $answers[] = $answer = new \QuestionAnswer($i, $i);
+            $answers[] = $answer = new \ls\components\QuestionAnswer($i, $i);
         }
         if (!$this->bool_mandatory && $this->survey->bool_shownoanswer) {
-            $answers[] = new \QuestionAnswer("", gT("No answer"));
+            $answers[] = new \ls\components\QuestionAnswer("", gT("No answer"));
         }
         return $answers;
     }
     /**
      * @param null $scale
-     * @return \QuestionAnswer[]
+     * @return \ls\components\QuestionAnswer[]
      */
     public function getAnswers($scale = null)
     {

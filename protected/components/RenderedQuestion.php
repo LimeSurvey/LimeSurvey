@@ -1,5 +1,17 @@
 <?php
 
+namespace ls\components;
+
+use ArrayAccess;
+use CHtml;
+use CHttpException;
+use Exception;
+use PluginEvent;
+use ReflectionClass;
+use SettingGlobal;
+use ls\components\SurveySession;
+use TbHtml;
+
 /**
  *
  * This class manages all information needed to render a question.
@@ -42,13 +54,18 @@ class RenderedQuestion implements ArrayAccess
      */
     public $htmlOptions = [];
 
-    public function __construct(\Question $question) {
+    public function __construct(\Question $question)
+    {
         $this->_question = $question;
     }
-    public function setQuestionText($text) {
+
+    public function setQuestionText($text)
+    {
         $this->_text = $text;
     }
-    public function addValidation($javascript, $message = null) {
+
+    public function addValidation($javascript, $message = null)
+    {
         $this->_validations[$javascript] = $message;
     }
 
@@ -110,7 +127,8 @@ class RenderedQuestion implements ArrayAccess
         throw new \Exception("Cannot unset values");
     }
 
-    public function getMessages() {
+    public function getMessages()
+    {
         $result = '';
 
         foreach ($this->_validations as $expression => $message) {
@@ -123,10 +141,12 @@ class RenderedQuestion implements ArrayAccess
                 'data-irrelevance-expression' => $expression,
             ], $message);
         }
+
         return $result;
     }
 
-    public function setHtml($html) {
+    public function setHtml($html)
+    {
         $this->_html = $html;
     }
 
@@ -145,13 +165,12 @@ class RenderedQuestion implements ArrayAccess
         // Core value : not replaced
         $replacements['QID'] = $this->_question->primaryKey;
         $replacements['GID'] = $this->_question->gid;
-        $replacements['SGQ']= $this->_question->sgqa;
+        $replacements['SGQ'] = $this->_question->sgqa;
         $replacements['QUESTION_CODE'] = null;
         $replacements['QUESTION_NUMBER'] = null;
 
         $iNumber = $this->_index + 1; // Nondevelopers people start counting from 1 for some reason..
-        switch (SettingGlobal::get('showqnumcode', 'choose'))
-        {
+        switch (SettingGlobal::get('showqnumcode', 'choose')) {
             case 'both':
                 $replacements['QUESTION_CODE'] = $this->_question->title;
                 $replacements['QUESTION_NUMBER'] = $iNumber;
@@ -161,13 +180,13 @@ class RenderedQuestion implements ArrayAccess
                 $replacements['QUESTION_CODE'] = $this->_question->title;
                 break;
             case 'choose':
-                switch($survey->showqnumcode) {
+                switch ($survey->showqnumcode) {
                     case 'B': // Both
                         $replacements['QUESTION_CODE'] = $this->_question->title;
-                        $replacements['QUESTION_NUMBER']=$iNumber;
+                        $replacements['QUESTION_NUMBER'] = $iNumber;
                         break;
                     case 'N':
-                        $replacements['QUESTION_NUMBER']=$iNumber;
+                        $replacements['QUESTION_NUMBER'] = $iNumber;
                         break;
                     case 'C':
                         $replacements['QUESTION_CODE'] = $this->_question->title;
@@ -180,7 +199,7 @@ class RenderedQuestion implements ArrayAccess
         }
         // Core value : user text
         $replacements['QUESTION_TEXT'] = $this['text'];
-        $replacements['QUESTIONHELP']= $this->_question->help;// User help
+        $replacements['QUESTIONHELP'] = $this->_question->help;// User help
 
         $classes = $this->_question->classes;
         $replacements['QUESTION_CLASS'] = implode(' ', $classes);
@@ -191,7 +210,8 @@ class RenderedQuestion implements ArrayAccess
         if (empty($this['html'])) {
             $rc = new ReflectionClass($this->_question);
             $url = "https://github.com/LimeSurvey/LimeSurvey/blob/develop/application/models/questions/{$rc->getShortName()}.php";
-            throw new \CHttpException(500, "No HTML found. Is " . get_class($this->_question) . "::render() implemented in $url");
+            throw new \CHttpException(500,
+                "No HTML found. Is " . get_class($this->_question) . "::render() implemented in $url");
         }
 
         $replacements['ANSWER'] = $this['html'];
@@ -233,13 +253,15 @@ class RenderedQuestion implements ArrayAccess
         $replacements['QUESTION_VALID_MESSAGE'] = $event->get('valid_message');
         // Always add id for QUESTION_ESSENTIALS
         $htmlOptions['id'] = "question{$this->_question->primaryKey}";
-        $replacements['QUESTION_ESSENTIALS']= CHtml::renderAttributes($htmlOptions);
+        $replacements['QUESTION_ESSENTIALS'] = CHtml::renderAttributes($htmlOptions);
 
         eP();
+
         return $replacements;
     }
 
-    public function setTemplate($template) {
+    public function setTemplate($template)
+    {
         $this->_template = $template;
     }
 
@@ -248,11 +270,14 @@ class RenderedQuestion implements ArrayAccess
      * @return string
      * @throws CHttpException
      */
-    public function render(SurveySession $session) {
-        return \ls\helpers\Replacements::templatereplace($this->_template, $this->getReplacements(), [], $this->_question->qid, $session);
+    public function render(SurveySession $session)
+    {
+        return \ls\helpers\Replacements::templatereplace($this->_template, $this->getReplacements(), [],
+            $this->_question->qid, $session);
     }
 
-    public function setIndex($i) {
+    public function setIndex($i)
+    {
         $this->_index = $i;
     }
 

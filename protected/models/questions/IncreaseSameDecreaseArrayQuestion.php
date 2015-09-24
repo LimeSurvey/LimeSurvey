@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 7/23/15
- * Time: 11:46 AM
- */
-
 namespace ls\models\questions;
 
 
@@ -19,13 +12,13 @@ class IncreaseSameDecreaseArrayQuestion extends FixedArrayQuestion
     public function getAnswers($scale = null)
     {
         $result = [
-            new \QuestionAnswer('I', gT("Increase")),
-            new \QuestionAnswer('S', gT("Same")),
-            new \QuestionAnswer('D', gT("Decrease")),
+            new \ls\components\QuestionAnswer('I', gT("Increase")),
+            new \ls\components\QuestionAnswer('S', gT("Same")),
+            new \ls\components\QuestionAnswer('D', gT("Decrease")),
         ];
 
         if (!$this->bool_mandatory) {
-            $result[] = new \QuestionAnswer('', gT('No answer'));
+            $result[] = new \ls\components\QuestionAnswer('', gT('No answer'));
         }
 
         return $result;

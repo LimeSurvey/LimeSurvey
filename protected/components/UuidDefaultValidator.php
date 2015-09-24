@@ -1,10 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 6/1/15
- * Time: 7:24 PM
- */
+namespace ls\components;
+
+use CDefaultValueValidator;
 
 class UuidDefaultValidator extends CDefaultValueValidator
 {

@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 8/20/15
- * Time: 11:14 AM
- */
-
 namespace ls\models\questions;
-
 
 class UploadQuestion extends \Question
 {
@@ -18,7 +10,7 @@ class UploadQuestion extends \Question
     public function getFields()
     {
         $result = parent::getFields();
-        $result[] = $field = new \QuestionResponseField($this->sgqa . '_filecount', $this->title . '_filecount', $this);
+        $result[] = $field = new \ls\components\QuestionResponseField($this->sgqa . '_filecount', $this->title . '_filecount', $this);
         $field->setRelevanceScript($this->getRelevanceScript());
 
         return $result;
@@ -42,10 +34,10 @@ class UploadQuestion extends \Question
      * It MUST NOT produce any output.
      * It should return a string or an object that can be converted to string.
      * @param \ls\interfaces\Response $response
-     * @param \SurveySession $session
-     * @return \RenderedQuestion
+     * @param \ls\components\SurveySession $session
+     * @return \ls\components\RenderedQuestion
      */
-    public function render(\ls\interfaces\iResponse $response, \SurveySession $session)
+    public function render(\ls\interfaces\iResponse $response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
 

@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 6/2/15
- * Time: 1:20 PM
- */
-
 namespace ls\models\forms;
 
 

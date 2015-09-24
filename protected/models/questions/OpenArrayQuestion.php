@@ -54,7 +54,7 @@ class OpenArrayQuestion extends BaseArrayQuestion
 
             foreach($yScale as $yQuestion) {
                 foreach($xScale as $xQuestion) {
-                    $this->_fields[] = $field = new \QuestionResponseField("{$this->sgqa}{$yQuestion->title}_{$xQuestion->title}", "{$this->title}_{$yQuestion->title}_{$xQuestion->title}", $this);
+                    $this->_fields[] = $field = new \ls\components\QuestionResponseField("{$this->sgqa}{$yQuestion->title}_{$xQuestion->title}", "{$this->title}_{$yQuestion->title}_{$xQuestion->title}", $this);
                     $field->setRelevanceScript('true');
                 }
             }

@@ -176,7 +176,7 @@ use Plugin;
                 $plugins = array_merge($plugins, \ls\pluginmanager\PluginConfig::readAll($pluginDir));
             }
             // Write to file.
-            $file = new \PhpConfigFile($this->pluginFile);
+            $file = new \ls\components\PhpConfigFile($this->pluginFile);
             $file->setConfig(array_map(function(PluginConfig $config) {
                 return $config->attributes;
             }, $plugins), false);

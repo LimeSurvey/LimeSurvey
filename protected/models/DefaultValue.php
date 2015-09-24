@@ -74,4 +74,3 @@ class DefaultValue extends ActiveRecord
 		return $values->save();
     }
 }
-

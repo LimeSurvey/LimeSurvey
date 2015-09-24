@@ -1,7 +1,7 @@
 <?php
 
 namespace ls\helpers;
-use \SurveySession;
+use ls\components\SurveySession;
 use \Survey;
 use \Yii;
 use \CClientScript;
@@ -159,7 +159,7 @@ class SurveyRuntime {
     /**
      * Main function
      *
-     * @param SurveySession $session
+     * @param \ls\components\SurveySession $session
      * @param $move
      * @throws CException
      * @throws CHttpException

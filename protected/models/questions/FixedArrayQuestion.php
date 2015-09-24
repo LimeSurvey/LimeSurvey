@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 8/20/15
- * Time: 11:47 AM
- */
-
 namespace ls\models\questions;
 use ls\interfaces\iResponse;
 use ls\interfaces\iSubQuestion;
@@ -36,10 +29,10 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
      * It MUST NOT produce any output.
      * It should return a string or an object that can be converted to string.
      * @param \ls\interfaces\Response $response
-     * @param \SurveySession $session
-     * @return \RenderedQuestion
+     * @param \ls\components\SurveySession $session
+     * @return \ls\components\RenderedQuestion
      */
-    public function render(iResponse$response, \SurveySession $session)
+    public function render(iResponse$response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
         $classes = [

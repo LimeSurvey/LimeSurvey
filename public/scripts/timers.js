@@ -1,5 +1,4 @@
 /**
- * Created by sam on 9/16/15.
  * This file implements unobtrusive time limits for questions.
  *
  * @todo Include this somewhere and decide what actions we still need to implement:

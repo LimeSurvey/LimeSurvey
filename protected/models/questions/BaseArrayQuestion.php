@@ -36,13 +36,13 @@ abstract class BaseArrayQuestion extends \Question
 
     /**
      * Returns the fields for this question.
-     * @return \QuestionResponseField[]
+     * @return \ls\components\QuestionResponseField[]
      */
     public function getFields() {
         $result = [];
         $em = $this->getExpressionManager();
         foreach ($this->subQuestions as $subQuestion) {
-            $result[] = $field = new \QuestionResponseField($this->sgqa . $subQuestion->title, "{$this->title}_{$subQuestion->title}", $this);
+            $result[] = $field = new \ls\components\QuestionResponseField($this->sgqa . $subQuestion->title, "{$this->title}_{$subQuestion->title}", $this);
 
             $filter = strtr($this->filterExpression, ['{VALUE}' => explode('|', $subQuestion->question, 2)[0]]);
 

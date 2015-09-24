@@ -6,24 +6,27 @@
  *
  *
  */
+use ls\components\SurveySessionManager;
+use ls\components\WebUser;
+
 if (file_exists(__DIR__ . '/config.php')) {
     $userConfig = require(__DIR__ . '/config.php');
 } else {
     $userConfig = [];
 }
 $internalConfig = array(
-	'basePath' => __DIR__ . '/../',
+    'basePath' => __DIR__ . '/../',
     'timeZone' => 'UTC',
     'sourceLanguage' => 'en',
     'controllerNamespace' => '\\ls\\controllers',
     'supportedLanguages' => include('locales.php'),
     'theme' => 'default',
-	'name' => 'LimeSurvey',
+    'name' => 'LimeSurvey',
     'loader' => $loader,
     'localeClass' =>  \ls\core\Locale::class,
-	'defaultController' => 'surveys',
-	'aliases' => array(
-		'vendor' => __DIR__ . '/../vendor',
+    'defaultController' => 'surveys',
+    'aliases' => array(
+        'vendor' => __DIR__ . '/../vendor',
         'bootstrap' => __DIR__ . '/../vendor/crisu83/yiistrap/widgets',
         'yiiwheels' => __DIR__ . '/../vendor/2amigos/yiiwheels',
 
@@ -35,31 +38,30 @@ $internalConfig = array(
         'public' => str_replace($webroot, '', $public),
         'publicPath' => $public
 
-	),
-	'import' => array(
-		'application.core.*',
-        'application.components.*',
-		'application.models.*',
+    ),
+    'import' => array(
+        'application.core.*',
+        'application.models.*',
         'application.models.installer.*',
-		'application.controllers.*',
-		'application.modules.*',
-	),
+        'application.controllers.*',
+        'application.modules.*',
+    ),
     'preload' => [
-        'log', 
+        'log',
         file_exists(__DIR__ . '/config.php') ? 'pluginManager' : null
     ],
-	'components' => [
+    'components' => [
         'surveySessionManager' => [
             'class' => SurveySessionManager::class
         ],
         'migrationManager' => [
-            'class' => 'MigrationManager'
+            'class' => 'ls\components\MigrationManager'
         ],
         'bootstrap' => [
             'class' => 'TbApi',
         ],
         'format' => [
-            'class' => 'LocalizedFormatter'
+            'class' => 'ls\components\LocalizedFormatter'
         ],
         'clientScript'=> [
             'class' => CClientScript::class,
@@ -139,7 +141,7 @@ $internalConfig = array(
             'pluginDirs' => [
                 __DIR__ . '/../core/plugins',
                 __DIR__ . '/../../plugins',
-                
+
             ],
             'loader' => $loader // Composer classloader.
         ],
@@ -147,7 +149,7 @@ $internalConfig = array(
             'class' => \YiiWheels::class
         ],
         'authManager' => [
-            'class' => \AuthManager::class
+            'class' => \ls\components\AuthManager::class
         ],
         'themeManager' => [
             'class' => ThemeManager::class,
@@ -165,5 +167,3 @@ $internalConfig = array(
 
 $result = CMap::mergeArray($internalConfig, $userConfig);
 return $result;
-/* End of file internal.php */
-/* Location: ./application/config/internal.php */

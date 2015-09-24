@@ -56,7 +56,7 @@
 			$className = get_called_class() . '_' . $id;
 			return new $className($scenario);
 		}
-        
+
         /**
          * This function checks if a table with the specified $id can be opened.
          * @param int $id
@@ -79,5 +79,3 @@
 
 
 	}
-
-

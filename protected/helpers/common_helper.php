@@ -10,6 +10,8 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
+use ls\components\SurveySession;
+
 Yii::import('application.helpers.sanitize_helper', true);
 
 /**

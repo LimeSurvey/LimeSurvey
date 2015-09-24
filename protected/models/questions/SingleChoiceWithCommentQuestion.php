@@ -20,7 +20,7 @@ class SingleChoiceWithCommentQuestion extends SingleChoiceQuestion
         bP();
         $result = parent::getFields();
 
-        $result[$this->sgqa . 'other'] = new \QuestionResponseField($this->sgqa . 'comment', $this->title . 'comment', $this);
+        $result[$this->sgqa . 'other'] = new \ls\components\QuestionResponseField($this->sgqa . 'comment', $this->title . 'comment', $this);
 
         eP();
         return $result;

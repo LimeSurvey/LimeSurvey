@@ -448,7 +448,7 @@ class FrontEnd
      * Adding a hidden input for default behaviour without javascript
      * Use button name="move" for real browser (with or without javascript) and IE6/7/8 with javascript
      */
-    public static function surveymover(\SurveySession $session)
+    public static function surveymover(\ls\components\SurveySession $session)
     {
         $surveyid = $session->surveyId;
 

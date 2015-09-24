@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 6/2/15
- * Time: 11:28 AM
- */
 
 class Html extends TbHtml {
 

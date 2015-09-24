@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 8/20/15
- * Time: 11:22 AM
- */
-
 namespace ls\models\questions;
 use ls\interfaces\iAnswer;
 use ls\interfaces\iResponse;
@@ -22,10 +15,10 @@ class FivePointChoiceQuestion extends FixedChoiceQuestion
 
         $answers = [];
         for ($i = 1; $i <= 5; $i++) {
-            $answers[] = $answer = new \QuestionAnswer($i, $i);
+            $answers[] = $answer = new \ls\components\QuestionAnswer($i, $i);
         }
         if (!$this->bool_mandatory && $this->survey->bool_shownoanswer) {
-            $result[] = new \QuestionAnswer("", gT("No answer"));
+            $result[] = new \ls\components\QuestionAnswer("", gT("No answer"));
         }
         return $answers;
     }
@@ -47,10 +40,10 @@ class FivePointChoiceQuestion extends FixedChoiceQuestion
      * It MUST NOT produce any output.
      * It should return a string or an object that can be converted to string.
      * @param \ls\interfaces\Response $response
-     * @param \SurveySession $session
+     * @param \ls\components\SurveySession $session
      * @return string
      */
-    public function render(iResponse$response, \SurveySession $session)
+    public function render(iResponse$response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
 

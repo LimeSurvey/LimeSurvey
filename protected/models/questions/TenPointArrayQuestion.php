@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 8/20/15
- * Time: 11:56 AM
- */
-
 namespace ls\models\questions;
-
 
 class TenPointArrayQuestion extends FivePointArrayQuestion
 {

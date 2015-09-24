@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 7/23/15
- * Time: 11:46 AM
- */
-
 namespace ls\models\questions;
-
 
 use ls\interfaces\iAnswer;
 
@@ -20,13 +12,13 @@ class YesNoUncertainArrayQuestion extends FixedArrayQuestion
     public function getAnswers($scale = null)
     {
         $result = [
-            new \QuestionAnswer('Y', gT("Yes")),
-            new \QuestionAnswer('N', gT("No")),
-            new \QuestionAnswer('U', gT("Uncertain"))
+            new \ls\components\QuestionAnswer('Y', gT("Yes")),
+            new \ls\components\QuestionAnswer('N', gT("No")),
+            new \ls\components\QuestionAnswer('U', gT("Uncertain"))
         ];
 
         if (!$this->bool_mandatory) {
-            $result[] = new \QuestionAnswer('', gT('No answer'));
+            $result[] = new \ls\components\QuestionAnswer('', gT('No answer'));
         }
 
         return $result;

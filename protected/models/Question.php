@@ -12,6 +12,10 @@
     *
         * 	Files Purpose: lots of common functions
     */
+use ls\components\DeferredValue;
+use ls\components\QuestionResponseField;
+use ls\components\QuestionValidationResult;
+use ls\components\ResponseField;
 
 
 /**
@@ -1275,13 +1279,13 @@
          * It MUST NOT produce any output.
          * It should return a string or an object that can be converted to string.
          * @param \ls\interfaces\Response $response
-         * @param \SurveySession $session
-         * @return \RenderedQuestion
+         * @param \ls\components\SurveySession $session
+         * @return \ls\components\RenderedQuestion
          */
-        public function render(\ls\interfaces\iResponse $response, \SurveySession $session)
+        public function render(\ls\interfaces\iResponse $response, \ls\components\SurveySession $session)
         {
             bP();
-            $result = new \RenderedQuestion($this);
+            $result = new \ls\components\RenderedQuestion($this);
             $result->setIndex($session->getQuestionIndex($this->primaryKey));
             $em = $this->getExpressionManager($response);
 

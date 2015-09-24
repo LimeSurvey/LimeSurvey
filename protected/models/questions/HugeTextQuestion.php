@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 8/21/15
- * Time: 10:13 AM
- */
-
 namespace ls\models\questions;
 
 
@@ -18,10 +11,10 @@ class HugeTextQuestion extends LongTextQuestion
      * It MUST NOT produce any output.
      * It should return a string or an object that can be converted to string.
      * @param Response $response
-     * @param \SurveySession $session
+     * @param \ls\components\SurveySession $session
      * @return string
      */
-    public function render(iResponse $response, \SurveySession $session)
+    public function render(iResponse $response, \ls\components\SurveySession $session)
     {
         if (!isset($this->text_input_width)) {
             $this->text_input_width = 70;

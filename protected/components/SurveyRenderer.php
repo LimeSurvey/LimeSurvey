@@ -1,12 +1,19 @@
 <?php
 
 
+namespace ls\components;
+
+use GroupRenderer;
+use QuestionRenderer;
+use ls\components\SurveySession;
+
 class SurveyRenderer extends Renderer
 {
 
     public function render()
     {
         $body = $this->renderBody();
+
         return $this->renderLayout($body);
     }
 
@@ -24,6 +31,7 @@ class SurveyRenderer extends Renderer
             default:
                 throw new \Exception("Format {$this->session->format} not supported");
         }
+
         return $result;
     }
 

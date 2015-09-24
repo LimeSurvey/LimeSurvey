@@ -10,6 +10,10 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
+use ls\components\LocalizedFormatter;
+use ls\components\MigrationManager;
+use ls\components\SurveySessionManager;
+use ls\components\WebUser;
 
 /**
  * Implements global  config

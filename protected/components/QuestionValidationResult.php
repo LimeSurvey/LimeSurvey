@@ -1,14 +1,13 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 8/13/15
- * Time: 10:24 AM
- */
-class QuestionValidationResult {
+namespace ls\components;
 
-    /** @var Question  */
+use Question;
+
+class QuestionValidationResult
+{
+
+    /** @var Question */
     protected $_question;
 
     /**
@@ -26,24 +25,29 @@ class QuestionValidationResult {
         $this->_question = $question;
     }
 
-    public function getSuccess() {
+    public function getSuccess()
+    {
         return empty($this->_messages);
     }
 
-    public function addMessage($field, $message) {
+    public function addMessage($field, $message)
+    {
         $this->_messages[$field][] = $message;
     }
 
-    public function getQuestion() {
+    public function getQuestion()
+    {
         return $this->_question;
     }
 
-    public function getMessages() {
+    public function getMessages()
+    {
         return $this->_messages;
     }
 
 
-    public function getMessagesAsString($separator = "\n") {
+    public function getMessagesAsString($separator = "\n")
+    {
         return implode($separator, \Cake\Utility\Hash::flatten($this->_messages));
     }
 

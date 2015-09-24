@@ -1,10 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 8/14/15
- * Time: 12:59 PM
- */
+
+namespace ls\components;
+
+use CTypedList;
+use ls\components\QuestionValidationResult;
+
 class QuestionValidationResultCollection extends CTypedList
 {
     /**
@@ -19,26 +19,30 @@ class QuestionValidationResultCollection extends CTypedList
     /**
      * Returns true if all validation results in this collection pass mandatory validation.
      */
-    public function getPassedMandatory() {
+    public function getPassedMandatory()
+    {
         /** @var QuestionValidationResult $validationResult */
-        foreach($this->iterator as $validationResult) {
+        foreach ($this->iterator as $validationResult) {
             if (!$validationResult->getPassedMandatory()) {
                 return false;
             }
         }
+
         return true;
     }
 
     /**
      * Returns true if all validation results in this collection have a success status.
      */
-    public function getSuccess() {
+    public function getSuccess()
+    {
         /** @var QuestionValidationResult $validationResult */
-        foreach($this->iterator as $validationResult) {
+        foreach ($this->iterator as $validationResult) {
             if (!$validationResult->getSuccess()) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -47,9 +51,10 @@ class QuestionValidationResultCollection extends CTypedList
     {
         $messages = [];
         /** @var QuestionValidationResult $validationResult */
-        foreach($this->iterator as $validationResult) {
+        foreach ($this->iterator as $validationResult) {
             $messages[] = $validationResult->getMessagesAsString($separator);
         }
+
         return implode($separator, \Cake\Utility\Hash::flatten($messages));
     }
 

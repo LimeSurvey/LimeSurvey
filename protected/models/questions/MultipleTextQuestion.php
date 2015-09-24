@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 5/11/15
- * Time: 5:12 PM
- */
-
 namespace ls\models\questions;
-
 
 class MultipleTextQuestion extends TextQuestion
 {
@@ -31,11 +23,11 @@ class MultipleTextQuestion extends TextQuestion
 
     /**
      * Returns the fields for this question.
-     * @return \QuestionResponseField[]
+     * @return \ls\components\QuestionResponseField[]
      */
     public function getFields() {
         foreach($this->subQuestions as $subQuestion) {
-            $fields[] = $field = new \QuestionResponseField($this->sgqa . $subQuestion->title, "{$this->title}_{$subQuestion->title}", $this);
+            $fields[] = $field = new \ls\components\QuestionResponseField($this->sgqa . $subQuestion->title, "{$this->title}_{$subQuestion->title}", $this);
             $field->setRelevanceScript($this->getRelevanceScript() . ' && ' .$subQuestion->getRelevanceScript());
         }
 
@@ -61,10 +53,10 @@ class MultipleTextQuestion extends TextQuestion
      * It MUST NOT produce any output.
      * It should return a string or an object that can be converted to string.
      * @param \ls\interfaces\Response $response
-     * @param \SurveySession $session
-     * @return \RenderedQuestion
+     * @param \ls\components\SurveySession $session
+     * @return \ls\components\RenderedQuestion
      */
-    public function render(\ls\interfaces\iResponse $response, \SurveySession $session)
+    public function render(\ls\interfaces\iResponse $response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
         $html ='';
@@ -79,7 +71,7 @@ class MultipleTextQuestion extends TextQuestion
         return $result;
     }
 
-    public function renderSubQuestion(\Question $question, \ls\interfaces\iResponse $response, \SurveySession $session) {
+    public function renderSubQuestion(\Question $question, \ls\interfaces\iResponse $response, \ls\components\SurveySession $session) {
         
 
         $extraclass ="";

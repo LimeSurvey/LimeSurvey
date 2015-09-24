@@ -30,7 +30,7 @@ class Replacements
         $replacements = [],
         $redata = [],
         $questionNum = null,
-        \SurveySession $session
+        \ls\components\SurveySession $session
     ) {
         bP();
         $survey = $session->survey;
