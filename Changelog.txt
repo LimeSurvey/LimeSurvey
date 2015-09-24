@@ -2,6 +2,7 @@ CHANGE LOG
 ------------------------------------------------------
 
 Changes from 2.05+ (unreleased build 20150606) to 2.051 (unreleased build 20150917)
+2015-09-25 Fixed issue #09919: LSRC2 export return partial answer if language code is invalid (Denis Chenu @ Shnoulle)
 2015-09-22 POST variable cleanup in tokens.php
 2015-09-18 Build 20150918: Admin footer cleanup, Changelog.txt added, Version and build display in login footer
 2015-09-17 Bug #8446 fixed. Forum topic https://www.limesurvey.org/en/forum/can-i-do-this-with-limesurvey/95421-bug-in-second-language-need-help-we-must-go-online-soon
