@@ -38,7 +38,7 @@ class surveypermission extends Survey_Common_Action {
 			$aData['sidebar']['state'] = "close";
 			$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
 			$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";			
-			$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+			//$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
 			$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;			        	
 
 			
@@ -330,9 +330,6 @@ class surveypermission extends Survey_Common_Action {
             $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";           
             
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;            
-
-
 
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
@@ -417,8 +414,8 @@ class surveypermission extends Survey_Common_Action {
             $aData['sidebar']['state'] = "close";
             $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";           
-            $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;                        
+            //$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+            //$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;                        
 
 
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
@@ -625,8 +622,8 @@ class surveypermission extends Survey_Common_Action {
             $aData['sidebar']['state'] = "close";
             $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";           
-            $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;                        
+            //$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+            //$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;                        
 
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
@@ -736,8 +733,6 @@ class surveypermission extends Survey_Common_Action {
             $aData['sidebar']['state'] = "close";
             $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";           
-            $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;                        
 
 
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);

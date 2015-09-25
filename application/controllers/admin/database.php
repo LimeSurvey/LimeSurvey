@@ -1052,7 +1052,6 @@ class database extends Survey_Common_Action
             $oSurvey->savetimings = App()->request->getPost('savetimings');
             $oSurvey->template = Yii::app()->request->getPost('template');
             $oSurvey->assessments = App()->request->getPost('assessments');
-            //$oSurvey->additional_languages = implode(' ',Yii::app()->request->getPost('additional_languages',array()));
             $oSurvey->additional_languages =  Yii::app()->request->getPost('languageids');
             $oSurvey->datestamp = App()->request->getPost('datestamp');
             $oSurvey->ipaddr = App()->request->getPost('ipaddr');
