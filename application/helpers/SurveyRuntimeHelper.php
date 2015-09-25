@@ -360,6 +360,8 @@ class SurveyRuntimeHelper {
                     {
                         // may be submitting from the navigation bar, in which case need to process all intervening questions
                         // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
+                        if($thissurvey['questionindex']==2) // Must : save actual page , review whole before set finished to true (see #09906), index==1 seems to don't need it : (don't force move)
+                            LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
                         $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps'] + 1, false);
                     }
                 }
@@ -391,7 +393,7 @@ class SurveyRuntimeHelper {
             if (isset($moveResult) && isset($moveResult['seq']) )// Reload at first page (welcome after click previous fill an empty $moveResult array
             {
                 // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
-                if($moveResult['finished'] == true && $thissurvey['questionindex']==2)// $thissurvey['questionindex']>=2
+                if($moveResult['finished'] == true && $move != 'movesubmit' && $thissurvey['questionindex']==2)// we already done if move == 'movesubmit', don't do it again
                 {
                     //LimeExpressionManager::JumpTo(-1, false, false, true);
                     LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
