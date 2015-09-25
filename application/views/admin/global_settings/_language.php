@@ -5,7 +5,6 @@
  *  
  */
 ?>
-
     <div class="form-group">
             <label class="col-sm-4 control-label"  for='defaultlang'><?php eT("Default site language:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
             <div class="col-sm-6">

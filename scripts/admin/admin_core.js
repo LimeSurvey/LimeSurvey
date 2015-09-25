@@ -475,6 +475,57 @@ function goodchars(e, goods)
 }
 
 
+function DoAdd()
+{
+    if (document.getElementById("available_languages").selectedIndex>-1)
+        {
+        var strText = document.getElementById("available_languages").options[document.getElementById("available_languages").selectedIndex].text;
+        var strId = document.getElementById("available_languages").options[document.getElementById("available_languages").selectedIndex].value;
+        AddItem(document.getElementById("additional_languages"), strText, strId);
+        RemoveItem(document.getElementById("available_languages"), document.getElementById("available_languages").selectedIndex);
+        sortSelect(document.getElementById("additional_languages"));
+        UpdateLanguageIDs();
+    }
+}
+
+function DoRemove(minItems,strmsg)
+{
+    var strText = document.getElementById("additional_languages").options[document.getElementById("additional_languages").selectedIndex].text;
+    var strId = document.getElementById("additional_languages").options[document.getElementById("additional_languages").selectedIndex].value;
+    if (document.getElementById("additional_languages").options.length>minItems)
+        {
+        AddItem(document.getElementById("available_languages"), strText, strId);
+        RemoveItem(document.getElementById("additional_languages"), document.getElementById("additional_languages").selectedIndex);
+        sortSelect(document.getElementById("available_languages"));
+        UpdateLanguageIDs();
+    }
+    else
+        if (strmsg!=''){alert(strmsg);}
+}
+
+function UpdateLanguageIDs(mylangs,confirmtxt)
+{
+    document.getElementById("languageids").value = '';
+
+    var lbBox = document.getElementById("additional_languages");
+    for (var i = 0; i < lbBox.options.length; i++)
+        {
+        document.getElementById("languageids").value = document.getElementById("languageids").value + lbBox.options[i].value+ ' ';
+    }
+    if (mylangs)
+        {
+        if (checklangs(mylangs))
+            {
+            return true;
+        } else
+            {
+            return confirm(confirmtxt);
+        }
+    }
+}
+
+
+
 function trim(stringToTrim) {
     return stringToTrim.replace(/^\s+|\s+$/g,"");
 }

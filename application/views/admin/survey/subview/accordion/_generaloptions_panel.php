@@ -43,7 +43,7 @@
                             ?>
         
                         </select>
-                        <?php echo $jsRemLang; ?>
+                        <input type='hidden' name='languageids' id='languageids' value="<?php echo $esrow['additional_languages'];?>" />
                     </td>
                     <td style='text-align:left'>
                         <div class="col-sm-4">
