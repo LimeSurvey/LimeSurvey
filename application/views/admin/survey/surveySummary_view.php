@@ -150,7 +150,19 @@
                             </div>
                         <?php endif; ?>
                     <?php endif; ?>
-                </div>
+                </div> <!-- row add question/group-->
+
+                <!-- last visited question -->
+                <?php if($showLastQuestion):?>
+                    <div class="row text-left">
+                        <div class="col-lg-6">
+                            <?php eT("Last visited question:");?>
+                            <a href="<?php echo $last_question_link;?>" class=""><?php echo $last_question_name;?></a>
+                            <br/><br/>
+                        </div>
+                    </div>
+                <?php endif;?>                
+                
             </div>
         </div>
      

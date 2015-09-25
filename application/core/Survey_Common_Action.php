@@ -397,12 +397,11 @@ class Survey_Common_Action extends CAction
 	{
 		if (isset($aData['display']['surveysummary']))
 		{
-		
 		    if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid']))
 		    {
 		        $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
 		    }
-		    $this->_surveysummary($aData['surveyid'], !empty($aData['display']['menu_bars']['surveysummary']) ? $aData['display']['menu_bars']['surveysummary'] : null, !empty($aData['gid']) ? $aData['gid'] : null);
+		    $this->_surveysummary($aData);
 		}		
 	}
 
@@ -621,6 +620,13 @@ class Survey_Common_Action extends CAction
 	{
 		if(isset($aData['questiongroupbar']))
 		{
+		    if(!isset($aData['gid']))
+            {
+                if(isset($_GET['gid']))
+                {
+                   $aData['gid'] = $_GET['gid']; 
+                }
+            }
 			$surveyid = $aData['surveyid'];
 			$gid = $aData['gid'];
             $oSurvey = $aData['oSurvey'];
@@ -893,8 +899,11 @@ class Survey_Common_Action extends CAction
     * @param int Survey id
     * @param string Action to be performed
     */
-    function _surveysummary($iSurveyID, $action=null, $gid=null)
+    function _surveysummary($aData)
     {
+        $iSurveyID = $aData['surveyid'];
+        $gid = $aData['gid'];
+        
         $aSurveyInfo=getSurveyInfo($iSurveyID);
         $oSurvey = $aData['oSurvey'];
         $baselang = $aSurveyInfo['language'];
@@ -1074,22 +1083,6 @@ class Survey_Common_Action extends CAction
         //
 
         $aData['tableusage'] = false;
-        if ($gid || ($action !== true && in_array($action, array('deactivate', 'activate', 'surveysecurity', 'editdefaultvalues', 'editemailtemplates',
-        'surveyrights', 'addsurveysecurity', 'addusergroupsurveysecurity',
-        'setsurveysecurity', 'setusergroupsurveysecurity', 'delsurveysecurity',
-        'editsurveysettings', 'editsurveylocalesettings', 'updatesurveysettingsandeditlocalesettings', 'addgroup', 'importgroup',
-        'ordergroups', 'deletesurvey', 'resetsurveylogic',
-        'importsurveyresources', 'translate', 'emailtemplates',
-        'exportstructure', 'quotas', 'copysurvey', 'viewgroup', 'viewquestion'))))
-        {
-            $showstyle = "style='display: none'";
-        }
-        else
-        {
-            $showstyle = "";
-        }
-
-        $aData['showstyle'] = $showstyle;
         $aData['aAdditionalLanguages'] = $aAdditionalLanguages;
         $aData['surveyinfo'] = $aSurveyInfo;
 

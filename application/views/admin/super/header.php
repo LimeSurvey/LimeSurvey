@@ -1211,7 +1211,6 @@ div.panel.disabled a{
 	border : 1px solid #89C68D;
 	color : #2D2D2D;
 
-
 	position : relative;
     -webkit-animation: slidefromtop 1s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: slidefromtop 1s; /* Firefox < 16 */
@@ -1236,6 +1235,8 @@ div.panel.disabled a{
 {
     font-size: 1.2em;
 }
+
+
 </style>
 
 
@@ -1466,11 +1467,13 @@ $('#collapseOne').on('hide.bs.collapse', function () {
   $('#questionTypeContainer').css("overflow","hidden")
 })
 	
-
+<?php 
+    $surveyid = (isset($surveyid))?$surveyid:'';
+?>
 /* Switch format group */
 $('#switchchangeformat').on('switchChange.bootstrapSwitch', function(event, state) {
     $.ajax({
-        url : '<?php echo $this->createUrl("admin/survey/sa/changeFormat/surveyid/23627".$surveyinfo['sid']); ?>',
+        url : '<?php echo $this->createUrl("admin/survey/sa/changeFormat/surveyid/".$surveyid); ?>',
         type : 'GET',
         dataType : 'html', 
         
@@ -1483,6 +1486,30 @@ $('#switchchangeformat').on('switchChange.bootstrapSwitch', function(event, stat
     });
    
 });
+
+/* Slide last survey / question  */
+function rotateLast(){
+    $rotateShown = $('.rotateShown');
+    $rotateHidden = $('.rotateHidden');
+    $rotateShown.hide('slide', { direction: 'left', easing: 'easeInOutQuint'}, 500, function(){
+        $rotateHidden.show('slide', { direction: 'right', easing: 'easeInOutQuint' }, 1000)
+    });
+    
+    $rotateShown.removeClass('rotateShown').addClass('rotateHidden');
+    $rotateHidden.removeClass('rotateHidden').addClass('rotateShown');
+    window.setTimeout( rotateLast, 5000 );
+    /*
+    window.setTimeout( function(){
+    $rotateHidden.removeClass('rotateHidden').addClass('rotateShown');
+    window.setTimeout( rotateLast, 2000 );
+    },  2000 );     
+     */
+ }
+
+ if ( $( "#last_question" ).length ) {
+     $('.rotateHidden').hide();
+     window.setTimeout( rotateLast, 2000 );
+ }
     
 });	
 

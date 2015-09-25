@@ -1,5 +1,4 @@
 <?php $this->renderPartial("./survey/Question/question_subviews/_ajax_variables", $ajaxDatas); ?>
-
 <?php $this->renderPartial("./survey/Question/newQuestion_subviews/_ajax_variables", $ajaxDatas); ?>
 
 <script type='text/javascript'><?php echo $qTypeOutput; ?></script>
@@ -28,6 +27,7 @@
 	
 	<div class="row">
 	    <!-- Form for the whole page-->
+	    <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
 		<?php if(!$adding):?>
 		    
 		<!-- The tabs & tab-fanes -->

@@ -54,7 +54,52 @@ class SurveyAdmin extends Survey_Common_Action
 		{
 		    $aData['issuperadmin'] = true;
 		}
-		
+
+        // We get the last survey visited by user
+        $setting_entry = 'last_survey_'.Yii::app()->user->getId();		
+        $lastsurvey = getGlobalSetting($setting_entry);
+        if( $lastsurvey != null)
+        {
+            $aData['showLastSurvey'] = true;
+            $iSurveyID = $lastsurvey;
+            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+            $aData['surveyTitle'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";           
+            $aData['surveyUrl'] = $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}");
+        }
+        else 
+        {
+            $aData['showLastSurvey'] = false;            
+        }
+        $baselang = Survey::model()->findByPk($iSurveyID)->language;
+        
+        // We get the last question visited by user 
+        $setting_entry = 'last_question_'.Yii::app()->user->getId();      
+        $lastquestion = getGlobalSetting($setting_entry);
+        
+        // the question group of this question
+        $setting_entry = 'last_question_gid_'.Yii::app()->user->getId();
+        $lastquestiongroup = getGlobalSetting($setting_entry);
+        
+        // the sid of this question : last_question_sid_1
+        $setting_entry = 'last_question_sid_'.Yii::app()->user->getId();
+        $lastquestionsid = getGlobalSetting($setting_entry); 
+        
+        if( $lastquestion != null && $lastquestiongroup != null)
+        {
+            $aData['showLastQuestion'] = true;
+            $qid = $lastquestion;
+            $gid = $lastquestiongroup;
+            $sid = $lastquestionsid;
+            $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $sid, 'language' => $baselang));
+            
+            $aData['last_question_name'] = $qrrow['title'].' : '.$qrrow['question'];
+            $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$iSurveyID/gid/$gid/qid/$qid");
+        }
+        else 
+        {
+           $aData['showLastQuestion'] = false;
+        }
+        
         $this->_renderWrappedTemplate('super', 'welcome', $aData);		
 		
     }
@@ -325,15 +370,18 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function view($iSurveyID, $gid = null, $qid = null)
     {
+        
         $iSurveyID = sanitize_int($iSurveyID);
         if (isset($gid))
             $gid = sanitize_int($gid);
         if (isset($qid))
             $qid = sanitize_int($qid);
 
+        $baselang = Survey::model()->findByPk($iSurveyID)->language;
+        
         // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
-        LimeExpressionManager::SetEMLanguage(Survey::model()->findByPk($iSurveyID)->language);
+        LimeExpressionManager::SetEMLanguage($baselang);
         LimeExpressionManager::SetSurveyId($iSurveyID);
         LimeExpressionManager::StartProcessingPage(false,true);
 
@@ -344,19 +392,42 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID;
         $aData['gid'] = $gid;
         $aData['qid'] = $qid;
+        $aData['display']['surveysummary'] = true;
 
-		if($gid==null)
-        {
-            $aData['display']['surveysummary'] = true;
-        }
-
-            
+        // Last survey visited
+        $setting_entry = 'last_survey_'.Yii::app()->user->getId();
+        setGlobalSetting($setting_entry, $iSurveyID);
+                  
 		$aData['surveybar']['buttons']['view']= true;
 		$aData['surveybar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listsurveys");
 		$aData['surveybar']['returnbutton']['text'] = gT('return to survey list');
 		$aData['sidebar']["survey_menu"]=TRUE;
-		
-		
+
+
+
+        // We get the last question visited by user for this survey
+        $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;      
+        $lastquestion = getGlobalSetting($setting_entry);
+        
+        $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
+        //$setting_entry = 'last_question_gid'.Yii::app()->user->getId().'_'.$iSurveyID;
+        $lastquestiongroup = getGlobalSetting($setting_entry);
+        
+        if( $lastquestion != null && $lastquestiongroup != null)
+        {
+            $aData['showLastQuestion'] = true;
+            $qid = $lastquestion;
+            $gid = $lastquestiongroup;
+            $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
+            
+            $aData['last_question_name'] = $qrrow['title'].' : '.$qrrow['question'];
+            $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$iSurveyID/gid/$gid/qid/$qid");
+        }
+        else 
+        {
+	       $aData['showLastQuestion'] = false;
+        }
+
         $this->_renderWrappedTemplate('survey', array(), $aData);
     }
 

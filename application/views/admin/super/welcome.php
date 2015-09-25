@@ -30,6 +30,31 @@
 		</div>
 	</div>
 
+    <?php if($showLastSurvey || $showLastQuestion):?>
+        <div class="row text-right">
+            <div class="col-lg-9 col-sm-9  ">
+                <div style="float: right;">
+                <?php if($showLastSurvey):?>
+                    <span id="last_survey" class="rotateShown">
+                    <?php eT("Last visited survey:");?>
+                    <a href="<?php echo $surveyUrl;?>" class=""><?php echo $surveyTitle;?></a>
+                    </span>
+                <?php endif; ?>
+                
+                <?php if($showLastQuestion):?>
+                    <span id="last_question" class="rotateHidden">
+                    <?php eT("Last visited question:");?>
+                    <a href="<?php echo $last_question_link;?>" class=""><?php echo $last_question_name;?></a>
+                    </span>
+                <?php endif; ?>
+                </div>                
+                <br/><br/>
+            </div>
+        </div>
+    <?php endif;?>
+    
+    
+    
     <!-- First row of boxes -->
 	<div class="row text-center ">
 	    

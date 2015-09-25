@@ -86,17 +86,6 @@ class questions extends Survey_Common_Action
                 {
                     $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
                 }
-                /*
-                if ($aAttribute['name']=='relevance')
-                {
-                $sRelevance = $aAttribute['value'];
-                if ($sRelevance !== '' && $sRelevance !== '1' && $sRelevance !== '0')
-                {
-                LimeExpressionManager::ProcessString("{" . $sRelevance . "}");    // tests Relevance equation so can pretty-print it
-                $aAttribute['value']= LimeExpressionManager::GetLastPrettyPrintExpression();
-                }
-                }
-                */
                 $DisplayArray[] = $aAttribute;
             }
         }
@@ -118,9 +107,35 @@ class questions extends Survey_Common_Action
 		$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 		
-		//$aData['questionbar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listquestions/", array('surveyid'=>$surveyid));		
-		//$aData['questionbar']['returnbutton']['text'] = gT('return to question list');			
-		
+        
+        // Last question visited : By user (only one by user)
+        $setting_entry = 'last_question_'.Yii::app()->user->getId();
+        setGlobalSetting($setting_entry, $qid);
+        
+        // we need to set the sid for this question
+        $setting_entry = 'last_question_sid_'.Yii::app()->user->getId();      
+        setGlobalSetting($setting_entry, $iSurveyID);
+
+        // we need to set the gid for this question
+        $setting_entry = 'last_question_gid_'.Yii::app()->user->getId();
+        setGlobalSetting($setting_entry, $gid);
+        
+
+        // Last question for this survey (only one by survey, many by user)
+        $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
+        setGlobalSetting($setting_entry, $qid);
+
+        // we need to set the gid for this question
+        $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
+        setGlobalSetting($setting_entry, $gid);        
+        
+/*                // Need to set the group too : By user
+        $setting_entry = 'last_questiongroup_'.Yii::app()->user->getId();
+        setGlobalSetting($setting_entry, $gid);        
+*/
+       
+
+				
 		$this->_renderWrappedTemplate('survey/Question', 'question_view', $aData);
 	}
 
