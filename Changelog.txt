@@ -2,6 +2,7 @@ CHANGE LOG
 ------------------------------------------------------
 
 Changes from 2.05+ (unreleased build 20150606) to 2.051 (unreleased build 20150917)
+2015-09-27 Fixed issue #09906: Invalid survey is set finished in response table with index complete (Denis Chenu @ Shnoulle)
 2015-09-27 Fixed issue #09919: Partial reversion (Denis Chenu @ Shnoulle)
 2015-09-25 Fixed issue #09919: LSRC2 export return partial answer if language code is invalid (Denis Chenu @ Shnoulle)
 2015-09-22 POST variable cleanup in tokens.php
