@@ -196,8 +196,22 @@
 .side-menu #dropdown .panel-body .navbar-nav {
   width: 100%;
 }
-.side-menu #dropdown .panel-body .navbar-nav li {
+
+/**
+ * 	Reset bootstrap panel default value
+ */
+.side-menu #dropdown .panel-body .navbar-nav li.panel{
+	margin-bottom: 0px;
+    background-color: transparent;
+    border: none;
+    border-radius: 0px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.side-menu #dropdown .panel-body .navbar-nav li, .side-menu #dropdown .panel-body .navbar-nav li.panel-default {
   padding-left: 15px;
+  border: none;
   border-bottom: 1px solid #e7e7e7;
 }
 .side-menu #dropdown .panel-body .navbar-nav li:last-child {
