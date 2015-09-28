@@ -14,9 +14,8 @@
         
         // Bootstrap
         App()->bootstrap->register();   
-		App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "../bootstrap/lime-icons2.css" );
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "font-awesome/font-awesome-43.min.css");
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css");
+        App()->getClientScript()->registerPackage('lime-bootstrap');
+        
 
         // Right to Left
         if (getLanguageRTL($_SESSION['adminlang']))

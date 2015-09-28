@@ -261,9 +261,19 @@ return array(
     
     // displayParticipants
     'display-participants' => array(
-        'baseUrl' => 'styles/bootstrap/',
+        'baseUrl' => 'styles/limebootstrap/',
         'css' => array(
             'displayParticipants.css',
+        ),
+    ),
+    
+    // LimeSurvey Bootstrap Admin Interface
+    'lime-bootstrap' => array(
+        'baseUrl' => 'styles/limebootstrap/',
+        'css' => array(
+            'lime-icons2.css',
+            'font-awesome/font-awesome-43.min.css',
+            'awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css'
         ),
     ),
     
