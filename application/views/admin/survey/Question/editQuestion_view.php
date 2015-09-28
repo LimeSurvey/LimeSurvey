@@ -54,10 +54,9 @@
                             <div class="panel-body">
                                 <div>
                                     <div  class="form-group">
-                                        <label for='question_type_button'>
+                                        <label class="col-sm-4 control-label" for="question_type_button">
                                             <?php eT("Question Type:"); ?>
                                         </label>
-                                        <br/>
                                         <?php if($selectormodeclass!="none"): ?>
                                             <?php
                                                 foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
@@ -72,7 +71,7 @@
                                             
                                             <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                             
-                                            <div class="btn-group" id="question_type_button" style="z-index: 1000">
+                                            <div class="col-sm-8 btn-group" id="question_type_button" style="z-index: 1000">
                                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="z-index: 1000">
                                                     <?php foreach($groups as $name => $group):?>
                                                         <?php foreach($group as $type => $option):?>
@@ -120,14 +119,16 @@
                                     </div>
                                     
                                     <div  class="form-group">
-                                        <label for='gid'><?php eT("Question group:"); ?></label>
-                                        <select name='gid' id='gid' class="form-control">
-                                            <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
-                                        </select>
+                                        <label class="col-sm-4 control-label" for='gid'><?php eT("Question group:"); ?></label>
+										<div class="col-sm-8">
+											<select name='gid' id='gid' class="form-control">
+												<?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
+											</select>
+										</div>
                                     </div>
-                                    
+
                                     <div  class="form-group" id="OtherSelection">
-                                        <label><?php eT("Option 'Other':"); ?></label>
+                                        <label class="col-sm-4 control-label"><?php eT("Option 'Other':"); ?></label>
                                         <?php if ($activated != "Y"): ?>
                                             <label for='OY'><?php eT("Yes"); ?></label><input id='OY' type='radio' class='radiobtn' name='other' value='Y'
                                                 <?php if ($eqrow['other'] == "Y") { ?>
@@ -144,23 +145,27 @@
                                             <input type='hidden' name='other' value="<?php echo $eqrow['other']; ?>" />                                     
                                         <?php endif;?>
                                     </div>    
-                                                     
-                                    
-                            
-                                    <div id='MandatorySelection'  class="form-group">
-                                        <label><?php eT("Mandatory:"); ?></label>
+
+                                    <div id='MandatorySelection' class="form-group">
+                                        <label class="col-sm-4 control-label"><?php eT("Mandatory:"); ?></label>
                                         <!--  'value'=>($eqrow['mandatory'] == "Y") -->
-                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'value'=> '0'  ));?>                                            
+										<div class="col-sm-8">
+											<?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'value'=> '0'  ));?>                                            
+										</div>
                                     </div>
-                                    
-                                    <div  class="form-group">
-                                        <label for='relevance'><?php eT("Relevance equation:"); ?></label>
-                                        <textarea  class="form-control" rows='1' id='relevance' name='relevance' ></textarea>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for='relevance'><?php eT("Relevance equation:"); ?></label>
+										<div class="col-sm-8">
+											<textarea class="form-control" rows='1' id='relevance' name='relevance' ></textarea>
+										</div>
                                     </div>
-                                    
+
                                     <div id='Validation'  class="form-group">
-                                        <label for='preg'><?php eT("Validation:"); ?></label>
-                                        <input type='text' id='preg' name='preg' size='50' value="<?php echo $eqrow['preg']; ?>" />
+                                        <label class="col-sm-4 control-label" for='preg'><?php eT("Validation:"); ?></label>
+										<div class="col-sm-8">
+											<input type='text' id='preg' name='preg' size='50' value="<?php echo $eqrow['preg']; ?>" />
+										</div>
                                     </div>
                                 </div>     
                             </div>
