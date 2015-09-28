@@ -258,7 +258,7 @@ return array(
             'jquery.horizontal.scroll.js'
         ),
     ),    
-    
+
     // displayParticipants
     'display-participants' => array(
         'baseUrl' => 'styles/limebootstrap/',
@@ -275,6 +275,21 @@ return array(
             'font-awesome/font-awesome-43.min.css',
             'awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css'
         ),
+        'depends' => array(
+            'bootstrap'
+        ),
     ),
+    
+    // adminstyle-rtl
+    'adminstyle-rtl' => array(
+        'baseUrl' => 'styles/limebootstrap/',
+        'css' => array(
+            'adminstyle-rtl.css',
+        ),
+        'depends' => array(
+            'bootstrap',
+            'lime-bootstrap'
+        )
+    ),    
     
 );

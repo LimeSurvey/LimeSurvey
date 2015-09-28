@@ -20,7 +20,7 @@
         // Right to Left
         if (getLanguageRTL($_SESSION['adminlang']))
         {        
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle-rtl.css" );
+            App()->getClientScript()->registerPackage('adminstyle-rtl');
         }
         
         // Printable
