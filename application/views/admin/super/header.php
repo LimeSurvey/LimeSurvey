@@ -12,9 +12,6 @@
 
 //        App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/gringegreen/' . "adminstyle.css") );
         
-        // display participants : should rather be in the right contoller
-		App()->getClientScript()->registerPackage('display-participants');
-		
         // Bootstrap
         App()->bootstrap->register();   
 		App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "../bootstrap/lime-icons2.css" );
