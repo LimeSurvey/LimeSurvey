@@ -134,7 +134,6 @@ class InstallerController extends CController {
         $this->loadHelper('surveytranslator');
         Yii::app()->session->remove('configFileWritten');
 
-
         $aData['title'] = gT('Welcome');
         $aData['descp'] = gT('Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey.');
         $aData['classesForStep'] = array('on','off','off','off','off','off');
@@ -227,7 +226,6 @@ class InstallerController extends CController {
     private function stepDatabaseConfiguration()
     {
         $this->loadHelper('surveytranslator');
-
 
         // usual data required by view
         $aData['title'] = gT('Database configuration');
@@ -420,10 +418,10 @@ class InstallerController extends CController {
     function stepCreateDb()
     {
         // check status. to be called only when database don't exist else redirect to proper link.
-        if(!Yii::app()->session['databaseDontExist']) {
+        if(!Yii::app()->session['databaseDontExist']) 
+        {
             $this->redirect(array('installer/welcome'));
         }
-
 
         $aData['model'] = $model = new InstallerConfigForm;
         $aData['title'] = gT("Database configuration");

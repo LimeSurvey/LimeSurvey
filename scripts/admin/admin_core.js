@@ -41,7 +41,6 @@ $(document).ready(function(){
             duration: 'fast'
         }, $.datepicker.regional[LS.data.language]);
     }
-    $(".sf-menu").superfish({speed: 'fast'});
     doToolTip();
     $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
     $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");

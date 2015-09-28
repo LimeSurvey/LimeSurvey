@@ -284,7 +284,7 @@ class tokens extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jqgrid');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "tokens.js");
         // CSS
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "displayParticipants.css");
+        
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-timepicker.css");
 
         Yii::app()->loadHelper('surveytranslator');
@@ -2647,6 +2647,8 @@ class tokens extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = 'token', $aViewUrls = array(), $aData = array())
     {
+        App()->getClientScript()->registerPackage('display-participants');        
+        
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         $aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
