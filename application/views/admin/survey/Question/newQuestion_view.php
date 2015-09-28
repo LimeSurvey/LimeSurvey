@@ -13,7 +13,7 @@
     
     <div class="row">
         <!-- Form for the whole page-->
-        <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
+        <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30 form-horizontal','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
         
             <!-- The tabs & tab-fanes -->
             <div class="col-lg-8 content-right">
