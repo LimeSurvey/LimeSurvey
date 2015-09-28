@@ -18,7 +18,7 @@
             <ul>
                 <li><label for='label_name'><?php eT("Set name:"); ?></label>
                     <input type='hidden' name='languageids' id='languageids' value='<?php echo $langids; ?>' />
-                    <input type='text' id='label_name' name='label_name' maxlength='100' size='50' value='<?php if (isset($lbname)) { echo $lbname;} ?>' />
+                    <?php echo CHtml::textField('label_name',isset($lbname)?$lbname:"",array('maxlength'=>100,'size'=>50)); ?>
                 </li>
 
                 <li><label><?php eT("Languages:"); ?></label>
