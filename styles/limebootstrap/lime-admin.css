@@ -45,6 +45,35 @@ body {
 	box-shadow: 0 3px 3px rgba(99, 49, 48, 0.1);
 	background-color: #fff;
 	z-index: 2000; 
+}
+
+/**
+ * 	General
+ */
+.side-body h3, .list-surveys h3 , .pagetitle
+{
+	position : relative;
+	color: #fff;
+	padding: 0.5em;
+	/* background-color: #328637; */
+	color: #333333;
+	border-bottom: solid 2px #328637;
+	margin-bottom : 1em;
+    -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 1s; /* Firefox < 16 */
+        -ms-animation: fadein 1s; /* Internet Explorer */
+         -o-animation: fadein 1s; /* Opera < 12.1 */
+            animation: fadein 1s;
+}
+
+.tab-content{
+	padding-top: 2em;
+}
+
+span.cke_skin_kama
+{
+    padding-left : 0px;
+    width: 625px !important;    
 }	
 
 
@@ -55,7 +84,7 @@ body {
 :focus {
   outline: none;
 }
-.row {
+body .row {
   margin-right: 0;
   margin-left: 0;
 }
@@ -248,6 +277,128 @@ body {
 {
 	from { top: -15px;}
 	to { top: 0px;}
+}
+
+/* HTML EDITOR */
+.htmleditor {
+    overflow : hidden;
+}
+
+.form-group {
+    margin-bottom : 17px;
+}
+
+.cke_skin_kama .cke_toolgroup {
+  padding-bottom : 6px;
+  background: none;  
+}
+.cke_skin_kama .cke_button a:hover, .cke_skin_kama .cke_button a.cke_off:hover, .cke_skin_kama .cke_button a.cke_off span:hover, .cke_skin_kama .cke_button a span:hover
+{
+    background-color : #fafafa;
+    cursor: pointer; cursor: hand;
+}
+
+.cke_skin_kama .cke_button a, .cke_skin_kama .cke_button a.cke_off
+{
+    cursor: pointer; cursor: hand;
+}
+
+span.cke_skin_kama {
+    /*border: 1px solid #dddddd;
+    border-radius: 3px;*/
+   border : none;
+}
+
+.cke_skin_kama tr
+{
+    border : 1px solid #DADADA;
+    border-top : none;
+    padding : 5px 5px 0px 5px;
+    display: block;
+    min-height: 2em;
+    padding-bottom : 10px;
+    z-index: 1OO;
+}
+
+.cke_skin_kama tbody tr:first-child
+{
+   border-top: 1px solid #DADADA;
+   padding-bottom : 0px;
+}
+
+table.cke_editor
+{
+   box-shadow:  1px 1px 2px rgba(0, 0, 0, 0.16);
+}
+
+.cke_contents {
+    width : 650px;
+}
+
+.cke_skin_kama .cke_rcombo .cke_openbutton .cke_icon {
+}
+
+.cke_skin_kama .cke_rcombo .cke_openbutton .cke_icon:hover, .cke_skin_kama .cke_rcombo .cke_openbutton:hover, .cke_skin_kama .cke_rcombo:hover, .cke_skin_kama:hover, .cke_skin_kama .cke_rcombo a:hover {
+        background-color : #fafafa;
+    cursor: pointer; cursor: hand;
+}
+
+.cke_skin_kama .cke_rcombo .cke_off a:hover .cke_openbutton, .cke_skin_kama .cke_rcombo .cke_off a:focus .cke_openbutton, .cke_skin_kama .cke_rcombo .cke_off a:active .cke_openbutton, .cke_skin_kama .cke_rcombo .cke_on .cke_openbutton
+{
+            background-color : #fafafa;
+}
+
+.cke_skin_kama .cke_rcombo a, .cke_skin_kama .cke_rcombo a:active, .cke_skin_kama .cke_rcombo a:hover {
+    height: 26px;
+}
+
+
+.cke_toolgroup {
+    cursor: pointer; cursor: hand;
+  border: 1px solid #dddddd;
+  border-radius: 0px;
+  box-shadow: 0 1px 0 rgba(255,255,255,.5),0 0 2px rgba(255,255,255,.15) inset,0 1px 0 rgba(255,255,255,.15) inset;
+  background: #e4e4e4;
+  -webkit-border-radius: 0px;
+        
+}
+
+.checkbox label:after {
+    padding-left: 4px;
+    padding-top: 2px;
+    font-size: 9px;
+}
+
+/**
+ * List survey     
+ */
+.hoverAction tr:hover
+{
+	color: #fff;
+	background-color: #6E9470;
+}
+
+
+/**
+ * 	Message Box
+ */
+.message-box
+{
+	border : 1px solid #89C68D;
+	color : #2D2D2D;
+
+	position : relative;
+    -webkit-animation: slidefromtop 1s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: slidefromtop 1s; /* Firefox < 16 */
+        -ms-animation: slidefromtop 1s; /* Internet Explorer */
+         -o-animation: slidefromtop 1s; /* Opera < 12.1 */
+            animation: slidefromtop 1s;		
+	
+}
+
+.message-box-error
+{
+	border : 1px solid #A0352F;
 }
 
 
