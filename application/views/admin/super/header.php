@@ -10,12 +10,9 @@
         App()->getClientScript()->registerPackage('jquery-cookie');
         App()->getClientScript()->registerPackage('qTip2');
 
-//        App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/gringegreen/' . "adminstyle.css") );
-        
         // Bootstrap
         App()->bootstrap->register();   
         App()->getClientScript()->registerPackage('lime-bootstrap');
-        
 
         // Right to Left
         if (getLanguageRTL($_SESSION['adminlang']))
@@ -35,10 +32,6 @@
     <?php echo $firebug ?>
     <?php $this->widget('ext.LimeScript.LimeScript'); ?>
     <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
-	<link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Roboto+Mono:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700' rel='stylesheet' type='text/css'>
-	    
 </head>
 <body>
 	
