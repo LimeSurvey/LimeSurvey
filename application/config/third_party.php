@@ -292,4 +292,16 @@ return array(
             'lime-bootstrap'
         )
     ),    
+    
+    // statistics
+    'statistics' => array(
+        'baseUrl' => 'styles/limebootstrap/application',
+        'css' => array(
+            'statistics.css',
+        ),
+        'depends' => array(
+            'bootstrap',
+            'lime-bootstrap'
+        )    
+    ),
 );

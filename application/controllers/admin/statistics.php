@@ -624,6 +624,7 @@ class statistics extends Survey_Common_Action {
      */
     protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
     {
+        App()->getClientScript()->registerPackage('statistics');
 
         $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
