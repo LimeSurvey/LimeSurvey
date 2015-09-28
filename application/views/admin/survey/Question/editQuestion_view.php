@@ -148,9 +148,8 @@
 
                                     <div id='MandatorySelection' class="form-group">
                                         <label class="col-sm-4 control-label"><?php eT("Mandatory:"); ?></label>
-                                        <!--  'value'=>($eqrow['mandatory'] == "Y") -->
 										<div class="col-sm-8">
-											<?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'value'=> '0'  ));?>                                            
+											<?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'value'=> $eqrow['mandatory'] === "Y"));?>
 										</div>
                                     </div>
 
