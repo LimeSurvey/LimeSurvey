@@ -258,7 +258,7 @@ return array(
             'jquery.horizontal.scroll.js'
         ),
     ),    
-    
+
     // displayParticipants
     'display-participants' => array(
         'baseUrl' => 'styles/limebootstrap/',
@@ -272,9 +272,36 @@ return array(
         'baseUrl' => 'styles/limebootstrap/',
         'css' => array(
             'lime-icons2.css',
+            'fonts.css',
             'font-awesome/font-awesome-43.min.css',
             'awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css'
         ),
+        'depends' => array(
+            'bootstrap'
+        ),
     ),
     
+    // adminstyle-rtl
+    'adminstyle-rtl' => array(
+        'baseUrl' => 'styles/limebootstrap/',
+        'css' => array(
+            'adminstyle-rtl.css',
+        ),
+        'depends' => array(
+            'bootstrap',
+            'lime-bootstrap'
+        )
+    ),    
+    
+    // statistics
+    'statistics' => array(
+        'baseUrl' => 'styles/limebootstrap/application',
+        'css' => array(
+            'statistics.css',
+        ),
+        'depends' => array(
+            'bootstrap',
+            'lime-bootstrap'
+        )    
+    ),
 );

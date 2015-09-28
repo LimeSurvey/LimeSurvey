@@ -10,17 +10,14 @@
         App()->getClientScript()->registerPackage('jquery-cookie');
         App()->getClientScript()->registerPackage('qTip2');
 
-//        App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/gringegreen/' . "adminstyle.css") );
-        
         // Bootstrap
         App()->bootstrap->register();   
         App()->getClientScript()->registerPackage('lime-bootstrap');
-        
 
         // Right to Left
         if (getLanguageRTL($_SESSION['adminlang']))
         {        
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle-rtl.css" );
+            App()->getClientScript()->registerPackage('adminstyle-rtl');
         }
         
         // Printable
@@ -35,68 +32,12 @@
     <?php echo $firebug ?>
     <?php $this->widget('ext.LimeScript.LimeScript'); ?>
     <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
-	<link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Roboto+Mono:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700' rel='stylesheet' type='text/css'>
-	    
 </head>
 <body>
 	
 <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
 
-
-
 <style>
-
-/**
- *     Statistics
- * 
- */
-
-tr.success
-{
-    color : white;
-    font-size: 1.3em;
-    text-shadow: 1px 1px #77A3A5;
-} 
-
-tr.info, tr.danger {
-    color : white;
-}
-#response-filter-header
-{
-    margin-bottom: 10px;
-}
-
-.table-boxed td
-{
-    height: 1px;
-    padding: 10px;
-}
-
-.inerTableBox {
-
-    border-radius: 3px;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-    padding: 1em;
-    margin : 0.5em;
-    height : 110%;
-    width : 100%;
-    position : relative;
-    left : -22px;
-}
-
-
-.canvas-chart {
-    width: 100%;
-}
-
-.vcenter {
-        display: inline-block;
-    vertical-align: middle;
-    float: none;
-}
-
 /**
  * 	NavBar
  */
@@ -220,6 +161,7 @@ tr.info, tr.danger {
   top: -35px;
 
 }
+
 .left.carousel-control {
   right: 30px;
   left: inherit;
