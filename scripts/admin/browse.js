@@ -30,9 +30,7 @@ $(document).on("mouseenter",".browsetable tbody td:not([title])",function(){
   }
 });
 $(document).ready(function(){
-    $('ul.sf-menu').superfish({
-        speed:'fast'
-    }); 
+
     $("#selectall").click(function(){
         $('.cbResponseMarker').attr('checked',$(this).is(':checked'));
     });
