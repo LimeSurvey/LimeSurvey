@@ -10,6 +10,17 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+// Collapse in editarticle
+$(document).ready(function(){ 
+	$('#questionTypeContainer').css("overflow","visible");
+	$('#collapseOne').on('shown.bs.collapse', function () {
+		$('#questionTypeContainer').css("overflow","visible");
+	});
+	
+	$('#collapseOne').on('hide.bs.collapse', function () {
+		$('#questionTypeContainer').css("overflow","hidden");
+	});
+});
 /**
 * Validate question object on blur on title element
 */

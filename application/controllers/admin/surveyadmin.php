@@ -47,8 +47,9 @@ class SurveyAdmin extends Survey_Common_Action
     public function index()
     {
     	
-		Yii::app()->loadHelper('surveytranslator');
-		
+		App()->loadHelper('surveytranslator');
+        App()->getClientScript()->registerPackage('panel-clickable');
+        App()->getClientScript()->registerPackage('panels-animation');
 		$aData['issuperadmin'] = false;
 		if (Permission::model()->hasGlobalPermission('superadmin','read'))
 		{
@@ -370,6 +371,8 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function view($iSurveyID, $gid = null, $qid = null)
     {
+        App()->getClientScript()->registerPackage('panel-clickable');
+        App()->getClientScript()->registerPackage('panels-animation');
         
         $iSurveyID = sanitize_int($iSurveyID);
         if (isset($gid))

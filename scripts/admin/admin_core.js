@@ -42,6 +42,8 @@ $(document).ready(function(){
         }, $.datepicker.regional[LS.data.language]);
     }
     doToolTip();
+    $('.btntooltip').tooltip();
+    
     $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
     $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
 
@@ -59,10 +61,62 @@ $(document).ready(function(){
         $("div",this).html(pValue + "%");
     });
 
+	if ($('#save-form-button').length>0){
+		$("#save-form-button").on('click', function(){
+			var formid = '#'+$(this).attr('aria-data-form-id');
+			$form = $(formid);
+			$form.find('[type="submit"]').trigger('click');;
+		});
+	}
+	
+	if ($('#save-button').length>0){
+		$('#save-button').on('click', function()
+		{
+		    if($(this).attr('data-use-form-id')==1)
+		    {
+		        formId = '#'+$(this).attr('data-form-to-save');
+		        $(formId).submit();
+		    }
+		    else
+		    {
+			  $form = $('.side-body').find('form');
+			  $form.submit();
+			}
+			
+		});
+	}
 
+	if($('.open-preview').length>0){
+		$('.open-preview').on('click', function(){
+			var frameSrc = $(this).attr("aria-data-url");
+			$('#frame-question-preview').attr('src',frameSrc);
+			$('#question-preview').modal('show');
+		});
+	}
+	
     if ($('#advancedquestionsettingswrapper').length>0){
     	updatequestionattributes();
     } 
+
+	/* Switch format group */
+	if ($('#switchchangeformat').length>0){
+		$('#switchchangeformat').on('switchChange.bootstrapSwitch', function(event, state) {
+		    $.ajax({
+		        url : '<?php echo $this->createUrl("admin/survey/sa/changeFormat/surveyid/".$surveyid); ?>',
+		        type : 'GET',
+		        dataType : 'html', 
+		        
+		        // html contains the buttons
+		        success : function(html, statut){
+		        },
+		        error :  function(html, statut){
+		            alert('error');
+		        }
+		    });
+		   
+		});
+	};
+
 
     $('#showadvancedattributes').click(function(){
         $('#showadvancedattributes').hide();
@@ -82,6 +136,12 @@ $(document).ready(function(){
 
     });
     $('#question_type').change(updatequestionattributes);
+
+    $('#question_type_button  li a').click(function(){
+        $(".btn:first-child .buttontext").text($(this).text());
+        $('#question_type').val($(this).attr('aria-data-value'));
+        updatequestionattributes();
+   	});
 
     $('#MinimizeGroupWindow').click(function(){
         $('#groupdetails').hide();
@@ -710,7 +770,7 @@ jQuery.fn.center = function () {
     this.css("top", ( $(window).height() - this.height() ) / 2+$(window).scrollTop() + "px");
     this.css("left", ( $(window).width() - this.width() ) / 2+$(window).scrollLeft() + "px");
     return this;
-}
+};
 
 // Fix broken substr function with negative start value (in older IE)
 // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr
@@ -719,7 +779,7 @@ if ('ab'.substr(-1) != 'b') {
 		return function(start, length) {
 			if (start < 0) start = this.length + start;
 			return substr.call(this, start, length);
-		}
+		};
 	}(String.prototype.substr);
 }
 

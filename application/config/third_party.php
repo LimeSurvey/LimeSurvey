@@ -269,14 +269,16 @@ return array(
     
     // LimeSurvey Bootstrap Admin Interface
     'lime-bootstrap' => array(
-        'baseUrl' => 'styles/limebootstrap/',
+        'baseUrl' => '',
+        'js' => '',
         'css' => array(
-            'lime-admin.css',
-            'fonts.css',
-            'font-awesome/font-awesome-43.min.css',
-            'awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css'
+            'styles/limebootstrap/lime-admin.css',
+            'styles/limebootstrap/fonts.css',
+            'styles/limebootstrap/font-awesome/font-awesome-43.min.css',
+            'styles/limebootstrap/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css'
         ),
         'depends' => array(
+            'jquery',
             'bootstrap'
         ),
     ),
@@ -317,5 +319,26 @@ return array(
             'lime-bootstrap',
         ),    
     ),
+    
+    // Clickable panels 
+    'panel-clickable' => array(
+        'baseUrl' => '',
+        'js' => array('scripts/admin/panelclickable.js'),
+        'depends' => array(
+            'bootstrap',
+            'lime-bootstrap',
+        ),    
+    ),
+
+    // panels animation 
+    'panels-animation' => array(
+        'baseUrl' => '',
+        'js' => array('scripts/admin/panelsanimation.js'),
+        'depends' => array(
+            'panel-clickable',
+            'bootstrap',
+            'lime-bootstrap',
+        ),    
+    ),    
     
 );

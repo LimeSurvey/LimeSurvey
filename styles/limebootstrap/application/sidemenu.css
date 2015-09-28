@@ -19,7 +19,7 @@
   background-color: #fff;
   border-right: 1px solid #e7e7e7;
   background-color : #fff;
- 		  
+       
 }
 
 .side-menu .navbar-default .navbar-nav > li > a {
@@ -27,8 +27,8 @@
 }
 .side-menu .navbar {
   border: none;
-	background-color : #fff;
-	  box-shadow: none;	  
+    background-color : #fff;
+      box-shadow: none;      
   
 }
 .side-menu .navbar-header {
@@ -56,7 +56,7 @@
 }
 
 #sideMenu .navbar-default .navbar-nav > .active > a {
-	background-color: transparent;
+    background-color: transparent;
 }
 .side-menu #dropdown li.active:hover {
   cursor : default;
@@ -150,14 +150,14 @@
 .side-menu #dropdown li:hover, .toWhite a:hover{
   color: #fff;
   font-weight: 700;
-  background-color: #89C68D;	
+  background-color: #89C68D;    
 }
 
 
 .side-menu #dropdown li.disabled:hover {
-	color: #fff;
-	font-weight: 700;
-	background-color: transparent;
+    color: #fff;
+    font-weight: 700;
+    background-color: transparent;
 }
 
 .side-menu .navbar-nav .active, .side-menu .navbar-nav .active:hover {
@@ -198,10 +198,10 @@
 }
 
 /**
- * 	Reset bootstrap panel default value
+ *     Reset bootstrap panel default value
  */
 .side-menu #dropdown .panel-body .navbar-nav li.panel{
-	margin-bottom: 0px;
+    margin-bottom: 0px;
     background-color: transparent;
     border: none;
     border-radius: 0px;
@@ -477,7 +477,7 @@
   #dropdown .panel-body .navbar-nav {
     margin: 0;
   }
-}	
+}    
 
 .side-menu
 {
@@ -486,11 +486,11 @@
 
 .content-right, .col-lg-12.content-right, .content-right .col-lg-12
 {
-	padding-left: 0em;
+    padding-left: 0em;
     padding-right: 0em;
     -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: fadein 1s; /* Firefox < 16 */
         -ms-animation: fadein 1s; /* Internet Explorer */
          -o-animation: fadein 1s; /* Opera < 12.1 */
-            animation: fadein 1s;	
+            animation: fadein 1s;
 }

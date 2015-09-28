@@ -7,6 +7,10 @@ $(document).on('submit',"#addnewsurvey",function(){
 });
 $(document).ready(function(){
 
+	$('#template').on('change', function(event){
+		templatechange($(this).val());
+	});
+
     $("[data-copy]").each(function(){
         $(this).html($("#"+$(this).data('copy')).html());
     });
