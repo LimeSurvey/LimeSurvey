@@ -209,24 +209,6 @@ div.panel.disabled a{
 }
 
 
-.message-box
-{
-	border : 1px solid #89C68D;
-	color : #2D2D2D;
-
-	position : relative;
-    -webkit-animation: slidefromtop 1s; /* Safari, Chrome and Opera > 12.1 */
-       -moz-animation: slidefromtop 1s; /* Firefox < 16 */
-        -ms-animation: slidefromtop 1s; /* Internet Explorer */
-         -o-animation: slidefromtop 1s; /* Opera < 12.1 */
-            animation: slidefromtop 1s;		
-	
-}
-
-.message-box-error
-{
-	border : 1px solid #A0352F;
-}
 
 
 .panel-clickable:hover
