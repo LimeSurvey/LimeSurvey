@@ -6,17 +6,13 @@
     <?php 
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-cookie');
-        App()->getClientScript()->registerPackage('jquery-superfish');
         App()->getClientScript()->registerPackage('qTip2');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-ui.css" );
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "superfish.css" );
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
 		App()->bootstrap->register();	
 		App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "../bootstrap/lime-icons2.css" );
-
-                        
 
         if (getLanguageRTL($_SESSION['adminlang']))
         {        

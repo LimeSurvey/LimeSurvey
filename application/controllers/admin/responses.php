@@ -293,7 +293,6 @@ class responses extends Survey_Common_Action
         else
         {
             $aData['surveyid'] = $iSurveyID;
-            App()->getClientScript()->registerPackage('jquery-superfish');
             $message['title']= gT('Access denied!');
             $message['message']= gT('You do not have sufficient rights to access this page.');
             $message['class']= "error";
@@ -1133,7 +1132,6 @@ class responses extends Survey_Common_Action
         else
         {
             $aData['surveyid'] = $iSurveyID;
-            App()->getClientScript()->registerPackage('jquery-superfish');
             $message['title']= gT('Access denied!');
             $message['message']= gT('You do not have sufficient rights to access this page.');
             $message['class']= "error";
