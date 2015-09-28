@@ -796,6 +796,7 @@ class Survey_Common_Action extends CAction
 	 */
 	function _surveysidemenu($aData)
 	{
+	    App()->getClientScript()->registerPackage('sidemenu');
 		$iSurveyID = $aData['surveyid'];
 		// TODO : create subfunctions
         $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->find('sid = :surveyid', array(':surveyid' => $aData['surveyid'])); //$sumquery1, 1) ; //Checked

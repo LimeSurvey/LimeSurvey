@@ -10,7 +10,7 @@
 
     <div class="absolute-wrapper"> </div> 
     <!-- Menu -->
-    <div class="side-menu col-lg-4 offset-0" id="sideMenu">
+    <div class="side-menu" id="sideMenu">
     
     <nav class="navbar navbar-default" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
