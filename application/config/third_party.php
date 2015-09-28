@@ -271,7 +271,7 @@ return array(
     'lime-bootstrap' => array(
         'baseUrl' => 'styles/limebootstrap/',
         'css' => array(
-            'lime-icons2.css',
+            'lime-admin.css',
             'fonts.css',
             'font-awesome/font-awesome-43.min.css',
             'awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css'
@@ -304,4 +304,18 @@ return array(
             'lime-bootstrap'
         )    
     ),
+    
+    // sidemenu
+    'sidemenu' => array(
+        'baseUrl' => '',
+        'js' => array('scripts/admin/sidemenu.js'),            
+        'css' => array(
+            'styles/limebootstrap/application/sidemenu.css',
+        ),
+        'depends' => array(
+            'bootstrap',
+            'lime-bootstrap',
+        ),    
+    ),
+    
 );
