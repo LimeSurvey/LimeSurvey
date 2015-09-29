@@ -300,7 +300,7 @@ abstract class Token extends Dynamic
             array('email', 'filter', 'filter' => 'trim'),
             array(
                 'email',
-                'LSYii_EmailIDNAValidator',
+                'email',
                 'allowEmpty' => true,
                 'allowMultiple' => true,
                 'except' => 'allowinvalidemail'
