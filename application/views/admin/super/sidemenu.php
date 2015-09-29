@@ -47,16 +47,16 @@
 					<span class="glyphicon glyphicon-info-sign"></span>
 					<?php eT("Survey");?>
 				</a>
-			</li>			
+			</li>
 
             <!-- Question & Groups-->
             <li class="panel panel-default dropdownlvl1" id="dropdown">
                 <a data-toggle="collapse" id="questions-groups-collapse" href="#dropdown-lvl1" <?php if( isset($sidebar["questiongroups"]) ) echo 'aria-expanded="true"'; ?>  >
-                    <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Question and Groups:');?> 
+                    <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Question and Groups:');?>
                     <!-- <span class="glyphicon glyphicon-sort-by-order" id="sort-questions-button" aria-url="<?php echo $this->createUrl("admin/survey/sa/organize/surveyid/$surveyid"); ?>" ></span>-->
                    <span class="caret"></span>
                 </a>
-                
+
                 <!-- Dropdown level 1 -->
                 <div id="dropdown-lvl1" class="panel-collapse collapse <?php if( isset($sidebar["questiongroups"]) || isset($sidebar["listquestions"]) || 1==1 ) echo 'in'; ?>"  <?php if( isset($sidebar["questiongroups"]) || isset($sidebar["listquestions"]) ) echo 'aria-expanded="true"'; ?> >
                     <div class="panel-body">
@@ -68,7 +68,7 @@
                                     <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Questions explorer');?> 
                                    <span class="caret" ></span>
                                 </a>
-                            
+
                                 <div id="explorer-lvl1" class="panel-collapse collapse" >
                                     <div class="panel-body">
                                         <ul class="nav navbar-nav dropdown-first-level" id="explorer-container">
@@ -79,7 +79,7 @@
                                                         <a data-toggle="collapse" id="" href="#questiongroup-<?php echo $aGroup->gid; ?>" class="question-group-collapse">
                                                            <span class="question-group-collapse-title"><?php echo $aGroup->group_name;?><span class="caret"></span></span>
                                                         </a>
-                                    
+
                                                         <div id="questiongroup-<?php echo $aGroup->gid; ?>" class="panel-collapse collapse questiongroupdropdown" >
                                                             <div class="panel-body">
                                                                 <ul class="nav navbar-nav dropdown-first-level">
