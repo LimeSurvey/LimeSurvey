@@ -338,6 +338,7 @@ class questiongroups extends Survey_Common_Action
             Yii::app()->loadHelper('surveytranslator');
 
             $aAdditionalLanguages = Survey::model()->findByPk($surveyid)->additionalLanguages;
+            // TODO: This is not an array, but a string "en"
             $aBaseLanguage = Survey::model()->findByPk($surveyid)->language;
 
             $aLanguages = array_merge(array($aBaseLanguage), $aAdditionalLanguages);

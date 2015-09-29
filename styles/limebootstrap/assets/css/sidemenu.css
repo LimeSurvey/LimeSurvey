@@ -71,10 +71,14 @@
 #sideMenu .side-menu .dropdownlvl1 > a:hover, 
 #sideMenu .sidemenuscontainer li:hover,  
 #sideMenu .sidemenuscontainer li:hover>a, 
-#sideMenu  a[aria-expanded="true"] {
+#sideMenu a[aria-expanded="true"] {
   color: #fff;
   font-weight: 700;
   background-color: #19691E;
+}
+
+#sideMenu a[aria-expanded="false"] {
+  color: #002E03;
 }
 
 #explorer-container {
