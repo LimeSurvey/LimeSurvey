@@ -3,6 +3,12 @@
  * General container for edit survey action
  */
 ?>
+
+<script type="text/javascript">
+    standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
+    templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
+</script>
+
 <?php 
     extract($settings_data);
 	$count = 0;
