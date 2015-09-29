@@ -8,7 +8,7 @@
 <!-- Configuration -->
 <li class="dropdown mega-dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/global.png" /> <?php eT('Configuration');?><span class="caret"></span></a>				
-    <ul class="dropdown-menu mega-dropdown-menu">
+    <ul class="dropdown-menu mega-dropdown-menu" id="mainmenu-dropdown">
         
         <!-- First column -->
         <li class="col-sm-3 ">
