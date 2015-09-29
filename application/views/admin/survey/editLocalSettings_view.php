@@ -9,7 +9,7 @@
     
     <!-- Survey title -->
 	<div class="form-group">
-        <label class="control-label col-sm-3" for="short_title<?php echo $esrow['surveyls_language']; ?>" id="question-group-title"><?php eT("Survey title"); ?>:</label>
+        <label class="col-sm-3" for="short_title<?php echo $esrow['surveyls_language']; ?>" id="question-group-title"><?php eT("Survey title"); ?>:</label>
         <div class="col-sm-9">
             <input class="form-control" type='text' size='80' id='short_title_<?php echo $esrow['surveyls_language']; ?>' name='short_title_<?php echo $esrow['surveyls_language']; ?>' value="<?php echo $esrow['surveyls_title']; ?>" />
         </div>
@@ -17,7 +17,7 @@
 	
 	<!-- Description -->
 	<div class="form-group">
-		<label class="control-label col-sm-3"  for="description_<?php echo $esrow['surveyls_language']; ?>"><?php eT("Description:"); ?></label>
+		<label class="col-sm-3"  for="description_<?php echo $esrow['surveyls_language']; ?>"><?php eT("Description:"); ?></label>
 		<div class="col-sm-12">
 	        <textarea cols='80' rows='15' id='description_<?php echo $esrow['surveyls_language']; ?>' name='description_<?php echo $esrow['surveyls_language']; ?>'>
 	        	<?php echo $esrow['surveyls_description']; ?>
@@ -28,7 +28,7 @@
 
     <!-- Welcome message -->
 	<div class="form-group">
-		<label class="control-label col-sm-4" for='welcome_<?php echo $esrow['surveyls_language']; ?>'><?php eT("Welcome message:"); ?></label>
+		<label class="col-sm-4" for='welcome_<?php echo $esrow['surveyls_language']; ?>'><?php eT("Welcome message:"); ?></label>
 
 		<div class="col-sm-12">
         	<textarea cols='80' rows='15' id='welcome_<?php echo $esrow['surveyls_language']; ?>' name='welcome_<?php echo $esrow['surveyls_language']; ?>'>
@@ -40,7 +40,7 @@
 
     <!-- End message -->
 	<div class="form-group">
-		<label class="control-label col-sm-3" for='endtext_<?php echo $esrow['surveyls_language']; ?>'><?php eT("End message:"); ?></label>
+		<label class="col-sm-3" for='endtext_<?php echo $esrow['surveyls_language']; ?>'><?php eT("End message:"); ?></label>
 
 		<div class="col-sm-12">
         	<textarea cols='80' rows='15' id='endtext_<?php echo $esrow['surveyls_language']; ?>' name='endtext_<?php echo $esrow['surveyls_language']; ?>'>
