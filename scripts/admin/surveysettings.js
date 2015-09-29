@@ -7,7 +7,7 @@ $(document).on('submit',"#addnewsurvey",function(){
 });
 $(document).ready(function(){
 
-	$('#template').on('change', function(event){
+	$('#template').on('change keyup', function(event){
 		templatechange($(this).val());
 	});
 
@@ -154,7 +154,7 @@ function templatechange(template)
     }
     else
     {
-    $("#preview").attr('src',templaterooturl+'/'+template+'/preview.png');
+        $("#preview").attr('src',templaterooturl+'/'+template+'/preview.png');
     }
 }
 
