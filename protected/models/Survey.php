@@ -1,6 +1,6 @@
 <?php
 namespace ls\models;
-
+use Yii;
 /**
  * @property Question[] $questions
  * @property boolean $bool_usetokens

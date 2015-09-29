@@ -2,71 +2,71 @@
 use ls\models\Survey;
 
 $menu = [
-        array(
-            array(
+        [
+            [
                 'title' => gT('Default administration page'),
                 'url' => ['surveys/index'],
                 'icon' => 'home'
-            ),
-            array(
+            ],
+            [
                 'title' => gT('Manage survey administrators'),
                 'url' => ['users/index'],
                 'icon' => 'folder-open'
-            ),
+            ],
             [
                 'title' => gT('Create/edit user groups'),
-                'url' => array('admin/usergroups', 'sa' => 'index'),
+                'url' => ['admin/usergroups', 'sa' => 'index'],
                 'icon' => 'tags',
                 'visible' => false && App()->user->checkAccess('usergroups')
             ],
-            array(
+            [
                 'title' => gT('Global settings'),
                 'url' => ['settings/index'],
                 'icon' => 'pencil',
                 'visible' => App()->user->checkAccess('settings')
-            ),
-            array(
+            ],
+            [
                 'title' => gT('Check Data Integrity'),
-                'url' => array('admin/checkintegrity'),
+                'url' => ['admin/checkintegrity'],
                 'icon' => 'check',
                 'visible' => App()->user->checkAccess('settings')
-            ),
-            array(
+            ],
+            [
                 'title' => gT('Backup Entire Database'),
-                'url' => array("admin/dumpdb"),
+                'url' => ["admin/dumpdb"],
                 'icon' => 'download-alt',
                 'visible' => App()->user->checkAccess('superadmin') && App()->db->driverName == 'mysql'
-            ),
-            array(
+            ],
+            [
                 'label' => gT('The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump.'),
                 'icon' => 'backup_disabled',
                 'visible' => App()->user->checkAccess('superadmin') && App()->db->driverName != 'mysql'
-            ),
-            array(
+            ],
+            [
                 'title' => gT('Edit label sets'),
-                'url' => array('admin/labels', 'sa' => 'view'),
+                'url' => ['admin/labels', 'sa' => 'view'],
                 'icon' => 'list',
                 'visible' => App()->user->checkAccess('labelsets')
-            ),
-            array(
+            ],
+            [
                 'title' => gT('ls\models\Template Editor'),
-                'url' => array('admin/templates/'),
+                'url' => ['templates/index'],
                 'icon' => 'eye-open',
                 'visible' => App()->user->checkAccess('templates')
-            ),
-            array(
+            ],
+            [
                 'title' => gT('Central participant database/panel'),
-                'url' => array('participants/index'),
+                'url' => ['participants/index'],
                 'icon' => 'user',
                 'visible' => App()->user->checkAccess('participantpanel')
-            ),
-            array(
+            ],
+            [
                 'title' => gT('Plugin manager'),
-                'url' => array('/plugins'),
+                'url' => ['/plugins'],
                 'icon' => 'wrench',
                 'visible' => App()->user->checkAccess('superadmin')
-            ),
-        ), [
+            ],
+        ], [
 //            array(
 //                'title' => gT('Detailed list of surveys'),
 //                'url' => array('admin/survey', 'sa' => 'index'),
@@ -99,11 +99,11 @@ $menu = [
                 'url' => ['users/profile'],
                 'icon' => 'edit'
             ],
-            array(
+            [
                 'title' => gT('LimeSurvey online manual'),
                 'url' => "http://docs.limesurvey.org",
                 'icon' => 'question-sign',
-            ),
+            ],
             
             
             

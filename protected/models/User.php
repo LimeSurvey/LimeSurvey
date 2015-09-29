@@ -14,7 +14,7 @@
 
 namespace ls\models;
 
-use ls\models\ActiveRecord;
+use CPasswordHelper;
 
 class User extends ActiveRecord implements \ls\pluginmanager\iUser
 {
@@ -333,7 +333,7 @@ class User extends ActiveRecord implements \ls\pluginmanager\iUser
                 'label' => 'Language',
                 'current' => $this->getLanguage(),
                 'type' => 'select',
-                'options' => TbHtml::listData(App()->supportedLanguages, 'code', function ($data) {
+                'options' => \TbHtml::listData(App()->supportedLanguages, 'code', function ($data) {
                     return "{$data['description']} - {$data['nativedescription']}";
                 })
 
