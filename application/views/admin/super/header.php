@@ -1,13 +1,22 @@
+<?php
+/**
+ * Header of the application
+ * Called from render_wrapped_template
+ */
+?>
 <!DOCTYPE html>
 <html lang="<?php echo $adminlang; ?>"<?php echo $languageRTL;?> >
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- Assets load -->
     <?php 
         // jQuery plugins
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-cookie');
         App()->getClientScript()->registerPackage('qTip2');
+    
         // Bootstrap
         App()->bootstrap->register();   
         App()->getClientScript()->registerPackage('lime-bootstrap');
