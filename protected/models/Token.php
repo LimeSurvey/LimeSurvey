@@ -63,7 +63,7 @@ abstract class Token extends Dynamic
             'validfrom' => gT('Valid from'),
             'validuntil' => gT('Valid until'),
         );
-        foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info) {
+        foreach (json_decode(Survey::model()->findByPk($this->getSurveyId())->attributedescriptions, true) as $key => $info) {
             $labels[$key] = $info['description'];
         }
 
@@ -231,40 +231,19 @@ abstract class Token extends Dynamic
 
     }
 
-    /**
-     *
-     * @param mixed $className Either the classname or the survey id.
-     * @return Token
-     */
-    public static function model($className = null)
-    {
-        return parent::model($className);
-    }
-
-    /**
-     *
-     * @param int $surveyId
-     * @param string $scenario
-     * @return Token Description
-     */
-    public static function create($surveyId, $scenario = 'insert')
-    {
-        return parent::create($surveyId, $scenario);
-    }
-
     public function relations()
     {
         $result = [
-            'survey' => [self::BELONGS_TO, 'ls\models\Survey', '', 'on' => "sid = {$this->dynamicId}"],
+            'survey' => [self::BELONGS_TO, Survey::class, '', 'on' => "sid = {$this->dynamicId}"],
             'surveylink' => [
                 self::BELONGS_TO,
-                'ls\models\SurveyLink',
+                SurveyLink::class,
                 ['participant_id' => 'participant_id'],
                 'on' => "survey_id = {$this->dynamicId}"
             ]
         ];
 
-        if (\ls\models\Response::valid($this->dynamicId)) {
+        if (Response::valid($this->dynamicId)) {
             $result['responses'] = [self::HAS_MANY, 'Response_' . $this->dynamicId, ['token' => 'token']];
         }
 
@@ -315,7 +294,7 @@ abstract class Token extends Dynamic
             ['captcha', 'captcha', 'on' => 'register'],
 
         );
-        foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info) {
+        foreach (json_decode($this->survey->attributedescriptions, true) as $key => $info) {
             $aRules[] = array($key, 'required');
         }
 

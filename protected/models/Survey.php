@@ -178,17 +178,17 @@ class Survey extends ActiveRecord
         return [
             'languagesettings' => array(
                 self::HAS_MANY,
-                'ls\models\SurveyLanguageSetting',
+                SurveyLanguageSetting::class,
                 'surveyls_survey_id',
                 'index' => 'surveyls_language'
             ),
             'defaultlanguage' => array(
                 self::BELONGS_TO,
-                'ls\models\SurveyLanguageSetting',
+                SurveyLanguageSetting::class,
                 array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'),
                 'together' => true
             ),
-            'owner' => array(self::BELONGS_TO, 'ls\models\User', '', 'on' => "$alias.owner_id = owner.uid"),
+            'owner' => array(self::BELONGS_TO, User::class, '', 'on' => "$alias.owner_id = owner.uid"),
             'groups' => [self::HAS_MANY, QuestionGroup::class, 'sid', 'order' => 'group_order ASC', 'index' => 'id'],
             // @todo Disable this since we should only iterate over questions via groups.
             'questions' => [
@@ -499,7 +499,8 @@ class Survey extends ActiveRecord
      */
     public function getTokenAttributes()
     {
-        $attdescriptiondata = decodeTokenAttributes($this->attributedescriptions);
+
+        $attdescriptiondata = json_decode($this->attributedescriptions, true);
         // checked for invalid data
         if ($attdescriptiondata == null) {
             return array();
@@ -742,7 +743,7 @@ class Survey extends ActiveRecord
      */
     public function getResponseCount()
     {
-        return $this->isNewRecord || !Response::valid($this->sid) ? 0 : Response::model($this->sid)->count();
+        return $this->isNewRecord || !Response::valid($this->sid, true) ? 0 : Response::model($this->sid)->count();
     }
 
     /**
