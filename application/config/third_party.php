@@ -261,21 +261,20 @@ return array(
 
     // displayParticipants
     'display-participants' => array(
-        'baseUrl' => 'styles/limebootstrap/',
+        'baseUrl' => 'styles/limebootstrap/assets/',
         'css' => array(
-            'displayParticipants.css',
+            'css/displayParticipants.css',
         ),
     ),
     
     // LimeSurvey Bootstrap Admin Interface
     'lime-bootstrap' => array(
-        'baseUrl' => '',
-        'js' => '',
+        'baseUrl' => 'styles/limebootstrap/assets/',
         'css' => array(
-            'styles/limebootstrap/lime-admin.css',
-            'styles/limebootstrap/fonts.css',
-            'styles/limebootstrap/font-awesome/font-awesome-43.min.css',
-            'styles/limebootstrap/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css'
+            'css/lime-admin.css',
+            'css/fonts.css',
+            'css/font-awesome/font-awesome-43.min.css',
+            'css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css'
         ),
         'depends' => array(
             'jquery',
@@ -285,9 +284,9 @@ return array(
     
     // adminstyle-rtl
     'adminstyle-rtl' => array(
-        'baseUrl' => 'styles/limebootstrap/',
+        'baseUrl' => 'styles/limebootstrap/assets/',
         'css' => array(
-            'adminstyle-rtl.css',
+            'css/adminstyle-rtl.css',
         ),
         'depends' => array(
             'bootstrap',
@@ -297,9 +296,9 @@ return array(
     
     // statistics
     'statistics' => array(
-        'baseUrl' => 'styles/limebootstrap/application',
+        'baseUrl' => 'styles/limebootstrap/assets/',
         'css' => array(
-            'statistics.css',
+            'css/statistics.css',
         ),
         'depends' => array(
             'bootstrap',
@@ -309,10 +308,10 @@ return array(
     
     // sidemenu
     'sidemenu' => array(
-        'baseUrl' => '',
-        'js' => array('scripts/admin/sidemenu.js'),            
+        'baseUrl' => 'styles/limebootstrap/assets/',
+        'js' => array('scripts/sidemenu.js'),            
         'css' => array(
-            'styles/limebootstrap/application/sidemenu.css',
+            'css/sidemenu.css',
         ),
         'depends' => array(
             'bootstrap',
@@ -322,8 +321,8 @@ return array(
     
     // Clickable panels 
     'panel-clickable' => array(
-        'baseUrl' => '',
-        'js' => array('scripts/admin/panelclickable.js'),
+        'baseUrl' => 'styles/limebootstrap/assets/',
+        'js' => array('scripts/panelclickable.js'),
         'depends' => array(
             'bootstrap',
             'lime-bootstrap',
@@ -332,8 +331,8 @@ return array(
 
     // panels animation 
     'panels-animation' => array(
-        'baseUrl' => '',
-        'js' => array('scripts/admin/panelsanimation.js'),
+        'baseUrl' => 'styles/limebootstrap/assets/',
+        'js' => array('scripts/panelsanimation.js'),
         'depends' => array(
             'panel-clickable',
             'bootstrap',

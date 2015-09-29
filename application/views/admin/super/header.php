@@ -8,7 +8,6 @@
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-cookie');
         App()->getClientScript()->registerPackage('qTip2');
-
         // Bootstrap
         App()->bootstrap->register();   
         App()->getClientScript()->registerPackage('lime-bootstrap');
