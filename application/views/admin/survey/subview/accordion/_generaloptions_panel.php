@@ -1,3 +1,10 @@
+<?php
+/**
+ * General options
+ */
+?>
+<!-- General options -->
+
 <?php if($action=='editsurveysettings'):?>
     <?php
         $yii = Yii::app();
@@ -9,7 +16,8 @@
                         . "});\n";
         Yii::app()->getClientScript()->registerScript('confirmLanguage',$sConfirmLanguage,CClientScript::POS_BEGIN);
     ?>
-        
+   
+    <!-- Base language -->
     <div class="form-group">
         <label class="col-sm-5 control-label" ><?php  eT("Base language:") ; ?></label>
         <div class="col-sm-7" style="padding-top: 7px;">
@@ -17,6 +25,7 @@
         </div>
     </div>
 
+    <!-- Additional Languages -->
     <div class="form-group">
         <label class="col-sm-5 text-right"  for='additional_languages'><?php  eT("Additional Languages"); ?>:</label>
         <div class="col-sm-12">
@@ -70,7 +79,7 @@
         </div>
     </div>
     
-    
+    <!-- Administrator -->
     <div class="form-group">
         <label class="col-sm-3 control-label"  for='admin'><?php  eT("Administrator:"); ?></label>
         <div class="col-sm-9">
@@ -78,6 +87,7 @@
         </div>
     </div>
     
+    <!-- Admin email -->
     <div class="form-group">
         <label class="col-sm-3 control-label"  for='adminemail'><?php  eT("Admin email:"); ?></label>
         <div class="col-sm-9">
@@ -85,6 +95,7 @@
         </div>
     </div>
     
+    <!-- Bounce email -->
     <div class="form-group">
         <label class="col-sm-3 control-label"  for='bounce_email'><?php  eT("Bounce email:"); ?></label>
         <div class="col-sm-9">
@@ -92,6 +103,7 @@
         </div>
     </div>
     
+    <!-- Fax to -->
     <div class="form-group">
         <label class="col-sm-3 control-label"  for='faxto'><?php  eT("Fax to:"); ?></label>
         <div class="col-sm-9">
@@ -100,59 +112,67 @@
     </div>    
 
 <?php else: ?>
-<div class="form-group">
-    <label class="col-sm-3 control-label" for='url'><?php  eT("End URL:"); ?></label>
-    <div class="col-sm-9">
-        <input type='text' class="form-control"  id='url' name='url' placeholder="http://your.redirection.com"  />
-    </div>
-</div>                                              
+    <!-- End URL -->
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for='url'><?php  eT("End URL:"); ?></label>
+        <div class="col-sm-9">
+            <input type='text' class="form-control"  id='url' name='url' placeholder="http://your.redirection.com"  />
+        </div>
+    </div>                                              
 
-<div class="form-group">
-    <label class="col-sm-3 control-label" for='urldescrip'><?php  eT("URL description:") ; ?></label>
-    <div class="col-sm-9">
-        <input type='text' maxlength='255' size='50' id='urldescrip' name='urldescrip' value=''  class="form-control"  placeholder="<?php eT('describe this redirection');?>" />
+    <!-- URL description -->    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for='urldescrip'><?php  eT("URL description:") ; ?></label>
+        <div class="col-sm-9">
+            <input type='text' maxlength='255' size='50' id='urldescrip' name='urldescrip' value=''  class="form-control"  placeholder="<?php eT('describe this redirection');?>" />
+        </div>
     </div>
-</div>
 
-<div class="form-group">
-    <label class="col-sm-3 control-label" for='dateformat'><?php  eT("Date format:") ; ?></label>
-    <div class="col-sm-3">
-        <?php echo CHtml::listBox('dateformat',$sDateFormatDefault, $aDateFormatData, array('id'=>'dateformat','size'=>'1', 'class'=>'form-control')); ?>
+    <!-- Date format -->    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for='dateformat'><?php  eT("Date format:") ; ?></label>
+        <div class="col-sm-3">
+            <?php echo CHtml::listBox('dateformat',$sDateFormatDefault, $aDateFormatData, array('id'=>'dateformat','size'=>'1', 'class'=>'form-control')); ?>
+        </div>
     </div>
-</div>
-
-<div class="form-group">
-    <label class="col-sm-3 control-label" for='numberformat'><?php  eT("Decimal mark:"); ?></label>
-    <div class="col-sm-3">
-        <?php echo CHtml::listBox('numberformat',$sRadixDefault, $aRadixPointData, array('id'=>'numberformat','size'=>'1', 'class'=>'form-control')); ?>
-    </div>
-</div>
-
-<div class="form-group">
-    <label class="col-sm-3 control-label" for='admin'><?php  eT("Administrator:") ; ?></label>
-    <div class="col-sm-9">
-        <input type='text' size='50' id='admin' name='admin'   class="form-control"  value='<?php echo $owner['full_name'] ; ?>' />
-    </div>
-</div>
     
-<div class="form-group">                                
-    <label class="col-sm-3 control-label" for='adminemail'><?php  eT("Admin email:") ; ?></label>
-    <div class="col-sm-9">
-        <input type='email' size='30'   class="form-control"   id='adminemail' name='adminemail' value='<?php echo $owner['email'] ; ?>' />
+    <!-- Decimal mark -->    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for='numberformat'><?php  eT("Decimal mark:"); ?></label>
+        <div class="col-sm-3">
+            <?php echo CHtml::listBox('numberformat',$sRadixDefault, $aRadixPointData, array('id'=>'numberformat','size'=>'1', 'class'=>'form-control')); ?>
+        </div>
     </div>
-</div>
 
-<div class="form-group">
-    <label class="col-sm-3 control-label" for='bounce_email'><?php  eT("Bounce Email:") ; ?></label>
-    <div class="col-sm-9">
-        <input type='email' size='50'  class="form-control"  id='bounce_email' name='bounce_email' value='<?php echo $owner['bounce_email'] ; ?>' />
+    <!-- Administrator -->    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for='admin'><?php  eT("Administrator:") ; ?></label>
+        <div class="col-sm-9">
+            <input type='text' size='50' id='admin' name='admin'   class="form-control"  value='<?php echo $owner['full_name'] ; ?>' />
+        </div>
     </div>
-</div>
 
-<div class="form-group">
-    <label class="col-sm-3 control-label" for='faxto'><?php  eT("Fax to:") ; ?></label>
-    <div class="col-sm-9">
-        <input type='text' size='50' id='faxto' name='faxto'  class="form-control" />
+    <!-- Admin email -->        
+    <div class="form-group">                                
+        <label class="col-sm-3 control-label" for='adminemail'><?php  eT("Admin email:") ; ?></label>
+        <div class="col-sm-9">
+            <input type='email' size='30'   class="form-control"   id='adminemail' name='adminemail' value='<?php echo $owner['email'] ; ?>' />
+        </div>
     </div>
-</div>  
+
+    <!-- Bounce Email -->    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for='bounce_email'><?php  eT("Bounce Email:") ; ?></label>
+        <div class="col-sm-9">
+            <input type='email' size='50'  class="form-control"  id='bounce_email' name='bounce_email' value='<?php echo $owner['bounce_email'] ; ?>' />
+        </div>
+    </div>
+
+    <!-- Fax to -->    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for='faxto'><?php  eT("Fax to:") ; ?></label>
+        <div class="col-sm-9">
+            <input type='text' size='50' id='faxto' name='faxto'  class="form-control" />
+        </div>
+    </div>  
 <?php endif;?>

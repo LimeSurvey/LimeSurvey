@@ -20,16 +20,18 @@
     gT('Edit LimeSurvey templates');
 ?>
 
+<!-- Welcome view -->
 <div class="container-fluid welcome full-page-wrapper">
     
     <!-- Jumbotron -->
-	<div class="row">
-		<div class="jumbotron" id="welcome-jumbotron">
-			<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/Limesurvey_logo.png" id="lime-logo" />
-			<p><?php eT('This is the LimeSurvey admin interface. From here, you can start to build your survey.')?></p>
-		</div>
-	</div>
+    <div class="row">
+        <div class="jumbotron" id="welcome-jumbotron">
+            <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/Limesurvey_logo.png" id="lime-logo" />
+            <p><?php eT('This is the LimeSurvey admin interface. From here, you can start to build your survey.')?></p>
+        </div>
+    </div>
 
+    <!-- Last visited survey/question -->
     <?php if($showLastSurvey || $showLastQuestion):?>
         <div class="row text-right">
             <div class="col-lg-9 col-sm-9  ">
@@ -56,9 +58,9 @@
     
     
     <!-- First row of boxes -->
-	<div class="row text-center ">
-	    
-	    <!-- First box defined in database -->
+    <div class="row text-center ">
+        
+        <!-- First box defined in database -->
         <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
                 'fromDb'=> true,
                 'dbPosition'=>'1',
@@ -77,12 +79,12 @@
                 'dbPosition'=>'3',
         ));?>                
 
-	</div>
-	
-	<!-- Second row of boxes -->
-	<div class="row">
-	    
-	    <!-- 4th defined in database -->				
+    </div>
+    
+    <!-- Second row of boxes -->
+    <div class="row">
+        
+        <!-- 4th defined in database -->                
         <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
                 'fromDb'=> true,
                 'dbPosition'=>'4',
@@ -100,7 +102,8 @@
                 'fromDb'=> true,
                 'dbPosition'=>'6',
         ));?>                
-	</div>	
+    </div>    
 </div>
 
+<!-- Notification setting -->
 <input type="hidden" id="absolute_notification" />
