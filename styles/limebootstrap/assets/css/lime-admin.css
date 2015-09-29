@@ -501,6 +501,7 @@ div.panel.disabled a{
 	padding: 1em;
 }
 
+/** TODO: Should this really be called -boot? Sounds like it's used in a script, which it isn't. */ 
 .htmleditorboot
 {
 	padding-top : 2em;
