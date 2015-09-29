@@ -409,7 +409,11 @@ class ParticipantAttributeName extends LSActiveRecord
         }
         if (!empty($insertnames))
         {
-            $oParticipantAttributeName=ParticipantAttributeName::model()->findByPk($data['attribute_id']);
+            $oParticipantAttributeName=ParticipantAttributeName::model()->findByPk(array (
+                    'attribute_id' => $data['attribute_id'],
+                    'attribute_type' => $data['attribute_type']
+                )
+            );
             foreach ($insertnames as $sFieldname=>$sValue)
             {
                $oParticipantAttributeName->$sFieldname=$sValue;
