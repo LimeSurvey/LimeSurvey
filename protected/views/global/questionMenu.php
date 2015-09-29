@@ -1,7 +1,9 @@
 <?php
 /* @var Controller $this*/
+use ls\models\Question;
+
 if (!isset($model) || !$model instanceof Question) {
-    throw new Exception("Question must be set for question menu.");
+    throw new Exception("ls\models\Question must be set for question menu.");
 }
 $menu = [[ // Left side
     [

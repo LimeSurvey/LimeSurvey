@@ -38,17 +38,17 @@ class GroupsController extends Controller {
         /**
          * @todo Switch to findByPk after language has been removed from group table.
          */
-        $this->menus['survey'] = $survey = \Survey::model()->findByPk($surveyId);
+        $this->menus['survey'] = $survey = \ls\models\Survey::model()->findByPk($surveyId);
 
         if (!isset($survey)) {
-            throw new \CHttpException(404, "Survey not found.");
+            throw new \CHttpException(404, "ls\models\Survey not found.");
         } elseif ($survey->isActive) {
             throw new \CHttpException(421, "Cannot add groups to active survey.");
         }
-        $group = new \QuestionGroup();
+        $group = new \ls\models\QuestionGroup();
         $group->sid = $survey->primaryKey;
         if (App()->request->isPostRequest) {
-            $group->setAttributes(App()->request->getPost('QuestionGroup'));
+            $group->setAttributes(App()->request->getPost('ls\models\QuestionGroup'));
 
             if ($group->save()) {
                 return $this->redirect(['groups/update', 'id' => $group->primaryKey]);
@@ -79,6 +79,6 @@ class GroupsController extends Controller {
     }
     public function loadModel($id)
     {
-        return \QuestionGroup::model()->findByPk($id);
+        return \ls\models\QuestionGroup::model()->findByPk($id);
     }
 }

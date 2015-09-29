@@ -11,6 +11,8 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+use ls\models\Survey;
+use ls\models\SurveyDynamic;
 
 /**
 * Export Action
@@ -237,10 +239,10 @@ class export extends Survey_Common_Action {
             }
             $data['exports'] = $exportData;    // Pass available exports
             $data['headexports'] = [
-                'code'=> ['label'=>gT("Question code"),'help'=>null,'checked'=>false],
+                'code'=> ['label'=>gT("ls\models\Question code"),'help'=>null,'checked'=>false],
                 'abbreviated'=> ['label'=>gT("Abbreviated question text"),'help'=>null,'checked'=>false],
                 'full'=> ['label'=>gT("Full question text"),'help'=>null,'checked'=>true],
-                'codetext'=> ['label'=>gT("Question code and question text"),'help'=>null,'checked'=>false],
+                'codetext'=> ['label'=>gT("ls\models\Question code and question text"),'help'=>null,'checked'=>false],
             ];
             // Add a plugin for adding headexports : a public function getRegistereddPlugins($event) can help here.
             $aLanguagesCode=Survey::model()->findByPk($iSurveyID)->getAllLanguages();
@@ -843,7 +845,7 @@ class export extends Survey_Common_Action {
         $xml->startDocument('1.0', 'UTF-8');
         $xml->startElement('document');
         $xml->writeElement('LimeSurveyDocType', 'Label set');
-        $xml->writeElement('DBVersion', \SettingGlobal::get("DBVersion"));
+        $xml->writeElement('DBVersion', \ls\models\SettingGlobal::get("DBVersion"));
 
         // Label sets table
         $lsquery = "SELECT * FROM {{labelsets}} WHERE lid=" . implode(' or lid=', $lids);

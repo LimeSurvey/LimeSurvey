@@ -7,11 +7,11 @@ trait InternalUserDbTrait {
      * @return array|\IDataProvider The user objects or a dataprovider for them.
      */
     public function getUsers() {
-        return new \CActiveDataProvider('User');
+        return new \CActiveDataProvider('ls\models\User');
     }
     
     public function getUser($id) {
-        return \User::model()->findByPk($id);
+        return \ls\models\User::model()->findByPk($id);
     }
     
     public function enumerable() {

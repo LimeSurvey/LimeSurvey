@@ -12,49 +12,53 @@
    *
      *	Files Purpose: lots of common functions
 */
+namespace ls\models;
+
+use ls\models\ActiveRecord;
+use ls\models\Question;
 
 /**
- * Class QuestionAttribute
+ * Class ls\models\QuestionAttribute
  * @property string $language
  * @property string $attribute
  * @property string $value
  */
 class QuestionAttribute extends ActiveRecord
 {
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{question_attributes}}';
-	}
+    /**
+     * Returns the setting's table name to be used by the model
+     *
+     * @access public
+     * @return string
+     */
+    public function tableName()
+    {
+        return '{{question_attributes}}';
+    }
 
 
     /**
-    * Defines the relations for this model
-    *
-    * @access public
-    * @return array
-    */
+     * Defines the relations for this model
+     *
+     * @access public
+     * @return array
+     */
     public function relations()
     {
-		return [
+        return [
             'qid' => [self::BELONGS_TO, Question::class, 'qid']
         ];
     }
 
     /**
-    * Returns this model's validation rules
-    *
-    */
+     * Returns this model's validation rules
+     *
+     */
     public function rules()
     {
         return [
             [['qid', 'attribute'], 'required'],
-            ['value', 'LSYii_Validators'],
+            ['value', 'required'],
         ];
     }
 
@@ -65,22 +69,22 @@ class QuestionAttribute extends ActiveRecord
      * @return mixed
      * @deprecated
      */
-    public function setQuestionAttribute($iQuestionID,$sAttributeName, $sValue)
+    public function setQuestionAttribute($iQuestionID, $sAttributeName, $sValue)
     {
         $oModel = new self;
-        $aResult=$oModel->findAll('attribute=:attributeName and qid=:questionID',array(':attributeName'=>$sAttributeName,':questionID'=>$iQuestionID));
-        if (!empty($aResult))
-        {
-            $oModel->updateAll(array('value'=>$sValue),'attribute=:attributeName and qid=:questionID',array(':attributeName'=>$sAttributeName,':questionID'=>$iQuestionID));
-        }
-        else
-        {
+        $aResult = $oModel->findAll('attribute=:attributeName and qid=:questionID',
+            array(':attributeName' => $sAttributeName, ':questionID' => $iQuestionID));
+        if (!empty($aResult)) {
+            $oModel->updateAll(array('value' => $sValue), 'attribute=:attributeName and qid=:questionID',
+                array(':attributeName' => $sAttributeName, ':questionID' => $iQuestionID));
+        } else {
             $oModel = new self;
-            $oModel->attribute=$sAttributeName;
-            $oModel->value=$sValue;
-            $oModel->qid=$iQuestionID;
+            $oModel->attribute = $sAttributeName;
+            $oModel->value = $sValue;
+            $oModel->qid = $iQuestionID;
             $oModel->save();
         }
+
         return Yii::app()->db->createCommand()
             ->select()
             ->from($this->tableName())
@@ -98,21 +102,23 @@ class QuestionAttribute extends ActiveRecord
     public static function insertRecords($data)
     {
         $attrib = new self;
-		foreach ($data as $k => $v)
-			$attrib->$k = $v;
-		return $attrib->save();
+        foreach ($data as $k => $v) {
+            $attrib->$k = $v;
+        }
+
+        return $attrib->save();
     }
 
-    public function getQuestionsForStatistics($fields, $condition, $orderby=FALSE)
+    public function getQuestionsForStatistics($fields, $condition, $orderby = false)
     {
         $command = Yii::app()->db->createCommand()
-        ->select($fields)
-        ->from($this->tableName())
-        ->where($condition);
-        if ($orderby != FALSE)
-        {
+            ->select($fields)
+            ->from($this->tableName())
+            ->where($condition);
+        if ($orderby != false) {
             $command->order($orderby);
         }
+
         return $command->queryAll();
     }
 

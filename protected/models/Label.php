@@ -13,6 +13,8 @@
  *
  */
 
+use ls\models\ActiveRecord;
+
 class Label extends ActiveRecord
 {
     /**
@@ -68,7 +70,7 @@ class Label extends ActiveRecord
                             'params'=>array(':lid'=>$this->lid,':language'=>$this->language)
                     ),
                     'message'=>'{attribute} "{value}" is already in use.'),
-            array('title','LSYii_Validators'),
+            array('title','required'),
             array('sortorder','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
             array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
             array('assessment_value','numerical', 'integerOnly'=>true,'allowEmpty'=>true),

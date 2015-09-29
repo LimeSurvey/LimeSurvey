@@ -1,5 +1,7 @@
 <?php
-/** @var \Survey $survey */
+/** @var \ls\models\Survey $survey */
+use ls\models\SurveyLanguageSetting;
+
 /** @var TbActiveForm $form */
 $form->layout = TbHtml::FORM_LAYOUT_VERTICAL;
 echo TbHtml::openTag('fieldset', [

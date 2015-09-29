@@ -13,13 +13,13 @@
         { ?>
             <div class='successheader'><?php eT("Success"); ?></div><br /><br />
             
-            <strong><?php eT("Survey import summary"); ?></strong><br />        
+            <strong><?php eT("ls\models\Survey import summary"); ?></strong><br />
             
             
             <ul style="text-align:left;">
             <li><?php eT("Surveys"); ?>: <?php echo $aImportResults['surveys']; ?></li>
             <li><?php eT("Languages"); ?>: <?php echo $aImportResults['languages']; ?></li>
-            <li><?php eT("Question groups"); ?>: <?php echo $aImportResults['groups']; ?></li>
+            <li><?php eT("ls\models\Question groups"); ?>: <?php echo $aImportResults['groups']; ?></li>
             <li><?php eT("Questions"); ?>: <?php echo $aImportResults['questions']; ?></li>
             <li><?php eT("Answers"); ?>: <?php echo $aImportResults['answers']; ?></li>
             <?php if (isset($aImportResults['subquestions']))
@@ -42,7 +42,7 @@
             { ?>
                 <li><?php eT("Not imported label sets"); ?>: <?php echo $aImportResults['deniedcountls']; eT("(Label sets were not imported since you do not have the permission to create new label sets.)"); ?></li>
             <?php } ?>
-            <li><?php eT("Question attributes"); ?>: <?php echo $aImportResults['question_attributes']; ?></li>
+            <li><?php eT("ls\models\Question attributes"); ?>: <?php echo $aImportResults['question_attributes']; ?></li>
             <li><?php eT("Assessments"); ?>: <?php echo $aImportResults['assessments']; ?></li>
             <li><?php eT("Quotas"); ?>: <?php echo $aImportResults['quota']; ?> (<?php echo $aImportResults['quotamembers']; eT("quota members"); eT("and"); echo $aImportResults['quotals']; eT("quota language settings"); ?>)</li></ul><br />
             

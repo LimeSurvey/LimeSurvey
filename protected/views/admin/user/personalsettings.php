@@ -28,7 +28,7 @@
             </li>
 
             <li>
-                <?php echo CHtml::label(gT("Question type selector"), 'questionselectormode'); ?>:
+                <?php echo CHtml::label(gT("ls\models\Question type selector"), 'questionselectormode'); ?>:
                 <?php
                 echo CHtml::dropDownList('questionselectormode', Yii::app()->session['questionselectormode'], array(
                     'default' => gT("Default"),
@@ -39,7 +39,7 @@
             </li>
 
             <li>
-                <?php echo CHtml::label(gT("Template editor mode"), 'templateeditormode'); ?>:
+                <?php echo CHtml::label(gT("ls\models\Template editor mode"), 'templateeditormode'); ?>:
                 <?php
                 echo CHtml::dropDownList('templateeditormode', Yii::app()->session['templateeditormode'], array(
                     'default' => gT("Default"),

@@ -26,7 +26,7 @@ class ParticipantDatabaseSettings extends \CFormModel
             'hideblacklisted' => gT('Hide blacklisted participants:'),
             'allowunblacklist' => gT('Allow participant to unblacklist himself/herself:'),
             'deleteblacklisted' => gT('Delete globally blacklisted participant from the database:'),
-            'userideditable'=> gT('User ID editable:')
+            'userideditable'=> gT('ls\models\User ID editable:')
         ];
     }
     public function init()
@@ -43,7 +43,7 @@ class ParticipantDatabaseSettings extends \CFormModel
         $transaction = App()->db->beginTransaction();
         $success = true;
         foreach($this->attributes as $name => $value) {
-            $success = $success && \SettingGlobal::set($name, $value);
+            $success = $success && \ls\models\SettingGlobal::set($name, $value);
         }
         if ($success) {
             $transaction->commit();
@@ -70,7 +70,7 @@ class ParticipantDatabaseSettings extends \CFormModel
     protected function load()
     {
         foreach ($this->attributeNames() as $attributeName) {
-            $this->$attributeName = \SettingGlobal::get($attributeName, App()->getConfig($attributeName));
+            $this->$attributeName = \ls\models\SettingGlobal::get($attributeName, App()->getConfig($attributeName));
         }
     }
 }

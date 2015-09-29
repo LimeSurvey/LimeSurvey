@@ -3,7 +3,7 @@ namespace ls\helpers;
 
 use \Yii;
 use \CHtml;
-use \Survey;
+use ls\models\Survey;
 use \LimeExpressionManager;
 use \TbHtml;
 class Replacements
@@ -293,7 +293,7 @@ class Replacements
             if (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '') {
                 $_googleAnalyticsAPIKey = trim($thissurvey['googleanalyticsapikey']);
             } else {
-                $_googleAnalyticsAPIKey = trim(\SettingGlobal::get('googleanalyticsapikey'));
+                $_googleAnalyticsAPIKey = trim(\ls\models\SettingGlobal::get('googleanalyticsapikey'));
             }
             $_googleAnalyticsStyle = (isset($thissurvey['googleanalyticsstyle']) ? $thissurvey['googleanalyticsstyle'] : '0');
             $_googleAnalyticsJavaScript = '';
@@ -521,7 +521,7 @@ EOD;
      * @param string $move :
      * @return string
      **/
-    protected static function doHtmlSaveAll($move = "", \Survey $survey)
+    protected static function doHtmlSaveAll($move = "", \ls\models\Survey $survey)
     {
 
         static $aSaveAllButtons = array();

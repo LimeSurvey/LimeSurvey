@@ -1,5 +1,7 @@
 <div class="row">
 <?php
+use ls\models\Response;
+
 echo TbHtml::openTag('div', ['class' => isset($wrapper) ? $wrapper : 'col-md-12']);
 
     if (!isset($columns)) {

@@ -2,7 +2,6 @@
 
 class SideEffectTest extends PHPUnit_Framework_TestCase {
 
-
     public function fileProvider() {
         $result = array_map(function($fileName) {
             return ['file' => $fileName];
@@ -10,7 +9,6 @@ class SideEffectTest extends PHPUnit_Framework_TestCase {
             'fileTypes' => ['php'],
             'exclude' => ['vendor', 'views', 'entry.php', 'tests']
         ]));
-//        var_dump($result); die();
         return $result;
     }
 
@@ -28,8 +26,6 @@ class SideEffectTest extends PHPUnit_Framework_TestCase {
         echo $file;
         if (strpos($string, 'exit') !== false) {
             echo "Exit in first 200 chars!";
-        } else {
-            include($file);
         }
 
     }

@@ -18,7 +18,7 @@ class DropDownListQuestion extends SingleChoiceQuestion
 
         $em = $this->getExpressionManager($response);
 
-        $createOption = function(\Answer $answer) use ($em, $response) {
+        $createOption = function(\ls\models\Answer $answer) use ($em, $response) {
             // Get the parts for the answer, we construct one EM expression from the whole.
             $parts = $em->asSplitStringOnExpressions($answer->answer);
             $expressionParts = [];

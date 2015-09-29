@@ -47,7 +47,7 @@
         </ul>
     </div>
     <div id="newcreated" class="<?php echo $columnstyle ?>">
-        <div class="heading"><?php eT("Token attributes to create"); ?></div>
+        <div class="heading"><?php eT("ls\models\Token attributes to create"); ?></div>
         <ul class="newcreate" id="sortable" style ="height:40px">
         </ul>
     </div>
@@ -93,7 +93,7 @@
         ?>
         <div class='heading'><?php eT("Standard token fields") ?></div><br />
         <ul class="standardfields">
-            <li id='t_token'><?php eT("Token") ?></li>
+            <li id='t_token'><?php eT("ls\models\Token") ?></li>
         </ul>
         <div class='explanation'>
             <input type='checkbox' id='overwritest' name='overwritest' /> <label for='overwritest'><?php eT("Overwrite existing standard field values if a participant already exists?") ?></label>

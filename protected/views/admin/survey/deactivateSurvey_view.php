@@ -45,8 +45,8 @@
     else
     { ?>
     <br /><div class='messagebox ui-corner-all'>
-        <div class='header ui-widget-header'><?php eT("Deactivate Survey"); echo "($surveyid)"; ?></div>
-        <div class='successheader'><?php eT("Survey Has Been Deactivated"); ?>
+        <div class='header ui-widget-header'><?php eT("Deactivate ls\models\Survey"); echo "($surveyid)"; ?></div>
+        <div class='successheader'><?php eT("ls\models\Survey Has Been Deactivated"); ?>
         </div>
         <p>
         <?php eT("The responses to this survey are no longer available using LimeSurvey."); ?></p>

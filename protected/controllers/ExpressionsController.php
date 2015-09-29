@@ -14,14 +14,14 @@ class ExpressionsController extends Controller
      * Should be overwritten if the model for the controller is not standard or
      * has no single PK.
      * @param int $id
-     * @return \Survey
+     * @return \ls\models\Survey
      * @throws \CHttpException
      */
     public function loadModel($id) {
         // Get the model name.
-        $model = \Survey::model()->findByPk($id);
+        $model = \ls\models\Survey::model()->findByPk($id);
         if (!isset($model)) {
-            throw new \CHttpException(404, "Survey not found.");
+            throw new \CHttpException(404, "ls\models\Survey not found.");
         }
         return $model;
     }

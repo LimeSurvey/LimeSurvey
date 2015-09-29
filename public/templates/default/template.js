@@ -18,7 +18,7 @@
 
 
 /*
- * The function focusFirst puts the Focus on the first non-hidden element in the Survey. 
+ * The function focusFirst puts the Focus on the first non-hidden element in the ls\models\Survey.
  * 
  * Normally this is the first input field (the first answer).
  */

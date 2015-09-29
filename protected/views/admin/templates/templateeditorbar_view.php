@@ -47,7 +47,7 @@
 </script>
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-        <strong><?php eT('Template editor'); ?> - <?php eT("Template:"); ?> <i><?php echo $templatename; ?></i></strong>
+        <strong><?php eT('ls\models\Template editor'); ?> - <?php eT("ls\models\Template:"); ?> <i><?php echo $templatename; ?></i></strong>
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>
@@ -59,7 +59,7 @@
             if (!is_template_editable($templatename))
             { ?>
                 <div class="menubar-right" style='padding-left:15px;padding-top:5px;'><span style='font-size:10px; font-weight: bold;'><?php eT('Note: This is a standard template.');?><br />
-                    <?php printf(gT('If you want to edit it %s please copy it first%s.'),"<a href='#' title=\"".gT("Copy Template")."\""
+                    <?php printf(gT('If you want to edit it %s please copy it first%s.'),"<a href='#' title=\"".gT("Copy ls\models\Template")."\""
                     ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the copied template:")."', '".gT("copy_of_")."$templatename', '$templatename', 'copy')\">",'</a>'); ?></span></div>
                 <?php
             } ?>
@@ -81,13 +81,13 @@
                 {
                     ?>
                     <a href='<?php echo $this->createUrl('admin/templates/sa/templatezip/templatename/' . $templatename) ?>'>
-                        <img src='<?php echo $sImageURL; ?>export.png' alt='<?php eT("Export Template"); ?>' /></a>
+                        <img src='<?php echo $sImageURL; ?>export.png' alt='<?php eT("Export ls\models\Template"); ?>' /></a>
                     <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
                     <?php 
                     if (App()->user->checkAccess('templates', ['crud' => 'create']))
                     { ?>
                         <a href='#' onclick="javascript: copyprompt('<?php eT("Please enter the name for the copied template:"); ?>', '<?php echo gT("copy_of_")."$templatename"; ?>',            '<?php echo $templatename; ?>', 'copy')">
-                            <img src='<?php echo $sImageURL; ?>copy.png' alt='<?php eT("Copy Template"); ?>' /></a>
+                            <img src='<?php echo $sImageURL; ?>copy.png' alt='<?php eT("Copy ls\models\Template"); ?>' /></a>
                         <?php
                     }
                 }
@@ -133,7 +133,7 @@
         </div>
         <div class='menubar-right'>
 
-            <label for='templatedir'><?php eT("Template:"); ?></label>
+            <label for='templatedir'><?php eT("ls\models\Template:"); ?></label>
             <select class="listboxtemplates" id='templatedir' name='templatedir' onchange="javascript: window.open(LS.createUrl('admin/templates', {sa: 'view', editfile: '<?=$editfile; ?>', screenname: '<?=$screenname?>', templatename : escape(this.value)}), '_top')">
                 <?php echo templateoptions($templates, $templatename); ?>
             </select>

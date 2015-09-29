@@ -8,6 +8,8 @@
 */
 
 use \ls\models\forms\FormattingOptions;
+use ls\models\Survey;
+
 abstract class Writer implements IWriter
 {
 
@@ -51,7 +53,7 @@ abstract class Writer implements IWriter
             if (isset($survey->getFieldMap('full')[$column])) {
                 $question = $survey->getFieldMap('full')[$column];
             } else {
-                // Token field
+                // ls\models\Token field
                 $question = ['gid'=>0, 'qid'=>''];
             }
             $question['index'] = $index;
@@ -285,7 +287,7 @@ abstract class Writer implements IWriter
          */
         foreach ($this->options->selectedColumns as $sColumn)
         {
-            //Survey question field, $column value is a field name from the getFieldMap function.
+            //ls\models\Survey question field, $column value is a field name from the getFieldMap function.
             switch ($this->options->headingFormat)
             {
                 case 'abbreviated':
@@ -339,7 +341,7 @@ abstract class Writer implements IWriter
                             break;
                     }
                 }
-                else //Token table value
+                else //ls\models\Token table value
                 {
                     $elementArray[]=$value;
                 }

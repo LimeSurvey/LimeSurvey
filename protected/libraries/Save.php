@@ -35,13 +35,13 @@ Partial survey answers are saved (provided at least Next/Prev/Last/Submit/Save s
 Details.
 1. The answers are saved in the "survey_x" table only.  The "saved" table is no longer used.
 2. The "saved_control" table has new column (srid) that points to the "survey_x" record it corresponds to.
-3. Answer are saved every time you move between pages (Next,Prev,Last,Submit, or Save so far).
+3. ls\models\Answer are saved every time you move between pages (Next,Prev,Last,Submit, or Save so far).
 4. Only the fields modified on the page are updated. A new hidden field "modfields" store which fields have changed. - REVERTED
 5. Answered are reloaded from the database after the save so that if some other answers were modified by someone else
 the updates would be picked up for the current page.  There is still an issue if two people modify the same
 answer at the same time.. the 'last one to save' wins.
 6. The survey_x datestamp field is updated every time the record is updated.
-7. Template can now contain {DATESTAMP} to show the last modified date/time.
+7. ls\models\Template can now contain {DATESTAMP} to show the last modified date/time.
 8. A new field 'submitdate' has been added to the survey_x table and is written when the submit button is clicked.
 9. Save So Far now displays on Submit page. This allows the user one last chance to create a saved_control record so they
 can return later.
@@ -51,6 +51,10 @@ Notes
 1. A new column SRID has been added to saved_control.
 2. saved table no longer exists.
 */
+
+use ls\models\SavedControl;
+use ls\models\SurveyDynamic;
+use ls\models\SurveyTimingDynamic;
 
 class Save {
 
@@ -108,7 +112,7 @@ class Save {
 
         global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $clienttoken, $thisstep;
 
-        $timeadjust = \SettingGlobal::get('timeadjust');
+        $timeadjust = \ls\models\SettingGlobal::get('timeadjust');
 
         //Check that the required fields have been completed.
         $errormsg = '';
@@ -194,13 +198,13 @@ class Save {
                 throw new \CHttpException(500, "Unable to insert record into saved_control table.<br /><br />");
             }
 
-            $_SESSION['survey_'.$surveyid]['holdname'] = $_POST['savename']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
-            $_SESSION['survey_'.$surveyid]['holdpass'] = $_POST['savepass']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
+            $_SESSION['survey_'.$surveyid]['holdname'] = $_POST['savename']; //ls\models\Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
+            $_SESSION['survey_'.$surveyid]['holdpass'] = $_POST['savepass']; //ls\models\Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
 
             //Email if needed
             if (isset($_POST['saveemail']) && validateEmailAddress($_POST['saveemail']))
             {
-                $subject  = gT("Saved Survey Details") . " - " . $thissurvey['name'];
+                $subject  = gT("Saved ls\models\Survey Details") . " - " . $thissurvey['name'];
                 $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
                 $message .= "\n\n".$thissurvey['name']."\n\n";
                 $message .= gT("Name").": ".$_POST['savename']."\n";

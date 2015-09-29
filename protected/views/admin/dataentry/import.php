@@ -29,9 +29,9 @@
         
         $list = array(
             
-            gT("Question is moved to another group (result is imported correctly)."),
-            gT("Question is removed from target (result is ignored)."),
-            gT("Question is added to target (result is set to database default value).")
+            gT("ls\models\Question is moved to another group (result is imported correctly)."),
+            gT("ls\models\Question is removed from target (result is ignored)."),
+            gT("ls\models\Question is added to target (result is set to database default value).")
         );
         CHtml::openTag('ul');
         foreach ($list as $item)

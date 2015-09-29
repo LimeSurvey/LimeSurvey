@@ -1,5 +1,7 @@
 <?php
 /** @var Survey $survey*/
+use ls\models\Survey;
+
 foreach ($survey->languages as $language) {
     $tabs[] = [
         'label' => App()->locale->getLanguage($language),

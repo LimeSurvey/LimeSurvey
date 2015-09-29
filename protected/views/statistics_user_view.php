@@ -1,5 +1,5 @@
 <script type='text/javascript'>
-    var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/graph"); ?>";
+    var graphUrl="<?php use ls\models\Template;echo Yii::app()->getController()->createUrl("admin/statistics/sa/graph"); ?>";
 </script>
         <div id='statsContainer'>
             <div id='statsHeader'>

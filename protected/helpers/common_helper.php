@@ -11,9 +11,18 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 use ls\components\SurveySession;
+use ls\models\Answer;
+use ls\models\LabelSet;
+use ls\models\Question;
+use ls\models\QuestionGroup;
+use ls\models\Quota;
+use ls\models\QuotaMember;
+use ls\models\Survey;
+use ls\models\SurveyDynamic;
+use ls\models\Token;
 
 /**
- * Translation helper function
+ * ls\models\Translation helper function
  * @param string $sToTranslate
  * @param string $sEscapeMode
  * @param string $sLanguage
@@ -24,7 +33,7 @@ function gT($sToTranslate, $sEscapeMode = 'unescaped', $sLanguage = NULL)
 }
 
 /**
- * Translation helper function which outputs right away.
+ * ls\models\Translation helper function which outputs right away.
  * @param string $sToTranslate
  * @param string $sEscapeMode
  * @param string $sLanguage
@@ -35,7 +44,7 @@ function eT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
 }
 
 /**
- * Translation helper function for plural forms
+ * ls\models\Translation helper function for plural forms
  * @param string $sToTranslate
  * @param integer $iCount
  * @param string $sEscapeMode
@@ -46,7 +55,7 @@ function ngT($sToTranslate, $iCount, $sEscapeMode = 'html')
 }
 
 /**
- * Translation helper function for plural forms which outputs right away
+ * ls\models\Translation helper function for plural forms which outputs right away
  * @param string $sToTranslate
  * @param integer $iCount
  * @param string $sEscapeMode
@@ -414,7 +423,7 @@ function templateDefaultTexts($sLanguage, $mode='html', $sNewlines='text')
     $sOldLanguage=App()->language;
     App()->setLanguage($sLanguage);
     $aDefaultTexts=array(
-    'admin_detailed_notification_subject'=>gT("Response submission for survey {SURVEYNAME} with results",$mode),
+    'admin_detailed_notification_subject'=>gT("ls\models\Response submission for survey {SURVEYNAME} with results",$mode),
     'admin_detailed_notification'=>gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to reload the survey:\n{RELOADURL}\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}\n\n\nThe following answers were given by the participant:\n{ANSWERTABLE}",$mode),
     'admin_detailed_notification_css'=>'<style type="text/css">
     .printouttable {
@@ -452,7 +461,7 @@ function templateDefaultTexts($sLanguage, $mode='html', $sNewlines='text')
     padding-top:1em;
     }
     </style>',
-    'admin_notification_subject'=>gT("Response submission for survey {SURVEYNAME}",$mode),
+    'admin_notification_subject'=>gT("ls\models\Response submission for survey {SURVEYNAME}",$mode),
     'admin_notification'=>gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to reload the survey:\n{RELOADURL}\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}",$mode),
     'confirmation_subject'=>gT("Confirmation of your participation in our survey"),
     'confirmation'=>gT("Dear {FIRSTNAME},\n\nthis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",$mode),
@@ -460,7 +469,7 @@ function templateDefaultTexts($sLanguage, $mode='html', $sNewlines='text')
     'invitation'=>gT("Dear {FIRSTNAME},\n\nyou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",$mode)."\n\n".gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",$mode)."\n\n".gT("If you are blacklisted but want to participate in this survey and want to receive invitations please click the following link:\n{OPTINURL}",$mode),
     'reminder_subject'=>gT("Reminder to participate in a survey",$mode),
     'reminder'=>gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",$mode)."\n\n".gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",$mode),
-    'registration_subject'=>gT("Survey registration confirmation",$mode),
+    'registration_subject'=>gT("ls\models\Survey registration confirmation",$mode),
     'registration'=>gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",$mode)
     );
     if ($sNewlines=='html')
@@ -582,7 +591,7 @@ function sendCacheHeaders()
 }
 
 /**
-* @param integer $iSurveyID The Survey ID
+* @param integer $iSurveyID The ls\models\Survey ID
 * @param string $sFieldCode Field code of the particular field
 * @param string $sValue The stored response value
 * @param string $sLanguage Initialized limesurvey_lang object for the resulting response data
@@ -611,7 +620,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
             case 'D':
                 if (trim($sValue)!='')
                 {
-                    $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($fields['qid']);
+                    $qidattributes = \ls\models\QuestionAttribute::model()->getQuestionAttributes($fields['qid']);
                     $dateformatdetails = \ls\helpers\SurveyTranslator::getDateFormatDataForQID($qidattributes, $iSurveyID);
                     $sValue=convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
                 }
@@ -623,7 +632,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                     {
                         $sValue=rtrim(rtrim($sValue,"0"),".");
                     }
-                    $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($fields['qid']);
+                    $qidattributes = \ls\models\QuestionAttribute::model()->getQuestionAttributes($fields['qid']);
                     if($qidattributes['num_value_int_only'])
                     {
                         $sValue=number_format($sValue, 0, '', '');
@@ -789,7 +798,7 @@ function validateEmailAddresses($aEmailAddressList){
 /**
  *This functions generates a a summary containing the SGQA for questions of a survey, enriched with options per question
  * It can be used for the generation of statistics. Derived from Statistics_userController
- * @param int $iSurveyID Id of the Survey in question
+ * @param int $iSurveyID Id of the ls\models\Survey in question
  * @param array $aFilters an array which is the result of a query in Questions model
  * @param string $sLanguage
  * @return array The summary
@@ -912,7 +921,7 @@ return $allfields;
 /**
 * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
 *
-* @param string $surveyid The Survey ID
+* @param string $surveyid The ls\models\Survey ID
 * @param mixed $style 'short' (default) or 'full' - full creates extra information like default values
 * @param mixed $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param int $questionid Limit to a certain qid only (for question preview) - default is false
@@ -936,7 +945,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         if ($style == "full")
         {
             $fieldmap["id"]['title']="";
-            $fieldmap["id"]['question']=gT("Response ID");
+            $fieldmap["id"]['question']=gT("ls\models\Response ID");
             $fieldmap["id"]['group_name']="";
         }
 
@@ -972,7 +981,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             if ($style == "full")
             {
                 $fieldmap["token"]['title']="";
-                $fieldmap["token"]['question']=gT("Token");
+                $fieldmap["token"]['question']=gT("ls\models\Token");
                 $fieldmap["token"]['group_name']="";
             }
         }
@@ -1093,7 +1102,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
                 // Field identifier
                 // GXQXSXA
-                // G=Group  Q=Question S=Subquestion A=Answer Option
+                // G=Group  Q=ls\models\Question S=Subquestion A=ls\models\Answer Option
                 // If S or A don't exist then set it to 0
                 // Implicit (subqestion intermal to a question type ) or explicit qubquestions/answer count starts at 1
 
@@ -1298,7 +1307,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['hasconditions'] = $conditions;
                         $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                     }
-                } else  // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
+                } else  // ls\models\Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
                 {
                     //MULTI ENTRY
                     $abrows = getSubQuestions($surveyid,$question->qid, $sLanguage);
@@ -1478,7 +1487,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 }
 
 /**
-* Returns true if the given survey has a File Upload Question Type
+* Returns true if the given survey has a File Upload ls\models\Question Type
 * @param $surveyid The survey ID
 * @return bool
 */
@@ -1490,7 +1499,7 @@ function hasFileUploadQuestion($iSurveyID) {
 /**
 * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
 *
-* @param string $surveyid The Survey ID
+* @param string $surveyid The ls\models\Survey ID
 * @param mixed $style 'short' (default) or 'full' - full creates extra information like default values
 * @param mixed $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param int $questionid Limit to a certain qid only (for question preview) - default is false
@@ -1528,7 +1537,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
             $fieldname="{$field['sid']}X{$field['gid']}X{$field['qid']}time";
             if (!isset($fieldmap[$fieldname]))
             {
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>$field['qid'], 'aid'=>'', "title"=>$field['title'].'Time', "question"=>gT('Question time').": ".$field['title']);
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>$field['qid'], 'aid'=>'', "title"=>$field['title'].'Time', "question"=>gT('ls\models\Question time').": ".$field['title']);
             }
         }
     }
@@ -1702,7 +1711,7 @@ function questionAttributes($returnByName=false)
         'default'=>'1',
         'inputtype'=>'integer',
         "help"=>gT("If one of the subquestions is marked then for each marked subquestion this value is added as assessment."),
-        "caption"=>gT('Assessment value'));
+        "caption"=>gT('ls\models\Assessment value'));
 
         $qattributes["category_separator"]=array(
         "types"=>"!",
@@ -1851,7 +1860,7 @@ function questionAttributes($returnByName=false)
         'sortorder'=>200,
         'inputtype'=>'textarea',
         "help"=>gT('Enter a boolean equation to validate the whole question.'),
-        "caption"=>gT('Question validation equation'));
+        "caption"=>gT('ls\models\Question validation equation'));
 
         $qattributes["em_validation_q_tip"]=array(
         "types"=>":;ABCDEFKMNOPQRSTU",
@@ -1859,7 +1868,7 @@ function questionAttributes($returnByName=false)
         'sortorder'=>210,
         'inputtype'=>'textarea',
         "help"=>gT('This is a hint text that will be shown to the participant describing the question validation equation.'),
-        "caption"=>gT('Question validation tip'));
+        "caption"=>gT('ls\models\Question validation tip'));
 
         $qattributes["em_validation_sq"]=array(
         "types"=>";:KQSTUN",
@@ -2304,7 +2313,7 @@ function questionAttributes($returnByName=false)
         'inputtype'=>'text',
         'i18n'=>true,
         "help"=>gT('Add a prefix to the answer field'),
-        "caption"=>gT('Answer prefix'));
+        "caption"=>gT('ls\models\Answer prefix'));
 
         $qattributes["printable_help"]=array(
         "types"=>"15ABCDEFGHKLMNOPRWYZ!:*",
@@ -2489,7 +2498,7 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Slider'),
         'sortorder'=>110,
         'inputtype'=>'text',
-        "help"=>gT('Answer|Left-slider-text|Right-slider-text separator character'),
+        "help"=>gT('ls\models\Answer|Left-slider-text|Right-slider-text separator character'),
         "caption"=>gT('Slider left/right text separator'));
 
         $qattributes["suffix"]=array(
@@ -2499,7 +2508,7 @@ function questionAttributes($returnByName=false)
         'inputtype'=>'text',
         'i18n'=>true,
         "help"=>gT('Add a suffix to the answer field'),
-        "caption"=>gT('Answer suffix'));
+        "caption"=>gT('ls\models\Answer suffix'));
 
         $qattributes["text_input_width"]=array(
         "types"=>"KNSTUQ;",
@@ -3184,7 +3193,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
         $qidtotitle[$qrow['qid']]=$qrow['title'];
-        $qresult = \QuestionAttribute::model()->getQuestionAttributes($qrow['qid'],$qrow['type']);
+        $qresult = \ls\models\QuestionAttribute::model()->getQuestionAttributes($qrow['qid'],$qrow['type']);
         if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
         {
             $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -3605,7 +3614,7 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
 }
 
 /**
-* @todo Move this to the Survey model.
+* @todo Move this to the ls\models\Survey model.
 * @param mixed $id
 * @param mixed $type
 */
@@ -3721,9 +3730,9 @@ function fixCKeditorText($str)
 
 /**
 * Returns the full list of attribute token fields including the properties for each field
-* Use this instead of plain Survey::model()->findByPk($iSurveyID)->tokenAttributes calls because Survey::model()->findByPk($iSurveyID)->tokenAttributes may contain old descriptions where the fields does not physically exist
+* Use this instead of plain ls\models\Survey::model()->findByPk($iSurveyID)->tokenAttributes calls because ls\models\Survey::model()->findByPk($iSurveyID)->tokenAttributes may contain old descriptions where the fields does not physically exist
 *
-* @param integer $iSurveyID The Survey ID
+* @param integer $iSurveyID The ls\models\Survey ID
 */
 function GetParticipantAttributes($iSurveyID)
 {
@@ -3765,7 +3774,7 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
             'showregister'=>'N'
         ),
         'token'=>array(
-            'description'=>gT('Token'),
+            'description'=>gT('ls\models\Token'),
             'mandatory'=>'N',
             'showregister'=>'Y'
         ),
@@ -3944,7 +3953,7 @@ function enforceSSLMode()
     (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO']=="https"));
     if (Yii::app()->getConfig('ssl_emergency_override') !== true )
     {
-        $force_ssl = strtolower(\SettingGlobal::get('force_ssl'));
+        $force_ssl = strtolower(\ls\models\SettingGlobal::get('force_ssl'));
     }
     else
     {
@@ -3963,7 +3972,7 @@ function enforceSSLMode()
 /**
 * Returns the number of answers matching the quota
 *
-* @param int $iSurveyId - Survey identification number
+* @param int $iSurveyId - ls\models\Survey identification number
 * @param int $quotaid - quota id for which you want to compute the completed field
 * @return mixed - value of matching entries in the result DB or null
 */
@@ -4039,7 +4048,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     {
         if (!empty($fname['qid']))
         {
-            $attributes = \QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
+            $attributes = \ls\models\QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
             if (getQuestionAttributeValue($attributes, 'hidden') == 1)
             {
                 continue;
@@ -4097,7 +4106,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
 
 /**
 * getQuotaInformation() returns quota information for the current survey
-* @param string $surveyid - Survey identification number
+* @param string $surveyid - ls\models\Survey identification number
 * @param string $language - Language of the quota
 * @param string $quotaid - Optional quotaid that restricts the result to a given quota
 * @return array - nested array, Quotas->Members
@@ -4338,9 +4347,9 @@ function getGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
 * Example outupt assumin $index-by="by-depqid":
 *Array
 *(
-*    [184] => Array     // Question Id 184
+*    [184] => Array     // ls\models\Question Id 184
 *        (
-*            [183] => Array // Depends on Question Id 183
+*            [183] => Array // Depends on ls\models\Question Id 183
 *                (
 *                    [0] => 5   // Because of condition Id 5
 *                )
@@ -4350,7 +4359,7 @@ function getGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
 *)
 *
 * Usage example:
-*   * Get all questions dependencies for Survey $sid and group $gid indexed by depqid:
+*   * Get all questions dependencies for ls\models\Survey $sid and group $gid indexed by depqid:
 *       $result=getQuestDepsForConditions($sid,$gid);
 *   * Get all questions dependencies for question $qid in survey/group $sid/$gid indexed by depqid:
 *       $result=getGroupDepsForConditions($sid,$gid,$qid);

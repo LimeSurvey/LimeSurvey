@@ -1,5 +1,7 @@
 <?php
 /** @var Survey $survey */
+use ls\models\Survey;
+
 echo TbHtml::openTag('fieldset', []);
 echo $form->dropDownListControlGroup($survey, 'format', $survey->formatOptions);
 

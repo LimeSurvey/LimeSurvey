@@ -30,7 +30,7 @@
     <?php } ?>
     <?php if($bCaptcha){ ?>
     <tr class="register-form-row register-form-captcha">
-        <th class="register-form-label label-cell"><label for='loadsecurity'><?php eT("Security Question"); ?></label></th>
+        <th class="register-form-label label-cell"><label for='loadsecurity'><?php eT("Security ls\models\Question"); ?></label></th>
         <td class="register-form-input input-cell" ><img src="<?php echo Yii::app()->getController()->createUrl('/verification/image/sid/'.$iSurveyId) ?>" alt='' class='captcha' />
             <?php echo CHtml::textField('loadsecurity', '',array('id'=>'loadsecurity','class'=>'text','size'=>'5','maxlength'=>'3')); ?>
         </td>

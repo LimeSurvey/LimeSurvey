@@ -367,7 +367,7 @@ msgid "PDF export"
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:106
-msgid "Survey name (ID):"
+msgid "ls\models\Survey name (ID):"
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:172
@@ -432,7 +432,7 @@ msgstr ""
 
 #: application/controllers/RegisterController.php:278
 #: application/controllers/RegisterController.php:286
-msgid "Survey administrator %s (%s)"
+msgid "ls\models\Survey administrator %s (%s)"
 msgstr ""
 
 #: application/controllers/RegisterController.php:285
@@ -613,7 +613,7 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:277
 #: application/controllers/admin/limereplacementfields.php:294
 #: application/controllers/admin/limereplacementfields.php:327
-msgid "Token attribute: %s"
+msgid "ls\models\Token attribute: %s"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:221
@@ -659,7 +659,7 @@ msgstr ""
 #: application/views/admin/assessments_view.php:75
 #: application/views/admin/export/statistics_view.php:176
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:1
-msgid "Question group"
+msgid "ls\models\Question group"
 msgstr ""
 
 #: application/controllers/admin/assessments.php:86
@@ -690,7 +690,7 @@ msgid "Assessments mode not activated"
 msgstr ""
 
 #: application/controllers/admin/assessments.php:108
-msgid "Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."
+msgid "ls\models\Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."
 msgstr ""
 
 #: application/controllers/admin/assessments.php:135
@@ -709,7 +709,7 @@ msgid "Logout successful."
 msgstr ""
 
 #: application/controllers/admin/authentication.php:182
-msgid "User data"
+msgid "ls\models\User data"
 msgstr ""
 
 #: application/controllers/admin/authentication.php:187
@@ -887,11 +887,11 @@ msgid "timings"
 msgstr ""
 
 #: application/controllers/admin/checkintegrity.php:675
-msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
+msgid "ls\models\Survey ID %d saved at %s containing %d record(s) (%s)"
 msgstr ""
 
 #: application/controllers/admin/checkintegrity.php:734
-msgid "Survey ID %d saved at %s containing %d record(s)"
+msgid "ls\models\Survey ID %d saved at %s containing %d record(s)"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:67
@@ -966,7 +966,7 @@ msgid "Main admin screen"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:138
-msgid "Reset Survey Logic"
+msgid "Reset ls\models\Survey Logic"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:143
@@ -1649,7 +1649,7 @@ msgstr ""
 #: application/views/admin/export/statistics_view.php:1289
 #: application/views/admin/survey/Question/questionbar_view.php:5
 #: application/views/admin/templates/templateeditor_printoutput_view.php:3
-msgid "Question"
+msgid "ls\models\Question"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1743
@@ -1658,7 +1658,7 @@ msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1744
 #: application/controllers/admin/conditionsaction.php:1867
-msgid "Token fields"
+msgid "ls\models\Token fields"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1801
@@ -1681,7 +1681,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:1230
 #: application/views/admin/templates/templateeditor_question_answer_view.php:5
 #: application/views/admin/templates/templateeditor_question_answer_view.php:6
-msgid "Answer"
+msgid "ls\models\Answer"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1864
@@ -1717,7 +1717,7 @@ msgid "Constant value"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1899
-msgid "Answer from previous questions"
+msgid "ls\models\Answer from previous questions"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1911
@@ -1748,7 +1748,7 @@ msgid "Not all answer options were saved. This usually happens due to server lim
 msgstr ""
 
 #: application/controllers/admin/database.php:192
-msgid "Answer options were successfully saved."
+msgid "ls\models\Answer options were successfully saved."
 msgstr ""
 
 #: application/controllers/admin/database.php:228
@@ -1777,47 +1777,47 @@ msgid "The question could not be added. You must enter at least a question code.
 msgstr ""
 
 #: application/controllers/admin/database.php:424
-msgid "Question could not be created with error on %s: %s"
+msgid "ls\models\Question could not be created with error on %s: %s"
 msgstr ""
 
 #: application/controllers/admin/database.php:463
-msgid "Question in language %s could not be created with error on %s: %s"
+msgid "ls\models\Question in language %s could not be created with error on %s: %s"
 msgstr ""
 
 #: application/controllers/admin/database.php:477
 #: application/views/admin/database/database_view.php:46
-msgid "Question could not be created."
+msgid "ls\models\Question could not be created."
 msgstr ""
 
 #: application/controllers/admin/database.php:602
-msgid "Question was successfully added."
+msgid "ls\models\Question was successfully added."
 msgstr ""
 
 #: application/controllers/admin/database.php:749
-msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions  before you can change the type of this question."
+msgid "ls\models\Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions  before you can change the type of this question."
 msgstr ""
 
 #: application/controllers/admin/database.php:822
-msgid "Question could not be updated with error on %s: %s"
+msgid "ls\models\Question could not be updated with error on %s: %s"
 msgstr ""
 
 #: application/controllers/admin/database.php:827
-msgid "Question could not be updated."
+msgid "ls\models\Question could not be updated."
 msgstr ""
 
 #: application/controllers/admin/database.php:855
-msgid "Question was successfully saved."
+msgid "ls\models\Question was successfully saved."
 msgstr ""
 
 #: application/controllers/admin/database.php:892
 #: application/views/admin/database/database_view.php:4
 #: application/views/admin/database/database_view.php:58
 #: application/views/admin/database/database_view.php:71
-msgid "Question could not be updated"
+msgid "ls\models\Question could not be updated"
 msgstr ""
 
 #: application/controllers/admin/database.php:956
-msgid "Survey text elements successfully saved."
+msgid "ls\models\Survey text elements successfully saved."
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:97
@@ -1855,7 +1855,7 @@ msgid "An error occurred uploading your file. This may be caused by incorrect pe
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:208
-msgid "Back to Response Import"
+msgid "Back to ls\models\Response Import"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:218
@@ -2100,7 +2100,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:1814
 #: application/libraries/Save.php:203
-msgid "Saved Survey Details"
+msgid "Saved ls\models\Survey Details"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1815
@@ -2177,7 +2177,7 @@ msgid "Export results"
 msgstr ""
 
 #: application/controllers/admin/export.php:236
-msgid "Question code"
+msgid "ls\models\Question code"
 msgstr ""
 
 #: application/controllers/admin/export.php:237
@@ -2189,7 +2189,7 @@ msgid "Full question text"
 msgstr ""
 
 #: application/controllers/admin/export.php:239
-msgid "Question code and question text"
+msgid "ls\models\Question code and question text"
 msgstr ""
 
 #: application/controllers/admin/export.php:634
@@ -2293,14 +2293,14 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:282
 #: application/controllers/admin/limereplacementfields.php:299
 #: application/controllers/admin/limereplacementfields.php:329
-msgid "Survey expiration date"
+msgid "ls\models\Survey expiration date"
 msgstr ""
 
 #: application/controllers/admin/limereplacementfields.php:227
 #: application/controllers/admin/limereplacementfields.php:247
 #: application/controllers/admin/limereplacementfields.php:266
 #: application/controllers/admin/limereplacementfields.php:286
-msgid "Token code for this participant"
+msgid "ls\models\Token code for this participant"
 msgstr ""
 
 #: application/controllers/admin/limereplacementfields.php:237
@@ -2351,7 +2351,7 @@ msgid "Overall assessment score"
 msgstr ""
 
 #: application/controllers/admin/limereplacementfields.php:335
-msgid "Assessment group score"
+msgid "ls\models\Assessment group score"
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:391
@@ -2474,7 +2474,7 @@ msgid "table"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:134
-msgid "Submit Your Survey."
+msgid "Submit Your ls\models\Survey."
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:136
@@ -2489,31 +2489,31 @@ msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:255
 #: application/controllers/admin/printablesurvey.php:283
-msgid "Answer was"
+msgid "ls\models\Answer was"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:259
-msgid "Answer was NOT"
+msgid "ls\models\Answer was NOT"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:263
-msgid "Answer was less than"
+msgid "ls\models\Answer was less than"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:267
-msgid "Answer was less than or equal to"
+msgid "ls\models\Answer was less than or equal to"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:271
-msgid "Answer was greater than or equal to"
+msgid "ls\models\Answer was greater than or equal to"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:275
-msgid "Answer was greater than"
+msgid "ls\models\Answer was greater than"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:279
-msgid "Answer matched (regexp)"
+msgid "ls\models\Answer matched (regexp)"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:292
@@ -2570,7 +2570,7 @@ msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:579
 #: application/libraries/PluginManager/Question/QuestionBase.php:107
-msgid "Question code:"
+msgid "ls\models\Question code:"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:614
@@ -2661,7 +2661,7 @@ msgstr ""
 
 #: application/controllers/admin/questiongroups.php:57
 #: application/controllers/admin/questions.php:55
-msgid "No SID (Survey) has been provided. Cannot import question."
+msgid "No SID (ls\models\Survey) has been provided. Cannot import question."
 msgstr ""
 
 #: application/controllers/admin/questiongroups.php:210
@@ -2694,7 +2694,7 @@ msgid "Base language"
 msgstr ""
 
 #: application/controllers/admin/questiongroups.php:391
-msgid "Question group successfully saved."
+msgid "ls\models\Question group successfully saved."
 msgstr ""
 
 #: application/controllers/admin/questions.php:58
@@ -2716,7 +2716,7 @@ msgid "Checked"
 msgstr ""
 
 #: application/controllers/admin/questions.php:863
-msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed."
+msgid "ls\models\Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed."
 msgstr ""
 
 #: application/controllers/admin/questions.php:864
@@ -2724,7 +2724,7 @@ msgid "Look at survey logic files"
 msgstr ""
 
 #: application/controllers/admin/questions.php:897
-msgid "Question was successfully deleted."
+msgid "ls\models\Question was successfully deleted."
 msgstr ""
 
 #: application/controllers/admin/questions.php:903
@@ -2758,7 +2758,7 @@ msgstr ""
 #: application/controllers/admin/quotas.php:167
 #: application/views/admin/quotas/newquota_view.php:5
 #: application/views/admin/quotas/viewquotas_view.php:14
-msgid "Quota name"
+msgid "ls\models\Quota name"
 msgstr ""
 
 #: application/controllers/admin/quotas.php:167
@@ -2785,7 +2785,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:965
 #: application/models/Token.php:35
 #: application/views/admin/participants/displayParticipants_view.php:95
-msgid "Token ID"
+msgid "ls\models\Token ID"
 msgstr ""
 
 #: application/controllers/admin/responses.php:126
@@ -2938,22 +2938,22 @@ msgid "You can't update question code for an active survey."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:99
-msgid "Question codes were successfully regenerated."
+msgid "ls\models\Question codes were successfully regenerated."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:306
-msgid "Error: Response table does not exist. Survey cannot be deactivated."
+msgid "Error: ls\models\Response table does not exist. ls\models\Survey cannot be deactivated."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:450
 #: application/controllers/admin/surveyadmin.php:467
 #: application/views/admin/survey/activateSurvey_view.php:5
 #: application/views/admin/survey/activateSurvey_view.php:35
-msgid "Activate Survey"
+msgid "Activate ls\models\Survey"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:453
-msgid "Survey table could not be created."
+msgid "ls\models\Survey table could not be created."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:457
@@ -2965,7 +2965,7 @@ msgid "Database error!!"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:468
-msgid "Survey has been activated. Results table has been successfully created."
+msgid "ls\models\Survey has been activated. Results table has been successfully created."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:473
@@ -3051,7 +3051,7 @@ msgid "Open"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:710
-msgid "Survey deleted."
+msgid "ls\models\Survey deleted."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:818
@@ -3059,7 +3059,7 @@ msgid "Import survey data"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:819
-msgid "Survey structure import summary"
+msgid "ls\models\Survey structure import summary"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:834
@@ -3069,7 +3069,7 @@ msgid "Copy survey"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:835
-msgid "Survey copy summary"
+msgid "ls\models\Survey copy summary"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:851
@@ -3107,19 +3107,19 @@ msgid "(No target question)"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:1457
-msgid "Survey settings were successfully saved."
+msgid "ls\models\Survey settings were successfully saved."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:1461
-msgid "Survey could not be updated."
+msgid "ls\models\Survey could not be updated."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:1491
-msgid "Survey language could not be created."
+msgid "ls\models\Survey language could not be created."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:1545
-msgid "Survey could not be created because it did not have a title"
+msgid "ls\models\Survey could not be created because it did not have a title"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:1633
@@ -3131,13 +3131,13 @@ msgid "Warning! Bounce email was not updated because it was not valid."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:1685
-msgid "Survey was successfully added."
+msgid "ls\models\Survey was successfully added."
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:41
 #: application/extensions/Menu/MenuWidget.php:261
 #: application/views/admin/survey/surveybar_view.php:69
-msgid "Survey permissions"
+msgid "ls\models\Survey permissions"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:48
@@ -3171,7 +3171,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:50
 #: application/controllers/admin/surveypermission.php:187
 #: application/views/admin/usergroup/usergroupbar_view.php:3
-msgid "User group"
+msgid "ls\models\User group"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:51
@@ -3210,7 +3210,7 @@ msgid "Are you sure you want to delete this entry?"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:179
-msgid "User"
+msgid "ls\models\User"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:182
@@ -3236,11 +3236,11 @@ msgid "Please select a user group first"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:246
-msgid "User group added."
+msgid "ls\models\User group added."
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:250
-msgid "Set Survey Rights"
+msgid "Set ls\models\Survey Rights"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:258
@@ -3310,7 +3310,7 @@ msgstr ""
 
 #: application/controllers/admin/surveypermission.php:324
 #: application/controllers/admin/usergroups.php:365
-msgid "User added."
+msgid "ls\models\User added."
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:327
@@ -3371,12 +3371,12 @@ msgid "Save Now"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:518
-msgid "Deleting User"
+msgid "Deleting ls\models\User"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:531
 #: application/controllers/admin/useraction.php:250
-msgid "Could not delete user. User was not supplied."
+msgid "Could not delete user. ls\models\User was not supplied."
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:575
@@ -3384,11 +3384,11 @@ msgid "Edit survey permissions"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:621
-msgid "Survey permissions for all users in this group were successfully updated."
+msgid "ls\models\Survey permissions for all users in this group were successfully updated."
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:628
-msgid "Survey permissions were successfully updated."
+msgid "ls\models\Survey permissions were successfully updated."
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:632
@@ -3400,7 +3400,7 @@ msgid "Demo mode: Uploading templates is disabled."
 msgstr ""
 
 #: application/controllers/admin/templates.php:124
-msgid "Template '%s' does already exist."
+msgid "ls\models\Template '%s' does already exist."
 msgstr ""
 
 #: application/controllers/admin/templates.php:135
@@ -3452,7 +3452,7 @@ msgstr ""
 #: application/controllers/admin/templates.php:442
 #: application/controllers/admin/templates.php:444
 #: application/controllers/admin/templates.php:446
-msgid "Template could not be renamed to `%s`."
+msgid "ls\models\Template could not be renamed to `%s`."
 msgstr ""
 
 #: application/controllers/admin/templates.php:442
@@ -3480,7 +3480,7 @@ msgid "Please check the directory permissions."
 msgstr ""
 
 #: application/controllers/admin/templates.php:530
-msgid "Template '%s' was successfully deleted."
+msgid "ls\models\Template '%s' was successfully deleted."
 msgstr ""
 
 #: application/controllers/admin/templates.php:533
@@ -3488,7 +3488,7 @@ msgid "There was a problem deleting the template '%s'. Please check your directo
 msgstr ""
 
 #: application/controllers/admin/templates.php:798
-msgid "Survey List Page"
+msgid "ls\models\Survey List Page"
 msgstr ""
 
 #: application/controllers/admin/templates.php:799
@@ -3496,7 +3496,7 @@ msgid "Welcome Page"
 msgstr ""
 
 #: application/controllers/admin/templates.php:800
-msgid "Question Page"
+msgid "ls\models\Question Page"
 msgstr ""
 
 #: application/controllers/admin/templates.php:801
@@ -3528,7 +3528,7 @@ msgid "Printable survey page"
 msgstr ""
 
 #: application/controllers/admin/templates.php:920
-msgid "Template Sample"
+msgid "ls\models\Template Sample"
 msgstr ""
 
 #: application/controllers/admin/templates.php:922
@@ -3733,7 +3733,7 @@ msgid "The selected attribute was invalid."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1219
-msgid "Token attribute descriptions were successfully updated."
+msgid "ls\models\Token attribute descriptions were successfully updated."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1220
@@ -3741,11 +3741,11 @@ msgid "Back to attribute field management."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1420
-msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
+msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: ls\models\Token is not yet valid."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1424
-msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
+msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: ls\models\Token is not valid anymore."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1501
@@ -3801,7 +3801,7 @@ msgid "Started but not yet completed"
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1629
-msgid "Survey status"
+msgid "ls\models\Survey status"
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1634
@@ -3915,7 +3915,7 @@ msgstr ""
 #: application/views/admin/export/exportresults_view.php:154
 #: application/views/admin/token/tokenbar.php:5
 #: application/views/admin/token/tokenwarning.php:3
-msgid "Token control"
+msgid "ls\models\Token control"
 msgstr ""
 
 #: application/controllers/admin/tokens.php:2480
@@ -3990,7 +3990,7 @@ msgid "Please choose..."
 msgstr ""
 
 #: application/controllers/admin/translate.php:445
-msgid "Survey title and description"
+msgid "ls\models\Survey title and description"
 msgstr ""
 
 #: application/controllers/admin/translate.php:460
@@ -4028,7 +4028,7 @@ msgstr ""
 #: application/views/admin/survey/QuestionGroups/import_view.php:9
 #: application/views/admin/survey/copySurvey_view.php:22
 #: application/views/admin/survey/importSurvey_view.php:36
-msgid "Question groups"
+msgid "ls\models\Question groups"
 msgstr ""
 
 #: application/controllers/admin/translate.php:520
@@ -4036,7 +4036,7 @@ msgid "Group description"
 msgstr ""
 
 #: application/controllers/admin/translate.php:550
-msgid "Question help"
+msgid "ls\models\Question help"
 msgstr ""
 
 #: application/controllers/admin/translate.php:565
@@ -4048,7 +4048,7 @@ msgid "Subquestions"
 msgstr ""
 
 #: application/controllers/admin/translate.php:581
-msgid "Answer options"
+msgid "ls\models\Answer options"
 msgstr ""
 
 #: application/controllers/admin/translate.php:596
@@ -4086,7 +4086,7 @@ msgid "Registration email"
 msgstr ""
 
 #: application/controllers/admin/translate.php:845
-msgid "Question code / ID"
+msgid "ls\models\Question code / ID"
 msgstr ""
 
 #: application/controllers/admin/update.php:281
@@ -4158,7 +4158,7 @@ msgid "If you have any questions regarding this mail please do not hesitate to c
 msgstr ""
 
 #: application/controllers/admin/useraction.php:144
-msgid "User registration at '%s'"
+msgid "ls\models\User registration at '%s'"
 msgstr ""
 
 #: application/controllers/admin/useraction.php:151
@@ -4179,7 +4179,7 @@ msgid "Initial Superadmin cannot be deleted!"
 msgstr ""
 
 #: application/controllers/admin/useraction.php:295
-msgid "User '%s' was successfully deleted."
+msgid "ls\models\User '%s' was successfully deleted."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:300
@@ -4229,7 +4229,7 @@ msgid "Note: You can only give limited permissions to other users because your o
 msgstr ""
 
 #: application/controllers/admin/useraction.php:590
-msgid "Template permissions were updated successfully."
+msgid "ls\models\Template permissions were updated successfully."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:594
@@ -4261,7 +4261,7 @@ msgid "Failed to add group! Group already exists."
 msgstr ""
 
 #: application/controllers/admin/usergroups.php:180
-msgid "User group successfully added!"
+msgid "ls\models\User group successfully added!"
 msgstr ""
 
 #: application/controllers/admin/usergroups.php:186
@@ -4269,7 +4269,7 @@ msgid "Failed to add group! Group Name was not supplied."
 msgstr ""
 
 #: application/controllers/admin/usergroups.php:217
-msgid "User group successfully saved!"
+msgid "ls\models\User group successfully saved!"
 msgstr ""
 
 #: application/controllers/admin/usergroups.php:223
@@ -4291,11 +4291,11 @@ msgid "You can not add or remove the group owner from the group."
 msgstr ""
 
 #: application/controllers/admin/usergroups.php:369
-msgid "User already exists in the group."
+msgid "ls\models\User already exists in the group."
 msgstr ""
 
 #: application/controllers/admin/usergroups.php:375
-msgid "User removed."
+msgid "ls\models\User removed."
 msgstr ""
 
 #: application/controllers/admin/usergroups.php:379
@@ -4303,15 +4303,15 @@ msgid "Failed to remove user."
 msgstr ""
 
 #: application/controllers/admin/usergroups.php:379
-msgid "User does not exist in the group."
+msgid "ls\models\User does not exist in the group."
 msgstr ""
 
 #: application/controllers/admin/usergroups.php:387
-msgid "User not found."
+msgid "ls\models\User not found."
 msgstr ""
 
 #: application/controllers/survey/index.php:97
-msgid "Token mismatch"
+msgid "ls\models\Token mismatch"
 msgstr ""
 
 #: application/controllers/survey/index.php:98
@@ -4482,7 +4482,7 @@ msgid "Detailed email notification with response data is sent to:"
 msgstr ""
 
 #: application/core/Survey_Common_Action.php:836
-msgid "Survey cannot be activated yet."
+msgid "ls\models\Survey cannot be activated yet."
 msgstr ""
 
 #: application/core/Survey_Common_Action.php:839
@@ -4720,7 +4720,7 @@ msgstr ""
 #: application/extensions/Menu/MenuWidget.php:285
 #: application/views/admin/survey/surveybar_view.php:87
 #: application/views/admin/survey/surveybar_view.php:90
-msgid "Survey logic file"
+msgid "ls\models\Survey logic file"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:299
@@ -4812,7 +4812,7 @@ msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:609
 #: application/views/admin/super/adminmenu.php:80
-msgid "Template Editor"
+msgid "ls\models\Template Editor"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:621
@@ -4834,7 +4834,7 @@ msgstr ""
 #: application/helpers/SurveyRuntimeHelper.php:36
 #: application/helpers/SurveyRuntimeHelper.php:74
 #: application/helpers/SurveyRuntimeHelper.php:86
-msgid "Question index"
+msgid "ls\models\Question index"
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:55
@@ -4960,16 +4960,16 @@ msgstr ""
 
 #: application/helpers/admin/export/DocWriter.php:74
 #: application/helpers/admin/export/HtmlWriter.php:68
-msgid "Survey response"
+msgid "ls\models\Survey response"
 msgstr ""
 
 #: application/helpers/admin/export/HtmlWriter.php:55
 #: application/views/admin/templates/templateeditor_printoutput_view.php:1
-msgid "Survey name (ID)"
+msgid "ls\models\Survey name (ID)"
 msgstr ""
 
 #: application/helpers/admin/export/PdfWriter.php:60
-msgid "Survey response %d"
+msgid "ls\models\Survey response %d"
 msgstr ""
 
 #: application/helpers/admin/htmleditor_helper.php:198
@@ -5009,7 +5009,7 @@ msgid "This survey setting has not been imported: %s => %s"
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:1101
-msgid "Question code %s was updated to %s."
+msgid "ls\models\Question code %s was updated to %s."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:1209
@@ -5288,7 +5288,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1829
 #: application/helpers/admin/statistics_helper.php:1842
 #: application/helpers/admin/statistics_helper.php:1890
-msgid "Response"
+msgid "ls\models\Response"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:1867
@@ -5381,7 +5381,7 @@ msgid "Statistics"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:2940
-msgid "Survey %s"
+msgid "ls\models\Survey %s"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:2951
@@ -5390,7 +5390,7 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:301
 #: application/views/admin/survey/listSurveys_view.php:46
 #: application/views/admin/survey/surveybar_view.php:3
-msgid "Survey"
+msgid "ls\models\Survey"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:3037
@@ -5437,7 +5437,7 @@ msgid "Detailed email notification with result codes"
 msgstr ""
 
 #: application/helpers/common_helper.php:1179
-msgid "Response submission for survey {SURVEYNAME} with results"
+msgid "ls\models\Response submission for survey {SURVEYNAME} with results"
 msgstr ""
 
 #: application/helpers/common_helper.php:1180
@@ -5464,7 +5464,7 @@ msgid ""
 msgstr ""
 
 #: application/helpers/common_helper.php:1217
-msgid "Response submission for survey {SURVEYNAME}"
+msgid "ls\models\Response submission for survey {SURVEYNAME}"
 msgstr ""
 
 #: application/helpers/common_helper.php:1218
@@ -5571,7 +5571,7 @@ msgid ""
 msgstr ""
 
 #: application/helpers/common_helper.php:1225
-msgid "Survey registration confirmation"
+msgid "ls\models\Survey registration confirmation"
 msgstr ""
 
 #: application/helpers/common_helper.php:1226
@@ -5589,7 +5589,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:1771
 #: application/views/admin/export/statistics_view.php:78
-msgid "Response ID"
+msgid "ls\models\Response ID"
 msgstr ""
 
 #: application/helpers/common_helper.php:1779
@@ -5611,7 +5611,7 @@ msgstr ""
 #: application/views/admin/participants/attributeMap_view.php:96
 #: application/views/admin/token/browse.php:111
 #: application/views/admin/token/tokenform.php:56
-msgid "Token"
+msgid "ls\models\Token"
 msgstr ""
 
 #: application/helpers/common_helper.php:1822
@@ -5653,7 +5653,7 @@ msgid "Group time"
 msgstr ""
 
 #: application/helpers/common_helper.php:2385
-msgid "Question time"
+msgid "ls\models\Question time"
 msgstr ""
 
 #: application/helpers/common_helper.php:2623
@@ -5785,7 +5785,7 @@ msgstr ""
 #: application/views/admin/labels/labelview_view.php:40
 #: application/views/admin/survey/Question/answerOptions_view.php:23
 #: application/views/admin/survey/Question/answerOptions_view.php:70
-msgid "Assessment value"
+msgid "ls\models\Assessment value"
 msgstr ""
 
 #: application/helpers/common_helper.php:2692
@@ -5936,7 +5936,7 @@ msgid "Enter a boolean equation to validate the whole question."
 msgstr ""
 
 #: application/helpers/common_helper.php:2834
-msgid "Question validation equation"
+msgid "ls\models\Question validation equation"
 msgstr ""
 
 #: application/helpers/common_helper.php:2841
@@ -5944,7 +5944,7 @@ msgid "This is a hint text that will be shown to the participant describing the 
 msgstr ""
 
 #: application/helpers/common_helper.php:2842
-msgid "Question validation tip"
+msgid "ls\models\Question validation tip"
 msgstr ""
 
 #: application/helpers/common_helper.php:2849
@@ -6316,7 +6316,7 @@ msgid "Add a prefix to the answer field"
 msgstr ""
 
 #: application/helpers/common_helper.php:3287
-msgid "Answer prefix"
+msgid "ls\models\Answer prefix"
 msgstr ""
 
 #: application/helpers/common_helper.php:3296
@@ -6463,7 +6463,7 @@ msgid "Display slider min and max value"
 msgstr ""
 
 #: application/helpers/common_helper.php:3472
-msgid "Answer|Left-slider-text|Right-slider-text separator character"
+msgid "ls\models\Answer|Left-slider-text|Right-slider-text separator character"
 msgstr ""
 
 #: application/helpers/common_helper.php:3473
@@ -6475,7 +6475,7 @@ msgid "Add a suffix to the answer field"
 msgstr ""
 
 #: application/helpers/common_helper.php:3482
-msgid "Answer suffix"
+msgid "ls\models\Answer suffix"
 msgstr ""
 
 #: application/helpers/common_helper.php:3489
@@ -7674,19 +7674,19 @@ msgid "Your answer must be between %s and %s"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3203
-msgid "Answer must be greater or equal to %s"
+msgid "ls\models\Answer must be greater or equal to %s"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3204
-msgid "Answer must be less or equal to %s"
+msgid "ls\models\Answer must be less or equal to %s"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3205
-msgid "Answer must be %s"
+msgid "ls\models\Answer must be %s"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3206
-msgid "Answer must be between %s and %s"
+msgid "ls\models\Answer must be between %s and %s"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3227
@@ -7788,7 +7788,7 @@ msgid "Invalid question - probably missing sub-questions or language-specific se
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9016
-msgid "Logic File for Survey # "
+msgid "Logic File for ls\models\Survey # "
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9033
@@ -7836,7 +7836,7 @@ msgid "Tip:"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9129
-msgid "Question attribute"
+msgid "ls\models\Question attribute"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9129
@@ -7938,13 +7938,13 @@ msgstr ""
 
 #: application/helpers/frontend_helper.php:960
 #: application/helpers/frontend_helper.php:1141
-msgid "Token:"
+msgid "ls\models\Token:"
 msgstr ""
 
 #: application/helpers/frontend_helper.php:985
 #: application/helpers/frontend_helper.php:1149
 #: application/views/register/registerForm.php:33
-msgid "Security Question"
+msgid "Security ls\models\Question"
 msgstr ""
 
 #: application/helpers/frontend_helper.php:1023
@@ -8421,7 +8421,7 @@ msgid "If you want to check any of the answers you have made, and/or change them
 msgstr ""
 
 #: application/helpers/replacements_helper.php:347
-msgid "Restart this Survey"
+msgid "Restart this ls\models\Survey"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:356
@@ -9007,7 +9007,7 @@ msgid "Some user templates can not be updated, please add the placeholder {TEMPL
 msgstr ""
 
 #: application/helpers/update/updatedb_helper.php:2407
-msgid "Template(s) to be verified :"
+msgid "ls\models\Template(s) to be verified :"
 msgstr ""
 
 #: application/helpers/update/updatedb_helper.php:2413
@@ -9017,7 +9017,7 @@ msgstr ""
 #: application/libraries/PluginManager/Question/QuestionBase.php:113
 #: application/views/admin/survey/Question/editQuestion_view.php:185
 #: application/views/admin/survey/Question/editQuestion_view.php:194
-msgid "Question group:"
+msgid "ls\models\Question group:"
 msgstr ""
 
 #: application/libraries/PluginManager/Question/QuestionBase.php:120
@@ -9087,7 +9087,7 @@ msgid "Permission to view statistics"
 msgstr ""
 
 #: application/models/Permission.php:104
-msgid "Survey deletion"
+msgid "ls\models\Survey deletion"
 msgstr ""
 
 #: application/models/Permission.php:105
@@ -9095,7 +9095,7 @@ msgid "Permission to delete a survey"
 msgstr ""
 
 #: application/models/Permission.php:114
-msgid "Survey activation"
+msgid "ls\models\Survey activation"
 msgstr ""
 
 #: application/models/Permission.php:115
@@ -9103,7 +9103,7 @@ msgid "Permission to activate/deactivate a survey"
 msgstr ""
 
 #: application/models/Permission.php:119
-msgid "Survey content"
+msgid "ls\models\Survey content"
 msgstr ""
 
 #: application/models/Permission.php:120
@@ -9111,7 +9111,7 @@ msgid "Permission to create/view/update/delete/import/export the questions, grou
 msgstr ""
 
 #: application/models/Permission.php:128
-msgid "Survey text elements"
+msgid "ls\models\Survey text elements"
 msgstr ""
 
 #: application/models/Permission.php:129
@@ -9119,7 +9119,7 @@ msgid "Permission to view/update the survey text elements : survey title, survey
 msgstr ""
 
 #: application/models/Permission.php:135
-msgid "Survey security"
+msgid "ls\models\Survey security"
 msgstr ""
 
 #: application/models/Permission.php:136
@@ -9127,7 +9127,7 @@ msgid "Permission to modify survey security settings"
 msgstr ""
 
 #: application/models/Permission.php:144
-msgid "Survey settings"
+msgid "ls\models\Survey settings"
 msgstr ""
 
 #: application/models/Permission.php:145
@@ -9175,7 +9175,7 @@ msgstr ""
 
 #: application/models/Permission.php:205
 #: application/views/admin/usergroup/usergroupbar_view.php:50
-msgid "User groups"
+msgid "ls\models\User groups"
 msgstr ""
 
 #: application/models/Permission.php:206
@@ -9213,7 +9213,7 @@ msgstr ""
 
 #: application/models/Permission.php:229
 #: application/views/admin/participants/participantsPanel_view.php:16
-msgid "Participant panel"
+msgid "ls\models\Participant panel"
 msgstr ""
 
 #: application/models/Permission.php:230
@@ -9249,11 +9249,11 @@ msgid "'%s' can not be used if the 'Other' option for this question is activated
 msgstr ""
 
 #: application/models/Question.php:140
-msgid "Question codes must be unique."
+msgid "ls\models\Question codes must be unique."
 msgstr ""
 
 #: application/models/Question.php:141
-msgid "Question codes must start with a letter and may only contain alphanumeric characters."
+msgid "ls\models\Question codes must start with a letter and may only contain alphanumeric characters."
 msgstr ""
 
 #: application/models/Question.php:145
@@ -9420,7 +9420,7 @@ msgid "There are no groups available."
 msgstr ""
 
 #: application/views/admin/assessments_view.php:6
-msgid "Assessment rules"
+msgid "ls\models\Assessment rules"
 msgstr ""
 
 #: application/views/admin/assessments_view.php:9
@@ -9478,7 +9478,7 @@ msgstr ""
 
 #: application/views/admin/authentication/forgotpassword.php:8
 #: application/views/admin/token/bounce.php:57
-msgid "User name"
+msgid "ls\models\User name"
 msgstr ""
 
 #: application/views/admin/authentication/forgotpassword.php:13
@@ -9581,7 +9581,7 @@ msgid "The following assessments should be deleted:"
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:77
-msgid "Assessment:"
+msgid "ls\models\Assessment:"
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:85
@@ -9759,15 +9759,15 @@ msgid "The question could not be added. You must enter at least enter a question
 msgstr ""
 
 #: application/views/admin/database/database_view.php:40
-msgid "Question in language %s could not be created."
+msgid "ls\models\Question in language %s could not be created."
 msgstr ""
 
 #: application/views/admin/database/database_view.php:52
-msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
+msgid "ls\models\Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr ""
 
 #: application/views/admin/database/database_view.php:77
-msgid "Survey could not be updated"
+msgid "ls\models\Survey could not be updated"
 msgstr ""
 
 #: application/views/admin/dataentry/active_html_view.php:28
@@ -9855,15 +9855,15 @@ msgid "Currently we detect and handle the following changes:"
 msgstr ""
 
 #: application/views/admin/dataentry/import.php:32
-msgid "Question is moved to another group (result is imported correctly)."
+msgid "ls\models\Question is moved to another group (result is imported correctly)."
 msgstr ""
 
 #: application/views/admin/dataentry/import.php:33
-msgid "Question is removed from target (result is ignored)."
+msgid "ls\models\Question is removed from target (result is ignored)."
 msgstr ""
 
 #: application/views/admin/dataentry/import.php:34
-msgid "Question is added to target (result is set to database default value)."
+msgid "ls\models\Question is added to target (result is set to database default value)."
 msgstr ""
 
 #: application/views/admin/dataentry/insert.php:74
@@ -10225,7 +10225,7 @@ msgid "Code/text separator"
 msgstr ""
 
 #: application/views/admin/export/exportresults_view.php:121
-msgid "Answer codes"
+msgid "ls\models\Answer codes"
 msgstr ""
 
 #: application/views/admin/export/exportresults_view.php:124
@@ -10426,7 +10426,7 @@ msgid "View statistics"
 msgstr ""
 
 #: application/views/admin/export/statistics_view.php:146
-msgid "Response filters"
+msgid "ls\models\Response filters"
 msgstr ""
 
 #: application/views/admin/export/statistics_view.php:289
@@ -10673,7 +10673,7 @@ msgstr ""
 
 #: application/views/admin/globalSettings_view.php:213
 #: application/views/admin/user/personalsettings.php:38
-msgid "Question type selector"
+msgid "ls\models\Question type selector"
 msgstr ""
 
 #: application/views/admin/globalSettings_view.php:221
@@ -10687,7 +10687,7 @@ msgstr ""
 
 #: application/views/admin/globalSettings_view.php:228
 #: application/views/admin/templates/templateeditorbar_view.php:50
-msgid "Template editor"
+msgid "ls\models\Template editor"
 msgstr ""
 
 #: application/views/admin/globalSettings_view.php:236
@@ -10812,7 +10812,7 @@ msgstr ""
 #: application/views/admin/globalSettings_view.php:569
 #: application/views/admin/globalSettings_view.php:575
 #: application/views/admin/globalSettings_view.php:581
-msgid "Survey admin can choose"
+msgid "ls\models\Survey admin can choose"
 msgstr ""
 
 #: application/views/admin/globalSettings_view.php:559
@@ -11249,11 +11249,11 @@ msgstr ""
 
 #: application/views/admin/limeReplacementFields_view.php:111
 #: application/views/admin/limeReplacementFields_view.php:126
-msgid "Some Question have been disabled"
+msgid "Some ls\models\Question have been disabled"
 msgstr ""
 
 #: application/views/admin/limeReplacementFields_view.php:113
-msgid "Survey Format is %s:"
+msgid "ls\models\Survey Format is %s:"
 msgstr ""
 
 #: application/views/admin/limeReplacementFields_view.php:113
@@ -11267,7 +11267,7 @@ msgid "Only Previous pages answers are available"
 msgstr ""
 
 #: application/views/admin/limeReplacementFields_view.php:127
-msgid "Survey mode is set to %s:"
+msgid "ls\models\Survey mode is set to %s:"
 msgstr ""
 
 #: application/views/admin/limeReplacementFields_view.php:127
@@ -11537,7 +11537,7 @@ msgid "Drag this attribute to another column to map it to the central participan
 msgstr ""
 
 #: application/views/admin/participants/attributeMapToken_view.php:34
-msgid "Participant attributes to create"
+msgid "ls\models\Participant attributes to create"
 msgstr ""
 
 #: application/views/admin/participants/attributeMapToken_view.php:39
@@ -11584,7 +11584,7 @@ msgid "Unmapped participant attributes"
 msgstr ""
 
 #: application/views/admin/participants/attributeMap_view.php:50
-msgid "Token attributes to create"
+msgid "ls\models\Token attributes to create"
 msgstr ""
 
 #: application/views/admin/participants/attributeMap_view.php:56
@@ -11669,13 +11669,13 @@ msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:75
 #: application/views/admin/participants/displayParticipants_view.php:199
-msgid "Survey links"
+msgid "ls\models\Survey links"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:76
 #: application/views/admin/participants/displayParticipants_view.php:93
 #: application/views/admin/participants/displayParticipants_view.php:200
-msgid "Survey name"
+msgid "ls\models\Survey name"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:78
@@ -11721,11 +11721,11 @@ msgid "Begins with"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:92
-msgid "Participant's survey information"
+msgid "ls\models\Participant's survey information"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:94
-msgid "Survey ID"
+msgid "ls\models\Survey ID"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:96
@@ -11742,11 +11742,11 @@ msgid "Submitted"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:102
-msgid "Participant's attribute information"
+msgid "ls\models\Participant's attribute information"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:104
-msgid "Participant ID"
+msgid "ls\models\Participant ID"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:106
@@ -11912,7 +11912,7 @@ msgid "Share"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:256
-msgid "User with whom the participants are to be shared"
+msgid "ls\models\User with whom the participants are to be shared"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:273
@@ -12179,11 +12179,11 @@ msgstr ""
 
 #: application/views/admin/participants/userControl_view.php:13
 #: application/views/admin/user/editusers.php:1
-msgid "User control"
+msgid "ls\models\User control"
 msgstr ""
 
 #: application/views/admin/participants/userControl_view.php:28
-msgid "User ID editable:"
+msgid "ls\models\User ID editable:"
 msgstr ""
 
 #: application/views/admin/participants/viewAttribute_view.php:3
@@ -12244,15 +12244,15 @@ msgid "Edit quota"
 msgstr ""
 
 #: application/views/admin/quotas/editquota_view.php:4
-msgid "Quota name:"
+msgid "ls\models\Quota name:"
 msgstr ""
 
 #: application/views/admin/quotas/editquota_view.php:5
-msgid "Quota limit:"
+msgid "ls\models\Quota limit:"
 msgstr ""
 
 #: application/views/admin/quotas/editquota_view.php:6
-msgid "Quota action:"
+msgid "ls\models\Quota action:"
 msgstr ""
 
 #: application/views/admin/quotas/editquota_view.php:7
@@ -12277,7 +12277,7 @@ msgstr ""
 
 #: application/views/admin/quotas/editquotalang_view.php:3
 #: application/views/admin/quotas/newquota_view.php:36
-msgid "Quota message"
+msgid "ls\models\Quota message"
 msgstr ""
 
 #: application/views/admin/quotas/editquotalang_view.php:4
@@ -12292,7 +12292,7 @@ msgstr ""
 
 #: application/views/admin/quotas/newanswer_view.php:1
 #: application/views/admin/quotas/newanswertwo_view.php:8
-msgid "Survey quota"
+msgid "ls\models\Survey quota"
 msgstr ""
 
 #: application/views/admin/quotas/newanswer_view.php:1
@@ -12314,7 +12314,7 @@ msgstr ""
 
 #: application/views/admin/quotas/newanswererror_view.php:1
 #: application/views/admin/quotas/newanswertwo_view.php:2
-msgid "Question Selection"
+msgid "ls\models\Question Selection"
 msgstr ""
 
 #: application/views/admin/quotas/newanswererror_view.php:3
@@ -12326,7 +12326,7 @@ msgid "All answers are already selected in this quota."
 msgstr ""
 
 #: application/views/admin/quotas/newanswertwo_view.php:23
-msgid "Select Answer"
+msgid "Select ls\models\Answer"
 msgstr ""
 
 #: application/views/admin/quotas/newanswertwo_view.php:36
@@ -12338,12 +12338,12 @@ msgid "New quota"
 msgstr ""
 
 #: application/views/admin/quotas/newquota_view.php:9
-msgid "Quota limit"
+msgid "ls\models\Quota limit"
 msgstr ""
 
 #: application/views/admin/quotas/newquota_view.php:13
 #: application/views/admin/quotas/viewquotas_view.php:16
-msgid "Quota action"
+msgid "ls\models\Quota action"
 msgstr ""
 
 #: application/views/admin/quotas/newquota_view.php:20
@@ -12356,11 +12356,11 @@ msgstr ""
 
 #: application/views/admin/quotas/newquota_view.php:54
 #: application/views/admin/quotas/viewquotasfooter_view.php:10
-msgid "Add New Quota"
+msgid "Add New ls\models\Quota"
 msgstr ""
 
 #: application/views/admin/quotas/viewquotas_view.php:4
-msgid "Quota could not be added."
+msgid "ls\models\Quota could not be added."
 msgstr ""
 
 #: application/views/admin/quotas/viewquotas_view.php:4
@@ -12368,7 +12368,7 @@ msgid "It is missing a quota message for the following languages:"
 msgstr ""
 
 #: application/views/admin/quotas/viewquotas_view.php:9
-msgid "Survey quotas"
+msgid "ls\models\Survey quotas"
 msgstr ""
 
 #: application/views/admin/quotas/viewquotas_view.php:15
@@ -12515,7 +12515,7 @@ msgstr ""
 
 #: application/views/admin/responses/browseidheader_view.php:34
 #: application/views/admin/responses/browseidheader_view.php:35
-msgid "Export this Response"
+msgid "Export this ls\models\Response"
 msgstr ""
 
 #: application/views/admin/responses/browseidheader_view.php:40
@@ -12530,7 +12530,7 @@ msgid "Show next..."
 msgstr ""
 
 #: application/views/admin/responses/browseindex_view.php:2
-msgid "Response summary"
+msgid "ls\models\Response summary"
 msgstr ""
 
 #: application/views/admin/responses/browseindex_view.php:3
@@ -12547,7 +12547,7 @@ msgstr ""
 
 #: application/views/admin/responses/browseindex_view.php:11
 #: application/views/admin/token/tokensummary.php:2
-msgid "Token summary"
+msgid "ls\models\Token summary"
 msgstr ""
 
 #: application/views/admin/responses/browseindex_view.php:12
@@ -12567,7 +12567,7 @@ msgstr ""
 
 #: application/views/admin/responses/browseindex_view.php:16
 #: application/views/admin/token/tokensummary.php:16
-msgid "Total with no unique Token"
+msgid "Total with no unique ls\models\Token"
 msgstr ""
 
 #: application/views/admin/responses/browsemenubar_view.php:15
@@ -12583,7 +12583,7 @@ msgid "Display Last 50 Responses"
 msgstr ""
 
 #: application/views/admin/responses/browsemenubar_view.php:52
-msgid "Dataentry Screen for Survey"
+msgid "Dataentry Screen for ls\models\Survey"
 msgstr ""
 
 #: application/views/admin/responses/browsemenubar_view.php:57
@@ -12632,7 +12632,7 @@ msgid "Show last..."
 msgstr ""
 
 #: application/views/admin/responses/listResponses_view.php:9
-msgid "Survey Respones"
+msgid "ls\models\Survey Respones"
 msgstr ""
 
 #: application/views/admin/responses/listResponses_view.php:10
@@ -12800,11 +12800,11 @@ msgid "Ok"
 msgstr ""
 
 #: application/views/admin/survey/Question/answerOptions_view.php:59
-msgid "Answer scale %s"
+msgid "ls\models\Answer scale %s"
 msgstr ""
 
 #: application/views/admin/survey/Question/answerOptions_view.php:78
-msgid "Answer option"
+msgid "ls\models\Answer option"
 msgstr ""
 
 #: application/views/admin/survey/Question/answerOptions_view.php:133
@@ -12812,7 +12812,7 @@ msgid "Some example answer option"
 msgstr ""
 
 #: application/views/admin/survey/Question/answerOptions_view.php:134
-msgid "Answer:"
+msgid "ls\models\Answer:"
 msgstr ""
 
 #: application/views/admin/survey/Question/answerOptions_view.php:138
@@ -12890,11 +12890,11 @@ msgstr ""
 #: application/views/admin/survey/Question/editQuestion_view.php:110
 #: application/views/admin/survey/Question/editQuestion_view.php:115
 #: application/views/admin/survey/Question/questionbar_view.php:164
-msgid "Question:"
+msgid "ls\models\Question:"
 msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:128
-msgid "Question Type:"
+msgid "ls\models\Question Type:"
 msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:174
@@ -12973,7 +12973,7 @@ msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:341
 #: application/views/admin/survey/Question/import_view.php:1
-msgid "Import Question"
+msgid "Import ls\models\Question"
 msgstr ""
 
 #: application/views/admin/survey/Question/editdefaultvalues_view.php:1
@@ -13002,16 +13002,16 @@ msgid "Use same default value across languages:"
 msgstr ""
 
 #: application/views/admin/survey/Question/import_view.php:7
-msgid "Question import summary"
+msgid "ls\models\Question import summary"
 msgstr ""
 
 #: application/views/admin/survey/Question/import_view.php:20
 #: application/views/admin/survey/QuestionGroups/import_view.php:20
-msgid "Question attributes:"
+msgid "ls\models\Question attributes:"
 msgstr ""
 
 #: application/views/admin/survey/Question/import_view.php:22
-msgid "Question import is complete."
+msgid "ls\models\Question import is complete."
 msgstr ""
 
 #: application/views/admin/survey/Question/import_view.php:23
@@ -13023,7 +13023,7 @@ msgid "Preview this question in:"
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:33
-msgid "Edit Current Question"
+msgid "Edit Current ls\models\Question"
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:40
@@ -13052,7 +13052,7 @@ msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:73
 #: application/views/admin/survey/Question/questionbar_view.php:79
-msgid "Copy Current Question"
+msgid "Copy Current ls\models\Question"
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:78
@@ -13086,7 +13086,7 @@ msgid "Show details of this question"
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:141
-msgid "Show Details of this Question"
+msgid "Show Details of this ls\models\Question"
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:142
@@ -13094,11 +13094,11 @@ msgid "Close this question"
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:156
-msgid "Mandatory Question"
+msgid "Mandatory ls\models\Question"
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:159
-msgid "Optional Question"
+msgid "Optional ls\models\Question"
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:185
@@ -13231,7 +13231,7 @@ msgid "Edit Group"
 msgstr ""
 
 #: application/views/admin/survey/QuestionGroups/import_view.php:7
-msgid "Question group import summary"
+msgid "ls\models\Question group import summary"
 msgstr ""
 
 #: application/views/admin/survey/QuestionGroups/import_view.php:13
@@ -13239,7 +13239,7 @@ msgid "Conditions"
 msgstr ""
 
 #: application/views/admin/survey/QuestionGroups/import_view.php:22
-msgid "Question group import is complete."
+msgid "ls\models\Question group import is complete."
 msgstr ""
 
 #: application/views/admin/survey/QuestionGroups/import_view.php:23
@@ -13316,7 +13316,7 @@ msgid "Questions with conditions to this group"
 msgstr ""
 
 #: application/views/admin/survey/activateSurvey_view.php:7
-msgid "Survey does not pass consistency check"
+msgid "ls\models\Survey does not pass consistency check"
 msgstr ""
 
 #: application/views/admin/survey/activateSurvey_view.php:9
@@ -13396,7 +13396,7 @@ msgid "Save / Activate survey"
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:16
-msgid "Survey import summary"
+msgid "ls\models\Survey import summary"
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:21
@@ -13426,7 +13426,7 @@ msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:45
 #: application/views/admin/survey/importSurvey_view.php:38
-msgid "Question attributes"
+msgid "ls\models\Question attributes"
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:47
@@ -13523,11 +13523,11 @@ msgid "Deactivate survey"
 msgstr ""
 
 #: application/views/admin/survey/deactivateSurvey_view.php:48
-msgid "Deactivate Survey"
+msgid "Deactivate ls\models\Survey"
 msgstr ""
 
 #: application/views/admin/survey/deactivateSurvey_view.php:49
-msgid "Survey Has Been Deactivated"
+msgid "ls\models\Survey Has Been Deactivated"
 msgstr ""
 
 #: application/views/admin/survey/deactivateSurvey_view.php:52
@@ -13587,7 +13587,7 @@ msgid "Edit survey text elements"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:2
-msgid "Survey title"
+msgid "ls\models\Survey title"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:11
@@ -13664,7 +13664,7 @@ msgid "Import again"
 msgstr ""
 
 #: application/views/admin/survey/importSurvey_view.php:67
-msgid "Response import summary"
+msgid "ls\models\Response import summary"
 msgstr ""
 
 #: application/views/admin/survey/importSurvey_view.php:88
@@ -13730,7 +13730,7 @@ msgid "Tokens available"
 msgstr ""
 
 #: application/views/admin/survey/listSurveys_view.php:46
-msgid "Response rate"
+msgid "ls\models\Response rate"
 msgstr ""
 
 #: application/views/admin/survey/listSurveys_view.php:68
@@ -13915,7 +13915,7 @@ msgid "Enable assessment mode?"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabNotification_view.php:76
-msgid "Participant may save and resume later?"
+msgid "ls\models\Participant may save and resume later?"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabNotification_view.php:80
@@ -13935,7 +13935,7 @@ msgid "Default Google Analytics"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabNotification_view.php:85
-msgid "Survey name-[SID]/Group name"
+msgid "ls\models\Survey name-[SID]/Group name"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabPanelIntegration_view.php:9
@@ -14017,19 +14017,19 @@ msgid "Presentation & navigation"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabPresentation_view.php:140
-msgid "Question by Question"
+msgid "ls\models\Question by ls\models\Question"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabPresentation_view.php:148
-msgid "Template"
+msgid "ls\models\Template"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabPresentation_view.php:161
-msgid "Template preview"
+msgid "ls\models\Template preview"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabPresentation_view.php:162
-msgid "Template preview image"
+msgid "ls\models\Template preview image"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabPresentation_view.php:166
@@ -14114,7 +14114,7 @@ msgstr ""
 #: application/views/admin/survey/subview/tabPublication_view.php:61
 #: application/views/admin/survey/subview/tabPublication_view.php:67
 #: application/views/admin/survey/subview/tabPublication_view.php:80
-msgid "Survey Access"
+msgid "ls\models\Survey Access"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabPublication_view.php:55
@@ -14145,7 +14145,7 @@ msgid "If you set 'Yes' then no link will exist between token table and survey r
 msgstr ""
 
 #: application/views/admin/survey/subview/tabTokens_view.php:9
-msgid "You can't use Anonymized responses when Token-based answers persistence is enabled."
+msgid "You can't use Anonymized responses when ls\models\Token-based answers persistence is enabled."
 msgstr ""
 
 #: application/views/admin/survey/subview/tabTokens_view.php:14
@@ -14226,13 +14226,13 @@ msgid "Plugins"
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:12
-msgid "Survey URL"
+msgid "ls\models\Survey URL"
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:106
 #: application/views/admin/templates/templateeditorbar_view.php:50
 #: application/views/admin/templates/templateeditorbar_view.php:136
-msgid "Template:"
+msgid "ls\models\Template:"
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:122
@@ -14248,11 +14248,11 @@ msgid "Number of questions/groups"
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:143
-msgid "Survey currently active"
+msgid "ls\models\Survey currently active"
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:152
-msgid "Survey table name"
+msgid "ls\models\Survey table name"
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:161
@@ -14273,15 +14273,15 @@ msgid "This survey is currently not active"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:12
-msgid "Activate this Survey"
+msgid "Activate this ls\models\Survey"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:15
-msgid "Survey cannot be activated. Either you have no permission or there are no questions."
+msgid "ls\models\Survey cannot be activated. Either you have no permission or there are no questions."
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:58
-msgid "Survey properties"
+msgid "ls\models\Survey properties"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:105
@@ -14313,12 +14313,12 @@ msgid "Export..."
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:163
-msgid "Survey structure (.lss)"
+msgid "ls\models\Survey structure (.lss)"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:169
 #: application/views/admin/survey/surveybar_view.php:174
-msgid "Survey archive (.lsa)"
+msgid "ls\models\Survey archive (.lsa)"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:173
@@ -14371,7 +14371,7 @@ msgid "This survey is not active - no responses are available"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:258
-msgid "Question group/question organizer disabled"
+msgid "ls\models\Question group/question organizer disabled"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:265
@@ -14379,11 +14379,11 @@ msgid "Reorder question groups / questions"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:271
-msgid "Token management"
+msgid "ls\models\Token management"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:279
-msgid "Question groups:"
+msgid "ls\models\Question groups:"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:289
@@ -14404,7 +14404,7 @@ msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:330
 #: application/views/admin/survey/surveybar_view.php:331
-msgid "Hide details of this Survey"
+msgid "Hide details of this ls\models\Survey"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:333
@@ -14452,7 +14452,7 @@ msgid "Folder"
 msgstr ""
 
 #: application/views/admin/templates/importuploaded_view.php:78
-msgid "Template upgrade summary"
+msgid "ls\models\Template upgrade summary"
 msgstr ""
 
 #: application/views/admin/templates/importuploaded_view.php:105
@@ -14460,11 +14460,11 @@ msgid "Open imported template"
 msgstr ""
 
 #: application/views/admin/templates/templateeditor_assessments_view.php:3
-msgid "Assessment heading"
+msgid "ls\models\Assessment heading"
 msgstr ""
 
 #: application/views/admin/templates/templateeditor_assessments_view.php:7
-msgid "Assessment details"
+msgid "ls\models\Assessment details"
 msgstr ""
 
 #: application/views/admin/templates/templateeditor_assessments_view.php:8
@@ -14517,7 +14517,7 @@ msgstr ""
 
 #: application/views/admin/templates/templateeditorbar_view.php:62
 #: application/views/admin/templates/templateeditorbar_view.php:90
-msgid "Copy Template"
+msgid "Copy ls\models\Template"
 msgstr ""
 
 #: application/views/admin/templates/templateeditorbar_view.php:63
@@ -14531,7 +14531,7 @@ msgid "copy_of_"
 msgstr ""
 
 #: application/views/admin/templates/templateeditorbar_view.php:84
-msgid "Export Template"
+msgid "Export ls\models\Template"
 msgstr ""
 
 #: application/views/admin/templates/templateeditorbar_view.php:100
@@ -14653,7 +14653,7 @@ msgid "Add new token entry"
 msgstr ""
 
 #: application/views/admin/token/bounce.php:19
-msgid "Survey bounce email"
+msgid "ls\models\Survey bounce email"
 msgstr ""
 
 #: application/views/admin/token/bounce.php:29
@@ -14677,7 +14677,7 @@ msgid "Add participants to central database"
 msgstr ""
 
 #: application/views/admin/token/browse.php:82
-msgid "Participant table is empty."
+msgid "ls\models\Participant table is empty."
 msgstr ""
 
 #: application/views/admin/token/browse.php:84
@@ -14737,7 +14737,7 @@ msgid "Please enter a value for: "
 msgstr ""
 
 #: application/views/admin/token/browse.php:140
-msgid "Survey participants"
+msgid "ls\models\Survey participants"
 msgstr ""
 
 #: application/views/admin/token/browse.php:149
@@ -14841,7 +14841,7 @@ msgid "Number of tokens"
 msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:11
-msgid "Token length"
+msgid "ls\models\Token length"
 msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:22
@@ -14872,7 +14872,7 @@ msgid "Sending reminders..."
 msgstr ""
 
 #: application/views/admin/token/emailpost.php:8
-msgid "Sending to Token IDs"
+msgid "Sending to ls\models\Token IDs"
 msgstr ""
 
 #: application/views/admin/token/emailwarning.php:5
@@ -14885,7 +14885,7 @@ msgstr ""
 
 #: application/views/admin/token/exportdialog.php:1
 #: application/views/admin/token/exportdialog.php:7
-msgid "Token export options"
+msgid "ls\models\Token export options"
 msgstr ""
 
 #: application/views/admin/token/invite.php:3
@@ -15325,11 +15325,11 @@ msgid "Transfer the surveys of this user to: "
 msgstr ""
 
 #: application/views/admin/user/deluser.php:31
-msgid "Delete User"
+msgid "Delete ls\models\User"
 msgstr ""
 
 #: application/views/admin/user/editusers.php:7
-msgid "User ID"
+msgid "ls\models\User ID"
 msgstr ""
 
 #: application/views/admin/user/editusers.php:12
@@ -15391,7 +15391,7 @@ msgid "Full selector"
 msgstr ""
 
 #: application/views/admin/user/personalsettings.php:49
-msgid "Template editor mode"
+msgid "ls\models\Template editor mode"
 msgstr ""
 
 #: application/views/admin/user/personalsettings.php:53
@@ -15420,7 +15420,7 @@ msgid "Set templates that this user may access"
 msgstr ""
 
 #: application/views/admin/user/setusertemplates.php:15
-msgid "Template name"
+msgid "ls\models\Template name"
 msgstr ""
 
 #: application/views/admin/user/setusertemplates.php:17
@@ -15662,7 +15662,7 @@ msgid "Found & writable"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:101
-msgid "Session writable"
+msgid "ls\models\Session writable"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:109

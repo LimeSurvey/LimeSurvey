@@ -614,7 +614,7 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 }
 
 /* -------------------------------------------------
-   START: Question styles  ------------------------- */
+   START: ls\models\Question styles  ------------------------- */
   /* =====================================
 == Full list of question classes =======
 
@@ -1225,7 +1225,7 @@ table.statisticstable strong {
   font-weight: bold;
 }
 
-/* Question Index */
+/* ls\models\Question Index */
 .withindex.outerframe{
   margin-left: 1em;
   margin-right: 26em;

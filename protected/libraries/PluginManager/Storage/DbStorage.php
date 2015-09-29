@@ -1,6 +1,6 @@
 <?php
 namespace ls\pluginmanager;
-use PluginSetting;
+use ls\models\PluginSetting;
 
 class DbStorage implements iPluginStorage {
 
@@ -52,7 +52,7 @@ class DbStorage implements iPluginStorage {
             $attributes['key'] = $key;
         }
         
-        $records = \PluginSetting::model()->findAllByAttributes($attributes);
+        $records = \ls\models\PluginSetting::model()->findAllByAttributes($attributes);
         if (count($records) > 1)
         {
             foreach ($records as $record)
@@ -72,9 +72,9 @@ class DbStorage implements iPluginStorage {
     }
 
     /**
-     * This function retrieves plugin data related to the Question model.
+     * This function retrieves plugin data related to the ls\models\Question model.
      * LS saves this data in a question_attributes EAV table; therefore
-     * the 'Question' model is treated specially.
+     * the 'ls\models\Question' model is treated specially.
      * @param iPlugin $plugin
      * @param type $key
      * @param type $model

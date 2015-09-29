@@ -1,4 +1,4 @@
-"Clear Logo" Template for Lime Survey
+"Clear Logo" ls\models\Template for Lime ls\models\Survey
 --------------------------------------
 
 Simple, user-friendly layout, with a logo of any size in the top-left.

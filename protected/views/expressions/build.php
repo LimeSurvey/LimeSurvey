@@ -2,6 +2,8 @@
     <div class="col-md-3" style="position: fixed; top: 70px; bottom: 0px; overflow-y:scroll; background-color: white;">
 
 <?php
+use ls\models\Survey;
+
 $tree = [];
 /** @var Survey $survey */
 
@@ -81,7 +83,7 @@ $this->widget(\SamIT\Yii1\Widgets\BootstrapTreeView::class, [
     ]
 ]);?>
     </div>
-    <div class="col-md-6 col-md-offset-3 expressions" id="expressions">
+    <div class="col-md-6 col-md-offset-3 clause" id="expressions" data-operator="and">
 <?php
 
 
@@ -105,36 +107,49 @@ $this->widget(\SamIT\Yii1\Widgets\BootstrapTreeView::class, [
         }
 
         function createClause(expression, type) {
-            if (typeof type == 'undefined') {
-                type = 'or';
+            if (expression instanceof jQuery) {
+                return expression;
             }
-            return $('<span>').addClass(type + '-clause').html(expression);
+            var $clause = $('<span>').addClass('clause');
+            if (typeof type != 'undefined') {
+                $clause.attr('data-operator', type);
+            }
+            return $clause.html(expression);
         }
 
         function addExpression(expression, nodeId) {
+
             console.log('Adding expression');
             var id = "expression" + nodeId;
 
             $('#' + id).remove();
-            createClause(expression, 'and').attr('id', id).appendTo('#expressions');
+            createClause(expression).attr('id', id).appendTo('#expressions');
         }
 
         function constructExpression(node) {
-            var clause = createClause('', 'and');
-
-            clause.append($tree.treeview('getNode', node.parentId).nodes.filter(function(node) {
+            var children = $tree.treeview('getNode', node.parentId).nodes.filter(function(node) {
                 return node.state.selected;
-            }).map(function(node) {
-                return createClause(node.data, 'or');
-            }));
-            return clause;
+            });
+
+            if (children.length == 1) {
+                return createClause(children[0].data);
+            } else {
+                var $clause = createClause('', 'or');
+                for (var i = 0; i < children.length; i++) {
+                    $clause.append(createClause(children[i].data));
+                }
+
+                return $clause;
+            }
+
+
         }
         $tree.on('nodeSelected', function (e, node) {
             if (node.data.indexOf('{VALUE}') > -1) {
                 popupText(node);
             } else {
                 // Get parent node.
-                addExpression(constructExpression(node).html(), node.parentId);
+                addExpression(constructExpression(node), node.parentId);
             }
         });
         $tree.on('nodeUnselected', function (e, node) {
@@ -143,27 +158,51 @@ $this->widget(\SamIT\Yii1\Widgets\BootstrapTreeView::class, [
             } else {
                 $('#expression' + node.parentId).remove();
                 console.log(node);
-                addExpression(constructExpression(node).html(), node.parentId);
+                addExpression(constructExpression(node), node.parentId);
             }
         });
-
-
-
     });
+
+    window.expressionToJson = function expressionToJson(selector) {
+        var $node = $(selector);
+        if ($node.children().length == 0) {
+            return $node.text();
+        } else {
+            return [
+                $node.attr('data-operator'),
+                $node.children().toArray().map(expressionToJson)
+            ];
+        }
+    }
+
+
 </script>
 <style>
-    .expressions .and-clause::before {
-        content: "( ";
-    }
-    .expressions .and-clause::after {
-        content: " )";
+    .clause > .clause:first-child:not(:last-child)::before {
+        content: "( " !important;
     }
 
-    .expressions .or-clause:not(:first-child)::before {
+    .clause > .clause:last-child:not(:first-child)::after {
+        content: " )" !important;
+    }
+
+    .clause[data-operator]::before {
+        display: block;
+
+    }
+    .clause[data-operator="or"] > .clause:not(:first-child)::before {
         content: " || ";
     }
-    .expressions .and-clause:not(:first-child)::before {
-        content: " && (";
+
+    .clause[data-operator="and"] > .clause:not(:first-child)::before {
+        content: " && ";
+    }
+
+    .clause > .clause {
+        border: 2px solid red;
+    }
+    .clause[data-operator] > .clause {
+        border-width: 0;
     }
 
 </style>

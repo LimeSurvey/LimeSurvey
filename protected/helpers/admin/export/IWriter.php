@@ -1,4 +1,6 @@
 <?php
+use ls\models\Survey;
+
 interface IWriter
 {
 
@@ -7,7 +9,7 @@ interface IWriter
     * Writes the survey and all the responses it contains to the output
     * using the options specified in FormattingOptions.
     *
-    * See Survey for information on loading a survey
+    * See ls\models\Survey for information on loading a survey
     * and results from the database.
     *
     * @param Survey $survey

@@ -1,5 +1,7 @@
 <?php
 /** @var Question $question */
+use ls\models\Question;
+
 if (!$question->hasSubQuestions) return;
 
 $first = true;

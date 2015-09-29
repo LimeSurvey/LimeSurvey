@@ -108,4 +108,16 @@ class TokenStream {
         }
         return $result;
     }
+
+    public function dump()
+    {
+        $parts = [];
+        foreach ($this->getItems() as $token) {
+            if ($token->type != Token::WS) {
+                $parts[] = $token->dump();
+            }
+        }
+        return implode(' ', $parts);
+
+    }
 }

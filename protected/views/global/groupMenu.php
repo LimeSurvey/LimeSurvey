@@ -1,5 +1,7 @@
 <?php
 /* @var Controller $this*/
+use ls\models\QuestionGroup;
+
 /** @var QuestionGroup $model */
 if (!isset($model) || !$model instanceof QuestionGroup) {
     throw new Exception("Group must be set for group menu.");
@@ -26,13 +28,13 @@ $menu = [[ // Left side
     ],
     [
 //        'label' => gT('Questions'),
-//        'items' => array_map(function(Question $question) {
+//        'items' => array_map(function(ls\models\Question $question) {
 //            return [
 //                'url' => App()->createUrl('questions/view', ['id' => $question->qid]),
 //                'label' => $question->title
 //            ];
 //
-//        }, Question::model()->primary()->findAllByAttributes(['sid' => $this->survey->sid, 'language' => $this->survey->language]))
+//        }, ls\models\Question::model()->primary()->findAllByAttributes(['sid' => $this->survey->sid, 'language' => $this->survey->language]))
     ], 
     
 ]];

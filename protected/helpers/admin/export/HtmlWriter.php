@@ -1,5 +1,7 @@
 <?php
-    class HtmlWriter extends Writer
+use ls\models\Survey;
+
+class HtmlWriter extends Writer
     {
 
 
@@ -19,7 +21,7 @@
                 \Html::tag('style', [], 'td { border: 1px solid black }'),
                 \Html::closeTag('head'),
                 \Html::openTag('body'),
-                \Html::tag('h1', ['data-sid' => $survey->sid], gT("Survey name (ID)")
+                \Html::tag('h1', ['data-sid' => $survey->sid], gT("ls\models\Survey name (ID)")
                     . ": {$survey->localizedTitle} ({$survey->sid})")
             ]);
 
@@ -38,7 +40,7 @@
 
         protected function renderRecord($headers, $values)
         {
-            $record = \Html::tag('h1', [], sprintf(gT("Survey response")));
+            $record = \Html::tag('h1', [], sprintf(gT("ls\models\Survey response")));
             $record .= \Html::openTag('div', [
                 'class' => 'response',
                 'data-srid' => $values[0]

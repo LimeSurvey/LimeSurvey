@@ -1,7 +1,7 @@
 <?php
 namespace ls\migrations;
 use \CDbMigration;
-use SettingGlobal;
+use ls\models\SettingGlobal;
 
 class m150213_153506_initial_migration extends CDbMigration
 {

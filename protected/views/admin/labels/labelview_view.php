@@ -37,7 +37,7 @@
                                     <th>&nbsp;</th>';
                             ?>
                             <th><?php eT("Code") ?></th>
-                            <th><?php eT("Assessment value") ?></th>
+                            <th><?php eT("ls\models\Assessment value") ?></th>
                             <th><?php eT("Title") ?></th>
                             <th><?php eT("Action") ?></th>
                         </tr>

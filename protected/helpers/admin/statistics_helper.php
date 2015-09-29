@@ -10,6 +10,9 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
+use ls\models\Question;
+use ls\models\Survey;
+use ls\models\SurveyDynamic;
 
 
 /**
@@ -462,7 +465,7 @@ function buildSelects($allfields, $surveyid, $language) {
                         }
                     }
 
-                    //| - File Upload Question Type
+                    //| - File Upload ls\models\Question Type
                     else if ($firstletter == "|")
                     {
                         // no. of files greater than
@@ -613,7 +616,7 @@ class statistics_helper {
     * @param boolean $browse
     *
     * @output array $output An array containing "alist"=>A list of answers to the question in the form of an array ($alist array
-    *                       contains an array for every field to be displayed - with the Actual Question Code/Title, The text (flattened)
+    *                       contains an array for every field to be displayed - with the Actual ls\models\Question Code/Title, The text (flattened)
     *                       of the question, and the fieldname where the data is stored.
     *                       "qtitle"=>The title of the question,
     *                       "qquestion"=>The description of the question,
@@ -702,7 +705,7 @@ class statistics_helper {
             // So, instead of building an array of predefined answers like we do with lists & other types,
             // we instead create two "types" of possible answer - either there is a response.. or there isn't.
             // This question type then can provide a % of the question answered in the summary.
-            $alist[]=array("Answer", gT("Answer"), $mfield);
+            $alist[]=array("ls\models\Answer", gT("ls\models\Answer"), $mfield);
             $alist[]=array("NoAnswer", gT("No answer"), $mfield);
         }
 
@@ -741,7 +744,7 @@ class statistics_helper {
             // So, instead of building an array of predefined answers like we do with lists & other types,
             // we instead create two "types" of possible answer - either there is a response.. or there isn't.
             // This question type then can provide a % of the question answered in the summary.
-            $alist[]=array("Answer", gT("Answer"), $mfield);
+            $alist[]=array("ls\models\Answer", gT("ls\models\Answer"), $mfield);
             $alist[]=array("NoAnswer", gT("No answer"), $mfield);
         }
 
@@ -1371,7 +1374,7 @@ class statistics_helper {
                     break;
 
                 case ":": //Array (Multiple Flexi) (Numbers)
-                    $aQuestionAttributes=\QuestionAttribute::model()->getQuestionAttributes($qiqid);
+                    $aQuestionAttributes= \ls\models\QuestionAttribute::model()->getQuestionAttributes($qiqid);
                     if (trim($aQuestionAttributes['multiflexible_max'])!='') {
                         $maxvalue=$aQuestionAttributes['multiflexible_max'];
                     }
@@ -1481,7 +1484,7 @@ class statistics_helper {
                     $sSubquestion = flattenText($questionDesc['question']);
 
                     //get question attributes
-                    $aQuestionAttributes=\QuestionAttribute::model()->getQuestionAttributes($qqid);
+                    $aQuestionAttributes= \ls\models\QuestionAttribute::model()->getQuestionAttributes($qqid);
 
 
                     //check last character -> label 1
@@ -1696,7 +1699,7 @@ class statistics_helper {
                     $sDatabaseType = Yii::app()->db->getDriverName();
 
                     //free text answers
-                    if($al[0]=="Answer")
+                    if($al[0]=="ls\models\Answer")
                     {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
                         $query .= ($sDatabaseType == "mysql")?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
@@ -1795,8 +1798,8 @@ class statistics_helper {
                 {$fname=gT("No answer");}
 
             //"other" handling
-            //"Answer" means that we show an option to list answer to "other" text field
-            elseif ($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P")
+            //"ls\models\Answer" means that we show an option to list answer to "other" text field
+            elseif ($al[0] === gT("Other") || $al[0] === "ls\models\Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P")
             {
                 if ($outputs['qtype'] == "P") $sColumnName = $al[2]."comment";
                 else  $sColumnName = $al[2];
@@ -1810,7 +1813,7 @@ class statistics_helper {
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
                     $headPDF2 = array();
-                    $headPDF2[] = array(gT("ID"),gT("Response"));
+                    $headPDF2[] = array(gT("ID"),gT("ls\models\Response"));
                     $tablePDF2 = array();
                     $result2= $this->_listcolumn($surveyid,$sColumnName);
 
@@ -1823,7 +1826,7 @@ class statistics_helper {
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='xls') {
                     $headXLS = array();
                     $tableXLS = array();
-                    $headXLS[] = array(gT("ID"),gT("Response"));
+                    $headXLS[] = array(gT("ID"),gT("ls\models\Response"));
 
                     $result2= $this->_listcolumn($surveyid,$sColumnName);
 
@@ -1848,10 +1851,10 @@ class statistics_helper {
             elseif ($outputs['qtype'] == "S" || $outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "Q")
             {
                 $headPDF = array();
-                $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"));
+                $headPDF[] = array(gT("ls\models\Answer"),gT("Count"),gT("Percentage"));
 
                 //show free text answers
-                if ($al[0] == "Answer")
+                if ($al[0] == "ls\models\Answer")
                 {
                     $fname= "$al[1]";
                     if ($browse===true) $fname .= " <input type='button'  class='statisticsbrowsebutton' value='"
@@ -1871,7 +1874,7 @@ class statistics_helper {
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
                     $headPDF2 = array();
-                    $headPDF2[] = array(gT("ID"),gT("Response"));
+                    $headPDF2[] = array(gT("ID"),gT("ls\models\Response"));
                     $tablePDF2 = array();
                     $result2= $this->_listcolumn($surveyid,$sColumnName);
 
@@ -1894,7 +1897,7 @@ class statistics_helper {
                         {
                             case 'xls':
                                 $this->xlsRow++;
-                                $this->sheet->write($this->xlsRow,0,gT("Answer"));
+                                $this->sheet->write($this->xlsRow,0,gT("ls\models\Answer"));
                                 $this->sheet->write($this->xlsRow,1,gT("Count"));
                                 $this->sheet->write($this->xlsRow,2,gT("Percentage"));
                                 $this->sheet->write($this->xlsRow,3,gT("Sum"));
@@ -1903,12 +1906,12 @@ class statistics_helper {
                             case 'pdf':
 
                                 $headPDF = array();
-                                $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"),gT("Sum"));
+                                $headPDF[] = array(gT("ls\models\Answer"),gT("Count"),gT("Percentage"),gT("Sum"));
 
                                 break;
                             case 'html':
                                 //four columns
-                                $statisticsoutput .= "<strong>".gT("Answer")."</strong></th>\n"
+                                $statisticsoutput .= "<strong>".gT("ls\models\Answer")."</strong></th>\n"
                                 ."\t\t<th width='15%' align='center' >"
                                 ."<strong>".gT("Count")."</strong></th>\n"
                                 ."\t\t<th width='20%' align='center' >"
@@ -1931,7 +1934,7 @@ class statistics_helper {
                         {
                             case 'xls':
                                 $this->xlsRow++;
-                                $this->sheet->write($this->xlsRow,0,gT("Answer"));
+                                $this->sheet->write($this->xlsRow,0,gT("ls\models\Answer"));
                                 $this->sheet->write($this->xlsRow,1,gT("Count"));
                                 $this->sheet->write($this->xlsRow,2,gT("Percentage"));
                                 break;
@@ -1939,12 +1942,12 @@ class statistics_helper {
                             case 'pdf':
 
                                 $headPDF = array();
-                                $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"));
+                                $headPDF[] = array(gT("ls\models\Answer"),gT("Count"),gT("Percentage"));
 
                                 break;
                             case 'html':
                                 //three columns
-                                $statisticsoutput .= "<strong>".gT("Answer")."</strong></td>\n"
+                                $statisticsoutput .= "<strong>".gT("ls\models\Answer")."</strong></td>\n"
                                 ."\t\t<th width='25%' align='center' >"
                                 ."<strong>".gT("Count")."</strong></th>\n"
                                 ."\t\t<th width='25%' align='center' >"
@@ -1975,7 +1978,7 @@ class statistics_helper {
                     {
                         case 'xls':
                             $this->xlsRow++;
-                            $this->sheet->write($this->xlsRow,0,gT("Answer"));
+                            $this->sheet->write($this->xlsRow,0,gT("ls\models\Answer"));
                             $this->sheet->write($this->xlsRow,1,gT("Count"));
                             $this->sheet->write($this->xlsRow,2,gT("Percentage"));
                             break;
@@ -1983,12 +1986,12 @@ class statistics_helper {
                         case 'pdf':
 
                             $headPDF = array();
-                            $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"));
+                            $headPDF[] = array(gT("ls\models\Answer"),gT("Count"),gT("Percentage"));
 
                             break;
                         case 'html':
                             //three columns
-                            $statisticsoutput .= "<strong>".gT("Answer")."</strong></th>\n"
+                            $statisticsoutput .= "<strong>".gT("ls\models\Answer")."</strong></th>\n"
                             ."\t\t<th width='25%' align='center' >"
                             ."<strong>".gT("Count")."</strong></th>\n"
                             ."\t\t<th width='25%' align='center' >"
@@ -2679,7 +2682,7 @@ class statistics_helper {
         //-------------------------- PCHART OUTPUT ----------------------------
         list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
         $qsid = $surveyid;
-        $aattr = \QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid'], substr($rt, 0, 1));
+        $aattr = \ls\models\QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid'], substr($rt, 0, 1));
 
         //PCHART has to be enabled and we need some data
         if ($usegraph == 1) {
@@ -2736,7 +2739,7 @@ class statistics_helper {
                         case 'html':
                             $statisticsoutput .= "<img src=\"$tempurl/".$cachefilename."\" border='1' />";
 
-                            $aattr = \QuestionAttribute::model()->getQuestionAttributes($qqid, $firstletter);
+                            $aattr = \ls\models\QuestionAttribute::model()->getQuestionAttributes($qqid, $firstletter);
                             if ($bShowMap) {
                                 $statisticsoutput .= "<div id=\"statisticsmap_$rt\" class=\"statisticsmap\"></div>";
 
@@ -2822,7 +2825,7 @@ class statistics_helper {
         * $outputType: html || pdf ||
         */
         /**
-        * get/set Survey Details
+        * get/set ls\models\Survey Details
         */
 
         //no survey ID? -> come and get one
@@ -2921,7 +2924,7 @@ class statistics_helper {
             $this->pdf->SetAuthor('LimeSurvey');
             $this->pdf->SetTitle(sprintf(gT("Statistics survey %s"),$surveyid));
             $this->pdf->SetSubject($surveyInfo['surveyls_title']);
-            $this->pdf->SetKeywords('LimeSurvey,'.gT("Statistics").', '.sprintf(gT("Survey %s"),$surveyid));
+            $this->pdf->SetKeywords('LimeSurvey,'.gT("Statistics").', '.sprintf(gT("ls\models\Survey %s"),$surveyid));
             $this->pdf->SetDisplayMode('fullpage', 'two');
             $this->pdf->setLanguageArray($aPdfLanguageSettings['lg']);
 
@@ -2932,7 +2935,7 @@ class statistics_helper {
             // set default header data
             // Since png crashes some servers (and we can not try/catch that) we use .gif (or .jpg) instead
             $headerlogo = 'statistics.gif';
-            $this->pdf->SetHeaderData($headerlogo, 10, gT("Quick statistics",'unescaped') , gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
+            $this->pdf->SetHeaderData($headerlogo, 10, gT("Quick statistics",'unescaped') , gT("ls\models\Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
             $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
             // set default monospaced font
             $this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -3040,7 +3043,7 @@ class statistics_helper {
                 }
                 $this->pdf->AddPage('P', ' A4');
                 $this->pdf->Bookmark(gT("Results",'unescaped'), 0, 0);
-                $this->pdf->titleintopdf(gT("Results",'unescaped'),gT("Survey",'unescaped')." ".$surveyid);
+                $this->pdf->titleintopdf(gT("Results",'unescaped'),gT("ls\models\Survey",'unescaped')." ".$surveyid);
                 $this->pdf->tableintopdf($array);
                 break;
 
@@ -3163,7 +3166,7 @@ class statistics_helper {
                     return $tempfilename;
                 }
                 else
-                    return $this->pdf->Output(gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
+                    return $this->pdf->Output(gT('ls\models\Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
 
                 break;
             case 'html':

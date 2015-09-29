@@ -1,7 +1,7 @@
 <?php
 namespace ls\components;
 
-class MemoryValidator extends CNumberValidator
+class MemoryValidator extends \CNumberValidator
 {
     /**
      * @var integer|float upper limit of the number. Defaults to null, meaning no upper limit.

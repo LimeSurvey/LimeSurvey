@@ -1,5 +1,7 @@
 <?php
-	$menu = [
+use ls\models\Survey;
+
+$menu = [
         array(
             array(
                 'title' => gT('Default administration page'),
@@ -47,7 +49,7 @@
                 'visible' => App()->user->checkAccess('labelsets')
             ),
             array(
-                'title' => gT('Template Editor'),
+                'title' => gT('ls\models\Template Editor'),
                 'url' => array('admin/templates/'),
                 'icon' => 'eye-open',
                 'visible' => App()->user->checkAccess('templates')

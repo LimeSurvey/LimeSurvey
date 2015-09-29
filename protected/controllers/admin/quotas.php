@@ -11,6 +11,12 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+use ls\models\Answer;
+use ls\models\Question;
+use ls\models\Quota;
+use ls\models\QuotaLanguageSetting;
+use ls\models\QuotaMember;
+use ls\models\Survey;
 
 /**
  * Quotas Controller
@@ -160,7 +166,7 @@ class quotas extends Survey_Common_Action
             header("Content-Disposition: attachment; filename=results-survey" . $iSurveyId . ".csv");
             header("Content-type: text/comma-separated-values; charset=UTF-8");
             header("Pragma: public");
-            echo gT("Quota name") . "," . gT("Limit") . "," . gT("Completed") . "," . gT("Remaining") . "\r\n";
+            echo gT("ls\models\Quota name") . "," . gT("Limit") . "," . gT("Completed") . "," . gT("Remaining") . "\r\n";
             foreach ($csvoutput as $line)
             {
                 echo $line;

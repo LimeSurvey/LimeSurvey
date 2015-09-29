@@ -1,4 +1,4 @@
-/*  This file is part of Lime Survey Template : citronade
+/*  This file is part of Lime ls\models\Survey ls\models\Template : citronade
     Copyright (C) 2007-2012 The LimeSurvey Project Team / Carsten Schmitz
     Copyright (C) 2010-2012 GsiLL / Denis Chenu <http://sondages.pro>
     you can redistribute it and/or modify
@@ -105,7 +105,7 @@ p.url{font-size:1.2em;text-align:center;font-weight:bold}
 .groupdescription{border: 0 solid #5670A1;border-top:0px none #5670A1;background:#EEF6FF;}
 .grouptitle{border: 0 solid #5670A1;border-bottom:0px none #5670A1;background:#5670A1;color:#FEFEFE}
 
-/* Question bloc decoration */
+/* ls\models\Question bloc decoration */
 .question-wrapper{background-color:#FEFEFE;border:1px solid #5670A1;}
 .question-wrapper .question-text{background:#5670A1;padding:0.5em 1.5em;color:#FEFEFE}
 .question-wrapper .question-text a{color:#FEFEFE}
@@ -192,7 +192,7 @@ input.checkbox[disabled],input.radio[disabled]{opacity: 0.3;}
 .js #index .row:hover{background-color: #E5F8A8;color: #5670A1;text-decoration:none;}
 .current .jshide{display:none}
 #index .container .submit{margin:0 auto 0.5em;display:block}
-/* Question specific decoration */
+/* ls\models\Question specific decoration */
 table.question{border-color:#D5DBE7;}
 table.question tbody{border-color:#D5DBE7;}
 table.question tr{border-color:#D5DBE7;}
@@ -362,7 +362,7 @@ input[type="text"],input.text, textarea {
 }
 .question-help{clear: both;overflow:auto;}
 .question-help img {margin: 1px 5px 5px 1px;}
-/* Question answer specific                      */
+/* ls\models\Question answer specific                      */
 p.question{text-align:center;margin: 0 1em}
 .textarea,.text {text-align: left;}
 table.question{table-layout:fixed;width:99%;}

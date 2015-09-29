@@ -1,26 +1,34 @@
 <?php
 
-class DummyResponse extends CFormModel implements \ls\interfaces\iResponse
+namespace ls\models;
+
+use CFormModel;
+
+class DummyResponse extends \CFormModel implements \ls\interfaces\iResponse
 {
     protected $_id;
 
     protected $fields = [];
-    public function __construct(Survey $survey) {
+
+    public function __construct(Survey $survey)
+    {
         $this->_id = \Cake\Utility\Text::uuid();
         $this->save();
-        foreach($survey->getColumns() as $field => $type) {
+        foreach ($survey->getColumns() as $field => $type) {
             $this->fields[$field] = null;
         }
     }
 
-    public function __get($name) {
+    public function __get($name)
+    {
         if (array_key_exists($name, $this->fields)) {
             return $this->fields[$name];
         }
         parent::__get($name);
     }
 
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
         if (array_key_exists($name, $this->fields)) {
             $this->fields[$name] = $value;
         } else {
@@ -45,19 +53,23 @@ class DummyResponse extends CFormModel implements \ls\interfaces\iResponse
     public static function loadById($id)
     {
         $key = 'dummy.' . $id;
+
         return App()->session->get($key);
     }
 
-    public function save() {
+    public function save()
+    {
         $key = 'dummy.' . $this->_id;
         App()->session->add($key, $this);
     }
 
-    public function getToken() {
+    public function getToken()
+    {
         return null;
     }
 
-    public function getAttributes($names = null) {
+    public function getAttributes($names = null)
+    {
         return $this->fields;
     }
 
@@ -66,7 +78,8 @@ class DummyResponse extends CFormModel implements \ls\interfaces\iResponse
      * @param $field
      * @param \Psr\Http\Message\UploadedFileInterface[] $file
      */
-    public function setFiles($field, array $files) {
+    public function setFiles($field, array $files)
+    {
         // First check if the question type for the field is actually an upload question.
 //         Get the question id from the field name.
 //vdd($files);
@@ -80,7 +93,7 @@ class DummyResponse extends CFormModel implements \ls\interfaces\iResponse
                 $base = "$directory/{$this->getId()}_";
                 /** @var \Psr\Http\Message\UploadedFileInterface $file */
                 $meta = [];
-                foreach($files as $file) {
+                foreach ($files as $file) {
                     if ($file->getSize() > 0) {
                         $extension = pathinfo($file->getClientFilename())['extension'];
                         $targetPath = $base . App()->securityManager->generateRandomString(10) . '.' . strtolower($extension);

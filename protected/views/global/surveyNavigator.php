@@ -1,11 +1,14 @@
 <!--<nav>-->
-<?php 
+<?php
+use ls\models\Question;
+use ls\models\QuestionGroup;
+
 $items = [];
 /** @var QuestionGroup $group */
 foreach ($survey->groups as $group) {
     $item = [
         'text' => $group->title,
-        'url' => ['groups/view', 'id' => $group->id],
+        'url' => ['groups/update', 'id' => $group->id],
         'class' => 'group',
         'icon' => null,
         'active' => isset($this->menus['group']) && $this->menus['group']->id === $group->id && !isset($this->menus['question']),

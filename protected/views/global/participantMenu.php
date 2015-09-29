@@ -33,7 +33,7 @@ $menu = [[ // Left side
 ], [ // Right side
 
 ],
-'brandLabel' => gT("Participant database")];
+'brandLabel' => gT("ls\models\Participant database")];
 
 $event = new PluginEvent('afterParticipantMenuLoad', $this);
 $event->set('menu', $menu);

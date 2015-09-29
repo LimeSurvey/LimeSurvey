@@ -10,7 +10,7 @@ class m150602_153442_refactor_participant_attributes extends CDbMigration
      */
     public function safeUp()
 	{
-        $table = \ParticipantAttributeName::model()->tableName();
+        $table = \ls\models\ParticipantAttributeName::model()->tableName();
         $this->renameColumn($table, 'attribute_type', 'type');
         $this->renameColumn($table, 'attribute_id', 'id');
         $this->renameColumn($table, 'defaultname', 'name');

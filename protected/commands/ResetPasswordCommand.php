@@ -28,7 +28,7 @@ use CConsoleCommand;
             }
             else
             {
-                echo "User {$sArgument[0]} not found.\n";
+                echo "ls\models\User {$sArgument[0]} not found.\n";
             }
         }
     }

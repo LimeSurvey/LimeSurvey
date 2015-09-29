@@ -11,6 +11,8 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+use ls\models\ActiveRecord;
+
 class UserInGroup extends ActiveRecord {
 
 	/**
@@ -56,7 +58,7 @@ class UserInGroup extends ActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'users' => array(self::BELONGS_TO, 'User', '', 'on' => 't.uid = users.uid')
+            'users' => array(self::BELONGS_TO, 'ls\models\User', '', 'on' => 't.uid = users.uid')
         );
     }
 

@@ -17,7 +17,7 @@ class Import178 extends BaseElementXmlImport{
     {
         $transaction = App()->db->beginTransaction();
         try {
-            /** @var \Survey $survey */
+            /** @var \ls\models\Survey $survey */
             $result = $this->importSurvey($this->parsedDocument);
         } catch(\Exception $e) {
             $transaction->rollback();
@@ -43,7 +43,7 @@ class Import178 extends BaseElementXmlImport{
             }
         }
         if (!empty($translatedFields)) {
-            $translation = new \Translation();
+            $translation = new \ls\models\Translation();
             $translation->language = $data['language'];
             $translation->model = $translatable->getModel();
             $translation->model_id = $translatable->owner->primaryKey;
@@ -55,7 +55,7 @@ class Import178 extends BaseElementXmlImport{
         }
         eP();
     }
-    protected function prepareGroup(array $data, \Survey $survey) {
+    protected function prepareGroup(array $data, \ls\models\Survey $survey) {
         // Translate gid.
 
         $data['id'] = isset($data['gid']) ? $data['gid'] : $data['id'];
@@ -64,8 +64,8 @@ class Import178 extends BaseElementXmlImport{
         unset($data['language']);
         return $data;
     }
-    protected function importGroup(array $data, \Survey $survey, array &$questionMap) {
-        $group = new \QuestionGroup();
+    protected function importGroup(array $data, \ls\models\Survey $survey, array &$questionMap) {
+        $group = new \ls\models\QuestionGroup();
         // Set related model.
         $group->survey = $survey;
         $data = $this->prepareGroup($data, $survey);
@@ -98,7 +98,7 @@ class Import178 extends BaseElementXmlImport{
      * @throws \Exceptions
      */
     protected function importSurvey($data) {
-        $survey = new \Survey();
+        $survey = new \ls\models\Survey();
 
         $surveyTranslations = \TbArray::popValue('languagesettings', $data, []);
         $groups = \TbArray::popValue('groups', $data, []);
@@ -126,8 +126,8 @@ class Import178 extends BaseElementXmlImport{
         return $survey;
     }
 
-    protected function importSurveyTranslation($data, \Survey $survey) {
-        $languageSetting = new \SurveyLanguageSetting();
+    protected function importSurveyTranslation($data, \ls\models\Survey $survey) {
+        $languageSetting = new \ls\models\SurveyLanguageSetting();
         $languageSetting->survey = $survey;
         $languageSetting->setAttributes($data, false);
         $languageSetting->surveyls_survey_id = $survey->primaryKey;
@@ -136,12 +136,12 @@ class Import178 extends BaseElementXmlImport{
         }
     }
 
-    protected function prepareQuestion($data, \QuestionGroup $group, \Question $parent = null) {
+    protected function prepareQuestion($data, \ls\models\QuestionGroup $group, \ls\models\Question $parent = null) {
         \Yii::beginProfile('prepareQuestion');
         unset($data['language']);
         $data['gid'] = $group->primaryKey;
         $data['sid'] = $group->sid;
-        $model = \Question::model();
+        $model = \ls\models\Question::model();
         $model->title = $data['title'];
         if (!$model->validate(['title'])) {
             $data['title'] = "q" . $data['title'];
@@ -153,7 +153,7 @@ class Import178 extends BaseElementXmlImport{
         return $data;
     }
 
-    protected function importCondition($data, \Question $question, array $questionMap)
+    protected function importCondition($data, \ls\models\Question $question, array $questionMap)
     {
         \Yii::beginProfile('importCondition');
         $oldTargetQid = intval($data['cqid']);
@@ -177,7 +177,7 @@ class Import178 extends BaseElementXmlImport{
         \Yii::endProfile('importCondition');
         return $result;
     }
-    protected function importQuestion(array $data, \QuestionGroup $group, array &$questionMap, \Question $parent = null) {
+    protected function importQuestion(array $data, \ls\models\QuestionGroup $group, array &$questionMap, \ls\models\Question $parent = null) {
         /**
          * If we only have 1 language, use it even if it is not the "base" language.
          */
@@ -188,8 +188,8 @@ class Import178 extends BaseElementXmlImport{
         $answers = \TbArray::popValue('answers', $data, []);
         $data = $this->prepareQuestion($data, $group, $parent);
         // We want the "correct class".
-        $class = \Question::resolveClass($data['type']);
-        /** @var \Question $question */
+        $class = \ls\models\Question::resolveClass($data['type']);
+        /** @var \ls\models\Question $question */
         $question = new $class('import');
         $question->type = $data['type'];
         // Set related models.
@@ -235,16 +235,16 @@ class Import178 extends BaseElementXmlImport{
         return $result;
     }
 
-    protected function prepareAnswer($data, \Question $question) {
+    protected function prepareAnswer($data, \ls\models\Question $question) {
         unset($data['qid']);
         $data['question_id'] = $question->primaryKey;
         unset($data['language']);
         return $data;
     }
-    protected function importAnswer($data, \Question $question)
+    protected function importAnswer($data, \ls\models\Question $question)
     {
         \Yii::beginProfile('importAnswer');
-        $answer = new \Answer('import');
+        $answer = new \ls\models\Answer('import');
         // Set related model.
         $answer->question = $question;
         $translations = \TbArray::popValue('translations', $data, []);

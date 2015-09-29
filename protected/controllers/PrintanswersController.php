@@ -59,7 +59,7 @@ use \Yii;
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
             //SET THE TEMPLATE DIRECTORY
              $sTemplate = $aSurveyInfo['template'];
-            //Survey is not finished or don't exist
+            //ls\models\Survey is not finished or don't exist
             if (!App()->surveySessionManager->isActive || !App()->surveySessionManager->current->isFinished)
             //display "sorry but your session has expired"
             {
@@ -94,7 +94,7 @@ use \Yii;
             {
                 $sOutput = CHtml::form(["printanswers/view/surveyid/{$iSurveyID}/printableexport/pdf"], 'post')
                 ."<center><input type='submit' value='".gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
-                $sOutput .= "\t<div class='printouttitle'><strong>".gT("Survey name (ID):")."</strong> $sSurveyName ($iSurveyID)</div><p>&nbsp;\n";
+                $sOutput .= "\t<div class='printouttitle'><strong>".gT("ls\models\Survey name (ID):")."</strong> $sSurveyName ($iSurveyID)</div><p>&nbsp;\n";
                 LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
                 // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
                 LimeExpressionManager::StartProcessingGroup(1,($aSurveyInfo['anonymized']!="N"),$iSurveyID);
@@ -126,7 +126,7 @@ use \Yii;
                                 $sOutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]} {$sFieldname}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
                         }
                     }
-                    elseif (substr($sFieldname,0,4) != 'qid_') // Question text is already in subquestion text, skipping it
+                    elseif (substr($sFieldname,0,4) != 'qid_') // ls\models\Question text is already in subquestion text, skipping it
                     {
                         $sOutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>".flattenText($fname[2])."</td></tr>";
                     }
@@ -195,7 +195,7 @@ use \Yii;
                             $oPDF->addAnswer($fname[0]." ".$fname[1], $fname[2]);
                         }
                     }
-                    elseif (substr($sFieldname,0,4) != 'qid_') // Question text is already in subquestion text, skipping it
+                    elseif (substr($sFieldname,0,4) != 'qid_') // ls\models\Question text is already in subquestion text, skipping it
                     {
                         $oPDF->addAnswer($fname[0]." ".$fname[1], $fname[2]);
                     }

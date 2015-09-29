@@ -1,5 +1,7 @@
 <div class="row"><div class="col-sm-12 col-md-6">
-    <?php echo TbHtml::tag('h1', [], $survey->localizedTitle); ?>
+    <?php use ls\models\Token;
+
+    echo TbHtml::tag('h1', [], $survey->localizedTitle); ?>
 </div></div><div class="row"><div class="col-sm-12 col-md-12">
 <?php
 $inputOptions =  [
@@ -17,7 +19,7 @@ $form = $this->beginWidget(TbActiveForm::class, [
 ]);
 
 //echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_HORIZONTAL, '', 'post');
-//$token = Token::create($survey->sid);
+//$token = ls\models\Token::create($survey->sid);
 /** @var Token $token */
 echo $form->textFieldControlGroup($token, 'firstname', array_merge($inputOptions, ['error' => $token->getError('firstname')]));
 echo $form->textFieldControlGroup($token, 'lastname', $inputOptions);

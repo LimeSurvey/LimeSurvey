@@ -1,5 +1,5 @@
 <?php
-/** @var \QuestionGroup $group */
+/** @var \ls\models\QuestionGroup $group */
 $options = ['formLayout' => TbHtml::FORM_LAYOUT_VERTICAL];
 $group->language = $language;
 echo TbHtml::openTag('fieldset', [

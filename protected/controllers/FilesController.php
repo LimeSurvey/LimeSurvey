@@ -77,7 +77,7 @@ class FilesController extends Controller
             mkdir($dir);
         }
         return [
-            'alias' => "Survey ({$surveyId})",
+            'alias' => "ls\models\Survey ({$surveyId})",
             'driver' => 'LocalFileSystem',
             'path'   => $dir,
             'URL' => App()->baseUrl . Yii::getPathOfAlias('public') , $relative,
@@ -100,11 +100,11 @@ class FilesController extends Controller
     */
     protected function getRootForTemplate($template) {
         $result = [];
-        if (true || !\Template::isStandardTemplate($template)) {
-            $dir = \Template::getTemplatePath($template);
-            $url = \Template::getTemplateURL($template);
+        if (true || !\ls\models\Template::isStandardTemplate($template)) {
+            $dir = \ls\models\Template::getTemplatePath($template);
+            $url = \ls\models\Template::getTemplateURL($template);
             $result[] = [
-                'alias' => "Template ({$template})",
+                'alias' => "ls\models\Template ({$template})",
                 'driver' => 'LocalFileSystem',
                 'path' => $dir,
                 'URL' => App()->baseUrl . $url,
@@ -135,7 +135,7 @@ class FilesController extends Controller
 
         $result = [];
         // Get accessible surveys.
-        foreach (\Survey::model()->accessible()->findAll() as $survey) {
+        foreach (\ls\models\Survey::model()->accessible()->findAll() as $survey) {
             $result[] = $this->getRootForSurvey($survey->primaryKey);
         }
 //        vdd($result);

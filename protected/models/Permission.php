@@ -12,6 +12,10 @@
    *
    */
 
+use ls\models\ActiveRecord;
+use ls\models\Survey;
+use ls\models\User;
+
 class Permission extends ActiveRecord
 {
     /**
@@ -91,7 +95,7 @@ class Permission extends ActiveRecord
                 'update' => false,
                 'import' => false,
                 'export' => false,
-                'title' => gT("Survey deletion"),
+                'title' => gT("ls\models\Survey deletion"),
                 'description' => gT("Permission to delete a survey"),
                 'img' => 'delete'
             ),
@@ -101,12 +105,12 @@ class Permission extends ActiveRecord
                 'delete' => false,
                 'import' => false,
                 'export' => false,
-                'title' => gT("Survey activation"),
+                'title' => gT("ls\models\Survey activation"),
                 'description' => gT("Permission to activate/deactivate a survey"),
                 'img' => 'activate_deactivate'
             ),
             'surveycontent' => array(
-                'title' => gT("Survey content"),
+                'title' => gT("ls\models\Survey content"),
                 'description' => gT("Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"),
                 'img' => 'add'
             ),
@@ -115,14 +119,14 @@ class Permission extends ActiveRecord
                 'delete' => false,
                 'import' => false,
                 'export' => false,
-                'title' => gT("Survey text elements"),
+                'title' => gT("ls\models\Survey text elements"),
                 'description' => gT("Permission to view/update the survey text elements : survey title, survey description, welcome and end message …"),
                 'img'=>'edit'
             ),
             'surveysecurity' => array(
                 'import' => false,
                 'export' => false,
-                'title' => gT("Survey security"),
+                'title' => gT("ls\models\Survey security"),
                 'description' => gT("Permission to modify survey security settings"),
                 'img' => 'survey_security'
             ),
@@ -131,7 +135,7 @@ class Permission extends ActiveRecord
                 'delete' => false,
                 'import' => false,
                 'export' => false,
-                'title' => gT("Survey settings"),
+                'title' => gT("ls\models\Survey settings"),
                 'description' => gT("Permission to view/update the survey settings including token table creation"),
                 'img' => 'survey_settings'
             ),
@@ -192,7 +196,7 @@ class Permission extends ActiveRecord
             'usergroups' => array(
                 'import' => false,
                 'export' => false,
-                'title' => gT("User groups"),
+                'title' => gT("ls\models\User groups"),
                 'description' => gT("Permission to create, view, update and delete user groups"),
                 'img' => 'usergroup'
             ),
@@ -216,7 +220,7 @@ class Permission extends ActiveRecord
             ),
             'participantpanel' => array(
                 'import' => false,
-                'title' => gT("Participant panel"),
+                'title' => gT("ls\models\Participant panel"),
                 'description' => gT("Permission to create your own participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),
                 'img' => 'cpdb'
             ),
@@ -438,7 +442,7 @@ class Permission extends ActiveRecord
     * @param $sEntityName string The entity name
     * @param $sPermission string Name of the permission
     * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
-    * @param $iUserID integer User ID - if not given the one of the current user is used
+    * @param $iUserID integer ls\models\User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
     public static function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD='read', $iUserID=null)
@@ -504,7 +508,7 @@ class Permission extends ActiveRecord
     * Returns true if a user has global permission for a certain action. 
     * @param $sPermission string Name of the permission - see function getGlobalPermissions
     * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
-    * @param $iUserID integer User ID - if not given the one of the current user is used
+    * @param $iUserID integer ls\models\User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
     function hasGlobalPermission($sPermission, $sCRUD='read', $iUserID=null)
@@ -518,7 +522,7 @@ class Permission extends ActiveRecord
     * @param $iSurveyID integer The survey ID
     * @param $sPermission string Name of the permission
     * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
-    * @param $iUserID integer User ID - if not given the one of the current user is used
+    * @param $iUserID integer ls\models\User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
     function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD='read', $iUserID=null)
@@ -539,7 +543,7 @@ class Permission extends ActiveRecord
     * Returns true if a user has permission to read/create/update a certain template
     * @param $sPermission string Name of the permission - see function getGlobalPermissions
     * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
-    * @param $iUserID integer User ID - if not given the one of the current user is used
+    * @param $iUserID integer ls\models\User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
     function hasTemplatePermission($sTemplateName, $sCRUD='read', $iUserID=null)

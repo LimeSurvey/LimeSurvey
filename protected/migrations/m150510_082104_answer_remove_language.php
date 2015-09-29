@@ -12,14 +12,14 @@ class m150510_082104_answer_remove_language extends CDbMigration
     public function safeUp()
 	{
         // We are removing languages from the answer table and moving it to the translation table.
-        $table = \Answer::model()->tableName();
+        $table = \ls\models\Answer::model()->tableName();
         $this->dropPrimaryKey('', $table);
-        $this->addColumn(\Answer::model()->tableName(), 'id', 'pk');
+        $this->addColumn(\ls\models\Answer::model()->tableName(), 'id', 'pk');
         $this->renameColumn($table, 'qid', 'question_id');
         $this->dbConnection->schema->getTable($table, true);
-        $answers = \Answer::model()->findAll();
+        $answers = \ls\models\Answer::model()->findAll();
         $deleted = $created = 0;
-        /** @var \Answer $answer */
+        /** @var \ls\models\Answer $answer */
         foreach ($answers as $answer) {
             $behaviorConfig = $answer->behaviors()['translatable'];
             // Get the base language
@@ -29,9 +29,9 @@ class m150510_082104_answer_remove_language extends CDbMigration
             }
             if ($baseLanguage != $answer->language) {
                 // Create translation if not base language.
-                $translation = new \Translation();
+                $translation = new \ls\models\Translation();
                 $translation->language = $answer->language;
-                $translation->model = 'Answer'; // We have Single Table Inheritance so we use the base class.
+                $translation->model = 'ls\models\Answer'; // We have Single Table Inheritance so we use the base class.
                 $translation->model_id = $answer->id;
                 foreach ($answer->translatableAttributes as $attribute) {
                     $translation->$attribute = $answer->$attribute;

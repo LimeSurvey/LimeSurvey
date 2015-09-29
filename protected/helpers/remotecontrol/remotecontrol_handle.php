@@ -1,5 +1,19 @@
 <?php
 use ls\components\UserIdentity;
+use ls\models\Answer;
+use ls\models\DefaultValue;
+use ls\models\Question;
+use ls\models\QuestionAttribute;
+use ls\models\QuestionGroup;
+use ls\models\QuotaMember;
+use ls\models\Response;
+use ls\models\Session;
+use ls\models\Survey;
+use ls\models\SurveyDynamic;
+use ls\models\SurveyLanguageSetting;
+use ls\models\Token;
+use ls\models\TokenDynamic;
+use ls\models\User;
 
 /**
 * This class handles all methods of the RPCs
@@ -97,7 +111,7 @@ class remotecontrol_handle
     }
 
 
-    /* Survey specific functions */
+    /* ls\models\Survey specific functions */
 
     /**
     * RPC Routine to add an empty survey with minimum details.
@@ -105,10 +119,10 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID The wish id of the Survey to add
-    * @param string $sSurveyTitle Title of the new Survey
-    * @param string $sSurveyLanguage    Default language of the Survey
-    * @param string $sformat Question appearance format
+    * @param int $iSurveyID The wish id of the ls\models\Survey to add
+    * @param string $sSurveyTitle Title of the new ls\models\Survey
+    * @param string $sSurveyLanguage    Default language of the ls\models\Survey
+    * @param string $sformat ls\models\Question appearance format
     * @return array|string|int
     */
     public function add_survey($sSessionKey, $iSurveyID, $sSurveyTitle, $sSurveyLanguage, $sformat = 'G')
@@ -176,7 +190,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID The id of the Survey to be deleted
+    * @param int $iSurveyID The id of the ls\models\Survey to be deleted
     * @return array Returns Status
     */
     public function delete_survey($sSessionKey, $iSurveyID)
@@ -237,7 +251,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID The id of the Survey to be checked
+    * @param int $iSurveyID The id of the ls\models\Survey to be checked
     * @param array $aSurveySettings The properties to get
     * @return array
     */
@@ -269,7 +283,7 @@ class remotecontrol_handle
                 return array('status' => 'No permission');
         }
         else
-            return array('status' => 'Invalid Session key');
+            return array('status' => 'Invalid ls\models\Session key');
     }
 
     /**
@@ -341,7 +355,7 @@ class remotecontrol_handle
                 return array('status' => 'No permission');
         }
         else
-            return array('status' => 'Invalid Session key');
+            return array('status' => 'Invalid ls\models\Session key');
     }
 
 
@@ -385,7 +399,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey
+    * @param int $iSurveyID Id of the ls\models\Survey
     * @param string $docType Type of documents the exported statistics should be
     * @param string $sLanguage Optional language of the survey to use
     * @param string $graph Create graph option
@@ -478,7 +492,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey
+    * @param int $iSurveyID Id of the ls\models\Survey
     * @param string $sType (day|hour)
     * @param string $dStart
     * @param string $dEnd
@@ -506,7 +520,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey to get summary
+    * @param int $iSurveyID Id of the ls\models\Survey to get summary
     * @param string $sStatName Name of the summary option - valid values are 'token_count', 'token_invalid', 'token_sent', 'token_opted_out', 'token_completed', 'completed_responses', 'incomplete_responses', 'full_responses' or 'all'
     * @return string The requested value or an array of all values when $sStatName = 'all'
     */
@@ -587,7 +601,7 @@ class remotecontrol_handle
             return array('status' => 'Invalid session key');
     }
 
-    /*Survey language specific functions */
+    /*ls\models\Survey language specific functions */
 
     /**
     * RPC Routine to add a survey language.
@@ -712,7 +726,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Dd of the Survey
+    * @param int $iSurveyID Dd of the ls\models\Survey
     * @param array $aSurveyLocaleSettings Properties to get
     * @param string $sLang Language to use
     * @return array The requested values
@@ -753,7 +767,7 @@ class remotecontrol_handle
                 return array('status' => 'No permission');
         }
         else
-            return array('status' => 'Invalid Session key');
+            return array('status' => 'Invalid ls\models\Session key');
     }
 
     /**
@@ -827,7 +841,7 @@ class remotecontrol_handle
                 return array('status' => 'No permission');
         }
         else
-            return array('status' => 'Invalid Session key');
+            return array('status' => 'Invalid ls\models\Session key');
     }
 
     /* Group specific functions */
@@ -839,7 +853,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Dd of the Survey to add the group
+    * @param int $iSurveyID Dd of the ls\models\Survey to add the group
     * @param string $sGroupTitle Name of the group
     * @param string $sGroupDescription     Optional description of the group
     * @return array|int The id of the new group - Or status
@@ -855,7 +869,7 @@ class remotecontrol_handle
                     return array('status' => 'Error: Invalid survey ID');
 
                 if($oSurvey['active']=='Y')
-                    return array('status' => 'Error:Survey is active and not editable');
+                    return array('status' => 'Error:ls\models\Survey is active and not editable');
 
                 $oGroup = new QuestionGroup;
                 $oGroup->sid = $iSurveyID;
@@ -872,7 +886,7 @@ class remotecontrol_handle
                 return array('status' => 'No permission');
         }
         else
-            return array('status' => 'Invalid Session Key');
+            return array('status' => 'Invalid ls\models\Session Key');
     }
 
     /**
@@ -902,7 +916,7 @@ class remotecontrol_handle
                     return array('status' => 'Error: Invalid group ID');
 
                 if($oSurvey['active']=='Y')
-                    return array('status' => 'Error:Survey is active and not editable');
+                    return array('status' => 'Error:ls\models\Survey is active and not editable');
 
                 $depented_on = getGroupDepsForConditions($oGroup->sid,"all",$iGroupID,"by-targgid");
                 if(isset($depented_on))
@@ -921,7 +935,7 @@ class remotecontrol_handle
                 return array('status' => 'No permission');
         }
         else
-            return array('status' => 'Invalid Session Key');
+            return array('status' => 'Invalid ls\models\Session Key');
     }
 
     /**
@@ -948,7 +962,7 @@ class remotecontrol_handle
             if (App()->user->checkAccess('survey', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {
                 if($oSurvey->getAttribute('active') =='Y')
-                    return array('status' => 'Error:Survey is active and not editable');
+                    return array('status' => 'Error:ls\models\Survey is active and not editable');
 
                 if (!in_array($sImportDataType,array('csv','lsg'))) return array('status' => 'Invalid extension');
                 libxml_use_internal_errors(true);
@@ -1022,7 +1036,7 @@ class remotecontrol_handle
         }
         else
         {
-            return array('status' => 'Invalid Session Key');
+            return array('status' => 'Invalid ls\models\Session Key');
         }
 
     }
@@ -1063,7 +1077,7 @@ class remotecontrol_handle
                 return array('status' => 'No permission');
         }
         else
-            return array('status' => 'Invalid Session Key');
+            return array('status' => 'Invalid ls\models\Session Key');
     }
 
 
@@ -1134,10 +1148,10 @@ class remotecontrol_handle
                 return array('status' => 'No permission');
         }
         else
-            return array('status' => 'Invalid Session key');
+            return array('status' => 'Invalid ls\models\Session key');
     }
 
-    /* Question specific functions */
+    /* ls\models\Question specific functions */
 
 
     /**
@@ -1147,7 +1161,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int iQuestionID Id of the question to delete
-    * @return array|int Id of the deleted Question or status
+    * @return array|int Id of the deleted ls\models\Question or status
     */
     public function delete_question($sSessionKey, $iQuestionID)
     {
@@ -1164,12 +1178,12 @@ class remotecontrol_handle
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
 
                 if($oSurvey['active']=='Y')
-                    return array('status' => 'Survey is active and not editable');
+                    return array('status' => 'ls\models\Survey is active and not editable');
                 $iGroupID=$oQuestion['gid'];
 
                 $oCondition = Condition::model()->findAllByAttributes(array('cqid' => $iQuestionID));
                 if(count($oCondition)>0)
-                return array('status' => 'Cannot delete Question. Others rely on this question');
+                return array('status' => 'Cannot delete ls\models\Question. Others rely on this question');
 
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$iQuestionID);
 
@@ -1230,7 +1244,7 @@ class remotecontrol_handle
             if (App()->user->checkAccess('survey', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {
                 if($oSurvey->getAttribute('active') =='Y')
-                    return array('status' => 'Error:Survey is Active and not editable');
+                    return array('status' => 'Error:ls\models\Survey is Active and not editable');
 
                 $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
                 if (!isset($oGroup))
@@ -1518,23 +1532,23 @@ class remotecontrol_handle
                 return array('status' => 'No permission');
         }
         else
-            return array('status' => 'Invalid Session key');
+            return array('status' => 'Invalid ls\models\Session key');
     }
 
 
 
 
-    /* Participant-Token specific functions */
+    /* ls\models\Participant-ls\models\Token specific functions */
 
 
 
     /**
     * RPC Routine to add participants to the tokens collection of the survey.
-    * Returns the inserted data including additional new information like the Token entry ID and the token string.
+    * Returns the inserted data including additional new information like the ls\models\Token entry ID and the token string.
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey
+    * @param int $iSurveyID Id of the ls\models\Survey
     * @param struct $aParticipantData Data of the participants to be added
     * @param bool Optional - Defaults to true and determins if the access token automatically created
     * @return array The values added
@@ -1577,12 +1591,12 @@ class remotecontrol_handle
     }
 
     /**
-    * RPC Routine to delete multiple participants of a Survey.
+    * RPC Routine to delete multiple participants of a ls\models\Survey.
     * Returns the id of the deleted token
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey that the participants belong to
+    * @param int $iSurveyID Id of the ls\models\Survey that the participants belong to
     * @param array $aTokenIDs Id of the tokens/participants to delete
     * @return array Result of deletion
     */
@@ -1618,7 +1632,7 @@ class remotecontrol_handle
                 return array('status' => 'No permission');
         }
         else
-            return array('status' => 'Invalid Session Key');
+            return array('status' => 'Invalid ls\models\Session Key');
     }
 
 
@@ -1627,7 +1641,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey to get token properties
+    * @param int $iSurveyID Id of the ls\models\Survey to get token properties
     * @param int $iTokenID Id of the participant to check
     * @param array $aTokenProperties The properties to get
     * @return array The requested values
@@ -1665,7 +1679,7 @@ class remotecontrol_handle
                 return array('status' => 'No permission');
         }
         else
-            return array('status' => 'Invalid Session Key');
+            return array('status' => 'Invalid ls\models\Session Key');
     }
 
     /**
@@ -1716,7 +1730,7 @@ class remotecontrol_handle
                 return array('status' => 'No permission');
         }
         else
-            return array('status' => 'Invalid Session Key');
+            return array('status' => 'Invalid ls\models\Session Key');
     }
 
 
@@ -1726,7 +1740,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey containing the groups
+    * @param int $iSurveyID Id of the ls\models\Survey containing the groups
     * @return array The list of groups
     */
     public function list_groups($sSessionKey, $iSurveyID)
@@ -1828,7 +1842,7 @@ class remotecontrol_handle
                 return array('status' => 'No permission');
         }
         else
-            return array('status' => 'Invalid Session Key');
+            return array('status' => 'Invalid ls\models\Session Key');
     }
 
     /**
@@ -2013,7 +2027,7 @@ class remotecontrol_handle
             }
             else
             {
-                return array('status' => 'Token table could not be created');
+                return array('status' => 'ls\models\Token table could not be created');
             }
         }
         else
@@ -2234,7 +2248,7 @@ class remotecontrol_handle
     }
 
 
-    /* Response specific functions */
+    /* ls\models\Response specific functions */
 
 
     /**
@@ -2243,7 +2257,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey to insert responses
+    * @param int $iSurveyID Id of the ls\models\Survey to insert responses
     * @param struct $aResponseData The actual response
     * @return int The response ID
     */
@@ -2302,12 +2316,12 @@ class remotecontrol_handle
     /**
     * RPC Routine to update a response in a given survey.
     * Routine supports only single response updates.
-    * Response to update will be identified either by the response id, or the token if response id is missing.
+    * ls\models\Response to update will be identified either by the response id, or the token if response id is missing.
     * Routine is only applicable for active surveys with alloweditaftercompletion = Y.
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey to update response
+    * @param int $iSurveyID Id of the ls\models\Survey to update response
     * @param struct $aResponseData The actual response
     * @return mixed TRUE(bool) on success. errormessage on error
     */
@@ -2320,11 +2334,11 @@ class remotecontrol_handle
             return 'Error: Invalid survey ID';
         }
         if ($oSurvey->getAttribute('active') !== 'Y') {
-            return 'Error: Survey is not active.';
+            return 'Error: ls\models\Survey is not active.';
         }
 
         if ($oSurvey->getAttribute('alloweditaftercompletion') !== 'Y') {
-            return 'Error: Survey does not allow edit after completion.';
+            return 'Error: ls\models\Survey does not allow edit after completion.';
         }
 
         if (App()->user->checkAccess('responses', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
@@ -2349,7 +2363,7 @@ class remotecontrol_handle
             }
 
             if(empty($aResponses))
-                return 'Error: No matching Response.';
+                return 'Error: No matching ls\models\Response.';
             if(count($aResponses) > 1)
                 return 'Error: More then one matching response, updateing multiple responses at once is not supported.';
 
@@ -2382,7 +2396,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey
+    * @param int $iSurveyID Id of the ls\models\Survey
     * @param string $sDocumentType pdf,csv,xls,doc,json
     * @param string $sLanguageCode The language to be used
     * @param string $sCompletionStatus Optional 'complete','incomplete' or 'all' - defaults to 'all'
@@ -2436,7 +2450,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey
+    * @param int $iSurveyID Id of the ls\models\Survey
     * @param string $sDocumentType pdf,csv,xls,doc,json
     * @param string $sToken The token for which responses needed
     * @param string $sLanguageCode The language to be used
@@ -2454,7 +2468,7 @@ class remotecontrol_handle
         if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data, survey table does not exist.');
         if(!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) return array('status' => 'No Data, could not get max id.');
 
-        if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) return array('status' => 'No Response found for Token');
+        if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) return array('status' => 'No ls\models\Response found for ls\models\Token');
         if (!App()->user->checkAccess('responses', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $iSurveyID])) return array('status' => 'No permission');
         if (is_null($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
         if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));

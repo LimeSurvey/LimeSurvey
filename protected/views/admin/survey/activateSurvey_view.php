@@ -2,9 +2,9 @@
     if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck))
     { ?>
     <div class='messagebox ui-corner-all'>
-        <div class='header ui-widget-header'><?php eT("Activate Survey"); echo "($surveyid)"; ?></div>
+        <div class='header ui-widget-header'><?php eT("Activate ls\models\Survey"); echo "($surveyid)"; ?></div>
         <div class='warningheader'><?php eT("Error"); ?><br />
-        <?php eT("Survey does not pass consistency check"); ?></div>
+        <?php eT("ls\models\Survey does not pass consistency check"); ?></div>
         <p>
         <strong><?php eT("The following problems have been found:"); ?></strong><br />
         <ul>
@@ -32,7 +32,7 @@
     { ?>
 
     <br /><div class='messagebox ui-corner-all'>
-        <div class='header ui-widget-header'><?php eT("Activate Survey"); echo "($surveyid)" ;?></div>
+        <div class='header ui-widget-header'><?php eT("Activate ls\models\Survey"); echo "($surveyid)" ;?></div>
         <div class='warningheader'>
             <?php eT("Warning"); ?><br />
             <?php eT("READ THIS CAREFULLY BEFORE PROCEEDING"); ?>

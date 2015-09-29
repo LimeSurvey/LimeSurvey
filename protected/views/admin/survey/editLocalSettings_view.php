@@ -1,5 +1,5 @@
 <ul>
-    <li><label for='short_title_<?php echo $esrow['surveyls_language']; ?>'><?php eT("Survey title"); ?>:</label>
+    <li><label for='short_title_<?php echo $esrow['surveyls_language']; ?>'><?php eT("ls\models\Survey title"); ?>:</label>
         <input type='text' size='80' id='short_title_<?php echo $esrow['surveyls_language']; ?>' name='short_title_<?php echo $esrow['surveyls_language']; ?>' value="<?php echo $esrow['surveyls_title']; ?>" />
     </li>
     <li><label for='description_<?php echo $esrow['surveyls_language']; ?>'><?php eT("Description:"); ?></label>

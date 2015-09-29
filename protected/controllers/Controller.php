@@ -53,7 +53,7 @@ abstract class Controller extends \CController
 
 	protected function _init()
 	{
-		enforceSSLMode();// This really should be at the top but for it to utilise \SettingGlobal::get() it has to be here
+		enforceSSLMode();// This really should be at the top but for it to utilise \ls\models\SettingGlobal::get() it has to be here
 
         
 		//SET LOCAL TIME

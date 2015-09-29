@@ -1,7 +1,7 @@
 <?php
-class JsonWriter extends Writer
+abstract class JsonWriter extends Writer
 {
-    private $output;
+    private $output = '';
     /**
      * The open filehandle
      */
@@ -11,10 +11,14 @@ class JsonWriter extends Writer
      */
     protected $havePrev = false;
 
-    function __construct()
+    /**
+     * @param FormattingOptions $options
+     */
+    public function __construct(\ls\models\forms\FormattingOptions $options)
     {
-        $this->output = '';
+        parent::__construct($options);
     }
+
 
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {

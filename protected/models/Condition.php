@@ -1,19 +1,7 @@
 <?php
-    /*
-    * LimeSurvey
-    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
-    * All rights reserved.
-    * License: GNU/GPL License v2 or later, see LICENSE.php
-    * LimeSurvey is free software. This version may have been modified pursuant
-    * to the GNU General Public License, and as distributed it includes or
-    * is derivative of works licensed under the GNU General Public License or
-    * other free or open source software licenses.
-    * See COPYRIGHT.php for copyright notices and details.
-    *
-    *     Files Purpose: lots of common functions
-    */
+use ls\models\ActiveRecord;
 
-    class Condition extends ActiveRecord
+class Condition extends ActiveRecord
     {
         /**
         * Returns the static model of Settings table
@@ -60,7 +48,7 @@
         {
 			$alias = $this->getTableAlias();
             return array(
-            'questions' => array(self::HAS_ONE, 'Question', '',
+            'questions' => array(self::HAS_ONE, 'ls\models\Question', '',
             'on' => "$alias.cqid = questions.qid",
             ),
             );

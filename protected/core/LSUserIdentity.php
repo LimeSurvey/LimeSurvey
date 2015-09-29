@@ -1,4 +1,5 @@
 <?php
+use ls\models\User;
 use ls\pluginmanager\PluginEvent;
 /*
 * LimeSurvey
@@ -34,7 +35,7 @@ class LSUserIdentity extends CUserIdentity {
     public $id = null;
 
     /**
-     * A User::model() object
+     * A ls\models\User::model() object
      *
      * @var User
      */
@@ -138,7 +139,7 @@ class LSUserIdentity extends CUserIdentity {
         Yii::app()->session['templateeditormode'] = $user->templateeditormode;
         Yii::app()->session['questionselectormode'] = $user->questionselectormode;
         Yii::app()->session['dateformat'] = $user->dateformat;
-        Yii::app()->session['session_hash'] = hash('sha256',\SettingGlobal::get('SessionName').$user->users_name.$user->uid);
+        Yii::app()->session['session_hash'] = hash('sha256', \ls\models\SettingGlobal::get('SessionName').$user->users_name.$user->uid);
 
         // Perform language settings
         if (App()->request->getPost('loginlang','default') != 'default')

@@ -1,11 +1,11 @@
 <?php if (count($question_answers) == $x) { ?>
-<div class="header"><?php eT("Add answer");?>: <?php eT("Question Selection");?></div><br />
+<div class="header"><?php eT("Add answer");?>: <?php eT("ls\models\Question Selection");?></div><br />
 	<div class="messagebox">
 		<?php eT("All answers are already selected in this quota.");?>
 		<br/><br/><input type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$iSurveyId");?>', '_top')" value="<?php eT("Continue");?>"/>
 	</div>
 <?php } else { ?>
-<div class="header ui-widget-header"><?php eT("Survey quota");?>: <?php eT("Add answer");?></div><br />
+<div class="header ui-widget-header"><?php eT("ls\models\Survey quota");?>: <?php eT("Add answer");?></div><br />
 	<div class="messagebox ui-corner-all" style="width: 600px">
         <?php echo CHtml::form(array("admin/quotas/sa/insertquotaanswer/surveyid/{$iSurveyId}"), 'post', array('#'=>'quota_'.\ls\helpers\Sanitize::int($_POST['quota_id']))); ?>
 			<table class="addquotaanswer">
@@ -20,7 +20,7 @@
 						<td align="center">&nbsp;</td>
 					</tr>
 					<tr class="evenrow">
-						<td width="35%" align="center" valign="top"><strong><?php eT("Select Answer");?>:</strong></td>
+						<td width="35%" align="center" valign="top"><strong><?php eT("Select ls\models\Answer");?>:</strong></td>
 						<td align="left">
 							<select name="quota_anscode" size="15">
 <?php

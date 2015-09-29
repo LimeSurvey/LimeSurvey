@@ -11,6 +11,9 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+use ls\models\QuestionGroup;
+use ls\models\Survey;
+use ls\models\Token;
 
 /**
 * Strips html tags and replaces new lines
@@ -137,7 +140,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
                 }
             } else if ($field['LStype'] == 'Y')
                 {
-                    if ($row[$fieldno] == 'Y')    // Yes/No Question Type
+                    if ($row[$fieldno] == 'Y')    // Yes/No ls\models\Question Type
                     {
                         echo( $q. 1 .$q);
                     } else if ($row[$fieldno] == 'N'){
@@ -251,7 +254,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
     } elseif ($field['LStype'] == ':') {
         $displayvaluelabel = 0;
         //Get the labels that could apply!
-        if (is_null($qidattributes)) $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($field["qid"], $field['LStype']);
+        if (is_null($qidattributes)) $qidattributes= \ls\models\QuestionAttribute::model()->getQuestionAttributes($field["qid"], $field['LStype']);
         if (trim($qidattributes['multiflexible_max'])!='') {
             $maxvalue=$qidattributes['multiflexible_max'];
         } else {
@@ -339,7 +342,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
         'H'=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'F'),
         'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F','Scale'=>2),
         'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
-        'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A','hide'=>1),
+        'X'=>Array('name'=>'Boilerplate ls\models\Question','size'=>1,'SPSStype'=>'A','hide'=>1),
         'D'=>Array('name'=>'Date','size'=>20,'SPSStype'=>'DATETIME23.2'),
         'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
         'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
@@ -477,7 +480,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
                 //Get default scale for this type
                 if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
                 //But allow override
-                $aQuestionAttribs = \QuestionAttribute::model()->getQuestionAttributes($qid,$ftype);
+                $aQuestionAttribs = \ls\models\QuestionAttribute::model()->getQuestionAttributes($qid,$ftype);
                 if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
             }
 
@@ -636,7 +639,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = [])
     $sdump = "";
     if (!isset($exclude['answers']))
     {
-        //Answer table
+        //ls\models\Answer table
         $aquery = "SELECT {{answers}}.*
         FROM {{answers}}, {{questions}}
         WHERE {{answers}}.question_id ={{questions}}.qid
@@ -666,7 +669,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = [])
 
     buildXMLFromQuery($xmlwriter,$query);
 
-    // QuestionGroup
+    // ls\models\QuestionGroup
     $gquery = "SELECT *
     FROM {{groups}}
     WHERE sid=$iSurveyID
@@ -687,7 +690,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = [])
     ORDER BY qid";
     buildXMLFromQuery($xmlwriter,$qquery,'subquestions');
 
-    //Question attributes
+    //ls\models\Question attributes
     $sBaseLanguage=Survey::model()->findByPk($iSurveyID)->language;
     $platform = Yii::app()->db->getDriverName();
     if ($platform == 'mssql' || $platform =='sqlsrv' || $platform =='dblib')
@@ -706,7 +709,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = [])
 
     if (!isset($exclude['quotas']))
     {
-        //Quota
+        //ls\models\Quota
         $query = "SELECT {{quota}}.*
         FROM {{quota}}
         WHERE {{quota}}.sid=$iSurveyID";
@@ -718,7 +721,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = [])
         WHERE {{quota_members}}.sid=$iSurveyID";
         buildXMLFromQuery($xmlwriter,$query);
 
-        //Quota languagesettings
+        //ls\models\Quota languagesettings
         $query = "SELECT {{quota_languagesettings}}.*
         FROM {{quota_languagesettings}}, {{quota}}
         WHERE {{quota}}.id = {{quota_languagesettings}}.quotals_quota_id
@@ -733,13 +736,13 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = [])
     //Exclude some fields from the export
     buildXMLFromQuery($xmlwriter,$squery,'',array('owner_id','active','datecreated'));
 
-    // Survey language settings
+    // ls\models\Survey language settings
     $slsquery = "SELECT *
     FROM {{surveys_languagesettings}}
     WHERE surveyls_survey_id=$iSurveyID";
     buildXMLFromQuery($xmlwriter,$slsquery);
 
-    // Survey url parameters
+    // ls\models\Survey url parameters
     $slsquery = "SELECT *
     FROM {{survey_url_parameters}}
     WHERE sid={$iSurveyID}";
@@ -757,8 +760,8 @@ function surveyGetXMLData($iSurveyID, $exclude = array())
     $xml->setIndent(true);
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
-    $xml->writeElement('LimeSurveyDocType','Survey');
-    $xml->writeElement('DBVersion',\SettingGlobal::get("DBVersion"));
+    $xml->writeElement('LimeSurveyDocType','ls\models\Survey');
+    $xml->writeElement('DBVersion', \ls\models\SettingGlobal::get("DBVersion"));
     $xml->writeElement('version', App()->params['version']);
     $xml->startElement('languages');
     $languages = Survey::model()->findByPk($iSurveyID)->allLanguages;
@@ -798,7 +801,7 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType',$sDocType);
-    $xml->writeElement('DBVersion',\SettingGlobal::get("DBVersion"));
+    $xml->writeElement('DBVersion', \ls\models\SettingGlobal::get("DBVersion"));
     $xml->startElement('languages');
     $aSurveyLanguages=Survey::model()->findByPk($iSurveyID)->additionalLanguages;
     $aSurveyLanguages[]=Survey::model()->findByPk($iSurveyID)->language;
@@ -1522,7 +1525,7 @@ function group_export($action, $iSurveyID, $gid)
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType','Group');
-    $xml->writeElement('DBVersion', \SettingGlobal::get("DBVersion"));
+    $xml->writeElement('DBVersion', \ls\models\SettingGlobal::get("DBVersion"));
     $xml->startElement('languages');
 
     $lresult = QuestionGroup::model()->findAllByAttributes(array('gid' => $gid), array('select'=>'language','group' => 'language'));
@@ -1538,7 +1541,7 @@ function group_export($action, $iSurveyID, $gid)
 
 function groupGetXMLStructure($xml,$gid)
 {
-    // QuestionGroup
+    // ls\models\QuestionGroup
     $gquery = "SELECT *
     FROM {{groups}}
     WHERE gid=$gid";
@@ -1556,7 +1559,7 @@ function groupGetXMLStructure($xml,$gid)
     WHERE gid=$gid and parent_qid>0 order by question_order, language, scale_id";
     buildXMLFromQuery($xml,$qquery,'subquestions');
 
-    //Answer
+    //ls\models\Answer
     $aquery = "SELECT DISTINCT {{answers}}.*
     FROM {{answers}}, {{questions}}
     WHERE ({{answers}}.qid={{questions}}.qid)
@@ -1572,7 +1575,7 @@ function groupGetXMLStructure($xml,$gid)
     AND (b.gid={$gid})";
     buildXMLFromQuery($xml,$cquery,'conditions');
 
-    //Question attributes
+    //ls\models\Question attributes
     $iSurveyID=Yii::app()->db->createCommand("select sid from {{groups}} where gid={$gid}")->query()->read();
     $iSurveyID=$iSurveyID['sid'];
     $sBaseLanguage=Survey::model()->findByPk($iSurveyID)->language;
@@ -1604,8 +1607,8 @@ function groupGetXMLStructure($xml,$gid)
 // DUMP THE RELATED DATA FOR A SINGLE QUESTION INTO A SQL FILE FOR IMPORTING LATER ON OR
 // ON ANOTHER SURVEY SETUP DUMP ALL DATA WITH RELATED QID FROM THE FOLLOWING TABLES
 //  - Questions
-//  - Answer
-//  - Question attributes
+//  - ls\models\Answer
+//  - ls\models\Question attributes
 //  - Default values
 function questionExport($action, $iSurveyID, $gid, $qid)
 {
@@ -1624,8 +1627,8 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     $xml->setIndent(true);
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
-    $xml->writeElement('LimeSurveyDocType','Question');
-    $xml->writeElement('DBVersion', \SettingGlobal::get('DBVersion'));
+    $xml->writeElement('LimeSurveyDocType','ls\models\Question');
+    $xml->writeElement('DBVersion', \ls\models\SettingGlobal::get('DBVersion'));
     $xml->startElement('languages');
     $aLanguages=Survey::model()->findByPk($iSurveyID)->additionalLanguages;
     $aLanguages[]=Survey::model()->findByPk($iSurveyID)->language;
@@ -1655,7 +1658,7 @@ function questionGetXMLStructure($xml,$gid,$qid)
     buildXMLFromQuery($xml,$qquery,'subquestions');
 
 
-    // Answer table
+    // ls\models\Answer table
     $aquery = "SELECT *
     FROM {{answers}}
     WHERE qid = $qid order by language, scale_id, sortorder";
@@ -1663,7 +1666,7 @@ function questionGetXMLStructure($xml,$gid,$qid)
 
 
 
-    // Question attributes
+    // ls\models\Question attributes
     $iSurveyID=Yii::app()->db->createCommand("select sid from {{groups}} where gid={$gid}")->query();
     $iSurveyID=$iSurveyID->read();
     $iSurveyID=$iSurveyID['sid'];

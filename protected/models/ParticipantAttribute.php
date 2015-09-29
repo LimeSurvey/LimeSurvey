@@ -10,12 +10,16 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * 	$Id: SurveyLink.php 11999 2012-01-12 10:26:32Z gautamgupta $
+ * 	$Id: ls\models\SurveyLink.php 11999 2012-01-12 10:26:32Z gautamgupta $
  * 	Files Purpose: lots of common functions
  */
+namespace ls\models;
+
+use ls\models\ActiveRecord;
+use ls\models\ParticipantAttributeName;
 
 /**
- * Class ParticipantAttribute
+ * Class ls\models\ParticipantAttribute
  * @property string $value;
  * @property int $attribute_id;
  * @property string $participant_id;
@@ -41,7 +45,6 @@ class ParticipantAttribute extends ActiveRecord
             'participant' => [self::BELONGS_TO, ParticipantAttributeName::class, 'participant_id']
         ];
     }
-
 
 
 }

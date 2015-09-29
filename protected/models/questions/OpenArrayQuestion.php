@@ -1,6 +1,6 @@
 <?php
 namespace ls\models\questions;
-use Question;
+use ls\models\Question;
 /**
  * Class OpenArrayQuestion
  * Used by array question types that have free inputs, like:
@@ -67,7 +67,7 @@ class OpenArrayQuestion extends BaseArrayQuestion
     /**
      * This function return the class by question type
      * @param string question type
-     * @return string Question class to be added to the container
+     * @return string ls\models\Question class to be added to the container
      */
     public function getClasses()
     {

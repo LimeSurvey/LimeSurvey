@@ -30,7 +30,7 @@ $(document).on('click','#frmeditquestion :submit',{validated:false},function(eve
 });
 /**
 * Validate question object before submit : actually only title need to be validated
-* This disallow submitting if Question code are not unique (else loose all fields)
+* This disallow submitting if ls\models\Question code are not unique (else loose all fields)
 */
 function validateQuestion(jqObject){
     if(typeof jqObject=="undefined"){jqObject=$([]);}

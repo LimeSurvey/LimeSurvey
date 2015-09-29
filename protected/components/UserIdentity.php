@@ -2,7 +2,7 @@
 
 namespace ls\components;
 
-class UserIdentity extends CUserIdentity
+class UserIdentity extends \CUserIdentity
 {
     protected $id;
     protected $user;

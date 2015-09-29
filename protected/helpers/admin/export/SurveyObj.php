@@ -13,7 +13,7 @@ class SurveyObj
     public $anonymous;
 
     /**
-    * Answer, codes, and full text to the questions.
+    * ls\models\Answer, codes, and full text to the questions.
     * This is used in conjunction with the fieldMap to produce
     * some of the more verbose output in a survey export.
     * array[recordNo][columnName]

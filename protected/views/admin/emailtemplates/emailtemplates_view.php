@@ -1,5 +1,7 @@
 <?php
-    $surveyinfo = getSurveyInfo($surveyid);
+use ls\models\Survey;
+
+$surveyinfo = getSurveyInfo($surveyid);
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'emailtemplates.js');
 ?>
 <script type='text/javascript'>

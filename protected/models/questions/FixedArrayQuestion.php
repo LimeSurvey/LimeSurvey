@@ -51,7 +51,7 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
 
         $cellWidth = round((( 100 - $width ) / count($this->getAnswers())) , 1); // convert number of columns to percentage of table width
 
-        $rightQuestions = array_filter($this->subQuestions, function(\Question $this) {
+        $rightQuestions = array_filter($this->subQuestions, function(\ls\models\Question $this) {
             return strpos($this->question, '|') !== false;
         });
 

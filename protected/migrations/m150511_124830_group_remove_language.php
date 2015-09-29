@@ -11,12 +11,12 @@ class m150511_124830_group_remove_language extends CDbMigration
     public function safeUp()
 	{
         // We are removing languages from the answer table and moving it to the translation table.
-        $table = \QuestionGroup::model()->tableName();
+        $table = \ls\models\QuestionGroup::model()->tableName();
 //        $this->renameColumn($table, 'gid', 'id');
         $this->dbConnection->schema->getTable($table, true);
-        $groups = \QuestionGroup::model()->findAll();
+        $groups = \ls\models\QuestionGroup::model()->findAll();
         $deleted = $created = 0;
-        /** @var \QuestionGroup $group */
+        /** @var \ls\models\QuestionGroup $group */
         foreach ($groups as $group) {
             $behaviorConfig = $group->behaviors()['translatable'];
             // Get the base language
@@ -26,7 +26,7 @@ class m150511_124830_group_remove_language extends CDbMigration
             }
             if ($baseLanguage != $group->language) {
                 // Create translation if not base language.
-                $translation = new \Translation();
+                $translation = new \ls\models\Translation();
                 $translation->language = $group->language;
                 $translation->model = 'Group'; // We have Single Table Inheritance so we use the base class.
                 $translation->model_id = $group->id;

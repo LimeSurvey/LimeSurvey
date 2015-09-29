@@ -94,8 +94,8 @@ class Settings extends \CFormModel
             // General tab.
             'sitename' => gT("Site name"),
             'defaulttemplate' => gT('Default template'),
-            'defaultquestionselectormode' => gT('Question type selector'),
-            'defaulttemplateeditormode' => gT('Template editor'),
+            'defaultquestionselectormode' => gT('ls\models\Question type selector'),
+            'defaulttemplateeditormode' => gT('ls\models\Template editor'),
             'defaulthtmleditormode' => gT('Default HTML editor mode'),
             'admintheme' => gT('Administration template'),
             'GeoNamesUsername' => gT('GeoNames username for API'),
@@ -103,7 +103,7 @@ class Settings extends \CFormModel
             'ipInfoDbAPIKey' => gT('IP Info DB API Key'),
             'googleanalyticsapikey', gT('Google Analytics API key'),
             'googletranslateapikey' => gT('Google Translate API key'),
-            'iSessionExpirationTime' => gT('Session lifetime for surveys (seconds)'),
+            'iSessionExpirationTime' => gT('ls\models\Session lifetime for surveys (seconds)'),
 
             // Email settings.
             'siteadminemail' => gt("Default site admin email"),
@@ -125,8 +125,8 @@ class Settings extends \CFormModel
             'bounceencryption' => gT("Encryption type"),
             
             // Security
-            'surveyPreview_require_Auth' => gt("Survey preview only for administration users"),
-            'filterxsshtml' => gt("Survey preview only for administration users"),
+            'surveyPreview_require_Auth' => gt("ls\models\Survey preview only for administration users"),
+            'filterxsshtml' => gt("ls\models\Survey preview only for administration users"),
             'usercontrolSameGroupPolicy' => gt("Group member can only see own group"),
             'force_ssl' => gt("Force HTTPS"),
 
@@ -165,7 +165,7 @@ class Settings extends \CFormModel
         $transaction = App()->db->beginTransaction();
         $success = true;
         foreach($this->attributes as $name => $value) {
-            $success = $success && \SettingGlobal::set($name, $value);
+            $success = $success && \ls\models\SettingGlobal::set($name, $value);
         }
         if ($success) {
             $transaction->commit();
@@ -193,14 +193,14 @@ class Settings extends \CFormModel
     protected function load()
     {
         foreach ($this->attributeNames() as $attributeName) {
-            $this->$attributeName = \SettingGlobal::get($attributeName, App()->getConfig($attributeName));
+            $this->$attributeName = \ls\models\SettingGlobal::get($attributeName, App()->getConfig($attributeName));
         }
     }
 
 
     public function getDefaultTemplateOptions()
     {
-        $values = \Template::getTemplateList();
+        $values = \ls\models\Template::getTemplateList();
         return array_combine($values, $values);
     }
 
@@ -272,19 +272,19 @@ class Settings extends \CFormModel
     }
 
     public function getYesNoAdminOptions() {
-        return array("1"=>gT('Yes'),"0"=>gT('No'),"2"=>gT('Survey admin can choose'));
+        return array("1"=>gT('Yes'),"0"=>gT('No'),"2"=>gT('ls\models\Survey admin can choose'));
     }
 
     public function getShowHideChooseOptions() {
-        return array('choose'=>gT('Survey admin can choose'),'show'=>gT('Yes'),'hide'=>gT('No'));
+        return array('choose'=>gT('ls\models\Survey admin can choose'),'show'=>gT('Yes'),'hide'=>gT('No'));
     }
 
     public function getShowQuestionCodeOptions() {
-        return array('choose'=>gT('Survey admin can choose'),'show'=>gT('Show both'),'number'=>gT('Show question number only'),'code'=>gT('Show question code only'),'none'=>gT('Hide both'));
+        return array('choose'=>gT('ls\models\Survey admin can choose'),'show'=>gT('Show both'),'number'=>gT('Show question number only'),'code'=>gT('Show question code only'),'none'=>gT('Hide both'));
     }
 
     public function getShowGroupInfoOptions() {
-        return array('choose'=>gT('Survey admin can choose'),'show'=>gT('Show both'),'name'=>gT('Show group name only'),'description'=>gT('Show group description only'),'none'=>gT('Hide both'));
+        return array('choose'=>gT('ls\models\Survey admin can choose'),'show'=>gT('Show both'),'name'=>gT('Show group name only'),'description'=>gT('Show group description only'),'none'=>gT('Hide both'));
     }
 
 

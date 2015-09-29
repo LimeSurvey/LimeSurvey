@@ -1,35 +1,10 @@
 <?php
-/*
- * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
-  * 	Files Purpose: lots of common functions
- */
+
+namespace ls\models;
 
 class SurveyLink extends ActiveRecord
 {
-
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return SurveyLink
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
-
-    /**
+   /**
      * Returns the setting's table name to be used by the model
      *
      * @access public
@@ -62,14 +37,17 @@ class SurveyLink extends ActiveRecord
      *
      *
      * */
-    function rebuildLinksFromTokenTable($iSurveyId) {
+    function rebuildLinksFromTokenTable($iSurveyId)
+    {
         $this->deleteLinksBySurvey($iSurveyId);
-        $tableName="{{tokens_".$iSurveyId."}}";
-        $dateCreated=date('Y-m-d H:i:s', time());
-        $query = "INSERT INTO ".SurveyLink::tableName()." (participant_id, token_id, survey_id, date_created) SELECT participant_id, tid, '".$iSurveyId."', '".$dateCreated."' FROM ".$tableName." WHERE participant_id IS NOT NULL";
+        $tableName = "{{tokens_" . $iSurveyId . "}}";
+        $dateCreated = date('Y-m-d H:i:s', time());
+        $query = "INSERT INTO " . SurveyLink::tableName() . " (participant_id, token_id, survey_id, date_created) SELECT participant_id, tid, '" . $iSurveyId . "', '" . $dateCreated . "' FROM " . $tableName . " WHERE participant_id IS NOT NULL";
+
         return Yii::app()->db->createCommand($query)
-                             ->query();
+            ->query();
     }
+
     /*
      * Delete a single survey_link based on a token table entry(by token_id and survey_id)
      *
@@ -83,11 +61,14 @@ class SurveyLink extends ActiveRecord
      *
      * @return true|false
      * */
-    function deleteTokenLink($iTokenIds, $surveyId) {
-        $query = "DELETE FROM ".SurveyLink::tableName()." WHERE token_id IN (".implode(", ", $iTokenIds).") AND survey_id=:survey_id";
+    function deleteTokenLink($iTokenIds, $surveyId)
+    {
+        $query = "DELETE FROM " . SurveyLink::tableName() . " WHERE token_id IN (" . implode(", ",
+                $iTokenIds) . ") AND survey_id=:survey_id";
+
         return Yii::app()->db->createCommand($query)
-                             ->bindParam(":survey_id", $surveyId)
-                             ->query();
+            ->bindParam(":survey_id", $surveyId)
+            ->query();
     }
 
     /*
@@ -99,11 +80,13 @@ class SurveyLink extends ActiveRecord
      *
      * @return true|false
      * */
-    function deleteLinksBySurvey($surveyId) {
-        $query = "DELETE FROM ".SurveyLink::tableName(). " WHERE survey_id = :survey_id";
+    function deleteLinksBySurvey($surveyId)
+    {
+        $query = "DELETE FROM " . SurveyLink::tableName() . " WHERE survey_id = :survey_id";
+
         return Yii::app()->db->createCommand($query)
-                             ->bindParam(":survey_id", $surveyId)
-                             ->query();
+            ->bindParam(":survey_id", $surveyId)
+            ->query();
     }
 
 }

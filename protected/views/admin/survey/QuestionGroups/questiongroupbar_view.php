@@ -1,4 +1,4 @@
-<strong><?php eT("Question group"); ?></strong>&nbsp;
+<strong><?php eT("ls\models\Question group"); ?></strong>&nbsp;
 <span class='basic'><?php echo $grow['group_name']; ?> (<?php eT("ID"); ?>:<?php echo $gid; ?>)</span>
 </div>
 <div class='menubar-main'>

@@ -3,6 +3,8 @@
 /**
  * @var QuestionGroup $group;
  */
+use ls\models\QuestionGroup;
+
 echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_HORIZONTAL, ['groups/create', 'surveyId' => $group->sid], 'post', []);
 $options = ['formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL];
 echo TbHtml::openTag('fieldset', []);

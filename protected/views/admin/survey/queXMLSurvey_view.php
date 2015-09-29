@@ -104,15 +104,15 @@
             <input type='text' size='10' id='queXMLQuestionnaireInfoMargin' name='queXMLQuestionnaireInfoMargin' value="<?php echo $queXMLQuestionnaireInfoMargin; ?>" />
         </li>
 
-        <li><label for='queXMLResponseTextFontSize'><?php eT("Response text / sub question font size"); ?></label>
+        <li><label for='queXMLResponseTextFontSize'><?php eT("ls\models\Response text / sub question font size"); ?></label>
             <input type='text' size='10' id='queXMLResponseTextFontSize' name='queXMLResponseTextFontSize' value="<?php echo $queXMLResponseTextFontSize; ?>" />
         </li>
 
-        <li><label for='queXMLResponseLabelFontSize'><?php eT("Response label font size (normal)"); ?></label>
+        <li><label for='queXMLResponseLabelFontSize'><?php eT("ls\models\Response label font size (normal)"); ?></label>
             <input type='text' size='10' id='queXMLResponseLabelFontSize' name='queXMLResponseLabelFontSize' value="<?php echo $queXMLResponseLabelFontSize; ?>" />
         </li>
 
-        <li><label for='queXMLResponseLabelFontSizeSmall'><?php eT("Response label font size (small)"); ?></label>
+        <li><label for='queXMLResponseLabelFontSizeSmall'><?php eT("ls\models\Response label font size (small)"); ?></label>
             <input type='text' size='10' id='queXMLResponseLabelFontSizeSmall' name='queXMLResponseLabelFontSizeSmall' value="<?php echo $queXMLResponseLabelFontSizeSmall; ?>" />
         </li>
 

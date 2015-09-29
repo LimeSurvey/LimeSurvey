@@ -3,7 +3,7 @@
 namespace ls\components;
 
 use IAuthManager;
-use SettingGlobal;
+use ls\models\SettingGlobal;
 
 class AuthManager implements IAuthManager
 {

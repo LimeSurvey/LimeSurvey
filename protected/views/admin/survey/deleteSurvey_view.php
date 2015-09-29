@@ -1,6 +1,8 @@
 <br />
 <div class='messagebox ui-corner-all'>
-    <div class='header ui-widget-header'><?php eT("Delete survey"); ?>
+    <div class='header ui-widget-header'><?php use ls\models\Survey;
+
+        eT("Delete survey"); ?>
     </div>
 
     <?php if (empty($surveyid) || Survey::model()->findByPk($surveyid) === null)

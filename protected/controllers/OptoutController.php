@@ -47,7 +47,7 @@ class OptoutController extends Controller {
 
         $aSurveyInfo = getSurveyInfo($surveyid, $sBaseLanguage);
 
-        if ($aSurveyInfo == false || !\Token::valid($surveyid)){
+        if ($aSurveyInfo == false || !\ls\models\Token::valid($surveyid)){
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         } else {
 
@@ -139,7 +139,7 @@ class OptoutController extends Controller {
                 }
                 if(!empty($oToken->participant_id))
                 {
-                    //Participant also exists in central db
+                    //ls\models\Participant also exists in central db
                     $oParticipant = Participant::model()->findByPk($oToken->participant_id);
                     if($oParticipant->blacklisted=="Y")
                     {

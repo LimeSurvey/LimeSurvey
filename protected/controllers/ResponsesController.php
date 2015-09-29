@@ -1,7 +1,7 @@
 <?php
 namespace ls\controllers;
 use ls\models\forms\FormattingOptions;
-use Survey;
+use ls\models\Survey;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequest;
 
@@ -19,7 +19,7 @@ class ResponsesController extends Controller
         $survey = Survey::model()->findByPk($id);
         $this->menus['survey'] = $survey;
 
-        $dataProvider = new \CActiveDataProvider(\Response::model($id), [
+        $dataProvider = new \CActiveDataProvider(\ls\models\Response::model($id), [
             'pagination' => [
                 'pageSize' => 20
             ]
@@ -34,7 +34,7 @@ class ResponsesController extends Controller
          * @todo Add permission check.
          */
         if (App()->request->isPostRequest || App()->request->isDeleteRequest) {
-            return \Response::model($surveyId)->deleteByPk($id);
+            return \ls\models\Response::model($surveyId)->deleteByPk($id);
         }
 
         $this->redirect(['responses/index', 'id' => $surveyId]);
@@ -46,7 +46,7 @@ class ResponsesController extends Controller
 
     public function actionDeleteMultiple(array $ids, $surveyId) {
         if (App()->request->isDeleteRequest
-            && 0 < $count = \Response::model($surveyId)->deleteAllByAttributes(['id' => $ids]) ) {
+            && 0 < $count = \ls\models\Response::model($surveyId)->deleteAllByAttributes(['id' => $ids]) ) {
             App()->user->setFlash('success', gT("Responses deleted"));
         } else {
             App()->user->setFlash('danger', gT("Responses not deleted"));
@@ -56,7 +56,7 @@ class ResponsesController extends Controller
 
     public function actionExport($id)
     {
-        /* @var Survey $survey */
+        /* @var \ls\models\Survey $survey */
         $this->menus['survey'] = $survey = Survey::model()->findByPk($id);
 
         $options = new FormattingOptions();
@@ -100,7 +100,7 @@ class ResponsesController extends Controller
 
     public function actionView($id, $surveyId)
     {
-        $response = \Response::model($surveyId)->findByPk($id);
+        $response = \ls\models\Response::model($surveyId)->findByPk($id);
         $this->menus['survey'] = $response->survey;
         return $this->render('view', [
             'response' => $response
@@ -117,7 +117,7 @@ class ResponsesController extends Controller
      */
     public function actionAppend($surveyId, $id, $copy = false)
     {
-        $response = \Response::model($surveyId)->findByPk($id);
+        $response = \ls\models\Response::model($surveyId)->findByPk($id);
         $newResponse = $response->append($copy);
         $newResponse->save();
         $this->redirect(['responses/index', 'id' => $surveyId]);

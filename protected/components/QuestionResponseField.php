@@ -4,7 +4,7 @@
 namespace ls\components;
 
 use JsonSerializable;
-use Question;
+use ls\models\Question;
 use ls\components\ResponseField;
 use TbArray;
 
@@ -12,7 +12,7 @@ use TbArray;
  * This class contains a fields' details for a field that is part of a response to a question.
  * It replaces some of the arrays with informal structure.
  * @property-read string $name
- * @property-read Question $question
+ * @property-read \ls\models\Question $question
  */
 class QuestionResponseField extends ResponseField implements JsonSerializable
 {

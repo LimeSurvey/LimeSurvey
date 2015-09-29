@@ -2,6 +2,8 @@
     <div class="col-md-4 col-md-offset-4">
 <?php
 /** @var Controller $this */
+use ls\models\Survey;
+
 /** @var TbActiveForm $form */
 /** @var Survey $survey */
 $form = $this->beginWidget(TbActiveForm::class, [

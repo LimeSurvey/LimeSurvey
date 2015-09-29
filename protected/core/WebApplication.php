@@ -14,6 +14,7 @@ use ls\components\LocalizedFormatter;
 use ls\components\MigrationManager;
 use ls\components\SurveySessionManager;
 use ls\components\WebUser;
+use ls\models\SettingGlobal;
 
 /**
  * Implements global  config
@@ -126,8 +127,8 @@ class WebApplication extends CWebApplication
         $this->name = SettingGlobal::get('sitename', 'LimeSurvey');
         $this->initLanguage();
         // These take care of dynamically creating a class for each token / response table.
-		ClassFactory::registerClass('Token_', 'Token');
-		ClassFactory::registerClass('Response_', 'Response');
+		ClassFactory::registerClass('Token_', 'ls\models\Token');
+		ClassFactory::registerClass('Response_', 'ls\models\Response');
 	}
 
     public function initLanguage()

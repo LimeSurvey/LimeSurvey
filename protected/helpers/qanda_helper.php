@@ -44,6 +44,9 @@
 * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
 */
 
+use ls\models\Answer;
+use ls\models\Question;
+
 function return_timer_script(Question $question, $ia, $disable=null) {
     global $thissurvey;
 
@@ -672,7 +675,7 @@ function do_array(Question $question)
                 $answer_head_line .= "\t<th>".$ld."</th>\n";
             }
             if ($right_exists) {$answer_head_line .= "\t<td>&nbsp;</td>\n";}
-            if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory and we can show "no answer"
+            if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //ls\models\Question is not mandatory and we can show "no answer"
             {
                 $answer_head_line .= "\t<th>".gT('No answer')."</th>\n";
             }
@@ -783,7 +786,7 @@ function do_array(Question $question)
             $odd_even = alternation($odd_even);
             $answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
         }
-        if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
+        if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //ls\models\Question is not mandatory
         {
             $odd_even = alternation($odd_even);
             $answer_cols .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";

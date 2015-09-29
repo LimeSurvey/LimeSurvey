@@ -1,5 +1,5 @@
 <?php
-/** @var \Question $question */
+/** @var \ls\models\Question $question */
 /** @var TbActiveForm $form */
 $form->layout = TbHtml::FORM_LAYOUT_VERTICAL;
 $question->language = $language;

@@ -11,6 +11,8 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+use ls\models\Token;
+
 /**
  * Description of ExpressionManager
  * (1) Does safe evaluation of PHP expressions.  Only registered Functions, and known Variables are allowed.
@@ -298,7 +300,7 @@ class ExpressionManager {
         // Set bBothString if one is forced to be string, only if bith can be numeric. Mimic JS and PHO
         // Not sure if needed to test if [2] is set. : TODO review
         if($bBothNumeric){
-            $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// Question can return NUMERIC or WORD : DQ and DS is string entered by user, STRING is a result of a String function
+            $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// ls\models\Question can return NUMERIC or WORD : DQ and DS is string entered by user, STRING is a result of a String function
             if( (isset($arg1[2]) && in_array($arg1[2],$aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2],$aForceStringArray)) ) )
             {
                 $bBothNumeric=false;

@@ -1,4 +1,6 @@
-<?php if( count($tokenfieldlist)) { ?>
+<?php use ls\models\Survey;
+
+if( count($tokenfieldlist)) { ?>
     <div class='header ui-widget-header'><?php eT("Manage token attribute fields"); ?></div>
     <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributedescriptions/surveyid/{$surveyid}"), 'post'); ?>
     <div id="tabs">

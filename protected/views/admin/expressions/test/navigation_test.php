@@ -18,21 +18,21 @@ $sFormTag
 <h3>Enter the following variables to test navigation for a survey using different styles</h3>
 <table border='1'>
 <tr><th>Parameter</th><th>Value</th></tr>
-<tr><td>Survey ID (SID)</td>
+<tr><td>ls\models\Survey ID (SID)</td>
 <td><select name='sid' id='sid'>
 $surveyList
 </select></td></tr>
 <tr><td>Navigation Style</td>
 <td><select name='surveyMode' id='surveyMode'>
-<option value='question'>Question (One-at-a-time)</option>
+<option value='question'>ls\models\Question (One-at-a-time)</option>
 <option value='group' selected='selected'>Group (Group-at-a-time)</option>
-<option value='survey'>Survey (All-in-one)</option>
+<option value='survey'>ls\models\Survey (All-in-one)</option>
 </select></td></tr>
 <tr><td>Debug Log Level</td>
 <td>
 Specify which debugging features to use
 <ul>
-<li><input type='checkbox' name='LEM_DEBUG_TIMING' id='LEM_DEBUG_TIMING' value='Y'/>Detailed Timing</li>
+<li><input type='checkbox' name='LEM_DEBUG_TIMING' id='LEM_DEBUG_TIMING' value='Y'/>Detailed ls\models\Timing</li>
 <li><input type='checkbox' name='LEM_DEBUG_VALIDATION_SUMMARY' id='LEM_DEBUG_VALIDATION_SUMMARY' value='Y' checked="checked"/>Validation Summary</li>
 <li><input type='checkbox' name='LEM_DEBUG_VALIDATION_DETAIL' id='LEM_DEBUG_VALIDATION_DETAIL' value='Y' checked="checked"/>Validation Detail (Validation Summary must also be checked to see detail)</li>
 <li><input type='checkbox' name='LEM_PRETTY_PRINT_ALL_SYNTAX' id='LEM_PRETTY_PRINT_ALL_SYNTAX' value='Y' checked="checked"/>Pretty Print Syntax</li>
@@ -73,7 +73,7 @@ else {
         'rooturl'=>'../../..',
     );
 
-    print '<h3>Starting survey ' . $surveyid . " using Survey Mode '". $surveyMode . (($assessments) ? "' [Uses Assessments]" : "'") . "</h3>";
+    print '<h3>Starting survey ' . $surveyid . " using ls\models\Survey Mode '". $surveyMode . (($assessments) ? "' [Uses Assessments]" : "'") . "</h3>";
     $now = microtime(true);
     LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, true,$LEMdebugLevel);
     print '<b>[StartSurvey() took ' . (microtime(true) - $now) . ' seconds]</b><br/>';

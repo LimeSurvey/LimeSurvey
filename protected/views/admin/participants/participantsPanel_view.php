@@ -13,7 +13,7 @@
 </script>
 <div class="menubar">
     <div class='menubar-title ui-widget-header'>
-        <strong><?php eT("Participant panel"); ?> </strong>
+        <strong><?php eT("ls\models\Participant panel"); ?> </strong>
     </div>
     <?php
         $home = array('src' => $sImageURL.'home.png',

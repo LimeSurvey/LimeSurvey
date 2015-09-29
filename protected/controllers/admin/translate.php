@@ -11,6 +11,12 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+use ls\models\Answer;
+use ls\models\Question;
+use ls\models\QuestionGroup;
+use ls\models\Survey;
+use ls\models\SurveyLanguageSetting;
+
 /**
 * Translate Controller
 *
@@ -274,7 +280,7 @@ class translate extends Survey_Common_Action {
 		$adminmenu .= CHtml::closeTag('div');
 
 
-        // Survey language list
+        // ls\models\Survey language list
 		$adminmenu .= $this->_getLanguageList($iSurveyID, $tolang);
 		$adminmenu .= CHtml::closeTag('div');
 		$adminmenu .= CHtml::closeTag('div');
@@ -284,7 +290,7 @@ class translate extends Survey_Common_Action {
 
 	/*
 	* _getSurveyButton() returns test / execute survey button
-	* @param string $iSurveyID Survey id
+	* @param string $iSurveyID ls\models\Survey id
 	* @param string $menuitem_url Menu item url
 	*/
 	private function _getSurveyButton($iSurveyID, $menuitem_url)
@@ -327,7 +333,7 @@ class translate extends Survey_Common_Action {
 			$tmp_survlangs[] = $baselang;
 			rsort($tmp_survlangs);
 
-			// Test Survey Language Selection Popup
+			// Test ls\models\Survey Language Selection Popup
 			$survey_button .= CHtml::openTag(
 									'div',
 									[
@@ -357,7 +363,7 @@ class translate extends Survey_Common_Action {
 
 	/*
 	* _getLanguageList() returns survey language list
-	* @param string $iSurveyID Survey id
+	* @param string $iSurveyID ls\models\Survey id
 	* @param string $tolang The target translation code
 	*/
 	private function _getLanguageList($iSurveyID, $tolang)
@@ -418,7 +424,7 @@ class translate extends Survey_Common_Action {
     /**
     * setupTranslateFields() creates a customised array with database query
     * information for use by survey translation
-    * @param string $iSurveyID Survey id
+    * @param string $iSurveyID ls\models\Survey id
     * @param string $type Type of database field that is being translated, e.g. title, question, etc.
     * @param string $baselang The source translation language code, e.g. "En"
     * @param string $tolang The target translation language code, e.g. "De"
@@ -443,7 +449,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => gT("Survey title and description"),
+					'description' => gT("ls\models\Survey title and description"),
 					'HTMLeditorType' => "title",
 					'HTMLeditorDisplay' => "Inline",
 					'associated' => "description"
@@ -503,7 +509,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => TRUE,
 					'qid' => FALSE,
-					'description' => gT("Question groups"),
+					'description' => gT("ls\models\Question groups"),
 					'HTMLeditorType' => "group",
 					'HTMLeditorDisplay' => "Popup",
 					'associated' => "group_desc"
@@ -548,7 +554,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => TRUE,
 					'qid' => TRUE,
-					'description' => gT("Question help"),
+					'description' => gT("ls\models\Question help"),
 					'HTMLeditorType' => "question_help",
 					'HTMLeditorDisplay' => "Popup",
 					'associated' => ""
@@ -579,7 +585,7 @@ class translate extends Survey_Common_Action {
                     'scaleid' => 'scale_id',
 					'gid' => FALSE,
 					'qid' => TRUE,
-					'description' => gT("Answer options"),
+					'description' => gT("ls\models\Answer options"),
 					'HTMLeditorType' => "subquestion",
 					'HTMLeditorDisplay' => "Popup",
 					'associated' => ""
@@ -860,7 +866,7 @@ class translate extends Survey_Common_Action {
 		$translateoutput .= '<colgroup valign="top" width="55%" />';
         if ($type=='question' || $type=='subquestion' || $type=='question_help' || $type=='answer')
         {
-            $translateoutput .= CHtml::tag('th', [], CHtml::tag('b', [], gT('Question code / ID')));
+            $translateoutput .= CHtml::tag('th', [], CHtml::tag('b', [], gT('ls\models\Question code / ID')));
         }
         $translateoutput .= CHtml::tag('th', [], CHtml::tag('b', [], $baselangdesc));
         $translateoutput .= CHtml::tag('th', [], CHtml::tag('b', [], $tolangdesc));
@@ -871,9 +877,9 @@ class translate extends Survey_Common_Action {
 
     /**
     * displayTranslateFields() Formats and displays translation fields (base language as well as to language)
-    * @param string $iSurveyID Survey id
+    * @param string $iSurveyID ls\models\Survey id
     * @param string $gid Group id
-    * @param string $qid Question id
+    * @param string $qid ls\models\Question id
     * @param string $type Type of database field that is being translated, e.g. title, question, etc.
     * @param array $amTypeOptions Array containing options associated with each $type
     * @param string $baselangdesc The source translation language, e.g. "English"

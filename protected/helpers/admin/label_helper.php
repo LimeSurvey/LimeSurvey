@@ -15,6 +15,8 @@
 //include_once("login_check.php");
 //Security Checked: POST/GET/SESSION/DB/returnGlobal
 
+use ls\models\LabelSet;
+
 function updateset($lid)
 {
     

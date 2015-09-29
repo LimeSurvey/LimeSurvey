@@ -34,7 +34,7 @@
             </select>
             <?php break;
             case "D": //DATE
-                //                            $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($deqrow['qid'], $deqrow['type']);
+                //                            $qidattributes = \ls\models\QuestionAttribute::model()->getQuestionAttributes($deqrow['qid'], $deqrow['type']);
                 $dateformatdetails = \ls\helpers\SurveyTranslator::getDateFormatDataForQID($qidattributes, $thissurvey);
                 if(canShowDatePicker($dateformatdetails))
                 {

@@ -109,7 +109,7 @@ class Expressions extends Survey_Common_Action {
                 return 'Test Evaluation of Strings Containing Expressions';
                 break;
             case 'survey_logic_file':
-                return 'Survey logic file';
+                return 'ls\models\Survey logic file';
                 break;
             case 'syntax_errors':
                 echo 'Show Log of Syntax Errors';
@@ -121,7 +121,7 @@ class Expressions extends Survey_Common_Action {
                 return 'Upgrade Relevance Location';
                 break;
             case 'usage':
-                return 'Running Translation Log';
+                return 'Running ls\models\Translation Log';
                 break;
         }
     }

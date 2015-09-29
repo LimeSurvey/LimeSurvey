@@ -5,9 +5,9 @@ use ls\models\questions\RadioListQuestion;
 use ls\models\questions\ShortTextQuestion;
 use \Yii;
 use ls\components\SurveySession;
-use \DummyResponse;
-use \Survey;
-use SurveyLanguageSetting;
+use ls\models\DummyResponse;
+use ls\models\Survey;
+use ls\models\SurveyLanguageSetting;
 use Cake\Utility\Hash;
 
 class TemplatesController extends Controller
@@ -15,12 +15,12 @@ class TemplatesController extends Controller
     public $layout = 'main';
     public function actionIndex($name = 'default', $screen = 'welcome')
     {
-        if (!\Template::templateNameFilter($name)) {
-            throw new \CHttpException(404, "Template not found.");
+        if (!\ls\models\Template::templateNameFilter($name)) {
+            throw new \CHttpException(404, "ls\models\Template not found.");
         }
         $template = [
             'name' => $name,
-            'writable' => \Template::isStandardTemplate($name)
+            'writable' => \ls\models\Template::isStandardTemplate($name)
         ];
         $screen = Hash::get(Hash::extract($this->screens(), "{n}[id=$screen]"), 0, null);
 //        $this->menus['template'] = [
@@ -49,7 +49,7 @@ class TemplatesController extends Controller
             ]
         ];
         $screens[] = [
-            'name' => gT('Question Page'),
+            'name' => gT('ls\models\Question Page'),
             'id' => 'question',
             'templates' => [
                 'startpage.pstpl',
@@ -133,8 +133,8 @@ class TemplatesController extends Controller
 
     public function actionPreview($name, $page) {
         App()->disableWebLogRoutes();
-        if (!\Template::templateNameFilter($name)) {
-            throw new \CHttpException(404, "Template not found.");
+        if (!\ls\models\Template::templateNameFilter($name)) {
+            throw new \CHttpException(404, "ls\models\Template not found.");
         }
 
 
@@ -158,7 +158,7 @@ class TemplatesController extends Controller
 
         // FAKE DATA FOR TEMPLATES
         $survey['sid'] = 12345;
-        $languageSettings->title = gT("Template Sample");
+        $languageSettings->title = gT("ls\models\Template Sample");
         $languageSettings->description =
             "<p>".gT('This is a sample survey description. It could be quite long.')."</p>".
             "<p>".gT("But this one isn't.")."<p>";
@@ -268,8 +268,8 @@ class TemplatesController extends Controller
          * Construct survey.
          */
         $survey = new Survey();
-        $survey->format = \Survey::FORMAT_GROUP;
-        $group = new \QuestionGroup();
+        $survey->format = \ls\models\Survey::FORMAT_GROUP;
+        $group = new \ls\models\QuestionGroup();
         $group->primaryKey = 0;
         $question1 = new ShortTextQuestion();
         $question2 = new ShortTextQuestion();

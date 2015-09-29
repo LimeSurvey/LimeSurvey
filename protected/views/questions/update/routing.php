@@ -1,5 +1,7 @@
 <?php
 /** @var TbActiveForm $form */
+use ls\models\Question;
+
 /** @var Question $question */
 //$form->layout = TbHtml::FORM_LAYOUT_HORIZONTAL;
 echo TbHtml::openTag('fieldset', []);

@@ -122,12 +122,12 @@ class remotecontrol extends Survey_Common_Action
         $aResult=$client->call('activate_survey', [$sSessionKey, $iSurveyID]);
         if ($aResult['status']=='OK')
         {
-            echo 'Survey '.$iSurveyID.' successfully activated.<br>';
+            echo 'ls\models\Survey '.$iSurveyID.' successfully activated.<br>';
         }
         $aResult=$client->call('activate_tokens', [$sSessionKey, $iSurveyID, [1,2]]);
         if ($aResult['status']=='OK')
         {
-            echo 'Tokens for Survey ID '.$iSurveyID.' successfully activated.<br>';
+            echo 'Tokens for ls\models\Survey ID '.$iSurveyID.' successfully activated.<br>';
         }
         $aResult=$client->call('set_survey_properties', [$sSessionKey, $iSurveyID, ['faxto'=>'0800-LIMESURVEY']]);
         if (!array_key_exists('status', $aResult))

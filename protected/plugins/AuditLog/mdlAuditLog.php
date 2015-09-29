@@ -12,6 +12,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+use ls\models\ActiveRecord;
 
 /**
  * This is the model class for table "{{plugins}}".

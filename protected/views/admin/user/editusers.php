@@ -1,10 +1,10 @@
-<div class='header ui-widget-header'><?php eT("User control");?></div><br />
+<div class='header ui-widget-header'><?php eT("ls\models\User control");?></div><br />
 <table id='users' class='users'>
     <thead>
         <tr>
             <th><?php eT("Action");?></th>
 
-            <th style='width:5%'><?php eT("User ID");?></th>
+            <th style='width:5%'><?php eT("ls\models\User ID");?></th>
             <th style='width:15%'><?php eT("Username");?></th>
             <th style='width:20%'><?php eT("Email");?></th>
             <th style='width:20%'><?php eT("Full name");?></th>

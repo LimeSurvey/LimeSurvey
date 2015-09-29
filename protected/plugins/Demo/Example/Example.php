@@ -83,7 +83,7 @@ class Example extends PluginBase {
                 'message' => array(
                     'type' => 'string',
                     'label' => 'Message to show to users:',
-                    'current' => $this->get('message', 'Survey', $event->get('survey'))
+                    'current' => $this->get('message', 'ls\models\Survey', $event->get('survey'))
                 )
             )
          ));
@@ -95,7 +95,7 @@ class Example extends PluginBase {
         foreach ($event->get('settings') as $name => $value)
         {
             
-            $this->set($name, $value, 'Survey', $event->get('survey'));
+            $this->set($name, $value, 'ls\models\Survey', $event->get('survey'));
         }
     }
 

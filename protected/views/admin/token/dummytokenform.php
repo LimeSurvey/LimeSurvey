@@ -1,5 +1,7 @@
 <div class='header ui-widget-header'>
-    <?php eT("Create dummy tokens"); ?>
+    <?php use ls\models\Survey;
+
+    eT("Create dummy tokens"); ?>
 </div>
 <?php echo CHtml::form(array("admin/tokens/sa/adddummies/surveyid/{$surveyid}/subaction/add"), 'post', array('id'=>'edittoken', 'name'=>'edittoken', 'class'=>'form30')); ?>
     <ul>
@@ -8,7 +10,7 @@
         </li>
         <li><label for='amount'><?php eT("Number of tokens"); ?>:</label>
             <input type='text' size='20' id='amount' name='amount' value="100" /></li>
-        <li><label for='tokenlen'><?php eT("Token length"); ?>:</label>
+        <li><label for='tokenlen'><?php eT("ls\models\Token length"); ?>:</label>
             <input type='text' size='20' id='tokenlen' name='tokenlen' value="<?php echo $tokenlength; ?>" /></li>
         <li><label for='firstname'><?php eT("First name"); ?>:</label>
             <input type='text' size='30' id='firstname' name='firstname' value="" /></li>

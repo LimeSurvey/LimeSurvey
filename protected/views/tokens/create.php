@@ -1,6 +1,6 @@
 <div class="row"><div class="col-md-6 col-md-offset-3">
 <?php
-/** @var \Token $token */
+/** @var \ls\models\Token $token */
 /** @var TbActiveForm $form */
 $form = $this->beginWidget(TbActiveForm::class, [
     'layout' => TbHtml::FORM_LAYOUT_HORIZONTAL,

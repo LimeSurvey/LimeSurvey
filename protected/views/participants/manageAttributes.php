@@ -2,7 +2,9 @@
     <div class="col-md-12">
 <?php
 
-    $this->widget(WhGridView::class, [
+use ls\models\ParticipantAttributeName;
+
+$this->widget(WhGridView::class, [
         'dataProvider' => $dataProvider,
         'columns' => [
             [

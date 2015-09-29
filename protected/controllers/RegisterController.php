@@ -2,7 +2,7 @@
 namespace ls\controllers;
 use \Yii;
 use \CHttpException;
-use \Survey;
+use ls\models\Survey;
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -107,7 +107,7 @@ class RegisterController extends Controller {
 
     /**
     * Validate a register form
-    * @param $iSurveyId Survey Id to register
+    * @param $iSurveyId \ls\models\Survey Id to register
     * @return array of errors when try to register (empty array => no error)
     */
     public function getRegisterErrors($iSurveyId){
@@ -191,7 +191,7 @@ class RegisterController extends Controller {
 
     /**
     * Send the register email with $_POST value
-    * @param $iSurveyId Survey Id to register
+    * @param $iSurveyId \ls\models\Survey Id to register
     * @return boolean : if email is set to sent (before SMTP problem)
     */
     public function sendRegistrationEmail($iSurveyId,$iTokenId){
@@ -267,7 +267,7 @@ class RegisterController extends Controller {
             $this->sMessage="<div id='wrapper' class='message tokenmessage'>"
                 . "<p>".gT("Thank you for registering to participate in this survey.")."</p>\n"
                 . "<p>{$this->sMailMessage}</p>\n"
-                . "<p>".sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
+                . "<p>".sprintf(gT("ls\models\Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
                 . "</div>\n";
         }
         else
@@ -275,7 +275,7 @@ class RegisterController extends Controller {
             $this->sMessage="<div id='wrapper' class='message tokenmessage'>"
                 . "<p>".gT("Thank you for registering to participate in this survey.")."</p>\n"
                 . "<p>".gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.")."</p>\n"
-                . "<p>".sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
+                . "<p>".sprintf(gT("ls\models\Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
                 . "</div>\n";
         }
         // Allways return true : if we come here, we allways trye to send an email

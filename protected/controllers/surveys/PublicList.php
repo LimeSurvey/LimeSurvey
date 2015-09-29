@@ -1,7 +1,7 @@
 <?php
 namespace ls\controllers\surveys;
 
-use \Survey;
+use ls\models\Survey;
 class PublicList extends \Action
 {
     public function run($language = null)

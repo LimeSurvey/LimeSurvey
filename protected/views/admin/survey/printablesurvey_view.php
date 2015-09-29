@@ -1,6 +1,8 @@
 <?php
 
-echo '<link rel="stylesheet" type="text/css" href="' . \Template::getTemplateURL(SettingGlobal::get('defaulttemplate')) . '/print_template.css" />';
+use ls\models\SettingGlobal;
+
+echo '<link rel="stylesheet" type="text/css" href="' . \ls\models\Template::getTemplateURL(SettingGlobal::get('defaulttemplate')) . '/print_template.css" />';
 
 echo $surveydesc . "<br />";
 echo $welcome . "<br /><br />";

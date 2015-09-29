@@ -1,6 +1,8 @@
 <?php
 /** @var Survey $survey */
 
+use ls\models\Survey;
+
 echo TbHtml::pageHeader($survey->getLocalizedTitle(), $survey->getLocalizedDescription());
 echo TbHtml::tag('div', ['class'=>'welcome'], $survey->getLocalizedWelcomeText());
 echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_HORIZONTAL);

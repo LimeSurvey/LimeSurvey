@@ -10,7 +10,7 @@ use ls\interfaces\iAnswer;
  * Class FixedChoiceQuestion
  * @package ls\models\questions
  */
-abstract class FixedChoiceQuestion extends \Question
+abstract class FixedChoiceQuestion extends \ls\models\Question
 {
     /**
      * Returns the number of scales for answers.

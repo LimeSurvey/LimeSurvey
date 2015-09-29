@@ -97,20 +97,20 @@ namespace ls\pluginmanager;
                     'type' => 'select',
                     'localized' => false,
                     'advanced' => false,
-                    'label' => gt('Question type:'),
+                    'label' => gt('ls\models\Question type:'),
                     'options' => CHtml::listData(App()->getPluginManager()->loadQuestionObjects(), 'guid', 'name')
                 ),
                 'code' => array(
                     'type' => 'string',
                     'localized' => false,
                     'advanced' => false,
-                    'label' => gT('Question code:')
+                    'label' => gT('ls\models\Question code:')
                 ),
                 'gid' => array(
                     'type' => 'select',
                     'localized' => false,
                     'advanced' => false,
-                    'label' => gT('Question group:'),
+                    'label' => gT('ls\models\Question group:'),
                     'options' => function($this) { return $this->api->getGroupList($this->get('sid')); }
                 ),
                 'relevance' => array(
@@ -144,7 +144,7 @@ namespace ls\pluginmanager;
             if (!isset($questionId) && isset($this->questionId))
             {
                 $questionId = $this->questionId;
-                return $this->plugin->getStore()->get($this->plugin, $key, 'Question', $questionId, $default, $language);
+                return $this->plugin->getStore()->get($this->plugin, $key, 'ls\models\Question', $questionId, $default, $language);
             }
             else
             {
@@ -303,7 +303,7 @@ namespace ls\pluginmanager;
         
         /**
          * This function saves question data. 
-         * @param int $qid Question id.
+         * @param int $qid ls\models\Question id.
          * @param string $key
          * @param string $language
          * @param mixed $value
@@ -314,7 +314,7 @@ namespace ls\pluginmanager;
             if (!isset($questionId) && isset($this->questionId))
             {
                 $questionId = $this->questionId;
-                return $this->plugin->getStore()->set($this->plugin, $key, $value, 'Question', $questionId, $language);
+                return $this->plugin->getStore()->set($this->plugin, $key, $value, 'ls\models\Question', $questionId, $language);
             }
             else
             {

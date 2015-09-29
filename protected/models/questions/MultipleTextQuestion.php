@@ -10,7 +10,7 @@ class MultipleTextQuestion extends TextQuestion
 
     public function getColumns()
     {
-        $result = call_user_func_array('array_merge', array_map(function (\Question $subQuestion) {
+        $result = call_user_func_array('array_merge', array_map(function (\ls\models\Question $subQuestion) {
             $subResult = [];
             foreach ($subQuestion->columns as $name => $type) {
                 $subResult[$this->sgqa . $name] = $type;
@@ -39,7 +39,7 @@ class MultipleTextQuestion extends TextQuestion
     /**
      * This function return the class by question type
      * @param string question type
-     * @return string Question class to be added to the container
+     * @return string ls\models\Question class to be added to the container
      */
     public function getClasses()
     {
@@ -71,7 +71,7 @@ class MultipleTextQuestion extends TextQuestion
         return $result;
     }
 
-    public function renderSubQuestion(\Question $question, \ls\interfaces\iResponse $response, \ls\components\SurveySession $session) {
+    public function renderSubQuestion(\ls\models\Question $question, \ls\interfaces\iResponse $response, \ls\components\SurveySession $session) {
         
 
         $extraclass ="";

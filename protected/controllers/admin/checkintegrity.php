@@ -11,6 +11,18 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+use ls\models\Answer;
+use ls\models\Assessment;
+use ls\models\DefaultValue;
+use ls\models\Question;
+use ls\models\QuestionAttribute;
+use ls\models\QuestionGroup;
+use ls\models\Quota;
+use ls\models\QuotaLanguageSetting;
+use ls\models\QuotaMember;
+use ls\models\Survey;
+use ls\models\SurveyLanguageSetting;
+
 /**
  * CheckIntegrity Controller
  *
@@ -667,7 +679,7 @@ class CheckIntegrity extends Survey_Common_Action
                     if ($aFirstRow['recordcount']==0) { // empty table - so add it to immediate deletion
                         $aDelete['orphansurveytables'][] = $sTableName;
                     } else {
-                        $aOldSurveyTableAsk[] = ['table' => $sTableName, 'details' => sprintf(gT('Survey ID %d saved at %s containing %d record(s) (%s)'), $iSurveyID, $sDate, $aFirstRow['recordcount'], $sType)];
+                        $aOldSurveyTableAsk[] = ['table' => $sTableName, 'details' => sprintf(gT('ls\models\Survey ID %d saved at %s containing %d record(s) (%s)'), $iSurveyID, $sDate, $aFirstRow['recordcount'], $sType)];
                     }
                 }
             }
@@ -728,7 +740,7 @@ class CheckIntegrity extends Survey_Common_Action
                     }
                     else
                     {
-                        $aOldTokenTableAsk[] = ['table' => $sTableName, 'details' => sprintf(gT('Survey ID %d saved at %s containing %d record(s)'), $iSurveyID, $sDate, $aFirstRow['recordcount'])];
+                        $aOldTokenTableAsk[] = ['table' => $sTableName, 'details' => sprintf(gT('ls\models\Survey ID %d saved at %s containing %d record(s)'), $iSurveyID, $sDate, $aFirstRow['recordcount'])];
                     }
                 }
             }

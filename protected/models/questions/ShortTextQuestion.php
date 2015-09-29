@@ -19,7 +19,7 @@ class ShortTextQuestion extends TextQuestion
         // ---------------------------------------------------------------
 
 
-        $sGoogleMapsAPIKey = \SettingGlobal::get("googleMapsAPIKey");
+        $sGoogleMapsAPIKey = \ls\models\SettingGlobal::get("googleMapsAPIKey");
         if ($sGoogleMapsAPIKey!='')
         {
             $sGoogleMapsAPIKey='&key='.$sGoogleMapsAPIKey;
@@ -224,7 +224,7 @@ class ShortTextQuestion extends TextQuestion
                 $strBuild .= "5";*/
 
             $aGlobalMapScriptVar= array(
-                'geonameUser'=>\SettingGlobal::get('GeoNamesUsername'),// Did we need to urlencode ?
+                'geonameUser'=> \ls\models\SettingGlobal::get('GeoNamesUsername'),// Did we need to urlencode ?
                 'geonameLang'=>Yii::app()->language,
             );
             $aThisMapScriptVar=array(

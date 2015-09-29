@@ -13,9 +13,9 @@
 	<div class="language-changer">
 	   <p>{LANGUAGECHANGER}</p>
 	    <br />
-       <a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}limesurvey_logo.png" border="0" title="LimeSurvey Survey Software" /></a>
+       <a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}limesurvey_logo.png" border="0" title="LimeSurvey ls\models\Survey Software" /></a>
        <br />
-       <a href="http://www.limesurvey.org" target="_blank">The Online Survey Tool</a> - Free &amp; Open Source
+       <a href="http://www.limesurvey.org" target="_blank">The Online ls\models\Survey Tool</a> - Free &amp; Open Source
        <br />
 	</div>
 </div>

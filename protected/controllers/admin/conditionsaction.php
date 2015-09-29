@@ -11,6 +11,10 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+use ls\models\Answer;
+use ls\models\Question;
+use ls\models\Survey;
+
 /**
 * Condition Controller
 *
@@ -135,7 +139,7 @@ class conditionsaction extends Survey_Common_Action {
             $resetsurveylogicoutput = $br;
             $resetsurveylogicoutput .= CHtml::openTag('table', ['class'=>'alertbox']);
             $resetsurveylogicoutput .= CHtml::openTag('tr').CHtml::openTag('td', ['colspan'=>'2']);
-            $resetsurveylogicoutput .= CHtml::tag('font', ['size'=>'1'], CHtml::tag('strong', [], gT("Reset Survey Logic")));
+            $resetsurveylogicoutput .= CHtml::tag('font', ['size'=>'1'], CHtml::tag('strong', [], gT("Reset ls\models\Survey Logic")));
             $resetsurveylogicoutput .= CHtml::closeTag('td').CHtml::closeTag('tr');
 
             if (!isset($_GET['ok']))
@@ -722,7 +726,7 @@ class conditionsaction extends Survey_Common_Action {
                                 }
                                 break;
                         }
-                        // Only Show No-Answer if question is not mandatory
+                        // Only Show No-ls\models\Answer if question is not mandatory
                         if ($rows['mandatory'] != 'Y')
                         {
                             $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "", gT("No answer")];
@@ -734,7 +738,7 @@ class conditionsaction extends Survey_Common_Action {
                 { // Multiflexi
 
                     //Get question attribute for $canswers
-                    $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($rows['qid'], $rows['type']);
+                    $qidattributes= \ls\models\QuestionAttribute::model()->getQuestionAttributes($rows['qid'], $rows['type']);
                     if (isset($qidattributes['multiflexible_max']) && trim($qidattributes['multiflexible_max'])!='') {
                         $maxvalue=floatval($qidattributes['multiflexible_max']);
                     } else {
@@ -823,7 +827,7 @@ class conditionsaction extends Survey_Common_Action {
 
                     foreach ($aresult as $arows)
                     {
-                        $attr = \QuestionAttribute::model()->getQuestionAttributes($rows['qid']);
+                        $attr = \ls\models\QuestionAttribute::model()->getQuestionAttributes($rows['qid']);
                         $sLanguage=Survey::model()->findByPk($iSurveyID)->language;
                         // dualscale_header are allways set, but can be empty
                         $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gt('Scale 1') : $attr['dualscale_headerA'][$sLanguage];
@@ -855,7 +859,7 @@ class conditionsaction extends Survey_Common_Action {
                             $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1", "{$lrows['code']}", "{$lrows['code']}"];
                         }
 
-                        // Only Show No-Answer if question is not mandatory
+                        // Only Show No-ls\models\Answer if question is not mandatory
                         if ($rows['mandatory'] != 'Y')
                         {
                             $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "", gT("No answer")];
@@ -876,7 +880,7 @@ class conditionsaction extends Survey_Common_Action {
                         $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
                         $cquestions[]= [$shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']];
 
-                        // Only Show No-Answer if question is not mandatory
+                        // Only Show No-ls\models\Answer if question is not mandatory
                         if ($rows['mandatory'] != 'Y')
                         {
                             $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "", gT("No answer")];
@@ -884,7 +888,7 @@ class conditionsaction extends Survey_Common_Action {
 
                     } //while
                 }
-                elseif ($rows['type'] == "R") //Answer Ranking
+                elseif ($rows['type'] == "R") //ls\models\Answer Ranking
                 {
                     $aresult = Answer::model()->findAllByAttributes([
                     "qid" => $rows['qid'],
@@ -905,7 +909,7 @@ class conditionsaction extends Survey_Common_Action {
                         {
                             $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, $qck[0], $qck[1]];
                         }
-                        // Only Show No-Answer if question is not mandatory
+                        // Only Show No-ls\models\Answer if question is not mandatory
                         if ($rows['mandatory'] != 'Y')
                         {
                             $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, " ", gT("No answer")];
@@ -949,7 +953,7 @@ class conditionsaction extends Survey_Common_Action {
                         case "Y": // Y/N/NA
                             $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", gT("Yes")];
                             $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", gT("No")];
-                            // Only Show No-Answer if question is not mandatory
+                            // Only Show No-ls\models\Answer if question is not mandatory
                             if ($rows['mandatory'] != 'Y')
                             {
                                 $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer")];
@@ -958,7 +962,7 @@ class conditionsaction extends Survey_Common_Action {
                         case "G": //Gender
                             $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", gT("Female")];
                             $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", gT("Male")];
-                            // Only Show No-Answer if question is not mandatory
+                            // Only Show No-ls\models\Answer if question is not mandatory
                             if ($rows['mandatory'] != 'Y')
                             {
                                 $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer")];
@@ -969,7 +973,7 @@ class conditionsaction extends Survey_Common_Action {
                             {
                                 $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $i, $i];
                             }
-                            // Only Show No-Answer if question is not mandatory
+                            // Only Show No-ls\models\Answer if question is not mandatory
                             if ($rows['mandatory'] != 'Y')
                             {
                                 $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer")];
@@ -978,7 +982,7 @@ class conditionsaction extends Survey_Common_Action {
 
                         case "N": // Simple Numerical questions
 
-                            // Only Show No-Answer if question is not mandatory
+                            // Only Show No-ls\models\Answer if question is not mandatory
                             if ($rows['mandatory'] != 'Y')
                             {
                                 $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer")];
@@ -1000,7 +1004,7 @@ class conditionsaction extends Survey_Common_Action {
                             }
                             if ($rows['type'] == "D")
                             {
-                                // Only Show No-Answer if question is not mandatory
+                                // Only Show No-ls\models\Answer if question is not mandatory
                                 if ($rows['mandatory'] != 'Y')
                                 {
                                     $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer")];
@@ -1020,7 +1024,7 @@ class conditionsaction extends Survey_Common_Action {
                                     $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", gT("Other")];
                                 }
 
-                                // Only Show No-Answer if question is not mandatory
+                                // Only Show No-ls\models\Answer if question is not mandatory
                                 if ($rows['mandatory'] != 'Y')
                                 {
                                     $canswers[]= [$rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer")];
@@ -1751,14 +1755,14 @@ class conditionsaction extends Survey_Common_Action {
             ."</div>\n"
             ."</div>\n";
 
-            // Begin "Question" row
+            // Begin "ls\models\Question" row
             $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
-            ."<div class='condition-tbl-left'>".gT("Question")."</div>\n"
+            ."<div class='condition-tbl-left'>".gT("ls\models\Question")."</div>\n"
             ."<div class='condition-tbl-right'>\n"
             ."\t<div id=\"conditionsource\" class=\"tabs-nav\">\n"
             ."\t<ul>\n"
             ."\t<li><a href=\"#SRCPREVQUEST\"><span>".gT("Previous questions")."</span></a></li>\n"
-            ."\t<li><a href=\"#SRCTOKENATTRS\"><span>".gT("Token fields")."</span></a></li>\n"
+            ."\t<li><a href=\"#SRCTOKENATTRS\"><span>".gT("ls\models\Token fields")."</span></a></li>\n"
             ."\t</ul>\n";
 
             // Previous question tab
@@ -1828,9 +1832,9 @@ class conditionsaction extends Survey_Common_Action {
             ."</div>\n"
             ."</div>\n";
 
-            // Begin "Answer" row
+            // Begin "ls\models\Answer" row
             $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
-            ."<div class='condition-tbl-left'>".gT("Answer")."</div>\n";
+            ."<div class='condition-tbl-left'>".gT("ls\models\Answer")."</div>\n";
 
             if ($subaction == "editthiscondition")
             {
@@ -1881,7 +1885,7 @@ class conditionsaction extends Survey_Common_Action {
             ."\t\t<li><a href=\"#CANSWERSTAB\"><span>".gT("Predefined")."</span></a></li>\n"
             ."\t\t<li><a href=\"#CONST\"><span>".gT("Constant")."</span></a></li>\n"
             ."\t\t<li><a href=\"#PREVQUESTIONS\"><span>".gT("Questions")."</span></a></li>\n"
-            ."\t\t<li><a href=\"#TOKENATTRS\"><span>".gT("Token fields")."</span></a></li>\n"
+            ."\t\t<li><a href=\"#TOKENATTRS\"><span>".gT("ls\models\Token fields")."</span></a></li>\n"
             ."\t\t<li><a href=\"#REGEXP\"><span>".gT("RegExp")."</span></a></li>\n"
             ."\t</ul>\n";
 
@@ -1913,10 +1917,10 @@ class conditionsaction extends Survey_Common_Action {
                 }
             }
             $aViewUrls['output'] .= "\t\t</select>\n"
-            ."\t\t<br /><span id='prevQuestionSGQALabel'>".gT("Answer from previous questions")."</span>\n"
+            ."\t\t<br /><span id='prevQuestionSGQALabel'>".gT("ls\models\Answer from previous questions")."</span>\n"
             ."\t</div>\n";
 
-            // Token tab
+            // ls\models\Token tab
             $aViewUrls['output'] .= "\t<div id='TOKENATTRS'>\n"
             ."\t\t<select name='tokenAttr' id='tokenAttr' size='7'>\n";
             foreach (getTokenFieldsAndNames($iSurveyID) as $tokenattr => $tokenattrName)
@@ -2113,10 +2117,10 @@ class conditionsaction extends Survey_Common_Action {
 
             //output with hoover effect
             $reshtml= "<span style='cursor: hand' alt='".$htmlhinttext."' title='".$htmlhinttext."' "
-            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\" />"
+            ." onclick=\"alert('".gT("ls\models\Question","js").": $jshinttext')\" />"
             ." \"$shortstring...\" </span>"
             ."<img style='cursor: hand' src='$imageurl/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
-            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\" />";
+            ." onclick=\"alert('".gT("ls\models\Question","js").": $jshinttext')\" />";
         }
         else
         {

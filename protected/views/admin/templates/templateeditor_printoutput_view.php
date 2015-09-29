@@ -1,6 +1,6 @@
-<span class='printouttitle'><strong><?php eT("Survey name (ID)") ?></strong> Test survey (46962)</span><br />
+<span class='printouttitle'><strong><?php eT("ls\models\Survey name (ID)") ?></strong> Test survey (46962)</span><br />
 <table class='printouttable' >
-    <tr><th><?php eT("Question") ?></th><th><?php eT("Your answer") ?></th></tr>
+    <tr><th><?php eT("ls\models\Question") ?></th><th><?php eT("Your answer") ?></th></tr>
     <tr>
         <td>id</td>
         <td>12</td>

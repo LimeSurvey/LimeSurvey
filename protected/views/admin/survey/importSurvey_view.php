@@ -33,9 +33,9 @@
         <ul style="text-align:left;">
             <li><?php eT("Surveys");?>: <?php echo $aImportResults['surveys'];?></li>
             <li><?php eT("Languages");?>: <?php echo $aImportResults['languages'];?></li>
-            <li><?php eT("Question groups");?>: <?php echo $aImportResults['groups'];?></li>
+            <li><?php eT("ls\models\Question groups");?>: <?php echo $aImportResults['groups'];?></li>
             <li><?php eT("Questions");?>: <?php echo $aImportResults['questions'];?></li>
-            <li><?php eT("Question attributes");?>: <?php echo $aImportResults['question_attributes'];?></li>
+            <li><?php eT("ls\models\Question attributes");?>: <?php echo $aImportResults['question_attributes'];?></li>
             <li><?php eT("Answers");?>: <?php echo $aImportResults['answers'];?></li>
             <?php if (isset($aImportResults['subquestions']))
                 {?>
@@ -64,7 +64,7 @@
         <?php
             if (isset($aImportResults['responses']))
             {?>
-            <strong><?php eT("Response import summary"); ?></strong><br />
+            <strong><?php eT("ls\models\Response import summary"); ?></strong><br />
             <ul>
                 <li><?php eT("Responses");?>: <?php echo $aImportResults['responses'];?></li>
                 <?php }?>

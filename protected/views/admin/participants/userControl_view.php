@@ -10,7 +10,7 @@
     <ul>
         <li>
             <a href='#usercontrol'><?php
-        eT("User control");
+        eT("ls\models\User control");
         ?></a>
         </li>
     </ul>
@@ -25,7 +25,7 @@
             <ul>
                 <li>
                     <label for='userideditable' id='userideditable'>
-                        <?php eT('User ID editable:'); ?>
+                        <?php eT('ls\models\User ID editable:'); ?>
                     </label>
                     <?php echo CHtml::dropDownList('userideditable', $userideditable, $options); ?>
                 </li>

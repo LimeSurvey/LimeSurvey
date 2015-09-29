@@ -211,7 +211,7 @@ class pdf extends TCPDF {
   private $_iCellHeight = 6;
 
   /**
-   * Survey Information (preventing from passing to methods every time)
+   * ls\models\Survey Information (preventing from passing to methods every time)
    *
    * @var array
    * @access private
@@ -627,11 +627,11 @@ class pdf extends TCPDF {
   }
   /**
    *
-   * Create Answer PDF document, set metadata and set title
-   * @param $aSurveyInfo - Survey Information (preventing from passing to methods every time)
+   * Create ls\models\Answer PDF document, set metadata and set title
+   * @param $aSurveyInfo - ls\models\Survey Information (preventing from passing to methods every time)
    * @param $aPdfLanguageSettings - Pdf language settings
    * @param $sSiteName - LimeSurvey site name (header and metadata)
-   * @param $sSurveyName - Survey name (header, metadata and title),
+   * @param $sSurveyName - ls\models\Survey name (header, metadata and title),
    * @param $sDefaultHeaderString - TCPDF header string
    * @return unknown_type
    */
@@ -752,8 +752,8 @@ class pdf extends TCPDF {
    *
    * Add answer to PDF
    *
-   * @param $sQuestion - Question field text array
-   * @param $sResponse - Answer field text array
+   * @param $sQuestion - ls\models\Question field text array
+   * @param $sResponse - ls\models\Answer field text array
    * @param $bReplaceExpressions - Try to replace LimeSurvey Expressions. This is false when exporting answers PDF from admin GUI
    *                               because we can not interpret expressions so just purify.
    *                               TODO: Find a universal valid method to interpret expressions

@@ -107,7 +107,7 @@ class GTranslate
 	private $api_key = null;
 
 	/**
-	* Google request User IP
+	* Google request ls\models\User IP
 	* @access private
 	* @var string	
 	*/
@@ -222,7 +222,7 @@ class GTranslate
 	}
 	
 	/**
-	* Define the User Ip for the query
+	* Define the ls\models\User Ip for the query
  	* @access public
 	* @param string $ip
 	* return boolean
@@ -299,7 +299,7 @@ class GTranslate
 	}
 
         /**     
-        * Response Evaluator, validates the response
+        * ls\models\Response Evaluator, validates the response
 	* Throws an exception on error 
         * @access private
         * @param String $json_response
@@ -315,7 +315,7 @@ class GTranslate
 				return $json_response->responseData->translatedText;
 				break;
 			default:
-				throw new GTranslateException("Unable to perform Translation:".$json_response->responseDetails);
+				throw new GTranslateException("Unable to perform ls\models\Translation:".$json_response->responseDetails);
 			break;
 		}
 	}

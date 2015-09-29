@@ -18,7 +18,7 @@
                 $items = require __DIR__ . '/../menu.php';
                 $this->widget('TbNavbar', [
                     'brandUrl' => ['moduleplugin'],
-                    'brandLabel' => 'LS User Dashboard',
+                    'brandLabel' => 'LS ls\models\User Dashboard',
                     'display' => null,
 //                    'fluid' => true,
                     'items' => [

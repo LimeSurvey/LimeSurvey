@@ -1,5 +1,7 @@
 <?php
 /** @var TbActiveForm $form */
+use ls\models\Question;
+
 /** @var Question $question */
 //$form->layout = TbHtml::FORM_LAYOUT_HORIZONTAL;
 echo TbHtml::openTag('fieldset', []);
@@ -13,9 +15,9 @@ if ($question->hasAttribute('exclude_all_others')) {
 }
 if ($question->hasAttribute('array_filter')) {
     echo $form->textFieldControlGroup($question, 'array_filter');
-//    echo $form->checkBoxListControlGroup($question, 'array_filter', TbHtml::listData(array_filter($question->survey->questions, function(Question $question) {
-//        return $question->type == Question::TYPE_MULTIPLE_CHOICE
-//            || $question->type == Question::TYPE_MULTIPLE_CHOICE_WITH_COMMENT;
+//    echo $form->checkBoxListControlGroup($question, 'array_filter', TbHtml::listData(array_filter($question->survey->questions, function(ls\models\Question $question) {
+//        return $question->type == ls\models\Question::TYPE_MULTIPLE_CHOICE
+//            || $question->type == ls\models\Question::TYPE_MULTIPLE_CHOICE_WITH_COMMENT;
 //    }), 'title', 'question'));
 }
 

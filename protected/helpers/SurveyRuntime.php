@@ -2,13 +2,13 @@
 
 namespace ls\helpers;
 use ls\components\SurveySession;
-use \Survey;
+use ls\models\Survey;
 use \Yii;
 use \CClientScript;
 use \TbHtml;
 use LimeExpressionManager;
-use \QuestionGroup;
-use \Question;
+use ls\models\QuestionGroup;
+use ls\models\Question;
 class SurveyRuntime {
 
 
@@ -31,7 +31,7 @@ class SurveyRuntime {
         echo "\n\n<!-- PRESENT THE INDEX -->\n";
         echo TbHtml::openTag('div', array('id' => 'index'));
         echo TbHtml::openTag('div', array('class' => 'container'));
-        echo TbHtml::tag('h2', array(), gT("Question index"));
+        echo TbHtml::tag('h2', array(), gT("ls\models\Question index"));
         echo TbHtml::openTag('ol');
         /**
          * @var int $key
@@ -69,8 +69,8 @@ class SurveyRuntime {
     {
         echo TbHtml::openTag('div', array('id' => 'index'));
         echo TbHtml::openTag('div', array('class' => 'container'));
-        echo TbHtml::tag('h2', array(), gT("Question index"));
-        echo 'Question by question not yet supported, use incremental index.';
+        echo TbHtml::tag('h2', array(), gT("ls\models\Question index"));
+        echo 'ls\models\Question by question not yet supported, use incremental index.';
         echo TbHtml::closeTag('div');
         echo TbHtml::closeTag('div');
 
@@ -81,7 +81,7 @@ class SurveyRuntime {
     {
         echo "\n\n<!-- PRESENT THE INDEX -->\n";
 
-        echo '<div id="index"><div class="container"><h2>' . gT("Question index") . '</h2>';
+        echo '<div id="index"><div class="container"><h2>' . gT("ls\models\Question index") . '</h2>';
 
         $lastGseq=-1;
         $gseq = -1;
@@ -169,7 +169,7 @@ class SurveyRuntime {
      */
     function run(SurveySession $session, $move)
     {
-        /** @var Survey $survey */
+        /** @var \ls\models\Survey $survey */
         $survey = $session->survey;
 
         $this->setJavascriptVar($survey);
@@ -358,7 +358,7 @@ class SurveyRuntime {
                     $completed = \ls\helpers\Replacements::templatereplace($survey->getLocalizedEndText(), array(), $redata, null);
                 }
 
-                // Link to Print Answer Preview  **********
+                // Link to Print ls\models\Answer Preview  **********
                 if ($session->survey->bool_printanswers) {
                     $url = App()->createUrl("/printanswers/view", ['surveyid' => $survey->primaryKey]);
                     $completed .= "<br /><br />"
@@ -425,7 +425,7 @@ class SurveyRuntime {
         //******************************************************************************************************
         //PRESENT SURVEY
         //******************************************************************************************************
-        bP('Present Survey');
+        bP('Present ls\models\Survey');
 
         //Iterate through the questions about to be displayed:
         if ($session->format != Survey::FORMAT_ALL_IN_ONE && $session->survey->bool_showprogress) {
@@ -448,7 +448,7 @@ class SurveyRuntime {
         /**
          * @Todo Check if any question on the current page is an upload question.
          */
-//        if ($question->type == Question::TYPE_UPLOAD) {
+//        if ($question->type == ls\models\Question::TYPE_UPLOAD) {
             $formParams['enctype'] = 'multipart/form-data';
 //        }
         if ($session->getViewCount() > 1) {
@@ -525,7 +525,7 @@ class SurveyRuntime {
         echo "\n";
 
         doFooter();
-        eP('Present Survey');
+        eP('Present ls\models\Survey');
     }
     /**
     * setJavascriptVar

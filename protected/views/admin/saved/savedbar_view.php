@@ -1,6 +1,8 @@
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-        <?php eT('Saved Responses'); echo ' '. $sSurveyName . ' ' . sprintf(gT('ID: %s'), $iSurveyId); ?>
+        <?php use ls\models\SavedControl;
+
+        eT('Saved Responses'); echo ' '. $sSurveyName . ' ' . sprintf(gT('ID: %s'), $iSurveyId); ?>
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>

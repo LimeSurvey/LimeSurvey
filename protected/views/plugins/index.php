@@ -1,7 +1,9 @@
 <div class="col-md-12">
 <?php
     /* @var $this ConfigController */
-    /* @var $dataProvider CActiveDataProvider */
+use ls\models\SettingGlobal;
+
+/* @var $dataProvider CActiveDataProvider */
 
     
     $gridColumns = [

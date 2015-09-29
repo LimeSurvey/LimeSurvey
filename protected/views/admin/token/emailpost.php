@@ -5,7 +5,7 @@
     <?php
     if ($tokenids)
     {
-        echo " (" . gT("Sending to Token IDs") . ":&nbsp;" . short_implode(", ", "-", $tokenids) . ")";
+        echo " (" . gT("Sending to ls\models\Token IDs") . ":&nbsp;" . short_implode(", ", "-", $tokenids) . ")";
     }
     ?>
     <br /><br />

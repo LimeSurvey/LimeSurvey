@@ -1,17 +1,9 @@
 <?php
-/*
- * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
-  * 	Files Purpose: lots of common functions
- */
+namespace ls\models;
+
+use ls\models\ActiveRecord;
+use ls\models\Survey;
+
 class SurveyDynamic extends ActiveRecord
 {
     protected static $sid = 0;
@@ -24,18 +16,21 @@ class SurveyDynamic extends ActiveRecord
      * @param int $surveyid
      * @return SurveyDynamic
      */
-    public static function model($sid = NULL)
-    {         
+    public static function model($sid = null)
+    {
         $refresh = false;
         if (!is_null($sid)) {
             self::sid($sid);
             $refresh = true;
         }
-        
+
         $model = parent::model(__CLASS__);
-        
+
         //We need to refresh if we changed sid
-        if ($refresh === true) $model->refreshMetaData();
+        if ($refresh === true) {
+            $model->refreshMetaData();
+        }
+
         return $model;
     }
 
@@ -49,7 +44,7 @@ class SurveyDynamic extends ActiveRecord
      */
     public static function sid($sid)
     {
-        self::$sid = (int) $sid;
+        self::$sid = (int)$sid;
     }
 
     /**
@@ -75,8 +70,6 @@ class SurveyDynamic extends ActiveRecord
     }
 
 
-    
-
     /**
      * Deletes some records from survey's table
      * according to specific condition
@@ -86,22 +79,20 @@ class SurveyDynamic extends ActiveRecord
      * @param array $condition
      * @return int
      */
-    public static function deleteSomeRecords($condition = FALSE)
+    public static function deleteSomeRecords($condition = false)
     {
         $survey = new SurveyDynamic;
         $criteria = new CDbCriteria;
 
-        if ($condition != FALSE)
-        {
-            foreach ($condition as $column => $value)
-            {
+        if ($condition != false) {
+            foreach ($condition as $column => $value) {
                 return $criteria->addCondition($column . "=`" . $value . "`");
             }
         }
 
         return $survey->deleteAll($criteria);
     }
-    
+
     /**
      * Return criteria updated with the ones needed for including results from the timings table
      *
@@ -114,11 +105,10 @@ class SurveyDynamic extends ActiveRecord
         $newCriteria = new CDbCriteria();
         $criteria = $this->getCommandBuilder()->createCriteria($condition);
 
-        if ($criteria->select == '*')
-        {
+        if ($criteria->select == '*') {
             $criteria->select = 't.*';
         }
-		$alias = $this->getTableAlias();
+        $alias = $this->getTableAlias();
 
         $newCriteria->join = "LEFT JOIN {{survey_" . self::$sid . "_timings}} survey_timings ON $alias.id = survey_timings.id";
         $newCriteria->select = 'survey_timings.*';  // Otherwise we don't get records from the token table
@@ -138,44 +128,45 @@ class SurveyDynamic extends ActiveRecord
     {
         $newCriteria = new CDbCriteria();
         $criteria = $this->getCommandBuilder()->createCriteria($condition);
-        $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . self::$sid  . '}}')->getColumnNames();
-        $aSelectFields=array_diff($aSelectFields, array('token'));
-        $aSelect=array();
-		$alias = $this->getTableAlias();
-        foreach($aSelectFields as $sField)
-            $aSelect[]="$alias.".Yii::app()->db->schema->quoteColumnName($sField);
-        $aSelectFields=$aSelect;   
-		$aSelectFields[]="$alias.token";
+        $aSelectFields = Yii::app()->db->schema->getTable('{{survey_' . self::$sid . '}}')->getColumnNames();
+        $aSelectFields = array_diff($aSelectFields, array('token'));
+        $aSelect = array();
+        $alias = $this->getTableAlias();
+        foreach ($aSelectFields as $sField) {
+            $aSelect[] = "$alias." . Yii::app()->db->schema->quoteColumnName($sField);
+        }
+        $aSelectFields = $aSelect;
+        $aSelectFields[] = "$alias.token";
 
-        if ($criteria->select == '*')
-        {
+        if ($criteria->select == '*') {
             $criteria->select = $aSelectFields;
         }
 
         $newCriteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} tokens ON $alias.token = tokens.token";
 
-        $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . self::$sid . '}}')->getColumnNames();
-        $aTokenFields=array_diff($aTokenFields, array('token'));
-        
+        $aTokenFields = Yii::app()->db->schema->getTable('{{tokens_' . self::$sid . '}}')->getColumnNames();
+        $aTokenFields = array_diff($aTokenFields, array('token'));
+
         $newCriteria->select = $aTokenFields;  // Otherwise we don't get records from the token table
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
     }
-    
+
     public static function countAllAndPartial($sid)
     {
         $select = array(
             'count(*) AS cntall',
-            'sum(CASE 
-                 WHEN '. Yii::app()->db->quoteColumnName('submitdate') . ' IS NULL THEN 1
+            'sum(CASE
+                 WHEN ' . Yii::app()->db->quoteColumnName('submitdate') . ' IS NULL THEN 1
                           ELSE 0
                  END) AS cntpartial',
-            );
+        );
         $result = Yii::app()->db->createCommand()->select($select)->from('{{survey_' . $sid . '}}')->queryRow();
+
         return $result;
     }
-    
+
     /**
      * Return true if actual survey is completed
      *
@@ -186,25 +177,25 @@ class SurveyDynamic extends ActiveRecord
     public function isCompleted($srid)
     {
         static $resultCache = array();
-        
+
         $sid = self::$sid;
         if (array_key_exists($sid, $resultCache) && array_key_exists($srid, $resultCache[$sid])) {
             return $resultCache[$sid][$srid];
         }
-        $completed=false;
+        $completed = false;
 
-        if(Yii::app()->db->schema->getTable($this->tableName())){
-            $data=Yii::app()->db->createCommand()
+        if (Yii::app()->db->schema->getTable($this->tableName())) {
+            $data = Yii::app()->db->createCommand()
                 ->select("submitdate")
                 ->from($this->tableName())
-                ->where('id=:id', array(':id'=>$srid))
+                ->where('id=:id', array(':id' => $srid))
                 ->queryRow();
-            if($data && $data['submitdate'])
-            {
-                $completed=true;
+            if ($data && $data['submitdate']) {
+                $completed = true;
             }
         }
         $resultCache[$sid][$srid] = $completed;
+
         return $completed;
     }
 
@@ -218,22 +209,22 @@ class SurveyDynamic extends ActiveRecord
     public function exist($srid)
     {
         $sid = self::$sid;
-        $exist=false;
+        $exist = false;
 
-        if(Yii::app()->db->schema->getTable($this->tableName())){
-            $data=Yii::app()->db->createCommand()
+        if (Yii::app()->db->schema->getTable($this->tableName())) {
+            $data = Yii::app()->db->createCommand()
                 ->select("id")
                 ->from($this->tableName())
-                ->where('id=:id', array(':id'=>$srid))
+                ->where('id=:id', array(':id' => $srid))
                 ->queryRow();
-            if($data)
-            {
-                $exist=true;
+            if ($data) {
+                $exist = true;
             }
         }
+
         return $exist;
     }
-    
+
     /**
      * Return next id if next response exist in database
      *
@@ -242,29 +233,30 @@ class SurveyDynamic extends ActiveRecord
      *
      * @return integer
      */
-    public function next($srid,$usefilterstate=false)
+    public function next($srid, $usefilterstate = false)
     {
         $sid = self::$sid;
-        $next=false;
-        if ($usefilterstate && incompleteAnsFilterState() == 'incomplete')
-            $wherefilterstate='submitdate IS NULL';
-        elseif ($usefilterstate && incompleteAnsFilterState() == 'complete')
-            $wherefilterstate='submitdate IS NOT NULL';
-        else
-            $wherefilterstate='1=1';
+        $next = false;
+        if ($usefilterstate && incompleteAnsFilterState() == 'incomplete') {
+            $wherefilterstate = 'submitdate IS NULL';
+        } elseif ($usefilterstate && incompleteAnsFilterState() == 'complete') {
+            $wherefilterstate = 'submitdate IS NOT NULL';
+        } else {
+            $wherefilterstate = '1=1';
+        }
 
-        if(Yii::app()->db->schema->getTable($this->tableName())){
-            $data=Yii::app()->db->createCommand()
+        if (Yii::app()->db->schema->getTable($this->tableName())) {
+            $data = Yii::app()->db->createCommand()
                 ->select("id")
                 ->from($this->tableName())
-                ->where(array('and',$wherefilterstate,'id > :id'), array(':id'=>$srid))
+                ->where(array('and', $wherefilterstate, 'id > :id'), array(':id' => $srid))
                 ->order('id ASC')
                 ->queryRow();
-            if($data)
-            {
-                $next=$data['id'];
+            if ($data) {
+                $next = $data['id'];
             }
         }
+
         return $next;
     }
 
@@ -276,32 +268,33 @@ class SurveyDynamic extends ActiveRecord
      *
      * @return integer
      */
-    public function previous($srid,$usefilterstate=false)
+    public function previous($srid, $usefilterstate = false)
     {
         $sid = self::$sid;
-        $previous=false;
-        if ($usefilterstate && incompleteAnsFilterState() == 'incomplete')
-            $wherefilterstate='submitdate IS NULL';
-        elseif ($usefilterstate && incompleteAnsFilterState() == 'complete')
-            $wherefilterstate='submitdate IS NOT NULL';
-        else
-            $wherefilterstate='1=1';
+        $previous = false;
+        if ($usefilterstate && incompleteAnsFilterState() == 'incomplete') {
+            $wherefilterstate = 'submitdate IS NULL';
+        } elseif ($usefilterstate && incompleteAnsFilterState() == 'complete') {
+            $wherefilterstate = 'submitdate IS NOT NULL';
+        } else {
+            $wherefilterstate = '1=1';
+        }
 
-        if(Yii::app()->db->schema->getTable($this->tableName())){
-            $data=Yii::app()->db->createCommand()
+        if (Yii::app()->db->schema->getTable($this->tableName())) {
+            $data = Yii::app()->db->createCommand()
                 ->select("id")
                 ->from($this->tableName())
-                ->where(array('and',$wherefilterstate,'id < :id'), array(':id'=>$srid))
+                ->where(array('and', $wherefilterstate, 'id < :id'), array(':id' => $srid))
                 ->order('id DESC')
                 ->queryRow();
-            if($data)
-            {
-                $previous=$data['id'];
+            if ($data) {
+                $previous = $data['id'];
             }
         }
+
         return $previous;
     }
-    
+
     /**
      * Function that returns a timeline of the surveys submissions
      *
@@ -312,36 +305,34 @@ class SurveyDynamic extends ActiveRecord
      * @access public
      * @return array
      */
-    public function timeline($sType, $dStart, $dEnd) 
+    public function timeline($sType, $dStart, $dEnd)
     {
-            
-        $sid = self::$sid;        
-        $oSurvey=Survey::model()->findByPk($sid);
-        if ($oSurvey['datestamp']!='Y') {
-               return false;
-        }
-        else
-        {    
-            $criteria=new CDbCriteria;
+
+        $sid = self::$sid;
+        $oSurvey = Survey::model()->findByPk($sid);
+        if ($oSurvey['datestamp'] != 'Y') {
+            return false;
+        } else {
+            $criteria = new CDbCriteria;
             $criteria->select = 'submitdate';
             $criteria->addCondition('submitdate >= :dstart');
-            $criteria->addCondition('submitdate <= :dend');    
-            $criteria->order="submitdate";
-            
+            $criteria->addCondition('submitdate <= :dend');
+            $criteria->order = "submitdate";
+
             $criteria->params[':dstart'] = $dStart;
-            $criteria->params[':dend'] = $dEnd; 
+            $criteria->params[':dend'] = $dEnd;
             $oResult = $this->findAll($criteria);
-            
-            if($sType=="hour")
+
+            if ($sType == "hour") {
                 $dFormat = "Y-m-d_G";
-            else
+            } else {
                 $dFormat = "Y-m-d";
-            
-            foreach($oResult as $sResult)
-            {        
-                $aRes[] = date($dFormat,strtotime($sResult['submitdate']));        
             }
-                
+
+            foreach ($oResult as $sResult) {
+                $aRes[] = date($dFormat, strtotime($sResult['submitdate']));
+            }
+
             return array_count_values($aRes);
         }
     }

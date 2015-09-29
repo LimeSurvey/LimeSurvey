@@ -16,7 +16,7 @@
         'settings' => array(
             'bounce_email'=>array(
                 'type'=>'email',
-                'label'=>gT('Survey bounce email'),
+                'label'=>gT('ls\models\Survey bounce email'),
                 'htmlOptions'=>array(
                     'size'=>50,
                 ),
@@ -54,7 +54,7 @@
             ),
             'bounceaccountuser'=>array(
                 'type'=>'string',
-                'label'=>gT('User name'),
+                'label'=>gT('ls\models\User name'),
                 'htmlOptions'=>array(
                     'size'=>50,
                 ),

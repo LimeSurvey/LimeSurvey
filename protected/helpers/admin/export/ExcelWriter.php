@@ -1,4 +1,7 @@
 <?php
+use ls\models\Response;
+use ls\models\Survey;
+
 /**
 * Exports results in Microsoft Excel format.  By default the Writer sends
 * HTTP headers and the file contents via HTTP.  For testing purposes a
@@ -34,7 +37,7 @@ class ExcelWriter implements IWriter {
      * Writes the survey and all the responses it contains to the output
      * using the options specified in FormattingOptions.
      *
-     * See Survey for information on loading a survey
+     * See ls\models\Survey for information on loading a survey
      * and results from the database.
      *
      * @param Survey $survey
@@ -49,7 +52,7 @@ class ExcelWriter implements IWriter {
          */
         foreach ($this->options->selectedColumns as $sColumn)
         {
-            //Survey question field, $column value is a field name from the getFieldMap function.
+            //ls\models\Survey question field, $column value is a field name from the getFieldMap function.
             switch ($this->options->headingFormat)
             {
                 case 'abbreviated':
@@ -105,7 +108,7 @@ class ExcelWriter implements IWriter {
                             break;
                     }
                 } else {
-                    // Token table value
+                    // ls\models\Token table value
                     $elementArray[]=$value;
                 }
             }

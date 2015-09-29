@@ -12,7 +12,7 @@
     {
         ?>
         <tr><th>
-        <?php eT('Template name');?>
+        <?php eT('ls\models\Template name');?>
         <br />&nbsp;</th><th>
         <?php eT('Allowed');?>
         <br /><input type='checkbox' alt='<?php eT("Check or uncheck all items");?>' class='tipme' id='checkall' />

@@ -406,7 +406,7 @@
 
 7 - Documentation
 =================
-  PclZip User Manuel is available in English on PhpConcept : http://www.phpconcept.net/pclzip/man/en/index.php
+  PclZip ls\models\User Manuel is available in English on PhpConcept : http://www.phpconcept.net/pclzip/man/en/index.php
   A Russian translation was done by Feskov Kuzma : http://php.russofile.ru/ru/authors/unsort/zip/
 
 8 - Author

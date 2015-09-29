@@ -1,5 +1,7 @@
 <?php
-    if (empty($surveys)) {
+use ls\models\Survey;
+
+if (empty($surveys)) {
         return $this->renderPartial('firstSteps');
     }
 

@@ -1,7 +1,7 @@
 <?php
 namespace ls\controllers;
 use \Yii;
-use \Survey;
+use ls\models\Survey;
 use \PluginEvent;
 use CClientScript;
 /*
@@ -115,7 +115,7 @@ class UploaderController extends Controller
             if (!isset($aFieldMap[$sFieldName])) {
                 throw new CHttpException(400);// See for debug > 1
             }
-            $aAttributes = \QuestionAttribute::model()->getQuestionAttributes($aFieldMap[$sFieldName]['qid'],
+            $aAttributes = \ls\models\QuestionAttribute::model()->getQuestionAttributes($aFieldMap[$sFieldName]['qid'],
                 $aFieldMap[$sFieldName]['type']);
 
             $maxfilesize = (int)$aAttributes['max_filesize'];
@@ -280,8 +280,8 @@ class UploaderController extends Controller
         if (!is_null($oEvent->get('template'))) {
             $aSurveyInfo['templatedir'] = $event->get('template');
         }
-        $sTemplateDir = \Template::getTemplatePath($aSurveyInfo['template']);
-        $sTemplateUrl = \Template::getTemplateURL($aSurveyInfo['template']) . "/";
+        $sTemplateDir = \ls\models\Template::getTemplatePath($aSurveyInfo['template']);
+        $sTemplateUrl = \ls\models\Template::getTemplateURL($aSurveyInfo['template']) . "/";
         App()->clientScript->registerScript('sNeededScriptVar', $sNeededScriptVar, CClientScript::POS_HEAD);
         App()->clientScript->registerScript('sLangScriptVar', $sLangScriptVar, CClientScript::POS_HEAD);
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'ajaxupload.js');
@@ -306,7 +306,7 @@ class UploaderController extends Controller
         $qid = (int)Yii::app()->request->getParam('qid');
         $minfiles = (int)Yii::app()->request->getParam('minfiles');
         $maxfiles = (int)Yii::app()->request->getParam('maxfiles');
-        $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($qid);
+        $qidattributes = \ls\models\QuestionAttribute::model()->getQuestionAttributes($qid);
         $qidattributes['max_filesize'] = floor(min($qidattributes['max_filesize'] * 1024,
                 getMaximumFileUploadSize()) / 1024);
         $body = '</head><body class="uploader">

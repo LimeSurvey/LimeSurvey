@@ -28,6 +28,6 @@
         <input type="hidden" name="uid" value="<?php echo $postuserid; ?>" />
         <input type="hidden" name="user" value="<?php echo $postuser; ?>" />
         <input type="hidden" name="action" value="finaldeluser" /><br /> <br />
-        <input type="submit" value="<?php eT("Delete User"); ?>" />
+        <input type="submit" value="<?php eT("Delete ls\models\User"); ?>" />
     </form>
 </div>

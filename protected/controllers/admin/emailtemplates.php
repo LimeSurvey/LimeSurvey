@@ -12,6 +12,9 @@
  *
  *
  */
+use ls\models\Survey;
+use ls\models\SurveyLanguageSetting;
+
 /**
  * emailtemplates
  *

@@ -1,5 +1,7 @@
 <?php
 /** @var TbActiveForm $form */
+use ls\models\Question;
+
 /** @var Question $question */
 echo TbHtml::openTag('fieldset', []);
 echo $form->textFieldControlGroup($question, 'preg');

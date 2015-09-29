@@ -15,7 +15,7 @@
 
 namespace ls\controllers;
 use \Yii;
-use PreCheck, InstallerConfigForm, User;
+use PreCheck, InstallerConfigForm, ls\models\User;
 /**
 * Installer
 *
@@ -283,7 +283,7 @@ class InstallerController extends \CController {
                         $aData['pwd'] = gT("The password you have chosen at the optional settings step.");
                     }
                 } else {
-                    // User already existed.
+                    // ls\models\User already existed.
                     $aData['user'] = gT("A user already existed in the database.");
                     $aData['pwd'] = gT("A user already existed in the database.");
                     
@@ -360,7 +360,7 @@ class InstallerController extends \CController {
         ."| This file will contain the settings needed to access your database."."\n"
         ."|"."\n"
         ."| For complete instructions please consult the 'Database Connection'" ."\n"
-        ."| page of the User Guide."."\n"
+        ."| page of the ls\models\User Guide."."\n"
         ."|"."\n"
         ."| -------------------------------------------------------------------"."\n"
         ."| EXPLANATION OF VARIABLES"."\n"

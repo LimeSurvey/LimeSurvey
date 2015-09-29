@@ -1,13 +1,13 @@
 <?php
 namespace ls\models\questions;
 
-use Response;
+use ls\models\Response;
 
 /**
  * Class ChoiceQuestion
  * @package ls\models\questions
  */
-class ChoiceQuestion extends \Question
+class ChoiceQuestion extends \ls\models\Question
 {
     public function attributeLabels()
     {

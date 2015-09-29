@@ -1,4 +1,4 @@
-"Basic" Template for phpSurveyor
+"Basic" ls\models\Template for phpSurveyor
 
 --------------------------------
 

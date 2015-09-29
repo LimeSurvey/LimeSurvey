@@ -77,7 +77,7 @@ class PluginsController extends Controller
     {
         if ($id === App()->authManager->authorizationPlugin->id) {
             App()->user->setFlash('error', "Cannot disable currently active authorization plugin.");
-        } elseif (in_array($id, \SettingGlobal::get('authenticationPlugins', []))) {
+        } elseif (in_array($id, \ls\models\SettingGlobal::get('authenticationPlugins', []))) {
             App()->user->setFlash('error', "Cannot disable currently active authentication plugin.");
         }
 
@@ -127,7 +127,7 @@ class PluginsController extends Controller
             }
             $authenticationPlugins = $request->getParam('authenticationPlugins');
             if (is_array($authenticationPlugins) && array_intersect($authenticationPlugins, array_keys(App()->pluginManager->getAuthenticators())) == $authenticationPlugins) {
-                \SettingGlobal::set('authenticationPlugins', $authenticationPlugins);
+                \ls\models\SettingGlobal::set('authenticationPlugins', $authenticationPlugins);
                 App()->user->setFlash('success', gT('Authorization and authentication configuration updated.'));
             }
 

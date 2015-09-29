@@ -221,7 +221,7 @@ $config['usercontrolSameGroupPolicy'] = true;
 // Demo mode disables the following things:
 //
 // * Disables changing of the admin user's details and password
-// * Disables uploading files on the Template Editor
+// * Disables uploading files on the ls\models\Template Editor
 // * Disables sending email invitations and reminders
 // * Disables doing a database dump
 // * Disables the ability to save the following global settings: Site name, Default language, Default Htmleditor Mode, XSS filter

@@ -64,14 +64,14 @@ echo \CHtml::openTag('div', ['class' => 'col-md-offset-3 col-md-9', 'style' => '
         ];
     }
     $right[] = [
-        'label' => gT('Template') . ': ' . $template['name'],
+        'label' => gT('ls\models\Template') . ': ' . $template['name'],
         'items' => array_map(function($directory) use ($screen) {
             return [
                 'url' => App()->createUrl('templates/index', ['name' => basename($directory), 'screen' => $screen['id']]),
                 'label' => basename($directory)
             ];
 
-        }, \Template::getTemplateList()),
+        }, \ls\models\Template::getTemplateList()),
 
     ];
 

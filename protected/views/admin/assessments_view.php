@@ -1,9 +1,11 @@
-<?php echo PrepareEditorScript(false, $this); ?>
+<?php use ls\models\Assessment;
+
+echo PrepareEditorScript(false, $this); ?>
 <script type="text/javascript">
 <!--
     var strnogroup='<?php eT("There are no groups available.", "js");?>';
 --></script>
-<div class='header ui-widget-header'><?php eT("Assessment rules");?></div>
+<div class='header ui-widget-header'><?php eT("ls\models\Assessment rules");?></div>
 
 <table class='assessmentlist'><thead>
 <tr><th><?php eT("ID");?></th><th><?php eT("Actions");?></th><th><?php eT("SID");?></th>
@@ -41,7 +43,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
 	<td><?php eT("Total");?></td>
 	<td>-</td>
 <?php } else { ?>
-	<td><?php eT("Question group");?></td>
+	<td><?php eT("ls\models\Question group");?></td>
 	<td><?php echo $groups[$assess['gid']]." (".$assess['gid'].")";?></td>
 <?php } ?>
 
@@ -73,7 +75,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
     <input type='radio' id='radiogroup' name='scope' value='G' <?php
     if (isset($editdata) && $editdata['scope'] == "G") {echo " checked='checked' ";} ?>/>
     <label for='radiogroup'><?php eT("Group");?></label></li>
-    <li><label for='gid'><?php eT("Question group");?></label>
+    <li><label for='gid'><?php eT("ls\models\Question group");?></label>
         <?php 
         if (isset($groups))
         { ?>

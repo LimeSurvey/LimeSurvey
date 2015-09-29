@@ -7,7 +7,7 @@ namespace ls\models\questions;
  * @package ls\models\questions
  * @property string $filterExpression
  */
-abstract class BaseArrayQuestion extends \Question
+abstract class BaseArrayQuestion extends \ls\models\Question
 {
     public function getSubQuestionScales()
     {
@@ -18,13 +18,13 @@ abstract class BaseArrayQuestion extends \Question
     public function relations()
     {
         return array_merge(parent::relations(), [
-            'answers' => [self::HAS_MANY, \Answer::class, 'question_id', 'order' => 'sortorder', 'index' => 'code']
+            'answers' => [self::HAS_MANY, \ls\models\Answer::class, 'question_id', 'order' => 'sortorder', 'index' => 'code']
         ]);
     }
 
     public function getColumns()
     {
-        $result = call_user_func_array('array_merge', array_map(function (\Question $subQuestion) {
+        $result = call_user_func_array('array_merge', array_map(function (\ls\models\Question $subQuestion) {
             $subResult = [];
             foreach ($subQuestion->columns as $name => $type) {
                 $subResult[$this->sgqa . $name] = $type;

@@ -2,7 +2,7 @@
 namespace ls\models\questions;
 
 
-class DisplayQuestion extends \Question
+class DisplayQuestion extends \ls\models\Question
 {
     /**
      * This function renders the object.

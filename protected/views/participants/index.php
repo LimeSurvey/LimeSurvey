@@ -11,7 +11,7 @@ echo TbHtml::openTag('div', ['class' => isset($wrapper) ? $wrapper : 'col-md-12'
             [
                 'class' => WhRelationalColumn::class,
                 'name' => 'attributeCount',
-//                'value' => function(Participant $model) { return $model->; },
+//                'value' => function(ls\models\Participant $model) { return $model->; },
                 'url' => App()->createUrl('participants/attributes')
             ],
             'firstname',

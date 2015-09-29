@@ -11,6 +11,8 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+use ls\models\Question;
+use ls\models\Survey;
 
 /**
 * fixes the numbering of questions
@@ -248,7 +250,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 
 /**
 * Function to activate a survey
-* @param int $iSurveyID The Survey ID
+* @param int $iSurveyID The ls\models\Survey ID
 * @param bool $simulate
 * @return string
 */

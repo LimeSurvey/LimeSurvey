@@ -11,6 +11,9 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+use ls\models\Survey;
+use ls\models\SurveyLanguageSetting;
+use ls\models\Token;
 
 /**
 * Sends email to tokens - invitation and reminders
@@ -145,7 +148,7 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 		   $aResult[$aTokenRow['tid']] =  array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
 												'email'=>$fieldsarray["{EMAIL}"],
 												'status'=>'fail',
-												'error'=>'Token not valid yet');
+												'error'=>'ls\models\Token not valid yet');
 
 		}
 		elseif (isset($aTokenRow['validuntil']) && trim($aTokenRow['validuntil']) != '' && convertDateTimeFormat($aTokenRow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1)
@@ -153,7 +156,7 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 		   $aResult[$aTokenRow['tid']] =  array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
 												'email'=>$fieldsarray["{EMAIL}"],
 												'status'=>'fail',
-												'error'=>'Token not valid anymore');
+												'error'=>'ls\models\Token not valid anymore');
 
 		}
 		else

@@ -108,9 +108,9 @@
                 <tr>
                     <td>
                         <br />
-                        <font color='orange'><?php eT("Some Question have been disabled");?></font>
+                        <font color='orange'><?php eT("Some ls\models\Question have been disabled");?></font>
                         <br />
-                        <?php echo sprintf(gT("Survey Format is %s:"), gT("All in one"));?>
+                        <?php echo sprintf(gT("ls\models\Survey Format is %s:"), gT("All in one"));?>
                         <br />
                         <i><?php eT("Only Previous pages answers are available");?></i>
                         <br />
@@ -123,8 +123,8 @@
                 <tr>
                     <td>
                         <br />
-                        <font color='orange'><?php eT("Some Question have been disabled");?></font>
-                        <br /><?php echo sprintf(gT("Survey mode is set to %s:"), gT("Group by Group"));?>
+                        <font color='orange'><?php eT("Some ls\models\Question have been disabled");?></font>
+                        <br /><?php echo sprintf(gT("ls\models\Survey mode is set to %s:"), gT("Group by Group"));?>
                         <br/><i><?php eT("Only Previous pages answers are available");?>
                         </i><br />
                     </td></tr>

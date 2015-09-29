@@ -35,15 +35,21 @@ R - Ranking
 S - Short Free Text
 T - Long Free Text
 U - Huge Free Text
-X - Boilerplate Question
+X - Boilerplate ls\models\Question
 Y - Yes/No
 ! - List (Dropdown)
 : - Array (Flexible Labels) multiple drop down
 ; - Array (Flexible Labels) multiple texts
-| - File Upload Question
+| - File Upload ls\models\Question
 
 
 */
+use ls\models\PluginDynamic;
+use ls\models\Question;
+use ls\models\SavedControl;
+use ls\models\Survey;
+use ls\models\SurveyDynamic;
+use ls\models\SurveyTimingDynamic;
 
 /**
 * dataentry
@@ -204,7 +210,7 @@ class dataentry extends Survey_Common_Action
                 $aData['aResult']['errors'][] = "<pre>".
                 $aData['aUrls'][] = [
                     'link'=>$this->getController()->createUrl('admin/dataentry/sa/vvimport/surveyid/'.$aData['surveyid']),
-                    'text'=>$aData['aUrlText'][] = gT("Back to Response Import"),
+                    'text'=>$aData['aUrlText'][] = gT("Back to ls\models\Response Import"),
                 ];
                 $this->_renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
                 die;
@@ -500,7 +506,7 @@ class dataentry extends Survey_Common_Action
 
 
             // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-            // $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answer if exist)
+            // $fnames = (Field Name in ls\models\Survey Table, Short Title of ls\models\Question, ls\models\Question Type, Field Name, ls\models\Question Code, Predetermined ls\models\Answer if exist)
 
             $fnames['completed'] = ['fieldname'=>"completed", 'question'=>gT("Completed"), 'type'=>'completed'];
 
@@ -618,7 +624,7 @@ class dataentry extends Survey_Common_Action
                     //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
                     if(isset($fname['qid']) && isset($fname['type']))
                     {
-                        $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($fname['qid'], $fname['type']);
+                        $qidattributes = \ls\models\QuestionAttribute::model()->getQuestionAttributes($fname['qid'], $fname['type']);
                     }
                     switch ($fname['type'])
                     {
@@ -714,7 +720,7 @@ class dataentry extends Survey_Common_Action
                             break;
                         case "L": //LIST drop-down
                         case "!": //List (Radio)
-                            $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
+                            $qidattributes= \ls\models\QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                             if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator'])!='')
                             {
                                 $optCategorySeparator = $qidattributes['category_separator'];
@@ -897,7 +903,7 @@ class dataentry extends Survey_Common_Action
                             break;
 
                         case "M": //Multiple choice checkbox
-                            $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
+                            $qidattributes= \ls\models\QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                             if (trim($qidattributes['display_columns'])!='')
                             {
                                 $dcols=$qidattributes['display_columns'];
@@ -996,7 +1002,7 @@ class dataentry extends Survey_Common_Action
                             if ($fname['aid']!=='filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0))
                             {//file metadata
                                 $metadata = json_decode($idrow[$fname['fieldname']], true);
-                                $qAttributes = \QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
+                                $qAttributes = \ls\models\QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                                 for ($i = 0; ($i < $qAttributes['max_num_of_files']) && isset($metadata[$i]); $i++)
                                 {
                                     if ($qAttributes['show_title'])
@@ -1188,7 +1194,7 @@ class dataentry extends Survey_Common_Action
                                     if ($idrow[$fname['fieldname']] == $frow['code']) {$aDataentryoutput .= " checked";}
                                     $aDataentryoutput .= " />".$frow['answer']."&nbsp;\n";
                                 }
-                                //Add 'No Answer'
+                                //Add 'No ls\models\Answer'
                                 $aDataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value=''";
                                 if ($idrow[$fname['fieldname']] == '') {$aDataentryoutput .= " checked";}
                                 $aDataentryoutput .= " />".gT("No answer")."&nbsp;\n";
@@ -1201,7 +1207,7 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= "</table>\n";
                             break;
                         case ":": //ARRAY (Multi Flexi) (Numbers)
-                            $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
+                            $qidattributes= \ls\models\QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                             if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
                                 $maxvalue=$qidattributes['multiflexible_max'];
                                 $minvalue=1;
@@ -1413,7 +1419,7 @@ class dataentry extends Survey_Common_Action
                     }
                     else
                     {
-                        $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($irow['qid'], $irow['type']);
+                        $qidattributes = \ls\models\QuestionAttribute::model()->getQuestionAttributes($irow['qid'], $irow['type']);
                         $dateformatdetails = \ls\helpers\SurveyTranslator::getDateFormatDataForQID($qidattributes, $thissurvey);
 
                         $this->getController()->loadLibrary('Date_Time_Converter');
@@ -1679,7 +1685,7 @@ class dataentry extends Survey_Common_Action
                             elseif ($irow['type'] == 'D')
                             {
                                 Yii::app()->loadLibrary('Date_Time_Converter');
-                                $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($irow['qid'], $irow['type']);
+                                $qidattributes = \ls\models\QuestionAttribute::model()->getQuestionAttributes($irow['qid'], $irow['type']);
                                 $dateformatdetails = \ls\helpers\SurveyTranslator::getDateFormatDataForQID($qidattributes, $thissurvey);
                                 $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
                                 $insert_data[$fieldname] = $datetimeobj->convert("Y-m-d H:i:s");
@@ -1821,7 +1827,7 @@ class dataentry extends Survey_Common_Action
                                 //Send email
                                 if (validateEmailAddress($saver['email']) && !returnGlobal('redo'))
                                 {
-                                    $subject = gT("Saved Survey Details");
+                                    $subject = gT("Saved ls\models\Survey Details");
                                     $message = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
                                     $message .= "\n\n".$thissurvey['name']."\n\n";
                                     $message .= gT("Name").": ".$saver['identifier']."\n";
@@ -1936,7 +1942,7 @@ class dataentry extends Survey_Common_Action
                 foreach ($deqrows as $deqrow)
                 {
                     $cdata = [];
-                    $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($deqrow['qid'], $deqrow['type']);
+                    $qidattributes = \ls\models\QuestionAttribute::model()->getQuestionAttributes($deqrow['qid'], $deqrow['type']);
                     $cdata['qidattributes'] = $qidattributes;
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
                     // TODO - can questions be hidden?  Are JavaScript variables names used?  Consistently with everywhere else?
@@ -1948,7 +1954,7 @@ class dataentry extends Survey_Common_Action
                     $relevance = trim($qinfo['info']['relevance']);
                     $explanation = trim($qinfo['relEqn']);
                     $validation = trim($qinfo['prettyValidTip']);
-                    $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
+                    $qidattributes= \ls\models\QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
                     $array_filter_help = flattenText($this->_array_filter_help($qidattributes, $sDataEntryLanguage, $surveyid));
 
                     if (($relevance != '' && $relevance != '1') || ($validation != '') || ($array_filter_help != ''))

@@ -12,7 +12,7 @@ class SubQuestions extends \CFormModel
     public $titles = [];
     public $dummy;
     /**
-     * @var \Question
+     * @var \ls\models\Question
      */
     public $question;
     public $questions;
@@ -24,9 +24,9 @@ class SubQuestions extends \CFormModel
 
 
     public function getInstance() {
-        return new \Question('insertsub');
+        return new \ls\models\Question('insertsub');
     }
-    public function __construct(\Question $question, $scenario = '')
+    public function __construct(\ls\models\Question $question, $scenario = '')
     {
         parent::__construct($scenario);
         $this->question = $question;

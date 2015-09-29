@@ -1,6 +1,6 @@
 <div class='menubar surveybar'>
     <div class='menubar-title ui-widget-header'>
-        <strong><?php eT("Survey"); ?></strong>
+        <strong><?php eT("ls\models\Survey"); ?></strong>
         <span class='basic'><?php echo $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")"; ?></span>
     </div>
     <div class='menubar-main'>
@@ -9,10 +9,10 @@
                 <img src='<?php echo $sImageURL;?>inactive.png' alt='<?php eT("This survey is currently not active"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/>
                 <?php if($canactivate) { ?>
                     <a href="<?php echo $this->createUrl("admin/survey/sa/activate/surveyid/$surveyid"); ?>">
-                        <img src='<?php echo $sImageURL; ?>activate.png' alt='<?php eT("Activate this Survey"); ?>'/></a>
+                        <img src='<?php echo $sImageURL; ?>activate.png' alt='<?php eT("Activate this ls\models\Survey"); ?>'/></a>
                     <?php } else { ?>
                     <img src='<?php echo $sImageURL; ?>activate_disabled.png'
-                        alt='<?php eT("Survey cannot be activated. Either you have no permission or there are no questions."); ?>' />
+                        alt='<?php eT("ls\models\Survey cannot be activated. Either you have no permission or there are no questions."); ?>' />
                     <?php } ?>
                 <?php } else { ?>
                 <?php if($expired) { ?>
@@ -55,7 +55,7 @@
                 
             <?php if($surveylocale || $surveysettings || $surveysecurity || $quotas || $assessments || $surveycontent) { ?>
             <li><a href='#'>
-                    <img src='<?php echo $sImageURL;?>edit.png' alt='<?php eT("Survey properties");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a><ul>
+                    <img src='<?php echo $sImageURL;?>edit.png' alt='<?php eT("ls\models\Survey properties");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a><ul>
                     <?php if($surveylocale) { ?>
                         <li><a href='<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/$surveyid");?>'>
                             <img src='<?php echo $sImageURL;?>edit_30.png' alt=''/> <?php eT("Edit text elements");?></a></li>
@@ -66,7 +66,7 @@
                         <?php } ?>
                     <?php if($surveysecurity) { ?>
                         <li><a href='<?php echo $this->createUrl("admin/surveypermission/sa/view/surveyid/$surveyid");?>' >
-                            <img src='<?php echo $sImageURL;?>survey_security_30.png' alt=''/> <?php eT("Survey permissions");?></a></li>
+                            <img src='<?php echo $sImageURL;?>survey_security_30.png' alt=''/> <?php eT("ls\models\Survey permissions");?></a></li>
                         <?php } ?>
 
                     <?php if($quotas) { ?>
@@ -84,10 +84,10 @@
                     <?php if($surveycontent) { ?>
                         <?php if($onelanguage) { ?>
                             <li><a target='_blank' href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/");?>' >
-                                <img src='<?php echo $sImageURL;?>quality_assurance_30.png' alt='' /> <?php eT("Survey logic file");?></a></li>
+                                <img src='<?php echo $sImageURL;?>quality_assurance_30.png' alt='' /> <?php eT("ls\models\Survey logic file");?></a></li>
                             <?php } else { ?>
                             <li><a target='_blank' href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/");?>' >
-                                <img src='<?php echo $sImageURL;?>quality_assurance_30.png' alt='' /> <?php eT("Survey logic file");?></a><ul>
+                                <img src='<?php echo $sImageURL;?>quality_assurance_30.png' alt='' /> <?php eT("ls\models\Survey logic file");?></a><ul>
                                     <?php foreach ($languagelist as $tmp_lang) { ?>
                                         <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/lang/$tmp_lang");?>'>
                                             <img src='<?php echo $sImageURL;?>quality_assurance.png' alt='' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
@@ -160,18 +160,18 @@
                        		<ul>
                             <?php if($surveyexport) { ?>
                                 <li><a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurexml/surveyid/$surveyid");?>' >
-                                    <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("Survey structure (.lss)");?></a>
+                                    <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("ls\models\Survey structure (.lss)");?></a>
                                 </li>
                                 <?php } ?>
                             <?php if($respstatsread && $surveyexport) {
                                     if ($activated){?>
                                     <li><a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportarchive/surveyid/$surveyid");?>' >
-                                        <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("Survey archive (.lsa)");?></a></li>
+                                        <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("ls\models\Survey archive (.lsa)");?></a></li>
                                     <?php }
                                     else
                                     {?>
                                     <li><a href="#" onclick="alert('<?php eT("You can only archive active surveys.", "js");?>');" >
-                                        <img src='<?php echo $sImageURL;?>export_disabled_30.png' alt='' /> <?php eT("Survey archive (.lsa)");?></a></li><?php
+                                        <img src='<?php echo $sImageURL;?>export_disabled_30.png' alt='' /> <?php eT("ls\models\Survey archive (.lsa)");?></a></li><?php
                                     }
                             }?>
                             <?php if($surveyexport) { ?>
@@ -247,7 +247,7 @@
                 {
                     if ($activated)
                     { ?><li><a href='#'>
-                            <img src='<?php echo $sImageURL; ?>organize_disabled.png' title='' alt='<?php eT("Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>'
+                            <img src='<?php echo $sImageURL; ?>organize_disabled.png' title='' alt='<?php eT("ls\models\Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>'
                                 width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a></li>
                     <?php }
                     else
@@ -260,7 +260,7 @@
 
             <?php if($tokenmanagement) { ?>
                 <li><a href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>">
-                        <img src='<?php echo $sImageURL;?>tokens.png' alt='<?php eT("Token management");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
+                        <img src='<?php echo $sImageURL;?>tokens.png' alt='<?php eT("ls\models\Token management");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
                 </li>
                 <?php } ?>
         </ul>
@@ -268,7 +268,7 @@
         <div class='menubar-right'>
             <?php if ($permission)
                 { ?>
-                <label for='groupselect'><?php eT("Question groups:"); ?></label>
+                <label for='groupselect'><?php eT("ls\models\Question groups:"); ?></label>
                 <select name='groupselect' id='groupselect' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
 
                     <?php echo $groups; ?>
@@ -319,8 +319,8 @@
                     <?php }
             } ?>
             <img id='separator3' src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
-            <input type='image' src='<?php echo $sImageURL; ?>minimize.png' title='<?php eT("Hide details of this Survey"); ?>'
-                alt='<?php eT("Hide details of this Survey"); ?>' onclick='$("#surveydetails").hide();' />
+            <input type='image' src='<?php echo $sImageURL; ?>minimize.png' title='<?php eT("Hide details of this ls\models\Survey"); ?>'
+                alt='<?php eT("Hide details of this ls\models\Survey"); ?>' onclick='$("#surveydetails").hide();' />
 
             <input type='image' src='<?php echo $sImageURL; ?>maximize.png' title='<?php eT("Show details of this survey"); ?>'
                 alt='<?php eT("Show details of this survey"); ?>' onclick='$("#surveydetails").show();' />

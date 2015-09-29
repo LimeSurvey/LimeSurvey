@@ -6,7 +6,7 @@ abstract class BaseImport {
     abstract public function setSource($file);
 
     /**
-     * @return \Survey
+     * @return \ls\models\Survey
      */
     abstract public function run();
 

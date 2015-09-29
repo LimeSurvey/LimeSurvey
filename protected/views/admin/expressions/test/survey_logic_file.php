@@ -21,7 +21,7 @@ $sFormTag
 <h3>Generate a logic file for the survey</h3>
 <table border='1'>
 <tr><th>Parameter</th><th>Value</th></tr>
-<tr><td>Survey ID (SID)</td>
+<tr><td>ls\models\Survey ID (SID)</td>
 <td><select name='sid' id='sid'>
 $surveyList
 </select></td></tr>
@@ -29,7 +29,7 @@ $surveyList
 <td>
 Specify which debugging features to use
 <ul>
-<li><input type='checkbox' name='LEM_DEBUG_TIMING' id='LEM_DEBUG_TIMING' value='Y'/>Detailed Timing</li>
+<li><input type='checkbox' name='LEM_DEBUG_TIMING' id='LEM_DEBUG_TIMING' value='Y'/>Detailed ls\models\Timing</li>
 <li><input type='checkbox' name='LEM_DEBUG_VALIDATION_SUMMARY' id='LEM_DEBUG_VALIDATION_SUMMARY' value='Y'/>Validation Summary</li>
 <li><input type='checkbox' name='LEM_DEBUG_VALIDATION_DETAIL' id='LEM_DEBUG_VALIDATION_DETAIL' value='Y'/>Validation Detail (Validation Summary must also be checked to see detail)</li>
 <li><input type='checkbox' name='LEM_PRETTY_PRINT_ALL_SYNTAX' id='LEM_PRETTY_PRINT_ALL_SYNTAX' value='Y' checked="checked"/>Pretty Print Syntax</li>
@@ -68,7 +68,7 @@ else {
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Logic File - Survey #$surveyid</title>
+<title>Logic File - ls\models\Survey #$surveyid</title>
 <style type="text/css">
 tr.LEMgroup td
 {

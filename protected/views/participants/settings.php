@@ -20,7 +20,7 @@
         $this->widget('TbTabs', [
             'tabs' => [
                 [
-                    'label' => gT('User control'),
+                    'label' => gT('ls\models\User control'),
                     'content' => $this->renderPartial('settings/user', ['form' => $form, 'settings' => $settings], true),
                     'active' => true
                 ], [

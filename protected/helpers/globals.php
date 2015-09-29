@@ -79,9 +79,7 @@ function eP($key = false) {
         } else {
             $identifier = $token;
         }
-
         \Yii::endProfile($identifier);
-
     }
 }
 

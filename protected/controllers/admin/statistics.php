@@ -11,6 +11,10 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+use ls\models\Answer;
+use ls\models\Question;
+use ls\models\QuestionAttribute;
+use ls\models\Survey;
 
 /**
 * Statistics Controller
@@ -56,7 +60,7 @@ class statistics extends Survey_Common_Action {
         *  S - Short Free Text
         *  T - Long Free Text
         *  U - Huge Free Text
-        *  X - Boilerplate Question
+        *  X - Boilerplate ls\models\Question
         *  Y - Yes/No
         *  ! - List (Dropdown)
         *  : - Array (Flexible Labels) multiple drop down
@@ -525,7 +529,7 @@ class statistics extends Survey_Common_Action {
             $aFieldmap=createFieldMap($qsid,'full',false,false,$sStatisticsLanguage);
             $qtype=$aFieldmap[$sQCode]['type'];
             $qqid=$aFieldmap[$sQCode]['qid'];
-            $aattr = \QuestionAttribute::model()->getQuestionAttributes($qqid);
+            $aattr = \ls\models\QuestionAttribute::model()->getQuestionAttributes($qqid);
             $field = substr($_POST['id'], 1);
 
             switch ($_POST['cmd']) {

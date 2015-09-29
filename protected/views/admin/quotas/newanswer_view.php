@@ -1,4 +1,4 @@
-<div class="header ui-widget-header"><?php eT("Survey quota");?>: <?php eT("Add answer");?></div><br />
+<div class="header ui-widget-header"><?php eT("ls\models\Survey quota");?>: <?php eT("Add answer");?></div><br />
 <div class="messagebox ui-corner-all" style="width: 600px">
     <?php echo CHtml::form(array("admin/quotas/sa/new_answer/surveyid/{$iSurveyId}/subaction/new_answer_two"), 'post'); ?>
         <table class="addquotaanswer">

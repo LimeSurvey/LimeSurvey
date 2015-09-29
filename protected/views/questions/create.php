@@ -4,6 +4,8 @@
  * @var Question $question;
  */
 // This is a create view so we use POST.
+use ls\models\Question;
+
 /** @var TbActiveForm $form */
 $form = $this->beginWidget(TbActiveForm::class, [
     'enableAjaxValidation' => false,

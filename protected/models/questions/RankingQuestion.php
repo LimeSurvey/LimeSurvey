@@ -2,7 +2,7 @@
 namespace ls\models\questions;
 
 
-class RankingQuestion extends \Question
+class RankingQuestion extends \ls\models\Question
 {
     public function getAnswerScales()
     {
@@ -72,7 +72,7 @@ class RankingQuestion extends \Question
     /**
      * This function return the class by question type
      * @param string question type
-     * @return string Question class to be added to the container
+     * @return string ls\models\Question class to be added to the container
      */
     public function getClasses()
     {

@@ -11,6 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+use ls\models\SavedControl;
 
 /**
  * Saved controller
@@ -70,7 +71,7 @@ class saved extends Survey_Common_Action
 
     /**
      * Load saved list.
-     * @param mixed $iSurveyId Survey id
+     * @param mixed $iSurveyId ls\models\Survey id
      */
     private function _showSavedList($iSurveyId)
     {

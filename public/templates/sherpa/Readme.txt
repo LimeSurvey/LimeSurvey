@@ -1,4 +1,4 @@
-This LimeSurvey Template is kindly provided by LimeSurvey User "jmblum"
+This LimeSurvey ls\models\Template is kindly provided by LimeSurvey ls\models\User "jmblum"
 
 His description of this template:
 The templates that come with LimeSurvey are all a bit of a mess from a HTML 

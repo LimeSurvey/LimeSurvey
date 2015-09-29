@@ -92,7 +92,7 @@ abstract class STATAxmlWriter extends Writer
      * Lbllist: code, setname of valuelabels
      * variable_labels: code, vardescription (question text)
      * Data: ObservationNumber(ID), code, value
-     * Valuelabels: Setname, Answercode, Answer
+     * Valuelabels: Setname, Answercode, ls\models\Answer
      *
      * Some things depending on the responses (eg. STATA data type and format, some reoding),
      * are done later in updateResponsemap()
@@ -129,7 +129,7 @@ abstract class STATAxmlWriter extends Writer
 
         // STATA only uses value labels on numerical variables. If the answer codes are not numerical we later replace them with the text-answer
         // here we go through the answers-array and check whether answer-codes are numerical. If they are not, we save the respective QIDs
-        // so responses can later be set to full answer test of Question or SQ'
+        // so responses can later be set to full answer test of ls\models\Question or SQ'
         foreach ($aFieldmap['answers'] as $qid => $aScale)
         {
             foreach ($aFieldmap['answers'][$qid] as $iScale => $aAnswers)
@@ -160,7 +160,7 @@ abstract class STATAxmlWriter extends Writer
             }
 
 
-            // create 'varname' from Question/Subquestiontitles
+            // create 'varname' from ls\models\Question/Subquestiontitles
             $aQuestion['varname'] = viewHelper::getFieldCode($aFieldmap['questions'][$sSGQAkey]);
 
             //set field types for standard vars

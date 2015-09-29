@@ -10,7 +10,7 @@ class m150501_082838_create_translation_table extends CDbMigration
      */
     public function safeUp()
 	{
-        \Translation::createTable();
+        \ls\models\Translation::createTable();
         return true;
 	}
     

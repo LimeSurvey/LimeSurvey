@@ -10,6 +10,20 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
+use ls\models\Answer;
+use ls\models\Assessment;
+use ls\models\DefaultValue;
+use ls\models\Question;
+use ls\models\QuestionAttribute;
+use ls\models\QuestionGroup;
+use ls\models\Quota;
+use ls\models\QuotaLanguageSetting;
+use ls\models\QuotaMember;
+use ls\models\Survey;
+use ls\models\SurveyDynamic;
+use ls\models\SurveyLanguageSetting;
+use ls\models\SurveyTimingDynamic;
+use ls\models\Token;
 
 /**
 * This function imports a LimeSurvey .lsg question group XML file
@@ -349,7 +363,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
     $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($iNewSID)->additionalLanguages);
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
-    if ($xml->LimeSurveyDocType!='Question') throw new \CHttpException(500, 'This is not a valid LimeSurvey question structure XML file.');
+    if ($xml->LimeSurveyDocType!='ls\models\Question') throw new \CHttpException(500, 'This is not a valid LimeSurvey question structure XML file.');
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
     $aSQIDReplacements=array(0=>0);
@@ -812,7 +826,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     }
     $xml = @simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
 
-    if (!$xml || $xml->LimeSurveyDocType!='Survey')
+    if (!$xml || $xml->LimeSurveyDocType!='ls\models\Survey')
     {
         $results['error'] = gT("This is not a valid LimeSurvey survey structure XML file.");
         return $results;
@@ -1115,7 +1129,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             // Set a warning if question title was updated
             if(isset($sNewTitle))
             {
-                $results['importwarnings'][] = sprintf(gT("Question code %s was updated to %s."),$sOldTitle,$sNewTitle);
+                $results['importwarnings'][] = sprintf(gT("ls\models\Question code %s was updated to %s."),$sOldTitle,$sNewTitle);
                 $aQuestionCodeReplacements[$sOldTitle]=$sNewTitle;
                 unset($sNewTitle);
                 unset($sOldTitle);

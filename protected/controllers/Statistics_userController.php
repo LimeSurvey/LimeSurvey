@@ -18,7 +18,7 @@ use \Yii;
  * Created 12-2008 by Maziminke (maziminke@web.de)
  *
  * This file handles the "Show results to users" option:
- * Survey Settings -> Presentation & navigation -> "Public statistics?"
+ * ls\models\Survey Settings -> Presentation & navigation -> "Public statistics?"
  *
  * The admin can set a question attribute "public_statistics" for each question
  * to determine whether the results of a certain question should be shown to the user
@@ -83,7 +83,7 @@ class Statistics_userController extends Controller {
                 // CHANGE JSW_NZ - let's get the survey title for display
                 $thisSurveyTitle = $surveyinfo["name"];
                 // CHANGE JSW_NZ - let's get css from individual template.css - so define path
-                $thisSurveyCssPath = \Template::getTemplateURL($surveyinfo["template"]);
+                $thisSurveyCssPath = \ls\models\Template::getTemplateURL($surveyinfo["template"]);
                 if ($surveyinfo['publicstatistics']!='Y')
                 {
                     throw new \CHttpException(500, 'The public statistics for this survey are deactivated.');
@@ -373,7 +373,7 @@ class Statistics_userController extends Controller {
 
 
         // 1: Get list of questions with answers chosen
-        //"Getting Questions and Answer ..." is shown above the bar
+        //"Getting Questions and ls\models\Answer ..." is shown above the bar
         $prb->setLabelValue('txt1',gT('Getting questions and answers ...'));
         $prb->moveStep(5);
 
@@ -434,7 +434,7 @@ class Statistics_userController extends Controller {
         //output footer
         echo getFooter();
 
-        //Delete all Session Data
+        //Delete all ls\models\Session Data
         Yii::app()->session['finished'] = true;
     }
 

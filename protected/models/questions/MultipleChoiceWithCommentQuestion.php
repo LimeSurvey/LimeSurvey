@@ -49,7 +49,7 @@ class MultipleChoiceWithCommentQuestion extends MultipleChoiceQuestion
     /**
      * This function return the class by question type
      * @param string question type
-     * @return string Question class to be added to the container
+     * @return string ls\models\Question class to be added to the container
      */
     public function getClasses()
     {
@@ -57,7 +57,7 @@ class MultipleChoiceWithCommentQuestion extends MultipleChoiceQuestion
     }
 
 
-    public function renderSubQuestion(\Question $question, iResponse $response, \ls\components\SurveySession $session) {
+    public function renderSubQuestion(\ls\models\Question $question, iResponse $response, \ls\components\SurveySession $session) {
 
         $result = parent::renderSubQuestion($question, $response, $session);
         // Render a line in the multiple choice question.

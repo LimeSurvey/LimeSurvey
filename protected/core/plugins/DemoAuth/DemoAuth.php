@@ -21,7 +21,7 @@ class DemoAuth extends PluginBase implements \ls\pluginmanager\iAuthenticationPl
             'settings' => [
                 'id' => [
                     'type' => 'select',
-                    'label' => gT("User"),
+                    'label' => gT("ls\models\User"),
                     'options' => CHtml::listData($this->getUsers()->data, 'id', 'name')
                 ],
             ]
@@ -34,7 +34,7 @@ class DemoAuth extends PluginBase implements \ls\pluginmanager\iAuthenticationPl
      */
     public function authenticate(\CHttpRequest $request) {
         if ($request->isPostRequest) {
-            $user = \User::model()->findByPk($request->getParam('id'));
+            $user = \ls\models\User::model()->findByPk($request->getParam('id'));
             if (isset($user)) {
                 return $user;
             }

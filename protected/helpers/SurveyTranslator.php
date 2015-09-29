@@ -142,8 +142,8 @@
         /**
          * Get the date format for a specified survey
          *
-         * @param $surveyid integer Survey id
-         * @param $languagecode string Survey language code (optional)
+         * @param $surveyid integer ls\models\Survey id
+         * @param $languagecode string ls\models\Survey language code (optional)
          * @returns integer
          *
          */

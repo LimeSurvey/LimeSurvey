@@ -8,7 +8,7 @@ class Index extends \Action
         $this->layout = 'main';
         $filter = new \ls\models\filter\Survey();
         $filter->setAttributes(App()->request->getParam(\CHtml::modelName($filter)));
-        $surveys = \Survey::model()->accessible();
+        $surveys = \ls\models\Survey::model()->accessible();
         $surveys->getDbCriteria()->mergeWith($filter->search());
         $surveys->with('languagesettings');
         $dataProvider = new \CActiveDataProvider($surveys);

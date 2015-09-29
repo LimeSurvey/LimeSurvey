@@ -1,4 +1,6 @@
-<div class='header ui-widget-header'><?php eT("Data entry"); ?></div>
+<div class='header ui-widget-header'><?php use ls\models\Survey;
+
+    eT("Data entry"); ?></div>
 
         <?php echo CHtml::form(array("admin/dataentry/sa/insert"), 'post', array('name'=>'addsurvey', 'id'=>'addsurvey', 'enctype'=>'multipart/form-data'));?>
             <table class='data-entry-tbl'>
@@ -26,7 +28,7 @@
             { ?>
                 <tr>
                 <td valign='top' width='1%'></td>
-                <td valign='top' align='right' width='30%'><font color='red'>*</font><strong><?php echo gT("Token",'html',$sDataEntryLanguage); ?>:</strong></td>
+                <td valign='top' align='right' width='30%'><font color='red'>*</font><strong><?php echo gT("ls\models\Token",'html',$sDataEntryLanguage); ?>:</strong></td>
                 <td valign='top'  align='left' style='padding-left: 20px'>
                 <input type='text' id='token' name='token' onkeyup='activateSubmit(this);' />
                 </td>

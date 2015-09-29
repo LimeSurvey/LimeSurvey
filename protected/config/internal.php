@@ -9,6 +9,11 @@
 use ls\components\SurveySessionManager;
 use ls\components\WebUser;
 
+// Make sure we set default values for passed in parameters so we pass SideEffects testing.
+$loader = !isset($loader)?: $loader;
+$public = !isset($public)?: $public;
+$webroot = !isset($webroot)?: $webroot;
+$bowerAssetPath = !isset($bowerAssetPath)?: $bowerAssetPath;
 if (file_exists(__DIR__ . '/config.php')) {
     $userConfig = require(__DIR__ . '/config.php');
 } else {

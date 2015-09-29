@@ -15,6 +15,10 @@ use ls\components\QuestionResponseField;
 use ls\components\QuestionValidationResult;
 use ls\components\QuestionValidationResultCollection;
 use ls\components\SurveySession;
+use ls\models\Question;
+use ls\models\QuestionGroup;
+use ls\models\SettingGlobal;
+use ls\models\Survey;
 
 /**
     * LimeExpressionManager
@@ -25,11 +29,8 @@ use ls\components\SurveySession;
     * @author Thomas M. White (TMSWhite)
     * @author Denis Chenu <http://sondages.pro>
     */
-    include_once('em_core_helper.php');
-    Yii::app()->loadHelper('database');
 
 
-    Yii::import("application.libraries.Date_Time_Converter");
     define('LEM_DEBUG_VALIDATION_SUMMARY',2);   // also includes  SQL error messages
     define('LEM_DEBUG_VALIDATION_DETAIL',4);
     define('LEM_PRETTY_PRINT_ALL_SYNTAX',32);
@@ -2277,10 +2278,10 @@ use ls\components\SurveySession;
             $_minV = (($date_min == '') ? "''" : "if((strtotime(" . $date_min . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_min . ")),'')");
             $_maxV = (($date_max == '') ? "''" : "if((strtotime(" . $date_max . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_max . ")),'')");
             $qtips['value_range'] =
-                "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . gT("Answer must be greater or equal to %s") . "',$_minV), '')}" .
-                "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . gT("Answer must be less or equal to %s") . "',$_maxV), '')}" .
-                "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . gT("Answer must be %s") . "', $_minV), '')}" .
-                "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . gT("Answer must be between %s and %s") . "', ($_minV), ($_maxV)), '')}";
+                "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . gT("ls\models\Answer must be greater or equal to %s") . "',$_minV), '')}" .
+                "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . gT("ls\models\Answer must be less or equal to %s") . "',$_maxV), '')}" .
+                "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . gT("ls\models\Answer must be %s") . "', $_minV), '')}" .
+                "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . gT("ls\models\Answer must be between %s and %s") . "', ($_minV), ($_maxV)), '')}";
         }
 
         // min/max value for each numeric entry - for multi-flexible question type
@@ -3611,7 +3612,7 @@ use ls\components\SurveySession;
          * @return QuestionValidationResult
          */
 
-        private function validateQuestion(\Question $question, $force = false)
+        private function validateQuestion(\ls\models\Question $question, $force = false)
         {
             $session = App()->surveySessionManager->current;
             $result =  $question->validateResponse($session->response);
@@ -4091,7 +4092,7 @@ use ls\components\SurveySession;
 
 
         /**
-         * Get array of info needed to display the Question Index
+         * Get array of info needed to display the ls\models\Question Index
          * @return <type>
          */
         static function GetQuestionIndexInfo()
@@ -4116,7 +4117,7 @@ use ls\components\SurveySession;
             $session = App()->surveySessionManager->current;
             switch ($session->format) {
                 case Survey::FORMAT_ALL_IN_ONE:
-                    throw new \Exception("Question indexes don't apply to all in one surveys.");
+                    throw new \Exception("ls\models\Question indexes don't apply to all in one surveys.");
                     break;
                 case Survey::FORMAT_GROUP:
                     $result = null;
@@ -4519,7 +4520,7 @@ use ls\components\SurveySession;
                             case 'T': //LONG FREE TEXT
                             case 'U': //HUGE FREE TEXT
                             case '*': //Equation
-                            case 'I': //Language Question
+                            case 'I': //Language ls\models\Question
                             case '|': //File Upload
                             case 'X': //BOILERPLATE QUESTION
                                 $shown = $code;
@@ -4711,7 +4712,7 @@ use ls\components\SurveySession;
 
             $surveyname = \ls\helpers\Replacements::templatereplace('{SURVEYNAME}', array('SURVEYNAME' => $aSurveyInfo['surveyls_title']));
 
-            $out = '<div id="showlogicfilediv" ><H3>' . gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</H3>\n";
+            $out = '<div id="showlogicfilediv" ><H3>' . gT('Logic File for ls\models\Survey # ') . '[' . $LEM->sid . "]: $surveyname</H3>\n";
             $out .= "<table id='logicfiletable'>";
 
             if (is_null($gid) && is_null($qid)) {
@@ -4813,7 +4814,7 @@ use ls\components\SurveySession;
                     $attrs['other'] = $LEM->questionSeq2relevance[$qseq]['other'];
                 }
                 if (count($attrs) > 0) {
-                    $attrTable = "<table id='logicfileattributetable'><tr><th>" . gT("Question attribute") . "</th><th>" . gT("Value") . "</th></tr>\n";
+                    $attrTable = "<table id='logicfileattributetable'><tr><th>" . gT("ls\models\Question attribute") . "</th><th>" . gT("Value") . "</th></tr>\n";
                     $count = 0;
                     foreach ($attrs as $key => $value) {
                         if (is_null($value) || trim($value) == '') {

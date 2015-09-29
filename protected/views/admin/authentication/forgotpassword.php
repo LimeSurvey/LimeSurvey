@@ -5,7 +5,7 @@
 <?php echo CHtml::form(array("admin/authentication/sa/forgotpassword"), 'post', array('class'=>'form44','id'=>'forgotpassword','name'=>'forgotpassword'));?>
 
     <ul>
-        <li><label for="user"><?php eT('User name'); ?></label><input name="user" id="user" type="text" size="60" maxlength="60" value="" /></li>
+        <li><label for="user"><?php eT('ls\models\User name'); ?></label><input name="user" id="user" type="text" size="60" maxlength="60" value="" /></li>
         <li><label for="email"><?php eT('Email'); ?></label><input name="email" id="email" type="email" size="60" maxlength="60" value="" /></li>
     </ul>
         <p>

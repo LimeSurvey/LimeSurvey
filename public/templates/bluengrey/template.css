@@ -607,7 +607,7 @@ td.clearall-result .warning-text {
 
 
 /* -------------------------------------------------
-   START: Question styles  ------------------------- */
+   START: ls\models\Question styles  ------------------------- */
   /* =====================================
 == Full list of question classes =======
 
@@ -1330,7 +1330,7 @@ td.statsImageholder {
   background-color: #fff;
 }
 
-/* Survey listing styles */
+/* ls\models\Survey listing styles */
 #listingHeader {
   margin-top: 5px;
   padding: 10px 0px;
@@ -1401,7 +1401,7 @@ table.assessments th{
  padding: 0 10px;
 }
 
-/* Question Index */
+/* ls\models\Question Index */
 .withindex.outerframe{
   margin-left: 1em;
   margin-right: 26em;

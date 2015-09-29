@@ -8,6 +8,9 @@
  * @todo : Add any expression
  * @version : 1.1
  */
+use ls\models\QuotaLanguageSetting;
+use ls\models\Survey;
+
 class ExpressionValidate extends Survey_Common_Action {
 
     /**
@@ -63,11 +66,11 @@ class ExpressionValidate extends Survey_Common_Action {
             {
                 $this->sLang=$sLang;
                 $aExpressions['name_'.$sLang]= [
-                    'title'=>sprintf("Quota name (%s)",$sLang),
+                    'title'=>sprintf("ls\models\Quota name (%s)",$sLang),
                     'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_name, [],__METHOD__),
                 ];
                 $aExpressions['message_'.$sLang]= [
-                    'title'=>sprintf("Quota message (%s)",$sLang),
+                    'title'=>sprintf("ls\models\Quota message (%s)",$sLang),
                     'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_message, [],__METHOD__),
                 ];
                 $aExpressions['url_'.$sLang]= [
@@ -175,17 +178,17 @@ class ExpressionValidate extends Survey_Common_Action {
         // Not needed : \ls\helpers\Replacements::templatereplace do the job : but this can/must be fixed for invitaton/reminder/registration (#9424)
         $aReplacement["SURVEYNAME"] = gT("Name of the survey");
         $aReplacement["SURVEYDESCRIPTION"] =  gT("Description of the survey");
-        // Replaced when sending email with Survey 
+        // Replaced when sending email with ls\models\Survey
         $aAttributes = getTokenFieldsAndNames($iSurveyId,true);
-        $aReplacement["TOKEN"] = gt("Token code for this participant");
+        $aReplacement["TOKEN"] = gt("ls\models\Token code for this participant");
         $aReplacement["TOKEN:EMAIL"] = gt("Email from the token");
         $aReplacement["TOKEN:FIRSTNAME"] = gt("First name from token");
         $aReplacement["TOKEN:LASTNAME"] = gt("Last name from token");
-        $aReplacement["TOKEN:TOKEN"] = gt("Token code for this participant");
+        $aReplacement["TOKEN:TOKEN"] = gt("ls\models\Token code for this participant");
         $aReplacement["TOKEN:LANGUAGE"] = gt("language of token");
         foreach ($aAttributes as $sAttribute=>$aAttribute)
         {
-            $aReplacement['TOKEN:'.strtoupper($sAttribute).'']=sprintf(gT("Token attribute: %s"), $aAttribute['description']);
+            $aReplacement['TOKEN:'.strtoupper($sAttribute).'']=sprintf(gT("ls\models\Token attribute: %s"), $aAttribute['description']);
         }
 
         switch ($sType)
@@ -203,7 +206,7 @@ class ExpressionValidate extends Survey_Common_Action {
                 $aReplacement["SURVEYURL"] = gt("URL of the survey");
                 foreach ($aAttributes as $sAttribute=>$aAttribute)
                 {
-                    $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
+                    $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("ls\models\Token attribute: %s"), $aAttribute['description']);
                 }
                 break;
             case 'confirmation' :
@@ -213,7 +216,7 @@ class ExpressionValidate extends Survey_Common_Action {
                 $aReplacement["SURVEYURL"] = gt("URL of the survey");
                 foreach ($aAttributes as $sAttribute=>$aAttribute)
                 {
-                    $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
+                    $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("ls\models\Token attribute: %s"), $aAttribute['description']);
                 }
                 // $moveResult = LimeExpressionManager::NavigateForwards(); // Seems OK without, nut need $LEM::StartSurvey
                 break;
@@ -232,7 +235,7 @@ class ExpressionValidate extends Survey_Common_Action {
         }
 
         $aData= [];
-        //$oSurveyLanguage=SurveyLanguageSetting::model()->find("surveyls_survey_id=:sid and surveyls_language=:language",array(":sid"=>$iSurveyId,":language"=>$sLang));
+        //$oSurveyLanguage=ls\models\SurveyLanguageSetting::model()->find("surveyls_survey_id=:sid and surveyls_language=:language",array(":sid"=>$iSurveyId,":language"=>$sLang));
         $aExpressions= [];
         foreach($aTypeAttributes[$sType] as $key=>$aAttribute)
         {

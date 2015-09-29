@@ -23,7 +23,7 @@ use ls\pluginmanager\PluginBase;
         }
 
         /**
-        * User logout to the audit log
+        * ls\models\User logout to the audit log
         * @return unknown_type
         */
         public function beforeLogout()
@@ -263,7 +263,7 @@ use ls\pluginmanager\PluginBase;
                         'tab'=>'notification', // @todo: Setting no used yet
                         'category'=>'Auditing for person-related data', // @todo: Setting no used yet
                         'label' => 'Audit log for this survey',
-                        'current' => $this->get('auditing', 'Survey', $event->get('survey'))
+                        'current' => $this->get('auditing', 'ls\models\Survey', $event->get('survey'))
                     )
                 )
             ));
@@ -274,7 +274,7 @@ use ls\pluginmanager\PluginBase;
             $event = $this->getEvent();
             foreach ($event->get('settings') as $name => $value)
             {
-                $this->set($name, $value, 'Survey', $event->get('survey'));
+                $this->set($name, $value, 'ls\models\Survey', $event->get('survey'));
             }
         }
 

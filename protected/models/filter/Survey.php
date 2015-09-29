@@ -6,7 +6,7 @@ namespace ls\models\filter;
  * Filter model for survey class.
  * @package ls\models\filter
  */
-class Survey extends \Survey {
+class Survey extends \ls\models\Survey {
     public $status;
     public $localizedTitle;
     public $bool_usetokens;
@@ -51,7 +51,7 @@ class Survey extends \Survey {
 
             if (isset($this->localizedTitle)) {
 //            die('ok');
-                $table = \SurveyLanguageSetting::model()->tableName();
+                $table = \ls\models\SurveyLanguageSetting::model()->tableName();
                 // Search in all languages.
                 $criteria->addCondition("EXISTS(SELECT * FROM $table WHERE surveyls_title LIKE :keyword AND sid = surveyls_survey_id)");
                 // Escape code from CDbCriteria::addSearchCondition

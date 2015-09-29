@@ -12,6 +12,13 @@
  *
  */
 
+use ls\models\Participant;
+use ls\models\ParticipantAttributeName;
+use ls\models\SettingGlobal;
+use ls\models\Survey;
+use ls\models\SurveyLink;
+use ls\models\User;
+
 function subval_sort($a, $subkey, $order)
 {
     $b = [];
@@ -568,7 +575,7 @@ class participantsaction extends Survey_Common_Action
      * Receives an ajax call containing the participant id in the fourth segment of the url
      * Supplies list of survey links - surveys of which this participant is on the tokens table
      * URL: [localurl]/limesurvey/admin/participants/getSurveyInfo_json/pid/[participant_id]
-     * RETURNS: json data containing linked survey information (Survey name, survey id, token_id and date_added)
+     * RETURNS: json data containing linked survey information (ls\models\Survey name, survey id, token_id and date_added)
      */
     function getSurveyInfo_json()
     {

@@ -236,7 +236,7 @@ class PreCheck extends CFormModel
         if (!check_DirectoryWriteable(Yii::app()->getConfig('uploaddir').'/', $aData, 'uploaddir', 'uerror',true) )
             $bProceed = false;
 
-        // Session writable check
+        // ls\models\Session writable check
         $session = Yii::app()->session; /* @var $session CHttpSession */
         $sessionWritable = ($session->get('saveCheck', null)==='save');
         $aData['sessionWritable'] = $sessionWritable;

@@ -1,6 +1,6 @@
 <?php
 namespace ls\controllers;
-use Token;
+use ls\models\Token;
 use Yii;
 use ls\pluginmanager\PluginEvent;
 class TokensController extends Controller
@@ -17,12 +17,12 @@ class TokensController extends Controller
 
     public function actionResponses($id, $surveyId) {
         $this->layout = 'bare';
-        $survey = \Survey::model()->findByPk($surveyId);
-        $token = \Token::model($survey->sid)->findByPk($id);
+        $survey = \ls\models\Survey::model()->findByPk($surveyId);
+        $token = \ls\models\Token::model($survey->sid)->findByPk($id);
         $criteria = new \CDbCriteria();
         $criteria->order = 'submitdate DESC';
         $criteria->addColumnCondition(['token' => $token->token]);
-        $dataProvider = new \CActiveDataProvider(\Response::model($survey->sid), [
+        $dataProvider = new \CActiveDataProvider(\ls\models\Response::model($survey->sid), [
             'criteria' => $criteria,
             'pagination' => [
                 'pageSize' => 50
@@ -43,20 +43,20 @@ class TokensController extends Controller
     }
     public function actionCreate($surveyId)
     {
-        $survey = \Survey::model()->findByPk($surveyId);
+        $survey = \ls\models\Survey::model()->findByPk($surveyId);
         $this->menus['survey'] = $survey;
         if (!$survey->bool_usetokens) {
             throw new \CHttpException(412, "The survey you selected does not have tokens enabled");
         }
 
-        $token = \Token::create($survey->sid);
+        $token = \ls\models\Token::create($survey->sid);
         if (App()->request->isPostRequest) {
             $token->setAttributes(App()->request->getPost(get_class($token)));
 
             // Validate & safe.
             if ($token->save()) {
                 // On success.
-                App()->user->setFlash('success', 'Token created');
+                App()->user->setFlash('success', 'ls\models\Token created');
                 $this->redirect(['tokens/index', 'surveyId' => $survey->sid]);
             }
         }
@@ -68,7 +68,7 @@ class TokensController extends Controller
      * @param $id
      */
     public function actionView($surveyId, $id) {
-        $survey = \Survey::model()->findByPk($surveyId);
+        $survey = \ls\models\Survey::model()->findByPk($surveyId);
         $this->menus['survey'] = $survey;
         $token = $this->loadModel($id, $surveyId);
 
@@ -87,7 +87,7 @@ class TokensController extends Controller
         /**
          * @todo Add permission check.
          */
-        $survey = \Survey::model()->findByPk($surveyId);
+        $survey = \ls\models\Survey::model()->findByPk($surveyId);
         $this->menus['survey'] = $survey;
 
         $token = $this->loadModel($id, $surveyId);
@@ -98,7 +98,7 @@ class TokensController extends Controller
             // Validate & safe.
             if ($token->save()) {
                 // On success.
-                App()->user->setFlash('success', 'Token updated');
+                App()->user->setFlash('success', 'ls\models\Token updated');
                 $this->redirect(['tokens/index', 'surveyId' => $survey->sid]);
             }
         }
@@ -110,17 +110,17 @@ class TokensController extends Controller
         /**
          * @todo Add permission check.
          */
-        $survey = \Survey::model()->findByPk($surveyId);
+        $survey = \ls\models\Survey::model()->findByPk($surveyId);
         $this->menus['survey'] = $survey;
         if (!$survey->bool_usetokens) {
             throw new \CHttpException(412, "The survey you selected does not have tokens enabled.");
         }
 
-        if (!\Token::valid($survey->sid)) {
-            \Token::createTable($survey->sid);
+        if (!\ls\models\Token::valid($survey->sid)) {
+            \ls\models\Token::createTable($survey->sid);
         }
 
-        $dataProvider = new \CActiveDataProvider(\Token::model($survey->sid), [
+        $dataProvider = new \CActiveDataProvider(\ls\models\Token::model($survey->sid), [
             'pagination' => [
                 'pageSize' => 50
             ]
@@ -130,12 +130,12 @@ class TokensController extends Controller
     public function actionRegister($surveyId)
     {
         $this->layout = 'minimal';
-        if (null === $survey = \Survey::model()->findByPk($surveyId)) {
+        if (null === $survey = \ls\models\Survey::model()->findByPk($surveyId)) {
             throw new \CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         } elseif (!$survey->bool_allowregister) {
             throw new \CHttpException(403, "The survey in which you are trying to register does not allow registration. It may have been updated or the link you were given is outdated or incorrect.");
         }
-        $token = \Token::create($survey->sid, 'register');
+        $token = \ls\models\Token::create($survey->sid, 'register');
         if (App()->request->isPostRequest) {
             $token->setAttributes(App()->request->getPost(get_class($token)));
             $token->generateToken();
@@ -152,7 +152,7 @@ class TokensController extends Controller
      * @param $iSurveyId Survey Id to register
      * @return boolean : if email is set to sent (before SMTP problem)
      */
-    protected function sendRegistrationEmail(\Token $token){
+    protected function sendRegistrationEmail(\ls\models\Token $token){
 
         $sLanguage=App()->language;
         $iSurveyId = $token->surveyId;
@@ -222,7 +222,7 @@ class TokensController extends Controller
             $message = "<div id='wrapper' class='message tokenmessage'>"
                 . "<p>".gT("Thank you for registering to participate in this survey.")."</p>\n"
                 . "<p>{$this->sMailMessage}</p>\n"
-                . "<p>".sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
+                . "<p>".sprintf(gT("ls\models\Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
                 . "</div>\n";
         }
         else
@@ -230,7 +230,7 @@ class TokensController extends Controller
             $message = "<div id='wrapper' class='message tokenmessage'>"
                 . "<p>".gT("Thank you for registering to participate in this survey.")."</p>\n"
                 . "<p>".gT("You are registred but an error happen when trying to send the email, please contact the survey administrator.")."</p>\n"
-                . "<p>".sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
+                . "<p>".sprintf(gT("ls\models\Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
                 . "</div>\n";
         }
         return $message;
@@ -239,17 +239,17 @@ class TokensController extends Controller
     /**
      * @param type $id
      * @param null $surveyId
-     * @return Token
+     * @return \ls\models\Token
      * @throws \CHttpException
      */
     public function loadModel($id, $surveyId = null)
     {
         if (!isset($surveyId)) {
             throw new \InvalidArgumentException("SurveyID is required when loading token.");
-        } elseif (!\Token::valid($surveyId)) {
-            throw new \CHttpException(404, gT("Token table not found"));
-        } elseif (null === $result = \Token::model($surveyId)->findByPk($id)) {
-            throw new \CHttpException(404, gT("Token not found"));
+        } elseif (!\ls\models\Token::valid($surveyId)) {
+            throw new \CHttpException(404, gT("ls\models\Token table not found"));
+        } elseif (null === $result = \ls\models\Token::model($surveyId)->findByPk($id)) {
+            throw new \CHttpException(404, gT("ls\models\Token not found"));
         }
         return $result;
     }
@@ -262,7 +262,7 @@ class TokensController extends Controller
      */
     public function actionDelete($id, $surveyId) {
         if ($this->loadModel($id, $surveyId)->delete()) {
-            App()->user->setFlash('success', gT("Token deleted"));
+            App()->user->setFlash('success', gT("ls\models\Token deleted"));
         } else {
             App()->user->setFlash('success', gT("Could not delete token"));
         }

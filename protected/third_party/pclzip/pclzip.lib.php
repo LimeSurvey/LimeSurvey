@@ -3610,7 +3610,7 @@
   // Return Values :
   //
   // 1 : ... ?
-  // PCLZIP_ERR_USER_ABORTED(2) : User ask for extraction stop in callback
+  // PCLZIP_ERR_USER_ABORTED(2) : ls\models\User ask for extraction stop in callback
   // --------------------------------------------------------------------------------
   function privExtractFile(&$p_entry, $p_path, $p_remove_path, $p_remove_all_path, &$p_options)
   {

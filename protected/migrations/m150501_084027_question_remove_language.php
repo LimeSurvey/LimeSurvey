@@ -11,9 +11,9 @@ class m150501_084027_question_remove_language extends CDbMigration
     public function safeUp()
 	{
         // We are removing languages from the question table and moving it to the translation table.
-        $questions = \Question::model()->findAll();
+        $questions = \ls\models\Question::model()->findAll();
         $deleted = $created = 0;
-        /** @var \Question $question */
+        /** @var \ls\models\Question $question */
         foreach ($questions as $question) {
             $behaviorConfig = $question->behaviors()['translatable'];
             // Get the base language
@@ -24,9 +24,9 @@ class m150501_084027_question_remove_language extends CDbMigration
             }
             if ($baseLanguage != $question->language) {
                 // Create translation if not base language.
-                $translation = new \Translation();
+                $translation = new \ls\models\Translation();
                 $translation->language = $question->language;
-                $translation->model = 'Question'; // We have Single Table Inheritance so we use the base class.
+                $translation->model = 'ls\models\Question'; // We have Single Table Inheritance so we use the base class.
                 $translation->model_id = $question->qid;
                 foreach ($question->translatableAttributes as $attribute) {
                     $translation->$attribute = $question->$attribute;
@@ -52,7 +52,7 @@ class m150501_084027_question_remove_language extends CDbMigration
         }
 
         // Now we can drop the language column.
-        $this->dropColumn(\Question::model()->tableName(), 'language');
+        $this->dropColumn(\ls\models\Question::model()->tableName(), 'language');
 
 
 

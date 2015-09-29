@@ -4,6 +4,8 @@
  * Get user summary data.
  */
 
+use ls\models\Survey;
+
 $overview = [
 //    gT("Users") => 0,
     'surveyCount' => Survey::model()->count(),

@@ -2,7 +2,9 @@
     <div class="col-md-12">
         <?php
         /** @var Question $question */
-            echo TbHtml::tag('h1', [], "Question {$question->title} ({$question->typeName}) -- class: " . get_class($question));
+        use ls\models\Question;
+
+        echo TbHtml::tag('h1', [], "ls\models\Question {$question->title} ({$question->typeName}) -- class: " . get_class($question));
         // This is an update view so we use PUT.
         /** @var TbActiveForm $form */
         $form = $this->beginWidget(TbActiveForm::class, [

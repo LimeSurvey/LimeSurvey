@@ -3,10 +3,11 @@
  * This view wraps the yii validators so they still work when fields are dynamically duplicated (when adding / removing answer options).
  *
  */
+use ls\models\Answer;
 
-/** @var \Question $question */
+/** @var \ls\models\Question $question */
 /** @var TbActiveForm $form */
-/** @var \Answer $answer */
+/** @var \ls\models\Answer $answer */
 
 
 $i = 0;
@@ -44,7 +45,7 @@ for ($scale = 0; $scale < $question->answerScales; $scale++) {
             SamIT\Form\FormHelper::createAttributesForHighlight(TbHtml::resolveName($answer, $attribute))));
         if ($first) {
             $validators = \SamIT\Form\ValidatorGenerator::createFromYii1Model($answer, 'code');
-            $message = gT("Answer codes must be unique.");
+            $message = gT("ls\models\Answer codes must be unique.");
             /**
              * This is client side only. The server side is handled by the controller.
              * @todo Develop something proper that uses a collection model and validates that model.

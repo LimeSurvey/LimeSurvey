@@ -1,5 +1,5 @@
 <script type='text/javascript'>
-    var sLabelSetName='<?php eT('Label set name','js'); ?>';
+    var sLabelSetName='<?php use ls\models\Survey;eT('Label set name','js'); ?>';
     var languagecount=<?php echo count($anslangs); ?>;
     var newansweroption_text='<?php eT('New subquestion','js'); ?>';
     var strcode='<?php eT('Code','js'); ?>';

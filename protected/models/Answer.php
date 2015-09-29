@@ -11,9 +11,14 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+namespace ls\models;
+
+use ls\models\ActiveRecord;
+use ls\models\Question;
+use ls\models\QuestionGroup;
 
 /**
- * Class Answer
+ * Class ls\models\Answer
  * @property string $answer
  * @property Question $question
  * @property string $code
@@ -32,17 +37,20 @@ class Answer extends ActiveRecord implements \ls\interfaces\iAnswer
     }
 
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return array_merge(parent::behaviors(), [
             'translatable' => [
-                'class' => SamIT\Yii1\Behaviors\TranslatableBehavior::class,
+                'class' => \SamIT\Yii1\Behaviors\TranslatableBehavior::class,
                 'translationModel' => Translation::class,
                 'model' => __CLASS__, // See TranslatableBehavior comments.
                 'attributes' => ['answer'],
                 /**
                  * @todo Refactor this so we don't get a lot of queries. Alternatively cache the query.
                  */
-                'baseLanguage' => function(Answer $answer) { return $answer->question->survey->language; }
+                'baseLanguage' => function (Answer $answer) {
+                    return $answer->question->survey->language;
+                }
             ]
         ]);
     }
@@ -62,27 +70,39 @@ class Answer extends ActiveRecord implements \ls\interfaces\iAnswer
     }
 
     /**
-    * Returns this model's validation rules
-    *
-    */
+     * Returns this model's validation rules
+     *
+     */
     public function rules()
     {
         return array(
-            ['question_id', CExistValidator::class, 'className' => Question::class, 'attributeName' => 'qid', 'on' => ['update', 'insert']],
-            ['code','length', 'min' => 1, 'max'=>5, 'allowEmpty' => false],
+            [
+                'question_id',
+                \CExistValidator::class,
+                'className' => Question::class,
+                'attributeName' => 'qid',
+                'on' => ['update', 'insert']
+            ],
+            ['code', 'length', 'min' => 1, 'max' => 5, 'allowEmpty' => false],
             ['code', 'required'],
-            ['code', 'match', 'pattern' => '/^[a-z0-9]*$/i', 'message' => gT('Answer codes may only contain alphanumeric characters.')],
-            ['sortorder','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
-            ['answer', LSYii_Validators::class],
-
-            array('assessment_value','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            [
+                'code',
+                'match',
+                'pattern' => '/^[a-z0-9]*$/i',
+                'message' => gT('ls\models\Answer codes may only contain alphanumeric characters.')
+            ],
+            ['sortorder', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
+            ['answer', 'length'],
+            array('assessment_value', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
+            array('scale_id', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
         );
     }
 
-    public function init() {
+    public function init()
+    {
         $this->code = 'A1';
     }
+
     /**
      * Return the key=>value answer for a given $qid
      *
@@ -93,37 +113,39 @@ class Answer extends ActiveRecord implements \ls\interfaces\iAnswer
      * @param type $iScaleID
      * @return array
      */
-    function getAnswerFromCode($qid, $code, $sLanguage, $iScaleID=0)
+    function getAnswerFromCode($qid, $code, $sLanguage, $iScaleID = 0)
     {
         static $answerCache = array();
 
         if (array_key_exists($qid, $answerCache)
-                && array_key_exists($code, $answerCache[$qid])
-                && array_key_exists($sLanguage, $answerCache[$qid][$code])
-                && array_key_exists($iScaleID, $answerCache[$qid][$code][$sLanguage])) {
+            && array_key_exists($code, $answerCache[$qid])
+            && array_key_exists($sLanguage, $answerCache[$qid][$code])
+            && array_key_exists($iScaleID, $answerCache[$qid][$code][$sLanguage])
+        ) {
             // We have a hit :)
             return $answerCache[$qid][$code][$sLanguage][$iScaleID];
         } else {
             $answerCache[$qid][$code][$sLanguage][$iScaleID] = Yii::app()->db->cache(6)->createCommand()
-            ->select('answer')
-            ->from(self::tableName())
-            ->where(array('and', 'qid=:qid', 'code=:code', 'scale_id=:scale_id', 'language=:lang'))
-            ->bindParam(":qid", $qid, PDO::PARAM_INT)
-            ->bindParam(":code", $code, PDO::PARAM_STR)
-            ->bindParam(":lang", $sLanguage, PDO::PARAM_STR)
-                        ->bindParam(":scale_id", $iScaleID, PDO::PARAM_INT)
-            ->query()->readAll();
+                ->select('answer')
+                ->from(self::tableName())
+                ->where(array('and', 'qid=:qid', 'code=:code', 'scale_id=:scale_id', 'language=:lang'))
+                ->bindParam(":qid", $qid, PDO::PARAM_INT)
+                ->bindParam(":code", $code, PDO::PARAM_STR)
+                ->bindParam(":lang", $sLanguage, PDO::PARAM_STR)
+                ->bindParam(":scale_id", $iScaleID, PDO::PARAM_INT)
+                ->query()->readAll();
 
             return $answerCache[$qid][$code][$sLanguage][$iScaleID];
         }
     }
 
-    public function oldNewInsertansTags($newsid,$oldsid)
+    public function oldNewInsertansTags($newsid, $oldsid)
     {
-            $criteria = new CDbCriteria;
-            $criteria->compare('questions.sid',$newsid);
-            $criteria->compare('answer','{INSERTANS::'.$oldsid.'X');
-            return $this->with('questions')->findAll($criteria);
+        $criteria = new CDbCriteria;
+        $criteria->compare('questions.sid', $newsid);
+        $criteria->compare('answer', '{INSERTANS::' . $oldsid . 'X');
+
+        return $this->with('questions')->findAll($criteria);
     }
 
     /**
@@ -137,17 +159,17 @@ class Answer extends ActiveRecord implements \ls\interfaces\iAnswer
      */
     public static function updateSortOrder($qid, $lang)
     {
-        $data = self::model()->findAllByAttributes(array('qid' => $qid, 'language' => $lang), array('order' => 'sortorder asc'));
+        $data = self::model()->findAllByAttributes(array('qid' => $qid, 'language' => $lang),
+            array('order' => 'sortorder asc'));
         $position = 0;
 
-        foreach ($data as $row)
-        {
+        foreach ($data as $row) {
             $row->sortorder = $position++;
             $row->save();
         }
     }
 
-    public function getAnswerQuery($surveyid, $lang, $return_query = TRUE)
+    public function getAnswerQuery($surveyid, $lang, $return_query = true)
     {
         $query = Yii::app()->db->createCommand();
         $query->select("{{answers}}.*, {{questions}}.gid");
@@ -156,27 +178,28 @@ class Answer extends ActiveRecord implements \ls\interfaces\iAnswer
         $query->order('qid, code, sortorder');
         $query->bindParams(":surveyid", $surveyid, PDO::PARAM_INT);
         $query->bindParams(":lang", $lang, PDO::PARAM_STR);
-        return ( $return_query ) ? $query->queryAll() : $query;
+
+        return ($return_query) ? $query->queryAll() : $query;
     }
 
-    function getAllRecords($condition, $order=FALSE)
+    function getAllRecords($condition, $order = false)
     {
-        $command=Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
-        if ($order != FALSE)
-        {
+        $command = Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
+        if ($order != false) {
             $command->order($order);
         }
+
         return $command->query();
     }
 
     public function getQuestionsForStatistics($fields, $condition, $orderby)
     {
         return Yii::app()->db->createCommand()
-        ->select($fields)
-        ->from(self::tableName())
-        ->where($condition)
-        ->order($orderby)
-        ->queryAll();
+            ->select($fields)
+            ->from(self::tableName())
+            ->where($condition)
+            ->order($orderby)
+            ->queryAll();
     }
 
     /**

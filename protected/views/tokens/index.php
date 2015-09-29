@@ -1,5 +1,7 @@
 <div class="row"><div class="col-md-12">
 <?php
+use ls\models\Token;
+
 echo TbHtml::buttonGroup([
     [
         'icon' => 'plus',
@@ -52,7 +54,7 @@ $columns = [
         'class' => WhRelationalColumn::class,
         'name' => 'Responses',
         'url' => App()->createUrl('tokens/responses', ['surveyId' => $survey->sid]),
-        'value' => function(\Token $model) {
+        'value' => function(\ls\models\Token $model) {
             return $model->responseCount;
         },
 //        'afterAjaxUpdate' => 'js:function(tr,rowid,data){

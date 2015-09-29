@@ -31,7 +31,7 @@
 
         </div>
         <div id="newcreated" class="attribute-column">
-            <div class="heading"><?php eT("Participant attributes to create") ?></div>
+            <div class="heading"><?php eT("ls\models\Participant attributes to create") ?></div>
             <div class="newcreate droppable" style ="height: 40px">
             </div>
         </div>

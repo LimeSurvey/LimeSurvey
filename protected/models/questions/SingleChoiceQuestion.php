@@ -16,7 +16,7 @@ class SingleChoiceQuestion extends ChoiceQuestion
     public function relations()
     {
         return array_merge(parent::relations(), [
-            'answers' => [self::HAS_MANY, \Answer::class, 'question_id', 'order' => 'sortorder', 'index' => 'code']
+            'answers' => [self::HAS_MANY, \ls\models\Answer::class, 'question_id', 'order' => 'sortorder', 'index' => 'code']
         ]);
     }
 

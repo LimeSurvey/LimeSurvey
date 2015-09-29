@@ -28,7 +28,7 @@ class FormattingOptions extends \CFormModel
     * Acceptable values are:
     * "abbreviated" = Abbreviated headings
     * "full" = Full headings
-    * "code" = Question codes
+    * "code" = ls\models\Question codes
     * "none" = No headers.
     *
     * @var string
@@ -65,7 +65,7 @@ class FormattingOptions extends \CFormModel
 
     /**
     * Valid values are:
-    * "short" = Answer codes
+    * "short" = ls\models\Answer codes
     * "long" = Full answers
     *
     * @var string
@@ -135,13 +135,13 @@ class FormattingOptions extends \CFormModel
     }
 
     public function getSelectedColumnOptions() {
-        $columns = array_keys(\Survey::model()->findByPk($this->surveyId)->getColumns());
+        $columns = array_keys(\ls\models\Survey::model()->findByPk($this->surveyId)->getColumns());
         return array_combine($columns, $columns);
     }
 
     public function getHeadingFormatOptions() {
         return [
-            "code" => gT('Question code'),
+            "code" => gT('ls\models\Question code'),
             "abbreviated" => gT('Abbreviated question text'),
             "full" => gT("Full question text"),
             "none" => gT("No headers")
@@ -159,7 +159,7 @@ class FormattingOptions extends \CFormModel
 
     public function getAnswerFormatOptions() {
         return [
-            "short" => gT("Answer codes"),
+            "short" => gT("ls\models\Answer codes"),
             "long" => gT('Full answers')
         ];
     }

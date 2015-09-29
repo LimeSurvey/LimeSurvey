@@ -77,7 +77,7 @@ $ldap_server[$serverId]['bindpw']	=	"AsecretPassword";
  *****************************************/
 
 /**********************************************************************/
-/* Predefined Queries for Token Imports                               */
+/* Predefined Queries for ls\models\Token Imports                               */
 /*                                                                    */
 /* This sample query definition is just an fake template: do not      */
 /* expect it to do something intelligent on your directory            */
@@ -130,7 +130,7 @@ $ldap_queries[$query_id]['email_attr'] = 'mail';
 // token, language, attr1 and attr2 piece of information
 // do not use capital letters in the attribute name
 // if unused, leave empty or comment the lines
-$ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto Token generation bu phpsv
+$ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto ls\models\Token generation bu phpsv
 $ldap_queries[$query_id]['language'] = '';
 $ldap_queries[$query_id]['attr1'] = '';
 $ldap_queries[$query_id]['attr2'] = '';
@@ -166,7 +166,7 @@ $ldap_queries[$query_id]['userscope'] = 'sub';
 $ldap_queries[$query_id]['firstname_attr'] = 'givenname';
 $ldap_queries[$query_id]['lastname_attr'] = 'sn';
 $ldap_queries[$query_id]['email_attr'] = 'mail';
-$ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto Token generation bu phpsv
+$ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto ls\models\Token generation bu phpsv
 $ldap_queries[$query_id]['language'] = '';
 $ldap_queries[$query_id]['attr1'] = '';
 $ldap_queries[$query_id]['attr2'] = '';
@@ -196,7 +196,7 @@ $ldap_queries[$query_id]['userscope'] = 'sub';
 $ldap_queries[$query_id]['firstname_attr'] = 'givenname';
 $ldap_queries[$query_id]['lastname_attr'] = 'sn';
 $ldap_queries[$query_id]['email_attr'] = 'mail';
-$ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto Token generation bu phpsv
+$ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto ls\models\Token generation bu phpsv
 $ldap_queries[$query_id]['language'] = '';
 $ldap_queries[$query_id]['attr1'] = '';
 $ldap_queries[$query_id]['attr2'] = '';

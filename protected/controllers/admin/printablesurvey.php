@@ -11,9 +11,13 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+use ls\models\Answer;
+use ls\models\Question;
+use ls\models\QuestionGroup;
+use ls\models\Template;
 
 /**
- * Printable Survey Controller
+ * Printable ls\models\Survey Controller
  *
  * This controller shows a printable survey.
  *
@@ -91,8 +95,8 @@ class printablesurvey extends Survey_Common_Action
             {
                 $templatename="default";
             }
-            $sFullTemplatePath = \Template::getTemplatePath($templatename).DIRECTORY_SEPARATOR;
-            $sFullTemplateUrl = \Template::getTemplateURL($templatename)."/";
+            $sFullTemplatePath = \ls\models\Template::getTemplatePath($templatename).DIRECTORY_SEPARATOR;
+            $sFullTemplateUrl = \ls\models\Template::getTemplateURL($templatename)."/";
             define('PRINT_TEMPLATE_DIR' , $sFullTemplatePath , true);
             define('PRINT_TEMPLATE_URL' , $sFullTemplateUrl , true);
 
@@ -127,7 +131,7 @@ class printablesurvey extends Survey_Common_Action
             ,'WELCOME' => $welcome
             ,'END' => $end
             ,'THEREAREXQUESTIONS' => 0
-            ,'SUBMIT_TEXT' => gT("Submit Your Survey.")
+            ,'SUBMIT_TEXT' => gT("Submit Your ls\models\Survey.")
             ,'SUBMIT_BY' => $surveyexpirydate
             ,'THANKS' => gT("Thank you for completing this survey.")
             ,'HEADELEMENTS' => $headelements
@@ -196,7 +200,7 @@ class printablesurvey extends Survey_Common_Action
                     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                     // START doing questions
 
-                    $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($deqrow['qid'],$deqrow['type']);
+                    $qidattributes= \ls\models\QuestionAttribute::model()->getQuestionAttributes($deqrow['qid'],$deqrow['type']);
                     if ($qidattributes['hidden'] == 1 && $deqrow['type'] != '*')
                     {
                         continue;
@@ -249,35 +253,35 @@ class printablesurvey extends Survey_Common_Action
                             if($distinctrow['cqid']){ // cqid != 0  ==> previous answer match
                                 if($distinctrow['method']=='==')
                                 {
-                                    $sExplanation .= gT("Answer was")." ";
+                                    $sExplanation .= gT("ls\models\Answer was")." ";
                                 }
                                 elseif($distinctrow['method']=='!=')
                                 {
-                                    $sExplanation .= gT("Answer was NOT")." ";
+                                    $sExplanation .= gT("ls\models\Answer was NOT")." ";
                                 }
                                 elseif($distinctrow['method']=='<')
                                 {
-                                    $sExplanation .= gT("Answer was less than")." ";
+                                    $sExplanation .= gT("ls\models\Answer was less than")." ";
                                 }
                                 elseif($distinctrow['method']=='<=')
                                 {
-                                    $sExplanation .= gT("Answer was less than or equal to")." ";
+                                    $sExplanation .= gT("ls\models\Answer was less than or equal to")." ";
                                 }
                                 elseif($distinctrow['method']=='>=')
                                 {
-                                    $sExplanation .= gT("Answer was greater than or equal to")." ";
+                                    $sExplanation .= gT("ls\models\Answer was greater than or equal to")." ";
                                 }
                                 elseif($distinctrow['method']=='>')
                                 {
-                                    $sExplanation .= gT("Answer was greater than")." ";
+                                    $sExplanation .= gT("ls\models\Answer was greater than")." ";
                                 }
                                 elseif($distinctrow['method']=='RX')
                                 {
-                                    $sExplanation .= gT("Answer matched (regexp)")." ";
+                                    $sExplanation .= gT("ls\models\Answer matched (regexp)")." ";
                                 }
                                 else
                                 {
-                                    $sExplanation .= gT("Answer was")." ";
+                                    $sExplanation .= gT("ls\models\Answer was")." ";
                                 }
                             }
                             if(!$distinctrow['cqid']) { // cqid == 0  ==> token attribute match
@@ -463,7 +467,7 @@ class printablesurvey extends Survey_Common_Action
                                         $thiscquestion=$fieldmap[$conrow['cfieldname']];
                                         $condition="parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$sLanguageCode}'";
                                         $ansresult= Question::model()->findAll($condition);
-                                        $cqidattributes = \QuestionAttribute::model()->getQuestionAttributes($conrow['cqid'], $conrow['type']);
+                                        $cqidattributes = \ls\models\QuestionAttribute::model()->getQuestionAttributes($conrow['cqid'], $conrow['type']);
                                         if ($labelIndex == 0)
                                         {
                                             if (trim($cqidattributes['dualscale_headerA'][$sLanguageCode]) != '') {
@@ -573,7 +577,7 @@ class printablesurvey extends Survey_Common_Action
                         if(isset($showsgqacode) && $showsgqacode == true)
                         {
                             $deqrow['question'] = $deqrow['question']."<br />".gT("ID:")." $fieldname <br />".
-                                                  gT("Question code:")." ".$deqrow['title'];
+                                                  gT("ls\models\Question code:")." ".$deqrow['title'];
                         }
 
                         $question = [
@@ -583,7 +587,7 @@ class printablesurvey extends Survey_Common_Action
                         ,'QUESTION_SCENARIO' => $sExplanation    // if there are conditions on a question, list the conditions.
                         ,'QUESTION_MANDATORY' => ''        // translated 'mandatory' identifier
                         ,'QUESTION_ID' => $deqrow['qid']    // id to be added to wrapping question div
-                        ,'QUESTION_CLASS' => \Question::getQuestionClass( $deqrow['type'])    // classes to be added to wrapping question div
+                        ,'QUESTION_CLASS' => \ls\models\Question::getQuestionClass( $deqrow['type'])    // classes to be added to wrapping question div
                         ,'QUESTION_TYPE_HELP' => $qinfo['validTip']   // ''        // instructions on how to complete the question // prettyValidTip is too verbose; assuming printable surveys will use static values
                         ,'QUESTIONHELP' => ''            // content of the question help field.
                         ,'ANSWER' => ''                // contains formatted HTML answer
@@ -755,7 +759,7 @@ class printablesurvey extends Survey_Common_Action
                                 break;
 
                                 // ==================================================================
-                            case "R":  //RANKING Type Question
+                            case "R":  //RANKING Type ls\models\Question
                                 $rearesult=Answer::model()->getAllRecords(" qid='{$deqrow['qid']}' AND language='{$sLanguageCode}'", ['sortorder', 'answer']);
                                 $rearesult = $rearesult->readAll();
                                 $reacount = count($rearesult);

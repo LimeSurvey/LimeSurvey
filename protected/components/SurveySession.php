@@ -1,7 +1,8 @@
 <?php
 
 namespace ls\components;
-
+use ls\models\Survey;
+use ls\models\QuestionGroup;
 /**
  * Class ls\components\SurveySession
  * IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT
@@ -21,7 +22,7 @@ namespace ls\components;
  * @property \ls\interfaces\iResponse $response;
  * @property string $templateDir;
  */
-class SurveySession extends CComponent
+class SurveySession extends \CComponent
 {
     /**
      * These variables are not serialized.
@@ -171,7 +172,7 @@ class SurveySession extends CComponent
                 'languagesettings'
             ])->findByPk($id);
             if (!isset($survey)) {
-                throw new \Exception("Survey not found.");
+                throw new \Exception("ls\models\Survey not found.");
             }
             /**
              * We manually set the questions in survey to the same objects as those in groups.
@@ -219,7 +220,7 @@ class SurveySession extends CComponent
         return $this->_survey;
     }
 
-    public function setSurvey(\Survey $survey)
+    public function setSurvey(\ls\models\Survey $survey)
     {
         $this->_survey = $survey;
     }
@@ -401,7 +402,7 @@ class SurveySession extends CComponent
     public function getTemplateDir()
     {
         if (!isset($this->_templateDir)) {
-            $this->_templateDir = \Template::getTemplatePath($this->survey->template) . '/';
+            $this->_templateDir = \ls\models\Template::getTemplatePath($this->survey->template) . '/';
         };
 
         return $this->_templateDir;
@@ -409,7 +410,7 @@ class SurveySession extends CComponent
 
     public function getTemplateUrl()
     {
-        return \Template::getTemplateURL($this->survey->template) . '/';
+        return \ls\models\Template::getTemplateURL($this->survey->template) . '/';
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
+use ls\models\SettingGlobal;
 
-    /**
+/**
      * Load the globals helper as early as possible. Only earlier solution is to use
      * index.php
      */

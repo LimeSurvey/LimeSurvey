@@ -43,7 +43,7 @@
     var sConfirmationArchiveMessage='<?php eT("This function creates a ZIP archive of several survey archives and can take some time - please be patient! Do you want to continue?",'js');?>';
     var jsonUrl = "<?php echo Yii::app()->getController()->createUrl('admin/survey/sa/getSurveys_json'); ?>";
     var editUrl = "<?php echo $this->createUrl('admin/survey/sa/editSurvey_json'); ?>";
-    var colNames = ["<?php eT("Status") ?>","<?php eT("SID") ?>","<?php eT("Survey") ?>","<?php eT("Date created") ?>","<?php eT("Owner") ?>","<?php eT("Access") ?>","<?php eT("Anonymized responses") ?>","<?php eT("Full") ?>","<?php eT("Partial") ?>","<?php eT("Total") ?>","<?php eT("Tokens available") ?>","<?php eT("Response rate") ?>"];
+    var colNames = ["<?php eT("Status") ?>","<?php eT("SID") ?>","<?php eT("ls\models\Survey") ?>","<?php eT("Date created") ?>","<?php eT("Owner") ?>","<?php eT("Access") ?>","<?php eT("Anonymized responses") ?>","<?php eT("Full") ?>","<?php eT("Partial") ?>","<?php eT("Total") ?>","<?php eT("Tokens available") ?>","<?php eT("ls\models\Response rate") ?>"];
     var colModels = [{ "name":"status", "index":"status", "width":25, "align":"center", "sorttype":"string", "sortable": true, "editable":false},
     { "name":"sid", "index":"sid", "sorttype":"int", "sortable": true, "width":15, "align":"center", "editable":false},
     { "name":"survey", "index":"survey", "sorttype":stripLinkSort, "sortable": true, "width":100, "align":"left", "editable":true},

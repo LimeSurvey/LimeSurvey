@@ -25,7 +25,7 @@ class FivePointChoiceQuestion extends FixedChoiceQuestion
     /**
      * This function return the class by question type
      * @param string question type
-     * @return string Question class to be added to the container
+     * @return string ls\models\Question class to be added to the container
      *
      */
     public function getClasses()
@@ -61,7 +61,7 @@ class FivePointChoiceQuestion extends FixedChoiceQuestion
             }
             $answer .= "/>\n<label for=\"answer$this->sgqa$fp\" class=\"answertext\">$fp</label>\n\t</li>\n";
         }
-        if (!$this->bool_mandatory  && $this->survey->bool_shownoanswer) // Add "No Answer" option if question is not mandatory
+        if (!$this->bool_mandatory  && $this->survey->bool_shownoanswer) // Add "No ls\models\Answer" option if question is not mandatory
         {
             $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$this->sgqa\" id=\"answer".$this->sgqa."NANS\" value=\"\"";
             if (!$response->{$this->sgqa})

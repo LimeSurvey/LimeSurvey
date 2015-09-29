@@ -2,6 +2,8 @@
 <?php
 /** @var CActiveDataProvider $attributes */
 
+use ls\models\Participant;
+
 echo TbHtml::openTag('div', ['class' => 'clearfix col-md-offset-2 col-md-8']);
     echo TbHtml::openTag('div', ['class' => 'col-md-4']);
         echo TbHtml::tag('h3', [], gT("Unmapped / ignored columns"));

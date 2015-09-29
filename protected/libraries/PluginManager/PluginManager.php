@@ -284,7 +284,7 @@ use Plugin;
             });
             if ($activeOnly) {
                 // If no active plugins are in the configuration we give enable AuthDb.
-                $authPlugins = \SettingGlobal::get('authenticationPlugins', ['ls_core_plugins_AuthDb']);
+                $authPlugins = \ls\models\SettingGlobal::get('authenticationPlugins', ['ls_core_plugins_AuthDb']);
                 $result = array_intersect_key($result, array_flip($authPlugins));
             }
             return $result;
@@ -296,7 +296,7 @@ use Plugin;
         public function getAuthorizer() {
             $authorizers = $this->getAuthorizers(true);
             // If not set use PermissionDb.
-            $authPlugin = \SettingGlobal::get('authorizationPlugin', 'ls_core_plugins_PermissionDb');
+            $authPlugin = \ls\models\SettingGlobal::get('authorizationPlugin', 'ls_core_plugins_PermissionDb');
             if (isset($authorizers[$authPlugin])) {
                 return $authorizers[$authPlugin];
             }

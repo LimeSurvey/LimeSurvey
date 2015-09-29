@@ -72,8 +72,8 @@ else
     var firstnameTxt="<?php eT("First name") ?>";
     var lastnameTxt="<?php eT("Last name") ?>";
     var blacklistedTxt="<?php eT("Blacklisted") ?>";
-    var surveysTxt="<?php eT("Survey links") ?>";
-    var surveyTxt="<?php eT("Survey name") ?>";
+    var surveysTxt="<?php eT("ls\models\Survey links") ?>";
+    var surveyTxt="<?php eT("ls\models\Survey name") ?>";
     var languageTxt="<?php eT("Language") ?>";
     var owneridTxt="<?php eT("Owner ID") ?>";
     var ownernameTxt="<?php eT("Owner name") ?>";
@@ -89,19 +89,19 @@ else
     /* End search form titles */
 
     /* Colnames and heading for survey links subgrid */
-    var linksHeadingTxt="<?php eT("Participant's survey information", 'js')?>";
-    var surveyNameColTxt="<?php eT("Survey name", 'js')?>";
-    var surveyIdColTxt="<?php eT("Survey ID", 'js') ?>";
-    var tokenIdColTxt="<?php eT("Token ID", 'js') ?>";
+    var linksHeadingTxt="<?php eT("ls\models\Participant's survey information", 'js')?>";
+    var surveyNameColTxt="<?php eT("ls\models\Survey name", 'js')?>";
+    var surveyIdColTxt="<?php eT("ls\models\Survey ID", 'js') ?>";
+    var tokenIdColTxt="<?php eT("ls\models\Token ID", 'js') ?>";
     var dateAddedColTxt="<?php eT("Date added", 'js') ?>";
     var dateInvitedColTxt="<?php eT("Last invited", 'js') ?>";
     var dateCompletedColTxt="<?php eT("Submitted", 'js') ?>";
     var surveylinkUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getSurveyInfo_json/pid/"); ?>";
 
     /* Colnames and heading for attributes subgrid */
-    var attributesHeadingTxt="<?php eT("Participant's attribute information", 'js') ?>";
+    var attributesHeadingTxt="<?php eT("ls\models\Participant's attribute information", 'js') ?>";
     var actionsColTxt="<?php eT("Actions", 'js') ?>";
-    var participantIdColTxt="<?php eT("Participant ID", 'js') ?>";
+    var participantIdColTxt="<?php eT("ls\models\Participant ID", 'js') ?>";
     var attributeTypeColTxt="<?php eT("Attribute type", 'js') ?>";
     var attributeIdColTxt="<?php eT("Attribute ID", 'js') ?>";
     var attributeNameColTxt="<?php eT("Attribute name", 'js') ?>";
@@ -196,8 +196,8 @@ echo $colModels;
         'lastname' => gT("Last name"),
         'email' => gT("Email"),
         'blacklisted' => gT("Blacklisted"),
-        'surveys' => gT("Survey links"),
-        'survey' => gT("Survey name"),
+        'surveys' => gT("ls\models\Survey links"),
+        'survey' => gT("ls\models\Survey name"),
         'language' => gT("Language"),
         'owner_uid' => gT("Owner ID"),
         'owner_name' => gT("Owner name"));
@@ -253,7 +253,7 @@ echo $colModels;
 <div id="shareform" title="<?php eT("Share") ?>" style="display:none">
   <div class='popupgroup'>
     <p>
-<?php eT("User with whom the participants are to be shared"); ?></p>
+<?php eT("ls\models\User with whom the participants are to be shared"); ?></p>
     <p>
         <?php
         $options[''] = gT("Select...");
@@ -298,7 +298,7 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
         </fieldset>
         <fieldset class='popupgroup'>
 		  <legend>
-            <?php eT("Survey"); ?>
+            <?php eT("ls\models\Survey"); ?>
           </legend>
           <p>
             <?php

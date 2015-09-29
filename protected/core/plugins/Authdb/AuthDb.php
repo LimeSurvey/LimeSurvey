@@ -20,7 +20,7 @@ class AuthDb extends PluginBase implements \ls\pluginmanager\iAuthenticationPlug
         if ($request->isPostRequest) {
             $username = $request->getParam('username');
             $password = $request->getParam('password');
-            $user = \User::model()->findByAttributes(['users_name' => $username]);
+            $user = \ls\models\User::model()->findByAttributes(['users_name' => $username]);
             if (isset($user) && $user->validatePassword($password)) {
                 return $user;
             }

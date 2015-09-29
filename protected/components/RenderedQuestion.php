@@ -8,7 +8,7 @@ use CHttpException;
 use Exception;
 use PluginEvent;
 use ReflectionClass;
-use SettingGlobal;
+use ls\models\SettingGlobal;
 use ls\components\SurveySession;
 use TbHtml;
 
@@ -44,7 +44,7 @@ class RenderedQuestion implements ArrayAccess
 
     protected $_text;
     /**
-     * @var \Question
+     * @var \ls\models\Question
      */
     private $_question;
 
@@ -54,7 +54,7 @@ class RenderedQuestion implements ArrayAccess
      */
     public $htmlOptions = [];
 
-    public function __construct(\Question $question)
+    public function __construct(\ls\models\Question $question)
     {
         $this->_question = $question;
     }
@@ -199,7 +199,7 @@ class RenderedQuestion implements ArrayAccess
         }
         // Core value : user text
         $replacements['QUESTION_TEXT'] = $this['text'];
-        $replacements['QUESTIONHELP'] = $this->_question->help;// User help
+        $replacements['QUESTIONHELP'] = $this->_question->help;// ls\models\User help
 
         $classes = $this->_question->classes;
         $replacements['QUESTION_CLASS'] = implode(' ', $classes);
@@ -228,7 +228,7 @@ class RenderedQuestion implements ArrayAccess
         $event = new PluginEvent('beforeQuestionRender');
         // Some helper
         $event->set('question', $this->_question);
-        // User text
+        // ls\models\User text
         $event->set('text', $replacements['QUESTION_TEXT']);
         $event->set('questionhelp', $replacements['QUESTIONHELP']);
         // The classes
@@ -241,7 +241,7 @@ class RenderedQuestion implements ArrayAccess
         $event->set('htmlOptions', $htmlOptions);
 
         $event->dispatch();
-        // User text
+        // ls\models\User text
         $replacements['QUESTION_TEXT'] = $event->get('text');
         $replacements['QUESTIONHELP'] = $event->get('questionhelp');
         $replacements['QUESTIONHELPPLAINTEXT'] = strip_tags(addslashes($replacements['QUESTIONHELP']));

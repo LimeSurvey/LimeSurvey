@@ -1,5 +1,5 @@
 /*
- * JavaScript functions for LimeSurvey Survey tool bar
+ * JavaScript functions for LimeSurvey ls\models\Survey tool bar
  *
  * This file is part of LimeSurvey
  * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz

@@ -2,7 +2,7 @@
 namespace ls\controllers;
 use ls\models\forms\ParticipantDatabaseSettings;
 use ls\models\forms\Settings;
-use Participant;
+use ls\models\Participant;
 
 class ParticipantsController extends Controller
 {
@@ -27,8 +27,8 @@ class ParticipantsController extends Controller
             'totalrecords' => false && App()->user->checkAccess('superadmin') ? Participant::model()->count() : Participant::model()->accessibleTo(App()->user->id)->count(),
             'owned' => Participant::model()->ownedBy(App()->user->id)->count(),
             'shared' => Participant::model()->ownedBy(App()->user->id)->count(),
-//            'attributes' => \ParticipantAttributeName::model()->findAll(),
-            'attributecount' => \ParticipantAttributeName::model()->count(),
+//            'attributes' => \ls\models\ParticipantAttributeName::model()->findAll(),
+            'attributecount' => \ls\models\ParticipantAttributeName::model()->count(),
             'blacklisted' => Participant::model()->ownedBy(App()->user->id)->blacklisted()->count()
         ];
         // loads the participant panel and summary view
@@ -40,7 +40,7 @@ class ParticipantsController extends Controller
      * @param $id
      */
     public function actionAttributes($id) {
-        $searchModel = \ParticipantAttribute::model();
+        $searchModel = \ls\models\ParticipantAttribute::model();
         $searchModel->dbCriteria->addColumnCondition(['participant_id' => $id]);
         $dataProvider = new \CActiveDataProvider($searchModel);
         if (App()->request->isAjaxRequest) {
@@ -52,7 +52,7 @@ class ParticipantsController extends Controller
     }
 
     public function actionManageAttributes() {
-        $dataProvider = new \CActiveDataProvider(\ParticipantAttributeName::class);
+        $dataProvider = new \CActiveDataProvider(\ls\models\ParticipantAttributeName::class);
         $this->render('manageAttributes', ['dataProvider' => $dataProvider]);
     }
 
@@ -94,7 +94,7 @@ class ParticipantsController extends Controller
 
         $participant = new Participant();
         $tableName = $participant->tableName();
-        $attributeTableName = \ParticipantAttribute::model()->tableName();
+        $attributeTableName = \ls\models\ParticipantAttribute::model()->tableName();
 
         $participant->getSafeAttributeNames();
         $fields = array_flip($participant->safeAttributeNames);
@@ -102,7 +102,7 @@ class ParticipantsController extends Controller
         foreach($map as $csvName => $targetName) {
             if (!isset($fields[$targetName])) {
                 // Create it.
-                $model = new \ParticipantAttributeName();
+                $model = new \ls\models\ParticipantAttributeName();
                 $model->name = $targetName;
                 if (!$model->save()) {
                     var_dump($model->errors);
@@ -187,10 +187,10 @@ class ParticipantsController extends Controller
     public function actionUpdate($id)
     {
         $participant = Participant::model()->with('customAttributes')->findByPk($id);
-        if (strcasecmp(App()->request->psr7->getMethod(), 'put') === 0 && isset(App()->request->psr7->getParsedBody()['Participant'])) {
-            $participant->setAttributes(App()->request->psr7->getParsedBody()['Participant']);
+        if (strcasecmp(App()->request->psr7->getMethod(), 'put') === 0 && isset(App()->request->psr7->getParsedBody()['ls\models\Participant'])) {
+            $participant->setAttributes(App()->request->psr7->getParsedBody()['ls\models\Participant']);
             if ($participant->save()) {
-                App()->user->setFlash('success', gT("Participant information updated."));
+                App()->user->setFlash('success', gT("ls\models\Participant information updated."));
                 $this->redirect(['participants/index']);
             }
         }

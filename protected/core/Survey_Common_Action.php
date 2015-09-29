@@ -12,9 +12,12 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+use ls\models\Question;
+use ls\models\QuestionGroup;
+use ls\models\Survey;
 
 /**
-* Survey Common Action
+* ls\models\Survey Common Action
 *
 * This controller contains common functions for survey related views.
 *

@@ -3,7 +3,7 @@ namespace ls\models\questions;
 
 use ls\interfaces\iSubQuestion;
 
-class SubQuestion extends \Question implements iSubQuestion {
+class SubQuestion extends \ls\models\Question implements iSubQuestion {
     /**
      * Returns this model's validation rules
      *

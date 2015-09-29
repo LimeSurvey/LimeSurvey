@@ -1,5 +1,5 @@
 <?php
-//vdd(Template::getTemplateList());
+//vdd(ls\models\Template::getTemplateList());
 /* @var Controller $this*/
 $menu = [[ // Left side
     [
@@ -19,7 +19,7 @@ $menu = [[ // Left side
     ],
 ], [ // Right side
     [
-        'label' => gT('Template') . ': ' . $template['name'],
+        'label' => gT('ls\models\Template') . ': ' . $template['name'],
 //        'url' => ['templates/index'],
         'items' => array_map(function($template) {
             return [
@@ -27,7 +27,7 @@ $menu = [[ // Left side
                 'label' => $template
             ];
 
-        }, \Template::getTemplateList()),
+        }, \ls\models\Template::getTemplateList()),
 
     ],
     [

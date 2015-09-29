@@ -13,7 +13,7 @@
 */
 
 /**
-* A Survey object may be loaded from the database via the SurveyDao
+* A ls\models\Survey object may be loaded from the database via the SurveyDao
 * (which follows the Data Access Object pattern).  Data access is broken
 * into two separate functions: the first loads the survey structure from
 * the database, and the second loads responses from the database.  The
@@ -22,12 +22,12 @@
 * The responses can be loaded a user-defined number at a time for output
 * without having to load the entire set of responses from the database.
 *
-* The Survey object contains methods to conveniently access data that it
+* The ls\models\Survey object contains methods to conveniently access data that it
 * contains in an attempt to encapsulate some of the complexity of its internal
 * format.
 *
 * Data formatting operations that may be specific to the data export routines
-* are relegated to the Writer class hierarcy and work with the Survey object
+* are relegated to the Writer class hierarcy and work with the ls\models\Survey object
 * and FormattingOptions objects to provide proper style/content when exporting
 * survey information.
 *
@@ -35,7 +35,7 @@
 * and what is not.  In general, anything that requires altering of data fields
 * (abbreviating, concatenating, etc...) has been moved into the writers and
 * anything that is a direct access call with no formatting logic is a part of
-* the Survey object.
+* the ls\models\Survey object.
 *
 * - elameno
 */

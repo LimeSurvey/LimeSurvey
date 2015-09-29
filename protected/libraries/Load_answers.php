@@ -30,7 +30,7 @@ class Load_answers {
 
         echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post')."\n";
 		echo \ls\helpers\Replacements::templatereplace(file_get_contents($sTemplatePath . "load.pstpl"), array(), $redata);
-		//PRESENT OPTIONS SCREEN (Replace with Template Later)
+		//PRESENT OPTIONS SCREEN (Replace with ls\models\Template Later)
 		//END
 		echo "<input type='hidden' name='loadall' value='reload' />\n";
 		if (isset($clienttoken) && $clienttoken != "")

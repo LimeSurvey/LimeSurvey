@@ -2,45 +2,46 @@
 namespace ls\expressionmanager;
 
 class Tokenizer {
-    public $tokens = [
-        'STRING' => [
+    
+    public static $tokens = [
+        Token::STRING => [
             '(?<!\\\\)".*?(?<!\\\\)"', // Single quoted string.
             '(?<!\\\\)\'.*?(?<!\\\\)\'' // Double quoted string.
         ],
-        'WS' => '\s+',
-        'LP' => '\(',
-        'RP' => '\)',
-        'LISTSEPARATOR' => ',',
-        'EQ_OP' => ['<=', '<', '>=', '>', '==', '!=', '\ble\b', '\blt\b', '\bge\b', '\bgt\b', '\beq\b', '\bne\b'],
-        'MULTI_OP' => ['\*', '/'],
-        'ADD_OP' => ['\+', '\b-\b'],
-        'SGQA' => '[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*',
-        'BOOL' => ['true', 'false'],
-        'UN_OP' => '!',
-        'LOGIC_OP' => ['\band\b', '\bor\b', '&&' , '\|\|'],
-        'NUMBER' => ['-?[0-9]+\.?[0-9]*', '-?[0-9]*\.?[0-9]+'],
-        'APPLY' => ['\.'],
-        'WORD' => '[A-Z][A-Z0-9_]*',
-
-
-
+        Token::WS => '\s+',
+        Token::LP => '\(',
+        Token::RP => '\)',
+        Token::SEPARATOR => ',',
+        Token::EQ_OP => ['<=', '<', '>=', '>', '==', '!=', '\ble\b', '\blt\b', '\bge\b', '\bgt\b', '\beq\b', '\bne\b'],
+        Token::MULTI_OP => ['\*', '/'],
+        Token::ADD_OP => ['\+', '\b-\b'],
+        Token::SGQA => '[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*',
+        Token::BOOL => ['true', 'false'],
+        Token::UN_OP => '!',
+        Token::LOGIC_OP => ['\band\b', '\bor\b', '&&' , '\|\|'],
+        Token::NUMBER => ['-?[0-9]+\.?[0-9]*', '-?[0-9]*\.?[0-9]+'],
+        Token::APPLY => '\.',
+        Token::WORD => '[A-Z][A-Z0-9_]*',
+        Token::ASSIGN => '=',
+        // We have this here so we cant unit test and check if all tokens have a rule in the tokenizer.
+        Token::UNKNOWN => []
     ];
 
 
-    private $_regex;
+    private static $_regex;
     public function __construct() {
 
     }
 
     protected function getRegex() {
-        if (!isset($this->_regex)) {
+        if (!isset(self::$_regex)) {
             $parts = [];
-            array_walk_recursive($this->tokens, function($value) use (&$parts) {
+            array_walk_recursive(self::$tokens, function ($value) use (&$parts) {
                 $parts[] = $value;
             });
-            $this->_regex =  '#(' . implode('|', $parts) . ')#i';
+            self::$_regex =  '#(' . implode('|', $parts) . ')#i';
         }
-        return $this->_regex;
+        return self::$_regex;
     }
     public function tokenize($string) {
         $regex = $this->getRegex();
@@ -52,15 +53,20 @@ class Tokenizer {
         return new TokenStream($tokens);
     }
 
-    public function classify($string) {
-        foreach($this->tokens as $name => $regexes) {
-            foreach(is_array($regexes) ? $regexes : [$regexes] as $regex) {
+    /**
+     * @param $string The content of the token.
+     * @return int The type of the token.
+     */
+    public function classify($string)
+    {
+        foreach(self::$tokens as $name => $expressions) {
+            foreach ((array) $expressions as $regex) {
                 $regex = strtr($regex, ['\\b' => '']);
                 if (preg_match("#^{$regex}$#i", $string) == 1) {
                     return $name;
                 }
             }
         }
-        return "UNKNOWN";
+        return Token::UNKNOWN;
     }
 }

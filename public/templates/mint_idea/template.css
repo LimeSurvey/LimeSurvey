@@ -756,7 +756,7 @@ select {
 	margin-right: 5px;margin-left:5px;
 }
 /* -------------------------------------------------
-   START: Question styles  ------------------------- */
+   START: ls\models\Question styles  ------------------------- */
   /* =====================================
 == Full list of question classes =======
 
@@ -1398,7 +1398,7 @@ td.statsImageholder {
   
 }
 
-/* Question Index */
+/* ls\models\Question Index */
 .withindex.outerframe{
   margin-left: 1em;
   margin-right: 26em;

@@ -1,7 +1,7 @@
 <?php
 namespace ls\helpers;
 use \Yii;
-use \Survey;
+use ls\models\Survey;
 use \CHtml;
 class FrontEnd
 {
@@ -81,7 +81,7 @@ class FrontEnd
 
                 foreach ($fields as $field) {
                     if ($fieldmap[$field]['type'] == "|" && !strrpos($fieldmap[$field]['fieldname'], "_filecount")) {
-                        $validation = \QuestionAttribute::model()->getQuestionAttributes($fieldmap[$field]['qid']);
+                        $validation = \ls\models\QuestionAttribute::model()->getQuestionAttributes($fieldmap[$field]['qid']);
 
                         $filecount = 0;
 
@@ -568,7 +568,7 @@ class FrontEnd
                             if (($field['type'] == "M") || ($field['type'] == "P")) //Multiflexi choice  - result is the assessment attribute value
                             {
                                 if ($_SESSION['survey_' . $surveyid][$field['fieldname']] == "Y") {
-                                    $aAttributes = \QuestionAttribute::model()->getQuestionAttributes($field['qid'],
+                                    $aAttributes = \ls\models\QuestionAttribute::model()->getQuestionAttributes($field['qid'],
                                         $field['type']);
                                     $fieldmap[$field['fieldname']]['assessment_value'] = (int)$aAttributes['assessment_value'];
                                     $total = $total + (int)$aAttributes['assessment_value'];
@@ -657,7 +657,7 @@ class FrontEnd
 
     /**
      * checkCompletedQuota() returns matched quotas information for the current response
-     * @param integer $surveyid - Survey identification number
+     * @param integer $surveyid - ls\models\Survey identification number
      * @param bool $return - set to true to return information, false do the quota
      * @return array - nested array, Quotas->Members->Fields, includes quota information matched in session.
      */

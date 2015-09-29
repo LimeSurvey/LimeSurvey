@@ -1,5 +1,7 @@
 <?php
 use ls\models\forms\FormattingOptions;
+use ls\models\Survey;
+
 class CsvWriter extends Writer
 {
     private $separator = ',';

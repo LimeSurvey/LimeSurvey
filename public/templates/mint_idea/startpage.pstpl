@@ -33,7 +33,7 @@
             
             <div id="header">
               
-              <h1 id="logo"><a href="./" title="Company">Lime<span class="light">Survey</span><span class="leaf"> </span></a></h1>
+              <h1 id="logo"><a href="./" title="Company">Lime<span class="light">ls\models\Survey</span><span class="leaf"> </span></a></h1>
               <hr class="noscreen" />   
            
               <p class="noscreen noprint">

@@ -745,7 +745,7 @@ table.clearall-result td {
 
 
 /* -------------------------------------------------
-   START: Question styles  ------------------------- */
+   START: ls\models\Question styles  ------------------------- */
   /* =====================================
 == Full list of question classes =======
 
@@ -1435,7 +1435,7 @@ div.questionTitle {
   background-color: #D2E0F2;
 }
 
-/* Question Index */
+/* ls\models\Question Index */
 .withindex.outerframe {
   margin-left: 1em;
   margin-right: 26em;

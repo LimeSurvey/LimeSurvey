@@ -2,7 +2,7 @@
 
 namespace ls\components;
 
-use Question;
+use ls\models\Question;
 
 class QuestionValidationResult
 {

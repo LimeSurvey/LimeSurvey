@@ -1,4 +1,6 @@
-<?php echo PrepareEditorScript(true, $this); ?>
+<?php use ls\models\Survey;
+
+echo PrepareEditorScript(true, $this); ?>
 <div class='header ui-widget-header'>
     <?php eT("Edit answer options"); ?>
 </div>
@@ -20,7 +22,7 @@
         var strCantDeleteLastAnswer='<?php eT('You cannot delete the last answer option.','js'); ?>';
         var lsbrowsertitle='<?php eT('Label set browser','js'); ?>';
         var quickaddtitle='<?php eT('Quick-add answers','js'); ?>';
-        var sAssessmentValue='<?php eT('Assessment value','js'); ?>';
+        var sAssessmentValue='<?php eT('ls\models\Assessment value','js'); ?>';
         var duplicateanswercode='<?php eT('Error: You are trying to use duplicate answer codes.','js'); ?>';
         var strNoLabelSet='<?php eT('There are no label sets which match the survey default language','js'); ?>';
         var langs='<?php echo implode(';',$anslangs); ?>';
@@ -56,7 +58,7 @@
                     $position=1;
                     if ($scalecount>1)
                     { ?>
-                    <div class='header ui-widget-header' style='margin-top:5px;'><?php echo sprintf(gT("Answer scale %s"),$scale_id+1); ?></div>
+                    <div class='header ui-widget-header' style='margin-top:5px;'><?php echo sprintf(gT("ls\models\Answer scale %s"),$scale_id+1); ?></div>
                     <?php } ?>
 
 
@@ -67,7 +69,7 @@
                             <th><?php eT("Code"); ?></th>
                             <?php if ($assessmentvisible)
                                 { ?>
-                                <th><?php eT("Assessment value"); ?>
+                                <th><?php eT("ls\models\Assessment value"); ?>
                                 <?php }
                                 else
                                 { ?>
@@ -75,7 +77,7 @@
                                     <?php } ?>
 
                             </th>
-                            <th><?php eT("Answer option"); ?></th>
+                            <th><?php eT("ls\models\Answer option"); ?></th>
                             <th><?php eT("Actions"); ?></th>
                         </tr></thead>
                     <tbody>
@@ -131,7 +133,7 @@
 
                             </td><td>
                                 <input type='text' class='answer' id='answer_<?php echo $row['language']; ?>_<?php echo $row['sortorder']; ?>_<?php echo $scale_id; ?>' name='answer_<?php echo $row['language']; ?>_<?php echo $row['sortorder']; ?>_<?php echo $scale_id; ?>' size='100' placeholder='<?php eT("Some example answer option","js") ?>' value="<?php echo $row['answer']; ?>" />
-                                <?php echo  getEditor("editanswer","answer_".$row['language']."_{$row['sortorder']}_{$scale_id}", "[".gT("Answer:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer'); ?>
+                                <?php echo  getEditor("editanswer","answer_".$row['language']."_{$row['sortorder']}_{$scale_id}", "[".gT("ls\models\Answer:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer'); ?>
 
 
                             </td><td><?php if ($first) { ?>

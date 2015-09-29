@@ -1,9 +1,9 @@
 <?php 
 namespace ls\pluginmanager;
 use Yii;
-use User;
-use PluginDynamic;
-use SurveyDynamic;
+use ls\models\User;
+use ls\models\PluginDynamic;
+use ls\models\SurveyDynamic;
     /**
     * Class exposing a Limesurvey API to plugins.
     * This class is instantiated by the plugin manager,
@@ -84,7 +84,7 @@ use SurveyDynamic;
          * @param iPlugin $plugin
          * @param string $sTableName Name of the table.
          * @param string $bPluginTable True if the table is plugin specific.
-         * @return PluginDynamic
+         * @return \ls\models\PluginDynamic
          */
         public function getTable(iPlugin $plugin, $sTableName, $bPluginTable = true)
         {
@@ -119,7 +119,7 @@ use SurveyDynamic;
          * @param string $sTableNamem
          * @param string $scenario
          * @param string $bPluginTable True if the table is plugin specific.
-         * @return PluginDynamic
+         * @return \ls\models\PluginDynamic
          */
         public function newModel(iPlugin $plugin, $sTableName, $scenario = 'insert', $bPluginTable = true)
         {
@@ -219,13 +219,13 @@ use SurveyDynamic;
 
         public function getResponses($surveyId, $attributes = array(), $condition = '', $params = array())
         {
-            return \Response::model($surveyId)->findAllByAttributes($attributes, $condition, $params);
+            return \ls\models\Response::model($surveyId)->findAllByAttributes($attributes, $condition, $params);
         }
 
 
         public function getToken($surveyId, $token)
         {
-            return \Token::model($surveyId)->findByAttributes(array('token' => $token));
+            return \ls\models\Token::model($surveyId)->findByAttributes(array('token' => $token));
         }
         /**
         * Gets a key value list using the group name as value and the group id
@@ -235,14 +235,14 @@ use SurveyDynamic;
         */
         public function getGroupList($surveyId)
         {
-            $result = \QuestionGroup::model()->findListByAttributes(array('sid' => $surveyId), 'group_name');
+            $result = \ls\models\QuestionGroup::model()->findListByAttributes(array('sid' => $surveyId), 'group_name');
             return $result;
         }
         
         /**
         * Retrieves user details for the currently logged in user
         * Returns false if the user is not logged and returns null if the user does not exist anymore for some reason (should not really happen)
-        * @return User
+        * @return \ls\models\User
         */
         public function getCurrentUser(){
             if (Yii::app()->user->id)
@@ -284,7 +284,7 @@ use SurveyDynamic;
          * Returns null if the user does not exist anymore for some reason (should not really happen)
          * 
          * @param int $iUserID The userid
-         * @return User
+         * @return \ls\models\User
          */
         public function getUser($iUserID){
             return User::model()->findByPk($iUserID);
@@ -306,7 +306,7 @@ use SurveyDynamic;
         
         /**
         * Retrieves user permission details for a user
-        * @param $iUserID int The User ID
+        * @param $iUserID int The ls\models\User ID
         * @param  $iSurveyID int The related survey IF for survey permissions - if 0 then global permissions will be retrieved
         * Returns null if the user does not exist anymore for some reason (should not really happen)
         * @return User
@@ -316,10 +316,10 @@ use SurveyDynamic;
         }        
         
         /**
-        * Retrieves Participant data
-        * @param $iParticipantID int The Participant ID
+        * Retrieves ls\models\Participant data
+        * @param $iParticipantID int The ls\models\Participant ID
         * Returns null if the user does not exist anymore for some reason (should not really happen)
-        * @return User
+        * @return \ls\models\User
         */
         public function getParticipant($iParticipantID){
             return Participant::model()->findByPk($iParticipantID);
@@ -329,7 +329,7 @@ use SurveyDynamic;
         {
             $conditions['sid'] = $surveyId;
             $conditions['language'] = $language;
-            return \Question::model()->with('subquestions')->findAllByAttributes($conditions);
+            return \ls\models\Question::model()->with('subquestions')->findAllByAttributes($conditions);
         }
         /**
          * Gets the metadata for a table.

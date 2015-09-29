@@ -2,9 +2,9 @@
 namespace ls\models\import;
 
 /**
- * Import class for QuestionGroup model
+ * Import class for ls\models\QuestionGroup model
  */
-class Group extends \QuestionGroup
+class Group extends \ls\models\QuestionGroup
 {
     public function rules() {
 

@@ -6,7 +6,7 @@ namespace ls\models\questions;
  * "Long free text"
  * @package ls\models\questions
  */
-abstract class TextQuestion extends \Question{
+abstract class TextQuestion extends \ls\models\Question{
 
 
 

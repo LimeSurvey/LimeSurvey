@@ -31,16 +31,16 @@ class QuestionsController extends Controller
             $transaction = App()->db->beginTransaction();
             $error = false;
             $answers = [];
-            if ($question->hasAnswers && App()->request->getParam('Answer', false) !== false) {
+            if ($question->hasAnswers && App()->request->getParam('ls\models\Answer', false) !== false) {
 
                 // Remove all answers.
-                array_map(function (\Answer $answer) {
+                array_map(function (\ls\models\Answer $answer) {
                     return $answer->delete();
-                }, \Answer::model()->findAllByAttributes(['question_id' => $question->qid]));
+                }, \ls\models\Answer::model()->findAllByAttributes(['question_id' => $question->qid]));
                 // Create new ones.
                 $codes = [];
-                foreach(App()->request->getParam('Answer') as $i => $data) {
-                    $answer = new \Answer();
+                foreach(App()->request->getParam('ls\models\Answer') as $i => $data) {
+                    $answer = new \ls\models\Answer();
                     $answer->question_id = $question->qid;
                     $answer->setAttributes($data);
                     $answer->sortorder = $i;
@@ -62,9 +62,9 @@ class QuestionsController extends Controller
             if ($question->hasSubQuestions && App()->request->getParam(\CHtml::modelName(SubQuestion::class), false) !== false) {
 
                 // Remove all subquestions.
-                array_map(function (\Question $question) {
+                array_map(function (\ls\models\Question $question) {
                     return $question->delete();
-                }, \Question::model()->findAllByAttributes(['parent_qid' => $question->qid]));
+                }, \ls\models\Question::model()->findAllByAttributes(['parent_qid' => $question->qid]));
 
                 // Create new ones.
                 $codes = [];
@@ -97,19 +97,19 @@ class QuestionsController extends Controller
                 if (// Validate and save question.
                     $question->save()
                     // Save new answers.
-                    && array_reduce($answers, function ($carry, \Answer $answer) {
+                    && array_reduce($answers, function ($carry, \ls\models\Answer $answer) {
                         return $carry && $answer->save();
                     }, true)
                     // Save new subquestions.
-                    && array_reduce($subQuestions, function ($carry, \Question $subQuestion) {
+                    && array_reduce($subQuestions, function ($carry, \ls\models\Question $subQuestion) {
                         return $carry && $subQuestion->save();
                     }, true)
                 ) {
                     $transaction->commit();
-                    App()->user->setFlash('success', "Question updated.");
+                    App()->user->setFlash('success', "ls\models\Question updated.");
                 } else {
                     $transaction->rollback();
-                    App()->user->setFlash('danger', "Question could not be updated.");
+                    App()->user->setFlash('danger', "ls\models\Question could not be updated.");
 
                 }
             } elseif (count(App()->user->getFlashes(false)) == 0) {
@@ -124,18 +124,18 @@ class QuestionsController extends Controller
         /**
          * @todo Switch to findByPk after language has been removed from group table.
          */
-        $group = \QuestionGroup::model()->findByPk($groupId);
+        $group = \ls\models\QuestionGroup::model()->findByPk($groupId);
         $this->menus['survey'] = $group->survey;
         if (!isset($group->survey)) {
-            throw new \CHttpException(404, "Survey not found.");
+            throw new \CHttpException(404, "ls\models\Survey not found.");
         } elseif ($group->survey->isActive) {
             throw new \CHttpException(421, "Cannot add questions to active survey.");
         }
-        $question = new \Question();
+        $question = new \ls\models\Question();
         $question->sid = $group->sid;
         $question->gid = $group->primaryKey;
         if (App()->request->isPostRequest) {
-            $question->setAttributes(App()->request->getPost('Question'));
+            $question->setAttributes(App()->request->getPost('ls\models\Question'));
             if ($question->save()) {
                 $this->redirect(['questions/update', 'id' => $question->primaryKey]);
             }
@@ -161,7 +161,7 @@ class QuestionsController extends Controller
     {
         $model = $this->loadModel($id);
         if (isset($model) && $model->delete()) {
-            App()->user->setFlash('success', "Question deleted.");
+            App()->user->setFlash('success', "ls\models\Question deleted.");
         }
         if (isset($model)) {
             $this->redirect(["surveys/update", "id" => $model->sid]);
@@ -171,12 +171,12 @@ class QuestionsController extends Controller
     }
     /**
      * @param int $id
-     * @return \Question
+     * @return \ls\models\Question
      */
     public function loadModel($id) {
-        $result = \Question::model()->findByPk($id);
+        $result = \ls\models\Question::model()->findByPk($id);
         if (!isset($result)) {
-            throw new \CHttpException(404, gT("Question not found."));
+            throw new \CHttpException(404, gT("ls\models\Question not found."));
         }
         return $result;
     }
@@ -184,11 +184,11 @@ class QuestionsController extends Controller
     public function actionPreview($id) {
         $question = $this->loadModel($id);
         $this->layout = 'showsurvey';
-        $dummy = new \DummyResponse($question->survey);
+        $dummy = new \ls\models\DummyResponse($question->survey);
         $session = new \ls\components\SurveySession($question->sid, $dummy, null);
         App()->surveySessionManager->setCurrent($session);
         $renderedQuestion = $question->render($dummy, $session);
-        $path = \Template::getTemplatePath($question->survey->template);
+        $path = \ls\models\Template::getTemplatePath($question->survey->template);
         ob_start();
         renderOldTemplate("$path/startpage.pstpl");
         renderOldTemplate("$path/startgroup.pstpl");

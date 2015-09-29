@@ -40,7 +40,7 @@ class DateTimeQuestion extends TextQuestion
     /**
      * This function return the class by question type
      * @param string question type
-     * @return string Question class to be added to the container
+     * @return string ls\models\Question class to be added to the container
      */
     public function getClasses()
     {

@@ -2379,7 +2379,7 @@ class quexmlpdf extends pdf {
         $this->SetY($this->GetY() + $this->helpBeforeBorderBottom,false); //new line
     }
 
-    //Question header
+    //ls\models\Question header
     $helph = $help;
     //don't display help if separate questions are involved
     if (isset($question['responses'][0]['response']['separate'])) $helph = false;

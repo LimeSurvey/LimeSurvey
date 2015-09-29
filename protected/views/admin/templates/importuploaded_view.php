@@ -75,7 +75,7 @@
         {
         ?>
         <br />
-        <div class="header"><?php eT("Template upgrade summary") ?></div>
+        <div class="header"><?php eT("ls\models\Template upgrade summary") ?></div>
         <?php
             if(!$templateFixes['success'])
             {

@@ -1,4 +1,7 @@
 <?php
+use ls\models\Survey;
+use ls\models\Template;
+
 class index extends CAction {
 
     public function run()
@@ -50,7 +53,7 @@ class index extends CAction {
         $param = $this->_getParameters(func_get_args(), $_POST);
 
         if (null === $session = App()->surveySessionManager->current) {
-            throw new \CHttpException(404, "Session not found");
+            throw new \CHttpException(404, "ls\models\Session not found");
         }
 
         header('X-ResponseId: ' . $session->responseId);
@@ -146,7 +149,7 @@ class index extends CAction {
 
     function _surveyCantBeViewedWithCurrentPreviewAccess($id, $bIsSurveyActive)
     {
-        $bSurveyPreviewRequireAuth = \SettingGlobal::get('surveyPreview_require_Auth');
+        $bSurveyPreviewRequireAuth = \ls\models\SettingGlobal::get('surveyPreview_require_Auth');
         return $id && $bIsSurveyActive === false && isset($bSurveyPreviewRequireAuth) && $bSurveyPreviewRequireAuth == true &&  !$this->_canUserPreviewSurvey($id);
     }
 
