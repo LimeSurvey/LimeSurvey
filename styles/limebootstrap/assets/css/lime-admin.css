@@ -409,6 +409,11 @@ table.cke_editor
 	border : 1px solid #A0352F;
 }
 
+.message-box-warning
+{
+	border : 1px solid #A15426;
+}
+
 /**
  * 	Welcome page
  */

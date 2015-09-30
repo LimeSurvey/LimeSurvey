@@ -16,6 +16,9 @@
 // where based on the current database version the database is upgraded
 // For this there will be a settings table which holds the last time the database was upgraded
 
+/**
+ * @param integer $iOldDBVersion
+ */
 function db_upgrade_all($iOldDBVersion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
@@ -24,7 +27,6 @@ function db_upgrade_all($iOldDBVersion) {
 
     $sUserTemplateRootDir = Yii::app()->getConfig('usertemplaterootdir');
     $sStandardTemplateRootDir = Yii::app()->getConfig('standardtemplaterootdir');
-    echo str_pad(gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". gT('Please be patient...')."<br /><br />\n";
 
     $oDB = Yii::app()->getDb();
     $oDB->schemaCachingDuration=0; // Deactivate schema caching
@@ -368,7 +370,7 @@ function db_upgrade_all($iOldDBVersion) {
             $oDB->createCommand()->createIndex('sess2_expiry','{{sessions}}','expiry');
             $oDB->createCommand()->createIndex('sess2_expireref','{{sessions}}','expireref');
             // Move all user templates to the new user template directory
-            echo sprintf(gT("Moving user templates to new location at %s..."),$sUserTemplateRootDir)."<br />";
+            echo "<br>".sprintf(gT("Moving user templates to new location at %s..."),$sUserTemplateRootDir)."<br />";
             $hTemplateDirectory = opendir($sStandardTemplateRootDir);
             $aFailedTemplates=array();
             // get each entry
@@ -480,7 +482,7 @@ function db_upgrade_all($iOldDBVersion) {
             // change the primary index to include language
             if (Yii::app()->db->driverName=='mysql') // special treatment for mysql because this needs to be in one step since an AUTOINC field is involved
             {
-                modifyPrimaryKey('{{assessments}}', array('id', 'language'));
+                modifyPrimaryKey('assessments', array('id', 'language'));
             }
             else
             {
@@ -1304,6 +1306,23 @@ function db_upgrade_all($iOldDBVersion) {
             upgradeSurveyTables181();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>181),"stg_name='DBVersion'");
         }        
+        if ($iOldDBVersion < 183)
+        {
+            upgradeSurveyTables183();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>183),"stg_name='DBVersion'");
+        }        
+        if ($iOldDBVersion < 184)
+        {
+            fixKCFinder184();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>184),"stg_name='DBVersion'");
+        }
+        
+        // LS 2.5 table start at 250
+        if ($iOldDBVersion < 250)
+        {
+            createBoxes250();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>250),"stg_name='DBVersion'");
+        }               
         $oTransaction->commit();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
@@ -1321,14 +1340,113 @@ function db_upgrade_all($iOldDBVersion) {
         $oDB->schema->getTables();
         // clear the cache of all loaded tables
         $oDB->schema->refresh();
-        echo '<br /><br />'.gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
+        Yii::app()->session['dbError']=htmlspecialchars($e->getMessage());
         return false;
     }
     fixLanguageConsistencyAllSurveys();
-    echo '<br /><br />'.sprintf(gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
 }
 
+
+function upgradeSurveyTables183()
+{
+    $oSchema = Yii::app()->db->schema;
+    $aTables = dbGetTablesLike("survey\_%");        
+    if (!empty($aTables))
+    {
+        foreach ( $aTables as $sTableName )
+        {
+            $oTableSchema=$oSchema->getTable($sTableName);
+            if (empty($oTableSchema->primaryKey))
+            {
+                addPrimaryKey(substr($sTableName,strlen(Yii::app()->getDb()->tablePrefix)), 'id');            
+            }   
+        }
+    }
+}
+
+
+function fixKCFinder184()
+{
+    $sThirdPartyDir=Yii::app()->getConfig('homedir').DIRECTORY_SEPARATOR.'third_party'.DIRECTORY_SEPARATOR;
+    rmdirr($sThirdPartyDir.'ckeditor/plugins/toolbar');
+    rmdirr($sThirdPartyDir.'ckeditor/plugins/toolbar/ls-office2003');
+    array_map('unlink', glob($sThirdPartyDir.'kcfinder/cache/*.js')); 
+    array_map('unlink', glob($sThirdPartyDir.'kcfinder/cache/*.css')); 
+    rmdirr($sThirdPartyDir.'kcfinder/upload/files'); 
+    rmdirr($sThirdPartyDir.'kcfinder/upload/.thumbs'); 
+}
+
+/**
+ * Create boxes table
+ */
+function createBoxes250()
+{
+    $oDB = Yii::app()->db;
+    $oDB->createCommand()->createTable('{{boxes}}',array(
+        'id' => 'pk',
+        'position' => 'integer',
+        'url' => 'text',
+        'title' => 'text',
+        'img' => 'text',
+        'desc' => 'text',
+        'page'=>'text',
+    ));
+                
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '1',
+        'url'      => 'admin/survey/sa/newsurvey' ,
+        'title'    => 'Creates survey' ,
+        'img'      => 'add.png' ,
+        'desc'     => 'Create a new survey' ,
+        'page'     => 'welcome',
+    )); 
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '2',
+        'url'      =>  'admin/survey/sa/listsurveys',
+        'title'    =>  'List surveys',
+        'img'      =>  'surveylist.png',
+        'desc'     =>  'List available surveys',
+        'page'     =>  'welcome',
+    )); 
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '3',
+        'url'      =>  'admin/globalsettings',
+        'title'    =>  'Global settings',
+        'img'      =>  'global.png',
+        'desc'     =>  'Edit global settings',
+        'page'     =>  'welcome',
+    )); 
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '4',
+        'url'      =>  'admin/update',
+        'title'    =>  'ComfortUpdate',
+        'img'      =>  'shield&#45;update.png',
+        'desc'     =>  'Stay safe and up to date',
+        'page'     =>  'welcome',
+    )); 
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '5',
+        'url'      =>  'admin/labels/sa/view',
+        'title'    =>  'Label sets',
+        'img'      =>  'labels.png',
+        'desc'     =>  'Edit label sets',
+        'page'     =>  'welcome',
+    )); 
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '6',
+        'url'      =>  'admin/templates/sa/view',
+        'title'    =>  'Template editor',
+        'img'      =>  'templates.png',
+        'desc'     =>  'Edit LimeSurvey templates',
+        'page'     =>  'welcome',
+    )); 
+}
 
 function upgradeSurveyTables181()
 {
@@ -1395,8 +1513,15 @@ function upgradeTokenTables179()
 {
     $oDB = Yii::app()->db;
     $oSchema = Yii::app()->db->schema;
-    if(Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='mysql') $sSubstringCommand='substring'; else $sSubstringCommand='substr';
-
+    switch (Yii::app()->db->driverName){
+        case 'sqlsrv':
+        case 'dblib':
+        case 'mssql':
+            $sSubstringCommand='substring';
+            break;
+        default:
+            $sSubstringCommand='substr';
+    }    
     $surveyidresult = dbGetTablesLike("tokens%");
     if ($surveyidresult)
     {
@@ -1634,17 +1759,11 @@ function upgradePermissions166()
 
 function upgradeSurveys156()
 {
-    global $modifyoutput;
     $sSurveyQuery = "SELECT * FROM {{surveys_languagesettings}}";
-    $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
+    $oSurveyResult = Yii::app()->getDb()->createCommand($sSurveyQuery)->queryAll();
     foreach ( $oSurveyResult as $aSurveyRow )
     {
-
-        Yii::app()->loadLibrary('Limesurvey_lang',array("langcode"=>$aSurveyRow['surveyls_language']));
-        $sLanguage = App()->language;
-        $aDefaultTexts=templateDefaultTexts($sLanguage,'unescaped');
-        unset($sLanguage);
-
+        $aDefaultTexts=templateDefaultTexts($aSurveyRow['surveyls_language'],'unescaped');
         if (trim(strip_tags($aSurveyRow['surveyls_email_confirm'])) == '')
         {
             $sSurveyUpdateQuery= "update {{surveys}} set sendconfirmation='N' where sid=".$aSurveyRow['surveyls_survey_id'];
@@ -1748,7 +1867,7 @@ function upgradeSurveys145()
         }
     }
     $sSurveyQuery = "SELECT * FROM {{surveys_languagesettings}}";
-    $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
+    $oSurveyResult = Yii::app()->getDb()->createCommand($sSurveyQuery)->queryAll();
     foreach ( $oSurveyResult as $aSurveyRow )
     {
         $sLanguage = App()->language;
@@ -2131,6 +2250,10 @@ function upgradeTokenTables126()
     }
 }
 
+/**
+ * @param string $sOldLanguageCode
+ * @param string $sNewLanguageCode
+ */
 function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
 {
     $oDB = Yii::app()->db;
@@ -2165,9 +2288,12 @@ function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
     }
 }
 
+/**
+ * @param string $sTablename
+ */
 function addPrimaryKey($sTablename, $aColumns)
 {
-    return Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY', $sTablename, $aColumns);
+    return Yii::app()->db->createCommand()->addPrimaryKey('PK_'.$sTablename.'_'.randomChars(12,'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'), '{{'.$sTablename.'}}', $aColumns);
 }
 
 /**
@@ -2189,6 +2315,7 @@ function dropPrimaryKey($sTablename)
             Yii::app()->db->createCommand($sQuery)->execute();
             break;
         case 'pgsql':
+        case 'sqlsrv':
         case 'mssql':
             $pkquery = "SELECT CONSTRAINT_NAME "
             ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
@@ -2217,6 +2344,9 @@ function fixLanguageConsistencyAllSurveys()
     }
 }
 
+/**
+ * @param string $sFieldType
+ */
 function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault='NULL')
 {
     $oDB = Yii::app()->db;
@@ -2270,6 +2400,10 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
 }
 
 
+/**
+ * @param string $sTableName
+ * @param string $sColumnName
+ */
 function dropColumn($sTableName, $sColumnName)
 {
     if (Yii::app()->db->getDriverName()=='mssql' || Yii::app()->db->getDriverName()=='sqlsrv' || Yii::app()->db->getDriverName()=='dblib')
@@ -2283,6 +2417,9 @@ function dropColumn($sTableName, $sColumnName)
 
 
 
+/**
+ * @param string $sType
+ */
 function addColumn($sTableName, $sColumn, $sType)
 {
     Yii::app()->db->createCommand()->addColumn($sTableName,$sColumn,$sType);
@@ -2326,8 +2463,8 @@ function dropDefaultValueMSSQL($fieldname, $tablename)
 /**
 * This function drops a unique Key of an MSSQL database field by using the name of the field it lies upon and the table name
 *
-* @param mixed $sFieldName
-* @param mixed $sTableName
+* @param string $sFieldName
+* @param string $sTableName
 */
 function dropUniqueKeyMSSQL($sFieldName, $sTableName)
 {
@@ -2341,6 +2478,9 @@ function dropUniqueKeyMSSQL($sFieldName, $sTableName)
     }
 }
 
+/**
+ * @param string $sFieldName
+ */
 function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
 {
     $oDB = Yii::app()->getDb();
