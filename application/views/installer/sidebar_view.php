@@ -6,14 +6,8 @@
 <h2 class="maintitle"><?php eT("Progress"); ?></h2>
 <p><?php printf(gT("%s%% completed"),$progressValue); ?></p>
 <?php
-    Yii::app()->bootstrap->init();
-    $this->widget('ext.bootstrap.widgets.TbProgress', array(
-            'type' => 'success',
-            'striped' => true,
-            'animated' => true,
-            'percent' => $progressValue,
-        ));
-    ?>
+    echo TbHtml::animatedProgressBar($progressValue);
+?>
 <ol>
     <li class="<?php echo $classesForStep[0]; ?>">
         <?php eT("Welcome"); ?>

@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="span3">
+    <div class="col-md-3">
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
-    <div class="span9">
+    <div class="col-md-9">
         <h2><?php echo $title; ?></h2>
 
         <?php echo CHtml::form(array("installer/welcome"), 'post'); ?>
@@ -14,7 +14,7 @@
                         echo CHtml::label(gT('Please select your preferred language:'), 'installerLang');
                     ?>
                 </div>
-                <div class="span3">
+                <div class="col-md-3">
                     <?php
                         echo CHtml::dropDownList('installerLang', 'en', $languages, array('id' => 'installerLang', 'encode' => false));
                     ?>
@@ -25,9 +25,9 @@
             ?>
             </fieldset>
             <div class="row navigator">
-                <div class="span3"></div>
-                <div class="span3"></div>
-                <div class="span3">
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3">
                     <input class='btn' type="submit" value="<?php eT('Start installation'); ?>" />
                 </div>
             </div>
