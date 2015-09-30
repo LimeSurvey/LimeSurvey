@@ -540,13 +540,14 @@ class Survey_Common_Action extends CAction
      * @author Olle Haerstedt <olle.haerstedt@limesurvey.org>
      */
     function _organizequestionbar($aData) {
-        if (isset($aData['aGroupsAndQuestions'])) {
+        if (isset($aData['organizebar'])) {
             $this->getController()->renderPartial("/admin/survey/Question/organizequestionbar_view", $aData);
         }
     }
 
     /**
     * Shows admin menu for question
+    *
     * @param int Survey id
     * @param int Group id
     * @param int Question id
@@ -556,7 +557,7 @@ class Survey_Common_Action extends CAction
     {
         if(isset($aData['questionbar']))
         {
-            if (!is_object($aData['$oSurvey']))
+            if (!is_object($aData['oSurvey']))
             {
     
                 $iSurveyID = $aData['surveyid'];

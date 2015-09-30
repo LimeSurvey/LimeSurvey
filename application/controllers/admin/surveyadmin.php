@@ -379,6 +379,9 @@ class SurveyAdmin extends Survey_Common_Action
         
         $iSurveyID = sanitize_int($iSurveyID);
 
+        $survey = Survey::model()->findByPk($iSurveyID);
+        $baselang = $survey->language;
+        $aData['aAdditionalLanguages'] = $survey->additionalLanguages;
         
         // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
@@ -386,10 +389,6 @@ class SurveyAdmin extends Survey_Common_Action
         LimeExpressionManager::SetSurveyId($iSurveyID);
         LimeExpressionManager::StartProcessingPage(false,true);
 
-        $survey = Survey::model()->findByPk($iSurveyID);
-        $baselang = $survey->language;
-        $aData['aAdditionalLanguages'] = $survey->additionalLanguages;
-        
         $surveyinfo = $survey->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData["surveyinfo"] = $surveyinfo;
@@ -1273,6 +1272,13 @@ class SurveyAdmin extends Survey_Common_Action
         }
     }
 
+    /**
+     * Show the form for Organize question groups/questions
+     *
+     * @todo Change function name to _showOrganizeGroupsAndQuestions?
+     * @param int $iSurveyID
+     * @return void
+     */
     private function _showReorderForm($iSurveyID)
     {
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
@@ -1285,6 +1291,9 @@ class SurveyAdmin extends Survey_Common_Action
 
         $aGrouplist = QuestionGroup::model()->getGroups($iSurveyID);
         $initializedReplacementFields = false;
+
+		$aData['organizebar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/view/", array('surveyid' => $iSurveyID));
+		$aData['organizebar']['returnbutton']['text'] = gT('return to survey summary');	
 
         foreach ($aGrouplist as $iGID => $aGroup)
         {
