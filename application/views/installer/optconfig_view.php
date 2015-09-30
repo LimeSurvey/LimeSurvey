@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="span3">
+    <div class="col-md-3">
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
-    <div class="span9">
+    <div class="col-md-9">
     <?php echo CHtml::beginForm($this->createUrl('installer/optional'), 'post', array('class' => 'form-horizontal')); ?>
     <h2><?php echo $title; ?></h2>
     <p><?php echo $descp; ?></p>
@@ -76,11 +76,11 @@
     ?>
     </fieldset>
         <div class="row navigator">
-            <div class="span3">
+            <div class="col-md-3">
                 <input class="btn" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" />
             </div>
-            <div class="span3"></div>
-            <div class="span3">
+            <div class="col-md-3"></div>
+            <div class="col-md-3">
                 <?php echo CHtml::submitButton(gT("Next"), array('class' => 'btn')); ?>
             </div>
         </div>
