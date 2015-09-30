@@ -22,15 +22,18 @@ trait SmartColumnTypeTrait
         throw new \Exception("Could not parse type.");
     }
 
-    protected function parseType($type, callable $baseParser) {
+    protected function parseType($type, callable $baseParser)
+    {
         $parts = $this->splitColumnType($type);
         $base = $baseParser($parts['base']);
         $baseParts = $this->splitColumnType($base);
         if (!empty($parts['arguments'])) {
             $baseParts['arguments'] = $parts['arguments'];
+            $result = $baseParts['base'] . (!empty($baseParts['arguments']) ? "({$baseParts['arguments']}) " : " ") . $parts['suffix'];
+        } else {
+            $result = $base;
         }
 
-        $result = $baseParts['base'] . (!empty($baseParts['arguments']) ? "({$baseParts['arguments']}) " : " ") . $parts['suffix'];
         return $result;
     }
     /**

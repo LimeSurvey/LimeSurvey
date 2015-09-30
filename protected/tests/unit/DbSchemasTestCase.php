@@ -17,33 +17,39 @@ class DbSchemasTestCase extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->db = new \CDbConnection('mysql:host=127.0.0.1;dbname=yii','test','test');
+        $this->db = new \CDbConnection('mysql:host=127.0.0.1;dbname=yii', 'test', 'test');
     }
 
     /**
      * Test that default column types supported by Yii are still correct in our subclasses.
      * @param $class
      */
-    protected function doForClass($class) {
+    protected function doForClass($class)
+    {
         /** @var \CDbSchema $schema */
         $schema = new $class($this->db);
-        $parentSchema = get_parent_class($schema);
-        /** @var \CDbSchema $schema2 */
-        $schema2 = new $parentSchema($this->db);
-
-        foreach($schema2->columnTypes as $source => $target) {
+        foreach ($schema->columnTypes as $source => $target) {
+            // Code must not mangle defaults from array configuration.
             $this->assertEquals($target, $schema->getColumnType($source));
         }
     }
 
-    public function testMySql() {
+    public function testMySql()
+    {
+        $schema = new \MysqlSchema($this->db);
+
         $this->doForClass(\MysqlSchema::class);
     }
-    public function testMsSql() {
-        $this->doForClass(\MssqlSchema::class);
+    public function testMsSql()
+    {
+        $schema = new \MssqlSchema($this->db);
+        $this->assertEquals('int IDENTITY PRIMARY KEY NOT NULL', $schema->getColumnType('pk'));
     }
 
-    public function testPgSql() {
+    public function testPgSql()
+    {
+        $schema = new \PgsqlSchema($this->db);
+        $this->assertEquals('numeric (10,0)', $schema->getColumnType('decimal'));
         $this->doForClass(\PgsqlSchema::class);
     }
 
