@@ -373,16 +373,12 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function view($iSurveyID, $gid = null, $qid = null)
     {
+        // We load the panel packages for quick actions
         App()->getClientScript()->registerPackage('panel-clickable');
         App()->getClientScript()->registerPackage('panels-animation');
         
         $iSurveyID = sanitize_int($iSurveyID);
-        if (isset($gid))
-            $gid = sanitize_int($gid);
-        if (isset($qid))
-            $qid = sanitize_int($qid);
 
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
         
         // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
@@ -391,12 +387,13 @@ class SurveyAdmin extends Survey_Common_Action
         LimeExpressionManager::StartProcessingPage(false,true);
 
         $survey = Survey::model()->findByPk($iSurveyID);
+        $baselang = $survey->language;
+        $aData['aAdditionalLanguages'] = $survey->additionalLanguages;
+        
         $surveyinfo = $survey->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData["surveyinfo"] = $surveyinfo;
         $aData['surveyid'] = $iSurveyID;
-        $aData['gid'] = $gid;
-        $aData['qid'] = $qid;
         $aData['display']['surveysummary'] = true;
 
         // Last survey visited
@@ -408,13 +405,11 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveybar']['returnbutton']['text'] = gT('return to survey list');
         $aData['sidebar']["survey_menu"]=TRUE;
 
-
-
         // We get the last question visited by user for this survey
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;      
         $lastquestion = getGlobalSetting($setting_entry);
-        
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
+
         //$setting_entry = 'last_question_gid'.Yii::app()->user->getId().'_'.$iSurveyID;
         $lastquestiongroup = getGlobalSetting($setting_entry);
         

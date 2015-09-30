@@ -166,227 +166,261 @@
             </div>
         </div>
      
-	<!-- Survey summary -->
-	<h3><?php eT('Survey summary'); ?></h3>
-		<div class="row">
-			<div class="col-lg-12 content-right">
-				<table class="items table" id='surveydetails'>
-					<thead>
-						<tr>
-							<th><?php eT("Title");?></th>
-							<th><?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?></th>
-						</tr>
-					</thead>
-				    <tr>
-				        <td>
-				            <strong> <?php echo gT("Survey URL");?> :</strong>
-				        </td>
-				        <td>
-				        </td>
-				    </tr>
-				    <tr>
-				    	<td style="border-top: none; padding-left: 2em">
-				    		<small><?php echo getLanguageNameFromCode($surveyinfo['language'],false); ?></small>
-				    	</td>
-				    	<td style="border-top: none;" >
-					        <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language'])); ?>
-					        <small><a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a></small>
-				    	</td>
-				    </tr>
-				    
-				        <?php
-				        foreach ($aAdditionalLanguages as $langname)
-				        {?>
-				        <tr>
-				            <td  style="border-top: none; padding-left: 2em">
-				                <small><?php echo getLanguageNameFromCode($langname,false).":";?></small>
-				            </td>
-				            <td  style="border-top: none;" >
-				            	<?php $tmp_url = $this->createAbsoluteUrl("/survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$langname)); ?>
-				            	<small><a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a></small>
-				            </td>
-				        </tr>
-				
-				        <?php
-				        } ?>
-				    <tr>
-				        <td   style="border-top: none; padding-left: 2em">
-				            <small><?php eT("End URL");?>:</small>
-				        </td>
-				        <td style="border-top: none">
-				            <small><?php echo $endurl;?></small>
-				        </td>
-				    </tr>						        
-				    <tr>
-				    	<td><strong><?php eT("Survey's texts");?> :</strong></td>
-				    	<td></td>
-				    </tr>
-				    <tr>
-				        <td style="border-top: none; padding-left: 2em">
-				            <small><?php eT("Description:");?></small>
-				        </td>
-				        <td style="border-top: none;" >
-				        	<small>
-				            <?php
-				                if (trim($surveyinfo['surveyls_description']) != '')
-				                {
-				                    templatereplace(flattenText($surveyinfo['surveyls_description']));
-				                    echo LimeExpressionManager::GetLastPrettyPrintExpression();
-				                }
-				            ?>
-				            </small>
-				        </td>
-				    </tr>
-				    <tr>
-				        <td style="border-top: none; padding-left: 2em">
-				            <small><?php eT("Welcome:");?></small>
-				        </td>
-				        <td style="border-top: none;" >
-				        	<small>
-				            <?php
-				                templatereplace(flattenText($surveyinfo['surveyls_welcometext']));
-				                echo LimeExpressionManager::GetLastPrettyPrintExpression();
-				            ?>
-				            </small>
-				        </td>
-				    </tr>
-				    <tr>
-				        <td style="border-top: none; padding-left: 2em">
-				            <small><?php eT("End message:");?></small>
-				        </td>
-				        <td style="border-top: none;" >
-				        	<small>
-				            <?php
-				                templatereplace(flattenText($surveyinfo['surveyls_endtext']));
-				                echo LimeExpressionManager::GetLastPrettyPrintExpression();
-				            ?>
-				            </small>
-				        </td>
-				    </tr>
+    <!-- Survey summary -->
+    <h3><?php eT('Survey summary'); ?></h3>
+        <div class="row">
+            <div class="col-lg-12 content-right">
+                <table class="items table" id='surveydetails'>
+                    <thead>
+                        
+                        <!-- Title -->
+                        <tr>
+                            <th><?php eT("Title");?></th>
+                            <th><?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?></th>
+                        </tr>
+                    </thead>
+                    
+                    <!-- Survey URL -->
+                    <tr>
+                        <td>
+                            <strong> <?php echo gT("Survey URL");?> :</strong>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    
+                    <!-- Base language -->
+                    <tr>
+                        <td style="border-top: none; padding-left: 2em">
+                            <small><?php echo getLanguageNameFromCode($surveyinfo['language'],false); ?></small>
+                        </td>
+                        <td style="border-top: none;" >
+                            <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language'])); ?>
+                            <small><a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a></small>
+                        </td>
+                    </tr>
+                        
+                    <!-- Additional languages  -->
+                    <?php foreach ($aAdditionalLanguages as $langname): ?>
+                        <tr>
+                            <td  style="border-top: none; padding-left: 2em">
+                                <small><?php echo getLanguageNameFromCode($langname,false).":";?></small>
+                            </td>
+                            <td  style="border-top: none;" >
+                                <?php $tmp_url = $this->createAbsoluteUrl("/survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$langname)); ?>
+                                <small><a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a></small>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    
+                    <!-- End URL -->
+                    <tr>
+                        <td   style="border-top: none; padding-left: 2em">
+                            <small><?php eT("End URL");?>:</small>
+                        </td>
+                        <td style="border-top: none">
+                            <small><?php echo $endurl;?></small>
+                        </td>
+                    </tr>          
+                    
+                    <!-- Survey's texts -->                      
+                    <tr>
+                        <td><strong><?php eT("Survey's texts");?> :</strong></td>
+                        <td></td>
+                    </tr>
+                    
+                    <!-- Description -->
+                    <tr>
+                        <td style="border-top: none; padding-left: 2em">
+                            <small><?php eT("Description:");?></small>
+                        </td>
+                        <td style="border-top: none;" >
+                            <small>
+                            <?php
+                                if (trim($surveyinfo['surveyls_description']) != '')
+                                {
+                                    templatereplace(flattenText($surveyinfo['surveyls_description']));
+                                    echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                                }
+                            ?>
+                            </small>
+                        </td>
+                    </tr>
+                    
+                    <!-- Welcome -->
+                    <tr>
+                        <td style="border-top: none; padding-left: 2em">
+                            <small><?php eT("Welcome:");?></small>
+                        </td>
+                        <td style="border-top: none;" >
+                            <small>
+                            <?php
+                                templatereplace(flattenText($surveyinfo['surveyls_welcometext']));
+                                echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                            ?>
+                            </small>
+                        </td>
+                    </tr>
+                    
+                    <!-- End message -->
+                    <tr>
+                        <td style="border-top: none; padding-left: 2em">
+                            <small><?php eT("End message:");?></small>
+                        </td>
+                        <td style="border-top: none;" >
+                            <small>
+                            <?php
+                                templatereplace(flattenText($surveyinfo['surveyls_endtext']));
+                                echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                            ?>
+                            </small>
+                        </td>
+                    </tr>
 
-					<tr>
-						<td>
-							<strong><?php eT('Languages');?>:</strong>
-						</td>
-						<td></td>
-					</tr>
-				    <tr>
-				        <td style="border-top: none; padding-left: 2em">
-				            <small><?php eT("Base language:");?></small>
-				        </td>
-				        <td style="border-top: none;" >
-				            <small><?php echo $language;?></small>
-				        </td>
-				    </tr>
-					<?php $count=0; ?>
-				        <?php foreach ($aAdditionalLanguages as $langname): ?>
-				        <tr>
-							<?php if($count==0): ?>
-							    <td style="border-top: none; padding-left: 2em">
-							        <small><?php eT("Additional languages:");?>
-							    </td>
-							    <?php $count++;?>
-							<?php else:?>
-								<td style="border-top: none; padding-left: 2em"></td>									    
-							<?php endif;?>
-							
-				            <td  style="border-top: none;">
-				               <small> <?php echo getLanguageNameFromCode($langname,false);?></small>
-				            </td>
-				        </tr>
-			        <?php endforeach;?>
+                    <!-- Languages -->
+                    <tr>
+                        <td>
+                            <strong><?php eT('Languages');?>:</strong>
+                        </td>
+                        <td></td>
+                    </tr>
+                    
+                    <!-- Base language -->
+                    <tr>
+                        <td style="border-top: none; padding-left: 2em">
+                            <small><?php eT("Base language:");?></small>
+                        </td>
+                        <td style="border-top: none;" >
+                            <small><?php echo $language;?></small>
+                        </td>
+                    </tr>
+                    
+                    <!-- Additional languages -->
+                    <?php foreach ($aAdditionalLanguages as $langname): ?>
+                        <tr>
+                            <?php if($count==0): ?>
+                                <td style="border-top: none; padding-left: 2em">
+                                    <small><?php eT("Additional languages:");?>
+                                </td>
+                                <?php $count++;?>
+                            <?php else:?>
+                                <td style="border-top: none; padding-left: 2em"></td>                                        
+                            <?php endif;?>
+                            
+                            <td  style="border-top: none;">
+                               <small> <?php echo getLanguageNameFromCode($langname,false);?></small>
+                            </td>
+                        </tr>
+                    <?php endforeach;?>
 
-				    
-				    <tr>
-				        <td>
-				            <strong><?php eT("Administrator:");?></strong>
-				        </td>
-				        <td>
-				            <?php echo flattenText("{$surveyinfo['admin']} ({$surveyinfo['adminemail']})");?>
-				        </td>
-				    </tr>
-				    <?php if (trim($surveyinfo['faxto'])!='') { ?>
-				        <tr>
-				            <td>
-				                <strong><?php eT("Fax to:");?></strong>
-				            </td>
-				            <td>
-				                <?php echo flattenText($surveyinfo['faxto']);?>
-				            </td>
-				        </tr>
-				    <?php } ?>
-				    <tr>
-				        <td>
-				            <strong><?php eT("Start date/time:");?></strong>
-				        </td>
-				        <td>
-				            <?php echo $startdate;?>
-				        </td>
-				    </tr>
-				    <tr>
-				        <td>
-				            <strong><?php eT("Expiry date/time:");?></strong>
-				        </td>
-				        <td>
-				            <?php echo $expdate;?>
-				        </td>
-				    </tr>
-				    <tr>
-				        <td>
-				            <strong><?php eT("Template:");?></strong>
-				        </td>
-				        <td>
-				            <?php echo $surveyinfo['template'];?>
-				        </td>
-				    </tr>
+                    <!-- Administrator -->
+                    <tr>
+                        <td>
+                            <strong><?php eT("Administrator:");?></strong>
+                        </td>
+                        <td>
+                            <?php echo flattenText("{$surveyinfo['admin']} ({$surveyinfo['adminemail']})");?>
+                        </td>
+                    </tr>
+                    
+                    <!-- Fax to -->
+                    <?php if (trim($surveyinfo['faxto'])!=''): ?>
+                        <tr>
+                            <td>
+                                <strong><?php eT("Fax to:");?></strong>
+                            </td>
+                            <td>
+                                <?php echo flattenText($surveyinfo['faxto']);?>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                    
+                    <!-- Start date/time -->
+                    <tr>
+                        <td>
+                            <strong><?php eT("Start date/time:");?></strong>
+                        </td>
+                        <td>
+                            <?php echo $startdate;?>
+                        </td>
+                    </tr>
+                    
+                    <!-- Expiry date/time -->
+                    <tr>
+                        <td>
+                            <strong><?php eT("Expiry date/time:");?></strong>
+                        </td>
+                        <td>
+                            <?php echo $expdate;?>
+                        </td>
+                    </tr>
+                    
+                    <!-- Template -->
+                    <tr>
+                        <td>
+                            <strong><?php eT("Template:");?></strong>
+                        </td>
+                        <td>
+                            <?php echo $surveyinfo['template'];?>
+                        </td>
+                    </tr>
 
-				    <tr>
-				        <td>
-				            <strong><?php eT("Number of questions/groups");?>:</strong>
-				        </td>
-				        <td>
-				            <?php echo $sumcount3."/".$sumcount2;?>
-				        </td>
-				    </tr>
-				    <tr>
-				        <td>
-				            <strong><?php eT("Survey currently active");?>:</strong>
-				        </td>
-				        <td>
-				            <?php echo $activatedlang;?>
-				        </td>
-				    </tr>
-				    <?php if($activated=="Y") { ?>
-				    <tr>
-				        <td>
-				            <strong><?php eT("Survey table name");?>:</strong>
-				        </td>
-				        <td>
-				            <?php echo $surveydb;?>
-				        </td>
-				    </tr>
-				    <?php } ?>
-				    <tr>
-				        <td>
-				            <strong><?php eT("Hints");?>:</strong>
-				        </td>
-				        <td>
-				            <?php echo $warnings.$hints;?>
-				        </td>
-				    </tr>
-				    <?php if ($tableusage != false){
-				            if ($tableusage['dbtype']=='mysql' || $tableusage['dbtype']=='mysqli'){
-				                $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
-				                $size_usage =  round($tableusage['size'][0]/$tableusage['size'][1] * 100,2); ?>
-				                <tr><td><strong><?php eT("Table column usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
-				                <tr><td><strong><?php eT("Table size usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $size_usage;?>'></div></td></tr>
-				            <?php }
-				            elseif (($arrCols['dbtype'] == 'mssql')||($arrCols['dbtype'] == 'postgre')||($arrCols['dbtype'] == 'dblib')){
-				                $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2); ?>
-				                <tr><td><strong><?php eT("Table column usage");?>: </strong></td><td><strong><?php echo $column_usage;?>%</strong><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
-				            <?php }
-				        } ?>
-				</table>
-			</div>
-		</div>
+                    <!-- Number of questions/groups -->     
+                    <tr>
+                        <td>
+                            <strong><?php eT("Number of questions/groups");?>:</strong>
+                        </td>
+                        <td>
+                            <?php echo $sumcount3."/".$sumcount2;?>
+                        </td>
+                    </tr>
+                    
+                    <!-- Survey currently active -->
+                    <tr>
+                        <td>
+                            <strong><?php eT("Survey currently active");?>:</strong>
+                        </td>
+                        <td>
+                            <?php echo $activatedlang;?>
+                        </td>
+                    </tr>
+                    
+                    <!-- Survey table name -->
+                    <?php if($activated=="Y"): ?>
+                        <tr>
+                            <td>
+                                <strong><?php eT("Survey table name");?>:</strong>
+                            </td>
+                            <td>
+                                <?php echo $surveydb;?>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                    
+                    <!-- Hints  -->
+                    <tr>
+                        <td>
+                            <strong><?php eT("Hints");?>:</strong>
+                        </td>
+                        <td>
+                            <?php echo $warnings.$hints;?>
+                        </td>
+                    </tr>
+                    
+                    <!-- usage -->
+                    <?php if ($tableusage != false){
+                            if ($tableusage['dbtype']=='mysql' || $tableusage['dbtype']=='mysqli'){
+                                $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
+                                $size_usage =  round($tableusage['size'][0]/$tableusage['size'][1] * 100,2); ?>
+                                <tr><td><strong><?php eT("Table column usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
+                                <tr><td><strong><?php eT("Table size usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $size_usage;?>'></div></td></tr>
+                            <?php }
+                            elseif (($arrCols['dbtype'] == 'mssql')||($arrCols['dbtype'] == 'postgre')||($arrCols['dbtype'] == 'dblib')){
+                                $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2); ?>
+                                <tr><td><strong><?php eT("Table column usage");?>: </strong></td><td><strong><?php echo $column_usage;?>%</strong><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
+                            <?php }
+                        } ?>
+                </table>
+            </div>
+        </div>
 </div>
