@@ -16,7 +16,7 @@
         'settings' => array(
             'bounce_email'=>array(
                 'type'=>'email',
-                'label'=>gT('ls\models\Survey bounce email'),
+                'label'=>gT('Survey bounce email'),
                 'htmlOptions'=>array(
                     'size'=>50,
                 ),

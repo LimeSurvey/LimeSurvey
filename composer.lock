@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6b73cc80375b5f46c715106773680050",
+    "hash": "e9db15087bde18e750a7480deb576e4b",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -2414,12 +2414,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-eventmanager.git",
-                "reference": "f5d39564ad4609fe0f20a47443a84d963197007a"
+                "reference": "a6c747fe59658fb62feb23613d7ea22146b6b611"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/f5d39564ad4609fe0f20a47443a84d963197007a",
-                "reference": "f5d39564ad4609fe0f20a47443a84d963197007a",
+                "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/a6c747fe59658fb62feb23613d7ea22146b6b611",
+                "reference": "a6c747fe59658fb62feb23613d7ea22146b6b611",
                 "shasum": ""
             },
             "require": {
@@ -2434,8 +2434,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev",
-                    "dev-develop": "2.6-dev"
+                    "dev-master": "2.6-dev",
+                    "dev-develop": "3.0-dev"
                 }
             },
             "autoload": {
@@ -2452,7 +2452,7 @@
                 "eventmanager",
                 "zf2"
             ],
-            "time": "2015-09-29 13:37:38"
+            "time": "2015-09-29 16:41:35"
         },
         {
             "name": "zendframework/zend-http",
@@ -4008,12 +4008,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "6fa3d4a79022c9a02de17f210683516e92024f76"
+                "reference": "28b8b18beadde5ae4684d4adcab87f29ea0ac101"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/225e0f307d5901c914d8642193023e5c72892350",
-                "reference": "6fa3d4a79022c9a02de17f210683516e92024f76",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/28b8b18beadde5ae4684d4adcab87f29ea0ac101",
+                "reference": "28b8b18beadde5ae4684d4adcab87f29ea0ac101",
                 "shasum": ""
             },
             "require": {
@@ -4049,7 +4049,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2015-09-28 12:06:46"
+            "time": "2015-09-30 09:18:13"
         }
     ],
     "aliases": [],

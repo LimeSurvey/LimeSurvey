@@ -36,16 +36,19 @@ class SurveysController extends Controller
 
     public function actionUpdate($id) {
         $survey = $this->loadModel($id, 'groups.questions');
+
         if (App()->request->isPostRequest && isset($survey)) {
-            $survey->setAttributes($_POST['ls\models\Survey']);
+            $survey->setAttributes($_POST['Survey']);
             if ($survey->save(true)) {
-                App()->user->setFlash('success', gT("ls\models\Survey settings updated."));
+                App()->user->setFlash('success', gT("Survey settings updated."));
                 $this->refresh();
             }
         }
         $this->layout = 'survey';
         $this->menus['survey'] = $survey;
+        bP('render');
         $this->render('update', ['survey' => $survey]);
+        eP('render');
     }
 
     public function actionActivate($id) {
@@ -53,7 +56,7 @@ class SurveysController extends Controller
         $survey = $this->loadModel($id);
         if (App()->request->isPostRequest) {
             $survey->activate();
-            App()->user->setFlash('succcess', "ls\models\Survey activated.");
+            App()->user->setFlash('succcess', "Survey activated.");
             $this->redirect(['surveys/update', 'id' => $survey->primaryKey]);
         }
 
@@ -65,7 +68,7 @@ class SurveysController extends Controller
         $survey = $this->loadModel($id);
         if (App()->request->isPostRequest) {
             $survey->deactivate();
-            App()->user->setFlash('succcess', "ls\models\Survey deactivated.");
+            App()->user->setFlash('succcess', "Survey deactivated.");
             $this->redirect(['surveys/update', 'id' => $survey->sid]);
         }
 
@@ -86,7 +89,7 @@ class SurveysController extends Controller
     public function loadModel($id, $with = null) {
         $survey = Survey::model()->with($with)->findByPk($id);
         if (!isset($survey)) {
-            throw new \CHttpException(404, "ls\models\Survey not found.");
+            throw new \CHttpException(404, "Survey not found");
         } elseif (!App()->user->checkAccess('survey', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $id])) {
             throw new \CHttpException(403);
         }
@@ -110,9 +113,9 @@ class SurveysController extends Controller
         if (!$survey->isActive) {
             throw new \CHttpException(412, gT("The survey is not active."));
         } elseif ($survey->bool_usetokens && !isset($token)) {
-            throw new \CHttpException(400, gT("ls\models\Token required."));
+            throw new \CHttpException(400, gT("Token required."));
         } elseif ($survey->bool_usetokens && null === $token = \ls\models\Token::model($id)->findByAttributes(['token' => $token])) {
-            throw new \CHttpException(404, gT("ls\models\Token not found."));
+            throw new \CHttpException(404, gT("Token not found."));
         }
 
         $targetUrl = [
@@ -164,7 +167,7 @@ class SurveysController extends Controller
 
         $survey = $this->loadModel($id);
         if (App()->request->isPostRequest && $survey->unexpire()) {
-            App()->user->setFlash('success', gT("ls\models\Survey expiry date removed."));
+            App()->user->setFlash('success', gT("Survey expiry date removed."));
             $this->redirect(['surveys/update', 'id' => $id]);
         }
         $this->render('unexpire', ['survey' => $survey]);
@@ -176,7 +179,7 @@ class SurveysController extends Controller
 
         if (App()->request->isPostRequest) {
 //                $survey->deactivate();
-//                App()->user->setFlash('succcess', "ls\models\Survey deactivated.");
+//                App()->user->setFlash('succcess', "Survey deactivated.");
 //                $this->redirect(['surveys/update', 'id' => $survey->sid]);
 
 
@@ -197,10 +200,10 @@ class SurveysController extends Controller
             $importer = ImportFactory::getForLss($file->getTempName());
             if (null !== $survey = $importer->run()) {
 
-                App()->user->setFlash('success', "ls\models\Survey imported ({$survey->groupCount}/{$survey->questionCount}).");
+                App()->user->setFlash('success', "Survey imported ({$survey->groupCount}/{$survey->questionCount}).");
                 $this->redirect(['surveys/update', 'id' => $survey->primaryKey]);
             } else {
-                App()->user->setFlash('error', "ls\models\Survey not imported.");
+                App()->user->setFlash('error', "Survey not imported.");
                 $this->redirect(['surveys/index']);
 
             }
@@ -236,8 +239,8 @@ class SurveysController extends Controller
         $request = App()->request;
 
         if ($request->isPostRequest) {
-            $survey->setAttributes($request->getParam('ls\models\Survey'));
-            $languageSetting->setAttributes($request->getParam('ls\models\SurveyLanguageSetting'));
+            $survey->setAttributes($request->getParam('Survey'));
+            $languageSetting->setAttributes($request->getParam('SurveyLanguageSetting'));
 
             // Validate both before saving either.
             if ($survey->validate()
@@ -248,7 +251,7 @@ class SurveysController extends Controller
                 && $languageSetting->save(true)
             ) {
 
-                App()->user->setFlash('success', gT('ls\models\Survey created'));
+                App()->user->setFlash('success', gT('Survey created'));
                 return $this->redirect(['surveys/update', 'id' => $survey->sid]);
             }
         }
@@ -287,7 +290,7 @@ class SurveysController extends Controller
                 'crud' => 'delete'
             ])) {
             $survey->deleteDependent();
-            App()->user->setFlash('success', gT("ls\models\Survey deleted"));
+            App()->user->setFlash('success', gT("Survey deleted"));
             $this->redirect(['surveys/index']);
         } else {
             if ($survey->isActive) {

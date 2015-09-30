@@ -81,7 +81,8 @@ $menu = [
                         'label' => $survey->localizedTitle . ((!$survey->isActive) ? ' (' . gT('inactive') .')' : '')
                     ];
                     
-                }, Survey::model()->findAll())
+                }, Survey::model()->findAll()),
+                'visible' => App()->user->checkAccess('surveys', ['crud' => 'read'])
             ], 
             [
                 'title' => gT('Create, import, or copy a survey'),
@@ -93,11 +94,23 @@ $menu = [
                 'title' => gT('Logout') . ' ' . App()->user->name,
                 'label' => App()->user->name,
                 'url' => ['users/logout'],
-                'icon' => 'off'
-            ], [
+                'icon' => 'log-out',
+                'visible' => !App()->user->isGuest
+
+            ],
+            [
+                'title' => gT('Login'),
+//                'label' => App()->user->name,
+                'url' => ['users/login'],
+                'icon' => 'log-in',
+                'visible' => App()->user->isGuest
+
+            ],
+            [
                 'title' => gT('Preferences'),
                 'url' => ['users/profile'],
-                'icon' => 'edit'
+                'icon' => 'edit',
+                'visible' => !App()->user->isGuest
             ],
             [
                 'title' => gT('LimeSurvey online manual'),

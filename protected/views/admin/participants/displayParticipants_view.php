@@ -72,8 +72,8 @@ else
     var firstnameTxt="<?php eT("First name") ?>";
     var lastnameTxt="<?php eT("Last name") ?>";
     var blacklistedTxt="<?php eT("Blacklisted") ?>";
-    var surveysTxt="<?php eT("ls\models\Survey links") ?>";
-    var surveyTxt="<?php eT("ls\models\Survey name") ?>";
+    var surveysTxt="<?php eT("Survey links") ?>";
+    var surveyTxt="<?php eT("Survey name") ?>";
     var languageTxt="<?php eT("Language") ?>";
     var owneridTxt="<?php eT("Owner ID") ?>";
     var ownernameTxt="<?php eT("Owner name") ?>";
@@ -90,8 +90,8 @@ else
 
     /* Colnames and heading for survey links subgrid */
     var linksHeadingTxt="<?php eT("ls\models\Participant's survey information", 'js')?>";
-    var surveyNameColTxt="<?php eT("ls\models\Survey name", 'js')?>";
-    var surveyIdColTxt="<?php eT("ls\models\Survey ID", 'js') ?>";
+    var surveyNameColTxt="<?php eT("Survey name", 'js')?>";
+    var surveyIdColTxt="<?php eT("Survey ID", 'js') ?>";
     var tokenIdColTxt="<?php eT("ls\models\Token ID", 'js') ?>";
     var dateAddedColTxt="<?php eT("Date added", 'js') ?>";
     var dateInvitedColTxt="<?php eT("Last invited", 'js') ?>";
@@ -196,8 +196,8 @@ echo $colModels;
         'lastname' => gT("Last name"),
         'email' => gT("Email"),
         'blacklisted' => gT("Blacklisted"),
-        'surveys' => gT("ls\models\Survey links"),
-        'survey' => gT("ls\models\Survey name"),
+        'surveys' => gT("Survey links"),
+        'survey' => gT("Survey name"),
         'language' => gT("Language"),
         'owner_uid' => gT("Owner ID"),
         'owner_name' => gT("Owner name"));
@@ -298,7 +298,7 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
         </fieldset>
         <fieldset class='popupgroup'>
 		  <legend>
-            <?php eT("ls\models\Survey"); ?>
+            <?php eT("Survey"); ?>
           </legend>
           <p>
             <?php

@@ -172,7 +172,7 @@ class SurveySession extends \CComponent
                 'languagesettings'
             ])->findByPk($id);
             if (!isset($survey)) {
-                throw new \Exception("ls\models\Survey not found.");
+                throw new \Exception("Survey not found.");
             }
             /**
              * We manually set the questions in survey to the same objects as those in groups.

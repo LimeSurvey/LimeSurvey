@@ -74,7 +74,7 @@ if (!isset($gid) || $gid != "")
 if (isset($usresult) &&$usresult)
 {
 ?>
-<script type="text/javascript">alert("<?php eT("ls\models\Survey could not be updated", 'js'); ?>")</script><br />
+<script type="text/javascript">alert("<?php eT("Survey could not be updated", 'js'); ?>")</script><br />
 <?php
 }
 ?>

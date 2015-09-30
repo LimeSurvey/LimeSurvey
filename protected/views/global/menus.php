@@ -1,13 +1,15 @@
 <?php
+bP('menus');
 $items = require __DIR__ . '/../global/menu.php';
 $this->widget(\TbNavbar::class, [
+//    'brandLabel' => TbHtml::image(App()->baseUrl . Yii::getPathOfAlias('public') . '/images/logo_big.png'),
     'brandUrl' => ['surveys/index'],
     'display' => TbHtml::NAVBAR_DISPLAY_FIXEDTOP,
     'fluid' => true,
     'items' => [
         [
             'class' => TbNav::class,
-            'items' => $items[0],
+            'items' => !App()->user->isGuest ? $items[0] : [],
         ],
         [
             'class' => TbNav::class,
@@ -20,7 +22,7 @@ foreach (array_reverse($this->menus) as $name => $data) {
     $file = __DIR__ . "/../global/{$name}Menu.php";
     if (file_exists($file)) {
         if (!is_array($data)) {
-         $data = ['model' => $data];
+            $data = ['model' => $data];
         }
         $menu = require_config($file, $data, $this);
         $this->widget(\TbNavBar::class, [
@@ -29,11 +31,11 @@ foreach (array_reverse($this->menus) as $name => $data) {
             'fluid' => true,
             'items' => [
                 [
-                    'class' => 'TbNav',
+                    'class' => TbNav::class,
                     'items' => $menu[0]
                 ],
                 [
-                    'class' => 'TbNav',
+                    'class' => TbNav::class,
                     'htmlOptions' => [
                     'class' => 'navbar-right'
                     ],
@@ -44,3 +46,4 @@ foreach (array_reverse($this->menus) as $name => $data) {
 
     }
 }
+eP('menus');

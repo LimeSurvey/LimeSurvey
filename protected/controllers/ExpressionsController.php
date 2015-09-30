@@ -21,7 +21,7 @@ class ExpressionsController extends Controller
         // Get the model name.
         $model = \ls\models\Survey::model()->findByPk($id);
         if (!isset($model)) {
-            throw new \CHttpException(404, "ls\models\Survey not found.");
+            throw new \CHttpException(404, "Survey not found");
         }
         return $model;
     }

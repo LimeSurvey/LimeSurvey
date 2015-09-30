@@ -4,7 +4,7 @@ use ls\models\QuestionGroup;
 use ls\models\Survey;
 
 if (!isset($this->survey)) {
-    throw new Exception("ls\models\Survey must be set for survey menu.");
+    throw new Exception("Survey must be set for survey menu.");
 }
 $menu = [[ // Left side
     [

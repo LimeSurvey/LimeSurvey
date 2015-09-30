@@ -21,7 +21,7 @@ $sFormTag
 <h3>Generate a logic file for the survey</h3>
 <table border='1'>
 <tr><th>Parameter</th><th>Value</th></tr>
-<tr><td>ls\models\Survey ID (SID)</td>
+<tr><td>Survey ID (SID)</td>
 <td><select name='sid' id='sid'>
 $surveyList
 </select></td></tr>
@@ -68,7 +68,7 @@ else {
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Logic File - ls\models\Survey #$surveyid</title>
+<title>Logic File - Survey #$surveyid</title>
 <style type="text/css">
 tr.LEMgroup td
 {

@@ -115,7 +115,7 @@
             
             if(!empty($this->buttons)) {
                 
-//                echo CHtml::openTag('div', ['class' => 'btn-group pull-right']);
+                echo CHtml::openTag('div', ['class' => 'btn-group pull-right']);
                 $buttons = [];
                 foreach ($this->buttons as $label => $htmlOptions) {
                     if (is_numeric($label)) {
@@ -125,7 +125,7 @@
                     $buttons[] = $this->renderButton($label, $htmlOptions);
                 }
                 echo TbHtml::formActions($buttons);
-//                echo CHtml::closeTag('div');
+                echo CHtml::closeTag('div');
             }
         }
 

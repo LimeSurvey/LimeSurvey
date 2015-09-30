@@ -9,7 +9,7 @@
     </tr>
     <tr>
         <td>
-            <strong><?php echo gT("ls\models\Survey URL") ." - ".getLanguageNameFromCode($surveyinfo['language'],false).":";?></strong>
+            <strong><?php echo gT("Survey URL") ." - ".getLanguageNameFromCode($surveyinfo['language'],false).":";?></strong>
         </td>
         <td>
         <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language'])); ?>
@@ -140,7 +140,7 @@
     </tr>
     <tr>
         <td>
-            <strong><?php eT("ls\models\Survey currently active");?>:</strong>
+            <strong><?php eT("Survey currently active");?>:</strong>
         </td>
         <td>
             <?php echo $activatedlang;?>
@@ -149,7 +149,7 @@
     <?php if($activated=="Y") { ?>
     <tr>
         <td>
-            <strong><?php eT("ls\models\Survey table name");?>:</strong>
+            <strong><?php eT("Survey table name");?>:</strong>
         </td>
         <td>
             <?php echo $surveydb;?>

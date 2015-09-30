@@ -2,7 +2,7 @@
 <?php
 use ls\models\Question;
 use ls\models\QuestionGroup;
-
+bP('surveyNavigator');
 $items = [];
 /** @var QuestionGroup $group */
 foreach ($survey->groups as $group) {
@@ -46,5 +46,6 @@ $this->widget(\SamIT\Yii1\Widgets\BootstrapTreeView::class, [
     'data' => $items,
     'nodeIcon' => null,
 ]);
+eP('surveyNavigator');
 ?>
 <!--</nav>-->

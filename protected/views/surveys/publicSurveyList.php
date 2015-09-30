@@ -1,35 +1,31 @@
+<div class="col-md-4 col-md-offset-4 col-xs-12" style="text-align: center;">
 <?php
-    echo TbHtml::tag('h1', [], App()->name);
-
+    echo TbHtml::tag('h1', [], TbHtml::image(App()->baseUrl . Yii::getPathOfAlias('public') . '/images/logo-text.png'));
     $list = '';
-    foreach($publicSurveys as $survey)
-    {
-        $list .= CHtml::openTag('li');
+    if (!empty($publicSurveys)) {
+        $this->widget(TbNav::class, [
+            'type' => TbHtml::NAV_TYPE_LIST,
+            'items' => array_merge([['label' => "Public surveys"]], array_map(function(\ls\models\Survey $survey) {
+                return [
+                    'label' => "{$survey->getLocalizedTitle()} ({$survey->primaryKey})",
+                    'url' => ['surveys/start', 'id' => $survey->sid, 'lang' => App()->language]
+                ];
+            }, $publicSurveys))
+        ]);
+    }
 
-        $list .= CHtml::link($survey->localizedTitle, ['surveys/start', 'id' => $survey->sid, 'lang' => App()->language], array('class' => 'surveytitle'));
-        if ($survey->publicstatistics == "Y")
-        {
-            $list .= CHtml::link('(' . gT('View statistics') . ')', array('statistics_user/action', 'surveyid' => $survey->sid,'language' => App()->language));
-        }
-        $list .= CHtml::closeTag('li');
+    if (!empty($futureSurveys)) {
+        $this->widget(TbNav::class, [
+            'type' => TbHtml::NAV_TYPE_LIST,
+            'items' => array_merge([['label' => gT("Following survey(s) are not yet active but you can register for them.")]], array_map(function(\ls\models\Survey $survey) {
+                return [
+                    'label' => "{$survey->getLocalizedTitle()} ({$survey->primaryKey})",
+                    'url' => ['surveys/register', 'id' => $survey->sid, 'lang' => App()->language]
+                ];
+            }, $futureSurveys))
+        ]);
 
     }
-    if (!empty($futureSurveys))
-    {
-        $list .= "</ul><div class=\"survey-list-heading\">".  gT("Following survey(s) are not yet active but you can register for them.")."</div><ul>";
-        foreach($futureSurveys as $survey)
-        {
-            $list .= CHtml::openTag('li');
-            $list .= CHtml::link($survey->localizedTitle, array('survey/index', 'sid' => $survey->sid, 'lang' => App()->language), array('class' => 'surveytitle'));
-            $list .= CHtml::closeTag('li');
-            $list .= CHtml::tag('div', array(
-                'data-regformsurvey' => $survey->sid,
 
-            ));
-        }
-    }
-    if(empty($list)) {
-        $list = CHtml::openTag('li',array('class'=>'surveytitle')).gT("No available surveys").CHtml::closeTag('li');
-    }
-    echo $list;
-    echo App()->format->format(App()->getConfig("siteadminemail"), 'email');
+?>
+</div>

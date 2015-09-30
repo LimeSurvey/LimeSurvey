@@ -1,6 +1,7 @@
 <div class="row">
     <div class="col-md-12">
         <?php
+        bP('survey update view');
         /** @var TbActiveForm $form */
         $form = $this->beginWidget(TbActiveForm::class, [
             'enableAjaxValidation' => false,
@@ -80,7 +81,7 @@
         ]);
         echo TbHtml::closeTag('div');
         $this->endWidget();
-
+        eP('survey update view');
         ?>
     </div>
 

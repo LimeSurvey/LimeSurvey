@@ -6,7 +6,7 @@
     </script>
     <?php } ?>
 
-<div class="header ui-widget-header"><?php eT("ls\models\Survey quotas");?></div>
+<div class="header ui-widget-header"><?php eT("Survey quotas");?></div>
 <br />
 <table id="quotalist" class="quotalist">
 <thead>

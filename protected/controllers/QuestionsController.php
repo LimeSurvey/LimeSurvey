@@ -127,7 +127,7 @@ class QuestionsController extends Controller
         $group = \ls\models\QuestionGroup::model()->findByPk($groupId);
         $this->menus['survey'] = $group->survey;
         if (!isset($group->survey)) {
-            throw new \CHttpException(404, "ls\models\Survey not found.");
+            throw new \CHttpException(404, "Survey not found");
         } elseif ($group->survey->isActive) {
             throw new \CHttpException(421, "Cannot add questions to active survey.");
         }

@@ -4,7 +4,7 @@ use ls\models\Survey;
 
 /* @var Survey $model */
 if (!isset($model) || !$model instanceof Survey) {
-    throw new Exception("ls\models\Survey must be set for survey menu.");
+    throw new Exception("Survey must be set for survey menu.");
 }
 $menu = [[ // Left side
     [
@@ -37,7 +37,7 @@ $menu = [[ // Left side
         ],
         'url' => ["surveys/preview", 'id' => $model->primaryKey]
     ],[
-        'title' => gT('ls\models\Survey settings'),
+        'title' => gT('Survey settings'),
         'icon' => 'wrench',
 //        'disabled' => $model->responseCount == 0,
         'url' => ["surveys/update", 'id' => $model->sid]

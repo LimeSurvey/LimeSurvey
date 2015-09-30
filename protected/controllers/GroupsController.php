@@ -41,7 +41,7 @@ class GroupsController extends Controller {
         $this->menus['survey'] = $survey = \ls\models\Survey::model()->findByPk($surveyId);
 
         if (!isset($survey)) {
-            throw new \CHttpException(404, "ls\models\Survey not found.");
+            throw new \CHttpException(404, "Survey not found");
         } elseif ($survey->isActive) {
             throw new \CHttpException(421, "Cannot add groups to active survey.");
         }

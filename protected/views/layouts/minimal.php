@@ -18,13 +18,12 @@
         }
     ?>
     <body class="<?=$bodyClasses; ?>">
-        <div style="position: absolute; top: 5px; right: 5px;">
-            <?php
-            echo TbHtml::link('Login', ['users/login']);
-            ?>
-        </div>
+        <?php
+            $this->renderPartial('/global/menus');
+        ?>
+
         <div class="alerts">
-            <?php $this->widget('TbAlert'); ?>
+            <?php $this->widget(TbAlert::class); ?>
         </div>
         <div class="container">
             

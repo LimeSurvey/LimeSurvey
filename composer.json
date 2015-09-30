@@ -65,6 +65,7 @@
             "protected/vendor/yiisoft/yii/framework/db",
             "protected/vendor/yiisoft/yii/framework/validators",
             "protected/vendor/yiisoft/yii/framework/i18n",
+            "protected/vendor/yiisoft/yii/framework/zii",
             "protected/helpers"
         ],
         "psr-4" : {
