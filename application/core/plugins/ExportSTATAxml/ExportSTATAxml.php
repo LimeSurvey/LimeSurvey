@@ -34,10 +34,18 @@ class ExportSTATAxml extends \ls\pluginmanager\PluginBase {
         switch ($type) {
             case 'stataxml':
                 $event->set('label', gT("STATA (.xml)"));
-                $event->set('onclick', 'document.getElementById("ansabbrev").checked=true;
-                        document.getElementById("ansfull").disabled=true;document.getElementById("convertyto1").checked=true;document.getElementById("convertnto2").checked=true;
-                        document.getElementById("convertnto").value=0;document.getElementById("convertyto").value=1;
-                        document.getElementById("headcodes").disabled=true;document.getElementById("headabbreviated").disabled=true;document.getElementById("headfull").checked=true;');
+                $event->set('onclick', '
+				 document.getElementById("answers-short").checked=true;
+				 document.getElementById("answers-long").disabled=true;
+                     document.getElementById("converty").checked=true;
+                     document.getElementById("convertn").checked=true;
+                     document.getElementById("convertnto").value=0;
+                     document.getElementById("convertyto").value=1;
+                     document.getElementById("headstyle-code").disabled=true;
+                     document.getElementById("headstyle-abbreviated").disabled=true;
+                     document.getElementById("headstyle-full").checked=true;
+                     document.getElementById("headstyle-codetext").disabled=true;
+				 ');
                 break;
 
             default:
