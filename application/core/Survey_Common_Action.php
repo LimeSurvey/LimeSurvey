@@ -259,11 +259,12 @@ class Survey_Common_Action extends CAction
             $this->_titlebar($aData);
             
             //// Each view will call the correct bar as a subview.  
-             $this->_surveybar($aData);
+            $this->_surveybar($aData);
             $this->_nquestiongroupbar($aData);
             $this->_questionbar($aData);
             $this->_browsemenubar($aData);
             $this->_tokenbar($aData);
+            $this->_organizequestionbar($aData);
         
             //// TODO : check what it's doing exactly, and why it is here (not after or before)
             //// It seems that it is not used at all. It's about timing 
@@ -499,7 +500,7 @@ class Survey_Common_Action extends CAction
             {
                 $activetokens = count($tokenlist);
             } 
-            else 
+            else
             {
                 $activetokens = 0;
             }
@@ -509,8 +510,8 @@ class Survey_Common_Action extends CAction
             $aData['dataForConfigMenu']['deactivatedtokens'] = $deactivatedtokens;
             
             $aData['sitename'] = Yii::app()->getConfig("sitename");
-            
-            
+
+
             $this->getController()->renderPartial("/admin/super/adminmenu", $aData);
         }
     }
@@ -518,16 +519,31 @@ class Survey_Common_Action extends CAction
 
     function _titlebar($aData)
     {
-        if( isset($aData['title_bar']) )
+        if( isset($aData['title_bar']) ) {
             $this->getController()->renderPartial("/admin/super/title_bar", $aData);
+        }
     }
     
     function _tokenbar($aData)
     {
-        if( isset($aData['token_bar']) )
-            $this->getController()->renderPartial("/admin/token/token_bar", $aData);        
+        if( isset($aData['token_bar']) ) {
+            $this->getController()->renderPartial("/admin/token/token_bar", $aData);
+        }
     }
-    
+
+    /**
+     * Render the save/cancel bar for Organize question groups/questions
+     *
+     * @param array $aData
+     *
+     * @since 2014-09-30
+     * @author Olle Haerstedt <olle.haerstedt@limesurvey.org>
+     */
+    function _organizequestionbar($aData) {
+        if (isset($aData['aGroupsAndQuestions'])) {
+            $this->getController()->renderPartial("/admin/survey/Question/organizequestionbar_view", $aData);
+        }
+    }
 
     /**
     * Shows admin menu for question
@@ -589,7 +605,8 @@ class Survey_Common_Action extends CAction
                 $DisplayArray = array();
                 foreach ($aAttributesWithValues as $aAttribute)
                 {
-                    if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default']) || ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default']))
+                    if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default']) ||
+                        ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default']))
                     {
                         if ($aAttribute['inputtype'] == 'singleselect')
                         {
@@ -634,7 +651,9 @@ class Survey_Common_Action extends CAction
             $sumcount4 = count($sumresult4);
             $aData['sumcount4'] = $sumcount4;
     
-            $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByPk($surveyid); //$sumquery1, 1) ; //Checked //  if surveyid is invalid then die to prevent errors at a later time
+            $sumresult1 = Survey::model()->with(array(
+                'languagesettings' => array('condition' => 'surveyls_language=language'))
+                )->findByPk($surveyid); //$sumquery1, 1) ; //Checked //  if surveyid is invalid then die to prevent errors at a later time
             $surveyinfo = $sumresult1->attributes;
             $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
             $surveyinfo = array_map('flattenText', $surveyinfo);

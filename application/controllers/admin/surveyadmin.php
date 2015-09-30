@@ -716,14 +716,22 @@ class SurveyAdmin extends Survey_Common_Action
                 if ($survey->allowregister=='Y')
                 {
                     $aViewUrls['output'] .= gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n"
-                    ."<input type='submit' value='".gT("Initialise tokens")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))."\" />\n";
+                        ."<input type='submit' value='".gT("Initialise tokens")
+                        ."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))."\" />\n";
                 }
                 else
                 {
                     $aViewUrls['output'] .= gT("This survey is now active, and responses can be recorded.")."<br /><br />\n"
-                    ."<strong>".gT("Open-access mode").":</strong> ".gT("No invitation code is needed to complete the survey.")."<br />".gT("You can switch to the closed-access mode by initialising a token table with the button below.")."<br /><br />\n"
-                    ."<input type='submit' class='btn btn-default'  value='".gT("Switch to closed-access mode")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))."\" />\n"
-                    ."<input type='submit' class='btn btn-default' value='".gT("No, thanks.")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID))."\" />\n";
+                        ."<strong>".gT("Open-access mode").":</strong> "
+                        .gT("No invitation code is needed to complete the survey.")."<br />"
+                        .gT("You can switch to the closed-access mode by initialising a token table with the button below.")."<br /><br />\n"
+                        ."<input type='submit' class='btn btn-default'  value='"
+                        .gT("Switch to closed-access mode")
+                        ."' onclick=\""
+                        .convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))."\" />\n"
+                        ."<input type='submit' class='btn btn-default' value='"
+                        .gT("No, thanks.")."' onclick=\""
+                        .convertGETtoPOST(Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID))."\" />\n";
                 }
                 $aViewUrls['output'] .= "</div><br />&nbsp;\n";
             }
@@ -1232,11 +1240,12 @@ class SurveyAdmin extends Survey_Common_Action
     /**
     * questiongroup::organize()
     * Load ordering of question group screen.
-    * @return
+    * @param int $iSurveyID
+    * @return void
     */
     public function organize($iSurveyID)
     {
-        $iSurveyID = (int)$iSurveyID;
+        $iSurveyID = (int) $iSurveyID;
 
         if (!empty($_POST['orgdata']) && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
         {
@@ -1266,6 +1275,9 @@ class SurveyAdmin extends Survey_Common_Action
 
     private function _showReorderForm($iSurveyID)
     {
+        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+
         // Prepare data for the view
         $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
         LimeExpressionManager::StartSurvey($iSurveyID, 'survey');

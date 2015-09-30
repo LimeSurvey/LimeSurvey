@@ -107,7 +107,7 @@ $aReplacementData=array();
 						<?php eT("Set conditions for this question"); ?>
 					</a>				
 			<?php else:?>
-					<a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You don't have necessary permission","js"); ?>'>
+					<a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You don't have necessary permission","js"); ?>')">
 						<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/conditions.png" />
 						<?php eT("Set conditions for this question"); ?>
 					</a>					
