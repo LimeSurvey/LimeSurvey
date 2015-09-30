@@ -12,10 +12,30 @@ class ResponsesController extends Controller
 {
     public $layout = 'survey';
 
+    public function accessRules()
+    {
+
+        return array_merge([
+            [
+                'allow',
+                'actions' => ['index'],
+                'roles' => [
+                    'responses' => ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $this->getActionParams()['id']]
+                ]
+
+            ]
+        ], parent::accessRules());
+    }
+
+
     public function actionIndex($id) {
         /**
          * @todo Add permission check.
          */
+        if (!\ls\models\Response::valid($id)) {
+            throw new \CHttpException(404, gT("Response table not found"));
+        }
+
         $survey = Survey::model()->findByPk($id);
         $this->menus['survey'] = $survey;
 

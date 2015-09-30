@@ -56,7 +56,7 @@ class Survey extends ActiveRecord
             'partialResponseCount' => gT("Partial"),
             'responseCount' => gT("Total"),
             'responseRate' => gT('Rate'),
-            'sid' => gT('ls\models\Survey ID')
+            'sid' => gT('Survey ID')
 
 
         ];
@@ -427,7 +427,7 @@ class Survey extends ActiveRecord
     {
         $result = [];
         if (!$this->isActive && $this->questionCount == 0) {
-            $result[] = gT("ls\models\Survey cannot be activated yet.");
+            $result[] = gT("Survey cannot be activated yet.");
             if ($this->groupCount == 0 && App()->user->checkAccess('surveycontent',
                     ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $this->sid])
             ) {
@@ -636,7 +636,7 @@ class Survey extends ActiveRecord
     public function getFormatOptions()
     {
         return [
-            self::FORMAT_QUESTION => gT("ls\models\Question by ls\models\Question"),
+            self::FORMAT_QUESTION => gT("Question by Question"),
             self::FORMAT_GROUP => gT("Group by Group"),
             self::FORMAT_ALL_IN_ONE => gT("All in one"),
         ];
@@ -933,7 +933,7 @@ class Survey extends ActiveRecord
 
     public function getCaptchaOptions()
     {
-        $a = gT("ls\models\Survey Access");
+        $a = gT("Survey Access");
         $an = str_pad('', strlen($a), '-');
         $r = gT("Registration");
         $rn = str_pad('', strlen($r), '-');

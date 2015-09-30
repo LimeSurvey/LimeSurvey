@@ -45,7 +45,7 @@ abstract class Token extends Dynamic
 
     public function attributeLabels()
     {
-        $labels = array(
+        $labels = [
             'tid' => gT('ls\models\Token ID'),
             'partcipant' => gt('ls\models\Participant ID'),
             'firstname' => gT('First name'),
@@ -62,7 +62,7 @@ abstract class Token extends Dynamic
             'usesleft' => gT('Uses left'),
             'validfrom' => gT('Valid from'),
             'validuntil' => gT('Valid until'),
-        );
+        ];
         foreach (json_decode(Survey::model()->findByPk($this->getSurveyId())->attributedescriptions, true) as $key => $info) {
             $labels[$key] = $info['description'];
         }
@@ -87,14 +87,6 @@ abstract class Token extends Dynamic
     public static function createTable($surveyId, array $extraFields = [])
     {
         $surveyId = intval($surveyId);
-        // Specify case sensitive collations for the token
-        $sCollation = '';
-        if (Yii::app()->db->driverName == 'mysqli' | Yii::app()->db->driverName == 'mysqli') {
-            $sCollation = "COLLATE 'utf8_bin'";
-        }
-        if (Yii::app()->db->driverName == 'sqlsrv' | Yii::app()->db->driverName == 'dblib' | Yii::app()->db->driverName == 'mssql') {
-            $sCollation = "COLLATE SQL_Latin1_General_CP1_CS_AS";
-        }
         $fields = [
             'tid' => 'pk',
             'participant_id' => 'string(50)',
@@ -102,7 +94,7 @@ abstract class Token extends Dynamic
             'lastname' => 'string(40)',
             'email' => 'text',
             'emailstatus' => 'text',
-            'token' => "string(35) {$sCollation}",
+            'token' => "string(35)",
             'language' => 'string(25)',
             'blacklisted' => 'string(17)',
             'sent' => "string(17) DEFAULT 'N'",
@@ -126,10 +118,11 @@ abstract class Token extends Dynamic
             }
         }
 
+        /** @var \CDbConnection $db */
         $db = \Yii::app()->db;
-        $sTableName = self::constructTableName($surveyId);
+        $tableName = self::constructTableName($surveyId);
 
-        $db->createCommand()->createTable($sTableName, $fields);
+        $db->createCommand()->createTable($tableName, $fields);
         /**
          * Random not needed for:
          * - PostgreSQL
@@ -137,17 +130,17 @@ abstract class Token extends Dynamic
          * - MSSQL
          *
          */
-        $db->createCommand()->createIndex("idx_token_token_{$surveyId}_" . rand(1, 50000), $sTableName, 'token');
+        $db->createCommand()->createIndex("idx_token_token_{$surveyId}_" . rand(1, 50000), $tableName, 'token', true);
 
         // Refresh schema cache just in case the table existed in the past, and return if table exist
-        return $db->schema->getTable($sTableName, true);
+        return $db->schema->getTable($tableName, true);
     }
 
     public function findByToken($token)
     {
-        return $this->findByAttributes(array(
+        return $this->findByAttributes([
             'token' => $token
-        ));
+        ]);
     }
 
     /**
@@ -189,11 +182,11 @@ abstract class Token extends Dynamic
         $tkresult = Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$surveyId}}} WHERE token IS NULL OR token=''")->queryAll();
         //Exit early if there are not empty tokens
         if (count($tkresult) === 0) {
-            return array(0, 0);
+            return [0, 0];
         }
 
         //get token length from survey settings
-        $tlrow = Survey::model()->findByAttributes(array("sid" => $surveyId));
+        $tlrow = Survey::model()->findByAttributes(["sid" => $surveyId]);
 
         //Add some criteria to select only the token field
         $criteria = $this->getDbCriteria();
@@ -227,7 +220,7 @@ abstract class Token extends Dynamic
             }
         }
 
-        return array($newtokencount, count($tkresult));
+        return [$newtokencount, count($tkresult)];
 
     }
 
@@ -270,32 +263,31 @@ abstract class Token extends Dynamic
 
     public function rules()
     {
-        $aRules = array(
-            array('token', 'unique', 'allowEmpty' => true),
-            array('firstname', 'required'),
-            array('lastname', 'required'),
-            array(implode(',', $this->tableSchema->columnNames), 'safe'),
-            array('remindercount', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
-            array('email', 'filter', 'filter' => 'trim'),
-            array(
+        $aRules = [
+            ['token', 'unique', 'allowEmpty' => true],
+            ['firstname', 'required'],
+            ['lastname', 'required'],
+            [implode(',', $this->tableSchema->columnNames), 'safe'],
+            ['remindercount', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
+            ['email', 'filter', 'filter' => 'trim'],
+            [
                 'email',
-                'email',
+                \CEmailValidator::class,
                 'allowEmpty' => true,
-                'allowMultiple' => true,
                 'except' => 'allowinvalidemail'
-            ),
-            array('usesleft', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
-            array('mpid', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
-            array('blacklisted', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
-            array('emailstatus', 'default', 'value' => 'OK'),
+            ],
+            ['usesleft', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
+            ['mpid', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
+            ['blacklisted', 'in', 'range' => ['Y', 'N'], 'allowEmpty' => true],
+            ['emailstatus', 'default', 'value' => 'OK'],
             ['email', 'email', 'on' => 'register'],
             ['email', 'unique', 'on' => 'register'],
             [['lastname', 'firstname'], 'safe', 'on' => 'register'],
             ['captcha', 'captcha', 'on' => 'register'],
 
-        );
+        ];
         foreach (json_decode($this->survey->attributedescriptions, true) as $key => $info) {
-            $aRules[] = array($key, 'required');
+            $aRules[] = [$key, 'required'];
         }
 
         return $aRules;
@@ -305,33 +297,33 @@ abstract class Token extends Dynamic
     {
         $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
 
-        return array(
-            'incomplete' => array(
+        return [
+            'incomplete' => [
                 'condition' => "completed = 'N'"
-            ),
-            'usable' => array(
+            ],
+            'usable' => [
                 'condition' => "COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now'"
-            ),
-            'editable' => array(
+            ],
+            'editable' => [
                 'condition' => "COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now'"
-            ),
-            'empty' => array(
+            ],
+            'empty' => [
                 'condition' => 'token is null or token = ""'
-            )
-        );
+            ]
+        ];
     }
 
     public function summary()
     {
         $criteria = $this->getDbCriteria();
-        $criteria->select = array(
+        $criteria->select = [
             "COUNT(*) as count",
             "COUNT(CASE WHEN (token IS NULL OR token='') THEN 1 ELSE NULL END) as invalid",
             "COUNT(CASE WHEN (sent!='N' AND sent<>'') THEN 1 ELSE NULL END) as sent",
             "COUNT(CASE WHEN (emailstatus LIKE 'OptOut%') THEN 1 ELSE NULL END) as optout",
             "COUNT(CASE WHEN (completed!='N' and completed<>'') THEN 1 ELSE NULL END) as completed",
             "COUNT(CASE WHEN (completed='Q') THEN 1 ELSE NULL END) as screenout",
-        );
+        ];
         $command = $this->getCommandBuilder()->createFindCommand($this->getTableSchema(), $criteria);
 
         return $command->queryRow();

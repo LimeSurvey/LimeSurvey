@@ -23,7 +23,7 @@ class UsersController extends Controller
 
     public function actionLogin() {
         App()->pluginManager->scanPlugins();
-        $request = Yii::app()->request; 
+        $request = Yii::app()->request;
         $authenticators = App()->pluginManager->getAuthenticators(true);
         if ($request->getParam('_logintype') !== null && isset($authenticators[$request->getParam('_logintype')])) {
             $plugin = $authenticators[$request->getParam('_logintype')];
