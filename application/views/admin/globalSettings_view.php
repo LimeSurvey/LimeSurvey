@@ -112,7 +112,7 @@
                         };?>
                         </table>
                     </ul>
-                    <p><?php echo sprintf($clang->gT('You can %s download and update manually %s or use the %s.'),"<a href='http://manual.limesurvey.org//Upgrading_from_a_previous_version'>","</a>","<a href='http://manual.limesurvey.org/ComfortUpdate'>".$clang->gT('3-Click ComfortUpdate').'</a>'); ?></p>
+                    <p><?php echo sprintf($clang->gT('You can %s download and update manually %s or use the %s.'),"<a href='http://manual.limesurvey.org/Upgrading_from_a_previous_version' target='_blank'>","</a>","<a href='http://manual.limesurvey.org/ComfortUpdate' target='_blank'>".$clang->gT('3-Click ComfortUpdate').'</a>'); ?></p>
                     <?php }
                     elseif (isset($updateinfo['errorcode']))
                     { echo sprintf($clang->gT('There was an error on update check (%s)'),$updateinfo['errorcode']); ?><br />
@@ -125,7 +125,7 @@
                     }
                     else
                     {
-                        printf($clang->gT('This is an unstable version and cannot be updated using ComfortUpdate. Please check %sour website%s regularly for a newer version.'),"<a href='http://www.limesurvey.org'>","</a>");
+                        printf($clang->gT('This is an unstable version and cannot be updated using ComfortUpdate. Please check %sour website%s regularly for a newer version.'),"<a href='http://www.limesurvey.org' target='_blank'>","</a>");
                     }
 
                 ?>

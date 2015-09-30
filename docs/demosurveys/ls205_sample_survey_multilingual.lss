@@ -1843,7 +1843,7 @@
     <description><![CDATA[<p>
 	LimeSurvey can use a lot of condition and filter to show or hide question. You an use AND or OR condition. You can use previous question answers and tokens.</p>
 <p>
-	<small>More information : <a href="http://manual.limesurvey.org/Conditions_Engine">Conditions Engine</a> and <a href="http://manual.limesurvey.org/Expression_Manager">expression manager</a></small></p>
+	<small>More information : <a href="http://manual.limesurvey.org/Conditions_Engine" target="_blank">Conditions Engine</a> and <a href="http://manual.limesurvey.org/Expression_Manager" target="_blank">expression manager</a></small></p>
  ]]></description>
     <language><![CDATA[en]]></language>
     <randomization_group/>
@@ -1857,7 +1857,7 @@
     <description><![CDATA[<p>
 	LimeSurvey peut utiliser de nombreuses conditions et filtres pour masquer certaines questions. Il est possible d'utiliser des conditions de type OR ou AND. Vous pouvez utiliser les réponses précédentes mais aussi les attributs des invitations.</p>
 <p>
-	<small>Plus d'informations : <a href="http://manual.limesurvey.org/Conditions_Engine">le gestionnaire de conditions</a> et le <a href="http://manual.limesurvey.org/Expression_Manager">gestionnaire d'expressions</a></small></p>
+	<small>Plus d'informations : <a href="http://manual.limesurvey.org/Conditions_Engine" target="_blank">le gestionnaire de conditions</a> et le <a href="http://manual.limesurvey.org/Expression_Manager" target="_blank">gestionnaire d'expressions</a></small></p>
 ]]></description>
     <language><![CDATA[fr]]></language>
     <randomization_group/>
