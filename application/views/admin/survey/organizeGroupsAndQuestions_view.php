@@ -14,7 +14,7 @@
                 <?php
                     foreach ($aGroupsAndQuestions as  $aGroupAndQuestions)
                     {?>
-                    <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='group-item' data-level='group'><h4> <?php echo flattenText($aGroupAndQuestions['group_name'],true);?></h4>
+                    <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='group-item' data-level='group'><div class="h4"> <?php echo flattenText($aGroupAndQuestions['group_name'],true);?></div>
                         <?php if (isset ($aGroupAndQuestions['questions']))
                             {?>
                             <ol class='question-list' data-level='question'>
