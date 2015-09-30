@@ -158,7 +158,7 @@ class TemplatesController extends Controller
 
         // FAKE DATA FOR TEMPLATES
         $survey['sid'] = 12345;
-        $languageSettings->title = gT("ls\models\Template Sample");
+        $languageSettings->title = gT("Template Sample");
         $languageSettings->description =
             "<p>".gT('This is a sample survey description. It could be quite long.')."</p>".
             "<p>".gT("But this one isn't.")."<p>";

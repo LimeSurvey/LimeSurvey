@@ -705,7 +705,7 @@ class statistics_helper {
             // So, instead of building an array of predefined answers like we do with lists & other types,
             // we instead create two "types" of possible answer - either there is a response.. or there isn't.
             // This question type then can provide a % of the question answered in the summary.
-            $alist[]=array("ls\models\Answer", gT("ls\models\Answer"), $mfield);
+            $alist[]=array("ls\models\Answer", gT("Answer"), $mfield);
             $alist[]=array("NoAnswer", gT("No answer"), $mfield);
         }
 
@@ -744,7 +744,7 @@ class statistics_helper {
             // So, instead of building an array of predefined answers like we do with lists & other types,
             // we instead create two "types" of possible answer - either there is a response.. or there isn't.
             // This question type then can provide a % of the question answered in the summary.
-            $alist[]=array("ls\models\Answer", gT("ls\models\Answer"), $mfield);
+            $alist[]=array("ls\models\Answer", gT("Answer"), $mfield);
             $alist[]=array("NoAnswer", gT("No answer"), $mfield);
         }
 
@@ -1813,7 +1813,7 @@ class statistics_helper {
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
                     $headPDF2 = array();
-                    $headPDF2[] = array(gT("ID"),gT("ls\models\Response"));
+                    $headPDF2[] = array(gT("ID"),gT("Response"));
                     $tablePDF2 = array();
                     $result2= $this->_listcolumn($surveyid,$sColumnName);
 
@@ -1826,7 +1826,7 @@ class statistics_helper {
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='xls') {
                     $headXLS = array();
                     $tableXLS = array();
-                    $headXLS[] = array(gT("ID"),gT("ls\models\Response"));
+                    $headXLS[] = array(gT("ID"),gT("Response"));
 
                     $result2= $this->_listcolumn($surveyid,$sColumnName);
 
@@ -1851,7 +1851,7 @@ class statistics_helper {
             elseif ($outputs['qtype'] == "S" || $outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "Q")
             {
                 $headPDF = array();
-                $headPDF[] = array(gT("ls\models\Answer"),gT("Count"),gT("Percentage"));
+                $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"));
 
                 //show free text answers
                 if ($al[0] == "ls\models\Answer")
@@ -1874,7 +1874,7 @@ class statistics_helper {
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
                     $headPDF2 = array();
-                    $headPDF2[] = array(gT("ID"),gT("ls\models\Response"));
+                    $headPDF2[] = array(gT("ID"),gT("Response"));
                     $tablePDF2 = array();
                     $result2= $this->_listcolumn($surveyid,$sColumnName);
 
@@ -1897,7 +1897,7 @@ class statistics_helper {
                         {
                             case 'xls':
                                 $this->xlsRow++;
-                                $this->sheet->write($this->xlsRow,0,gT("ls\models\Answer"));
+                                $this->sheet->write($this->xlsRow,0,gT("Answer"));
                                 $this->sheet->write($this->xlsRow,1,gT("Count"));
                                 $this->sheet->write($this->xlsRow,2,gT("Percentage"));
                                 $this->sheet->write($this->xlsRow,3,gT("Sum"));
@@ -1906,12 +1906,12 @@ class statistics_helper {
                             case 'pdf':
 
                                 $headPDF = array();
-                                $headPDF[] = array(gT("ls\models\Answer"),gT("Count"),gT("Percentage"),gT("Sum"));
+                                $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"),gT("Sum"));
 
                                 break;
                             case 'html':
                                 //four columns
-                                $statisticsoutput .= "<strong>".gT("ls\models\Answer")."</strong></th>\n"
+                                $statisticsoutput .= "<strong>".gT("Answer")."</strong></th>\n"
                                 ."\t\t<th width='15%' align='center' >"
                                 ."<strong>".gT("Count")."</strong></th>\n"
                                 ."\t\t<th width='20%' align='center' >"
@@ -1934,7 +1934,7 @@ class statistics_helper {
                         {
                             case 'xls':
                                 $this->xlsRow++;
-                                $this->sheet->write($this->xlsRow,0,gT("ls\models\Answer"));
+                                $this->sheet->write($this->xlsRow,0,gT("Answer"));
                                 $this->sheet->write($this->xlsRow,1,gT("Count"));
                                 $this->sheet->write($this->xlsRow,2,gT("Percentage"));
                                 break;
@@ -1942,12 +1942,12 @@ class statistics_helper {
                             case 'pdf':
 
                                 $headPDF = array();
-                                $headPDF[] = array(gT("ls\models\Answer"),gT("Count"),gT("Percentage"));
+                                $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"));
 
                                 break;
                             case 'html':
                                 //three columns
-                                $statisticsoutput .= "<strong>".gT("ls\models\Answer")."</strong></td>\n"
+                                $statisticsoutput .= "<strong>".gT("Answer")."</strong></td>\n"
                                 ."\t\t<th width='25%' align='center' >"
                                 ."<strong>".gT("Count")."</strong></th>\n"
                                 ."\t\t<th width='25%' align='center' >"
@@ -1978,7 +1978,7 @@ class statistics_helper {
                     {
                         case 'xls':
                             $this->xlsRow++;
-                            $this->sheet->write($this->xlsRow,0,gT("ls\models\Answer"));
+                            $this->sheet->write($this->xlsRow,0,gT("Answer"));
                             $this->sheet->write($this->xlsRow,1,gT("Count"));
                             $this->sheet->write($this->xlsRow,2,gT("Percentage"));
                             break;
@@ -1986,12 +1986,12 @@ class statistics_helper {
                         case 'pdf':
 
                             $headPDF = array();
-                            $headPDF[] = array(gT("ls\models\Answer"),gT("Count"),gT("Percentage"));
+                            $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"));
 
                             break;
                         case 'html':
                             //three columns
-                            $statisticsoutput .= "<strong>".gT("ls\models\Answer")."</strong></th>\n"
+                            $statisticsoutput .= "<strong>".gT("Answer")."</strong></th>\n"
                             ."\t\t<th width='25%' align='center' >"
                             ."<strong>".gT("Count")."</strong></th>\n"
                             ."\t\t<th width='25%' align='center' >"
@@ -2924,7 +2924,7 @@ class statistics_helper {
             $this->pdf->SetAuthor('LimeSurvey');
             $this->pdf->SetTitle(sprintf(gT("Statistics survey %s"),$surveyid));
             $this->pdf->SetSubject($surveyInfo['surveyls_title']);
-            $this->pdf->SetKeywords('LimeSurvey,'.gT("Statistics").', '.sprintf(gT("ls\models\Survey %s"),$surveyid));
+            $this->pdf->SetKeywords('LimeSurvey,'.gT("Statistics").', '.sprintf(gT("Survey %s"),$surveyid));
             $this->pdf->SetDisplayMode('fullpage', 'two');
             $this->pdf->setLanguageArray($aPdfLanguageSettings['lg']);
 
@@ -2935,7 +2935,7 @@ class statistics_helper {
             // set default header data
             // Since png crashes some servers (and we can not try/catch that) we use .gif (or .jpg) instead
             $headerlogo = 'statistics.gif';
-            $this->pdf->SetHeaderData($headerlogo, 10, gT("Quick statistics",'unescaped') , gT("ls\models\Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
+            $this->pdf->SetHeaderData($headerlogo, 10, gT("Quick statistics",'unescaped') , gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
             $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
             // set default monospaced font
             $this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -3043,7 +3043,7 @@ class statistics_helper {
                 }
                 $this->pdf->AddPage('P', ' A4');
                 $this->pdf->Bookmark(gT("Results",'unescaped'), 0, 0);
-                $this->pdf->titleintopdf(gT("Results",'unescaped'),gT("ls\models\Survey",'unescaped')." ".$surveyid);
+                $this->pdf->titleintopdf(gT("Results",'unescaped'),gT("Survey",'unescaped')." ".$surveyid);
                 $this->pdf->tableintopdf($array);
                 break;
 

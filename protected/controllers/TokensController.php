@@ -222,7 +222,7 @@ class TokensController extends Controller
             $message = "<div id='wrapper' class='message tokenmessage'>"
                 . "<p>".gT("Thank you for registering to participate in this survey.")."</p>\n"
                 . "<p>{$this->sMailMessage}</p>\n"
-                . "<p>".sprintf(gT("ls\models\Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
+                . "<p>".sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
                 . "</div>\n";
         }
         else
@@ -230,7 +230,7 @@ class TokensController extends Controller
             $message = "<div id='wrapper' class='message tokenmessage'>"
                 . "<p>".gT("Thank you for registering to participate in this survey.")."</p>\n"
                 . "<p>".gT("You are registred but an error happen when trying to send the email, please contact the survey administrator.")."</p>\n"
-                . "<p>".sprintf(gT("ls\models\Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
+                . "<p>".sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
                 . "</div>\n";
         }
         return $message;
@@ -247,9 +247,9 @@ class TokensController extends Controller
         if (!isset($surveyId)) {
             throw new \InvalidArgumentException("SurveyID is required when loading token.");
         } elseif (!\ls\models\Token::valid($surveyId)) {
-            throw new \CHttpException(404, gT("ls\models\Token table not found"));
+            throw new \CHttpException(404, gT("Token table not found"));
         } elseif (null === $result = \ls\models\Token::model($surveyId)->findByPk($id)) {
-            throw new \CHttpException(404, gT("ls\models\Token not found"));
+            throw new \CHttpException(404, gT("Token not found"));
         }
         return $result;
     }
@@ -262,7 +262,7 @@ class TokensController extends Controller
      */
     public function actionDelete($id, $surveyId) {
         if ($this->loadModel($id, $surveyId)->delete()) {
-            App()->user->setFlash('success', gT("ls\models\Token deleted"));
+            App()->user->setFlash('success', gT("Token deleted"));
         } else {
             App()->user->setFlash('success', gT("Could not delete token"));
         }

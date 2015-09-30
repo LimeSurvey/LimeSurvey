@@ -119,7 +119,7 @@ class ParticipantsController extends Controller
         $fields = array_flip($participant->safeAttributeNames);
 
 
-        $batchInserter = new \ls\components\Batch(function(array $batch, $category = null) {
+        $batchInserter = new \ls\components\Batch(function (array $batch, $category = null) {
             if (!empty($batch)) {
                 \Yii::beginProfile('query');
                 try {
@@ -190,7 +190,7 @@ class ParticipantsController extends Controller
         if (strcasecmp(App()->request->psr7->getMethod(), 'put') === 0 && isset(App()->request->psr7->getParsedBody()['ls\models\Participant'])) {
             $participant->setAttributes(App()->request->psr7->getParsedBody()['ls\models\Participant']);
             if ($participant->save()) {
-                App()->user->setFlash('success', gT("ls\models\Participant information updated."));
+                App()->user->setFlash('success', gT("Participant information updated."));
                 $this->redirect(['participants/index']);
             }
         }

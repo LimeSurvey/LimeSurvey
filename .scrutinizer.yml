@@ -1,6 +1,6 @@
 filter:
-    excluded_paths: [framework/*, locale/*, docs/*, fonts/*, third_party/*, application/third_party/*, images/*, styles/*, styles-public/*, templates/*, themes/*, tmp/*, upload/*]
-    paths: [application/*]
+    excluded_paths: [protected/vendor]
+    paths: [protected/*]
 tools:
     php_code_sniffer:
         config:

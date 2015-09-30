@@ -188,7 +188,7 @@ class ExpressionValidate extends Survey_Common_Action {
         $aReplacement["TOKEN:LANGUAGE"] = gt("language of token");
         foreach ($aAttributes as $sAttribute=>$aAttribute)
         {
-            $aReplacement['TOKEN:'.strtoupper($sAttribute).'']=sprintf(gT("ls\models\Token attribute: %s"), $aAttribute['description']);
+            $aReplacement['TOKEN:'.strtoupper($sAttribute).'']=sprintf(gT("Token attribute: %s"), $aAttribute['description']);
         }
 
         switch ($sType)
@@ -206,7 +206,7 @@ class ExpressionValidate extends Survey_Common_Action {
                 $aReplacement["SURVEYURL"] = gt("URL of the survey");
                 foreach ($aAttributes as $sAttribute=>$aAttribute)
                 {
-                    $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("ls\models\Token attribute: %s"), $aAttribute['description']);
+                    $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
                 }
                 break;
             case 'confirmation' :
@@ -216,7 +216,7 @@ class ExpressionValidate extends Survey_Common_Action {
                 $aReplacement["SURVEYURL"] = gt("URL of the survey");
                 foreach ($aAttributes as $sAttribute=>$aAttribute)
                 {
-                    $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("ls\models\Token attribute: %s"), $aAttribute['description']);
+                    $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
                 }
                 // $moveResult = LimeExpressionManager::NavigateForwards(); // Seems OK without, nut need $LEM::StartSurvey
                 break;

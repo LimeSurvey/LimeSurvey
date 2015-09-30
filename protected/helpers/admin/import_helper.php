@@ -1129,7 +1129,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             // Set a warning if question title was updated
             if(isset($sNewTitle))
             {
-                $results['importwarnings'][] = sprintf(gT("ls\models\Question code %s was updated to %s."),$sOldTitle,$sNewTitle);
+                $results['importwarnings'][] = sprintf(gT("Question code %s was updated to %s."),$sOldTitle,$sNewTitle);
                 $aQuestionCodeReplacements[$sOldTitle]=$sNewTitle;
                 unset($sNewTitle);
                 unset($sOldTitle);

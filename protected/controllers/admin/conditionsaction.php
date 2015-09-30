@@ -1757,12 +1757,12 @@ class conditionsaction extends Survey_Common_Action {
 
             // Begin "ls\models\Question" row
             $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
-            ."<div class='condition-tbl-left'>".gT("ls\models\Question")."</div>\n"
+            ."<div class='condition-tbl-left'>".gT("Question")."</div>\n"
             ."<div class='condition-tbl-right'>\n"
             ."\t<div id=\"conditionsource\" class=\"tabs-nav\">\n"
             ."\t<ul>\n"
             ."\t<li><a href=\"#SRCPREVQUEST\"><span>".gT("Previous questions")."</span></a></li>\n"
-            ."\t<li><a href=\"#SRCTOKENATTRS\"><span>".gT("ls\models\Token fields")."</span></a></li>\n"
+            ."\t<li><a href=\"#SRCTOKENATTRS\"><span>".gT("Token fields")."</span></a></li>\n"
             ."\t</ul>\n";
 
             // Previous question tab
@@ -1834,7 +1834,7 @@ class conditionsaction extends Survey_Common_Action {
 
             // Begin "ls\models\Answer" row
             $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
-            ."<div class='condition-tbl-left'>".gT("ls\models\Answer")."</div>\n";
+            ."<div class='condition-tbl-left'>".gT("Answer")."</div>\n";
 
             if ($subaction == "editthiscondition")
             {
@@ -1885,7 +1885,7 @@ class conditionsaction extends Survey_Common_Action {
             ."\t\t<li><a href=\"#CANSWERSTAB\"><span>".gT("Predefined")."</span></a></li>\n"
             ."\t\t<li><a href=\"#CONST\"><span>".gT("Constant")."</span></a></li>\n"
             ."\t\t<li><a href=\"#PREVQUESTIONS\"><span>".gT("Questions")."</span></a></li>\n"
-            ."\t\t<li><a href=\"#TOKENATTRS\"><span>".gT("ls\models\Token fields")."</span></a></li>\n"
+            ."\t\t<li><a href=\"#TOKENATTRS\"><span>".gT("Token fields")."</span></a></li>\n"
             ."\t\t<li><a href=\"#REGEXP\"><span>".gT("RegExp")."</span></a></li>\n"
             ."\t</ul>\n";
 
@@ -1917,7 +1917,7 @@ class conditionsaction extends Survey_Common_Action {
                 }
             }
             $aViewUrls['output'] .= "\t\t</select>\n"
-            ."\t\t<br /><span id='prevQuestionSGQALabel'>".gT("ls\models\Answer from previous questions")."</span>\n"
+            ."\t\t<br /><span id='prevQuestionSGQALabel'>".gT("Answer from previous questions")."</span>\n"
             ."\t</div>\n";
 
             // ls\models\Token tab
@@ -2117,10 +2117,10 @@ class conditionsaction extends Survey_Common_Action {
 
             //output with hoover effect
             $reshtml= "<span style='cursor: hand' alt='".$htmlhinttext."' title='".$htmlhinttext."' "
-            ." onclick=\"alert('".gT("ls\models\Question","js").": $jshinttext')\" />"
+            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\" />"
             ." \"$shortstring...\" </span>"
             ."<img style='cursor: hand' src='$imageurl/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
-            ." onclick=\"alert('".gT("ls\models\Question","js").": $jshinttext')\" />";
+            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\" />";
         }
         else
         {

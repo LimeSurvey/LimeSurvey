@@ -151,5 +151,20 @@ return [
         'js' => [
             'bootstrap-notify.min.js'
         ]
+    ],
+    'papaparse' => [
+        'basePath' => 'bower.papaparse',
+        'js' => [
+            'papaparse.js'
+        ]
+    ],
+    'ajaxq' => [
+        'basePath' => 'bower.ajaxq',
+        'js' => [
+            'ajaxq.js'
+        ],
+        'depends' => [
+            'jquery'
+        ]
     ]
 ];

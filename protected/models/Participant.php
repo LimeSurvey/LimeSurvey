@@ -4,7 +4,7 @@ namespace ls\models;
 use ls\components\UuidDefaultValidator;
 use ls\models\ActiveRecord;
 use ls\models\Survey;
-
+use \DateTime;
 /**
  * This is the model class for table "{{participants}}".
  *
@@ -110,7 +110,7 @@ class Participant extends ActiveRecord
     public function attributeLabels()
     {
         return array(
-            'participant_id' => 'ls\models\Participant',
+            'participant_id' => 'Participant',
             'firstname' => 'First name',
             'lastname' => 'Last name',
             'email' => 'Email',

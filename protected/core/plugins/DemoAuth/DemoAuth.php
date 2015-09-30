@@ -21,7 +21,7 @@ class DemoAuth extends PluginBase implements \ls\pluginmanager\iAuthenticationPl
             'settings' => [
                 'id' => [
                     'type' => 'select',
-                    'label' => gT("ls\models\User"),
+                    'label' => gT("User"),
                     'options' => CHtml::listData($this->getUsers()->data, 'id', 'name')
                 ],
             ]

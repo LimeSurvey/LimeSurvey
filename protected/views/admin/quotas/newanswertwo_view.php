@@ -1,5 +1,5 @@
 <?php if (count($question_answers) == $x) { ?>
-<div class="header"><?php eT("Add answer");?>: <?php eT("ls\models\Question Selection");?></div><br />
+<div class="header"><?php eT("Add answer");?>: <?php eT("Question Selection");?></div><br />
 	<div class="messagebox">
 		<?php eT("All answers are already selected in this quota.");?>
 		<br/><br/><input type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$iSurveyId");?>', '_top')" value="<?php eT("Continue");?>"/>

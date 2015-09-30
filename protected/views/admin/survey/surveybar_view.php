@@ -247,7 +247,7 @@
                 {
                     if ($activated)
                     { ?><li><a href='#'>
-                            <img src='<?php echo $sImageURL; ?>organize_disabled.png' title='' alt='<?php eT("ls\models\Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>'
+                            <img src='<?php echo $sImageURL; ?>organize_disabled.png' title='' alt='<?php eT("Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>'
                                 width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a></li>
                     <?php }
                     else
@@ -260,7 +260,7 @@
 
             <?php if($tokenmanagement) { ?>
                 <li><a href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>">
-                        <img src='<?php echo $sImageURL;?>tokens.png' alt='<?php eT("ls\models\Token management");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
+                        <img src='<?php echo $sImageURL;?>tokens.png' alt='<?php eT("Token management");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
                 </li>
                 <?php } ?>
         </ul>
@@ -268,7 +268,7 @@
         <div class='menubar-right'>
             <?php if ($permission)
                 { ?>
-                <label for='groupselect'><?php eT("ls\models\Question groups:"); ?></label>
+                <label for='groupselect'><?php eT("Question groups:"); ?></label>
                 <select name='groupselect' id='groupselect' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
 
                     <?php echo $groups; ?>

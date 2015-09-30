@@ -10,7 +10,7 @@
     <ul>
         <li>
             <a href='#usercontrol'><?php
-        eT("ls\models\User control");
+        eT("User control");
         ?></a>
         </li>
     </ul>

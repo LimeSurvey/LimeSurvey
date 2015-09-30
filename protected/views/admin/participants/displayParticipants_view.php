@@ -89,19 +89,19 @@ else
     /* End search form titles */
 
     /* Colnames and heading for survey links subgrid */
-    var linksHeadingTxt="<?php eT("ls\models\Participant's survey information", 'js')?>";
+    var linksHeadingTxt="<?php eT("Participant's survey information", 'js')?>";
     var surveyNameColTxt="<?php eT("Survey name", 'js')?>";
     var surveyIdColTxt="<?php eT("Survey ID", 'js') ?>";
-    var tokenIdColTxt="<?php eT("ls\models\Token ID", 'js') ?>";
+    var tokenIdColTxt="<?php eT("Token ID", 'js') ?>";
     var dateAddedColTxt="<?php eT("Date added", 'js') ?>";
     var dateInvitedColTxt="<?php eT("Last invited", 'js') ?>";
     var dateCompletedColTxt="<?php eT("Submitted", 'js') ?>";
     var surveylinkUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getSurveyInfo_json/pid/"); ?>";
 
     /* Colnames and heading for attributes subgrid */
-    var attributesHeadingTxt="<?php eT("ls\models\Participant's attribute information", 'js') ?>";
+    var attributesHeadingTxt="<?php eT("Participant's attribute information", 'js') ?>";
     var actionsColTxt="<?php eT("Actions", 'js') ?>";
-    var participantIdColTxt="<?php eT("ls\models\Participant ID", 'js') ?>";
+    var participantIdColTxt="<?php eT("Participant ID", 'js') ?>";
     var attributeTypeColTxt="<?php eT("Attribute type", 'js') ?>";
     var attributeIdColTxt="<?php eT("Attribute ID", 'js') ?>";
     var attributeNameColTxt="<?php eT("Attribute name", 'js') ?>";
@@ -253,7 +253,7 @@ echo $colModels;
 <div id="shareform" title="<?php eT("Share") ?>" style="display:none">
   <div class='popupgroup'>
     <p>
-<?php eT("ls\models\User with whom the participants are to be shared"); ?></p>
+<?php eT("User with whom the participants are to be shared"); ?></p>
     <p>
         <?php
         $options[''] = gT("Select...");

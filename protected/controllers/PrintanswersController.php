@@ -94,7 +94,7 @@ use \Yii;
             {
                 $sOutput = CHtml::form(["printanswers/view/surveyid/{$iSurveyID}/printableexport/pdf"], 'post')
                 ."<center><input type='submit' value='".gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
-                $sOutput .= "\t<div class='printouttitle'><strong>".gT("ls\models\Survey name (ID):")."</strong> $sSurveyName ($iSurveyID)</div><p>&nbsp;\n";
+                $sOutput .= "\t<div class='printouttitle'><strong>".gT("Survey name (ID):")."</strong> $sSurveyName ($iSurveyID)</div><p>&nbsp;\n";
                 LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
                 // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
                 LimeExpressionManager::StartProcessingGroup(1,($aSurveyInfo['anonymized']!="N"),$iSurveyID);

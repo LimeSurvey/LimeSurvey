@@ -2278,10 +2278,10 @@ use ls\models\Survey;
             $_minV = (($date_min == '') ? "''" : "if((strtotime(" . $date_min . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_min . ")),'')");
             $_maxV = (($date_max == '') ? "''" : "if((strtotime(" . $date_max . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_max . ")),'')");
             $qtips['value_range'] =
-                "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . gT("ls\models\Answer must be greater or equal to %s") . "',$_minV), '')}" .
-                "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . gT("ls\models\Answer must be less or equal to %s") . "',$_maxV), '')}" .
-                "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . gT("ls\models\Answer must be %s") . "', $_minV), '')}" .
-                "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . gT("ls\models\Answer must be between %s and %s") . "', ($_minV), ($_maxV)), '')}";
+                "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . gT("Answer must be greater or equal to %s") . "',$_minV), '')}" .
+                "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . gT("Answer must be less or equal to %s") . "',$_maxV), '')}" .
+                "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . gT("Answer must be %s") . "', $_minV), '')}" .
+                "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . gT("Answer must be between %s and %s") . "', ($_minV), ($_maxV)), '')}";
         }
 
         // min/max value for each numeric entry - for multi-flexible question type
@@ -4814,7 +4814,7 @@ use ls\models\Survey;
                     $attrs['other'] = $LEM->questionSeq2relevance[$qseq]['other'];
                 }
                 if (count($attrs) > 0) {
-                    $attrTable = "<table id='logicfileattributetable'><tr><th>" . gT("ls\models\Question attribute") . "</th><th>" . gT("Value") . "</th></tr>\n";
+                    $attrTable = "<table id='logicfileattributetable'><tr><th>" . gT("Question attribute") . "</th><th>" . gT("Value") . "</th></tr>\n";
                     $count = 0;
                     foreach ($attrs as $key => $value) {
                         if (is_null($value) || trim($value) == '') {

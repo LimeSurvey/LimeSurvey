@@ -75,7 +75,7 @@
             </fieldset>
 
             <fieldset id='left'>
-                <legend><?php eT("ls\models\Response ID"); ?></legend>
+                <legend><?php eT("Response ID"); ?></legend>
                 <ul>
                     <li>
                         <label for='idG'><?php eT("Greater than:"); ?></label>
@@ -143,7 +143,7 @@
     <div style='clear: both'></div>
     <div class='header header_statistics'>
         <div style='float:right'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidefilter' alt='<?php eT("Minimize"); ?>'/></div>
-        <?php eT("ls\models\Response filters"); ?>
+        <?php eT("Response filters"); ?>
     </div>
     <!-- AUTOSCROLLING DIV CONTAINING QUESTION FILTERS -->
     <div id='statisticsresponsefilters' class='statisticsfilters scrollheight_400' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
@@ -173,7 +173,7 @@
                             <strong>
                                 <?php echo $flt[4]; ?>
                             </strong>
-                            (<?php echo gT("ls\models\Question group").$flt[1]; ?>)
+                            (<?php echo gT("Question group").$flt[1]; ?>)
                         </span>
                     </div>
                 </td>
@@ -1283,10 +1283,10 @@ flush(); //Let's give the user something to look at while they wait for the pret
 
             //output with hoover effect
             $reshtml= "<span style='cursor: pointer' title='".$htmlhinttext."' "
-            ." onclick=\"alert('".gT("ls\models\Question","js").": $jshinttext')\">"
+            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\">"
             ." \"$shortstring...\" </span>"
             ."<img style='cursor: pointer' src='$sImageURL/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
-            ." onclick=\"alert('".gT("ls\models\Question","js").": $jshinttext')\" />";
+            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\" />";
         }
         else
         {

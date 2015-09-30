@@ -103,7 +103,7 @@
     </tr>
     <tr>
         <td>
-            <strong><?php eT("ls\models\Template:");?></strong>
+            <strong><?php eT("Template:");?></strong>
         </td>
         <td>
             <?php echo $surveyinfo['template'];?>

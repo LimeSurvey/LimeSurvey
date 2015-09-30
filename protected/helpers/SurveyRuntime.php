@@ -31,7 +31,7 @@ class SurveyRuntime {
         echo "\n\n<!-- PRESENT THE INDEX -->\n";
         echo TbHtml::openTag('div', array('id' => 'index'));
         echo TbHtml::openTag('div', array('class' => 'container'));
-        echo TbHtml::tag('h2', array(), gT("ls\models\Question index"));
+        echo TbHtml::tag('h2', array(), gT("Question index"));
         echo TbHtml::openTag('ol');
         /**
          * @var int $key
@@ -69,7 +69,7 @@ class SurveyRuntime {
     {
         echo TbHtml::openTag('div', array('id' => 'index'));
         echo TbHtml::openTag('div', array('class' => 'container'));
-        echo TbHtml::tag('h2', array(), gT("ls\models\Question index"));
+        echo TbHtml::tag('h2', array(), gT("Question index"));
         echo 'ls\models\Question by question not yet supported, use incremental index.';
         echo TbHtml::closeTag('div');
         echo TbHtml::closeTag('div');
@@ -81,7 +81,7 @@ class SurveyRuntime {
     {
         echo "\n\n<!-- PRESENT THE INDEX -->\n";
 
-        echo '<div id="index"><div class="container"><h2>' . gT("ls\models\Question index") . '</h2>';
+        echo '<div id="index"><div class="container"><h2>' . gT("Question index") . '</h2>';
 
         $lastGseq=-1;
         $gseq = -1;

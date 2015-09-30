@@ -45,7 +45,7 @@ class SurveyLanguageSetting extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'surveyls_title' => gT("ls\models\Survey title"),
+            'surveyls_title' => gT("Survey title"),
             'surveyls_endtext' => gT("End message"),
             'surveyls_welcometext' => gT('Welcome message'),
             'surveyls_description' => gT('Description'),

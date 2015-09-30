@@ -253,35 +253,35 @@ class printablesurvey extends Survey_Common_Action
                             if($distinctrow['cqid']){ // cqid != 0  ==> previous answer match
                                 if($distinctrow['method']=='==')
                                 {
-                                    $sExplanation .= gT("ls\models\Answer was")." ";
+                                    $sExplanation .= gT("Answer was")." ";
                                 }
                                 elseif($distinctrow['method']=='!=')
                                 {
-                                    $sExplanation .= gT("ls\models\Answer was NOT")." ";
+                                    $sExplanation .= gT("Answer was NOT")." ";
                                 }
                                 elseif($distinctrow['method']=='<')
                                 {
-                                    $sExplanation .= gT("ls\models\Answer was less than")." ";
+                                    $sExplanation .= gT("Answer was less than")." ";
                                 }
                                 elseif($distinctrow['method']=='<=')
                                 {
-                                    $sExplanation .= gT("ls\models\Answer was less than or equal to")." ";
+                                    $sExplanation .= gT("Answer was less than or equal to")." ";
                                 }
                                 elseif($distinctrow['method']=='>=')
                                 {
-                                    $sExplanation .= gT("ls\models\Answer was greater than or equal to")." ";
+                                    $sExplanation .= gT("Answer was greater than or equal to")." ";
                                 }
                                 elseif($distinctrow['method']=='>')
                                 {
-                                    $sExplanation .= gT("ls\models\Answer was greater than")." ";
+                                    $sExplanation .= gT("Answer was greater than")." ";
                                 }
                                 elseif($distinctrow['method']=='RX')
                                 {
-                                    $sExplanation .= gT("ls\models\Answer matched (regexp)")." ";
+                                    $sExplanation .= gT("Answer matched (regexp)")." ";
                                 }
                                 else
                                 {
-                                    $sExplanation .= gT("ls\models\Answer was")." ";
+                                    $sExplanation .= gT("Answer was")." ";
                                 }
                             }
                             if(!$distinctrow['cqid']) { // cqid == 0  ==> token attribute match
@@ -577,7 +577,7 @@ class printablesurvey extends Survey_Common_Action
                         if(isset($showsgqacode) && $showsgqacode == true)
                         {
                             $deqrow['question'] = $deqrow['question']."<br />".gT("ID:")." $fieldname <br />".
-                                                  gT("ls\models\Question code:")." ".$deqrow['title'];
+                                                  gT("Question code:")." ".$deqrow['title'];
                         }
 
                         $question = [

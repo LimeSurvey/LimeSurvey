@@ -132,7 +132,7 @@ class UserAction extends Survey_Common_Action
                 $body .= "<a href='" . $this->getController()->createAbsoluteUrl("/admin") . "'>" . gT("Click here to log in.") . "</a><br /><br />\n";
                 $body .= sprintf(gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'), Yii::app()->getConfig("siteadminemail")) . "<br />\n";
 
-                $subject = sprintf(gT("ls\models\User registration at '%s'", "unescaped"), Yii::app()->getConfig("sitename"));
+                $subject = sprintf(gT("User registration at '%s'", "unescaped"), Yii::app()->getConfig("sitename"));
                 $to = $new_user . " <$new_email>";
                 $from = Yii::app()->getConfig("siteadminname") . " <" . Yii::app()->getConfig("siteadminemail") . ">";
                 $extra = '';
@@ -283,7 +283,7 @@ class UserAction extends Survey_Common_Action
             die();
         }
 
-        $extra = "<br />" . sprintf(gT("ls\models\User '%s' was successfully deleted."),$postuser)."<br /><br />\n";
+        $extra = "<br />" . sprintf(gT("User '%s' was successfully deleted."),$postuser)."<br /><br />\n";
         if ($transfer_surveys_to > 0 && $iSurveysTransferred>0) {
             $user = User::model()->findByPk($transfer_surveys_to);
             $sTransferred_to = $user->users_name;
@@ -578,7 +578,7 @@ class UserAction extends Survey_Common_Action
                 $uresult = $oPermission->save();
             }
             if ($uresult !== false) {
-                Yii::app()->setFlashMessage(gT("ls\models\Template permissions were updated successfully."));
+                Yii::app()->setFlashMessage(gT("Template permissions were updated successfully."));
             }
             else
             {

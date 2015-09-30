@@ -86,7 +86,7 @@ class Assessments extends Survey_Common_Action
     {
         $oAssessments = Assessment::model()->findAllByAttributes(['sid' => $iSurveyID]);
         $aData = $this->_collectGroupData($iSurveyID);
-        $aHeadings = [gT("Scope"), gT("ls\models\Question group"), gT("Minimum"), gT("Maximum")];
+        $aHeadings = [gT("Scope"), gT("Question group"), gT("Minimum"), gT("Maximum")];
         $aData['actiontitle'] = gT("Add");
         $aData['actionvalue'] = "assessmentadd";
         $aData['editId'] = '';
@@ -108,7 +108,7 @@ class Assessments extends Survey_Common_Action
 
         Yii::app()->loadHelper('admin/htmleditor');
         if ($surveyinfo['assessments']!='Y')
-            $urls['message'] = ['title' => gT("Assessments mode not activated"), 'message' => sprintf(gT("ls\models\Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="'.$this->getController()->createUrl('admin/survey/sa/editsurveysettings/surveyid/'.$iSurveyID).'">','</a>'), 'class'=> 'warningheader'];
+            $urls['message'] = ['title' => gT("Assessments mode not activated"), 'message' => sprintf(gT("Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="'.$this->getController()->createUrl('admin/survey/sa/editsurveysettings/surveyid/'.$iSurveyID).'">','</a>'), 'class'=> 'warningheader'];
         $urls['assessments_view'][]= $aData;
         $this->_renderWrappedTemplate('', $urls, $aData);
     }

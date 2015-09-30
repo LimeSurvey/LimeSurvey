@@ -118,7 +118,7 @@
                 <legend><?php eT("Responses");?></legend>
                 <ul>
                     <li><?php echo CHTML::radioButton('answers',false,array('value'=>'short','id'=>'answers-short'));
-                        echo CHTML::label(gT("ls\models\Answer codes"),'answers-short');?>
+                        echo CHTML::label(gT("Answer codes"),'answers-short');?>
                         <ul>
                             <li><?php echo CHTML::checkBox('converty',false,array('value'=>'Y','id'=>'converty'));
                                 echo CHTML::label(gT("Convert Y to"),'converty');?>
@@ -151,7 +151,7 @@
                 <span id='columncount'>&nbsp;</span>
                 </fieldset>
             <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}") && App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $surveyid])) { ?>
-                <fieldset><legend><?php eT("ls\models\Token control");?></legend>
+                <fieldset><legend><?php eT("Token control");?></legend>
                     <?php eT("Choose token fields");?>:
                     <img src='<?php echo $imageurl;?>/help.gif' alt='<?php eT("Help");?>' onclick='javascript:alert("<?php gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js");?>")' /><br />
                     <select name='attribute_select[]' multiple size='20'>

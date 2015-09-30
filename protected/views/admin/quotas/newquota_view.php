@@ -2,15 +2,15 @@
 <?php echo CHtml::form(array("admin/quotas/sa/insertquota/surveyid/{$iSurveyId}"), 'post', array('class'=>'form30', 'id'=>'addnewquotaform', 'name'=>'addnewquotaform')); ?>
     <ul>
         <li>
-            <label for="quota_name"><?php eT("ls\models\Quota name");?>:</label>
+            <label for="quota_name"><?php eT("Quota name");?>:</label>
             <input id="quota_name" name="quota_name" type="text" size="30" maxlength="255" />
         </li>
         <li>
-            <label for="quota_limit"><?php eT("ls\models\Quota limit");?>:</label>
+            <label for="quota_limit"><?php eT("Quota limit");?>:</label>
             <input id="quota_limit" name="quota_limit" type="text" size="12" maxlength="8" />
         </li>
         <li>
-            <label for="quota_action"><?php eT("ls\models\Quota action");?>:</label>
+            <label for="quota_action"><?php eT("Quota action");?>:</label>
             <select id="quota_action" name="quota_action">
                 <option value ="1"><?php eT("Terminate survey");?></option>
                 <option value ="2"><?php eT("Terminate survey with warning");?></option>
@@ -33,7 +33,7 @@
             <div id="tabpage_<?php echo $lang ?>">
                 <ul>
                     <li>
-                        <label for="quotals_message_<?php echo $lang;?>"><?php eT("ls\models\Quota message");?>:</label>
+                        <label for="quotals_message_<?php echo $lang;?>"><?php eT("Quota message");?>:</label>
                         <textarea id="quotals_message_<?php echo $lang;?>" name="quotals_message_<?php echo $lang;?>" cols="60" rows="6"><?php eT("Sorry your responses have exceeded a quota on this survey.");?></textarea>
                     </li>
                     <li>

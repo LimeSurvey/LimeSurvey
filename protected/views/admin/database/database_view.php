@@ -1,7 +1,7 @@
 <?php
 if (isset($uqresult))
 {?>
-<script type="text/javascript">alert("<?php eT("ls\models\Question could not be updated", 'js'); ?>")</script><br />
+<script type="text/javascript">alert("<?php eT("Question could not be updated", 'js'); ?>")</script><br />
 <?php
 }
 if (isset($result)) // Checked
@@ -37,25 +37,25 @@ if (isset($strlen) && $strlen < 1)
 if (isset($result2))
 {
 ?>
-<script type="text/javascript">alert("<?php printf(gT("ls\models\Question in language %s could not be created.", 'js'), $alang); ?>")</script><br />
+<script type="text/javascript">alert("<?php printf(gT("Question in language %s could not be created.", 'js'), $alang); ?>")</script><br />
 <?php
 }
 if (isset($result3))
 {
 ?>
-<script type="text/javascript">alert("<?php eT("ls\models\Question could not be created.", 'js'); ?>")</script><br />
+<script type="text/javascript">alert("<?php eT("Question could not be created.", 'js'); ?>")</script><br />
 <?php
 }
 if (isset($cccount) && $cccount)
 {
 ?>
-<script type="text/javascript">alert("<?php eT("ls\models\Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question.", 'js'); ?> (<?php echo $qidlist; ?>)")</script><br />
+<script type="text/javascript">alert("<?php eT("Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question.", 'js'); ?> (<?php echo $qidlist; ?>)")</script><br />
 <?php
 }
 if (isset($uqresult))
 {
 ?>
-<script type="text/javascript">alert("<?php eT("ls\models\Question could not be updated", 'js'); ?>")</script><br />
+<script type="text/javascript">alert("<?php eT("Question could not be updated", 'js'); ?>")</script><br />
 <?php
 }
 if (isset($array_result) && !is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
@@ -68,7 +68,7 @@ if (isset($array_result) && !is_null($array_result['notAbove']) && is_null($arra
 if (!isset($gid) || $gid != "")
 {
 ?>
-<script type="text/javascript">alert("<?php eT("ls\models\Question could not be updated", 'js'); ?>")</script><br />
+<script type="text/javascript">alert("<?php eT("Question could not be updated", 'js'); ?>")</script><br />
 <?php
 }
 if (isset($usresult) &&$usresult)

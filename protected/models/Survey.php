@@ -921,8 +921,8 @@ class Survey extends ActiveRecord
     public function getFeatureOptions()
     {
         return [
-            'use_series' => gT("ls\models\Response series"),
-            'bool_usetokens' => gT("ls\models\Token support"),
+            'use_series' => gT("Response series"),
+            'bool_usetokens' => gT("Token support"),
             'bool_anonymized' => gT("Anonymized responses"),
             'bool_datestamp' => gT("Date stamps"),
             'bool_ipaddr' => gT("Log IP address"),

@@ -77,7 +77,7 @@
                 if(Permission::model()->hasGlobalPermission('templates','read'))
                 { ?>
                 <a href="<?php echo $this->createUrl("admin/templates/sa/view"); ?>">
-                    <img src='<?php echo $sImageURL;?>templates.png' alt='<?php eT("ls\models\Template Editor");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
+                    <img src='<?php echo $sImageURL;?>templates.png' alt='<?php eT("Template Editor");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php } ?>
             <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
             <?php

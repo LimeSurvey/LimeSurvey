@@ -1,5 +1,5 @@
 <?php
-	class ExpressionManagerTest extends CTestCase
+	class ExpressionManagerTest extends \PHPUnit_Framework_TestCase
 	{
 		/**
 		 *
@@ -143,7 +143,7 @@
 		public function oldTestEvaluator()
 		{
 			
-
+/*
         // Syntax for $tests is
         // expectedResult~expression
         // if the expected result is an error, use NULL for the expected result
@@ -818,7 +818,7 @@ EOD;
 
         print $pre;
         print $body;
-    
+    */
 		}
 
 

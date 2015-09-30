@@ -1,6 +1,6 @@
 <?php
     $cs = App()->clientScript;
-    $cs->registerScriptFile(App()->params['bower-asset'] . '/ajaxq/ajaxq.js');
+    $cs->registerPackage('ajaxq');
     $cs->registerCssFile(App()->theme->baseUrl . '/css/csvimport.css');
     echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_VERTICAL, ['participants/import', 'step' => 'map'], 'post', ['enctype' => 'multipart/form-data', 'id' => 'importForm']);
 ?>
@@ -11,7 +11,7 @@
     <div class="col-md-3 col-md-offset-2">
         <?php
         /** @var CActiveDataProvider $attributes */
-        App()->clientScript->registerScriptFile(App()->params['bower-asset'] . '/papaparse/papaparse.js');
+        App()->clientScript->registerPackage('papaparse');
         echo TbHtml::fileFieldControlGroup('file', null, [
             'label' => gT("CSV File"),
             'required' => true,

@@ -1,9 +1,9 @@
 <div class="header ui-widget-header"><?php eT("Edit quota");?></div>
     <?php echo CHtml::form(array("admin/quotas/sa/modifyquota/surveyid/{$iSurveyId}"), 'post', array('id'=>'editquota','class'=>'form30')); ?>
         <ul>
-        <li><label for='quota_name'><?php eT("ls\models\Quota name:");?></label> <input id="quota_name" name="quota_name" type="text" size="30" maxlength="255" value="<?php echo $quotainfo['name'];?>" /></li>
-        <li><label for='quota_limit'><?php eT("ls\models\Quota limit:");?></label><input id="quota_limit" name="quota_limit" type="text" size="12" maxlength="8" value="<?php echo $quotainfo['qlimit'];?>" /></li>
-        <li><label for='quota_action'><?php eT("ls\models\Quota action:");?></label> <select name="quota_action" id="quota_action">
+        <li><label for='quota_name'><?php eT("Quota name:");?></label> <input id="quota_name" name="quota_name" type="text" size="30" maxlength="255" value="<?php echo $quotainfo['name'];?>" /></li>
+        <li><label for='quota_limit'><?php eT("Quota limit:");?></label><input id="quota_limit" name="quota_limit" type="text" size="12" maxlength="8" value="<?php echo $quotainfo['qlimit'];?>" /></li>
+        <li><label for='quota_action'><?php eT("Quota action:");?></label> <select name="quota_action" id="quota_action">
             <option value ="1" <?php if($quotainfo['action'] == 1) echo "selected='selected'"; ?>><?php eT("Terminate survey");?></option>
             <option value ="2" <?php if($quotainfo['action'] == 2) echo "selected='selected'"; ?>><?php eT("Terminate survey with warning");?></option>
         </select></li>

@@ -246,7 +246,7 @@ abstract class Response extends Dynamic implements \ls\interfaces\iResponse
             $db->createCommand()->createTable($tableName, $columns);
             $db->createCommand()->addPrimaryKey('', $tableName, ['id']);
             $createdTables[] = $tableName;
-            $messages[] = gT("ls\models\Response table created.");
+            $messages[] = gT("Response table created.");
         }
 
         if ($survey->bool_usetokens) {

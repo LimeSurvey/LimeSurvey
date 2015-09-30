@@ -449,7 +449,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => gT("ls\models\Survey title and description"),
+					'description' => gT("Survey title and description"),
 					'HTMLeditorType' => "title",
 					'HTMLeditorDisplay' => "Inline",
 					'associated' => "description"
@@ -509,7 +509,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => TRUE,
 					'qid' => FALSE,
-					'description' => gT("ls\models\Question groups"),
+					'description' => gT("Question groups"),
 					'HTMLeditorType' => "group",
 					'HTMLeditorDisplay' => "Popup",
 					'associated' => "group_desc"
@@ -554,7 +554,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => TRUE,
 					'qid' => TRUE,
-					'description' => gT("ls\models\Question help"),
+					'description' => gT("Question help"),
 					'HTMLeditorType' => "question_help",
 					'HTMLeditorDisplay' => "Popup",
 					'associated' => ""
@@ -585,7 +585,7 @@ class translate extends Survey_Common_Action {
                     'scaleid' => 'scale_id',
 					'gid' => FALSE,
 					'qid' => TRUE,
-					'description' => gT("ls\models\Answer options"),
+					'description' => gT("Answer options"),
 					'HTMLeditorType' => "subquestion",
 					'HTMLeditorDisplay' => "Popup",
 					'associated' => ""

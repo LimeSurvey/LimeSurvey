@@ -55,7 +55,7 @@ class PdfWriter extends Writer
             {
                 $this->pdf->AddPage();
             }
-            $this->pdf->addTitle(sprintf(gT("ls\models\Survey response %d"), $this->rowCounter));
+            $this->pdf->addTitle(sprintf(gT("Survey response %d"), $this->rowCounter));
             foreach ($this->aGroupMap as $gid => $questions)
             {
                 if ($gid != 0)

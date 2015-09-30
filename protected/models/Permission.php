@@ -95,7 +95,7 @@ class Permission extends ActiveRecord
                 'update' => false,
                 'import' => false,
                 'export' => false,
-                'title' => gT("ls\models\Survey deletion"),
+                'title' => gT("Survey deletion"),
                 'description' => gT("Permission to delete a survey"),
                 'img' => 'delete'
             ),
@@ -105,12 +105,12 @@ class Permission extends ActiveRecord
                 'delete' => false,
                 'import' => false,
                 'export' => false,
-                'title' => gT("ls\models\Survey activation"),
+                'title' => gT("Survey activation"),
                 'description' => gT("Permission to activate/deactivate a survey"),
                 'img' => 'activate_deactivate'
             ),
             'surveycontent' => array(
-                'title' => gT("ls\models\Survey content"),
+                'title' => gT("Survey content"),
                 'description' => gT("Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"),
                 'img' => 'add'
             ),
@@ -119,14 +119,14 @@ class Permission extends ActiveRecord
                 'delete' => false,
                 'import' => false,
                 'export' => false,
-                'title' => gT("ls\models\Survey text elements"),
+                'title' => gT("Survey text elements"),
                 'description' => gT("Permission to view/update the survey text elements : survey title, survey description, welcome and end message …"),
                 'img'=>'edit'
             ),
             'surveysecurity' => array(
                 'import' => false,
                 'export' => false,
-                'title' => gT("ls\models\Survey security"),
+                'title' => gT("Survey security"),
                 'description' => gT("Permission to modify survey security settings"),
                 'img' => 'survey_security'
             ),
@@ -135,7 +135,7 @@ class Permission extends ActiveRecord
                 'delete' => false,
                 'import' => false,
                 'export' => false,
-                'title' => gT("ls\models\Survey settings"),
+                'title' => gT("Survey settings"),
                 'description' => gT("Permission to view/update the survey settings including token table creation"),
                 'img' => 'survey_settings'
             ),
@@ -196,7 +196,7 @@ class Permission extends ActiveRecord
             'usergroups' => array(
                 'import' => false,
                 'export' => false,
-                'title' => gT("ls\models\User groups"),
+                'title' => gT("User groups"),
                 'description' => gT("Permission to create, view, update and delete user groups"),
                 'img' => 'usergroup'
             ),
@@ -220,7 +220,7 @@ class Permission extends ActiveRecord
             ),
             'participantpanel' => array(
                 'import' => false,
-                'title' => gT("ls\models\Participant panel"),
+                'title' => gT("Participant panel"),
                 'description' => gT("Permission to create your own participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),
                 'img' => 'cpdb'
             ),

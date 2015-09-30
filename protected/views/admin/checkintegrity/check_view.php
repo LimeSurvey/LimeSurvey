@@ -76,7 +76,7 @@
                 <ul>
                     <?php
                         foreach ($assessments as $assessment) {?>
-                        <li>AID:<?php echo $assessment['id'];?> <?php eT("ls\models\Assessment:");?> <?php eT("Reason:");?> <?php echo $assessment['reason'];?></li><?php
+                        <li>AID:<?php echo $assessment['id'];?> <?php eT("Assessment:");?> <?php eT("Reason:");?> <?php echo $assessment['reason'];?></li><?php
                     }?>
                 </ul>
             </li>

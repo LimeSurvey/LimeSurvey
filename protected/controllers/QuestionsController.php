@@ -176,7 +176,7 @@ class QuestionsController extends Controller
     public function loadModel($id) {
         $result = \ls\models\Question::model()->findByPk($id);
         if (!isset($result)) {
-            throw new \CHttpException(404, gT("ls\models\Question not found."));
+            throw new \CHttpException(404, gT("Question not found."));
         }
         return $result;
     }

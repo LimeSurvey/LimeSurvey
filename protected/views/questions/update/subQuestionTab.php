@@ -46,7 +46,7 @@ for ($scale = 0; $scale < $question->subQuestionScales; $scale++) {
             SamIT\Form\FormHelper::createAttributesForHighlight(TbHtml::resolveName($subQuestion, $attribute))));
         if ($first) {
             $validators = \SamIT\Form\ValidatorGenerator::createFromYii1Model($subQuestion, 'title');
-            $message = gT("ls\models\Answer codes must be unique.");
+            $message = gT("Answer codes must be unique.");
             /**
              * This is client side only. The server side is handled by the controller.
              * @todo Develop something proper that uses a collection model and validates that model.

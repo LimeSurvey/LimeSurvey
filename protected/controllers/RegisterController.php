@@ -267,7 +267,7 @@ class RegisterController extends Controller {
             $this->sMessage="<div id='wrapper' class='message tokenmessage'>"
                 . "<p>".gT("Thank you for registering to participate in this survey.")."</p>\n"
                 . "<p>{$this->sMailMessage}</p>\n"
-                . "<p>".sprintf(gT("ls\models\Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
+                . "<p>".sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
                 . "</div>\n";
         }
         else
@@ -275,7 +275,7 @@ class RegisterController extends Controller {
             $this->sMessage="<div id='wrapper' class='message tokenmessage'>"
                 . "<p>".gT("Thank you for registering to participate in this survey.")."</p>\n"
                 . "<p>".gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.")."</p>\n"
-                . "<p>".sprintf(gT("ls\models\Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
+                . "<p>".sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
                 . "</div>\n";
         }
         // Allways return true : if we come here, we allways trye to send an email

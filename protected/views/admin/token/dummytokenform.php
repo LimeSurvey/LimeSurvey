@@ -10,7 +10,7 @@
         </li>
         <li><label for='amount'><?php eT("Number of tokens"); ?>:</label>
             <input type='text' size='20' id='amount' name='amount' value="100" /></li>
-        <li><label for='tokenlen'><?php eT("ls\models\Token length"); ?>:</label>
+        <li><label for='tokenlen'><?php eT("Token length"); ?>:</label>
             <input type='text' size='20' id='tokenlen' name='tokenlen' value="<?php echo $tokenlength; ?>" /></li>
         <li><label for='firstname'><?php eT("First name"); ?>:</label>
             <input type='text' size='30' id='firstname' name='firstname' value="" /></li>

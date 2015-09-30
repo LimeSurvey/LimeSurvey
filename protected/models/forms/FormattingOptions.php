@@ -159,7 +159,7 @@ class FormattingOptions extends \CFormModel
 
     public function getAnswerFormatOptions() {
         return [
-            "short" => gT("ls\models\Answer codes"),
+            "short" => gT("Answer codes"),
             "long" => gT('Full answers')
         ];
     }
