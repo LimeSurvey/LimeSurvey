@@ -558,7 +558,7 @@ class Survey_Common_Action extends CAction
     {
         if(isset($aData['questionbar']))
         {
-            if (!is_object($aData['oSurvey']))
+            if (is_object($aData['oSurvey']))
             {
     
                 $iSurveyID = $aData['surveyid'];
