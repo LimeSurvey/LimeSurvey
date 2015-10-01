@@ -936,7 +936,6 @@ class Survey_Common_Action extends CAction
     function _surveysummary($aData)
     {
         $iSurveyID = $aData['surveyid'];
-        $gid = $aData['gid'];
 
         $aSurveyInfo=getSurveyInfo($iSurveyID);
         $oSurvey = $aData['oSurvey'];
