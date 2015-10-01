@@ -833,6 +833,17 @@ class Survey_Common_Action extends CAction
             'languagesettings' => array('condition'=>'surveyls_language=language'))
         )->find('sid = :surveyid', array(':surveyid' => $aData['surveyid'])); //$sumquery1, 1) ; //Checked
 
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read'))
+        {
+            $aData['permission'] = true;
+        }
+        else
+        {
+            $aData['gid'] = $gid = null;
+            $qid = null;
+            $aData['permission'] = false;
+        }
+
         if (!is_null($sumresult1))
         {
             $surveyinfo = $sumresult1->attributes;
