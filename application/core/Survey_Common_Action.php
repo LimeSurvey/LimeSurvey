@@ -753,7 +753,8 @@ class Survey_Common_Action extends CAction
             // Translate survey item
             $aData['surveytranslate'] = Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'read');
             // RESET SURVEY LOGIC BUTTON
-            //$sumquery6 = "SELECT count(*) FROM ".db_table_name('conditions')." as c, ".db_table_name('questions')." as q WHERE c.qid = q.qid AND q.sid=$iSurveyID"; //Getting a count of conditions for this survey
+            //$sumquery6 = "SELECT count(*) FROM ".db_table_name('conditions')." as c, ".db_table_name('questions')." 
+            // as q WHERE c.qid = q.qid AND q.sid=$iSurveyID"; //Getting a count of conditions for this survey
             // TMSW Condition->Relevance:  How is conditionscount used?  Should Relevance do the same?
     
             $iConditionCount = Condition::model()->with(Array('questions'=>array('condition'=>'sid ='.$iSurveyID)))->count();
@@ -765,16 +766,25 @@ class Survey_Common_Action extends CAction
             // PRINTABLE VERSION OF SURVEY BUTTON
             // SHOW PRINTABLE AND SCANNABLE VERSION OF SURVEY BUTTON
             //browse responses menu item
-            $aData['respstatsread'] = Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'statistics', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export');
+            $aData['respstatsread'] = Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')
+                || Permission::model()->hasSurveyPermission($iSurveyID, 'statistics', 'read')
+                || Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export');
             // Data entry screen menu item
             $aData['responsescreate'] = Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'create');
             $aData['responsesread'] = Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read');
             // TOKEN MANAGEMENT BUTTON
             $bTokenExists = tableExists('{{tokens_' . $iSurveyID . '}}');
-            if(!$bTokenExists)
-                $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create');
-            else
-                $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'import'); // and export / import ?
+            if(!$bTokenExists) {
+                $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
+                    || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create');
+            }
+            else {
+                $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
+                    || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create')
+                    || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')
+                    || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export')
+                    || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'import'); // and export / import ?
+            }
     
             $aData['gid'] = $gid; // = $this->input->post('gid');
     
@@ -820,8 +830,21 @@ class Survey_Common_Action extends CAction
         
         $iSurveyID = $aData['surveyid'];
         // TODO : create subfunctions
-        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->find('sid = :surveyid', array(':surveyid' => $aData['surveyid'])); //$sumquery1, 1) ; //Checked
-        
+        $sumresult1 = Survey::model()->with(array(
+            'languagesettings' => array('condition'=>'surveyls_language=language'))
+        )->find('sid = :surveyid', array(':surveyid' => $aData['surveyid'])); //$sumquery1, 1) ; //Checked
+
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read'))
+        {
+            $aData['permission'] = true;
+        }
+        else
+        {
+            $aData['gid'] = $gid = null;
+            $qid = null;
+            $aData['permission'] = false;
+        }
+
         if (!is_null($sumresult1))
         {
             $surveyinfo = $sumresult1->attributes;
@@ -831,10 +854,17 @@ class Survey_Common_Action extends CAction
     
             // Tokens
             $bTokenExists = tableExists('{{tokens_' . $iSurveyID . '}}');
-            if (!$bTokenExists)
-                $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create');
-            else
-                $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'import'); // and export / import ?
+            if (!$bTokenExists) {
+                $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') 
+                    || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create');
+            }
+            else {
+                $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') 
+                    || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create') 
+                    || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read') 
+                    || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export') 
+                    || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'import'); // and export / import ?
+            }
                 
             // Question explorer
             $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID, "language" => $sumresult1->defaultlanguage->surveyls_language));
@@ -907,8 +937,7 @@ class Survey_Common_Action extends CAction
     function _surveysummary($aData)
     {
         $iSurveyID = $aData['surveyid'];
-        $gid = $aData['gid'];
-        
+
         $aSurveyInfo=getSurveyInfo($iSurveyID);
         $oSurvey = $aData['oSurvey'];
         $baselang = $aSurveyInfo['language'];
