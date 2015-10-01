@@ -16,7 +16,7 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="<?php echo $this->createUrl("/admin/survey/sa/index"); ?>">
+		<a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
 		    <?php echo $sitename; ?>
 		</a>
 	</div>
