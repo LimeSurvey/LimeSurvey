@@ -50,6 +50,7 @@
                             'id'=>'switchchangeformat',
                             'value'=>$switchvalue,
                         ));?>
+                        <input type="hidden" id="switch-url" data-url="<?php echo $this->createUrl("admin/survey/sa/changeFormat/surveyid/".$surveyinfo['sid']);?>" />
                         <br/><br/>
                     </div>
                 </div>
