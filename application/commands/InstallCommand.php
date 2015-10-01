@@ -23,7 +23,7 @@
         {
             if (!isset($sArgument) || !isset($sArgument[0]) || !isset($sArgument[1]) || !isset($sArgument[2]) || !isset($sArgument[3])) die('You have to set admin/password/full name and email address on the command line like this: php starter.php adminname mypassword fullname emailaddress');
             Yii::import('application.helpers.common_helper', true);
-            
+
             try
             {
                 $this->connection = App()->getDb();
@@ -43,7 +43,7 @@
                 case 'pgsql':
                     $sql_file = 'pgsql';
                     break;
-                case 'dblib': 
+                case 'dblib':
                 case 'mssql':
                 case 'sqlsrv':
                     $sql_file = 'mssql';
@@ -152,7 +152,7 @@
                     case 'odbc':
                         $this->connection->createCommand("CREATE DATABASE [$sDatabaseName];")->execute();
                         break;
-                    case 'postgres':
+                    case 'pgsql':
                         $this->connection->createCommand("CREATE DATABASE \"$sDatabaseName\" ENCODING 'UTF8'")->execute();
                         break;
                     default:
@@ -164,7 +164,7 @@
             {
                 throw new CException('Database could not be created because it either existed or you have no permissions');
             }
-            
+
             $this->connection->active = false;
             $this->connection->connectionString = $connectionString;
             $this->connection->active = true;
