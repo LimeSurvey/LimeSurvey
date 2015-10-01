@@ -19,9 +19,12 @@
  */
 hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'function';
 linksInDialog();
+
 $(document).ready(function(){
+
     initializeAjaxProgress();
     tableCellAdapters();
+
     if(typeof(userdateformat) !== 'undefined')
         {
         $(".popupdate").each(function(i,e) {
@@ -68,21 +71,50 @@ $(document).ready(function(){
 			$form.find('[type="submit"]').trigger('click');;
 		});
 	}
+
+    // Attach this <input> tag to form to check for closing after save
+    var closeAfterSaveInput = $("<input>")
+        .attr("type", "hidden")
+        .attr("name", "close-after-save");
+
+    /**
+     * Helper function for save buttons onclick event
+     *
+     * @param {object} that - this from calling method
+     * @return {object} jQuery DOM form object
+     */
+    var getForm = function (that) {
+        var $form;
+        if($(that).attr('data-use-form-id')==1)
+        {
+            formId = '#'+$(that).attr('data-form-to-save');
+            $form = $(formId);
+        }
+        else
+        {
+          $form = $('.side-body').find('form');
+        }
+        return $form;
+    };
 	
-	if ($('#save-button').length>0){
+	if ($('#save-button').length > 0){
 		$('#save-button').on('click', function()
 		{
-		    if($(this).attr('data-use-form-id')==1)
-		    {
-		        formId = '#'+$(this).attr('data-form-to-save');
-		        $(formId).submit();
-		    }
-		    else
-		    {
-			  $form = $('.side-body').find('form');
-			  $form.submit();
-			}
-			
+            var $form = getForm(this);
+            closeAfterSaveInput.val("false");
+            $form.append(closeAfterSaveInput);
+            $form.submit();
+		});
+	}
+
+    // Save-and-close button
+	if ($('#save-and-close-button').length > 0){
+		$('#save-and-close-button').on('click', function()
+		{
+            var $form = getForm(this);
+            closeAfterSaveInput.val("true");
+            $form.append(closeAfterSaveInput);
+            $form.submit();
 		});
 	}
 
