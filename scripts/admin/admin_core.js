@@ -133,8 +133,10 @@ $(document).ready(function(){
 	/* Switch format group */
 	if ($('#switchchangeformat').length>0){
 		$('#switchchangeformat').on('switchChange.bootstrapSwitch', function(event, state) {
+			//alert('ok');
+			$url = $('#switch-url').attr('data-url');
 		    $.ajax({
-		        url : '<?php echo $this->createUrl("admin/survey/sa/changeFormat/surveyid/".$surveyid); ?>',
+		        url : $url,
 		        type : 'GET',
 		        dataType : 'html', 
 		        
