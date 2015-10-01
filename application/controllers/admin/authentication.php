@@ -277,7 +277,7 @@ class Authentication extends Survey_Common_Action
     */
     private function _doRedirect()
     {
-        $returnUrl = App()->user->getReturnUrl(array('/admin/survey/sa/index'));
+        $returnUrl = App()->user->getReturnUrl(array('/admin/'));
         $this->getController()->redirect($returnUrl);
     }
 

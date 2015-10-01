@@ -891,7 +891,7 @@ class Survey_Common_Action extends CAction
     {
         if ( isset($aData['display']['menu_bars']['listquestiongroups']) )
         {        
-            $this->getController()->renderPartial("/admin/super/listquestiongroups", $aData);
+            $this->getController()->renderPartial("/admin/survey/QuestionGroups/listquestiongroups", $aData);
         }        
     }
 
@@ -923,7 +923,7 @@ class Survey_Common_Action extends CAction
             $model['language'] = $baselang;
             $aData['model']=$model;    
             
-            $this->getController()->renderPartial("/admin/super/listquestions", $aData);        
+            $this->getController()->renderPartial("/admin/survey/Question/listquestions", $aData);        
         }
     }
 
