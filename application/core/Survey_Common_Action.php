@@ -812,7 +812,6 @@ class Survey_Common_Action extends CAction
     
             $aData['GidNext'] = $GidNext = getGidNext($iSurveyID, $gid);
             $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
-            $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
             if($aData['gid']==null)        
                 $this->getController()->renderPartial("/admin/survey/surveybar_view", $aData);
         }
@@ -1135,7 +1134,6 @@ class Survey_Common_Action extends CAction
             $oSurvey = $aData['oSurvey'];
             $aData['title'] = $aData['display']['menu_bars']['browse'];
             $aData['thissurvey'] = getSurveyInfo($iSurveyID);
-            $aData['sImageURL'] = Yii::app()->getConfig("adminimageurl");
             $aData['surveyid'] = $iSurveyID;
     
             $tmp_survlangs = $oSurvey->additionalLanguages;
