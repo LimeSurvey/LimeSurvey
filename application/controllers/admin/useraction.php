@@ -65,7 +65,7 @@ class UserAction extends Survey_Common_Action
         for ($i = 1; $i <= count($userlist); $i++)
             $noofsurveyslist[$i] = $this->_getSurveyCountForUser($userlist[$i]);
 
-        $aData['imageurl'] = Yii::app()->getConfig("adminimageurl");
+        $aData['imageurl'] = Yii::app()->getBaseUrl(true).'/images/lime-icons/328637/';
         $aData['noofsurveyslist'] = $noofsurveyslist;
 
         $aData['title_bar']['title'] = gT('User Control');         
@@ -522,7 +522,7 @@ class UserAction extends Survey_Common_Action
                 unset($aBasePermissions['superadmin']);
             }
             $aData['aBasePermissions']=$aBasePermissions;
-            $data['sImageURL'] = Yii::app()->getConfig("imageurl");
+            $aData['sImageURL'] = Yii::app()->getBaseUrl(true).'/images/lime-icons/328637/';
 
             $aData['oUser'] =$oUser;
             App()->getClientScript()->registerPackage('jquery-tablesorter');
