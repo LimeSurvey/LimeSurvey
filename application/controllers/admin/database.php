@@ -940,14 +940,21 @@ class database extends Survey_Common_Action
             }
             else
             {
-                if(Yii::app()->request->getPost('redirection') == "edit") {
-                    $this->getController()->redirect(array('admin/questions/sa/editquestion/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
-                } else {
+                $closeAfterSave = Yii::app()->request->getPost('close-after-save') === 'true';
+
+                if ($closeAfterSave)
+                {
+                    // Redirect to summary
                     $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+                }
+                else
+                {
+                    // Redirect to edit
+                    $this->getController()->redirect(array('admin/questions/sa/editquestion/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+                    // This works too: $this->getController()->redirect(Yii::app()->request->urlReferrer);
                 }
             }
         }
-
 
         /**
          * updatesurveylocalesettings 

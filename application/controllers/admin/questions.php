@@ -898,7 +898,7 @@ class questions extends Survey_Common_Action
     * Load edit/new question screen depending on $action.
     *
     * @access public
-    * @param string $action
+    * @param string $sa subaction
     * @param int $surveyid
     * @param int $gid
     * @param int $qid
@@ -924,6 +924,7 @@ class questions extends Survey_Common_Action
 		$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 		$aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
+		$aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
 		$aData['questiongroupbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid;			
 		
         Yii::app()->session['FileManagerContext'] = "create:question:{$surveyid}";
