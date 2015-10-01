@@ -1245,9 +1245,11 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function organize($iSurveyID)
     {
+        $request = Yii::app()->request;
+
         $iSurveyID = (int) $iSurveyID;
 
-        $thereIsPostData = !empty($_POST['orgdata']);
+        $thereIsPostData = $request->getPost('orgdata') !== null;
         $userHasPermissionToUpdate = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
 
         if ($thereIsPostData && $userHasPermissionToUpdate)
@@ -1255,12 +1257,13 @@ class SurveyAdmin extends Survey_Common_Action
             // Save the new ordering
             $this->_reorderGroup($iSurveyID);
 
-            $closeAfterSave = $_POST['close-after-save'] === 'true';
-
-            if ($closeAfterSave) {
+            $closeAfterSave = $request->getPost('close-after-save') === 'true';
+            if ($closeAfterSave)
+            {
                 $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
             }
-            else {
+            else
+            {
                 $this->_showReorderForm($iSurveyID);
             }
         }
