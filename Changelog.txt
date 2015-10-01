@@ -1,6 +1,9 @@
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.051 (build 20150930) onwards
+2015-10-01 Fixed issue #09863: plain text email setting doesn't properly affect admin notification email (Denis Chenu @ Shnoulle)
+
 Changes from 2.05+ (unreleased build 20150606) to 2.051 (build 20150930)
 2015-09-30 Build 20150930: All limesurvey project site links to open in new window
 2015-09-29 Fixed issue #09926: Cannot save dropdown values in CPD since table has 2 primary keys (KRav007)
