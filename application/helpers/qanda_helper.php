@@ -982,7 +982,7 @@ function do_date($ia)
         {
             $mindate=$date_min;
         }
-        elseif ((strlen($date_min)==4) && ($date_min>=1900) && ($date_min<=2099))
+        elseif (ctype_digit($date_min) && (strlen($date_min)==4) && ($date_min>=1900) && ($date_min<=2099))
         {
             // backward compatibility: if only a year is given, add month and day
             $mindate=$date_min.'-01-01';
@@ -1010,7 +1010,7 @@ function do_date($ia)
         {
             $maxdate=$date_max;
         }
-        elseif ((strlen($date_max)==4) && ($date_max>=1900) && ($date_max<=2099))
+        elseif (ctype_digit($date_max) && (strlen($date_max)==4) && ($date_max>=1900) && ($date_max<=2099))
         {
             // backward compatibility: if only a year is given, add month and day
             $maxdate=$date_max.'-12-31';
