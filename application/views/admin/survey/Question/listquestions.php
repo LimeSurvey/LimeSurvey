@@ -7,36 +7,33 @@
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 
 <div class="side-body">
-	<h3><?php eT('Questions in this survey'); ?></h3>
+    <h3><?php eT('Questions in this survey'); ?></h3>
 
-	<div class="row">
-		<div class="col-lg-12 content-right">
+    <div class="row">
+        <div class="col-lg-12 content-right">
 
             <!-- Search Box -->
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="form">
+                    <div class="form  text-right">
                         <!-- Begin Form -->
                         <?php $form=$this->beginWidget('CActiveForm', array(
                             'action' => Yii::app()->createUrl('admin/survey/sa/listquestions/surveyid/'.$surveyid),
                             'method' => 'get',
                                 'htmlOptions'=>array(
-                                    'class'=>'form-horizontal',
+                                    'class'=>'form-inline',
                                 ),
-                        )); ?>
+                            )); ?>
                         
                             <!-- search input -->
                             <div class="form-group">
-                                <?php echo $form->label($model, 'search: ', array('class'=>'col-sm-2 control-label text-right col-sm-offset-6')); ?>
-                                <div class="col-sm-2 text-right">
-                                    <?php echo $form->textField($model, 'title', array('class'=>'form-control')); ?>
-                                </div>
+                                <?php echo $form->label($model, 'search: ', array('class'=>'control-label' )); ?>
+                                <?php echo $form->textField($model, 'title', array('class'=>'form-control')); ?>
                             </div>
 
                             <!-- select group -->
                             <div class="form-group">
-                                <?php echo $form->label($model, 'Group:', array('class'=>'col-sm-2 control-label text-right col-sm-offset-6')); ?>
-                                <div class="col-sm-2 text-right">
+                                <?php echo $form->label($model, 'Group:', array('class'=>'control-label')); ?>
                                     <select name="group_name" class="form-control">
                                         <option value=""><?php eT('any group');?></option>
                                         <?php foreach($model->AllGroups as $group): ?>
@@ -45,22 +42,20 @@
                                             </option>
                                         <?php endforeach?>
                                     </select>
-                                </div>
-                                <div class="col-sm-2">
-                                    <?php echo CHtml::submitButton('Search', array('class'=>'btn btn-success')); ?>
-                                    <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestions/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('reset');?></a>
-                                </div>
                             </div>
+
+                            <?php echo CHtml::submitButton('Search', array('class'=>'btn btn-success')); ?>
+                            <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestions/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('reset');?></a>                            
                             
                         <?php $this->endWidget(); ?>
                     </div><!-- form -->                 
                 </div>
             </div>
-		    
-		    <!-- Grid -->
-        	<?php
-				$this->widget('bootstrap.widgets.TbGridView', array(
-					'dataProvider' => $model->search(),
+            
+            <!-- Grid -->
+            <?php
+                $this->widget('bootstrap.widgets.TbGridView', array(
+                    'dataProvider' => $model->search(),
 
                     // Number of row per page selection
                     'id' => 'question-grid',
@@ -70,48 +65,47 @@
                             $pageSize,
                             Yii::app()->params['pageSizeOptions'],
                             array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')) .
-                        gT(' rows per page'),					
-					
-					'columns' => array(
-						array(
-							'name' => 'Question id',
-							'value'=>'$data->qid',
-							'htmlOptions' => array('class' => 'col-md-1'),
-						),
-						array(
-							'name' => 'Question order',
-							'value'=>'$data->question_order',
-							'htmlOptions' => array('class' => 'col-md-2'),
-						),															
-						array(
-							'name' => 'Title',
-							'value'=>'$data->title',
-							'htmlOptions' => array('class' => 'col-md-1'),
-						),
-						array(
-							'name' => 'Question',
-							'value'=>'$data->question',
-						),
-						array(
-							'name' => 'Group',
-							//'value'=>'$data->groupName',
-							'value'=>'$data->groups->group_name',
-							'htmlOptions' => array('class' => 'col-md-2'),
-						),				
+                        gT(' rows per page'),                    
+                    
+                    'columns' => array(
+                        array(
+                            'name' => 'Question id',
+                            'value'=>'$data->qid',
+                            'htmlOptions' => array('class' => 'col-md-1'),
+                        ),
+                        array(
+                            'name' => 'Question order',
+                            'value'=>'$data->question_order',
+                            'htmlOptions' => array('class' => 'col-md-2'),
+                        ),                                                            
+                        array(
+                            'name' => 'Title',
+                            'value'=>'$data->title',
+                            'htmlOptions' => array('class' => 'col-md-1'),
+                        ),
+                        array(
+                            'name' => 'Question',
+                            'value'=>'$data->question',
+                        ),
+                        array(
+                            'name' => 'Group',
+                            'value'=>'$data->groups->group_name',
+                            'htmlOptions' => array('class' => 'col-md-2'),
+                        ),                
 
-						array(            
-						    'name'=>'',
-						    'type'=>'raw',
-						    'value'=>'$data->buttons',
-						    'htmlOptions' => array('class' => 'col-md-2 text-right'),
-						),	
-																										
-					),
-					'ajaxUpdate' => false,
-   				)); 
-        	?>
-		</div>
-	</div>
+                        array(            
+                            'name'=>'',
+                            'type'=>'raw',
+                            'value'=>'$data->buttons',
+                            'htmlOptions' => array('class' => 'col-md-2 text-right'),
+                        ),    
+                                                                                                        
+                    ),
+                    'ajaxUpdate' => false,
+                   )); 
+            ?>
+        </div>
+    </div>
 </div>
 
 
@@ -134,7 +128,7 @@ jQuery(document).on("change", '#pageSize', function(){
         <h4 class="modal-title" id="myModalLabel"><?php eT("Question preview");?></h4>
       </div>
       <div class="modal-body">
-      	<iframe id="frame-question-preview" src="" style="zoom:0.60" width="99.6%" height="600" frameborder="0"></iframe>
+          <iframe id="frame-question-preview" src="" style="zoom:0.60" width="99.6%" height="600" frameborder="0"></iframe>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
