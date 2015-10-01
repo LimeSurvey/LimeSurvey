@@ -34,6 +34,7 @@
         <?php echo CHtml::form(array("admin/survey/sa/organize/surveyid/{$surveyid}"), 'post', array('id'=>'frmOrganize')); ?>
             <p>
                 <input type='hidden' id='orgdata' name='orgdata' value='' />
+                <input type='hidden' id='close-after-save' name='close-after-save' value='' />
                 <button class='hidden' id='btnSave'><?php echo eT('Save'); ?></button>
             </p>
         </form>

@@ -1239,6 +1239,7 @@ class SurveyAdmin extends Survey_Common_Action
     /**
     * questiongroup::organize()
     * Load ordering of question group screen.
+    *
     * @param int $iSurveyID
     * @return void
     */
@@ -1246,9 +1247,22 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $iSurveyID = (int) $iSurveyID;
 
-        if (!empty($_POST['orgdata']) && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
+        $thereIsPostData = !empty($_POST['orgdata']);
+        $userHasPermissionToUpdate = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
+
+        if ($thereIsPostData && $userHasPermissionToUpdate)
         {
+            // Save the new ordering
             $this->_reorderGroup($iSurveyID);
+
+            $closeAfterSave = $_POST['close-after-save'] === 'true';
+
+            if ($closeAfterSave) {
+                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
+            }
+            else {
+                $this->_showReorderForm($iSurveyID);
+            }
         }
         else
         {
@@ -1353,7 +1367,6 @@ class SurveyAdmin extends Survey_Common_Action
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         Yii::app()->session['flashmessage'] = gT("The new question group/question order was successfully saved.");
-        $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
     }
 
     /**
