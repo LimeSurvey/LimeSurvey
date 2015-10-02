@@ -366,12 +366,15 @@ class Survey extends LSActiveRecord
         foreach ($attdescriptiondata as $sKey=>$aValues)
         {
             if (!is_array($aValues)) $aValues=array();
-            $aCompleteData[$sKey]= array_merge(array(
-                    'description' => '',
-                    'mandatory' => 'N',
-                    'show_register' => 'N',
-                    'cpdbmap' =>''
-                    ),$aValues);
+            if(preg_match("/^attribute_[0-9]{1,}$/",$sKey))
+            {
+              $aCompleteData[$sKey]= array_merge(array(
+                      'description' => '',
+                      'mandatory' => 'N',
+                      'show_register' => 'N',
+                      'cpdbmap' =>''
+                      ),$aValues);
+            }
         }
         return $aCompleteData;
     }

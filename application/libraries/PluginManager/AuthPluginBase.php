@@ -152,30 +152,4 @@ abstract class AuthPluginBase extends PluginBase {
         
         return $this;
     }
-
-    /**
-     * Set the username to use for authentication
-     *
-     * @param string $sAuthType
-     */
-    protected function setAuthPermission($iNewUID,$sAuthType)
-    {
-        $aPerm = array(
-            'entity_id' => 0,
-            'entity' => 'global',
-            'uid' => $iNewUID,
-            'permission' => $sAuthType,
-            'create_p' => 0,
-            'read_p' => 1,
-            'update_p' => 0,
-            'delete_p' => 0,
-            'import_p' => 0,
-            'export_p' => 0
-        );
-
-        $oPermission = new Permission;
-        foreach ($aPerm as $k => $v)
-            $oPermission->$k = $v;
-        $oPermission->save();
-    }
 }
