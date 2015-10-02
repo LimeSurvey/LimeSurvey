@@ -2,7 +2,6 @@
 bP('menus');
 $items = require __DIR__ . '/../global/menu.php';
 $this->widget(\TbNavbar::class, [
-//    'brandLabel' => TbHtml::image(App()->baseUrl . Yii::getPathOfAlias('public') . '/images/logo_big.png'),
     'brandUrl' => ['surveys/index'],
     'display' => TbHtml::NAVBAR_DISPLAY_FIXEDTOP,
     'fluid' => true,

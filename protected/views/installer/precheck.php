@@ -48,7 +48,7 @@
 <div class="btn-group pull-right">
     <?php 
         echo TbHtml::linkButton('Previous', ['url' => ['installer/license'], 'color' => TbHtml::BUTTON_COLOR_DEFAULT]);
-        echo TbHtml::linkButton('Recheck', ['url' => ['installer/precheck'], 'color' => TbHtml::BUTTON_COLOR_DEFAULT]);
+        echo TbHtml::linkButton('Recheck', ['url' => ['installer/session'], 'color' => TbHtml::BUTTON_COLOR_DEFAULT]);
         echo TbHtml::submitButton('Next', ['disabled' => !$pass, 'color' => $pass ? TbHtml::BUTTON_COLOR_PRIMARY : TbHtml::BUTTON_COLOR_DANGER]);
     ?>
 

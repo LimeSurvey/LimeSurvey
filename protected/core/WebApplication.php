@@ -31,6 +31,7 @@ use ls\models\SettingGlobal;
  * @property MigrationManager $migrationManager
  * @property CSecurityManager $securityManager
  * @property \ls\components\ThemeManager $themeManager
+ * @property-read string $publicUrl The url of the public folder.
  * @property CTheme $theme
  */
 class WebApplication extends CWebApplication
@@ -270,5 +271,9 @@ class WebApplication extends CWebApplication
            $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
        }
    }
+
+    public function getPublicUrl($absolute = false) {
+        return $this->getBaseUrl($absolute) . Yii::getPathOfAlias('public');
+    }
 }
 

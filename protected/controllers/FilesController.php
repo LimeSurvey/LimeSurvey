@@ -80,7 +80,7 @@ class FilesController extends Controller
             'alias' => "ls\models\Survey ({$surveyId})",
             'driver' => 'LocalFileSystem',
             'path'   => $dir,
-            'URL' => App()->baseUrl . Yii::getPathOfAlias('public') , $relative,
+            'URL' => App()->publicUrl . $relative,
             'icon' => "{$this->getAssetsUrl()}/img/volume_icon_local.png",
             'accessControl' => 'access',
             'attributes' => [

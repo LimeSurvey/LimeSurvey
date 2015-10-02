@@ -1,6 +1,6 @@
 <div class="col-md-4 col-md-offset-4 col-xs-12" style="text-align: center;">
 <?php
-    echo TbHtml::tag('h1', [], TbHtml::image(App()->baseUrl . Yii::getPathOfAlias('public') . '/images/logo-text.png'));
+    echo TbHtml::tag('h1', [], TbHtml::image(App()->publicUrl . '/images/logo-text.png'));
     $list = '';
     if (!empty($publicSurveys)) {
         $this->widget(TbNav::class, [

@@ -81,13 +81,18 @@ class InstallerController extends \CController {
         $this->progress = 15;
 
         if (App()->request->isPostRequest) {
-            $this->redirect(['installer/precheck']);
+            $this->redirect(['installer/session']);
         }
         /** 
          * Load PreCheck model here to allow it to check session stuff.
          */
         new PreCheck();
         $this->render('license');
+    }
+
+    public function actionSession() {
+        App()->session->add('precheck', true);
+        $this->redirect(['installer/precheck']);
     }
     /**
     * check a few writing permissions and optional settings
@@ -113,24 +118,27 @@ class InstallerController extends \CController {
         $this->stepTitle = gT('Database configuration');
         $aData['descp'] = gT('Please enter the database settings you want to use for LimeSurvey:');
         $this->progress = 40;
-        $aData['model'] = $oModel = new InstallerConfigForm;
+        $aData['model'] = $configForm = new InstallerConfigForm;
         
         if(Yii::app()->request->getPost('InstallerConfigForm') != null) {
-            $oModel->attributes = Yii::app()->request->getPost('InstallerConfigForm');
-            if ($oModel->validate() // All is good
-                    || ($oModel->validate(['dsn']) && $oModel->createDatabase()) // Database was created, now all is good.
+            $configForm->attributes = Yii::app()->request->getPost('InstallerConfigForm');
+            if ($configForm->validate() // All is good
+                    || ($configForm->validate(['dsn'])
+                    && $configForm->createDatabase()
+                    && $configForm->validate()
+                ) // Database was created, now all is good.
                 ) {
                 Yii::app()->setComponent('db', [
-                    'connectionString' => $oModel->dsn,
-                    'username' => $oModel->dbuser,
-                    'password' => $oModel->dbpwd,
-                    'tablePrefix' => $oModel->dbprefix
+                    'connectionString' => $configForm->dsn,
+                    'username' => $configForm->dbuser,
+                    'password' => $configForm->dbpwd,
+                    'tablePrefix' => $configForm->dbprefix
                 ]);
                 Yii::app()->db->active = true;
                 /**
                  * Save configuration.
                  */
-                if (!$this->writeConfigFile($oModel)) {
+                if (!$this->writeConfigFile($configForm)) {
                     throw new CHttpException(500, "Failed to write config file.");
                 }
                 /*
@@ -146,7 +154,7 @@ class InstallerController extends \CController {
                 ];
                 $isEmpty = true;
                 foreach($requiredTables as $table) {
-                    $isEmpty = $isEmpty  && !isset($tables["{$oModel->dbprefix}$table"]);
+                    $isEmpty = $isEmpty  && !isset($tables["{$configForm->dbprefix}$table"]);
                 }
                 
                 /**
@@ -467,7 +475,7 @@ class InstallerController extends \CController {
             ],
             [
                 'allow',
-                'actions' => ['index', 'license', 'precheck', 'config'],
+                'actions' => ['index', 'license', 'session', 'precheck', 'config'],
                 'expression' => function() { return !App()->isInstalled; }
             ],
             ['allow',

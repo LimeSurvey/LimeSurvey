@@ -16,7 +16,7 @@ class PgsqlSchema extends CPgsqlSchema
     
     public function createDatabase($name) {
         try {
-            $this->connection->createCommand("CREATE DATABASE \"$name\" ENCODING 'UTF8'")->execute();
+            $this->dbConnection->createCommand("CREATE DATABASE \"$name\" ENCODING 'UTF8'")->execute();
         } catch (Exception $e) {
             return false;
         }

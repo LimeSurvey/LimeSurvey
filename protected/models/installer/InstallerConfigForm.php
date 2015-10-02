@@ -95,11 +95,12 @@ class InstallerConfigForm extends CFormModel
             $pdo = new PDO($this->getDsn(true), $this->dbuser, $this->dbpwd);
         } catch (PDOException $e) {
             // Connection to database failed.
-           $error = gT('Try again! Connection with database failed. Reason: ');
-           // Remove passwords.
-           $error .= strtr($e->getMessage(), [$this->dbpwd => '***']);
-           $this->addError($attribute, $error);
-           return;
+            $error = gT('Try again! Connection with database failed. Reason: ');
+            // Remove passwords.
+            $error .= strtr($e->getMessage(), [$this->dbpwd => '***']);
+            $this->addError($attribute, $error);
+            $this->addError($attribute, "Dsn used: {$this->getDsn()}");
+            return;
         }
         
         if (in_array($pdo->getAttribute(PDO::ATTR_DRIVER_NAME), ['mysql', 'mysqli']) && version_compare($pdo->getAttribute(PDO::ATTR_SERVER_VERSION), '4.1','<')) {
@@ -133,6 +134,7 @@ class InstallerConfigForm extends CFormModel
                 $driver = 'pgsql';
                 $parts['dbname'] = $this->dbname;
                 $parts['port'] = $this->port;
+                $parts['host'] = $this->host;
                 break;
             case 'dblib' :
                 $driver = 'dblib';

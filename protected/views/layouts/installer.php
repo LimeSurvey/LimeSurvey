@@ -6,25 +6,14 @@
 	<meta name="author" content="" />
 
     <link rel="shortcut icon" href="<?php echo Yii::app()->baseUrl; ?>images/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="<?php echo $this->createUrl('/');?>images/favicon.ico" type="image/x-icon" />
-
-        <?php
+    <?php
+        echo \CHtml::linkTag("icon", "image/x-icon", App()->publicUrl . "/images/favicon.ico");
         App()->getClientScript()->registerPackage('jqueryui');
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/main.css');
-        //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . 'grid.css', 'all');
+        App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/installer.css');
 
-        //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . 'adminstyle.css', 'all');
-
-        $script = "$(function() {
-        $('.demo').find('a:first').button().end().
-            find('a:eq(1)').button().end().
-            find('a:eq(2)').button();
-        });";
         App()->bootstrap->register();
-        App()->getClientScript()->registerScript('installer', $script);
     ?>
-    <link rel="icon" href="<?php echo Yii::app()->baseUrl; ?>/images/favicon.ico" />
-	<title><?php eT("LimeSurvey installer"); ?></title>
+	<title><?=gT("LimeSurvey installer"); ?></title>
 </head>
 
 <body id="installer">
@@ -44,7 +33,7 @@
         </div>
         <div class="row" style="margin-top: 30px;">
             <div class="col-md-12" style="text-align: center;">
-                <img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/poweredby.png" alt="Powered by LimeSurvey"/>
+                <?= \CHtml::image(App()->publicUrl . '/images/poweredby.png', gT("Powered by LimeSurvey")); ?>
             </div>
         </div>
     </div>

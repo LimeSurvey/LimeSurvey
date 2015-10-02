@@ -4,19 +4,14 @@
  */
 class PreCheck extends CFormModel 
 {
-       
-    public $sessionSupport = false;
-    
-    public function __construct($scenario = '') {
-        parent::__construct($scenario);
-        if (!isset($_SESSION['precheck'])) {
-            $_SESSION['precheck'] = 'precheck';
-        } else {
-            $this->sessionSupport = true;
-        }
+
+
+    public function getSessionSupport()
+    {
+        return App()->session->get('precheck', false);
     }
-        
-    public function getVersion() {
+    public function getVersion()
+    {
         return PHP_VERSION;
     }
     public function getMemoryLimit() {
