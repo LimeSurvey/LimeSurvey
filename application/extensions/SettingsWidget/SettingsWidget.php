@@ -388,7 +388,10 @@ class SettingsWidget extends CWidget
             'data' => $metaData['options'],
             'name' => $name,
             'value' => $value,
-            'options' => $select2Options,
+            //'options' => $select2Options,
+            'pluginOptions' => array(
+                'options' => $select2Options
+            ),
             'htmlOptions'=>$htmlOptions,
         );
         $properties['events']=isset($metaData['events']) ? $metaData['events'] : array();
@@ -396,18 +399,9 @@ class SettingsWidget extends CWidget
         if (isset($metaData['submitonchange']) && $metaData['submitonchange']) {
             $properties['events']['change']='js: function(e) { this.form.submit();}';
         }
-        //return App()->getController()->widget('ext.bootstrap.widgets.TbSelect2', $properties, true);
 
-        return App()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
-            'name' => $name,
-            'data' => $metaData['options'],
-            'value' => $value,                    
-            'pluginOptions' => array(
-                'options' => $select2Options,                    
-            ),
+        return App()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', $properties, true);
 
-            'htmlOptions' => $htmlOptions
-        ), true);            
     }
 
     public function renderString($name, array $metaData, $form = null)
