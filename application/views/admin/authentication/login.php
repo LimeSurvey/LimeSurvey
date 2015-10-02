@@ -54,15 +54,16 @@
                                         $info = App()->getPluginManager()->getPluginInfo($plugin);
                                         $possibleAuthMethods[$plugin] = $info['pluginName'];
                                     }
+                                    //print_r($possibleAuthMethods); die();
+                                       
                                     $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
-                                    
-                                    'name' => 'authMethod',
-                                    'pluginOptions' => array(
-                                    'value' => $selectedAuth,
-                                    'data' => $possibleAuthMethods,
-                                    'options' => array(
-                                        'onChange'=>'this.form.submit();'
-                                    )
+                                        'name' => 'authMethod',
+                                        'data' => $possibleAuthMethods,
+                                        'pluginOptions' => array(
+                                            'value' => $selectedAuth,
+                                            'options' => array(
+                                                    'onChange'=>'this.form.submit();'
+                                                    )
                                     )));                
                                         
                                         
