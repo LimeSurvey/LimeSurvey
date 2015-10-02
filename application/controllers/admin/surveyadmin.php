@@ -164,7 +164,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $arrayed_data['title_bar']['title'] = gT('New survey');            
         $arrayed_data['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
-        $arrayed_data['fullpagebar']['closebutton']['url'] = 'admin/survey/sa/index';        
+        $arrayed_data['fullpagebar']['closebutton']['url'] = 'admin/index';        
 
         $this->_renderWrappedTemplate('survey', $aViewUrls, $arrayed_data);
     }
