@@ -55,7 +55,7 @@
 <div class="side-body">
     <h3><?php eT('Survey responses'); ?></h3>
     <div class="row">
-        <div class="col-lg-12 content-right" style="overflow: scroll; padding-bottom: 1em">
+        <div class="col-lg-12 content-right" style="overflow-x: scroll; padding-bottom: 1em">
             <table id="displayresponses"></table> <div id="pager"></div>
         </div>
     </div>

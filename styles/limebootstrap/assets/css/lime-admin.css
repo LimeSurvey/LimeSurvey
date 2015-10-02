@@ -510,7 +510,7 @@ div.panel.disabled a{
 	padding: 1em;
 }
 
-/** TODO: Should this really be called -boot? Sounds like it's used in a script, which it isn't. */ 
+
 .htmleditorboot
 {
 	padding-top : 2em;
@@ -593,7 +593,51 @@ div.panel.disabled a{
     font-size: 1.2em;
 }
 
+/*jQgrid*/
 
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, 
+.ui-jqgrid .ui-jqgrid-view .ui-jqgrid-toppager, .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default
+{
+	background-image: none;
+	background-color: transparent;
+}
+
+.ui-jqgrid .ui-jqgrid-bdiv
+{
+	overflow : hidden;
+}
+
+.ui-search-toolbar th div
+{
+	min-height: 40px;
+}
+
+#gs_completed {
+	    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #646464;
+    background-color: #ffffff;
+    background-image: none;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
+}
+
+.ui-th-column, .ui-jqgrid .ui-jqgrid-htable th.ui-th-column div input
+{
+	margin-top: 8px;
+}
+
+.ui-jqgrid .ui-jqgrid-htable th.ui-th-column div input.cbox, .ui-jqgrid td input.cbox {
+	margin : 4px 0 0;
+}
 
 /**
  * Icons    
