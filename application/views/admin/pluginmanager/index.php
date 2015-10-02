@@ -18,11 +18,11 @@
     $dataProvider = new CArrayDataProvider($data);
     
     $gridColumns = array(
-        array(// display the activation link
-            'class' => 'CLinkColumn',
+        array(// display the status
+            'class' => 'CDataColumn',
             'header' => gT('Status'),
-            'labelExpression' => function($data) { return ($data['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Active'), array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Inactive'), array('width' => 32, 'height' => 32))); },
-            'url' => '#'
+            'type' => 'html',
+            'value' => function($data) { return ($data['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Active'), array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Inactive'), array('width' => 32, 'height' => 32))); }
         ),
         array(// display the activation link
             'class' => 'CDataColumn',
@@ -47,7 +47,7 @@
             'header' => gT('Plugin'),
             'name' => 'name'
         ),
-        array(// display the 'name' attribute
+        array(// display the 'description' attribute
             'class' => 'CDataColumn',
             'header' => gT('Description'),
             'name' => 'description'
