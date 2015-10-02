@@ -400,10 +400,9 @@ class SettingsWidget extends CWidget
 
         return App()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
             'name' => $name,
-            'data' => $metaData['options'],                    
+            'data' => $metaData['options'],
+            'value' => $value,                    
             'pluginOptions' => array(
-                'value' => $value,
-
                 'options' => $select2Options,                    
             ),
 
