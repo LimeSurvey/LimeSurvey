@@ -1,10 +1,12 @@
 <h3 class="pagetitle"><?php echo sprintf(gT("Settings for plugin: %s"), $plugin['name']); ?></h3>
 
 <?php
+    $title = isset($properties['pluginName']) ? sprintf(gT("Settings for plugin: %s"), $properties['pluginName']) : null;
+    if (is_null($title)) $title = isset($plugin['name']) ? sprintf(gT("Settings for plugin %s"), $plugin['name']) : null;
 
     $this->widget('ext.SettingsWidget.SettingsWidget', array(
         'settings' => $settings,
-        'title' => 'FOOBAR',
+        'title' => $title,
         'formHtmlOptions' => array(
             'id' => "pluginsettings-{$plugin['name']}",
         ),
