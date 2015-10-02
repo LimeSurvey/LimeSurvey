@@ -120,7 +120,7 @@ class SurveyLanguageSetting extends ActiveRecord
             ['surveyls_description', 'required'],
             ['surveyls_welcometext', 'required'],
             ['surveyls_endtext', 'required'],
-            ['surveyls_url', 'required', 'isUrl' => true],
+            ['surveyls_url', \CUrlValidator::class],
             ['surveyls_urldescription', 'required'],
             [
                 'surveyls_dateformat',
