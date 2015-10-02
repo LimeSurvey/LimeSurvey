@@ -10,7 +10,7 @@ class m150322_132458_add_series_to_survey extends CDbMigration
      */
     public function safeUp()
 	{
-        $this->addColumn('{{surveys}}', 'use_series', 'boolean DEFAULT 0 NOT NULL');
+        $this->addColumn('{{surveys}}', 'use_series', 'boolean DEFAULT FALSE NOT NULL');
 	}
     
     /**

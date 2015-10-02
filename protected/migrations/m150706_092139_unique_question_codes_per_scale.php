@@ -10,11 +10,15 @@ class m150706_092139_unique_question_codes_per_scale extends CDbMigration
      */
     public function safeUp()
 	{
-        $this->dropIndex('unique_question_codes', '{{questions}}');
-        $this->createIndex('unique_question_codes', '{{questions}}', ['sid', 'title', 'parent_qid', 'scale_id'], true);
-        return true;
+		try {
+			$this->dropForeignKey('unique_question_codes', '{{questions}}');
+	 	} catch (\Exception $e) {
+			$this->dropIndex('unique_question_codes', '{{questions}}');
+		}
+		$this->createIndex('unique_question_codes', '{{questions}}', ['sid', 'title', 'parent_qid', 'scale_id'], true);
+		return true;
 	}
-    
+
     /**
      * @return boolean True if migration was a success.
      */

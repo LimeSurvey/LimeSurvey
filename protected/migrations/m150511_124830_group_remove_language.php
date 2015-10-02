@@ -12,7 +12,7 @@ class m150511_124830_group_remove_language extends CDbMigration
 	{
         // We are removing languages from the answer table and moving it to the translation table.
         $table = \ls\models\QuestionGroup::model()->tableName();
-//        $this->renameColumn($table, 'gid', 'id');
+
         $this->dbConnection->schema->getTable($table, true);
         $groups = \ls\models\QuestionGroup::model()->findAll();
         $deleted = $created = 0;

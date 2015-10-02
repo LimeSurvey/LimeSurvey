@@ -26,7 +26,7 @@ class DbConnection extends \CDbConnection
             throw new \Exception("SQL file is not readable.");
         }
         $sql = strtr(file_get_contents($fileName), ['prefix_' => $prefix]);
-        $this->createCommand($sql)->execute();
+        $this->pdoInstance->exec($sql);
         return true;
     }
 }

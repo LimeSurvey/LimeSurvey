@@ -50,6 +50,7 @@ class DbSchemasTestCase extends \PHPUnit_Framework_TestCase
     {
         $schema = new \PgsqlSchema($this->db);
         $this->assertEquals('numeric (10,0)', $schema->getColumnType('decimal'));
+        $this->assertEquals('character varying(10) NOT NULL', $schema->getColumnType('string(10) NOT NULL'));
         $this->doForClass(\PgsqlSchema::class);
     }
 

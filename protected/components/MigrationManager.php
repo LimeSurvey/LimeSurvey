@@ -1,6 +1,7 @@
 <?php
 namespace ls\components;
 
+use \CHtml;
 /**
  * Application component that manages Yii migrations.
  * Most of the protected functions have been copies from CMigrateCommand,
