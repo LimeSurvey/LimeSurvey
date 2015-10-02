@@ -1,6 +1,8 @@
 <?php
-
 namespace ls\models;
+
+use PluginEvent;
+use \Yii;
 
 class Permission extends ActiveRecord
 {
