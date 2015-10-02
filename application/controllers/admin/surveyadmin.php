@@ -51,46 +51,39 @@ class SurveyAdmin extends Survey_Common_Action
 
     public function listsurveys()
     {
-        if (count(getSurveyList(true)) == 0)
+        Yii::app()->loadHelper('surveytranslator');
+        
+        $aData['issuperadmin'] = false;
+        if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
-            $this->_renderWrappedTemplate('super', 'firststeps');
-        } 
-        else 
+            $aData['issuperadmin'] = true;
+        }
+        
+        $aData['model'] = $model =  new Survey('search');
+        
+        // Search
+        if (isset($_GET['Survey']['searched_value']))
         {
-            Yii::app()->loadHelper('surveytranslator');
-
-            $aData['issuperadmin'] = false;
-            if (Permission::model()->hasGlobalPermission('superadmin','read'))
-            {
-                $aData['issuperadmin'] = true;
-            }
-
-            $aData['model'] = $model =  new Survey('search');
-
-            // Search
-            if (isset($_GET['Survey']['searched_value']))
-            {
-                $model->searched_value = $_GET['Survey']['searched_value'];
-            }
-            
-            $model->active = null;
-            // Filter state
-            if (isset($_GET['active']))
-            {
-                $model->active = $_GET['active'];
-            }
-                           
-            // Set number of page             
-            if (isset($_GET['pageSize'])) 
-            {
-                Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
-            }
-            
-            $aData['fullpagebar']['button']['newsurvey'] = true;
-            
-            $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
-            
-        }        
+            $model->searched_value = $_GET['Survey']['searched_value'];
+        }
+        
+        $model->active = null;
+        // Filter state
+        if (isset($_GET['active']))
+        {
+            $model->active = $_GET['active'];
+        }
+                       
+        // Set number of page             
+        if (isset($_GET['pageSize'])) 
+        {
+            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+        }
+        
+        $aData['fullpagebar']['button']['newsurvey'] = true;
+        
+        $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
+        
     }
 
     public function listupdates()
