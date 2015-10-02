@@ -262,15 +262,20 @@ class SettingsWidget extends CWidget
     }
     /**
      * render label according to type and $metaData['label']
-     *
      */
-    public function renderLabel($name,$metaData){
+    public function renderLabel($name, $metaData){
         if(!isset($metaData['label']))
+        {
             return "";
-        if(!in_array($metaData['type'],array('list','boolean','logo','link','info')))
+        }
+        else if(!in_array($metaData['type'], array('list','logo','link','info')))
+        {
             return CHtml::label($metaData['label'], $name, $metaData['labelOptions']);
+        }
         else
+        {
             return CHtml::tag('div',$metaData['labelOptions'], $metaData['label']);
+        }
     }
     /**
      * render help/desscription according to type and $metaData['help']
