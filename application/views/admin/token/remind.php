@@ -104,5 +104,40 @@
                 </p>
                 </form>
             </div>
-        </div>
+        <?php } ?>
+
+    <ul>
+        <?php if (count($tokenids)>0) { ?>
+            <li>
+                <label><?php eT("Send reminder to token ID(s):"); ?></label>
+                <?php echo short_implode(", ", "-", (array) $tokenids); ?>
+            </li>
+        <?php } ?>
+        <li><label for='bypassbademails'>
+                <?php eT("Bypass token with failing email addresses"); ?>:</label>
+                <?php echo CHtml::dropDownList('bypassbademails', 'Y',array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
+        </li>
+        <li>
+            <label for='minreminderdelay'><?php eT("Min days between reminders"); ?>:</label>
+            <?php echo CHtml::textField('minreminderdelay'); ?>
+        </li>
+        <li>
+            <label for='maxremindercount'><?php eT("Max reminders"); ?>:</label>
+            <?php echo CHtml::textField('maxremindercount'); ?>
+        </li>
+        <li>
+              <?php echo CHtml::label(gT("Bypass date control before sending email."),'bypassdatecontrol', array('title'=>gt("If some tokens have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),'unescaped')); ?>
+              <?php echo CHtml::checkbox('bypassdatecontrol', false); ?>
+        </li>
+    </ul>
+    <p>
+        <?php
+            echo CHtml::submitButton(gT("Send Reminders"));
+            echo CHtml::hiddenField('ok','absolutely');
+            echo CHtml::hiddenField('subaction','remind');
+            if (!empty($tokenids))
+                echo CHtml::hiddenField('tokenids',implode('|', (array) $tokenids));
+        ?>
+    </p>
+    </form>
 </div>
