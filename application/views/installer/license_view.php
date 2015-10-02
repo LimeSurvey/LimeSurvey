@@ -13,11 +13,11 @@
 
             <div class="row navigator">
             <div class="col-md-3">
-                <input class="btn" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/install/welcome"); ?>', '_top')" />
+                <input class="btn btn-default" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/install/welcome"); ?>', '_top')" />
             </div>
             <div class="col-md-3"></div>
             <div class="col-md-3">
-                <input class="btn"  type="submit" value="<?php eT('I accept'); ?>" />
+                <input class="btn btn-default"  type="submit" value="<?php eT('I accept'); ?>" />
             </div>
             </div>
         </form>

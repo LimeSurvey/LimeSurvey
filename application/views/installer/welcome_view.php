@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-md-3">
                     <?php
-                        echo CHtml::dropDownList('installerLang', 'en', $languages, array('id' => 'installerLang', 'encode' => false));
+                        echo CHtml::dropDownList('installerLang', 'en', $languages, array('id' => 'installerLang', 'class'=>'form-control', 'encode' => false));
                     ?>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                 <div class="col-md-3"></div>
                 <div class="col-md-3"></div>
                 <div class="col-md-3">
-                    <input class='btn' type="submit" value="<?php eT('Start installation'); ?>" />
+                    <input class='btn btn-default' type="submit" value="<?php eT('Start installation'); ?>" />
                 </div>
             </div>
         <?php echo CHtml::endForm(); ?>

@@ -56,7 +56,7 @@
         $rows[] = array(
             'label' => CHtml::activeLabelEx($model, 'surveylang', array('class' => 'control-label', 'label' => gT("Default language"))),
             'description' => gT("This will be your default language."),
-            'control' => CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' => 'width: 156px', 'encode' => false, 'options'=>array('en' => array('selected' => true))))
+            'control' => CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' => 'width: 156px', 'class'=>'form-control', 'encode' => false, 'options'=>array('en' => array('selected' => true))))
         );
 
         foreach ($rows as $row)
@@ -77,11 +77,11 @@
     </fieldset>
         <div class="row navigator">
             <div class="col-md-3">
-                <input class="btn" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" />
+                <input class="btn btn-default" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" />
             </div>
             <div class="col-md-3"></div>
             <div class="col-md-3">
-                <?php echo CHtml::submitButton(gT("Next"), array('class' => 'btn')); ?>
+                <?php echo CHtml::submitButton(gT("Next"), array('class' => 'btn btn-default')); ?>
             </div>
         </div>
 

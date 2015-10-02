@@ -16,7 +16,7 @@
                 $rows = array();
                 $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dbtype', array('class' => 'control-label', 'label' => gT("Database type"))),
-                    'control' => CHtml::activeDropDownList($model, 'dbtype', $model->supported_db_types, array('required' => 'required', 'autofocus' => 'autofocus')),
+                    'control' => CHtml::activeDropDownList($model, 'dbtype', $model->supported_db_types, array('required' => 'required', 'class'=>'form-control', 'autofocus' => 'autofocus')),
                     'description' => gT("The type of your database management system")
                 );
                 $rows[] = array(
@@ -58,12 +58,12 @@
         </fieldset>
         <div class="row">
             <div class="col-md-3" >
-                <input class="btn" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
+                <input class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
             </div>
             <div class="col-md-3" style="text-align: center;">
             </div>
             <div class="col-md-3" style="text-align: right;">
-                <?php echo CHtml::submitButton(gT("Next"), array('class' => 'btn')); ?>
+                <?php echo CHtml::submitButton(gT("Next"), array('class' => 'btn btn-default')); ?>
             </div>
         </div>
         <?php echo CHtml::endForm(); ?>

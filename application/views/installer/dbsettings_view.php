@@ -10,7 +10,7 @@
 
             <div class="row">
                 <div class="col-md-3" >
-                    <input class="btn" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
+                    <input class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
                 </div>
                 <div class="col-md-3" style="text-align: center;">
                 </div>
@@ -21,7 +21,7 @@
                             echo CHtml::form(array($next['action']), 'post');
                             echo CHtml::submitButton(gT($next['label']), array(
                                 'name' => $next['name'],
-                                'class' => 'btn'
+                                'class' => 'btn btn-default'
                             ));
                             echo CHtml::endForm();
                         }

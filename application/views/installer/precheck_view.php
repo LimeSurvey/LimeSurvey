@@ -147,15 +147,15 @@ function dirReport($dir, $write)
         </fieldset>
         <div class="row navigator">
             <div class="col-md-3" >
-                <input class="btn" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" />
+                <input class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" />
             </div>
             <div class="col-md-3">
-                <input class="btn" type="button" value="<?php eT('Check again'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
+                <input class="btn btn-default" type="button" value="<?php eT('Check again'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
             </div>
             <div class="col-md-3">
 
                 <?php if (isset($next) && $next== TRUE) { ?>
-                <input class="btn" type="button" value="<?php eT('Next'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
+                <input class="btn btn-default" type="button" value="<?php eT('Next'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
                 <?php } ?>
             </div>
         </div>
