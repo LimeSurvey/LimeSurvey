@@ -14,6 +14,7 @@
 use ls\models\Answer;
 use ls\models\Assessment;
 use ls\models\DefaultValue;
+use ls\models\Permission;
 use ls\models\Question;
 use ls\models\QuestionAttribute;
 use ls\models\QuestionGroup;

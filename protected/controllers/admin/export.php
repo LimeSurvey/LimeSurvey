@@ -11,6 +11,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+use ls\models\Permission;
 use ls\models\Survey;
 use ls\models\SurveyDynamic;
 

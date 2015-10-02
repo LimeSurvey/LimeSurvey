@@ -11,6 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 use ls\models\LabelSet;
+use ls\models\Permission;
 
 /**
  * labels

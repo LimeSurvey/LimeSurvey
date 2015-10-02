@@ -1,4 +1,5 @@
 <?php
+use ls\models\Permission;
 use ls\models\User;
 
 /**

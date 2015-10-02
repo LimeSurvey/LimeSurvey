@@ -3,6 +3,8 @@ namespace ls\controllers;
 use ls\models\forms\ParticipantDatabaseSettings;
 use ls\models\forms\Settings;
 use ls\models\Participant;
+use ls\models\ParticipantAttribute;
+use ls\models\ParticipantAttributeName;
 
 class ParticipantsController extends Controller
 {
@@ -56,20 +58,22 @@ class ParticipantsController extends Controller
         $this->render('manageAttributes', ['dataProvider' => $dataProvider]);
     }
 
-    public function actionImport()
+    public function actionImport(array $items = null, array $map = null, $querySize = 1000)
     {
-        $this->render('import');
+        if (App()->request->isAjaxRequest && isset($items, $map, $querySize)) {
+            return $this->ajaxImport($items, $map, $querySize);
+        } else {
+            $this->render('import');
+        }
     }
 
 
-    public function actionAjaxImport(array $items, array $map, $querySize = 1000)
+    public function ajaxImport(array $items, array $map, $querySize = 1000)
     {
-        header('Content-Type: application/json');
-
         // Set response code so on errors (max execution time, memory limit) we don't get http 200.
-        http_response_code(501);
+        http_response_code(500);
         set_time_limit(20);
-        ini_set('memory_limit', '92M');
+        ini_set('memory_limit', '64M');
         $return_bytes = function($val) {
             $val = trim($val);
             $last = strtolower($val[strlen($val)-1]);
@@ -85,6 +89,8 @@ class ParticipantsController extends Controller
 
             return $val;
         };
+
+        $transaction = App()->getDb()->beginTransaction();
         $start = App()->request->psr7->getServerParams()['REQUEST_TIME_FLOAT'];
         $memoryLimit = $return_bytes(ini_get('memory_limit'));
 
@@ -94,18 +100,19 @@ class ParticipantsController extends Controller
 
         $participant = new Participant();
         $tableName = $participant->tableName();
-        $attributeTableName = \ls\models\ParticipantAttribute::model()->tableName();
+        $attributeTableName = ParticipantAttribute::model()->tableName();
 
         $participant->getSafeAttributeNames();
         $fields = array_flip($participant->safeAttributeNames);
 
-        foreach($map as $csvName => $targetName) {
+        // Create new participant attributes.
+        foreach ($map as $targetName => $csvName) {
             if (!isset($fields[$targetName])) {
                 // Create it.
-                $model = new \ls\models\ParticipantAttributeName();
+                $model = new ParticipantAttributeName();
                 $model->name = $targetName;
                 if (!$model->save()) {
-                    var_dump($model->errors);
+                    throw new \CHttpException(500, "Could not create new participant attribute.");
                 } else {
                     unset($participant);
                 }
@@ -117,7 +124,6 @@ class ParticipantsController extends Controller
         }
 
         $fields = array_flip($participant->safeAttributeNames);
-
 
         $batchInserter = new \ls\components\Batch(function (array $batch, $category = null) {
             if (!empty($batch)) {
@@ -135,11 +141,11 @@ class ParticipantsController extends Controller
 
 
         $initialAttributes = $participant->getAttributes();
-        array_map(function($row) use ($batchInserter, $attributeTableName, $participant, $initialAttributes, $fields) {
-            \Yii::beginProfile('row');
+        $counters = [];
+        foreach ($items as $row) {
             $participant->setAttributes($initialAttributes, false);
             \Yii::beginProfile('alternative');
-            foreach($row as $key => $value) {
+            foreach ($row as $key => $value) {
                 if (isset($fields[$key])) {
                     $participant->$key = $value;
                 }
@@ -150,21 +156,31 @@ class ParticipantsController extends Controller
                 $batchInserter->add($participant->getAttributes());
                 $batchInserter->add($participant->getNewCustomAttributes(), $attributeTableName);
             } else {
-                var_dump($participant->errors);
-
+                foreach ($participant->errors as $field => $errors) {
+                    foreach ($errors as $error) {
+                        if (isset($counters[$field][$error])) {
+                            $counters[$field][$error]++;
+                        } else {
+                            $counters[$field][$error] = 1;
+                        }
+                    }
+                }
             }
 
             \Yii::endProfile('row');
-        }, $items);
+        }
         \Yii::endProfile('import');
 
 
 
         http_response_code(200);
+        header('Content-Type: application/json');
         echo json_encode([
             'memory' => memory_get_peak_usage() / $memoryLimit,
             'time' => (microtime(true) - $start) / ini_get('max_execution_time'),
-            'queries' => $batchInserter->commitCount
+            'queries' => $batchInserter->commitCount,
+            'records' => $batchInserter->recordCount,
+            'errors' => $counters
         ]);
 
 

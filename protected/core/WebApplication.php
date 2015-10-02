@@ -21,7 +21,7 @@ use ls\models\SettingGlobal;
  * @property CLogRouter $log Log router component.
  * @property LocalizedFormatter $format
  * @property \ls\pluginmanager\PluginManager $pluginManager
- * @property CDbConnection $db
+ * @property DbConnection $db
  * @property SurveySessionManager $surveySessionManager
  * @property \HttpRequest $request;
  * @property WebUser $user

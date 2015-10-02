@@ -1,4 +1,5 @@
 <?php
+
 namespace ls\models;
 
 class Permission extends ActiveRecord
@@ -14,7 +15,7 @@ class Permission extends ActiveRecord
         return '{{permissions}}';
     }
 
-   
+
     /**
      * Returns the static model of Settings table
      *
@@ -106,7 +107,7 @@ class Permission extends ActiveRecord
                 'export' => false,
                 'title' => gT("Survey text elements"),
                 'description' => gT("Permission to view/update the survey text elements : survey title, survey description, welcome and end message …"),
-                'img'=>'edit'
+                'img' => 'edit'
             ),
             'surveysecurity' => array(
                 'import' => false,
@@ -125,7 +126,8 @@ class Permission extends ActiveRecord
                 'img' => 'survey_settings'
             ),
             'tokens' => array(
-                'title' => gT("Tokens"),'description'=>gT("Permission to create/update/delete/import/export token entries"),
+                'title' => gT("Tokens"),
+                'description' => gT("Permission to create/update/delete/import/export token entries"),
                 'img' => 'tokens'
             ),
             'translations' => array(
@@ -138,15 +140,15 @@ class Permission extends ActiveRecord
                 'img' => 'translate'
             )
         );
-        uasort($aPermissions, array(__CLASS__,"comparePermissionTitle"));
-        foreach ($aPermissions as &$permission)
-        {
+        uasort($aPermissions, array(__CLASS__, "comparePermissionTitle"));
+        foreach ($aPermissions as &$permission) {
             $permission = array_merge($defaults, $permission);
         }
+
         return $aPermissions;
     }
-    
-    
+
+
     /**
      * Returns the global permissions including description and title
      *
@@ -164,12 +166,12 @@ class Permission extends ActiveRecord
             'import' => true,
             'export' => true
         );
-        $aPermissions=array(
+        $aPermissions = array(
             'surveys' => array(
                 'import' => false,
                 'title' => gT("Surveys"),
                 'description' => gT("Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"),
-                'img'=>'survey'
+                'img' => 'survey'
             ),
             'users' => array(
                 'import' => false,
@@ -186,7 +188,7 @@ class Permission extends ActiveRecord
                 'img' => 'usergroup'
             ),
             'templates' => array(
-                'title'=> gT("Templates"),
+                'title' => gT("Templates"),
                 'description' => gT("Permission to create, view, update, delete, export and import templates"),
                 'img' => 'templates'
             ),
@@ -210,7 +212,7 @@ class Permission extends ActiveRecord
                 'img' => 'cpdb'
             ),
         );
-        uasort($aPermissions, array(__CLASS__,"comparePermissionTitle"));
+        uasort($aPermissions, array(__CLASS__, "comparePermissionTitle"));
         $aPermissions['superadmin'] = array(
             'create' => false,
             'update' => false,
@@ -252,66 +254,75 @@ class Permission extends ActiveRecord
             'img' => 'usergroup'
         );
 
-        foreach ($aPermissions as &$permission)
-        {
+        foreach ($aPermissions as &$permission) {
             $permission = array_merge($defaults, $permission);
         }
+
         return $aPermissions;
-    }    
-    
-    public static function getPermissions($iUserID, $iEntityID=null, $sEntityName=null)
+    }
+
+    public static function getPermissions($iUserID, $iEntityID = null, $sEntityName = null)
     {
-        if ($sEntityName=='survey')
-        {
-            $aBasePermissions=Permission::model()->getSurveyBasePermissions();
+        if ($sEntityName == 'survey') {
+            $aBasePermissions = Permission::model()->getSurveyBasePermissions();
+        } elseif ($sEntityName == 'global') {
+            $aBasePermissions = Permission::model()->getGlobalBasePermissions();
         }
-        elseif ($sEntityName=='global')
-        {   
-            $aBasePermissions=Permission::model()->getGlobalBasePermissions();
-        }
-        
-        if (is_null($sEntityName))
-        {
-            $oPermissions=Permission::model()->findAllByAttributes(array('uid'=>$iUserID));
+
+        if (is_null($sEntityName)) {
+            $oPermissions = Permission::model()->findAllByAttributes(array('uid' => $iUserID));
             $aBasePermissions = array();
-            foreach($oPermissions as $oPermission)
-            {
+            foreach ($oPermissions as $oPermission) {
                 $aBasePermissions[$oPermission->id] = $oPermission->attributes;
             }
-        }   
-        else
-        {
-            foreach ($aBasePermissions as $sPermission=>&$aPermissionDetail){
-                $oCurrentPermissions=Permission::model()->findByAttributes(array('uid'=>$iUserID,'entity_id'=>$iEntityID, 'permission'=>$sPermission));
-                if ($aPermissionDetail['create']) $aPermissionDetail['create']=($oCurrentPermissions?(boolean)$oCurrentPermissions->create_p:false);
-                if ($aPermissionDetail['read']) $aPermissionDetail['read']=($oCurrentPermissions?(boolean)$oCurrentPermissions->read_p:false);
-                if ($aPermissionDetail['update']) $aPermissionDetail['update']=($oCurrentPermissions?(boolean)$oCurrentPermissions->update_p:false);
-                if ($aPermissionDetail['delete']) $aPermissionDetail['delete']=($oCurrentPermissions?(boolean)$oCurrentPermissions->delete_p:false);
-                if ($aPermissionDetail['import']) $aPermissionDetail['import']=($oCurrentPermissions?(boolean)$oCurrentPermissions->import_p:false);
-                if ($aPermissionDetail['export']) $aPermissionDetail['export']=($oCurrentPermissions?(boolean)$oCurrentPermissions->export_p:false);
+        } else {
+            foreach ($aBasePermissions as $sPermission => &$aPermissionDetail) {
+                $oCurrentPermissions = Permission::model()->findByAttributes(array(
+                    'uid' => $iUserID,
+                    'entity_id' => $iEntityID,
+                    'permission' => $sPermission
+                ));
+                if ($aPermissionDetail['create']) {
+                    $aPermissionDetail['create'] = ($oCurrentPermissions ? (boolean)$oCurrentPermissions->create_p : false);
+                }
+                if ($aPermissionDetail['read']) {
+                    $aPermissionDetail['read'] = ($oCurrentPermissions ? (boolean)$oCurrentPermissions->read_p : false);
+                }
+                if ($aPermissionDetail['update']) {
+                    $aPermissionDetail['update'] = ($oCurrentPermissions ? (boolean)$oCurrentPermissions->update_p : false);
+                }
+                if ($aPermissionDetail['delete']) {
+                    $aPermissionDetail['delete'] = ($oCurrentPermissions ? (boolean)$oCurrentPermissions->delete_p : false);
+                }
+                if ($aPermissionDetail['import']) {
+                    $aPermissionDetail['import'] = ($oCurrentPermissions ? (boolean)$oCurrentPermissions->import_p : false);
+                }
+                if ($aPermissionDetail['export']) {
+                    $aPermissionDetail['export'] = ($oCurrentPermissions ? (boolean)$oCurrentPermissions->export_p : false);
+                }
             }
-        }     
+        }
+
         return $aBasePermissions;
     }
-     
+
     /**
-    * Sets permissions (global or survey-specific) for a survey administrator
-    * Checks what permissions may be set and automatically filters invalid ones. 
-    * A permission may be invalid if the permission does not exist or that particular user may not give that permission
-    * 
-    * @param mixed $iUserID
-    * @param mixed $iEntityID
-    * @param mixed $sEntityName
-    * @param mixed $aPermissions
-    * @param mixed $bBypassCheck
-    */
-    public static function setPermissions($iUserID, $iEntityID, $sEntityName, $aPermissions, $bBypassCheck=false)
+     * Sets permissions (global or survey-specific) for a survey administrator
+     * Checks what permissions may be set and automatically filters invalid ones.
+     * A permission may be invalid if the permission does not exist or that particular user may not give that permission
+     *
+     * @param mixed $iUserID
+     * @param mixed $iEntityID
+     * @param mixed $sEntityName
+     * @param mixed $aPermissions
+     * @param mixed $bBypassCheck
+     */
+    public static function setPermissions($iUserID, $iEntityID, $sEntityName, $aPermissions, $bBypassCheck = false)
     {
         $iUserID = \ls\helpers\Sanitize::int($iUserID);
         // Filter global permissions on save
-        if ($sEntityName=='global')
-        {
-            $aBasePermissions=Permission::model()->getGlobalBasePermissions();
+        if ($sEntityName == 'global') {
+            $aBasePermissions = Permission::model()->getGlobalBasePermissions();
             if (!App()->user->checkAccess('superadmin') && !$bBypassCheck) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
             {
                 // Make sure that he owns the user he wants to give global permissions for
@@ -319,63 +330,55 @@ class Permission extends ActiveRecord
                 if (!$oUser) {
                     die('You are not allowed to set permisisons for this user');
                 }
-                $aFilteredPermissions=array();
-                foreach  ($aBasePermissions as $PermissionName=>$aPermission)
-                {
-                    foreach ($aPermission as $sPermissionKey=>&$sPermissionValue)
-                    {
-                        if ($sPermissionKey!='title' && $sPermissionKey!='img' && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) $sPermissionValue=false;
+                $aFilteredPermissions = array();
+                foreach ($aBasePermissions as $PermissionName => $aPermission) {
+                    foreach ($aPermission as $sPermissionKey => &$sPermissionValue) {
+                        if ($sPermissionKey != 'title' && $sPermissionKey != 'img' && !Permission::model()->hasGlobalPermission($PermissionName,
+                                $sPermissionKey)
+                        ) {
+                            $sPermissionValue = false;
+                        }
                     }
                     // Only have a row for that permission if there is at least one permission he may give to other users
-                    if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export'])
-                    {
-                        $aFilteredPermissions[$PermissionName]=$aPermission;
+                    if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']) {
+                        $aFilteredPermissions[$PermissionName] = $aPermission;
                     }
                 }
-                $aBasePermissions=$aFilteredPermissions;        
-            }
-            elseif (App()->user->checkAccess('superadmin') && App()->user->id!=1)
-            {
+                $aBasePermissions = $aFilteredPermissions;
+            } elseif (App()->user->checkAccess('superadmin') && App()->user->id != 1) {
                 unset($aBasePermissions['superadmin']);
             }
-        }
-        elseif ($sEntityName=='survey')
-        {
-            $aBasePermissions=Permission::model()->getSurveyBasePermissions();
+        } elseif ($sEntityName == 'survey') {
+            $aBasePermissions = Permission::model()->getSurveyBasePermissions();
         }
 
-        $aFilteredPermissions=array();
-        foreach ($aBasePermissions as $sPermissionname=>$aPermission)
-        {
-            $aFilteredPermissions[$sPermissionname]['create']= (isset($aPermissions[$sPermissionname]['create']) && $aPermissions[$sPermissionname]['create']);
-            $aFilteredPermissions[$sPermissionname]['read']  = (isset($aPermissions[$sPermissionname]['read']) && $aPermissions[$sPermissionname]['read']);
-            $aFilteredPermissions[$sPermissionname]['update']= (isset($aPermissions[$sPermissionname]['update']) && $aPermissions[$sPermissionname]['update']);
-            $aFilteredPermissions[$sPermissionname]['delete']= (isset($aPermissions[$sPermissionname]['delete']) && $aPermissions[$sPermissionname]['delete']);
-            $aFilteredPermissions[$sPermissionname]['import']= (isset($aPermissions[$sPermissionname]['import']) && $aPermissions[$sPermissionname]['import']);
-            $aFilteredPermissions[$sPermissionname]['export']= (isset($aPermissions[$sPermissionname]['export']) && $aPermissions[$sPermissionname]['export']);
+        $aFilteredPermissions = array();
+        foreach ($aBasePermissions as $sPermissionname => $aPermission) {
+            $aFilteredPermissions[$sPermissionname]['create'] = (isset($aPermissions[$sPermissionname]['create']) && $aPermissions[$sPermissionname]['create']);
+            $aFilteredPermissions[$sPermissionname]['read'] = (isset($aPermissions[$sPermissionname]['read']) && $aPermissions[$sPermissionname]['read']);
+            $aFilteredPermissions[$sPermissionname]['update'] = (isset($aPermissions[$sPermissionname]['update']) && $aPermissions[$sPermissionname]['update']);
+            $aFilteredPermissions[$sPermissionname]['delete'] = (isset($aPermissions[$sPermissionname]['delete']) && $aPermissions[$sPermissionname]['delete']);
+            $aFilteredPermissions[$sPermissionname]['import'] = (isset($aPermissions[$sPermissionname]['import']) && $aPermissions[$sPermissionname]['import']);
+            $aFilteredPermissions[$sPermissionname]['export'] = (isset($aPermissions[$sPermissionname]['export']) && $aPermissions[$sPermissionname]['export']);
         }
-        
+
         $condition = array('entity_id' => $iEntityID, 'uid' => $iUserID);
-        $oEvent=new PluginEvent('beforePermissionSetSave');
-        $oEvent->set('aNewPermissions',$aFilteredPermissions);
-        $oEvent->set('iSurveyID',$iEntityID);
-        $oEvent->set('iUserID',$iUserID);
+        $oEvent = new PluginEvent('beforePermissionSetSave');
+        $oEvent->set('aNewPermissions', $aFilteredPermissions);
+        $oEvent->set('iSurveyID', $iEntityID);
+        $oEvent->set('iUserID', $iUserID);
         $result = App()->getPluginManager()->dispatchEvent($oEvent);
 
         // Only the original superadmin may change the superadmin permissions
-        if (App()->user->id!=1)
-        {
-            Permission::model()->deleteAllByAttributes($condition,"permission <> 'superadmin' AND entity <> 'template'");
-        }
-        else
-        {
-            Permission::model()->deleteAllByAttributes($condition,"entity <> 'template'");
+        if (App()->user->id != 1) {
+            Permission::model()->deleteAllByAttributes($condition,
+                "permission <> 'superadmin' AND entity <> 'template'");
+        } else {
+            Permission::model()->deleteAllByAttributes($condition, "entity <> 'template'");
         }
 
-        foreach ($aFilteredPermissions as $sPermissionname=>$aPermission)
-        {
-            if ($aPermission['create'] || $aPermission['read'] ||$aPermission['update'] || $aPermission['delete']  || $aPermission['import']  || $aPermission['export'])
-            {
+        foreach ($aFilteredPermissions as $sPermissionname => $aPermission) {
+            if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']) {
                 $data = array(
                     'entity_id' => $iEntityID,
                     'entity' => $sEntityName,
@@ -390,26 +393,33 @@ class Permission extends ActiveRecord
                 );
 
                 $permission = new self;
-                foreach ($data as $k => $v)
+                foreach ($data as $k => $v) {
                     $permission->$k = $v;
+                }
                 $permission->save();
             }
         }
+
         return true;
     }
 
 
     function giveAllSurveyPermissions($iUserID, $iSurveyID)
     {
-        $aPermissions=$this->getSurveyBasePermissions();
-        $aPermissionsToSet=array();
-        foreach ($aPermissions as $sPermissionName=>$aPermissionDetails)
-        {
-            foreach ($aPermissionDetails as $sPermissionDetailKey=>$sPermissionDetailValue)
-            {
-                if (in_array($sPermissionDetailKey,array('create','read','update','delete','import','export')) && $sPermissionDetailValue==true)
-                {
-                    $aPermissionsToSet[$sPermissionName][$sPermissionDetailKey]=1;
+        $aPermissions = $this->getSurveyBasePermissions();
+        $aPermissionsToSet = array();
+        foreach ($aPermissions as $sPermissionName => $aPermissionDetails) {
+            foreach ($aPermissionDetails as $sPermissionDetailKey => $sPermissionDetailValue) {
+                if (in_array($sPermissionDetailKey, array(
+                        'create',
+                        'read',
+                        'update',
+                        'delete',
+                        'import',
+                        'export'
+                    )) && $sPermissionDetailValue == true
+                ) {
+                    $aPermissionsToSet[$sPermissionName][$sPermissionDetailKey] = 1;
                 }
 
             }
@@ -418,146 +428,161 @@ class Permission extends ActiveRecord
     }
 
 
-
-    
     /**
-    * Checks if a user has a certain permission
-    *
-    * @param $iEntityID integer The entity ID
-    * @param $sEntityName string The entity name
-    * @param $sPermission string Name of the permission
-    * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
-    * @param $iUserID integer ls\models\User ID - if not given the one of the current user is used
-    * @return bool True if user has the permission
-    */
-    public static function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD='read', $iUserID=null)
+     * Checks if a user has a certain permission
+     *
+     * @param $iEntityID integer The entity ID
+     * @param $sEntityName string The entity name
+     * @param $sPermission string Name of the permission
+     * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
+     * @param $iUserID integer ls\models\User ID - if not given the one of the current user is used
+     * @return bool True if user has the permission
+     */
+    public static function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
         static $aPermissionStatic;
 
-        $oEvent=new PluginEvent('beforeHasPermission');
-        $oEvent->set('iEntityID',$iEntityID);
-        $oEvent->set('sEntityName',$sEntityName);
-        $oEvent->set('sPermission',$sPermission);
-        $oEvent->set('sCRUD',$sCRUD);
-        $oEvent->set('iUserID',$iUserID);
+        $oEvent = new PluginEvent('beforeHasPermission');
+        $oEvent->set('iEntityID', $iEntityID);
+        $oEvent->set('sEntityName', $sEntityName);
+        $oEvent->set('sPermission', $sPermission);
+        $oEvent->set('sCRUD', $sCRUD);
+        $oEvent->set('iUserID', $iUserID);
         App()->getPluginManager()->dispatchEvent($oEvent);
-        $pluginbPermission=$oEvent->get('bPermission');
+        $pluginbPermission = $oEvent->get('bPermission');
         // isset — Determine if a variable is set and is not NULL. And isset seems little speedest.
-        if (isset($pluginbPermission)) 
-             return $pluginbPermission;
+        if (isset($pluginbPermission)) {
+            return $pluginbPermission;
+        }
 
-        if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
-        $sCRUD=$sCRUD.'_p';
+        if (!in_array($sCRUD, array('create', 'read', 'update', 'delete', 'import', 'export'))) {
+            return false;
+        }
+        $sCRUD = $sCRUD . '_p';
 
-        if (is_null($iUserID))
-        {
-            if (!Yii::app()->user->getIsGuest()) $iUserID = App()->user->id;
-            else return false;
+        if (is_null($iUserID)) {
+            if (!Yii::app()->user->getIsGuest()) {
+                $iUserID = App()->user->id;
+            } else {
+                return false;
+            }
         }
 
         // Check if superadmin and cache it
-        if (!isset($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']))
-        {
-            $aPermission = self::model()->findByAttributes(array("entity_id"=>0,'entity'=>'global', "uid"=> $iUserID, "permission"=>'superadmin'));
+        if (!isset($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p'])) {
+            $aPermission = self::model()->findByAttributes(array(
+                "entity_id" => 0,
+                'entity' => 'global',
+                "uid" => $iUserID,
+                "permission" => 'superadmin'
+            ));
             $bPermission = is_null($aPermission) ? array() : $aPermission->attributes;
-            if (!isset($bPermission['read_p']) || $bPermission['read_p']==0)
-            {
-                $bPermission=false;
+            if (!isset($bPermission['read_p']) || $bPermission['read_p'] == 0) {
+                $bPermission = false;
+            } else {
+                $bPermission = true;
             }
-            else
-            {
-                $bPermission=true;
-            }
-            $aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']= $bPermission;
+            $aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p'] = $bPermission;
         }
 
-        if ($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']) return true;
-        if (!isset($aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]))
-        {
-            $query = self::model()->findByAttributes(array("entity_id"=> $iEntityID, "uid"=> $iUserID, "entity"=>$sEntityName, "permission"=>$sPermission));
-            $bPermission = is_null($query) ? array() : $query->attributes;
-            if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD]==0)
-            {
-                $bPermission=false;
-            }
-            else
-            {
-                $bPermission=true;
-            }
-            $aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]=$bPermission;
+        if ($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']) {
+            return true;
         }
+        if (!isset($aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD])) {
+            $query = self::model()->findByAttributes(array(
+                "entity_id" => $iEntityID,
+                "uid" => $iUserID,
+                "entity" => $sEntityName,
+                "permission" => $sPermission
+            ));
+            $bPermission = is_null($query) ? array() : $query->attributes;
+            if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD] == 0) {
+                $bPermission = false;
+            } else {
+                $bPermission = true;
+            }
+            $aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD] = $bPermission;
+        }
+
         return $aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD];
     }
-    
+
     /**
-    * Returns true if a user has global permission for a certain action. 
-    * @param $sPermission string Name of the permission - see function getGlobalPermissions
-    * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
-    * @param $iUserID integer ls\models\User ID - if not given the one of the current user is used
-    * @return bool True if user has the permission
-    */
-    function hasGlobalPermission($sPermission, $sCRUD='read', $iUserID=null)
+     * Returns true if a user has global permission for a certain action.
+     * @param $sPermission string Name of the permission - see function getGlobalPermissions
+     * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
+     * @param $iUserID integer ls\models\User ID - if not given the one of the current user is used
+     * @return bool True if user has the permission
+     */
+    function hasGlobalPermission($sPermission, $sCRUD = 'read', $iUserID = null)
     {
         return $this->hasPermission(0, 'global', $sPermission, $sCRUD, $iUserID);
     }
 
     /**
-    * Checks if a user has a certain permission in the given survey
-    *
-    * @param $iSurveyID integer The survey ID
-    * @param $sPermission string Name of the permission
-    * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
-    * @param $iUserID integer ls\models\User ID - if not given the one of the current user is used
-    * @return bool True if user has the permission
-    */
-    function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD='read', $iUserID=null)
+     * Checks if a user has a certain permission in the given survey
+     *
+     * @param $iSurveyID integer The survey ID
+     * @param $sPermission string Name of the permission
+     * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
+     * @param $iUserID integer ls\models\User ID - if not given the one of the current user is used
+     * @return bool True if user has the permission
+     */
+    function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        $oSurvey=Survey::Model()->findByPk($iSurveyID);
-        if (!$oSurvey) 
+        $oSurvey = Survey::Model()->findByPk($iSurveyID);
+        if (!$oSurvey) {
             return false;
-        $iUserID=self::getUserId($iUserID);
+        }
+        $iUserID = self::getUserId($iUserID);
         // If you own a survey you have access to the whole survey
-        if ($iUserID==$oSurvey->owner_id) 
+        if ($iUserID == $oSurvey->owner_id) {
             return true;
+        }
         // Get global correspondance for surveys rigth
-        $sGlobalCRUD=($sCRUD=='create' || ($sCRUD=='delete' && $sPermission!='survey') ) ? 'update' : $sCRUD;
-        return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
+        $sGlobalCRUD = ($sCRUD == 'create' || ($sCRUD == 'delete' && $sPermission != 'survey')) ? 'update' : $sCRUD;
+
+        return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iSurveyID,
+            'survey', $sPermission, $sCRUD, $iUserID);
     }
 
     /**
-    * Returns true if a user has permission to read/create/update a certain template
-    * @param $sPermission string Name of the permission - see function getGlobalPermissions
-    * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
-    * @param $iUserID integer ls\models\User ID - if not given the one of the current user is used
-    * @return bool True if user has the permission
-    */
-    function hasTemplatePermission($sTemplateName, $sCRUD='read', $iUserID=null)
+     * Returns true if a user has permission to read/create/update a certain template
+     * @param $sPermission string Name of the permission - see function getGlobalPermissions
+     * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
+     * @param $iUserID integer ls\models\User ID - if not given the one of the current user is used
+     * @return bool True if user has the permission
+     */
+    function hasTemplatePermission($sTemplateName, $sCRUD = 'read', $iUserID = null)
     {
-        return $this->hasPermission(0, 'global', 'templates', $sCRUD, $iUserID) || $this->hasPermission(0, 'template', $sTemplateName, $sCRUD, $iUserID);
+        return $this->hasPermission(0, 'global', 'templates', $sCRUD, $iUserID) || $this->hasPermission(0, 'template',
+            $sTemplateName, $sCRUD, $iUserID);
     }
 
     /**
-    * function used to order Permission by language string
-    * @param aApermission array The first permission information
-    * @param aBpermission array The second permission information
-    * @return bool 
-    */
-    private static function comparePermissionTitle($aApermission,$aBpermission)
+     * function used to order Permission by language string
+     * @param aApermission array The first permission information
+     * @param aBpermission array The second permission information
+     * @return bool
+     */
+    private static function comparePermissionTitle($aApermission, $aBpermission)
     {
         return strcmp($aApermission['title'], $aBpermission['title']);
     }
 
     /**
-    * get the default/fixed $iUserID
-    * @param iUserID optionnal user id
-    * @return integer user id
-    */
-    private static function getUserId($iUserID=null)
+     * get the default/fixed $iUserID
+     * @param iUserID optionnal user id
+     * @return integer user id
+     */
+    private static function getUserId($iUserID = null)
     {
-        $sOldLanguage=App()->language;// See bug #09695 : called by EM
-        if (is_null($iUserID) && !Yii::app()->user->getIsGuest())
+        $sOldLanguage = App()->language;// See bug #09695 : called by EM
+        if (is_null($iUserID) && !Yii::app()->user->getIsGuest()) {
             $iUserID = Yii::app()->session['loginID'];
+        }
         App()->setLanguage($sOldLanguage);
+
         return $iUserID;
     }
 

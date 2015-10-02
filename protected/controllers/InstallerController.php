@@ -135,12 +135,6 @@ class InstallerController extends \CController {
                     'tablePrefix' => $configForm->dbprefix
                 ]);
                 Yii::app()->db->active = true;
-                /**
-                 * Save configuration.
-                 */
-                if (!$this->writeConfigFile($configForm)) {
-                    throw new CHttpException(500, "Failed to write config file.");
-                }
                 /*
                  * Check if database is filled by checking a subset of the tables.
                  */
@@ -162,6 +156,13 @@ class InstallerController extends \CController {
                  */
                 if ($isEmpty) {
                     $this->populateDatabase();
+                }
+
+                /**
+                 * Save configuration.
+                 */
+                if (!$this->writeConfigFile($configForm)) {
+                    throw new CHttpException(500, "Failed to write config file.");
                 }
 
                 $output = \TbHtml::tag('p', [], gT('The database has been prepared.'))
@@ -212,7 +213,7 @@ class InstallerController extends \CController {
             default:
                 throw new Exception(sprintf('Unknown database type "%s".', $db->driverName));
         }
-        $db->executeFile(Yii::getPathOfAlias('application') . "/../installer/sql/create-$sql_file.sql", $db->tablePrefix);
+        $db->executeFile(Yii::getPathOfAlias('application') . "/installer/create-$sql_file.sql", $db->tablePrefix);
     }
 
     /**
@@ -264,7 +265,7 @@ class InstallerController extends \CController {
                         $user->email=$sAdminEmail;
                         $user->save();
                         // Save permissions
-                        $permission=new \Permission;
+                        $permission=new \ls\models\Permission;
                         $permission->entity_id=0;
                         $permission->entity='global';
                         $permission->uid=$user->uid;

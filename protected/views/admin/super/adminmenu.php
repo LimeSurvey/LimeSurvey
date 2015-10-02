@@ -1,7 +1,9 @@
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
         <div class='menubar-title-left'>
-            <strong><?php eT("Administration");?></strong>
+            <strong><?php use ls\models\Permission;
+
+                eT("Administration");?></strong>
             <?php
                 if(Yii::app()->session['loginID'])
                 { ?>

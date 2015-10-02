@@ -33,7 +33,7 @@ class PermissionDb extends PluginBase implements \ls\pluginmanager\iAuthorizatio
         $params = array_merge($defaults, $params);
         // Check superadmin first.
         $superAdmin = ($itemName != 'superadmin') && $this->checkAccess('superadmin', $userId);
-        return $superAdmin ?: \Permission::hasPermission($params['entity_id'], $params['entity'], $itemName, $params['crud'], $userId);
+        return $superAdmin ?: \ls\models\Permission::hasPermission($params['entity_id'], $params['entity'], $itemName, $params['crud'], $userId);
     }
 
     public function clearAll() {
@@ -57,7 +57,7 @@ class PermissionDb extends PluginBase implements \ls\pluginmanager\iAuthorizatio
     }
 
     public function getAuthAssignments($userId) {
-        return \Permission::model()->findAllByAttributes(['uid' => $userId]);
+        return \ls\models\Permission::model()->findAllByAttributes(['uid' => $userId]);
     }
 
     public function getAuthItem($name) {
@@ -65,7 +65,7 @@ class PermissionDb extends PluginBase implements \ls\pluginmanager\iAuthorizatio
     }
 
     public function getAuthItems($type = null, $userId = null) {
-        return \Permission::getGlobalBasePermissions();
+        return \ls\models\Permission::getGlobalBasePermissions();
     }
 
     public function getItemChildren($itemName) {
@@ -79,7 +79,7 @@ class PermissionDb extends PluginBase implements \ls\pluginmanager\iAuthorizatio
     public function isAssigned($itemName, $userId) {
         if (strpos($itemName, '.')) {
             list($itemName, $crud) = explode('.', $itemName);
-            return \Permission::model()->countByAttributes([
+            return \ls\models\Permission::model()->countByAttributes([
                 'entity' => 'global',
                 'entity_id' => 0,
                 "{$crud}_p" => 1

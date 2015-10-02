@@ -1,6 +1,8 @@
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-        <strong><?php eT("Label set administration"); ?></strong>
+        <strong><?php use ls\models\Permission;
+
+            eT("Label set administration"); ?></strong>
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>

@@ -1,6 +1,8 @@
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-        <strong><?php eT("Label Set"); ?>:</strong> <?php echo flattenText($row['label_name']); ?>
+        <strong><?php use ls\models\Permission;
+
+            eT("Label Set"); ?>:</strong> <?php echo flattenText($row['label_name']); ?>
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>

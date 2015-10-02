@@ -98,7 +98,7 @@ class UsersController extends Controller
 
         if (isset($pluginObject) && $pluginObject instanceOf \ls\pluginmanager\iAuthorizationPlugin) {
             return $this->render('permissions', [
-                'permissions' => \Permission::getGlobalBasePermissions(),
+                'permissions' => \ls\models\Permission::getGlobalBasePermissions(),
                 'plugin' => $pluginObject,
                 'userId' => $id
             ]);
