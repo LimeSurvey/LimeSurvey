@@ -132,7 +132,7 @@
                 
                 <!-- Plugin manager -->
                 <li class="dropdown-item">
-                    <a href="<?php echo $this->createUrl("plugins/"); ?>">
+                    <a href="<?php echo $this->createUrl("/admin/pluginmanager/sa/index"); ?>">
                         <?php eT("Plugin manager");?>
                     </a>
                 </li>           
