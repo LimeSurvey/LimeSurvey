@@ -16,8 +16,8 @@
 *
 * This controller performs token actions
 *
-* @package		LimeSurvey
-* @subpackage	Backend
+* @package        LimeSurvey
+* @subpackage    Backend
 */
 class conditionsaction extends Survey_Common_Action {
 
@@ -30,31 +30,30 @@ class conditionsaction extends Survey_Common_Action {
         Yii::app()->loadHelper("database");
 
 
-			$aData['sidebar']['state'] = "close";
-			$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-			$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-			$aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid;
-			$aData['questionbar']['buttons']['conditions'] = TRUE;
-			
-			
-			switch($subaction)
-			{
-				case 'editconditionsform':
-					$aData['questionbar']['buttons']['condition']['edit'] = TRUE;	
-					break;
-				
-				case 'conditions':
-					$aData['questionbar']['buttons']['condition']['conditions'] = TRUE;	
-					break;
-				
-				case 'copyconditionsform':
-					$aData['questionbar']['buttons']['condition']['copyconditionsform'] = TRUE;
-					break;
-				
-				default:
-					$aData['questionbar']['buttons']['condition']['edit'] = TRUE;
-					break;
-			}
+            $aData['sidebar']['state'] = "close";
+            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+            $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid;
+            $aData['questionbar']['buttons']['conditions'] = TRUE;
+            
+            switch($subaction)
+            {
+                case 'editconditionsform':
+                    $aData['questionbar']['buttons']['condition']['edit'] = TRUE;    
+                    break;
+                
+                case 'conditions':
+                    $aData['questionbar']['buttons']['condition']['conditions'] = TRUE;    
+                    break;
+                
+                case 'copyconditionsform':
+                    $aData['questionbar']['buttons']['condition']['copyconditionsform'] = TRUE;
+                    break;
+                
+                default:
+                    $aData['questionbar']['buttons']['condition']['edit'] = TRUE;
+                    break;
+            }
 
 
         if( !empty($_POST['subaction']) ) $subaction=Yii::app()->request->getPost('subaction');
@@ -92,17 +91,17 @@ class conditionsaction extends Survey_Common_Action {
         if (Yii::app()->getConfig('stringcomparizonoperators') == 1)
         {
             $method = array(
-            "<"  	=> gT("Less than"),
-            "<=" 	=> gT("Less than or equal to"),
-            "==" 	=> gT("equals"),
-            "!=" 	=> gT("Not equal to"),
-            ">=" 	=> gT("Greater than or equal to"),
-            ">"  	=> gT("Greater than"),
-            "RX" 	=> gT("Regular expression"),
-            "a<b"  	=> gT("Less than (Strings)"),
-            "a<=b" 	=> gT("Less than or equal to (Strings)"),
-            "a>=b" 	=> gT("Greater than or equal to (Strings)"),
-            "a>b"  	=> gT("Greater than (Strings)")
+            "<"      => gT("Less than"),
+            "<="     => gT("Less than or equal to"),
+            "=="     => gT("equals"),
+            "!="     => gT("Not equal to"),
+            ">="     => gT("Greater than or equal to"),
+            ">"      => gT("Greater than"),
+            "RX"     => gT("Regular expression"),
+            "a<b"      => gT("Less than (Strings)"),
+            "a<=b"     => gT("Less than or equal to (Strings)"),
+            "a>=b"     => gT("Greater than or equal to (Strings)"),
+            "a>b"      => gT("Greater than (Strings)")
             );
         }
         else
@@ -257,11 +256,11 @@ class conditionsaction extends Survey_Common_Action {
                 }
 
                 $condition_data = array(
-                'qid' 			=> $qid,
-                'scenario' 		=> $p_scenario,
-                'cqid' 			=> $p_cqid,
-                'cfieldname' 	=> $conditionCfieldname,
-                'method'		=> $p_method
+                'qid'             => $qid,
+                'scenario'         => $p_scenario,
+                'cqid'             => $p_cqid,
+                'cfieldname'     => $conditionCfieldname,
+                'method'        => $p_method
                 );
 
                 if (isset($p_canswers))
@@ -314,7 +313,7 @@ class conditionsaction extends Survey_Common_Action {
         // UPDATE ENTRY IF THIS IS AN EDIT
         if (isset($p_subaction) && $p_subaction == "updatecondition")
         {
-            if ((	!isset($p_canswers) &&
+            if ((    !isset($p_canswers) &&
             !isset($_POST['ConditionConst']) &&
             !isset($_POST['prevQuestionSGQA']) &&
             !isset($_POST['tokenAttr']) &&
@@ -462,11 +461,11 @@ class conditionsaction extends Survey_Common_Action {
                 foreach ($result->readAll() as $row)
                 {
                     $proformaconditions[] = array(
-                    "scenario"		=>	$row['scenario'],
-                    "cqid"			=>	$row['cqid'],
-                    "cfieldname"	=>	$row['cfieldname'],
-                    "method"		=>	$row['method'],
-                    "value"			=>	$row['value']
+                    "scenario"        =>    $row['scenario'],
+                    "cqid"            =>    $row['cqid'],
+                    "cfieldname"    =>    $row['cfieldname'],
+                    "method"        =>    $row['method'],
+                    "value"            =>    $row['value']
                     );
                 } // while
 
@@ -478,12 +477,12 @@ class conditionsaction extends Survey_Common_Action {
 
                         //First lets make sure there isn't already an exact replica of this condition
                         $conditions_data = array(
-                        'qid' 			=> 	$newqid,
-                        'scenario' 		=> 	$pfc['scenario'],
-                        'cqid' 			=> 	$pfc['cqid'],
-                        'cfieldname' 	=> 	$pfc['cfieldname'],
-                        'method' 		=>	$pfc['method'],
-                        'value' 		=> 	$pfc['value']
+                        'qid'             =>     $newqid,
+                        'scenario'         =>     $pfc['scenario'],
+                        'cqid'             =>     $pfc['cqid'],
+                        'cfieldname'     =>     $pfc['cfieldname'],
+                        'method'         =>    $pfc['method'],
+                        'value'         =>     $pfc['value']
                         );
 
                         $result = Condition::model()->findAllByAttributes($conditions_data);
@@ -542,7 +541,7 @@ class conditionsaction extends Survey_Common_Action {
         //END PROCESS ACTIONS
 
         $cquestions = Array();
-        $canswers 	= Array();
+        $canswers     = Array();
 
         //BEGIN: GATHER INFORMATION
         // 1: Get information for this question
@@ -627,14 +626,14 @@ class conditionsaction extends Survey_Common_Action {
                 foreach ($result as $myrows)
                 {                   //key => value
                     $theserows[] = array(
-                    "qid"		=>	$myrows['qid'],
-                    "sid"		=>	$myrows['sid'],
-                    "gid"		=>	$myrows['gid'],
-                    "question"	=>	$myrows['question'],
-                    "type"		=>	$myrows['type'],
-                    "mandatory"	=>	$myrows['mandatory'],
-                    "other"		=>	$myrows['other'],
-                    "title"		=>	$myrows['title']
+                    "qid"        =>    $myrows['qid'],
+                    "sid"        =>    $myrows['sid'],
+                    "gid"        =>    $myrows['gid'],
+                    "question"    =>    $myrows['question'],
+                    "type"        =>    $myrows['type'],
+                    "mandatory"    =>    $myrows['mandatory'],
+                    "other"        =>    $myrows['other'],
+                    "title"        =>    $myrows['title']
                     );
                 }
             }
@@ -656,14 +655,14 @@ class conditionsaction extends Survey_Common_Action {
                 foreach ($result as $myrows)
                 {
                     $postrows[]=array(
-                    "qid"		=>	$myrows['qid'],
-                    "sid"		=>	$myrows['sid'],
-                    "gid"		=>	$myrows['gid'],
-                    "question"	=>	$myrows['question'],
-                    "type"		=>	$myrows['type'],
-                    "mandatory"	=>	$myrows['mandatory'],
-                    "other"		=>	$myrows['other'],
-                    "title"		=>	$myrows['title']
+                    "qid"        =>    $myrows['qid'],
+                    "sid"        =>    $myrows['sid'],
+                    "gid"        =>    $myrows['gid'],
+                    "question"    =>    $myrows['question'],
+                    "type"        =>    $myrows['type'],
+                    "mandatory"    =>    $myrows['mandatory'],
+                    "other"        =>    $myrows['other'],
+                    "title"        =>    $myrows['title']
                     );
                 } // while
             }
@@ -1035,7 +1034,7 @@ class conditionsaction extends Survey_Common_Action {
                             {
                                 // For dropdown questions
                                 // optinnaly add the 'Other' answer
-                                if ( (	$rows['type'] == "L" ||
+                                if ( (    $rows['type'] == "L" ||
                                 $rows['type'] == "!") &&
                                 $rows['other'] == "Y" )
                                 {
@@ -1245,7 +1244,7 @@ class conditionsaction extends Survey_Common_Action {
                         $initialCheckbox = "";
                     }
 
-                    if (	$scenariotext != "" && ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
+                    if (    $scenariotext != "" && ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
                     $subaction == "updatecondition" || $subaction == "editthiscondition" ||
                     $subaction == "renumberscenarios" || $subaction == "updatescenario" ||
                     $subaction == "deletescenario" || $subaction == "delete")
@@ -1255,15 +1254,15 @@ class conditionsaction extends Survey_Common_Action {
                         'name'=>'DeleteWholeGroup'
                         ));
                         $additional_main_content = CHtml::link($img_tag, '#', array(
-                        'onclick' 	=> 	"if ( confirm('".gT("Are you sure you want to delete all conditions set in this scenario?", "js")."')) { document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}"
+                        'onclick'     =>     "if ( confirm('".gT("Are you sure you want to delete all conditions set in this scenario?", "js")."')) { document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}"
                         ));
 
                         $img_tag = CHtml::image($imageurl.'/scenario_edit.png', gT("Edit scenario"), array(
                         'name'=>'DeleteWholeGroup'
                         ));
                         $additional_main_content .= CHtml::link($img_tag, '#', array(
-                        'id' 		=> 	'editscenariobtn'.$scenarionr['scenario'],
-                        'onclick' 	=> 	"$('#editscenario{$scenarionr['scenario']}').toggle('slow');"
+                        'id'         =>     'editscenariobtn'.$scenarionr['scenario'],
+                        'onclick'     =>     "$('#editscenario{$scenarionr['scenario']}').toggle('slow');"
                         ));
 
                         $aData['additional_content'] = $additional_main_content;
@@ -1348,8 +1347,8 @@ class conditionsaction extends Survey_Common_Action {
                     $conditionscount=$conditionscount+$conditionscounttoken;
 
                     
-					
-					////////////////// BUILD CONDITIONS DISPLAY	
+                    
+                    ////////////////// BUILD CONDITIONS DISPLAY    
                     if ($conditionscount > 0)
                     {
                         $aConditionsMerged=Array();
@@ -1603,9 +1602,9 @@ class conditionsaction extends Survey_Common_Action {
                                 }
                             }
 
-                            $aViewUrls['output'] 	.= 	CHtml::closeTag('td') 	. CHtml::closeTag('tr') .
+                            $aViewUrls['output']     .=     CHtml::closeTag('td')     . CHtml::closeTag('tr') .
                             CHtml::closeTag('table'). CHtml::closeTag('form') .
-                            CHtml::closeTag('td') 	. CHtml::closeTag('tr');
+                            CHtml::closeTag('td')     . CHtml::closeTag('tr');
 
                             $currentfield = $rows['cfieldname'];
                         }
@@ -1618,13 +1617,13 @@ class conditionsaction extends Survey_Common_Action {
             }
             else
             { // no condition ==> disable delete all conditions button, and display a simple comment
-                $aViewUrls['output'] = 	CHtml::openTag('tr') . CHtml::tag('td', array(),
+                $aViewUrls['output'] =     CHtml::openTag('tr') . CHtml::tag('td', array(),
                 gT("This question is always shown.")).CHtml::tag('td', array(),'&nbsp;').CHtml::closeTag('tr');
             }
 
             $aViewUrls['output'] .= CHtml::closeTag('table');
-			//// To close the div opened in condition header....  see : https://goo.gl/BY7gUJ
-			$aViewUrls['afteroutput'] = '</div></div></div>';
+            //// To close the div opened in condition header....  see : https://goo.gl/BY7gUJ
+            $aViewUrls['afteroutput'] = '</div></div></div>';
 
         }
         //END DISPLAY CONDITIONS FOR THIS QUESTION
