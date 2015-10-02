@@ -16,7 +16,7 @@ class Index extends Survey_Common_Action
 
     public function run()
     {
-               App()->loadHelper('surveytranslator');
+        App()->loadHelper('surveytranslator');
         App()->getClientScript()->registerPackage('panel-clickable');
         App()->getClientScript()->registerPackage('panels-animation');
         $aData['issuperadmin'] = false;
@@ -40,7 +40,6 @@ class Index extends Survey_Common_Action
         {
             $aData['showLastSurvey'] = false;            
         }
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
         
         // We get the last question visited by user 
         $setting_entry = 'last_question_'.Yii::app()->user->getId();      
@@ -56,6 +55,7 @@ class Index extends Survey_Common_Action
         
         if( $lastquestion != null && $lastquestiongroup != null)
         {
+            $baselang = Survey::model()->findByPk($iSurveyID)->language;
             $aData['showLastQuestion'] = true;
             $qid = $lastquestion;
             $gid = $lastquestiongroup;
