@@ -1,6 +1,7 @@
 <?php
 /**
  * Question group bar
+ * Also used for Edit question
  */
 ?>
 
@@ -115,7 +116,7 @@
                 <?php if(isset($questiongroupbar['saveandclosebutton'])):?>
                     
                     <!-- Save and close -->
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/282267{$surveyid}"); ?>" role="button">
+                    <a id="save-and-close-button" class="btn btn-default" role="button">
                         <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
                         <?php eT("Save and close");?>
                     </a>
