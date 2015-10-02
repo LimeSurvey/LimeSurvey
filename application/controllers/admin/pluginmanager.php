@@ -1,11 +1,17 @@
 <?php
 
+/**
+ */
 class PluginManager extends Survey_Common_Action
 {
     public function init()
     {
     }
 
+    /**
+     * Overview for plugins
+     * Copied from PluginsController 2015-10-02
+     */
     public function index()
     {
         $oPluginManager = App()->getPluginManager();
@@ -55,6 +61,71 @@ class PluginManager extends Survey_Common_Action
         }
 
         $this->_renderWrappedTemplate('pluginmanager', 'index', array('data' => $data));
+    }
+
+    /**
+     * Activate a plugin
+     *
+     * @todo Defensive programming
+     * @param int $id Plugin id
+     * @return void
+     */
+    public function activate($id)
+    {
+        $oPlugin = Plugin::model()->findByPk($id);
+        if (!is_null($oPlugin))
+        {
+            $iStatus = $oPlugin->active;
+            if ($iStatus == 0)
+            {
+                // Load the plugin:
+                App()->getPluginManager()->loadPlugin($oPlugin->name, $id);
+                $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeActivate', $this), $oPlugin->name);
+                if ($result->get('success', true))
+                {
+                    $iStatus = 1;
+                } else
+                {
+                    Yii::app()->user->setFlash('error', gT('Failed to activate the plugin.'));
+                    $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
+                }
+            }
+            $oPlugin->active = $iStatus;
+            $oPlugin->save();
+            Yii::app()->user->setFlash('success', gT('Plugin was activated'));
+        }
+        $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
+    }
+
+    /**
+     * Deactivate plugin with $id
+     *
+     * @param int $id
+     * @return void
+     */
+    public function deactivate($id)
+    {
+        $oPlugin = Plugin::model()->findByPk($id);
+        if (!is_null($oPlugin))
+        {
+            $iStatus = $oPlugin->active;
+            if ($iStatus == 1)
+            {
+                $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeDeactivate', $this), $oPlugin->name);
+                if ($result->get('success', true))
+                {
+                    $iStatus = 0;
+                } else
+                {
+                    Yii::app()->user->setFlash('error', gT('Failed to deactivate the plugin.'));
+                    $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
+                }
+            }
+            $oPlugin->active = $iStatus;
+            $oPlugin->save();
+            Yii::app()->user->setFlash('success', gT('Plugin was deactivated'));
+        }
+        $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
     }
 
     /**
