@@ -129,6 +129,53 @@ class PluginManager extends Survey_Common_Action
     }
 
     /**
+     * Configure for plugin
+     */
+    public function configure($id)
+    {
+        $arPlugin      = Plugin::model()->findByPk($id)->attributes;
+        $oPluginObject = App()->getPluginManager()->loadPlugin($arPlugin['name'], $arPlugin['id']);
+
+        if ($arPlugin === null)
+        {
+            Yii::app()->user->setFlash('error', gT('Plugin not found'));
+            $this->getController()->redirect(array('admin/pluginmanager/sa/index'));
+        }
+
+        // If post handle data, yt0 seems to be the submit button
+        if (App()->request->isPostRequest)
+        {
+
+            $aSettings = $oPluginObject->getPluginSettings(false);
+            $aSave     = array();
+            foreach ($aSettings as $name => $setting)
+            {
+                $aSave[$name] = App()->request->getPost($name, null);
+            }
+            $oPluginObject->saveSettings($aSave);
+            Yii::app()->user->setFlash('success', gT('Settings saved'));
+            if(App()->request->getPost('redirect'))
+            {
+                $this->getController()->redirect(App()->request->getPost('redirect'), true);
+            }
+        }
+
+        // Prepare settings to be send to the view.
+        $aSettings = $oPluginObject->getPluginSettings();
+        if (empty($aSettings))
+        {
+            // And show a message
+            Yii::app()->user->setFlash('notice', gt('This plugin has no settings'));
+            $this->getController()->redirect('admin/pluginmanager/sa/index', true);
+        }
+
+        // Send to view plugin porperties: name and description
+        $aPluginProp = App()->getPluginManager()->getPluginInfo($arPlugin['name']);
+
+        $this->_renderWrappedTemplate('pluginmanager', 'configure', array('settings' => $aSettings, 'plugin' => $arPlugin, 'properties' => $aPluginProp));
+    }
+
+    /**
     * Renders template(s) wrapped in header and footer
     *
     * @param string $sAction Current action, the folder to fetch views from
