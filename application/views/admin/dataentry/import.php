@@ -19,18 +19,18 @@
                                     'name' => 'ok'
                                 ),
                                 gT('Cancel') => array(
-                					'type' => 'link',
-                					'href' => App()->createUrl('plugins/index')
-                				)
+                                    'type' => 'link',
+                                    'href' => App()->createUrl('plugins/index')
+                                )
                             )
                         ));
                         echo CHtml::openTag('div', array('class' => 'messagebox ui-corner-all'));
                         echo CHtml::tag('div', array('class' => 'warningheader'), gT("Warning"));
                         eT("You can import all old responses that are compatible with your current survey. Compatibility is determined by comparing column types and names, the ID field is always ignored.");
-                		echo '<br/>';
+                        echo '<br/>';
                         eT("Using type coercion may break your data; use with care or not at all if possible.");
                         echo '<br/>';
-                		eT("Currently we detect and handle the following changes:");
+                        eT("Currently we detect and handle the following changes:");
                         
                         $list = array(
                             

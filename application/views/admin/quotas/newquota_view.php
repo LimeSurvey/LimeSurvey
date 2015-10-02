@@ -1,9 +1,9 @@
 <div class="side-body col-lg-8">
-	<div class="row">                             
-		<div class="col-lg-12 content-right">
-			<h3>
-				<?php eT("New quota");?>
-			</h3>
+    <div class="row">                             
+        <div class="col-lg-12 content-right">
+            <h3>
+                <?php eT("New quota");?>
+            </h3>
 
 <?php echo CHtml::form(array("admin/quotas/sa/insertquota/surveyid/{$iSurveyId}"), 'post', array('class'=>'form30', 'id'=>'addnewquotaform', 'name'=>'addnewquotaform')); ?>
     <ul>
@@ -58,5 +58,5 @@
         <input type="hidden" name="subaction" value="insertquota" />
     </div>
     
-	</form>
+    </form>
 </div></div></div>

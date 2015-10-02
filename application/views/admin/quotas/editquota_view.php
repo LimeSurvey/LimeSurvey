@@ -1,9 +1,9 @@
 <div class="side-body col-lg-8">
-	<div class="row">                             
-		<div class="col-lg-12 content-right">
-			<h3>
-				<?php eT("Edit quota");?>
-			</h3>
+    <div class="row">                             
+        <div class="col-lg-12 content-right">
+            <h3>
+                <?php eT("Edit quota");?>
+            </h3>
 
 
     <?php echo CHtml::form(array("admin/quotas/sa/modifyquota/surveyid/{$iSurveyId}"), 'post', array('id'=>'editquota','class'=>'form30')); ?>
