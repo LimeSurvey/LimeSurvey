@@ -128,9 +128,16 @@ class SettingsWidget extends CWidget
 
     protected function renderSetting($name, $metaData, $form = null, $return = false,$wrapper='div')
     {
+        // TODO: Weird hack that fixes some rendering issues after moving to Bootstrap2
+        echo "&nbsp;";
+
         // No type : invalid setting
         if(!isset($metaData['type']))
+        {
+            // TODO: assert or throw exception
             return "";
+        }
+
         // Fix $metaData
         $metaData=$this->fixMetaData($name, $metaData);
         // Fix $name
@@ -159,9 +166,13 @@ class SettingsWidget extends CWidget
         $result=CHtml::tag($wrapper,array('class'=>"setting control-group setting-{$metaData['type']}", 'data-name' => $name),$content);
 
         if($return)
+        {
             return $result;
+        }
         else
+        {
             echo $result;
+        }
     }
 
     protected function renderSettings()
@@ -169,7 +180,7 @@ class SettingsWidget extends CWidget
         echo CHtml::openTag('ul',array('class'=>"settings-list"));
         foreach($this->settings as $name => $metaData)
         {
-            $this->renderSetting($name, $metaData, null, false,'li');
+            $this->renderSetting($name, $metaData, null, false, 'li');
         }
         echo CHtml::closeTag('ul');
     }
