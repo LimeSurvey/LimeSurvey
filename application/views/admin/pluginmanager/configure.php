@@ -4,7 +4,7 @@
 
     $this->widget('ext.SettingsWidget.SettingsWidget', array(
         'settings' => $settings,
-        'title' => $title,
+        'title' => 'FOOBAR',
         'formHtmlOptions' => array(
             'id' => "pluginsettings-{$plugin['name']}",
         ),
