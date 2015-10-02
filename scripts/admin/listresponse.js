@@ -21,7 +21,7 @@ $(window).scroll(function(){
 
 $(document).on("click","[data-delete]",function(event){
     event.preventDefault();
-    var responseid=$(this).data("delete")
+    var responseid=$(this).data("delete");
     var url=$(this).attr("href"); // Or replace responseid  by post if needed
     var buttons = {};
     buttons[sDelCaption] = function(){

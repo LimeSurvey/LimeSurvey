@@ -639,6 +639,14 @@ div.panel.disabled a{
 	margin : 4px 0 0;
 }
 
+.ui-jqgrid .ui-jqgrid-htable th div {
+	height : auto;
+}
+
+.ui-jqgrid tr.ui-row-ltr td {
+	border: none;
+}
+
 /**
  * Icons    
  */

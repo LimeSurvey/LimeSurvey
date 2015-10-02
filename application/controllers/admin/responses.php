@@ -372,8 +372,8 @@ class responses extends Survey_Common_Action
             'sorttype' => 'string',
             'sortable' => false,
             'width' => '100',
-            'resizable' => true,
-            'align' => 'left',
+            'resizable' => false,
+            'align' => 'center',
             'label' => gt("Actions"),
             'search' => false,
             'hidedlg'=>true,
@@ -396,7 +396,7 @@ class responses extends Survey_Common_Action
             'index'=>'lastpage',
             'sorttype'=>'integer',
             'sortable'=>true,
-            'width'=>'100',
+            'width'=>'150',
             'resizable' => true,// Strangely : don't work
             'align'=>'center',
             'title'=>viewHelper::getFieldText($fields['lastpage']),
@@ -433,7 +433,7 @@ class responses extends Survey_Common_Action
                 'name'=>'token',
                 'index'=>'token',
                 'sorttype'=>'string',
-                'sortable'=>true, 'width'=>'100',
+                'sortable'=>true, 'width'=>'150',
                 'align'=>'left',
                 'title'=>gt('Token')
             );
@@ -442,7 +442,7 @@ class responses extends Survey_Common_Action
                 'index'=>'firstname',
                 'sorttype'=>'string',
                 'sortable'=>true,
-                'width'=>'100',
+                'width'=>'150',
                 'align'=>'left',
                 'title'=>gt('First name'),
             );
@@ -451,7 +451,7 @@ class responses extends Survey_Common_Action
                 'index'=>'lastname',
                 'sorttype'=>'string',
                 'sortable'=>true,
-                'width'=>'100',
+                'width'=>'150',
                 'align'=>'left',
                 'title'=>gt('Last Name'),
             );
@@ -460,7 +460,7 @@ class responses extends Survey_Common_Action
                 'index'=>'email',
                 'sorttype'=>'string',
                 'sortable'=>true,
-                'width'=>'100',
+                'width'=>'150',
                 'align'=>'left',
                 'title'=>gt('Email'),
             );
@@ -520,7 +520,7 @@ class responses extends Survey_Common_Action
                         'name' => $aFileInfoField[0],
                         'index' => $aFileInfoField[0],
                         'sortable' => false,
-                        'width' => '100',
+                        'width' => '150',
                         'align' => 'left',
                         'editable' => false,
                         'search' => false,
@@ -557,7 +557,7 @@ class responses extends Survey_Common_Action
                 'index' => $fielddetails['fieldname'],
                 'sorttype' => 'string',// Depend of question type can be excellent
                 'sortable' => true,
-                'width' => '100',
+                'width' => '200',
                 'align' => 'left',
                 'editable' => false,
                 'hidden' => (bool)$bHidden,
