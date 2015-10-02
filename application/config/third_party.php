@@ -340,4 +340,16 @@ return array(
         ),    
     ),    
     
+    // select2
+    'select2' => array(
+        'baseUrl' => 'styles/limebootstrap/assets/',
+        'js' => array('scripts/select2.js'),
+        'depends' => array(
+            'bootstrap',
+            'lime-bootstrap',
+            //'jquery',
+            //'jqueryui',
+        ),    
+    ),    
+    
 );

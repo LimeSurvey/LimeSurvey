@@ -133,6 +133,8 @@ class PluginManager extends Survey_Common_Action
      */
     public function configure($id)
     {
+        App()->getClientScript()->registerPackage('select2');
+
         $arPlugin      = Plugin::model()->findByPk($id)->attributes;
         $oPluginObject = App()->getPluginManager()->loadPlugin($arPlugin['name'], $arPlugin['id']);
 
