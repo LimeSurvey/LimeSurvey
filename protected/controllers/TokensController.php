@@ -51,7 +51,7 @@ class TokensController extends Controller
 
         $token = \ls\models\Token::create($survey->sid);
         if (App()->request->isPostRequest) {
-            $token->setAttributes(App()->request->getPost(get_class($token)));
+            $token->setAttributes(App()->request->getPost(\CHtml::modelName($token)));
 
             // Validate & safe.
             if ($token->save()) {
@@ -92,17 +92,17 @@ class TokensController extends Controller
 
         $token = $this->loadModel($id, $surveyId);
 
-        if (App()->request->isPostRequest) {
-            $token->setAttributes(App()->request->getPost(get_class($token)));
+        if (App()->request->isPutRequest) {
+            $token->setAttributes(App()->request->getPost(\CHtml::modelName($token)));
 
             // Validate & safe.
             if ($token->save()) {
                 // On success.
-                App()->user->setFlash('success', 'ls\models\Token updated');
-                $this->redirect(['tokens/index', 'surveyId' => $survey->sid]);
+                App()->user->setFlash('success', gT('Token updated'));
+//                $this->redirect(['tokens/index', 'surveyId' => $survey->sid]);
             }
         }
-        $this->render('create', ['token' => $token, 'survey' => $survey]);
+        $this->render('update', ['token' => $token, 'survey' => $survey]);
     }
 
     public function actionIndex($surveyId)

@@ -46,13 +46,13 @@ abstract class Token extends Dynamic
     public function attributeLabels()
     {
         $labels = [
-            'tid' => gT('ls\models\Token ID'),
-            'partcipant' => gt('ls\models\Participant ID'),
+            'tid' => gT('Token ID'),
+            'partcipant' => gt('Participant ID'),
             'firstname' => gT('First name'),
             'lastname' => gT('Last name'),
             'email' => gT('Email address'),
             'emailstatus' => gT('Email status'),
-            'token' => gT('ls\models\Token'),
+            'token' => gT('Token'),
             'language' => gT('Language code'),
             'blacklisted' => gT('Blacklisted'),
             'sent' => gT('Invitation sent date'),
@@ -265,11 +265,9 @@ abstract class Token extends Dynamic
     {
         $aRules = [
             ['token', 'unique', 'allowEmpty' => true],
-            ['firstname', 'required'],
-            ['lastname', 'required'],
-            [implode(',', $this->tableSchema->columnNames), 'safe'],
+            ['firstname', 'length', 'max' => 40],
+            ['lastname', 'length', 'max' => 40],
             ['remindercount', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
-            ['email', 'filter', 'filter' => 'trim'],
             [
                 'email',
                 \CEmailValidator::class,

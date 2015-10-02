@@ -8,7 +8,8 @@ $form = $this->beginWidget(TbActiveForm::class, [
     'enableAjaxValidation' => false,
     'clientOptions' => [
         'validateOnSubmit' => true
-    ]
+    ],
+    'method' => 'put'
 
 ]);
 $inputOptions = [
@@ -19,6 +20,9 @@ echo $form->textFieldControlGroup($token, 'lastname', $inputOptions);
 echo $form->textFieldControlGroup($token, 'email', $inputOptions);
 echo $form->textFieldControlGroup($token, 'token', $inputOptions);
 echo $form->dropDownListControlGroup($token, 'language', $survey->allLanguages, $inputOptions);
+echo $form->textFieldControlGroup($token, 'sent', $inputOptions);
+echo $form->textFieldControlGroup($token, 'remindersent', $inputOptions);
+echo $form->textFieldControlGroup($token, 'completed', $inputOptions);
 echo $form->numberFieldControlGroup($token, 'usesleft', $inputOptions);
 echo $form->dateFieldControlGroup($token, 'validfrom');
 echo $form->dateFieldControlGroup($token, 'validuntil');

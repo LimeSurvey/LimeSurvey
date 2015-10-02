@@ -75,16 +75,17 @@ abstract class Dynamic extends ActiveRecord
     public static function valid($id, $refresh = false)
     {
         $result = false;
-        if (is_numeric($id) && (!isset(self::$valid[$id]) || $refresh)) {
+        $tableName = static::constructTableName($id);
+        if (is_numeric($id) && (!isset(self::$valid[$tableName]) || $refresh)) {
             try {
-                App()->db->createCommand("SELECT 1 FROM " . static::constructTableName($id))->execute();
-                self::$valid[$id] = true;
+                App()->db->createCommand("SELECT 1 FROM `$tableName`")->execute();
+                self::$valid[$tableName] = true;
             } catch (\CDbException $e) {
-                self::$valid[$id] = false;
+                self::$valid[$tableName] = false;
             }
         }
 
-        return self::$valid[$id];
+        return self::$valid[$tableName];
     }
 
 

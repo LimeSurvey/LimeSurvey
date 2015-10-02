@@ -73,5 +73,6 @@ table.upgrade tr.disabled {
 }
 
 body {
+    position: relative;
     margin-top: 70px;
 }
