@@ -1,17 +1,5 @@
 <?php
-/*
-   * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
-   * All rights reserved.
-   * License: GNU/GPL License v2 or later, see LICENSE.php
-   * LimeSurvey is free software. This version may have been modified pursuant
-   * to the GNU General Public License, and as distributed it includes or
-   * is derivative of works licensed under the GNU General Public License or
-   * other free or open source software licenses.
-   * See COPYRIGHT.php for copyright notices and details.
-   *
-     *	Files Purpose: lots of common functions
-*/
+namespace ls\models\installer;
 
 class InstallerConfigForm extends CFormModel
 {
@@ -23,15 +11,15 @@ class InstallerConfigForm extends CFormModel
 	public $dbpwd;
 	public $dbprefix = 'lime_';
 
-	public $supported_db_types = array();
-	public $db_names = array(
+	public $supported_db_types = [];
+	public $db_names = [
 		'mysql' => 'MySQL',
 		'mysqli' => 'MySQL (newer driver)',
         'sqlsrv' => 'Microsoft SQL Server (sqlsrv)',
 		'mssql' => 'Microsoft SQL Server (mssql)',
 		'dblib' => 'Microsoft SQL Server (dblib)',
 		'pgsql' => 'PostgreSQL',
-	);
+    ];
 
 	// Optional
 	public $adminLoginPwd = 'password';
@@ -42,8 +30,12 @@ class InstallerConfigForm extends CFormModel
 	public $siteName = 'LimeSurvey';
 	public $surveylang = 'en';
 
+    /**
+     * @var DbConnection
+     */
+    protected $_dbConnection;
 	public function __construct($scenario = 'database') {
-        $drivers=array();
+        $drivers= [];
         if (extension_loaded('pdo'))
         {
             $drivers = DbConnection::getAvailableDrivers();
@@ -66,14 +58,14 @@ class InstallerConfigForm extends CFormModel
 
         return [
 			// Database
-            array('dbtype, dblocation, dbname, dbuser', 'required', 'on' => 'database'),
-			array('dbpwd, dbprefix', 'safe', 'on' => 'database'),
-			array('dbtype', 'in', 'range' => array_keys($this->supported_db_types), 'on' => 'database'),
+            ['dbtype, dblocation, dbname, dbuser', 'required', 'on' => 'database'],
+			['dbpwd, dbprefix', 'safe', 'on' => 'database'],
+			['dbtype', 'in', 'range' => array_keys($this->supported_db_types), 'on' => 'database'],
 			//Optional
-			array('adminLoginName, adminName, siteName, confirmPwd', 'safe', 'on' => 'optional'),
-			array('adminEmail', 'email', 'on' => 'optional'),
-			array('surveylang', 'in', 'range' => array_keys(\ls\helpers\SurveyTranslator::getLanguageData(true, Yii::app()->session['installerLang'])), 'on' => 'optional'),
-            array('adminLoginPwd', 'compare', 'compareAttribute' => 'confirmPwd', 'message' => gT('Passwords do not match!'), 'strict' => true, 'on' => 'optional'),
+			['adminLoginName, adminName, siteName, confirmPwd', 'safe', 'on' => 'optional'],
+			['adminEmail', 'email', 'on' => 'optional'],
+			['surveylang', 'in', 'range' => array_keys(\ls\helpers\SurveyTranslator::getLanguageData(true, Yii::app()->session['installerLang'])), 'on' => 'optional'],
+            ['adminLoginPwd', 'compare', 'compareAttribute' => 'confirmPwd', 'message' => gT('Passwords do not match!'), 'strict' => true, 'on' => 'optional'],
             
             ['dsn', 'validateDsn', 'on' => 'database'], // Validate connection without database.
             ['dbname', 'validateDatabase', 'on' => 'database']
@@ -184,15 +176,72 @@ class InstallerConfigForm extends CFormModel
         $parts = explode(':', $this->dblocation, 2);
         return count($parts) > 1 ? $parts[1] : null;
     }
-    
+
     public function createDatabase() 
     {
-        $conn = new DbConnection($this->getDsn(true), $this->dbuser, $this->dbpwd);
+
         $result = $conn->schema->createDatabase($this->dbname);
         if (!$result) {
             $this->addError('dbname', gT('Database does not exist and could not be created.'));
         }
         return $result;
+    }
+
+    public function isDatabaseEmpty()
+    {
+        /*
+         * Check if database is filled by checking a subset of the tables.
+         */
+
+        $tables = array_flip($this->getDbConnection()->schema->tableNames);
+        $requiredTables = [
+            'answers',
+            'quota',
+            'surveys',
+            'users'
+        ];
+        $result = true;
+        foreach($requiredTables as $table) {
+            $result = $result  && !isset($tables["{$this->dbprefix}$table"]);
+        }
+        return $result;
+
+    }
+
+    public function getDbConnection() {
+        if (!isset($this->_dbConnection)) {
+            $this->_dbConnection = new DbConnection($this->getDsn(true), $this->dbuser, $this->dbpwd);
+        }
+
+        return $this->_dbConnection;
+    }
+
+    /**
+     * Function to populate the database.
+     * @return
+     */
+    public function populateDatabase()
+    {
+        $db = $this->getDbConnection();
+        /* @todo Use Yii as it supports various db types and would better handle this process */
+        switch ($db->driverName)
+        {
+            case 'mysqli':
+            case 'mysql':
+                $sql_file = 'mysql';
+                break;
+            case 'dblib':
+            case 'sqlsrv':
+            case 'mssql':
+                $sql_file = 'mssql';
+                break;
+            case 'pgsql':
+                $sql_file = 'pgsql';
+                break;
+            default:
+                throw new Exception(sprintf('Unknown database type "%s".', $db->driverName));
+        }
+        $db->executeFile(Yii::getPathOfAlias('application') . "/installer/create-$sql_file.sql", $db->tablePrefix);
     }
 }
 

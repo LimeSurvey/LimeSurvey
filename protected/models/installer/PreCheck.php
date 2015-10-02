@@ -1,4 +1,5 @@
 <?php
+namespace ls\models\installer;
 /**
  * Model that checks all requirements.
  */

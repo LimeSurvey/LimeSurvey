@@ -15,7 +15,9 @@
 
 namespace ls\controllers;
 use \Yii;
-use PreCheck, InstallerConfigForm, ls\models\User;
+use ls\models\installer\PreCheck;
+use ls\models\installer\InstallerConfigForm;
+use ls\models\User;
 /**
 * Installer
 *
@@ -135,27 +137,13 @@ class InstallerController extends \CController {
                     'tablePrefix' => $configForm->dbprefix
                 ]);
                 Yii::app()->db->active = true;
-                /*
-                 * Check if database is filled by checking a subset of the tables.
-                 */
-                
-                $tables = array_flip(Yii::app()->db->schema->tableNames);
-                $requiredTables = [
-                    'answers',
-                    'quota',
-                    'surveys',
-                    'users'
-                ];
-                $isEmpty = true;
-                foreach($requiredTables as $table) {
-                    $isEmpty = $isEmpty  && !isset($tables["{$configForm->dbprefix}$table"]);
-                }
-                
+
                 /**
                  * isEmpty will be true if no tables exist using the user specified prefix.
                  */
-                if ($isEmpty) {
-                    $this->populateDatabase();
+
+                if ($configForm->isDatabaseEmpty()) {
+                    $configForm->populateDatabase();
                 }
 
                 /**
@@ -188,33 +176,7 @@ class InstallerController extends \CController {
         $this->render('config', $aData);
     }
 
-    /**
-    * Function to populate the database.
-    * @return
-    */
-    protected function populateDatabase()
-    {
-        $db = App()->db;
-       /* @todo Use Yii as it supports various db types and would better handle this process */
-        switch ($db->driverName)
-        {
-            case 'mysqli':
-            case 'mysql':
-                $sql_file = 'mysql';
-                break;
-            case 'dblib':
-            case 'sqlsrv':
-            case 'mssql':
-                $sql_file = 'mssql';
-                break;
-            case 'pgsql':
-                $sql_file = 'pgsql';
-                break;
-            default:
-                throw new Exception(sprintf('Unknown database type "%s".', $db->driverName));
-        }
-        $db->executeFile(Yii::getPathOfAlias('application') . "/installer/create-$sql_file.sql", $db->tablePrefix);
-    }
+
 
     /**
     * Optional settings screen
