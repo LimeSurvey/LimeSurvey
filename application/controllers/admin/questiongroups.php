@@ -472,7 +472,7 @@ class questiongroups extends Survey_Common_Action
             }
 
             Yii::app()->session['flashmessage'] = gT("Question group successfully saved.");
-            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
+            $this->getController()->redirect(array('admin/questiongroups/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
     }
 
