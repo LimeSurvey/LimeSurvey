@@ -172,7 +172,7 @@ class InstallerController extends \CController {
                 $this->renderText($output);
                 return;
             }
-        } 
+        }
         $this->render('config', $aData);
     }
 
@@ -439,21 +439,29 @@ class InstallerController extends \CController {
             [
                 'allow',
                 'actions' => ['index', 'license', 'session', 'precheck', 'config'],
-                'expression' => function() { return !App()->isInstalled; }
+                'expression' => function () {
+                    return !App()->isInstalled;
+                }
             ],
             ['allow',
-                'actions' => ['optional'], 
-                'expression' => function() { return User::model()->count() == 0; }
+                'actions' => ['optional'],
+                'expression' => function () {
+                    return User::model()->count() == 0;
+                },
+                'deniedCallback' => function () {
+                    $this->redirect(['surveys/index']);
+                }
+
             ],
             [
                 'deny',
-                'deniedCallback' => function() {
+                'deniedCallback' => function () {
                     throw new \CHttpException(403, "Installer not accessible. Please remove config.php to run the installer.");
                 }
             ],
         ];
         // Note the order; rules are numerically indexed and we want to
-        // parents rules to be executed only if ours dont apply.
+        // parents rules to be executed only if ours don't apply.
         return array_merge($rules, parent::accessRules());
     }
 }

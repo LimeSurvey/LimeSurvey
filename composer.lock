@@ -1970,12 +1970,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SAM-IT/yii1-translate.git",
-                "reference": "d5952295d5afb1cb25d8f34d13b77820ef26fdec"
+                "reference": "ee1beb15f4683d21496ce409107d15af8eb94c1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SAM-IT/yii1-translate/zipball/d5952295d5afb1cb25d8f34d13b77820ef26fdec",
-                "reference": "d5952295d5afb1cb25d8f34d13b77820ef26fdec",
+                "url": "https://api.github.com/repos/SAM-IT/yii1-translate/zipball/ee1beb15f4683d21496ce409107d15af8eb94c1f",
+                "reference": "ee1beb15f4683d21496ce409107d15af8eb94c1f",
                 "shasum": ""
             },
             "require": {
@@ -2003,7 +2003,7 @@
                 }
             ],
             "description": "Translatable model and behavior for Yii1",
-            "time": "2015-06-22 14:30:12"
+            "time": "2015-10-02 08:56:10"
         },
         {
             "name": "studio-42/elfinder",
@@ -2011,12 +2011,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Studio-42/elFinder.git",
-                "reference": "1c005968360f7d4cb0e9baf3fc264d6d6ad88afd"
+                "reference": "a9cefb3f6a4643013cdc5b4ca8b809ad2516c8bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/1c005968360f7d4cb0e9baf3fc264d6d6ad88afd",
-                "reference": "1c005968360f7d4cb0e9baf3fc264d6d6ad88afd",
+                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/a9cefb3f6a4643013cdc5b4ca8b809ad2516c8bd",
+                "reference": "a9cefb3f6a4643013cdc5b4ca8b809ad2516c8bd",
                 "shasum": ""
             },
             "require": {
@@ -2055,7 +2055,7 @@
             ],
             "description": "File manager for web",
             "homepage": "http://elfinder.org",
-            "time": "2015-09-26 11:27:35"
+            "time": "2015-10-03 15:10:19"
         },
         {
             "name": "tecnickcom/tcpdf",
@@ -2126,12 +2126,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "79cdd66bbb53b8b55c4151c0b425062519f5a2e8"
+                "reference": "d53525cc3e24ef2e2d841468836c3d7712214f0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/79cdd66bbb53b8b55c4151c0b425062519f5a2e8",
-                "reference": "79cdd66bbb53b8b55c4151c0b425062519f5a2e8",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/d53525cc3e24ef2e2d841468836c3d7712214f0a",
+                "reference": "d53525cc3e24ef2e2d841468836c3d7712214f0a",
                 "shasum": ""
             },
             "replace": {
@@ -2169,7 +2169,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-09-28 21:36:44"
+            "time": "2015-10-04 05:45:37"
         },
         {
             "name": "yiisoft/yii",
@@ -3224,12 +3224,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "12259bb1352612df9ec24048714a3bedafe79674"
+                "reference": "84b40c563a4eb4251670a23b23f808b32fcf74f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/12259bb1352612df9ec24048714a3bedafe79674",
-                "reference": "12259bb1352612df9ec24048714a3bedafe79674",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/84b40c563a4eb4251670a23b23f808b32fcf74f5",
+                "reference": "84b40c563a4eb4251670a23b23f808b32fcf74f5",
                 "shasum": ""
             },
             "require": {
@@ -3278,7 +3278,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-09-24 07:56:07"
+            "time": "2015-10-03 05:44:56"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -3460,16 +3460,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.1.x-dev",
+            "version": "5.2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "6ec7b8eaaa1f519b229aaf74d8c673b6a7c8b1e9"
+                "reference": "af124ca5972f4f4862382d8a32b94e479d13684b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6ec7b8eaaa1f519b229aaf74d8c673b6a7c8b1e9",
-                "reference": "6ec7b8eaaa1f519b229aaf74d8c673b6a7c8b1e9",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/af124ca5972f4f4862382d8a32b94e479d13684b",
+                "reference": "af124ca5972f4f4862382d8a32b94e479d13684b",
                 "shasum": ""
             },
             "require": {
@@ -3504,7 +3504,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.1.x-dev"
+                    "dev-master": "5.2.x-dev"
                 }
             },
             "autoload": {
@@ -3530,7 +3530,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-09-27 08:37:06"
+            "time": "2015-10-05 09:52:42"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -3538,12 +3538,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "4f526b7e2c42cacf32c86e1e0c9ab9d3b24273cf"
+                "reference": "28fffaf4c2b72812b3975a029c1a3d920cf5ea01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/4f526b7e2c42cacf32c86e1e0c9ab9d3b24273cf",
-                "reference": "4f526b7e2c42cacf32c86e1e0c9ab9d3b24273cf",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/28fffaf4c2b72812b3975a029c1a3d920cf5ea01",
+                "reference": "28fffaf4c2b72812b3975a029c1a3d920cf5ea01",
                 "shasum": ""
             },
             "require": {
@@ -3586,7 +3586,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2015-09-02 07:30:58"
+            "time": "2015-10-02 06:54:34"
         },
         {
             "name": "sebastian/comparator",
@@ -4008,12 +4008,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "28b8b18beadde5ae4684d4adcab87f29ea0ac101"
+                "reference": "6f9ac2eb9dca0d6a67ca06e6424b700a4353c2f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/28b8b18beadde5ae4684d4adcab87f29ea0ac101",
-                "reference": "28b8b18beadde5ae4684d4adcab87f29ea0ac101",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/6f9ac2eb9dca0d6a67ca06e6424b700a4353c2f9",
+                "reference": "6f9ac2eb9dca0d6a67ca06e6424b700a4353c2f9",
                 "shasum": ""
             },
             "require": {
@@ -4049,7 +4049,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2015-09-30 09:18:13"
+            "time": "2015-10-02 17:05:43"
         }
     ],
     "aliases": [],
