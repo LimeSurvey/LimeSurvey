@@ -1129,6 +1129,7 @@ class questions extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
+        $rqid = $qid;
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete'))
         {
@@ -1186,6 +1187,13 @@ class questions extends Survey_Common_Action
             }
 
             Yii::app()->session['flashmessage'] = gT("Question was successfully deleted.");
+
+            // remove question from lastVisited
+            SettingGlobal::model()->deleteAll(
+                        "stg_value = :stg_value",
+                        array(':stg_value' => $rqid )
+                    );               
+                            
 
             $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid ));
         }
