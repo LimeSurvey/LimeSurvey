@@ -1,9 +1,7 @@
 <?php
 namespace ls\models;
 
-use ls\models\Dynamic;
-use ls\models\Question;
-use ls\models\Survey;
+use \Yii;
 
 /**
  * Relations
