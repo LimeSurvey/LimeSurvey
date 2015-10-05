@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.06+! 
+Welcome to LimeSurvey v2.5RC! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -15,7 +15,7 @@ HOW TO INSTALL
 This release does have the following requirements: 
 
 *MySQL 4.1.0 or later OR Microsoft SQL Server 2005 or later OR Postgres 8.1 or later
-*PHP 5.3.0 or later with the following modules/libraries enabled:
+*PHP 5.3.3 or later with the following modules/libraries enabled:
     *mbstring (Multibyte String Functions) extension library (see also Installation FAQ(external link))
     *PDO database driver for MySQL (pdo_mysql or pdo_mysqli) or Postgres (pdo_pgsql) or MSSQL (pdo_sqlsrv)
     
@@ -58,6 +58,229 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 2.06+ (build 150930) to 2.5+ (build 151005) Okt 5, 2015
+*New feature: Revamped administration user interface based on Bootstrap
+
+Changes from 2.06+ (build 150911) to 2.06+ (build 150930) Sept 30, 2015
+-Fixed issue #9885: LDAP pluging - Default setting "LDAP authentication" does not apply (Alfredo Esteban)
+-Fixed issue #9892: Ranking filter + on element not filtered : reset the last possibility (Denis Chenu)
+-Fixed issue #9903: Field Description (and checkboxes) entries seem missing for attribute_10+ (Denis Chenu)
+-Fixed issue #9906: Invalid survey is set finished in response table with index complete (Denis Chenu)
+-Fixed issue #9907: Invitations can not be sent before the start date of the tokens / inappropriate error message (Denis Chenu)
+-Fixed issue #9917: Error when updating a label set name containing a simple quote (Denis Chenu)
+-Fixed issue #9919: LSRC2 export return partial answer if langage code is invalid (Denis Chenu)
+-Fixed issue: Google Analytics code not running (Joao C Costa)
+-Fixed issue: PHP notice in Expression manager and public with Bad exclusive option with exclude auto (Denis Chenu)
+-Updated feature: New LDAP authentication option (Alfredo Esteban)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Latvian by marcic
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Tamil by apmuthu
+#Updated translation: Thai by tomzt
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.06+ (build 150831) to 2.06+ (build 150911) Sept 11, 2015
+-Fixed issue #9848: Missinterpretation of tips with survey without welcome page (Denis Chenu)
+-Fixed issue #9859: Broken javascript with thousands_separator (Denis Chenu)
+-Fixed issue #9862: Invitations substitute wrong token into barebone URL (Denis Chenu)
+-Fixed issue #9863: plain text email setting doesn't properly affect admin notification email (Denis Chenu)
+-Fixed issue #9870: RemoteControl export_responses fails with <script> tag in question and "full" question header export (Carsten Schmitz)
+-Fixed issue #9872: PostgreSQL database integity check fails (Carsten Schmitz)
+-Fixed issue #9875: token CSV import : the control for duplicate emails no longer works (Denis Chenu)
+-Fixed issue #9877: Possible issue with activation of token with malformed attributedescriptions (Denis Chenu)
+-Fixed issue: date and time picker are not translated (Denis Chenu)
+-Fixed issue: New sub question button for relevance is inactive (Denis Chenu)
+-Fixed issue: [security] Control CRSF when create token table (Denis Chenu)
+#Updated translation: Bulgarian by YanaTsoneva
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Taiwan) (Traditional) by Alwaystar
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Italian by lfanfoni, ritapas, arioli
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Korean by spn
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Brazil) by samirfor, rubensqueiroz, hugomusetti, paulohpmoraes, mauriciofurtado
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Spanish (Argentina) (Informal) by feippe
+#Updated translation: Spanish (Spain) by aesteban, cbrito
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by adzpire, tomzt
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.06+ (build 150825) to 2.06+ (build 150831) Aug 31, 2015
+-Fixed issue #9836: Multiple choice with comments Label misalignment in multiple templates (tpartner)
+-Fixed issue #9840: XSS possible where token variables are used (Carsten Schmitz)
+-Fixed issue #9842: Error in R export plugin - Quotation marks in answer options are not escaped (Carsten Schmitz)
+-Fixed issue #9843: Add a new participant to the CPDB is not possible if CPDB mapping is activated (tpartner)
+-Fixed issue #9845: Map question with OSM + combineJs error (Denis Chenu)
+-Fixed issue #9847: Non integer numerical input is saved as rounded integer to the database (Denis Chenu)
+-Fixed issue #9849: Start page with surveylist appears in english (US) instead of default language (Denis Chenu)
+-Fixed issue #9852: DB error when trying to activate survey (only PostgresQL) (Denis Chenu)
+-Fixed issue #9854: Token page view reponse links lead to all responses instead of to the one selected (Denis Chenu)
+-Fixed issue: Quota to 0 without response are always true (must be invalid) (Denis Chenu)
+-Fixed issue: User can accidentally change certain survey settings after survey is already active (Carsten Schmitz)
+#Updated translation: Bulgarian by YanaTsoneva
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Argentina) (Informal) by feippe
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Thai by adzpire, tomzt
+
+Changes from 2.06+ (build 150824) to 2.06+ (build 150825) Aug 24, 2015
+-Fixed issue #9457: Error in integrity check when using MSSQL (Carsten Schmitz)
+-Fixed issue #9461: Can share a participant without selecting a user (Carsten Schmitz)
+-Fixed issue #9837: Quotes are removed in End URL field (Carsten Schmitz)
+-Updated translation: Spanish (Spain) by aesteban
+-Updated translation: French (France) by arnaud21
+-Updated translation: Norwegian (Bokmål) by pmonstad
+-Updated translation: Norwegian (Nynorsk) by pmonstad
+-Updated translation: Polish by borluuk, elisa
+-Updated translation: Russian by ddrmoscow, vipgroup
+-Updated translation: Thai by tomzt
+-Updated translation: Polish (Informal) by elisa
+
+Changes from 2.06+ (build 150812) to 2.06+ (build 150824) Aug 24, 2015
+-Fixed issue #9790: Use conditions to get a subset of list_participants (Jan-E)
+-Fixed issue 09643: Date/Time validation error if DB!=MySQL (mfaber)
+-Fixed issue #9457: Error in integrity check when using MSSQL (Carsten Schmitz)
+-Fixed issue #9814: When copying a question with subquestion/answer options onlyt the first one is copied (Carsten Schmitz)
+-Fixed issue #9817: Comfort Update behind Proxy dont work (louis)
+-Fixed issue #9818: File upload popup not translated (Carsten Schmitz)
+-Fixed issue #9822: Unable to upload image on server via KCFinder (Carsten Schmitz)
+-Fixed Issue #9827: When save global settings with debug=2 : Undefined index: updatecheckperiod (louis)
+-Fixed issue #9829: Error after changing language in the registration process (Carsten Schmitz)
+-Fixed issue #9838: Data in timings cannot be deleted normally (Carsten Schmitz)
+-Fixed issue: Minimum required PHP version is now 5.3.3 (Carsten Schmitz)
+-New feature: Auto creation of users from LDAP (Alfredo Esteban)
+-New feature: Link template name to template editor if user has (Marcel Minke)
+-New feature: Link template name to template editor if user has sufficient permissions. (Marcel Minke)
+
+Changes from 2.06+ (build 150731) to 2.06+ (build 150812) Aug 12, 2015
+-Fixed issue #9615: KCFinder Image Browse Server not working when using db sessions (Gabriele Mambrini)
+-Fixed issue #9803: When importing token data from CSV file the reminder date is ignored (Denis Chenu)
+-Fixed issue #9806: Reason for being unable to preview a survey not given (Carsten Schmitz)
+-Fixed issue #9810: Error Accessing central participant database (Carsten Schmitz)
+-Fixed issue #9811: Unable to delete responses (Carsten Schmitz)
+-Fixed issue #9819: Not possible to add languages to the list of available languages in global settings (Carsten Schmitz)
+-Fixed issue: No proper message in ComfortUpdate when database is not MySQL (Carsten Schmitz)
+-Fixed issue: Untranslated strings in ComfortUpdate (Carsten Schmitz)
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Ukrainian by Alena from iVOX Ukraine
+
+Changes from 2.06+ (build 150730) to 2.06+ (build 150731) Jul 31, 2015
+-Fixed issue #9801: Strange placeholder text under "General option" when editing a question (Carsten Schmitz)
+-Fixed issue: #9802 No success message for update (louis)
+#Updated translation: German by c_schmitz
+
+Changes from 2.06+ (build 150729) to 2.06+ (build 150730) Jul 30, 2015
+-Fixed issue #9726: File browser not properly behaving due to old cached files (Carsten Schmitz)
+-Fixed issue #9744: Multiple choice  question type label 'Not displayed' missing in statistics graph (Carsten Schmitz)
+-Fixed issue #9798: Logout notice error (Carsten Schmitz)
+-Fixed issue: Setting for loading the end URL is behaving properly when editing survey settings (Carsten Schmitz)
+-New feature: Allow export to use statistics filter (Denis Chenu)
+-New feature: ComfortUpdate notification (louis)
+-New feature: ComfortUpdater with key system (louis)
+#Updated translation: German by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+
+Changes from 2.06+ (build 150723) to 2.06+ (build 150729) Jul 29, 2015
+-Fixed issue #9761: CSRF token entropy (Carsten Schmitz)
+-Fixed issue #9771: Unable to directly upgrade from 1.87 to 2.06 (Carsten Schmitz)
+-Fixed issue #9778 (Sam)
+-Fixed issue #9791: Upgrade from 2.05+ breaks on Linux/MSSQL systems (Carsten Schmitz)
+-Fixed issue #9793: Token table upgrade goes wrong on MSSQL (Carsten Schmitz)
+-Fixed issue: Unable to validate ranking question (Denis Chenu)
+#Updated translation: Albanian by eunacal
+#Updated translation: Arabic by malbariqi, AmalHanna
+#Updated translation: Armenian by bagrig
+#Updated translation: Chinese (Taiwan) (Traditional) by asakous
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz, hermann
+#Updated translation: Hebrew by gadeynebram
+#Updated translation: Korean by c_schmitz, spn
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow
+#Updated translation: Slovak by gmambro
+#Updated translation: Spanish (Mexican) by javoguadas
+#Updated translation: Ukrainian by exlibris69, myksyd, NPO, zvorchik
+
+Changes from 2.06+ (build 150629) to 2.06+ (build 150723) Jul 23, 2015
+-Fixed issue #8917: Error in R export plugin when exporting Yes/No question results (Carsten Schmitz)
+-Fixed issue #9776: Mail registered participants with RemoteControl API (Jan-E)
+-Fixed issue #9783: Use "adminname <adminemail>" as from-header in emailTokens (Jan-E)
+-Fixed issue #9706: Wrong minimum PHP version in installer (Gabriele Mambrini)
+-Fixed issue #9200: Delete selected participants from CPDB does not allow to select a deletion mode (Carsten Schmitz)
+-Fixed issue #9666: Data entry screen with token problem (Carsten Schmitz)
+-Fixed issue #9700: Owner list not sorted alphabetically when assigning a new survey owner (Carsten Schmitz)
+-Fixed issue #9717: Activation does not check if all subquestion and answer options scales exist (Carsten Schmitz)
+-Fixed issue #9737: No header on print version (Alfredo Esteban)
+-Fixed issue #9748: Incorrect link for testing https (Denis Chenu)
+-Fixed issue #9749: Button for batch sending invitations actually goes to page for sending reminders (Denis Chenu)
+-Fixed issue #9753: Lack of sub question for array text and arry number aren't show in Question view (Denis Chenu)
+-Fixed issue #9757: Inclusion filter for full responses/Incomplete responses can not be reset in browse (Denis Chenu)
+-Fixed issue #9758: Selecting to show last 50 responses does not show the last 50 responses anymore (Denis Chenu)
+-Fixed issue #9766: Blank page when trying to use the plugin manager (ptramonti)
+-Fixed issue #9769: Preview url can breaks logic on questions (Denis Chenu)
+-Fixed issue #9770: Unable to import old responses table (Denis Chenu)
+-Fixed issue #9772: Using "Previous" Button to Navigate back to Welcome Screen before Exit Makes ReVisiting Fail (Denis Chenu)
+-Fixed issue #9773: Ranking question with filter are not resetted when come back to question (Denis Chenu)
+-Fixed issue #9777: Bad link for view/edit responses with 'urlFormat' => 'get' (Denis Chenu)
+-Fixed issue #9778: Unable to use cron event (Sam)
+-Fixed issue #9780 queXML export fails (Adam Zammit)
+-Fixed issue #9782: Redundant SQ relevance button on scale>0 (mfaber)
+-Fixed issue #9787: IE9 - the exit and clear survey button do not work (Denis Chenu)
+-Fixed issue: Button for sending email with url format get (Denis Chenu)
+-Fixed issue: Unable to delete multiple response in some condition (Denis Chenu)
+-Fixed issue: XAMPP installer not completing successfully (Carsten Schmitz)
+-New feature #8331: Set appearance options for queXML export (Adam Zammit)
+-New Feature #8343: quexf: next page message with new question splitting option (Adam Zammit)
+-New Feature #8344: quexf: conditional splitting with new question splitting option (Adam Zammit)
+-New feature #9785: unicode function for substr and other text management function (Denis Chenu)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by DenisChenu, arnaud21
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Korean by spn
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
  
 Changes from 2.06+ (build 150625) to 2.06+ (build 150629) Jun 29, 2015
 -Fixed issue 09706: Wrong minimum PHP version in installer (Gabriele Mambrini)
