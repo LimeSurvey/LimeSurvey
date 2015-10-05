@@ -3017,7 +3017,7 @@ class statistics_helper {
         //// This is the classical way to build a charjs object. See http://www.chartjs.org/docs/                 
         $statisticsoutput .= '    
                              var ctx = document.getElementById("chartjs-'.$type.'-'.$qqid.'").getContext("2d");
-                             window.chartjs'.$type.$qqid.' = new Chart(ctx).'.$type.'({
+                             window.chartjs'.$type.str_replace('-', '_', $qqid).' = new Chart(ctx).'.$type.'({
                                  labels: '.json_encode($labels).',
                                  datasets: [{
                                      label: "'.$qqid.'",
@@ -3047,10 +3047,10 @@ class statistics_helper {
         {
             foreach($labels as $i => $name )
             {
-                $statisticsoutput .= 'chartjs'.$type.$qqid.'.datasets[0].bars['.$i.'].fillColor = "rgba('.$COLORS_FOR_SURVEY[$i].',0.6)";'; // or : "rgb(20,130,200)" 
-                $statisticsoutput .= 'chartjs'.$type.$qqid.'.datasets[0].bars['.$i.'].highlightFill = "rgba('.$COLORS_FOR_SURVEY[$i].',0.9)";'; // or : "rgb(20,130,200)"
+                $statisticsoutput .= 'chartjs'.$type.str_replace('-', '_', $qqid).'.datasets[0].bars['.$i.'].fillColor = "rgba('.$COLORS_FOR_SURVEY[$i].',0.6)";'; // or : "rgb(20,130,200)" 
+                $statisticsoutput .= 'chartjs'.$type.str_replace('-', '_', $qqid).'.datasets[0].bars['.$i.'].highlightFill = "rgba('.$COLORS_FOR_SURVEY[$i].',0.9)";'; // or : "rgb(20,130,200)"
             }                                                        
-            $statisticsoutput .= 'chartjs'.$type.$qqid.'.update();';
+            $statisticsoutput .= 'chartjs'.$type.str_replace('-', '_', $qqid).'.update();';
         }
 
         if(!$noscript)
@@ -3074,7 +3074,7 @@ class statistics_helper {
         //// This is the classical way to build a charjs object. See http://www.chartjs.org/docs/
         $statisticsoutput .= '
                               var ctx = document.getElementById("chartjs-'.$type.'-'.$qqid.'").getContext("2d");
-                              window.chartjs'.$type.$qqid.' = new Chart(ctx).'.$type.'(
+                              window.chartjs'.$type.str_replace('-', '_', $qqid).' = new Chart(ctx).'.$type.'(
                                         ['; 
                                             foreach($labels as $i => $label)
                                             {
