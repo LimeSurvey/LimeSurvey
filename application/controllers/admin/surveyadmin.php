@@ -883,10 +883,10 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $aData = $aViewUrls = array();
         $aData['surveyid'] = $iSurveyID = (int) $iSurveyID;
-
         $aData['sidebar']['state'] = "close";
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";            
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+        $aData['sidebar']['state'] = "close";
         
         
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete'))
