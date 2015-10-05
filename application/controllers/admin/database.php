@@ -286,7 +286,10 @@ class database extends Survey_Common_Action
                                 $oSubQuestion->parent_qid=$iQuestionID;
                                 $oSubQuestion->language=$sLanguage;
                                 $oSubQuestion->scale_id=$iScaleID;
-                                $oSubQuestion->relevance=$aRelevance[0][$iPosition];
+                                if(isset($aRelevance[0][$iPosition]))
+                                {
+                                    $oSubQuestion->relevance=$aRelevance[0][$iPosition];
+                                }
                             }
                             else                                                //new record: additional language
                             {
