@@ -3,6 +3,7 @@
  * Survey default view
  * 
  */
+ $count= 0;
 ?>
 <div class="side-body">
     
