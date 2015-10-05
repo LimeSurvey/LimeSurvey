@@ -29,7 +29,7 @@
 <div class="tab-content">
     <div id='neweditlblset0' class="tab-pane fade in active">
         <?php echo CHtml::form(array("admin/labels/sa/process"), 'post',array('class'=>'form30','id'=>'labelsetform','onsubmit'=>"return isEmpty(document.getElementById('label_name'), '".gT("Error: You have to enter a name for this label set.","js")."')")); ?>
-            <ul>
+            <ul class="list-unstyled">
                 <li><label for='label_name'><?php eT("Set name:"); ?></label>
                     <input type='hidden' name='languageids' id='languageids' value='<?php echo $langids; ?>' />
                     <?php echo CHtml::textField('label_name',isset($lbname)?$lbname:"",array('maxlength'=>100,'size'=>50)); ?>
