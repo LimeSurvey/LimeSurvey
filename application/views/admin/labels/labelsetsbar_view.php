@@ -55,7 +55,20 @@
                         <?php eT("Export this label set"); ?>
                     </a>
                 <?php endif; ?>
-            <?php endif; ?>              
+            <?php endif; ?>    
+            
+             <?php if (isset($labelbar['buttons']['edition'])):?>
+
+                <?php if (Permission::model()->hasGlobalPermission('labelsets','delete')) { ?>
+                    <a class="btn btn-default" role="button" data-action='deletelabelset' data-url='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' data-confirm='<?php eT('Do you really want to delete this label set?'); ?>' >
+                        <img src="<?php echo $sImageURL; ?>delete.png" />
+                        <?php eT("Delete label set"); ?>
+                    </a>
+                                        
+                <?php }; ?>
+                 
+             <?php endif;?>
+                      
         </div>
         
         
@@ -108,5 +121,3 @@
         </div>
     </div>
 </div>
-          
-
