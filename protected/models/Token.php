@@ -65,12 +65,16 @@ abstract class Token extends Dynamic
             'validfrom' => gT('Valid from'),
             'validuntil' => gT('Valid until'),
         ];
-        foreach (json_decode(Survey::model()->findByPk($this->getSurveyId())->attributedescriptions, true) as $key => $info) {
-            $labels[$key] = $info['description'];
-        }
 
+        if (is_array($attributeDescriptions = json_decode($this->survey->attributedescriptions, true))) {
+            foreach($attributeDescriptions as $key => $info) {
+                $labels[$key] = $info['description'];
+            }
+        }
         return $labels;
     }
+
+
 
     public function init()
     {
@@ -231,7 +235,7 @@ abstract class Token extends Dynamic
 
     public function rules()
     {
-        $aRules = [
+        $rules = [
             ['token', 'unique', 'allowEmpty' => true],
             ['firstname', 'length', 'max' => 40],
             ['lastname', 'length', 'max' => 40],
@@ -252,11 +256,12 @@ abstract class Token extends Dynamic
             ['captcha', 'captcha', 'on' => 'register'],
 
         ];
-        foreach (json_decode($this->survey->attributedescriptions, true) as $key => $info) {
-            $aRules[] = [$key, 'required'];
+        if (is_array($attributeDescriptions = json_decode($this->survey->attributedescriptions, true))) {
+            foreach($attributeDescriptions as $key => $info) {
+                $rules[] = [$key, 'required'];
+            }
         }
-
-        return $aRules;
+        return $rules;
     }
 
     public function scopes()

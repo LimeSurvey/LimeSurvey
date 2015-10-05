@@ -38,7 +38,7 @@ class SurveysController extends Controller
         $survey = $this->loadModel($id, 'groups.questions');
 
         if (App()->request->isPostRequest && isset($survey)) {
-            $survey->setAttributes(\CHtml::modelName($survey));
+            $survey->setAttributes(App()->request->getParam(\CHtml::modelName($survey)));
             if ($survey->save(true)) {
                 App()->user->setFlash('success', gT("Survey settings updated."));
                 $this->refresh();
@@ -155,8 +155,6 @@ class SurveysController extends Controller
             }
 
             $this->redirect(['survey/index', 'SSM' => $session->getId()]);
-
-//            $this->redirect(['surveys/run', 'sessionId' => $session->id]);
         } else {
             $this->render('execute/welcome', ['survey' => $survey]);
         }
