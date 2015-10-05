@@ -15,7 +15,7 @@ foreach ($question->survey->languages as $language) {
     $first = false;
 }
 echo TbHtml::well("To assist you with editing, the base language is shown for untranslated fields.");
-App()->clientScript->registerScriptFile('/components/samit-forms/samit-forms.js');
+App()->clientScript->registerScriptFile(App()->assetManager->publish(\Yii::getPathOfAlias('bower.samit-forms') . '/samit-forms.js'));
 App()->clientScript->registerScript('stform', \SamIT\Form\FormHelper::activateForm('body'));
 
 $this->widget(TbTabs::class, [

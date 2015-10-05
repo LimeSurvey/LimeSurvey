@@ -3,6 +3,7 @@
 use ls\models\Survey;
 
 echo TbHtml::openTag('fieldset', []);
+echo $form->dropDownListControlGroup($survey, 'template', array_combine(\ls\models\Template::getTemplateList(), \ls\models\Template::getTemplateList()));
 echo $form->dropDownListControlGroup($survey, 'format', $survey->formatOptions);
 
 echo $form->dropDownListControlGroup($survey, 'questionindex', $survey->indexOptions);

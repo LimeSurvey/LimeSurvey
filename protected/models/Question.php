@@ -6,6 +6,7 @@ use ls\components\QuestionResponseField;
 use ls\components\QuestionValidationResult;
 use ls\components\ResponseField;
 use ExpressionManager;
+use \CDbCriteria;
 
 
 /**

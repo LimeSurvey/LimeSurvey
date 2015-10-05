@@ -59,8 +59,6 @@ class Template extends ActiveRecord
     public static function getTemplateURL($name)
     {
         if (self::isStandardTemplate($name)) {
-//            vd(App()->getBaseUrl(true));
-//            vdd(str_replace(Yii::getPathOfAlias('webroot'), App()->baseUrl, realpath(Yii::getPathOfAlias("coreTemplates.$name"))));
             return str_replace(Yii::getPathOfAlias('webroot'), App()->baseUrl,
                 realpath(Yii::getPathOfAlias("coreTemplates.$name")));
         } else {
@@ -107,5 +105,27 @@ class Template extends ActiveRecord
             'sherpa',
             'vallendar',
         ];
+    }
+
+    public static function getOptions()
+    {
+        $templates = self::getTemplateList();
+        if (App()->user->checkAccess('superadmin')) {
+
+            return array_combine($templates, $templates);
+        } else {
+            $result = [];
+            foreach ($templates as $template) {
+                if (App()->user->checkAccess($template, [
+                    'entity' => 'template',
+                    'entity_id' => 0,
+                    'crud' => 'read'
+                ])) {
+                    $result[$template] = $template;
+                }
+            }
+            return $result;
+        }
+
     }
 }

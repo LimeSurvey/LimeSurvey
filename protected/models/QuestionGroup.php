@@ -60,7 +60,7 @@ class QuestionGroup extends ActiveRecord
     public function rules()
     {
         return [
-            ['group_name,description', 'required'],
+            ['group_name,description', 'safe'],
             ['group_name', 'required']
         ];
     }

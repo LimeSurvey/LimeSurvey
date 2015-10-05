@@ -40,4 +40,10 @@ interface iResponse {
      * @param \Psr\Http\Message\UploadedFileInterface[] $file
      */
     public function setFiles($field, array $files);
+
+    public function save();
+
+    public function markAsFinished();
+
+    public function getIsFinished();
 }

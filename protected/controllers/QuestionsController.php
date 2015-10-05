@@ -106,10 +106,10 @@ class QuestionsController extends Controller
                     }, true)
                 ) {
                     $transaction->commit();
-                    App()->user->setFlash('success', "ls\models\Question updated.");
+                    App()->user->setFlash('success', "Question updated.");
                 } else {
                     $transaction->rollback();
-                    App()->user->setFlash('danger', "ls\models\Question could not be updated.");
+                    App()->user->setFlash('danger', "Question could not be updated.");
 
                 }
             } elseif (count(App()->user->getFlashes(false)) == 0) {
@@ -120,10 +120,8 @@ class QuestionsController extends Controller
         $this->render('update', ['question' => $question, 'questionnames' => $question->translations]);
     }
 
-    public function actionCreate($groupId) {
-        /**
-         * @todo Switch to findByPk after language has been removed from group table.
-         */
+    public function actionCreate($groupId)
+    {
         $group = \ls\models\QuestionGroup::model()->findByPk($groupId);
         $this->menus['survey'] = $group->survey;
         if (!isset($group->survey)) {
@@ -134,8 +132,9 @@ class QuestionsController extends Controller
         $question = new \ls\models\Question();
         $question->sid = $group->sid;
         $question->gid = $group->primaryKey;
+        $question->type = $question::TYPE_DISPLAY;
         if (App()->request->isPostRequest) {
-            $question->setAttributes(App()->request->getPost('ls\models\Question'));
+            $question->setAttributes(App()->request->getPost(\CHtml::modelName($question)));
             if ($question->save()) {
                 $this->redirect(['questions/update', 'id' => $question->primaryKey]);
             }

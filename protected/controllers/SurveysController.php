@@ -38,7 +38,7 @@ class SurveysController extends Controller
         $survey = $this->loadModel($id, 'groups.questions');
 
         if (App()->request->isPostRequest && isset($survey)) {
-            $survey->setAttributes($_POST['Survey']);
+            $survey->setAttributes(\CHtml::modelName($survey));
             if ($survey->save(true)) {
                 App()->user->setFlash('success', gT("Survey settings updated."));
                 $this->refresh();
@@ -239,8 +239,8 @@ class SurveysController extends Controller
         $request = App()->request;
 
         if ($request->isPostRequest) {
-            $survey->setAttributes($request->getParam('Survey'));
-            $languageSetting->setAttributes($request->getParam('SurveyLanguageSetting'));
+            $survey->setAttributes($request->getParam(\CHtml::modelName($survey)));
+            $languageSetting->setAttributes($request->getParam(\CHtml::modelName($languageSetting)));
 
             // Validate both before saving either.
             if ($survey->validate()
@@ -250,9 +250,11 @@ class SurveysController extends Controller
                 // Validate language setting again after setting survey id.
                 && $languageSetting->save(true)
             ) {
-
                 App()->user->setFlash('success', gT('Survey created'));
                 return $this->redirect(['surveys/update', 'id' => $survey->sid]);
+            } else {
+                var_dump($survey->errors);
+                var_dump($languageSetting->errors);
             }
         }
         $this->render('create', ['survey' => $survey, 'languageSetting' => $languageSetting]);

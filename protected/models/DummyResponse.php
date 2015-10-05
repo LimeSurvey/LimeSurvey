@@ -9,6 +9,7 @@ class DummyResponse extends \CFormModel implements \ls\interfaces\iResponse
     protected $_id;
 
     protected $fields = [];
+    protected $finished = false;
 
     public function __construct(Survey $survey)
     {
@@ -112,5 +113,16 @@ class DummyResponse extends \CFormModel implements \ls\interfaces\iResponse
             }
         }
 
+    }
+
+
+    public function markAsFinished()
+    {
+        $this->finished = true;
+    }
+
+    public function getIsFinished()
+    {
+        return $this->finished;
     }
 }

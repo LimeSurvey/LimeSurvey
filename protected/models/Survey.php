@@ -241,10 +241,16 @@ class Survey extends ActiveRecord
     public function rules()
     {
         return [
+            // Defaults
+            ['format', \CDefaultValueValidator::class, 'value' => self::FORMAT_ALL_IN_ONE],
+            ['admin', \CDefaultValueValidator::class, 'value' => App()->user->getName()],
+            ['template', \CDefaultValueValidator::class, 'value' => 'default'],
             ['datecreated', 'default', 'value' => date("Y-m-d")],
             ['startdate', 'default', 'value' => null],
             ['expires', 'default', 'value' => null],
-            ['admin,faxto', 'required'],
+
+
+            ['admin', 'required'],
             ['adminemail', 'filter', 'filter' => 'trim'],
             ['bounce_email', 'email', 'allowEmpty' => true],
             ['adminemail', 'filter', 'filter' => 'trim'],
@@ -290,7 +296,7 @@ class Survey extends ActiveRecord
             ['tokenlength', 'numerical', 'integerOnly' => true, 'allowEmpty' => true, 'min' => '5', 'max' => '36'],
             ['bouncetime', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
             ['navigationdelay', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
-            ['template', 'filter', 'filter' => [$this, 'filterTemplateSave']],
+            ['template', \CRangeValidator::class, 'range' => array_keys(Template::getOptions())],
             ['language', 'required', 'on' => 'insert'],
             ['additionalLanguages', 'safe'],
             ['translatedFields', 'safe'],
@@ -298,33 +304,13 @@ class Survey extends ActiveRecord
             ['features', 'safe'],
             ['sid', 'default', 'value' => randomChars(6, '123456789')],
             ['bool_listpublic', 'boolean'],
-            ['bool_showwelcome', 'boolean']
+            ['bool_showwelcome', 'boolean'],
+
 
 
         ];
     }
 
-
-    /**
-     * filterTemplateSave to fix some template name
-     */
-    public function filterTemplateSave($sTemplateName)
-    {
-        if (!Permission::model()->hasTemplatePermission($sTemplateName)) {
-            if (!$this->isNewRecord)// Reset to default only if different from actual value
-            {
-                $oSurvey = self::model()->findByPk($this->sid);
-                if ($oSurvey->template != $sTemplateName)// No need to test !is_null($oSurvey)
-                {
-                    $sTemplateName = Yii::app()->getConfig('defaulttemplate');
-                }
-            } else {
-                $sTemplateName = Yii::app()->getConfig('defaulttemplate');
-            }
-        }
-
-        return Template::templateNameFilter($sTemplateName);
-    }
 
     /**
      * permission scope for this model
@@ -685,7 +671,6 @@ class Survey extends ActiveRecord
             $result['name'] = $result['surveyls_title'];
             $result['description'] = $result['surveyls_description'];
             $result['welcome'] = $result['surveyls_welcometext'];
-            $result['templatedir'] = $result['template'];
             $result['adminname'] = $result['admin'];
             $result['tablename'] = '{{survey_' . $result['sid'] . '}}';
             $result['urldescrip'] = $result['surveyls_urldescription'];

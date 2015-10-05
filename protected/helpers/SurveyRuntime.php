@@ -9,6 +9,8 @@ use \TbHtml;
 use LimeExpressionManager;
 use ls\models\QuestionGroup;
 use ls\models\Question;
+use PluginEvent;
+
 class SurveyRuntime {
 
 
@@ -260,8 +262,6 @@ class SurveyRuntime {
         //SEE IF THIS GROUP SHOULD DISPLAY
         $show_empty_group = ($session->getStep() == 0);
 
-        $redata = compact(array_keys(get_defined_vars()));
-
         //SUBMIT ###############################################################################
         if ((isset($move) && $move == "movesubmit")) {
             FrontEnd::resetTimers();
@@ -276,13 +276,11 @@ class SurveyRuntime {
                 sendCacheHeaders();
                 doHeader();
 
-                renderOldTemplate($templatePath . "startpage.pstpl", [], $redata,
-                    'SubmitStartpageI', null, true);
+                renderOldTemplate($templatePath . "startpage.pstpl", [], [], $session);
 
                 //Check for assessments
                 if ($survey->bool_assessments && $assessments) {
-                    renderOldTemplate($templatePath . "assessment.pstpl", [], $redata,
-                        'SubmitAssessmentI', null, true);
+                    renderOldTemplate($templatePath . "assessment.pstpl", [], [], $session);
                 }
 
                 // fetch all filenames from $_SESSIONS['files'] and delete them all
@@ -294,7 +292,7 @@ class SurveyRuntime {
                 }
                 */
                 // can't kill session before end message, otherwise INSERTANS doesn't work.
-                $completed = \ls\helpers\Replacements::templatereplace($survey->getLocalizedEndText(), array(), $redata, null);
+                $completed = \ls\helpers\Replacements::templatereplace($survey->getLocalizedEndText(), [], [], null, $session);
                 $completed .= "<br /><strong><font size='2' color='red'>" . gT("Did Not Save") . "</font></strong><br /><br />\n\n";
                 $completed .= gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
                 if ($survey->bool_printanswers) {
@@ -374,7 +372,7 @@ class SurveyRuntime {
                 // Link to Public statistics  **********
                 if ($session->survey->bool_publicstatistics) {
                     $url = App()->createUrl("statistics_user/action",
-                        ['surveyid' => $surveyid, 'language' => $session->language]);
+                        ['surveyid' => $session->surveyId, 'language' => $session->language]);
                     $completed .= "<br /><br />"
                         . "<a class='publicstatisticslink' href='$url' target='_blank'>"
                         . gT("View the statistics for this survey.")
@@ -384,9 +382,9 @@ class SurveyRuntime {
 
                 $session->isFinished = true;
                 sendCacheHeaders();
-                if ($session->survey->bool_autoredirect && $thissurvey['surveyls_url']) {
+                if ($session->survey->bool_autoredirect && isset($survey->localizedEndUrl)) {
                     //Automatically redirect the page to the "url" setting for the survey
-                    header("Location: {$thissurvey['surveyls_url']}");
+                    header("Location: {$survey->localizedEndUrl}");
                 }
 
                 doHeader();
@@ -409,11 +407,8 @@ class SurveyRuntime {
 
             $redata['completed'] = implode("\n", $blocks) . "\n" . $redata['completed'];
 
-            renderOldTemplate($templatePath . "completed.pstpl", array('completed' => $completed),
-                $redata, 'SubmitCompleted', null, true);
-            echo "\n";
-            renderOldTemplate($templatePath . "endpage.pstpl", array(), $redata, 'SubmitEndpage',
-                null, true);
+            renderOldTemplate($templatePath . "completed.pstpl", [], ['completed' => $completed], $session);
+            renderOldTemplate($templatePath . "endpage.pstpl", [], [], $session);
             doFooter();
 
             exit;

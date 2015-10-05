@@ -2,6 +2,7 @@
 namespace ls\helpers;
 use \Yii;
 use ls\models\Survey;
+use \CHttpCookie;
 use \CHtml;
 class FrontEnd
 {

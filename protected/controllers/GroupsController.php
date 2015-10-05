@@ -48,10 +48,12 @@ class GroupsController extends Controller {
         $group = new \ls\models\QuestionGroup();
         $group->sid = $survey->primaryKey;
         if (App()->request->isPostRequest) {
-            $group->setAttributes(App()->request->getPost('ls\models\QuestionGroup'));
+            $group->setAttributes(App()->request->getPost(\CHtml::modelName($group)));
 
             if ($group->save()) {
                 return $this->redirect(['groups/update', 'id' => $group->primaryKey]);
+            } else {
+                var_dump($group->errors);
             }
         } else {
             $lastTitle = ([] != $values = array_values($group->survey->groups)) ? $values[count($group->survey->groups) - 1]->group_name : "g0";
