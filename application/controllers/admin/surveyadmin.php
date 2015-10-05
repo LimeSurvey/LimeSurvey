@@ -356,7 +356,11 @@ class SurveyAdmin extends Survey_Common_Action
             $gid = $lastquestiongroup;
             $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
             
-            $aData['last_question_name'] = $qrrow['title'].' : '.$qrrow['question'];
+            $aData['last_question_name'] = $qrrow['title']; 
+            if($qrrow['question'])
+                $aData['last_question_name'] .= ' : '.$qrrow['question'];
+            
+            
             $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$iSurveyID/gid/$gid/qid/$qid");
         }
         else 
