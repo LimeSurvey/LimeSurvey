@@ -263,11 +263,10 @@ class SurveysController extends Controller
     {
         $this->layout = 'survey';
         $ssm = App()->surveySessionManager;
-        if ($ssm->active
-            && !$ssm->current->isFinished
-        ) {
-            $surveyId = $ssm->current->surveyId;
-            if (!isset($ssm->current->response) || $ssm->current->response->delete(true)) {
+        $session = $ssm->current;
+        if ($ssm->active && !$ssm->current->isFinished) {
+            $surveyId = $session->surveyId;
+            if (!isset($session->response) || $session->response->delete(true)) {
                 $ssm->destroySession();
 
             }
@@ -276,7 +275,8 @@ class SurveysController extends Controller
         $templatePath = \ls\models\Template::getTemplatePath('default');
         return $this->render('abort', [
             'templatePath' => $templatePath,
-            'surveyId' => isset($surveyId) ? $surveyId : null
+            'surveyId' => isset($surveyId) ? $surveyId : null,
+            'session' => $session
         ]);
     }
 
