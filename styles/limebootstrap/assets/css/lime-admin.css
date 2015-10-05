@@ -485,6 +485,10 @@ div.panel.disabled a{
     
 }
 
+#welcomeModal {
+    z-index: 20000;
+}
+
 /**
  *     User control
  */

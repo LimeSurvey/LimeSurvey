@@ -57,7 +57,7 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close');?></button>
-                      <button type="button" class="btn btn-primary"><?php eT('Create a new survey');?></button>
+                      <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey") ?>" class="btn btn-primary"><?php eT('Create a new survey');?></a>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
