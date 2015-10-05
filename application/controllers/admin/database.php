@@ -290,6 +290,10 @@ class database extends Survey_Common_Action
                                 {
                                     $oSubQuestion->relevance=$aRelevance[0][$iPosition];
                                 }
+                                else 
+                                {
+                                    $oSubQuestion->relevance='';
+                                }
                             }
                             else                                                //new record: additional language
                             {
