@@ -325,9 +325,7 @@ class responses extends Survey_Common_Action
             $aData['tokeninfo'] = Token::model($iSurveyID)->summary();
         }
 
-        //$aData['sidebar']["token_menu"]=TRUE;
-        //$aData['token_bar']['buttons']['view']=TRUE;
-
+        $aData['menu']['edition'] = false;
 
         $aViewUrls[] = 'browseindex_view';
         $this->_renderWrappedTemplate('',$aViewUrls, $aData);
@@ -352,6 +350,7 @@ class responses extends Survey_Common_Action
 
         $aData = $this->_getData($iSurveyId);
         
+        $aData['menu']['edition'] = false;
         
         extract($aData);
         $aViewUrls = array();

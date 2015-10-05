@@ -74,8 +74,6 @@ class dataentry extends Survey_Common_Action
         $aData = array();
 
         $aData['display']['menu_bars']['browse'] = gT("Data entry");
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-        $aData["surveyinfo"] = $surveyinfo;     
         $aData['title_bar']['title'] = gT("Data entry");
         $aData['sidebar']['state'] = "close";
         $aData['menu']['edition'] = true;
@@ -492,6 +490,7 @@ class dataentry extends Survey_Common_Action
             $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
         }
 
+        
         $surveyinfo = getSurveyInfo($surveyid);
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses','update'))
         {
@@ -595,7 +594,7 @@ class dataentry extends Survey_Common_Action
             'subaction' => $subaction,
             'part' => 'header'
             );
-
+            
             $aViewUrls[] = 'dataentry_header_view';
             $aViewUrls[] = 'edit';
 
@@ -2420,6 +2419,13 @@ class dataentry extends Survey_Common_Action
     {
         if (!isset($aData['display']['menu_bars']['browse']))
         {
+            if(isset($aData['surveyid']))
+                $iSurveyId = $aData['surveyid'];
+            
+            if(isset($_POST['sid']))
+                $iSurveyId = $_POST['sid'];
+            
+            
             $aData['display']['menu_bars']['browse'] = gT("Data entry");
             $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
             $aData["surveyinfo"] = $surveyinfo;     

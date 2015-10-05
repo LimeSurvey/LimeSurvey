@@ -642,7 +642,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
             else
             {
-                $aViewUrls['output']= "<br />\n<div class='messagebox ui-corner-all'>\n"
+                $aViewUrls['output']= "<br />\n<div class='jumbotron message-box'>\n"
                 ."<h3>".gT("Activate Survey")." ({$iSurveyID})</h3>\n"
                 ."<div class='alert alert-success' role='alert'>".gT("Survey has been activated. Results table has been successfully created.")."</div><br /><br />\n";
 

@@ -3008,6 +3008,9 @@ class statistics_helper {
      {
 
         $COLORS_FOR_SURVEY = $colors;
+        
+        $statisticsoutput = '';
+        
         if(!$noscript)
             $statisticsoutput = '<script>/*<![CDATA[*/';
 
@@ -3062,6 +3065,8 @@ class statistics_helper {
      */
     private function init_chart_js_graph_with_datas($type,$labels,$qqid,$grawdata, $COLORS_FOR_SURVEY, $noscript=false)
     {
+
+        $statisticsoutput = '';
 
         if(!$noscript)
             $statisticsoutput = '<script>/*<![CDATA[*/';

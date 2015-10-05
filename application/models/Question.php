@@ -760,7 +760,7 @@
             );
 
             $criteria = new CDbCriteria;
-            $criteria->condition='t.sid=:surveyid AND t.language=:language';
+            $criteria->condition='t.sid=:surveyid AND t.language=:language AND parent_qid=""';
             $criteria->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
             $criteria->join='LEFT JOIN {{groups}} AS groups ON ( groups.gid = t.gid AND t.language = groups.language )';
             

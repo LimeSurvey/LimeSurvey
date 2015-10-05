@@ -1,6 +1,6 @@
 <div class='menubar surveybar' id="tokenbarid">
     <div class='row container-fluid'>
-        <?php if(!$menu['edition']): ?>
+        <?php if(isset($menu) && !$menu['edition']): ?>
             <div class="col-md-12">   
             <!-- Show summary information -->
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')): ?>            
@@ -172,7 +172,7 @@
         </div>
         <?php else: ?>
         <div class="col-md-5 text-right col-md-offset-7">
-            <?php if($menu['save']): ?>
+            <?php if(isset($menu['save'])): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                     <?php eT("Save");?>
@@ -183,21 +183,21 @@
                 </a>
             <?php endif;?>
             
-            <?php if($menu['export']): ?>
+            <?php if(isset($menu['export'])): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
                     <?php eT("Export");?>
                 </a>                
             <?php endif;?>
             
-            <?php if($menu['import']): ?>
+            <?php if(isset($menu['import'])): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
                     <?php eT("Import");?>
                 </a>                
             <?php endif;?>            
             
-            <?php if($menu['stats']):?>
+            <?php if(isset($menu['stats'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
                     <?php eT("View statistics"); ?>
@@ -209,7 +209,7 @@
                 </a>                  
 
             <?php endif;?>            
-            <?php if ($menu['view']): ?>
+            <?php if (isset($menu['view'])): ?>
                 <?php if ($exist): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}/lang/$rlanguage"); ?>' role="button">
                         <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/edit.png" />
@@ -246,7 +246,7 @@
                 
             <?php endif;?>
             
-            <?php if($menu['close']): ?>
+            <?php if(isset($menu) && $menu['close']): ?>
                 <a class="btn btn-danger" href="<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid"); ?>" role="button">
                     <span class="glyphicon glyphicon-close" aria-hidden="true"></span>
                     <?php eT("Close");?>

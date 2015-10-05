@@ -73,11 +73,13 @@ class saved extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'saved', $aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
-        $aData['surveyid'] = $aData['iSurveyId'];
+        $aData['surveyid'] = $iSurveyId = $aData['iSurveyId'];
+        
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData["surveyinfo"] = $surveyinfo;     
         $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];        
-        
+        $aData['menu']['close'] =  true;
+        $aData['menu']['edition'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

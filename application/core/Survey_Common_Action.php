@@ -921,6 +921,7 @@ class Survey_Common_Action extends CAction
             // We filter the current survey id
             $model['sid'] = $iSurveyID;
             $model['language'] = $baselang;
+            
             $aData['model']=$model;    
             
             $this->getController()->renderPartial("/admin/survey/Question/listquestions", $aData);        

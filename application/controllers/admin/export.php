@@ -245,7 +245,7 @@ class export extends Survey_Common_Action {
                 $aLanguages[$sLanguage]=getLanguageNameFromCode($sLanguage,false);
             }
             $data['aLanguages'] = $aLanguages;    // Pass available exports
-            $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
 
             $data['sidebar']['state'] = "close";
             $data['menu']['edition'] = true;
@@ -410,7 +410,7 @@ class export extends Survey_Common_Action {
             $data['surveyid'] = $iSurveyID;
             $data['display']['menu_bars']['browse'] = gT('Export results');
 
-            $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $data["surveyinfo"] = $surveyinfo;     
             $data['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];        
