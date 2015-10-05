@@ -4,9 +4,9 @@
     */
 ?>
     <!-- State when page is loaded : for JavaScript-->
-	<?php if(isset($sidebar['state'])):?>
-	   <input type="hidden" id="close-side-bar" />
-	<?php endif;?>
+    <?php if(isset($sidebar['state'])):?>
+       <input type="hidden" id="close-side-bar" />
+    <?php endif;?>
 
     <div class="absolute-wrapper"> </div> 
     <!-- Menu -->
@@ -27,7 +27,7 @@
             <!-- Brand -->
             <div class="brand-name-wrapper">
                 <a class="navbar-brand hideside toggleside" href="#">
-					<?php eT('General');?>
+                    <?php eT('General');?>
                 </a>
             </div>
             <a class="btn btn-default hide-button hideside toggleside">
@@ -41,13 +41,13 @@
     <div class="side-menu-container">
         <ul class="nav navbar-nav sidemenuscontainer">
 
-			<!-- Survey summary-->
-			<li class="toWhite <?php if( isset($sidebar["survey_menu"]) ) echo 'active'; ?> ">
-				<a href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
-					<span class="glyphicon glyphicon-info-sign"></span>
-					<?php eT("Survey");?>
-				</a>
-			</li>
+            <!-- Survey summary-->
+            <li class="toWhite <?php if( isset($sidebar["survey_menu"]) ) echo 'active'; ?> ">
+                <a href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                    <?php eT("Survey");?>
+                </a>
+            </li>
 
             <!-- Question & Groups-->
             <li class="panel panel-default dropdownlvl1" id="dropdown">
@@ -104,6 +104,14 @@
                                                                             </a>
                                                                         </li>
                                                                     <?php endif;?>
+                                                                    
+                                                                    <!-- add question to this group -->
+                                                                    <li>
+                                                                        <a class="text-success" href="<?php echo $this->createUrl("/admin/questions/sa/newquestion/surveyid/$surveyid/gid/$aGroup->gid"); ?>">
+                                                                            <span class="glyphicon glyphicon-plus-sign"></span>
+                                                                            <?php eT('Add new question to group');?>
+                                                                        </a>
+                                                                    </li>
                                                                 </ul>
                                                             </div>
                                                         </div>
@@ -121,67 +129,67 @@
                             </li>
                             
 
-			            <?php if($permission):?>
-			            	<!-- List Groups -->
-			            	<li class="toWhite <?php if( isset($sidebar["listquestiongroups"]) ) echo 'active'; ?>">
-			            		<!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
-				            	<a href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
-				            		<span class="glyphicon glyphicon-list"></span>
-				            		<?php eT("List question groups");?>
-				            	</a>
-			            	</li>
-			            	
-							<!-- List Questions -->
-							<li class="toWhite <?php if( isset($sidebar["listquestions"]) ) echo 'active'; ?>">
-								<a href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
-									<span class="glyphicon glyphicon-list"></span>
-									<?php eT("List questions");?>
-								</a>
-							</li>			            	
-			            <?php endif; ?>			                                  	
+                        <?php if($permission):?>
+                            <!-- List Groups -->
+                            <li class="toWhite <?php if( isset($sidebar["listquestiongroups"]) ) echo 'active'; ?>">
+                                <!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
+                                <a href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
+                                    <span class="glyphicon glyphicon-list"></span>
+                                    <?php eT("List question groups");?>
+                                </a>
+                            </li>
+                            
+                            <!-- List Questions -->
+                            <li class="toWhite <?php if( isset($sidebar["listquestions"]) ) echo 'active'; ?>">
+                                <a href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
+                                    <span class="glyphicon glyphicon-list"></span>
+                                    <?php eT("List questions");?>
+                                </a>
+                            </li>                            
+                        <?php endif; ?>                                                  
 
                         <!-- Organize questions -->
-			            <?php if($surveycontent):?>
+                        <?php if($surveycontent):?>
                             <?php if ($activated):?>
-			                    <li class="disabled">
-			                    	<a href='#'>
-			                    		<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/organize_disabled.png" title='' alt='<?php eT("Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>' />
-			                    		<?php eT("Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>
-			                         </a>
-			                    </li>
-			                    <?php else: ?>
-			                    <li>
-			                        <a href="<?php echo $this->createUrl("admin/survey/sa/organize/surveyid/$surveyid"); ?>">
-			                            <img src='<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/organize.png' alt='<?php eT("Reorder question groups / questions"); ?>' "/>
-			                            <?php eT("Reorder question groups / questions"); ?>
-			                        </a>
-			                    </li>
+                                <li class="disabled">
+                                    <a href='#'>
+                                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/organize_disabled.png" title='' alt='<?php eT("Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>' />
+                                        <?php eT("Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>
+                                     </a>
+                                </li>
+                                <?php else: ?>
+                                <li>
+                                    <a href="<?php echo $this->createUrl("admin/survey/sa/organize/surveyid/$surveyid"); ?>">
+                                        <img src='<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/organize.png' alt='<?php eT("Reorder question groups / questions"); ?>' "/>
+                                        <?php eT("Reorder question groups / questions"); ?>
+                                    </a>
+                                </li>
                             <?php endif; ?>
-			            <?php endif;?>  
-                        	
+                        <?php endif;?>  
+                            
                             
                         </ul>
                     </div>
                 </div>
             </li>
 
-			<!-- Token -->
+            <!-- Token -->
             <?php if($tokenmanagement):?> 
-            	<li class="toWhite  <?php if( isset($sidebar["token_menu"]) ) echo 'active'; ?> ">
-	            	<a href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>">
-	            		<span class="glyphicon glyphicon-user"></span>
-	            		<?php eT("Token management");?>
-	            	</a>
-            	</li>
-            <?php endif; ?>			            
+                <li class="toWhite  <?php if( isset($sidebar["token_menu"]) ) echo 'active'; ?> ">
+                    <a href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <?php eT("Token management");?>
+                    </a>
+                </li>
+            <?php endif; ?>                        
 
-			<!-- Survey List -->
-            	<li class="toWhite" >
-	            	<a href="<?php echo $this->createUrl("admin/survey/sa/listsurveys/"); ?>" class="" >
-	            		<span class="glyphicon glyphicon-step-backward"></span>
-	            		<?php eT("Return to survey list");?>
-	            	</a>
-            	</li>
+            <!-- Survey List -->
+                <li class="toWhite" >
+                    <a href="<?php echo $this->createUrl("admin/survey/sa/listsurveys/"); ?>" class="" >
+                        <span class="glyphicon glyphicon-step-backward"></span>
+                        <?php eT("Return to survey list");?>
+                    </a>
+                </li>
 
 
         </ul>

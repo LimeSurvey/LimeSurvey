@@ -198,7 +198,7 @@
             $button = '<a class="btn btn-default list-btn"  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-plus-sign text-success" aria-hidden="true"></span></a>';
 
             // Group edition
-            // View summary
+            // Edit
             $url = Yii::app()->createUrl("admin/questiongroups/sa/edit/surveyid/$this->sid/gid/$this->gid");
             $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Edit group').'"><span class="glyphicon glyphicon-pencil text-success" aria-hidden="true"></span></a>';            
 
