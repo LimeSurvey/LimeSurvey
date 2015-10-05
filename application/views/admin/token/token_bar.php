@@ -149,7 +149,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
             
             <!-- Save buttons -->            
             <?php if(isset($token_bar['savebutton']['form'])):?>
-                <a class="btn btn-success" href="#" role="button" id="save-button" data-use-form-id="<?php if (isset($surveybar['savebutton']['useformid'])){ echo '1';}?>" data-form-to-save="<?php if (is_string($surveybar['savebutton']['form'])) {echo $surveybar['savebutton']['form']; }?>">
+                <a class="btn btn-success" href="#" role="button" id="save-button" data-use-form-id="<?php if (isset($token_bar['savebutton']['useformid'])){ echo '1';}?>" data-form-to-save="<?php if (is_string($token_bar['savebutton']['form'])) {echo $token_bar['savebutton']['form']; }?>">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                     <?php eT("Save");?>
                 </a>
