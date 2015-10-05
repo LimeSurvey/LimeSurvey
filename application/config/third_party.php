@@ -283,6 +283,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
+            'jquery-notify',
             'bootstrap'
         ),
     ),
