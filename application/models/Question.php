@@ -68,9 +68,9 @@
             $alias = $this->getTableAlias();
             return array(
             
-  				'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language'),
-  				
-				// Seriously ???? 
+          'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language'),
+          
+        // Seriously ???? 
                 //'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"),
                 'parents' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.parent_qid = parents.qid"),
                 'subquestions' => array(self::HAS_MANY, 'Question', 'parent_qid', 'on' => "$alias.language = subquestions.language")
@@ -156,7 +156,7 @@
             return $aRules;
         }
 
-		
+    
 
         /**
         * Rewrites sort order for questions in a group
@@ -714,20 +714,23 @@
              return QuestionGroup::model()->findAll("sid=:sid",array(':sid'=>$this->sid));
         }
 
-		public function getbuttons()
-		{
-			
-			$url = Yii::app()->createUrl("/admin/questions/sa/view/surveyid/");
-			$url .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
-			$button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
+    public function getbuttons()
+    {
+    	
+    	$url = Yii::app()->createUrl("/admin/questions/sa/view/surveyid/");
+    	$url .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
+    	$button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
 
-			$previewUrl = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
-			$previewUrl .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;			
-			
-			$button = '<a class="btn btn-default open-preview" aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="glyphicon glyphicon-eye-open" aria-hidden="true" ></span></a> ';
-			$button .= '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
-			return $button;
-		}
+    	$previewUrl = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
+    	$previewUrl .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;    	
+
+            $editurl = Yii::app()->createUrl("admin/questions/sa/editquestion/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
+
+    	$button = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="glyphicon glyphicon-eye-open" aria-hidden="true" ></span></a> ';
+            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Edit question").'" href="'.$editurl.'" role="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
+    	$button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Question summary").'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a>';
+    	return $button;
+    }
 
 
         public function search()
