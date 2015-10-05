@@ -35,6 +35,8 @@ use Yii;
  * @method Token incomplete() incomplete() Select only uncompleted tokens
  * @method Token usable() usable() Select usable tokens: valid daterange and userleft > 0
  *
+ *
+ * @method-static Token model()
  */
 abstract class Token extends Dynamic
 {
@@ -174,62 +176,20 @@ abstract class Token extends Dynamic
      * Generates a token for all token objects in this survey.
      * Syntax: ls\models\Token::model(12345)->generateTokens();
      */
-    public function generateTokens()
+    public function generateTokens($length = 15)
     {
         if ($this->scenario != '') {
-            throw new \Exception("This function should only be called like: ls\models\Token::model(12345)->generateTokens");
+            throw new \Exception("This function should only be called like: Token::model(12345)->generateTokens(20)");
         }
         /**
          * @todo Generate tokens in SQL.
          */
-        //$sql = "SUBSTRING(CONCAT(MD5(RAND()), MD5(RAND())), 1, 15)";
+        $value = new \CDbExpression("(SELECT SUBSTRING(CONCAT(MD5(RAND()), MD5(RAND())), 1, $length))");
 
         $surveyId = $this->dynamicId;
-        $tokenLength = isset($this->survey) && is_numeric($this->survey->tokenlength) ? $this->survey->tokenlength : 15;
-
-        $tkresult = Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$surveyId}}} WHERE token IS NULL OR token=''")->queryAll();
-        //Exit early if there are not empty tokens
-        if (count($tkresult) === 0) {
-            return [0, 0];
-        }
-
-        //get token length from survey settings
-        $tlrow = Survey::model()->findByAttributes(["sid" => $surveyId]);
-
-        //Add some criteria to select only the token field
-        $criteria = $this->getDbCriteria();
-        $criteria->select = 'token';
-        $ntresult = $this->findAllAsArray($criteria);   //Use AsArray to skip active record creation
-
-        // select all existing tokens
-        foreach ($ntresult as $tkrow) {
-            $existingtokens[$tkrow['token']] = true;
-        }
-
-        $newtokencount = 0;
-        $invalidtokencount = 0;
-        foreach ($tkresult as $tkrow) {
-            $bIsValidToken = false;
-            while ($bIsValidToken == false && $invalidtokencount < 50) {
-                $newtoken = App()->securityManager->generateRandomString($tokenLength);
-                if (!isset($existingtokens[$newtoken])) {
-                    $existingtokens[$newtoken] = true;
-                    $bIsValidToken = true;
-                    $invalidtokencount = 0;
-                } else {
-                    $invalidtokencount++;
-                }
-            }
-            if ($bIsValidToken) {
-                $itresult = $this->updateByPk($tkrow['tid'], ['token' => $newtoken]);
-                $newtokencount++;
-            } else {
-                break;
-            }
-        }
-
-        return [$newtokencount, count($tkresult)];
-
+        return $this->updateAll([
+            'token' => $value
+        ], 'token IS NULL');
     }
 
     public function relations()
@@ -359,6 +319,6 @@ abstract class Token extends Dynamic
             return strncmp("attribute_", $attribute, 10) === 0;
         });
     }
-}
 
-?>
+
+}

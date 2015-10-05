@@ -36,11 +36,9 @@ abstract class Dynamic extends ActiveRecord
     }
 
     /**
-     *
+     * @inheritdoc
      * @param int $className
-     * @return Dynamic
      */
-
     public static function model($className = null)
     {
         if (!isset($className)) {

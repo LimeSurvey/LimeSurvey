@@ -1,10 +1,27 @@
 <?php
 namespace ls\controllers;
+use ls\models\Permission;
+use ls\models\Survey;
 use ls\models\Token;
 use Yii;
 use ls\pluginmanager\PluginEvent;
 class TokensController extends Controller
 {
+    public function accessRules()
+    {
+        return array_merge([
+            ['allow',
+                'roles' => ['tokens' => [
+                    'entity_id' => App()->request->getParam('surveyId'),
+                    'entity' => 'survey',
+                    'crud' => 'update'
+                ]],
+                'actions' => ['generate', 'update']
+            ],
+        ], parent::accessRules());
+
+    }
+
 
     public function actions() {
         return [
@@ -56,7 +73,7 @@ class TokensController extends Controller
             // Validate & safe.
             if ($token->save()) {
                 // On success.
-                App()->user->setFlash('success', 'ls\models\Token created');
+                App()->user->setFlash('success', 'Token created');
                 $this->redirect(['tokens/index', 'surveyId' => $survey->sid]);
             }
         }
@@ -397,11 +414,20 @@ class TokensController extends Controller
     /**
      * Generates tokens.
      * @throws \CHttpException Bad method exception if not post.
+     * @param int Id of the survey.
      */
-    public function actionGenerate($surveyId) {
+    public function actionGenerate($surveyId)
+    {
         if (!App()->request->getIsPostRequest()) {
             throw new \CHttpException(405);
         }
+        $survey = Survey::model()->findByPk($surveyId);
+        $result = Token::model($surveyId)->generateTokens($survey->tokenlength);
+        App()->user->setFlash('info', \Yii::t('', "Generated {n} token|Generated {n} tokens", $result));
+        $this->renderText('ok');
+        return;
+        $this->redirect(['tokens/index', 'surveyId' => $surveyId]);
+
     }
 
 }

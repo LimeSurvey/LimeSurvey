@@ -1,6 +1,10 @@
 <?php
 namespace ls\models;
 
+/**
+ * Class ActiveRecord
+ * @package ls\models
+ */
 class ActiveRecord extends \CActiveRecord implements \JsonSerializable
 {
 
@@ -135,6 +139,10 @@ class ActiveRecord extends \CActiveRecord implements \JsonSerializable
         return parent::deleteAllByAttributes(array(), $criteria, array());
     }
 
+    /**
+     * @param null $class
+     * @return static
+     */
     public static function model($class = null)
     {
         if (!isset($class)) {
