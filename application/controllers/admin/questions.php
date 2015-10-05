@@ -842,6 +842,11 @@ class questions extends Survey_Common_Action
         $eqrow['relevance'] = 1;
         $eqrow['group_name'] = '';                        
 
+        if(isset($_GET['gid']))
+        {
+            $eqrow['gid'] = $_GET['gid'];        
+        }
+
         $aData['eqrow'] = $eqrow;
 
         $sumresult1 = Survey::model()->findByPk($surveyid);
@@ -863,19 +868,6 @@ class questions extends Survey_Common_Action
         
             $aData['accordionDatas']['selectormodeclass'] = $selectormodeclass;
             $aData['selectormodeclass'] = $selectormodeclass;
-
-            /*
-            foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
-            {
-                if (!isset($groups[$questionType['group']]))
-                {
-                    $groups[$questionType['group']] = array();
-                }
-                $groups[$questionType['group']][$key] = $questionType['description'];
-            }            
-            
-            $aData['accordionDatas']['groups'] = $groups;
-             */
         }
         
         

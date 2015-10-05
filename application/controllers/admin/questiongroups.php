@@ -247,7 +247,22 @@ class questiongroups extends Survey_Common_Action
                 // This line sets the newly inserted group as the new group
                 if (isset($groupid))
                     $gid = $groupid;
-                Yii::app()->session['flashmessage'] = gT("New question group was saved.");
+                
+                $questions = new Question('search');
+                $questions->gid = $gid;
+                Yii::app()->setFlashMessage(gT("New question group was saved."));
+                 
+                if($questions->search()->itemCount<1)
+                {
+                    Yii::app()->setFlashMessage(gT('You can now add a question in this group.'),'warning');
+
+                                  sprintf(gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".gT("minitab method")."</a>");
+
+                    
+                }
+
+               
+                
             }
         
             // http://local.lsinst/LimeSurvey_206/index.php/admin/survey/sa/view/surveyid/282267/gid/10

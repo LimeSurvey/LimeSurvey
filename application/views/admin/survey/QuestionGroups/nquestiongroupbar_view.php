@@ -13,6 +13,11 @@
         <div class="col-md-12">
             <?php if(isset($questiongroupbar['buttons']['view'])):?>
                 <!-- Buttons -->
+                                                                             
+               <a class="btn btn-default" href="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>" role="button">
+                   <img src="<?php echo $sImageURL; ?>add.png" />
+                   <?php eT("Add new question to group");?>
+               </a>            
                 
                 <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
                     <?php if (count($languagelist) > 1): ?>
