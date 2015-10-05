@@ -250,9 +250,6 @@ class labels extends Survey_Common_Action
                 $aData['lid'] = $lid;
                 $aData['row'] = $result->attributes;
 
-                // Display a specific labelbar menu
-                $aViewUrls['labelbar_view'][] = $aData;
-
                 $rwlabelset = $result;
 
                 // Make languages array from the current row
