@@ -70,6 +70,14 @@ abstract class Token extends Dynamic
         return $labels;
     }
 
+    public function init()
+    {
+        parent::init();
+        if ($this->getScenario() == 'insert') {
+            $this->usesleft = 1;
+        }
+    }
+
     public function beforeDelete()
     {
         $result = parent::beforeDelete();
@@ -111,10 +119,10 @@ abstract class Token extends Dynamic
         }
 
         // create fields for the custom token attributes associated with this survey
-        $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->getTokenAttributes();
-        foreach ($tokenattributefieldnames as $attrname => $attrdetails) {
-            if (!isset($fields[$attrname])) {
-                $fields[$attrname] = 'string(255)';
+        $customAttributeNames = Survey::model()->findByPk($surveyId)->getTokenAttributes();
+        foreach ($customAttributeNames as $name => $details) {
+            if (!isset($fields[$name])) {
+                $fields[$name] = 'string(255)';
             }
         }
 

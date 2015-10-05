@@ -122,7 +122,7 @@ class TokensController extends Controller
 
         $dataProvider = new \CActiveDataProvider(\ls\models\Token::model($survey->sid), [
             'pagination' => [
-                'pageSize' => 50
+                'pageSize' => 20
             ]
         ]);
         return $this->render('index', ['dataProvider' => $dataProvider, 'survey' => $survey]);
@@ -267,6 +267,141 @@ class TokensController extends Controller
             App()->user->setFlash('success', gT("Could not delete token"));
         }
         $this->redirect(['tokens/index', 'surveyId' => $surveyId]);
+    }
+
+
+    /**
+     * @param $id
+     * @todo Add permission check.
+     */
+    public function actionImport($surveyId, array $items = null, array $map = null, $querySize = 1000)
+    {
+        $survey = \ls\models\Survey::model()->findByPk($surveyId);
+        $this->menus['survey'] = $survey;
+        if (!Token::valid($surveyId)) {
+            throw new \CHttpException(404, gT("Token table not found"));
+        }
+        $model = Token::create($surveyId);
+        if (App()->request->isAjaxRequest && isset($items, $map, $querySize)) {
+            return $this->ajaxImport($surveyId, $items, $map, $querySize);
+        } else {
+
+            $this->render('import', ['model' => $model]);
+
+        }
+    }
+
+    public function ajaxImport($surveyId, array $items, array $map, $querySize = 1000)
+    {
+        // Set response code so on errors (max execution time, memory limit) we don't get http 200.
+        http_response_code(500);
+        header('Content-Type: application/json');
+        set_time_limit(20);
+        ini_set('memory_limit', '64M');
+        $return_bytes = function($val) {
+            $val = trim($val);
+            $last = strtolower($val[strlen($val)-1]);
+            switch($last) {
+                // The 'G' modifier is available since PHP 5.1.0
+                case 'g':
+                    $val *= 1024;
+                case 'm':
+                    $val *= 1024;
+                case 'k':
+                    $val *= 1024;
+            }
+
+            return $val;
+        };
+
+        $transaction = App()->getDb()->beginTransaction();
+        $start = App()->request->psr7->getServerParams()['REQUEST_TIME_FLOAT'];
+        $memoryLimit = $return_bytes(ini_get('memory_limit'));
+
+
+
+
+
+        $model = Token::create($surveyId);
+
+        $tableName = $model->tableName();
+
+        $fields = array_flip($model->safeAttributeNames);
+
+        $executeResults = [];
+        $batchInserter = new \ls\components\Batch(function (array $batch, $category = null) use (&$executeResults) {
+            if (!empty($batch)) {
+                \Yii::beginProfile('query');
+                try {
+                    $command = App()->db->commandBuilder->createMultipleInsertCommand($category, $batch);
+                } catch (\Exception $e) {
+                    die("Error in query generation.");
+                }
+                try {
+                    $executeResults [] = $command->execute();
+                } catch (\Exception $e) {
+                    die("Error in query execution.");
+                }
+                \Yii::endProfile('query');
+            }
+        }, 1000, $tableName);
+
+
+        $initialAttributes = $model->getAttributes();
+        $counters = [];
+        foreach ($items as $row) {
+            $model->setAttributes($initialAttributes, false);
+            \Yii::beginProfile('alternative');
+            foreach ($row as $key => $value) {
+                if (isset($fields[$key])) {
+                    $model->$key = $value;
+                }
+            }
+            \Yii::endProfile('alternative');
+
+            if ($model->validate()) {
+                $batchInserter->add($model->getAttributes());
+            } else {
+                foreach ($model->errors as $field => $errors) {
+                    foreach ($errors as $error) {
+                        if (isset($counters[$field][$error])) {
+                            $counters[$field][$error]++;
+                        } else {
+                            $counters[$field][$error] = 1;
+                        }
+                    }
+                }
+            }
+
+            \Yii::endProfile('row');
+        }
+        \Yii::endProfile('import');
+
+
+
+        $batchInserter->commit();
+        $transaction->commit();
+        http_response_code(200);
+        echo json_encode([
+            'memory' => memory_get_peak_usage() / $memoryLimit,
+            'time' => (microtime(true) - $start) / ini_get('max_execution_time'),
+            'queries' => $batchInserter->commitCount,
+            'records' => $batchInserter->recordCount,
+            'errors' => $counters,
+            'results' => $executeResults
+        ]);
+
+
+    }
+
+    /**
+     * Generates tokens.
+     * @throws \CHttpException Bad method exception if not post.
+     */
+    public function actionGenerate($surveyId) {
+        if (!App()->request->getIsPostRequest()) {
+            throw new \CHttpException(405);
+        }
     }
 
 }

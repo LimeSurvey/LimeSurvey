@@ -52,7 +52,6 @@ class Participant extends ActiveRecord
     {
         $rules = [
             ['blacklisted', 'default', 'value' => 'N'],
-            ['participant_id', 'length', 'max' => 50],
             ['firstname, lastname', 'length', 'max' => 150],
             /**
              * @todo This is not a text field, it should use a range validator!
@@ -64,7 +63,7 @@ class Participant extends ActiveRecord
             // Please remove those attributes that should not be searched.
             ['participant_id, firstname, lastname, email, language, blacklisted, owner_uid', 'safe', 'on' => 'search'],
             // Set some default values.
-            ['participant_id', UuidDefaultValidator::class],
+            ['participant_id', UuidDefaultValidator::class, 'safe' => false, 'on' => 'insert'],
             ['created', 'default', 'value' => date(DateTime::ATOM), 'safe' => false],
             ['owner_uid', 'default', 'value' => App()->user->id, 'safe' => false],
             ['created_by', 'default', 'value' => App()->user->id, 'safe' => false],

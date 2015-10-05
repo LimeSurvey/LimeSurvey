@@ -37,7 +37,7 @@ class DbSchemasTestCase extends \PHPUnit_Framework_TestCase
     public function testMySql()
     {
         $schema = new \MysqlSchema($this->db);
-
+        $this->assertEquals('int(11) DEFAULT 0', $schema->getColumnType('integer DEFAULT 0'));
         $this->doForClass(\MysqlSchema::class);
     }
     public function testMsSql()

@@ -47,7 +47,7 @@ class ParticipantAttributeName extends ActiveRecord
             ['visible', 'default', 'value' => 1],
             array('type, visible', 'required'),
             array('type', 'length', 'max' => 4),
-            array('visible', CBooleanValidator::class),
+            array('visible', \CBooleanValidator::class),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array('id, type, visible', 'safe', 'on' => 'search'),

@@ -5,8 +5,21 @@ use ls\models\Token;
 echo TbHtml::buttonGroup([
     [
         'icon' => 'plus',
+        'title' => gT("Create new token"),
         'url' => ['tokens/create', 'surveyId' => $survey->sid]
-    ]
+    ],
+    [
+        'icon' => 'import',
+        'title' => gT("Import from CSV"),
+        'url' => ['tokens/import', 'surveyId' => $survey->sid]
+    ],
+    [
+        'icon' => 'cog',
+        'title' => gT("Generate tokens"),
+        'data-method' => 'post',
+        'data-confirm' => gT("Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?"),
+        'url' => ['tokens/generate', 'surveyId' => $survey->sid]
+    ],
 ]);
 $columns = isset($dataProvider->data[0]) ? $dataProvider->data[0]->attributeNames() : [];
 
@@ -40,7 +53,7 @@ $columns = [
                 'icon' => TbHtml::ICON_CERTIFICATE,
                 'title' => gT("Execute survey with this token."),
                 'visible' => function($row, Token $model) {
-                    return $model->usesleft > 0;
+                    return $model->usesleft > 0 && !empty($model->token);
                 },
                 'url' => function(Token $model, $row) {
                     return App()->createUrl('surveys/start', ['token' => $model->token, 'id' => $model->surveyId]);

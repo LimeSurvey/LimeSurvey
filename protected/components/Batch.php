@@ -14,6 +14,7 @@ class Batch
     protected $defaultCategory;
     public $batchSize;
     public $commitCount = 0;
+    public $recordCount = 0;
     protected $data = [];
 
     public function __construct(\Closure $callback, $batchSize = 5000, $defaultCategory = 'default')
@@ -50,6 +51,7 @@ class Batch
         $callback = $this->callback;
         $callback($this->data[$category], $category);
         $this->commitCount++;
+        $this->recordCount += count($this->data[$category]);
         unset($this->data[$category]);
     }
 

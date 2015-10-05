@@ -10,8 +10,8 @@ trait SmartColumnTypeTrait
      * - Any arguments that must be appended.
      * @param string $type
      */
-    protected function splitColumnType($type) {
-        $regex = '/^([a-zA-Z ]+)\s*(\(.+\))?\s*(.*)$/';
+    public function splitColumnType($type) {
+        $regex = '/^([a-zA-Z]+)\s*(\(.+\))?\s*(.*)$/';
         if (preg_match($regex, $type, $matches)) {
             return [
                 'base' => trim($matches[1]),
@@ -22,16 +22,27 @@ trait SmartColumnTypeTrait
         throw new \Exception("Could not parse type.");
     }
 
+    public function splitArguments($type) {
+        $regex = '/^([^()]*)(\(.*\))?(.*)$/';
+        if (preg_match($regex, $type, $matches)) {
+            return [
+                'base' => trim($matches[1]),
+                'arguments' => substr($matches[2], 1, -1),
+                'suffix' => $matches[3]
+            ];
+        }
+        throw new \Exception("Could not parse type.");
+    }
+
+
     protected function parseType($type, callable $baseParser)
     {
         $parts = $this->splitColumnType($type);
-        $base = $baseParser($parts['base']);
-        $baseParts = $this->splitColumnType($base);
         if (!empty($parts['arguments'])) {
-            $baseParts['arguments'] = $parts['arguments'];
-            $result = $baseParts['base'] . (!empty($baseParts['arguments']) ? "({$baseParts['arguments']}) " : " ") . $parts['suffix'];
+            $baseParts = $this->splitArguments($baseParser($parts['base']));
+            $result = trim($baseParts['base'] . "({$parts['arguments']}) " .  $parts['suffix']);
         } else {
-            $result = $base;
+            $result = $baseParser($type);
         }
 
         return $result;

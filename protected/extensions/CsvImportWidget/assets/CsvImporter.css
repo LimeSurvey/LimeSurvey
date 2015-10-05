@@ -1,0 +1,111 @@
+.CsvImportWidget .form-group {
+    overflow: hidden;
+}
+
+
+.CsvImportWidget .form-horizontal .sortable.hide-inputs .csvColumn .control-label{
+    width: 100%;
+    text-align: center;
+}
+
+.CsvImportWidget .sortable.form-control {
+    height: auto;
+    overflow: hidden;
+}
+.CsvImportWidget .form-horizontal .sortable.hide-inputs .csvColumn{
+    /*margin-bottom: 0px;*/
+    border-radius: 5px;
+    border: 1px solid black;
+
+}
+
+.CsvImportWidget .form-horizontal .hide-inputs .csvColumn {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.CsvImportWidget .sortable1 .csvColumn .control-label {
+    text-align: left;
+    /**/
+}
+.CsvImportWidget .hide-inputs input {
+    display: none;
+}
+
+
+
+.CsvImportWidget .sortable {
+    min-height: 34px;
+    height: auto;
+}
+
+.CsvImportWidget .sortable1.form-control {
+    padding: 0px;
+}
+.CsvImportWidget .resourceUsage {
+    height: 100px;
+    display: flex;
+    border: 1px solid black;
+    align-items: flex-end;
+}
+
+.CsvImportWidget .resourceUsage > div {
+    display: flex;
+}
+
+.CsvImportWidget .resourceUsage > div.time {
+    background-color: #681818;
+}
+
+.CsvImportWidget .resourceUsage > div.memory {
+    background-color: #6ce26c;
+}
+.CsvImportWidget {
+    position: relative;
+
+}
+.CsvImportWidget .overlay {
+    background-color: rgba(255,0,0,0.5);
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    z-index: 10;
+    display: none;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    line-height: 4em;
+}
+
+.CsvImportWidget.stopping .overlay {
+    display: inline-block;
+}
+
+
+.CsvImportWidget.busy .stop {
+    display:inline-block;
+
+}
+
+.CsvImportWidget.busy.stopping .stop,
+.CsvImportWidget .stop
+{
+    display: none;
+}
+
+.CsvImportWidget.busy .start
+{
+    display: none;
+}
+
+
+
+.form-horizontal .csvColumn .control-label{
+    padding-bottom: 7px;
+}
+
+.csvColumn.placeholder {
+    display: none;
+}
