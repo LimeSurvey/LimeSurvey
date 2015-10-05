@@ -545,6 +545,11 @@ abstract class Response extends Dynamic implements \ls\interfaces\iResponse
             return $this->getAttribute('token');
         }
     }
+
+    public function getIsFinished()
+    {
+        return isset($this->submitdate);
+    }
 }
 
 
