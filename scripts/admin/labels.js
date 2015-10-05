@@ -81,10 +81,7 @@ $(document).ready(function(){
                 dataToSend['langs'].push(div_language);
         });
 
-		// This is probably not working... 
-		//$("tbody>tr",$("#tabs>form>div:first")).each(function(trindex,trelement){
-
-        $(".labelDatas").each(function(trindex,trelement){
+        $(".tab-content div:first .labelDatas").each(function(trindex,trelement){
 
             var tr_code = $(trelement).attr('id');
             tr_code=tr_code.split('_');// first is row, second langage and last the row number
