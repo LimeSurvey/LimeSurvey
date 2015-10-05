@@ -10,7 +10,7 @@
     * other free or open source software licenses.
     * See COPYRIGHT.php for copyright notices and details.
     *
-       *	Files Purpose: lots of common functions
+       *    Files Purpose: lots of common functions
     */
 
     class QuestionGroup extends LSActiveRecord
@@ -190,14 +190,20 @@
             }
             return $command->query();
         }
-		
-		public function getbuttons()
-		{
-			$url = Yii::app()->createUrl("/admin/questiongroups/sa/view/surveyid/");
-			$url .= '/'.$this->sid.'/gid/'.$this->gid;
-			$button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
-			return $button;
-		}
+        
+        public function getbuttons()
+        {
+            // Add question to this group
+            $url = Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$this->sid/gid/$this->gid");
+            $button = '<a class="btn btn-default list-btn"  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-plus-sign text-success" aria-hidden="true"></span></a>';
+
+            // View summary
+            $url = Yii::app()->createUrl("/admin/questiongroups/sa/view/surveyid/");
+            $url .= '/'.$this->sid.'/gid/'.$this->gid;
+            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><span class="glyphicon glyphicon-pencil text-success" aria-hidden="true"></span></a>';
+            
+            return $button;
+        }
 
 
 
