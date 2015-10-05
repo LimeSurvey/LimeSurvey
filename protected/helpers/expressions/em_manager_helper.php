@@ -3136,7 +3136,7 @@ use ls\models\Survey;
         private function navigateNextQuestion($force) {
             $this->StartProcessingPage();
             $session = App()->surveySessionManager->current;
-            $this->processData($session->response, $_POST);
+            $this->processData($session->response, App()->request->psr7);
             $question = $session->getQuestionByIndex($session->step);
             $message = '';
             if (!$force) {

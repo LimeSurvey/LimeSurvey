@@ -534,6 +534,12 @@ abstract class Response extends Dynamic implements \ls\interfaces\iResponse
         return $this->getAttribute('id');
     }
 
+    /**
+     * This is from the iResponse interface.
+     * @param string $id
+     * @return static
+     * @throws Exception
+     */
     public static function loadById($id)
     {
         return static::model()->findByPk($id);
