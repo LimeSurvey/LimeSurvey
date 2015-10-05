@@ -74,6 +74,7 @@ class translate extends Survey_Common_Action {
 			if ( $actionvalue == "translateSave" && Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update') )
 			{
 				$this->_translateSave($iSurveyID, $tolang, $baselang, $tab_names);
+                Yii::app()->setFlashMessage(gT("Saved"),'success');
 			}
 
             $tolangdesc = $supportedLanguages[$tolang]['description'];
