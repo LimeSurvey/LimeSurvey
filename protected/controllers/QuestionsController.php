@@ -1,5 +1,6 @@
 <?php
 namespace ls\controllers;
+use ls\models\Answer;
 use ls\models\forms\SubQuestions;
 use ls\models\questions\SubQuestion;
 use \Yii;
@@ -31,7 +32,7 @@ class QuestionsController extends Controller
             $transaction = App()->db->beginTransaction();
             $error = false;
             $answers = [];
-            if ($question->hasAnswers && App()->request->getParam('ls\models\Answer', false) !== false) {
+            if ($question->hasAnswers && App()->request->getParam(\CHtml::modelName(Answer::class), false) !== false) {
 
                 // Remove all answers.
                 array_map(function (\ls\models\Answer $answer) {
@@ -39,7 +40,7 @@ class QuestionsController extends Controller
                 }, \ls\models\Answer::model()->findAllByAttributes(['question_id' => $question->qid]));
                 // Create new ones.
                 $codes = [];
-                foreach(App()->request->getParam('ls\models\Answer') as $i => $data) {
+                foreach(App()->request->getParam(\CHtml::modelName(Answer::class)) as $i => $data) {
                     $answer = new \ls\models\Answer();
                     $answer->question_id = $question->qid;
                     $answer->setAttributes($data);
