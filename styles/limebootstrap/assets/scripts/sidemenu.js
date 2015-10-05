@@ -47,32 +47,34 @@ jQuery(document).on('click', '.hideside', function(){
 /**
  * If the side bar state is set to  "close" on page load, it closes the side menu 
  */
-if ( $( "#close-side-bar" ).length ) {
-    $that = $('.toggleside');
-
-    $('.side-menu').css({
-      opacity: 0.5,
-      left: -250,
-    });
-
-    $('.side-body').css({
-      left: -125,
-    });        
-
-    $that.removeClass("hideside");
-    $that.addClass("showside");
-    $('#chevronside').removeClass('glyphicon-chevron-left');
-    $('#chevronside').addClass("glyphicon-chevron-right");
-
-    $('.absolute-wrapper').css({
-      opacity: 0.5,
-      left: -250,
+$(document).ready(function(){
+    if ( $("#close-side-bar").length ) {
+        $that = $('.toggleside');
+    
+        $('.side-menu').css({
+          opacity: 0.5,
+          left: -250,
+        });
+    
+        $('.side-body').css({
+          left: -125,
         });        
     
-    $('.sidemenuscontainer').css({
-        opacity: 0,
-    });                   
-}
+        $that.removeClass("hideside");
+        $that.addClass("showside");
+        $('#chevronside').removeClass('glyphicon-chevron-left');
+        $('#chevronside').addClass("glyphicon-chevron-right");
+    
+        $('.absolute-wrapper').css({
+          opacity: 0.5,
+          left: -250,
+            });        
+        
+        $('.sidemenuscontainer').css({
+            opacity: 0,
+        });                   
+    }
+});
 
 /**
  * Show the side menu
