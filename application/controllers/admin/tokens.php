@@ -1620,6 +1620,7 @@ class tokens extends Survey_Common_Action
     */
     function exportdialog($iSurveyId)
     {
+        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData["surveyinfo"] = $surveyinfo;     
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
         $aData['sidebar']["token_menu"]=TRUE;
