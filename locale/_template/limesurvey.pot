@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2015-09-30 08:06:04+00:00\n"
+"POT-Creation-Date: 2015-10-05 12:46:58+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1779,67 +1779,67 @@ msgstr ""
 msgid "Failed to delete answer"
 msgstr ""
 
-#: application/controllers/admin/database.php:336
+#: application/controllers/admin/database.php:343
 msgid "Error on %s for subquestion %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:341
+#: application/controllers/admin/database.php:348
 msgid "Subquestions %s could not be updated."
 msgstr ""
 
-#: application/controllers/admin/database.php:355
+#: application/controllers/admin/database.php:362
 msgid "Not all subquestions were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."
 msgstr ""
 
-#: application/controllers/admin/database.php:359
+#: application/controllers/admin/database.php:366
 msgid "Subquestions were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:379
+#: application/controllers/admin/database.php:386
 msgid "The question could not be added. You must enter at least a question code."
 msgstr ""
 
-#: application/controllers/admin/database.php:424
+#: application/controllers/admin/database.php:431
 msgid "Question could not be created with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:463
+#: application/controllers/admin/database.php:470
 msgid "Question in language %s could not be created with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:477
+#: application/controllers/admin/database.php:484
 #: application/views/admin/database/database_view.php:46
 msgid "Question could not be created."
 msgstr ""
 
-#: application/controllers/admin/database.php:603
+#: application/controllers/admin/database.php:610
 msgid "Question was successfully added."
 msgstr ""
 
-#: application/controllers/admin/database.php:750
+#: application/controllers/admin/database.php:757
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions  before you can change the type of this question."
 msgstr ""
 
-#: application/controllers/admin/database.php:823
+#: application/controllers/admin/database.php:830
 msgid "Question could not be updated with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:828
+#: application/controllers/admin/database.php:835
 msgid "Question could not be updated."
 msgstr ""
 
-#: application/controllers/admin/database.php:856
+#: application/controllers/admin/database.php:863
 msgid "Question was successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:893
+#: application/controllers/admin/database.php:900
 #: application/views/admin/database/database_view.php:4
 #: application/views/admin/database/database_view.php:58
 #: application/views/admin/database/database_view.php:71
 msgid "Question could not be updated"
 msgstr ""
 
-#: application/controllers/admin/database.php:957
+#: application/controllers/admin/database.php:964
 msgid "Survey text elements successfully saved."
 msgstr ""
 
@@ -4989,11 +4989,11 @@ msgstr ""
 msgid "Survey response %d"
 msgstr ""
 
-#: application/helpers/admin/htmleditor_helper.php:198
+#: application/helpers/admin/htmleditor_helper.php:191
 msgid "Start HTML editor in a popup window"
 msgstr ""
 
-#: application/helpers/admin/htmleditor_helper.php:199
+#: application/helpers/admin/htmleditor_helper.php:192
 msgid "Give focus to the HTML editor popup window"
 msgstr ""
 
