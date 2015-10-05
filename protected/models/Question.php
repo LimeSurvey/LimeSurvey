@@ -1127,7 +1127,6 @@ class Question extends ActiveRecord implements \ls\interfaces\iRenderable
     {
 
         $em = $this->getExpressionManager($response);
-        $result = new QuestionValidationResult($this);
         foreach ($this->getValidationExpressions() as $expression => $message) {
             if (!$em->ProcessBooleanExpression($expression)) {
                 return false;
@@ -1217,7 +1216,7 @@ class Question extends ActiveRecord implements \ls\interfaces\iRenderable
     public function getExpressionManager(\ls\interfaces\iResponse $response = null)
     {
         bP();
-        if (!isset($this->_expressionManager)) {
+        if (!isset($this->_expressionManager) || isset($response)) {
 
             $session = App()->surveySessionManager->current;
             if (!isset($response)) {

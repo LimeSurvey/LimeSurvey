@@ -554,6 +554,14 @@ abstract class Response extends Dynamic implements \ls\interfaces\iResponse
     {
         return isset($this->submitdate);
     }
+
+    public function setResponseValue($key, $value) {
+        if ($this->isAttributeSafe($key)) {
+            $this->$key = $value;
+            return true;
+        }
+        return false;
+    }
 }
 
 

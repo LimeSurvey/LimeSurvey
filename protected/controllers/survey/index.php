@@ -26,7 +26,7 @@ class index extends CAction {
         $clientScript->registerPackage('jqueryui');
         $clientScript->registerPackage('jquery-touch-punch');
 
-        $clientScript->registerScriptFile(App()->getConfig('generalscripts') . "survey_runtime.js");
+        $clientScript->registerPackage('SurveyRuntime');
 
         ob_start(function($buffer, $phase) use ($clientScript) {
             $clientScript->render($buffer);

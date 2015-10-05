@@ -125,4 +125,26 @@ class DummyResponse extends \CFormModel implements \ls\interfaces\iResponse
     {
         return $this->finished;
     }
+
+    public function delete($deleteFiles = false)
+    {
+        $this->fields = [];
+        $this->_id = null;
+        return true;
+
+    }
+
+
+    public function setResponseValue($key, $value)
+    {
+        if (array_key_exists($key, $this->fields)) {
+            $this->fields[$key] = $value;
+
+            return true;
+        }
+        return false;
+    }
+
+
+
 }

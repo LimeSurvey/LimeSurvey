@@ -46,4 +46,18 @@ interface iResponse {
     public function markAsFinished();
 
     public function getIsFinished();
+
+    /**
+     * @param bool|false $deleteFiles Should files associated with this response be deleted as well?
+     * @return boolean True if delete succeeded, false otherwise.
+     */
+    public function delete($deleteFiles = false);
+
+    /**
+     * Sets a response value.
+     * @param string $key
+     * @param mixed $value
+     * @return boolean True on success, false otherwise.
+     */
+    public function setResponseValue($key, $value);
 }
