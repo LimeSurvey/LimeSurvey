@@ -25,13 +25,13 @@ if (!defined('BASEPATH'))
 */
 class questions extends Survey_Common_Action
 {
-	
-	public function view($surveyid, $gid, $qid)
-	{
-		$aData = array();
-		$aData['surveyid'] = $iSurveyID = $surveyid;
-		$aData['gid'] = $gid;
-		$aData['qid'] = $qid;
+    
+    public function view($surveyid, $gid, $qid)
+    {
+        $aData = array();
+        $aData['surveyid'] = $iSurveyID = $surveyid;
+        $aData['gid'] = $gid;
+        $aData['qid'] = $qid;
 
 
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
@@ -95,18 +95,18 @@ class questions extends Survey_Common_Action
         $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
         $questionsummary .= $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
         $finaldata['display'] = $questionsummary;
-		$aData['display']['menu_bars']['gid_action'] = 'viewquestion';
+        $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
 
-		$aData['sidebar']['questiongroups'] = true;
-		$aData['sidebar']['listquestions'] = true;
-		
-		$aData['sidebar']['question'] = true;
-		$aData['sidebar']['question_name'] = $qrrow['title'].' : '.$qrrow['question'];
-		$aData['questionbar']['buttons']['view'] = TRUE;
+        $aData['sidebar']['questiongroups'] = true;
+        $aData['sidebar']['listquestions'] = true;
+        
+        $aData['sidebar']['question'] = true;
+        $aData['sidebar']['question_name'] = $qrrow['title'].' : '.$qrrow['question'];
+        $aData['questionbar']['buttons']['view'] = TRUE;
 
-		$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-		
+        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+        
         
         // Last question visited : By user (only one by user)
         $setting_entry = 'last_question_'.Yii::app()->user->getId();
@@ -135,9 +135,9 @@ class questions extends Survey_Common_Action
 */
        
 
-				
-		$this->_renderWrappedTemplate('survey/Question', 'question_view', $aData);
-	}
+                
+        $this->_renderWrappedTemplate('survey/Question', 'question_view', $aData);
+    }
 
     /**
      * Display import view
@@ -162,7 +162,7 @@ class questions extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT("You don't have enough permissions.");
             $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid));
         }                     
-    }	
+    }    
 
     /**
     * Function responsible to import a question.
@@ -348,7 +348,7 @@ class questions extends Survey_Common_Action
                         $defaultvalue = DefaultValue::model()->findByAttributes(array(
                         'specialtype' => '',
                         'qid' => $qid,
-						'sqid' => $aSubquestion['qid'],
+                        'sqid' => $aSubquestion['qid'],
                         'scale_id' => $scale_id,
                         'language' => $language
                         ));
@@ -388,13 +388,13 @@ class questions extends Survey_Common_Action
         );
 
 
-		$aData['sidebar']['state'] = "close";
-		$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-		$aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
-		$aData['questiongroupbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid;			
+        $aData['sidebar']['state'] = "close";
+        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+        $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
+        $aData['questiongroupbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid;            
 
-		
+        
         $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
         $aData['display']['menu_bars']['qid_action'] = 'editdefaultvalues';
 
@@ -920,13 +920,13 @@ class questions extends Survey_Common_Action
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
 
 
-		$aData['sidebar']['state'] = "close";
-		$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-		$aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
-		$aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
-		$aData['questiongroupbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid;			
-		
+        $aData['sidebar']['state'] = "close";
+        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+        $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
+        $aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
+        $aData['questiongroupbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid;            
+        
         Yii::app()->session['FileManagerContext'] = "create:question:{$surveyid}";
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
