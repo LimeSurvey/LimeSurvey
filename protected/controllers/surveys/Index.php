@@ -5,7 +5,7 @@ namespace ls\controllers\surveys;
 class Index extends \Action
 {
     public function run() {
-        $this->layout = 'main';
+        $this->controller->layout = 'main';
         $filter = new \ls\models\filter\Survey();
         $filter->setAttributes(App()->request->getParam(\CHtml::modelName($filter)));
         $surveys = \ls\models\Survey::model()->accessible();
