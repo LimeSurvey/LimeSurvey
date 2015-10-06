@@ -5225,10 +5225,14 @@ function getUpdateInfo()
 
 /**
 * This function updates the actual global variables if an update is available after using getUpdateInfo
+*
+* Not used anymore.
+*
 * @return Array with update or error information
 */
 function updateCheck()
 {
+    /*
     $aUpdateVersions=getUpdateInfo();
 
     if (isset($aUpdateVersions['errorcode']))
@@ -5275,6 +5279,7 @@ function updateCheck()
 
     setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
     return $aUpdateVersions;
+     */
 }
 
 /**

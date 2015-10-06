@@ -13,10 +13,10 @@
         </div>
 
         <?php if($showupdate): ?>
-            <div id="update-small-notification" class='menubar-title-right <?php if(Yii::app()->session['notificationstate']=='1'){echo 'hidden';};?> fade in'>
+            <div id="update-small-notification" class='menubar-title-right <?php if(Yii::app()->session['notificationstate']=='1' || Yii::app()->session['unstable_update'] ){echo 'hidden';};?> fade in'>
                         <strong><?php eT('New update available:');?></strong> <a href="<?php echo Yii::app()->createUrl("admin/globalsettings", array("update"=>'updatebuttons')); ?>"><?php eT('Click here to use ComfortUpdate or to download it.');?></a>
             </div>
-        <?php endif; ?>                        
+        <?php endif; ?>
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>
@@ -83,7 +83,7 @@
             <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
             <?php
                 if(Permission::model()->hasGlobalPermission('participantpanel','read'))
-                { 	 ?>
+                {      ?>
                 <a href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" >
                     <img src='<?php echo $sImageURL;?>cpdb.png' alt='<?php eT("Central participant database/panel");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php }
@@ -126,7 +126,7 @@
 $(document).ready(function(){
     $('#update-alert').on('closed.bs.alert', function () {
         $('#update-small-notification').removeClass('hidden');
-        
+
 
         // The ajax request call an action to update controller. This action is defined inside the form.
         // For example, the forms .launchUpdateForm inside the view _updatesavailable calls update/sa/getwelcome wich will itself calls the update server to get the welcome message.
@@ -137,10 +137,10 @@ $(document).ready(function(){
             },
             error :  function(html, statut){
             },
-            
+
         });
-        
-      
+
+
     });
-});    
+});
 </script>
