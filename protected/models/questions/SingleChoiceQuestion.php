@@ -49,5 +49,14 @@ class SingleChoiceQuestion extends ChoiceQuestion
         return $result;
     }
 
+    /**
+     * Does this question support custom answers?
+     * @return boolean
+     */
+    public function getHasCustomAnswers()
+    {
+        return true;
+    }
+
 
 }
