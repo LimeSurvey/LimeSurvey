@@ -4,15 +4,16 @@ function ExpressionManager(vars) {
     /**
      * Initialization
      */
-        // Touched class (same as angularJS .st-touched)
+
+    // Touched class (same as angularJS .st-touched)
     var setTouched = function() {
         $(this).addClass('touched');
         $(this).closest('div.question').addClass('touched');
     }
-    $(document).on('blur', 'input, select, textarea',setTouched);
+    $(document).on('blur', ':input',setTouched);
 
 
-    $(document).on('change', 'input, select, textarea', function(e) {
+    $(document).on('change', ':input', function(e) {
         setTouched.call(this);
         // Touched class (same as angularJS .st-dirty)
         $(this).addClass('dirty');

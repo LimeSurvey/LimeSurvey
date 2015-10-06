@@ -29,10 +29,6 @@ class DateTimeQuestion extends TextQuestion
             }
             $expression = '(is_empty(' . $this->varName . '.NAOK) || (' . $this->varName . '.NAOK >= date("Y-m-d H:i", strtotime(' . $date_min . ')) ))';
             $result[$expression] = gT("Date is too small.");
-
-
-
-
         }
         return $result;
     }
@@ -76,7 +72,9 @@ class DateTimeQuestion extends TextQuestion
     public function render(iResponse $response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
-        $result->setHtml(\TbHtml::dateField($this->sgqa, $response->{$this->sgqa}));
+        $result->setHtml(\TbHtml::dateField($this->sgqa, $response->{$this->sgqa}, [
+            'data-validation-expression' => $this->getExpressionManager($response)->getJavascript(implode(' and ', array_keys($this->getValidationExpressions())))
+        ]));
         return $result;
     }
 

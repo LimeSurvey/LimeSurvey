@@ -392,7 +392,7 @@ EOD;
             $coreReplacements['LOADFORM'] = $_loadform;
             $coreReplacements['LOADHEADING'] = gT("Load a previously saved survey");
             $coreReplacements['LOADMESSAGE'] = gT("You can load a survey that you have previously saved from this screen.") . "<br />" . gT("Type in the 'name' you used to save the survey, and the password.") . "<br />";
-            $coreReplacements['NAVIGATOR'] = FrontEnd::surveymover($session);
+            $coreReplacements['NAVIGATOR'] = FrontEnd::surveyNavigator($session);
             $coreReplacements['NOSURVEYID'] = (isset($surveylist)) ? $surveylist['nosid'] : '';
             $coreReplacements['NUMBEROFQUESTIONS'] = $_totalquestionsAsked;
             $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global

@@ -1,19 +1,13 @@
-/*
- * JavaScript functions in survey taking
- *
- * This file is part of LimeSurvey
- * Copyright (C) 2007-2013 The LimeSurvey Project Team
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
 
+(function($) {
+
+    $(document).on('click',"#limesurvey .button", function(event) {
+        $("#limesurvey .button").attr('disabled', true);
+    })
+
+
+})(jQuery);
 // Some function can be launch before document ready (and seems intersting)
-limesurveySubmitHandler();
 needConfirmHandler();
 tableCellAdapters();
 activateLanguageChanger();
@@ -32,41 +26,6 @@ $(document).ready(function()
         $(focus_element).focus();
     }
 
-    // Keypad functions
-    var kp = $("input.num-keypad");
-    if(kp.length)
-	{ 
-		kp.keypad({
-			showAnim: 'fadeIn', keypadOnly: false,
-			onKeypress: function(key, value, inst) { 
-				$(this).trigger('keyup');
-			}
-		});
-	}
-    kp = $(".text-keypad");
-    if(kp.length)
-    {
-        var spacer = $.keypad.HALF_SPACE;
-        for(var i = 0; i != 8; ++i) spacer += $.keypad.SPACE;
-	    kp.keypad({
-		    showAnim: 'fadeIn',
-		    keypadOnly: false,
-		    layout: [
-                spacer + $.keypad.CLEAR + $.keypad.CLOSE, $.keypad.SPACE,
-			    '!@#$%^&*()_=' + $.keypad.HALF_SPACE + $.keypad.BACK,
-			    $.keypad.HALF_SPACE + '`~[]{}<>\\|/' + $.keypad.SPACE + $.keypad.SPACE + '789',
-			    'qwertyuiop\'"' + $.keypad.HALF_SPACE + $.keypad.SPACE + '456',
-			    $.keypad.HALF_SPACE + 'asdfghjkl;:' + $.keypad.SPACE + $.keypad.SPACE + '123',
-			    $.keypad.SPACE + 'zxcvbnm,.?' + $.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + '-0+',
-			    $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER],
-				onKeypress: function(key, value, inst) { 
-					$(this).trigger('keyup');
-				}
-			});
-    }
-
-    // Maxlength for textareas TODO limit to not CSS3 compatible browser
-    maxlengthtextarea();
 
 });
 
@@ -79,24 +38,6 @@ function setJsVar(){
     LEMradix=LSvar.sLEMradix;
     numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');
     intRegex = new RegExp('[^-0-9]','g');
-}
-// Deactivate all other button on submit
-function limesurveySubmitHandler(){
-    // Return false disallow all other system
-    $(document).on("click",".disabled",function(){return false});
-    $(document).on("click",'.active',function(){return false;});// "[active]" don't seem to work with jquery-1.10.2
-
-    $(document).on('click',"#limesurvey .button", function(event){
-        $(this).prop('active',true).addClass('active');
-        $("#limesurvey .button.ui-button" ).not($(this)).button( "option", "disabled", true );
-        $("#limesurvey .button").not($(this)).prop('disabled',true).addClass('disabled');
-    });
-    if (document.all && !document.querySelector) { // IE7 or lower
-        $(function() {
-            $("#defaultbtn").css('display','inline').css('width','0').css('height','0').css('padding','0').css('margin','0').css('overflow','hidden');
-            $("#limesurvey [type='submit']").not("#defaultbtn").first().before($("#defaultbtn"));
-        });
-    }
 }
 
 
@@ -113,37 +54,6 @@ function needConfirmHandler(){
         $(this).prop('active',false).removeClass('active');
         return false;
     });
-}
-/**
- * checkconditions : javascript function attach to some element 
- * Launch ExprMgr_process_relevance_and_tailoring with good value
- */
-function checkconditions(value, name, type, evt_type)
-{
-    if (typeof evt_type === 'undefined')
-    {
-        evt_type = 'onchange';
-    }
-    if (type == 'radio' || type == 'select-one')
-    {
-        $('#java'+name).val(value);
-    }
-    else if (type == 'checkbox')
-    {
-        if ($('#answer'+name).is(':checked'))
-        {
-            $('#java'+name).val('Y');
-        } else
-        {
-            $('#java'+name).val('');
-        }
-    }
-    else if (type == 'text' && name.match(/other$/))
-    {
-        $('#java'+name).val(value);
-    }
-    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ))
-        ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
 }
 
 /**
@@ -250,7 +160,6 @@ function navbuttonsJqueryUi(){
     }
     });
     $(".button").button();
-    // TODO trigger handler activate/deactivate to update ui-button class
 }
 /**
  * showStartPopups : Take all message in startPopups json array and launch an alert with text
@@ -377,29 +286,6 @@ function tableCellAdapters()
 	});
 }
 
-Array.prototype.push = function()
-{
-	var n = this.length >>> 0;
-	for (var i = 0; i < arguments.length; i++)
-	{
-		this[n] = arguments[i];
-		n = n + 1 >>> 0;
-	}
-	this.length = n;
-	return n;
-};
-
-Array.prototype.pop = function() {
-	var n = this.length >>> 0, value;
-	if (n) {
-		value = this[--n];
-		delete this[n];
-	}
-	this.length = n;
-	return value;
-};
-
-
 //defined in group.php & question.php & survey.php, but a static function
 function inArray(needle, haystack)
 {
@@ -431,43 +317,6 @@ function addHiddenField(theform,thename,thevalue)
 	myel.value = thevalue;
 }
 
-function cancelBubbleThis(eventObject)
-{
-	if (!eventObject) var eventObject = window.event;
-	eventObject.cancelBubble = true;
-	if (eventObject && eventObject.stopPropagation) {
-		eventObject.stopPropagation();
-	}
-}
-
-function cancelEvent(e)
-{
-  e = e ? e : window.event;
-  if(e.stopPropagation)
-    e.stopPropagation();
-  if(e.preventDefault)
-    e.preventDefault();
-  e.cancelBubble = true;
-  e.cancel = true;
-  e.returnValue = false;
-  return false;
-}
-
-function hookEvent(element, eventName, callback)
-{
-  if(typeof(element) == "string")
-    element = document.getElementById(element);
-  if(element == null)
-    return;
-  if(element.addEventListener)
-  {
-    if(eventName == 'mousewheel')
-      element.addEventListener('DOMMouseScroll', callback, false);
-    element.addEventListener(eventName, callback, false);
-  }
-  else if(element.attachEvent)
-    element.attachEvent("on" + eventName, callback);
-}
 
 function noScroll(e)
 {
@@ -505,21 +354,6 @@ function goodchars(e, goods)
     return false;
 }
 
-function show_hide_group(group_id)
-{
-	var questionCount;
-
-	// First let's show the group description, otherwise, all its childs would have the hidden status
-	$("#group-" + group_id).show();
-	// If all questions in this group are conditionnal
-	// Count visible questions in this group
-		questionCount=$("div#group-" + group_id).find("div[id^='question']:visible").size();
-
-		if( questionCount == 0 )
-		{
-			$("#group-" + group_id).hide();
-		}
-}
 
 // round function from phpjs.org
 function round (value, precision, mode) {
@@ -550,34 +384,6 @@ function round (value, precision, mode) {
 
     return (isHalf ? value : Math.round(value)) / m;
 }
-
-/* Maxlengt on textarea */
-function maxlengthtextarea(){
-    // Calling this function at document.ready : use maxlength attribute on textarea
-    // Can be replaced by inline javascript
-    $("textarea[maxlength]").change(function(){ // global solution
-        var maxlen=$(this).attr("maxlength");
-        if ($(this).val().length > maxlen) {
-            $(this).val($(this).val().substring(0, maxlen));
-        }
-    });
-    $("textarea[maxlength]").keyup(function(){ // For copy/paste (not for all browser)
-        var maxlen=$(this).attr("maxlength");
-        if ($(this).val().length > maxlen) {
-            $(this).val($(this).val().substring(0, maxlen));
-        }
-    });
-    $("textarea[maxlength]").keydown(function(event){ // No new key after maxlength
-        var maxlen=$(this).attr("maxlength");
-        var k =event.keyCode;
-        if (($(this).val().length >= maxlen) &&
-         !(k == null ||k==0||k==8||k==9||k==13||k==27||k==37||k==38||k==39||k==40||k==46)) {
-            // Don't accept new key except NULL,Backspace,Tab,Enter,Esc,arrows,Delete
-            return false;
-        }
-    });
-}
-/* add a title on cell with answer */
 function doToolTipTable()
 {
    $(document).on("mouseover"," td.answer-item",function(){

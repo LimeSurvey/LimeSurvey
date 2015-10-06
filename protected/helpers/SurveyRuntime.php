@@ -446,7 +446,6 @@ class SurveyRuntime {
         echo \TbHtml::well("View count for this page: {$session->getViewCount()}");
         echo \TbHtml::well("Current step: {$session->getStep()}");
         if ($session->getViewCount() > 1) {
-
             $formParams['class'] = 'touched';
         }
         echo TbHtml::beginForm('', 'post', $formParams);

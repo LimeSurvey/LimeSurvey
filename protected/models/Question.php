@@ -7,6 +7,7 @@ use ls\components\QuestionValidationResult;
 use ls\components\ResponseField;
 use ExpressionManager;
 use \CDbCriteria;
+use \TbHtml;
 
 
 /**

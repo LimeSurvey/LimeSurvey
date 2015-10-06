@@ -449,73 +449,57 @@ class FrontEnd
      * Adding a hidden input for default behaviour without javascript
      * Use button name="move" for real browser (with or without javascript) and IE6/7/8 with javascript
      */
-    public static function surveymover(\ls\components\SurveySession $session)
+    public static function surveyNavigator(\ls\components\SurveySession $session)
     {
-        $surveyid = $session->surveyId;
-
-        $sMoveNext = "movenext";
-        $sMovePrev = "";
-        $iSessionStep = $session->step;
-        $iSessionMaxStep = $session->maxStep;
-        $iSessionTotalSteps = $session->stepCount;
-        $sClass = "submit button";
-        $sSurveyMover = "";
-
+        $classes = "submit button";
+        $result = [];
         // Count down
-        if ($session->survey->navigationdelay > 0 && $iSessionMaxStep == $iSessionStep) {
-            $sClass .= " disabled";
+        if ($session->survey->navigationdelay > 0 && $session->maxStep == $session->step) {
+            $classes .= " disabled";
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "/navigator-countdown.js");
             App()->getClientScript()->registerScript('navigator_countdown',
                 "navigator_countdown({$session->survey->navigationdelay});\n", CClientScript::POS_BEGIN);
         }
 
         // Previous ?
-        if ($session->format != Survey::FORMAT_ALL_IN_ONE && $session->survey->bool_allowprev) {
-            $sMovePrev = "moveprev";
+        if ($session->format != Survey::FORMAT_ALL_IN_ONE
+            && $session->survey->bool_allowprev
+            && $session->step > 0
+        ) {
+            $result[] = CHtml::htmlButton(gT("Previous"), [
+                'type' => 'submit',
+                'id' => "moveprevbtn",
+                'value' => 'moveprev',
+                'name' => 'moveprev',
+                'accesskey' => 'p',
+                'class' => $classes
+            ]);
         }
 
-        // Submit ?
-        if ($iSessionStep == $iSessionTotalSteps
+        // Submit
+        if ($session->getStepCount() == $session->step
             || $session->format == Survey::FORMAT_ALL_IN_ONE
         ) {
-            $sMoveNext = "movesubmit";
-        }
-
-        // Construction of mover
-        if ($sMovePrev) {
-            $sLangMoveprev = gT("Previous");
-            $sSurveyMover .= CHtml::htmlButton($sLangMoveprev, array(
+            $result[] = CHtml::htmlButton(gT("Submit"), [
                 'type' => 'submit',
-                'id' => "{$sMovePrev}btn",
-                'value' => $sMovePrev,
-                'name' => $sMovePrev,
-                'accesskey' => 'p',
-                'class' => $sClass
-            ));
-        }
-        if ($sMovePrev && $sMoveNext) {
-            $sSurveyMover .= " ";
-        }
-
-        if ($sMoveNext) {
-            if ($sMoveNext == "movesubmit") {
-                $sLangMovenext = gT("Submit");
-                $sAccessKeyNext = 'l';// Why l ?
-            } else {
-                $sLangMovenext = gT("Next");
-                $sAccessKeyNext = 'n';
-            }
-            $sSurveyMover .= CHtml::htmlButton($sLangMovenext, array(
+                'id' => "movesubmitbtn",
+                'value' => "movesubmit",
+                'name' => "movesubmit",
+                'accesskey' => "l",
+                'class' => $classes
+            ]);
+        } else {
+            $result[] = CHtml::htmlButton(gT("Next"), [
                 'type' => 'submit',
-                'id' => "{$sMoveNext}btn",
-                'value' => $sMoveNext,
-                'name' => $sMoveNext,
-                'accesskey' => $sAccessKeyNext,
-                'class' => $sClass
-            ));
+                'id' => "movenextbtn",
+                'value' => "movenext",
+                'name' => "movenext",
+                'accesskey' => "l",
+                'class' => $classes
+            ]);
         }
 
-        return $sSurveyMover;
+        return implode(' ', $result);
     }
 
     /**
