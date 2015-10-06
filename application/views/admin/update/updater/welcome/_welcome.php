@@ -13,7 +13,13 @@
 
 <?php
     if( isset($serverAnswer->html) )
-        echo $serverAnswer->html;
+    {
+        if ( $serverAnswer->html != 'update_unstable')
+        {
+            echo $serverAnswer->html;
+        }
+
+    }
 ?>
 
 <!-- Welcome Message -->
@@ -46,6 +52,16 @@
     <p></p>
     <div>
         <h4><?php eT('ComfortUpdate key information'); ?></h4>
+        <?php if( isset($serverAnswer->html) ): ?>
+            <?php if ( $serverAnswer->html == 'update_unstable' && $serverAnswer->key_infos->keyid != 'FREE'):?>
+                <p>
+                    <?php eT('This is an update to an unstable version'); ?>
+                    <br/>
+                    <?php eT('It will not affect your update key.')?>
+                </p>
+            <?php endif;?>
+        <?php endif;?>
+
         <strong><?php eT('Your update key:');?> <?php echo $serverAnswer->key_infos->keyid; ?></strong><br/>
         <strong><?php eT('Valid until:');?> <?php echo $serverAnswer->key_infos->validuntil; ?></strong><br/>
         <?php  if ($serverAnswer->key_infos->remaining_updates!=-999) { ?>

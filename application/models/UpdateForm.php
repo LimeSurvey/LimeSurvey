@@ -532,7 +532,7 @@ class UpdateForm extends CFormModel
         $today = new DateTime("now");
         $next_update_check = Yii::app()->session['next_update_check'];
 
-        if (is_null($next_update_check) || ($next_update_check <  $today) || is_null(Yii::app()->session['update_result']) || 1==1 )
+        if (is_null($next_update_check) || ($next_update_check <  $today) || is_null(Yii::app()->session['update_result'])  )
         {
             // Turn on the alert notification
             Yii::app()->session['notificationstate']=1;
