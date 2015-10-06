@@ -67,98 +67,6 @@ class FrontEnd
     }
 
     /**
-     * @todo Move this to UploadQuestion.
-     */
-    private static function checkUploadedFileValidity($surveyid, $move, $backok = null)
-    {
-        return false;
-        $session = App()->surveySessionManager->current;
-
-        if (!isset($backok) || $backok != "Y") {
-            $fieldmap = createFieldMap($surveyid, 'full', false, false, $session->language);
-
-            if (isset($_POST['fieldnames']) && $_POST['fieldnames'] != "") {
-                $fields = explode("|", $_POST['fieldnames']);
-
-                foreach ($fields as $field) {
-                    if ($fieldmap[$field]['type'] == "|" && !strrpos($fieldmap[$field]['fieldname'], "_filecount")) {
-                        $validation = \ls\models\QuestionAttribute::model()->getQuestionAttributes($fieldmap[$field]['qid']);
-
-                        $filecount = 0;
-
-                        $json = $_POST[$field];
-                        // if name is blank, its basic, hence check
-                        // else, its ajax, don't check, bypass it.
-
-                        if ($json != "" && $json != "[]") {
-                            $phparray = json_decode(stripslashes($json));
-                            if ($phparray[0]->size != "") { // ajax
-                                $filecount = count($phparray);
-                            } else { // basic
-                                for ($i = 1; $i <= $validation['max_num_of_files']; $i++) {
-                                    if (!isset($_FILES[$field . "_file_" . $i]) || $_FILES[$field . "_file_" . $i]['name'] == '') {
-                                        continue;
-                                    }
-
-                                    $filecount++;
-
-                                    $file = $_FILES[$field . "_file_" . $i];
-
-                                    // File size validation
-                                    if ($file['size'] > $validation['max_filesize'] * 1000) {
-                                        $filenotvalidated = array();
-                                        $filenotvalidated[$field . "_file_" . $i] = sprintf(gT("Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."),
-                                            $file['size'], $validation['max_filesize']);
-                                        $append = true;
-                                    }
-
-                                    // File extension validation
-                                    $pathinfo = pathinfo(basename($file['name']));
-                                    $ext = $pathinfo['extension'];
-
-                                    $validExtensions = explode(",", $validation['allowed_filetypes']);
-                                    if (!(in_array($ext, $validExtensions))) {
-                                        if (isset($append) && $append) {
-                                            $filenotvalidated[$field . "_file_" . $i] .= sprintf(gT("Sorry, only %s extensions are allowed!"),
-                                                $validation['allowed_filetypes']);
-                                            unset($append);
-                                        } else {
-                                            $filenotvalidated = array();
-                                            $filenotvalidated[$field . "_file_" . $i] .= sprintf(gT("Sorry, only %s extensions are allowed!"),
-                                                $validation['allowed_filetypes']);
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            $filecount = 0;
-                        }
-
-                        if (isset($validation['min_num_of_files']) && $filecount < $validation['min_num_of_files'] && LimeExpressionManager::QuestionIsRelevant($fieldmap[$field]['qid'])) {
-                            $filenotvalidated = array();
-                            $filenotvalidated[$field] = gT("The minimum number of files has not been uploaded.");
-                        }
-                    }
-                }
-            }
-            if (isset($filenotvalidated)) {
-                if (isset($move) &&
-                    ($move == "moveprev" || $move == "movenext")
-                ) {
-                    App()->surveySessionManager->current->setStep($thisstep);
-                }
-
-                return $filenotvalidated;
-            }
-        }
-        if (!isset($filenotvalidated)) {
-            return false;
-        } else {
-            return $filenotvalidated;
-        }
-    }
-
-    /**
      * Marks a tokens as completed and sends a confirmation email to the participiant.
      * If $quotaexit is set to true then the user exited the survey due to a quota
      * restriction and the according token is only marked as 'Q'
@@ -451,14 +359,12 @@ class FrontEnd
      */
     public static function surveyNavigator(\ls\components\SurveySession $session)
     {
-        $classes = "submit button";
         $result = [];
+        $cs = App()->getClientScript();
+        $cs->registerScriptFile(App()->getPublicUrl() . '/scripts/navigator.js');
         // Count down
         if ($session->survey->navigationdelay > 0 && $session->maxStep == $session->step) {
-            $classes .= " disabled";
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "/navigator-countdown.js");
-            App()->getClientScript()->registerScript('navigator_countdown',
-                "navigator_countdown({$session->survey->navigationdelay});\n", CClientScript::POS_BEGIN);
+            $cs->registerScript('navigator_countdown', "navigator_countdown({$session->survey->navigationdelay});\n");
         }
 
         // Previous ?
@@ -466,13 +372,12 @@ class FrontEnd
             && $session->survey->bool_allowprev
             && $session->step > 0
         ) {
-            $result[] = CHtml::htmlButton(gT("Previous"), [
+            $result[] = CHtml::submitButton(gT("Previous"), [
                 'type' => 'submit',
                 'id' => "moveprevbtn",
-                'value' => 'moveprev',
-                'name' => 'moveprev',
+                'value' => 'prev',
+                'name' => 'move',
                 'accesskey' => 'p',
-                'class' => $classes
             ]);
         }
 
@@ -483,19 +388,17 @@ class FrontEnd
             $result[] = CHtml::htmlButton(gT("Submit"), [
                 'type' => 'submit',
                 'id' => "movesubmitbtn",
-                'value' => "movesubmit",
-                'name' => "movesubmit",
+                'value' => "submit",
+                'name' => "move",
                 'accesskey' => "l",
-                'class' => $classes
             ]);
         } else {
             $result[] = CHtml::htmlButton(gT("Next"), [
                 'type' => 'submit',
                 'id' => "movenextbtn",
-                'value' => "movenext",
-                'name' => "movenext",
+                'value' => "next",
+                'name' => "move",
                 'accesskey' => "l",
-                'class' => $classes
             ]);
         }
 

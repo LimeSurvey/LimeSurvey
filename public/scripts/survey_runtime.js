@@ -1,9 +1,7 @@
 
 (function($) {
 
-    $(document).on('click',"#limesurvey .button", function(event) {
-        $("#limesurvey .button").attr('disabled', true);
-    })
+
 
 
 })(jQuery);

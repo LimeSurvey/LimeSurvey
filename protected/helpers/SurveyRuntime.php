@@ -166,8 +166,6 @@ class SurveyRuntime {
      * @throws CException
      * @throws CHttpException
      * @throws Exception
-     * @internal param mixed $surveyid
-     * @internal param mixed $args
      */
     function run(SurveySession $session, $move)
     {
@@ -190,9 +188,6 @@ class SurveyRuntime {
         }
 
 
-        if (isset($_POST['LEMpostKey']) && $_POST['LEMpostKey'] != $session->postKey) {
-            throw new \Exception("CSRF Protection triggered.");
-        }
 
         if (isset($move) && $move == "clearcancel") {
             $moveResult = LimeExpressionManager::JumpTo($session->step, true, false, true);
@@ -200,13 +195,13 @@ class SurveyRuntime {
 
 
         //Move current step ###########################################################################
-        if (isset($move) && $move == 'moveprev' && ($session->survey->bool_allowprev || $session->survey->questionindex > 0)) {
+        if ($move == 'prev' && ($session->survey->bool_allowprev || $session->survey->questionindex > 0)) {
             $moveResult = LimeExpressionManager::NavigateBackwards();
         }
-        if (isset($move) && $move == "movenext") {
+        if ($move == "next") {
             $moveResult = LimeExpressionManager::NavigateForwards();
         }
-        if (isset($move) && ($move == 'movesubmit')) {
+        if ($move == 'submit') {
             if ($session->format == Survey::FORMAT_ALL_IN_ONE) {
                 $moveResult = LimeExpressionManager::NavigateForwards();
             } else {
@@ -215,16 +210,16 @@ class SurveyRuntime {
                 $moveResult = LimeExpressionManager::JumpTo($session->getStepCount() + 1);
             }
         }
-        if (isset($move) && $move == 'changelang') {
+        if ($move == 'changelang') {
             // jump to current step using new language, processing POST values
             $moveResult = LimeExpressionManager::JumpTo($session->getStep(), true, true, true);  // do process the POST data
         }
-        if (isset($move) && is_numeric($move) && $session->survey->questionindex == Survey::INDEX_INCREMENTAL) {
+        if (is_numeric($move) && $session->survey->questionindex == Survey::INDEX_INCREMENTAL) {
             $move = (int)$move;
             if ($move > 0 && ($move <= $session->getStep() || $move <= $session->getMaxStep())) {
                 $moveResult = LimeExpressionManager::JumpTo($move);
             }
-        } elseif (isset($move) && is_numeric($move) && $session->survey->questionindex == Survey::INDEX_FULL) {
+        } elseif (is_numeric($move) && $session->survey->questionindex == Survey::INDEX_FULL) {
             $moveResult = LimeExpressionManager::JumpTo($move, true, true);
             $session->setStep($moveResult['seq'] + 1);
         }
@@ -440,9 +435,12 @@ class SurveyRuntime {
         /**
          * @Todo Check if any question on the current page is an upload question.
          */
-//        if ($question->type == ls\models\Question::TYPE_UPLOAD) {
+        if (Question::model()->findByAttributes([
+            'type' => Question::TYPE_UPLOAD,
+            'sid' => $survey->primaryKey
+        ]) != null) {
             $formParams['enctype'] = 'multipart/form-data';
-//        }
+        }
         echo \TbHtml::well("View count for this page: {$session->getViewCount()}");
         echo \TbHtml::well("Current step: {$session->getStep()}");
         if ($session->getViewCount() > 1) {
@@ -506,11 +504,10 @@ class SurveyRuntime {
         }
 
         $step = $session->getStep();
-        echo TbHtml::hiddenField('thisstep', $step, ['id' => 'thisstep']);
         echo TbHtml::hiddenField('sid', $session->surveyId, ['id' => 'sid']);
         echo TbHtml::hiddenField('SSM', $session->getId());
         echo TbHtml::hiddenField('start_time', time(), ['id' => 'start_time']);
-        echo TbHtml::hiddenField('LEMpostKey', $session->postKey, ['id' => 'LEMpostKey']);
+        echo TbHtml::hiddenField('csrfToken', $session->postKey);
 
         echo "</form>\n";
 

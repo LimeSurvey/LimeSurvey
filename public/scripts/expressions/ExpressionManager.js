@@ -12,6 +12,29 @@ function ExpressionManager(vars) {
     }
     $(document).on('blur', ':input',setTouched);
 
+    /**
+     * Add name and value of the button to the form.
+     */
+    $(document).on('click', 'button[type=submit][value]', function(e) {
+        var $button = $(this);
+        var $form = $button.closest('form');
+        if ($form.length > 0) {
+            // Add button data.
+            $form.append($('<input type="hidden" name="_button"/>').attr('value', $button.attr('value')));
+        }
+    });
+    // A form is touched when someone tries to submit it.
+    $(document).on('submit',"form", function(e) {
+        var $this = $(this);
+        $this.addClass('touched');
+        // Check if form is valid.
+        if ($this.find('.invalid').length > 0) {
+            e.preventDefault();
+        } else {
+            // Disable buttons to prevent repeated clicks.
+            $this.find(':button').attr('disabled', true);
+        }
+    });
 
     $(document).on('change', ':input', function(e) {
         setTouched.call(this);

@@ -38,6 +38,11 @@
             $form.append($('<input type="hidden" name="_method"/>').attr('value', this.data('method')));
         }
 
+        // Add button data.
+        if (typeof this.attr('value') != 'undefined' && typeof this.attr('name') != 'undefined') {
+            $form.append($('<input type="hidden"/>').attr('name', this.attr('name')).attr('value', this.attr('value')));
+        }
+
         $form.submit();
 
 

@@ -719,12 +719,13 @@ class LimeExpressionManager
         return (isset($LEM->lastMoveResult) ? $LEM->lastMoveResult : null);
     }
 
-    private function processData(\ls\interfaces\iResponse $response, \Psr\Http\Message\ServerRequestInterface $request) {
+    private function processData(\ls\interfaces\iResponse $response, \Psr\Http\Message\ServerRequestInterface $request)
+    {
 
-        foreach($request->getParsedBody() as $key => $value) {
+        foreach ($request->getParsedBody() as $key => $value) {
             $response->setResponseValue($key, $value);
         }
-        foreach($request->getUploadedFiles() as $field => $files) {
+        foreach ($request->getUploadedFiles() as $field => $files) {
             $response->setFiles($field, $files);
         }
         return $response->save();

@@ -41,6 +41,9 @@ interface iResponse {
      */
     public function setFiles($field, array $files);
 
+    /**
+     * @return boolean
+     */
     public function save();
 
     public function markAsFinished();
