@@ -316,6 +316,7 @@ class SurveySession extends \CComponent
     }
 
     /**
+     * The step for the survey, starts counting at 0.
      * @return int
      */
     public function getStep()
@@ -366,11 +367,12 @@ class SurveySession extends \CComponent
 
     public function __wakeup()
     {
-        $this->_viewCount++;
+
     }
 
     public function __sleep()
     {
+        $this->_viewCount++;
         return [
             'surveyId',
             'id',

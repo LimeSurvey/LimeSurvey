@@ -1925,8 +1925,6 @@ class dataentry extends Survey_Common_Action
 
             foreach ($degresult->readAll() as $degrow)
             {
-                LimeExpressionManager::StartProcessingGroup($degrow['gid'], ($thissurvey['anonymized']!="N"));
-
                 $deqquery = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND parent_qid=0 AND gid={$degrow['gid']} AND language='{$sDataEntryLanguage}'";
                 $deqrows = (array) dbExecuteAssoc($deqquery)->readAll();
                 $aDataentryoutput .= "\t<tr>\n"

@@ -1686,10 +1686,6 @@ class ExpressionManager {
         if (is_null($result)) {
             return false;    // if there are errors in the expression, hide it?
         }
-//        if ($result == 'false') {
-//            return false;    // since the string 'false' is not considered boolean false, but an expression in JavaScript can return 'false'
-//        }
-//        return !empty($result);
 
         // Check whether any variables are irrelevant - making this comparable to JavaScript which uses LEManyNA(varlist) to do the same thing
         foreach ($this->GetVarsUsed() as $var)    // this function wants to see the NAOK suffix

@@ -53,7 +53,7 @@ class index extends CAction {
         $param = $this->_getParameters(func_get_args(), $_POST);
 
         if (null === $session = App()->surveySessionManager->current) {
-            throw new \CHttpException(404, "ls\models\Session not found");
+            throw new \CHttpException(404, "Session not found");
         }
 
         header('X-ResponseId: ' . $session->responseId);

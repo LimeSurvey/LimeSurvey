@@ -45,7 +45,7 @@ class SurveyRuntime {
             if (LimeExpressionManager::GroupIsRelevant($group->primaryKey))
             {
                 $step = $key + 1;
-                $stepInfo = LimeExpressionManager::singleton()->validateGroup($key);
+                $valid = LimeExpressionManager::singleton()->validateGroup($key);
                 $classes = implode(' ', array(
                     'row',
                     $stepInfo['anyUnanswered'] ? 'missing' : '',
@@ -180,8 +180,6 @@ class SurveyRuntime {
 
         $radix = \ls\helpers\SurveyTranslator::getRadixPointData($survey->getLocalizedNumberFormat())['separator'];
 
-        //        if (isset($param['newtest']) && $param['newtest'] == "Y")
-        //            setcookie("limesurvey_timers", "0");   //@todo fix - sometimes results in headers already sent error
         $show_empty_group = false;
 
 
@@ -241,7 +239,6 @@ class SurveyRuntime {
             // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
             if ($moveResult['finished']) {
                 if ($session->survey->questionindex == Survey::INDEX_FULL) {
-                    //LimeExpressionManager::JumpTo(-1, false, false, true);
                     LimeExpressionManager::StartSurvey($session->surveyId);
                     $moveResult = LimeExpressionManager::JumpTo($session->getStepCount() + 1, false, false);// no preview, no save data and NO force
                     if (!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs'])) {
@@ -446,7 +443,10 @@ class SurveyRuntime {
 //        if ($question->type == ls\models\Question::TYPE_UPLOAD) {
             $formParams['enctype'] = 'multipart/form-data';
 //        }
+        echo \TbHtml::well("View count for this page: {$session->getViewCount()}");
+        echo \TbHtml::well("Current step: {$session->getStep()}");
         if ($session->getViewCount() > 1) {
+
             $formParams['class'] = 'touched';
         }
         echo TbHtml::beginForm('', 'post', $formParams);
