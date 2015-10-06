@@ -76,7 +76,7 @@ class index extends CAction {
 
         if ($move == 'default') {
             if ($session->format == Survey::FORMAT_ALL_IN_ONE
-            || $session->step > 0 && ($session->step == $session->totalSteps)) {
+            || $session->step > 0 && ($session->step == $session->stepCount)) {
                 $move="submit";
             } else {
                 $move="next";

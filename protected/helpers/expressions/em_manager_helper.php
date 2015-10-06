@@ -421,44 +421,6 @@ class LimeExpressionManager
 
 
 
-    /**
-     * Should be first function called on each page - sets/clears internally needed variables
-     * @param <boolean> $initializeVars - if true, initializes the replacement variables to enable syntax highlighting on admin pages
-     */
-    public static function StartProcessingPage($initializeVars = false)
-    {
-        $LEM =& LimeExpressionManager::singleton();
-        $session = App()->surveySessionManager->current;
-        if ($initializeVars) {
-            $LEM->em->StartProcessingGroup(
-                $session->surveyId,
-                '',
-                true
-            );
-        }
-    }
-
-    /**
-     * Initialize a survey so can use EM to manage navigation
-     * @param int $surveyid
-     * @param string $surveyMode
-     * @param array $aSurveyOptions
-     * @param bool $forceRefresh
-     * @param int $debugLevel
-     */
-    static function StartSurvey(
-        $surveyid,
-        $forceRefresh = false,
-        $debugLevel = 0
-    ) {
-        $LEM =& LimeExpressionManager::singleton();
-        $LEM->em->StartProcessingGroup($surveyid);
-        return [
-            'hasNext' => true,
-            'hasPrevious' => false,
-        ];
-    }
-
     public static function NavigateBackwards()
     {
         $LEM = LimeExpressionManager::singleton();
@@ -709,7 +671,7 @@ class LimeExpressionManager
      * @param type $clearSubstitutionInfo
      * @return type
      */
-    static function GetLastMoveResult($clearSubstitutionInfo = false)
+    public static function GetLastMoveResult($clearSubstitutionInfo = false)
     {
         $LEM =& LimeExpressionManager::singleton();
         if ($clearSubstitutionInfo) {
@@ -876,20 +838,17 @@ class LimeExpressionManager
         }
         $session = App()->surveySessionManager->current;
         $LEM = LimeExpressionManager::singleton();
-        $LEM->updatedValues = [];
         switch ($session->format) {
             case Survey::FORMAT_ALL_IN_ONE:
                 // This only happens if saving data so far, so don't want to submit it, just validate and return
                 $LEM->StartProcessingPage(true);
-                $updatedValues = $processPOST ? $LEM->ProcessCurrentResponses() : [];
                 $valid = $LEM->validateSurvey($force);
-                $LEM->lastMoveResult = array(
+                $LEM->lastMoveResult = [
                     'finished' => false,
                     'gseq' => 1,
                     'seq' => 1,
                     'valid' => $valid,
-                );
-
+                ];
                 $result = $LEM->lastMoveResult;
                 break;
             case Survey::FORMAT_GROUP:

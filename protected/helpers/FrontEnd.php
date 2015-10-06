@@ -67,20 +67,19 @@ class FrontEnd
     }
 
     /**
-     * Marks a tokens as completed and sends a confirmation email to the participiant.
+     * Marks a token as completed and sends a confirmation email to the participiant.
      * If $quotaexit is set to true then the user exited the survey due to a quota
      * restriction and the according token is only marked as 'Q'
      *
-     * @param mixed $quotaexit
+     * @param boolean $quotaExit
      */
-    public static function submittokens($quotaexit = false)
+    public static function submitToken(SurveySession $session, $quotaExit = false)
     {
-        $session = App()->surveySessionManager->current;
         $survey = $session->survey;
         $token = $session->response->tokenObject;
 
 
-        if ($quotaexit == true) {
+        if ($quotaExit == true) {
             $token->completed = 'Q';
             $token->usesleft--;
         } else {
@@ -112,10 +111,8 @@ class FrontEnd
         }
         $token->save();
 
-        if ($quotaexit == false) {
+        if ($quotaExit == false) {
             if (trim(strip_tags($survey->localizedConfirmationEmail)) != "" && $survey->bool_sendconfirmation) {
-                //   if($token->completed == "Y" || $token->completed == $today)
-//            {
                 $from = "{$survey->admin} <{$survey->adminemail}>";
                 $subject = $survey->localizedConfirmationEmailSubject;
 
@@ -138,20 +135,17 @@ class FrontEnd
                     $aReplacementVars[strtoupper($attr_name)] = $token->$attr_name;
                 }
 
-                $dateformatdatat = \ls\helpers\SurveyTranslator::getDateFormatData($survey->getLocalizedDateFormat());
-                $numberformatdatat = \ls\helpers\SurveyTranslator::getRadixPointData($survey->getLocalizedNumberFormat());
                 $redata = [];
                 $subject = Replacements::templatereplace($subject, $aReplacementVars, $redata, null);
 
                 $subject = html_entity_decode($subject, ENT_QUOTES);
 
-                $ishtml = $survey->bool_htmlemail;
 
                 $message = html_entity_decode(
                     Replacements::templatereplace($survey->getLocalizedConfirmationEmail(), $aReplacementVars, $redata, null),
                     ENT_QUOTES
                 );
-                if (!$ishtml) {
+                if (!$survey->bool_htmlemail) {
                     $message = strip_tags(breakToNewline($message));
                 }
 
@@ -173,12 +167,10 @@ class FrontEnd
                             }
                         }
                     }
-                    SendEmailMessage($message, $subject, $sToAddress, $from, SettingGlobal::get('sitename'), $ishtml,
-                        null, $aRelevantAttachments);
+                    SendEmailMessage($message, $subject, $sToAddress, $from, SettingGlobal::get('sitename'), $survey->bool_htmlemail,
+                        null, $aRelevantAttachments
+                    );
                 }
-                //   } else {
-                // Leave it to send optional confirmation at closed token
-                //          }
             }
         }
     }
@@ -372,7 +364,7 @@ class FrontEnd
             && $session->survey->bool_allowprev
             && $session->step > 0
         ) {
-            $result[] = CHtml::submitButton(gT("Previous"), [
+            $result[] = CHtml::htmlButton(gT("Previous"), [
                 'type' => 'submit',
                 'id' => "moveprevbtn",
                 'value' => 'prev',
