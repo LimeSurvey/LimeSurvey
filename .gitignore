@@ -23,3 +23,4 @@
 /application/config/config.php
 .idea
 .DS_Store
+tmp/runtime/gii-1.1.15
