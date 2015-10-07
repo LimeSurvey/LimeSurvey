@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2015-10-05 12:46:58+00:00\n"
+"POT-Creation-Date: 2015-10-07 10:36:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-Basepath: ..\\..\\..\\\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: application/controllers/AdminController.php:64
+#: application/controllers/AdminController.php:57
 #: application/controllers/PrintanswersController.php:78
 #: application/controllers/admin/dataentry.php:200
 #: application/controllers/admin/dataentry.php:1545
@@ -80,8 +80,8 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: application/controllers/AdminController.php:68
-#: application/controllers/AdminController.php:78
+#: application/controllers/AdminController.php:61
+#: application/controllers/AdminController.php:71
 #: application/controllers/admin/useraction.php:369
 #: application/views/admin/labels/importlabelresources_view.php:71
 #: application/views/admin/participants/attributeMapToken_view.php:90
@@ -90,7 +90,7 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: application/controllers/AdminController.php:84
+#: application/controllers/AdminController.php:77
 #: application/controllers/admin/surveyadmin.php:462
 #: application/controllers/admin/tokens.php:2372
 #: application/views/admin/authentication/forgotpassword.php:15
@@ -103,7 +103,7 @@ msgstr ""
 msgid "Main Admin Screen"
 msgstr ""
 
-#: application/controllers/AdminController.php:92
+#: application/controllers/AdminController.php:85
 #: application/core/Survey_Common_Action.php:349
 #: application/extensions/Menu/MenuWidget.php:142
 #: application/views/admin/conditions/conditionshead_view.php:25
@@ -113,13 +113,13 @@ msgstr ""
 msgid "LimeSurvey online manual"
 msgstr ""
 
-#: application/controllers/AdminController.php:339
+#: application/controllers/AdminController.php:332
 #: application/extensions/AdminFooter/AdminFooter.php:30
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:15
 msgid "Version"
 msgstr ""
 
-#: application/controllers/AdminController.php:381
+#: application/controllers/AdminController.php:375
 #: application/core/LSUserIdentity.php:130
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr ""
@@ -1135,7 +1135,7 @@ msgstr ""
 #: application/views/admin/update/updater/welcome/_error_files_update_updater.php:24
 #: application/views/admin/update/updater/welcome/_subscribe.php:36
 #: application/views/admin/update/updater/welcome/_updater_update.php:28
-#: application/views/admin/update/updater/welcome/_welcome.php:37
+#: application/views/admin/update/updater/welcome/_welcome.php:43
 #: application/views/plugins/configure.php:22
 msgid "Cancel"
 msgstr ""
@@ -1972,8 +1972,8 @@ msgstr ""
 #: application/helpers/common_helper.php:931
 #: application/helpers/common_helper.php:1001
 #: application/helpers/common_helper.php:3518
-#: application/helpers/common_helper.php:7158
-#: application/helpers/common_helper.php:7198
+#: application/helpers/common_helper.php:7163
+#: application/helpers/common_helper.php:7203
 #: application/views/admin/dataentry/content_view.php:155
 #: application/views/admin/token/bounce.php:28
 #: application/views/admin/token/bounce.php:74
@@ -2229,19 +2229,19 @@ msgstr ""
 #: application/controllers/admin/responses.php:294
 #: application/controllers/admin/responses.php:335
 #: application/controllers/admin/responses.php:1167
-#: application/helpers/common_helper.php:5976
+#: application/helpers/common_helper.php:5981
 msgid "Access denied!"
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:186
+#: application/controllers/admin/globalsettings.php:180
 msgid "Warning! Admin bounce email was not saved because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:192
+#: application/controllers/admin/globalsettings.php:186
 msgid "Warning! Admin email was not saved because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:227
+#: application/controllers/admin/globalsettings.php:221
 msgid "Global settings were saved."
 msgstr ""
 
@@ -3284,7 +3284,6 @@ msgstr ""
 #: application/controllers/admin/tokens.php:2505
 #: application/controllers/admin/tokens.php:2546
 #: application/controllers/admin/useraction.php:742
-#: application/helpers/common_helper.php:5982
 #: application/helpers/common_helper.php:5987
 #: application/helpers/common_helper.php:5992
 #: application/helpers/common_helper.php:5997
@@ -3293,20 +3292,21 @@ msgstr ""
 #: application/helpers/common_helper.php:6012
 #: application/helpers/common_helper.php:6017
 #: application/helpers/common_helper.php:6022
-#: application/helpers/common_helper.php:6028
-#: application/helpers/common_helper.php:6034
+#: application/helpers/common_helper.php:6027
+#: application/helpers/common_helper.php:6033
 #: application/helpers/common_helper.php:6039
 #: application/helpers/common_helper.php:6044
 #: application/helpers/common_helper.php:6049
 #: application/helpers/common_helper.php:6054
 #: application/helpers/common_helper.php:6059
-#: application/helpers/common_helper.php:6065
+#: application/helpers/common_helper.php:6064
 #: application/helpers/common_helper.php:6070
-#: application/helpers/common_helper.php:6079
+#: application/helpers/common_helper.php:6075
 #: application/helpers/common_helper.php:6084
-#: application/helpers/common_helper.php:6091
-#: application/helpers/common_helper.php:6095
-#: application/helpers/common_helper.php:6099
+#: application/helpers/common_helper.php:6089
+#: application/helpers/common_helper.php:6096
+#: application/helpers/common_helper.php:6100
+#: application/helpers/common_helper.php:6104
 #: application/helpers/frontend_helper.php:908
 #: application/helpers/frontend_helper.php:989
 #: application/helpers/frontend_helper.php:1152
@@ -3324,7 +3324,7 @@ msgstr ""
 #: application/views/admin/update/updater/steps/_updater_updated.php:21
 #: application/views/admin/update/updater/welcome/_key_updated.php:16
 #: application/views/admin/update/updater/welcome/_updater_update.php:30
-#: application/views/admin/update/updater/welcome/_welcome.php:39
+#: application/views/admin/update/updater/welcome/_welcome.php:45
 #: application/views/entertoken_view.php:48
 #: application/views/register/registerForm.php:39
 msgid "Continue"
@@ -4007,10 +4007,10 @@ msgstr ""
 #: application/helpers/common_helper.php:359
 #: application/helpers/common_helper.php:930
 #: application/helpers/common_helper.php:1000
-#: application/helpers/common_helper.php:6732
-#: application/helpers/common_helper.php:6769
-#: application/helpers/common_helper.php:7157
-#: application/helpers/common_helper.php:7197
+#: application/helpers/common_helper.php:6737
+#: application/helpers/common_helper.php:6774
+#: application/helpers/common_helper.php:7162
+#: application/helpers/common_helper.php:7202
 #: application/helpers/qanda_helper.php:1472
 #: application/helpers/qanda_helper.php:1945
 #: application/helpers/qanda_helper.php:2059
@@ -6899,250 +6899,246 @@ msgstr ""
 msgid "Uses left"
 msgstr ""
 
-#: application/helpers/common_helper.php:5236
-msgid "Error when checking for new version: %s"
-msgstr ""
-
-#: application/helpers/common_helper.php:5981
+#: application/helpers/common_helper.php:5986
 msgid "You are not allowed dump the database!"
 msgstr ""
 
-#: application/helpers/common_helper.php:5986
+#: application/helpers/common_helper.php:5991
 msgid "You are not allowed export a label set!"
 msgstr ""
 
-#: application/helpers/common_helper.php:5991
+#: application/helpers/common_helper.php:5996
 msgid "You are not allowed to change user data!"
 msgstr ""
 
-#: application/helpers/common_helper.php:5996
+#: application/helpers/common_helper.php:6001
 msgid "You are not allowed to create new surveys!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6001
+#: application/helpers/common_helper.php:6006
 msgid "You are not allowed to delete this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6006
+#: application/helpers/common_helper.php:6011
 msgid "You are not allowed to add new questions for this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6011
+#: application/helpers/common_helper.php:6016
 msgid "You are not allowed to activate this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6016
+#: application/helpers/common_helper.php:6021
 msgid "You are not allowed to stop this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6021
+#: application/helpers/common_helper.php:6026
 msgid "You are not allowed to add a group to this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6027
+#: application/helpers/common_helper.php:6032
 msgid "You are not allowed to order groups in this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6033
+#: application/helpers/common_helper.php:6038
 msgid "You are not allowed to edit this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6038
+#: application/helpers/common_helper.php:6043
 msgid "You are not allowed to edit groups in this survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6043
+#: application/helpers/common_helper.php:6048
 msgid "You are not allowed to browse responses!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6048
+#: application/helpers/common_helper.php:6053
 msgid "You are not allowed to set assessment rules!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6053
+#: application/helpers/common_helper.php:6058
 msgid "You are not allowed to delete this group!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6058
+#: application/helpers/common_helper.php:6063
 msgid "You are not allowed to import a survey!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6064
+#: application/helpers/common_helper.php:6069
 msgid "You are not allowed to import a group!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6069
+#: application/helpers/common_helper.php:6074
 msgid "You are not allowed to to import a question!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6078
 #: application/helpers/common_helper.php:6083
+#: application/helpers/common_helper.php:6088
 msgid "Security alert"
 msgstr ""
 
-#: application/helpers/common_helper.php:6078
 #: application/helpers/common_helper.php:6083
+#: application/helpers/common_helper.php:6088
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr ""
 
-#: application/helpers/common_helper.php:6078
 #: application/helpers/common_helper.php:6083
+#: application/helpers/common_helper.php:6088
 msgid "Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time."
 msgstr ""
 
-#: application/helpers/common_helper.php:6088
+#: application/helpers/common_helper.php:6093
 msgid "You are not allowed to perform this operation!"
 msgstr ""
 
-#: application/helpers/common_helper.php:6842
+#: application/helpers/common_helper.php:6847
 msgid "SQL command failed: %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:7288
+#: application/helpers/common_helper.php:7293
 msgid "ARMSCII-8 Armenian"
 msgstr ""
 
-#: application/helpers/common_helper.php:7289
+#: application/helpers/common_helper.php:7294
 msgid "US ASCII"
 msgstr ""
 
-#: application/helpers/common_helper.php:7290
+#: application/helpers/common_helper.php:7295
 msgid "Automatic"
 msgstr ""
 
-#: application/helpers/common_helper.php:7291
+#: application/helpers/common_helper.php:7296
 msgid "Big5 Traditional Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:7292
+#: application/helpers/common_helper.php:7297
 msgid "Binary pseudo charset"
 msgstr ""
 
-#: application/helpers/common_helper.php:7293
+#: application/helpers/common_helper.php:7298
 msgid "Windows Central European (Windows-1250)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7294
+#: application/helpers/common_helper.php:7299
 msgid "Windows Cyrillic (Windows-1251)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7295
+#: application/helpers/common_helper.php:7300
 msgid "Windows Arabic (Windows-1256)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7296
+#: application/helpers/common_helper.php:7301
 msgid "Windows Baltic (Windows-1257)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7297
+#: application/helpers/common_helper.php:7302
 msgid "DOS West European (cp850)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7298
+#: application/helpers/common_helper.php:7303
 msgid "DOS Central European (cp852)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7299
+#: application/helpers/common_helper.php:7304
 msgid "DOS Cyrillic (cp866)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7300
+#: application/helpers/common_helper.php:7305
 msgid "Windows-31J - SJIS for Windows Japanese (cp932)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7301
+#: application/helpers/common_helper.php:7306
 msgid "DEC West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:7302
+#: application/helpers/common_helper.php:7307
 msgid "UJIS for Windows Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:7303
+#: application/helpers/common_helper.php:7308
 msgid "EUC-KR Korean"
 msgstr ""
 
-#: application/helpers/common_helper.php:7304
+#: application/helpers/common_helper.php:7309
 msgid "GB2312 Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:7305
+#: application/helpers/common_helper.php:7310
 msgid "GBK Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:7306
+#: application/helpers/common_helper.php:7311
 msgid "GEOSTD8 Georgian"
 msgstr ""
 
-#: application/helpers/common_helper.php:7307
+#: application/helpers/common_helper.php:7312
 msgid "ISO 8859-7 Greek"
 msgstr ""
 
-#: application/helpers/common_helper.php:7308
+#: application/helpers/common_helper.php:7313
 msgid "ISO 8859-8 Hebrew"
 msgstr ""
 
-#: application/helpers/common_helper.php:7309
+#: application/helpers/common_helper.php:7314
 msgid "HP West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:7310
+#: application/helpers/common_helper.php:7315
 msgid "DOS Kamenicky Czech-Slovak (cp895)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7311
+#: application/helpers/common_helper.php:7316
 msgid "KOI8-R Relcom Russian"
 msgstr ""
 
-#: application/helpers/common_helper.php:7312
+#: application/helpers/common_helper.php:7317
 msgid "KOI8-U Ukrainian"
 msgstr ""
 
-#: application/helpers/common_helper.php:7313
+#: application/helpers/common_helper.php:7318
 msgid "ISO 8859-1 West European (latin1)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7314
+#: application/helpers/common_helper.php:7319
 msgid "ISO 8859-2 Central European (latin2)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7315
+#: application/helpers/common_helper.php:7320
 msgid "ISO 8859-9 Turkish (latin5)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7316
+#: application/helpers/common_helper.php:7321
 msgid "ISO 8859-13 Baltic (latin7)"
 msgstr ""
 
-#: application/helpers/common_helper.php:7317
+#: application/helpers/common_helper.php:7322
 msgid "Mac Central European"
 msgstr ""
 
-#: application/helpers/common_helper.php:7318
+#: application/helpers/common_helper.php:7323
 msgid "Mac West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:7319
+#: application/helpers/common_helper.php:7324
 msgid "Shift-JIS Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:7320
+#: application/helpers/common_helper.php:7325
 msgid "7bit Swedish"
 msgstr ""
 
-#: application/helpers/common_helper.php:7321
+#: application/helpers/common_helper.php:7326
 msgid "TIS620 Thai"
 msgstr ""
 
-#: application/helpers/common_helper.php:7322
+#: application/helpers/common_helper.php:7327
 msgid "UCS-2 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:7323
+#: application/helpers/common_helper.php:7328
 msgid "EUC-JP Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:7324
+#: application/helpers/common_helper.php:7329
 msgid "UTF-8 Unicode"
 msgstr ""
 
@@ -12766,12 +12762,13 @@ msgid "Delete entry"
 msgstr ""
 
 #: application/views/admin/super/adminmenu.php:17
-#: application/views/admin/update/_update_notification.php:23
+#: application/views/admin/update/_update_notification.php:28
 msgid "New update available:"
 msgstr ""
 
 #: application/views/admin/super/adminmenu.php:17
 #: application/views/admin/update/_update_notification.php:23
+#: application/views/admin/update/_update_notification.php:28
 msgid "Click here to use ComfortUpdate or to download it."
 msgstr ""
 
@@ -15332,6 +15329,14 @@ msgstr ""
 msgid "Auto Translate"
 msgstr ""
 
+#: application/views/admin/update/_update_notification.php:23
+msgid "New UNSTABLE update available:"
+msgstr ""
+
+#: application/views/admin/update/_update_notification.php:23
+msgid "You don't need an update key."
+msgstr ""
+
 #: application/views/admin/update/check_updates/_checkButtons.php:15
 msgid "Please wait, connecting to server...."
 msgstr ""
@@ -15527,7 +15532,7 @@ msgstr ""
 
 #: application/views/admin/update/updater/_error.php:149
 #: application/views/admin/update/updater/welcome/_error.php:74
-#: application/views/admin/update/updater/welcome/_welcome.php:58
+#: application/views/admin/update/updater/welcome/_welcome.php:74
 msgid "Renew this key"
 msgstr ""
 
@@ -15535,7 +15540,7 @@ msgstr ""
 #: application/views/admin/update/updater/_error.php:158
 #: application/views/admin/update/updater/welcome/_error.php:78
 #: application/views/admin/update/updater/welcome/_error.php:83
-#: application/views/admin/update/updater/welcome/_welcome.php:63
+#: application/views/admin/update/updater/welcome/_welcome.php:79
 msgid "Enter a new key"
 msgstr ""
 
@@ -15796,43 +15801,51 @@ msgstr ""
 msgid "Welcome to the LimeSurvey ComfortUpdate!"
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_welcome.php:22
+#: application/views/admin/update/updater/welcome/_welcome.php:28
 msgid "The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey."
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_welcome.php:23
+#: application/views/admin/update/updater/welcome/_welcome.php:29
 msgid "The following steps will be done by this update:"
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_welcome.php:24
+#: application/views/admin/update/updater/welcome/_welcome.php:30
 msgid "Your LimeSurvey installation is checked if the update can be run successfully."
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_welcome.php:25
+#: application/views/admin/update/updater/welcome/_welcome.php:31
 msgid "A backup of your old files will be created."
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_welcome.php:26
+#: application/views/admin/update/updater/welcome/_welcome.php:32
 msgid "New files will be downloaded and installed."
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_welcome.php:27
+#: application/views/admin/update/updater/welcome/_welcome.php:33
 msgid "The database will be updated (if necessary)."
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_welcome.php:48
+#: application/views/admin/update/updater/welcome/_welcome.php:54
 msgid "ComfortUpdate key information"
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_welcome.php:49
+#: application/views/admin/update/updater/welcome/_welcome.php:58
+msgid "This is an update to an unstable version"
+msgstr ""
+
+#: application/views/admin/update/updater/welcome/_welcome.php:60
+msgid "It will not affect your update key."
+msgstr ""
+
+#: application/views/admin/update/updater/welcome/_welcome.php:65
 msgid "Your update key:"
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_welcome.php:50
+#: application/views/admin/update/updater/welcome/_welcome.php:66
 msgid "Valid until:"
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_welcome.php:52
+#: application/views/admin/update/updater/welcome/_welcome.php:68
 msgid "Remaining updates:"
 msgstr ""
 
