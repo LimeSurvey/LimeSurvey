@@ -14,35 +14,41 @@ $.fn.displayComfortStep = function(options)
 	
 	
 	
-	// we display the ComfortUpdater tab inside the global setting view
-	$( "#tabs" ).tabs( "option", "active", 8 );
+
 	
 	// We need to know the destination build to resume any step
 	$destinationBuild = $('#destinationBuildForAjax').val();
 	$access_token =  $('#access_tokenForAjax').val();
 	$url = "";
 	
+	
+	$("#step0Updt").removeClass("on").addClass("off");
+
 	switch(params.step) {
 	    case "newKey":
-	        $url = 'update/sa/getnewkey';
+	        $url = $("#newkeyurl").attr('data-url');
+	        $("#welcome").hide();
+	        $("#newKey").show();	        
 	        break;
 	    
 	    case "checkFiles":
-	    	$url = 'update/sa/fileSystem';
+	    	$url = $("#filesystemurl").attr('data-url');
 	    	break;
 	    
 	    case "checkLocalErrors":
-	    	$url = 'update/sa/checkLocalErrors';
+	    	$url = $("#checklocalerrorsurl").attr('data-url');
 	    	break;
 	    
 	    case "welcome":
-	        $url = 'update/sa/getwelcome';
+	    	$url = $("#welcomeurl").attr('data-url');
 	        break;
 	      
 	}
 	
 	$url += '?destinationBuild=' + $destinationBuild + '&access_token=' + $access_token;
 	
+	/*
+	$url += '?destinationBuild=' + $destinationBuild + '&access_token=' + $access_token;
 	$.ajax({
 	    url: $url, 
 	    success: function(html) {
@@ -64,4 +70,33 @@ $.fn.displayComfortStep = function(options)
 			$("#updaterContainer").append(html.responseText);
 		}
 	});	
+	*/
+
+	// Those datas are defined in _ajaxVariables view	
+	datas = 'destinationBuild=' + $destinationBuild + '&access_token=' + $access_token + '&'+csrf_token_name+'='+csrf_token; 
+	
+	$.ajax({
+		type: "POST",
+		data: datas,
+	    url: $url, 
+	    success: function(html) {
+			// We hide the loader, and we append the submit new key content
+			$ajaxLoader.hide();
+	        $("#updaterContainer").empty().append(html);
+	        
+	        // Menus
+		
+		},
+		error :  function(html, statut){
+			$("#preUpdaterContainer").empty();
+			$("#updaterLayout").show();
+			$("#updaterContainer").show();
+			
+			$("#updaterContainer").empty().append("<span class='error'>you have an error, or a notice, inside your local installation of limesurvey. See : <br/></span>");
+			$("#updaterContainer").append(html.responseText);
+		}
+	});	
+	
+	}
+	
 };
