@@ -60,7 +60,7 @@ echo $changelog;
 </div>
 <div class="row">
 	<div class="col-lg-12" style="margin-top : 1em">	
-		<a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
+		<a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
 			<span class="ui-button-text"><?php eT("Cancel"); ?></span>
 		</a>		 
 		

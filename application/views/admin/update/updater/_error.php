@@ -4,7 +4,7 @@
  * @var obj $errorObject the object error   
  */
 // TODO : move to the controler
-$urlNew = Yii::app()->createUrl("admin/globalsettings", array("update"=>'newKey'));
+$urlNew = Yii::app()->createUrl("admin/update", array("update"=>'newKey'));
 // We first build the error message.
 // View is right place to do this, so it's easy for further integrators to change messages.
 $buttons = 0;
@@ -158,7 +158,7 @@ switch ($errorObject->error)
 	        <span class="ui-button-text"><?php eT("Enter a new key"); ?></span>
 	    </a>
 <?php endif;?>
-<a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
+<a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
 	<span class="ui-button-text"><?php eT("Cancel"); ?></span>
 </a>
 </div>

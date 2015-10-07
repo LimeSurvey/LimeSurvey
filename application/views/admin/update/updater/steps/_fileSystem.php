@@ -8,7 +8,7 @@
  * @var int $destinationBuild the destination build
  */
 ?>
-<?php $urlNew = Yii::app()->createUrl("admin/globalsettings", array("update"=>'checkFiles', 'destinationBuild' => $destinationBuild, 'access_token' => $access_token)); ?>
+<?php $urlNew = Yii::app()->createUrl("admin/update", array("update"=>'checkFiles', 'destinationBuild' => $destinationBuild, 'access_token' => $access_token)); ?>
 
 <h2 class="maintitle"><?php eT('Checking existing LimeSurvey files...'); ?></h2>
 
@@ -44,7 +44,7 @@
 				echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
 				echo CHtml::hiddenField('access_token' , $access_token);
 				echo CHtml::hiddenField('datasupdateinfo' , $datasupdateinfo);
-				echo '<a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="'.Yii::app()->createUrl("admin/globalsettings").'" role="button" aria-disabled="false">
+				echo '<a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="'.Yii::app()->createUrl("admin/update").'" role="button" aria-disabled="false">
 						<span class="ui-button-text">'.gT("Cancel").'</span>
 					</a>';
 				echo CHtml::submitButton(sprintf(gT('Continue')), array("class"=>"ui-button ui-widget ui-state-default ui-corner-all")); 

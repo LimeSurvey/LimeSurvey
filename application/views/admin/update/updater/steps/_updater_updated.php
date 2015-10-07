@@ -4,7 +4,7 @@
  */
 ?>
 <?php
-	$urlContinue = Yii::app()->createUrl("admin/globalsettings", array("update"=>'welcome', 'destinationBuild'=>$destinationBuild));
+	$urlContinue = Yii::app()->createUrl("admin/update", array("update"=>'welcome', 'destinationBuild'=>$destinationBuild));
 ?>
 <h2 class="maintitle"><?php eT("The ComfortUpdater need to be updated");?></h2>
 <div class="updater-background">

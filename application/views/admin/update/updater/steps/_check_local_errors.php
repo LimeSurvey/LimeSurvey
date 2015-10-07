@@ -9,7 +9,7 @@
 ?>
 
 <?php 
-		$urlNew = Yii::app()->createUrl("admin/globalsettings", array("update"=>'checkLocalErrors', 'destinationBuild' => $destinationBuild, 'access_token' => $access_token));
+		$urlNew = Yii::app()->createUrl("admin/update", array("update"=>'checkLocalErrors', 'destinationBuild' => $destinationBuild, 'access_token' => $access_token));
 		$errors = FALSE; 
 		//var_dump($localChecks); die();
 ?>
@@ -107,7 +107,7 @@
 	<?php // TODO : a new step request by url... ?>
 </p>
 <p>
-	<a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
+	<a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
 		<span class="ui-button-text"><?php eT("Cancel"); ?></span>
 	</a>	
 	<a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
@@ -127,7 +127,7 @@
 		echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
 		echo CHtml::hiddenField('access_token' , $access_token);
 	?>
-		<a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
+		<a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
 			<span class="ui-button-text"><?php eT("Cancel"); ?></span>
 		</a>		 
 

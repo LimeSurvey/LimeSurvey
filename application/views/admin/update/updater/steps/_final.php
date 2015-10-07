@@ -15,7 +15,7 @@
 <?php  eT('As a last step you should clear your browser cache now.'); ?> 
   <br /> 
 
-	<a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
+	<a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
 		<span class="ui-button-text"><?php eT('Back to main menu'); ?></span>
 	</a>	    
 		

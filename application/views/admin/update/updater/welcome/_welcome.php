@@ -7,7 +7,7 @@
  */
 ?>
 
-<?php $urlNew = Yii::app()->createUrl("admin/globalsettings", array("update"=>'newKey', 'destinationBuild' => $serverAnswer->destinationBuild)); ?>
+<?php $urlNew = Yii::app()->createUrl("admin/update", array("update"=>'newKey', 'destinationBuild' => $serverAnswer->destinationBuild)); ?>
 <h3 class="maintitle"><?php eT($serverAnswer->title);?></h3>
 
 <?php 

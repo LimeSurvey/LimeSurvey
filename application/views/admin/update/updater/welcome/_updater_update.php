@@ -23,7 +23,7 @@
 <!-- The form launching the update of the updater. -->
 <?php echo CHtml::beginForm('update/sa/updateUptader', 'post', array('id'=>'launchUpdateUpdaterForm')); ?>
 	<?php  echo CHtml::hiddenField('destinationBuild' , $serverAnswer->destinationBuild); ?>
-	<a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
+	<a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
 		<span class="ui-button-text"><?php eT("Cancel"); ?></span>
 	</a>
 	<?php echo CHtml::submitButton(gT("Continue"), array('class'=>"ajax_button ui-button ui-widget ui-state-default ui-corner-all",)); ?>
