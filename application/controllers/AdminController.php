@@ -27,14 +27,7 @@ class AdminController extends LSYii_Controller
     {
         parent::_init();
         App()->getComponent('bootstrap');
-        $sUpdateLastCheck = getGlobalSetting('updatelastcheck');
-
         $this->_sessioncontrol();
-
-        if (Yii::app()->getConfig('buildnumber') != "" && Yii::app()->getConfig('updatecheckperiod') > 0 && $sUpdateLastCheck < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-". Yii::app()->getConfig('updatecheckperiod')." days"))
-            updateCheck();
-
-        //unset(Yii::app()->session['FileManagerContext']);
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
         $this->user_id = Yii::app()->user->getId();
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid'));}         //SurveyID
@@ -221,12 +214,6 @@ class AdminController extends LSYii_Controller
         'update'           => 'update',
         );
     }
-
-
-	public function getGroupName($var)
-	{
-		echo $var;
-	}
 
     /**
     * Set Session User Rights

@@ -24,43 +24,43 @@ body {
     background-color:  transparent;
 }
 /**
- * 	Survey Bar
+ *     Survey Bar
  */
 .surveymanagerbar{
-	margin-top: -20px;
-	padding-top: 5px;
-	background-color : #19691E;
-	color : #fff;
-}	
+    margin-top: -20px;
+    padding-top: 5px;
+    background-color : #19691E;
+    color : #fff;
+}
 
 .surveymanagerbar h3{
-	margin-top: 5px;
-	font-weight : 300;
-	font-size: 1.5em;
+    margin-top: 5px;
+    font-weight : 300;
+    font-size: 1.5em;
 }
 
 
 .surveybar{
-	padding-top: 5px;
-	padding-bottom: 5px;
-	border-bottom : 1px solid #633130;
-	box-shadow: 0 3px 3px rgba(99, 49, 48, 0.1);
-	background-color: #fff;
-	z-index: 2000; 
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom : 1px solid #633130;
+    box-shadow: 0 3px 3px rgba(99, 49, 48, 0.1);
+    background-color: #fff;
+    z-index: 2000;
 }
 
 /**
- * 	General
+ *     General
  */
 .side-body h3, .list-surveys h3 , .pagetitle
 {
-	position : relative;
-	color: #fff;
-	padding: 0.5em;
-	/* background-color: #328637; */
-	color: #333333;
-	border-bottom: solid 2px #328637;
-	margin-bottom : 1em;
+    position : relative;
+    color: #fff;
+    padding: 0.5em;
+    /* background-color: #328637; */
+    color: #333333;
+    border-bottom: solid 2px #328637;
+    margin-bottom : 1em;
     -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: fadein 1s; /* Firefox < 16 */
         -ms-animation: fadein 1s; /* Internet Explorer */
@@ -69,18 +69,18 @@ body {
 }
 
 .tab-content{
-	padding-top: 2em;
+    padding-top: 2em;
 }
 
 span.cke_skin_kama
 {
     padding-left : 0px;
-    width: 625px !important;    
-}	
+    width: 625px !important;
+}
 
 
 /**
- * 	SideBar
+ *     SideBar
  */
 
 :focus {
@@ -107,14 +107,14 @@ body .row {
       box-shadow: 0 3px 3px rgba(132, 136, 138, 0.1);
  -webkit-border-radius: 0 !important;
      -moz-border-radius: 0 !important;
-          border-radius: 0 !important;      
+          border-radius: 0 !important;
 }
 
 .lime-icon{
     display: inline-block;
     height: 1em;
     width: 1em;
-    
+
 }
 
 .mega-dropdown {
@@ -125,7 +125,7 @@ body .row {
     width: 100%;
 }
 #mainmenu-dropdown {
-	z-index: 20002;	
+    z-index: 20002;
 }
 .mega-dropdown-menu > li > ul {
   padding: 0;
@@ -157,7 +157,7 @@ body .row {
 
 /**
  *     Footer
- */    
+ */
 
 .footer {
     position : absolute;
@@ -170,18 +170,44 @@ body .row {
     padding-top: 1em;
 }
 
+/**
+ *     Update alert
+ */
+.alert-security-update {
+    background-color: white;
+    border: 1px solid #800051;
+    color: #800051;
+    margin:  0em;
+}
+
+#update-container
+{
+    margin-top: 10px;
+    z-index: 10100;
+}
+
+#update-container .alert
+{
+    margin-bottom: 5px;
+}
+
+.navbar .nav-icon-btn.nav-icon-btn-danger .label {
+    background: #A15426;
+}
+
+.navbar .nav-icon-btn>a .label {
+    font-size: 10px;
+    padding: 0 3px;
+    line-height: 15px;
+    position: absolute;
+    display: block;
+    right: 5px;
+    top: 10px;
+}
 
 /**
  *     Box info
  */
-
-#alert-security-update {
-    background-color: white; 
-    border: 1px solid #800051; 
-    color: #800051; 
-    margin:  0em;
-}
-
 
 .box {
     border-radius: 3px;
@@ -215,73 +241,73 @@ body .row {
 }
 
 /**
- * 	Animations
+ *     Animations
  */
-@keyframes fadein 
+@keyframes fadein
 {
     from { opacity: 0; }
     to   { opacity: 1; }
 }
 
 /* Firefox < 16 */
-@-moz-keyframes fadein 
+@-moz-keyframes fadein
 {
     from { opacity: 0; }
     to   { opacity: 1; }
 }
 
 /* Safari, Chrome and Opera > 12.1 */
-@-webkit-keyframes fadein 
+@-webkit-keyframes fadein
 {
     from { opacity: 0; }
     to   { opacity: 1; }
 }
 
 /* Internet Explorer */
-@-ms-keyframes fadein 
+@-ms-keyframes fadein
 {
     from { opacity: 0; }
     to   { opacity: 1; }
 }
 
 /* Opera < 12.1 */
-@-o-keyframes fadein 
+@-o-keyframes fadein
 {
     from { opacity: 0; }
     to   { opacity: 1; }
 }
 
-@keyframes slidefromtop 
+@keyframes slidefromtop
 {
-	from { top: -15px;}
-	to { top: 0px;}
+    from { top: -15px;}
+    to { top: 0px;}
 }
 
 /* Firefox < 16 */
-@-moz-keyframes  slidefromtop 
+@-moz-keyframes  slidefromtop
 {
-	from { top: -15px;}
-	to { top: 0px;}
+    from { top: -15px;}
+    to { top: 0px;}
 }
 
-@-webkit-keyframes  slidefromtop 
+@-webkit-keyframes  slidefromtop
 {
-	from { top: -15px;}
-	to { top: 0px;}
+    from { top: -15px;}
+    to { top: 0px;}
 }
- 
+
 /* Internet Explorer */
-@-ms-keyframes  slidefromtop 
+@-ms-keyframes  slidefromtop
 {
-	from { top: -15px;}
-	to { top: 0px;}
+    from { top: -15px;}
+    to { top: 0px;}
 }
 
 /* Opera < 12.1 */
-@-o-keyframes  slidefromtop 
+@-o-keyframes  slidefromtop
 {
-	from { top: -15px;}
-	to { top: 0px;}
+    from { top: -15px;}
+    to { top: 0px;}
 }
 
 /* HTML EDITOR */
@@ -295,7 +321,7 @@ body .row {
 
 .cke_skin_kama .cke_toolgroup {
   padding-bottom : 6px;
-  background: none;  
+  background: none;
 }
 .cke_skin_kama .cke_button a:hover, .cke_skin_kama .cke_button a.cke_off:hover, .cke_skin_kama .cke_button a.cke_off span:hover, .cke_skin_kama .cke_button a span:hover
 {
@@ -365,7 +391,7 @@ table.cke_editor
   box-shadow: 0 1px 0 rgba(255,255,255,.5),0 0 2px rgba(255,255,255,.15) inset,0 1px 0 rgba(255,255,255,.15) inset;
   background: #e4e4e4;
   -webkit-border-radius: 0px;
-        
+
 }
 
 .checkbox label:after {
@@ -375,53 +401,53 @@ table.cke_editor
 }
 
 /**
- * List survey     
+ * List survey
  */
 .hoverAction tr:hover
 {
-	color: #fff;
-	background-color: #6E9470;
+    color: #fff;
+    background-color: #6E9470;
 }
 
 
 /**
- * 	Message Box
+ *     Message Box
  */
 .jumbotron.message-box
 {
-	background-color: transparent;
+    background-color: transparent;
 }
 
 .message-box
 {
-	border : 1px solid #89C68D;
-	color : #2D2D2D;
-	position : relative;
+    border : 1px solid #89C68D;
+    color : #2D2D2D;
+    position : relative;
     -webkit-animation: slidefromtop 1s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: slidefromtop 1s; /* Firefox < 16 */
         -ms-animation: slidefromtop 1s; /* Internet Explorer */
          -o-animation: slidefromtop 1s; /* Opera < 12.1 */
-            animation: slidefromtop 1s;		
-	
+            animation: slidefromtop 1s;
+
 }
 
 .message-box-error
 {
-	border : 1px solid #A0352F;
+    border : 1px solid #A0352F;
 }
 
 .message-box-warning
 {
-	border : 1px solid #A15426;
+    border : 1px solid #A15426;
 }
 
 /**
- * 	Welcome page
+ *     Welcome page
  */
 .jumbotron
 {
-	background-color : transparent;
-	text-align: center;
+    background-color : transparent;
+    text-align: center;
 }
 
 .welcome #lime-logo
@@ -430,45 +456,45 @@ table.cke_editor
        -moz-animation: fadein 1s; /* Firefox < 16 */
         -ms-animation: fadein 1s; /* Internet Explorer */
          -o-animation: fadein 1s; /* Opera < 12.1 */
-            animation: fadein 1s;	
+            animation: fadein 1s;
 }
 
-.alert 
+.alert
 {
-	position : relative;
+    position : relative;
     -webkit-animation: slidefromtop 1s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: slidefromtop 1s; /* Firefox < 16 */
         -ms-animation: slidefromtop 1s; /* Internet Explorer */
          -o-animation: slidefromtop 1s; /* Opera < 12.1 */
-            animation: slidefromtop 1s;		
+            animation: slidefromtop 1s;
 }
 
-.welcome .panel 
+.welcome .panel
 {
-	position : relative;
-	top : 50px;
-	opacity: 0;
-	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    position : relative;
+    top : 50px;
+    opacity: 0;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
 
-@media screen and (min-width: 1280px) and (max-width: 1440px) 
+@media screen and (min-width: 1280px) and (max-width: 1440px)
 {
-    .welcome .panel 
+    .welcome .panel
     {
-        min-height: 188px;    
+        min-height: 188px;
     }
 }
 
 .welcome .panel-body
 {
-	text-align : center;
+    text-align : center;
 }
 
 .welcome .panel-body img
 {
-	height: 4em;
-	margin-bottom : 1em;
+    height: 4em;
+    margin-bottom : 1em;
 }
 
 .survey-action .panel-body img
@@ -483,7 +509,7 @@ div.panel.disabled, div.panel.disabled  *{
 
 div.panel.disabled a{
     cursor:default;
-    
+
 }
 
 #welcomeModal {
@@ -494,13 +520,13 @@ div.panel.disabled a{
  *     User control
  */
 
-@media screen and (min-width: 1280px) and (max-width: 1366px) 
+@media screen and (min-width: 1280px) and (max-width: 1366px)
 {
     #user-control-table .form-group label
     {
           min-width: 80px;
     }
-    
+
     #add_user_btn
     {
         margin-top: 1.5em;
@@ -508,117 +534,117 @@ div.panel.disabled a{
 }
 
 /**
- * 	Edit group
+ *     Edit group
  */
 #edit-group .tab-pane
 {
-	padding: 1em;
+    padding: 1em;
 }
 
 
 .htmleditorboot
 {
-	padding-top : 2em;
+    padding-top : 2em;
 }
 
 /**
- * 	Edit question
+ *     Edit question
  */
 #edit-question-body
 {
-	min-height: 1200px;
+    min-height: 1200px;
 }
 
 /**
- * 	Login
+ *     Login
  */
 
 #profile-img
 {
-    min-height : 80px;    
+    min-height : 80px;
 }
 
-@media screen and (min-width: 1280px) and (max-width: 1680px) 
+@media screen and (min-width: 1280px) and (max-width: 1680px)
 {
     #profile-img
     {
-        min-height : 0;    
+        min-height : 0;
     }
 }
 
 
 .login-pannel
 {
-	margin-top: 40px;
+    margin-top: 40px;
 }
 
 .welcome .login-pannel .panel-body  img{
-	margin-bottom: 0px;
+    margin-bottom: 0px;
 }
 
-.login-title 
+.login-title
 {
-	border-bottom : solid 1px #DADADA; 
+    border-bottom : solid 1px #DADADA;
 }
 
-.login-content 
+.login-content
 {
-	
-	text-align : left;
-	padding : 1em;
+
+    text-align : left;
+    padding : 1em;
 }
 
 
-.login-submit 
+.login-submit
 {
-	border-top : solid 1px #DADADA;
-	text-align: right; 
+    border-top : solid 1px #DADADA;
+    text-align: right;
 }
 
 #s2id_loginlang
 {
-	border :none;
-	padding : 0 ;
+    border :none;
+    padding : 0 ;
 }
 
 
 .side-body, .full-page-wrapper
 {
-	position : relative;
-	margin-bottom : 65px;
+    position : relative;
+    margin-bottom : 65px;
 }
 
 .panel-clickable:hover
 {
-    cursor: pointer; cursor: hand; 
+    cursor: pointer; cursor: hand;
 }
 
-.pagination 
+.pagination
 {
     font-size: 1.2em;
 }
 
 /*jQgrid*/
 
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, 
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default,
 .ui-jqgrid .ui-jqgrid-view .ui-jqgrid-toppager, .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default
 {
-	background-image: none;
-	background-color: transparent;
+    background-image: none;
+    background-color: transparent;
 }
 
 .ui-jqgrid .ui-jqgrid-bdiv
 {
-	overflow : hidden;
+    overflow : hidden;
 }
 
 .ui-search-toolbar th div
 {
-	min-height: 40px;
+    min-height: 40px;
 }
 
 #gs_completed {
-	    display: block;
+        display: block;
     width: 100%;
     height: 34px;
     padding: 6px 12px;
@@ -637,23 +663,23 @@ div.panel.disabled a{
 
 .ui-th-column, .ui-jqgrid .ui-jqgrid-htable th.ui-th-column div input
 {
-	margin-top: 8px;
+    margin-top: 8px;
 }
 
 .ui-jqgrid .ui-jqgrid-htable th.ui-th-column div input.cbox, .ui-jqgrid td input.cbox {
-	margin : 4px 0 0;
+    margin : 4px 0 0;
 }
 
 .ui-jqgrid .ui-jqgrid-htable th div {
-	height : auto;
+    height : auto;
 }
 
 .ui-jqgrid tr.ui-row-ltr td {
-	border: none;
+    border: none;
 }
 
 /**
- * Icons    
+ * Icons
  */
 .icon-activate_deactivate_30 {
     background-image: url("images/lime-icons/activate_deactivate_30.png");

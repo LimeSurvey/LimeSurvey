@@ -5,7 +5,7 @@
  * Defining them here allows for easy inclusion in views.
  */
 return array(
-    
+
     // jQuery
     'jquery' => array(
         'baseUrl' => 'third_party/jquery/',
@@ -13,8 +13,8 @@ return array(
             'jquery-1.11.1.min.js'
         ),
     ),
-    
-    // jQuery UI 
+
+    // jQuery UI
     'jqueryui' => array(
         'baseUrl' => 'third_party/jqueryui/',
         'js' => array(
@@ -27,9 +27,9 @@ return array(
             'jquery',
             'bootstrap'
         )
-    ), 
-    
-    // jQgrid   
+    ),
+
+    // jQgrid
     'jqgrid' => array(
         'baseUrl' => 'third_party/jqgrid/',
         'js' => array(
@@ -53,9 +53,9 @@ return array(
         'depends' => array(
             'jqgrid'
         )
-        
+
     ),
-    
+
     // jQuery Notify
     'jquery-notify' => array(
         'baseUrl' => 'third_party/jquery-notify',
@@ -68,9 +68,9 @@ return array(
         'depends' => array(
             'jqueryui'
         )
-        
+
     ),
-    
+
     // jquery bindWithDelay
     'jquery-bindWithDelay' => array(
         'baseUrl' => 'third_party/jquery-bindWithDelay',
@@ -81,7 +81,7 @@ return array(
             'jquery'
         )
     ),
-    
+
     // jQuery Cookie
     'jquery-cookie' => array(
         'baseUrl' => 'third_party/jquery-cookie',
@@ -92,7 +92,7 @@ return array(
             'jquery'
         )
     ),
-    
+
     // jQuery Superfish
     'jquery-superfish' => array(
         'baseUrl' => 'third_party/jquery-superfish',
@@ -106,9 +106,9 @@ return array(
         'depends' => array(
             'jquery'
         )
-        
+
     ),
-    
+
     // jQuery json
     'jquery-json' => array(
         'baseUrl' => 'third_party/jquery-json',
@@ -119,7 +119,7 @@ return array(
             'jquery'
         )
     ),
-    
+
     // jQuery blockUI
     'jquery-blockUI' => array(
         'baseUrl' => 'third_party/jquery-blockui',
@@ -130,7 +130,7 @@ return array(
             'jquery'
         )
     ),
-    
+
     // qTip2
     'qTip2' => array(
         'baseUrl' => 'third_party/qTip2',
@@ -143,9 +143,9 @@ return array(
         'depends' => array(
             'jquery'
         )
-        
+
     ),
-    
+
     // jQuery Table Sorter
     'jquery-tablesorter' => array(
         'baseUrl' => 'third_party/jquery-tablesorter',
@@ -156,7 +156,7 @@ return array(
             'jquery'
         )
     ),
-    
+
     // jQuery NestedSortable
     'jquery-nestedSortable' => array(
         'baseUrl' => 'third_party/jquery-nestedSortable',
@@ -167,7 +167,7 @@ return array(
             'jqueryui'
         )
     ),
-    
+
     // Bootstrap Multiselect
     'bootstrap-multiselect' => array(
         'baseUrl' => 'third_party/bootstrap-multiselect',
@@ -181,7 +181,7 @@ return array(
             'jquery'
         )
     ),
-    
+
     // Ace
     'ace' => array(
         'baseUrl' => 'third_party/ace',
@@ -192,7 +192,7 @@ return array(
             'jquery-ace'
         )
     ),
-    
+
     // jQuery Ace
      'jquery-ace' => array(
         'baseUrl' => 'third_party/jquery-ace',
@@ -203,7 +203,7 @@ return array(
             'jquery',
         )
     ),
-    
+
     // jQuery selectboxes
     'jquery-selectboxes' => array(
         'baseUrl' => 'third_party/jquery-selectboxes/selectboxes',
@@ -214,9 +214,9 @@ return array(
             'jquery'
         )
     ),
-    
+
     // jQuery actual
-	'jquery-actual' => array(
+    'jquery-actual' => array(
         'baseUrl' => 'third_party/jquery-actual/',
         'js' => array(
             'jquery.actual.min.js'
@@ -225,20 +225,20 @@ return array(
             'jquery'
         )
     ),
-    
+
     // jQuery touch punch
-	'jquery-touch-punch' => array(
-		'baseUrl' => 'third_party/jquery-touch-punch/',
-		'js' => array(
-			'jquery.ui.touch-punch.min.js'
-		),
-		'depends' => array(
-			'jqueryui'
-		)
-	),
+    'jquery-touch-punch' => array(
+        'baseUrl' => 'third_party/jquery-touch-punch/',
+        'js' => array(
+            'jquery.ui.touch-punch.min.js'
+        ),
+        'depends' => array(
+            'jqueryui'
+        )
+    ),
 
     // jQuery timepicker
-	'jqueryui-timepicker' => array(
+    'jqueryui-timepicker' => array(
         'baseUrl' => 'third_party/jquery-ui-timepicker-addon/',
         'js' => array(
             'jquery-ui-timepicker-addon.js'
@@ -257,7 +257,7 @@ return array(
         'js' => array(
             'jquery.horizontal.scroll.js'
         ),
-    ),    
+    ),
 
     // displayParticipants
     'display-participants' => array(
@@ -266,11 +266,13 @@ return array(
             'css/displayParticipants.css',
         ),
     ),
-    
+
     // LimeSurvey Bootstrap Admin Interface
     'lime-bootstrap' => array(
         'baseUrl' => 'styles/limebootstrap/assets/',
-        
+
+        'js'=>array('scripts/notify.js'),
+
         'css' => array(
             'css/lime-admin.css',
             'css/fonts.css',
@@ -283,7 +285,7 @@ return array(
             'bootstrap'
         ),
     ),
-    
+
     // adminstyle-rtl
     'adminstyle-rtl' => array(
         'baseUrl' => 'styles/limebootstrap/assets/',
@@ -294,8 +296,8 @@ return array(
             'bootstrap',
             'lime-bootstrap'
         )
-    ),    
-    
+    ),
+
     // statistics
     'statistics' => array(
         'baseUrl' => 'styles/limebootstrap/assets/',
@@ -305,33 +307,33 @@ return array(
         'depends' => array(
             'bootstrap',
             'lime-bootstrap'
-        )    
+        )
     ),
-    
+
     // sidemenu
     'sidemenu' => array(
         'baseUrl' => 'styles/limebootstrap/assets/',
-        'js' => array('scripts/sidemenu.js'),            
+        'js' => array('scripts/sidemenu.js'),
         'css' => array(
             'css/sidemenu.css',
         ),
         'depends' => array(
             'bootstrap',
             'lime-bootstrap',
-        ),    
+        ),
     ),
-    
-    // Clickable panels 
+
+    // Clickable panels
     'panel-clickable' => array(
         'baseUrl' => 'styles/limebootstrap/assets/',
         'js' => array('scripts/panelclickable.js'),
         'depends' => array(
             'bootstrap',
             'lime-bootstrap',
-        ),    
+        ),
     ),
 
-    // panels animation 
+    // panels animation
     'panels-animation' => array(
         'baseUrl' => 'styles/limebootstrap/assets/',
         'js' => array('scripts/panelsanimation.js'),
@@ -339,9 +341,9 @@ return array(
             'panel-clickable',
             'bootstrap',
             'lime-bootstrap',
-        ),    
-    ),    
-    
+        ),
+    ),
+
     // select2
     'select2' => array(
         'baseUrl' => 'styles/limebootstrap/assets/',
@@ -351,7 +353,7 @@ return array(
             'lime-bootstrap',
             //'jquery',
             //'jqueryui',
-        ),    
-    ),    
-    
+        ),
+    ),
+
 );

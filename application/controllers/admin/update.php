@@ -61,12 +61,13 @@ class update extends Survey_Common_Action
 {
     public function index()
     {
-        $buttons = ( getGlobalSetting('updatenotification') == "both" )?1:0;
-
+        //$buttons = ( getGlobalSetting('updatenotification') == "both" )?1:0;
+		$buttons = 1;
+		
         $updateModel = new UpdateForm();
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         
-        $aData = array("thisupdatecheckperiod"=>getGlobalSetting('updatecheckperiod'),"updatelastcheck"=>getGlobalSetting('updatelastcheck'),"UpdateNotificationForBranch"=>getGlobalSetting('updatenotification'));
+        //$aData = array("thisupdatecheckperiod"=>getGlobalSetting('updatecheckperiod'),"updatelastcheck"=>getGlobalSetting('updatelastcheck'),"UpdateNotificationForBranch"=>getGlobalSetting('updatenotification'));
         $aData['serverAnswer'] = $serverAnswer;
                 
         $this->_renderWrappedTemplate('update', '_updateContainer', $aData);
@@ -423,7 +424,6 @@ class update extends Survey_Common_Action
         if(isset($continue) && $continue=="yes")
         {
             $aViewUrls['output'] = CheckForDBUpgrades($continue);
-            updateCheck();
             $aData['display']['header'] = false;
         }
         else
