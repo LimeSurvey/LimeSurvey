@@ -2504,10 +2504,6 @@ class tokens extends Survey_Common_Action
             . "<input type='submit' value='"
             . gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
             )));
-
-            $event = new PluginEvent('afterTokenTableCreate');
-            $event->set('surveyId', $iSurveyId);
-            App()->getPluginManager()->dispatchEvent($event);
         }
         /* Restore a previously deleted tokens table */
         elseif (returnGlobal('restoretable') == "Y" && Yii::app()->request->getPost('oldtable'))
