@@ -439,6 +439,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     {
         $timingsfieldmap = createTimingsFieldMap($iSurveyID,"full",false,false,getBaseLanguageFromSurveyID($iSurveyID));
 
+        $success = true;
         $column = array();
         $column['id'] = $createsurvey['id'];
         foreach ($timingsfieldmap as $field=>$fielddata)
@@ -454,10 +455,18 @@ function activateSurvey($iSurveyID, $simulate = false)
         }
         catch (CDbException $e)
         {
+            $success = false;
             return array('error'=>'timingstablecreation');
         }
-
+        if ($success){
+            $event = new PluginEvent('afterTableCreate');
+            $event->set('surveyId', $iSurveyID);
+            $event->set('type', 'timings');
+            $event->set('name', $tabname);
+            App()->getPluginManager()->dispatchEvent($event);
+        }
     }
+
     $aResult=array('status'=>'OK');
     // create the survey directory where the uploaded files can be saved
     if ($createsurveydirectory)
