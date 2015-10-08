@@ -1013,13 +1013,14 @@ class Survey extends ActiveRecord
     /**
      * We save this immediately if / when we move to TranslatableBehavior, saving will happen automatically when
      * saving the main record.
-     * @param $value
+     * @param array $value
      */
     public function setTranslatedFields($value)
     {
         foreach ($value as $language => $fields) {
-            if (!isset($this->languagesettings[$language])) {
+            if (!isset($this->languagesettings[$language])) { // && in_array($language,$this->getAllLanguages()) ?
                 $this->languagesettings[$language] = $languageSetting = new SurveyLanguageSetting();
+                $languageSetting->surveyls_survey_id = $this->primaryKey;
                 $languageSetting->surveyls_language = $language;
             } else {
                 $languageSetting = $this->languagesettings[$language];
