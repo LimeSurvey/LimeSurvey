@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.5RC! 
+Welcome to LimeSurvey v2.5RC2! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -59,8 +59,11 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.06+ (build 150930) to 2.5+ (build 151005) Okt 5, 2015
-*New feature: Revamped administration user interface based on Bootstrap
+Changes from 2.5RC1 (build 151005) to 2.5RC2 (build 151008) Okt 8, 2015
+*Fixed issue: Interface fixes (Louis Gac)
+
+Changes from 2.06+ (build 150930) to 2.5RC1 (build 151005) Okt 5, 2015
+*New feature: Revamped administration user interface based on Bootstrap (Louis Gac)
 
 Changes from 2.06+ (build 150911) to 2.06+ (build 150930) Sept 30, 2015
 -Fixed issue #9885: LDAP pluging - Default setting "LDAP authentication" does not apply (Alfredo Esteban)
