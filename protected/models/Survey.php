@@ -249,7 +249,6 @@ class Survey extends ActiveRecord
             ['startdate', 'default', 'value' => null],
             ['expires', 'default', 'value' => null],
 
-
             ['admin', 'required'],
             ['adminemail', 'filter', 'filter' => 'trim'],
             ['bounce_email', 'email', 'allowEmpty' => true],
@@ -1013,19 +1012,23 @@ class Survey extends ActiveRecord
     /**
      * We save this immediately if / when we move to TranslatableBehavior, saving will happen automatically when
      * saving the main record.
-     * @param $value
+     * @param array $value
      */
     public function setTranslatedFields($value)
     {
         foreach ($value as $language => $fields) {
-            if (!isset($this->languagesettings[$language])) {
+            if (!isset($this->languagesettings[$language])) { // && in_array($language,$this->getAllLanguages()) ?
                 $this->languagesettings[$language] = $languageSetting = new SurveyLanguageSetting();
+                $languageSetting->surveyls_survey_id = $this->primaryKey;
                 $languageSetting->surveyls_language = $language;
             } else {
                 $languageSetting = $this->languagesettings[$language];
             }
             $languageSetting->attributes = $fields;
-            $languageSetting->save();
+            if(!$languageSetting->save()){
+              App()->user->setFlash('danger', \CHtml::errorSummary($languageSetting));
+              //$this->addErrors($languageSetting->getErrors()); // Don't work : $survey->save return true before this was applied ... 
+            }
         }
     }
 

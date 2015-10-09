@@ -42,6 +42,8 @@ class SurveysController extends Controller
             if ($survey->save(true)) {
                 App()->user->setFlash('success', gT("Survey settings updated."));
                 $this->refresh();
+            }else{
+              App()->user->setFlash('danger', \CHtml::errorSummary($survey));
             }
         }
         $this->layout = 'survey';
