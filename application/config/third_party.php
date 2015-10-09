@@ -271,7 +271,10 @@ return array(
     'lime-bootstrap' => array(
         'baseUrl' => 'styles/limebootstrap/assets/',
 
-        'js'=>array('scripts/notify.js'),
+        'js'=>array(
+            'scripts/notify.js',
+            'scripts/save.js',
+        ),
 
         'css' => array(
             'css/lime-admin.css',

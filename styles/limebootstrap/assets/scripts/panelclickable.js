@@ -1,5 +1,5 @@
 /**
- * Panel Clickable 
+ * Panel Clickable
  * Like in front page, or quick actions
  */
 $(document).ready(function(){
@@ -9,5 +9,4 @@ $(document).ready(function(){
             window.location.href = $that.attr('aria-data-url');
         }
     });
-
 });
