@@ -29,7 +29,7 @@
 
 <div class="side-body" id="edit-question-body">
     <h3>
-        <?php eT("Edit subquestions"); ?>               
+        <?php eT("Edit subquestions"); ?>
     </h3>
     <div class="row">
         <div class="col-lg-8 content-right">
@@ -57,7 +57,7 @@
             $sortorderids='';
             $codeids='';
         ?>
-        
+
         <div class="tab-content">
         <?php foreach ($anslangs as $i => $anslang)
             { ?>
@@ -93,7 +93,7 @@
                                 <?php if ($scale_id==0)
                                     { ?>
                                     <th class="relevancehead"><img src='<?php echo $sImageURL; ?>subq_relevance_en.png' class='btntogglerelevance' alt='<?php eT("Edit subquestion relevance") ?>'/> <span style="display: none" class="relevance"> <?php eT("Relevance"); ?> </span> </th>
-                                <?php } ?>    
+                                <?php } ?>
                             </tr></thead>
                         <tbody>
                             <?php $alternate=false;
@@ -138,8 +138,7 @@
                                             <?php } ?>
 
                                     </td><td>
-                                        <input type='text' size='100' class='answer' id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' placeholder='<?php eT("Some example subquestion","js") ?>' value="<?php echo $row->question; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
-                                        
+                                         <input type='text' size='0' class='answer' id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' placeholder='<?php eT("Some example subquestion","js") ?>' value="<?php echo $row->question; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
                                         <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
                                         </td>
                                         <?php if ($activated != 'Y' && $first)
@@ -150,16 +149,16 @@
                                             </td>
                                             <?php } ?>
 
-                                    
-                                    
+
+
                                   <?php if ($scale_id==0) {   /* relevance column */ ?>
                                             <td>
-                                  <?php     if ($row->relevance!="1" && trim($row->relevance)!="") { ?> 
+                                  <?php     if ($row->relevance!="1" && trim($row->relevance)!="") { ?>
                                             <img src='<?php echo $sImageURL; ?>subq_relevance_en.png' class='btntogglerelevance' alt='<?php eT("Edit subquestion relevance") ?>'/>
-                                  <?php     } else {   /* no relevance equation: icon deactivated */  ?> 
-                                            <img src='<?php echo $sImageURL; ?>subq_relevance_dis.png' class='btntogglerelevance' alt='<?php eT("Edit subquestion relevance") ?>'/>  
+                                  <?php     } else {   /* no relevance equation: icon deactivated */  ?>
+                                            <img src='<?php echo $sImageURL; ?>subq_relevance_dis.png' class='btntogglerelevance' alt='<?php eT("Edit subquestion relevance") ?>'/>
                                   <?php     }
-                                            if ($first) {  /* default lang - input field */?> 
+                                            if ($first) {  /* default lang - input field */?>
                                                 <input style="display: none" type='text' size='20' class='relevance' id='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
                                   <?php     } else {       /* additional language: just print rel. equation */  ?>
                                         <span style="display: none" class="relevance"> <?php echo $row->relevance; ?> </span>
@@ -167,7 +166,7 @@
                                             </td>
                                   <?php } ?>
 
-                                  
+
                                     </tr>
                                 <?php $position++;
                                 }
@@ -193,7 +192,7 @@
             </div>
             <?php } ?>
         </div>
-        
+
         <div id='labelsetbrowser' class='labelsets-update' style='display:none;'>
             <div style='float:left; width:260px;'>
                 <label for='labelsets'><?php eT('Available label sets:'); ?></label>
@@ -257,9 +256,9 @@
 </form>
 
 
-            
+
         </div>
     </div>
-</div>    
+</div>
 
 
