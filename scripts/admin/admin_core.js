@@ -46,7 +46,7 @@ $(document).ready(function(){
     }
     doToolTip();
     $('.btntooltip').tooltip();
-    
+
     $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
     $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
 
@@ -68,7 +68,7 @@ $(document).ready(function(){
 		$("#save-form-button").on('click', function(){
 			var formid = '#'+$(this).attr('aria-data-form-id');
 			$form = $(formid);
-			$form.find('[type="submit"]').trigger('click');;
+			$form.find('[type="submit"]').trigger('click');
 		});
 	}
 
@@ -96,14 +96,15 @@ $(document).ready(function(){
         }
         return $form;
     };
-	
+
 	if ($('#save-button').length > 0){
 		$('#save-button').on('click', function()
 		{
             var $form = getForm(this);
             closeAfterSaveInput.val("false");
             $form.append(closeAfterSaveInput);
-            $form.submit();
+            $form.find('[type="submit"]').trigger('click');;
+            //$form.submit();
 		});
 	}
 
@@ -125,10 +126,10 @@ $(document).ready(function(){
 			$('#question-preview').modal('show');
 		});
 	}
-	
+
     if ($('#advancedquestionsettingswrapper').length>0){
     	updatequestionattributes();
-    } 
+    }
 
 	/* Switch format group */
 	if ($('#switchchangeformat').length>0){
@@ -138,8 +139,8 @@ $(document).ready(function(){
 		    $.ajax({
 		        url : $url,
 		        type : 'GET',
-		        dataType : 'html', 
-		        
+		        dataType : 'html',
+
 		        // html contains the buttons
 		        success : function(html, statut){
 		        },
@@ -147,7 +148,7 @@ $(document).ready(function(){
 		            alert('error');
 		        }
 		    });
-		   
+
 		});
 	};
 
@@ -160,7 +161,7 @@ $(document).ready(function(){
         });
 
     });
-    
+
     $('#hideadvancedattributes').click(function(){
         $('#showadvancedattributes').show();
         $('#hideadvancedattributes').hide();
@@ -241,13 +242,13 @@ function qTypeDropdownInit()
         });
     });
     $(document).ready(function() {
-    	
+
     	$('.questionType').on('mouseenter', function(e){
     		//alert($(this).attr('class'));
     		$('.questionType').qtip('hide');
     		$(this).qtip('option', 'position.target', $(this).qtip('show'));
     	});
-    	
+
     	$('.questionType').on('mouseleave', function(e){
     		$(this).qtip('hide');
     	});
@@ -263,8 +264,8 @@ function qTypeDropdownInit()
             {
                 $($(e.currentTarget).data().select2Data.element).qtip('hide');
             }
-            
-            
+
+
         });
         $('#question_type').on('close', function(e) {
             $('#question_type option').qtip('hide');
@@ -390,7 +391,7 @@ function doToolTip()
         }
     });
     $("a > img[alt]").data("hasqtip", true ).removeAttr('title');
-    
+
     // Call the popuptip hover rel attribute
     $('.popuptip').each(function(){
         if($(this).attr('rel')){
@@ -818,7 +819,7 @@ if ('ab'.substr(-1) != 'b') {
 }
 
 /**
-* Yii CSRF protection divs breaks this script so this function moves the 
+* Yii CSRF protection divs breaks this script so this function moves the
 * hidden CSRF field out of the div and remove it if needed
 * 140207 : Why this function is needed ? Where is the script broken ?
 */
@@ -875,7 +876,7 @@ function initializeAjaxProgress()
     });
     $('#ajaxprogress').bind('ajaxStop', function()
     {
-        
+
         $(this).dialog('close');
     });
 }
@@ -927,7 +928,7 @@ function addHiddenElement(theform,thename,thevalue)
     myel.value = thevalue;
     return myel;
 }
-function onlyUnique(value, index, self) { 
+function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
