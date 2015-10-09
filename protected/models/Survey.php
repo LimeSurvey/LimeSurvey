@@ -249,7 +249,6 @@ class Survey extends ActiveRecord
             ['startdate', 'default', 'value' => null],
             ['expires', 'default', 'value' => null],
 
-
             ['admin', 'required'],
             ['adminemail', 'filter', 'filter' => 'trim'],
             ['bounce_email', 'email', 'allowEmpty' => true],
@@ -1026,7 +1025,10 @@ class Survey extends ActiveRecord
                 $languageSetting = $this->languagesettings[$language];
             }
             $languageSetting->attributes = $fields;
-            $languageSetting->save();
+            if(!$languageSetting->save()){
+              App()->user->setFlash('danger', \CHtml::errorSummary($languageSetting));
+              //$this->addErrors($languageSetting->getErrors()); // Don't work : $survey->save return true before this was applied ... 
+            }
         }
     }
 

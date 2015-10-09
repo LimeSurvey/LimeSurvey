@@ -92,8 +92,17 @@ class SurveyLanguageSetting extends ActiveRecord
     public function rules()
     {
         return [
-            ['surveyls_survey_id','required', 'on' => 'insert'],
-            ['surveyls_language','required', 'on' => 'insert'],
+            [
+                'surveyls_survey_id','exist','except'=>'insert',
+                'allowEmpty'=>false,
+                'attributeName'=>'sid',
+                'className'=>Survey::class,
+            ],
+            [
+                'surveyls_language','in','except'=>'insert',
+                'allowEmpty'=>false,
+                'range'=>($this->survey) ? $this->survey->getAllLanguages() : array('en'),
+            ],
             ['surveyls_email_invite_subj', 'lsdefault'],
             ['surveyls_email_invite', 'lsdefault'],
             ['surveyls_email_remind_subj', 'lsdefault'],
