@@ -18,49 +18,49 @@
         <div class="col-md-9">
                 <!-- Information -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/summary.png" />
+                    <img src="<?php echo IMAGE_URL; ?>summary.png" />
                     <?php eT("Information");?>
                 </a>
 
                 <!-- Display participants -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/surveylist.png" />
+                    <img src="<?php echo IMAGE_URL; ?>surveylist.png" />
                     <?php eT("List");?>
                 </a>
 
                 <!-- Import from CSV file -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/importCSV"); ?>" role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/importcsv.png" />
+                    <img src="<?php echo IMAGE_URL; ?>importcsv.png" />
                     <?php eT("Import");?>
                 </a>
 
                 <!-- Export to CSV file -->
                 <a id="export" class="btn btn-default" href="#" role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/exportcsv.png" />
+                    <img src="<?php echo IMAGE_URL; ?>exportcsv.png" />
                     <?php eT("Export");?>
                 </a>
 
                 <!-- Blacklist control -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/blacklistControl"); ?>" role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/trafficred.png" />
+                    <img src="<?php echo IMAGE_URL; ?>trafficred.png" />
                     <?php eT("Blacklist");?>
                 </a>                
 
                 <!-- Global participant settings -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/userControl"); ?>" role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/global.png" />
+                    <img src="<?php echo IMAGE_URL; ?>global.png" />
                     <?php eT("Settings");?>
                 </a>
 
                 <!-- Attribute management -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/attributeControl"); ?>" role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/tag.png" />
+                    <img src="<?php echo IMAGE_URL; ?>tag.png" />
                     <?php eT("Attributes");?>
                 </a>                
 
                 <!-- Share panel -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/sharePanel"); ?>" role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/share.png" />
+                    <img src="<?php echo IMAGE_URL; ?>share.png" />
                     <?php eT("Share panel");?>
                 </a>                                                
 
@@ -82,7 +82,7 @@
 
 <!-- TODO : check and refactore -->
 <div id='exportcsvallprocessing' title='exportcsvall' style='display:none'>
-    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/ajax-loader.gif" alt="AJAX loader" />    
+    <img src="<?php echo IMAGE_URL; ?>ajax-loader.gif" alt="AJAX loader" />    
 </div>
 <div id='exportcsvallnorow' title='exportcsvallnorow' style='display:none'>
     <?php eT("There are no participants to be exported."); ?>    

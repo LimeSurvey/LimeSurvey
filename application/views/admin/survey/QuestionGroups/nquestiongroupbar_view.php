@@ -15,7 +15,7 @@
                 <!-- Buttons -->
                                                                              
                <a class="btn btn-default" href="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>" role="button">
-                   <img src="<?php echo $sImageURL; ?>add.png" />
+                   <img src="<?php echo IMAGE_URL; ?>add.png" />
                    <?php eT("Add new question to group");?>
                </a>            
                 
@@ -25,7 +25,7 @@
                         <!-- Preview multilangue -->
                         <div class="btn-group">
                           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <img src="<?php echo $sImageURL; ?>preview.png" />
+                              <img src="<?php echo IMAGE_URL; ?>preview.png" />
                             <?php eT("Preview this question group"); ?> <span class="caret"></span>
                           </button>
                           <ul class="dropdown-menu" style="min-width : 252px;">
@@ -42,7 +42,7 @@
                         
                         <!-- Preview simple langue -->
                         <a class="btn btn-default" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" role="button" target="_blank">
-                            <img src="<?php echo $sImageURL; ?>preview.png" />
+                            <img src="<?php echo IMAGE_URL; ?>preview.png" />
                             <?php eT("Preview this question group");?>
                         </a>
                     <?php endif; ?>                    
@@ -51,7 +51,7 @@
                 <!-- Edit button -->            
                 <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl('admin/questiongroups/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>" role="button">
-                        <img src="<?php echo $sImageURL; ?>edit.png" />
+                        <img src="<?php echo IMAGE_URL; ?>edit.png" />
                         <?php eT("Edit current question group");?>
                     </a>            
                 <?php endif; ?>            
@@ -59,7 +59,7 @@
                 <!-- Check survey logic -->
                 <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')): ?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
-                        <img src="<?php echo $sImageURL; ?>quality_assurance.png" />
+                        <img src="<?php echo IMAGE_URL; ?>expressionmanagercheck.png" />
                         <?php eT("Check survey logic for current question group"); ?>
                     </a>
                 <?php endif; ?>
@@ -74,14 +74,14 @@
                             
                             <!-- can delete group and question -->
                             <a class="btn btn-default" onclick="if (confirm('<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { window.open('<?php echo $this->createUrl("admin/questiongroups/sa/delete/surveyid/$surveyid/gid/$gid"); ?>','_top'); }" role="button">
-                                <img src="<?php echo $sImageURL; ?>delete.png" />
+                                <img src="<?php echo IMAGE_URL; ?>delete.png" />
                                 <?php eT("Delete current question group"); ?>
                             </a>
                         <?php else: ?>
                             
                             <!-- there is at least one question having a condition on its content -->
                             <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid/gid/$gid"); ?>'  class="btn btn-default" onclick="alert('<?php eT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>'); return false;">
-                                <img src="<?php echo $sImageURL; ?>delete.png" />
+                                <img src="<?php echo IMAGE_URL; ?>delete.png" />
                                 <?php eT("Delete current question group"); ?>
                             </a>
                         <?php endif; ?>
@@ -90,7 +90,7 @@
                         <!-- Activated -->
                         <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>" >
                             <button type="button" class="btn btn-default btntooltip" disabled="disabled">
-                                <img src="<?php echo $sImageURL; ?>delete.png" />
+                                <img src="<?php echo IMAGE_URL; ?>delete.png" />
                                 <?php eT("Delete current question group"); ?>
                             </button>
                         </span>
@@ -101,7 +101,7 @@
                     
                     <!-- Export -->
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>" role="button">
-                        <img src="<?php echo $sImageURL; ?>dumpgroup.png" />
+                        <img src="<?php echo IMAGE_URL; ?>dumpgroup.png" />
                         <?php eT("Export this question group"); ?>
                     </a>        
                 <?php endif; ?>

@@ -5,12 +5,12 @@
         public $fromDb=FALSE; // If set to 1, the widget will look for the box definition inside the database
         public $dbPosition=1; // Id of the box in the database
         public $position; // Position of the box in the list
-        public $url; 
+        public $url;
         public $title;
         public $img;
         public $description;
         public $offset='';
-                
+
         public function run()
         {
             if($this->fromDb)
@@ -19,12 +19,12 @@
             }
             return $this->renderContent();
         }
-        
+
         public function getBoxes()
         {
             $boxes = Boxes::model()->findAll();
         }
-        
+
         protected function setValuesFromDb()
         {
             $box = Boxes::model()->find(array('condition'=>'position=:positionId', 'params'=>array(':positionId'=>$this->dbPosition)));
@@ -36,7 +36,7 @@
                 $this->img = $box->img;
                 $this->description = $box->desc;
             }
-            else 
+            else
             {
                 $this->position = '1';
                 $this->url = '';
@@ -45,18 +45,18 @@
                 $this->description = gT('Unknown box id!');
             }
         }
-                
+
         protected function renderContent()
         {
             $offset = ($this->offset != '') ? 'col-sm-offset-1 col-lg-offset-'.$this->offset : '' ;
-            
+
             $this->render('box', array(
                 'position'=> $this->position,
-                'offset' => $offset, 
-                'url'=> Yii::app()->createUrl($this->url),         
-                'title'=> $this->title,      
-                'img'=> Yii::app()->getBaseUrl(true).'/images/lime-icons/big/328637/'.$this->img,        
-                'description'=> $this->description,            
+                'offset' => $offset,
+                'url'=> Yii::app()->createUrl($this->url),
+                'title'=> $this->title,
+                'img'=> BIG_IMAGE_URL.$this->img,        
+                'description'=> $this->description,
             ));
-        }                
+        }
     }

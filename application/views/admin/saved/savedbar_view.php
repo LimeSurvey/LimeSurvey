@@ -7,7 +7,7 @@
         <div class='menubar-left'>
 
             <a href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/{$iSurveyId}"); ?>" title="<?php eT('Return to survey administration'); ?>">
-                <img src="<?php echo $sImageURL; ?>/home.png" alt="<?php echo eT('Return to survey administration'); ?>">
+                <img src="<?php echo IMAGE_URL; ?>/home.png" alt="<?php echo eT('Return to survey administration'); ?>">
             </a>
         </div>
     </div>

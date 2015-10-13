@@ -20,13 +20,13 @@
             
             <?php if ($scenariocount > 0): ?>
                 <a href='#' onclick="if ( confirm('<?php eT("Are you sure you want to delete all conditions set to the questions you have selected?","js");?>')) { document.getElementById('deleteallconditions').submit();}">
-                    <img src='<?php echo $sImageURL;?>conditions_deleteall_16.png'  alt='<?php eT("Delete all conditions");?>' />
+                    <img src='<?php echo IMAGE_URL;?>conditions_deleteall_16.png'  alt='<?php eT("Delete all conditions");?>' />
                 </a>
             <?php endif; ?>
             
             <?php if ($scenariocount > 1): ?>
                 <a href='#' onclick="if ( confirm('<?php eT("Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?","js");?>')) { document.getElementById('toplevelsubaction').value='renumberscenarios'; document.getElementById('deleteallconditions').submit();}">
-                    <img src='<?php echo $sImageURL;?>scenario_renumber.png'  alt='<?php eT("Renumber scenario automatically");?>' />
+                    <img src='<?php echo IMAGE_URL;?>scenario_renumber.png'  alt='<?php eT("Renumber scenario automatically");?>' />
                 </a>
             <?php endif; ?>
             

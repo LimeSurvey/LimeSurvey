@@ -1529,7 +1529,7 @@ html {
   width: 100%; }
   .mega-dropdown-menu .dropdown-header {
     font-size: 18px;
-    color: #660b0b;
+    color: #AA4340;
     padding: 5px 60px 5px 5px;
     line-height: 30px; }
   .mega-dropdown-menu > li > ul {
@@ -1581,6 +1581,10 @@ html {
 
 #info-header {
   font-size: 3em;
+  color: #632725; }
+
+#info-footer {
+  font-size: 2em;
   color: #632725; }
 
 .box-icon {

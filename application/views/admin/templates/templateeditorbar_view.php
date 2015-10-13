@@ -54,7 +54,7 @@
             <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir)):?>
                 <!-- Create -->
                 <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Create new template called:"); ?>', '<?php eT("NewTemplate"); ?>', 'default', 'copy')">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/add.png" />
+                    <img src="<?php echo IMAGE_URL; ?>add.png" />
                     <?php eT("Create new template"); ?>
                 </a>
             <?php endif;?>
@@ -64,13 +64,13 @@
                 <!-- Import -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','import') && function_exists("zip_open")):?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl('admin/templates/sa/upload'); ?>" role="button">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/import.png" />
+                        <img src="<?php echo IMAGE_URL; ?>import.png" />
                         <?php eT("Import template"); ?>
                     </a>
                 <?php else: ?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("We are sorry but you don't have permissions to do this."); eT(" Or: "); eT("zip library not supported by PHP, Import ZIP Disabled"); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
-                            <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/import.png" />
+                            <img src="<?php echo IMAGE_URL; ?>import.png" />
                             <?php eT("Import template"); ?>
                         </button>
                     </span>
@@ -79,7 +79,7 @@
                 <!-- Export -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','export')):?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl('admin/templates/sa/templatezip/templatename/' . $templatename) ?>" role="button">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/export.png" />
+                        <img src="<?php echo IMAGE_URL; ?>export.png" />
                         <?php eT("Export Template"); ?>
                     </a>
                <?php endif;?>
@@ -87,7 +87,7 @@
                <!-- Copy -->
                <?php if(Permission::model()->hasGlobalPermission('templates','create')):?> 
                     <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the copied template:"); ?>', '<?php echo gT("copy_of_")."$templatename"; ?>',            '<?php echo $templatename; ?>', 'copy')">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/copy.png" />
+                        <img src="<?php echo IMAGE_URL; ?>copy.png" />
                         <?php eT("Copy Template"); ?>
                     </a>
                <?php endif;?>
@@ -100,7 +100,7 @@
                 <?php if(Permission::model()->hasGlobalPermission('templates','import')):?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
-                            <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/import_disabled.png" />
+                            <img src="<?php echo IMAGE_URL; ?>import_disabled.png" />
                             <?php eT("Import template"); ?>
                         </button>
                     </span>                    
@@ -110,7 +110,7 @@
                 <?php if(Permission::model()->hasGlobalPermission('templates','export')):?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
-                            <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/export_disabled.png" />
+                            <img src="<?php echo IMAGE_URL; ?>export_disabled.png" />
                             <?php eT("Export template"); ?>
                         </button>
                     </span>                    
@@ -120,7 +120,7 @@
                 <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
-                            <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/copy_disabled.png" />
+                            <img src="<?php echo IMAGE_URL; ?>copy_disabled.png" />
                             <?php eT("Copy template"); ?>
                         </button>
                     </span>                    
@@ -132,14 +132,14 @@
             <?php if(is_template_editable($templatename)):?>
                 <?php if(Permission::model()->hasGlobalPermission('templates','update')):?>
                     <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Rename this template to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/edit.png" />
+                        <img src="<?php echo IMAGE_URL; ?>edit.png" />
                         <?php eT("Rename this template"); ?>
                     </a>                                    
                 <?php endif;?>
                 
                 <?php if(Permission::model()->hasGlobalPermission('templates','delete')):?>
                     <a class="btn btn-default" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this template?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/templates/sa/delete/templatename/'.$templatename); ?>", "_top")'>
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/delete.png" />
+                        <img src="<?php echo IMAGE_URL; ?>delete.png" />
                         <?php eT("Delete this template"); ?>
                     </a>                                                        
                 <?php endif;?>                    

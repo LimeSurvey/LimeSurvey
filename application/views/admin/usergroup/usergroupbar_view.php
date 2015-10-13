@@ -5,7 +5,7 @@
             <!-- Add -->
             <?php if (Permission::model()->hasGlobalPermission('usergroups','create') && isset($usergroupbar['returnbutton']['url'])):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/usergroups/sa/add"); ?>" role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/add.png" alt='<?php eT("Add new user group"); ?>'  />
+                    <img src="<?php echo IMAGE_URL; ?>add.png" alt='<?php eT("Add new user group"); ?>'  />
                     <?php eT("Add new user group"); ?>
                 </a>                
             <?php endif; ?>            
@@ -13,7 +13,7 @@
             <!-- Mail to all Members -->
             <?php if(isset($usergroupbar['edit'])): ?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/usergroups/sa/mail/ugid/".$ugid); ?>" role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/invite.png" alt='<?php eT("Mail to all Members"); ?>'  />
+                    <img src="<?php echo IMAGE_URL; ?>invite.png" alt='<?php eT("Mail to all Members"); ?>'  />
                     <?php eT("Mail to all Members"); ?>
                 </a>                
              <?php endif;?>
@@ -21,7 +21,7 @@
             <!-- Edit current user group -->
             <?php if(isset($usergroupbar['edit'])):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/usergroups/sa/edit/ugid/".$ugid); ?>" role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/edit.png" alt='<?php eT("Edit current user group"); ?>'  />
+                    <img src="<?php echo IMAGE_URL; ?>edit.png" alt='<?php eT("Edit current user group"); ?>'  />
                     <?php eT("Edit current user group"); ?>
                 </a>                                
             <?php endif;?>
@@ -29,7 +29,7 @@
             <!-- Delete current user group -->
             <?php if(isset($usergroupbar['edit']) &&  (Yii::app()->session['loginID'] == $grow['owner_id'] || Permission::model()->hasGlobalPermission('usergroups','delete'))):?>
                 <a class="btn btn-default" href='#' onclick="if (confirm('<?php eT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl('admin/usergroups/sa/delete/ugid/'.$ugid)); ?>}">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/delete.png" alt='<?php eT("Delete current user group"); ?>'  />
+                    <img src="<?php echo IMAGE_URL; ?>delete.png" alt='<?php eT("Delete current user group"); ?>'  />
                     <?php eT("Delete current user group"); ?>
                 </a>                                
             <?php endif;?>

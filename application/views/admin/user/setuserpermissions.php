@@ -40,7 +40,7 @@
                     <tr>
                         <!-- Icon -->
                         <td>
-                            <img src='<?php echo $sImageURL.$aCRUDPermissions['img'];?>_30.png' alt='<?php echo $aCRUDPermissions['description'];?>'/>
+                            <img src='<?php echo IMAGE_URL.$aCRUDPermissions['img'];?>.png' alt='<?php echo $aCRUDPermissions['description'];?>'/>
                         </td>
                         
                         <!-- Warning super admin -->

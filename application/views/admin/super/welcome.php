@@ -1,12 +1,12 @@
 <?php
 /**
  * The welcome page is the home page
- * TODO : make a recursive function, taking any number of box in the database, calculating how much rows are needed. 
+ * TODO : make a recursive function, taking any number of box in the database, calculating how much rows are needed.
  */
 ?>
 
 <?php
-    // Boxes are defined by user. We still want the default boxes to be translated. 
+    // Boxes are defined by user. We still want the default boxes to be translated.
     gT('Create a new survey');
     gT('List surveys');
     gT('List available surveys');
@@ -22,11 +22,11 @@
 
 <!-- Welcome view -->
 <div class="container-fluid welcome full-page-wrapper">
-    
+
     <!-- Jumbotron -->
     <div class="row">
         <div class="jumbotron" id="welcome-jumbotron">
-            <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/Limesurvey_logo.png" id="lime-logo" />
+            <img src="<?php echo BIG_IMAGE_URL;?>Limesurvey_logo.png" id="lime-logo" />
             <p><?php eT('This is the LimeSurvey admin interface. From here, you can start to build your survey.')?></p>
         </div>
     </div>
@@ -37,8 +37,8 @@
             $(window).load(function(){
                 $('#welcomeModal').modal('show');
             });
-        </script>        
-                
+        </script>
+
         <div class="modal fade" id="welcomeModal">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -53,7 +53,7 @@
                             <li><?php eT('Create a new question group inside your survey.'); ?></li>
                             <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
                             <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<img src='" . Yii::app()->getConfig('adminimageurl') . "do_20.png' name='ShowHelp' title='' alt='" . gT("Test survey") . "'/>"); ?></li>
-                        </ol>        
+                        </ol>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close');?></button>
@@ -61,11 +61,11 @@
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->        
-        
-        
-        
-        
+        </div><!-- /.modal -->
+
+
+
+
     <?php endif;?>
 
     <!-- Last visited survey/question -->
@@ -79,24 +79,24 @@
                     <a href="<?php echo $surveyUrl;?>" class=""><?php echo $surveyTitle;?></a>
                     </span>
                 <?php endif; ?>
-                
+
                 <?php if($showLastQuestion):?>
                     <span id="last_question" class="rotateHidden">
                     <?php eT("Last visited question:");?>
                     <a href="<?php echo $last_question_link;?>" class=""><?php echo $last_question_name;?></a>
                     </span>
                 <?php endif; ?>
-                </div>                
+                </div>
                 <br/><br/>
             </div>
         </div>
     <?php endif;?>
-    
-    
-    
+
+
+
     <!-- First row of boxes -->
     <div class="row text-center ">
-        
+
         <!-- First box defined in database -->
         <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
                 'fromDb'=> true,
@@ -110,18 +110,18 @@
                 'dbPosition'=>'2',
         ));?>
 
-        <!-- 3rd defined in database -->                
+        <!-- 3rd defined in database -->
         <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
                 'fromDb'=> true,
                 'dbPosition'=>'3',
-        ));?>                
+        ));?>
 
     </div>
-    
+
     <!-- Second row of boxes -->
     <div class="row">
-        
-        <!-- 4th defined in database -->                
+
+        <!-- 4th defined in database -->
         <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
                 'fromDb'=> true,
                 'dbPosition'=>'4',
@@ -133,13 +133,13 @@
                 'fromDb'=> true,
                 'dbPosition'=>'5',
         ));?>
-        
-        <!-- 6th defined in database -->        
+
+        <!-- 6th defined in database -->
         <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
                 'fromDb'=> true,
                 'dbPosition'=>'6',
-        ));?>                
-    </div>    
+        ));?>
+    </div>
 </div>
 
 <!-- Notification setting -->

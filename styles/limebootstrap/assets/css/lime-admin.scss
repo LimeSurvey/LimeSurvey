@@ -16,6 +16,9 @@ $color_laurel_approx: #BC8D8C;
 $color_de_york_approx: #FCB0AE;
 
 
+// for configuration menu headers
+$color_dark_tan_approx: #AA4340;
+
 $color_gravel_approx: #494949;
 $white: #ffffff;
 $yellow: #ff0;
@@ -107,7 +110,7 @@ $black_001: rgba(0, 0, 0, 0.0001);
 $color_buccaneer_approx: #633130;
 $color_buccaneer_10_approx: rgba(99, 49, 48, 0.1);
 $color_gunsmoke_10_approx: rgba(132, 136, 138, 0.1);
-$color_dark_tan_approx: #660b0b;
+
 $color_rose_bud_cherry_approx: #800051;
 $black_16: rgba(0, 0, 0, 0.16);
 $black_12: rgba(0, 0, 0, 0.12);
@@ -2531,6 +2534,10 @@ html {
 }
 #info-header {
 	font-size: 3em;
+	color: $color_parsley_approx;
+}
+#info-footer {
+	font-size: 2em;
 	color: $color_parsley_approx;
 }
 .box-icon {

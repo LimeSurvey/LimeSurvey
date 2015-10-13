@@ -75,7 +75,7 @@
                                     else
                                     {
                                     ?>
-                                    <td><img class='handle' src='<?php echo $sImageURL; ?>handle.png' alt=''/></td>
+                                    <td><img class='handle' src='<?php echo IMAGE_URL; ?>handle.png' alt=''/></td>
                                     <td>
                                         <input type='hidden' class='hiddencode' value='<?php echo $row['code'] ?>' />
                                         <input type='text'  class='codeval' id='code_<?php echo $row['sortorder'] ?>' name='code_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['code'] ?>'/>
@@ -98,8 +98,8 @@
                                     if ($first)
                                     {
                                     ?>
-                                        <img src='<?php echo $sImageURL; ?>addanswer.png' class='btnaddanswer' alt='<?php eT("Insert a new label after this one") ?>' />
-                                        <img src='<?php echo $sImageURL; ?>deleteanswer.png' class='btndelanswer' alt='<?php eT("Delete this label") ?>' />
+                                        <img src='<?php echo IMAGE_URL; ?>addanswer.png' class='btnaddanswer' alt='<?php eT("Insert a new label after this one") ?>' />
+                                        <img src='<?php echo IMAGE_URL; ?>deleteanswer.png' class='btndelanswer' alt='<?php eT("Delete this label") ?>' />
                                     <?php
                                     }
                                 ?>

@@ -5,7 +5,7 @@
             <!-- Show summary information -->
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')): ?>            
                 <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid"); ?>' role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/summary.png" />
+                    <img src="<?php echo IMAGE_URL; ?>summary.png" />
                     <?php eT("Summary"); ?>
                 </a>
             <?php endif;?>
@@ -16,13 +16,13 @@
                 <!-- Display Responses -->
                 <?php if (count($tmp_survlangs) < 2): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>' role="button">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/document.png" />
+                        <img src="<?php echo IMAGE_URL; ?>document.png" />
                         <?php eT("Display Responses"); ?>
                     </a>
                 <?php else:?>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/add.png" /> 
+                        <img src="<?php echo IMAGE_URL; ?>add.png" /> 
                         <?php eT("Responses"); ?> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
@@ -41,13 +41,13 @@
                 <!-- Display Last 50 Responses -->                
                 <?php if (count($tmp_survlangs) < 2): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/start/0/limit/50/order/desc"); ?>' role="button">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/viewlast.png" />
+                        <img src="<?php echo IMAGE_URL; ?>viewlast.png" />
                         <?php eT("Last 50 Responses"); ?>
                     </a>                    
                 <?php else:?>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/viewlast.png" /> 
+                        <img src="<?php echo IMAGE_URL; ?>viewlast.png" /> 
                         <?php eT("Last 50 Responses");?> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
@@ -67,7 +67,7 @@
             <!-- Dataentry Screen for Survey -->
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create')): ?>
                 <a class="btn btn-default" href='<?php echo $this->createUrl("admin/dataentry/sa/view/surveyid/$surveyid"); ?>' role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/dataentry.png" />
+                    <img src="<?php echo IMAGE_URL; ?>dataentry.png" />
                     <?php eT("Dataentry"); ?>
                 </a>                
             <?php endif;?>
@@ -75,14 +75,14 @@
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'statistics', 'read')): ?>
                 <!-- Get statistics from these responses -->                
                 <a class="btn btn-default" href='<?php echo $this->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>' role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/statistics.png" />
+                    <img src="<?php echo IMAGE_URL; ?>statistics.png" />
                     <?php eT("Statistics"); ?>
                 </a>                                
                 
                 <!-- Get time statistics from these responses -->
                 <?php if ($thissurvey['savetimings'] == "Y"):?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/time/surveyid/$surveyid"); ?>' role="button">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/statistics_time.png" />
+                        <img src="<?php echo IMAGE_URL; ?>statistics_time.png" />
                         <?php eT("Get time statistics from these responses"); ?>
                     </a>
                 <?php endif;?>
@@ -93,7 +93,7 @@
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'export')): ?>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/export.png" /> 
+                        <img src="<?php echo IMAGE_URL; ?>export.png" /> 
                         <?php eT("Export"); ?> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
@@ -128,7 +128,7 @@
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create')): ?>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/import.png" /> 
+                        <img src="<?php echo IMAGE_URL; ?>import.png" /> 
                         <?php eT("Import"); ?> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
@@ -154,7 +154,7 @@
             <!-- View Saved but not submitted Responses -->
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')): ?>
                 <a class="btn btn-default" href='<?php echo $this->createUrl("admin/saved/sa/view/surveyid/$surveyid"); ?>' role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/saved.png" />
+                    <img src="<?php echo IMAGE_URL; ?>saved.png" />
                     <?php eT("View Saved but not submitted Responses"); ?>
                 </a>                       
             <?php endif;?>
@@ -164,7 +164,7 @@
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete')): ?>
                 <?php if ($thissurvey['anonymized'] == 'N' && $thissurvey['tokenanswerspersistence'] == 'Y'): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/dataentry/sa/iteratesurvey/surveyid/$surveyid"); ?>' role="button">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/iterate.png" />
+                        <img src="<?php echo IMAGE_URL; ?>iterate.png" />
                         <?php eT("Iterate survey"); ?>
                     </a>          
                 <?php endif;?>    
@@ -212,36 +212,36 @@
             <?php if (isset($menu['view'])): ?>
                 <?php if ($exist): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}/lang/$rlanguage"); ?>' role="button">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/edit.png" />
+                        <img src="<?php echo IMAGE_URL; ?>edit.png" />
                         <?php eT("Edit this entry"); ?>
                     </a>
                     <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete') && isset($rlanguage)): ?>
                     <a class="btn btn-default" href='#' role="button" onclick="if (confirm('<?php eT("Are you sure you want to delete this entry?", "js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/dataentry/sa/delete/id/$id/sid/$surveyid")); ?>}">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/delete.png" />
+                        <img src="<?php echo IMAGE_URL; ?>delete.png" />
                         <?php eT("Delete this entry"); ?>
                     </a>          
                     <?php endif;?>
 
                     <?php if ($bHasFile): ?>
                     <a class="btn btn-default" href='<?php echo Yii::app()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>$surveyid,"sResponseId"=>$id)); ?>' role="button" >
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/download.png"  class='downloadfile'/>
+                        <img src="<?php echo IMAGE_URL; ?>download.png"  class='downloadfile'/>
                         <?php eT("Delete this entry"); ?>
                     </a>          
                     <?php endif;?>   
 
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid/id/$id"); ?>' role="button" >
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/export.png"  class='downloadfile'/>
+                        <img src="<?php echo IMAGE_URL; ?>export.png"  class='downloadfile'/>
                         <?php eT("Export this Response"); ?>
                     </a>                    
                 <?php endif;?>                    
 
             <?php if($previous) { ?>
             <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/$previous"); ?>' title='<?php eT("Show previous..."); ?>' >
-                <img src='<?php echo $sImageURL; ?>databack.png' alt='<?php eT("Show previous..."); ?>' /></a>
+                <img src='<?php echo IMAGE_URL; ?>databack.png' alt='<?php eT("Show previous..."); ?>' /></a>
             <?php } ?>
             <?php if($next) { ?>
                 <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/$next"); ?>' title='<?php eT("Show next..."); ?>'>
-                    <img src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php eT("Show next..."); ?>' /></a>
+                    <img src='<?php echo IMAGE_URL; ?>dataforward.png' alt='<?php eT("Show next..."); ?>' /></a>
             <?php } ?>
                 
             <?php endif;?>

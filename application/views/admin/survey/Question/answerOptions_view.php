@@ -97,7 +97,7 @@
                         <tr class='row_<?php echo $position; ?><?php if ($alternate==true){ ?> highlight<?php } ?><?php $alternate=!$alternate; ?>'><td>
                                 <?php if ($first)
                                     { ?>
-                                    <img class='handle' src='<?php echo $sImageURL; ?>handle.png' alt=''/></td>
+                                    <img class='handle' src='<?php echo IMAGE_URL; ?>handle.png' alt=''/></td>
                                     <td><input type='hidden' class='oldcode' id='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" /><input type='text' class='code' id='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" maxlength='5' size='5' required
                                         onkeypress="return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')"
                                         />
@@ -138,8 +138,8 @@
 
 
                             </td><td><?php if ($first) { ?>
-                                <img src='<?php echo $sImageURL; ?>addanswer.png' class='btnaddanswer' alt='<?php eT("Insert a new answer option after this one") ?>' />
-                                <img src='<?php echo $sImageURL; ?>deleteanswer.png' class='btndelanswer' alt='<?php eT("Delete this answer option") ?>' />
+                                <img src='<?php echo IMAGE_URL; ?>addanswer.png' class='btnaddanswer' alt='<?php eT("Insert a new answer option after this one") ?>' />
+                                <img src='<?php echo IMAGE_URL; ?>deleteanswer.png' class='btndelanswer' alt='<?php eT("Delete this answer option") ?>' />
                                 <?php } ?>
                             </td></tr>
                         <?php $position++;

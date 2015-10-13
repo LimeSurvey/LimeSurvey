@@ -146,11 +146,11 @@
 		<div class='' id="displaytokenbar">
 		    <div class='row container-fluid'>
 		    	<div class="col-md-9">
-					            <img src='<?php echo $sImageURL; ?>databegin.png' alt='<?php eT("Show start..."); ?>' class="gridcontrol disabled databegin" />
-					            <img src='<?php echo $sImageURL; ?>databack.png' alt='<?php eT("Show previous.."); ?>' class="gridcontrol disabled databack" />
-					            <img src='<?php echo $sImageURL; ?>blank.gif' width='13' height='20' alt='' />
-					            <img src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php eT("Show next.."); ?>' class="gridcontrol disabled dataforward" />
-					            <img src='<?php echo $sImageURL; ?>dataend.png' alt='<?php eT("Show last.."); ?>' class="gridcontrol disabled dataend" />
+					            <img src='<?php echo IMAGE_URL; ?>databegin.png' alt='<?php eT("Show start..."); ?>' class="gridcontrol disabled databegin" />
+					            <img src='<?php echo IMAGE_URL; ?>databack.png' alt='<?php eT("Show previous.."); ?>' class="gridcontrol disabled databack" />
+					            <img src='<?php echo IMAGE_URL; ?>blank.gif' width='13' height='20' alt='' />
+					            <img src='<?php echo IMAGE_URL; ?>dataforward.png' alt='<?php eT("Show next.."); ?>' class="gridcontrol disabled dataforward" />
+					            <img src='<?php echo IMAGE_URL; ?>dataend.png' alt='<?php eT("Show last.."); ?>' class="gridcontrol disabled dataend" />
 			    </div>
 			    <div class="col-md-3">
 				            	<label for='searchstring'><?php eT("Filter by") ?></label><input type='text' name='searchstring' id='searchstring' class='gridsearch' value="" />

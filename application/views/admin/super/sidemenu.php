@@ -153,14 +153,14 @@
                             <?php if ($activated):?>
                                 <li class="disabled">
                                     <a href='#'>
-                                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/organize_disabled.png" title='' alt='<?php eT("Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>' />
+                                        <img src="<?php echo IMAGE_URL; ?>organize_disabled.png" title='' alt='<?php eT("Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>' />
                                         <?php eT("Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>
                                      </a>
                                 </li>
                                 <?php else: ?>
                                 <li>
                                     <a href="<?php echo $this->createUrl("admin/survey/sa/organize/surveyid/$surveyid"); ?>">
-                                        <img src='<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/organize.png' alt='<?php eT("Reorder question groups / questions"); ?>' "/>
+                                        <img src='<?php echo IMAGE_URL; ?>organize.png' alt='<?php eT("Reorder question groups / questions"); ?>' "/>
                                         <?php eT("Reorder question groups / questions"); ?>
                                     </a>
                                 </li>

@@ -22,7 +22,7 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
 
     <div class='header statistics col-lg-12 box text-left'>
         <div style='float:right;'>
-            <img src='<?php echo $sImageURL; ?>/maximize.png' id='showgfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidegfilter' alt='<?php eT("Minimize"); ?>'/>
+            <img src='<?php echo IMAGE_URL; ?>/maximize.png' id='showgfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo IMAGE_URL; ?>/minimize.png' id='hidegfilter' alt='<?php eT("Minimize"); ?>'/>
         </div>
         <div style='float:left;'>
         <?php eT("General filters"); ?>
@@ -195,7 +195,7 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
     
     
     <div class='header statistics col-lg-12 box text-left' id="response-filter-header">
-        <div style='float:right'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidefilter' alt='<?php eT("Minimize"); ?>'/></div>
+        <div style='float:right'><img src='<?php echo IMAGE_URL; ?>/maximize.png' id='showfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo IMAGE_URL; ?>/minimize.png' id='hidefilter' alt='<?php eT("Minimize"); ?>'/></div>
         <div style='float:left'>
             <?php eT("Response filters"); ?>
         </div>
@@ -1305,7 +1305,7 @@ flush(); //Let's give the user something to look at while they wait for the pret
 
 
 <div class='header statistics col-lg-12 box text-left'>
-    <div style='float:right'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showsfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidesfilter' alt='<?php eT("Minimize"); ?>'/></div>
+    <div style='float:right'><img src='<?php echo IMAGE_URL; ?>/maximize.png' id='showsfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo IMAGE_URL; ?>/minimize.png' id='hidesfilter' alt='<?php eT("Minimize"); ?>'/></div>
     <div style='float:left'>
         <?php eT("Statistics"); ?>
         </div>
@@ -1326,7 +1326,7 @@ flush(); //Let's give the user something to look at while they wait for the pret
     {
         global $maxchars; //Where does this come from? can it be replaced? passed with function call?
         
-        $sImageURL = Yii::app()->getConfig('adminimageurl');
+        IMAGE_URL = Yii::app()->getConfig('adminimageurl');
         if(!isset($maxchars))
         {
             $maxchars = 100;
@@ -1344,7 +1344,7 @@ flush(); //Let's give the user something to look at while they wait for the pret
             $reshtml= "<span style='cursor: pointer' title='".$htmlhinttext."' "
             ." onclick=\"alert('".gT("Question","js").": $jshinttext')\">"
             ." \"$shortstring...\" </span>"
-            ."<img style='cursor: pointer' src='$sImageURL/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
+            ."<img style='cursor: pointer' src='IMAGE_URL/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
             ." onclick=\"alert('".gT("Question","js").": $jshinttext')\" />";
         }
         else

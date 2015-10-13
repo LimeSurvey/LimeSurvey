@@ -1,42 +1,42 @@
 <?php
 /**
  * Survey default view
- * 
+ *
  */
  $count= 0;
 ?>
 <div class="side-body">
-    
+
     <!-- Quick Actions -->
     <h3><?php eT('Survey quick actions'); ?></h3>
         <div class="row welcome survey-action">
             <div class="col-lg-12 content-right">
-                
+
                 <!-- Alerts, infos... -->
                 <div class="row">
                     <div class="col-lg-12">
-                        
+
                         <!-- While survey is activated, you can't add or remove group or question -->
                         <?php if ($activated == "Y"): ?>
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <strong><?php eT('Warning!');?></strong> <?php eT('While survey is activated, you can\'t add or remove group or question');?>
                             </div>
-                        
+
                         <?php elseif(!$groups_count > 0):?>
-                            
+
                             <!-- To add questions, first, you must add a question group -->
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <strong><?php eT('Warning!');?></strong> <?php eT('To add questions, first, you must add a question group.');?>
                             </div>
-                            
-                            <!-- If you want a single page survey, just add a single group, and switch on "Show questions group by group -->                            
+
+                            <!-- If you want a single page survey, just add a single group, and switch on "Show questions group by group -->
                             <div class="alert alert-info alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;
                                 <?php eT('If you want a single page survey, just add a single group, and switch on "Show questions group by group"');?>
-                            </div>                                                                                                           
+                            </div>
                         <?php endif;?>
                     </div>
                 </div>
@@ -55,14 +55,14 @@
                         <br/><br/>
                     </div>
                 </div>
-                
-                
+
+
                 <!-- Add group / questions -->
                 <div class="row">
-                    
+
                     <!-- Survey active, so it's impossible to add new group/question -->
                     <?php if ($activated == "Y"): ?>
-                        
+
                             <!-- Can't add new group to survey  -->
                             <div class="col-lg-2">
                                 <div class="panel panel-primary disabled" id="pannel-1">
@@ -71,13 +71,13 @@
                                 </div>
                                 <div class="panel-body">
                                     <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
-                                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/big/328637/add.png" class="responsive"/>
+                                        <img src="<?php echo BIG_IMAGE_URL;?>add.png" class="responsive"/>
                                     </a>
                                     <p><a href="#"><?php eT('Add new group');?></a></p>
-                                </div>          
                                 </div>
-                            </div>                        
-                
+                                </div>
+                            </div>
+
                             <!-- Can't add a new question -->
                             <div class="col-lg-2" >
                                 <div class="panel panel-primary disabled" id="pannel-2">
@@ -86,18 +86,18 @@
                                     </div>
                                     <div class="panel-body  ">
                                         <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
-                                            <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/big/328637/add.png" class="responsive"/>
+                                            <img src="<?php echo BIG_IMAGE_URL; ?>add.png" class="responsive"/>
                                         </a>
                                         <p>
                                             <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                                                 <?php eT("Add new question"); ?>
                                             </a>
                                         </p>
-                                    </div>          
+                                    </div>
                                 </div>
-                            </div>            
-                    
-                    <!-- survey is not active, and user has permissions, so buttons are shown and active -->              
+                            </div>
+
+                    <!-- survey is not active, and user has permissions, so buttons are shown and active -->
                     <?php elseif(Permission::model()->hasSurveyPermission($surveyinfo['sid'],'surveycontent','create')): ?>
 
                         <!-- Add group -->
@@ -108,14 +108,14 @@
                             </div>
                             <div class="panel-body">
                                 <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>" >
-                                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/big/328637/add.png" class="responsive"/>
+                                    <img src="<?php echo BIG_IMAGE_URL; ?>add.png" class="responsive"/>
                                 </a>
                                 <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>"><?php eT('Add new group');?></a></p>
-                            </div>          
+                            </div>
                             </div>
                         </div>
 
-                        <!-- Survey has no group, so can't add a question -->                        
+                        <!-- Survey has no group, so can't add a question -->
                         <?php if(!$groups_count > 0): ?>
                             <div class="col-lg-2" >
                                 <div class="panel panel-primary disabled" id="pannel-2">
@@ -124,18 +124,18 @@
                                     </div>
                                     <div class="panel-body  ">
                                         <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
-                                            <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/big/328637/add.png" class="responsive"/>
+                                            <img src="<?php echo BIG_IMAGE_URL; ?>add.png" class="responsive"/>
                                         </a>
                                         <p>
                                             <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
                                                 <?php eT("Add new question"); ?>
                                             </a>
                                         </p>
-                                    </div>          
+                                    </div>
                                 </div>
                             </div>
-                    
-                        <!-- Survey has a group, so can add a question -->                                   
+
+                        <!-- Survey has a group, so can add a question -->
                         <?php else:?>
                             <div class="col-lg-2">
                                 <div class="panel panel-primary panel-clickable" id="pannel-2" aria-data-url="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>">
@@ -144,10 +144,10 @@
                                 </div>
                                 <div class="panel-body">
                                     <a  href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>" >
-                                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/big/328637/add.png" class="responsive"/>
+                                        <img src="<?php echo BIG_IMAGE_URL; ?>add.png" class="responsive"/>
                                     </a>
                                     <p><a href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>")"><?php eT("Add new question"); ?></a></p>
-                                </div>          
+                                </div>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -163,25 +163,25 @@
                             <br/><br/>
                         </div>
                     </div>
-                <?php endif;?>                
-                
+                <?php endif;?>
+
             </div>
         </div>
-     
+
     <!-- Survey summary -->
     <h3><?php eT('Survey summary'); ?></h3>
         <div class="row">
             <div class="col-lg-12 content-right">
                 <table class="items table" id='surveydetails'>
                     <thead>
-                        
+
                         <!-- Title -->
                         <tr>
                             <th><?php eT("Title");?></th>
                             <th><?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?></th>
                         </tr>
                     </thead>
-                    
+
                     <!-- Survey URL -->
                     <tr>
                         <td>
@@ -190,7 +190,7 @@
                         <td>
                         </td>
                     </tr>
-                    
+
                     <!-- Base language -->
                     <tr>
                         <td style="border-top: none; padding-left: 2em">
@@ -201,7 +201,7 @@
                             <small><a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a></small>
                         </td>
                     </tr>
-                        
+
                     <!-- Additional languages  -->
                     <?php foreach ($aAdditionalLanguages as $langname): ?>
                         <tr>
@@ -214,7 +214,7 @@
                             </td>
                         </tr>
                     <?php endforeach; ?>
-                    
+
                     <!-- End URL -->
                     <tr>
                         <td   style="border-top: none; padding-left: 2em">
@@ -223,14 +223,14 @@
                         <td style="border-top: none">
                             <small><?php echo $endurl;?></small>
                         </td>
-                    </tr>          
-                    
-                    <!-- Survey's texts -->                      
+                    </tr>
+
+                    <!-- Survey's texts -->
                     <tr>
                         <td><strong><?php eT("Survey's texts");?> :</strong></td>
                         <td></td>
                     </tr>
-                    
+
                     <!-- Description -->
                     <tr>
                         <td style="border-top: none; padding-left: 2em">
@@ -248,7 +248,7 @@
                             </small>
                         </td>
                     </tr>
-                    
+
                     <!-- Welcome -->
                     <tr>
                         <td style="border-top: none; padding-left: 2em">
@@ -263,7 +263,7 @@
                             </small>
                         </td>
                     </tr>
-                    
+
                     <!-- End message -->
                     <tr>
                         <td style="border-top: none; padding-left: 2em">
@@ -286,7 +286,7 @@
                         </td>
                         <td></td>
                     </tr>
-                    
+
                     <!-- Base language -->
                     <tr>
                         <td style="border-top: none; padding-left: 2em">
@@ -296,7 +296,7 @@
                             <small><?php echo $language;?></small>
                         </td>
                     </tr>
-                    
+
                     <!-- Additional languages -->
                     <?php foreach ($aAdditionalLanguages as $langname): ?>
                         <tr>
@@ -306,9 +306,9 @@
                                 </td>
                                 <?php $count++;?>
                             <?php else:?>
-                                <td style="border-top: none; padding-left: 2em"></td>                                        
+                                <td style="border-top: none; padding-left: 2em"></td>
                             <?php endif;?>
-                            
+
                             <td  style="border-top: none;">
                                <small> <?php echo getLanguageNameFromCode($langname,false);?></small>
                             </td>
@@ -324,7 +324,7 @@
                             <?php echo flattenText("{$surveyinfo['admin']} ({$surveyinfo['adminemail']})");?>
                         </td>
                     </tr>
-                    
+
                     <!-- Fax to -->
                     <?php if (trim($surveyinfo['faxto'])!=''): ?>
                         <tr>
@@ -336,7 +336,7 @@
                             </td>
                         </tr>
                     <?php endif; ?>
-                    
+
                     <!-- Start date/time -->
                     <tr>
                         <td>
@@ -346,7 +346,7 @@
                             <?php echo $startdate;?>
                         </td>
                     </tr>
-                    
+
                     <!-- Expiry date/time -->
                     <tr>
                         <td>
@@ -356,7 +356,7 @@
                             <?php echo $expdate;?>
                         </td>
                     </tr>
-                    
+
                     <!-- Template -->
                     <tr>
                         <td>
@@ -367,7 +367,7 @@
                         </td>
                     </tr>
 
-                    <!-- Number of questions/groups -->     
+                    <!-- Number of questions/groups -->
                     <tr>
                         <td>
                             <strong><?php eT("Number of questions/groups");?>:</strong>
@@ -376,7 +376,7 @@
                             <?php echo $sumcount3."/".$sumcount2;?>
                         </td>
                     </tr>
-                    
+
                     <!-- Survey currently active -->
                     <tr>
                         <td>
@@ -386,7 +386,7 @@
                             <?php echo $activatedlang;?>
                         </td>
                     </tr>
-                    
+
                     <!-- Survey table name -->
                     <?php if($activated=="Y"): ?>
                         <tr>
@@ -398,7 +398,7 @@
                             </td>
                         </tr>
                     <?php endif; ?>
-                    
+
                     <!-- Hints  -->
                     <tr>
                         <td>
@@ -408,7 +408,7 @@
                             <?php echo $warnings.$hints;?>
                         </td>
                     </tr>
-                    
+
                     <!-- usage -->
                     <?php if ($tableusage != false){
                             if ($tableusage['dbtype']=='mysql' || $tableusage['dbtype']=='mysqli'){

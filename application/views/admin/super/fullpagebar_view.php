@@ -14,7 +14,7 @@
             <!-- Create a new survey  -->
             <?php if (isset($fullpagebar['button']['newsurvey'])):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>" role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/add.png" />
+                    <img src="<?php echo IMAGE_URL; ?>add.png" />
                     <?php eT("Create a new survey");?>
                 </a>
             <?php endif;?>

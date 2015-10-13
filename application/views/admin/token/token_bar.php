@@ -13,7 +13,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <!-- Display tokens -->
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'read')): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>' role="button">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/document.png" />
+                        <img src="<?php echo IMAGE_URL; ?>document.png" />
                         <?php eT("Display tokens"); ?>
                     </a>
                 <?php endif; ?>
@@ -21,7 +21,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <!-- Create tokens -->
                 <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/add.png" /> 
+                    <img src="<?php echo IMAGE_URL; ?>add.png" /> 
                     <?php eT("Create tokens");?> <span class="caret"></span>
                 </button>
                 
@@ -30,7 +30,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'create')): ?>
                 <li>
                     <a href="<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$surveyid"); ?>" >
-                        <img src='<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/add.png' />
+                        <img src='<?php echo IMAGE_URL; ?>add.png' />
                         <?php eT("Add new token entry"); ?>
                     </a>
                 </li>
@@ -38,7 +38,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <!-- Create dummy tokens -->
                 <li>
                     <a href="<?php echo $this->createUrl("admin/tokens/sa/adddummies/surveyid/$surveyid"); ?>" >
-                       <img src='<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/create_dummy_token.png' />
+                       <img src='<?php echo IMAGE_URL; ?>create_dummy_token.png' />
                        <?php eT("Create dummy tokens"); ?>
                     </a>
                 </li>
@@ -52,7 +52,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                     <!-- from CSV file -->
                     <li>
                        <a href="<?php echo $this->createUrl("admin/tokens/sa/import/surveyid/$surveyid") ?>" >
-                           <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/importcsv.png" />
+                           <img src="<?php echo IMAGE_URL; ?>importcsv.png" />
                            <?php eT("from CSV file"); ?>
                        </a>
                     </li>
@@ -60,7 +60,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                     <!-- from LDAP query -->
                     <li>
                         <a href="<?php echo $this->createUrl("admin/tokens/sa/importldap/surveyid/$surveyid") ?>" >
-                            <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/importldap.png" />
+                            <img src="<?php echo IMAGE_URL; ?>importldap.png" />
                             <?php eT("from LDAP query"); ?>
                         </a>
                     </li>
@@ -71,7 +71,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <!-- Manage additional attribute fields -->
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$surveyid"); ?>' role="button">
-                       <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/token_manage.png" />
+                       <img src="<?php echo IMAGE_URL; ?>token_manage.png" />
                        <?php eT("Manage additional attribute fields"); ?>
                     </a>
                 <?php endif; ?>            
@@ -79,7 +79,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <!-- Export tokens to CSV file -->
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'export')): ?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/tokens/sa/exportdialog/surveyid/$surveyid"); ?>" role="button">
-                       <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/exportcsv.png" />
+                       <img src="<?php echo IMAGE_URL; ?>exportcsv.png" />
                        <?php eT("Export tokens to CSV file"); ?>
                     </a>
                 <?php endif; ?>
@@ -88,7 +88,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')):?>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/emailtemplates.png" /> 
+                        <img src="<?php echo IMAGE_URL; ?>emailtemplates.png" /> 
                         <?php eT("Tokens email");?> <span class="caret"></span>
                     </button>
                     
@@ -98,7 +98,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                         <!-- Send email invitation -->
                         <li>
                             <a href="<?php echo $this->createUrl("admin/tokens/sa/email/surveyid/$surveyid"); ?>" >
-                                <img src='<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/invite.png' />
+                                <img src='<?php echo IMAGE_URL; ?>invite.png' />
                                 <?php eT("Send email invitation"); ?>
                             </a>
                         </li>					
@@ -106,7 +106,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                         <!-- Send email reminder -->
                         <li>
                             <a href="<?php echo $this->createUrl("admin/tokens/sa/email/action/remind/surveyid/$surveyid"); ?>" >
-                                <img src='<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/remind.png' />
+                                <img src='<?php echo IMAGE_URL; ?>remind.png' />
                                 <?php eT("Send email reminder"); ?>
                             </a>
                         </li>
@@ -117,7 +117,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                         <!-- Bounce settings -->
                         <li>
                             <a href="<?php echo $this->createUrl("admin/tokens/sa/bouncesettings/surveyid/$surveyid"); ?>" >
-                                <img src='<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/bounce_settings.png' />
+                                <img src='<?php echo IMAGE_URL; ?>bounce_settings.png' />
                                 <?php eT("Bounce settings"); ?>
                             </a>
                         </li>
@@ -126,7 +126,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 
                 <!-- Generate tokens -->                
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/tokens/sa/tokenify/surveyid/$surveyid"); ?>" role="button">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/tokenify.png" />
+                    <img src="<?php echo IMAGE_URL; ?>tokenify.png" />
                     <?php eT("Generate tokens"); ?>
                 </a>
                 <?php endif; ?>

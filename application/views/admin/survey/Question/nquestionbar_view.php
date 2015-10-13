@@ -11,7 +11,7 @@ $aReplacementData=array();
 					<!-- Single button -->
 					<div class="btn-group">
 					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					  	<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/preview.png" />
+					  	<img src="<?php echo IMAGE_URL; ?>preview.png" />
 					    <?php eT("Preview this question"); ?> <span class="caret"></span>
 					  </button>
 					  <ul class="dropdown-menu" style="min-width : 252px;">
@@ -26,13 +26,13 @@ $aReplacementData=array();
 					</div>
 				<?php else:?>
 					<a class="btn btn-default" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>' role="button" target="_blank">
-						<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/preview.png" />
+						<img src="<?php echo IMAGE_URL; ?>preview.png" />
 						<?php eT("Preview this question");?>
 					</a>
 				<?php endif; ?>                	
 			<?php else: ?>
 				<a class="btn disabled" href="#" role="button">
-					<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/preview.png" />
+					<img src="<?php echo IMAGE_URL; ?>preview.png" />
 					<?php eT("Preview this question");?>
 				</a>            	
 			<?php endif; ?>		
@@ -41,7 +41,7 @@ $aReplacementData=array();
 			<!-- Edit button -->    		
 			<?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
 				<a class="btn btn-default" href='<?php echo $this->createUrl("admin/questions/sa/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>' role="button">
-					<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/edit.png" />
+					<img src="<?php echo IMAGE_URL; ?>edit.png" />
 					<?php eT("Edit Current Question");?>
 				</a>			
 			<?php endif; ?>    		
@@ -50,7 +50,7 @@ $aReplacementData=array();
 			<!-- Check logic -->
 	        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')): ?>
 				<a class="btn btn-default" href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>" role="button">
-					<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/quality_assurance.png" />
+					<img src="<?php echo IMAGE_URL; ?>expressionmanagercheck.png" />
 					<?php eT("Check survey logic for current question"); ?>
 				</a>
 			<?php endif; ?>
@@ -59,14 +59,14 @@ $aReplacementData=array();
 			<!-- Delete -->
 			<?php if( $activated != "Y" && Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete' )):?>
 				<a class="btn btn-default" onclick="if (confirm('<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/questions/sa/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
-					<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/delete.png" />
+					<img src="<?php echo IMAGE_URL; ?>delete.png" />
 					<?php eT("Delete current question"); ?>
 				</a>
 			<?php else:?>
 				<a href='<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'  
 					class="btn btn-default" 
 					onclick="alert('<?php eT("You can't delete this question because the survey is currently active.","js"); ?>')">
-					<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/delete.png" />
+					<img src="<?php echo IMAGE_URL; ?>delete.png" />
 					<?php eT("Delete current question group"); ?>
 				</a>				
 			<?php endif; ?>
@@ -75,7 +75,7 @@ $aReplacementData=array();
 			<!-- export -->
 			<?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','export')):?>
 				<a class="btn btn-default" href="<?php echo $this->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/$qid");?>" role="button">
-					<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/dumpquestion.png" />
+					<img src="<?php echo IMAGE_URL; ?>dumpquestion.png" />
 					<?php eT("Export this question"); ?>
 				</a>		
 			<?php endif; ?>
@@ -84,18 +84,18 @@ $aReplacementData=array();
 			<?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create')):?>
 				<?php if(($activated != "Y")):?>
 					<a class="btn btn-default" href="<?php echo $this->createUrl("admin/questions/sa/copyquestion/surveyid/$surveyid/gid/$gid/qid/$qid");?>" role="button">
-						<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/copy.png" />
+						<img src="<?php echo IMAGE_URL; ?>copy.png" />
 						<?php eT("Copy Current Question"); ?>
 					</a>					
 				<?php else:?>
 					<a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You can't copy a question if the survey is active.","js"); ?>'>
-						<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/copy.png" />
+						<img src="<?php echo IMAGE_URL; ?>copy.png" />
 						<?php eT("Copy Current Question"); ?>
 					</a>					
 				<?php endif;?>
 			<?php else:?>
 					<a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You don't have necessary permission","js"); ?>'>
-						<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/copy.png" />
+						<img src="<?php echo IMAGE_URL; ?>copy.png" />
 						<?php eT("Copy Current Question"); ?>
 					</a>				
 			<?php endif;?>				
@@ -103,12 +103,12 @@ $aReplacementData=array();
 			<!-- conditions -->
 			<?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')):?>
 					<a class="btn btn-default" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
-						<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/conditions.png" />
+						<img src="<?php echo IMAGE_URL; ?>conditions.png" />
 						<?php eT("Set conditions for this question"); ?>
 					</a>				
 			<?php else:?>
 					<a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You don't have necessary permission","js"); ?>')">
-						<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/conditions.png" />
+						<img src="<?php echo IMAGE_URL; ?>conditions.png" />
 						<?php eT("Set conditions for this question"); ?>
 					</a>					
 			<?php endif;?>
@@ -119,7 +119,7 @@ $aReplacementData=array();
 			<?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')):?>
 				<?php if($qtypes[$qrrow['type']]['subquestions'] >0):?>
 					<a class="btn btn-default" href="<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
-						<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/subquestions.png" />
+						<img src="<?php echo IMAGE_URL; ?>subquestions.png" />
 						<?php eT("Edit subquestions for this question"); ?>
 					</a>
 				<?php endif;?>
@@ -128,7 +128,7 @@ $aReplacementData=array();
 			<!-- Answer Options -->
 			<?php if( Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] > 0 ):?>
 					<a class="btn btn-default" href="<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
-						<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/answers.png" />
+						<img src="<?php echo IMAGE_URL; ?>answers.png" />
 						<?php eT("Edit answer options for this question"); ?>
 					</a>				
 			<?php endif;?>
@@ -137,7 +137,7 @@ $aReplacementData=array();
 			<!-- Default Values -->
 			<?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0):?>
 					<a class="btn btn-default" href="<?php echo $this->createUrl('admin/questions/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
-						<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/defaultanswers.png" />
+						<img src="<?php echo IMAGE_URL; ?>defaultanswers.png" />
 						<?php eT("Edit default answers for this question"); ?>
 					</a>								
 			<?php endif;?>
