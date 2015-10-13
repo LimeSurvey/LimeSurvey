@@ -318,7 +318,7 @@ return array(
         'baseUrl' => 'styles/limebootstrap/assets/',
         'js' => array('scripts/sidemenu.js'),
         'css' => array(
-            'css/sidemenu.css',
+            // Now inside lime-admin.css for easy sass export 'css/sidemenu.css',
         ),
         'depends' => array(
             'bootstrap',

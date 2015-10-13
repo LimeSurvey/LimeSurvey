@@ -1,7 +1,7 @@
 //colors
 
 // Fundamentals colors (like green)
-$color_forest_green_approx: #AA4340;
+$base-color: #AA4340;
 $color_parsley_approx: #632725;
 $color_norway_approx: #EBC6C5;
 $color_green_pea_approx: #7B302E;
@@ -14,10 +14,19 @@ $color_acapulco_approx: #FDC8B8;
 $color_envy_approx: #DDB3B2;
 $color_laurel_approx: #BC8D8C;
 $color_de_york_approx: #FCB0AE;
+$color_aqua_forest_approx: lighten( $base-color, 20% );;
 
 
 // for configuration menu headers
 $color_dark_tan_approx: #AA4340;
+
+// specific to side menu
+$color_deep_fir_approx: darken( $base-color, 20% );
+$color_hippie_green_approx: lighten( $base-color, 10% );
+$color_spring_rain_approx: lighten( $base-color, 30% );
+$color_desert_storm_approx: #f8f8f8;
+
+
 
 $color_gravel_approx: #494949;
 $white: #ffffff;
@@ -84,7 +93,6 @@ $black_175: rgba(0, 0, 0, 0.175);
 $white_10: rgba(255, 255, 255, 0.1);
 $color_dune_approx: #373f29;
 $color_log_cabin_approx: #252b1c;
-$color_aqua_forest_approx: #62a07f;
 $color_suva_gray_approx: #888888;
 
 $color_cod_gray_approx: #080808;
@@ -180,7 +188,7 @@ $color_heavy_metal_approx: #2d2d2d;
 //original selectors
 //pagination > li > a, .pagination > li > span
 %extend_8 {
-	color: $color_forest_green_approx;
+	color: $base-color;
 	background-color: $white;
 	border: 1px solid $color_alto_approx;
 }
@@ -197,8 +205,8 @@ $color_heavy_metal_approx: #2d2d2d;
 //.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus
 %extend_10 {
 	color: $white;
-	background-color: $color_forest_green_approx;
-	border: 1px solid $color_forest_green_approx;
+	background-color: $base-color;
+	border: 1px solid $base-color;
 }
 
 //original selectors
@@ -213,16 +221,16 @@ $color_heavy_metal_approx: #2d2d2d;
 //a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus
 %extend_12 {
 	color: $white;
-	background-color: $color_forest_green_approx;
-	border: 1px solid $color_forest_green_approx;
+	background-color: $base-color;
+	border: 1px solid $base-color;
 }
 
 //original selectors
 //a.list-group-item-success.active, a.list-group-item-success.active:hover, a.list-group-item-success.active:focus
 %extend_13 {
 	color: $white;
-	background-color: $color_forest_green_approx;
-	border: 1px solid $color_forest_green_approx;
+	background-color: $base-color;
+	border: 1px solid $base-color;
 }
 
 //original selectors
@@ -272,7 +280,7 @@ $color_heavy_metal_approx: #2d2d2d;
 	color: $white;
 	padding: 0.5em;
 	color: $color_mine_shaft_approx;
-	border-bottom: solid 2px $color_forest_green_approx;
+	border-bottom: solid 2px $base-color;
 	margin-bottom: 1em;
 	animation: fadein 1s;
 }
@@ -314,7 +322,7 @@ fieldset {
 	border: 1px solid $silver;
 }
 a {
-	color: $color_forest_green_approx;
+	color: $base-color;
 	&:hover {
 		color: $color_parsley_approx;
 	}
@@ -349,7 +357,7 @@ a {
 				color: $color_moss_green_approx;
 			}
 			> .badge {
-				color: $color_forest_green_approx;
+				color: $base-color;
 				background-color: $white;
 			}
 		}
@@ -365,23 +373,23 @@ a {
 	}
 	&.thumbnail {
 		&:hover {
-			border: 1px solid $color_forest_green_approx;
+			border: 1px solid $base-color;
 		}
 		&:focus {
-			border: 1px solid $color_forest_green_approx;
+			border: 1px solid $base-color;
 		}
 		&.active {
-			border: 1px solid $color_forest_green_approx;
+			border: 1px solid $base-color;
 		}
 	}
 	&.list-group-item-success {
-		color: $color_forest_green_approx;
+		color: $base-color;
 		&:hover {
-			color: $color_forest_green_approx;
+			color: $base-color;
 			background-color: $color_moss_green_approx;
 		}
 		&:focus {
-			color: $color_forest_green_approx;
+			color: $base-color;
 			background-color: $color_moss_green_approx;
 		}
 		&.active {
@@ -496,10 +504,10 @@ hr {
 	color: $color_gunsmoke_approx;
 }
 .text-primary {
-	color: $color_forest_green_approx;
+	color: $base-color;
 }
 .text-success {
-	color: $color_forest_green_approx;
+	color: $base-color;
 }
 .text-info {
 	color: $color_paradiso_approx;
@@ -512,7 +520,7 @@ hr {
 }
 .bg-primary {
 	color: $white;
-	background-color: $color_forest_green_approx;
+	background-color: $base-color;
 }
 .bg-success {
 	background-color: $color_sea_mist_approx;
@@ -905,43 +913,43 @@ fieldset[disabled] {
 		}
 	}
 	.btn-primary {
-		background-color: $color_forest_green_approx;
-		border: 1px solid $color_forest_green_approx;
+		background-color: $base-color;
+		border: 1px solid $base-color;
 		&:hover {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 		&:focus {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 		&:active {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 		&.active {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 	}
 	.btn-success {
-		background-color: $color_forest_green_approx;
-		border: 1px solid $color_forest_green_approx;
+		background-color: $base-color;
+		border: 1px solid $base-color;
 		&:hover {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 		&:focus {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 		&:active {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 		&.active {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 	}
 	.btn-info {
@@ -1015,25 +1023,25 @@ fieldset[disabled] {
 }
 .has-success {
 	.help-block {
-		color: $color_forest_green_approx;
+		color: $base-color;
 	}
 	.control-label {
-		color: $color_forest_green_approx;
+		color: $base-color;
 	}
 	.radio {
-		color: $color_forest_green_approx;
+		color: $base-color;
 	}
 	.checkbox {
-		color: $color_forest_green_approx;
+		color: $base-color;
 	}
 	.radio-inline {
-		color: $color_forest_green_approx;
+		color: $base-color;
 	}
 	.checkbox-inline {
-		color: $color_forest_green_approx;
+		color: $base-color;
 	}
 	.form-control {
-		border: 1px solid $color_forest_green_approx;
+		border: 1px solid $base-color;
 		//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
 		box-shadow: inset 0 1px 1px $black_75;
 		&:focus {
@@ -1043,12 +1051,12 @@ fieldset[disabled] {
 		}
 	}
 	.input-group-addon {
-		color: $color_forest_green_approx;
-		border: 1px solid $color_forest_green_approx;
+		color: $base-color;
+		border: 1px solid $base-color;
 		background-color: $color_sea_mist_approx;
 	}
 	.form-control-feedback {
-		color: $color_forest_green_approx;
+		color: $base-color;
 	}
 }
 .has-warning {
@@ -1209,8 +1217,8 @@ fieldset[disabled] {
 }
 .btn-primary {
 	color: $white;
-	background-color: $color_forest_green_approx;
-	border: 1px solid $color_forest_green_approx;
+	background-color: $base-color;
+	border: 1px solid $base-color;
 	&:hover {
 		@extend %extend_2;
 	}
@@ -1224,54 +1232,54 @@ fieldset[disabled] {
 		@extend %extend_2;
 	}
 	&.disabled {
-		background-color: $color_forest_green_approx;
-		border: 1px solid $color_forest_green_approx;
+		background-color: $base-color;
+		border: 1px solid $base-color;
 		&:hover {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 		&:focus {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 		&:active {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 		&.active {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 	}
 	.badge {
-		color: $color_forest_green_approx;
+		color: $base-color;
 		background-color: $white;
 	}
 }
 .btn-primary[disabled] {
-	background-color: $color_forest_green_approx;
-	border: 1px solid $color_forest_green_approx;
+	background-color: $base-color;
+	border: 1px solid $base-color;
 	&:hover {
-		background-color: $color_forest_green_approx;
-		border: 1px solid $color_forest_green_approx;
+		background-color: $base-color;
+		border: 1px solid $base-color;
 	}
 	&:focus {
-		background-color: $color_forest_green_approx;
-		border: 1px solid $color_forest_green_approx;
+		background-color: $base-color;
+		border: 1px solid $base-color;
 	}
 	&:active {
-		background-color: $color_forest_green_approx;
-		border: 1px solid $color_forest_green_approx;
+		background-color: $base-color;
+		border: 1px solid $base-color;
 	}
 	&.active {
-		background-color: $color_forest_green_approx;
-		border: 1px solid $color_forest_green_approx;
+		background-color: $base-color;
+		border: 1px solid $base-color;
 	}
 }
 .btn-success {
 	color: $white;
-	background-color: $color_forest_green_approx;
-	border: 1px solid $color_forest_green_approx;
+	background-color: $base-color;
+	border: 1px solid $base-color;
 	&:hover {
 		@extend %extend_3;
 	}
@@ -1285,48 +1293,48 @@ fieldset[disabled] {
 		@extend %extend_3;
 	}
 	&.disabled {
-		background-color: $color_forest_green_approx;
-		border: 1px solid $color_forest_green_approx;
+		background-color: $base-color;
+		border: 1px solid $base-color;
 		&:hover {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 		&:focus {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 		&:active {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 		&.active {
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 		}
 	}
 	.badge {
-		color: $color_forest_green_approx;
+		color: $base-color;
 		background-color: $white;
 	}
 }
 .btn-success[disabled] {
-	background-color: $color_forest_green_approx;
-	border: 1px solid $color_forest_green_approx;
+	background-color: $base-color;
+	border: 1px solid $base-color;
 	&:hover {
-		background-color: $color_forest_green_approx;
-		border: 1px solid $color_forest_green_approx;
+		background-color: $base-color;
+		border: 1px solid $base-color;
 	}
 	&:focus {
-		background-color: $color_forest_green_approx;
-		border: 1px solid $color_forest_green_approx;
+		background-color: $base-color;
+		border: 1px solid $base-color;
 	}
 	&:active {
-		background-color: $color_forest_green_approx;
-		border: 1px solid $color_forest_green_approx;
+		background-color: $base-color;
+		border: 1px solid $base-color;
 	}
 	&.active {
-		background-color: $color_forest_green_approx;
-		border: 1px solid $color_forest_green_approx;
+		background-color: $base-color;
+		border: 1px solid $base-color;
 	}
 }
 .btn-info {
@@ -1513,7 +1521,7 @@ fieldset[disabled] {
 	}
 }
 .btn-link {
-	color: $color_forest_green_approx;
+	color: $base-color;
 	&:hover {
 		color: $color_parsley_approx;
 	}
@@ -1543,23 +1551,23 @@ fieldset[disabled] {
 			color: $color_gravel_approx;
 			&:hover {
 				color: $white;
-				background-color: $color_forest_green_approx;
+				background-color: $base-color;
 			}
 			&:focus {
 				color: $white;
-				background-color: $color_forest_green_approx;
+				background-color: $base-color;
 			}
 		}
 		.active > a {
 			color: $white;
-			background-color: $color_forest_green_approx;
+			background-color: $base-color;
 			&:hover {
 				color: $white;
-				background-color: $color_forest_green_approx;
+				background-color: $base-color;
 			}
 			&:focus {
 				color: $white;
-				background-color: $color_forest_green_approx;
+				background-color: $base-color;
 			}
 		}
 		.disabled > a {
@@ -1941,7 +1949,7 @@ fieldset[disabled] {
 	}
 }
 .label-primary {
-	background-color: $color_forest_green_approx;
+	background-color: $base-color;
 }
 .label-primary[href] {
 	&:hover {
@@ -1952,7 +1960,7 @@ fieldset[disabled] {
 	}
 }
 .label-success {
-	background-color: $color_forest_green_approx;
+	background-color: $base-color;
 }
 .label-success[href] {
 	&:hover {
@@ -2017,7 +2025,7 @@ fieldset[disabled] {
 .alert-success {
 	background-color: $white;
 	border: 1px solid $color_moss_green_approx;
-	color: $color_forest_green_approx;
+	color: $base-color;
 	hr {
 		border-top-color: $color_granny_smith_apple_approx;
 	}
@@ -2064,7 +2072,7 @@ fieldset[disabled] {
 }
 .progress-bar {
 	color: $white;
-	background-color: $color_forest_green_approx;
+	background-color: $base-color;
 	//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
 	box-shadow: inset 0 -1px 0 $black_15;
 }
@@ -2086,7 +2094,7 @@ fieldset[disabled] {
 	}
 }
 .progress-bar-success {
-	background-color: $color_forest_green_approx;
+	background-color: $base-color;
 }
 .progress-bar-info {
 	background-color: $color_paradiso_approx;
@@ -2102,7 +2110,7 @@ fieldset[disabled] {
 	border: 1px solid $color_alto_approx;
 }
 .list-group-item-success {
-	color: $color_forest_green_approx;
+	color: $base-color;
 	background-color: $color_sea_mist_approx;
 }
 .list-group-item-info {
@@ -2159,18 +2167,18 @@ fieldset[disabled] {
 	}
 }
 .panel-primary {
-	border: 1px solid $color_forest_green_approx;
+	border: 1px solid $base-color;
 	> {
 		.panel-heading {
 			color: $white;
-			background-color: $color_forest_green_approx;
-			border: 1px solid $color_forest_green_approx;
+			background-color: $base-color;
+			border: 1px solid $base-color;
 			+ .panel-collapse .panel-body {
-				border-top-color: $color_forest_green_approx;
+				border-top-color: $base-color;
 			}
 		}
 		.panel-footer + .panel-collapse .panel-body {
-			border-bottom-color: $color_forest_green_approx;
+			border-bottom-color: $base-color;
 		}
 	}
 }
@@ -2178,7 +2186,7 @@ fieldset[disabled] {
 	border: 1px solid $color_moss_green_approx;
 	> {
 		.panel-heading {
-			color: $color_forest_green_approx;
+			color: $base-color;
 			background-color: $color_sea_mist_approx;
 			border: 1px solid $color_moss_green_approx;
 			+ .panel-collapse .panel-body {
@@ -2994,10 +3002,10 @@ table-striped > tbody > tr:nth-child(odd) > td {
 .nav-pills > {
 	li.active > a:focus {
 		color: $white;
-		background-color: $color_forest_green_approx;
+		background-color: $base-color;
 	}
 	.active > a > .badge {
-		color: $color_forest_green_approx;
+		color: $base-color;
 		background-color: $white;
 	}
 }
@@ -3022,7 +3030,7 @@ span.cke_skin_kama {
 	border: none;
 }
 .dropdown-item > a:hover {
-	background-color: $color_forest_green_approx;
+	background-color: $base-color;
 	color: $white;
 }
 .info > p {
@@ -3077,4 +3085,535 @@ div.panel.disabled {
 }
 .ui-search-toolbar th div {
 	min-height: 40px;
+}
+
+
+// For side menu
+
+.absolute-wrapper {
+	position: fixed;
+	left: 0;
+	width: 300px;
+	height: 100%;
+	background-color: $white;
+	border-right: 1px solid $color_mercury_approx;
+	//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 3px 0 3px -2px $color_gunsmoke_10_approx;
+}
+.side-menu {
+	position: absolute;
+	width: 300px;
+	padding: 0;
+	background-color: $white;
+	border-right: 1px solid $color_mercury_approx;
+	background-color: $white;
+	left: 0;
+	.navbar {
+		border: none;
+		background-color: $white;
+		//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: none;
+	}
+	.navbar-header {
+		width: 100%;
+		border-bottom: 1px solid $color_mercury_approx;
+	}
+	.navbar-nav {
+		li {
+			display: block;
+			width: 100%;
+			border-bottom: 1px solid $color_mercury_approx;
+			a {
+				padding: 15px;
+				.glyphicon {
+					padding-right: 10px;
+				}
+			}
+		}
+		.active {
+			background-color: transparent;
+			margin-right: -1px;
+			border-right: 5px solid $color_mercury_approx;
+			&:hover {
+				background-color: transparent;
+				margin-right: -1px;
+				border-right: 5px solid $color_mercury_approx;
+			}
+			a:hover {
+				color: $white;
+				font-weight: 700;
+				background-color: $color_parsley_approx;
+			}
+		}
+	}
+	#dropdown {
+		border: 0;
+		margin-bottom: 0;
+		//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+		border-radius: 0;
+		background-color: transparent;
+		//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: none;
+		li {
+			&:hover {
+				color: $white;
+				font-weight: 700;
+				background-color: $color_de_york_approx;
+			}
+			&.active:hover {
+				cursor: default;
+				background-color: transparent;
+				color: $color_parsley_approx;
+				margin-right: -1px;
+				border-right: 5px solid $color_mercury_approx;
+			}
+			&.disabled:hover {
+				color: $white;
+				font-weight: 700;
+				background-color: transparent;
+			}
+		}
+		.caret {
+			float: right;
+			margin: 9px 5px 0;
+		}
+		.indicator {
+			float: right;
+		}
+		.panel-body {
+			padding: 0;
+			background-color: $alabaster;
+			.navbar-nav {
+				width: 100%;
+				li {
+					padding-left: 15px;
+					border: none;
+					border-bottom: 1px solid $color_mercury_approx;
+					&.panel {
+						margin-bottom: 0;
+						background-color: transparent;
+						border: none;
+						//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+						border-radius: 0;
+						//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+						box-shadow: none;
+					}
+					&.panel-default {
+						padding-left: 15px;
+						border: none;
+						border-bottom: 1px solid $color_mercury_approx;
+					}
+					&:last-child {
+						border-bottom: none;
+					}
+				}
+			}
+			.panel-body {
+				margin-left: -15px;
+				li:last-child {
+					border-bottom: 1px solid $color_mercury_approx;
+				}
+			}
+			.panel > a {
+				margin-left: -20px;
+				padding-left: 35px;
+			}
+		}
+		.question-group-collapse .caret {
+			float: none;
+			margin-bottom: 9px;
+		}
+		> a {
+			border-bottom: 1px solid $color_mercury_approx;
+		}
+	}
+	.hide-button {
+		background-color: $alabaster;
+		border: 0;
+		//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+		border-radius: 0;
+		position: absolute;
+		top: 0;
+		right: 0;
+		padding: 15px 18px;
+	}
+	.brand-name-wrapper {
+		min-height: 50px;
+		.navbar-brand {
+			display: block;
+		}
+	}
+	#search {
+		position: relative;
+		z-index: 1000;
+		.panel-body {
+			padding: 0;
+			.navbar-form {
+				padding: 0;
+				padding-right: 50px;
+				width: 100%;
+				margin: 0;
+				position: relative;
+				border-top: 1px solid $color_mercury_approx;
+				.form-group {
+					width: 100%;
+					position: relative;
+				}
+				input {
+					border: 0;
+					//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+					border-radius: 0;
+					//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+					box-shadow: none;
+					width: 100%;
+					height: 50px;
+				}
+				.btn {
+					position: absolute;
+					right: 0;
+					top: 0;
+					border: 0;
+					//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+					border-radius: 0;
+					background-color: $alabaster;
+					padding: 15px 18px;
+				}
+			}
+		}
+	}
+	.navbar-default .navbar-nav > li > a {
+		color: $color_deep_fir_approx;
+	}
+	#explorer-collapse .caret {
+		float: none;
+		margin-bottom: 9px;
+	}
+}
+#explorer {
+	border: 0;
+	margin-bottom: 0;
+	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+	border-radius: 0;
+	background-color: transparent;
+	//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: none;
+	ul {
+		font-size: 0.9em;
+	}
+	.questiongroupdropdown li a {
+		color: $black;
+	}
+}
+.dropdownstyle {
+	border: 0;
+	margin-bottom: 0;
+	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+	border-radius: 0;
+	background-color: transparent;
+	//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: none;
+}
+#sideMenu {
+	min-height: 700px;
+	overflow: hidden;
+	a[aria-expanded="true"] {
+		color: $white;
+		font-weight: 700;
+		background-color: $color_parsley_approx;
+	}
+	a[aria-expanded="false"] {
+		color: $color_deep_fir_approx;
+	}
+	#dropdown {
+		li {
+			&:hover {
+				width: 100%;
+				font-weight: 700;
+				background-color: $color_hippie_green_approx;
+			}
+			&:hover>a {
+				width: 100%;
+				font-weight: 700;
+				background-color: $color_hippie_green_approx;
+			}
+			a[aria-expanded="true"] {
+				width: 100%;
+				font-weight: 700;
+				background-color: $color_hippie_green_approx;
+			}
+			.active a:hover {
+				width: 100%;
+				font-weight: 700;
+				background-color: $color_hippie_green_approx;
+			}
+			> a:hover {
+				width: 100%;
+				font-weight: 700;
+				background-color: $color_hippie_green_approx;
+			}
+		}
+		#explorer {
+			li {
+				&:hover {
+					font-weight: 700;
+					background-color: $color_aqua_forest_approx;
+				}
+				&:hover>a {
+					font-weight: 700;
+					background-color: $color_aqua_forest_approx;
+				}
+				a[aria-expanded="true"] {
+					font-weight: 700;
+					background-color: $color_aqua_forest_approx;
+				}
+				.active a:hover {
+					font-weight: 700;
+					background-color: $color_aqua_forest_approx;
+				}
+				> a:hover {
+					font-weight: 700;
+					background-color: $color_aqua_forest_approx;
+				}
+			}
+			.questiongroupdropdown li {
+				&:hover {
+					font-weight: 700;
+					background-color: $color_spring_rain_approx;
+				}
+				&:hover>a {
+					font-weight: 700;
+					background-color: $color_spring_rain_approx;
+				}
+				a[aria-expanded="true"] {
+					font-weight: 700;
+					background-color: $color_spring_rain_approx;
+				}
+				.active a:hover {
+					font-weight: 700;
+					background-color: $color_spring_rain_approx;
+				}
+				> a:hover {
+					font-weight: 700;
+					background-color: $color_spring_rain_approx;
+				}
+			}
+		}
+	}
+	.navbar-default .navbar-nav > .active > a {
+		background-color: transparent;
+	}
+	.side-menu .dropdownlvl1 > a:hover {
+		color: $white;
+		font-weight: 700;
+		background-color: $color_parsley_approx;
+	}
+	.sidemenuscontainer li {
+		&:hover {
+			color: $white;
+			font-weight: 700;
+			background-color: $color_parsley_approx;
+		}
+		&:hover>a {
+			color: $white;
+			font-weight: 700;
+			background-color: $color_parsley_approx;
+		}
+	}
+}
+#explorer-container {
+	max-height: 270px;
+	overflow-y: scroll;
+}
+.side-body {
+	min-height: 700px;
+	margin-left: 320px;
+}
+.question-group-collapse-title {
+	display: block;
+	padding-left: 20px;
+}
+.question-collapse-title {
+	display: block;
+	padding-left: 30px;
+}
+@media(max-width: 768px) {
+	.side-menu {
+		position: relative;
+		width: 100%;
+		height: 0;
+		border-right: 0;
+		border-bottom: 1px solid $color_mercury_approx;
+		.brand-name-wrapper .navbar-brand {
+			display: inline-block;
+		}
+	}
+	@-moz-keyframes slidein {
+		0% {
+			left: -300px;
+		}
+		100% {
+			left: 10px;
+		}
+	}
+	@-webkit-keyframes slidein {
+		0% {
+			left: -300px;
+		}
+		100% {
+			left: 10px;
+		}
+	}
+	@keyframes slidein {
+		0% {
+			left: -300px;
+		}
+		100% {
+			left: 10px;
+		}
+	}
+	@-moz-keyframes slideout {
+		0% {
+			left: 0;
+		}
+		100% {
+			left: -300px;
+		}
+	}
+	@-webkit-keyframes slideout {
+		0% {
+			left: 0;
+		}
+		100% {
+			left: -300px;
+		}
+	}
+	@keyframes slideout {
+		0% {
+			left: 0;
+		}
+		100% {
+			left: -300px;
+		}
+	}
+	@-moz-keyframes bodyslidein {
+		0% {
+			left: 0;
+		}
+		100% {
+			left: 300px;
+		}
+	}
+	@-webkit-keyframes bodyslidein {
+		0% {
+			left: 0;
+		}
+		100% {
+			left: 300px;
+		}
+	}
+	@keyframes bodyslidein {
+		0% {
+			left: 0;
+		}
+		100% {
+			left: 300px;
+		}
+	}
+	@-moz-keyframes bodyslideout {
+		0% {
+			left: 300px;
+		}
+		100% {
+			left: 0;
+		}
+	}
+	@-webkit-keyframes bodyslideout {
+		0% {
+			left: 300px;
+		}
+		100% {
+			left: 0;
+		}
+	}
+	@keyframes bodyslideout {
+		0% {
+			left: 300px;
+		}
+		100% {
+			left: 0;
+		}
+	}
+	.side-body {
+		margin-left: 5px;
+		margin-top: 70px;
+		position: relative;
+		animation: bodyslideout 300ms forwards;
+		//Instead of the line below you could use @include transform-style($style)
+		transform-style: preserve-3d;
+	}
+	.body-slide-in {
+		animation: bodyslidein 300ms forwards;
+		//Instead of the line below you could use @include transform-style($style)
+		transform-style: preserve-3d;
+	}
+	.navbar-toggle {
+		border: 0;
+		float: left;
+		padding: 18px;
+		margin: 0;
+		//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+		border-radius: 0;
+		background-color: $alabaster;
+	}
+	.navbar-header {
+		position: fixed;
+		z-index: 3;
+		background-color: $color_desert_storm_approx;
+	}
+	.side-menu-container > .navbar-nav {
+		position: fixed;
+		left: -300px;
+		width: 300px;
+		top: 43px;
+		height: 100%;
+		border-right: 1px solid $color_mercury_approx;
+		background-color: $color_desert_storm_approx;
+		animation: slideout 300ms forwards;
+		//Instead of the line below you could use @include transform-style($style)
+		transform-style: preserve-3d;
+		&.slide-in {
+			animation: slidein 300ms forwards;
+			//Instead of the line below you could use @include transform-style($style)
+			transform-style: preserve-3d;
+		}
+	}
+	#search .panel-body .navbar-form {
+		border-bottom: 0;
+		.form-group {
+			margin: 0;
+		}
+	}
+	#dropdown .panel-body .navbar-nav {
+		margin: 0;
+	}
+}
+.content-right {
+	padding-left: 0;
+	padding-right: 0;
+	animation: fadein 1s;
+	.col-lg-12 {
+		padding-left: 0;
+		padding-right: 0;
+		animation: fadein 1s;
+	}
+}
+.toWhite a:hover {
+	color: $white;
+	font-weight: 700;
+	background-color: $color_de_york_approx;
+}
+.col-lg-12.content-right {
+	padding-left: 0;
+	padding-right: 0;
+	animation: fadein 1s;
 }
