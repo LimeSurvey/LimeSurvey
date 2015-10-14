@@ -11,8 +11,8 @@
         <?php
         App()->getClientScript()->registerPackage('jqueryui');
         App()->bootstrap->register();
-        App()->getClientScript()->registerPackage('lime-bootstrap');
-        
+        App()->getClientScript()->registerPackage('lime-bootstrap-Sea_Green');
+
         App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/main.css');
 
         $script = "$(function() {

@@ -127,7 +127,7 @@ abstract class LSYii_Controller extends CController
             @ini_set("display_errors", 0);
             error_reporting(0);
         }
-        
+
 		//SET LOCAL TIME
 		$timeadjust = Yii::app()->getConfig("timeadjust");
 		if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}
@@ -135,9 +135,9 @@ abstract class LSYii_Controller extends CController
 		{
 			Yii::app()->setConfig("timeadjust",$timeadjust.' hours');
 		}
-        
-        Yii::app()->setConfig('adminimageurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/images/');
-        Yii::app()->setConfig('adminstyleurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/');
+
+        //Yii::app()->setConfig('adminimageurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/images/');
+        //Yii::app()->setConfig('adminstyleurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/');
 	}
 
     /**
@@ -152,7 +152,7 @@ abstract class LSYii_Controller extends CController
     {
         $sPublicUrl=Yii::app()->getConfig("publicurl");
         // Control if public url are really public : need scheme and host
-        // If yes: use it 
+        // If yes: use it
         $aPublicUrl=parse_url($sPublicUrl);
         if(isset($aPublicUrl['scheme']) && isset($aPublicUrl['host']))
         {
@@ -163,7 +163,7 @@ abstract class LSYii_Controller extends CController
             }
             return trim($sPublicUrl,"/").$url;
         }
-        else 
+        else
             return parent::createAbsoluteUrl($route,$params,$schema,$ampersand);
     }
 }

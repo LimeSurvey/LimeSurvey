@@ -26,7 +26,7 @@
     <!-- Jumbotron -->
     <div class="row">
         <div class="jumbotron" id="welcome-jumbotron">
-            <img src="<?php echo BIG_IMAGE_URL;?>Limesurvey_logo.png" id="lime-logo" />
+            <img src="<?php echo IMAGE_BASE_URL;?>Limesurvey_logo.png" id="lime-logo" />
             <p><?php eT('This is the LimeSurvey admin interface. From here, you can start to build your survey.')?></p>
         </div>
     </div>
@@ -49,10 +49,10 @@
                     <div class="modal-body">
                         <p><?php eT("Some piece-of-cake steps to create your very own first survey:"); ?></p>
                         <ol>
-                            <li><?php echo sprintf(gT('Create a new survey clicking on the %s icon.'), "<img src='" . Yii::app()->getConfig('adminimageurl') . "add_20.png' name='ShowHelp' title='' alt='" . gT("Add survey") . "'/>"); ?></li>
+                            <li><?php echo sprintf(gT('Create a new survey clicking on the %s icon.'), "<img src='" . Yii::app()->getConfig('adminimageurl') . "add.png' name='ShowHelp' title='' alt='" . gT("Add survey") . "'/>"); ?></li>
                             <li><?php eT('Create a new question group inside your survey.'); ?></li>
                             <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
-                            <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<img src='" . Yii::app()->getConfig('adminimageurl') . "do_20.png' name='ShowHelp' title='' alt='" . gT("Test survey") . "'/>"); ?></li>
+                            <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<img src='" . Yii::app()->getConfig('adminimageurl') . "do.png' name='ShowHelp' title='' alt='" . gT("Test survey") . "'/>"); ?></li>
                         </ol>
                     </div>
                     <div class="modal-footer">

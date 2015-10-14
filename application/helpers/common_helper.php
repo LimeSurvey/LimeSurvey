@@ -294,6 +294,9 @@ function getTemplateList()
     return Template::getTemplateList();
 }
 
+/**
+ * Return the list of admin theme from styles directory and from upload directory
+ */
 function getAdminThemeList()
 {
     $standardtemplaterootdir=Yii::app()->getConfig("styledir");
@@ -305,6 +308,19 @@ function getAdminThemeList()
             if (!is_file("$standardtemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
             {
                 $list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
+            }
+        }
+        closedir($handle);
+    }
+
+    $usertemplatethemerootdir = Yii::app()->getConfig("uploaddir").'/admintheme';
+    if ($usertemplatethemerootdir && $handle = opendir($usertemplatethemerootdir))
+    {
+        while (false !== ($file = readdir($handle)))
+        {
+            if (!is_file("$usertemplatethemerootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
+            {
+                $list_of_files[$file] = $usertemplatethemerootdir.DIRECTORY_SEPARATOR.$file;
             }
         }
         closedir($handle);
@@ -3049,7 +3065,7 @@ function questionAttributes($returnByName=false)
         'inputtype'=>'text',
         'help'=>gT('Add additional CSS class(es) for this question. Use a space between different CSS class names.'),
         'caption'=>gT('CSS class(es)'));
-        
+
         $qattributes["max_answers"]=array(
         "types"=>"MPR1:;ABCEFKQ",
         'category'=>gT('Logic'),
@@ -7506,4 +7522,3 @@ function array_diff_assoc_recursive($array1, $array2) {
     }
 
 // Closing PHP tag intentionally omitted - yes, it is okay
-

@@ -228,11 +228,22 @@ class Survey_Common_Action extends CAction
     {
         // Gather the data
         $aData = $this->_addPseudoParams($aData); //// the check of the surveyid should be done in the Admin controller it self.
-        //$aData['sImageURL'] = Yii::app()->getBaseUrl(true).'/images/lime-icons/328637/';
-        define('IMAGE_URL', Yii::app()->getBaseUrl(true).'/images/lime-icons/AA4340/');
-        define('BIG_IMAGE_URL', Yii::app()->getBaseUrl(true).'/images/lime-icons/big/AA4340/');
-        define('INVERT_IMAGE_URL', Yii::app()->getBaseUrl(true).'/images/lime-icons/AA4340/invert/');
 
+        // Defingin images url
+        define('IMAGE_BASE_URL', Yii::app()->getConfig('adminimagebaseurl'));
+        define('IMAGE_URL', IMAGE_BASE_URL.'/14/');
+        define('BIG_IMAGE_URL', IMAGE_BASE_URL.'/213/');
+
+/*
+        //$aData['sImageURL'] = Yii::app()->getBaseUrl(true).'/images/lime-icons/328637/';
+        //$sAdmintheme = Yii::app()->getConfig('admintheme');
+        //define('IMAGE_BASE_URL', Yii::app()->getBaseUrl(true)."/styles/$sAdmintheme/images/");
+        define('IMAGE_BASE_URL', Yii::app()->getConfig('adminimagebaseurl'));
+
+
+        define('IMAGE_URL', IMAGE_BASE_URL.'/14/');
+        define('BIG_IMAGE_URL', IMAGE_BASE_URL.'/213/');
+*/
 
         //// This will be handle by subviews inclusions
         $aViewUrls = (array) $aViewUrls; $sViewPath = '/admin/';

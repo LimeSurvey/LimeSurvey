@@ -21,7 +21,7 @@
         <tr >
             <td style='padding:3px;'>
                 <?php echo CHtml::form(array('admin/user/sa/modifyuser'), 'post');?>            
-                    <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php eT("Edit this user");?>' />
+                    <input type='image' src='<?php echo $imageurl;?>edit.png' alt='<?php eT("Edit this user");?>' />
                     <input type='hidden' name='action' value='modifyuser' />
                     <input type='hidden' name='uid' value='<?php echo htmlspecialchars($usrhimself['uid']);?>' />
                 </form>
@@ -61,7 +61,7 @@
                 <td style='padding:3px;'>          
                     <?php if (Permission::model()->hasGlobalPermission('superadmin','read') || $usr['uid'] == Yii::app()->session['loginID'] || (Permission::model()->hasGlobalPermission('users','update') && $usr['parent_id'] == Yii::app()->session['loginID'])) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/modifyuser'), 'post', array( 'class'=>'pull-left'));?>            
-                            <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php eT("Edit this user");?>' />
+                            <input type='image' src='<?php echo $imageurl;?>edit.png' alt='<?php eT("Edit this user");?>' />
                             <input type='hidden' name='action' value='modifyuser' />
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
                         </form>
@@ -72,7 +72,7 @@
                         (Permission::model()->hasGlobalPermission('users','update') &&
                         $usr['parent_id'] == Yii::app()->session['loginID'])) && $usr['uid']!=1) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/setuserpermissions'), 'post', array( 'class'=>'pull-left col-md-1'));?>            
-                            <input type='image' src='<?php echo $imageurl;?>security_16.png' alt='<?php eT("Set global permissions for this user");?>' />
+                            <input type='image' src='<?php echo $imageurl;?>security.png' alt='<?php eT("Set global permissions for this user");?>' />
                             <input type='hidden' name='action' value='setuserpermissions' />
                             <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />

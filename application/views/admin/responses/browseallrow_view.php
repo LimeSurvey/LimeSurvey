@@ -4,7 +4,7 @@
 <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/{$dtrow['id']}"); ?>'><img src='<?php echo IMAGE_URL; ?>token_viewanswer.png' alt='<?php eT('View response details'); ?>'/></a>
 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update'))
 { ?>
-<a href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$dtrow['id']}"); ?>'><img src='<?php echo IMAGE_URL; ?>edit_16.png' alt='<?php eT('Edit this response'); ?>'/></a>
+<a href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$dtrow['id']}"); ?>'><img src='<?php echo IMAGE_URL; ?>edit.png' alt='<?php eT('Edit this response'); ?>'/></a>
 <?php }
 if ($bHasFileUploadQuestion) { ?>
 <a><img id='downloadfile_<?php echo $dtrow['id']; ?>' src='<?php echo IMAGE_URL; ?>down.png' alt='<?php eT('Download all files in this response as a zip file'); ?>' class='downloadfile'/></a>

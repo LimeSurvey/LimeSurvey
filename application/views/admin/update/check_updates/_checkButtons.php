@@ -13,7 +13,7 @@
 ?>
 <div id="ajaxupdaterLayoutLoading" style="text-align : center; margin-top: 200px; margin-bottom: 200px; display: none">
 	<p><?php eT('Please wait, data loading');?>...</p>
-	<img src="<?php echo Yii::app()->baseUrl;?>/images/ajax-loader.gif" alt="loading..."/>    <br/>
+	<img src="<?php echo IMAGE_BASE_URL;?>ajax-loader.gif" alt="loading..."/>    <br/>
 </div>
 
 <div id="preUpdaterContainer">
@@ -65,7 +65,7 @@
 	
 	<!-- The js will inject inside this li the HTML of the update buttons --> 
 	<li style="text-align: center" id="udapteButtonsContainer">
-		<img src="<?php echo Yii::app()->baseUrl;?>/images/ajax-loader.gif" alt="loading..." id="ajaxLoading" style="display: none;"/>    <br/>
+		<img src="<?php echo IMAGE_BASE_URL;?>ajax-loader.gif" alt="loading..." id="ajaxLoading" style="display: none;"/>    <br/>
 		<span id="updatesavailable"></span>            	
 	</li>
 	</ul>				

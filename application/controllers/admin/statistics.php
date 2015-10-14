@@ -111,7 +111,6 @@ class statistics extends Survey_Common_Action {
 
 
         //Call the javascript file
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'statistics.js');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'json-js/json2.min.js');
 
         $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
@@ -624,18 +623,17 @@ class statistics extends Survey_Common_Action {
      */
     protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerPackage('statistics');
 
         $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
         $aData['menu']['edition'] = true;
         $aData['menu']['stats'] =  true;
-        $aData['menu']['close'] =  true;        
+        $aData['menu']['close'] =  true;
         $aData['sidebar']['state'] = "close";
         $iSurveyId = $aData['surveyid'];
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-        $aData["surveyinfo"] = $surveyinfo;     
-        $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];           
+        $aData["surveyinfo"] = $surveyinfo;
+        $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

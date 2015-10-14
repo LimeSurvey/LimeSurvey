@@ -87,7 +87,7 @@
 
                     <!-- the button launching the update -->
                     <button type="submit" class="btn btn-default ajax_button launch_update">
-                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/big/328637/shield-update.png" style="height : 1em; margin-right : 0.5em;"/>
+                        <img src="<?php echo IMAGE_BASE_URL;?>shield-update.png" style="height : 1em; margin-right : 0.5em;"/>
                         <?php eT("Use ComfortUpdate");?>
                     </button>
 

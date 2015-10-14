@@ -99,7 +99,7 @@ class quotas extends Survey_Common_Action
 			
 			//$aData['surveybar']['active_survey_properties'] = 'quotas';
 			$aData['surveybar']['buttons']['view']= TRUE;
-		    $aData['surveybar']['active_survey_properties']['img'] = 'quota_30.png';
+		    $aData['surveybar']['active_survey_properties']['img'] = 'quota.png';
 			$aData['surveybar']['active_survey_properties']['txt'] = gT("Quotas");			
 			$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;			        	
 

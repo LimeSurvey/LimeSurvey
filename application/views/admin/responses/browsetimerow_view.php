@@ -5,7 +5,7 @@
 
         <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update'))
             { ?>
-            <a href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$dtrow['id']}"); ?>'><img src='<?php echo IMAGE_URL; ?>/edit_16.png' alt='<?php eT('Edit this response'); ?>'/></a>
+            <a href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$dtrow['id']}"); ?>'><img src='<?php echo IMAGE_URL; ?>/edit.png' alt='<?php eT('Edit this response'); ?>'/></a>
         <?php } ?>
         <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
             { ?>

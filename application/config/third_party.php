@@ -267,20 +267,36 @@ return array(
         ),
     ),
 
-    // LimeSurvey Bootstrap Admin Interface
-    'lime-bootstrap' => array(
+    // select2
+    'select2' => array(
         'baseUrl' => 'styles/limebootstrap/assets/',
+        'js' => array('scripts/select2.js'),
+        'depends' => array(
+            'bootstrap',
+            //'lime-bootstrap',
+            //'jquery',
+            //'jqueryui',
+        ),
+    ),
+
+    // LimeSurvey Bootstrap Admin Interface
+    'lime-bootstrap-Apple_Blossom' => array(
+        'baseUrl' => 'styles/Apple_Blossom/',
 
         'js'=>array(
             'scripts/notify.js',
             'scripts/save.js',
+            'scripts/panelclickable.js',
+            'scripts/panelsanimation.js',
         ),
 
         'css' => array(
             'css/lime-admin.css',
             'css/fonts.css',
             'css/font-awesome/font-awesome-43.min.css',
-            'css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css'
+            'css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css',
+            'css/statistics.css',
+
         ),
         'depends' => array(
             'jquery',
@@ -289,73 +305,29 @@ return array(
         ),
     ),
 
-    // adminstyle-rtl
-    'adminstyle-rtl' => array(
-        'baseUrl' => 'styles/limebootstrap/assets/',
-        'css' => array(
-            'css/adminstyle-rtl.css',
-        ),
-        'depends' => array(
-            'bootstrap',
-            'lime-bootstrap'
-        )
-    ),
+    // LimeSurvey Bootstrap Admin Interface
+    'lime-bootstrap-Sea_Green' => array(
+        'baseUrl' => 'styles/Sea_Green/',
 
-    // statistics
-    'statistics' => array(
-        'baseUrl' => 'styles/limebootstrap/assets/',
+        'js'=>array(
+            'scripts/notify.js',
+            'scripts/save.js',
+            'scripts/panelclickable.js',
+            'scripts/panelsanimation.js',
+        ),
+
         'css' => array(
+            'css/lime-admin.css',
+            'css/fonts.css',
+            'css/font-awesome/font-awesome-43.min.css',
+            'css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css',
             'css/statistics.css',
-        ),
-        'depends' => array(
-            'bootstrap',
-            'lime-bootstrap'
-        )
-    ),
 
-    // sidemenu
-    'sidemenu' => array(
-        'baseUrl' => 'styles/limebootstrap/assets/',
-        'js' => array('scripts/sidemenu.js'),
-        'css' => array(
-            // Now inside lime-admin.css for easy sass export 'css/sidemenu.css',
         ),
         'depends' => array(
-            'bootstrap',
-            'lime-bootstrap',
-        ),
-    ),
-
-    // Clickable panels
-    'panel-clickable' => array(
-        'baseUrl' => 'styles/limebootstrap/assets/',
-        'js' => array('scripts/panelclickable.js'),
-        'depends' => array(
-            'bootstrap',
-            'lime-bootstrap',
-        ),
-    ),
-
-    // panels animation
-    'panels-animation' => array(
-        'baseUrl' => 'styles/limebootstrap/assets/',
-        'js' => array('scripts/panelsanimation.js'),
-        'depends' => array(
-            'panel-clickable',
-            'bootstrap',
-            'lime-bootstrap',
-        ),
-    ),
-
-    // select2
-    'select2' => array(
-        'baseUrl' => 'styles/limebootstrap/assets/',
-        'js' => array('scripts/select2.js'),
-        'depends' => array(
-            'bootstrap',
-            'lime-bootstrap',
-            //'jquery',
-            //'jqueryui',
+            'jquery',
+            'jquery-notify',
+            'bootstrap'
         ),
     ),
 

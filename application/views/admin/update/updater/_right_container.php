@@ -8,7 +8,7 @@
 	<!-- the ajax loader -->
 	<div id="ajaxContainerLoading" style="text-align : center; margin-top: 70px; margin-bottom: 100px; display: none">
 		<p><?php eT('PLease wait, data loading...');?></p>
-		<img src="<?php echo Yii::app()->baseUrl;?>/images/ajax-loader.gif" alt="loading..."/>    <br/>
+		<img src="<?php echo IMAGE_BASE_URL;?>ajax-loader.gif" alt="loading..."/>    <br/>
 	</div>
 	
 	<!-- Here come the different steps content. Content is loaded by the ajax request (see ./steps for html views)	-->

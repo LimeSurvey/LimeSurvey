@@ -61,7 +61,7 @@ class surveypermission extends Survey_Common_Action {
                     . "<th>".gT("Full name")."</th>\n";
                 foreach ($aBaseSurveyPermissions as $sPermission=>$aSubPermissions )
                 {
-                    $surveysecurity.="<th><img src=\"{$imageurl}{$aSubPermissions['img']}_30.png\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
+                    $surveysecurity.="<th><img src=\"{$imageurl}{$aSubPermissions['img']}.png\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
                 }
                 $surveysecurity .= "</tr></thead>\n";
 
@@ -112,7 +112,7 @@ class surveypermission extends Survey_Common_Action {
                             if($PermissionRow['uid']!=Yii::app()->user->getId() || Permission::model()->hasGlobalPermission('superadmin','read')) // Can not update own security
                             {
                                 $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/set/surveyid/{$surveyid}"), 'post', array('style'=>"display:inline;"))
-                                ."<input type='image' src='{$imageurl}edit_16.png' alt='".gT("Edit permissions")."' />"
+                                ."<input type='image' src='{$imageurl}edit.png' alt='".gT("Edit permissions")."' />"
                                 ."<input type='hidden' name='action' value='setsurveysecurity' />"
                                 ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
                                 ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
@@ -122,7 +122,7 @@ class surveypermission extends Survey_Common_Action {
                         if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','delete'))
                         {
                             $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/delete/surveyid/{$surveyid}"), 'post', array('style'=>"display:inline;"))
-                            ."<input type='image' src='{$imageurl}/token_delete.png' alt='".gT("Delete")."' onclick='return confirm(\"".gT("Are you sure you want to delete this entry?","js")."\")' />"
+                            ."<input type='image' src='{$imageurl}/delete.png' alt='".gT("Delete")."' onclick='return confirm(\"".gT("Are you sure you want to delete this entry?","js")."\")' />"
                             ."<input type='hidden' name='action' value='delsurveysecurity' />"
                             ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
                             ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
@@ -503,7 +503,7 @@ class surveypermission extends Survey_Common_Action {
             foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions)
             {
                 $oddcolumn=!$oddcolumn;
-                $usersummary .= "<tr><td><img src='{$imageurl}{$aCRUDPermissions['img']}_30.png' alt='' title='{$aCRUDPermissions['description']}'/></td>";
+                $usersummary .= "<tr><td><img src='{$imageurl}{$aCRUDPermissions['img']}.png' alt='' title='{$aCRUDPermissions['description']}'/></td>";
                 $usersummary .= "<td>{$aCRUDPermissions['title']}</td>";
                 $usersummary .= "<td ><input type=\"checkbox\"  class=\"markrow\" name='all_{$sPermissionKey}' /></td>";
                 foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)

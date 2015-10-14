@@ -1,0 +1,48 @@
+/**
+ *     Statistics
+ * 
+ */
+
+tr.success
+{
+    color : white;
+    font-size: 1.3em;
+    text-shadow: 1px 1px #77A3A5;
+} 
+
+tr.info, tr.danger {
+    color : white;
+}
+#response-filter-header
+{
+    margin-bottom: 10px;
+}
+
+.table-boxed td
+{
+    height: 1px;
+    padding: 10px;
+}
+
+.inerTableBox {
+
+    border-radius: 3px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    padding: 1em;
+    margin : 0.5em;
+    height : 110%;
+    width : 100%;
+    position : relative;
+    left : -22px;
+}
+
+
+.canvas-chart {
+    width: 100%;
+}
+
+.vcenter {
+        display: inline-block;
+    vertical-align: middle;
+    float: none;
+}

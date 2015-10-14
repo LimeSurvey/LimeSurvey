@@ -9,22 +9,26 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    
+
     <!-- Assets load -->
-    <?php 
+    <?php
         // jQuery plugins
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-cookie');
         App()->getClientScript()->registerPackage('qTip2');
-    
+
         // Bootstrap
-        App()->bootstrap->register();   
-        App()->getClientScript()->registerPackage('lime-bootstrap');
+        App()->bootstrap->register();
+        //-Apple_Blossom
+        //App()->getClientScript()->registerPackage('lime-bootstrap');
+        $sAdmintheme = Yii::app()->getConfig('admintheme');
+        $sPackage = 'lime-bootstrap-'.$sAdmintheme;
+        App()->getClientScript()->registerPackage($sPackage);
 
         // Right to Left
         if (getLanguageRTL($_SESSION['adminlang']))
-            App()->getClientScript()->registerPackage('adminstyle-rtl');
-        
+            App()->getClientScript()->registerCssFile(Yii::app()->getBaseUrl(true)."/styles/$sAdmintheme/css/adminstyle-rtl.css");
+
         // Printable
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');
     ?>
@@ -37,7 +41,7 @@
     <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
 </head>
 <body>
-	
+
 <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
 
 <script>

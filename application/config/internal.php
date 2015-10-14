@@ -26,15 +26,15 @@ $internalConfig = array(
         'vendor.twbs.bootstrap.dist' => realpath(__DIR__ . '/../extensions/bootstrap'),
         // yiiwheels configuration
         'yiiwheels' => realpath(__DIR__ . '/../extensions/yiiwheels'),
-        
-        'vendor.twbs.bootstrap.dist'        
+
+        'vendor.twbs.bootstrap.dist'
     ),
 
     'params'=>array(
         'defaultPageSize'=>5,
-        'pageSizeOptions'=>array(5=>5,10=>10,20=>20,50=>50,100=>100),    
+        'pageSizeOptions'=>array(5=>5,10=>10,20=>20,50=>50,100=>100),
     ),
-    
+
     'import' => array(
         'application.core.*',
         'application.core.db.*',
@@ -44,9 +44,9 @@ $internalConfig = array(
 
     	'bootstrap.helpers.*',
     	'bootstrap.widgets.*',
-    	'bootstrap.behaviors.*', 
+    	'bootstrap.behaviors.*',
     	'yiiwheels.widgets.select2.WhSelect2',
-		       
+
 
         //'bootstrap.helpers.TbHtml',
     ),
@@ -66,9 +66,9 @@ $internalConfig = array(
         ),
         // yiiwheels configuration
         'yiiwheels' => array(
-            'class' => 'yiiwheels.YiiWheels',   
+            'class' => 'yiiwheels.YiiWheels',
         ),
-	 	 
+
         'clientScript'=>array(
             'class'=>'ext.ExtendedClientScript.ExtendedClientScript',
             'combineCss'=>false,
@@ -85,7 +85,7 @@ $internalConfig = array(
         'assetManager' => array(
             'baseUrl' => '/tmp/assets',
             'basePath'=> dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'assets'
-            
+
         ),
         'request' => array(
             'class'=>'LSHttpRequest',

@@ -21,7 +21,7 @@
 
 <div class="col-lg-12 list-surveys">
 	<h3>
-		<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/big/fff/shield-update.png" style="height : 1em; margin-right : 0.5em;"/>
+		<img src="<?php echo IMAGE_BASE_URL;?>lime-icons/big/fff/shield-update.png" style="height : 1em; margin-right : 0.5em;"/>
 		<?php eT('ComfortUpdate'); ?>
 	</h3>
 

@@ -65,11 +65,11 @@ class UserAction extends Survey_Common_Action
         for ($i = 1; $i <= count($userlist); $i++)
             $noofsurveyslist[$i] = $this->_getSurveyCountForUser($userlist[$i]);
 
-        $aData['imageurl'] = Yii::app()->getBaseUrl(true).'/images/lime-icons/328637/';
+        $aData['imageurl'] = IMAGE_BASE_URL;
         $aData['noofsurveyslist'] = $noofsurveyslist;
 
-        $aData['title_bar']['title'] = gT('User Control');         
-        $aData['fullpagebar']['returnbutton']['url'] = 'admin/survey/sa/index';       
+        $aData['title_bar']['title'] = gT('User Control');
+        $aData['fullpagebar']['returnbutton']['url'] = 'admin/survey/sa/index';
         $aData['fullpagebar']['returnbutton']['text'] = gT('return to admin pannel');
 
         $this->_renderWrappedTemplate('user', 'editusers', $aData);
@@ -326,7 +326,7 @@ class UserAction extends Survey_Common_Action
                 $aData['mur'] = $sresult;
 
                 $aData['fullpagebar']['savebutton']['form'] = 'moduserform';
-                $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';               
+                $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';
 
                 $this->_renderWrappedTemplate('user', 'modifyuser', $aData);
                 return;
@@ -337,9 +337,9 @@ class UserAction extends Survey_Common_Action
                 $this->getController()->redirect(array("admin/user/sa/index"));
             }
         }
-        
 
-        
+
+
         Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
         $this->getController()->redirect(array("admin/user/sa/index"));
     }
@@ -420,7 +420,7 @@ class UserAction extends Survey_Common_Action
         {
             Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
         }
-        $aData['fullpagebar']['continuebutton']['url'] = 'admin/user/sa/index';                       
+        $aData['fullpagebar']['continuebutton']['url'] = 'admin/user/sa/index';
         $this->_renderWrappedTemplate('user', $aViewUrls, $aData);
     }
 
@@ -522,7 +522,7 @@ class UserAction extends Survey_Common_Action
                 unset($aBasePermissions['superadmin']);
             }
             $aData['aBasePermissions']=$aBasePermissions;
-            $aData['sImageURL'] = Yii::app()->getBaseUrl(true).'/images/lime-icons/328637/';
+            $aData['sImageURL'] = IMAGE_BASE_URL;
 
             $aData['oUser'] =$oUser;
             App()->getClientScript()->registerPackage('jquery-tablesorter');
@@ -530,8 +530,8 @@ class UserAction extends Survey_Common_Action
 
 
                 $aData['fullpagebar']['savebutton']['form'] = 'savepermissions';
-                $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';               
-            
+                $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';
+
             $this->_renderWrappedTemplate('user', 'setuserpermissions', $aData);
         }
         else
@@ -565,10 +565,10 @@ class UserAction extends Survey_Common_Action
                 $aData['list'][] = array('templaterights'=>$templaterights,'templates'=>$templates);
             }
         }
-        
+
         $aData['fullpagebar']['savebutton']['form'] = 'modtemplaterightsform';
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';                       
-        
+        $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';
+
         $this->_renderWrappedTemplate('user', 'setusertemplates', $aData);
     }
 
@@ -659,9 +659,9 @@ class UserAction extends Survey_Common_Action
         // Get user lang
         $user = User::model()->findByPk(Yii::app()->session['loginID']);
         $aData['sSavedLanguage'] = $user->lang;
-        
+
         $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/survey/sa/index';               
+        $aData['fullpagebar']['closebutton']['url'] = 'admin/survey/sa/index';
 
         // Render personal settings view
         $this->_renderWrappedTemplate('user', 'personalsettings', $aData);

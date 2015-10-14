@@ -7,7 +7,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
-                          <img id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo Yii::app()->getBaseUrl(true);?>/images/Limesurvey_logo.png" />
+                          <img id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo IMAGE_BASE_URL;?>Limesurvey_logo.png" />
                              <p>Dashboard</p>
                         </div>                    
                     </div>

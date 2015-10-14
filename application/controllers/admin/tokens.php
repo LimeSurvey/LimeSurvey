@@ -468,13 +468,13 @@ class tokens extends Survey_Common_Action
             }
             // Check if the token can be taken
             if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "" || $aSurveyInfo['alloweditaftercompletion']=="Y") && $bCreatePermission) {
-                $action .= viewHelper::getImageLink('do_16.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}/lang/{$token['language']}/newtest/Y", gT("Do survey"), '_blank');
+                $action .= viewHelper::getImageLink('do.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}/lang/{$token['language']}/newtest/Y", gT("Do survey"), '_blank');
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
             if($bTokenDeletePermission){
                 $attribs = array('onclick' => 'if (confirm("' . gT("Are you sure you want to delete this entry?") . ' (' . $token['tid'] . ')")) {$("#displaytokens").delRowData(' . $token['tid'] . ');$.post(delUrl,{tid:' . $token['tid'] . '});}');
-                $action .= viewHelper::getImageLink('token_delete.png', null, gT("Delete token entry"), null, 'imagelink btnDelete', $attribs);
+                $action .= viewHelper::getImageLink('delete.png', null, gT("Delete token entry"), null, 'imagelink btnDelete', $attribs);
             }
             if (strtolower($token['emailstatus']) == 'ok' && $token['email'] && $bTokenUpdatePermission) {
                 if ($token['completed'] == 'N' && $token['usesleft'] > 0) {
@@ -490,9 +490,9 @@ class tokens extends Survey_Common_Action
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
             if($bTokenUpdatePermission)
-                $action .= viewHelper::getImageLink('edit_16.png', null, gT("Edit token entry"), null, 'imagelink token_edit');
+                $action .= viewHelper::getImageLink('edit.png', null, gT("Edit token entry"), null, 'imagelink token_edit');
             if(!empty($token['participant_id']) && $token['participant_id'] != "" && $bGlobalPanelReadPermission) {
-                $action .= viewHelper::getImageLink('cpdb_16.png', null, gT("View this person in the central participants database"), null, 'imagelink cpdb',array('onclick'=>"sendPost('".$this->getController()->createUrl('admin/participants/sa/displayParticipants')."','',['searchcondition'],['participant_id||equal||{$token['participant_id']}']);"));
+                $action .= viewHelper::getImageLink('cpdb.png', null, gT("View this person in the central participants database"), null, 'imagelink cpdb',array('onclick'=>"sendPost('".$this->getController()->createUrl('admin/participants/sa/displayParticipants')."','',['searchcondition'],['participant_id||equal||{$token['participant_id']}']);"));
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }

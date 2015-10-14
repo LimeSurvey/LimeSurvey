@@ -57,7 +57,7 @@
                     <?php if (Permission::model()->hasSurveyPermission($surveyid, 'assessments','update')) { ?>
                         <?php 
                             echo CHtml::link(
-                                CHtml::image("{$imageurl}edit_16.png",gT("Edit")),
+                                CHtml::image("{$imageurl}edit.png",gT("Edit")),
                                 array("admin/assessments","sa"=>"index","surveyid"=>$surveyid,"action"=>'assessmentedit','id'=>$assess['id'])
                             );
                         ?>

@@ -62,14 +62,14 @@
                 </td>
                 <td class='actions'>
                     <?php
-                        $edit = array('src' => Yii::app()->getConfig('adminimageurl') . 'cancel_16.png',
+                        $edit = array('src' => Yii::app()->getConfig('adminimageurl') . 'cancel.png',
                             'alt' => gT("Cancel editing"),
                             'width' => '16',
                             'class' => 'cancel',
                             'height' => '16',
                             'title' => gT("Cancel editing"));
                         echo CHtml::image($edit['src'], $edit['alt'], array_slice($edit, 2));
-                        $edit = array('src' => Yii::app()->getConfig('adminimageurl') . 'edit_16.png',
+                        $edit = array('src' => Yii::app()->getConfig('adminimageurl') . 'edit.png',
                             'alt' => gT("Edit value"),
                             'width' => '15',
                             'class' => 'edit',

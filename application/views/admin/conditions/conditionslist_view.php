@@ -20,7 +20,7 @@
             
             <?php if ($scenariocount > 0): ?>
                 <a href='#' onclick="if ( confirm('<?php eT("Are you sure you want to delete all conditions set to the questions you have selected?","js");?>')) { document.getElementById('deleteallconditions').submit();}">
-                    <img src='<?php echo IMAGE_URL;?>conditions_deleteall_16.png'  alt='<?php eT("Delete all conditions");?>' />
+                    <img src='<?php echo IMAGE_URL;?>conditions_deleteall.png'  alt='<?php eT("Delete all conditions");?>' />
                 </a>
             <?php endif; ?>
             
