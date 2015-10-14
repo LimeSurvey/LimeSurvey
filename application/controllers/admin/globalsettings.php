@@ -177,7 +177,6 @@ class GlobalSettings extends Survey_Common_Action
             $adminimagebaseurl = Yii::app()->getBaseUrl()."/upload/admintheme/$sAdmintheme/images/";
             setGlobalSetting('adminimagebaseurl', $adminimagebaseurl);
             setGlobalSetting('adminimageurl', $adminimagebaseurl.'images/14/');
-
         }
         else
         {
@@ -264,7 +263,8 @@ class GlobalSettings extends Survey_Common_Action
 
 
         Yii::app()->session['flashmessage'] = $warning.gT("Global settings were saved.");
-        Yii::app()->getController()->redirect('globalsettings');
+
+        Yii::app()->getController()->redirect(Yii::app()->createUrl('admin/globalsettings'));
     }
 
     private function _checkSettings()
