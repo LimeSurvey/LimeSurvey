@@ -26,6 +26,7 @@ class AdminController extends LSYii_Controller
     protected function _init()
     {
         parent::_init();
+
         App()->getComponent('bootstrap');
         $this->_sessioncontrol();
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
@@ -125,6 +126,14 @@ class AdminController extends LSYii_Controller
     */
     public function run($action)
     {
+
+        // Guest can't access to any action but authentication
+        // We don't use the Yii access rules, because the subcontrollers with subactins method are too far from a standard Yii architecture.
+        if (Yii::app()->user->getIsGuest() && $action!='authentication' )
+        {
+            $this->redirect(array('admin/authentication/'));
+        }
+
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}'))
         {
