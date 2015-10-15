@@ -299,21 +299,22 @@ class UpdateForm extends CFormModel
     {
         foreach ( $updateinfos as $file )
         {
-            if ( $file->type =='D' && file_exists($this->rootdir.$file->file) )
+            $sFileToDelete = str_replace("..", "", $file->file);
+            if ( $file->type =='D' && file_exists($this->rootdir.$sFileToDelete) )
             {
-                if( is_file($this->rootdir.$file->file ) )
+                if( is_file($this->rootdir.$sFileToDelete ) )
                 {
-                    if( ! @unlink($this->rootdir.$file->file) )
+                    if( ! @unlink($this->rootdir.$sFileToDelete) )
                     {
-                        $return = array('result'=>FALSE, 'error'=>'cant_remove_deleted_files', 'message'=>'file : '.$file->file);
+                        $return = array('result'=>FALSE, 'error'=>'cant_remove_deleted_files', 'message'=>'file : '.$sFileToDelete);
                         return (object) $return;
                     }
                 }
                 else
                 {
-                    if( ! rmdir($this->rootdir.$file->file) )
+                    if( ! rmdir($this->rootdir.$sFileToDelete) )
                     {
-                        $return = array('result'=>FALSE, 'error'=>'cant_remove_deleted_directory', 'message'=>'dir : '.$afile->file);
+                        $return = array('result'=>FALSE, 'error'=>'cant_remove_deleted_directory', 'message'=>'dir : '.$sFileToDelete);
                         return (object) $return;
                     }
                 }
@@ -437,10 +438,13 @@ class UpdateForm extends CFormModel
 
         foreach ($updateinfos as $file)
         {
-            // Sort out directories
-            if (is_file($this->publicdir.$file->file)===true)
+
+            // To block the access to subdirectories
+            $sFileToZip = str_replace("..", "", $file->file);
+
+            if (is_file($this->publicdir.$sFileToZip)===true)
             {
-                $filestozip[]=$this->publicdir.$file->file;
+                $filestozip[]=$this->publicdir.$sFileToZip;
             }
         }
 
