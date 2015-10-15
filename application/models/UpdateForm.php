@@ -442,7 +442,7 @@ class UpdateForm extends CFormModel
             // To block the access to subdirectories
             $sFileToZip = str_replace("..", "", $file->file);
 
-            if (is_file($this->publicdir.$sFileToZip)===true)
+            if (is_file($this->publicdir.$sFileToZip)===true && $basename($sFileToZip)!='config.php')
             {
                 $filestozip[]=$this->publicdir.$sFileToZip;
             }
