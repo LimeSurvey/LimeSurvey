@@ -182,9 +182,12 @@ class UpdateForm extends CFormModel
         $lsRootPath = dirname(Yii::app()->request->scriptFile).'/';
         foreach( $toCheck as $check )
         {
-            if( !is_writable( $lsRootPath . $check ) )
+            if(file_exists(  $lsRootPath . $check ))
             {
-                $readOnly[] = $lsRootPath . $check ;
+                if( !is_writable( $lsRootPath . $check ) )
+                {
+                    $readOnly[] = $lsRootPath . $check ;
+                }
             }
         }
 
