@@ -132,10 +132,10 @@ class AdminController extends LSYii_Controller
         {
             $sDBVersion = getGlobalSetting('DBVersion');
             if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'update' && $action != 'authentication')
-                $this->redirect(array('/admin/update/sa/db'));
+                $this->redirect(array('/admin/databaseupdate/sa/db'));
         }
 
-        if ($action != "db")
+        if ($action != "databaseupdate" && $action != "db")
             if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
             {
                 if (!empty($action) && $action != 'index')
@@ -185,6 +185,7 @@ class AdminController extends LSYii_Controller
         'checkintegrity'   => 'checkintegrity',
         'conditions'       => 'conditionsaction',
         'database'         => 'database',
+        'databaseupdate'   => 'databaseupdate',
         'dataentry'        => 'dataentry',
         'dumpdb'           => 'dumpdb',
         'emailtemplates'   => 'emailtemplates',
