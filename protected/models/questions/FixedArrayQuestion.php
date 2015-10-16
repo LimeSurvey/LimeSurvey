@@ -98,15 +98,17 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
         return $result;
     }
 
-    protected function renderSubQuestion(iSubQuestion $subQuestion, iResponse $response, $relevance) {
+    protected function renderSubQuestion(iSubQuestion $subQuestion, iResponse $response, $relevance)
+    {
         bP();
+
         $result = [];
         $em = $this->getExpressionManager($response);
         $result[] = \TbHtml::openTag('tr', [
             'data-relevance-expression' => $em->getJavascript($relevance),
             'data-enabled-expression' => $this->array_filter_style == 1 ? $em->getJavascript($relevance) : null,
         ]);
-        $fieldName = $this->sgqa . $subQuestion->getCode();
+        $fieldName = $this->sgqa . explode('_', $subQuestion->getCode(), 2)[1];
 
         $parts = explode('|', $subQuestion->getLabel(), 2);
         $answerText = $parts[0];

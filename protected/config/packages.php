@@ -92,9 +92,9 @@ return [
         ]
      ],
     'jquery-actual' => [
-        'basePath' => 'bower.jquery.actual',
+        'basePath' => 'bower',
         'js' => [
-            'jquery.actual.min.js'
+            'jquery.actual/jquery.actual.min.js'
         ],
         'depends' => [
             'jquery'

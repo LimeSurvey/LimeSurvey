@@ -42,7 +42,7 @@ abstract class BaseArrayQuestion extends \ls\models\Question
         $result = [];
         $em = $this->getExpressionManager();
         foreach ($this->subQuestions as $subQuestion) {
-            $result[] = $field = new \ls\components\QuestionResponseField($this->sgqa . $subQuestion->title, "{$this->title}_{$subQuestion->title}", $this);
+            $result[] = $field = new \ls\components\QuestionResponseField($this->sgqa . $subQuestion->title, "{$subQuestion->code}", $this);
 
             $filter = strtr($this->filterExpression, ['{VALUE}' => explode('|', $subQuestion->question, 2)[0]]);
 

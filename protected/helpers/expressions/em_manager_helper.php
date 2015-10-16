@@ -606,7 +606,6 @@ class LimeExpressionManager
 
         switch ($session->format) {
             case Survey::FORMAT_ALL_IN_ONE:
-                $LEM->StartProcessingPage();
                 $session = App()->surveySessionManager->current;
                 $LEM->processData($session->response, App()->request->psr7);
                 $valid = $LEM->validateSurvey();

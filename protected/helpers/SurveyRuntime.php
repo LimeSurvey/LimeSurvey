@@ -351,6 +351,7 @@ class SurveyRuntime {
         echo TbHtml::hiddenField('start_time', time(), ['id' => 'start_time']);
         echo TbHtml::hiddenField('csrfToken', $session->postKey);
 
+        $this->renderNavigator($session);
         echo "</form>\n";
 
         renderOldTemplate($session->templateDir . "endpage.pstpl", array(), $redata);
