@@ -353,7 +353,7 @@ class UpdateForm extends CFormModel
      */
     public function updateVersion($destinationBuild)
     {
-        // Now we have to update version.php
+        $destinationBuild = (int) $destinationBuild;
         @ini_set('auto_detect_line_endings', true);
         $versionlines=file($this->rootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'version.php');
         $handle = fopen($this->rootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'version.php', "w");
