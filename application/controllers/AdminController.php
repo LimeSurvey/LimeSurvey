@@ -127,13 +127,6 @@ class AdminController extends LSYii_Controller
     public function run($action)
     {
 
-        // Guest can't access to any action but authentication
-        // We don't use the Yii access rules, because the subcontrollers with subactins method are too far from a standard Yii architecture.
-        if (Yii::app()->user->getIsGuest() && $action!='authentication' && $action != "remotecontrol" )
-        {
-            $this->redirect(array('admin/authentication/'));
-        }
-
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}'))
         {
@@ -142,7 +135,7 @@ class AdminController extends LSYii_Controller
                 $this->redirect(array('/admin/update/sa/db'));
         }
 
-        if ($action != "update" && $action != "db")
+        if ($action != "db")
             if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
             {
                 if (!empty($action) && $action != 'index')
