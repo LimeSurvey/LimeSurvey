@@ -1,13 +1,16 @@
 <?php
 namespace ls\models;
 
+use ls\interfaces\DependentRecordInterface;
+use ls\traits\DependentRecordTrait;
+
 /**
  * Class ActiveRecord
  * @package ls\models
  */
-class ActiveRecord extends \CActiveRecord implements \JsonSerializable
+class ActiveRecord extends \CActiveRecord implements \JsonSerializable, DependentRecordInterface
 {
-
+    use DependentRecordTrait;
     /**
      * Lists the behaviors of this model
      *
@@ -27,52 +30,6 @@ class ActiveRecord extends \CActiveRecord implements \JsonSerializable
         return $result;
     }
 
-    /**
-     * Modified version that default to do the same as the original, but allows via a
-     * third parameter to retrieve the result as array instead of active records. This
-     * solves a joining problem. Usage via findAllAsArray method
-     *
-     * Performs the actual DB query and populates the AR objects with the query result.
-     * This method is mainly internally used by other AR query methods.
-     * @param CDbCriteria $criteria the query criteria
-     * @param boolean $all whether to return all data
-     * @return mixed the AR objects populated with the query result
-     * @since 1.1.7
-     */
-    protected function query($criteria, $all = false, $asAR = true)
-    {
-        if ($asAR === true) {
-            return parent::query($criteria, $all);
-        } else {
-            $this->beforeFind();
-            $this->applyScopes($criteria);
-            if (!$all) {
-                $criteria->limit = 1;
-            }
-
-            $command = $this->getCommandBuilder()->createFindCommand($this->getTableSchema(), $criteria);
-            //For debug, this command will get you the generated sql:
-            //echo $command->getText();
-
-            return $all ? $command->queryAll() : $command->queryRow();
-        }
-    }
-
-    /**
-     * Finds all active records satisfying the specified condition but returns them as array
-     *
-     * See {@link find()} for detailed explanation about $condition and $params.
-     * @param mixed $condition query condition or criteria.
-     * @param array $params parameters to be bound to an SQL statement.
-     * @return array list of active records satisfying the specified condition. An empty array is returned if none is found.
-     */
-    public function findAllAsArray($condition = '', $params = array())
-    {
-        Yii::trace(get_class($this) . '.findAll()', 'system.db.ar.CActiveRecord');
-        $criteria = $this->getCommandBuilder()->createCriteria($condition, $params);
-
-        return $this->query($criteria, true, false);  //Notice the third parameter 'false'
-    }
 
 
     /**
@@ -85,12 +42,10 @@ class ActiveRecord extends \CActiveRecord implements \JsonSerializable
      * @param boolean $forceRefresh Don't use value from static cache but always requery the database
      * @return false|int
      */
-    public function getMaxId($field = null, $forceRefresh = false)
+    public function getMaxId($field = null)
     {
-        static $maxIds = array();
-
         if (is_null($field)) {
-            $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
+            $primaryKey = $this->primaryKey();
             if (is_string($primaryKey)) {
                 $field = $primaryKey;
             } else {
@@ -100,17 +55,12 @@ class ActiveRecord extends \CActiveRecord implements \JsonSerializable
             }
         }
 
-        if ($forceRefresh || !array_key_exists($field, $maxIds)) {
-            $maxId = $this->dbConnection->createCommand()
-                ->select('MAX(' . $this->dbConnection->quoteColumnName($field) . ')')
-                ->from($this->tableName())
-                ->queryScalar();
+        return $this->dbConnection->createCommand()
+            ->select('MAX(' . $this->dbConnection->quoteColumnName($field) . ')')
+            ->from($this->tableName())
+            ->queryScalar();
 
-            // Save so we can reuse in the same request
-            $maxIds[$field] = $maxId;
-        }
 
-        return $maxIds[$field];
     }
 
     /**
@@ -137,20 +87,6 @@ class ActiveRecord extends \CActiveRecord implements \JsonSerializable
         $this->dispatchPluginModelEvent('beforeModelDeleteMany', $criteria);
 
         return parent::deleteAllByAttributes(array(), $criteria, array());
-    }
-
-    /**
-     * @param null $class
-     * @return static
-     */
-    public static function model($class = null)
-    {
-        if (!isset($class)) {
-            $class = get_called_class();
-        }
-
-        return parent::model($class);
-
     }
 
     /*
@@ -196,7 +132,7 @@ class ActiveRecord extends \CActiveRecord implements \JsonSerializable
      * @return void
      * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.sleep
      */
-    function __wakeup()
+    public function __wakeup()
     {
         // Re-attach behaviors.
         $this->attachBehaviors($this->behaviors());
@@ -236,8 +172,38 @@ class ActiveRecord extends \CActiveRecord implements \JsonSerializable
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         return $this->attributes;
     }
+
+    /**
+     * @return array List of relation names that contain only dependent records.
+     */
+    public function dependentRelations() {
+        return [];
+    }
+
+    /**
+     * Returns the static model of the specified AR class.
+     * The model returned is a static instance of the AR class.
+     * It is provided for invoking class-level methods (something similar to static class methods.)
+     *
+     * EVERY derived AR class must override this method as follows,
+     * <pre>
+     * public static function model($className=__CLASS__)
+     * {
+     *     return parent::model($className);
+     * }
+     * </pre>
+     *
+     * @param string $className active record class name.
+     * @return static active record model instance.
+     */
+    public static function model($className = null)
+    {
+        return parent::model(!isset($className) ? get_called_class() :$className);
+    }
+
+
 }

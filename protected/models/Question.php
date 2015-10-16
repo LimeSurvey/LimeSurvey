@@ -367,17 +367,11 @@ class Question extends ActiveRecord implements \ls\interfaces\iRenderable
         $alias = $this->getTableAlias();
 
         return array(
-            'groups' => array(
-                self::HAS_ONE,
-                'ls\models\QuestionGroup',
-                '',
-                'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"
-            ),
-            'parent' => array(self::BELONGS_TO, 'ls\models\Question', 'parent_qid'),
-            'subQuestions' => array(self::HAS_MANY, 'ls\models\Question', 'parent_qid'),
+            'parent' => array(self::BELONGS_TO, self::class, 'parent_qid'),
+            'subQuestions' => array(self::HAS_MANY, self::class, 'parent_qid'),
             'questionAttributes' => [self::HAS_MANY, QuestionAttribute::class, 'qid', 'index' => 'attribute'],
-            'group' => [self::BELONGS_TO, 'ls\models\QuestionGroup', 'gid'],
-            'survey' => [self::BELONGS_TO, 'ls\models\Survey', 'sid'],
+            'group' => [self::BELONGS_TO, QuestionGroup::class, 'gid'],
+            'survey' => [self::BELONGS_TO, Survey::class, 'sid'],
             // Conditions this question has.
             'conditions' => [self::HAS_MANY, Condition::class, 'qid'],
             // Conditions other questions have where this question is the target.
@@ -1013,31 +1007,6 @@ class Question extends ActiveRecord implements \ls\interfaces\iRenderable
         ];
     }
 
-    /**
-     * Deletes this record and all dependent records.
-     * @throws CDbException
-     */
-    public function deleteDependent()
-    {
-        if (App()->db->getCurrentTransaction() == null) {
-            $transaction = App()->db->beginTransaction();
-        }
-        foreach ($this->dependentRelations() as $relation) {
-            /** @var CActiveRecord $record */
-            foreach ($this->$relation as $record) {
-                if (method_exists($record, 'deleteDependent')) {
-                    $record->deleteDependent();
-                } else {
-                    $record->delete();
-                }
-            }
-        }
-        $this->delete();
-
-        if (isset($transaction)) {
-            $transaction->commit();
-        }
-    }
 
     /**
      * Returns the question attributes that do use i18n.

@@ -147,31 +147,6 @@ class QuestionGroup extends ActiveRecord
 
     }
 
-    /**
-     * Deletes this record and all dependent records.
-     * @throws CDbException
-     */
-    public function deleteDependent()
-    {
-        if (App()->db->getCurrentTransaction() == null) {
-            $transaction = App()->db->beginTransaction();
-        }
-        foreach ($this->dependentRelations() as $relation) {
-            /** @var CActiveRecord $record */
-            foreach ($this->$relation as $record) {
-                if (method_exists($record, 'deleteDependent')) {
-                    $record->deleteDependent();
-                } else {
-                    $record->delete();
-                }
-            }
-        }
-        $this->delete();
-
-        if (isset($transaction)) {
-            $transaction->commit();
-        }
-    }
 
     public function isRelevant(\ls\interfaces\iResponse $response)
     {

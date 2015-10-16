@@ -1017,16 +1017,19 @@ class Survey extends ActiveRecord
      */
     public function setTranslatedFields($value)
     {
+        $languageSettings = $this->languagesettings;
         foreach ($value as $language => $fields) {
-            if (!isset($this->languagesettings[$language])) {
-                $this->languagesettings[$language] = $languageSetting = new SurveyLanguageSetting();
+            if (!isset($languageSettings[$language])) {
+                $languageSettings[$language] = $languageSetting = new SurveyLanguageSetting();
+                $languageSetting->surveyls_survey_id = $this->primaryKey;
                 $languageSetting->surveyls_language = $language;
             } else {
-                $languageSetting = $this->languagesettings[$language];
+                $languageSetting = $languageSettings[$language];
             }
             $languageSetting->attributes = $fields;
             $languageSetting->save();
         }
+        $this->languagesettings = $languageSettings;
     }
 
     /**
@@ -1058,42 +1061,5 @@ class Survey extends ActiveRecord
             'quota'
         ];
     }
-
-    /**
-     * Deletes this record and all dependent records.
-     * @throws CDbException
-     */
-    public function deleteDependent()
-    {
-        if (App()->db->getCurrentTransaction() == null) {
-            $transaction = App()->db->beginTransaction();
-        }
-        foreach ($this->dependentRelations() as $relation) {
-            /** @var CActiveRecord $record */
-
-            $config = $this->relations()[$relation];
-            if (method_exists($config[1], 'deleteDependent')) {
-                foreach ($this->$relation as $record) {
-                    $record->deleteDependent();
-                }
-            } else {
-                // Delete all records in the relation.
-                if ($config[0] == \CHasManyRelation::class && !isset($config['on']) && is_string($config[2])) {
-                    $class = $config[1];
-                    $class::model()->deleteAllByAttributes([
-                        $config[2] => $this->primaryKey
-                    ]);
-                } else {
-                    throw new \Exceptiion("dont know what to do!");
-                }
-            }
-        }
-        $this->delete();
-
-        if (isset($transaction)) {
-            $transaction->commit();
-        }
-    }
-
 
 }

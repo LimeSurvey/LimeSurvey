@@ -76,8 +76,6 @@ class SurveyLanguageSetting extends ActiveRecord
      */
     public function relations()
     {
-        $alias = $this->getTableAlias();
-
         return [
             'survey' => [self::BELONGS_TO, Survey::class, 'surveyls_survey_id'],
             'owner' => [self::BELONGS_TO, User::class, '', 'on' => 'survey.owner_id = owner.uid'],
@@ -92,6 +90,7 @@ class SurveyLanguageSetting extends ActiveRecord
     public function rules()
     {
         return [
+            ['surveyls_survey_id', \CExistValidator::class, 'className' => Survey::class, 'attributeName' => 'sid'],
             ['surveyls_email_invite_subj', 'lsdefault'],
             ['surveyls_email_invite', 'lsdefault'],
             ['surveyls_email_remind_subj', 'lsdefault'],

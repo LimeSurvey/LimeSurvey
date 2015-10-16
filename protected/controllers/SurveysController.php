@@ -289,7 +289,7 @@ class SurveysController extends Controller
                 'entity_id' => $survey->primaryKey,
                 'crud' => 'delete'
             ])) {
-            $survey->deleteDependent();
+            $survey->deleteDependent(App()->db);
             App()->user->setFlash('success', gT("Survey deleted"));
             $this->redirect(['surveys/index']);
         } else {
