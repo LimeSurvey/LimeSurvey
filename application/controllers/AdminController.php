@@ -131,7 +131,7 @@ class AdminController extends LSYii_Controller
         if (Yii::app()->db->schema->getTable('{{surveys}}'))
         {
             $sDBVersion = getGlobalSetting('DBVersion');
-            if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'update' && $action != 'authentication')
+            if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate' && $action != 'authentication')
                 $this->redirect(array('/admin/databaseupdate/sa/db'));
         }
 
