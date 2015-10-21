@@ -144,10 +144,4 @@ class ResponsesController extends Controller
 
         $this->redirect(['responses/update', 'id' => $newResponse->getId(), 'surveyId' => $surveyId]);
     }
-
-
-    public function actionUpdate($id, $surveyId)
-    {
-
-    }
 }
