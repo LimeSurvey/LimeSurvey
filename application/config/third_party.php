@@ -288,6 +288,7 @@ return array(
             'scripts/save.js',
             'scripts/panelclickable.js',
             'scripts/panelsanimation.js',
+            'scripts/sidemenu.js'
         ),
 
         'css' => array(
@@ -314,6 +315,7 @@ return array(
             'scripts/save.js',
             'scripts/panelclickable.js',
             'scripts/panelsanimation.js',
+            'scripts/sidemenu.js'
         ),
 
         'css' => array(
