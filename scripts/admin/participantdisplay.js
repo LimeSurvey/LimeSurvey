@@ -33,8 +33,8 @@ function addcondition(newcid)
     <option value='lessthan'>"+lessthanTxt+"</option>\n\
     </select></td>\n\
     <td><input type='text' id='conditiontext_"+conditionid+"' style='margin-left:10px;' /></td>\n\
-    <td><img src="+minusbutton+" onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+" alt='"+minusbuttonTxt+"' />\n\
-    <img src="+addbutton+" id='addbutton' onclick='addcondition();' style='margin-bottom:4px' alt='"+addbuttonTxt+"' /></td></tr>\n\<tr></tr>";
+    <td><span class='glyphicon glyphicon-trash text-warning' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+" title='"+minusbuttonTxt+"' ></span>\n\
+    <span id='addbutton' onclick='addcondition();' style='margin-bottom:4px' alt='"+addbuttonTxt+"'  class='icon-add text-success'></span></td></tr>\n\<tr></tr>";
     //$('#searchtable > tbody > tr').eq(id).after(html);
     $('#searchtable > tbody > tr').eq(conditionid).after(html);
     conditionid++;
@@ -75,8 +75,8 @@ $(document).ready(function() {
         <option value='lessthan'>"+lessthanTxt+"</option>\n\
         </select></td>\n\
         <td><input type='text' id='conditiontext_"+conditionid+"' style='margin-left:10px;' /></td>\n\
-        <td><img src="+minusbutton+" onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+" alt='"+minusbuttonTxt+"' />\n\
-        <img src="+addbutton+" id='addbutton' onclick='addcondition();' style='margin-bottom:4px' alt='"+addbuttonTxt+"' /></td></tr>\n\<tr></tr>";
+        <td><span class='glyphicon glyphicon-trash text-warning' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+" title='"+minusbuttonTxt+"' ></span>\n\
+        <span  id='addbutton' onclick='addcondition();' style='margin-bottom:4px' alt='"+addbuttonTxt+"' class='icon-add text-success'></span></td></tr>\n\<tr></tr>";
         $('#searchtable tr:last').after(html);
     });
 
@@ -117,11 +117,6 @@ $(document).ready(function() {
         rowList: [25,50,100,250,500,1000,2500,5000],
         multiselect: true,
         loadComplete : function() {
-            /* Sneaky way of adding custom icons to jqGrid pager buttons */
-            $("#pager").find(".ui-share-icon")
-            .css({"background-image":"url("+imageurl+"share_12.png)", "background-position":"0", "color":"black"});
-            $("#pager").find(".ui-addtosurvey-icon")
-            .css({"background-image":"url("+imageurl+"tokens_12.png)", "background-position":"0", "color":"black"});
         },
         loadError : function(xhr, st, str) {
             var dialog_buttons={};
@@ -252,7 +247,7 @@ $(document).ready(function() {
 
             /* Pager for attribute subgrid */
             jQuery("#"+subgrid_table_id).jqGrid('navGrid',"#"+pager_id,{
-                refresh: false, 
+                refresh: false,
                 edit:false,
                 add:false,
                 del:false,
@@ -275,8 +270,8 @@ $(document).ready(function() {
             search: false,
             alertcap: sWarningMsg,
             alerttext: sSelectRowMsg,
-            addtitle: createParticipantTxt, 
-            deltitle: deleteParticipantTxt, 
+            addtitle: createParticipantTxt,
+            deltitle: deleteParticipantTxt,
             refreshtitle: refreshListTxt},
         {}, //Default settings for edit
         {
@@ -286,9 +281,9 @@ $(document).ready(function() {
             bCancel: sCancel,
             afterShowForm: function(form) {
                 form.closest('div.ui-jqdialog').center();
-            }            
+            }
         }, //default settings for add
-        {msg:deleteMsg, 
+        {msg:deleteMsg,
             bCancel: sCancel,
             caption: sDeleteDialogCaption,
             bSubmit: sDeleteButtonCaption,
@@ -453,7 +448,7 @@ $(document).ready(function() {
                             width : 600,
                             height : 300,
                             open: function(event, ui) {
-                                $('#attributes').multiselect({ includeSelectAllOption:true, 
+                                $('#attributes').multiselect({ includeSelectAllOption:true,
                                     selectAllValue: '0',
                                     selectAllText: sSelectAllText,
                                     nonSelectedText: sNonSelectedText,
@@ -556,10 +551,10 @@ $(document).ready(function() {
                         if(rows=="") { /* All in grid */
                             $.post(
                                 getSearchIDs,
-                                { 
+                                {
                                     searchcondition: searchconditions,
                                     searchURL: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')
-                                },                               
+                                },
                                 function(data) {
                                     $('#count').val(totalitems);
                                     $('#participant_id').val(data);

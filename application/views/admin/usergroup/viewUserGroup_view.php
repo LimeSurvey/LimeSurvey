@@ -8,32 +8,32 @@
             <?php if(isset($groupfound)):?>
                 <strong><?php eT("Group description: ");?></strong>
                 <?php echo htmlspecialchars($usergroupdescription);?>
-                                
+
             <?php endif;?>
-            
+
 <br/><br/>
-                            
-                            
-                            
-                            
+
+
+
+
             <?php if(isset($headercfg)): ?>
                 <?php if($headercfg["type"] == "success"): ?>
-                    
-                    <div class="alert alert-success alert-dismissible" role="alert">                                                                 
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
-                        <?php echo $headercfg["message"];?>
-                    </div>                                                                                                                           
-                    
-                <?php else:?>
 
-                    <div class="alert alert-warning alert-dismissible" role="alert">                                                                 
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <?php echo $headercfg["message"];?>
                     </div>
-                    
+
+                <?php else:?>
+
+                    <div class="alert alert-warning alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <?php echo $headercfg["message"];?>
+                    </div>
+
                 <?php endif;?>
             <?php endif;?>
-                                        
+
             <br/><br/>
             <?php if (!empty($userloop)) { ?>
                 <table class='users table'>
@@ -53,7 +53,8 @@
                             if(isset($currentuser["displayactions"]) && $currentuser["displayactions"] == true)
                             { ?>
                                 <?php echo CHtml::form(array("admin/usergroups/sa/user/ugid/{$ugid}/action/remove"), 'post'); ?>
-                                <input type='image' src='<?php echo Yii::app()->getConfig('adminimageurl')?>/token_delete.png' alt='<?php eT("Delete this user from group");?>' onclick='return confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")' />
+
+                                <button type="submit" onclick='return confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")' class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash text-success"></span></button>
                                 <input name='uid' type='hidden' value='<?php echo $currentuser["userid"]; ?>' />
                                 </form>
                                 <?php
@@ -75,7 +76,7 @@
                     </tbody>
                 </table>
             <?php } ?>
-            
+
             <?php
             if (!empty($useradddialog))
             {
@@ -107,6 +108,4 @@
             ?>
         </div>
     </div>
-</div>    
-
-        
+</div>

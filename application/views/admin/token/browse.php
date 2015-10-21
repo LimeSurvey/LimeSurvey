@@ -28,7 +28,7 @@
             $aTokenColumns[$aTokenColumn]['quickfilter']=true;
         }
     }
-    // Build the columnNames for the extra attributes 
+    // Build the columnNames for the extra attributes
     // and, build the columnModel
     $attributes = getTokenFieldsAndNames($surveyid,true);
     $uidNames=$columnNames=$aColumnHeader=array();
@@ -97,7 +97,7 @@
     var showRemindButton = <?php echo $showRemindButton; ?>;
     <?php if (!Permission::model()->hasGlobalPermission('participantpanel','read')){?>
     var bParticipantPanelPermission=false;
-    <?php 
+    <?php
     } else {?>
     var bParticipantPanelPermission=true;
     var viewParticipantsLink = "<?php eT("View participants of this survey in the central participant database panel") ?>";
@@ -129,31 +129,31 @@
     var colInformation=<?php echo $sJsonColumnInformation ?>
 
     function checkMandatoryAttr(value, colname)  {
-        if (value  == '') 
+        if (value  == '')
             return [false, '<?php eT("Please enter a value for: ") ?>'+colname]; // See http://phpjs.org/functions/sprintf/
-        else 
+        else
             return [true,''];
     }
 </script>
 
 
 <div class="side-body">
-	<h3><?php eT("Survey participants",'js'); ?></h3>        
-                                                  
-	<div class="row">                             
+	<h3><?php eT("Survey participants",'js'); ?></h3>
+
+	<div class="row">
 		<div class="col-lg-12 content-right">
 
 		<div class='' id="displaytokenbar">
 		    <div class='row container-fluid'>
 		    	<div class="col-md-9">
-					            <img src='<?php echo IMAGE_URL; ?>databegin.png' alt='<?php eT("Show start..."); ?>' class="gridcontrol disabled databegin" />
-					            <img src='<?php echo IMAGE_URL; ?>databack.png' alt='<?php eT("Show previous.."); ?>' class="gridcontrol disabled databack" />
-					            <img src='<?php echo IMAGE_URL; ?>blank.gif' width='13' height='20' alt='' />
-					            <img src='<?php echo IMAGE_URL; ?>dataforward.png' alt='<?php eT("Show next.."); ?>' class="gridcontrol disabled dataforward" />
-					            <img src='<?php echo IMAGE_URL; ?>dataend.png' alt='<?php eT("Show last.."); ?>' class="gridcontrol disabled dataend" />
+                    <span class="gridcontrol disabled databegin icon-databegin text-success" title='<?php eT("Show start..."); ?>'></span>
+					<span title='<?php eT("Show previous.."); ?>' class="gridcontrol disabled databack icon-databack text-success"></span>
+					<img src='<?php echo IMAGE_URL; ?>blank.gif' width='13' height='20' alt='' />
+					<span title='<?php eT("Show next.."); ?>' class="gridcontrol disabled dataforward icon-dataforward text-success"></span>
+					<span title='<?php eT("Show last.."); ?>' class="gridcontrol disabled dataend icon-dataend text-success" />
 			    </div>
 			    <div class="col-md-3">
-				            	<label for='searchstring'><?php eT("Filter by") ?></label><input type='text' name='searchstring' id='searchstring' class='gridsearch' value="" />
+                    <label for='searchstring'><?php eT("Filter by") ?></label><input type='text' name='searchstring' id='searchstring' class='gridsearch' value="" />
 			    </div>
 		</div>
 	   </div>
@@ -167,7 +167,7 @@
 			?>
 			<table id="displaytokens"></table>
 			<div id="pager"></div>
-			
+
 			<div id ="search" style="display:none">
 			    <?php
 			        $aOptionSearch = array('' => gT('Select...'));
@@ -191,11 +191,13 @@
 			            <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $aOptionSearch); ?></td>
 			            <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $aOptionCondition); ?></td>
 			            <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
-			            <td><img src=<?php echo Yii::app()->getConfig('adminimageurl')."plus.png" ?> alt='<?php eT("Add another search criteria");?>' class="addcondition-button" style="margin-bottom:4px"></td>
+			            <td>
+                            <span title='<?php eT("Add another search criteria");?>' class="addcondition-button icon-add text-success" style="margin-bottom:4px">
+                        </td>
 			        </tr>
 			    </table>
 			</div>
-			
+
 			<?php if (Permission::model()->hasGlobalPermission('participantpanel','read')) { ?>
 			    <div id="addcpdb" title="addsurvey" style="display:none">
 			        <p><?php eT("Please select the attributes that are to be added to the central database"); ?></p>
@@ -209,14 +211,14 @@
 			                            echo "<option value='".$key."'>".$value."</option>";
 			                        }
 			                    }
-			
+
 			                ?>
 			            </select>
 			        </p>
-			
+
 			    </div>
 			<?php } ?>
-			
+
 			<div id="fieldnotselected" title="<?php eT("Error") ?>" style="display:none">
 			    <p>
 			        <?php eT("Please select a field."); ?>

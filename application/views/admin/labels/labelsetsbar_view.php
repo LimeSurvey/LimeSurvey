@@ -8,34 +8,34 @@
 <!-- Label Bar menu -->
 <div class='menubar' id="labelbar">
     <div class='row container-fluid'>
-        
+
         <div class="col-lg-6">
-            
+
             <!-- View buttons -->
             <?php if (isset($labelbar['buttons']['view'])):?>
                 <!-- Add -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/newlabelset");?>" role="button">
-                    <img src="<?php echo IMAGE_URL; ?>add.png" />
+                    <span class="icon-add text-success"></span>
                     <?php eT("Create or import new label set(s)"); ?>
                 </a>
-                
-    
+
+
                 <!-- Export Multiple -->
                 <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/exportmulti");?>" role="button">
-                        <img src="<?php echo IMAGE_URL; ?>dumplabelmulti.png" />
+                        <span class="icon-export text-success"></span>
                         <?php eT("Export multiple label sets"); ?>
                     </a>
                 <?php endif; ?>
-            <?php endif; ?>  
+            <?php endif; ?>
 
-            <!-- Edition buttons -->                                  
+            <!-- Edition buttons -->
             <?php if (isset($labelbar['buttons']['edit'])):?>
-                
+
                 <!-- Edit label set -->
                 <?php if (Permission::model()->hasGlobalPermission('labelsets','update')):?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/editlabelset/lid/".$lid);?>" role="button">
-                        <img src="<?php echo IMAGE_URL; ?>edit.png" />
+                        <span class="glyphicon glyphicon-pencil  text-success"></span>
                         <?php eT("Edit label set"); ?>
                     </a>
                 <?php endif; ?>
@@ -43,47 +43,47 @@
                 <!-- Delete label set -->
                 <?php if (Permission::model()->hasGlobalPermission('labelsets','update')):?>
                     <a class="btn btn-default" href='#' data-action='deletelabelset' data-url='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' data-confirm='<?php eT('Do you really want to delete this label set?'); ?>' role="button">
-                        <img src="<?php echo IMAGE_URL; ?>delete.png" />
+                        <span class="glyphicon glyphicon-trash  text-warning"></span>
                         <?php eT("Delete label set"); ?>
                     </a>
                 <?php endif; ?>
 
-                <!-- Export this label set -->    
+                <!-- Export this label set -->
                 <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/export/sa/dumplabel/lid/$lid");?>" role="button">
-                        <img src="<?php echo IMAGE_URL; ?>dumplabel.png" />
+                        <span class="icon-export text-success"></span>
                         <?php eT("Export this label set"); ?>
                     </a>
                 <?php endif; ?>
-            <?php endif; ?>    
-            
+            <?php endif; ?>
+
              <?php if (isset($labelbar['buttons']['edition'])):?>
 
                 <?php if (Permission::model()->hasGlobalPermission('labelsets','delete')): ?>
                     <a class="btn btn-default" role="button" data-action='deletelabelset' data-url='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' data-confirm='<?php eT('Do you really want to delete this label set?'); ?>' >
-                        <img src="<?php echo IMAGE_URL; ?>delete.png" />
+                        <span class="glyphicon glyphicon-trash  text-warning"></span>
                         <?php eT("Delete label set"); ?>
                     </a>
                 <?php endif; ?>
-                 
+
              <?php endif;?>
-                      
+
         </div>
-        
-        
-        <!-- Right action buttons --> 
+
+
+        <!-- Right action buttons -->
         <div class="col-lg-6 text-right">
-            
+
             <!-- view action buttons-->
             <?php if (isset($labelbar['buttons']['view'])):?>
-                
+
                 <!-- return to admin pannel -->
                 <a class="btn btn-default pull-right" href="<?php echo $this->createUrl('admin/index'); ?>" role="button" style="display: block">
                     <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
                     &nbsp;&nbsp;
                     <?php eT('return to admin pannel'); ?>
                 </a>
-                    
+
                 <!-- labelsetchanger -->
                 <div class="form-group form-inline col-md-6 pull-right">
                     <label for='labelsetchanger'><?php eT("Label sets:");?> </label>
@@ -91,7 +91,7 @@
                         <option value=''
                             <?php if (!isset($lid) || $lid<1) { ?> selected='selected' <?php } ?>
                             ><?php eT("Please choose..."); ?></option>
-                
+
                         <?php if (count($labelsets)>0)
                             {
                                 foreach ($labelsets as $lb)
@@ -103,20 +103,20 @@
                         } ?>
                     </select>
                 </div>
-            <?php endif; ?>    
-            
+            <?php endif; ?>
+
             <!-- edition action buttons -->
             <?php if (isset($labelbar['buttons']['edition'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" aria-data-form-id="<?php echo $labelbar['savebutton']['form']; ?>">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                    
+
                     <?php echo $labelbar['savebutton']['text'];?>
-                </a>                
+                </a>
                 <a class="btn btn-danger" href="<?php echo $this->createUrl($labelbar['closebutton']['url']); ?>" role="button">
                     <span class="glyphicon glyphicon-close" aria-hidden="true"></span>
                     <?php eT("Close");?>
                 </a>
-            <?php endif;?>          
+            <?php endif;?>
         </div>
     </div>
 </div>

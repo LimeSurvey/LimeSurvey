@@ -16,7 +16,7 @@
     /* @var $dataProvider CActiveDataProvider */
 
     $dataProvider = new CArrayDataProvider($data);
-    
+
     $gridColumns = array(
         array(// display the status
             'class' => 'CDataColumn',
@@ -30,15 +30,15 @@
             'header' => gT('Action'),
             'value' => function($data) {
                 if ($data['active'] == 0)
-                { 
+                {
                     $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Activate'), array('width' => 16, 'height' => 16)), array("/admin/pluginmanager/sa/activate", "id" => $data['id']));
                 } else {
-                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Deactivate'), array('width' => 16, 'height' => 16)), array("/admin/pluginmanager/sa/deactivate", "id" => $data['id'])); 
+                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Deactivate'), array('width' => 16, 'height' => 16)), array("/admin/pluginmanager/sa/deactivate", "id" => $data['id']));
                 }
                 if(count($data['settings'])>0)
                 {
-                    $output .= CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'survey_settings.png', gT('Configure'), array('width' => 16, 'height' => 16, 'style' => 'margin-left: 8px;')), array("/admin/pluginmanager/sa/configure", "id" => $data['id'])); 
-                    //$output .= CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'survey_settings.png', gT('Configure'), array('width' => 16, 'height' => 16, 'style' => 'margin-left: 8px;')), array("/plugins/configure", "id" => $data['id'])); 
+                    $output .= CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'survey_settings.png', gT('Configure'), array('width' => 16, 'height' => 16, 'style' => 'margin-left: 8px;')), array("/admin/pluginmanager/sa/configure", "id" => $data['id']));
+                    //$output .= CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'survey_settings.png', gT('Configure'), array('width' => 16, 'height' => 16, 'style' => 'margin-left: 8px;')), array("/plugins/configure", "id" => $data['id']));
                 }
                 return $output;
             }
@@ -53,8 +53,8 @@
             'header' => gT('Description'),
             'name' => 'description'
         ),
-    ); 
-        
+    );
+
         /*
             array(            // display a column with "view", "update" and "delete" buttons
             'class' => 'CallbackColumn',
@@ -63,7 +63,7 @@
         )
     );
         */
-        
+
     $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider'=>$dataProvider,
         'columns'=>$gridColumns,

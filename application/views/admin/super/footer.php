@@ -13,15 +13,13 @@
 		    <div class="col-xs-6 col-md-4 col-lg-1 ">
 		    	<a href='http://manual.limesurvey.org'>
                     <span class="glyphicon glyphicon-info-sign" id="info-footer"></span>
-                    <!-- <img alt='LimeSurvey - <?php eT("Online Manual");?>' title='LimeSurvey - <?php eT("Online manual");?>' src='<?php echo Yii::app()->getConfig('adminimageurl');?>docs.png' /> -->
                 </a>
 		    </div>
 
 		    <!-- Support / Donate -->
 		    <div  class="col-xs-6 col-md-4  col-lg-5 text-right"  >
 		    	<a href='http://donate.limesurvey.org'>
-                    <!-- <img alt='<?php eT("Support this project - Donate to "); ?>LimeSurvey' title='<?php eT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo Yii::app()->getConfig('adminimageurl');;?>donate.png'/> -->
-                    <img alt='<?php eT("Support this project - Donate to "); ?>LimeSurvey' title='<?php eT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo IMAGE_URL;?>donate.png'/> 
+                    <img alt='<?php eT("Support this project - Donate to "); ?>LimeSurvey' title='<?php eT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo IMAGE_URL;?>donate.png'/>
                 </a>
 		    </div>
 

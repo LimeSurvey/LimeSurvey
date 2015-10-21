@@ -45,11 +45,11 @@ class tokens extends Survey_Common_Action
 
 
 		$surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-		$aData["surveyinfo"] = $surveyinfo;		
+		$aData["surveyinfo"] = $surveyinfo;
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 		$aData['sidebar']["token_menu"]=TRUE;
 		$aData['token_bar']['buttons']['view']=TRUE;
-				
+
 
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
@@ -284,7 +284,7 @@ class tokens extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jqgrid');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "tokens.js");
         // CSS
-        
+
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-timepicker.css");
 
         Yii::app()->loadHelper('surveytranslator');
@@ -336,19 +336,19 @@ class tokens extends Survey_Common_Action
         $aLanguages=array();
         foreach ($aLanguageCodes as $aCode)
         {
-            $aLanguages[$aCode]=getLanguageNameFromCode($aCode,false);    
+            $aLanguages[$aCode]=getLanguageNameFromCode($aCode,false);
         }
         $aData['aLanguages'] = $aLanguages;
 
 
 		$surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-		$aData["surveyinfo"] = $surveyinfo;		
+		$aData["surveyinfo"] = $surveyinfo;
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 		$aData['sidebar']["token_menu"]=TRUE;
 		$aData['token_bar']['buttons']['view']=TRUE;
-				
 
-		
+
+
         $this->_renderWrappedTemplate('token', array('browse'), $aData);
     }
 
@@ -462,26 +462,29 @@ class tokens extends Survey_Common_Action
                 // @@TODO change link
                 $url = $this->getController()->createUrl("admin/responses/sa/browse/surveyid/{$iSurveyId}", array('token'=>$token['token']));
                 $title = gT("View response details");
-                $action .= CHtml::link(CHtml::image(Yii::app()->getConfig('adminimageurl') . 'token_viewanswer.png', $title, array('title'=>$title)), $url, array('class'=>'imagelink'));
+                $action .= CHtml::link(
+                                        '<span class="glyphicon glyphicon-list-alt text-success" title="'.$title.'"></span>',
+                                        $url,
+                                        array('class'=>'imagelink'));
             } else {
                     $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
             // Check if the token can be taken
             if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "" || $aSurveyInfo['alloweditaftercompletion']=="Y") && $bCreatePermission) {
-                $action .= viewHelper::getImageLink('do.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}/lang/{$token['language']}/newtest/Y", gT("Do survey"), '_blank');
+                $action .= viewHelper::getIconLink('icon-do text-success', "survey/index/sid/{$iSurveyId}/token/{$token['token']}/lang/{$token['language']}/newtest/Y", gT("Do survey"), '_blank');
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
             if($bTokenDeletePermission){
                 $attribs = array('onclick' => 'if (confirm("' . gT("Are you sure you want to delete this entry?") . ' (' . $token['tid'] . ')")) {$("#displaytokens").delRowData(' . $token['tid'] . ');$.post(delUrl,{tid:' . $token['tid'] . '});}');
-                $action .= viewHelper::getImageLink('delete.png', null, gT("Delete token entry"), null, 'imagelink btnDelete', $attribs);
+                $action .= viewHelper::getIconLink('glyphicon glyphicon-trash text-warning', null, gT("Delete token entry"), null, 'imagelink btnDelete', $attribs);
             }
             if (strtolower($token['emailstatus']) == 'ok' && $token['email'] && $bTokenUpdatePermission) {
                 if ($token['completed'] == 'N' && $token['usesleft'] > 0) {
                     if ($token['sent'] == 'N') {
-                        $action .= viewHelper::getImageLink('token_invite.png', "admin/tokens/sa/email/surveyid/{$iSurveyId}/tokenids/" . $token['tid'], gT("Send invitation email to this person (if they have not yet been sent an invitation email)"), "_blank");
+                        $action .= viewHelper::getIconLink('icon-invite text-success', "admin/tokens/sa/email/surveyid/{$iSurveyId}/tokenids/" . $token['tid'], gT("Send invitation email to this person (if they have not yet been sent an invitation email)"), "_blank");
                     } else {
-                        $action .= viewHelper::getImageLink('token_remind.png', "admin/tokens/sa/email/action/remind/surveyid/{$iSurveyId}/tokenids/" . $token['tid'], gT("Send reminder email to this person (if they have already received the invitation email)"), "_blank");
+                        $action .= viewHelper::getIconLink('icon-remind text-success', "admin/tokens/sa/email/action/remind/surveyid/{$iSurveyId}/tokenids/" . $token['tid'], gT("Send reminder email to this person (if they have already received the invitation email)"), "_blank");
                     }
                 } else {
                     $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
@@ -490,9 +493,9 @@ class tokens extends Survey_Common_Action
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
             if($bTokenUpdatePermission)
-                $action .= viewHelper::getImageLink('edit.png', null, gT("Edit token entry"), null, 'imagelink token_edit');
+                $action .= viewHelper::getIconLink('glyphicon glyphicon-pencil text-success', null, gT("Edit token entry"), null, 'imagelink token_edit');
             if(!empty($token['participant_id']) && $token['participant_id'] != "" && $bGlobalPanelReadPermission) {
-                $action .= viewHelper::getImageLink('cpdb.png', null, gT("View this person in the central participants database"), null, 'imagelink cpdb',array('onclick'=>"sendPost('".$this->getController()->createUrl('admin/participants/sa/displayParticipants')."','',['searchcondition'],['participant_id||equal||{$token['participant_id']}']);"));
+                $action .= viewHelper::getIconLink('icon-cpdb text-success', null, gT("View this person in the central participants database"), null, 'imagelink cpdb',array('onclick'=>"sendPost('".$this->getController()->createUrl('admin/participants/sa/displayParticipants')."','',['searchcondition'],['participant_id||equal||{$token['participant_id']}']);"));
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
@@ -642,7 +645,7 @@ class tokens extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
-        
+
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
         {
@@ -654,11 +657,11 @@ class tokens extends Survey_Common_Action
 
 
 		$surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-		$aData["surveyinfo"] = $surveyinfo;		
+		$aData["surveyinfo"] = $surveyinfo;
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 		$aData['sidebar']["token_menu"]=TRUE;
 		$aData['token_bar']['buttons']['view']=TRUE;
-				
+
         if (Yii::app()->request->getPost('subaction') == 'inserttoken')
         {
 
@@ -729,7 +732,7 @@ class tokens extends Survey_Common_Action
 
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
             $aData['surveyid'] = $iSurveyId;
-            
+
             $aData['sidebar']['state'] = "close";
 
             $this->_renderWrappedTemplate('token', array( 'addtokenpost'), $aData);
@@ -821,7 +824,7 @@ class tokens extends Survey_Common_Action
                 foreach ($aTokenData as $k => $v)
                     $token->$k = $v;
                 $token->save();
-                
+
                 $aData['sidebar']['state'] = "close";
                 $this->_renderWrappedTemplate('token', array( 'message' => array(
                 'title' => gT("Success"),
@@ -899,7 +902,7 @@ class tokens extends Survey_Common_Action
 
 		$surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
 		$aData['sidebar']['state'] = "close";
-		$aData["surveyinfo"] = $surveyinfo;		
+		$aData["surveyinfo"] = $surveyinfo;
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 		$aData['sidebar']["token_menu"]=TRUE;
 		$aData['token_bar']['savebutton']['form'] = TRUE;
@@ -1055,7 +1058,7 @@ class tokens extends Survey_Common_Action
 
 		$surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
 		$aData['sidebar']['state'] = "close";
-		$aData["surveyinfo"] = $surveyinfo;		
+		$aData["surveyinfo"] = $surveyinfo;
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 		$aData['sidebar']["token_menu"]=TRUE;
 		$aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
@@ -1270,11 +1273,11 @@ class tokens extends Survey_Common_Action
 
 		$surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
 		$aData['sidebar']['state'] = "close";
-		$aData["surveyinfo"] = $surveyinfo;		
+		$aData["surveyinfo"] = $surveyinfo;
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 		$aData['sidebar']["token_menu"]=TRUE;
 		$aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
-		
+
         $aTokenIds=$tokenids;
         if (empty($tokenids))
         {
@@ -1616,16 +1619,16 @@ class tokens extends Survey_Common_Action
 
     /**
     * Export Dialog
-     * 
+     *
     */
     function exportdialog($iSurveyId)
     {
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-        $aData["surveyinfo"] = $surveyinfo;     
+        $aData["surveyinfo"] = $surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
         $aData['sidebar']["token_menu"]=TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
-                
+
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $iSurveyId = sanitize_int($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'export'))//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
@@ -1647,7 +1650,7 @@ class tokens extends Survey_Common_Action
         else
         {
             //$aData['resultr'] = Token::model($iSurveyId)->findAll(array('select' => 'language', 'group' => 'language'));
-            
+
             $aData['surveyid'] = $iSurveyId;
             $aData['thissurvey'] = getSurveyInfo($iSurveyId); // For tokenbar view
             $aData['sAction']=App()->createUrl("admin/tokens",array("sa"=>"exportdialog","surveyid"=>$iSurveyId));
@@ -1742,7 +1745,7 @@ class tokens extends Survey_Common_Action
 
 		$surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
 		$aData['sidebar']['state'] = "close";
-		$aData["surveyinfo"] = $surveyinfo;		
+		$aData["surveyinfo"] = $surveyinfo;
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 		$aData['sidebar']["token_menu"]=TRUE;
 		$aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
@@ -2018,11 +2021,11 @@ class tokens extends Survey_Common_Action
 
 		$surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
 		$aData['sidebar']['state'] = "close";
-		$aData["surveyinfo"] = $surveyinfo;		
+		$aData["surveyinfo"] = $surveyinfo;
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 		$aData['sidebar']["token_menu"]=TRUE;
-		$aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;        
-		
+		$aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
+
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'tokensimport.js');
         $aEncodings =aEncodingsArray();
 
@@ -2327,7 +2330,7 @@ class tokens extends Survey_Common_Action
 
 		$surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
 		$aData['sidebar']['state'] = "close";
-		$aData["surveyinfo"] = $surveyinfo;		
+		$aData["surveyinfo"] = $surveyinfo;
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 		$aData['sidebar']["token_menu"]=TRUE;
 		$aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
@@ -2416,7 +2419,7 @@ class tokens extends Survey_Common_Action
             //Remove any survey_links to the CPDB
             SurveyLink::model()->deleteLinksBySurvey($iSurveyId);
 
-            $aData['sidebar']['state'] = "close";   
+            $aData['sidebar']['state'] = "close";
             $this->_renderWrappedTemplate('token', array( 'message' => array(
             'title' => gT("Delete Tokens Table"),
             'message' => '<br />' . gT("The tokens table has now been removed and tokens are no longer required to access this survey.") . "<br /> " . gT("A backup of this table has been made and can be accessed by your system administrator.") . "<br />\n"
@@ -2527,7 +2530,7 @@ class tokens extends Survey_Common_Action
 
 		$surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
 		$aData['sidebar']['state'] = "close";
-		$aData["surveyinfo"] = $surveyinfo;		
+		$aData["surveyinfo"] = $surveyinfo;
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 		$aData['sidebar']["token_menu"]=TRUE;
 		$aData['token_bar']['savebutton']['form'] = TRUE;
@@ -2633,13 +2636,13 @@ class tokens extends Survey_Common_Action
 
 		$surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
 		$aData['sidebar']['state'] = "close";
-		$aData["surveyinfo"] = $surveyinfo;		
+		$aData["surveyinfo"] = $surveyinfo;
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 		$aData['sidebar']["token_menu"]=TRUE;
-						
-		$aData['token_bar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/view/", array('surveyid'=>$iSurveyId));		
-		$aData['token_bar']['returnbutton']['text'] = gT('return to survey summary');	
-			
+
+		$aData['token_bar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/view/", array('surveyid'=>$iSurveyId));
+		$aData['token_bar']['returnbutton']['text'] = gT('return to survey summary');
+
         $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
         }
         Yii::app()->end();
@@ -2654,8 +2657,8 @@ class tokens extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = 'token', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerPackage('display-participants');        
-        
+        App()->getClientScript()->registerPackage('display-participants');
+
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         $aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);

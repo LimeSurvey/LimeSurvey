@@ -14,55 +14,55 @@
 
 <div class='menubar' id="participantbar">
     <div class='row container-fluid'>
-        
+
         <div class="col-md-9">
                 <!-- Information -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" role="button">
-                    <img src="<?php echo IMAGE_URL; ?>summary.png" />
+                    <span class="glyphicon glyphicon-list-alt text-success" ></span>
                     <?php eT("Information");?>
                 </a>
 
                 <!-- Display participants -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" role="button">
-                    <img src="<?php echo IMAGE_URL; ?>surveylist.png" />
+                    <span class="glyphicon glyphicon-list text-success"></span>
                     <?php eT("List");?>
                 </a>
 
                 <!-- Import from CSV file -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/importCSV"); ?>" role="button">
-                    <img src="<?php echo IMAGE_URL; ?>importcsv.png" />
+                    <span class="icon-importcsv text-success"></span>
                     <?php eT("Import");?>
                 </a>
 
                 <!-- Export to CSV file -->
                 <a id="export" class="btn btn-default" href="#" role="button">
-                    <img src="<?php echo IMAGE_URL; ?>exportcsv.png" />
+                    <span class="icon-exportcsv text-success"></span>
                     <?php eT("Export");?>
                 </a>
 
                 <!-- Blacklist control -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/blacklistControl"); ?>" role="button">
-                    <img src="<?php echo IMAGE_URL; ?>trafficred.png" />
+                    <span class="glyphicon glyphicon-ban-circle text-warning"></span>
                     <?php eT("Blacklist");?>
-                </a>                
+                </a>
 
                 <!-- Global participant settings -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/userControl"); ?>" role="button">
-                    <img src="<?php echo IMAGE_URL; ?>global.png" />
+                    <span class="icon-global text-success"></span>
                     <?php eT("Settings");?>
                 </a>
 
                 <!-- Attribute management -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/attributeControl"); ?>" role="button">
-                    <img src="<?php echo IMAGE_URL; ?>tag.png" />
+                    <span class="glyphicon glyphicon-tag text-success"></span>
                     <?php eT("Attributes");?>
-                </a>                
+                </a>
 
                 <!-- Share panel -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/sharePanel"); ?>" role="button">
-                    <img src="<?php echo IMAGE_URL; ?>share.png" />
+                    <span class="glyphicon glyphicon-share text-success"></span>
                     <?php eT("Share panel");?>
-                </a>                                                
+                </a>
 
         </div>
 
@@ -82,10 +82,10 @@
 
 <!-- TODO : check and refactore -->
 <div id='exportcsvallprocessing' title='exportcsvall' style='display:none'>
-    <img src="<?php echo IMAGE_URL; ?>ajax-loader.gif" alt="AJAX loader" />    
+    <img src="<?php echo IMAGE_URL; ?>ajax-loader.gif" alt="AJAX loader" />
 </div>
 <div id='exportcsvallnorow' title='exportcsvallnorow' style='display:none'>
-    <?php eT("There are no participants to be exported."); ?>    
+    <?php eT("There are no participants to be exported."); ?>
 </div>
 <div id="exportcsv" title="exportcsv" style="display:none" class='form30'>
     <ul>
@@ -97,8 +97,8 @@
                         {
                             echo "<option value=" . $value['attribute_id'] . ">" . $value['defaultname'] . "</option>\n";
                         }
-                    ?>                
+                    ?>
             </select>
         </li>
     </ul>
-</div>    
+</div>

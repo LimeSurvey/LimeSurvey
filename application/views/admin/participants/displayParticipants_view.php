@@ -157,7 +157,7 @@ else
     var getaddtosurveymsg = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getaddtosurveymsg"); ?>";
     var minusbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "deleteanswer.png" ?>";
     var imageurl = "<?php echo Yii::app()->getConfig('adminimageurl') ?>";
-    var addbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "plus.png" ?>";
+    var addbutton = "";
     var minusbuttonTxt = "<?php eT("Remove search condition", 'js') ?>";
     var addbuttonTxt = "<?php eT("Add search condition", 'js') ?>";
     var delparticipantUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/delParticipant"); ?>";
@@ -233,7 +233,9 @@ echo $colModels;
             <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $optionsearch); ?></td>
             <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $optioncontition); ?></td>
             <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
-            <td><img src=<?php echo Yii::app()->getConfig('adminimageurl') . "plus.png" ?>  id="addbutton" style="margin-bottom:4px" alt='<?php eT("Add search condition"); ?>'></td>
+            <td>
+                <span  id="addbutton" class='icon-add text-success'  title='<?php eT("Add search condition"); ?>'></span>
+            </td>
         </tr>
     </table>
     <br/>
@@ -348,16 +350,8 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
     <p>
 <?php eT("You do not have the permission to edit this participant."); ?></p>
 
-</div>            
-            
+</div>
+
         </div>
     </div>
-</div>    
-
-
-
-
-
-
-
-
+</div>

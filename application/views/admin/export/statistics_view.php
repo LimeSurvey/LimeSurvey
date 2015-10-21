@@ -5,7 +5,7 @@
     var showTextInline="<?php echo $showtextinline ?>";
 </script>
 
-<?php 
+<?php
 App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/chartjs/Chart.min.js');
 ?>
 
@@ -16,13 +16,14 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
 <div class="side-body">
     <h3><span class="glyphicon glyphicon-stats" aria-hidden="true"></span> &nbsp;&nbsp;&nbsp; <?php eT("Statistics"); ?></h3>
         <div class="row">
-            
+
             <div class="col-lg-12 content-right">
 <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder','#'=>'start', 'class'=>'form-horizontal'));?>
 
     <div class='header statistics col-lg-12 box text-left'>
         <div style='float:right;'>
-            <img src='<?php echo IMAGE_URL; ?>/maximize.png' id='showgfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo IMAGE_URL; ?>/minimize.png' id='hidegfilter' alt='<?php eT("Minimize"); ?>'/>
+            <span  id='showgfilter'  alt='<?php eT("Maximize"); ?>' class="icon-maximize" ></span>
+            <span  id='hidegfilter'  alt='<?php eT("Minimize"); ?>' class="icon-minimize" ></span>
         </div>
         <div style='float:left;'>
         <?php eT("General filters"); ?>
@@ -48,7 +49,7 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
                 <ul class='list-unstyled'>
                     <li>
                         <label for='completionstate'><?php eT("Include:"); ?> </label>
-                        <select name='completionstate' id='completionstate' class='form-control'> 
+                        <select name='completionstate' id='completionstate' class='form-control'>
                             <option value='all' <?php echo $selectshow; ?>><?php eT("All responses"); ?></option>
                             <option value='complete' <?php echo $selecthide; ?> > <?php eT("Completed responses only"); ?></option>
                             <option value='incomplete' <?php echo $selectinc; ?> > <?php eT("Incomplete responses only"); ?></option>
@@ -64,7 +65,7 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
                         <div class='checkbox'>
                             <input type='checkbox' id='noncompleted' name='noncompleted' <?php if (isset($_POST['noncompleted'])) {echo "checked='checked'"; } ?> />
                             <label id='noncompletedlbl' for='noncompleted' title='<?php eT("Count stats for each question based only on the total number of responses for which the question was displayed"); ?>'><?php eT("Subtotals based on displayed questions"); ?></label>
-                        </div>                            
+                        </div>
                     </li>
                     <?php
 
@@ -141,7 +142,7 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
                             <?php if($error != '') { echo "<span id='grapherror' style='display:none'>$error<hr /></span>"; } ?>
                         </div>
                     </li>
-                    
+
                     <li>
                         <div class="form-group col-sm-12">
 
@@ -149,10 +150,10 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
                                 <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                                 <?php eT("Each question has its own graph type defined in its advanced settings.");?>
                                 <br/>
-                                <?php eT("With chart type selector, you can force the use of graph type for all selected questions)");?>                            
+                                <?php eT("With chart type selector, you can force the use of graph type for all selected questions)");?>
                             </div>
 
-                            
+
                             <label for='charttype' class='control-label'>
                                 <?php eT('Chart type:');?>
                             </label>
@@ -178,7 +179,7 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
                             <input type='radio' id="outputtypepdf" name='outputtype' value='pdf' />
                             <label for='outputtypepdf'>PDF</label>
                         </div>
-                        <div class="radio">                            
+                        <div class="radio">
                             <input type='radio' id="outputtypexls" onclick='nographs();' name='outputtype' value='xls' />
                             <label for='outputtypexls'>Excel</label>
                        </div>
@@ -192,10 +193,14 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
         </p>
     </div>
     <div style='clear: both'></div>
-    
-    
+
+
     <div class='header statistics col-lg-12 box text-left' id="response-filter-header">
-        <div style='float:right'><img src='<?php echo IMAGE_URL; ?>/maximize.png' id='showfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo IMAGE_URL; ?>/minimize.png' id='hidefilter' alt='<?php eT("Minimize"); ?>'/></div>
+        <div style='float:right'>
+            <span  id='showfilter'  alt='<?php eT("Maximize"); ?>' class="icon-maximize" ></span>
+            <span  id='hidefilter'  alt='<?php eT("Minimize"); ?>' class="icon-minimize" ></span>
+
+        </div>
         <div style='float:left'>
             <?php eT("Response filters"); ?>
         </div>
@@ -347,7 +352,7 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
                             <span class='smalltext'><?php eT("Number less than");?>:</span><br>
                             <?php echo CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array('onkeypress'=>"return goodchars(event,'0123456789.,')"));?>
                             <br>
-                            <?php 
+                            <?php
                             //we added 1 form -> increase counter
                             $counter2++;
                         }
@@ -410,7 +415,7 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
                     echo " />&nbsp;"
                     ."&nbsp;"._showSpeaker($niceqtext)
                     ."<br />\n"
-                    ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n" 
+                    ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n"
                     .CHtml::textArea($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('rows'=>'3','cols'=>'80'))
                     ."\t</div></td>\n";
                     break;
@@ -1305,7 +1310,10 @@ flush(); //Let's give the user something to look at while they wait for the pret
 
 
 <div class='header statistics col-lg-12 box text-left'>
-    <div style='float:right'><img src='<?php echo IMAGE_URL; ?>/maximize.png' id='showsfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo IMAGE_URL; ?>/minimize.png' id='hidesfilter' alt='<?php eT("Minimize"); ?>'/></div>
+    <div style='float:right'>
+        <span  id='showsfilter'  alt='<?php eT("Maximize"); ?>' class="icon-maximize" ></span>
+        <span  id='hidesfilter'  alt='<?php eT("Minimize"); ?>' class="icon-minimize" ></span>
+    </div>
     <div style='float:left'>
         <?php eT("Statistics"); ?>
         </div>
@@ -1325,8 +1333,7 @@ flush(); //Let's give the user something to look at while they wait for the pret
     function _showSpeaker($hinttext)
     {
         global $maxchars; //Where does this come from? can it be replaced? passed with function call?
-        
-        IMAGE_URL = Yii::app()->getConfig('adminimageurl');
+
         if(!isset($maxchars))
         {
             $maxchars = 100;
@@ -1344,7 +1351,7 @@ flush(); //Let's give the user something to look at while they wait for the pret
             $reshtml= "<span style='cursor: pointer' title='".$htmlhinttext."' "
             ." onclick=\"alert('".gT("Question","js").": $jshinttext')\">"
             ." \"$shortstring...\" </span>"
-            ."<img style='cursor: pointer' src='IMAGE_URL/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
+            ."<span class='icon-assessments'  style='cursor: pointer' ></span>"
             ." onclick=\"alert('".gT("Question","js").": $jshinttext')\" />";
         }
         else

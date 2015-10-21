@@ -1,6 +1,7 @@
 <?php
 
 ?>
+
 <?php if(Permission::model()->hasSurveyPermission($surveyid,'responses','read')){ ?>
     <div class='statisticscolumnid'>
         <?php

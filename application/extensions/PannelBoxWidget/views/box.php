@@ -5,9 +5,10 @@
     </div>
     <div class="panel-body">
         <a  href="<?php echo $url; ?>" >
-            <img src="<?php echo $img;?>"  />
-        </a>
-        <p><a href="<?php echo $url; ?>"><?php echo $description;?></a></p>
-    </div>          
+            <span class="icon-<?php echo $ico;?>" style="font-size: 4em">
+            </span>
+        </a><br/><br/>
+        <a href="<?php echo $url; ?>"><?php echo $description;?></a>
+    </div>
     </div>
 </div>

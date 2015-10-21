@@ -8,10 +8,10 @@
        <input type="hidden" id="close-side-bar" />
     <?php endif;?>
 
-    <div class="absolute-wrapper"> </div> 
+    <div class="absolute-wrapper"> </div>
     <!-- Menu -->
     <div class="side-menu" id="sideMenu">
-    
+
     <nav class="navbar navbar-default" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -65,7 +65,7 @@
                             <!-- Explorer -->
                             <li class="panel panel-default" id="explorer" class="dropdownlvl2 dropdownstyle">
                                 <a data-toggle="collapse" id="explorer-collapse" href="#explorer-lvl1">
-                                    <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Questions explorer');?> 
+                                    <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Questions explorer');?>
                                    <span class="caret" ></span>
                                 </a>
 
@@ -83,16 +83,16 @@
                                                         <div id="questiongroup-<?php echo $aGroup->gid; ?>" class="panel-collapse collapse questiongroupdropdown" >
                                                             <div class="panel-body">
                                                                 <ul class="nav navbar-nav dropdown-first-level">
-                                                                    
+
                                                                     <?php if(count($aGroup['aQuestions'])):?>
                                                                         <?php foreach($aGroup['aQuestions'] as $question):?>
-                                                                        
+
                                                                         <!-- Question  -->
                                                                         <li class="toWhite">
                                                                             <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$surveyid/gid/".$aGroup->gid."/qid/".$question->qid); ?>"">
                                                                                 <span class="question-collapse-title">
                                                                                     <span class="glyphicon glyphicon-list"></span>
-                                                                                    <?php echo $question->title;?> 
+                                                                                    <?php echo $question->title;?>
                                                                                 </span>
                                                                             </a>
                                                                         </li>
@@ -104,7 +104,7 @@
                                                                             </a>
                                                                         </li>
                                                                     <?php endif;?>
-                                                                    
+
                                                                     <!-- add question to this group -->
                                                                     <li>
                                                                         <a class="text-success" href="<?php echo $this->createUrl("/admin/questions/sa/newquestion/surveyid/$surveyid/gid/$aGroup->gid"); ?>">
@@ -122,12 +122,12 @@
                                                 <a href="" onclick="event.preventDefault();" style="cursor: default;">
                                                     <?php eT('No question group in this survey');?>
                                                 </a>
-                                            </li>                    
+                                            </li>
                                             <?php endif;?>
                                         </ul>
-                                    </div>    
+                                    </div>
                             </li>
-                            
+
 
                         <?php if($permission):?>
                             <!-- List Groups -->
@@ -138,50 +138,50 @@
                                     <?php eT("List question groups");?>
                                 </a>
                             </li>
-                            
+
                             <!-- List Questions -->
                             <li class="toWhite <?php if( isset($sidebar["listquestions"]) ) echo 'active'; ?>">
                                 <a href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
                                     <span class="glyphicon glyphicon-list"></span>
                                     <?php eT("List questions");?>
                                 </a>
-                            </li>                            
-                        <?php endif; ?>                                                  
+                            </li>
+                        <?php endif; ?>
 
                         <!-- Organize questions -->
                         <?php if($surveycontent):?>
                             <?php if ($activated):?>
                                 <li class="disabled">
                                     <a href='#'>
-                                        <img src="<?php echo IMAGE_URL; ?>organize_disabled.png" title='' alt='<?php eT("Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>' />
+                                        <span class="icon-organize"></span>
                                         <?php eT("Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>
                                      </a>
                                 </li>
                                 <?php else: ?>
                                 <li>
                                     <a href="<?php echo $this->createUrl("admin/survey/sa/organize/surveyid/$surveyid"); ?>">
-                                        <img src='<?php echo IMAGE_URL; ?>organize.png' alt='<?php eT("Reorder question groups / questions"); ?>' "/>
+                                        <span class="icon-organize"></span>
                                         <?php eT("Reorder question groups / questions"); ?>
                                     </a>
                                 </li>
                             <?php endif; ?>
-                        <?php endif;?>  
-                            
-                            
+                        <?php endif;?>
+
+
                         </ul>
                     </div>
                 </div>
             </li>
 
             <!-- Token -->
-            <?php if($tokenmanagement):?> 
+            <?php if($tokenmanagement):?>
                 <li class="toWhite  <?php if( isset($sidebar["token_menu"]) ) echo 'active'; ?> ">
                     <a href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>">
                         <span class="glyphicon glyphicon-user"></span>
                         <?php eT("Token management");?>
                     </a>
                 </li>
-            <?php endif; ?>                        
+            <?php endif; ?>
 
             <!-- Survey List -->
                 <li class="toWhite" >

@@ -18,11 +18,11 @@
             </a>
         </li>
     <?php endforeach;?>
-</ul>            
-            
+</ul>
+
     <?php echo CHtml::form(array("admin/labels/sa/process"), 'post', array('id'=>'mainform')); ?>
         <input type='hidden' name='lid' value='<?php echo $lid ?>' />
-        <input type='hidden' name='action' value='modlabelsetanswers' />            
+        <input type='hidden' name='action' value='modlabelsetanswers' />
 <div class="tab-content">
         <?php
             $i = 0;
@@ -75,7 +75,10 @@
                                     else
                                     {
                                     ?>
-                                    <td><img class='handle' src='<?php echo IMAGE_URL; ?>handle.png' alt=''/></td>
+                                    <td>
+
+                                        <span class="glyphicon glyphicon-move text-success"></span>
+                                    </td>
                                     <td>
                                         <input type='hidden' class='hiddencode' value='<?php echo $row['code'] ?>' />
                                         <input type='text'  class='codeval' id='code_<?php echo $row['sortorder'] ?>' name='code_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['code'] ?>'/>
@@ -98,8 +101,9 @@
                                     if ($first)
                                     {
                                     ?>
-                                        <img src='<?php echo IMAGE_URL; ?>addanswer.png' class='btnaddanswer' alt='<?php eT("Insert a new label after this one") ?>' />
-                                        <img src='<?php echo IMAGE_URL; ?>deleteanswer.png' class='btndelanswer' alt='<?php eT("Delete this label") ?>' />
+                                        <span class="icon-add btnaddanswer text-success"></span> <?php // eT("Insert a new label after this one") ?>
+                                        <span class="glyphicon glyphicon-trash  text-warning btndelanswer"></span> <?php //eT("Delete this label") ?>
+
                                     <?php
                                     }
                                 ?>
@@ -124,9 +128,9 @@
             }
         ?>
     </div>
-</form>          
-    
-    
+</form>
+
+
           <div id='quickadd' style='display:none;'>
         <div style='float:left;'>
             <label for='quickaddarea'><?php eT('Enter your labels:') ?></label>
@@ -139,37 +143,37 @@
             </p>
         </div>
     </div>
-    
-    
-    
-    
-    
-    
-    
 
-    
-    
-    
-      
+
+
+
+
+
+
+
+
+
+
+
         </div>
     </div>
-</div>    
+</div>
 
 
 <div class="col-lg-4">
     <div class="row">
-        <div class="col-lg-12 content-right text-center">    
+        <div class="col-lg-12 content-right text-center">
             <div class="panel-group" id="accordion" role="tablist" style="margin-top: 20px">
                 <div class="panel panel-default" id="up_resmgmt">
-                    
+
                     <div class="panel-heading" role="tab" id="headingOne">
                         <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                 <?php eT("Uploaded resources management"); ?>
                             </a>
                         </h4>
-                    </div>            
-                    
+                    </div>
+
                     <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                         <div class="panel-body">
                             <div>
@@ -211,10 +215,9 @@
                             </div>
                         </div>
                     </div>
-                                
+
                 </div>
             </div>
-        </div>            
-</div>   
-</div>   
-
+        </div>
+</div>
+</div>

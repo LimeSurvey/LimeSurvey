@@ -8,6 +8,7 @@
         public $url;
         public $title;
         public $img;
+        public $ico;
         public $description;
         public $offset='';
 
@@ -34,6 +35,7 @@
                 $this->url = $box->url;
                 $this->title = $box->title;
                 $this->img = $box->img;
+                $this->ico = $box->ico;
                 $this->description = $box->desc;
             }
             else
@@ -48,14 +50,17 @@
 
         protected function renderContent()
         {
-            $offset = ($this->offset != '') ? 'col-sm-offset-1 col-lg-offset-'.$this->offset : '' ;
+            $offset = ($this->offset != '') ? 'col-sm-offset-1 col-lg-offset-'.$this->offset : '';
+
+
 
             $this->render('box', array(
                 'position'=> $this->position,
                 'offset' => $offset,
                 'url'=> Yii::app()->createUrl($this->url),
                 'title'=> $this->title,
-                'img'=> BIG_IMAGE_URL.$this->img,        
+                'img'=> BIG_IMAGE_URL.$this->img,
+                'ico'=> $this->ico,
                 'description'=> $this->description,
             ));
         }

@@ -35,21 +35,21 @@ class conditionsaction extends Survey_Common_Action {
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
             $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid;
             $aData['questionbar']['buttons']['conditions'] = TRUE;
-            
+
             switch($subaction)
             {
                 case 'editconditionsform':
-                    $aData['questionbar']['buttons']['condition']['edit'] = TRUE;    
+                    $aData['questionbar']['buttons']['condition']['edit'] = TRUE;
                     break;
-                
+
                 case 'conditions':
-                    $aData['questionbar']['buttons']['condition']['conditions'] = TRUE;    
+                    $aData['questionbar']['buttons']['condition']['conditions'] = TRUE;
                     break;
-                
+
                 case 'copyconditionsform':
                     $aData['questionbar']['buttons']['condition']['copyconditionsform'] = TRUE;
                     break;
-                
+
                 default:
                     $aData['questionbar']['buttons']['condition']['edit'] = TRUE;
                     break;
@@ -521,7 +521,7 @@ class conditionsaction extends Survey_Common_Action {
                     }
                     else
                     {
-                        
+
                         $CopyConditionsMessage = CHtml::tag('div', array('class'=>'successheader'),
                         '('.gT("Condition successfully copied").')'
                         );
@@ -1250,16 +1250,12 @@ class conditionsaction extends Survey_Common_Action {
                     $subaction == "deletescenario" || $subaction == "delete")
                     )
                     {
-                        $img_tag = CHtml::image($imageurl.'/scenario_delete.png', gT("Delete this scenario"), array(
-                        'name'=>'DeleteWholeGroup'
-                        ));
+                        $img_tag = '<span class="glyphicon glyphicon-trash"></span>';
                         $additional_main_content = CHtml::link($img_tag, '#', array(
                         'onclick'     =>     "if ( confirm('".gT("Are you sure you want to delete all conditions set in this scenario?", "js")."')) { document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}"
                         ));
 
-                        $img_tag = CHtml::image($imageurl.'/scenario_edit.png', gT("Edit scenario"), array(
-                        'name'=>'DeleteWholeGroup'
-                        ));
+                        $img_tag = '<span class="glyphicon glyphicon-pencil"></span>';
                         $additional_main_content .= CHtml::link($img_tag, '#', array(
                         'id'         =>     'editscenariobtn'.$scenarionr['scenario'],
                         'onclick'     =>     "$('#editscenario{$scenarionr['scenario']}').toggle('slow');"
@@ -1346,9 +1342,9 @@ class conditionsaction extends Survey_Common_Action {
 
                     $conditionscount=$conditionscount+$conditionscounttoken;
 
-                    
-                    
-                    ////////////////// BUILD CONDITIONS DISPLAY    
+
+
+                    ////////////////// BUILD CONDITIONS DISPLAY
                     if ($conditionscount > 0)
                     {
                         $aConditionsMerged=Array();
@@ -1627,8 +1623,8 @@ class conditionsaction extends Survey_Common_Action {
 
         }
         //END DISPLAY CONDITIONS FOR THIS QUESTION
-        
-        //// NICE COMMENTS : but a subaction copy would be even nicer  
+
+        //// NICE COMMENTS : but a subaction copy would be even nicer
 
         // BEGIN: DISPLAY THE COPY CONDITIONS FORM
         if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
@@ -1753,8 +1749,9 @@ class conditionsaction extends Survey_Common_Action {
             if  ( ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) ||
             ( $subaction == "editthiscondition" && isset($scenario) && $scenario == 1) )
             {
-                $scenarioAddBtn = "\t<a id='scenarioaddbtn' href='#' onclick=\"$('#scenarioaddbtn').hide();$('#defaultscenariotxt').hide('slow');$('#scenario').show('slow');\">"
-                ."<img src='$imageurl/plus.png' alt='".gT('Add scenario')."' /></a>\n";
+                $scenarioAddBtn =
+                "\t<a id='scenarioaddbtn' href='#' onclick=\"$('#scenarioaddbtn').hide();$('#defaultscenariotxt').hide('slow');$('#scenario').show('slow');\">"
+                ."<span class='icon-add'></span></a>\n";
                 $scenarioTxt = "<span id='defaultscenariotxt'>".gT("Default scenario")."</span>";
                 $scenarioInputStyle = "style = 'display: none;'";
             }
@@ -2114,7 +2111,7 @@ class conditionsaction extends Survey_Common_Action {
         $this->_renderWrappedTemplate('conditions', $aViewUrls, $aData);
 
         // TMSW Condition->Relevance:  Must call LEM->ConvertConditionsToRelevance() whenever Condition is added or updated - what is best location for that action?
-        
+
     }
 
     private function _showSpeaker($hinttext)
@@ -2140,7 +2137,7 @@ class conditionsaction extends Survey_Common_Action {
             $reshtml= "<span style='cursor: hand' alt='".$htmlhinttext."' title='".$htmlhinttext."' "
             ." onclick=\"alert('".gT("Question","js").": $jshinttext')\" />"
             ." \"$shortstring...\" </span>"
-            ."<img style='cursor: hand' src='$imageurl/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
+            ."<span class='fa fa-commenting-o text-success' style='cursor: hand'  title='".$htmlhinttext."'></span>"
             ." onclick=\"alert('".gT("Question","js").": $jshinttext')\" />";
         }
         else

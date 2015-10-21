@@ -7,7 +7,11 @@
 
 <!-- Configuration -->
 <li class="dropdown mega-dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo IMAGE_URL; ?>global.png" /> <?php eT('Configuration');?><span class="caret"></span></a>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <span class="icon-settings" ></span>
+        <?php eT('Configuration');?>
+        <span class="caret"></span>
+    </a>
     <ul class="dropdown-menu mega-dropdown-menu" id="mainmenu-dropdown">
 
         <!-- First column -->
@@ -46,7 +50,8 @@
 
                 <!-- Users -->
                 <li class="dropdown-header">
-                    <img src="<?php echo IMAGE_URL;?>user.png" />
+
+                    <span class="icon-user" ></span>
                     <?php eT('Users');?>
                 </li>
 
@@ -79,7 +84,7 @@
 
                 <!-- Settings -->
                 <li class="dropdown-header">
-                    <img src="<?php echo IMAGE_URL;?>global.png" />
+                    <span class="icon-global" ></span>
                     <?php eT('Settings');?>
                 </li>
 
@@ -112,7 +117,7 @@
 
                 <!-- Advanced -->
                 <li class="dropdown-header">
-                    <img src="<?php echo IMAGE_URL;?>tools.png" />
+                    <span class="icon-tools" ></span>
                     <?php eT('Advanced');?>
                 </li>
 
@@ -145,7 +150,7 @@
 
                 <!-- Expression Manager -->
                 <li class="dropdown-header">
-                    <img src="<?php echo IMAGE_URL;?>expressionmanager.png" />
+                    <span class="icon-expression" ></span>                    
                     <?php eT("Expression Manager");?>
                 </li>
 

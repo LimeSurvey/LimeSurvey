@@ -94,10 +94,12 @@
                             $row['code'] = htmlspecialchars($row['code']);
                             $row['answer']=htmlspecialchars($row['answer']);
                         ?>
-                        <tr class='row_<?php echo $position; ?><?php if ($alternate==true){ ?> highlight<?php } ?><?php $alternate=!$alternate; ?>'><td>
+                        <tr class='row_<?php echo $position; ?><?php if ($alternate==true){ ?> highlight<?php } ?><?php $alternate=!$alternate; ?>'>
+                            <td>
                                 <?php if ($first)
                                     { ?>
-                                    <img class='handle' src='<?php echo IMAGE_URL; ?>handle.png' alt=''/></td>
+                                    <span class='glyphicon glyphicon-move text-success'></span>
+                            </td>
                                     <td><input type='hidden' class='oldcode' id='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" /><input type='text' class='code' id='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" maxlength='5' size='5' required
                                         onkeypress="return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')"
                                         />
@@ -109,7 +111,7 @@
                                     <?php } ?>
 
                             </td>
-                            <td 
+                            <td
 
                                 <?php if ($assessmentvisible && $first)
                                     { ?>
@@ -138,8 +140,9 @@
 
 
                             </td><td><?php if ($first) { ?>
-                                <img src='<?php echo IMAGE_URL; ?>addanswer.png' class='btnaddanswer' alt='<?php eT("Insert a new answer option after this one") ?>' />
-                                <img src='<?php echo IMAGE_URL; ?>deleteanswer.png' class='btndelanswer' alt='<?php eT("Delete this answer option") ?>' />
+
+                                <span class="icon-add text-success btnaddanswer" title="<?php eT("Insert a new answer option after this one") ?>"></span>
+                                <span class="glyphicon glyphicon-trash text-warning btndelanswer" title="<?php eT("Delete this answer option") ?>"></span>
                                 <?php } ?>
                             </td></tr>
                         <?php $position++;
@@ -220,6 +223,6 @@
     <input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />
 </form>
 
-        
+
     </div>
-</div>    
+</div>

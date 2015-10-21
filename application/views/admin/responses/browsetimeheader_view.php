@@ -11,17 +11,17 @@
         <?php if (!Yii::app()->request->getPost('sql'))
         { ?>
             <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/0/limit/$limit"); ?>' title='<?php eT("Show start..."); ?>' >
-                <img name='DataBegin' align='left' src='<?php echo IMAGE_URL; ?>databegin.png' alt='<?php eT("Show start..."); ?>' />
+                <span title='<?php eT("Show start..."); ?>'  name='DataBegin'  class="icon-databegin text-success"></span>
             </a>
             <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/$last/limit/$limit"); ?>' title='<?php eT("Show previous.."); ?>'>
-                <img name='DataBack' align='left'  src='<?php echo IMAGE_URL; ?>databack.png' alt='<?php eT("Show previous.."); ?>' />
+                <span title='<?php eT("Show previous..."); ?>'  name='DataBack'  class="icon-databack text-success"></span>
             </a>
             <img src='<?php echo IMAGE_URL; ?>/blank.gif' width='13' height='20' alt='' />
             <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/$next/limit/$limit"); ?>' title='<?php eT("Show next..."); ?>'>
-                <img name='DataForward' align='left' src='<?php echo IMAGE_URL; ?>dataforward.png' alt='<?php eT("Show next.."); ?>' />
+                <span title='<?php eT("Show next..."); ?>'  name='DataForward'  class="icon-dataforward text-success"></span>
             </a>
             <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/$end/imit/$limit"); ?>' title='<?php eT("Show last..."); ?>'>
-                <img name='DataEnd' align='left' src='<?php echo IMAGE_URL; ?>dataend.png' alt='<?php eT("Show last.."); ?>' />
+                <span title='<?php eT("Show last..."); ?>'  name='DataEnd'  class="icon-dataend text-success"></span>
             </a>
             <img src='<?php echo IMAGE_URL; ?>separator.gif' alt='' />
         <?php } ?>
@@ -80,7 +80,7 @@
     <tr>
         <td colspan=<?php echo $fncount + 2; ?>>
             <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'delete')) { ?>
-                <img id='imgDeleteMarkedResponses' src='<?php echo IMAGE_URL; ?>token_delete.png' alt='<?php eT('Delete marked responses'); ?>' />
+                <span id='imgDeleteMarkedResponses' title='<?php eT('Delete marked responses'); ?>' class="glyphicon glyphicon-trash"/>
             <?php } ?>
         </td>
     </tr>

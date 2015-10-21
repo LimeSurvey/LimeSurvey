@@ -286,7 +286,7 @@ class responses extends Survey_Common_Action
             $aData['sidebar']['state'] = "close";
             $aData['menu']['edition'] = true;
             $aData['menu']['view'] = true;
-            $aData['menu']['close'] =  true;            
+            $aData['menu']['close'] =  true;
 
             $this->_renderWrappedTemplate('',$aViewUrls, $aData);
         }
@@ -349,9 +349,9 @@ class responses extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listresponse.js");
 
         $aData = $this->_getData($iSurveyId);
-        
+
         $aData['menu']['edition'] = false;
-        
+
         extract($aData);
         $aViewUrls = array();
         $sBrowseLanguage = $aData['language'];
@@ -562,7 +562,7 @@ class responses extends Survey_Common_Action
                 'hidden' => (bool)$bHidden,
                 'title' => $text,
             );
-            
+
         }
 
         $column_model_txt = ls_json_encode($column_model);
@@ -588,7 +588,7 @@ class responses extends Survey_Common_Action
 
     }
 
-    
+
    /**
     * Returns survey responses in json format for a given survey
     *
@@ -711,19 +711,22 @@ class responses extends Survey_Common_Action
         $dtresult = SurveyDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
         $all_rows = array();
         foreach ($dtresult as $row) {
-            $action_html  = "<a href='" . Yii::app()->createUrl("admin/responses/view/surveyid/$surveyid/id/{$row['id']}") . "'><img src='" . $sImageURL . "token_viewanswer.png' alt='" . gT('View response details') . "'/></a>";
+            $action_html  = "<a href='" . Yii::app()->createUrl("admin/responses/view/surveyid/$surveyid/id/{$row['id']}") . "'>";
+            $action_html  += "<span class='glyphicon glyphicon-list-alt text-success' title='" . gT('View response details') . "'></span></a>";
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','update')) {
-                $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$row['id']}") . "'><img src='" . $sImageURL . "edit.png' alt='" . gT('Edit this response') . "'/></a>";
+                $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$row['id']}") . "'>
+                <span class='glyphicon glyphicon-pencil text-success' title='" . gT('Edit this response') . "'></span></a>";
             }
             if (hasFileUploadQuestion($surveyid)) {
                 if(Response::model($surveyid)->findByPk($row['id'])->getFiles())
                     $action_html .= CHtml::link(
-                        CHtml::image("{$sImageURL}down.png",gT('Download all files in this response as a zip file'),array("class"=>"downloadfile")),
+                        CHtml::tag('span', array('class'=>'glyphicon glyphicon-download-alt downloadfile'),gT('Download all files in this response as a zip file')),
                         Yii::app()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>$surveyid,"sResponseId"=>$row['id']))
                     );
             }
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete')) {
-                $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>$surveyid,"sResponseId"=>$row['id']))."' data-delete='".$row['id']."'><img src='" . $sImageURL . "delete.png' alt='" . sprintf(gT('Delete response %s'),$row['id']) . "' class='deleteresponse'/></a>";
+                $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>$surveyid,"sResponseId"=>$row['id']))."' data-delete='".$row['id']."'>
+                <span title='" . sprintf(gT('Delete response %s'),$row['id']) . "' class='deleteresponse glyphicon glyphicon-trash text-warning'></span></a>";
             }
 
             $aSurveyEntry = array();
@@ -792,8 +795,8 @@ class responses extends Survey_Common_Action
         echo json_encode($aSurveyEntries);
         Yii::app()->end();
     }
-   
-    
+
+
     /**
     * Saves the hidden columns for response browsing in the session
     *
@@ -805,12 +808,12 @@ class responses extends Survey_Common_Action
     {
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
-           $aHiddenFields=explode('|',Yii::app()->request->getPost('aHiddenFields')); 
+           $aHiddenFields=explode('|',Yii::app()->request->getPost('aHiddenFields'));
            $_SESSION['survey_'.$iSurveyId]['HiddenFields']=$aHiddenFields;
         }
     }
-    
-    
+
+
     /**
     * Do an actions on response
     *
@@ -895,7 +898,7 @@ class responses extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("Sorry, this file was not found."),'error');
             $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$surveyid));
         }
-        
+
     }
 
     /**
@@ -1389,9 +1392,9 @@ class responses extends Survey_Common_Action
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
 
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-        $aData["surveyinfo"] = $surveyinfo;     
-        $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];        
-        
+        $aData["surveyinfo"] = $surveyinfo;
+        $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+
         parent::_renderWrappedTemplate('responses', $aViewUrls, $aData);
     }
 

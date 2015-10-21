@@ -71,7 +71,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
-                                        <img src="<?php echo BIG_IMAGE_URL;?>add.png" class="responsive"/>
+                                        <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                     </a>
                                     <p><a href="#"><?php eT('Add new group');?></a></p>
                                 </div>
@@ -86,7 +86,7 @@
                                     </div>
                                     <div class="panel-body  ">
                                         <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
-                                            <img src="<?php echo BIG_IMAGE_URL; ?>add.png" class="responsive"/>
+                                            <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                         </a>
                                         <p>
                                             <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
@@ -108,7 +108,7 @@
                             </div>
                             <div class="panel-body">
                                 <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>" >
-                                    <img src="<?php echo BIG_IMAGE_URL; ?>add.png" class="responsive"/>
+                                    <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                 </a>
                                 <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>"><?php eT('Add new group');?></a></p>
                             </div>
@@ -124,7 +124,7 @@
                                     </div>
                                     <div class="panel-body  ">
                                         <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
-                                            <img src="<?php echo BIG_IMAGE_URL; ?>add.png" class="responsive"/>
+                                            <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                         </a>
                                         <p>
                                             <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
@@ -144,7 +144,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <a  href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>" >
-                                        <img src="<?php echo BIG_IMAGE_URL; ?>add.png" class="responsive"/>
+                                        <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                     </a>
                                     <p><a href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>")"><?php eT("Add new question"); ?></a></p>
                                 </div>

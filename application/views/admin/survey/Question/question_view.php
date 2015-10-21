@@ -45,7 +45,9 @@
         <tr ><td></td><td>
                 <span class='statusentryhighlight'>
                     <?php eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/questions/sa/answeroptions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php eT("You need to add answer options to this question"); ?>
-                        <img src='<?php echo IMAGE_URL; ?>answers.png' title='<?php eT("Edit answer options for this question"); ?>' /></a></span></td></tr>
+                        <span class="icon-answers text-success" title='<?php eT("Edit answer options for this question"); ?>'></span>
+                    </a>
+                </span></td></tr>
         <?php }
 
 
@@ -54,7 +56,8 @@
         <tr ><td></td><td>
                 <span class='statusentryhighlight'>
                     <?php eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/questions/sa/subquestions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php eT("You need to add subquestions to this question"); ?>
-                        <img src='<?php echo IMAGE_URL; ?><?php if ($qtypes[$qrrow['type']]['subquestions']==1){?>subquestions<?php } else {?>subquestions2d<?php } ?>.png' title='<?php eT("Edit subquestions for this question"); ?>' /></a></span></td></tr>
+                        <span class="icon-subquestions text-success" title='<?php eT("Edit subquestions for this question"); ?>' ></span>
+                            </a></span></td></tr>
         <?php }
 
         if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
@@ -110,7 +113,7 @@
             </td>
         </tr>
         <?php } ?>
-            </table>			
+            </table>
 		</div>
 	</div>
 </div>

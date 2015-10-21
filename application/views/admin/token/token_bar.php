@@ -3,17 +3,17 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
 ?>
 <div class='menubar surveybar' id="tokenbarid">
     <div class='row container-fluid'>
-        
+
         <!-- left buttons -->
         <div class="col-md-9">
-            
+
             <!-- Token view buttons -->
             <?php if( isset($token_bar['buttons']['view']) ): ?>
 
                 <!-- Display tokens -->
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'read')): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>' role="button">
-                        <img src="<?php echo IMAGE_URL; ?>document.png" />
+                        <span class="glyphicon glyphicon-list-alt text-success"></span>
                         <?php eT("Display tokens"); ?>
                     </a>
                 <?php endif; ?>
@@ -21,46 +21,46 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <!-- Create tokens -->
                 <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="<?php echo IMAGE_URL; ?>add.png" /> 
+                    <span class="icon-add text-success"></span>
                     <?php eT("Create tokens");?> <span class="caret"></span>
                 </button>
-                
+
                 <!-- Add new token entry -->
                 <ul class="dropdown-menu">
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'create')): ?>
                 <li>
                     <a href="<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$surveyid"); ?>" >
-                        <img src='<?php echo IMAGE_URL; ?>add.png' />
+                        <span class="icon-add"></span>
                         <?php eT("Add new token entry"); ?>
                     </a>
                 </li>
-                
+
                 <!-- Create dummy tokens -->
                 <li>
                     <a href="<?php echo $this->createUrl("admin/tokens/sa/adddummies/surveyid/$surveyid"); ?>" >
-                       <img src='<?php echo IMAGE_URL; ?>create_dummy_token.png' />
+                       <span class="fa fa-plus-square"></span>
                        <?php eT("Create dummy tokens"); ?>
                     </a>
                 </li>
                 <?php endif; ?>
-                
+
                 <!-- Import tokens -->
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'import')): ?>
                     <li role="separator" class="divider"></li>
                     <small><?php eT("Import tokens"); ?> : </small>
-                    
+
                     <!-- from CSV file -->
                     <li>
                        <a href="<?php echo $this->createUrl("admin/tokens/sa/import/surveyid/$surveyid") ?>" >
-                           <img src="<?php echo IMAGE_URL; ?>importcsv.png" />
+                           <span class="icon-importcsv"></span>
                            <?php eT("from CSV file"); ?>
                        </a>
                     </li>
-                    
+
                     <!-- from LDAP query -->
                     <li>
                         <a href="<?php echo $this->createUrl("admin/tokens/sa/importldap/surveyid/$surveyid") ?>" >
-                            <img src="<?php echo IMAGE_URL; ?>importldap.png" />
+                            <span class="icon-importldap"></span>
                             <?php eT("from LDAP query"); ?>
                         </a>
                     </li>
@@ -71,74 +71,74 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <!-- Manage additional attribute fields -->
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$surveyid"); ?>' role="button">
-                       <img src="<?php echo IMAGE_URL; ?>token_manage.png" />
+                       <span class="icon-token_manage text-success"></span>
                        <?php eT("Manage additional attribute fields"); ?>
                     </a>
-                <?php endif; ?>            
+                <?php endif; ?>
 
                 <!-- Export tokens to CSV file -->
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'export')): ?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/tokens/sa/exportdialog/surveyid/$surveyid"); ?>" role="button">
-                       <img src="<?php echo IMAGE_URL; ?>exportcsv.png" />
+                       <span class="icon-exportcsv"></span>
                        <?php eT("Export tokens to CSV file"); ?>
                     </a>
                 <?php endif; ?>
-                
-                <!-- EMAILS -->                
+
+                <!-- EMAILS -->
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')):?>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="<?php echo IMAGE_URL; ?>emailtemplates.png" /> 
+                        <span class="icon-emailtemplates text-success"></span>
                         <?php eT("Tokens email");?> <span class="caret"></span>
                     </button>
-                    
+
                     <ul class="dropdown-menu">
                         <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'create')): ?>
-                            
+
                         <!-- Send email invitation -->
                         <li>
                             <a href="<?php echo $this->createUrl("admin/tokens/sa/email/surveyid/$surveyid"); ?>" >
-                                <img src='<?php echo IMAGE_URL; ?>invite.png' />
+                                <span class="icon-invite"></span>
                                 <?php eT("Send email invitation"); ?>
                             </a>
-                        </li>					
-                        
+                        </li>
+
                         <!-- Send email reminder -->
                         <li>
                             <a href="<?php echo $this->createUrl("admin/tokens/sa/email/action/remind/surveyid/$surveyid"); ?>" >
-                                <img src='<?php echo IMAGE_URL; ?>remind.png' />
+                                <span class="icon-remind"></span>
                                 <?php eT("Send email reminder"); ?>
                             </a>
                         </li>
                         <?php endif; ?>
-                        
+
                         <li role="separator" class="divider"></li>
-                        
+
                         <!-- Bounce settings -->
                         <li>
                             <a href="<?php echo $this->createUrl("admin/tokens/sa/bouncesettings/surveyid/$surveyid"); ?>" >
-                                <img src='<?php echo IMAGE_URL; ?>bounce_settings.png' />
+                                <span class="icon-bounce_settings"></span>
                                 <?php eT("Bounce settings"); ?>
                             </a>
                         </li>
                     </ul>
                 </div>
-                
-                <!-- Generate tokens -->                
+
+                <!-- Generate tokens -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/tokens/sa/tokenify/surveyid/$surveyid"); ?>" role="button">
-                    <img src="<?php echo IMAGE_URL; ?>tokenify.png" />
+                    <span class="icon-do text-success"></span>
                     <?php eT("Generate tokens"); ?>
                 </a>
                 <?php endif; ?>
             <?php endif;?>
         </div>
-        
+
         <!-- Right buttons -->
         <div class="col-md-3 text-right">
-            
+
             <!-- View token buttons -->
             <?php if( isset($token_bar['buttons']['view'] )): ?>
-                
+
                 <!-- Delete tokens table -->
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($surveyid, 'tokens','delete')): ?>
                     <a class="btn btn-danger" href="<?php echo $this->createUrl("admin/tokens/sa/kill/surveyid/$surveyid"); ?>" role="button">
@@ -146,20 +146,20 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                     </a>
                 <?php endif; ?>
             <?php endif; ?>
-            
-            <!-- Save buttons -->            
+
+            <!-- Save buttons -->
             <?php if(isset($token_bar['savebutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-button" data-use-form-id="<?php if (isset($token_bar['savebutton']['useformid'])){ echo '1';}?>" data-form-to-save="<?php if (is_string($token_bar['savebutton']['form'])) {echo $token_bar['savebutton']['form']; }?>">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                     <?php eT("Save");?>
                 </a>
-                
+
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/282267{$surveyid}"); ?>" role="button">
                     <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
                     <?php eT("Save and close");?>
                 </a>
             <?php endif;?>
-            
+
             <!-- Close -->
             <?php if(isset($token_bar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $this->createUrl($token_bar['closebutton']['url']); ?>" role="button">
@@ -167,7 +167,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
-            
+
             <!-- Return -->
             <?php if(isset($token_bar['returnbutton'])):?>
                 <a class="btn btn-default" href="<?php echo $token_bar['returnbutton']['url']; ?>" role="button">
@@ -176,6 +176,6 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 </a>
             <?php endif;?>
         </div>
-    	
+
     </div>
 </div>

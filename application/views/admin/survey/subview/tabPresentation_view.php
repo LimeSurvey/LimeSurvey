@@ -44,7 +44,7 @@
         </li>
 
         <li><label for='preview'><?php  eT("Template Preview:"); ?></label>
-            <img alt='<?php  eT("Template preview image"); ?>' name='preview' id='preview' src='<?php echo getTemplateURL($esrow['template']); ?>/preview.png' />
+            <span class="icon-do text-success" name='preview' id='preview' ></span>
         </li>
 
 

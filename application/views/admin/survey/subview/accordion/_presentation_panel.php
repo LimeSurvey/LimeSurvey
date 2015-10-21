@@ -6,7 +6,7 @@
 
 <!-- Presentation panel -->
 <div id='presentation' class="tab-pane fade in">
-    
+
     <!-- Format -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='format'><?php  eT("Format:"); ?></label>
@@ -32,15 +32,15 @@
                 </option>
             </select>
         </div>
-    </div>                                                  
-        
+    </div>
+
     <!-- Template -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='template'><?php  eT("Template:"); ?></label>
         <div class="col-sm-8">
             <select id='template'class="form-control"  name='template'>
                 <?php foreach (array_keys(getTemplateList()) as $tname) {
-            
+
                         if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $esrow['template']==htmlspecialchars($tname) ) { ?>
                         <option value='<?php echo $tname; ?>'
                             <?php if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) { ?>
@@ -51,11 +51,11 @@
                             ><?php echo $tname; ?></option>
                         <?php }
                 } ?>
-            </select>            
-            <img alt='<?php  eT("Template preview image"); ?>' name='preview' id='preview' src='<?php echo getTemplateURL($esrow['template']); ?>/preview.png' />    
+            </select>
+            <span alt='<?php  eT("Template preview image"); ?>' name='preview' id='preview' class="icon-do text-success"></span>    
         </div>
-    </div>                                                  
-        
+    </div>
+
     <!-- welcome screen -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='showwelcome'><?php  eT("Show welcome screen?") ; ?></label>
@@ -74,10 +74,10 @@
                     ><?php  eT("No") ; ?>
                 </option>
             </select>
-    
+
         </div>
     </div>
-        
+
     <!-- Navigation delay -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
@@ -85,7 +85,7 @@
             <input type='text' class="form-control" value="<?php echo $esrow['navigationdelay']; ?>" name='navigationdelay' id='navigationdelay' size='12' maxlength='2' onkeypress="return goodchars(event,'0123456789')" />
         </div>
     </div>
-        
+
     <!-- Show [<< Prev] button -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='allowprev'><?php  eT("Show [<< Prev] button"); ?></label>
@@ -104,15 +104,15 @@
                     ><?php  eT("No"); ?>
                 </option>
             </select>
-    
+
         </div>
-    </div>            
-        
+    </div>
+
     <!-- Show question index -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='questionindex'><?php  eT("Show question index / allow jumping"); ?></label>
         <div class="col-sm-8">
-    
+
             <?php
                 $data = array(
                     0 => gT('Disabled'),
@@ -124,10 +124,10 @@
                     'class' => 'form-control'
                 ));
             ?>
-        
+
         </div>
     </div>
-        
+
     <!-- Keyboard-less operation -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='nokeyboard'><?php  eT("Keyboard-less operation"); ?></label>
@@ -146,10 +146,10 @@
                     ><?php  eT("No"); ?>
                 </option>
             </select>
-            
+
         </div>
-    </div>            
-        
+    </div>
+
     <!-- Show progress bar -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='showprogress'><?php  eT("Show progress bar"); ?></label>
@@ -169,7 +169,7 @@
             </select>
         </div>
     </div>
-        
+
     <!-- Participants may print answers -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='printanswers'><?php  eT("Participants may print answers?"); ?></label>
@@ -188,10 +188,10 @@
                     ><?php  eT("No"); ?>
                 </option>
             </select>
-    
+
         </div>
     </div>
-        
+
     <!-- Public statistics -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='publicstatistics'><?php  eT("Public statistics?"); ?></label>
@@ -212,7 +212,7 @@
             </select>
         </div>
     </div>
-        
+
     <!-- Show graphs in public statistics -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='publicgraphs'><?php  eT("Show graphs in public statistics?"); ?></label>
@@ -232,7 +232,7 @@
             </select>
         </div>
     </div>
-        
+
     <!-- Automatically load URL -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='autoredirect'><?php  eT("Automatically load URL when survey complete?"); ?></label>
@@ -250,14 +250,14 @@
                         <?php } ?>
                     ><?php  eT("No"); ?>
                 </option>
-            </select>                
+            </select>
         </div>
-    </div>        
-        
+    </div>
+
     <!-- showxquestions -->
-    <?php switch($showxquestions): 
-            case 'show':  ?>    
-                
+    <?php switch($showxquestions):
+            case 'show':  ?>
+
                 <!-- Show "There are X questions in this survey -->
                 <div class="form-group">
                     <label class="col-sm-4 control-label" for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey"'); ?></label>
@@ -266,10 +266,10 @@
                     </div>
                 </div>
         <?php break;?>
-        
+
         <?php case 'hide': ?>
-            
-            <!-- Show "There are X questions in this survey -->        
+
+            <!-- Show "There are X questions in this survey -->
             <div class="form-group">
                 <label class="col-sm-4 control-label" for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showxquestions" id="" value="N" />
                 <div class="col-sm-8">
@@ -277,14 +277,14 @@
                 </div>
             </div>
         <?php break;?>
-    
+
         <?php default: ?>
-        
-            <!-- Show "There are X questions in this survey" -->        
+
+            <!-- Show "There are X questions in this survey" -->
             <div class="form-group">
                 <label class="col-sm-4 control-label" for="showxquestions"><?php  eT('Show "There are X questions in this survey"'); ?></label>
                 <div class="col-sm-8">
-    
+
                     <?php $sel_showxq = array( 'Y' => '' , 'N' => '' );
                     if (isset($esrow['showxquestions'])) {
                         $set_showxq = $esrow['showxquestions'];
@@ -293,22 +293,22 @@
                     if (empty($sel_showxq['Y']) && empty($sel_showxq['N'])) {
                         $sel_showxq['Y'] = ' selected="selected"';
                     }; ?>
-                    
+
                     <select id="showxquestions" name="showxquestions" class="form-control">
                         <option value="Y" <?php echo $sel_showxq['Y']; ?>><?php  eT('Yes'); ?></option>
                         <option value="N" <?php echo $sel_showxq['N']; ?>><?php  eT('No'); ?></option>
                     </select>
-                    
-                    <?php unset($sel_showxq,$set_showxq); ?>                        
+
+                    <?php unset($sel_showxq,$set_showxq); ?>
                 </div>
             </div>
-        <?php break;?>            
+        <?php break;?>
     <?php endswitch ?>
-    
-    <?php switch($showgroupinfo): 
+
+    <?php switch($showgroupinfo):
             case 'both': ?>
-            
-                <!-- Show group name and/or group description -->            
+
+                <!-- Show group name and/or group description -->
                 <div class="form-group">
                     <label class="col-sm-4 control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label>
                     <div class="col-sm-8">
@@ -323,49 +323,49 @@
             <div class="form-group">
                 <label class="col-sm-4 control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label>
                 <div class="col-sm-8">
-                    <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="N" /> 
+                    <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="N" />
                     <input type="text" class="form-control" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="<?php  eT('Show group name only (Forced by the system administrator)'); ?>" />
                 </div>
             </div>
         <?php break;?>
-    
+
         <?php case 'description': ?>
 
             <!-- Show group name and/or group description -->
             <div class="form-group">
-                <label class="col-sm-4 control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label> 
+                <label class="col-sm-4 control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control"  name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="<?php  eT('Show group description only (Forced by the system administrator)'); ?>" />                        
+                    <input type="text" class="form-control"  name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="<?php  eT('Show group description only (Forced by the system administrator)'); ?>" />
                     <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="D" />
                 </div>
             </div>
         <?php break;?>
-    
+
         <?php case 'none': ?>
-        
-            <!-- Show group name and/or group description -->        
+
+            <!-- Show group name and/or group description -->
             <div class="form-group">
                 <label class="col-sm-4 control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label>
                 <div class="col-sm-8">
-                    <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="X" /> 
+                    <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="X" />
                     <input type="text"  class="form-control" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="<?php  eT('Hide both (Forced by the system administrator)'); ?>" />
-                    
+
                 </div>
             </div>
         <?php break;?>
-    
+
         <?php default: ?>
-            <?php 
+            <?php
                 $sel_showgri = array( 'B' => '' , 'D' => '' , 'N' => '' , 'X' => '' );
-                if (isset($esrow['showgroupinfo'])) 
+                if (isset($esrow['showgroupinfo']))
                 {
                     $set_showgri = $esrow['showgroupinfo'];
                     $sel_showgri[$set_showgri] = ' selected="selected"';
                 }
-                if (empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X'])) 
+                if (empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X']))
                     $sel_showgri['C'] = ' selected="selected"';
-            ?>   
-            
+            ?>
+
             <!-- Show group name and/or group description -->
             <div class="form-group">
                 <label class="col-sm-4 control-label" for="showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label>
@@ -380,59 +380,59 @@
                 </div>
             </div>
         <?php break;?>
-        
+
     <?php endswitch ?>
-    
-    <?php switch($showqnumcode): 
+
+    <?php switch($showqnumcode):
             case 'none':  ?>
 
-                <!-- Show question number and/or code -->            
+                <!-- Show question number and/or code -->
                 <div class="form-group">
                     <label class="col-sm-4 control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label>
                     <div class="col-sm-8">
-                        <input type="hidden" name="showqnumcode" id="showqnumcode" value="X" /> 
+                        <input type="hidden" name="showqnumcode" id="showqnumcode" value="X" />
                         <input type="text" class="form-control" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Hide both (Forced by the system administrator)'); ?>" />
                     </div>
                 </div>
         <?php break;?>
-    
+
         <?php case 'number': ?>
-        
-            <!-- Show question number and/or code -->        
+
+            <!-- Show question number and/or code -->
             <div class="form-group">
-                <label class="col-sm-4 control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label> 
+                <label class="col-sm-4 control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label>
                 <div class="col-sm-8">
-                    <input type="hidden" name="showqnumcode" id="showqnumcode" value="N" /> 
+                    <input type="hidden" name="showqnumcode" id="showqnumcode" value="N" />
                     <input class="form-control" type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Show question number only (Forced by the system administrator)') ; ?>" />
-    
+
                 </div>
             </div>
-        <?php break;?>            
-    
+        <?php break;?>
+
         <?php case 'code': ?>
-        
-            <!-- Show question number and/or code -->        
+
+            <!-- Show question number and/or code -->
             <div class="form-group">
-                <label class="col-sm-4 control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label>  
+                <label class="col-sm-4 control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label>
                 <div class="col-sm-8">
-                    <input type="hidden" name="showqnumcode" id="showqnumcode" value="C" /> 
+                    <input type="hidden" name="showqnumcode" id="showqnumcode" value="C" />
                     <input class="form-control" type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Show question code only (Forced by the system administrator)'); ?>" />
                 </div>
             </div>
-        <?php break;?>            
-    
+        <?php break;?>
+
         <?php case 'both': ?>
-        
-            <!-- Show question number and/or code -->        
+
+            <!-- Show question number and/or code -->
             <div class="form-group">
-                <label class="col-sm-4 control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label>   
+                <label class="col-sm-4 control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label>
                 <div class="col-sm-8">
-                    <input type="hidden" name="showqnumcode" id="showqnumcode" value="B" /> 
+                    <input type="hidden" name="showqnumcode" id="showqnumcode" value="B" />
                     <input class="form-control" type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Show both (Forced by the system administrator)'); ?>"/>
                 </div>
             </div>
-        <?php break;?>            
-    
+        <?php break;?>
+
         <?php default: ?>
             <?php
                 $sel_showqnc = array( 'B' => '' , 'C' => '' , 'N' => '' , 'X' => '' );
@@ -444,10 +444,10 @@
                     $sel_showqnc['X'] = ' selected="selected"';
                 };
             ?>
-        
+
             <!-- Show question number and/or code -->
             <div class="form-group">
-                <label class="col-sm-4 control-label" for="showqnumcode"><?php  eT('Show question number and/or code'); ?></label>   
+                <label class="col-sm-4 control-label" for="showqnumcode"><?php  eT('Show question number and/or code'); ?></label>
                 <div class="col-sm-8">
                     <select class="form-control" id="showqnumcode" name="showqnumcode">
                         <option value="B"<?php echo $sel_showqnc['B']; ?>><?php  eT('Show both'); ?></option>
@@ -455,26 +455,26 @@
                         <option value="C"<?php echo $sel_showqnc['C']; ?>><?php  eT('Show question code only'); ?></option>
                         <option value="X"<?php echo $sel_showqnc['X']; ?>><?php  eT('Hide both'); ?></option>
                     </select>
-                    <?php unset($sel_showqnc,$set_showqnc);?>    
+                    <?php unset($sel_showqnc,$set_showqnc);?>
                 </div>
             </div>
         <?php break;?>
     <?php endswitch; ?>
-    
-    <?php switch($shownoanswer): 
+
+    <?php switch($shownoanswer):
             case 0:  ?>
 
-                <!-- Show "No answer" -->            
+                <!-- Show "No answer" -->
                 <div class="form-group">
-                    <label class="col-sm-4 control-label" for="dis_shownoanswer"><?php  eT('Show "No answer"'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer" value="N" /> 
+                    <label class="col-sm-4 control-label" for="dis_shownoanswer"><?php  eT('Show "No answer"'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer" value="N" />
                     <div class="col-sm-8">
-                        <input class="form-control" type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php  eT('Off (Forced by the system administrator)'); ?>" />                            
+                        <input class="form-control" type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php  eT('Off (Forced by the system administrator)'); ?>" />
                     </div>
                 </div>
         <?php break;?>
-    
+
         <?php case 2: ?>
-            <?php 
+            <?php
                 $sel_showno = array( 'Y' => '' , 'N' => '' );
                 if (isset($esrow['shownoanswer'])) {
                     $set_showno = $esrow['shownoanswer'];
@@ -482,33 +482,33 @@
                 };
                 if (empty($sel_showno)) {
                     $sel_showno['Y'] = ' selected="selected"';
-                }; 
+                };
             ?>
 
-            <!-- Show "No answer" -->            
+            <!-- Show "No answer" -->
             <div class="form-group">
-                <label class="col-sm-4 control-label" for="shownoanswer"><?php  eT('Show "No answer"'); ?></label> 
+                <label class="col-sm-4 control-label" for="shownoanswer"><?php  eT('Show "No answer"'); ?></label>
                 <div class="col-sm-8">
                     <select class="form-control" id="shownoanswer" name="shownoanswer">
                         <option value="Y"<?php echo $sel_showno['Y']; ?>><?php  eT('Yes'); ?></option>
                         <option value="N"<?php echo $sel_showno['N']; ?>><?php  eT('No'); ?></option>
                     </select>
-    
+
                 </div>
             </div>
         <?php break;?>
-    
+
         <?php default: ?>
 
             <!-- Show "No answer" -->
             <div class="form-group">
-                <label class="col-sm-4 control-label" for="dis_shownoanswer"><?php  eT('Show "No answer"'); ?></label> 
+                <label class="col-sm-4 control-label" for="dis_shownoanswer"><?php  eT('Show "No answer"'); ?></label>
                 <div class="col-sm-8">
-                      <input type="hidden" name="shownoanswer" id="shownoanswer" value="Y" /> 
+                      <input type="hidden" name="shownoanswer" id="shownoanswer" value="Y" />
                        <input class="form-control" type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php  eT('On (Forced by the system administrator)'); ?>" />
                 </div>
             </div>
         <?php break;?>
-                    
+
     <?php endswitch ?>
     </div>

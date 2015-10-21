@@ -85,10 +85,10 @@ class translate extends Survey_Common_Action {
 
 			$aData['sidebar']['state'] = "close";
 			$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-			$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";			
-			
+			$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+
 			$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-			$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;		
+			$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;
 
         $this->_renderWrappedTemplate('translate', $aViewUrls, $aData);
     }
@@ -282,7 +282,7 @@ class translate extends Survey_Common_Action {
 			$survey_button .= $this->menuItem(
 								$menutext,
 								'',
-								"do.png",
+								"icon-do text-success",
 								$menuitem_url . $baselang
 							);
 		}
@@ -290,8 +290,7 @@ class translate extends Survey_Common_Action {
 		{
 			$icontext = gT($menutext);
 
-			$img_tag = CHtml::image($imageurl . '/do.png', $icontext);
-			$survey_button .= CHtml::link($img_tag, '#', array(
+			$survey_button .= CHtml::link('<span class="icon-do text-success"></span>', '#', array(
 				'id' 		=> 	'dosurvey',
 				'class' 	=> 	'dosurvey',
 				'accesskey' => 	'd'
@@ -346,10 +345,10 @@ class translate extends Survey_Common_Action {
 		$language_list .= CHtml::openTag('div', array('class'=>'menubar-right')); // Opens .menubar-right div
 		$language_list .= CHtml::openTag('div', array('class'=>'row'));
         $language_list .= CHtml::openTag('div', array('class'=>'col-sm-12'));
-		
+
 		$language_list .= CHtml::tag('label', array('for'=>'translationlanguage', 'class' => 'col-sm-1  control-label'), gT("Translate to") . ":");
-        
-        $language_list .= CHtml::openTag('div', array('class'=>'col-sm-2')); 
+
+        $language_list .= CHtml::openTag('div', array('class'=>'col-sm-2'));
 		$language_list .= CHtml::openTag(
 							'select',
 							array(
@@ -975,13 +974,13 @@ class translate extends Survey_Common_Action {
     * @param string $jsMenuText
     * @return string
     */
-    private function menuItem( $jsMenuText, $menuImageText, $menuImageFile, $scriptname)
+    private function menuItem( $jsMenuText, $menuImageText, $menuIconClasses, $scriptname)
     {
+        //$imageurl = Yii::app()->getConfig("adminimageurl");
 
-        $imageurl = Yii::app()->getConfig("adminimageurl");
-
-		$img_tag = CHtml::image($imageurl . "/" . $menuImageFile, $jsMenuText, array('name'=>$menuImageText));
-		$menuitem = CHtml::link($img_tag, '#', array(
+		//$img_tag = CHtml::image($imageurl . "/" . $menuImageFile, $jsMenuText, array('name'=>$menuImageText));
+        $icon_tag = '<span class="'.$menuIconClasses.'"></span>'.$jsMenuText;
+		$menuitem = CHtml::link($icon_tag, '#', array(
 			'onclick' => "window.open('{$scriptname}', '_top')"
 		));
         return $menuitem;

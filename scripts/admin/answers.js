@@ -11,7 +11,7 @@ $(document).ready(function(){
         modal: true,
         width:800,
         title: lsbrowsertitle});
-    $('#quickadd').dialog({ 
+    $('#quickadd').dialog({
 		autoOpen: false,
         modal: true,
         width:600,
@@ -118,7 +118,7 @@ function addinput()
     languages=langs.split(';');
 
     sNextCode=getNextCode($(this).parent().parent().find('.code').val());
-    
+
     for (x in languages)
         {
         tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
@@ -133,11 +133,21 @@ function addinput()
             assessment_type='hidden';
         }
         if (x==0) {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td><img class="handle" src="' + sImageURL + 'handle.png" /></td><td><input class="code" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="5" required value="'+htmlspecialchars(sNextCode)+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" /><a class="editorLink"><img class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
+            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>'+
+            '<span class="glyphicon glyphicon-move text-success"></span>'+
+            '</td><td><input class="code" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="5" required value="'+htmlspecialchars(sNextCode)+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />'+
+            '<a class="editorLink">'+
+            '<span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
+            '<span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span></a></td><td>'+
+            '<span class="btnaddanswer icon-add text-success"></span>'+
+            '<span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
+            '</td></tr>'
         }
         else
             {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>&nbsp;</td><td>'+htmlspecialchars(sNextCode)+'</td><td><input type="text" size="100" class="answer" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" /><a class="editorLink"><img class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td></td></tr>'
+            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>&nbsp;</td><td>'+htmlspecialchars(sNextCode)+'</td><td><input type="text" size="100" class="answer" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" /><a class="editorLink">'+
+            '<span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
+            '<span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span></a></td><td></td></tr>'
         }
         tablerow.after(inserthtml);
         tablerow.next().find('.btnaddanswer').click(addinput);
@@ -272,16 +282,16 @@ function getNextCode(sSourceCode)
         sBaseCode=sSourceCode.substr(0,sSourceCode.length-mNumberFound.length);
     }
     var iNumberFound=+mNumberFound;
-    do 
+    do
     {
         iNumberFound=iNumberFound+1;
         sNewNumber=iNumberFound+'';
         sResult=sBaseCode+sNewNumber;
         if (sResult.length>5)
         {
-          sResult=sResult.substr(sResult.length - 5);  
+          sResult=sResult.substr(sResult.length - 5);
         }
-    } 
+    }
     while (areCodesUnique(sResult)==false);
     return(sResult);
 }
@@ -298,7 +308,7 @@ function popupeditor()
 
 /**
 * Checks for duplicate codes and shows an error message & returns false if there are any duplicates
-* 
+*
 * @returns {Boolean}
 */
 function checkForDuplicateCodes()
@@ -313,13 +323,13 @@ function checkForDuplicateCodes()
         return true;
     }
 }
-               
+
 /**
 * Check if all existing codes are unique
 * If sNewValue is not empty then only sNewValue is checked for uniqueness against the existing codes
-* 
-* @param sNewValue 
-* 
+*
+* @param sNewValue
+*
 * @returns {Boolean} False if codes are not unique
 */
 function areCodesUnique(sNewValue)
@@ -431,7 +441,7 @@ function lspreview()
                             if (!assessmentvisible)
                             {
                                 tabbody=tabbody+' style="display:none;"';
-                            }                                
+                            }
                             tabbody=tabbody+'>'+lsrows[z].assessment_value+'</td>';
                             tabbody=tabbody+'<td>'+htmlspecialchars(lsrows[z].title)+'</td></tr><tbody>';
                         }
@@ -439,7 +449,7 @@ function lspreview()
                         if (!assessmentvisible)
                         {
                             tabbody=tabbody+' style="display:none;"';
-                        }                       
+                        }
                         tabbody=tabbody+'>'+sAssessmentValue+'</th>';
                         tabbody=tabbody+'<th>'+strlabel+'</th></tr></thead></table></div>';
                     }
@@ -550,11 +560,20 @@ function transferlabels()
                         for (k in lsrows)
                             {
                             if (x==0) {
-                                tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="' + sImageURL + 'handle.png" /></td><td><input class="code" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].code)+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].assessment_value)+'"/></td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a class="editorLink"><img class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                tablerows=tablerows+'<tr class="row_'+k+'" ><td>'+
+                                '<span class="glyphicon glyphicon-move text-success"></span></td><td><input class="code" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].code)+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].assessment_value)+'"/></td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a class="editorLink">'+
+                                '<span class="btneditanswerena glyphicon glyphicon-pencil text-success" ></span>'+
+                                '<span class="btneditanswerdis glyphicon glyphicon-pencil text-success" alt="Give focus to the HTML editor popup window" style="display: none;" ></span></a></td><td>'+
+                                '<span class="btnaddanswer icon-add text-success"></span>'+
+                                '<span class="btndelanswer glyphicon glyphicon-trash text-warning"></span></td></tr>'
                             }
                             else
                                 {
-                                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>'+htmlspecialchars(lsrows[k].code)+'</td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a class="editorLink"><img class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
+                                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>'+htmlspecialchars(lsrows[k].code)+'</td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a class="editorLink">'+
+                                '<span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
+                                '<span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span></a></td><td>'+
+                                '<span class="btnaddanswer icon-add text-success"></span>'+
+                                '<span class="btndelanswer glyphicon glyphicon-trash text-warning"></span></td></tr>'
                             }
                         }
                     }
@@ -565,7 +584,12 @@ function transferlabels()
                     var k=0;
                     for (k in lsrows)
                         {
-                        tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>'+htmlspecialchars(lsrows[k].code)+'</td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a class="editorLink"><img class="btneditanswerena" src="../images/edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="../images/edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="../images/addanswer.png" class="btnaddanswer" /><img src="../images/deleteanswer.png" class="btndelanswer" /></td></tr>'
+                        tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>'+htmlspecialchars(lsrows[k].code)+'</td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a class="editorLink">'+
+                        '<span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
+                        '<span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;" ></span>'+
+                        '</a></td><td>'+
+                        '<span class="btnaddanswer icon-add text-success" />'+
+                        '<span class="btndelanswer  glyphicon glyphicon-trash text-warning" /></td></tr>'
                     }
                 }
                 if (lsreplace) {
@@ -653,11 +677,19 @@ function quickaddlabels()
             }
 	    var escaped_value = thisrow[parseInt(x)+1].replace('"', '&quot;');
             if (x==0) {
-                tablerows=tablerows+'<tr class="row_'+k+'" ><td><img class="handle" src="' + sImageURL + 'handle.png" /></td><td><input class="code" type="text" maxlength="5" size="5" value="'+thisrow[0]+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+escaped_value+'"></input><a class="editorLink"><img class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
+                tablerows=tablerows+'<tr class="row_'+k+'" ><td><span class="glyphicon glyphicon-move text-success"></span></td><td><input class="code" type="text" maxlength="5" size="5" value="'+thisrow[0]+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+escaped_value+'"></input><a class="editorLink">'+
+                '<span class="btneditanswerena  glyphicon glyphicon-pencil text-success"></span>'+
+                '<span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span></a></td><td>'+
+                '<span class="btnaddanswer icon-add text-success"></span>'+
+                '<span class="btndelanswer glyphicon glyphicon-trash text-warning"></span></td></tr>'
             }
             else
                 {
-                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" class="answer" value="'+escaped_value+'"></input><a class="editorLink"><img class="btneditanswerena" src="' + sImageURL + 'edithtmlpopup.png" width="16" height="16" border="0" /><img class="btneditanswerdis" alt="Give focus to the HTML editor popup window" src="' + sImageURL + 'edithtmlpopup_disabled.png" style="display: none;" width="16" height="16" align="top" border="0" /></a></td><td><img src="' + sImageURL + 'addanswer.png" class="btnaddanswer" /><img src="' + sImageURL + 'deleteanswer.png" class="btndelanswer" /></td></tr>'
+                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" class="answer" value="'+escaped_value+'"></input><a class="editorLink">'+
+                '<span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
+                '<span class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span></a></td><td>'+
+                '<span class="btnaddanswer  icon-add text-success"></span>'+
+                '<span class="btndelanswer glyphicon glyphicon-trash text-warning"></span></td></tr>'
 
             }
         }
@@ -741,7 +773,7 @@ function savelabel()
         {
         aLanguages = langs.split(';');
         $.post(sCheckLabelURL, { languages: aLanguages, lid: lid}, function(data) {
-           $('#strReplaceMessage').html(data); 
+           $('#strReplaceMessage').html(data);
             $('#dialog-confirm-replace').dialog({
                 resizable: false,
                 height: 200,
@@ -804,7 +836,7 @@ function ajaxreqsave() {
         if($(this).attr('id').substr(-1) === scale_id)
             assessmentvalues.push($(this).val());
     });
-        
+
     answers = new Object();
     languages = langs.split(';');
 

@@ -54,77 +54,77 @@
             <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir)):?>
                 <!-- Create -->
                 <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Create new template called:"); ?>', '<?php eT("NewTemplate"); ?>', 'default', 'copy')">
-                    <img src="<?php echo IMAGE_URL; ?>add.png" />
+                    <span class="icon-add text-success"></span>
                     <?php eT("Create new template"); ?>
                 </a>
             <?php endif;?>
-            
+
             <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir)):?>
-                
+
                 <!-- Import -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','import') && function_exists("zip_open")):?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl('admin/templates/sa/upload'); ?>" role="button">
-                        <img src="<?php echo IMAGE_URL; ?>import.png" />
+                        <span class="icon-import text-success"></span>
                         <?php eT("Import template"); ?>
                     </a>
                 <?php else: ?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("We are sorry but you don't have permissions to do this."); eT(" Or: "); eT("zip library not supported by PHP, Import ZIP Disabled"); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
-                            <img src="<?php echo IMAGE_URL; ?>import.png" />
+                            <span class="icon-import text-success"></span>
                             <?php eT("Import template"); ?>
                         </button>
                     </span>
                 <?php endif;?>
-                
+
                 <!-- Export -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','export')):?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl('admin/templates/sa/templatezip/templatename/' . $templatename) ?>" role="button">
-                        <img src="<?php echo IMAGE_URL; ?>export.png" />
+                        <span class="icon-export text-success"></span>
                         <?php eT("Export Template"); ?>
                     </a>
                <?php endif;?>
-                
+
                <!-- Copy -->
-               <?php if(Permission::model()->hasGlobalPermission('templates','create')):?> 
+               <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
                     <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the copied template:"); ?>', '<?php echo gT("copy_of_")."$templatename"; ?>',            '<?php echo $templatename; ?>', 'copy')">
-                        <img src="<?php echo IMAGE_URL; ?>copy.png" />
+                        <span class="icon-copy text-success"></span>
                         <?php eT("Copy Template"); ?>
                     </a>
                <?php endif;?>
-               
+
             <?php else: ?>
 
                 <!-- All buttons disabled -->
-                
+
                 <!-- import disabled -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','import')):?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
-                            <img src="<?php echo IMAGE_URL; ?>import_disabled.png" />
+                            <span class="icon-import text-muted"></span>
                             <?php eT("Import template"); ?>
                         </button>
-                    </span>                    
-                <?php endif;?>     
+                    </span>
+                <?php endif;?>
 
                 <!-- export disabled -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','export')):?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
-                            <img src="<?php echo IMAGE_URL; ?>export_disabled.png" />
+                            <span class="icon-export text-muted"></span>
                             <?php eT("Export template"); ?>
                         </button>
-                    </span>                    
+                    </span>
                 <?php endif;?>
 
                 <!-- create disabled -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
-                            <img src="<?php echo IMAGE_URL; ?>copy_disabled.png" />
+                            <span class="icon-copy text-muted"></span>
                             <?php eT("Copy template"); ?>
                         </button>
-                    </span>                    
-                <?php endif;?>                
+                    </span>
+                <?php endif;?>
 
             <?php endif;?>
 
@@ -132,50 +132,48 @@
             <?php if(is_template_editable($templatename)):?>
                 <?php if(Permission::model()->hasGlobalPermission('templates','update')):?>
                     <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Rename this template to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
-                        <img src="<?php echo IMAGE_URL; ?>edit.png" />
+                        <span class="glyphicon glyphicon-pencil  text-success"></span>
                         <?php eT("Rename this template"); ?>
-                    </a>                                    
+                    </a>
                 <?php endif;?>
-                
+
                 <?php if(Permission::model()->hasGlobalPermission('templates','delete')):?>
                     <a class="btn btn-default" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this template?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/templates/sa/delete/templatename/'.$templatename); ?>", "_top")'>
-                        <img src="<?php echo IMAGE_URL; ?>delete.png" />
+                        <span class="glyphicon glyphicon-trash  text-warning"></span>
                         <?php eT("Delete this template"); ?>
-                    </a>                                                        
-                <?php endif;?>                    
+                    </a>
+                <?php endif;?>
             <?php endif;?>
         </div>
 
 
         <!-- Menu Right -->
-            
+
         <div class="col-md-4 text-right form-inline">
             <div class="form-group">
                 <label for='templatedir'><?php eT("Template:"); ?></label>
                 <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/view/editfile/".$editfile."/screenname/".$screenname); ?>/templatename/'+escape(this.value), '_top')">
                     <?php echo templateoptions($templates, $templatename); ?>
-                </select>            
-            </div>            
+                </select>
+            </div>
 
             <div class="form-group">
                 <label for='listboxtemplates'><?php eT("Screen:"); ?></label>
                 <select class="listboxtemplates form-control" id='listboxtemplates' name='screenname' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/screenredirect/editfile/".$editfile."/templatename/".$templatename); ?>/screenname/'+escape(this.value), '_top')">
                     <?php echo makeoptions($screens, "id", "name", HTMLEscape($screenname) ); ?>
                 </select>
-            </div>                        
+            </div>
 
 
 
-            
 
-            
             <?php if(isset($fullpagebar['savebutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" aria-data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                     <?php eT("Save");?>
                 </a>
             <?php endif;?>
-            
+
             <?php if(isset($fullpagebar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $this->createUrl($fullpagebar['closebutton']['url']); ?>" role="button">
                     <span class="glyphicon glyphicon-close" aria-hidden="true"></span>
@@ -188,7 +186,7 @@
                     &nbsp;&nbsp;
                     <?php eT("Return to survey administration."); ?>
                 </a>
-            <?php endif;?>            
+            <?php endif;?>
         </div>
     </div>
 </div>
@@ -203,13 +201,13 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;
         <strong>
-            <?php eT('Note: This is a standard template.');?>    
+            <?php eT('Note: This is a standard template.');?>
         </strong>
-        <?php 
+        <?php
             printf(gT('If you want to edit it %s please copy it first%s.'),"<a href='#' title=\"".gT("Copy Template")."\""
-            ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the copied template:")."', '".gT("copy_of_")."$templatename', '$templatename', 'copy')\">",'</a>'); 
+            ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the copied template:")."', '".gT("copy_of_")."$templatename', '$templatename', 'copy')\">",'</a>');
         ?>
-    </div>        
+    </div>
 <?php endif;?>
 
 

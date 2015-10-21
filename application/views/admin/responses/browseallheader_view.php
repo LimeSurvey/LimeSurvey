@@ -12,15 +12,19 @@
             <?php if (!isset($_POST['sql']))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid", array('start' =>0,'limit'=>$limit)); ?>'>
-                    <img src='<?php echo IMAGE_URL; ?>databegin.png' alt='<?php eT("Show start..."); ?>' /></a>
+                    <span class="icon-databegin text-success" title='<?php eT("Show start..."); ?>'></span>
+                </a>
                 <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid", array('start' =>$last,'limit'=>$limit)); ?>'>
-                    <img src='<?php echo IMAGE_URL; ?>databack.png' alt='<?php eT("Show previous.."); ?>' /></a>
+                    <span class="icon-databack text-success" title="<?php eT("Show previous.."); ?>"></span>
+                </a>
                 <img src='<?php echo IMAGE_URL; ?>blank.gif' width='13' height='20' alt='' />
 
                 <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid", array('start' =>$next,'limit'=>$limit)); ?>'>
-                    <img src='<?php echo IMAGE_URL; ?>dataforward.png' alt='<?php eT("Show next.."); ?>' /></a>
+                    <span class="icon-dataforward text-success" title="<?php eT("Show next.."); ?>"></span>
+                </a>
                 <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid", array('start' =>$end,'limit'=>$limit)); ?>'>
-                    <img src='<?php echo IMAGE_URL; ?>dataend.png' alt='<?php eT("Show last.."); ?>' /></a>
+                    <span class="icon-dataend text-success" title="<?php eT("Show last.."); ?>"></span>
+                </a>
                 <img src='<?php echo IMAGE_URL; ?>separator.gif' class='separator' alt='' />
                 <?php
                 }
@@ -59,7 +63,7 @@
     </div>
 </div>
 
-<?php 
+<?php
 echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post', array('id'=>'resulttableform')); ?>
 <!-- DATA TABLE -->
 <?php if ($fncount < 10) { ?>
@@ -97,7 +101,7 @@ echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post
                 <?php if(isset($fn['code'])){ ?>
                     <strong class="qcode">[<?php echo $fn['code']; ?>]</strong>
                 <?php }?>
-                <span class="questiontext"><?php echo $fn[1]; ?></span> 
+                <span class="questiontext"><?php echo $fn[1]; ?></span>
             </th>
             <?php } ?>
     </tr>
@@ -106,10 +110,10 @@ echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post
     <tr>
         <td colspan=<?php echo $fncount + 2; ?>>
 <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'delete')) { ?>
-<img id='imgDeleteMarkedResponses' src='<?php echo IMAGE_URL; ?>token_delete.png' alt='<?php eT('Delete marked responses'); ?>' />
+<span id='imgDeleteMarkedResponses' class="glyphicon glyphicon-trash text-warning" title="<?php eT('Delete marked responses'); ?>"></span>
 <?php } ?>
 <?php if ($bHasFileUploadQuestion) { ?>
-<img id='imgDownloadMarkedFiles' src='<?php echo IMAGE_URL; ?>down_all.png' alt='<?php eT('Download marked files'); ?>' />
+<span id='imgDownloadMarkedFiles' class="glyphicon glyphicon-download-alt text-success" title="<?php eT('Download marked files'); ?>"></span>
 <?php } ?>
 </td>
     </tr>

@@ -25,20 +25,20 @@
         <?php echo CHtml::textField('defaultname', $attributes['defaultname'],array('required'=>'required')); ?>
     </div>
     <div class="form-group "><label for="atttype"><?php eT('Attribute type:'); ?></label>
-        <?php 
+        <?php
             echo CHtml::dropDownList('attribute_type', $attributes['attribute_type'], array(
                 'TB' => 'Text box',
                 'DD' => 'Drop-down list',
                 'DP' => 'Date'),
                 array('class'=>'form-control')
-                
+
                 );
         ?>
     </div>
     <div class="form-group"><label for='attvisible' id='attvisible'><?php eT('Attribute visible:') ?></label>
         <?php  echo CHtml::checkbox('visible', ($attributes['visible'] == "TRUE"),array('value'=>'TRUE','uncheckValue'=>'FALSE')); ?>
     </div>
-    
+
 
 <div id='ddtable' style='display: none'>
     <br/><br/>
@@ -47,7 +47,7 @@
             <tr>
                 <th colspan='2'><?php eT('Values:'); ?></th>
             </tr>
-        </thead>            
+        </thead>
         <?php
             foreach ($attributevalues as $row => $value)
             {
@@ -61,30 +61,12 @@
                     </div>
                 </td>
                 <td class='actions'>
-                    <?php
-                        $edit = array('src' => Yii::app()->getConfig('adminimageurl') . 'cancel.png',
-                            'alt' => gT("Cancel editing"),
-                            'width' => '16',
-                            'class' => 'cancel',
-                            'height' => '16',
-                            'title' => gT("Cancel editing"));
-                        echo CHtml::image($edit['src'], $edit['alt'], array_slice($edit, 2));
-                        $edit = array('src' => Yii::app()->getConfig('adminimageurl') . 'edit.png',
-                            'alt' => gT("Edit value"),
-                            'width' => '15',
-                            'class' => 'edit',
-                            'name' => $value['value_id'],
-                            'height' => '15',
-                            'title' => gT("Edit value"));
-                        echo CHtml::image($edit['src'], $edit['alt'], array_slice($edit, 2));
-                        $del = array('src' => Yii::app()->getConfig('adminimageurl') . 'delete.png',
-                            'alt' => gT("Delete value"),
-                            'width' => '15',
-                            'height' => '15',
-                            'class'=> 'delete',
-                            'title' => gT("Delete value"));
-                        echo CHtml::link(CHtml::image($del['src'], $del['alt'], array_slice($del, 2)), $this->createUrl('admin/participants/sa/delAttributeValues/aid/' . $attributes['attribute_id'] . '/vid/' . $value['value_id']));
-                ?></td>
+                    <span class="glyphicon glyphicon-remove-circle text-warning cancel" title="<?php eT('Cancel editing'); ?>"></span>
+                    <span class="glyphicon glyphicon-pencil text-success edit" name="<?php echo $value['value_id']; ?>" title="<?php eT('Edit value'); ?>"></span>
+                    <a href="<?php echo $this->createUrl('admin/participants/sa/delAttributeValues/aid/' . $attributes['attribute_id'] . '/vid/' . $value['value_id']); ?>" title="<?php eT('Delete value'); ?>" >
+                        <span class="glyphicon glyphicon-trash text-warning delete" title="<?php eT('Delete value'); ?>"></span>
+                    </a>
+                </td>
             </tr>
             <?php
             }
@@ -95,7 +77,7 @@
             <td></td>
             <td class='actions'>
                 <a href='#' class='add'>
-                    <img src = "<?php echo Yii::app()->getConfig('adminimageurl'); ?>plus.png" alt='<?php eT("Add value") ?>' title='<?php eT("Add value") ?>' id='addsign' name='addsign'>
+                    <span class="icon-add text-success" title='<?php eT("Add value") ?>' id='addsign' name='addsign'></span>
                 </a>
             </td>
         </tr>
@@ -112,20 +94,11 @@
         <tr>
             <td class='data'>
                 <?php
-                    $plus = array('src' => Yii::app()->getConfig('adminimageurl') . "plus.png",
-                        'alt' => gT('Add language'),
-                        'title' => gT('Add language'),
-                        'id' => 'add',
-                        'hspace' => 2,
-                        'vspace' => -6);
-
                     echo CHtml::dropDownList('langdata', '', $aOptions, array('class'=>'form-control'));
                 ?>
             </td>
             <td class='actions'>
-                <?php
-                    echo CHtml::image($plus['src'], $plus['alt'], array_slice($plus, 2));
-                ?>
+                <span class="icon-add text-success" id="add" title="<?php eT('Add language'); ?>" ></span>
             </td>
         </tr>
     </table>
@@ -140,7 +113,7 @@
                 </a>
                 <script type='text/javascript'>
                     removeitem.push('<?php echo $value['lang'] ?>');
-                </script>            
+                </script>
             </li>
         <?php endforeach;?>
 </ul>
@@ -183,6 +156,3 @@
         </div>
     </div>
 </div>
-            
-
-

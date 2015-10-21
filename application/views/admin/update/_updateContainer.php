@@ -2,11 +2,11 @@
 /**
  * This view generate all the structure needed for the comfort updater.
  * If no step is requested (by url or by post), ajax will render the check buttons, else, it will show the comfort updater (menus, etc.)
- * 
+ *
  * @var int $thisupdatecheckperiod  : the current check period in days (0 => never ; 1 => everyday ; 7 => every week, etc..  )
- * @var $updatelastcheck TODO : check type 
+ * @var $updatelastcheck TODO : check type
  * @var $UpdateNotificationForBranch TODO : check type
- * 
+ *
  */
 ?>
 
@@ -15,13 +15,13 @@
 
     App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdater/comfortupdater.js');
 	App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdater/buildComfortButtons.js');
-	App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdater/displayComfortStep.js'); 
-	$this->renderPartial("./update/_ajaxVariables"); 
+	App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdater/displayComfortStep.js');
+	$this->renderPartial("./update/_ajaxVariables");
 ?>
 
 <div class="col-lg-12 list-surveys">
 	<h3>
-		<img src="<?php echo IMAGE_BASE_URL;?>lime-icons/big/fff/shield-update.png" style="height : 1em; margin-right : 0.5em;"/>
+        <span style="height : 1em; margin-right : 0.5em;" class="icon-shield text-success"></span>z
 		<?php eT('ComfortUpdate'); ?>
 	</h3>
 
@@ -31,22 +31,22 @@
             	<div id="preUpdaterContainer">
             	<!-- The check buttons : render by ajax only if no step is required by url or post -->
             	<?php // $this->renderPartial("./update/check_updates/_checkButtons", array( "thisupdatecheckperiod"=>$thisupdatecheckperiod, "updatelastcheck"=>$updatelastcheck,"UpdateNotificationForBranch"=>$UpdateNotificationForBranch )); ?>
-            	<?php 	
+            	<?php
             		if( $serverAnswer->result )
             		{
             			unset($serverAnswer->result);
             			$this->renderPartial('./update/check_updates/update_buttons/_updatesavailable', array('updateInfos' => $serverAnswer));
             		}
-            		else 
+            		else
             		{
-            			// Error : we build the error title and messages 
-            			$this->renderPartial('./update/check_updates/update_buttons/_updatesavailable_error', array('serverAnswer' => $serverAnswer));			
+            			// Error : we build the error title and messages
+            			$this->renderPartial('./update/check_updates/update_buttons/_updatesavailable_error', array('serverAnswer' => $serverAnswer));
             		}
             	?>
             	</div>
-            	
+
             	<!-- The updater  -->
-            	<?php $this->renderPartial("./update/updater/_updater"); ?> 
+            	<?php $this->renderPartial("./update/updater/_updater"); ?>
             </div>
 		</div>
 	</div>

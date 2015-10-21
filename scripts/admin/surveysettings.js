@@ -46,8 +46,8 @@ $(document).ready(function(){
                                     for(var i=0;i < ids.length;i++)
                                     {
                                         var cl = ids[i];
-                                        be = "<image style='cursor:pointer;' src='"+imageUrl+"/edit.png' value='E' onclick=\"editParameter('"+cl+"');\" />";
-                                        de = "<image style='cursor:pointer;' src='"+imageUrl+"/token_delete.png' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+cl+"');\" />";
+                                        be = "<span style='cursor:pointer;' class='glyphicon glyphicon-edit text-success' value='E' onclick=\"editParameter('"+cl+"');\"></span>";
+                                        de = "<span style='cursor:pointer;' class='glyphicon glyphicon-trash text-warning' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+cl+"');\"></span>";
                                         jQuery("#urlparams").jqGrid('setRowData',ids[i],{act:be+de});
                                     }
         }
@@ -106,8 +106,8 @@ function saveParameter()
     if ($("#dlgEditParameter").data('action')=='add')
     {
        sGUID=guidGenerator();
-       jQuery("#urlparams").addRowData(sGUID, { act: "<image style='cursor:pointer;' src='"+imageUrl+"/edit.png' value='E' onclick=\"editParameter('"+sGUID+"');\" />"
-                                                    +"<image style='cursor:pointer;' src='"+imageUrl+"/token_delete.png' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+sGUID+"');\" />",
+       jQuery("#urlparams").addRowData(sGUID, { act: "<span style='cursor:pointer;' class='glyphicon glyphicon-pencil text-success' value='E' onclick=\"editParameter('"+sGUID+"');\"></span>"
+                                                    +"<span style='cursor:pointer;' class='glyphicon glyphicon-trash text-warning' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+sGUID+"');\" ></span>",
                                                 id:sGUID,
                                                 sid:$('#id').val(),
                                                 parameter:sParamname,

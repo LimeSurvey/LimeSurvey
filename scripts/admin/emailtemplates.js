@@ -7,8 +7,8 @@ $(document).ready(function(){
     });
 */
     // Binds the Default value buttons for each email template subject and body text
-    $('.fillin').bind('click', function(e) { 
-        e.preventDefault; 
+    $('.fillin').bind('click', function(e) {
+        e.preventDefault;
         var newval = $(this).attr('data-value');
         var target = $('#' + $(this).attr('data-target'));
         $(target).val(newval);
@@ -20,7 +20,7 @@ function KCFinder_callback(url)
 {
     addAttachment(window.KCFinder.target, url);
     window.KCFinder = null;
-    
+
 }
 
 function editAttachmentRelevance(e)
@@ -50,25 +50,22 @@ function addAttachment(target, url, relevance, size)
         var size = '-';
     }
     var filename = decodeURIComponent(url.replace(/^.*[\\\/]/, ''));
-    
-    
+
+
     var baserow = '<tr>';
         // Actions
         baserow = baserow + '<td>';
-        baserow = baserow + '<img alt="Remove attachment" class="btnattachmentremove" src="' + LS.data.adminImageUrl + 'deleteanswer.png">';
-        //baserow = baserow + '<img alt="Edit attachment relevance" class="btnattachmentrelevance" src="/styles/gringegreen/images/global.png">';
+        baserow = baserow + '<span title="Remove attachment" class="btnattachmentremove glyphicon glyphicon-trash text-warning">';
         baserow = baserow + '</td>';
 
         baserow = baserow + '<td><span class="filename"></span><input class="filename" type="hidden"></td>';
         baserow = baserow + '<td><span class="filesize"></span></td>';
         baserow = baserow + '<td><span class="relevance"></span><input class="relevance" type="hidden"></td>';
 
-        //baserow = baserow + '<td><img alt="Edit attachment relevance" class="btndelanswer" src="/styles/gringegreen/images/global.png"></td>';
-
         baserow = baserow + '</tr>';
-    
+
     if ($(target).is('table'))
-    { 
+    {
         var newrow = $(baserow).clone();
         var templatetype = $(target).attr('data-template');
         var index = $(target).find('tr').length - 1;
@@ -81,26 +78,26 @@ function addAttachment(target, url, relevance, size)
     {
         var newrow = target;
     }
-    
-    
+
+
     $('span.relevance').unbind('click').bind('click', editAttachmentRelevance);
     $('img.btnattachmentremove').unbind('click').bind('click', removeAttachment);
-    
+
     $('span.filename').unbind('click').bind('click', function(e) {
         e.preventDefault();
         var target = $(this).parents('tr');
-        openKCFinder_singleFile(target); 
-    }); 
-    
+        openKCFinder_singleFile(target);
+    });
+
     $(newrow).find('span.filesize').text(formatFileSize(size));
     $(newrow).find('span.filename').text(filename);
     $(newrow).find('input.filename').val(url);
 
-    
 
-    
-    
-        
+
+
+
+
 }
 function removeAttachment(e)
 {

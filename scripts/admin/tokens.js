@@ -348,7 +348,7 @@ $(document).ready(function() {
                         'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
                         'type': 'hidden'
                     })).appendTo('body');
-                    newForm.submit();                        
+                    newForm.submit();
                 }
             }
         });
@@ -373,7 +373,7 @@ $(document).ready(function() {
                         'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
                         'type': 'hidden'
                     })).appendTo('body');
-                    newForm.submit();                    
+                    newForm.submit();
                 }
             }
         });

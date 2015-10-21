@@ -10,29 +10,31 @@
     <div class="col-lg-4">
         <?php echo $onlyshow;?>
     </div>
-    
+
     <div class="col-lg-4">
         <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deleteallconditions/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;','id'=>'deleteallconditions','name'=>'deleteallconditions'));?>
             <input type='hidden' name='qid' value='<?php echo $qid;?>' />
             <input type='hidden' name='gid' value='<?php echo $gid;?>' />
             <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
             <input type='hidden' id='toplevelsubaction' name='subaction' value='deleteallconditions' />
-            
+
             <?php if ($scenariocount > 0): ?>
-                <a href='#' onclick="if ( confirm('<?php eT("Are you sure you want to delete all conditions set to the questions you have selected?","js");?>')) { document.getElementById('deleteallconditions').submit();}">
-                    <img src='<?php echo IMAGE_URL;?>conditions_deleteall.png'  alt='<?php eT("Delete all conditions");?>' />
+                <a class="btn btn-default" href='#' onclick="if ( confirm('<?php eT("Are you sure you want to delete all conditions set to the questions you have selected?","js");?>')) { document.getElementById('deleteallconditions').submit();}">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    <?php eT("Delete all conditions");?>
                 </a>
             <?php endif; ?>
-            
+
             <?php if ($scenariocount > 1): ?>
-                <a href='#' onclick="if ( confirm('<?php eT("Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?","js");?>')) { document.getElementById('toplevelsubaction').value='renumberscenarios'; document.getElementById('deleteallconditions').submit();}">
-                    <img src='<?php echo IMAGE_URL;?>scenario_renumber.png'  alt='<?php eT("Renumber scenario automatically");?>' />
+                <a class="btn btn-default" href='#' onclick="if ( confirm('<?php eT("Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?","js");?>')) { document.getElementById('toplevelsubaction').value='renumberscenarios'; document.getElementById('deleteallconditions').submit();}">
+                    <span class="icon-renumber"></span>
+                    <?php eT("Renumber scenario automatically");?>
                 </a>
             <?php endif; ?>
-            
-        </form>    
-    </div>    
-    
+
+        </form>
+    </div>
+
 <?php else :?>
             <strong><?php echo $onlyshow;?></strong>
             <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deleteallconditions/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;','id'=>'deleteallconditions','name'=>'deleteallconditions'));?>

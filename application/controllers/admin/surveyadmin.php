@@ -763,21 +763,23 @@ class SurveyAdmin extends Survey_Common_Action
             // Set status
             if ($rows['active'] == "Y" && $rows['expires'] != '' && $rows['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
             {
-                $aSurveyEntry[] = '<!--a--><img src="' . Yii::app()->getConfig('adminimageurl') . 'expired.png" alt="' . gT("This survey is active but expired.") . '" />';
+                $aSurveyEntry[] = '<!--a--><span class="icon-expired text-warning" title="' . gT("This survey is active but expired.") . '"></span>';
             }
             elseif ($rows['active'] == "Y" && $rows['startdate'] != '' && $rows['startdate'] > dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
             {
-                $aSurveyEntry[] = '<!--b--><img src="' . Yii::app()->getConfig('adminimageurl') . 'notyetstarted.png" alt="' . gT("This survey is active but has a start date.") . '" />';
+                $aSurveyEntry[] = '<!--b--><span class="icon-notyetstarted text-warning" title="' . gT("This survey is active but has a start date.") . '"></span>';
             }
             elseif ($rows['active'] == "Y")
             {
                 if (Permission::model()->hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
-                    $aSurveyEntry[] = '<!--c--><a href="' . $this->getController()->createUrl('admin/survey/sa/deactivate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . 'active.png" alt="' . gT("This survey is active - click here to stop this survey.") . '"/></a>';
+                    $aSurveyEntry[] = '<!--c--><a href="' . $this->getController()->createUrl('admin/survey/sa/deactivate/surveyid/' . $rows['sid']) . '">
+                    <span class="icon-active text-success" title="' . gT("This survey is active - click here to stop this survey.") . '"></span></a>';
                 }
                 else
                 {
-                    $aSurveyEntry[] = '<!--d--><img src="' . Yii::app()->getConfig('adminimageurl') . 'active.png" alt="' . gT("This survey is currently active.") . '" />';
+                    $aSurveyEntry[] = '<!--d-->
+                    <span class="icon-active text-success" title="' . gT("This survey is currently active.") . '"></span>';
                 }
             }
             else
@@ -787,11 +789,11 @@ class SurveyAdmin extends Survey_Common_Action
 
                 if ($questionsCountResult>0 && Permission::model()->hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
-                    $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/sa/activate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . 'inactive.png" title="" alt="' . gT("This survey is currently not active - click here to activate this survey.") . '" /></a>';
+                    $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/sa/activate/surveyid/' . $rows['sid']) . '"><span class="icon-inactive text-warning" title="' . gT("This survey is currently not active - click here to activate this survey.") . '"></span></a>';
                 }
                 else
                 {
-                    $aSurveyEntry[] = '<!--f--><img src="' . Yii::app()->getConfig('adminimageurl') . 'inactive.png" title="' . gT("This survey is currently not active.") . '" alt="' . gT("This survey is currently not active.") . '" />';
+                    $aSurveyEntry[] = '<!--f--><span class="icon-inactive text-warning" class="' . gT("This survey is currently not active.") . '"></span>';
                 }
             }
 

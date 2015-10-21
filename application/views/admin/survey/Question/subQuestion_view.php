@@ -92,7 +92,11 @@
                                 <?php } ?>
                                 <?php if ($scale_id==0)
                                     { ?>
-                                    <th class="relevancehead"><img src='<?php echo IMAGE_URL; ?>subq_relevance_en.png' class='btntogglerelevance' alt='<?php eT("Edit subquestion relevance") ?>'/> <span style="display: none" class="relevance"> <?php eT("Relevance"); ?> </span> </th>
+                                    <th class="relevancehead">
+
+                                        <?php // eT("Edit subquestion relevance") ?>
+                                        <span class="icon-conditions"></span>
+                                        <span style="display: none" class="relevance"> <?php eT("Relevance"); ?> </span> </th>
                                 <?php } ?>
                             </tr></thead>
                         <tbody>
@@ -126,7 +130,8 @@
                                             elseif ($activated != 'Y' && $first) // If survey is not activated and first language
                                             { ?>
                                             <?php if($row->title) {$sPattern="^([a-zA-Z0-9]*|{$row->title})$";}else{$sPattern="^[a-zA-Z0-9]*$";} ?>
-                                            <img class='handle' src='<?php echo IMAGE_URL; ?>handle.png' alt=''/></td>
+                                            <span class="glyphicon glyphicon-move"></span>
+                                            </td>
                                             <td><input type='hidden' class='oldcode' id='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" />
                                             <input type='text' id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' class='code' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='20' size='5' pattern='<?php echo $sPattern; ?>' required='required' />
 
@@ -144,8 +149,8 @@
                                         <?php if ($activated != 'Y' && $first)
                                             { ?>
                                             <td>
-                                            <img src='<?php echo IMAGE_URL; ?>addanswer.png' class='btnaddanswer' alt='<?php eT("Insert a new subquestion after this one") ?>' />
-                                            <img src='<?php echo IMAGE_URL; ?>deleteanswer.png' class='btndelanswer' alt='<?php eT("Delete this subquestion") ?>' />
+                                            <span class="icon-add text-success btnaddanswer"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new subquestion after this one") ?>"></span>
+                                            <span class="glyphicon glyphicon-trash text-success btndelanswer"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Delete this subquestion") ?>"></span>
                                             </td>
                                             <?php } ?>
 
@@ -154,9 +159,9 @@
                                   <?php if ($scale_id==0) {   /* relevance column */ ?>
                                             <td>
                                   <?php     if ($row->relevance!="1" && trim($row->relevance)!="") { ?>
-                                            <img src='<?php echo IMAGE_URL; ?>subq_relevance_en.png' class='btntogglerelevance' alt='<?php eT("Edit subquestion relevance") ?>'/>
+                                            <span class="icon-conditions text-success btntogglerelevance" data-toggle="tooltip" data-placement="bottom" title='<?php eT("Edit subquestion relevance") ?>'></span>
                                   <?php     } else {   /* no relevance equation: icon deactivated */  ?>
-                                            <img src='<?php echo IMAGE_URL; ?>subq_relevance_dis.png' class='btntogglerelevance' alt='<?php eT("Edit subquestion relevance") ?>'/>
+                                            <span class="icon-conditions text-success btntogglerelevance" data-toggle="tooltip" data-placement="bottom" title='<?php eT("Edit subquestion relevance") ?>'></span>
                                   <?php     }
                                             if ($first) {  /* default lang - input field */?>
                                                 <input style="display: none" type='text' size='20' class='relevance' id='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
@@ -260,5 +265,3 @@
         </div>
     </div>
 </div>
-
-

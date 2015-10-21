@@ -1,15 +1,15 @@
 <div class="side-body">
     <h3>
         <span style='font-weight:bold;'><?php eT('Saved Responses'); ?></span>
-        <?php echo $sSurveyName . ' ' . sprintf(gT('ID: %s'), $iSurveyId); ?>        
+        <?php echo $sSurveyName . ' ' . sprintf(gT('ID: %s'), $iSurveyId); ?>
     </h3>
-    
+
         <div class="row">
             <div class="col-lg-12 content-right">
                 <div class="alert alert-info" role="alert">
                     <?php eT('Saved Responses:'); ?> <?php echo getSavedCount($iSurveyId); ?>
                 </div>
-                
+
                 <p>
                     <table class='browsetable table' style='margin:0 auto; width:60%'>
                         <thead>
@@ -22,32 +22,29 @@
                                 <th><?php eT('Email address'); ?></th>
                             </tr>
                         </thead>
-                
+
                         <tbody>
                             <?php foreach($aResults as $oResult)
                                 { ?>
                                 <tr>
                                     <td><?php echo $oResult->scid; ?></td>
                                     <td align='center'>
-                
+
                                         <?php if (Permission::model()->hasSurveyPermission($iSurveyId,'responses','update'))
                                             { ?>
-                                            <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo IMAGE_URL; ?>edit.png'
-                                                title='<?php eT('Edit entry'); ?>' onclick="window.open('<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$iSurveyId}/id/{$oResult->srid}"); ?>', '_top')" />
+                                            <span onclick="window.open('<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$iSurveyId}/id/{$oResult->srid}"); ?>', '_top')" title='<?php eT('Edit entry'); ?>'  class="glyphicon glyphicon-pencil text-success"></span>
                                             <?php }
                                             if (Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete'))
                                             { ?>
-                                            <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo IMAGE_URL; ?>token_delete.png'
-                                                title='<?php eT('Delete entry'); ?>' onclick="if (confirm('<?php eT('Are you sure you want to delete this entry?', 'js'); ?>')) { window.open('<?php echo $this->createUrl("admin/saved/delete/surveyid/{$iSurveyId}/srid/{$oResult->srid}/scid/{$oResult->scid}"); ?>', '_top'); }" />
+                                            <span class="glyphicon glyphicon-trash text-warning" title='<?php eT('Delete entry'); ?>' onclick="if (confirm('<?php eT('Are you sure you want to delete this entry?', 'js'); ?>')) { window.open('<?php echo $this->createUrl("admin/saved/delete/surveyid/{$iSurveyId}/srid/{$oResult->srid}/scid/{$oResult->scid}"); ?>', '_top'); }" ></span>
                                             <?php } ?>
-                
                                     </td>
-                
+
                                     <td><?php echo $oResult->identifier; ?></td>
                                     <td><?php echo $oResult->ip; ?></td>
                                     <td><?php echo $oResult->saved_date; ?></td>
                                     <td><a href='mailto: <?php echo $oResult->email; ?>'> <?php echo $oResult->email; ?></td>
-                
+
                                 </tr>
                                 <?php } ?>
                         </tbody>

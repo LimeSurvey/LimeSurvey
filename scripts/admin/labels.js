@@ -25,7 +25,7 @@ $(document).ready(function(){
         {
             alert(strSelectLabelset);
             return false;
-        }   
+        }
         else
         {
             return true;
@@ -33,7 +33,7 @@ $(document).ready(function(){
     });
 
     removeCSRFDivs();
-    
+
     if ($(".answertable tbody").children().length == 0)
         add_label(undefined);
 
@@ -125,7 +125,7 @@ function quickaddfunction(){
 
     $(lsrows).each(function(index,element){
         code = undefined;
-        
+
         params = element.split(separatorchar);
         k = 0;
         if (params.length > $(".lslanguage").length){
@@ -149,11 +149,11 @@ function quickaddfunction(){
             var retcode = add_label();
         }
 		*/
-		
-		
-		
-		
-		
+
+
+
+
+
         if (typeof(code)!="undefined") {
             $("#code_"+retcode).val(code);
 		}
@@ -304,7 +304,9 @@ function createNewLabelTR(alternate,first){
     if (!first)
         x = x + "<td>###codeval###</td><td>###assessmentval###</td>";
     else
-        x = x + "<td><img src=" + sImageURL + "handle.png></td><td>"
+        x = x + "<td>"
+        + "<span class='glyphicon glyphicon-move text-success'></span>"
+        + "</td><td>"
         + "<input type='hidden' class='hiddencode' value='###codeval###' />"
         + "<input type='text' class='codeval' value='###codeval###' name='code_###next###' id='code_###next###' size='6' maxlength='5' >"
         + "</td><td>"
@@ -312,11 +314,12 @@ function createNewLabelTR(alternate,first){
 
     x = x + "<td><input name=\"title_###lang###_###next###\"  type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
     "<a title=\"\" id=\"title_###lang###_###next###_ctrl\" href=\"javascript:start_popup_editor('title_###lang###_###next###','[Label:](###lang###)','','','','editlabel','labels')\">"+
-    "<img height=\"16\" border=\"0\" width=\"16\" src=" + sImageURL + "edithtmlpopup.png name=\"title_###lang###_###next###_popupctrlena\" id=\"title_###lang###_###next###_popupctrlena\" alt=\"\">"+
-    "<img height=\"16\" border=\"0\" align=\"top\" width=\"16\" style=\"display: none;\" src=" + sImageURL + "edithtmlpopup_disabled.png name=\"title_###lang###_###next###_popupctrldis\" id=\"title_###lang###_###next###_popupctrldis\" alt=\"Give focus to the HTML editor popup window\"></a></td>";
+    "<span class=\"glyphicon glyphicon-pencil  text-success\" name=\"title_###lang###_###next###_popupctrlena\" id=\"title_###lang###_###next###_popupctrlena\" alt=\"\"></span>"+
+    "<span style=\"display: none;\" class=\"glyphicon glyphicon-pencil  text-success\" name=\"title_###lang###_###next###_popupctrldis\"  id=\"title_###lang###_###next###_popupctrldis\" alt=\"\"></span>"+
+    "</a></td>";
 
     if (first)
-        x = x + "<td style=\"text-align: center;\"><img class=\"btnaddanswer\" src=" + sImageURL + "addanswer.png><img class=\"btndelanswer\" src=" + sImageURL + "deleteanswer.png></td>";
+        x = x + "<td style=\"text-align: center;\">&nbsp<span class=\"btnaddanswer icon-add text-success\"></span> <span class=\"btndelanswer\ glyphicon glyphicon-trash  text-warning\"></span></td>";
 
     x = x + "</tr>";
 
@@ -405,4 +408,3 @@ function code_duplicates_check()
 function is_numeric (mixed_var) {
     return (typeof(mixed_var) === 'number' || typeof(mixed_var) === 'string') && mixed_var !== '' && !isNaN(mixed_var);
 }
-
