@@ -300,9 +300,11 @@ class SurveysController extends Controller
         }
     }
 
-    public function actionDeleteMultiple(array $ids) {
+    public function actionDeleteMultiple(array $ids)
+    {
         $count = 0;
-        foreach($ids as $id) {
+        $records = 0;
+        foreach ($ids as $id) {
             $survey = $this->loadModel($id);
             if (!$survey->isActive
             && App()->user->checkAccess('survey', [
@@ -310,19 +312,20 @@ class SurveysController extends Controller
                 'entity_id' => $survey->primaryKey,
                 'crud' => 'delete'
             ])) {
-                $survey->deleteDependent();
+                $records += $survey->deleteDependent(App()->db);
                 $count++;
 
             }
 
         }
-        App()->user->setFlash('success', gT("Surveys deleted") . " " . $count);
+        App()->user->setFlash('success', gT("Surveys deleted") . " $count / $records");
         $this->redirect(['surveys/index']);
     }
 
-    public function actionDeactivateMultiple(array $ids) {
+    public function actionDeactivateMultiple(array $ids)
+    {
         $count = 0;
-        foreach($ids as $id) {
+        foreach ($ids as $id) {
             $survey = $this->loadModel($id);
             if ($survey->isActive
                 && App()->user->checkAccess('survey', [
