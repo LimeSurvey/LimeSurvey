@@ -42,11 +42,17 @@ abstract class FixedChoiceQuestion extends \ls\models\Question
     public function render(\ls\interfaces\iResponse $response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
-        $html = \TbHtml::radioButtonList($this->sgqa, $response->{$this->sgqa}, \TbHtml::listData($this->getAnswers(), function(iAnswer $answer) {
-            return $answer->getCode();
-        }, function(iAnswer $answer) {
-            return $answer->getLabel();
-        }));
+        $html = \TbHtml::radioButtonList($this->sgqa, $response->{$this->sgqa}, \TbHtml::listData(
+            $this->getAnswers(),
+            function (iAnswer $answer) {
+                return $answer->getCode();
+            },
+            function (iAnswer $answer) {
+                return $answer->getLabel();
+            }
+        ), [
+            'data-validation-expression' => $this->getExpressionManager($response)->getJavascript(implode(' and ', array_keys($this->getValidationExpressions())))
+        ]);
         $result->setHtml($html);
         return $result;
     }

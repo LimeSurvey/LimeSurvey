@@ -1,5 +1,7 @@
 <?php
 namespace ls\helpers;
+use ls\components\SurveySession;
+use ls\models\SettingGlobal;
 use \Yii;
 use ls\models\Survey;
 use \CHttpCookie;
@@ -130,19 +132,18 @@ class FrontEnd
                     'sid' => $survey->primaryKey
                 ]);
 
-                $attrfieldnames = $token->customAttributeNames();
-                foreach ($attrfieldnames as $attr_name) {
+                foreach ($token->customAttributeNames() as $attr_name) {
                     $aReplacementVars[strtoupper($attr_name)] = $token->$attr_name;
                 }
 
                 $redata = [];
-                $subject = Replacements::templatereplace($subject, $aReplacementVars, $redata, null);
+                $subject = Replacements::templatereplace($subject, $aReplacementVars, $redata, null, $session);
 
                 $subject = html_entity_decode($subject, ENT_QUOTES);
 
 
                 $message = html_entity_decode(
-                    Replacements::templatereplace($survey->getLocalizedConfirmationEmail(), $aReplacementVars, $redata, null),
+                    Replacements::templatereplace($survey->getLocalizedConfirmationEmail(), $aReplacementVars, $redata, null, $session),
                     ENT_QUOTES
                 );
                 if (!$survey->bool_htmlemail) {
@@ -154,7 +155,7 @@ class FrontEnd
                 if ($sToAddress) {
                     $aAttachments = unserialize($survey->getLocalizedAttachments());
 
-                    $aRelevantAttachments = array();
+                    $aRelevantAttachments = [];
                     /*
                      * Iterate through attachments and check them for relevance.
                      */
@@ -194,7 +195,7 @@ class FrontEnd
         $debug = Yii::app()->getConfig('debug');
         $bIsHTML = ($thissurvey['htmlemail'] == 'Y');
 
-        $aReplacementVars = array();
+        $aReplacementVars = [];
 
         if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['survey_' . $surveyid]['scid'])) {
             $aReplacementVars['RELOADURL'] = "" . Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/" . $_SESSION['survey_' . $surveyid]['scid'] . "/loadname/" . urlencode($_SESSION['survey_' . $surveyid]['holdname']) . "/loadpass/" . urlencode($_SESSION['survey_' . $surveyid]['holdpass']) . "/lang/" . urlencode(App()->language));
@@ -221,8 +222,8 @@ class FrontEnd
             $aReplacementVars['STATISTICSURL'] = "<a href='{$aReplacementVars['STATISTICSURL']}'>{$aReplacementVars['STATISTICSURL']}</a>";
         }
         $aReplacementVars['ANSWERTABLE'] = '';
-        $aEmailResponseTo = array();
-        $aEmailNotificationTo = array();
+        $aEmailResponseTo = [];
+        $aEmailNotificationTo = [];
         $sResponseData = "";
 
         if (!empty($thissurvey['emailnotificationto'])) {
@@ -284,7 +285,7 @@ class FrontEnd
 
         $aAttachments = unserialize($thissurvey['attachments']);
 
-        $aRelevantAttachments = array();
+        $aRelevantAttachments = [];
         /*
          * Iterate through attachments and check them for relevance.
          */
@@ -313,7 +314,7 @@ class FrontEnd
             }
         }
 
-        $aRelevantAttachments = array();
+        $aRelevantAttachments = [];
         /*
          * Iterate through attachments and check them for relevance.
          */
@@ -440,7 +441,7 @@ class FrontEnd
                 $fieldmap = createFieldMap($surveyid, "full", false, false, $session->language);
                 $i = 0;
                 $total = 0;
-                $groups = array();
+                $groups = [];
                 foreach ($fieldmap as $field) {
                     if (in_array($field['type'], array('1', 'F', 'H', 'W', 'Z', 'L', '!', 'M', 'O', 'P'))) {
                         $fieldmap[$field['fieldname']]['assessment_value'] = 0;
@@ -547,7 +548,7 @@ class FrontEnd
         static $aMatchedQuotas; // EM call 2 times quotas with 3 lines of php code, then use static.
         $session = App()->surveySessionManager->current;
         if (!$aMatchedQuotas) {
-            $aMatchedQuotas = array();
+            $aMatchedQuotas = [];
             $quota_info = $aQuotasInfo = getQuotaInformation($session->surveyId, $session->language);
             // $aQuotasInfo have an 'active' key, we don't use it ?
             if (!$aQuotasInfo || empty($aQuotasInfo)) {
@@ -560,9 +561,9 @@ class FrontEnd
                 $iMatchedAnswers = 0;
                 $bPostedField = false;
                 // Array of field with quota array value
-                $aQuotaFields = array();
+                $aQuotaFields = [];
                 // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is unrelevant (em_manager_helper line 6548)
-                $aQuotaRelevantFieldnames = array();
+                $aQuotaRelevantFieldnames = [];
                 foreach ($aQuotaInfo['members'] as $aQuotaMember) {
                     $aQuotaFields[$aQuotaMember['fieldname']][] = $aQuotaMember['value'];
                     $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']] = isset($_SESSION['survey_' . $session->surveyId]['relevanceStatus'][$aQuotaMember['qid']]) && $_SESSION['survey_' . $session->surveyId]['relevanceStatus'][$aQuotaMember['qid']];
@@ -620,7 +621,7 @@ class FrontEnd
         $event->set('responseId', $_SESSION['survey_' . $session->surveyId]['srid']);// We allways have a responseId
         $event->set('aMatchedQuotas', $aMatchedQuotas);// Give all the matched quota : the first is the active
         App()->getPluginManager()->dispatchEvent($event);
-        $blocks = array();
+        $blocks = [];
         foreach ($event->getAllContent() as $blockData) {
             /* @var $blockData PluginEventContent */
             $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()),
@@ -638,10 +639,10 @@ class FrontEnd
             submittokens(true);
         }
         // Construct the default message
-        $sMessage = Replacements::templatereplace($sMessage, array(), $aDataReplacement, null);
+        $sMessage = Replacements::templatereplace($sMessage, [], $aDataReplacement, null);
         $sUrl = Replacements::passthruReplace($sUrl, $aSurveyInfo);
-        $sUrl = Replacements::templatereplace($sUrl, array(), $aDataReplacement, null);
-        $sUrlDescription = Replacements::templatereplace($sUrlDescription, array(), $aDataReplacement, null);
+        $sUrl = Replacements::templatereplace($sUrl, [], $aDataReplacement, null);
+        $sUrlDescription = Replacements::templatereplace($sUrlDescription, [], $aDataReplacement, null);
 
         // Construction of default message inside quotamessage class
         $sHtmlQuotaMessage = "<div class='quotamessage limesurveycore'>\n";
@@ -678,10 +679,10 @@ class FrontEnd
             header("Location: " . $sUrl);
         }
         doHeader();
-        renderOldTemplate($sTemplatePath . "/startpage.pstpl", array(), $aDataReplacement);
+        renderOldTemplate($sTemplatePath . "/startpage.pstpl", [], $aDataReplacement);
         renderOldTemplate($sTemplatePath . "/completed.pstpl",
             array("COMPLETED" => $sHtmlQuotaMessage, "URL" => $sHtmlQuotaUrl), $aDataReplacement);
-        renderOldTemplate($sTemplatePath . "/endpage.pstpl", array(), $aDataReplacement);
+        renderOldTemplate($sTemplatePath . "/endpage.pstpl", [], $aDataReplacement);
         doFooter();
 
         eP();

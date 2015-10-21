@@ -50,7 +50,6 @@ class SurveySession extends \CComponent
     protected $_maxStep = 0;
     protected $_templateDir;
     protected $_postKey;
-    protected $_finished = false;
     /**
      * This is used to decide if we should display errors.
      * It gets reset when changing the step.
@@ -88,22 +87,12 @@ class SurveySession extends \CComponent
 
     public function getIsFinished()
     {
-        return $this->_finished;
-    }
-
-    public function setIsFinished($value)
-    {
-        $this->_finished = $value;
+        return $this->response->getIsFinished();
     }
 
     public function getToken()
     {
         return $this->_response->getToken();
-    }
-
-    public function setToken($value)
-    {
-        $this->_token = $value;
     }
 
     public function getLanguage()

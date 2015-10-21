@@ -318,7 +318,6 @@ EOD;
                         break;
                     case '2':
                         // SurveyName-[SID]/[GSEQ]-GroupName - create custom GSEQ based upon page step
-                        $moveInfo = LimeExpressionManager::GetLastMoveResult();
                         if (is_null($moveInfo)) {
                             $gseq = 'welcome';
                         } else {
@@ -471,7 +470,7 @@ EOD;
     {
 
         if ($bReplaceInsertans) {
-            $replacements = array();
+            $replacements = [];
             foreach ($fieldsarray as $key => $value) {
                 $replacements[substr($key, 1, -1)] = $value;
             }
@@ -524,7 +523,7 @@ EOD;
     protected static function doHtmlSaveAll($move = "", \ls\models\Survey $survey)
     {
 
-        static $aSaveAllButtons = array();
+        static $aSaveAllButtons = [];
         if (isset($aSaveAllButtons[$move])) {
             return $aSaveAllButtons[$move];
         }

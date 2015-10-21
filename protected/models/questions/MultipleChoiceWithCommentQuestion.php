@@ -2,6 +2,7 @@
 namespace ls\models\questions;
 
 
+use ls\components\QuestionResponseField;
 use ls\interfaces\iResponse;
 
 class MultipleChoiceWithCommentQuestion extends MultipleChoiceQuestion
@@ -78,6 +79,28 @@ class MultipleChoiceWithCommentQuestion extends MultipleChoiceQuestion
         return $result;
 
     }
+
+    /**
+     * Returns the fields for this question.
+     * @return QuestionResponseField[]
+     */
+    public function getFields()
+    {
+        $result = parent::getFields();
+        foreach ($this->subQuestions as $subQuestion) {
+            $result[] = $field = new QuestionResponseField(
+                $this->sgqa . $subQuestion->title . 'comment',
+                "{$this->title}_{$subQuestion->title}comment",
+                $this
+            );
+            /**
+             * @todo Include subquestion relevance.
+             */
+            $field->setRelevanceScript($this->relevanceScript);
+        }
+        return $result;
+    }
+
 
 
 }

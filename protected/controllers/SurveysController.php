@@ -34,10 +34,11 @@ class SurveysController extends Controller
     }
 
 
-    public function actionUpdate($id) {
+    public function actionUpdate($id)
+    {
         $survey = $this->loadModel($id, 'groups.questions');
 
-        if (App()->request->isPostRequest && isset($survey)) {
+        if (App()->request->isPutRequest) {
             $survey->setAttributes(App()->request->getParam(\CHtml::modelName($survey)));
             if ($survey->save(true)) {
                 App()->user->setFlash('success', gT("Survey settings updated."));
@@ -51,7 +52,8 @@ class SurveysController extends Controller
         eP('render');
     }
 
-    public function actionActivate($id) {
+    public function actionActivate($id)
+    {
         $this->layout = 'survey';
         $survey = $this->loadModel($id);
         if (App()->request->isPostRequest) {
@@ -150,9 +152,6 @@ class SurveysController extends Controller
             $response->save();
 
             $session = App()->surveySessionManager->newSession($survey->primaryKey, $response);
-            if (isset($token)) {
-                $session->setToken($token);
-            }
 
             $this->redirect(['survey/index', 'SSM' => $session->getId()]);
         } else {
@@ -363,7 +362,8 @@ class SurveysController extends Controller
         echo $result;
     }
 
-    public function actionPreview($id) {
+    public function actionPreview($id)
+    {
         $survey = $this->loadModel($id);
         $dummy = new \ls\models\DummyResponse($survey);
         $session = App()->surveySessionManager->newSession($survey->primaryKey, $dummy);

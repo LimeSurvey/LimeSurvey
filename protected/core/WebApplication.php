@@ -128,8 +128,8 @@ class WebApplication extends CWebApplication
         $this->name = SettingGlobal::get('sitename', 'LimeSurvey');
         $this->initLanguage();
         // These take care of dynamically creating a class for each token / response table.
-		ClassFactory::registerClass('ls\models\Token_', 'ls\models\Token');
-		ClassFactory::registerClass('ls\models\Response_', 'ls\models\Response');
+		ClassFactory::registerClass('ls\models\Token_', \ls\models\Token::class);
+		ClassFactory::registerClass('ls\models\Response_', \ls\models\Response::class);
 	}
 
     public function initLanguage()

@@ -48,6 +48,8 @@ interface iResponse {
 
     public function markAsFinished();
 
+    public function markAsUnFinished();
+
     public function getIsFinished();
 
     /**

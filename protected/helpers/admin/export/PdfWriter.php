@@ -13,7 +13,7 @@ class PdfWriter extends Writer
      * @var array
      * @access private
      */
-    private $aGroupMap = array();
+    private $aGroupMap = [];
 
     public function init()
     {

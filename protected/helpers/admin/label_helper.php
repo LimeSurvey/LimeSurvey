@@ -26,7 +26,7 @@ function updateset($lid)
     $postlabel_name=Yii::app()->getRequest()->getPost('label_name');
     $newlanidarray = explode(" ",trim($postlanguageids));
 
-    $oldlangidsarray = array();
+    $oldlangidsarray = [];
     $labelset = LabelSet::model()->findByAttributes(array('lid' => $lid));
     $oldlangidsarray = explode(' ', $labelset->languages);
 
@@ -144,7 +144,7 @@ function modlabelsetanswers($lid)
 
     if ($ajax)
         $lid = insertlabelset();
-    $aErrors=array();
+    $aErrors=[];
     if (count(array_unique($data->{'codelist'})) == count($data->{'codelist'}))
     {
 

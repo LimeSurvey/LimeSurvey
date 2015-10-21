@@ -234,7 +234,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             // and an inelegant way to remove comments from List with Comments questions
             $i = 0;
             $j = 0;
-            $labelTmp = array();
+            $labelTmp = [];
             while (isset ($gdata[$i]))
             {
                 $aHelperArray=array_keys($lbl);
@@ -352,8 +352,8 @@ function getQuestionMapData($sField, $qsid)
 function buildSelects($allfields, $surveyid, $language) {
 
     //Create required variables
-    $selects=array();
-    $aQuestionMap=array();
+    $selects=[];
+    $aQuestionMap=[];
 
     $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
     foreach ($fieldmap as $field)
@@ -426,7 +426,7 @@ function buildSelects($allfields, $surveyid, $language) {
                     //P - Multiple choice with comments
                     elseif ($firstletter == "M"  || $firstletter == "P")
                     {
-                        $mselects=array();
+                        $mselects=[];
                         //create a list out of the $pv array
                         list($lsid, $lgid, $lqid) = explode("X", $pv);
 
@@ -625,7 +625,7 @@ class statistics_helper {
     protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage,$browse=true) {
 
         //Set up required variables
-        $alist=array();
+        $alist=[];
         $qtitle="";
         $qquestion="";
         $qtype="";
@@ -812,7 +812,7 @@ class statistics_helper {
             $query = "SELECT SUM(".Yii::app()->db->quoteColumnName($fieldname.'_filecount').") as sum, AVG(".Yii::app()->db->quoteColumnName($fieldname.'_filecount').") as avg FROM {{survey_$surveyid}}";
             $result=Yii::app()->db->createCommand($query)->query();
 
-            $showem = array();
+            $showem = [];
 
             foreach ($result->readAll() as $row)
             {
@@ -875,9 +875,9 @@ class statistics_helper {
                     break;
 
                 case 'pdf':
-                    $headPDF = array();
-                    $tablePDF = array();
-                    $footPDF = array();
+                    $headPDF = [];
+                    $tablePDF = [];
+                    $footPDF = [];
 
                     $pdfTitle = sprintf(gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
                     $titleDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
@@ -922,7 +922,7 @@ class statistics_helper {
             }
             else
             {
-                $showem = array();
+                $showem = [];
                 $fld = substr($rt, 1, strlen($rt));
                 $fielddata=$fieldmap[$fld];
 
@@ -957,9 +957,9 @@ class statistics_helper {
 
                     case 'pdf':
 
-                        $headPDF = array();
-                        $tablePDF = array();
-                        $footPDF = array();
+                        $headPDF = [];
+                        $tablePDF = [];
+                        $footPDF = [];
 
                         $pdfTitle = sprintf(gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
                         $titleDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
@@ -1067,7 +1067,7 @@ class statistics_helper {
 
                 //CALCULATE QUARTILES
                 $medcount = $this->getQuartile(0, $fieldname, $surveyid, $sql, $excludezeros); // Get the recordcount
-                $quartiles = array();
+                $quartiles = [];
                 $quartiles[1] = $this->getQuartile(1, $fieldname, $surveyid, $sql, $excludezeros);
                 $quartiles[2] = $this->getQuartile(2, $fieldname, $surveyid, $sql, $excludezeros);
                 $quartiles[3] = $this->getQuartile(3, $fieldname, $surveyid, $sql, $excludezeros);
@@ -1184,7 +1184,7 @@ class statistics_helper {
                             break;
 
                         case 'pdf':
-                            $tablePDF = array();
+                            $tablePDF = [];
                             $tablePDF[] = array(gT("Not enough values for calculation"));
                             $this->pdf->AddPage('P','A4');
                             $this->pdf->Bookmark($this->pdf->delete_html($qquestion), 1, 0);
@@ -1604,7 +1604,7 @@ class statistics_helper {
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
         $firstletter = substr($rt, 0, 1);
-        $astatdata=array();
+        $astatdata=[];
 
         if ($usegraph==1)
         {
@@ -1625,7 +1625,7 @@ class statistics_helper {
                 $this->sheet->write($this->xlsRow, 0,$xlsTitle);
                 $this->xlsRow++;
                 $this->sheet->write($this->xlsRow, 0,$xlsDesc);
-                $footXLS = array();
+                $footXLS = [];
 
                 break;
             case 'pdf':
@@ -1637,8 +1637,8 @@ class statistics_helper {
                 $this->pdf->AddPage('P','A4');
                 $this->pdf->Bookmark($sPDFQuestion, 1, 0);
                 $this->pdf->titleintopdf($pdfTitle,$sPDFQuestion);
-                $tablePDF = array();
-                $footPDF = array();
+                $tablePDF = [];
+                $footPDF = [];
 
                 break;
             case 'html':
@@ -1661,7 +1661,7 @@ class statistics_helper {
                 break;
         }
         //loop though the array which contains all answer data
-        $ColumnName_RM=array();
+        $ColumnName_RM=[];
         foreach ($outputs['alist'] as $al)
         {
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
@@ -1812,9 +1812,9 @@ class statistics_helper {
                     .gT("Browse")."' id='$sColumnName' />";
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
-                    $headPDF2 = array();
+                    $headPDF2 = [];
                     $headPDF2[] = array(gT("ID"),gT("Response"));
-                    $tablePDF2 = array();
+                    $tablePDF2 = [];
                     $result2= $this->_listcolumn($surveyid,$sColumnName);
 
                     foreach ($result2 as $row2)
@@ -1824,8 +1824,8 @@ class statistics_helper {
                 }
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='xls') {
-                    $headXLS = array();
-                    $tableXLS = array();
+                    $headXLS = [];
+                    $tableXLS = [];
                     $headXLS[] = array(gT("ID"),gT("Response"));
 
                     $result2= $this->_listcolumn($surveyid,$sColumnName);
@@ -1850,7 +1850,7 @@ class statistics_helper {
             */
             elseif ($outputs['qtype'] == "S" || $outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "Q")
             {
-                $headPDF = array();
+                $headPDF = [];
                 $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"));
 
                 //show free text answers
@@ -1873,9 +1873,9 @@ class statistics_helper {
                 ."\t</tr></thead>\n";
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
-                    $headPDF2 = array();
+                    $headPDF2 = [];
                     $headPDF2[] = array(gT("ID"),gT("Response"));
-                    $tablePDF2 = array();
+                    $tablePDF2 = [];
                     $result2= $this->_listcolumn($surveyid,$sColumnName);
 
                     foreach ($result2 as $row2)
@@ -1905,7 +1905,7 @@ class statistics_helper {
 
                             case 'pdf':
 
-                                $headPDF = array();
+                                $headPDF = [];
                                 $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"),gT("Sum"));
 
                                 break;
@@ -1941,7 +1941,7 @@ class statistics_helper {
 
                             case 'pdf':
 
-                                $headPDF = array();
+                                $headPDF = [];
                                 $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"));
 
                                 break;
@@ -1985,7 +1985,7 @@ class statistics_helper {
 
                         case 'pdf':
 
-                            $headPDF = array();
+                            $headPDF = [];
                             $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"));
 
                             break;
@@ -2623,7 +2623,7 @@ class statistics_helper {
 
         if($outputType=='pdf') //XXX TODO PDF
         {
-            //$tablePDF = array();
+            //$tablePDF = [];
             $tablePDF = array_merge_recursive($tablePDF, $footPDF);
             $this->pdf->headTable($headPDF,$tablePDF);
             //$this->pdf->tableintopdf($tablePDF);
@@ -2798,14 +2798,14 @@ class statistics_helper {
     public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
     {
 
-        $aStatisticsData=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
+        $aStatisticsData=[]; //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
 
         $statisticsoutput = ""; //This string carries all the actual HTML code to print.
         $imagedir = Yii::app()->getConfig("imagedir");
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
 
-        $this->pdf=array(); //Make sure $this->pdf exists - it will be replaced with an object if a $this->pdf is actually being created
+        $this->pdf=[]; //Make sure $this->pdf exists - it will be replaced with an object if a $this->pdf is actually being created
 
         //pick the best font file if font setting is 'auto'
         if (is_null($sLanguageCode))
@@ -3327,7 +3327,7 @@ class statistics_helper {
             $search['order']=$sortby.' '.$sortmethod;
         }
         $results=SurveyDynamic::model($surveyid)->findAll($search);
-        $output=array();
+        $output=[];
         foreach($results as $row) {
             $output[]=array("id"=>$row['id'], "value"=>$row[$column]);
         }

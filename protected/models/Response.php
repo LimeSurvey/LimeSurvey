@@ -163,8 +163,8 @@ abstract class Response extends Dynamic implements \ls\interfaces\iResponse
     {
         return [
             // Since we have a field named token as well.
-            'tokenObject' => [self::BELONGS_TO, 'Token_' . $this->dynamicId, ['token' => 'token']],
-            'survey' => [self::BELONGS_TO, 'ls\models\Survey', '', 'on' => "sid = {$this->dynamicId}"],
+            'tokenObject' => [self::BELONGS_TO, Token::class . '_' . $this->dynamicId, ['token' => 'token']],
+            'survey' => [self::BELONGS_TO, Survey::class, '', 'on' => "sid = {$this->dynamicId}"],
         ];
     }
 
@@ -500,6 +500,11 @@ abstract class Response extends Dynamic implements \ls\interfaces\iResponse
     }
 
 
+    public function markAsUnFinished()
+    {
+        $this->submitdate = null;
+    }
+
     /**
      * Lists the behaviors of this model
      *
@@ -555,7 +560,8 @@ abstract class Response extends Dynamic implements \ls\interfaces\iResponse
         return isset($this->submitdate);
     }
 
-    public function setResponseValue($key, $value) {
+    public function setResponseValue($key, $value)
+    {
         if ($this->isAttributeSafe($key)) {
             $this->$key = $value;
             return true;

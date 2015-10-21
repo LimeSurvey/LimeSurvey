@@ -129,7 +129,7 @@ class ResponsesController extends Controller
 
     /**
      * This function appends a new response to the series of the response id given.
-     * If the current seriwe hees_id is set to null it's initialized to 0.
+     * If the current series_id is set to null it's initialized to 0.
      *
      * @param int $surveyId
      * @param string $id
@@ -139,13 +139,26 @@ class ResponsesController extends Controller
     {
         $response = \ls\models\Response::model($surveyId)->findByPk($id);
         $newResponse = $response->append($copy);
+        $newResponse->markAsUnFinished();
         $newResponse->save();
-        $this->redirect(['responses/index', 'id' => $surveyId]);
+
+        $this->redirect(['responses/update', 'id' => $newResponse->getId(), 'surveyId' => $surveyId]);
     }
 
 
-    public function actionUpdate($id, $surveyId) {
-        $_SESSION['survey_'.$surveyId]['srid'] = $id;
-        $this->redirect(['survey/index', 'sid' => $surveyId]);
+    public function actionUpdate($id, $surveyId)
+    {
+        /** @var \ls\models\Survey $survey */
+        $survey = Survey::model()->findByPk($surveyId);
+        $this->layout = 'showsurvey';
+        if (!$survey->isActive) {
+            throw new \CHttpException(412, gT("The survey is not active."));
+        } elseif ($survey->bool_usetokens
+            && null === $response = \ls\models\Response::model($surveyId)->findByPk($id)
+        ) {
+            throw new \CHttpException(404, gT("Response not found."));
+        }
+
+        $this->redirect(['surveys/run', 'SSM' => App()->surveySessionManager->newSession($survey->primaryKey, $response)->getId()]);
     }
 }

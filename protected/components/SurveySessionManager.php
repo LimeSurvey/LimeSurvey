@@ -92,7 +92,8 @@ class SurveySessionManager extends CApplicationComponent
 
         foreach ($this->sessions as $session) {
             if ($session->getSurveyId() == $surveyId && $session->getResponseId() == $response->getId()) {
-                throw new \Exception("Duplicate session detected.");
+                $this->_current = $session;
+                return $this->current;
             }
         }
         // Doesn't really need to be random

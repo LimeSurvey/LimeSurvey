@@ -50,7 +50,7 @@ class pdfHelper
         {
             $pdffontsize=PDF_FONT_SIZE_MAIN;
         }
-        $lg=array();
+        $lg=[];
         $lg['a_meta_charset'] = 'UTF-8';
         if (\ls\helpers\SurveyTranslator::getLanguageRTL($language))
         {

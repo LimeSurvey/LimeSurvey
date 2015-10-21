@@ -34,7 +34,7 @@ use ls\models\Token;
 */
 function XMLImportGroup($sFullFilePath, $iNewSID)
 {
-    $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
+    $aLanguagesSupported = [];  // this array will keep all the languages supported for the survey
 
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
@@ -43,7 +43,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
     if ($xml==false || $xml->LimeSurveyDocType!='Group') throw new \CHttpException(500, 'This is not a valid LimeSurvey group structure XML file.');
     $iDBVersion = (int) $xml->DBVersion;
-    $aQIDReplacements=array();
+    $aQIDReplacements=[];
     $results['defaultvalues']=0;
     $results['answers']=0;
     $results['question_attributes']=0;
@@ -51,7 +51,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     $results['conditions']=0;
     $results['groups']=0;
 
-    $importlanguages=array();
+    $importlanguages=[];
     foreach ($xml->languages->language as $language)
     {
         $importlanguages[]=(string)$language;
@@ -64,7 +64,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     }
     // First get an overview of fieldnames - it's not useful for the moment but might be with newer versions
     /*
-    $fieldnames=array();
+    $fieldnames=[];
     foreach ($xml->questions->fields->fieldname as $fieldname )
     {
     $fieldnames[]=(string)$fieldname;
@@ -86,7 +86,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 
     foreach ($xml->groups->rows->row as $row)
     {
-        $insertdata=array();
+        $insertdata=[];
         foreach ($row as $key=>$value)
         {
             $insertdata[(string)$key]=(string)$value;
@@ -130,7 +130,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     {
         foreach ($xml->questions->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -169,7 +169,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 
         foreach ($xml->subquestions->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -210,7 +210,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 
         foreach ($xml->answers->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -234,7 +234,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 
         foreach ($xml->question_attributes->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -269,7 +269,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
         $results['defaultvalues']=0;
         foreach ($xml->defaultvalues->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -294,7 +294,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 
         foreach ($xml->conditions->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -358,7 +358,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
 {
 
-    $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
+    $aLanguagesSupported = [];  // this array will keep all the languages supported for the survey
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
     $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($iNewSID)->additionalLanguages);
@@ -366,7 +366,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
     $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
     if ($xml->LimeSurveyDocType!='ls\models\Question') throw new \CHttpException(500, 'This is not a valid LimeSurvey question structure XML file.');
     $iDBVersion = (int) $xml->DBVersion;
-    $aQIDReplacements=array();
+    $aQIDReplacements=[];
     $aSQIDReplacements=array(0=>0);
 
     $results['defaultvalues']=0;
@@ -374,7 +374,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
     $results['question_attributes']=0;
     $results['subquestions']=0;
 
-    $importlanguages=array();
+    $importlanguages=[];
     foreach ($xml->languages->language as $language)
     {
         $importlanguages[]=(string)$language;
@@ -387,7 +387,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
     }
     // First get an overview of fieldnames - it's not useful for the moment but might be with newer versions
     /*
-    $fieldnames=array();
+    $fieldnames=[];
     foreach ($xml->questions->fields->fieldname as $fieldname )
     {
     $fieldnames[]=(string)$fieldname;
@@ -414,7 +414,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
     }
     foreach ($xml->questions->rows->row as $row)
     {
-        $insertdata=array();
+        $insertdata=[];
         foreach ($row as $key=>$value)
         {
             $insertdata[(string)$key]=(string)$value;
@@ -458,7 +458,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
     {
         foreach ($xml->subquestions->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -500,7 +500,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
 
         foreach ($xml->answers->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -526,7 +526,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
         $aAllAttributes=questionAttributes(true);
         foreach ($xml->question_attributes->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -570,7 +570,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
         $results['defaultvalues']=0;
         foreach ($xml->defaultvalues->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -612,17 +612,17 @@ function XMLImportLabelsets($sFullFilePath, $options)
     if ($xml->LimeSurveyDocType!='Label set') throw new \CHttpException(500, 'This is not a valid LimeSurvey label set structure XML file.');
     $iDBVersion = (int) $xml->DBVersion;
     $csarray=buildLabelSetCheckSumArray();
-    $aLSIDReplacements=array();
+    $aLSIDReplacements=[];
     $results['labelsets']=0;
     $results['labels']=0;
-    $results['warnings']=array();
+    $results['warnings']=[];
 
     // Import labels table ===================================================================================
 
 
     foreach ($xml->labelsets->rows->row as $row)
     {
-        $insertdata=array();
+        $insertdata=[];
         foreach ($row as $key=>$value)
         {
             $insertdata[(string)$key]=(string)$value;
@@ -647,7 +647,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
     if (isset($xml->labels->rows->row))
         foreach ($xml->labels->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -820,7 +820,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     Yii::app()->loadHelper('database');
 
 
-    $aGIDReplacements = array();
+    $aGIDReplacements = [];
     if ($sXMLdata == NULL)
     {
         $sXMLdata = file_get_contents($sFullFilePath);
@@ -834,9 +834,9 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     }
 
     $iDBVersion = (int) $xml->DBVersion;
-    $aQIDReplacements=array();
-    $aQuestionCodeReplacements=array();
-    $aQuotaReplacements=array();
+    $aQIDReplacements=[];
+    $aQuestionCodeReplacements=[];
+    $aQuotaReplacements=[];
     $results['defaultvalues']=0;
     $results['answers']=0;
     $results['surveys']=0;
@@ -849,10 +849,10 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     $results['quotals']=0;
     $results['quotamembers']=0;
     $results['survey_url_parameters']=0;
-    $results['importwarnings']=array();
+    $results['importwarnings']=[];
 
 
-    $aLanguagesSupported=array();
+    $aLanguagesSupported=[];
     foreach ($xml->languages->language as $language)
     {
         $aLanguagesSupported[]=(string)$language;
@@ -863,7 +863,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
     foreach ($xml->surveys->rows->row as $row)
     {
-        $insertdata=array();
+        $insertdata=[];
 
         foreach ($row as $key=>$value)
         {
@@ -943,7 +943,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     foreach ($xml->surveys_languagesettings->rows->row as $row)
     {
 
-        $insertdata=array();
+        $insertdata=[];
         foreach ($row as $key=>$value)
         {
             $insertdata[(string)$key]=(string)$value;
@@ -1046,7 +1046,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
         foreach ($xml->questions->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -1154,7 +1154,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     {
         foreach ($xml->subquestions->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -1262,7 +1262,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
         foreach ($xml->answers->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
 
             foreach ($row as $key=>$value)
             {
@@ -1292,7 +1292,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         $aAllAttributes=questionAttributes(true);
         foreach ($xml->question_attributes->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -1347,7 +1347,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         $results['defaultvalues']=0;
         foreach ($xml->defaultvalues->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -1373,7 +1373,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         $results['conditions']=0;
         foreach ($xml->conditions->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -1449,7 +1449,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
         foreach ($xml->assessments->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -1476,7 +1476,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
         foreach ($xml->quota->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -1499,7 +1499,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
         foreach ($xml->quota_members->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -1522,7 +1522,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
         foreach ($xml->quota_languagesettings->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -1542,7 +1542,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
         foreach ($xml->survey_url_parameters->rows->row as $row)
         {
-            $insertdata=array();
+            $insertdata=[];
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
@@ -1619,7 +1619,7 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
 
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
-    $results['warnings']=array();
+    $results['warnings']=[];
     if ($xml->LimeSurveyDocType!='Tokens')
     {
         $results['error'] = gT("This is not a valid token data XML file.");
@@ -1638,7 +1638,7 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
     if ($sCreateMissingAttributeFields)
     {
         // Get a list with all fieldnames in the XML
-        $aXLMFieldNames=array();
+        $aXLMFieldNames=[];
         foreach ($xml->tokens->fields->fieldname as $sFieldName )
         {
             $aXLMFieldNames[]=(string)$sFieldName;
@@ -1661,7 +1661,7 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
     switchMSSQLIdentityInsert('tokens_'.$iSurveyID,true);
 	foreach ($xml->tokens->rows->row as $row)
     {
-        $insertdata=array();
+        $insertdata=[];
 
         foreach ($row as $key=>$value)
         {
@@ -1685,7 +1685,7 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
 }
 
 
-function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=array())
+function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=[])
 {
     Yii::app()->loadHelper('database');
 
@@ -1710,7 +1710,7 @@ function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=array())
             while ($oXMLReader->read()) {
                 if ($oXMLReader->name === 'row' && $oXMLReader->nodeType == XMLReader::ELEMENT)
                 {
-                    $aInsertData=array();
+                    $aInsertData=[];
                     while ($oXMLReader->read() && $oXMLReader->name != 'row') {
                         $sFieldname=$oXMLReader->name;
                         if ($sFieldname[0]=='_') $sFieldname=substr($sFieldname,1);
@@ -1758,7 +1758,7 @@ function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=array())
 * @param array $aOptions
 * Return array $result ("errors","warnings","success")
 */
-function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
+function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=[])
 {
 
     // Default optional
@@ -1774,7 +1774,7 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
     }
 
     // Prepare an array of sentence for result
-    $CSVImportResult=array();
+    $CSVImportResult=[];
     // Read the file
     $handle = fopen($sFullFilePath, "r"); // Need to be adapted for Mac ? in options ?
     while (!feof($handle))
@@ -1792,7 +1792,7 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
     //$aCsvHeader=array_map("trim",explode($aOptions['sSeparator'], trim(array_shift($aFileResponses))));
     $aCsvHeader=str_getcsv(array_shift($aFileResponses),$aOptions['sSeparator'],$aOptions['sQuoted']);
     $aLemFieldNames=LimeExpressionManager::getLEMqcode2sgqa($iSurveyId);
-    $aKeyForFieldNames=array();// An array assicated each fieldname with corresponding responses key
+    $aKeyForFieldNames=[];// An array assicated each fieldname with corresponding responses key
     if(!$aCsvHeader){
         $CSVImportResult['errors'][]=gT("File seems empty or has only one line");
         return $CSVImportResult;
@@ -1862,10 +1862,10 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
     // Some var to return
     $iNbResponseLine=0;
     $iNbResponseExisting=0;
-    $aResponsesInserted=array();
-    $aResponsesUpdated=array();
-    $aResponsesError=array();
-    $aExistingsId=array();
+    $aResponsesInserted=[];
+    $aResponsesUpdated=[];
+    $aResponsesError=[];
+    $aExistingsId=[];
 
     $iMaxId=0; // If we set the id, keep the max
     // Some specific header (with options)
@@ -2034,7 +2034,7 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
 }
 
 
-function XMLImportTimings($sFullFilePath,$iSurveyID,$aFieldReMap=array())
+function XMLImportTimings($sFullFilePath,$iSurveyID,$aFieldReMap=[])
 {
 
     Yii::app()->loadHelper('database');
@@ -2049,7 +2049,7 @@ function XMLImportTimings($sFullFilePath,$iSurveyID,$aFieldReMap=array())
 
     $results['responses']=0;
 
-    $aLanguagesSupported=array();
+    $aLanguagesSupported=[];
     foreach ($xml->languages->language as $language)
     {
         $aLanguagesSupported[]=(string)$language;
@@ -2063,7 +2063,7 @@ function XMLImportTimings($sFullFilePath,$iSurveyID,$aFieldReMap=array())
     switchMSSQLIdentityInsert('survey_'.$iSurveyID.'_timings',true);
     foreach ($xml->timings->rows->row as $row)
     {
-        $insertdata=array();
+        $insertdata=[];
 
         foreach ($row as $key=>$value)
         {
@@ -2115,8 +2115,8 @@ function TSVImportSurvey($sFullFilePath)
 {
 
 
-    $insertdata=array();
-    $results=array();
+    $insertdata=[];
+    $results=[];
     $results['error']=false;
     $baselang = 'en';   // TODO set proper default
 
@@ -2149,7 +2149,7 @@ function TSVImportSurvey($sFullFilePath)
     $filelines = explode("\n",$file);
     $row = array_shift($filelines);
     $headers = explode("\t",$row);
-    $rowheaders = array();
+    $rowheaders = [];
     foreach ($headers as $header)
     {
         $rowheaders[] = trim($header);
@@ -2161,10 +2161,10 @@ function TSVImportSurvey($sFullFilePath)
         $rowheaders[0] = 'class';   // second attempt to remove BOM
     }
 
-    $adata = array();
+    $adata = [];
     foreach ($filelines as $rowline)
     {
-        $rowarray = array();
+        $rowarray = [];
         $row = explode("\t",$rowline);
         for ($i = 0; $i < count($rowheaders); ++$i)
         {
@@ -2187,7 +2187,7 @@ function TSVImportSurvey($sFullFilePath)
     $results['subquestions']=0;
     $results['question_attributes']=0;
     $results['groups']=0;
-    $results['importwarnings']=array();
+    $results['importwarnings']=[];
     // these aren't used here, but are needed to avoid errors in post-import display
     $results['assessments']=0;
     $results['quota']=0;
@@ -2195,8 +2195,8 @@ function TSVImportSurvey($sFullFilePath)
     $results['quotals']=0;
 
     // collect information about survey and its language settings
-    $surveyinfo = array();
-    $surveyls = array();
+    $surveyinfo = [];
+    $surveyls = [];
     foreach ($adata as $row)
     {
         switch($row['class'])
@@ -2210,7 +2210,7 @@ function TSVImportSurvey($sFullFilePath)
             case 'SL':
                 if (!isset($surveyls[$row['language']]))
                 {
-                    $surveyls[$row['language']] = array();
+                    $surveyls[$row['language']] = [];
                 }
                 if (isset($row['text']))
                 {
@@ -2277,9 +2277,9 @@ function TSVImportSurvey($sFullFilePath)
         $results['languages']++;
     }
 
-    $ginfo=array();
-    $qinfo=array();
-    $sqinfo=array();
+    $ginfo=[];
+    $qinfo=[];
+    $sqinfo=[];
 
     if (isset($surveyinfo['language']))
     {
@@ -2295,7 +2295,7 @@ function TSVImportSurvey($sFullFilePath)
         {
             case 'G':
                 // insert group
-                $insertdata = array();
+                $insertdata = [];
                 $insertdata['sid'] = $iNewSID;
                 $gname = ((!empty($row['name']) ? $row['name'] : 'G' . $gseq));
                 $glang = (!empty($row['language']) ? $row['language'] : $baselang);
@@ -2343,7 +2343,7 @@ function TSVImportSurvey($sFullFilePath)
 
             case 'Q':
                 // insert question
-                $insertdata = array();
+                $insertdata = [];
                 $insertdata['sid'] = $iNewSID;
                 $qtype = (isset($row['type/scale']) ? $row['type/scale'] : 'T');
                 $qname = (isset($row['name']) ? $row['name'] : 'Q' . $qseq);
@@ -2410,7 +2410,7 @@ function TSVImportSurvey($sFullFilePath)
                         default:
                             if ($key != '' && $val != '')
                             {
-                                $insertdata = array();
+                                $insertdata = [];
                                 $insertdata['qid'] = $qid;
                                 // check if attribute is a i18n attribute. If yes, set language, else set language to null in attribute table
                                 if (isset($aAttributeList[$qtype][$key]['i18n']) && $aAttributeList[$qtype][$key]['i18n']==1)
@@ -2437,7 +2437,7 @@ function TSVImportSurvey($sFullFilePath)
                 // insert default value
                 if (isset($row['default']))
                 {
-                    $insertdata=array();
+                    $insertdata=[];
                     $insertdata['qid'] = $qid;
                     $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                     $insertdata['defaultvalue'] = $row['default'];
@@ -2463,7 +2463,7 @@ function TSVImportSurvey($sFullFilePath)
                         // only used to set default value for 'other' in these cases
                         if (isset($row['default']) && $row['default']!="")
                         {
-                            $insertdata=array();
+                            $insertdata=[];
                             $insertdata['qid'] = $qid;
                             $insertdata['specialtype'] = 'other';
                             $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
@@ -2479,7 +2479,7 @@ function TSVImportSurvey($sFullFilePath)
                 }
                 else
                 {
-                    $insertdata = array();
+                    $insertdata = [];
                     $scale_id = (isset($row['type/scale']) ? $row['type/scale'] : 0);
                     $insertdata['sid'] = $iNewSID;
                     $insertdata['gid'] = $gid;
@@ -2523,7 +2523,7 @@ function TSVImportSurvey($sFullFilePath)
                     // insert default value
                     if (isset($row['default']) && $row['default']!="")
                     {
-                        $insertdata=array();
+                        $insertdata=[];
                         $insertdata['qid'] = $qid;
                         $insertdata['sqid'] = $sqid;
                         $insertdata['scale_id'] = $scale_id;
@@ -2539,7 +2539,7 @@ function TSVImportSurvey($sFullFilePath)
                 }
                 break;
             case 'A':
-                $insertdata = array();
+                $insertdata = [];
                 $insertdata['qid'] = $qid;
                 $insertdata['code'] = (isset($row['name']) ? $row['name'] : 'A' . $aseq);
                 $insertdata['answer'] = (isset($row['text']) ? $row['text'] : '');

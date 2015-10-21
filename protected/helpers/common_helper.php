@@ -29,7 +29,7 @@ use ls\models\Token;
  */
 function gT($sToTranslate, $sEscapeMode = 'unescaped', $sLanguage = NULL)
 {
-    return quoteText(Yii::t('',$sToTranslate,array(),null,$sLanguage),$sEscapeMode);
+    return quoteText(Yii::t('',$sToTranslate,[],null,$sLanguage),$sEscapeMode);
 }
 
 /**
@@ -1051,7 +1051,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         . " AND b.sid = ".$surveyid;
         $defaultResults = Yii::app()->db->createCommand($defaultsQuery)->queryAll();
 
-        $defaultValues = array();   // indexed by question then subquestion
+        $defaultValues = [];   // indexed by question then subquestion
         foreach($defaultResults as $dv)
         {
             if ($dv['specialtype'] != '') {
@@ -1126,8 +1126,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     //MULTI FLEXI
                     $abrows = getSubQuestions($surveyid,$question->qid, $sLanguage);
                     //Now first process scale=1
-                    $answerset = array();
-                    $answerList = array();
+                    $answerset = [];
+                    $answerList = [];
                     foreach ($abrows as $key => $abrow) {
                         if ($abrow['scale_id'] == 1) {
                             $answerset[] = $abrow;
@@ -1556,7 +1556,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 * @param mixed $maxanswers
 */
 function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
-    $output=array();
+    $output=[];
     foreach($haystack as $hay) {
         if (array_key_exists($keyname, $hay)) {
             if ($hay[$keyname] == $needle) {
@@ -1580,7 +1580,7 @@ function buildLabelSetCheckSumArray()
     FROM ".db_table_name('labelsets')."
     ORDER BY lid"; */
     $result = LabelSet::model()->getLID();//($query) or throw new \CHttpException(500, "safe_died collecting labelset ids<br />$query<br />");  //Checked)
-    $csarray=array();
+    $csarray=[];
     foreach($result as $row)
     {
         $thisset="";
@@ -2969,7 +2969,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
     if (!is_array($customheaders) && $customheaders == '')
     {
-        $customheaders=array();
+        $customheaders=[];
     }
     if (Yii::app()->getConfig('demoMode'))
     {
@@ -2989,9 +2989,9 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
 
     $mail = new PHPMailer;
-    if (!$mail->SetLanguage($defaultlang,APPPATH.'/third_party/phpmailer/language/'))
+    if (!$mail->SetLanguage($defaultlang, Yii::getPathOfAlias('vendor.phpmailer.phpmailer.language')))
     {
-        $mail->SetLanguage('en',APPPATH.'/third_party/phpmailer/language/');
+        $mail->SetLanguage('en', Yii::getPathOfAlias('vendor.phpmailer.phpmailer.language'));
     }
     $mail->CharSet = $emailcharset;
     if (isset($emailsmtpssl) && trim($emailsmtpssl)!=='' && $emailsmtpssl!==0) {
@@ -3172,9 +3172,9 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     $surveyid=\ls\helpers\Sanitize::int($surveyid);
     $gid=\ls\helpers\Sanitize::int($gid);
 
-    $cascaded=array();
-    $sources=array();
-    $qidtotitle=array();
+    $cascaded=[];
+    $sources=[];
+    $qidtotitle=[];
     $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
 
     if($gid != "") {
@@ -3182,14 +3182,14 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     } else {
         $qrows = $fieldmap;
     }
-    $grows = array(); //Create an empty array in case query not return any rows
+    $grows = []; //Create an empty array in case query not return any rows
     // Store each result as an array with in the $grows array
     foreach ($qrows as $qrow) {
         if (isset($qrow['gid']) && !empty($qrow['gid'])) {
             $grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
         }
     }
-    $attrmach = array(); // Stores Matches of filters that have their values as questions within current group
+    $attrmach = []; // Stores Matches of filters that have their values as questions within current group
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
         $qidtotitle[$qrow['qid']]=$qrow['title'];
@@ -3207,7 +3207,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
                     * information about question $avalue['qid'], because that's the source */
                     $sources[$qrow['qid']]=$avalue['qid']; /* This question ($qrow['qid']) relies on answers in $avalue['qid'] */
                     if(isset($cascades)) {unset($cascades);}
-                    $cascades=array();                     /* Create an empty array */
+                    $cascades=[];                     /* Create an empty array */
 
                     /* At this stage, we know for sure that this question relies on one other question for the filter */
                     /* But this function wants to send back information about questions that rely on multiple other questions for the filter */
@@ -3241,7 +3241,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
             }
         }
     }
-    $cascade2=array();
+    $cascade2=[];
     if($output == "title")
     {
         foreach($cascaded as $key=>$cascade) {
@@ -3594,7 +3594,7 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
     }
     $aFieldMap = createFieldMap($iNewSID,'short',$forceRefresh,false,getBaseLanguageFromSurveyID($iNewSID));
 
-    $aFieldMappings=array();
+    $aFieldMappings=[];
     foreach ($aFieldMap as $sFieldname=>$aFieldinfo)
     {
         if ($aFieldinfo['qid']!=null)
@@ -3899,7 +3899,7 @@ function getSubQuestions($sid, $qid, $sLanguage) {
 
     if (!isset($subquestions[$sid]))
     {
-        $subquestions[$sid]=array();
+        $subquestions[$sid]=[];
     }
     if (!isset($subquestions[$sid][$sLanguage])) {
 
@@ -3909,7 +3909,7 @@ function getSubQuestions($sid, $qid, $sLanguage) {
 
         $query = Yii::app()->db->createCommand($query)->query();
 
-        $resultset=array();
+        $resultset=[];
         //while ($row=$result->FetchRow())
         foreach ($query->readAll() as $row)
         {
@@ -3918,7 +3918,7 @@ function getSubQuestions($sid, $qid, $sLanguage) {
         $subquestions[$sid][$sLanguage] = $resultset;
     }
     if (isset($subquestions[$sid][$sLanguage][$qid])) return $subquestions[$sid][$sLanguage][$qid];
-    return array();
+    return [];
 }
 
 /**
@@ -3987,7 +3987,7 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
     count($aQuota['members']) > 0)
     {
         // Keep a list of fields for easy reference
-        $aQuotaColumns = array();
+        $aQuotaColumns = [];
 
         foreach ($aQuota['members'] as $member)
         {
@@ -4031,7 +4031,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     $idrow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id'=>$iResponseID));
 
     // Create array of non-null values - those are the relevant ones
-    $aRelevantFields = array();
+    $aRelevantFields = [];
 
     foreach ($aFieldMap as $sKey=>$fname)
     {
@@ -4041,7 +4041,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
         }
     }
 
-    $aResultTable=array();
+    $aResultTable=[];
     $oldgid = 0;
     $oldqid = 0;
     foreach ($aRelevantFields as $sKey=>$fname)
@@ -4123,7 +4123,7 @@ function getQuotaInformation($surveyid,$language,$iQuotaID=null)
 
     $aQuotas = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes($aAttributes);
 
-    $aSurveyQuotasInfo = array();
+    $aSurveyQuotasInfo = [];
     $x=0;
 
 
@@ -4135,7 +4135,7 @@ function getQuotaInformation($surveyid,$language,$iQuotaID=null)
             // Array for each quota
             $aQuotaInfo = array_merge($oQuota->attributes,$oQuota->languagesettings[0]->attributes);// We have only one language, then we can use first only
             $aQuotaMembers = QuotaMember::model()->findAllByAttributes(array('quota_id'=>$oQuota->id));
-            $aQuotaInfo['members'] = array();
+            $aQuotaInfo['members'] = [];
             if (count($aQuotaMembers) > 0)
             {
                 foreach ($aQuotaMembers as $oQuotaMember)
@@ -4418,7 +4418,7 @@ function getLabelSets($languages = null)
 {
 
 
-    $languagesarray = array();
+    $languagesarray = [];
     if ($languages)
     {
         $languages=sanitize_languagecodeS($languages);
@@ -4441,7 +4441,7 @@ function getLabelSets($languages = null)
     }
 
     $result = LabelSet::model()->findAll($criteria);
-    $labelsets=array();
+    $labelsets=[];
     foreach ($result as $row)
         $labelsets[] = array($row->lid, $row->label_name);
     return $labelsets;
@@ -4724,7 +4724,7 @@ function getBrowserLanguage()
 }
 
 function array_diff_assoc_recursive($array1, $array2) {
-    $difference=array();
+    $difference=[];
     foreach($array1 as $key => $value) {
         if( is_array($value) ) {
             if( !isset($array2[$key]) || !is_array($array2[$key]) ) {

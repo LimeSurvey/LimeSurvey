@@ -47,7 +47,7 @@ abstract class Writer implements IWriter
     */
     public function createGroupMap(Survey $survey)
     {
-        $aGroupMap = array();
+        $aGroupMap = [];
         $index = 0;
         foreach ($this->options->selectedColumns as $column) {
             if (isset($survey->getFieldMap('full')[$column])) {
@@ -324,7 +324,7 @@ abstract class Writer implements IWriter
         // If no empty survey, render/export responses array.
         foreach($survey->responses as $response)
         {
-            $elementArray = array();
+            $elementArray = [];
 
             foreach ($this->options->selectedColumns as $column)
             {

@@ -273,7 +273,7 @@ class remotecontrol_handle
 
                 if (empty($aSurveySettings))
                     return array('status' => 'No valid Data');
-                $aResult = array();
+                $aResult = [];
                 foreach($aSurveySettings as $sPropertyName)
                 {
                     $aResult[$sPropertyName]=$oSurvey->$sPropertyName;
@@ -318,7 +318,7 @@ class remotecontrol_handle
                 $aSurveyData=array_intersect_key($aSurveyData,$aDestinationFields);
                 $oSurvey=Survey::model()->findByPk($iSurveyID);
                 $aBasicAttributes = $oSurvey->getAttributes();
-                $aResult = array();
+                $aResult = [];
 
                 if ($oSurvey->active=='Y')
                 {
@@ -527,7 +527,7 @@ class remotecontrol_handle
     */
     public function get_summary($sSessionKey,$iSurveyID, $sStatName)
     {
-        $aPermittedStats = array();
+        $aPermittedStats = [];
         if ($this->_checkSessionKey($sSessionKey))
         {
             $aPermittedTokenStats = array('token_count',
@@ -550,7 +550,7 @@ class remotecontrol_handle
             //Check permissions to access this survey
             if (App()->user->checkAccess('survey', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {
-                $aSummary=array();
+                $aSummary=[];
 
                 if (in_array($sStatName, $aPermittedTokenStats) || $sStatName=='all')
                 {
@@ -752,7 +752,7 @@ class remotecontrol_handle
 
 
                 $oSurveyLocale=SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang));
-                $aResult = array();
+                $aResult = [];
 
                 if (empty($aSurveyLocaleSettings))
                     return array('status' => 'No valid Data');
@@ -813,7 +813,7 @@ class remotecontrol_handle
                 $oSurveyLocale = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLanguage));
 
                 $aLangAttributes = $oSurveyLocale->getAttributes();
-                $aResult = array();
+                $aResult = [];
 
                 if (empty($aSurveyLocaleData))
                     return array('status' => 'No valid Data');
@@ -1028,7 +1028,7 @@ class remotecontrol_handle
         if ($this->_checkSessionKey($sSessionKey))
         {
             $responses = SurveyDynamic::model($iSurveyID)->findAllByAttributes(array('token' => $sToken));
-            $result = array();
+            $result = [];
             foreach ($responses as $response)
             {
                 $result[] = (int) $response->id;
@@ -1102,7 +1102,7 @@ class remotecontrol_handle
             }
             if (App()->user->checkAccess('survey', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $oGroup->sid]))
             {
-                $aResult = array();
+                $aResult = [];
                 // Remove fields that may not be modified
                 unset($aGroupData['sid']);
                 unset($aGroupData['gid']);
@@ -1360,7 +1360,7 @@ class remotecontrol_handle
                 if (empty($aQuestionSettings))
                     return array('status' => 'No valid Data');
 
-                $aResult=array();
+                $aResult=[];
                 foreach ($aQuestionSettings as $sPropertyName )
                 {
                     if ($sPropertyName == 'available_answers' || $sPropertyName == 'subquestions')
@@ -1368,7 +1368,7 @@ class remotecontrol_handle
                         $oSubQuestions =  Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionID,'language'=>$sLanguage ),array('order'=>'title') );
                         if (count($oSubQuestions)>0)
                         {
-                            $aData = array();
+                            $aData = [];
                             foreach($oSubQuestions as $oSubQuestion)
                             {
                                 if($sPropertyName == 'available_answers')
@@ -1392,7 +1392,7 @@ class remotecontrol_handle
                         $oAttributes =  QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> null ),array('order'=>'attribute') );
                         if (count($oAttributes)>0)
                         {
-                            $aData = array();
+                            $aData = [];
                             foreach($oAttributes as $oAttribute)
                                 $aData[$oAttribute['attribute']]= $oAttribute['value'];
 
@@ -1406,7 +1406,7 @@ class remotecontrol_handle
                         $oAttributes =  QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage ),array('order'=>'attribute') );
                         if (count($oAttributes)>0)
                         {
-                            $aData = array();
+                            $aData = [];
                             foreach($oAttributes as $oAttribute)
                                 $aData[$oAttribute['attribute']]= $oAttribute['value'];
 
@@ -1420,7 +1420,7 @@ class remotecontrol_handle
                         $oAttributes = Answer::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage ),array('order'=>'sortorder') );
                         if (count($oAttributes)>0)
                         {
-                            $aData = array();
+                            $aData = [];
                             foreach($oAttributes as $oAttribute) {
                                 $aData[$oAttribute['code']]['answer']=$oAttribute['answer'];
                                 $aData[$oAttribute['code']]['assessment_value']=$oAttribute['assessment_value'];
@@ -1616,7 +1616,7 @@ class remotecontrol_handle
                 if(!tableExists("{{tokens_$iSurveyID}}"))
                     return array('status' => 'Error: No token table');
 
-                $aResult=array();
+                $aResult=[];
                 foreach($aTokenIDs as $iTokenID)
                 {
                     $token = Token::model($iSurveyID)->findByPk($iTokenID);
@@ -1711,7 +1711,7 @@ class remotecontrol_handle
                 if (!isset($oToken))
                     return array('status' => 'Error: Invalid tokenid');
 
-                $aResult = array();
+                $aResult = [];
                 // Remove fields that may not be modified
                 unset($aTokenData['tid']);
 
@@ -1787,7 +1787,7 @@ class remotecontrol_handle
     * @param array $aConditions Optional conditions to limit the list, e.g. with array('email' => 'info@example.com')
     * @return array The list of tokens
     */
-    public function list_participants($sSessionKey, $iSurveyID, $iStart=0, $iLimit=10, $bUnused=false, $aAttributes=false, $aConditions=array() )
+    public function list_participants($sSessionKey, $iSurveyID, $iStart=0, $iLimit=10, $bUnused=false, $aAttributes=false, $aConditions=[] )
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -1800,7 +1800,7 @@ class remotecontrol_handle
                 if(!tableExists("{{tokens_$iSurveyID}}"))
                     return array('status' => 'Error: No token table');
 
-                $aAttributeValues = array();
+                $aAttributeValues = [];
                 if (count($aConditions)) {
                     $aConditionFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
                     $aAttributeValues = array_intersect_key($aConditions, $aConditionFields);
@@ -1973,7 +1973,7 @@ class remotecontrol_handle
                 foreach ($users as $user)
                 {
                     $attributes = $user->attributes;
-                    $attributes['permissions'] = array();
+                    $attributes['permissions'] = [];
                     foreach ($user->permissions as $permission)
                     {
                         $attributes['permissions'][] = $permission->attributes;
@@ -2002,7 +2002,7 @@ class remotecontrol_handle
     * @param array $aAttributeFields  An array of integer describing any additional attribute fields
     * @return array Status=>OK when successfull, otherwise the error description
     */
-    public function activate_tokens($sSessionKey, $iSurveyID, $aAttributeFields=array())
+    public function activate_tokens($sSessionKey, $iSurveyID, $aAttributeFields=[])
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         if (App()->user->checkAccess('surveys', ['crud' => 'create']))

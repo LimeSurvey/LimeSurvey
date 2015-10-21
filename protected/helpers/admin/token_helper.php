@@ -41,7 +41,7 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 	//Convert result to associative array to minimize SurveyLocale access attempts
 	foreach($oSurveyLocale as $rows)
 	{
-		$oTempObject=array();
+		$oTempObject=[];
 		foreach($rows as $k=>$v)
 		{
 			$oTempObject[$k] = $v;
@@ -62,7 +62,7 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 
 
 		//Build recipient
-		$to = array();
+		$to = [];
 		$aEmailaddresses = explode(';', $aTokenRow['email']);
 		foreach ($aEmailaddresses as $sEmailaddress)
 		{

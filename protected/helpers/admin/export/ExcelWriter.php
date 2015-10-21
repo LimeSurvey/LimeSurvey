@@ -91,7 +91,7 @@ class ExcelWriter implements IWriter {
         /** @var Response $response */
         foreach($survey->responses as $response)
         {
-            $elementArray = array();
+            $elementArray = [];
 
             foreach ($this->options->selectedColumns as $column)
             {

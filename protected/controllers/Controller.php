@@ -21,27 +21,27 @@ abstract class Controller extends \CController
      * @var Array of active menus, keys are the menu names, values will be passed to the view.
      */
     public $menus = [];
-    
+
     /**
      * This array contains the survey / group / question id used by the menu widget.
      * @var array
      */
     public $navData = [];
-	/**
-	 * Basic initialiser to the base controller class
-	 *
-	 * @access public
-	 * @param string $id
-	 * @param CWebModule $module
-	 * @return void
-	 */
-	public function __construct($id, $module = null)
-	{
-		parent::__construct($id, $module);
+    /**
+     * Basic initialiser to the base controller class
+     *
+     * @access public
+     * @param string $id
+     * @param CWebModule $module
+     * @return void
+     */
+    public function __construct($id, $module = null)
+    {
+        parent::__construct($id, $module);
 
         Yii::app()->session->init();
-		$this->_init();
-	}
+        $this->_init();
+    }
 
     public function accessRules() {
         return array_merge([
@@ -49,24 +49,24 @@ abstract class Controller extends \CController
             ['deny']
         ], parent::accessRules());
     }
-	
 
-	protected function _init()
-	{
-		enforceSSLMode();// This really should be at the top but for it to utilise \ls\models\SettingGlobal::get() it has to be here
 
-        
-		//SET LOCAL TIME
-		$timeadjust = Yii::app()->getConfig("timeadjust");
-		if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}
-		if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false && strpos($timeadjust,'days')===false)
-		{
-			Yii::app()->setConfig("timeadjust",$timeadjust.' hours');
-		}
-        
+    protected function _init()
+    {
+        enforceSSLMode();// This really should be at the top but for it to utilise \ls\models\SettingGlobal::get() it has to be here
+
+
+        //SET LOCAL TIME
+        $timeadjust = Yii::app()->getConfig("timeadjust");
+        if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}
+        if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false && strpos($timeadjust,'days')===false)
+        {
+            Yii::app()->setConfig("timeadjust",$timeadjust.' hours');
+        }
+
         Yii::app()->setConfig('adminimageurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/images/');
         Yii::app()->setConfig('adminstyleurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/');
-	}
+    }
 
     /**
      * Base implementation for load model.
@@ -88,7 +88,7 @@ abstract class Controller extends \CController
         } else {
             throw new \Exception("Override loadModel when using a non standard class.");
         }
-        
+
     }
 
     public function getActionParams()
@@ -130,7 +130,6 @@ abstract class Controller extends \CController
     {
         $result = parent::createActionFromMap($actionMap, $actionID, $requestActionID, $config);
         if (!isset($result)) {
-
             $class = __NAMESPACE__ . "\\{$this->id}\\" . ucfirst($actionID);
             if (class_exists($class)) {
                 $result = Yii::createComponent(['class' => $class], $this, $requestActionID);

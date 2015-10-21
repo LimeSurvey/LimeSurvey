@@ -278,7 +278,7 @@ class Survey extends ActiveRecord
             ['showprogress', 'in', 'range' => ['Y', 'N'], 'allowEmpty' => true],
             ['questionindex', 'in', 'range' => array_keys($this->indexOptions), 'allowEmpty' => false],
             ['nokeyboard', 'in', 'range' => ['Y', 'N'], 'allowEmpty' => true],
-            ['alloweditaftercompletion', 'in', 'range' => ['Y', 'N'], 'allowEmpty' => true],
+
             ['bounceprocessing', 'in', 'range' => ['L', 'N', 'G'], 'allowEmpty' => true],
             ['usecaptcha', 'in', 'range' => ['A', 'B', 'C', 'D', 'X', 'R', 'S', 'N'], 'allowEmpty' => true],
             ['showgroupinfo', 'in', 'range' => ['B', 'N', 'D', 'X'], 'allowEmpty' => true],
@@ -305,6 +305,7 @@ class Survey extends ActiveRecord
             ['sid', 'default', 'value' => randomChars(6, '123456789')],
             ['bool_listpublic', 'boolean'],
             ['bool_showwelcome', 'boolean'],
+            ['bool_alloweditaftercompletion', 'boolean'],
 
 
 

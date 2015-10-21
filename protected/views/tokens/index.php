@@ -53,7 +53,7 @@ $columns = [
                 'icon' => TbHtml::ICON_CERTIFICATE,
                 'title' => gT("Execute survey with this token."),
                 'visible' => function($row, Token $model) {
-                    return $model->usesleft > 0 && !empty($model->token);
+                    return $model->survey->isActive && $model->usesleft > 0 && !empty($model->token);
                 },
                 'url' => function(Token $model, $row) {
                     return App()->createUrl('surveys/start', ['token' => $model->token, 'id' => $model->surveyId]);

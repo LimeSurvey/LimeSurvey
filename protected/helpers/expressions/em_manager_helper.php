@@ -179,10 +179,10 @@ class LimeExpressionManager
         $query = LimeExpressionManager::getConditionsForEM($surveyId, $qid);
 
         $_qid = -1;
-        $relevanceEqns = array();
-        $scenarios = array();
-        $relAndList = array();
-        $relOrList = array();
+        $relevanceEqns = [];
+        $scenarios = [];
+        $relAndList = [];
+        $relOrList = [];
         foreach ($query->readAll() as $row) {
             $row['method'] = trim($row['method']); //For Postgres
             if ($row['qid'] != $_qid) {
@@ -203,9 +203,9 @@ class LimeExpressionManager
                 $_scenario = $row['scenario'];
                 $_cqid = $row['cqid'];
                 $_subqid = -1;
-                $relAndList = array();
-                $relOrList = array();
-                $scenarios = array();
+                $relAndList = [];
+                $relOrList = [];
+                $scenarios = [];
                 $releqn = '';
             }
             if ($row['scenario'] != $_scenario) {
@@ -213,15 +213,15 @@ class LimeExpressionManager
                     $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
                 }
                 $scenarios[] = '(' . implode(' and ', $relAndList) . ')';
-                $relAndList = array();
-                $relOrList = array();
+                $relAndList = [];
+                $relOrList = [];
                 $_scenario = $row['scenario'];
                 $_cqid = $row['cqid'];
                 $_subqid = -1;
             }
             if ($row['cqid'] != $_cqid) {
                 $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
-                $relOrList = array();
+                $relOrList = [];
                 $_cqid = $row['cqid'];
                 $_subqid = -1;
             }
@@ -252,7 +252,7 @@ class LimeExpressionManager
             }
             if ($_subqid != -1 && $_subqid != $subqid) {
                 $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
-                $relOrList = array();
+                $relOrList = [];
             }
             $_subqid = $subqid;
 
@@ -339,7 +339,7 @@ class LimeExpressionManager
             return $relevanceEqns;
         } else {
             if (isset($relevanceEqns[$qid])) {
-                $result = array();
+                $result = [];
                 $result[$qid] = $relevanceEqns[$qid];
 
                 return $result;
@@ -362,7 +362,7 @@ class LimeExpressionManager
         $LEM =& LimeExpressionManager::singleton();
 
         if (count($replacementFields) > 0) {
-            $replaceArray = array();
+            $replaceArray = [];
             foreach ($replacementFields as $key => $value) {
                 $replaceArray[$key] = array(
                     'code' => $value,
@@ -665,21 +665,6 @@ class LimeExpressionManager
         }
     }
 
-    /**
-     * Get last move information, optionally clearing the substitution cache
-     * @param type $clearSubstitutionInfo
-     * @return type
-     */
-    public static function GetLastMoveResult($clearSubstitutionInfo = false)
-    {
-        $LEM =& LimeExpressionManager::singleton();
-        if ($clearSubstitutionInfo) {
-            $LEM->em->ClearSubstitutionInfo();  // need to avoid double-generation of tailoring info
-        }
-
-        return (isset($LEM->lastMoveResult) ? $LEM->lastMoveResult : null);
-    }
-
     private function processData(\ls\interfaces\iResponse $response, \Psr\Http\Message\ServerRequestInterface $request)
     {
 
@@ -698,7 +683,7 @@ class LimeExpressionManager
         if ($processPOST) {
             $this->processData($session->response, App()->request->psr7);
         } else {
-            $updatedValues = array();
+            $updatedValues = [];
         }
 
         $message = '';
@@ -756,7 +741,7 @@ class LimeExpressionManager
         if ($processPOST) {
             $this->processData($session->response, $_POST);
         } else {
-            $updatedValues = array();
+            $updatedValues = [];
         }
         $message = '';
         // Validate if moving forward.

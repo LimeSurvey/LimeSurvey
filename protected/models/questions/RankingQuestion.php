@@ -159,8 +159,8 @@ class RankingQuestion extends \ls\models\Question
         $html .="</div>";
         $cs = App()->getClientScript();
         $cs->registerPackage('jquery-actual'); // Needed to with jq1.9 ?
-        $cs->registerScriptFile(App()->getConfig('generalscripts')."ranking.js");
-        $cs->registerCssFile(App()->getConfig('publicstyleurl') . "ranking.css");
+        $cs->registerScriptFile(App()->getPublicUrl() . "/scripts/ranking.js");
+        $cs->registerCssFile(App()->getPublicUrl() . "/styles-public/ranking.css");
 
         if(!empty($this->choice_title))
         {

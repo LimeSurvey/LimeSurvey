@@ -1,12 +1,27 @@
 <?php
+
+
+namespace ls\controllers\surveys;
+
+use \Yii;
+use \CClientScript;
 use ls\models\Survey;
-use ls\models\Template;
+use \PluginEvent;
 
-class index extends CAction {
-
-
-    public function run($_button = 'default', $csrfToken = null)
+/**
+ * Class Run, runs a survey.
+ * @package ls\controllers\surveys
+ */
+class Run extends \Action
+{
+    /**
+     * Runs the action,
+     * @throws \CHttpException
+     * @param string $csrfToken
+     */
+    public function run($csrfToken = null, $button = 'none')
     {
+
         if (null === $session = App()->surveySessionManager->current) {
             throw new \CHttpException(404, "Session not found");
         }
@@ -16,6 +31,7 @@ class index extends CAction {
 
 
         $buttons = [
+            'none' => true,
             'default' => true,
             'next' => true,
             'submit' => true,
@@ -34,7 +50,7 @@ class index extends CAction {
         if ($session->survey->bool_allowprev) {
             $buttons['prev'] =  true;
         }
-        if (!isset($buttons[$_button])) {
+        if (!isset($buttons[$button])) {
             throw new \CHttpException(400, "Invalid move type.");
         }
 
@@ -61,41 +77,13 @@ class index extends CAction {
         $clientScript->registerPackage('SurveyRuntime');
 
         ob_start();
-        $this->action($_button, $session);
-        $result = ob_get_clean();
-        $clientScript->render($result);
-        $clientScript->reset();
-        echo $result;
-    }
-
-    public function action($move, \ls\components\SurveySession $session)
-    {
-        bP();
         header('X-ResponseId: ' . $session->responseId);
 
 
-        if ($move == 'default') {
-            if ($session->format == Survey::FORMAT_ALL_IN_ONE
-            || $session->step > 0 && ($session->step == $session->stepCount)) {
-                $move="submit";
-            } else {
-                $move="next";
-            }
+        if ($session->isFinished && !$session->survey->bool_alloweditaftercompletion) {
+            throw new \CHttpException(403, "This response has been finished, you are not allowed to edit it after completion.");
         }
 
-        if ($session->isFinished && (
-            !$session->survey->bool_alloweditaftercompletion
-            || !$session->survey->bool_tokenanswerspersistence)
-        ) {
-            $params = [
-                "surveys/start",
-                'id' => $session->surveyId,
-            ];
-            if (!empty($session->response->token)) {
-                $params['token'] = $session->response->token;
-            }
-            $this->controller->redirect($params);
-        }
 
         $event = new PluginEvent('beforeSurveyPage');
         $event->set('surveyId', $session->surveyId);
@@ -104,15 +92,14 @@ class index extends CAction {
             $session->templateDir = $event->get('template');
         }
 
-        sendCacheHeaders();
-        eP();
         //Send local variables to the appropriate survey type
         bP('runtimehelper');
-        (new \ls\helpers\SurveyRuntime())->run($session, $move);
+        (new \ls\helpers\SurveyRuntime())->run($session, $button);
         eP('runtimehelper');
+        $result = ob_get_clean();
+        $clientScript->render($result);
+        $clientScript->reset();
+        echo $result;
     }
-
-
-
 
 }

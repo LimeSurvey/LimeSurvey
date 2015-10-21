@@ -59,7 +59,7 @@ function isNumericExtended($value)  {
 function strSplitUnicode($str, $l = 0) {
     if ($l > 0)
     {
-        $ret = array();
+        $ret = [];
         $len = mb_strlen($str, "UTF-8");
         for ($i = 0; $i < $len; $i += $l)
         {
@@ -222,12 +222,12 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
 * @param $field array field from SPSSFieldMap
 * @return array or false
 */
-function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
+function SPSSGetValues ($field = [], $qidattributes = null, $language ) {
     $length_vallabel = 120;
 
 
     if (!isset($field['LStype']) || empty($field['LStype'])) return false;
-    $answers=array();
+    $answers=[];
     if (strpos("!LORFWZWH1",$field['LStype']) !== false) {
         if (substr($field['code'],-5) == 'other' || substr($field['code'],-7) == 'comment') {
             //We have a comment field, so free text
@@ -380,7 +380,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
 
     $fieldno=0;
 
-    $fields=array();
+    $fields=[];
     if ($bTokenTableExists && $surveyprivate == 'N' && App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID])) {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
         foreach ($tokenattributes as $attributefield=>$attributedescription)
@@ -396,7 +396,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
         }
     }
 
-    $tempArray = array();
+    $tempArray = [];
     $fieldnames = Yii::app()->db->schema->getTable("{{survey_$iSurveyID}}")->getColumnNames();
     $num_results = count($fieldnames);
     $num_fields = $num_results;
@@ -415,7 +415,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
         $export_scale = '';
         $code='';
         $scale_id = null;
-        $aQuestionAttribs=array();
+        $aQuestionAttribs=[];
 
         #Determine field type
         if ($fieldname=='submitdate' || $fieldname=='startdate' || $fieldname == 'datestamp') {
@@ -450,7 +450,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
             if (!isset($fieldmap[$fieldname])) {
                 //Field in database but no longer in survey... how is this possible?
                 //@TODO: think of a fix.
-                $fielddata = array();
+                $fielddata = [];
                 $qid=0;
                 $varlabel = $fieldname;
                 $ftitle = $fieldname;
@@ -565,7 +565,7 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null) {
 * @param mixed $tagname  If the XML tag of the resulting question should be named differently than the table name set it here
 * @param array $excludes array of columnames not to include in export
 */
-function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
+function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = [])
 {
     $iChunkSize=3000; // This works even for very large result sets and leaves a minimal memory footprint
 
@@ -753,7 +753,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = [])
 /**
 * from export_structure_xml.php
 */
-function surveyGetXMLData($iSurveyID, $exclude = array())
+function surveyGetXMLData($iSurveyID, $exclude = [])
 {
     $xml = new XMLWriter();
     $xml->openMemory();
@@ -1784,7 +1784,7 @@ function tokensExport($iSurveyID)
 
     // Export token line by line and fill $aExportedTokens with token exported
     Yii::import('application.libraries.Date_Time_Converter', true);
-    $aExportedTokens = array();
+    $aExportedTokens = [];
     while ($brow = $bresult->read())
     {
         if (trim($brow['validfrom']!=''))

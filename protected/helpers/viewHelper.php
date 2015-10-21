@@ -31,7 +31,7 @@ class viewHelper
      * @param string $linkclass Optional class to add to the link
      * @param array  $attribs Optional array of attirbutes to set on the link
      */
-    public static function getImageLink($imgName, $linkUrl, $linkTxt, $linkTarget = null, $linkClass = 'imagelink', $attribs = array())
+    public static function getImageLink($imgName, $linkUrl, $linkTxt, $linkTarget = null, $linkClass = 'imagelink', $attribs = [])
     {
         if (!is_null($linkUrl) && $linkUrl != '#') {
             $linkUrl = Yii::app()->getController()->createUrl($linkUrl);
@@ -64,7 +64,7 @@ class viewHelper
      * @param array $aField the field information from createFieldMap
      * @param array $aOption option (see default)
      */
-    public static function getFieldText($aField, $aOption=array())
+    public static function getFieldText($aField, $aOption=[])
     {
         // Default options
         $aDefaultOption=array(
@@ -112,7 +112,7 @@ class viewHelper
      * @param array $aField the field information from createFieldMap
      * @param array $aOption option for filtering
      */
-    public static function getFieldCode($aField, $aOption=array())
+    public static function getFieldCode($aField, $aOption=[])
     {
         // Default options
         $aDefaultOption=array(

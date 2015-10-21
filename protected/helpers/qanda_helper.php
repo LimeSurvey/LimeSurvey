@@ -591,7 +591,7 @@ function do_array(Question $question)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $question->bool_mandatory) ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $question->bool_mandatory) ? explode("|",$aLastMoveResult['unansweredSQs']) : [];
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
@@ -633,8 +633,8 @@ function do_array(Question $question)
     $lresult= Answer::model()->findAllByAttributes(['question_id' => $question->primaryKey], [
         'order' => 'sortorder, code',
     ]);
-    $labelans=array();
-    $labelcode=array();
+    $labelans=[];
+    $labelcode=[];
     foreach ($lresult as $lrow)
     {
         $labelans[]=$lrow->answer;
@@ -683,7 +683,7 @@ function do_array(Question $question)
 
         $answer = '<tbody>';
         $trbc = '';
-        $inputnames=array();
+        $inputnames=[];
         foreach($question->subQuestions as  $subQuestion)
         {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
@@ -836,7 +836,7 @@ function do_array(Question $question)
 
         $answer = "\t<tbody>\n";
         $trbc = '';
-        $inputnames=array();
+        $inputnames=[];
 
         foreach ($aQuestions as $subQuestion)
         {
@@ -932,7 +932,7 @@ function do_array_multitext(Question $question)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $question->bool_mandatory) ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $question->bool_mandatory) ? explode("|",$aLastMoveResult['unansweredSQs']) : [];
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
@@ -1098,8 +1098,8 @@ function do_array_multitext(Question $question)
     $columnswidth=100-($answerwidth*2);
 
     $scale1 = $question->getSubQuestions(1);
-    $labelans=array();
-    $labelcode=array();
+    $labelans=[];
+    $labelcode=[];
     foreach($scale1 as $lrow)
     {
         $labelans[]=$lrow['question'];
@@ -1298,7 +1298,7 @@ EOD;
 function do_array_multiflexi(Question $question, \ls\interfaces\iResponse $response)
 {
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $question->bool_mandatory) ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $question->bool_mandatory) ? explode("|",$aLastMoveResult['unansweredSQs']) : [];
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
@@ -1634,7 +1634,7 @@ function do_array_multiflexi(Question $question, \ls\interfaces\iResponse $respo
 function do_arraycolumns(Question $question, \ls\interfaces\iResponse $response)
 {
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $question->bool_mandatory) ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $question->bool_mandatory) ? explode("|",$aLastMoveResult['unansweredSQs']) : [];
     $extraclass = "";
     $checkconditionFunction = "checkconditions";
     $caption=gT("An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. ");
@@ -1729,15 +1729,15 @@ function do_array_dual(Question $question, \ls\interfaces\iResponse $response)
 {
     return ['ok'];
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $question->bool_mandatory) ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $question->bool_mandatory) ? explode("|",$aLastMoveResult['unansweredSQs']) : [];
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
     $answertypeclass = ""; // Maybe not
     $caption="";// Just leave empty, are replaced after
-    $inputnames=array();
-    $labelans1=array();
-    $labelans=array();
+    $inputnames=[];
+    $labelans1=[];
+    $labelans=[];
     
 
     if ($question->use_dropdown==1)

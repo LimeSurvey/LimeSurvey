@@ -66,11 +66,12 @@ function ExpressionManager(vars) {
         }
     });
 
-    $(document).ready(function() {
+    var updateAll = function() {
         that.updateVisibility();
         that.updateReplacements();
         that.updateValidity();
-    });
+    };
+    $(document).ready(updateAll);
 
     for (var code in vars) {
         name2code[vars[code].name] = code;
@@ -81,8 +82,14 @@ function ExpressionManager(vars) {
      */
     this.setValues = function(values) {
         for (var key in values) {
-            vars[name2code[key]].value = values[key];
+            var code = name2code[key];
+            if (typeof code == 'undefined') {
+                throw "Could not get code for field: " + key;
+            }
+            vars[code].value = values[key];
         }
+        updateAll();
+
     }
     this.debug = function() {
         console.log(EM);

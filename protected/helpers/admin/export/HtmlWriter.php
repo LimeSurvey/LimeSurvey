@@ -9,7 +9,7 @@ class HtmlWriter extends Writer
         /**
          * Manages stack of open HTML tags that need closing.
          */
-        protected $stack = array();
+        protected $stack = [];
 
         public function beforeRenderRecords($headers, Survey $survey)
         {

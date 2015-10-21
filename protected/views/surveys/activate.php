@@ -12,6 +12,7 @@
         echo TbHtml::tag('li', [], $item);
     }
     echo TbHtml::closeTag('ul');
+    echo TbHtml::beginFormTb('horizontal', ["surveys/activate", 'id' => $survey->sid], 'post');
     echo TbHtml::well(gT("Please note that once responses have collected with this survey and you want to add or remove groups/questions or change one of the settings above, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."));
     echo TbHtml::submitButton(gT("Save / Activate survey"), ['color' => 'primary']);
     echo TbHtml::endForm();

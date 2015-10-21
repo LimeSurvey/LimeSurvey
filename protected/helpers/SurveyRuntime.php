@@ -33,7 +33,7 @@ class SurveyRuntime {
         echo "\n\n<!-- PRESENT THE INDEX -->\n";
         echo TbHtml::openTag('div', array('id' => 'index'));
         echo TbHtml::openTag('div', array('class' => 'container'));
-        echo TbHtml::tag('h2', array(), gT("Question index"));
+        echo TbHtml::tag('h2', [], gT("Question index"));
         echo TbHtml::openTag('ol');
         /**
          * @var int $key
@@ -71,7 +71,7 @@ class SurveyRuntime {
     {
         echo TbHtml::openTag('div', array('id' => 'index'));
         echo TbHtml::openTag('div', array('class' => 'container'));
-        echo TbHtml::tag('h2', array(), gT("Question index"));
+        echo TbHtml::tag('h2', [], gT("Question index"));
         echo 'ls\models\Question by question not yet supported, use incremental index.';
         echo TbHtml::closeTag('div');
         echo TbHtml::closeTag('div');
@@ -167,7 +167,7 @@ class SurveyRuntime {
      * @throws CHttpException
      * @throws Exception
      */
-    function run(SurveySession $session, $move)
+    public function run(SurveySession $session, $move)
     {
         /** @var \ls\models\Survey $survey */
         $survey = $session->survey;
@@ -216,12 +216,6 @@ class SurveyRuntime {
                     $session->setStep($moveResult['seq'] + 1);
                 }
 
-        }
-
-        if (!isset($moveResult) && !($session->format != Survey::FORMAT_ALL_IN_ONE && $session->getStep() == 0)) {
-            // Just in case not set via any other means, but don't do this if it is the welcome page
-            $moveResult = LimeExpressionManager::GetLastMoveResult(true);
-            $LEMskipReprocessing = true;
         }
 
         if (isset($moveResult) && isset($moveResult['seq']))// Reload at first page (welcome after click previous fill an empty $moveResult array
@@ -354,7 +348,7 @@ class SurveyRuntime {
         $this->renderNavigator($session);
         echo "</form>\n";
 
-        renderOldTemplate($session->templateDir . "endpage.pstpl", array(), $redata);
+        renderOldTemplate($session->templateDir . "endpage.pstpl", [], $redata);
 
         echo "\n";
 
@@ -379,7 +373,7 @@ class SurveyRuntime {
     {
         if(isset($survey->localizedNumberFormat))
         {
-            $aLSJavascriptVar=array();
+            $aLSJavascriptVar=[];
             $aLSJavascriptVar['bFixNumAuto']=(int)(bool)Yii::app()->getConfig('bFixNumAuto',1);
             $aLSJavascriptVar['bNumRealValue']=(int)(bool)Yii::app()->getConfig('bNumRealValue',0);
             $aRadix=\ls\helpers\SurveyTranslator::getRadixPointData($survey->localizedNumberFormat);
@@ -505,18 +499,18 @@ class SurveyRuntime {
 
             //Send notifications
 
-            sendSubmitNotifications($session->surveyId);
+            FrontEnd::sendSubmitNotifications($session->surveyId);
 
-
+            return App()->getController()->redirect(['surveys/completed', 'SSM' => $session->getId()]);
             $content = '';
 
-            $content .= Replacements::templatereplace(file_get_contents($session->templateDir . "startpage.pstpl"), [], $redata, null, $session);
+            $content .= Replacements::templatereplace(file_get_contents($session->templateDir . "startpage.pstpl"), [], [], null, $session);
 
             //Check for assessments
             if ($session->survey->bool_assessments) {
                 $assessments = \ls\helpers\FrontEnd::doAssessment($session->surveyId);
                 if ($assessments) {
-                    $content .= Replacements::templatereplace(file_get_contents($session->templateDir . "assessment.pstpl"), array(),
+                    $content .= Replacements::templatereplace(file_get_contents($session->templateDir . "assessment.pstpl"), [],
                         $redata, null);
                 }
             }
@@ -526,7 +520,7 @@ class SurveyRuntime {
                 $completed = "<br /><span class='success'>" . gT("Thank you!") . "</span><br /><br />\n\n"
                     . gT("Your survey responses have been recorded.") . "<br /><br />\n";
             } else {
-                $completed = Replacements::templatereplace($survey->getLocalizedEndText(), array(), $redata, null);
+                $completed = Replacements::templatereplace($survey->getLocalizedEndText(), [], $redata, null);
             }
 
             // Link to Print ls\models\Answer Preview  **********
@@ -561,6 +555,7 @@ class SurveyRuntime {
             }
 
             doHeader();
+
             echo $content;
         }
         $redata['completed'] = $completed;
@@ -569,7 +564,7 @@ class SurveyRuntime {
         $event->set('responseId', $session->getResponseId());
         $event->set('surveyId', $session->getSurveyId());
         App()->getPluginManager()->dispatchEvent($event);
-        $blocks = array();
+        $blocks = [];
 
         foreach ($event->getAllContent() as $blockData) {
             /* @var $blockData PluginEventContent */

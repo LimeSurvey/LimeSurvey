@@ -101,7 +101,7 @@
             $aAllowed = array('-', '.', '/', ':', ' ');
 
             // Convert
-            $tmp = array();
+            $tmp = [];
             foreach ($aAllowed as $k) {
                 $tmp[$k] = true;
             }
@@ -324,7 +324,7 @@
             if ($reverse_numbers) {
                 return join('', array_reverse($ar[0]));
             } else {
-                $temp = array();
+                $temp = [];
                 foreach ($ar[0] as $value) {
                     if (is_numeric($value) && !empty($temp[0]) && is_numeric($temp[0])) {
                         foreach ($temp as $key => $value2) {

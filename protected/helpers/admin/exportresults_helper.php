@@ -135,7 +135,7 @@ class ExportSurveyResultsService
             $oPluginManager = App()->getPluginManager();
             $oPluginManager->dispatchEvent($event);
 
-            $exports = $event->get('exportplugins', array());
+            $exports = $event->get('exportplugins', []);
             
             $this->_exports = $exports;
         }

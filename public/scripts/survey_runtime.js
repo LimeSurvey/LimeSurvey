@@ -14,7 +14,6 @@ $(document).ready(function()
     navbuttonsJqueryUi();
     showStartPopups();
     addClassEmpty();
-    noScrollOnSelect();
     doToolTipTable();
 
     if (typeof checkconditions!='undefined') checkconditions();
@@ -252,16 +251,6 @@ function addClassEmpty()
 	});
 }
 
-/**
- * Disable scroll on select, put it in function to allow update in template
- * 
- */
-function noScrollOnSelect()
-{
-    $(".question").find("select").each(function () {
-        hookEvent($(this).attr('id'),'mousewheel',noScroll);
-    });
-}
 /**
  * Adapt cell to have a click on cell do a click on input:radio or input:checkbox (if unique)
  * Using delegate the can be outside document.ready (using .on is possible but on $(document) then : less readbale

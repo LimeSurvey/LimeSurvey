@@ -48,8 +48,10 @@ echo TbHtml::openTag('div', ['class' => isset($wrapper) ? $wrapper : 'col-md-12'
 
         'token',
         'submitdate',
-        'series_id',
-
+        [
+            'name' => 'series_id',
+            'visible' => $survey->use_series,
+        ]
     ];
 
 //    $template = "{summary}\n{items}\n{pager}\n{extendedSummary}";
