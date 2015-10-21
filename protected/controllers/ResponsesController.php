@@ -148,17 +148,6 @@ class ResponsesController extends Controller
 
     public function actionUpdate($id, $surveyId)
     {
-        /** @var \ls\models\Survey $survey */
-        $survey = Survey::model()->findByPk($surveyId);
-        $this->layout = 'showsurvey';
-        if (!$survey->isActive) {
-            throw new \CHttpException(412, gT("The survey is not active."));
-        } elseif ($survey->bool_usetokens
-            && null === $response = \ls\models\Response::model($surveyId)->findByPk($id)
-        ) {
-            throw new \CHttpException(404, gT("Response not found."));
-        }
 
-        $this->redirect(['surveys/run', 'SSM' => App()->surveySessionManager->newSession($survey->primaryKey, $response)->getId()]);
     }
 }
