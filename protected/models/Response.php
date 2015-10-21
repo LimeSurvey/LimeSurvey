@@ -10,7 +10,7 @@ use \Yii;
  * @property Question[] $questions
  * @property Survey $survey
  */
-abstract class Response extends Dynamic implements \ls\interfaces\iResponse
+abstract class Response extends Dynamic implements \ls\interfaces\ResponseInterface
 {
     private $_attributeLabels = [];
     private $_questions;

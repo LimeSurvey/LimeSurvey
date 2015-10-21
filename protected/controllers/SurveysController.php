@@ -343,37 +343,5 @@ class SurveysController extends Controller
         $this->redirect(['surveys/index']);
     }
 
-    /**
-     * Renders the relevance and tailoring javascript for a survey.
-     */
-    public function actionScript($id) {
-        $survey = $this->loadModel($id);
-
-        $result = \LimeExpressionManager::getScript($survey);
-        header('Content-type: application/javascript');
-        header('Cache-control: public, max-age=7200');
-        header_remove('Pragma');
-        header_remove('Expires');
-        foreach (App()->log->routes as $route) {
-            if ($route instanceof \CWebLogRoute) {
-                $route->enabled = false;
-            }
-        }
-        echo $result;
-    }
-
-    public function actionPreview($id)
-    {
-        $survey = $this->loadModel($id);
-        $dummy = new \ls\models\DummyResponse($survey);
-        $session = App()->surveySessionManager->newSession($survey->primaryKey, $dummy);
-        return $this->redirect(['survey/index', 'SSM' => $session->getId()]);
-
-
-    }
-
-
-
-
 
 }

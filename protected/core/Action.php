@@ -29,19 +29,28 @@ class Action extends \CAction
      * @see renderPartial
      * @see getLayoutFile
      */
-    public function render($view, $data = null, $return = false) {
+    public function render($view, $data = null, $return = false)
+    {
         return $this->controller->render($view, $data, $return);
     }
 
-    public function setLayout($value) {
+    public function setLayout($value)
+    {
         $this->controller->layout = $value;
     }
 
-    public function getLayout($value) {
+    public function getLayout($value)
+    {
         return $this->controller->layout;
     }
 
-    public function loadModel($id) {
+    public function loadModel($id)
+    {
         return $this->controller->loadModel($id);
+    }
+
+    public function redirect($url, $terminate = true, $statusCode = 302)
+    {
+        return $this->controller->redirect($url, $terminate, $statusCode);
     }
 }

@@ -86,7 +86,7 @@ class SurveySessionManager extends CApplicationComponent
         return $this->sessions[$id];
     }
 
-    public function newSession($surveyId, \ls\interfaces\iResponse $response)
+    public function newSession($surveyId, \ls\interfaces\ResponseInterface $response)
     {
         /** @var SurveySession $session */
 

@@ -1,7 +1,7 @@
 <?php
 namespace ls\models\questions;
 
-use ls\interfaces\iResponse;
+use ls\interfaces\ResponseInterface;
 
 class LongTextQuestion extends TextQuestion
 {
@@ -13,7 +13,7 @@ class LongTextQuestion extends TextQuestion
      * @param \ls\components\SurveySession $session
      * @return string
      */
-    public function render(iResponse $response, \ls\components\SurveySession $session)
+    public function render(ResponseInterface $response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
 

@@ -1295,7 +1295,7 @@ EOD;
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_array_multiflexi(Question $question, \ls\interfaces\iResponse $response)
+function do_array_multiflexi(Question $question, \ls\interfaces\ResponseInterface $response)
 {
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $question->bool_mandatory) ? explode("|",$aLastMoveResult['unansweredSQs']) : [];
@@ -1631,7 +1631,7 @@ function do_array_multiflexi(Question $question, \ls\interfaces\iResponse $respo
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_arraycolumns(Question $question, \ls\interfaces\iResponse $response)
+function do_arraycolumns(Question $question, \ls\interfaces\ResponseInterface $response)
 {
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $question->bool_mandatory) ? explode("|",$aLastMoveResult['unansweredSQs']) : [];
@@ -1725,7 +1725,7 @@ function do_arraycolumns(Question $question, \ls\interfaces\iResponse $response)
 }
 
 // ---------------------------------------------------------------
-function do_array_dual(Question $question, \ls\interfaces\iResponse $response)
+function do_array_dual(Question $question, \ls\interfaces\ResponseInterface $response)
 {
     return ['ok'];
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();

@@ -2,7 +2,7 @@
 namespace ls\models\questions;
 
 
-use ls\interfaces\iResponse;
+use ls\interfaces\ResponseInterface;
 
 class DateTimeQuestion extends TextQuestion
 {
@@ -65,11 +65,11 @@ class DateTimeQuestion extends TextQuestion
      * This function renders the object.
      * It MUST NOT produce any output.
      * It should return a string or an object that can be converted to string.
-     * @param iResponse $response
+     * @param ResponseInterface $response
      * @param \ls\components\SurveySession $session
      * @return \ls\components\RenderedQuestion
      */
-    public function render(iResponse $response, \ls\components\SurveySession $session)
+    public function render(ResponseInterface $response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
         $result->setHtml(\TbHtml::dateField($this->sgqa, $response->{$this->sgqa}, [

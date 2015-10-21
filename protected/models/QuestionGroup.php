@@ -148,7 +148,7 @@ class QuestionGroup extends ActiveRecord
     }
 
 
-    public function isRelevant(\ls\interfaces\iResponse $response)
+    public function isRelevant(\ls\interfaces\ResponseInterface $response)
     {
         if (empty($this->grelevance)) {
             $result = true;
@@ -168,11 +168,11 @@ class QuestionGroup extends ActiveRecord
      * Gets the replacements for group info.
      * @return array
      */
-    public function getReplacements()
+    public function getReplacements(\ExpressionManager $em)
     {
         return [
             'GROUPNAME' => $this->title,
-            'GROUPDESCRIPTION' => $this->description
+            'GROUPDESCRIPTION' => $em->createDynamicReplacements($this->description)
         ];
     }
 }

@@ -3,7 +3,8 @@ namespace ls\models\questions;
 
 
 use ls\components\QuestionResponseField;
-use ls\interfaces\iResponse;
+use ls\interfaces\ResponseInterface;
+use ls\models\Question;
 
 class MultipleChoiceWithCommentQuestion extends MultipleChoiceQuestion
 {
@@ -58,9 +59,9 @@ class MultipleChoiceWithCommentQuestion extends MultipleChoiceQuestion
     }
 
 
-    public function renderSubQuestion(\ls\models\Question $question, iResponse $response, \ls\components\SurveySession $session) {
-
-        $result = parent::renderSubQuestion($question, $response, $session);
+    public function renderSubQuestion(Question $question, ResponseInterface $response)
+    {
+        $result = parent::renderSubQuestion($question, $response);
         // Render a line in the multiple choice question.
         $field = $this->sgqa . $question->title . 'comment';
         $result .= \CHtml::textField($field, $response->$field);

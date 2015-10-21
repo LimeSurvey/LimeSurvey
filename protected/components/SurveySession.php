@@ -19,7 +19,7 @@ use ls\models\QuestionGroup;
  * @property int $step;
  * @property mixed $format;
  * @property int $maxStep;
- * @property \ls\interfaces\iResponse $response;
+ * @property \ls\interfaces\ResponseInterface $response;
  * @property string $templateDir;
  */
 class SurveySession extends \CComponent
@@ -28,7 +28,7 @@ class SurveySession extends \CComponent
      * These variables are not serialized.
      */
     /**
-     * @var \ls\interfaces\iResponse
+     * @var \ls\interfaces\ResponseInterface
      */
     private $_response;
     /**
@@ -63,7 +63,7 @@ class SurveySession extends \CComponent
      * @param int $responseId
      * @param integer $id
      */
-    public function __construct($surveyId, \ls\interfaces\iResponse $response, $id)
+    public function __construct($surveyId, \ls\interfaces\ResponseInterface $response, $id)
     {
         $this->surveyId = $surveyId;
         $this->_responseId = $response->getId();

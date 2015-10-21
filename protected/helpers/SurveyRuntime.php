@@ -389,7 +389,8 @@ class SurveyRuntime {
     protected function renderGroup(SurveySession $session, QuestionGroup $group) {
         bP();
         echo "\n\n<!-- START THE GROUP -->\n";
-        $replacements = $group->getReplacements();
+        $em = LimeExpressionManager::getExpressionManagerForSession($session);
+        $replacements = $group->getReplacements($em);
         echo "\n\n<div id='group-{$session->getGroupIndex($group->primaryKey)}'";
         if  (!$group->isRelevant($session->response)) {
             echo " style='display: none;'";

@@ -9,7 +9,8 @@ namespace ls\interfaces;
  * The default implementation store it in database (for live surveys)
  * Or in session (for previews).
  */
-interface iResponse {
+interface ResponseInterface
+{
 
     /**
      * @return string The UUID for this response.
@@ -47,8 +48,6 @@ interface iResponse {
     public function save();
 
     public function markAsFinished();
-
-    public function markAsUnFinished();
 
     public function getIsFinished();
 

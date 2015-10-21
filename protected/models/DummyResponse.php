@@ -4,7 +4,7 @@ namespace ls\models;
 
 use CFormModel;
 
-class DummyResponse extends \CFormModel implements \ls\interfaces\iResponse
+class DummyResponse extends \CFormModel implements \ls\interfaces\ResponseInterface
 {
     protected $_id;
 

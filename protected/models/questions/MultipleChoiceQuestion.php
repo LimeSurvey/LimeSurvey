@@ -1,7 +1,8 @@
 <?php
 namespace ls\models\questions;
 
-use ls\interfaces\iResponse;
+use ls\interfaces\ResponseInterface;
+use ls\models\Question;
 
 /**
  * Class MultipleChoiceQuestion
@@ -89,7 +90,7 @@ class MultipleChoiceQuestion extends ChoiceQuestion
      * @param \ls\components\SurveySession $session
      * @return \ls\components\RenderedQuestion
      */
-    public function render(iResponse $response, \ls\components\SurveySession $session)
+    public function render(ResponseInterface $response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
 
@@ -105,16 +106,14 @@ class MultipleChoiceQuestion extends ChoiceQuestion
         return $result;
     }
 
-    public function renderSubQuestion(\ls\models\Question $question, iResponse $response, \ls\components\SurveySession $session) {
+    public function renderSubQuestion(Question $question, ResponseInterface $response)
+    {
         // Render a line in the multiple choice question.
-        $result = '';
         $field = $this->sgqa . $question->title;
-        $result .= \TbHtml::checkBox($field, $response->$field == 'Y', [
+        $result = \TbHtml::checkBox($field, $response->$field == 'Y', [
             'id' => "answer$field",
             'value' => 'Y'
-        ]);
-
-        $result .= \TbHtml::label($this->createReplacements($response, $question->question), "answer$field");
+        ]) . \TbHtml::label($this->getExpressionManager($response)->createDynamicReplacements($question->question), "answer$field");
         return $result;
 
     }

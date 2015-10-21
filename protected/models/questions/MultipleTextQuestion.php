@@ -56,7 +56,7 @@ class MultipleTextQuestion extends TextQuestion
      * @param \ls\components\SurveySession $session
      * @return \ls\components\RenderedQuestion
      */
-    public function render(\ls\interfaces\iResponse $response, \ls\components\SurveySession $session)
+    public function render(\ls\interfaces\ResponseInterface $response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
         $html ='';
@@ -71,7 +71,7 @@ class MultipleTextQuestion extends TextQuestion
         return $result;
     }
 
-    public function renderSubQuestion(\ls\models\Question $question, \ls\interfaces\iResponse $response, \ls\components\SurveySession $session) {
+    public function renderSubQuestion(\ls\models\Question $question, \ls\interfaces\ResponseInterface $response, \ls\components\SurveySession $session) {
         
 
         $extraclass ="";

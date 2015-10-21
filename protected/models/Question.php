@@ -1093,7 +1093,7 @@ class Question extends ActiveRecord implements \ls\interfaces\iRenderable
      * By default a question passes this if any of it's fields have been filled.
      * @return boolean
      */
-    final public function validateResponse(\ls\interfaces\iResponse $response)
+    final public function validateResponse(\ls\interfaces\ResponseInterface $response)
     {
 
         $em = $this->getExpressionManager($response);
@@ -1164,10 +1164,10 @@ class Question extends ActiveRecord implements \ls\interfaces\iRenderable
 
     /**
      * Checks if the question is relevant for the current response.
-     * @param \ls\interfaces\iResponse $response
+     * @param \ls\interfaces\ResponseInterface $response
      * @return boolean
      */
-    public function isRelevant(\ls\interfaces\iResponse $response)
+    public function isRelevant(\ls\interfaces\ResponseInterface $response)
     {
         // Check if the group is relevant first.
         if (!$this->group->isRelevant($response)) {
@@ -1183,108 +1183,14 @@ class Question extends ActiveRecord implements \ls\interfaces\iRenderable
     }
 
 
-    public function getExpressionManager(\ls\interfaces\iResponse $response = null)
+    public function getExpressionManager()
     {
-        bP();
-        if (!isset($this->_expressionManager) || isset($response)) {
-
-            $session = App()->surveySessionManager->current;
-            if (!isset($response)) {
-                $callback = function ($name, $attribute, $default, $groupSequence, $questionSequence) {
-
-                };
-            } else {
-                $callback = function ($name, $attribute, $default, $groupSequence, $questionSequence) use (
-                    $response,
-                    $session
-                ) {
-
-                    $parts = explode('.', $name);
-                    if (count($parts) > 1) {
-                        $attribute = $parts[1];
-                        $name = $parts[0];
-                    }
-                    // Simple inefficient solution, not sure where this map should be implemented.
-                    // NOTE: the solution is not a precomputed array in some singleton class!!!
-                    // NOTE2: It is also not stuffing everything into $_SESSION.
-                    $found = false;
-                    foreach ($session->survey->questions as $question) {
-                        /** @var ResponseField $field */
-                        foreach ($question->getFields() as $field) {
-                            if ($field->getCode() === $name) {
-                                $found = true;
-                                break 2;
-                            }
-                        }
-                    }
-                    if (!$found) {
-                        throw new \InvalidArgumentException("Unknown variable: $name");
-                    }
-
-                    switch ($attribute) {
-                        case 'relevanceStatus':
-                            $result = $field->question->isRelevant($response);
-                            break;
-                        case 'onlynum':
-                            $result = $field->isNumerical();
-                            break;
-                        case 'jsName':
-                            $result = $field->getJavascriptName();
-                            break;
-                        case 'code':
-                        case 'varName':
-                            $result = $field->getCode();
-                            break;
-                        case 'shown':
-                            $result = $field->getLabel($field->getName());
-                            break;
-                        case null:
-                            $result = $response->{$field->getName()};
-                            break;
-                        case 'NAOK':
-                            $result = $field->getName();
-                            break;
-                        default:
-                            throw new \Exception('Unknown attribute: ' . $attribute);
-                            vd($name);
-                            vdd($attribute);
-                    }
-
-                    return $result;
-                };
-            }
-
-            if (isset($session)) {
-                $questionGetter = function ($code) use ($session) {
-                    return $session->getQuestionByCode($code);
-                };
-            } else {
-                $questionGetter = function ($code) {
-                    // Get groups in order.
-                    foreach ($this->survey->questions as $question) {
-                        if ($code == $question->title) {
-                            $result = $question;
-                            break 1;
-                        }
-                    }
-                    if (!isset($result)) {
-                        throw new \Exception("Unknown code: $code");
-                    }
-
-                    return $result;
-                };
-            }
-
-            $this->_expressionManager = new ExpressionManager($callback, $questionGetter);
+        if (null !== $session = App()->surveySessionManager->current) {
+            return \LimeExpressionManager::getExpressionManagerForSession(App()->surveySessionManager->current);
+        } else {
+            return \LimeExpressionManager::getExpressionManagerForSurvey($this->survey);
         }
-        eP();
 
-        return $this->_expressionManager;
-    }
-
-    public function getMandatoryMessage()
-    {
-        return "<span class='errormandatory'>" . gT('This question is mandatory') . '</span>';
     }
 
     /**
@@ -1326,7 +1232,7 @@ class Question extends ActiveRecord implements \ls\interfaces\iRenderable
      * Will create span replacements for EM expressions.
      * @param string $text
      */
-    protected function createReplacements(\ls\interfaces\iResponse $response, $text)
+    protected function createReplacements(\ls\interfaces\ResponseInterface $response, $text)
     {
         $em = $this->getExpressionManager($response);
         $parts = $em->asSplitStringOnExpressions($text);
@@ -1362,7 +1268,7 @@ class Question extends ActiveRecord implements \ls\interfaces\iRenderable
      * @param \ls\components\SurveySession $session
      * @return \ls\components\RenderedQuestion
      */
-    public function render(\ls\interfaces\iResponse $response, \ls\components\SurveySession $session)
+    public function render(\ls\interfaces\ResponseInterface $response, \ls\components\SurveySession $session)
     {
         bP();
         $result = new \ls\components\RenderedQuestion($this);
@@ -1370,7 +1276,7 @@ class Question extends ActiveRecord implements \ls\interfaces\iRenderable
         $em = $this->getExpressionManager($response);
 
 
-        $result->setQuestionText($this->createReplacements($response, $this->question));
+        $result->setQuestionText($this->getExpressionManager($response)->createDynamicReplacements($this->question));
 
         foreach ($this->getValidationExpressions() as $expression => $message) {
             $result->addValidation($em->getJavascript($expression), $message);

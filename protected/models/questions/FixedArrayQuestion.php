@@ -1,6 +1,6 @@
 <?php
 namespace ls\models\questions;
-use ls\interfaces\iResponse;
+use ls\interfaces\ResponseInterface;
 use ls\interfaces\iSubQuestion;
 
 /**
@@ -32,7 +32,7 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
      * @param \ls\components\SurveySession $session
      * @return \ls\components\RenderedQuestion
      */
-    public function render(iResponse$response, \ls\components\SurveySession $session)
+    public function render(ResponseInterface$response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
         $classes = [
@@ -98,7 +98,7 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
         return $result;
     }
 
-    protected function renderSubQuestion(iSubQuestion $subQuestion, iResponse $response, $relevance)
+    protected function renderSubQuestion(iSubQuestion $subQuestion, ResponseInterface $response, $relevance)
     {
         bP();
 

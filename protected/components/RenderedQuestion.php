@@ -153,15 +153,16 @@ class RenderedQuestion implements ArrayAccess
     /**
      * Gets the replacements for rendering this question.
      * @return array
+     * @param SurveySession $session
      * @throws CHttpException
      * @throws Exception
      */
-    protected function getReplacements()
+    protected function getReplacements(SurveySession $session)
     {
         bP();
         $survey = $this->_question->survey;
 
-        $replacements = $this->_question->group->getReplacements();
+        $replacements = $this->_question->group->getReplacements(\LimeExpressionManager::getExpressionManagerForSession($session));
         // Core value : not replaced
         $replacements['QID'] = $this->_question->primaryKey;
         $replacements['GID'] = $this->_question->gid;
@@ -272,7 +273,7 @@ class RenderedQuestion implements ArrayAccess
      */
     public function render(SurveySession $session)
     {
-        return \ls\helpers\Replacements::templatereplace($this->_template, $this->getReplacements(), [],
+        return \ls\helpers\Replacements::templatereplace($this->_template, $this->getReplacements($session), [],
             $this->_question->qid, $session);
     }
 

@@ -665,7 +665,7 @@ class LimeExpressionManager
         }
     }
 
-    private function processData(\ls\interfaces\iResponse $response, \Psr\Http\Message\ServerRequestInterface $request)
+    private function processData(\ls\interfaces\ResponseInterface $response, \Psr\Http\Message\ServerRequestInterface $request)
     {
 
         foreach ($request->getParsedBody() as $key => $value) {
@@ -986,27 +986,16 @@ class LimeExpressionManager
     }
 
 
-    /**
-     * Returns an array of string parts, splitting out expressions
-     * @param type $src
-     * @return type
-     */
-    static function SplitStringOnExpressions($src)
-    {
-        $LEM =& LimeExpressionManager::singleton();
-
-        return $LEM->em->asSplitStringOnExpressions($src);
-    }
-
     public static function getScript(Survey $survey) {
         $cache = App()->cache;
         $key = __CLASS__ . 'EM_script' . $survey->primaryKey;
         if (false === $result = $cache->get($key)) {
+            $em = self::getExpressionManagerForSurvey($survey);
             $fields = [];
             foreach($survey->questions as $question) {
                 foreach($question->getFields() as $field) {
                     if (!$field instanceof QuestionResponseField) {
-                        throw new \Exception("getFields() must return an array of ls\components\QuestionResponseField");
+                        throw new \Exception("getFields() must return an array of QuestionResponseField");
                     }
                     $fields[$field->code] = $field;
                     if (YII_DEBUG) {
@@ -1449,6 +1438,109 @@ class LimeExpressionManager
 
     }
 
+    public static function getExpressionManagerForSession(SurveySession $session = null)
+    {
+        static $managers = [];
+
+        $key = isset($session) ? $session->responseId : 'blank';
+        if (!isset($managers[$key])) {
+            if (isset($session)) {
+                $questionGetter = function ($code) use ($session) {
+                    return $session->getQuestionByCode($code);
+                };
+
+                $callback = function ($name, $attribute) use ($session) {
+
+                    $parts = explode('.', $name);
+                    if (count($parts) > 1) {
+                        $attribute = $parts[1];
+                        $name = $parts[0];
+                    }
+                    // Simple inefficient solution, not sure where this map should be implemented.
+                    // NOTE: the solution is not a precomputed array in some singleton class!!!
+                    // NOTE2: It is also not stuffing everything into $_SESSION.
+                    $found = false;
+                    foreach ($session->survey->questions as $question) {
+                        /** @var ResponseField $field */
+                        foreach ($question->getFields() as $field) {
+                            if ($field->getCode() === $name) {
+                                $found = true;
+                                break 2;
+                            }
+                        }
+                    }
+                    if (!$found) {
+                        throw new \InvalidArgumentException("Unknown variable: $name");
+                    }
+
+                    switch ($attribute) {
+                        case 'relevanceStatus':
+                            $result = $field->question->isRelevant($session->response);
+                            break;
+                        case 'onlynum':
+                            $result = $field->isNumerical();
+                            break;
+                        case 'jsName':
+                            $result = $field->getJavascriptName();
+                            break;
+                        case 'code':
+                        case 'varName':
+                            $result = $field->getCode();
+                            break;
+                        case 'shown':
+                            $result = $field->getLabel($field->getName());
+                            break;
+                        case null:
+                            $result = $session->response->{$field->getName()};
+                            break;
+                        case 'NAOK':
+                            $result = $field->getName();
+                            break;
+                        default:
+                            throw new \Exception('Unknown attribute: ' . $attribute);
+                            vd($name);
+                            vdd($attribute);
+                    }
+
+                    return $result;
+                };
+            }
+
+
+
+            $managers[$key] = new ExpressionManager(isset($session) ? $callback : null, isset($session) ? $questionGetter : null);
+        }
+        return $managers[$key];
+    }
+
+    public static function getExpressionManagerForSurvey(Survey $survey)
+    {
+        static $managers = [];
+
+        $key = isset($session) ? $session->responseId : 'blank';
+        if (!isset($managers[$key])) {
+            $questionGetter = function ($code) use ($survey) {
+                $i = 0;
+                foreach ($survey->groups as $group) {
+                    foreach ($group->questions as $question) {
+                        if ($code == $question->title) {
+                            $result = $question;
+                            break 2;
+                        }
+                        $i++;
+                    }
+                }
+                if (!isset($result)) {
+                    throw new \Exception("Unknown code: $code");
+                }
+
+                return $result;
+            };
+
+            $managers[$key] = new ExpressionManager(null, $questionGetter);
+        }
+        return $managers[$key];
+    }
 
 
 

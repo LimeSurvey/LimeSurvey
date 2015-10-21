@@ -72,11 +72,15 @@ class ExpressionManager {
      */
     protected $questionGetter;
 
-    protected function getQuestionByCode($code) {
-        $getter = $this->questionGetter;
-        return $getter($code);
+    protected function getQuestionByCode($code)
+    {
+        if (isset($this->questionGetter)) {
+            $getter = $this->questionGetter;
+
+            return $getter($code);
+        }
     }
-    public function __construct(callable $variableGetter, callable $getQuestionByCode)
+    public function __construct(callable $variableGetter = null, callable $getQuestionByCode = null)
     {
         $this->variableGetter = $variableGetter;
         $this->questionGetter = $getQuestionByCode;
@@ -672,7 +676,7 @@ class ExpressionManager {
                 if ($this->RDP_isValidVariable($token1[0]))
                 {
                     $this->varsUsed[] = $token1[0];  // add this variable to list of those used in this equation
-                    if ($this->RDP_isWritableVariable($token1[0]))
+                    if ($this->GetVarAttribute($token1[0], 'readWrite', 'N') == 'Y')
                     {
                         $evalStatus = $this->RDP_EvaluateLogicalOrExpression();
                         if ($evalStatus)
@@ -1087,82 +1091,7 @@ class ExpressionManager {
         }
     }
 
-    /**
-     * Returns array of all JavaScript-equivalent variable names used when parsing a string via sProcessStringContainingExpressions
-     * @return <type>
-     */
-    public function GetAllJsVarsUsed()
-    {
-        if (is_null($this->allVarsUsed)){
-            return [];
-        }
-        $names = array_unique($this->allVarsUsed);
-        if (is_null($names)) {
-            return [];
-        }
-        $jsNames = [];
-        foreach ($names as $name)
-        {
-            if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/",$name))
-            {
-                continue;
-            }
-            $val = $this->GetVarAttribute($name,'jsName','');
-            if ($val != '') {
-                $jsNames[] = $val;
-            }
-        }
-        return array_unique($jsNames);
-    }
 
-
-
-    /**
-     * Return the list of all of the JavaScript variables used by the most recent expression
-     * @return <type>
-     */
-    public function GetJsVarsUsed()
-    {
-        if (is_null($this->varsUsed)){
-            return [];
-        }
-        $names = array_unique($this->varsUsed);
-        if (is_null($names)) {
-            return [];
-        }
-        $jsNames = [];
-        foreach ($names as $name)
-        {
-            if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/",$name))
-            {
-                continue;
-            }
-            $val = $this->GetVarAttribute($name,'jsName','');
-            if ($val != '') {
-                $jsNames[] = $val;
-            }
-        }
-        return array_unique($jsNames);
-    }
-
-    /**
-     * Return the JavaScript variable name for a named variable
-     * @param <type> $name
-     * @return <type>
-     */
-    public function GetJsVarFor($name)
-    {
-        return $this->GetVarAttribute($name,'jsName','');
-    }
-
-    /**
-     * Returns array of all variables used when parsing a string via sProcessStringContainingExpressions
-     * @return <type>
-     */
-    public function GetAllVarsUsed()
-    {
-        return array_unique($this->allVarsUsed);
-    }
 
     /**
      * Return the result of evaluating the equation - NULL if  error
@@ -1224,15 +1153,19 @@ class ExpressionManager {
                     }
                     elseif ($i+1<$numTokens && $tokens[$i+1][2] == 'ASSIGN')
                     {
-                        $jsName = $this->GetVarAttribute($token[0],'jsName','');
-                        $stringParts[] = "document.getElementById('" . $jsName . "').value";
-                        if ($tokens[$i+1][0] == '+=')
-                        {
-                            // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
-                            $varName = $this->GetVarAttribute($token[0],'varName',$token[0]);
-                            $stringParts[] = " = EM.val('" . $varName . "') + ";
-                            ++$i;
-                        }
+                        /**
+                         * @todo Implement this properly, remove dependency on getVarAttribute.
+                         */
+                        throw new \Exception("Not yet supported");
+//                        $jsName = $this->GetVarAttribute($token[0],'jsName','');
+//                        $stringParts[] = "document.getElementById('" . $jsName . "').value";
+//                        if ($tokens[$i+1][0] == '+=')
+//                        {
+//                            // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
+//                            $varName = $this->GetVarAttribute($token[0],'varName',$token[0]);
+//                            $stringParts[] = " = EM.val('" . $varName . "') + ";
+//                            ++$i;
+//                        }
                     } else {
                         $varsUsed[] = $token[0];
                         $stringParts[] = "EM.val('{$token[0]}')";
@@ -1295,242 +1228,6 @@ class ExpressionManager {
         $this->prettyPrintSource = $expr;
     }
 
-    /**
-     * Color-codes Expressions (using HTML <span> tags), showing variable types and values.
-     * @return <type>
-     */
-    public function GetPrettyPrintString()
-    {
-        // color code the equation, showing not only errors, but also variable attributes
-        $errs = $this->RDP_errs;
-        $tokens = $this->RDP_tokens;
-        $errCount = count($errs);
-        $errIndex = 0;
-        $aClass= [];
-        if ($errCount > 0)
-        {
-            usort($errs,"cmpErrorTokens");
-        }
-        $stringParts= [];
-        $numTokens = count($tokens);
-        $globalErrs= [];
-        $bHaveError=false;
-        while ($errIndex < $errCount)
-        {
-            if ($errs[$errIndex++][1][1]==0)
-            {
-                // General message, associated with position 0
-                $globalErrs[] = $errs[$errIndex-1][0];
-                $bHaveError=true;
-            }
-            else
-            {
-                --$errIndex;
-                break;
-            }
-        }
-        for ($i=0;$i<$numTokens;++$i)
-        {
-            $token = $tokens[$i];
-            $messages= [];
-            $thisTokenHasError=false;
-            if ($i==0 && count($globalErrs) > 0)
-            {
-                $messages = array_merge($messages,$globalErrs);
-                $thisTokenHasError=true;
-            }
-            if ($errIndex < $errCount && $token[1] == $errs[$errIndex][1][1])
-            {
-                $messages[] = $errs[$errIndex][0];
-                $thisTokenHasError=true;
-            }
-            if ($thisTokenHasError)
-            {
-                $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-error'>";
-                $bHaveError=true;
-            }
-            switch ($token[2])
-            {
-                case 'DQ_STRING':
-                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-var-string'>\"";
-                    $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
-                    $stringParts[] = "\"</span>";
-                    break;
-                case 'SQ_STRING':
-                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-var-string'>'";
-                    $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
-                    $stringParts[] = "'</span>";
-                    break;
-                case 'SGQA':
-                case 'WORD':
-                    if ($i+1<$numTokens && $tokens[$i+1][2] == 'LP')
-                    {
-                        // then word is a function name
-                        if ($this->RDP_isValidFunction($token[0])) {
-                            $funcInfo = $this->RDP_ValidFunctions[$token[0]];
-                            $messages[] = $funcInfo[2];
-                            $messages[] = $funcInfo[3];
-                        }
-                        $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-function' >";
-                        $stringParts[] = $token[0];
-                        $stringParts[] = "</span>";
-                    }
-                    else
-                    {
-                        if (!$this->RDP_isValidVariable($token[0]))
-                        {
-                            $class = 'em-var-error';
-                            $displayName = $token[0];
-                        }
-                        else
-                        {
-                            $jsName = $this->GetVarAttribute($token[0],'jsName','');
-                            $code = $this->GetVarAttribute($token[0],'code','');
-                            $question = $this->GetVarAttribute($token[0], 'question', '');
-                            $qcode= $this->GetVarAttribute($token[0],'qcode','');
-                            $questionSeq = $this->GetVarAttribute($token[0],'qseq',-1);
-                            $groupSeq = $this->GetVarAttribute($token[0],'gseq',-1);
-                            $ansList = $this->GetVarAttribute($token[0],'ansList','');
-                            $gid = $this->GetVarAttribute($token[0],'gid',-1);
-                            $qid = $this->GetVarAttribute($token[0],'qid',-1);
-
-                            if ($jsName != '') {
-                                $descriptor = '[' . $jsName . ']';
-                            }
-                            else {
-                                $descriptor = '';
-                            }
-                            // Show variable name instead of SGQA code, if available
-                            if ($qcode != '') {
-                                if (preg_match('/^INSERTANS:/',$token[0])) {
-                                    $displayName = $qcode . '.shown';
-                                    $descriptor = '[' . $token[0] . ']';
-                                }
-                                else {
-                                    $args = explode('.',$token[0]);
-                                    if (count($args) == 2) {
-                                        $displayName = $qcode . '.' . $args[1];
-                                    }
-                                    else {
-                                        $displayName = $qcode;
-                                    }
-                                }
-                            }
-                            else {
-                                $displayName = $token[0];
-                            }
-                            if ($questionSeq != -1) {
-                                $descriptor .= '[G:' . $groupSeq . ']';
-                            }
-                            if ($groupSeq != -1) {
-                                $descriptor .= '[Q:' . $questionSeq . ']';
-                            }
-                            if (strlen($descriptor) > 0) {
-                                $descriptor .= ': ';
-                            }
-
-                            $messages[] = $descriptor . htmlspecialchars($question,ENT_QUOTES,'UTF-8',false);
-                            if ($ansList != '')
-                            {
-                                $messages[] = htmlspecialchars($ansList,ENT_QUOTES,'UTF-8',false);
-                            }
-                            if ($code != '') {
-                                if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
-                                    $shown = $this->GetVarAttribute($token[0], 'shown', '');
-                                    $messages[] = 'value=[' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false) . '] '
-                                            . htmlspecialchars($shown,ENT_QUOTES,'UTF-8',false);
-                                }
-                                else {
-                                    $messages[] = 'value=' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false);
-                                }
-                            }
-
-                            if ($this->groupSeq == -1 || $groupSeq == -1 || $questionSeq == -1 || $this->questionSeq == -1) {
-                                $class = 'em-var-static'; 
-                            }
-                            elseif ($groupSeq > $this->groupSeq) {
-                                $class = 'em-var-before em-var-diffgroup';
-                            }
-                            elseif ($groupSeq < $this->groupSeq) {
-                                $class = 'em-var-after ';
-                            }
-                            elseif ($questionSeq > $this->questionSeq) {
-                                $class = 'em-var-before em-var-inpage';
-                            }
-                            else {
-                                $class = 'em-var-after em-var-inpage';
-                            }
-                        }
-                        // prevent EM prcessing of messages within span
-                        $message = implode('; ',$messages);
-                        $message = str_replace(['{','}'], ['{ ', ' }'], $message);
-
-                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid>0)
-                        {
-                            $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid);
-                            $stringParts[] = "<a title='{$message}' class='em-var {$class}' href='{$editlink}' >";
-                        }
-                        else
-                        {
-                            $stringParts[] = "<span title='"  . $message . "' class='em-var {$class}' >";
-                        }
-                        if ($this->sgqaNaming)
-                        {
-                            $sgqa = substr($jsName,4);
-                            $nameParts = explode('.',$displayName);
-                            if (count($nameParts)==2)
-                            {
-                                $sgqa .= '.' . $nameParts[1];
-                            }
-                            $stringParts[] = $sgqa;
-                        }
-                        else
-                        {
-                            $stringParts[] = $displayName;
-                        }
-                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid>0)
-                        {
-                            $stringParts[] = "</a>";
-                        }
-                        else
-                        {
-                            $stringParts[] = "</span>";
-                        }
-                    }
-                    break;
-                case 'ASSIGN':
-                    $messages[] = 'Assigning a new value to a variable';
-                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-assign'>";
-                    $stringParts[] = $token[0];
-                    $stringParts[] =  "</span>";
-                    break;
-                case 'COMMA':
-                    $stringParts[] = $token[0] . ' ';
-                    break;
-                case 'LP':
-                case 'RP':
-                case 'NUMBER':
-                    $stringParts[] = $token[0];
-                    break;
-                default:
-                    $stringParts[] = ' ' . $token[0] . ' ';
-                    break;
-            }
-            if ($thisTokenHasError)
-            {
-                $stringParts[] = "</span>";
-                ++$errIndex;
-            }
-        }
-        if($this->sid && App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $this->sid]))
-        {
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "expressions.css" );
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "expression.js");
-        }
-        $sClass='em-expression';
-        $sClass.=($bHaveError)?" em-haveerror":"";
-        return "<span class='$sClass'>" . implode('', $stringParts) . "</span>";
-    }
 
     /**
      * Get information about the variable, including JavaScript name, read-write status, and whether set on current page.
@@ -1539,8 +1236,10 @@ class ExpressionManager {
      */
     private function GetVarAttribute($name, $attr = null, $default = null)
     {
-        $getter = $this->variableGetter;
-        return $getter($name, $attr, $default, $this->groupSeq, $this->questionSeq);
+        if (isset($this->variableGetter)) {
+            $getter = $this->variableGetter;
+            return $getter($name, $attr, $default, $this->groupSeq, $this->questionSeq);
+        }
 
     }
 
@@ -1650,15 +1349,6 @@ class ExpressionManager {
         return $result;
     }
 
-    /**
-     * Return true if the variable name is writable
-     * @param <type> $name
-     * @return <type>
-     */
-    private function RDP_isWritableVariable($name)
-    {
-        return ($this->GetVarAttribute($name, 'readWrite', 'N') == 'Y');
-    }
 
     /**
      * Process an expression and return its boolean value
@@ -2353,6 +2043,39 @@ class ExpressionManager {
         }
         $output .= "</table>\n";
         return $output;
+    }
+
+
+    /**
+     * Create dynamic replacements.
+     * @param string $text
+     * @return string
+     */
+    public function createDynamicReplacements($text)
+    {
+        $parts = $this->asSplitStringOnExpressions($text);
+        $result = '';
+
+        foreach ($parts as $part) {
+            switch ($part[2]) {
+                case 'STRING':
+                    $result .= $part[0];
+                    break;
+                case 'EXPRESSION':
+                    if ($this->RDP_Evaluate(substr($part[0], 1, -1))) {
+                        $value = $this->GetResult();
+                    } else {
+
+                        $value = '';
+                    }
+                    $result .= TbHtml::tag('span', [
+                        'data-expression' => $this->getJavascript(substr($part[0], 1, -1))
+                    ], $value);
+            }
+        }
+
+        return $result;
+
     }
 }
 

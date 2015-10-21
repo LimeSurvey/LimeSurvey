@@ -22,7 +22,7 @@ class NumericalQuestion extends \ls\models\Question {
      * @param \ls\components\SurveySession $session
      * @return \ls\components\RenderedQuestion
      */
-    public function render(\ls\interfaces\iResponse $response, \ls\components\SurveySession $session)
+    public function render(\ls\interfaces\ResponseInterface $response, \ls\components\SurveySession $session)
     {
         $result = parent::render($response, $session);
         $extraclass ="";

@@ -2,7 +2,7 @@
 namespace ls\models\questions;
 
 
-use ls\interfaces\iResponse;
+use ls\interfaces\ResponseInterface;
 
 class HugeTextQuestion extends LongTextQuestion
 {
@@ -14,7 +14,7 @@ class HugeTextQuestion extends LongTextQuestion
      * @param \ls\components\SurveySession $session
      * @return string
      */
-    public function render(iResponse $response, \ls\components\SurveySession $session)
+    public function render(ResponseInterface $response, \ls\components\SurveySession $session)
     {
         if (!isset($this->text_input_width)) {
             $this->text_input_width = 70;
