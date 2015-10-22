@@ -183,7 +183,7 @@ class InstallerConfigForm extends \CFormModel
     public function createDatabase() 
     {
 
-        $result = $conn->schema->createDatabase($this->dbname);
+        $result = $this->getDbConnection()->schema->createDatabase($this->dbname);
         if (!$result) {
             $this->addError('dbname', gT('Database does not exist and could not be created.'));
         }

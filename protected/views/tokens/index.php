@@ -14,11 +14,23 @@ echo TbHtml::buttonGroup([
         'url' => ['tokens/import', 'surveyId' => $survey->sid]
     ],
     [
+        'icon' => 'export',
+        'title' => gT("Export to CSV"),
+        'url' => ['tokens/export', 'surveyId' => $survey->sid]
+    ],
+    [
         'icon' => 'cog',
         'title' => gT("Generate tokens"),
         'data-method' => 'post',
         'data-confirm' => gT("Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?"),
         'url' => ['tokens/generate', 'surveyId' => $survey->sid]
+    ],
+    [
+        'icon' => 'trash',
+        'title' => gT("Remove all tokens"),
+        'url' => ['tokens/clear', 'surveyId' => $survey->sid],
+        'data-method' => 'delete',
+        'data-confirm' => gT("This will remove all tokens from the table, are you sure?")
     ],
 ]);
 $columns = isset($dataProvider->data[0]) ? $dataProvider->data[0]->attributeNames() : [];

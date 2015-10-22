@@ -23,7 +23,8 @@ class TokensController extends Controller
     }
 
 
-    public function actions() {
+    public function actions()
+    {
         return [
             'captcha' => [
                 'class' => \CCaptchaAction::class,
