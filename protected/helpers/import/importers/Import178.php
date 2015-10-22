@@ -112,6 +112,10 @@ class Import178 extends BaseElementXmlImport{
         $oldKey = $survey->primaryKey;
         $survey->primaryKey = null;
         $questionMap = [];
+        // Workaround for unknown templates.
+        if (!$survey->validate(['template'])) {
+            $survey->template = null;
+        }
         if (!$survey->save()) {
             throw new \Exception("Could not save survey." . print_r($survey->errors, true));
         }

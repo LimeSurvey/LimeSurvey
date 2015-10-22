@@ -245,6 +245,7 @@ class Survey extends ActiveRecord
             ['format', \CDefaultValueValidator::class, 'value' => self::FORMAT_ALL_IN_ONE],
             ['admin', \CDefaultValueValidator::class, 'value' => App()->user->getName()],
             ['template', \CDefaultValueValidator::class, 'value' => 'default'],
+
             ['datecreated', 'default', 'value' => date("Y-m-d")],
             ['startdate', 'default', 'value' => null],
             ['expires', 'default', 'value' => null],

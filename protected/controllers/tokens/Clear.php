@@ -24,7 +24,7 @@ class Clear extends \Action
         if (App()->request->getIsDeleteRequest()) {
             /** @todo Implement this. */
             if (Token::model($surveyId)->deleteAll()) {
-                App()->user->setFlash('info', gT("Deleting all tokens not yet implemented."));
+                App()->user->setFlash('success', gT("Tokens removed"));
                 $this->redirect(['tokens/index', 'surveyId' => $surveyId]);
             }
         } else {
