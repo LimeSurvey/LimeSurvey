@@ -1,9 +1,10 @@
 <?php
 namespace ls\models\installer;
+use \Yii;
 /**
  * Model that checks all requirements.
  */
-class PreCheck extends CFormModel 
+class PreCheck extends \CFormModel
 {
 
 
@@ -20,7 +21,7 @@ class PreCheck extends CFormModel
     }
     
     public function getPdoSupport() {
-        return implode(",",PDO::getAvailableDrivers());
+        return implode(",",\PDO::getAvailableDrivers());
     }
     
     public function getMultiByteSupport() {

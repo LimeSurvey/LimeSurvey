@@ -1,7 +1,10 @@
 <?php
 namespace ls\models\installer;
 
-class InstallerConfigForm extends CFormModel
+use DbConnection;
+use Yii;
+
+class InstallerConfigForm extends \CFormModel
 {
 	// Database
 	public $dbtype;
