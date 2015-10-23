@@ -23,7 +23,7 @@
     $changelog = "";
     if($changelogs->changingBranch)
     {
-        $changelog.= gT("Note: Because you are updating from a stable to an unstable version or vice versa a change log might not be available or incomplete.\n\n");
+        $changelog.= gT("Note: Because you are updating from a stable to an unstable version or vice versa a change log might not be available or incomplete.")."\n\n";
     }
 
    foreach  ($changelogs->changelogentries as $changelogentry)
