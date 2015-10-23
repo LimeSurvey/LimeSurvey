@@ -1631,7 +1631,7 @@ class tokens extends Survey_Common_Action
             );
             $oSurvey=Survey::model()->findByPk($iSurveyId);
 
-            $aOptionsStatus=array('0'=>gt('All tokens'),'1'=>gT('Completed'),'2'=>gT('Not completed'));
+            $aOptionsStatus=array('0'=>gT('All tokens'),'1'=>gT('Completed'),'2'=>gT('Not completed'));
             if($oSurvey->anonymized=='N' && $oSurvey->active=='Y')
             {
                 $aOptionsStatus['3']=gT('Not started');
@@ -1639,7 +1639,7 @@ class tokens extends Survey_Common_Action
             }
 
             $oTokenLanguages=Token::model($iSurveyId)->findAll(array('select' => 'language', 'group' => 'language'));
-            $aFilterByLanguage=array(''=>gt('All'));
+            $aFilterByLanguage=array(''=>gT('All'));
             foreach ($oTokenLanguages as $oTokenLanguage)
             {
                 $sLanguageCode=sanitize_languagecode($oTokenLanguage->language);
@@ -1655,7 +1655,7 @@ class tokens extends Survey_Common_Action
                     'type'=>'select',
                     'label'=>gT('Invitation status'),
                     'options'=>array(
-                        '0'=>gt('All'),
+                        '0'=>gT('All'),
                         '1'=>gT('Invited'),
                         '2'=>gT('Not invited'),
                     ),
@@ -1664,7 +1664,7 @@ class tokens extends Survey_Common_Action
                     'type'=>'select',
                     'label'=>gT('Reminder status'),
                     'options'=>array(
-                        '0'=>gt('All'),
+                        '0'=>gT('All'),
                         '1'=>gT('Reminder(s) sent'),
                         '2'=>gT('No reminder(s) sent'),
                     ),
@@ -2102,7 +2102,7 @@ class tokens extends Survey_Common_Action
 
                         if (count($aFirstLine) != count($line))
                         {
-                            $aInvalidFormatList[] = sprintf(gt("Line %s"),$iRecordCount);
+                            $aInvalidFormatList[] = sprintf(gT("Line %s"),$iRecordCount);
                             $iRecordCount++;
                             continue;
                         }
@@ -2139,7 +2139,7 @@ class tokens extends Survey_Common_Action
                             if ($dupresult > 0)
                             {
                                 $bDuplicateFound = true;
-                                $aDuplicateList[] = sprintf(gt("Line %s : %s %s (%s)"),$iRecordCount,$aWriteArray['firstname'],$aWriteArray['lastname'],$aWriteArray['email']);
+                                $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s)"),$iRecordCount,$aWriteArray['firstname'],$aWriteArray['lastname'],$aWriteArray['email']);
                             }
                         }
 
@@ -2147,7 +2147,7 @@ class tokens extends Survey_Common_Action
                         if (!$bDuplicateFound && $bFilterBlankEmail && $aWriteArray['email'] == '')
                         {
                             $bInvalidEmail = true;
-                            $aInvalidEmailList[] = sprintf(gt("Line %s : %s %s"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']));
+                            $aInvalidEmailList[] = sprintf(gT("Line %s : %s %s"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']));
                         }
                         if (!$bDuplicateFound && $aWriteArray['email'] != '')
                         {
@@ -2165,7 +2165,7 @@ class tokens extends Survey_Common_Action
                                     else
                                     {
                                         $bInvalidEmail = true;
-                                        $aInvalidEmailList[] = sprintf(gt("Line %s : %s %s (%s)"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']),CHtml::encode($aWriteArray['email']));
+                                        $aInvalidEmailList[] = sprintf(gT("Line %s : %s %s (%s)"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']),CHtml::encode($aWriteArray['email']));
                                     }
                                 }
                             }
@@ -2178,7 +2178,7 @@ class tokens extends Survey_Common_Action
                             if(Token::model($iSurveyId)->count("token=:token",array(":token"=>$aWriteArray['token'])))
                             {
                                 $bDuplicateFound=true;
-                                $aDuplicateList[] = sprintf(gt("Line %s : %s %s (%s) - token : %s"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']),CHtml::encode($aWriteArray['email']),CHtml::encode($aWriteArray['token']));
+                                $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s) - token : %s"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']),CHtml::encode($aWriteArray['email']),CHtml::encode($aWriteArray['token']));
                             }
                         }
 
@@ -2206,7 +2206,7 @@ class tokens extends Survey_Common_Action
                             if (!$oToken->save())
                             {
                                 tracevar($oToken->getErrors());
-                                $aModelErrorList[] =  sprintf(gt("Line %s : %s"),$iRecordCount,Chtml::errorSummary($oToken));
+                                $aModelErrorList[] =  sprintf(gT("Line %s : %s"),$iRecordCount,Chtml::errorSummary($oToken));
                             }
                             else
                             {

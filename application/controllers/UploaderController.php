@@ -295,8 +295,8 @@ class UploaderController extends SurveyController {
                      errorMaxReached: '" . gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
                      errorTooMuch: '" . gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
                      errorNeedMoreConfirm: '" . gT("You need to upload %s more files for this question.\nAre you sure you want to exit?",'js') . "',
-                     deleteFile : '".gt('Delete','js') . "',
-                     editFile : '".gt('Edit','js') . "',
+                     deleteFile : '".gT('Delete','js') . "',
+                     editFile : '".gT('Edit','js') . "',
                     };
         ";
         $aSurveyInfo=getSurveyInfo($surveyid, $sLanguage);
