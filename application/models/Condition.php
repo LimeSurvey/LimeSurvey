@@ -109,9 +109,9 @@
                 $cfnregs='';
                 if (preg_match('/(\S*?)'.$iSurveyID."X".$iOldGroupID."X".$iQuestionID."(.*)/", $oRow->cfieldname, $cfnregs) > 0)
                 {
-                    $newcfn=$cfnregs[1].$iSurveyID."X".$iNewGroupID."X".$iQuestionID.$cfnregs[2];
-                    $update = Yii::app()->db->createCommand()
-                        ->update($this->tableName(), array('cfieldname' => $newcfn),
+                    $sNewCfn=$cfnregs[1].$iSurveyID."X".$iNewGroupID."X".$iQuestionID.$cfnregs[2];
+                    Yii::app()->db->createCommand()
+                        ->update($this->tableName(), array('cfieldname' => $sNewCfn),
                         'cid=:cid',array(':cid'=>$oRow->cid));
                     LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID,$oRow->qid);
                 }

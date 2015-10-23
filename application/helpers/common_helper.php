@@ -1310,14 +1310,14 @@ function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for gro
     QuestionGroup::model()->updateGroupOrder($surveyid,$baselang);
 }
 
-function fixMovedQuestionConditions($qid,$oldgid,$newgid, $surveyid=NULL) //Function rewrites the cfieldname for a question after group change
+function fixMovedQuestionConditions($qid,$oldgid,$newgid, $iSurveyID=NULL) //Function rewrites the cfieldname for a question after group change
 {
-    if(!isset($surveyid))
-        $surveyid = Yii::app()->getConfig('sid');
+    if(!isset($iSurveyID))
+        $iSurveyID = Yii::app()->getConfig('sid');
     $qid=sanitize_int($qid);
     $oldgid=sanitize_int($oldgid);
     $newgid=sanitize_int($newgid);
-    Condition::model()->updateCFieldName($surveyid,$qid,$oldgid,$newgid);
+    Condition::model()->updateCFieldName($iSurveyID,$qid,$oldgid,$newgid);
     // TMSW Condition->Relevance:  Call LEM->ConvertConditionsToRelevance() when done
 }
 

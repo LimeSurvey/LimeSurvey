@@ -1025,18 +1025,19 @@ class SurveyAdmin extends Survey_Common_Action
             {
                 $qid = (int)substr($ID, 1);
                 $gid = (int)substr($parent, 1);
-                if (!isset($questionorder[$gid]))
-                    $questionorder[$gid] = 0;
-				$sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-				$question = Question::model()->findByPk(array("qid"=>$qid,'language'=>$sBaseLanguage));
-                $oldgid = $question['gid'];
-                if($oldgid != $gid) {
-                        fixMovedQuestionConditions($qid,$oldgid,$gid,$iSurveyID);
-                }
-                Question::model()->updateAll(array('question_order' => $questionorder[$gid], 'gid' => $gid), 'qid=:qid', array(':qid' => $qid));
-                Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
+                if (!isset($aQuestionOrder[$gid]))
+                    $aQuestionOrder[$gid] = 0;
 
-                $questionorder[$gid]++;
+				$sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+				$oQuestion = Question::model()->findByPk(array("qid"=>$qid,'language'=>$sBaseLanguage));
+                $oldGid = $oQuestion['gid'];
+
+                if($oldGid != $gid) {
+                        fixMovedQuestionConditions($qid,$oldGid,$gid,$iSurveyID);
+                }
+                Question::model()->updateAll(array('question_order' => $aQuestionOrder[$gid], 'gid' => $gid), 'qid=:qid', array(':qid' => $qid));
+                Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
+                $aQuestionOrder[$gid]++;
             }
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
