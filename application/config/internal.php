@@ -37,6 +37,7 @@ $internalConfig = array(
             'combineCss'=>false,
             'compressCss'=>false,
             'combineJs'=>$userConfig['config']['debug']>0?false:true,
+            'basePath'=> dirname(dirname(dirname(dirname(__FILE__)))),
             'compressJs'=>false,
             'packages' => require('third_party.php'),
         ),
