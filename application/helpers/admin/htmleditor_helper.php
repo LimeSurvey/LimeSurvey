@@ -109,7 +109,6 @@
 
     function PrepareEditorScript($load=false, $controller = null)
     {
-        App()->getClientScript()->registerCoreScript('ckeditor');
         if ($controller == null)
         {
             $controller = Yii::app()->getController();
