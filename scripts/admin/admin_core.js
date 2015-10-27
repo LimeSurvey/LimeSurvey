@@ -664,21 +664,6 @@ if ('ab'.substr(-1) != 'b') {
 	}(String.prototype.substr);
 }
 
-/**
-* Yii CSRF protection divs breaks this script so this function moves the
-* hidden CSRF field out of the div and remove it if needed
-* 140207 : Why this function is needed ? Where is the script broken ?
-*/
-function removeCSRFDivs()
-{
-    $('input[name=YII_CSRF_TOKEN]').each(function(){
-       var parent = $(this).parent();
-       var grandfather = $(parent).parent();
-       $(grandfather).append(this);
-       $(parent).remove();
-    });
-}
-
 function linksInDialog()
 {
     $(function () {
