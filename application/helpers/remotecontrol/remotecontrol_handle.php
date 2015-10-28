@@ -2119,7 +2119,7 @@ class remotecontrol_handle
     * @param array $aTokenIds Array of the token ID of participants
     * @return array Result of the action
     */
-    public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds = false)
+    public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds=null)
     {
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey))
@@ -2181,7 +2181,7 @@ class remotecontrol_handle
     * @param array $aTokenIds Array of the token ID of participants
     * @return array Result of the action
     */
-    public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween=null, $iMaxReminders=null, $aTokenIds = false )
+    public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween=null, $iMaxReminders=null, $aTokenIds=null )
     {
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey))
