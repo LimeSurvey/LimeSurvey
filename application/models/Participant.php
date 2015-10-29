@@ -1320,7 +1320,7 @@ class Participant extends LSActiveRecord
                 else
                 {
                     /* Create entry in participants table */
-                    $black = !empty($tobeinserted['blacklisted']) ? $tobeinserted['blacklised'] : 'N';
+                    $black = !empty($tobeinserted['blacklisted']) ? $tobeinserted['blacklisted'] : 'N';
                     $pid=!empty($tobeinserted['participant_id']) ? $tobeinserted['participant_id'] : $this->gen_uuid();
                     $writearray = array('participant_id' => $pid,
                                         'firstname' => $tobeinserted['firstname'],
