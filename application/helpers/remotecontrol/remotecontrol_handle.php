@@ -2559,4 +2559,166 @@ class remotecontrol_handle
             return true;
         }
     }
+
+
+    /**
+     * This function import a participant to the LimeSurvey cpd. It stores attributes as well, if they are registered before in with ui
+     *
+     * Call the function with $response = $myJSONRPCClient->cpd_importParticipants( $sessionKey, $sParticipants, $sAction );
+     *
+     * @param int $sSessionKey
+     * @param JSon string $sParticipants
+     * [{"email":"dummy-02222@limesurvey.com","firstname":"max","lastname":"mustermann"}]
+     * @return array with status
+     */
+    public function cpd_importParticipants($sSessionKey, $sParticipants, $sAction = 'import')
+    {
+
+        if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+
+        $aResponse = array();
+        $aAttributeData = array();
+        $aAttributes = array();
+        $aDefaultFields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
+        $isValidEmail = true;
+        $doImport = true;
+        $mandatory = 0;
+        $sImportCount = 0;
+        $sAttribCount = 0;
+        $aResponse['ImportCount'] = 0;
+
+        $aNewParticipants = json_decode($sParticipants);
+
+        // get all attributes for mapping
+        $findCriteria = new CDbCriteria();
+        $findCriteria->offset = -1;
+        $findCriteria->limit = -1;
+        $aAttributeRecords = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($findCriteria);
+
+
+        foreach ($aNewParticipants as $key => $oParticipantData) {
+
+            $aData = array(
+                'firstname' => $oParticipantData->firstname,
+                'lastname' => $oParticipantData->lastname,
+                'email' => $oParticipantData->email,
+                'owner_uid' => Yii::app()->session['loginID'], // ToDo is this working?
+            );
+
+//Check for duplicate participants
+            $recordExists = Participant::model()->exists(
+                'firstname = :firstname AND lastname = :lastname AND email = :email AND owner_uid = :owner_uid',
+                [
+                    ':firstname' => $aData['firstname'],
+                    ':lastname' => $aData['lastname'],
+                    ':email' => $aData['email'],
+                    ':owner_uid' => $aData['owner_uid'],
+                ]);
+
+// check if email is valid
+            $this->_checkEmailFormat($aData['email']);
+
+            if ($isValidEmail == true) {
+
+                //First, process the known fields
+                if (!isset($aData['participant_id']) || $aData['participant_id'] == "") {
+                    $uuid = $this->_gen_uuid();
+                    $aData['participant_id'] = $uuid;
+                }
+                if (isset($aData['emailstatus']) && trim($aData['emailstatus'] == '')) {
+                    unset($aData['emailstatus']);
+                }
+                if (!isset($aData['language']) || $aData['language'] == "") {
+                    $aData['language'] = "en";
+                }
+                if (!isset($aData['blacklisted']) || $aData['blacklisted'] == "") {
+                    $aData['blacklisted'] = "N";
+                }
+                $aData['owner_uid'] = Yii::app()->session['loginID'];
+                if (isset($aData['validfrom']) && trim($aData['validfrom'] == '')) {
+                    unset($aData['validfrom']);
+                }
+                if (isset($aData['validuntil']) && trim($aData['validuntil'] == '')) {
+                    unset($aData['validuntil']);
+                }
+
+                if ((!empty($filterblankemails) && $aData['email'] == "")) {
+                    //The mandatory fields of email, firstname and lastname
+                    //must be filled, but one or more are empty
+                    $mandatory++;
+                    $doImport = false;
+                }
+
+                //If any of the mandatory fields are blank, then don't import this user
+                if (empty($recordExists)) {
+                    // save participant to database
+                    Participant::model()->insertParticipantCSV($aData);
+
+                    // Prepare atrribute values to store in db . Iterate through our values
+                    foreach ($oParticipantData as $sLabel => $sAttributeValue) {
+                        // skip default fields
+                        if (!in_array($sLabel, $aDefaultFields)) {
+                            foreach ($aAttributeRecords as $key => $value) {
+                                $aAttributes = $value->getAttributes();
+                                if ($aAttributes['defaultname'] == $sLabel) {
+                                    $aAttributeData['participant_id'] = $aData['participant_id'];
+                                    $aAttributeData['attribute_id'] = $aAttributes['attribute_id'];
+                                    $aAttributeData['value'] = $sAttributeValue;
+                                    $sAttribCount++;
+                                    // save attributes values for participant
+                                    ParticipantAttributeName::model()->saveParticipantAttributeValue($aAttributeData);
+                                }
+                            }
+                        }
+                    }
+                    $aResponse['ImportCount']++;
+                }
+            }
+
+        }
+        return $aResponse;
+    }
+
+    /**
+     * This function checks the email, if it's in a valid format
+     * @param $sEmail
+     * @return bool
+     */
+    protected function _checkEmailFormat($sEmail)
+    {
+        //Checking the email address is in a valid format
+        // $bInvalidemail = false;
+        $writearray['email'] = trim($sEmail);
+        if ($sEmail != '') {
+            $aEmailAddresses = explode(';', $sEmail);
+            // Ignore additional email addresses
+            $sEmailaddress = $aEmailAddresses[0];
+            if (!validateEmailAddress($sEmailaddress)) {
+                return false;
+                // $invalidemaillist[] = $line[0] . " " . $line[1] . " (" . $line[2] . ")"; DO WE need that?
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Create the LS participant id ID
+     * @return string
+     */
+    protected function _gen_uuid()
+    {
+        return sprintf(
+            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0x0fff) | 0x4000,
+            mt_rand(0, 0x3fff) | 0x8000,
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff)
+        );
+    }
+
 }
