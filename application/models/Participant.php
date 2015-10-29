@@ -1328,7 +1328,9 @@ class Participant extends LSActiveRecord
                                         'email' => $tobeinserted['email'],
                                         'language' => $tobeinserted['language'],
                                         'blacklisted' => $black,
-                                        'owner_uid' => Yii::app()->session['loginID']);
+                                        'owner_uid' => Yii::app()->session['loginID'],
+                                        'created_by' => Yii::app()->session['loginID'],
+                                        'created' => date('Y-m-d H:i:s', time()));
                     Yii::app()->db
                               ->createCommand()
                               ->insert('{{participants}}', $writearray);
