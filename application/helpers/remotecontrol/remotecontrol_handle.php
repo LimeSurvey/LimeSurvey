@@ -2571,7 +2571,7 @@ class remotecontrol_handle
      * [{"email":"dummy-02222@limesurvey.com","firstname":"max","lastname":"mustermann"}]
      * @return array with status
      */
-    public function cpd_importParticipants($sSessionKey, $sParticipants, $sAction = 'import')
+    public function cpd_importParticipants($sSessionKey, $sParticipants)
     {
 
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
