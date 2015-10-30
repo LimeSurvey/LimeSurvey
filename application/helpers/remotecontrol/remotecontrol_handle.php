@@ -2567,11 +2567,11 @@ class remotecontrol_handle
      * Call the function with $response = $myJSONRPCClient->cpd_importParticipants( $sessionKey, $sParticipants, $sAction );
      *
      * @param int $sSessionKey
-     * @param JSon string $sParticipants
-     * [{"email":"dummy-02222@limesurvey.com","firstname":"max","lastname":"mustermann"}]
+     * @param array $aParticipants
+     * [[0] => ["email"=>"dummy-02222@limesurvey.com","firstname"=>"max","lastname"=>"mustermann"]]
      * @return array with status
      */
-    public function cpd_importParticipants($sSessionKey, $sParticipants)
+    public function cpd_importParticipants($sSessionKey, $aParticipants)
     {
 
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
@@ -2587,8 +2587,6 @@ class remotecontrol_handle
         $sAttribCount = 0;
         $aResponse['ImportCount'] = 0;
 
-        $aNewParticipants = json_decode($sParticipants);
-
         // get all attributes for mapping
         $findCriteria = new CDbCriteria();
         $findCriteria->offset = -1;
@@ -2596,16 +2594,16 @@ class remotecontrol_handle
         $aAttributeRecords = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($findCriteria);
 
 
-        foreach ($aNewParticipants as $key => $oParticipantData) {
+        foreach ($aParticipants as $key => $aParticipantData) {
 
             $aData = array(
-                'firstname' => $oParticipantData->firstname,
-                'lastname' => $oParticipantData->lastname,
-                'email' => $oParticipantData->email,
+                'firstname' => $aParticipantData['firstname'],
+                'lastname' => $aParticipantData['lastname'],
+                'email' => $aParticipantData['email'],
                 'owner_uid' => Yii::app()->session['loginID'], // ToDo is this working?
             );
 
-//Check for duplicate participants
+            //Check for duplicate participants
             $recordExists = Participant::model()->exists(
                 'firstname = :firstname AND lastname = :lastname AND email = :email AND owner_uid = :owner_uid',
                 [
@@ -2615,7 +2613,7 @@ class remotecontrol_handle
                     ':owner_uid' => $aData['owner_uid'],
                 ]);
 
-// check if email is valid
+            // check if email is valid
             $this->_checkEmailFormat($aData['email']);
 
             if ($isValidEmail == true) {
@@ -2655,7 +2653,7 @@ class remotecontrol_handle
                     Participant::model()->insertParticipantCSV($aData);
 
                     // Prepare atrribute values to store in db . Iterate through our values
-                    foreach ($oParticipantData as $sLabel => $sAttributeValue) {
+                    foreach ($aParticipantData as $sLabel => $sAttributeValue) {
                         // skip default fields
                         if (!in_array($sLabel, $aDefaultFields)) {
                             foreach ($aAttributeRecords as $key => $value) {
