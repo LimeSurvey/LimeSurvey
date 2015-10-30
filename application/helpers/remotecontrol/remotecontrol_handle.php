@@ -2564,7 +2564,7 @@ class remotecontrol_handle
     /**
      * This function import a participant to the LimeSurvey cpd. It stores attributes as well, if they are registered before in with ui
      *
-     * Call the function with $response = $myJSONRPCClient->cpd_importParticipants( $sessionKey, $sParticipants, $sAction );
+     * Call the function with $response = $myJSONRPCClient->cpd_importParticipants( $sessionKey, $aParticipants, $sAction );
      *
      * @param int $sSessionKey
      * @param array $aParticipants
