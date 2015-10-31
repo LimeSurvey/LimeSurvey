@@ -583,6 +583,14 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
             }
         }
 
+        foreach ($sigCalled as $key => $param) {
+          // the struct of XMLRPC is an array in PHP
+          if ($param == 'struct')
+          {
+            $sigCalled[$key] = 'array';
+          }
+        }
+
         $signatures = $info->getPrototypes();
         foreach ($signatures as $signature) {
             $sigParams = $signature->getParameters();
