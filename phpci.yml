@@ -2,11 +2,8 @@ build_settings:
     clone_depth: 1 # depth of 1 is a shallow clone, remove this line to clone entire repo
     verbose: true
     ignore:
-        - "application/vendor"
-        - "tests"
-        - "third_party"
-        - "application/third_party"
-        - "locale"
+        - "protected/vendor"
+        - "protected/tests"
     mysql:
         host: "localhost"
         user: "root"
