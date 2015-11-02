@@ -2592,7 +2592,6 @@ class remotecontrol_handle
         $oFindCriteria->limit = -1;
         $aAttributeRecords = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($oFindCriteria);
 
-
         foreach ($aParticipants as $sKey => $aParticipantData) {
 
             $aData = array(
@@ -2620,8 +2619,8 @@ class remotecontrol_handle
                 //First, process the known fields
                 if (!isset($aData['participant_id']) || $aData['participant_id'] == "")
                 {
-                    $arParticipantModel = new Participant();
-                    $aData['participant_id'] = $arParticipantModel->gen_uuid();
+                  //  $arParticipantModel = new Participant();
+                    $aData['participant_id'] = Participant::gen_uuid();
                 }
                 if (isset($aData['emailstatus']) && trim($aData['emailstatus'] == ''))
                 {
