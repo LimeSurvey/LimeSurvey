@@ -2620,7 +2620,8 @@ class remotecontrol_handle
                 //First, process the known fields
                 if (!isset($aData['participant_id']) || $aData['participant_id'] == "")
                 {
-                    $aData['participant_id'] = $this->_gen_uuid();
+                    $arParticipantModel = new Participant();
+                    $aData['participant_id'] = $arParticipantModel->gen_uuid();
                 }
                 if (isset($aData['emailstatus']) && trim($aData['emailstatus'] == ''))
                 {
@@ -2702,24 +2703,4 @@ class remotecontrol_handle
         }
         return false;
     }
-
-    /**
-     * Create the LS participant id ID
-     * @return string
-     */
-    protected function _gen_uuid()
-    {
-        return sprintf(
-            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0x0fff) | 0x4000,
-            mt_rand(0, 0x3fff) | 0x8000,
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff)
-        );
-    }
-
 }
