@@ -2584,6 +2584,7 @@ class remotecontrol_handle
         $bDoImport = true;
         $sMandatory = 0;
         $sAttribCount = 0;
+        $aResponse = array();
         $aResponse['ImportCount'] = 0;
 
         // get all attributes for mapping
@@ -2604,12 +2605,12 @@ class remotecontrol_handle
             //Check for duplicate participants
             $arRecordExists = Participant::model()->exists(
                 'firstname = :firstname AND lastname = :lastname AND email = :email AND owner_uid = :owner_uid',
-                [
+                array(
                     ':firstname' => $aData['firstname'],
                     ':lastname' => $aData['lastname'],
                     ':email' => $aData['email'],
                     ':owner_uid' => $aData['owner_uid'],
-                ]);
+                ));
 
             // check if email is valid
             $this->_checkEmailFormat($aData['email']);
