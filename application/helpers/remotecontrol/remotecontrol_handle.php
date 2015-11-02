@@ -2116,9 +2116,10 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID ID of the survey that participants belong
+    * @param array $aTokenIDs Ids of the participant to invite
     * @return array Result of the action
     */
-    public function invite_participants($sSessionKey, $iSurveyID )
+    public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds = false )
     {
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey))
@@ -2138,7 +2139,7 @@ class remotecontrol_handle
             $SQLemailstatuscondition = "emailstatus = 'OK'";
 
             $oTokens = TokenDynamic::model($iSurveyID);
-            $aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, true, $SQLemailstatuscondition);
+            $aResultTokens = $oTokens->findUninvited( $aTokenIds, $iMaxEmails, true, $SQLemailstatuscondition);
             $aAllTokens = $oTokens->findUninvitedIDs(false, 0, true, $SQLemailstatuscondition);
             $iAllTokensCount=count($aAllTokens);
             unset($aAllTokens);
