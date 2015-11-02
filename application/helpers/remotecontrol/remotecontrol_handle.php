@@ -2684,7 +2684,7 @@ class remotecontrol_handle
     }
 
     /**
-     * This function checks the email, if it's in a valid format
+     * This function checks the email, if it's in a valid format 
      * @param $sEmail
      * @return bool
      */
