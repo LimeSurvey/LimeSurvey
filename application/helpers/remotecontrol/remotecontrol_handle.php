@@ -2562,9 +2562,9 @@ class remotecontrol_handle
 
 
     /**
-     * This function import a participant to the LimeSurvey cpd. It stores attributes as well, if they are registered before in with ui
+     * This function import a participant to the LimeSurvey cpd. It stores attributes as well, if they are registered before within ui
      *
-     * Call the function with $response = $myJSONRPCClient->cpd_importParticipants( $sessionKey, $aParticipants, $sAction );
+     * Call the function with $response = $myJSONRPCClient->cpd_importParticipants( $sessionKey, $aParticipants);
      *
      * @param int $sSessionKey
      * @param array $aParticipants
@@ -2580,21 +2580,20 @@ class remotecontrol_handle
         $aAttributeData = array();
         $aAttributes = array();
         $aDefaultFields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
-        $isValidEmail = true;
-        $doImport = true;
-        $mandatory = 0;
-        $sImportCount = 0;
+        $bIsValidEmail = true;
+        $bDoImport = true;
+        $sMandatory = 0;
         $sAttribCount = 0;
         $aResponse['ImportCount'] = 0;
 
         // get all attributes for mapping
-        $findCriteria = new CDbCriteria();
-        $findCriteria->offset = -1;
-        $findCriteria->limit = -1;
-        $aAttributeRecords = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($findCriteria);
+        $oFindCriteria = new CDbCriteria();
+        $oFindCriteria->offset = -1;
+        $oFindCriteria->limit = -1;
+        $aAttributeRecords = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($oFindCriteria);
 
 
-        foreach ($aParticipants as $key => $aParticipantData) {
+        foreach ($aParticipants as $sKey => $aParticipantData) {
 
             $aData = array(
                 'firstname' => $aParticipantData['firstname'],
@@ -2604,7 +2603,7 @@ class remotecontrol_handle
             );
 
             //Check for duplicate participants
-            $recordExists = Participant::model()->exists(
+            $arRecordExists = Participant::model()->exists(
                 'firstname = :firstname AND lastname = :lastname AND email = :email AND owner_uid = :owner_uid',
                 [
                     ':firstname' => $aData['firstname'],
@@ -2616,39 +2615,45 @@ class remotecontrol_handle
             // check if email is valid
             $this->_checkEmailFormat($aData['email']);
 
-            if ($isValidEmail == true) {
+            if ($bIsValidEmail == true) {
 
                 //First, process the known fields
-                if (!isset($aData['participant_id']) || $aData['participant_id'] == "") {
-                    $uuid = $this->_gen_uuid();
-                    $aData['participant_id'] = $uuid;
+                if (!isset($aData['participant_id']) || $aData['participant_id'] == "")
+                {
+                    $aData['participant_id'] = $this->_gen_uuid();
                 }
-                if (isset($aData['emailstatus']) && trim($aData['emailstatus'] == '')) {
+                if (isset($aData['emailstatus']) && trim($aData['emailstatus'] == ''))
+                {
                     unset($aData['emailstatus']);
                 }
-                if (!isset($aData['language']) || $aData['language'] == "") {
+                if (!isset($aData['language']) || $aData['language'] == "")
+                {
                     $aData['language'] = "en";
                 }
-                if (!isset($aData['blacklisted']) || $aData['blacklisted'] == "") {
+                if (!isset($aData['blacklisted']) || $aData['blacklisted'] == "")
+                {
                     $aData['blacklisted'] = "N";
                 }
                 $aData['owner_uid'] = Yii::app()->session['loginID'];
-                if (isset($aData['validfrom']) && trim($aData['validfrom'] == '')) {
+                if (isset($aData['validfrom']) && trim($aData['validfrom'] == ''))
+                {
                     unset($aData['validfrom']);
                 }
-                if (isset($aData['validuntil']) && trim($aData['validuntil'] == '')) {
+                if (isset($aData['validuntil']) && trim($aData['validuntil'] == ''))
+                {
                     unset($aData['validuntil']);
                 }
 
-                if ((!empty($filterblankemails) && $aData['email'] == "")) {
+                if (!empty($aData['email']))
+                {
                     //The mandatory fields of email, firstname and lastname
-                    //must be filled, but one or more are empty
-                    $mandatory++;
-                    $doImport = false;
+                    $sMandatory++;
+                    $bDoImport = false;
                 }
 
-                //If any of the mandatory fields are blank, then don't import this user
-                if (empty($recordExists)) {
+                // Write to database if record not exists
+                if (empty($arRecordExists))
+                {
                     // save participant to database
                     Participant::model()->insertParticipantCSV($aData);
 
@@ -2656,9 +2661,10 @@ class remotecontrol_handle
                     foreach ($aParticipantData as $sLabel => $sAttributeValue) {
                         // skip default fields
                         if (!in_array($sLabel, $aDefaultFields)) {
-                            foreach ($aAttributeRecords as $key => $value) {
-                                $aAttributes = $value->getAttributes();
-                                if ($aAttributes['defaultname'] == $sLabel) {
+                            foreach ($aAttributeRecords as $sKey => $arValue) {
+                                $aAttributes = $arValue->getAttributes();
+                                if ($aAttributes['defaultname'] == $sLabel)
+                                {
                                     $aAttributeData['participant_id'] = $aData['participant_id'];
                                     $aAttributeData['attribute_id'] = $aAttributes['attribute_id'];
                                     $aAttributeData['value'] = $sAttributeValue;
@@ -2672,7 +2678,6 @@ class remotecontrol_handle
                     $aResponse['ImportCount']++;
                 }
             }
-
         }
         return $aResponse;
     }
@@ -2684,16 +2689,14 @@ class remotecontrol_handle
      */
     protected function _checkEmailFormat($sEmail)
     {
-        //Checking the email address is in a valid format
-        // $bInvalidemail = false;
-        $writearray['email'] = trim($sEmail);
-        if ($sEmail != '') {
+        if ($sEmail != '')
+        {
             $aEmailAddresses = explode(';', $sEmail);
             // Ignore additional email addresses
             $sEmailaddress = $aEmailAddresses[0];
-            if (!validateEmailAddress($sEmailaddress)) {
+            if (!validateEmailAddress($sEmailaddress))
+            {
                 return false;
-                // $invalidemaillist[] = $line[0] . " " . $line[1] . " (" . $line[2] . ")"; DO WE need that?
             }
             return true;
         }
