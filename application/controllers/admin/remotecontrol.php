@@ -52,7 +52,7 @@ class remotecontrol extends Survey_Common_Action
                 }
                 else
                 {
-                  // an Zend_XmlRpc_Server_Fault with exception message from XMLRPC
+                  // a Zend_XmlRpc_Server_Fault with exception message from XMLRPC
                   echo $result;
                 }
             }
