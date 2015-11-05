@@ -1215,61 +1215,57 @@ span.qnumcode {
 
 /* Tips / Validation Messages */
 /* If the question is invalid, but has not been submitted, give it a pleasant warning color */
-div.em_num_answers.good {
+.em_num_answers.good {
  color: green;
 }
 
-div.em_num_answers.error {
+.em_num_answers.error {
   color: #FF00FF;
-  display: block;
 }
 
-div.em_value_range.good {
+.em_value_range.good {
   color: green;
 }
-div.em_value_range.error {
+.em_value_range.error {
   color: #FF00FF;
-  display: block;
 }
 
-div.em_sum_range.good {
+.em_sum_range.good {
   color: green;
 }
-div.em_sum_range.error {
+.em_sum_range.error {
   color: #FF00FF;
-  display: block;
 }
 
-div.em_regex_validation {
+.em_regex_validation {
   display: none;
 }
-div.em_regex_validation.good {
+.em_regex_validation.good {
   color: green;
 }
-div.em_regex_validation.error {
+.em_regex_validation.error {
   color: #FF00FF;
 }
 
-div.em_q_fn_validation.good {
+.em_q_fn_validation.good {
   color: green;
 }
-div.em_q_fn_validation.error {
+.em_q_fn_validation.error {
   color: #FF00FF;
 }
 
-div.em_sq_fn_validation.good {
+.em_sq_fn_validation.good {
   color: green;
 }
-div.em_sq_fn_validation.error {
+.em_sq_fn_validation.error {
   color: #FF00FF;
 }
 
-div.em_other_comment_mandatory.good {
+.em_other_comment_mandatory.good {
   display: none;
 }
-div.em_other_comment_mandatory.error {
+.em_other_comment_mandatory.error {
   color: #FF00FF;
-  display: block;
 }
 
 input.em_sq_validation.good, textarea.em_sq_validation.good {
@@ -1280,43 +1276,43 @@ input.em_sq_validation.error, textarea.em_sq_validation.error {
   background-color:  pink;
 }
 
-span.dynamic_sum {
+.dynamic_sum {
   font-weight: bold;
   background-color: #d3d3d3;
 }
-span.dynamic_sum.good {
+.dynamic_sum.good {
   color: green;
 }
-span.dynamic_sum.error {
+.dynamic_sum.error {
   color: red;
 }
 
-span.dynamic_remaining {
+.dynamic_remaining {
   font-weight: bold;
   background-color: #d3d3d3;
 }
-span.dyanamic_remaining.good {
+.dynamic_remaining.good {
   color: green;
 }
-span.dynamic_remaining.error {
+.dynamic_remaining.error {
   color: red;
 }
 
 /* If  it is still invalid after submit, flag it in red */
-.input-error div.error {
+.input-error .error {
   color: red;
   display: block;
 }
 
-span.hide-tip div.good {
+.hide-tip * {
     display: none;
 }
 
-span.hide-tip div.error {
+.hide-tip .error {
     color: #FF00FF;
 }
 
-.input-error span.hide-tip div.error {
+.input-error .hide-tip .error {
     color: red;
     display: block;
 }

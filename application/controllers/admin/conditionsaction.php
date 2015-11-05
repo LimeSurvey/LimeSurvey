@@ -816,8 +816,8 @@ class conditionsaction extends Survey_Common_Action {
                         $attr = getQuestionAttributeValues($rows['qid']);
                         $sLanguage=Survey::model()->findByPk($iSurveyID)->language;
                         // dualscale_header are allways set, but can be empty
-                        $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gt('Scale 1') : $attr['dualscale_headerA'][$sLanguage];
-                        $label2 = empty($attr['dualscale_headerB'][$sLanguage]) ? gt('Scale 2') : $attr['dualscale_headerB'][$sLanguage];
+                        $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gT('Scale 1') : $attr['dualscale_headerA'][$sLanguage];
+                        $label2 = empty($attr['dualscale_headerB'][$sLanguage]) ? gT('Scale 2') : $attr['dualscale_headerB'][$sLanguage];
                         $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label1]";
                         $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
                         $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0");

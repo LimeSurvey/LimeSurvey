@@ -59,6 +59,45 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.06+ (build 151016) to 2.06+ (build 151018) Oct 18, 2015
+Fixed issue: Database upgrade not working
+
+Changes from 2.06+ (build 151014) to 2.06+ (build 151016) Oct 16, 2015
+-Fixed issue #9969: [security] Unauthenticated local file disclosure vulnerability (Louis Gac)
+-Fixed issue #9934: Survey cannot be repeatedly activated in MSSQL (Carsten Schmitz)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Spanish (Spain) by kadejo
+
+
+Changes from 2.06+ (build 150930) to 2.06+ (build 151014) Oct 14, 2015
+-Fixed issue #9883: Stata plugin options not properly working - patch by nwinter (Carsten Schmitz)
+-Fixed issue #9897: Overload of namespace variables (Carsten Schmitz)
+-Fixed issue #9899: HTML editor launched even for email set to text (Denis Chenu)
+-Fixed issue #9926: Can't save dropdown values in CPD (kairavesloot)
+#Updated translation: Albanian by iebner
+#Updated translation: Bulgarian 
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Taiwan) (Traditional) by linuslin, Alwaystar
+#Updated translation: Croatian
+#Updated translation: French (France) by arnaud21
+#Updated translation: Georgian by Davitus
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Romanian
+#Updated translation: Spanish (Argentina) (Informal) by grudolf
+#Updated translation: Spanish (Spain) by titanio256, grudolf, aesteban
+#Updated translation: Turkish by kayazeren
+#Updated translation: Ukrainian by exlibris69
+
 Changes from 2.06+ (build 150911) to 2.06+ (build 150930) Sept 30, 2015
 -Fixed issue #9885: LDAP pluging - Default setting "LDAP authentication" does not apply (Alfredo Esteban)
 -Fixed issue #9892: Ranking filter + on element not filtered : reset the last possibility (Denis Chenu)

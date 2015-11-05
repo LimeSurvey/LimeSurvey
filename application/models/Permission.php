@@ -26,17 +26,6 @@ class Permission extends LSActiveRecord
     }
 
     /**
-     * Returns the table's primary key
-     *
-     * @access public
-     * @return string
-     */
-    public function primaryKey()
-    {
-        return array('sid', 'uid', 'permission');
-    }
-
-    /**
      * Returns the static model of Settings table
      *
      * @static

@@ -32,8 +32,7 @@ $(document).ready(function(){
         }
     });
 
-    removeCSRFDivs();
-    
+
     if ($(".answertable tbody").children().length == 0)
         add_label(undefined);
 

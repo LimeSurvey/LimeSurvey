@@ -508,7 +508,7 @@ class participantsaction extends Survey_Common_Action
         // if add it will insert a new row
         elseif ($sOperation == 'add' && Permission::model()->hasGlobalPermission('participantpanel','create'))
         {
-            $uuid = $this->gen_uuid();
+            $uuid = Participant::gen_uuid();
             $aData = array(
                 'participant_id' => $uuid,
                 'firstname' => Yii::app()->request->getPost('firstname'),
@@ -1356,7 +1356,7 @@ class participantsaction extends Survey_Common_Action
 
                        //First, process the known fields
                     if (!isset($writearray['participant_id']) || $writearray['participant_id'] == "") {
-                        $uuid = $this->gen_uuid(); //Generate a UUID for the new participant
+                        $uuid = Participant::gen_uuid(); //Generate a UUID for the new participant
                         $writearray['participant_id'] = $uuid;
                     }
                     if (isset($writearray['emailstatus']) && trim($writearray['emailstatus'] == '')) {
@@ -1445,24 +1445,6 @@ class participantsaction extends Survey_Common_Action
     {
         unset(Yii::app()->session['participantid']);
         Yii::app()->session['participantid'] = Yii::app()->request->getPost('participantid');
-    }
-
-    /*
-     * Generation of unique id
-     */
-    function gen_uuid()
-    {
-        return sprintf(
-                '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-                mt_rand(0, 0xffff),
-                mt_rand(0, 0xffff),
-                mt_rand(0, 0xffff),
-                mt_rand(0, 0x0fff) | 0x4000,
-                mt_rand(0, 0x3fff) | 0x8000,
-                mt_rand(0, 0xffff),
-                mt_rand(0, 0xffff),
-                mt_rand(0, 0xffff)
-        );
     }
 
     /*

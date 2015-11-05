@@ -249,7 +249,7 @@ class responses extends Survey_Common_Action
                                     switch ($metadata)
                                     {
                                         case "size":
-                                            $answervalue = sprintf(gt("%s KB"),intval($phparray[$index][$metadata]));
+                                            $answervalue = sprintf(gT("%s KB"),intval($phparray[$index][$metadata]));
                                             break;
                                         case "name":
                                             $answervalue = CHtml::link(
@@ -363,7 +363,7 @@ class responses extends Survey_Common_Action
             'width' => '100',
             'resizable' => true,
             'align' => 'left',
-            'label' => gt("Actions"),
+            'label' => gT("Actions"),
             'search' => false,
             'hidedlg'=>true,
         );
@@ -402,16 +402,16 @@ class responses extends Survey_Common_Action
             'stype'=>'select',
             'editoptions'=>array(
                 'value'=>array(
-                    ""=>gt("All"),
-                    "Y"=>gt("Yes"),
-                    "N"=>gt("No"),
+                    ""=>gT("All"),
+                    "Y"=>gT("Yes"),
+                    "N"=>gT("No"),
                 ),
             ),
             'sortable'=>true,
             'hidden'=>$bHidden,
             'width'=>'100',
             'align'=>'center',
-            'label' => gt("Completed"),
+            'label' => gT("Completed"),
         );
         // defaultSearch is the default search done before send request in json. Actually : completed and token only. Can be extended ( js is ready) ?
         $defaultSearch=array();
@@ -436,7 +436,7 @@ class responses extends Survey_Common_Action
                 'sorttype'=>'string',
                 'sortable'=>true, 'width'=>'100',
                 'align'=>'left',
-                'title'=>gt('Token')
+                'title'=>gT('Token')
             );
             $column_model[] = array(
                 'name'=>'firstname',
@@ -445,7 +445,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'100',
                 'align'=>'left',
-                'title'=>gt('First name'),
+                'title'=>gT('First name'),
             );
             $column_model[] = array(
                 'name'=>'lastname',
@@ -454,7 +454,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'100',
                 'align'=>'left',
-                'title'=>gt('Last Name'),
+                'title'=>gT('Last Name'),
             );
             $column_model[] = array(
                 'name'=>'email',
@@ -463,7 +463,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'100',
                 'align'=>'left',
-                'title'=>gt('Email'),
+                'title'=>gT('Email'),
             );
             // If token exist, test if token is set in params, add it to defaultSearch
             if($sTokenSearch= Yii::app()->request->getQuery('token'))

@@ -1310,13 +1310,14 @@ function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for gro
     QuestionGroup::model()->updateGroupOrder($surveyid,$baselang);
 }
 
-function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites the cfieldname for a question after group change
+function fixMovedQuestionConditions($qid,$oldgid,$newgid, $iSurveyID=NULL) //Function rewrites the cfieldname for a question after group change
 {
-    $surveyid = Yii::app()->getConfig('sid');
+    if(!isset($iSurveyID))
+        $iSurveyID = Yii::app()->getConfig('sid');
     $qid=sanitize_int($qid);
     $oldgid=sanitize_int($oldgid);
     $newgid=sanitize_int($newgid);
-    Condition::model()->updateCFieldName($surveyid,$qid,$oldgid,$newgid);
+    Condition::model()->updateCFieldName($iSurveyID,$qid,$oldgid,$newgid);
     // TMSW Condition->Relevance:  Call LEM->ConvertConditionsToRelevance() when done
 }
 
@@ -5225,10 +5226,14 @@ function getUpdateInfo()
 
 /**
 * This function updates the actual global variables if an update is available after using getUpdateInfo
+*
+* Not used anymore.
+*
 * @return Array with update or error information
 */
 function updateCheck()
 {
+    /*
     $aUpdateVersions=getUpdateInfo();
 
     if (isset($aUpdateVersions['errorcode']))
@@ -5275,6 +5280,7 @@ function updateCheck()
 
     setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
     return $aUpdateVersions;
+     */
 }
 
 /**
