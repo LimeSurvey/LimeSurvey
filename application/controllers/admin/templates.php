@@ -405,9 +405,9 @@ class templates extends Survey_Common_Action
         }
         if (returnGlobal('action') == "templatefiledelete") {
             // This is where the temp file is
-            $sFileToDelete=preg_replace("[^\w\s\d\.\-_~,;:\[\]\(\]]", '', returnGlobal('otherfile'));
-
-            $the_full_file_path = Yii::app()->getConfig('usertemplaterootdir') . "/" . $_POST['templatename'] . "/" . $sFileToDelete;
+            $sFileToDelete=sanitize_filename(returnGlobal('otherfile'),false,false);
+            $sTemplateName=Template::templateNameFilter(App()->request->getPost('templatename'));
+            $the_full_file_path = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sTemplateName . "/" . $sFileToDelete;
             if (@unlink($the_full_file_path))
             {
                 Yii::app()->session['flashmessage'] = sprintf(gT("The file %s was deleted."), htmlspecialchars($sFileToDelete));
@@ -416,7 +416,7 @@ class templates extends Survey_Common_Action
             {
                 Yii::app()->session['flashmessage'] = sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/template folder"), htmlspecialchars($sFileToDelete));
             }
-            $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . returnGlobal('editfile') . "/screenname/" . returnGlobal('screenname') . "/templatename/" . returnGlobal('templatename')));
+            $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . returnGlobal('editfile') . "/screenname/" . returnGlobal('screenname') . "/templatename/" . $sTemplateName));
         }
     }
 
@@ -515,7 +515,8 @@ class templates extends Survey_Common_Action
             die('No permission');
         }
         Yii::app()->loadHelper("admin/template");
-        if (is_template_editable($templatename) == true) {
+        if (array_key_exists($templatename,Template::getTemplateList()) && !Template::isStandardTemplate($templatename))
+        {
             if (rmdirr(Yii::app()->getConfig('usertemplaterootdir') . "/" . $templatename) == true) {
                 $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
                 foreach ($surveys as $s)
@@ -532,7 +533,10 @@ class templates extends Survey_Common_Action
             else
                 Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename),'error');
         }
-
+        else
+        {
+            // Throw an error 500 ?
+        }
         // Redirect with default templatename, editfile and screenname
         $this->getController()->redirect(array("admin/templates/sa/view"));
     }
@@ -564,10 +568,10 @@ class templates extends Survey_Common_Action
         }
 
         $action = returnGlobal('action');
-        $editfile = returnGlobal('editfile');
-        $templatename = returnGlobal('templatename');
+        $editfile = sanitize_filename(returnGlobal('editfile'));
+        $sTemplateName = Template::templateNameFilter(App()->request->getPost('templatename'));
         $screenname = returnGlobal('screenname');
-        $files = $this->_initfiles($templatename);
+        $files = $this->_initfiles($sTemplateName);
         $cssfiles = $this->_initcssfiles();
 
         if ($action == "templatesavechanges" && $changedtext) {
@@ -581,7 +585,7 @@ class templates extends Survey_Common_Action
                 )
                     $this->getController()->error('Invalid template name');
 
-                $savefilename = Yii::app()->getConfig('usertemplaterootdir') . "/" . $templatename . "/" . $editfile;
+                $savefilename = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sTemplateName . "/" . $editfile;
                 if (is_writable($savefilename)) {
                     if (!$handle = fopen($savefilename, 'w'))
                         $this->getController()->error('Could not open file ' . $savefilename);
@@ -596,7 +600,7 @@ class templates extends Survey_Common_Action
             }
         }
 
-        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $sTemplateName));
     }
 
     /**
@@ -609,6 +613,7 @@ class templates extends Survey_Common_Action
     * @param string $tempdir
     * @param string $templatename
     * @return void
+    * @deprecated ? 151005
     */
     protected function _templatebar($screenname, $editfile, $screens, $tempdir, $templatename)
     {
@@ -640,7 +645,6 @@ class templates extends Survey_Common_Action
     {
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
-
         Yii::app()->loadHelper("admin/template");
         $aData = array();
         $time = date("ymdHis");
@@ -884,7 +888,7 @@ class templates extends Survey_Common_Action
             $files[] = array('name' => 'question_start.pstpl');
             $Question[] = 'question_start.pstpl';
         }
-
+        $editfile=sanitize_filename($editfile); // Fixed with editable file after, but put in aData before fix 
         $availableeditorlanguages = array('bg', 'cs', 'de', 'dk', 'en', 'eo', 'es', 'fi', 'fr', 'hr', 'it', 'ja', 'mk', 'nl', 'pl', 'pt', 'ru', 'sk', 'zh');
         $extension = substr(strrchr($editfile, "."), 1);
         if ($extension == 'css' || $extension == 'js')
