@@ -2179,7 +2179,7 @@ class remotecontrol_handle
     * @param int $iSurveyID ID of the survey that participants belong
     * @param int $iMinDaysBetween Optional parameter days from last reminder
     * @param int $iMaxReminders Optional parameter Maximum reminders count
-    * @param array $aTokenIDs Ids of the participant to remind (optional filter)
+    * @param array $aTokenIds Ids of the participant to remind (optional filter)
     * @return array Result of the action
     */
     public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween=null, $iMaxReminders=null, $aTokenIds = false)
@@ -2223,7 +2223,7 @@ class remotecontrol_handle
             $iAllTokensCount=count($aAllTokens);
             unset($aAllTokens); // save some memory before the next query
 
-            $aResultTokens = $oTokens->findUninvited($aTokenIDs, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+            $aResultTokens = $oTokens->findUninvited($aTokenIds, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
 
             if (empty($aResultTokens))
                 return array('status' => 'Error: No candidate tokens');
