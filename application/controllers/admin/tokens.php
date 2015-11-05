@@ -354,11 +354,13 @@ class tokens extends Survey_Common_Action
             eT("We are sorry but you don't have permissions to do this.");// return json ? error not treated in js.
             return;
         }
-        $page  = Yii::app()->request->getPost('page', 1);
+        $page  = (int)Yii::app()->request->getPost('page', 1);
+        $limit = (int)Yii::app()->request->getPost('rows', 25);
         $sidx = Yii::app()->request->getPost('sidx', 'lastname');
         $sord = Yii::app()->request->getPost('sord', 'asc');
-        $limit = Yii::app()->request->getPost('rows', 25);
-
+        if (strtolower($sord)!='desc') {
+            $sord='asc';
+        }
         $aData = new stdClass;
         $aData->page = $page;
 
@@ -372,7 +374,7 @@ class tokens extends Survey_Common_Action
             $condition = new CDbCriteria();
         }
 
-        $condition->order = $sidx. " ". $sord;
+        $condition->order = Yii::app()->db->quoteColumnName($sidx). " ". $sord;
         $condition->offset = ($page - 1) * $limit;
         $condition->limit = $limit;
 		$tokens = Token::model($iSurveyId)->findAll($condition);

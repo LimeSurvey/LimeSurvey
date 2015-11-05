@@ -281,6 +281,7 @@ class Participant extends LSActiveRecord
 
     private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
     {
+        debugbreak();
         $selectValue = array();
         $joinValue = array();
 
@@ -856,11 +857,21 @@ class Participant extends LSActiveRecord
             elseif (is_numeric($sFieldname)) //Searching for an attribute
             {
                 $command->addCondition('attribute'. $sFieldname . '.value ' . $operator . ' '.$param, $booloperator);
-//                $command->addCondition('(attribute_id='. $sFieldname . ' AND value ' . $operator . ' '.$param.' )', $booloperator);
             }
             else
             {
-                $command->addCondition($sFieldname . ' '.$operator.' '.$param, $booloperator);
+                // Check if fieldname exists to prevent SQL injection
+                $aSafeFieldNames=array('firstname',
+                                  'lastname',
+                                  'email',
+                                  'blacklisted',
+                                  'surveys',
+                                  'survey',
+                                  'language',
+                                  'owner_uid',
+                                  'owner_name');
+                if (!in_array($sFieldname,$aSafeFieldNames)) continue; // Skip invalid fieldname
+                $command->addCondition(Yii::app()->db->quoteColumnName($sFieldname) . ' '.$operator.' '.$param, $booloperator);
             }
 
             $i++;

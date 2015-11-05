@@ -16,12 +16,9 @@
             <select name="characterset">
                 <option value="auto" selected="selected">Automatic</option>
                 <?php
-                $encodingsarray =aEncodingsArray();
-                $encodingsarray_keys = array_keys($encodingsarray);
-                $i = 0;
-                foreach ($encodingsarray as $encoding):
+                foreach (aEncodingsArray() as $key=>$encoding):
                     ?>
-                    <option value="<?php echo ($encodingsarray_keys[$i++]); ?>"><?php echo $encoding; ?></option>
+                    <option value="<?php echo $key;?>"><?php echo $encoding; ?></option>
                     <?php
                 endforeach;
                 ?>
@@ -39,11 +36,9 @@
             <select name="separatorused">
                 <option value="auto" selected="selected"><?php eT("(Autodetect)"); ?></option>
                 <?php
-                $separatorused_keys = array_keys($separatorused);
-                $i = 0;
-                foreach ($separatorused as $separator):
+                foreach ($separatorused as $key=>$separator):
                     ?>
-                    <option value="<?php echo ($separatorused_keys[$i++]); ?>"><?php echo $separator; ?></option>
+                    <option value="<?php echo $key;?>"><?php echo $separator; ?></option>
                     <?php
                 endforeach;
                 ?>

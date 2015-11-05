@@ -383,9 +383,9 @@ class participantsaction extends Survey_Common_Action
     function getAttributeInfo_json()
     {
 
-        $page = Yii::app()->request->getPost('page');
-        $limit = Yii::app()->request->getPost('rows');
-        $limit = isset($limit) ? $limit : 50; //Stop division by zero errors
+        $page = (int)Yii::app()->request->getPost('page');
+        $limit = (int)Yii::app()->request->getPost('rows');
+        $limit = empty($limit) ? $limit : 50; //Stop division by zero errors
         $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll(array('order'=>'attribute_name'));
         $attribute_types = array(
             'DD' => gT("Drop-down list"),
@@ -1145,7 +1145,7 @@ class participantsaction extends Survey_Common_Action
                         ."var cannotAcceptErrorTxt='".gT("This list cannot accept token attributes.")."';\n"
                         ."var separator = '".sanitize_paranoid_string($_POST['separatorused'])."';\n"
                         ."var thefilepath = '".$sRandomFileName."';\n"
-                        ."var filterblankemails = '".$filterblankemails."';\n";
+                        ."var filterblankemails = '".sanitize_paranoid_string($filterblankemails)."';\n";
         App()->getClientScript()->registerScript("sAttributeMapJS",$sAttributeMapJS,CClientScript::POS_BEGIN);
             $this->_renderWrappedTemplate('participants', 'attributeMapCSV', $aData);
         }
