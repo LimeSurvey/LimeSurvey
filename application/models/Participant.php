@@ -281,7 +281,6 @@ class Participant extends LSActiveRecord
 
     private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
     {
-        debugbreak();
         $selectValue = array();
         $joinValue = array();
 
