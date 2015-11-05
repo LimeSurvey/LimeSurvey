@@ -127,6 +127,7 @@
             $event->set('type', 'token');
             $event->set('name', $sTableName);
             App()->getPluginManager()->dispatchEvent($event);
+            
 
             // Refresh schema cache just in case the table existed in the past, and return if table exist
             return $db->schema->getTable($sTableName, true);
