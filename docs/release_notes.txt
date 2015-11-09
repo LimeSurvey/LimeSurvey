@@ -59,6 +59,40 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.06+ (build 151018) to 2.06+ (build 151109) Nov 9, 2015
+-Fixed issue #10004: Using hide_tip advanced settings does not hide the tips (Denis Chenu)
+-Fixed issue #10018: [security] XSS vulnerabilities in admin section (Carsten Schmitz)
+-Fixed issue #10018: [security] XSS vulnerabilities in admin section / template part (Denis Chenu)
+-Fixed issue #10022: [security] textarea input are not filtered in public part (Denis Chenu)
+-Fixed issue #9971: Integrity check showing error if MSSQL is used (Carsten Schmitz)
+-Fixed issue #9983: After "Exit and Clear survey", "Close this window" button does not consistently work (Carsten Schmitz)
+-Fixed issue #9992: Instructions on question creation page can not be translated (Carsten Schmitz)
+-Fixed issue: 'blacklisted' field is not set correctly due to a typo (encelado)
+-Fixed issue: Error after reordering a question used in condition (sieutruc)
+-Fixed issue: Non-nullable 'created_by' field is not set, violating schema requirements (encelado)
+-Fixed issue: 'token' column collation is not (always) set in survey tables (encelado)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Danish
+#Updated translation: Estonian
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz, AnnaHerwig, bardts
+#Updated translation: Hungarian
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Lithuanian
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Brazil) by valins, holch, mauriciofurtado
+#Updated translation: Portuguese (Portugal) by nostradumusfdx, sazevedo, valins, devUSIT, samarta
+#Updated translation: Romanian 
+#Updated translation: Slovenian
+#Updated translation: Spanish (Spain)
+#Updated translation: Swedish by bardts, maxzomborszki
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.06+ (build 151016) to 2.06+ (build 151018) Oct 18, 2015
 Fixed issue: Database upgrade not working
 
