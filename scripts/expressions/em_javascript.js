@@ -461,6 +461,7 @@ function LEMval(alias)
     if (LEMradix === ',') {
         newval = str.split(',').join('.');
     }
+
     if (newval == parseFloat(newval)) {
         if (newval.length > 0 && newval[0]==0) {
             return newval;   // so keep 0 prefixes on numbers
@@ -485,12 +486,14 @@ function LEMval(alias)
         }
     }
     var whichJsName;    // correct name whether on- or off-page
+
     if (LEMmode=='survey' || (LEMmode=='group' && attr.gseq == LEMgseq) || (LEMmode=='question' && attr.qid == LEMqid)) {
         whichJsName = (typeof attr.jsName_on === 'undefined') ? attr.jsName : attr.jsName_on;
     }
     else {
         whichJsName = attr.jsName;
     }
+
     if (whichJsName === null || typeof document.getElementById(whichJsName) === 'undefined' || document.getElementById(whichJsName) === null) {
         an_error = true;    // this line is here to make debugging easier
         return '';
@@ -673,7 +676,7 @@ function LEMval(alias)
                 {
                     return "";
                 }
-                if (LEMradix === ',') {
+                if (LEMgseq==attr.gseq && LEMradix === ',' ) {
                     var regValidateNum = /^-?\d*\,?\d*$/;
                 }else{
                     var regValidateNum = /^-?\d*\.?\d*$/;
