@@ -1,8 +1,10 @@
 <?php
 $aReplacementData=array();
+// ugly approach to highlighting current question in the group/question list
+echo "<script>$(\"#qmenu-$qid\").addClass('selected');</script>";
 ?>
 <div class='menubar-title ui-widget-header'>
-    <strong><?php eT("Question"); ?></strong> <span class='basic'><?php echo ellipsize(FlattenText($qrrow['question']),200); ?> (<?php echo gT("ID").":".$qid; ?>)</span>
+    <strong><?php eT("Question"); ?></strong> <span class='basic'><?php echo ellipsize(FlattenText($qrrow['question']),200); ?> (<?php echo gT("ID").":<span id='CurrentQid'>".$qid."</span>"; ?>)</span>
 </div>
 <div class='menubar-main'>
     <div class='menubar-left'>
@@ -144,7 +146,9 @@ $aReplacementData=array();
     </div>
 </div>
 </div>
-<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>
+<!-- 
+    <p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>
+    -->
 
 
 <table  id='questiondetails' <?php echo $qshowstyle; ?>><tr><td><strong>
