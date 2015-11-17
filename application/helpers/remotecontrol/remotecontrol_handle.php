@@ -1772,7 +1772,7 @@ class remotecontrol_handle
     * @param int  $iLimit Number of participants to return
     * @param bool $bUnused If you want unused tokens, set true
     * @param bool|array $aAttributes The extented attributes that we want
-    * @param array $aConditions Optional conditions to limit the list, e.g. with array('email' => 'info@example.com')
+    * @param array|struct $aConditions Optional conditions to limit the list, e.g. with array('email' => 'info@example.com')
     * @return array The list of tokens
     */
     public function list_participants($sSessionKey, $iSurveyID, $iStart=0, $iLimit=10, $bUnused=false, $aAttributes=false, $aConditions=array() )
@@ -1802,6 +1802,7 @@ class remotecontrol_handle
                 if(count($oTokens)==0)
                     return array('status' => 'No Tokens found');
 
+                $extendedAttributes = array();
                 if($aAttributes) {
                     $aBasicDestinationFields=Token::model($iSurveyID)->tableSchema->columnNames;
                     $aTokenProperties=array_intersect($aAttributes,$aBasicDestinationFields);
