@@ -18,7 +18,7 @@ injectglobalsettings();
 
 function injectglobalsettings()
 {
-    $settings = SettingGlobal::model()->findAll();
+	$settings = SettingGlobal::model()->findAll();
 
     //if ($dbvaluearray!==false)
     if (count($settings) > 0)
@@ -41,20 +41,20 @@ function getGlobalSetting($settingname)
 
     if ($dbvalue === false)
     {
-        $dbvalue = SettingGlobal::model()->findByPk($settingname);
+    	$dbvalue = SettingGlobal::model()->findByPk($settingname);
 
         if ($dbvalue === null)
         {
             Yii::app()->setConfig($settingname, null);
-            $dbvalue = '';
+			$dbvalue = '';
         }
         else
         {
             $dbvalue = $dbvalue->getAttribute('stg_value');
         }
 
-        if (Yii::app()->getConfig($settingname) !== false)
-        {
+		if (Yii::app()->getConfig($settingname) !== false)
+		{
             // If the setting was not found in the setting table but exists as a variable (from config.php)
             // get it and save it to the table
             setGlobalSetting($settingname, Yii::app()->getConfig($settingname));
@@ -72,18 +72,18 @@ function setGlobalSetting($settingname, $settingvalue)
         return; //don't save
     }
 
-    if ($record = SettingGlobal::model()->findByPk($settingname))
-    {
-        $record->stg_value = $settingvalue;
-        $record->save();
-    }
-    else
-    {
-        $record = new SettingGlobal;
-        $record->stg_name = $settingname;
-        $record->stg_value = $settingvalue;
-        $record->save();
-    }
+	if ($record = SettingGlobal::model()->findByPk($settingname))
+	{
+		$record->stg_value = $settingvalue;
+		$record->save();
+	}
+	else
+	{
+		$record = new SettingGlobal;
+		$record->stg_name = $settingname;
+		$record->stg_value = $settingvalue;
+		$record->save();
+	}
 
     Yii::app()->setConfig($settingname, $settingvalue);
 }

@@ -1,8 +1,8 @@
 <?php
 /**
  * This view generate the language tab inside global settings.
- * 
- *  
+ *
+ *
  */
 ?>
     <div class="form-group">
@@ -22,10 +22,10 @@
                 }
             ?>
         </select>
-        
-        </div>    
+
+        </div>
     </div>
-            
+
     <div class="form-group">
             <label class="col-sm-4 control-label"  for='includedLanguages'><?php eT("Available languages:"); ?></label>
             <div class="col-sm-6">
@@ -42,13 +42,13 @@
                 </td>
                 <td style="padding: 10px;">
                     <button class="btn btn-default" id="btnAdd" type="button">
-                        <span class="ui-icon ui-icon-carat-1-w" style="float:left"></span>
+                        <span class="ui-icon ui-icon-carat-1-w"></span>
                         <?php eT("Add"); ?>
                     </button>
                     <br /><br />
                     <button class="btn btn-default" type="button" id="btnRemove">
-                        <span class="ui-icon ui-icon-carat-1-e" style="float:right"></span>
                         <?php eT("Remove"); ?>
+                        <span class="ui-icon ui-icon-carat-1-e"></span>
                     </button>
                 </td>
                 <td >
@@ -60,11 +60,11 @@
                 </td>
             </tr>
         </table>
-        
-        </div>    
+
+        </div>
     </div>
-            
+
 
 <?php if (Yii::app()->getConfig("demoMode")==true):?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
-<?php endif; ?>            
+<?php endif; ?>

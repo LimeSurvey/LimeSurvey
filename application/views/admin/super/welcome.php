@@ -26,8 +26,8 @@
     <!-- Jumbotron -->
     <div class="row">
         <div class="jumbotron" id="welcome-jumbotron">
-            <img src="<?php echo IMAGE_BASE_URL;?>Limesurvey_logo.png" id="lime-logo" />
-            <p><?php eT('This is the LimeSurvey admin interface. From here, you can start to build your survey.')?></p>
+            <img src="<?php echo IMAGE_BASE_URL;?>Limesurvey_logo.png" id="lime-logo"  class="profile-img-card img-responsive center-block" />
+            <p class="hidden-xs" ><?php eT('This is the LimeSurvey admin interface. From here, you can start to build your survey.')?></p>
         </div>
     </div>
 
@@ -84,7 +84,7 @@
                 <?php if($showLastQuestion):?>
                     <span id="last_question" class="rotateHidden">
                     <?php eT("Last visited question:");?>
-                    <a href="<?php echo $last_question_link;?>" class=""><?php echo $last_question_name;?></a>
+                    <a href="<?php echo $last_question_link;?>" class=""><?php echo strip_tags($last_question_name);?></a>
                     </span>
                 <?php endif; ?>
                 </div>
@@ -96,7 +96,7 @@
 
 
     <!-- First row of boxes -->
-    <div class="row text-center ">
+    <div class="row text-center hidden-xs">
 
         <!-- First box defined in database -->
         <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
@@ -120,7 +120,7 @@
     </div>
 
     <!-- Second row of boxes -->
-    <div class="row">
+    <div class="row hidden-xs">
 
         <!-- 4th defined in database -->
         <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
@@ -140,6 +140,35 @@
                 'fromDb'=> true,
                 'dbPosition'=>'6',
         ));?>
+    </div>
+
+    <!-- Boxes for smartphones-->
+    <div class="row  hidden-sm  hidden-md hidden-lg ">
+        <div class="panel panel-primary panel-clickable" id="pannel-2" aria-data-url="/limesurvey/LimeSurveyNext/index.php/admin/survey/sa/listsurveys" style="opacity: 1; top: 0px;">
+            <div class="panel-heading">
+                <h3 class="panel-title"><?php eT('List surveys');?></h3>
+            </div>
+            <div class="panel-body">
+                <a href='<?php echo $this->createUrl("admin/survey/sa/listsurveys") ?>'>
+                    <span class="icon-list" style="font-size: 4em"></span>
+                </a><br><br>
+                <a href='<?php echo $this->createUrl("admin/survey/sa/listsurveys") ?>'><?php eT('List surveys');?></a>
+            </div>
+        </div>
+
+        <div class="panel panel-primary panel-clickable" id="pannel-3" aria-data-url="/limesurvey/LimeSurveyNext/index.php/admin/globalsettings" style="opacity: 1; top: 0px;">
+            <div class="panel-heading">
+                <h3 class="panel-title"><?php eT('Edit global settings');?></h3>
+            </div>
+            <div class="panel-body">
+                <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'>
+                    <span class="icon-settings" style="font-size: 4em">
+                    </span>
+                </a><br><br>
+                <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'><?php eT('Edit global settings');?></a>
+            </div>
+        </div>
+
     </div>
 </div>
 

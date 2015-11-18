@@ -86,17 +86,17 @@ class questiongroups extends Survey_Common_Action
             $aData['sExtension'] = $sExtension;
             //$aData['display']['menu_bars']['surveysummary'] = 'importgroup';
             $aData['sidebar']['state'] = "close";
-            
+
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-            
+
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'import_view', $aData);
         }
     }
 
     /**
      * Import a question group
-     * 
+     *
      */
     function importView($surveyid)
     {
@@ -108,22 +108,22 @@ class questiongroups extends Survey_Common_Action
             $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
             $aData['sidebar']['state'] = "close";
             $aData['sidebar']['questiongroups'] = true;
-            
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;           
+
+            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;
             $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveyid'] = $surveyid;
-            
-            
+
+
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-                    
+
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'importGroup_view', $aData);
-        }   
+        }
         else
         {
             Yii::app()->session['flashmessage'] = gT("You don't have enough permissions.");
             $this->getController()->redirect(array('admin/survey/sa/listquestiongroups/surveyid/' . $surveyid));
-        }     
+        }
     }
 
     /**
@@ -157,7 +157,7 @@ class questiongroups extends Survey_Common_Action
             $aData['sidebar']['state'] = "close";
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;            
+            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;
             $aData['surveybar']['savebutton']['form'] = true;
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'addGroup_view', $aData);
         }
@@ -247,27 +247,27 @@ class questiongroups extends Survey_Common_Action
                 // This line sets the newly inserted group as the new group
                 if (isset($groupid))
                     $gid = $groupid;
-                
+
                 $questions = new Question('search');
                 $questions->gid = $gid;
                 Yii::app()->setFlashMessage(gT("New question group was saved."));
-                 
+
                 if($questions->search()->itemCount<1)
                 {
                     Yii::app()->setFlashMessage(gT('You can now add a question in this group.'),'warning');
 
                                   sprintf(gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".gT("minitab method")."</a>");
 
-                    
+
                 }
 
-               
-                
+
+
             }
-        
+
             // http://local.lsinst/LimeSurvey_206/index.php/admin/survey/sa/view/surveyid/282267/gid/10
             // http://local.lsinst/LimeSurvey_206/index.php//282267/gid/10
-        
+
             $this->getController()->redirect(array('admin/questiongroups/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
     }
@@ -309,25 +309,25 @@ class questiongroups extends Survey_Common_Action
         $baselang = Survey::model()->findByPk($surveyid)->language;
         $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
         $aData['condarray'] = $condarray;
-        
+
         $grow = QuestionGroup::model()->findByPk(array('gid' => $gid, 'language' => $baselang));
         $grow = $grow->attributes;
-        
+
         $grow = array_map('flattenText', $grow);
-        
+
         $aData['surveyid'] = $surveyid;
         $aData['gid'] = $gid;
         $aData['grow'] = $grow;
-        
+
         $aData['sidebar']['questiongroups'] = true;
         $aData['sidebar']['group_name'] = $grow['group_name'];
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData['questiongroupbar']['buttons']['view'] = TRUE;
-        
-        //$aData['questiongroupbar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listquestiongroups/", array('surveyid'=>$surveyid));        
-        //$aData['questiongroupbar']['returnbutton']['text'] = gT('return to question group list');    
-        
+
+        //$aData['questiongroupbar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listquestiongroups/", array('surveyid'=>$surveyid));
+        //$aData['questiongroupbar']['returnbutton']['text'] = gT('return to question group list');
+
         $this->_renderWrappedTemplate('survey/QuestionGroups', 'group_view', $aData);
     }
 
@@ -409,7 +409,8 @@ class questiongroups extends Survey_Common_Action
             }
 
             $aData['sidebar']['questiongroups'] = true;
-            $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
+            $aData['questiongroupbar']['savebutton']['form'] = true;
+            $aData['questiongroupbar']['saveandclosebutton']['form'] = true;
             $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$gid;
 
             $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'editgroup';
@@ -487,7 +488,11 @@ class questiongroups extends Survey_Common_Action
             }
 
             Yii::app()->session['flashmessage'] = gT("Question group successfully saved.");
-            $this->getController()->redirect(array('admin/questiongroups/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
+
+            if(Yii::app()->request->getPost('close-after-save') === 'true')
+                $this->getController()->redirect(array('admin/questiongroups/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
+
+            $this->getController()->redirect(array('admin/questiongroups/sa/edit/surveyid/' . $surveyid . '/gid/' . $gid));
         }
     }
 

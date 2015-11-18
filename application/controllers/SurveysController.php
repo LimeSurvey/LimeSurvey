@@ -8,13 +8,16 @@
         public $layout = 'bare';
         public $defaultAction = 'publicList';
 
-        public function actionPublicList($sLanguage = null)
+        public function actionPublicList($lang = null)
         {
-            if (isset($sLanguage))
+            if (!empty($lang))// Control is a real language , in restrictToLanguages ?
             {
-                App()->setLanguage($sLanguage);
+                App()->setLanguage($lang);
             }
-
+            else
+            {
+                App()->setLanguage(App()->getConfig('defaultlang'));
+            }
             $this->render('publicSurveyList', array(
                 'publicSurveys' => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
                 'futureSurveys' => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),

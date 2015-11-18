@@ -1,18 +1,18 @@
 <?php
 /**
  * This file render the list of groups
- * It use the QuestionGroup model search method to build the data provider. 
- * 
+ * It use the QuestionGroup model search method to build the data provider.
+ *
  * @var $model  obj    the QuestionGroup model
- * @var $surveyid int 
+ * @var $surveyid int
  */
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 <div class="side-body">
-	<h3><?php eT('Question Groups in this survey'); ?></h3>
+	<h3><?php eT('Question groups in this survey'); ?></h3>
 	<div class="row">
 		<div class="col-lg-12 content-right">
-		    
+
 		    <!-- Search Box -->
             <div class="row">
                 <div class="col-lg-12">
@@ -30,18 +30,18 @@
                                     <?php echo $form->textField($model, 'group_name', array('class'=>'form-control')); ?>
                                 </div>
                                 <div class="col-sm-2">
-                                    <?php echo CHtml::submitButton('Search', array('class'=>'btn btn-success')); ?>
+                                    <?php echo CHtml::submitButton(gT('search'), array('class'=>'btn btn-success')); ?>
                                     <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('reset');?></a>
                                 </div>
                             </div>
                         <?php $this->endWidget(); ?>
-                    </div><!-- form -->				    
+                    </div><!-- form -->
 		        </div>
 		    </div>
-		    
+
 		    <!-- The table grid  -->
             <div class="row">
-                <div class="col-lg-12">				    
+                <div class="col-lg-12">
 		        	<?php
                         $this->widget('bootstrap.widgets.TbGridView', array(
 						    'id'=>'question-group-grid',
@@ -56,52 +56,52 @@
                                     array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')) .
                                 gT(' rows per page'),
 
-                            // Columns to dispplay							
+                            // Columns to dispplay
 							'columns' => array(
-							
+
                                 // Group Id
-								array(            
+								array(
 								    'name'=>'Group id',
 								    'value'=>'$data->gid',
 								    'htmlOptions' => array('class' => 'col-md-1'),
 								),
 
                                 // Group Order
-								array(            
+								array(
 								    'name'=>'Group Order',
 								    'value'=>'$data->group_order',
 								    'htmlOptions' => array('class' => 'col-md-1'),
 								),
 
                                 // Group Name
-								array(            
+								array(
 								    'name'=>'Group Name',
 								    'value'=>'$data->group_name',
 								    'htmlOptions' => array('class' => 'col-md-2'),
 								),
 
                                 // Description
-								array(            
+								array(
 								    'name'=>'Description',
 								    'type'=>'raw',
 								    'value'=>'$data->description',
 								    'htmlOptions' => array('class' => 'col-md-2'),
 								),
-								
+
                                 // Action buttons (defined in model)
-								array(            
+								array(
 								    'name'=>'',
 								    'type'=>'raw',
 								    'value'=>'$data->buttons',
 								    'htmlOptions' => array('class' => 'col-md-2 text-right'),
-								),								
-																								
+								),
+
 		  					),
 		  					'ajaxUpdate' => true,
-		   				)); 
+		   				));
 		        	?>
                 </div>
-            </div>        		        	
+            </div>
 		</div>
 	</div>
 </div>
@@ -113,4 +113,4 @@ jQuery(document).on("change", '#pageSize', function(){
     $.fn.yiiGridView.update('question-group-grid',{ data:{ pageSize: $(this).val() }});
     });
 });
-</script>         
+</script>

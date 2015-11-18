@@ -152,10 +152,7 @@ $(document).ready(function() {
         loadComplete: function()
         {
             $(this).removeClass('load');
-            /* Sneaky way of adding custom icons to jqGrid pager buttons */
-            $("#pager").find(".ui-add-to-cpdb-link").css({"background-image":"url("+imageurl+"addtocpdb_12.png)", "background-position":"0", "color":"black"});
-            $("#pager").find(".ui-participant-link").css({"background-image":"url("+imageurl+"cpdb_12.png)", "background-position":"0", "color":"black"});
-            $("#pager").find(".ui-bounceprocessing").css({"background-image":"url("+imageurl+"bounce_12.png)", "background-position":"0", "color":"black"});
+
             window.editing = false;
             jQuery(".token_edit").unbind('click').bind('click', function(e)
             {

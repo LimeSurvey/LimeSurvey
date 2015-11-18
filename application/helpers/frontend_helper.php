@@ -146,59 +146,15 @@ function makegraph($currentstep, $total)
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'lime-progress.css');
     $size = intval(($currentstep-1)/$total*100);
 
-    $graph = '<script type="text/javascript">
-    $(document).ready(function() {
-    $("#progressbar").progressbar({
-    value: '.$size.'
-    });
-    ;});';
-    if (App()->getLocale()->orientation == 'rtl')
-    {
-        $graph.='
-        $(document).ready(function() {
-        $("div.ui-progressbar-value").removeClass("ui-corner-left");
-        $("div.ui-progressbar-value").addClass("ui-corner-right");
-        });';
-    }
-    $graph.='
+    $graph='
     </script>
 
-    <div id="progress-wrapper">
-    <span class="hide">'.sprintf(gT('You have completed %s%% of this survey'),$size).'</span>
-    <div id="progress-pre">';
-    if (App()->getLocale()->orientation == 'rtl')
-    {
-        $graph.='100%';
-    }
-    else
-    {
-        $graph.='0%';
-    }
-
-    $graph.='</div>
-    <div id="progressbar"></div>
-    <div id="progress-post">';
-    if (App()->getLocale()->orientation == 'rtl')
-    {
-        $graph.='0%';
-    }
-    else
-    {
-        $graph.='100%';
-    }
-    $graph.='</div>
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="'.$size.'" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: '.$size.'%;">
+            '.$size.'%
+        </div>
     </div>';
 
-    if ($size == 0) // Progress bar looks dumb if 0
-
-    {
-        $graph.='
-        <script type="text/javascript">
-        $(document).ready(function() {
-        $("div.ui-progressbar-value").hide();
-        });
-        </script>';
-    }
 
     return $graph;
 }
@@ -257,10 +213,19 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
             $aListLang[$sLangCode]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');
         }
         $sSelected=App()->language;
-        $sHTMLCode=CHtml::label(gT("Choose another language"), 'lang',array('class'=>'hide label'));
-        $sHTMLCode.=CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass,'data-targeturl'=>$sTargetURL));
+
+        $sHTMLCode =CHtml::label(gT("Choose another language"), 'lang',array('class'=>'hide label'));
+
+        $sClass .= ' form-control ';
+
+        $sHTMLCode = '<div class="form-group">';
+        $sHTMLCode.= '<label for="language" class="control-label">'.gT("Choose another language").': </label>';
+
+        $sHTMLCode.= CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass,'data-targeturl'=>$sTargetURL));
+
+
         // We don't have to add this button if in previewmode
-        $sHTMLCode.= CHtml::htmlButton(gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'changelang jshide'));
+        $sHTMLCode.= CHtml::htmlButton(gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'changelang jshide btn btn-default'));
         return $sHTMLCode;
     }
     else
@@ -738,7 +703,7 @@ function sendSubmitNotifications($surveyid)
         $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,$redata,'admin_notification_subj',($thissurvey['anonymized'] == "Y"),NULL, array(), true);
         foreach ($aEmailNotificationTo as $sRecipient)
         {
-        if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid), $aRelevantAttachments))
+        if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid), $aRelevantAttachments))
             {
                 if ($debug>0)
                 {
@@ -770,7 +735,7 @@ function sendSubmitNotifications($surveyid)
         $sSubject=templatereplace($thissurvey['email_admin_responses_subj'],$aReplacementVars,$redata,'detailed_admin_notification_subj',$thissurvey['anonymized'] == "Y",NULL, array(), true);
         foreach ($aEmailResponseTo as $sRecipient)
         {
-        if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid), $aRelevantAttachments))
+        if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid), $aRelevantAttachments))
             {
                 if ($debug>0)
                 {
@@ -1185,11 +1150,8 @@ function buildsurveysession($surveyid,$preview=false)
     {
         $language_to_set = $thissurvey['language'];
     }
-
-    if (!isset($_SESSION['survey_'.$surveyid]['s_lang']))
-    {
-        SetSurveyLanguage($surveyid, $language_to_set);
-    }
+    // Always SetSurveyLanguage : surveys controller SetSurveyLanguage too, if different : broke survey (#09769)
+    SetSurveyLanguage($surveyid, $language_to_set);
 
 
     UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
@@ -1252,7 +1214,7 @@ function buildsurveysession($surveyid,$preview=false)
         if ($totalquestions == 0){
             echo '<li>'.gT("There are no questions in this survey.").'</li>';
         }
-        if ($iTotalGroupsWithoutQuestions == 0){
+        if ($iTotalGroupsWithoutQuestions > 0){
             echo '<li>'.gT("There are empty question groups in this survey - please create at least one question within a question group.").'</li>';
         }
         echo "</ul>"
@@ -1657,16 +1619,22 @@ function surveymover()
         $sMoveNext="";
     }
 
+    $sClass .= " btn btn-default btn-lg ";
+
     // Construction of mover
+    $sMovePrevButton = '';
     if($sMovePrev){
         $sLangMoveprev=gT("Previous");
-        $sSurveyMover.= CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass));
+        //$sSurveyMover.= CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass));
+        $sMovePrevButton = CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass));
     }
     if($sMovePrev && $sMoveNext){
         $sSurveyMover .= " ";
     }
 
+    $sMoveNextButton = '';
     if($sMoveNext){
+
         if($sMoveNext=="movesubmit"){
             $sLangMovenext=gT("Submit");
             $sAccessKeyNext='l';// Why l ?
@@ -1674,9 +1642,12 @@ function surveymover()
             $sLangMovenext=gT("Next");
             $sAccessKeyNext='n';
         }
-        $sSurveyMover.= CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass));
+
+        //$sSurveyMover.= CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass));
+        $sMoveNextButton = CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass));
      }
-    return $sSurveyMover;
+    //return $sSurveyMover;
+    return array('sMovePrevButton' => $sMovePrevButton, 'sMoveNextButton'=>$sMoveNextButton);
 }
 
 /**
@@ -1740,7 +1711,7 @@ function doAssessment($surveyid, $returndataonly=false)
                         {
                             if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
                             {
-                                $aAttributes=getQuestionAttributeValues($field['qid'],$field['type']);
+                                $aAttributes=getQuestionAttributeValues($field['qid']);
                                 $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
                                 $total=$total+(int)$aAttributes['assessment_value'];
                             }
@@ -1931,6 +1902,8 @@ function checkCompletedQuota($surveyid,$return=false)
         $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update 
         foreach ($aQuotasInfo as $aQuotaInfo)
         {
+            if(count($aQuotaInfo['members'])===0)
+                continue;
             $iMatchedAnswers=0;
             $bPostedField=false;
             // Array of field with quota array value
@@ -2022,9 +1995,9 @@ function checkCompletedQuota($surveyid,$return=false)
     if ($sAction == "2")
     {
         $sQuotaStep= isset($_SESSION['survey_'.$surveyid]['step'])?$_SESSION['survey_'.$surveyid]['step']:0; // Surely not needed
-        $sNavigator = CHtml::htmlButton(gT("Previous"),array('type'=>'submit','id'=>"moveprevbtn",'value'=>$sQuotaStep,'name'=>'move','accesskey'=>'p','class'=>"submit button"));
+        $sNavigator = CHtml::htmlButton(gT("Previous"),array('type'=>'submit','id'=>"moveprevbtn",'value'=>$sQuotaStep,'name'=>'move','accesskey'=>'p','class'=>"submit button btn btn-default"));
         //$sNavigator .= " ".CHtml::htmlButton(gT("Submit"),array('type'=>'submit','id'=>"movesubmit",'value'=>"movesubmit",'name'=>"movesubmit",'accesskey'=>'l','class'=>"submit button"));
-        $sHtmlQuotaMessage.= CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey'));
+        $sHtmlQuotaMessage.= CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','class'=>'survey-form-container QuotaMessage'));
         $sHtmlQuotaMessage.= templatereplace(file_get_contents($sTemplatePath."/navigator.pstpl"),array('NAVIGATOR'=>$sNavigator,'SAVE'=>''),$aDataReplacement);
         $sHtmlQuotaMessage.= CHtml::hiddenField('sid',$surveyid);
         $sHtmlQuotaMessage.= CHtml::hiddenField('token',$sClientToken);// Did we really need it ?
@@ -2120,7 +2093,11 @@ function display_first_page() {
     $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
 
     // Fill some necessary var for template
-    $navigator = surveymover();
+    $aNavigator = surveymover();
+    $moveprevbutton = $aNavigator['sMovePrevButton'];
+    $movenextbutton = $aNavigator['sMoveNextButton'];
+    $navigator = $moveprevbutton.' '.$movenextbutton;
+    
     $sitename = Yii::app()->getConfig('sitename');
     $languagechanger=makeLanguageChangerSurvey(App()->language);
 
@@ -2143,10 +2120,7 @@ function display_first_page() {
         echo templatereplace(file_get_contents($sTemplatePath."/privacy.pstpl"),array(),$redata,'frontend_helper[2765]')."\n";
     }
     echo templatereplace(file_get_contents($sTemplatePath."navigator.pstpl"),array(),$redata,'frontend_helper[2767]');
-    if ($thissurvey['active'] != "Y")
-    {
-        echo "<p style='text-align:center' class='error'>".gT("This survey is currently not active. You will not be able to save your responses.")."</p>\n";
-    }
+
     echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
     if (isset($token) && !empty($token)) {
         echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
@@ -2238,7 +2212,6 @@ function SetSurveyLanguage($surveyid, $sLanguage)
 **/
 function getMove()
 {
-#
     $aAcceptedMove=array('default','movenext','movesubmit','moveprev','saveall','loadall','clearall','changelang');
     // We can control is save and load are OK : todo fix according to survey settings
     // Maybe allow $aAcceptedMove in Plugin

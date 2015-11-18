@@ -349,7 +349,7 @@ class AdminController extends LSYii_Controller
     * @param string $class
     * @return void
     */
-    public function _showMessageBox($title,$message,$class="header ui-widget-header")
+    public function _showMessageBox($title,$message,$class="message-box-error")
     {
         $aData['title'] = $title;
         $aData['message'] = $message;

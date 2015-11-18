@@ -1003,15 +1003,14 @@ class tokens extends Survey_Common_Action
             $aData['surveyid'] = $iSurveyId;
             if(!$invalidtokencount)
             {
-                $aData['success'] = false;
-                $message=array('title' => gT("Success"),
-                'message' => gT("New dummy tokens were added.") . "<br /><br />\n<input type='button' value='"
-                . gT("Display tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId") . "', '_top')\" />\n"
-                );
+                $aData['success'] = true;
+                Yii::app()->session['flashmessage'] = gT("New dummy tokens were added.");
+                //admin/tokens/sa/browse/surveyid/652779//
+                $this->getController()->redirect(array("/admin/tokens/sa/browse/surveyid/{$iSurveyId}"));
             }
             else
             {
-                $aData['success'] = true;
+                $aData['success'] = false;
                 $message= array(
                 'title' => gT("Failed"),
                 'message' => "<p>".sprintf(gT("Only %s new dummy tokens were added after %s trials."),$newDummyToken,$invalidtokencount)
@@ -1020,6 +1019,7 @@ class tokens extends Survey_Common_Action
                 . gT("Display tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId") . "', '_top')\" />\n"
                 );
             }
+
             $this->_renderWrappedTemplate('token',  array('message' => $message),$aData);
 
         }
@@ -1243,13 +1243,10 @@ class tokens extends Survey_Common_Action
             $ls->surveyls_attributecaptions = json_encode($captions[$language]);
             $ls->save();
         }
-        $aData['thissurvey'] = getSurveyInfo($iSurveyId);
-        $aData['surveyid'] = $iSurveyId;
-        $aData['sidebar']['state'] = "close";
-        $this->_renderWrappedTemplate('token', array( 'message' => array(
-        'title' => gT('Token attribute descriptions were successfully updated.'),
-        'message' => "<br /><input type='button' class='btn btn-lg btn-default' value='" . gT('Back to attribute field management.') . "' onclick=\"window.open('" . $this->getController()->createUrl("/admin/tokens/sa/managetokenattributes/surveyid/$iSurveyId") . "', '_top')\" />"
-        )), $aData);
+
+        Yii::app()->session['flashmessage'] = gT('Token attribute descriptions were successfully updated.');
+        //admin/tokens/sa/browse/surveyid/652779//
+        $this->getController()->redirect(array("/admin/tokens/sa/managetokenattributes/surveyid/{$iSurveyId}"));
     }
 
     /**
@@ -2405,7 +2402,7 @@ class tokens extends Survey_Common_Action
             'title' => gT("Delete Tokens Table"),
             'message' => gT("If you delete this table tokens will no longer be required to access this survey.") . "<br />" . gT("A backup of this table will be made if you proceed. Your system administrator will be able to access this table.") . "<br />\n"
             . sprintf('("%s")<br /><br />', $newtableDisplay)
-            . "<input class='btn btn-default' type='submit' value='"
+            . "<input class='btn btn-danger' type='submit' value='"
             . gT("Delete Tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/kill/surveyid/{$iSurveyId}/ok/Y") . "', '_top')\" />\n"
             . "<input class='btn btn-default' type='submit' value='"
             . gT("Cancel") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/{$iSurveyId}") . "', '_top')\" />\n"

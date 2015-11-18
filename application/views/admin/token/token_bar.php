@@ -110,6 +110,15 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                                 <?php eT("Send email reminder"); ?>
                             </a>
                         </li>
+
+                        <!-- Edit email template -->
+                        <!-- Send email invitation -->
+                        <li>
+                            <a href="<?php echo $this->createUrl("admin/emailtemplates/sa/index/surveyid/$surveyid"); ?>" >
+                                <span class="fa fa-envelope-o"></span>
+                                <?php eT("Edit email templates"); ?>
+                            </a>
+                        </li>
                         <?php endif; ?>
 
                         <li role="separator" class="divider"></li>
@@ -150,20 +159,16 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
             <!-- Save buttons -->
             <?php if(isset($token_bar['savebutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-button" data-use-form-id="<?php if (isset($token_bar['savebutton']['useformid'])){ echo '1';}?>" data-form-to-save="<?php if (is_string($token_bar['savebutton']['form'])) {echo $token_bar['savebutton']['form']; }?>">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-ok" ></span>
                     <?php eT("Save");?>
                 </a>
 
-                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/282267{$surveyid}"); ?>" role="button">
-                    <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
-                    <?php eT("Save and close");?>
-                </a>
             <?php endif;?>
 
             <!-- Close -->
             <?php if(isset($token_bar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $this->createUrl($token_bar['closebutton']['url']); ?>" role="button">
-                    <span class="glyphicon glyphicon-close" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-close" ></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
@@ -171,7 +176,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
             <!-- Return -->
             <?php if(isset($token_bar['returnbutton'])):?>
                 <a class="btn btn-default" href="<?php echo $token_bar['returnbutton']['url']; ?>" role="button">
-                    <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-step-backward" ></span>
                     <?php echo $token_bar['returnbutton']['text'];?>
                 </a>
             <?php endif;?>

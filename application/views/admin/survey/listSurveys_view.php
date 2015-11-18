@@ -38,7 +38,7 @@
                                 <option value="N" <?php if( $model->active=="N"){echo "selected";}?>><?php eT('No');?></option>
                             </select>
                     </div>
-                            <?php echo CHtml::submitButton('Search', array('class'=>'btn btn-success')); ?>
+                            <?php echo CHtml::submitButton(gT('search'), array('class'=>'btn btn-success')); ?>
                             <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listsurveys');?>" class="btn btn-warning"><?php eT('reset');?></a>
 
                 <?php $this->endWidget(); ?>
@@ -67,7 +67,7 @@
                         array(
                             'name' => 'Survey id',
                             'value'=>'$data->sid',
-                            'htmlOptions' => array('class' => 'col-md-1'),
+                            'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
                         ),
 
                         array(
@@ -79,25 +79,25 @@
                         array(
                             'name' => 'Creation date',
                             'value'=>'$data->creationdate',
-                            'htmlOptions' => array('class' => 'col-md-1'),
+                            'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
                         ),
 
                         array(
                             'name' => 'Owner',
                             'value'=>'$data->owner->users_name',
-                            'htmlOptions' => array('class' => 'col-md-1'),
+                            'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
                         ),
 
                         array(
                             'name' => 'Anonymized responses',
                             'value'=>'$data->anonymizedResponses',
-                            'htmlOptions' => array('class' => 'col-md-1'),
+                            'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
                         ),
 
                         array(
                             'name' => 'Active',
                             'value'=>'$data->activeWord',
-                            'htmlOptions' => array('class' => 'col-md-1'),
+                            'htmlOptions' => array('class' => 'col-md-1  hidden-xs'),
                         ),
 
                         array(
@@ -115,6 +115,12 @@
                         array(
                             'name' => 'Total',
                             'value'=>'$data->countTotalAnswers',
+                            'htmlOptions' => array('class' => 'col-md-1'),
+                        ),
+
+                        array(
+                            'name' => 'Tokens available',
+                            'value'=>'$data->hasTokens',
                             'htmlOptions' => array('class' => 'col-md-1'),
                         ),
 

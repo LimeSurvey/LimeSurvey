@@ -198,19 +198,22 @@
             <?php } ?>
         </div>
 
-        <div id='labelsetbrowser' class='labelsets-update' style='display:none;'>
-            <div style='float:left; width:260px;'>
+        <div id='labelsetbrowser' class='labelsets-update row' style='display:none;'>
+            <div class='col-xs-5'>
                 <label for='labelsets'><?php eT('Available label sets:'); ?></label>
-                <select id='labelsets' size='10' style='width:250px;'><option>&nbsp;</option></select>
+                <select id='labelsets' size='10' style='width:250px;'>
+                    <option>&nbsp;</option>
+                </select>
                 <p class='button-list'>
-                    <button id='btnlsreplace' type='button'><?php eT('Replace'); ?></button>
-                    <button id='btnlsinsert' type='button'><?php eT('Add'); ?></button>
-                    <button id='btncancel' type='button'><?php eT('Cancel'); ?></button>
+                    <button id='btnlsreplace' type='button' class='btn btn-default'><?php eT('Replace'); ?></button>
+                    <button id='btnlsinsert' type='button' class='btn btn-default'><?php eT('Add'); ?></button>
+                    <button id='btncancel' type='button' class='btn btn-default'><?php eT('Cancel'); ?></button>
                 </p>
             </div>
-            <div id='labelsetpreview' style='float:right;width:500px;'>
-            </div>
+
+            <div id='labelsetpreview' style='col-xs-6'></div>
         </div>
+
         <div id='quickadd' class='labelsets-update' style='display:none;'>
             <div style='float:left;'>
                 <label for='quickaddarea'><?php eT('Enter your subquestions:'); ?></label>

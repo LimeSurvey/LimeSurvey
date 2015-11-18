@@ -39,20 +39,20 @@
 
             <?php if(isset($usergroupbar['savebutton']['form'])):?>
                 <a class="btn btn-default" href="#" role="button" id="save-form-button" aria-data-form-id="<?php echo $usergroupbar['savebutton']['form']; ?>">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-ok" ></span>
                     <?php echo $usergroupbar['savebutton']['text'];?>
                 </a>
             <?php endif;?>
 
             <?php if(isset($usergroupbar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $this->createUrl($usergroupbar['closebutton']['url']); ?>" role="button">
-                    <span class="glyphicon glyphicon-close" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-close" ></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
             <?php if(isset($usergroupbar['returnbutton']['url'])):?>
                 <a class="btn btn-default pull-right" href="<?php echo $this->createUrl($usergroupbar['returnbutton']['url']); ?>" role="button">
-                    <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-backward" ></span>
                     &nbsp;&nbsp;
                     <?php echo $usergroupbar['returnbutton']['text']; ?>
                 </a>

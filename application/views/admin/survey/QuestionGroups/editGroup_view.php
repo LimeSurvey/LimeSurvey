@@ -1,4 +1,4 @@
-<?php 
+<?php
 	echo PrepareEditorScript(false, $this);
 	$count = 0;
 ?>
@@ -64,11 +64,9 @@
                         </div>
                     </div>
 
+                    <input type="submit" class="hidden" value="Save" role="button" aria-disabled="false">
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-
-

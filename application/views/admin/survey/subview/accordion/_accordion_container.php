@@ -1,19 +1,19 @@
 <?php
 /**
- * Right accordion in the edit survey page 
+ * Right accordion in the edit survey page
  *
  * @var $data
  */
 ?>
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-    
+
     <!-- General Option -->
     <div class="panel panel-default" id="generaloptionsContainer">
         <div class="panel-heading" role="tab" id="headingOne">
             <h4 class="panel-title">
             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#generaloptions" aria-expanded="true" aria-controls="generaloptions">
-            <?php eT("General Option");?>
+            <?php eT("General option");?>
             </a>
             </h4>
         </div>
@@ -22,20 +22,20 @@
                 <?php $this->renderPartial('/admin/survey/subview/accordion/_generaloptions_panel', $data); ?>
             </div>
         </div>
-    </div>    
-    
+    </div>
+
     <!-- Presentation & navigation  -->
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingTwo">
             <h4 class="panel-title">
             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#presentationoptions" aria-expanded="false" aria-controls="presentationoptions">
               <?php  eT("Presentation & navigation"); ?>
-            </a>                        
+            </a>
             </h4>
         </div>
         <div id="presentationoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="presentationoptions">
             <div class="panel-body">
-                <?php $this->renderPartial('/admin/survey/subview/accordion/_presentation_panel', $data); ?>    
+                <?php $this->renderPartial('/admin/survey/subview/accordion/_presentation_panel', $data); ?>
             </div>
         </div>
     </div>
@@ -46,7 +46,7 @@
             <h4 class="panel-title">
             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#publicationoptions" aria-expanded="false" aria-controls="publicationoptions">
               <?php  eT("Publication & access control"); ?>
-            </a>                        
+            </a>
             </h4>
         </div>
         <div id="publicationoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="publicationoptions">
@@ -62,7 +62,7 @@
             <h4 class="panel-title">
             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#notificationoptions" aria-expanded="false" aria-controls="notificationoptions">
                 <?php  eT("Notification & data management"); ?>
-            </a>                        
+            </a>
             </h4>
         </div>
         <div id="notificationoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="notificationoptions">
@@ -78,7 +78,7 @@
             <h4 class="panel-title">
             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#tokensoptions" aria-expanded="false" aria-controls="tokensoptions">
                 <?php  eT("Tokens"); ?>
-            </a>                        
+            </a>
             </h4>
         </div>
         <div id="tokensoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tokensoptions">
@@ -88,16 +88,16 @@
         </div>
     </div>
 
-    <!-- Edition Mode -->    
+    <!-- Edition Mode -->
     <?php if($data['action']=='editsurveysettings'):?>
-        
+
         <!-- Panel integration -->
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingSix">
                 <h4 class="panel-title">
                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#integrationoptions" aria-expanded="false" aria-controls="resourcesoptions">
                     <?php  eT("Panel integration"); ?>
-                </a>                        
+                </a>
                 </h4>
             </div>
             <div id="integrationoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="integrationoptions">
@@ -105,15 +105,15 @@
                     <?php $this->renderPartial('/admin/survey/subview/accordion/_integration_panel', $data); ?>
                 </div>
             </div>
-        </div>                
-    
+        </div>
+
         <!-- Resources -->
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingSeven">
                 <h4 class="panel-title">
                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#resourcesoptions" aria-expanded="false" aria-controls="resourcesoptions">
                     <?php  eT("Resources"); ?>
-                </a>                        
+                </a>
                 </h4>
             </div>
             <div id="resourcesoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="resourcesoptions">
@@ -121,6 +121,6 @@
                     <?php $this->renderPartial('/admin/survey/subview/accordion/_resources_panel', $data); ?>
                 </div>
             </div>
-        </div>                
+        </div>
     <?php endif;?>
 </div>

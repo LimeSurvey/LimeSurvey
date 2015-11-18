@@ -111,8 +111,8 @@ function setPickerOptions(input)
     }
  
     // set minimum and maximum dates for calender
-    datemin=$('#datemin'+basename).val();
-    datemax=$('#datemax'+basename).val();
+    datemin=$('#datemin'+basename).text();
+    datemax=$('#datemax'+basename).text();
 
     return {
         // set minimum and maximum date

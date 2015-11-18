@@ -174,13 +174,13 @@ class GlobalSettings extends Survey_Common_Action
         $usertemplatethemerootdir = Yii::app()->getConfig("uploaddir").'/admintheme/'.$sAdmintheme;
         if ($usertemplatethemerootdir && file_exists($usertemplatethemerootdir) && is_dir($usertemplatethemerootdir) )
         {
-            $adminimagebaseurl = Yii::app()->getBaseUrl()."/upload/admintheme/$sAdmintheme/images/";
+            $adminimagebaseurl = Yii::app()->getBaseUrl(true)."/upload/admintheme/$sAdmintheme/images/";
             setGlobalSetting('adminimagebaseurl', $adminimagebaseurl);
             setGlobalSetting('adminimageurl', $adminimagebaseurl.'images/14/');
         }
         else
         {
-            $adminimagebaseurl = Yii::app()->getBaseUrl()."/styles/$sAdmintheme/images/";
+            $adminimagebaseurl = Yii::app()->getBaseUrl(true)."/styles/$sAdmintheme/images/";
             setGlobalSetting('adminimagebaseurl', $adminimagebaseurl);
             setGlobalSetting('adminimageurl', $adminimagebaseurl.'/14/');
         }

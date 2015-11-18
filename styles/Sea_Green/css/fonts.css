@@ -218,7 +218,7 @@ jQuery UI replacements
 */
 
 /* from participantdisplay.js */
-.ui-share-icon, .ui-addtosurvey-icon {
+.ui-share-icon {
     position: relative;
     top: 1px;
     display: inline-block;
@@ -229,9 +229,79 @@ jQuery UI replacements
     -webkit-font-smoothing: antialiased;
 
 }
-.ui-share-icon:before, .ui-addtosurvey-icon:before
+.ui-share-icon:before
 {
     content: "\e066";
+}
+
+
+/* for jQgrid */
+.ui-icon-plus, .ui-addtosurvey-icon {
+    font-family: 'icomoon';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+}
+
+.ui-icon-plus:before {
+    content: "\e800";
+}
+
+.ui-icon-minus, .ui-icon-refresh, .ui-icon-search, .ui-icon-extlink, .ui-icon-mail-closed, .ui-icon-mail-open, .ui-bounceprocessing, .ui-participant-link, .ui-icon-carat-1-w, .ui-icon-carat-1-e {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+.ui-icon-carat-1-w:before{
+    content: "\f060";
+}
+
+.ui-icon-carat-1-e:before{
+    content: "\f061";
+}
+
+.ui-icon-minus:before {
+    content: "\f068";
+}
+
+.ui-icon-refresh:before {
+    content: "\f021";
+}
+
+.ui-icon-search:before {
+     content: "\f002";
+}
+
+.ui-icon-extlink:before {
+     content: "\f0c1";
+}
+
+
+.ui-addtosurvey-icon:before {
+    content: "\e809";
+}
+.ui-icon-mail-closed:before {
+    content: "\f0e0 ";
+}
+
+.ui-icon-mail-open:before {
+    content: "\f003 ";
+}
+
+.ui-bounceprocessing:before {
+    content: "\f085";
+}
+
+.ui-participant-link:before {
+    content: "\f0c0";
 }
 
 /*

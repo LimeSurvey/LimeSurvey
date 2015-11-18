@@ -1324,7 +1324,7 @@
                 }
 
                 // individual subquestion relevance
-                if ($hasSubqs && 
+                if ($hasSubqs &&
                     $type!='|' && $type!='!' && $type !='L' && $type !='O'
                 )
                 {
@@ -1445,9 +1445,11 @@
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
                             $sq_names=array();
+                            $sq_eqPart=array();
                             foreach($subqs as $subq)
                             {
                                 $sq_names[] = $subq['varName'].".NAOK";
+                                $sq_eqPart[] = "intval(!is_empty({$subq['varName']}.NAOK))*{$subq['csuffix']}";
                             }
                             if (!isset($validationEqn[$questionNum]))
                             {
@@ -1457,7 +1459,7 @@
                             'qtype' => $type,
                             'type' => 'default',
                             'class' => 'default',
-                            'eqn' =>  'unique(' . implode(',',$sq_names) . ')',
+                            'eqn' =>  'unique(' . implode(',',$sq_names) . ') and count(' . implode(',',$sq_names) . ')==max('. implode(',',$sq_eqPart) .')',
                             'qid' => $questionNum,
                             );
                         }
@@ -3087,7 +3089,7 @@
                         $qtips['default']=$this->gT("Only numbers may be entered in these fields.");
                         break;
                     case 'R':
-                        $qtips['default']=$this->gT("All your answers must be different.");
+                        $qtips['default']=$this->gT("All your answers must be different and you must rank in order.");
                         break;
 // Helptext is added in qanda_help.php
 /*                  case 'D':
@@ -3158,7 +3160,7 @@
                             'atleast_1' => $this->gT("Please select at least one answer"),
                             'atmost_m' => $this->gT("Please select at most %s answers"),
                             'atmost_1' => $this->gT("Please select at most one answer"),
-                            '1' => $this->gT("Please select at most one answer"),
+                            '1' => $this->gT("Please select one answer"),
                             'n' => $this->gT("Please select %s answers"),
                             'between' => $this->gT("Please select between %s and %s answers")
                         );
@@ -4323,8 +4325,8 @@
         * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
         * @param integer $whichPrettyPrintIteration - if want to pretty-print the source string, which recursion  level should be pretty-printed
         * @param boolean $noReplacements - true if we already know that no replacements are needed (e.g. there are no curly braces)
-        * @param boolean $timeit 
-        * @param boolean $staticReplacement - return HTML string without the system to update by javascript 
+        * @param boolean $timeit
+        * @param boolean $staticReplacement - return HTML string without the system to update by javascript
         * @return string - the original $string with all replacements done.
         */
 
@@ -4838,11 +4840,11 @@
                     switch ($knownVar['type'])
                     {
                         case 'D': //DATE
-                            if (trim($value)=="")
+                            if (trim($value)=="" | $value=='INVALID')
                             {
                                 $value = NULL;
                             }
-                            elseif ($value!='INVALID')
+                            else
                             {
                                 $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
                                 $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
@@ -5162,7 +5164,7 @@
                     while (true)
                     {
                         $LEM->currentQset = array();    // reset active list of questions
-                        if (++$LEM->currentQuestionSeq >= $LEM->numQuestions) // Move next with finished, but without submit. 
+                        if (++$LEM->currentQuestionSeq >= $LEM->numQuestions) // Move next with finished, but without submit.
                         {
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
@@ -5609,7 +5611,7 @@
                     $LEM->StartProcessingPage();
                     if ($processPOST)
                         $updatedValues=$LEM->ProcessCurrentResponses();
-                    else 
+                    else
                         $updatedValues = array();
                     $message = '';
                     if (!$force && $LEM->currentQuestionSeq != -1 && $seq > $LEM->currentQuestionSeq)
@@ -6065,7 +6067,7 @@
                         // Relevance of subquestion for ranking question depend of the count of relevance of answers.
                         $iCountRank=(isset($iCountRank) ? $iCountRank+1 : 1);
                         // Relevant count is : Total answers less Unrelevant answers. subQrelInfo give only array with relevance equation, not this without any relevance.
-                        $iCountRelevant=isset($iCountRelevant) ? $iCountRelevant : count($sgqas)-count(array_filter($LEM->subQrelInfo[$qid],function($sqRankAnwsers){ return !$sqRankAnwsers['result']; })); 
+                        $iCountRelevant=isset($iCountRelevant) ? $iCountRelevant : count($sgqas)-count(array_filter($LEM->subQrelInfo[$qid],function($sqRankAnwsers){ return !$sqRankAnwsers['result']; }));
                         if($iCountRank >  $iCountRelevant)
                         {
                             $foundSQrelevance=true;
@@ -6311,7 +6313,8 @@
             $mandatoryTip = '';
             if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y'))
             {
-                $mandatoryTip = "<strong><br /><span class='errormandatory'>".$LEM->gT('This question is mandatory').'.  ';
+                //$mandatoryTip = "<strong><br /><span class='errormandatory'>".$LEM->gT('This question is mandatory').'.  ';
+                $mandatoryTip = "<p class='errormandatory alert alert-danger' role='alert'><span class='glyphicon glyphicon-exclamation-sign'></span>&nbsp" . $LEM->gT('This question is mandatory') . "</p>";
                 switch ($qInfo['type'])
                 {
                     case 'M':
@@ -6485,7 +6488,7 @@
                     $stringToParse = '';
                     foreach ($LEM->qid2validationEqn[$qid]['tips'] as $vclass=>$vtip)
                     {
-                        $stringToParse .= "<div id='vmsg_" . $qid  . '_' . $vclass . "' class='em_" . $vclass . " emtip'>" . $vtip . "</div>\n";
+                        $stringToParse .= "<div id='vmsg_" . $qid  . '_' . $vclass . "' class='em_" . $vclass . " emtip text-info'><span class='glyphicon glyphicon-info-sign'></span>  &nbsp" . $vtip . "</div>\n";
                     }
                     $prettyPrintValidTip = $stringToParse;
                     $validTip = $LEM->ProcessString($stringToParse, $qid,NULL,false,1,1,false,false);
@@ -6931,7 +6934,7 @@
                 foreach($LEM->runtimeTimings as $unit) {
                     $totalTime += $unit[1];
                 }
-                $LEM->debugTimingMsg .= "<table border='1'><tr><td colspan=2><b>Total time attributable to EM = " . $totalTime . "</b></td></tr>\n";
+                $LEM->debugTimingMsg .= "<table class='table' border='1'><tr><td colspan=2><b>Total time attributable to EM = " . $totalTime . "</b></td></tr>\n";
                 foreach ($LEM->runtimeTimings as $t)
                 {
                     $LEM->debugTimingMsg .= "<tr><td>" . $t[0] . "</td><td>" . $t[1] . "</td></tr>\n";
@@ -7197,6 +7200,14 @@
                                 $relParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
                                 $relParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
                                 $relParts[] = "    }\n";
+                                break;
+                            case 'R':
+                                $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));
+                                $relParts[] = " $('#question{$arg['qid']} .select-list select').each(function(){ \n";
+                                $relParts[] = "   if($(this).val()=='{$listItem}'){ \n";
+                                $relParts[] = "     $(this).val('').trigger('change'); \n";
+                                $relParts[] = "   }; \n";
+                                $relParts[] = " }); \n";
                                 break;
                             default:
                                 break;
@@ -7842,7 +7853,7 @@ EOST;
             }
 
             print "<h3>Note, if the <i>Vars Used</i> column is red, then at least one error was found in the <b>Source</b>. In such cases, the <i>Vars Used</i> list may be missing names of variables from sub-expressions containing errors</h3>";
-            print '<table border="1"><tr><th>Source</th><th>Pretty Print</th><th>Result</th><th>Vars Used</th></tr>';
+            print '<table class="table" border="1"><tr><th>Source</th><th>Pretty Print</th><th>Result</th><th>Vars Used</th></tr>';
             for ($i=0;$i<count($alltests);++$i)
             {
                 $test = $alltests[$i];
@@ -8012,7 +8023,7 @@ EOD;
             print "<h3>This is a test of dynamic relevance.</h3>";
             print "Enter your name and age, and try all the permutations of answers to whether you have or want children.<br />\n";
             print "Note how the text and sum of ages changes dynamically; that prior answers are remembered; and that irrelevant values are not included in the sum of ages.<br />";
-            print "<table border='1'><tr><td>";
+            print "<table class='table' border='1'><tr><td>";
             foreach ($argInfo as $arg)
             {
                 $rel = LimeExpressionManager::QuestionIsRelevant($arg['num']);
@@ -8025,7 +8036,7 @@ EOD;
                     print "<input type='hidden' id='" . $arg['name'] . "' name='" . $arg['name'] . "' value=''/></div>\n";
                 }
                 else {
-                    print "<table border='1' width='100%'>\n<tr>\n<td>[Q" . $arg['num'] . "] " . $arg['question'] . "</td>\n";
+                    print "<table class='table' border='1' width='100%'>\n<tr>\n<td>[Q" . $arg['num'] . "] " . $arg['question'] . "</td>\n";
                     switch($arg['type'])
                     {
                         case 'yesno':
@@ -9050,7 +9061,7 @@ EOD;
             $surveyname = templatereplace('{SURVEYNAME}',array('SURVEYNAME'=>$aSurveyInfo['surveyls_title']));
 
             $out = '<div id="showlogicfilediv" ><H3>' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</H3>\n";
-            $out .= "<table id='logicfiletable'>";
+            $out .= "<table class='table' id='logicfiletable'>";
 
             if (is_null($gid) && is_null($qid))
             {
@@ -9162,7 +9173,7 @@ EOD;
                     $attrs['other'] = $LEM->questionSeq2relevance[$qseq]['other'];
                 }
                 if (count($attrs) > 0) {
-                    $attrTable = "<table id='logicfileattributetable'><tr><th>" . $LEM->gT("Question attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
+                    $attrTable = "<table class='table' id='logicfileattributetable'><tr><th>" . $LEM->gT("Question attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
                     $count=0;
                     foreach ($attrs as $key=>$value) {
                         if (is_null($value) || trim($value) == '') {
@@ -10017,7 +10028,7 @@ EOD;
             $oToken = Token::model($iSurveyId)->findByAttributes(array(
                 'token' => $sToken
             ));
-            
+
             if ($oToken)
             {
                 foreach ($oToken->attributes as $attribute => $value)

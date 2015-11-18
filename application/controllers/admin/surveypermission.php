@@ -105,14 +105,14 @@ class surveypermission extends Survey_Common_Action {
                         //                  else {break;} //TODO Commented by lemeur
                         $surveysecurity .= "<tr>\n";
 
-                        $surveysecurity .= "<td>\n";
+                        $surveysecurity .= "<td class='col-xs-1'>\n";
 
                         if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','update'))
                         {
                             if($PermissionRow['uid']!=Yii::app()->user->getId() || Permission::model()->hasGlobalPermission('superadmin','read')) // Can not update own security
                             {
                                 $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/set/surveyid/{$surveyid}"), 'post', array('style'=>"display:inline;"))
-                                ."<button type='submit' class='btn btn-default'><span class='glyphicon glyphicon-pencil text-success' title='".gT("Edit permissions")."'></span></button>"
+                                ."<button type='submit' class='btn btn-default btn-xs'><span class='glyphicon glyphicon-pencil text-success' title='".gT("Edit permissions")."'></span></button>"
                                 ."<input type='hidden' name='action' value='setsurveysecurity' />"
                                 ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
                                 ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
@@ -122,7 +122,7 @@ class surveypermission extends Survey_Common_Action {
                         if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','delete'))
                         {
                             $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/delete/surveyid/{$surveyid}"), 'post', array('style'=>"display:inline;"))
-                            ."<button onclick='return confirm(\"".gT("Are you sure you want to delete this entry?","js")."\")' type='submit' class='btn btn-default'><span class='glyphicon glyphicon-trash text-warning' title='".gT("Delete")."'></span></button>"
+                            ."<button onclick='return confirm(\"".gT("Are you sure you want to delete this entry?","js")."\")' type='submit' class=' btn-xs btn btn-default'><span class='glyphicon glyphicon-trash text-warning' title='".gT("Delete")."'></span></button>"
                             ."<input type='hidden' name='action' value='delsurveysecurity' />"
                             ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
                             ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"

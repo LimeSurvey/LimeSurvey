@@ -8,16 +8,16 @@
        <input type="hidden" id="close-side-bar" />
     <?php endif;?>
 
-    <div class="absolute-wrapper"> </div>
+    <div class="absolute-wrapper hidden-xs"> </div>
     <!-- Menu -->
-    <div class="side-menu" id="sideMenu">
+    <div class="side-menu  hidden-xs" id="sideMenu">
 
-    <nav class="navbar navbar-default" role="navigation">
+    <nav class="navbar navbar-default  hidden-xs" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-        <div class="brand-wrapper">
+    <div class="navbar-header  hidden-xs">
+        <div class="brand-wrapper  hidden-xs">
             <!-- Hamburger -->
-            <button type="button" class="navbar-toggle">
+            <button type="button" class="navbar-toggle hidden-xs">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -25,12 +25,12 @@
             </button>
 
             <!-- Brand -->
-            <div class="brand-name-wrapper">
+            <div class="brand-name-wrapper  hidden-xs">
                 <a class="navbar-brand hideside toggleside" href="#">
                     <?php eT('General');?>
                 </a>
             </div>
-            <a class="btn btn-default hide-button hideside toggleside">
+            <a class="btn btn-default hide-button hideside toggleside  hidden-xs">
                 <span class="glyphicon glyphicon-chevron-left" id="chevronside"></span>
             </a>
         </div>
@@ -38,8 +38,8 @@
     </div>
 
     <!-- Main Menu -->
-    <div class="side-menu-container">
-        <ul class="nav navbar-nav sidemenuscontainer">
+    <div class="side-menu-container  hidden-xs">
+        <ul class="nav navbar-nav sidemenuscontainer  hidden-xs">
 
             <!-- Survey summary-->
             <li class="toWhite <?php if( isset($sidebar["survey_menu"]) ) echo 'active'; ?> ">
@@ -52,7 +52,7 @@
             <!-- Question & Groups-->
             <li class="panel panel-default dropdownlvl1" id="dropdown">
                 <a data-toggle="collapse" id="questions-groups-collapse" href="#dropdown-lvl1" <?php if( isset($sidebar["questiongroups"]) ) echo 'aria-expanded="true"'; ?>  >
-                    <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Question and Groups:');?>
+                    <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Questions and groups:');?>
                     <!-- <span class="glyphicon glyphicon-sort-by-order" id="sort-questions-button" aria-url="<?php echo $this->createUrl("admin/survey/sa/organize/surveyid/$surveyid"); ?>" ></span>-->
                    <span class="caret"></span>
                 </a>
@@ -86,16 +86,17 @@
 
                                                                     <?php if(count($aGroup['aQuestions'])):?>
                                                                         <?php foreach($aGroup['aQuestions'] as $question):?>
-
                                                                         <!-- Question  -->
-                                                                        <li class="toWhite">
-                                                                            <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$surveyid/gid/".$aGroup->gid."/qid/".$question->qid); ?>"">
-                                                                                <span class="question-collapse-title">
-                                                                                    <span class="glyphicon glyphicon-list"></span>
-                                                                                    <?php echo $question->title;?>
-                                                                                </span>
-                                                                            </a>
-                                                                        </li>
+                                                                            <?php if($question->parent_qid == 0):?>
+                                                                                <li class="toWhite">
+                                                                                    <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$surveyid/gid/".$aGroup->gid."/qid/".$question->qid); ?>"">
+                                                                                        <span class="question-collapse-title">
+                                                                                            <span class="glyphicon glyphicon-list"></span>
+                                                                                            <?php echo $question->title;?>
+                                                                                        </span>
+                                                                                    </a>
+                                                                                </li>
+                                                                            <?php endif;?>
                                                                         <?php endforeach; ?>
                                                                     <?php else:?>
                                                                         <li class="toWhite">

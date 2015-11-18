@@ -169,20 +169,20 @@
 
             <?php if(isset($fullpagebar['savebutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" aria-data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-ok" ></span>
                     <?php eT("Save");?>
                 </a>
             <?php endif;?>
 
             <?php if(isset($fullpagebar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $this->createUrl($fullpagebar['closebutton']['url']); ?>" role="button">
-                    <span class="glyphicon glyphicon-close" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-close" ></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
             <?php if(isset($fullpagebar['returnbutton']['url'])):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("/admin"); ?>" role="button">
-                    <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-backward" ></span>
                     &nbsp;&nbsp;
                     <?php eT("Return to survey administration."); ?>
                 </a>
@@ -198,8 +198,8 @@
 
 <?php if(!is_template_editable($templatename)):?>
     <div class="alert alert-info alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
+        <span class="glyphicon glyphicon-info-sign" ></span>&nbsp;&nbsp;&nbsp;
         <strong>
             <?php eT('Note: This is a standard template.');?>
         </strong>

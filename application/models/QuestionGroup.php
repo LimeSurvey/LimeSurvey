@@ -10,12 +10,12 @@
     * other free or open source software licenses.
     * See COPYRIGHT.php for copyright notices and details.
     *
-       *    Files Purpose: lots of common functions
+       *	Files Purpose: lots of common functions
     */
 
     class QuestionGroup extends LSActiveRecord
     {
-        
+
         public $aQuestions; // to stock array of questions of the group
         /**
         * Returns the static model of Settings table
@@ -190,23 +190,23 @@
             }
             return $command->query();
         }
-        
+
         public function getbuttons()
         {
             // Add question to this group
             $url = Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$this->sid/gid/$this->gid");
-            $button = '<a class="btn btn-default list-btn"  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-plus-sign text-success" aria-hidden="true"></span></a>';
+            $button = '<a class="btn btn-default list-btn"  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-plus-sign " ></span></a>';
 
             // Group edition
             // Edit
             $url = Yii::app()->createUrl("admin/questiongroups/sa/edit/surveyid/$this->sid/gid/$this->gid");
-            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Edit group').'"><span class="glyphicon glyphicon-pencil text-success" aria-hidden="true"></span></a>';            
+            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Edit group').'"><span class="glyphicon glyphicon-pencil " ></span></a>';
 
             // View summary
             $url = Yii::app()->createUrl("/admin/questiongroups/sa/view/surveyid/");
             $url .= '/'.$this->sid.'/gid/'.$this->gid;
-            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><span class="glyphicon glyphicon-list-alt text-success" aria-hidden="true"></span></a>';
-            
+            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><span class="glyphicon glyphicon-list-alt " ></span></a>';
+
             return $button;
         }
 
@@ -215,7 +215,7 @@
         public function search()
         {
             $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
-            
+
             $sort = new CSort();
             $sort->attributes = array(
               'Group id'=>array(
@@ -229,19 +229,19 @@
               'Group Name'=>array(
                 'asc'=>'group_name',
                 'desc'=>'group_name desc',
-              ),          
+              ),
             );
-            
+
             $criteria = new CDbCriteria;
             $criteria->condition='sid=:surveyid AND language=:language';
             $criteria->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
             $criteria->compare('group_name', $this->group_name, true);
-                                    
+
             $dataProvider=new CActiveDataProvider(get_class($this), array(
                     'criteria'=>$criteria,
-                    
+
                 'sort'=>$sort,
-                
+
                 'pagination'=>array(
                     'pageSize'=>$pageSize,
                 ),

@@ -6,47 +6,47 @@
 
 
 <div class="side-body" id="edit-question-body">
-    
+
     <!-- Page Title-->
     <h3>
-        <?php 
-                if ($adding) 
+        <?php
+                if ($adding)
                 {
                     eT("Add a new question");
-                } 
-                elseif ($copying) 
-                { 
+                }
+                elseif ($copying)
+                {
                     eT("Copy question");
-                } 
-                else 
+                }
+                else
                 {
                     eT("Edit question");
-                } 
-        ?>		
+                }
+        ?>
 	</h3>
-	
+
 	<div class="row">
 	    <!-- Form for the whole page-->
 	    <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30 form-horizontal','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
 		<?php if(!$adding):?>
-		    
+
 		<!-- The tabs & tab-fanes -->
 		<div class="col-lg-8 content-right">
             <?php $this->renderPartial('./survey/Question/question_subviews/_tabs',array('eqrow'=>$eqrow,'addlanguages'=>$addlanguages, 'surveyid'=>$surveyid, 'gid'=>NULL, 'qid'=>NULL, 'adding'=>$adding, 'aqresult'=>$aqresult, 'action'=>$action )); ?>
         </div>
 
-        <!-- The Accordion -->			        
+        <!-- The Accordion -->
         <div class="col-lg-4">
             <?php
-                // TODO : find why the $groups can't be generated from controller 
-            ?>                
+                // TODO : find why the $groups can't be generated from controller
+            ?>
             <div id='questionbottom'>
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="panel panel-default" id="questionTypeContainer">
                         <div class="panel-heading" role="tab" id="headingOne">
                           <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                             <?php eT("General Option");?>
+                             <?php eT("General option");?>
                             </a>
                           </h4>
                         </div>
@@ -68,37 +68,37 @@
                                                     $groups[$questionType['group']][$key] = $questionType['description'];
                                                 }
                                             ?>
-                                            
+
                                             <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
-                                            
+
                                             <div class="col-sm-8 btn-group" id="question_type_button" style="z-index: 1000">
                                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="z-index: 1000">
                                                     <?php foreach($groups as $name => $group):?>
                                                         <?php foreach($group as $type => $option):?>
                                                             <?php if($type == $eqrow['type']){echo '<span class="buttontext">' . $option . '</span>';}?>
-                                                        <?php endforeach;?>    
+                                                        <?php endforeach;?>
                                                     <?php endforeach;?>
                                                     &nbsp;&nbsp;&nbsp;<span class="caret"></span>
                                                 </button>
-                                                
+
                                                 <ul class="dropdown-menu" style="z-index: 1000">
-                                                    
+
                                                     <?php foreach($groups as $name => $group):?>
                                                         <small><?php echo $name;?></small>
-                                                       
+
                                                        <?php foreach($group as $type => $option):?>
                                                             <li>
                                                                 <a href="#" class="questionType" aria-data-value="<?php echo $type; ?>" <?php if($type == $eqrow['type']){echo 'active';}?>><?php echo $option;?></a>
                                                             </li>
-                                                        <?php endforeach;?>    
-                                                        
+                                                        <?php endforeach;?>
+
                                                         <li role="separator" class="divider"></li>
                                                     <?php endforeach;?>
-                                                    
+
                                                 </ul>
                                             </div>
                                         <?php else: ?>
-                                            <?php 
+                                            <?php
                                                 $aQtypeData=array();
                                                 foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
                                                 {
@@ -117,7 +117,7 @@
                                             ?>
                                         <?php endif; ?>
                                     </div>
-                                    
+
                                     <div  class="form-group">
                                         <label class="col-sm-4 control-label" for='gid'><?php eT("Question group:"); ?></label>
 										<div class="col-sm-8">
@@ -139,12 +139,12 @@
                                                 <?php if ($eqrow['other'] == "N" || $eqrow['other'] == "" ) { ?>
                                                     checked='checked'
                                                     <?php } ?>
-                                                />                                                
+                                                />
                                         <?php else:?>
-                                            <?php eT("Cannot be changed (survey is active)");?>    
-                                            <input type='hidden' name='other' value="<?php echo $eqrow['other']; ?>" />                                     
+                                            <?php eT("Cannot be changed (survey is active)");?>
+                                            <input type='hidden' name='other' value="<?php echo $eqrow['other']; ?>" />
                                         <?php endif;?>
-                                    </div>    
+                                    </div>
 
                                     <div id='MandatorySelection' class="form-group">
                                         <label class="col-sm-4 control-label"><?php eT("Mandatory:"); ?></label>
@@ -166,12 +166,12 @@
 											<input type='text' id='preg' name='preg' size='50' value="<?php echo $eqrow['preg']; ?>" />
 										</div>
                                     </div>
-                                </div>     
+                                </div>
                             </div>
                         </div>
                     </div>
-                
-                
+
+
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingTwo">
                             <h4 class="panel-title">
@@ -182,18 +182,18 @@
                         </div>
                         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                             <div class="panel-body">
-            
-                                
+
+
                                 <div id="advancedquestionsettingswrapper" >
                                     <div class="loader">
                                         <?php eT("Loading..."); ?>
                                     </div>
-                                
-                                    <div id="advancedquestionsettings"> 
+
+                                    <div id="advancedquestionsettings">
                                         <!-- Content append via ajax -->
                                     </div>
                                 </div>
-                                
+
                                 <br />
                             <br/>
                             </div>
@@ -201,16 +201,16 @@
                     </div>
                 </div>
             </div>
-                
-                
-                
-                
-                
-                
-                
-            </div>			        
-			        
-			        	
+
+
+
+
+
+
+
+            </div>
+
+
 
                 <?php if ($adding)
                     { ?>
@@ -230,24 +230,17 @@
                     <input type='hidden' id='qid' name='qid' value='<?php echo $qid; ?>' />
                     <p><button type='submit' class="saveandreturn hidden" name="redirection" value="edit"><?php eT("Save") ?> </button>
                     <input type='submit'  class="hidden" value='<?php eT("Save and close"); ?>' />
-                    <?php } ?>			        	
-			        
-			         <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' />	
+                    <?php } ?>
+
+			         <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' />
 			   </form>
-			
-			
-			
-			
-			
-			
+
+
+
+
+
+
 		</div>
 		<?php endif;?>
 	</div>
 </div>
-
-
-
-
-
-
-

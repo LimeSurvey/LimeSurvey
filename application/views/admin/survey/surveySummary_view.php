@@ -19,7 +19,7 @@
                         <!-- While survey is activated, you can't add or remove group or question -->
                         <?php if ($activated == "Y"): ?>
                             <div class="alert alert-warning alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
                                 <strong><?php eT('Warning!');?></strong> <?php eT('While survey is activated, you can\'t add or remove group or question');?>
                             </div>
 
@@ -27,14 +27,14 @@
 
                             <!-- To add questions, first, you must add a question group -->
                             <div class="alert alert-warning alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
                                 <strong><?php eT('Warning!');?></strong> <?php eT('To add questions, first, you must add a question group.');?>
                             </div>
 
                             <!-- If you want a single page survey, just add a single group, and switch on "Show questions group by group -->
                             <div class="alert alert-info alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
+                                <span class="glyphicon glyphicon-info-sign" ></span>&nbsp;&nbsp;&nbsp;
                                 <?php eT('If you want a single page survey, just add a single group, and switch on "Show questions group by group"');?>
                             </div>
                         <?php endif;?>
@@ -172,12 +172,37 @@
     <h3><?php eT('Survey summary'); ?></h3>
         <div class="row">
             <div class="col-lg-12 content-right">
-                <table class="items table" id='surveydetails'>
+
+                <!-- for very small screens -->
+                <div class="hidden-sm  hidden-md hidden-lg ">
+                    <p>
+                        <strong><?php eT("Title");?>:</strong><br/>
+                        <?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?>
+                    </p>
+
+                    <p>
+                        <strong><?php echo gT("Survey URL");?> :</strong><br/>
+                        <small><em><?php echo getLanguageNameFromCode($surveyinfo['language'],false); ?></em></small><br/>
+                            <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language'])); ?>
+                            <?php
+                                // TODO : move to controller
+                                $textLink = substr ( $tmp_url, 0 , 56 );
+                                if ( strlen($textLink) < strlen($tmp_url) )
+                                    $textLink .= '...';
+                            ?>
+                            <small><a href='<?php echo $tmp_url?>' target='_blank'><?php echo $textLink;?></a>
+                        </small>
+
+                    </p>
+                </div>
+
+                <!-- Table for big screens -->
+                <table class="items table hidden-xs" id='surveydetails'>
                     <thead>
 
                         <!-- Title -->
                         <tr>
-                            <th><?php eT("Title");?></th>
+                            <th><?php eT("Title");?>:</th>
                             <th><?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?></th>
                         </tr>
                     </thead>

@@ -40,28 +40,7 @@ class ParticipantAttributeName extends LSActiveRecord
      * @return ParticipantAttributeName
      */
     public static function model($class = __CLASS__) {
-        $model = parent::model($class);
-        $keys = $model->tableSchema->primaryKey;
-        if (is_array($keys) && count($keys)== 2) {
-            // Fix the primary key, needed for PgSQL http://bugs.limesurvey.org/view.php?id=6707
-            // First load the helper
-            Yii::app()->loadHelper('update/updatedb');
-            $dbType = Yii::app()->db->driverName;
-            if ($dbType == 'mysql') {
-                // Only for mysql first remove auto increment
-                alterColumn($model->tableName(), $model->primaryKey(), $model->tableSchema->getColumn($model->primaryKey())->dbType, false);
-            }
-            dropPrimaryKey('participant_attribute_names');// dropPrimaryKey add the prefix (not other ...)
-            addPrimaryKey($model->tableName(), (array) $model->primaryKey());
-            if ($dbType == 'mysql') {
-                // Add back auto increment
-                alterColumn($model->tableName(), $model->primaryKey(), 'autoincrement');
-            }
-            // Refresh all schema data now just to make sure
-            Yii::app()->db->schema->refresh();
-            $model->refreshMetaData();
-        }
-        return $model;
+        return parent::model($class);
     }
 
     /**

@@ -35,6 +35,9 @@ class index extends CAction {
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-touch-punch');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
+
+        App()->bootstrap->register();
+
         useFirebug();
 
         ob_start(function($buffer, $phase) {
@@ -62,7 +65,6 @@ class index extends CAction {
         $this->_loadRequiredHelpersAndLibraries();
 
         $param = $this->_getParameters(func_get_args(), $_POST);
-
         $surveyid = $param['sid'];
         Yii::app()->setConfig('surveyID',$surveyid);
         $thisstep = $param['thisstep'];
@@ -70,7 +72,8 @@ class index extends CAction {
         Yii::app()->setConfig('move',$move);
         $clienttoken = trim($param['token']);
         $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
-        if (is_null($thissurvey) && !is_null($surveyid)) $thissurvey = getSurveyInfo($surveyid);
+        if (is_null($thissurvey) && !is_null($surveyid))
+            $thissurvey = getSurveyInfo($surveyid);
 
         // unused vars in this method (used in methods using compacted method vars)
         @$loadname = $param['loadname'];
@@ -158,7 +161,6 @@ class index extends CAction {
         // recompute $redata since $saved_id used to be a global
         $redata = compact(array_keys(get_defined_vars()));
 
-
         if ( $this->_didSessionTimeOut($surveyid) )
         {
             // @TODO is this still required ?
@@ -182,11 +184,14 @@ class index extends CAction {
         {
             $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
         }
+        elseif(Survey::model()->findByPk($surveyid))
+        {
+            $sDisplayLanguage=Survey::model()->findByPk($surveyid)->language;
+        }
         else
         {
             $sDisplayLanguage=Yii::app()->getConfig('defaultlang');
         }
-
         //CHECK FOR REQUIRED INFORMATION (sid)
         if ($surveyid && $surveyExists)
         {
@@ -326,6 +331,7 @@ class index extends CAction {
                 Yii::app()->setConfig('move',"loadall");// Show loading form
             }
         }
+
         //Allow loading of saved survey
         if (Yii::app()->getConfig('move')=="loadall")
         {

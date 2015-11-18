@@ -14,7 +14,7 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
 </script>
 
 <div class="side-body">
-    <h3><span class="glyphicon glyphicon-stats" aria-hidden="true"></span> &nbsp;&nbsp;&nbsp; <?php eT("Statistics"); ?></h3>
+    <h3><span class="glyphicon glyphicon-stats"></span> &nbsp;&nbsp;&nbsp; <?php eT("Statistics"); ?></h3>
         <div class="row">
 
             <div class="col-lg-12 content-right">
@@ -147,7 +147,7 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
                         <div class="form-group col-sm-12">
 
                             <div class="alert alert-info alert-dismissible" role="alert">
-                                <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>×</span></button>
                                 <?php eT("Each question has its own graph type defined in its advanced settings.");?>
                                 <br/>
                                 <?php eT("With chart type selector, you can force the use of graph type for all selected questions)");?>

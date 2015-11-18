@@ -1,4 +1,6 @@
 $(document).ready(function(){
+
+
 if ($('#save-form-button').length>0){
     $("#save-form-button").on('click', function(){
         var formid = '#'+$(this).attr('aria-data-form-id');
@@ -38,8 +40,7 @@ if ($('#save-button').length > 0){
         var $form = getForm(this);
         closeAfterSaveInput.val("false");
         $form.append(closeAfterSaveInput);
-        $form.find('[type="submit"]').trigger('click');;
-        //$form.submit();
+        $form.find('[type="submit"]').first().trigger('click');
     });
 }
 
@@ -50,7 +51,8 @@ if ($('#save-and-close-button').length > 0){
         var $form = getForm(this);
         closeAfterSaveInput.val("true");
         $form.append(closeAfterSaveInput);
-        $form.submit();
+        //$form.submit();
+        $form.find('[type="submit"]').first().trigger('click');
     });
 }
 

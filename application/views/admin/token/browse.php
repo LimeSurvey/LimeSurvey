@@ -115,10 +115,10 @@
     { "name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":100, "align":"left", "editable":true},
     { "name":"lastname", "index":"lastname", "sorttype":"string", "sortable": true,"width":100, "align":"left", "editable":true},
     { "name":"email", "index":"email","align":"left","width":120, "sorttype":"string", "sortable": true, "editable":true},
-    { "name":"emailstatus", "index":"emailstatus","align":"left","width":70,"sorttype":"string", "sortable": true, "editable":true},
+    { "name":"emailstatus", "index":"emailstatus","align":"left","sorttype":"string", "sortable": true, "editable":true},
     { "name":"token", "index":"token","align":"left", "sorttype":"int", "sortable": true,"width":100,"editable":true},
     { "name":"language", "index":"language","align":"left", "sorttype":"int", "sortable": true,"width":55,"editable":true, "formatter":'select', "edittype":"select", "editoptions":{"value":"<?php echo $aLanguageNames; ?>"}},
-    { "name":"sent", "index":"sent","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"sent", "index":"sent","align":"left", "sorttype":"int", "sortable": true,"editable":true},
     { "name":"remindersent", "index":"remindersent","align":"left", "sorttype":"int", "sortable": true,"width":85,"editable":true},
     { "name":"remindercount", "index":"remindercount","align":"right", "sorttype":"int", "sortable": true,"width":85,"editable":true},
     { "name":"completed", "index":"completed","align":"left", "sorttype":"int", "sortable": true,"width":65,"editable":true},
@@ -140,24 +140,6 @@
 <div class="side-body">
 	<h3><?php eT("Survey participants",'js'); ?></h3>
 
-	<div class="row">
-		<div class="col-lg-12 content-right">
-
-		<div class='' id="displaytokenbar">
-		    <div class='row container-fluid'>
-		    	<div class="col-md-9">
-                    <span class="gridcontrol disabled databegin icon-databegin text-success" title='<?php eT("Show start..."); ?>'></span>
-					<span title='<?php eT("Show previous.."); ?>' class="gridcontrol disabled databack icon-databack text-success"></span>
-					<img src='<?php echo IMAGE_URL; ?>blank.gif' width='13' height='20' alt='' />
-					<span title='<?php eT("Show next.."); ?>' class="gridcontrol disabled dataforward icon-dataforward text-success"></span>
-					<span title='<?php eT("Show last.."); ?>' class="gridcontrol disabled dataend icon-dataend text-success" />
-			    </div>
-			    <div class="col-md-3">
-                    <label for='searchstring'><?php eT("Filter by") ?></label><input type='text' name='searchstring' id='searchstring' class='gridsearch' value="" />
-			    </div>
-		</div>
-	   </div>
-	</div>
 	<div  class="row">
 		<div class="col-lg-12" style="margin-top: 1em;">
 			<?php

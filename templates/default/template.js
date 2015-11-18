@@ -8,29 +8,29 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- * 
- * 
+ *
+ *
  * Description: Javascript file for templates. Put JS-functions for your template here.
- *  
- * 
+ *
+ *
  * $Id:$
  */
 
 
 /*
- * The function focusFirst puts the Focus on the first non-hidden element in the Survey. 
- * 
+ * The function focusFirst puts the Focus on the first non-hidden element in the Survey.
+ *
  * Normally this is the first input field (the first answer).
  */
 function focusFirst(Event)
 {
-	
+
 	$('#limesurvey :input:visible:enabled:first').focus();
 
 }
 /*
  * The focusFirst function is added to the eventlistener, when the page is loaded.
- * 
+ *
  * This can be used to start other functions on pageload as well. Just put it inside the 'ready' function block
  */
 
@@ -47,7 +47,7 @@ function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
 {
    var arVersion = navigator.appVersion.split("MSIE")
    var version = parseFloat(arVersion[1])
-   if ((version >= 5.5) && (version<7) && (document.body.filters)) 
+   if ((version >= 5.5) && (version<7) && (document.body.filters))
    {
       for(var i=0; i<document.images.length; i++)
       {
@@ -65,14 +65,48 @@ function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
             var strNewHTML = "<span " + imgID + imgClass + imgTitle
             + " style=\"" + "width:" + img.width + "px; height:" + img.height + "px;" + imgStyle + ";"
             + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
-            + "(src='" + img.src + "', sizingMethod='scale');\"></span>" 
+            + "(src='" + img.src + "', sizingMethod='scale');\"></span>"
             img.outerHTML = strNewHTML
             i = i-1
          }
       }
-   }    
+   }
 }
 
 $(document).ready(function(){
+
+    // Load survey button
+    if ($('#loadallbtnlink').length > 0){
+        $('#loadallbtnlink').on('click', function()
+        {
+            $('#loadallbtn').trigger('click');
+        });
+    }
+
+    // Save survey button
+    if ($('#saveallbtnlink').length > 0){
+        $('#saveallbtnlink').on('click', function()
+        {
+            $('#saveallbtn').trigger('click');
+        });
+    }
+
+    // clearall
+    if ($('#clearallbtnlink').length > 0){
+        $('#clearallbtnlink').on('click', function()
+        {
+            $('#clearall').trigger('click');
+        });
+    }
+
+    // Question index
+    if($('.linkToButton').length > 0){
+        $('.linkToButton').on('click', function()
+        {
+            event.preventDefault();
+            $btnToClick = $($(this).attr('data-button-to-click'));
+            $btnToClick.trigger('click');
+        });
+    }
 
 });

@@ -115,7 +115,7 @@
             <?php if(isset($questiongroupbar['savebutton']['form'])):?>
                 <!-- Save buttons -->
                 <a class="btn btn-success" href="#" role="button" id="save-button">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-ok"></span>
                     <?php eT("Save");?>
                 </a>
 
@@ -123,7 +123,7 @@
 
                     <!-- Save and close -->
                     <a id="save-and-close-button" class="btn btn-default" role="button">
-                        <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-saved"></span>
                         <?php eT("Save and close");?>
                     </a>
                 <?php endif; ?>
@@ -133,7 +133,7 @@
 
                 <!-- Close -->
                 <a class="btn btn-danger" href="<?php echo $this->createUrl($questiongroupbar['closebutton']['url']); ?>" role="button">
-                    <span class="glyphicon glyphicon-close" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-close"></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
@@ -142,7 +142,7 @@
 
                 <!-- return -->
                 <a class="btn btn-default" href="<?php echo $questiongroupbar['returnbutton']['url']; ?>" role="button">
-                    <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-step-backward"></span>
                     <?php echo $questiongroupbar['returnbutton']['text'];?>
                 </a>
             <?php endif;?>

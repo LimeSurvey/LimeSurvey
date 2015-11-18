@@ -24,6 +24,7 @@ class LSActiveRecord extends CActiveRecord
      * @return array
      */
     public function behaviors(){
+        $aBehaviors=array();
 		$sCreateFieldName=($this->hasAttribute('created')?'created':null);
         $sUpdateFieldName=($this->hasAttribute('modified')?'modified':null);
         $sDriverName = Yii::app()->db->getDriverName(); 
@@ -35,17 +36,20 @@ class LSActiveRecord extends CActiveRecord
         {
             $sTimestampExpression=new CDbExpression('NOW()');
         }
-        return array(
-			'PluginEventBehavior' => array(
-				'class' => 'application.models.behaviors.PluginEventBehavior'
-			),
-            'CTimestampBehavior' => array(
-                'class' => 'zii.behaviors.CTimestampBehavior',
-                'createAttribute' => $sCreateFieldName,
-                'updateAttribute' => $sUpdateFieldName,
-                'timestampExpression' =>  $sTimestampExpression
-            )
+        $aBehaviors['CTimestampBehavior'] = array(
+            'class' => 'zii.behaviors.CTimestampBehavior',
+            'createAttribute' => $sCreateFieldName,
+            'updateAttribute' => $sUpdateFieldName,
+            'timestampExpression' =>  $sTimestampExpression
         );
+        // Table plugins might not exist during a database upgrade so in that case disconnect events
+        if (Yii::app()->db->schema->getTable('{{plugins}}') !== null)
+        {
+            $aBehaviors['PluginEventBehavior']= array(
+                'class' => 'application.models.behaviors.PluginEventBehavior'
+            );
+        }
+        return $aBehaviors;
     }
     
     /**

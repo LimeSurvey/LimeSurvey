@@ -1,3 +1,8 @@
-<br />
-<span class="group-description">{GROUPDESCRIPTION}</span>
-<br /><br />
+<!-- Group description -->
+<div class="row" id="welcome-container">
+    <div class="col-sm-12 ">
+        <p class="group-description jumbotron">
+            {GROUPDESCRIPTION}
+        </p>
+    </div>
+</div>

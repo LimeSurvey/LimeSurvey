@@ -65,7 +65,7 @@ class UserAction extends Survey_Common_Action
         for ($i = 1; $i <= count($userlist); $i++)
             $noofsurveyslist[$i] = $this->_getSurveyCountForUser($userlist[$i]);
 
-        $aData['imageurl'] = IMAGE_BASE_URL;
+    //    $aData['imageurl'] = IMAGE_BASE_URL;
         $aData['noofsurveyslist'] = $noofsurveyslist;
 
         $aData['title_bar']['title'] = gT('User Control');
@@ -522,7 +522,7 @@ class UserAction extends Survey_Common_Action
                 unset($aBasePermissions['superadmin']);
             }
             $aData['aBasePermissions']=$aBasePermissions;
-            $aData['sImageURL'] = IMAGE_BASE_URL;
+            
 
             $aData['oUser'] =$oUser;
             App()->getClientScript()->registerPackage('jquery-tablesorter');

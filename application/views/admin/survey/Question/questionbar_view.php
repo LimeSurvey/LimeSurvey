@@ -167,12 +167,12 @@ $aReplacementData=array();
         <div class="col-md-5 text-right form-inline">
                 <?php if(isset($questionbar['savebutton']['form'])):?>
                     <a class="btn btn-success" href="#" role="button">
-                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-ok"></span>
                         <?php eT("Save");?>
                     </a>
 
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/282267{$surveyid}"); ?>" role="button">
-                        <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-saved"></span>
                         <?php eT("Save and close");?>
                     </a>
                 <?php endif;?>
@@ -190,7 +190,7 @@ $aReplacementData=array();
                 <?php if(isset($questionbar['closebutton']['url'])):?>
                     <!-- $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/{$surveyid}"); ?>-->
                     <a class="btn btn-danger" href="<?php echo $this->createUrl($questionbar['closebutton']['url']); ?>" role="button">
-                        <span class="glyphicon glyphicon-close" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-close"></span>
                         <?php eT("Close");?>
                     </a>
                 <?php endif;?>
@@ -198,7 +198,7 @@ $aReplacementData=array();
 
                 <?php if(isset($questionbar['returnbutton']['url'])):?>
                     <a class="btn btn-default" href="<?php echo $questionbar['returnbutton']['url']; ?>" role="button">
-                        <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-step-backward"></span>
                         <?php echo $questionbar['returnbutton']['text'];?>
                     </a>
                 <?php endif;?>

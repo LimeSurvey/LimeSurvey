@@ -294,9 +294,6 @@ function getTemplateList()
     return Template::getTemplateList();
 }
 
-/**
- * Return the list of admin theme from styles directory and from upload directory
- */
 function getAdminThemeList()
 {
     $standardtemplaterootdir=Yii::app()->getConfig("styledir");
@@ -308,19 +305,6 @@ function getAdminThemeList()
             if (!is_file("$standardtemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
             {
                 $list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
-            }
-        }
-        closedir($handle);
-    }
-
-    $usertemplatethemerootdir = Yii::app()->getConfig("uploaddir").'/admintheme';
-    if ($usertemplatethemerootdir && $handle = opendir($usertemplatethemerootdir))
-    {
-        while (false !== ($file = readdir($handle)))
-        {
-            if (!is_file("$usertemplatethemerootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
-            {
-                $list_of_files[$file] = $usertemplatethemerootdir.DIRECTORY_SEPARATOR.$file;
             }
         }
         closedir($handle);
@@ -1326,13 +1310,14 @@ function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for gro
     QuestionGroup::model()->updateGroupOrder($surveyid,$baselang);
 }
 
-function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites the cfieldname for a question after group change
+function fixMovedQuestionConditions($qid,$oldgid,$newgid, $iSurveyID=NULL) //Function rewrites the cfieldname for a question after group change
 {
-    $surveyid = Yii::app()->getConfig('sid');
+    if(!isset($iSurveyID))
+        $iSurveyID = Yii::app()->getConfig('sid');
     $qid=sanitize_int($qid);
     $oldgid=sanitize_int($oldgid);
     $newgid=sanitize_int($newgid);
-    Condition::model()->updateCFieldName($surveyid,$qid,$oldgid,$newgid);
+    Condition::model()->updateCFieldName($iSurveyID,$qid,$oldgid,$newgid);
     // TMSW Condition->Relevance:  Call LEM->ConvertConditionsToRelevance() when done
 }
 
@@ -2969,7 +2954,7 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Statistics'),
         'inputtype'=>'singleselect',
         'sortorder'=>102,
-        'options'=>array(0=>gT('Bar chart'), 1=>gT('Pie chart'), 2=>gT('Radar chart'),3=>gT('Line chart'),4=>gT('Polar chart'),5=>gT('Doughnut chart')),
+        'options'=>array(0=>gT('Bar chart'), 1=>gT('Pie chart')),
         'help'=>gT("Select the type of chart to be displayed"),
         'caption'=>gT("Chart type"),
         'default'=>0
@@ -3057,14 +3042,6 @@ function questionAttributes($returnByName=false)
         'default'=>0,
         'help'=>gT('Hide this question at any time. This is useful for including data using answer prefilling.'),
         'caption'=>gT('Always hide this question'));
-
-        $qattributes['cssclass']=array(
-        'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
-        'category'=>gT('Display'),
-        'sortorder'=>102,
-        'inputtype'=>'text',
-        'help'=>gT('Add additional CSS class(es) for this question. Use a space between different CSS class names.'),
-        'caption'=>gT('CSS class(es)'));
 
         $qattributes["max_answers"]=array(
         "types"=>"MPR1:;ABCEFKQ",
@@ -4219,7 +4196,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
         $qidtotitle[$qrow['qid']]=$qrow['title'];
-        $qresult = getQuestionAttributeValues($qrow['qid'],$qrow['type']);
+        $qresult = getQuestionAttributeValues($qrow['qid']);
         if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
         {
             $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -5160,7 +5137,7 @@ function cleanTempDirectory()
         }
     }
     $dir=  Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR;
-    $dp = opendir($dir) or die ('Could not open temporary upload directory :'.$dir);
+    $dp = opendir($dir) or die ('Could not open temporary upload directory');
     while ($file = readdir($dp)) {
         if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt') {
             @unlink($dir.$file);
@@ -5249,10 +5226,14 @@ function getUpdateInfo()
 
 /**
 * This function updates the actual global variables if an update is available after using getUpdateInfo
+*
+* Not used anymore.
+*
 * @return Array with update or error information
 */
 function updateCheck()
 {
+    /*
     $aUpdateVersions=getUpdateInfo();
 
     if (isset($aUpdateVersions['errorcode']))
@@ -5260,7 +5241,30 @@ function updateCheck()
         Yii::app()->setFlashMessage(sprintf(gT("Error when checking for new version: %s"),$aUpdateVersions['errorcode']).'<br>'.$aUpdateVersions['errorhtml'],'error');
         $aUpdateVersions=array();
     }
+    if (count($aUpdateVersions) && trim(Yii::app()->getConfig('buildnumber'))!='')
+    {
+        $sUpdateNotificationType = getGlobalSetting('updatenotification');
+        switch ($sUpdateNotificationType)
+        {
+            case 'stable':
+                // Only show update if in stable (master) branch
+                if (isset($aUpdateVersions['master'])) {
+                    $aUpdateVersion=$aUpdateVersions['master'];
+                    $aUpdateVersions=array_intersect_key($aUpdateVersions,array('master'=>'1'));
+                }
+                break;
 
+            case 'both':
+                // Show first available update
+                $aUpdateVersion=reset($aUpdateVersions);
+                break;
+
+            default:
+                // Never show a notification
+                $aUpdateVersions=array();
+                break;
+        }
+    }
 
     setGlobalSetting('updateversions',json_encode($aUpdateVersions));
 
@@ -5276,6 +5280,7 @@ function updateCheck()
 
     setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
     return $aUpdateVersions;
+     */
 }
 
 /**
@@ -7522,3 +7527,4 @@ function array_diff_assoc_recursive($array1, $array2) {
     }
 
 // Closing PHP tag intentionally omitted - yes, it is okay
+

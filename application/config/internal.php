@@ -31,7 +31,7 @@ $internalConfig = array(
     ),
 
     'params'=>array(
-        'defaultPageSize'=>5,
+        'defaultPageSize'=>10,
         'pageSizeOptions'=>array(5=>5,10=>10,20=>20,50=>50,100=>100),
     ),
 
@@ -47,19 +47,9 @@ $internalConfig = array(
     	'bootstrap.behaviors.*',
     	'yiiwheels.widgets.select2.WhSelect2',
 
-
-        //'bootstrap.helpers.TbHtml',
     ),
     'preload' => array ('log'),
     'components' => array(
-    /*
-        'bootstrap' => array(
-            'class' => 'application.core.LSBootstrap',
-            'responsiveCss' => false,
-            'jqueryCss' => false
-        ),
-	 */
-
 	  // yiistrap configuration
         'bootstrap' => array(
             'class' => 'bootstrap.components.TbApi',
@@ -85,7 +75,6 @@ $internalConfig = array(
         'assetManager' => array(
             'baseUrl' => '/tmp/assets',
             'basePath'=> dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'assets'
-
         ),
         'request' => array(
             'class'=>'LSHttpRequest',
@@ -144,6 +133,7 @@ $internalConfig = array(
 $result = CMap::mergeArray($internalConfig, $userConfig);
 /**
  * Some workarounds for erroneous settings in user config.php.
+ * seems not to be used anymore...
  */
 $result['defaultController']=($result['defaultController']=='survey') ? $internalConfig['defaultController'] : $result['defaultController'];
 /**

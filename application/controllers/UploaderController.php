@@ -14,13 +14,14 @@
 
 class UploaderController extends SurveyController {
     function run($actionID)
-    {
+    {   
         $surveyid=Yii::app()->session['LEMsid'];
         $oSurvey=Survey::model()->findByPk($surveyid);
         if(!$oSurvey)
             throw new CHttpException(400);// See for debug > 1
 
         $sLanguage=isset(Yii::app()->session['survey_'.$surveyid]['s_lang']) ? Yii::app()->session['survey_'.$surveyid]['s_lang']: "";
+        Yii::app()->setLanguage($sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");
         Yii::app()->loadHelper("database");
@@ -133,7 +134,7 @@ class UploaderController extends SurveyController {
             {
                 throw new CHttpException(400);// See for debug > 1
             }
-            $aAttributes=getQuestionAttributeValues($aFieldMap[$sFieldName]['qid'],$aFieldMap[$sFieldName]['type']);
+            $aAttributes=getQuestionAttributeValues($aFieldMap[$sFieldName]['qid']);
 
             $maxfilesize = (int) $aAttributes['max_filesize'];
             $valid_extensions_array = explode(",", $aAttributes['allowed_filetypes']);
@@ -294,8 +295,8 @@ class UploaderController extends SurveyController {
                      errorMaxReached: '" . gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
                      errorTooMuch: '" . gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
                      errorNeedMoreConfirm: '" . gT("You need to upload %s more files for this question.\nAre you sure you want to exit?",'js') . "',
-                     deleteFile : '".gt('Delete','js') . "',
-                     editFile : '".gt('Edit','js') . "',
+                     deleteFile : '".gT('Delete','js') . "',
+                     editFile : '".gT('Edit','js') . "',
                     };
         ";
         $aSurveyInfo=getSurveyInfo($surveyid, $sLanguage);

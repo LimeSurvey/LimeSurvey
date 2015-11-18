@@ -25,6 +25,7 @@ $(document).ready(function(){
     initializeAjaxProgress();
     tableCellAdapters();
 
+
     if(typeof(userdateformat) !== 'undefined')
         {
         $(".popupdate").each(function(i,e) {

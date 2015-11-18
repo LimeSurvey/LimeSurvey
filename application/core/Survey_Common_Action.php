@@ -234,22 +234,10 @@ class Survey_Common_Action extends CAction
         define('IMAGE_URL', IMAGE_BASE_URL.'/14/');
         define('BIG_IMAGE_URL', IMAGE_BASE_URL.'/213/');
 
-/*
-        //$aData['sImageURL'] = Yii::app()->getBaseUrl(true).'/images/lime-icons/328637/';
-        //$sAdmintheme = Yii::app()->getConfig('admintheme');
-        //define('IMAGE_BASE_URL', Yii::app()->getBaseUrl(true)."/styles/$sAdmintheme/images/");
-        define('IMAGE_BASE_URL', Yii::app()->getConfig('adminimagebaseurl'));
-
-
-        define('IMAGE_URL', IMAGE_BASE_URL.'/14/');
-        define('BIG_IMAGE_URL', IMAGE_BASE_URL.'/213/');
-*/
-
         //// This will be handle by subviews inclusions
         $aViewUrls = (array) $aViewUrls; $sViewPath = '/admin/';
         if (!empty($sAction))
             $sViewPath .= $sAction . '/';
-
 
 
         ob_start(); //// That was used before the MVC pattern, in procedural code. Will not be used anymore.
@@ -560,7 +548,8 @@ class Survey_Common_Action extends CAction
      */
     function _organizequestionbar($aData) {
         if (isset($aData['organizebar'])) {
-            $this->getController()->renderPartial("/admin/survey/Question/organizequestionbar_view", $aData);
+            $aData['questionbar'] = $aData['organizebar'];
+            $this->getController()->renderPartial("/admin/survey/Question/questionbar_view", $aData);
         }
     }
 

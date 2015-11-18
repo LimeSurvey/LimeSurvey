@@ -14,27 +14,28 @@
 
 class SurveyRuntimeHelper {
 
-
     protected function createFullQuestionIndex($LEMsessid, $surveyMode)
     {
         if ($surveyMode == 'group')
         {
-            $this->createFullQuestionIndexByGroup($LEMsessid);
+            return $this->createFullQuestionIndexByGroup($LEMsessid);
         }
         else
         {
-            $this->createFullQuestionIndexByQuestion($LEMsessid);
+            return $this->createFullQuestionIndexByQuestion($LEMsessid);
         }
 
     }
 
     protected function createFullQuestionIndexByGroup($LEMsessid)
     {
-        echo "\n\n<!-- PRESENT THE INDEX -->\n";
-        echo CHtml::openTag('div', array('id' => 'index'));
-        echo CHtml::openTag('div', array('class' => 'container'));
-        echo CHtml::tag('h2', array(), gT("Question index"));
-        echo CHtml::openTag('ol');
+        // Button will be shown inside the form. Not handled by replacement.
+        $htmlButtons = array();
+        $html = '';
+        $html .=  "\n\n<!-- PRESENT THE INDEX -->\n";
+        $html .=  CHtml::openTag('li', array('id' => 'index', 'class'=>'dropdown'));
+        $html .=  CHtml::link(gT("Question index").'&nbsp<span class="caret"></span>', array('#'), array('class'=>'dropdown-toggle', 'data-toggle'=>"dropdown", 'role'=>"button", 'aria-haspopup'=>"true", 'aria-expanded'=>"false"));
+        $html .=  CHtml::openTag('ul', array('class'=>'dropdown-menu'));
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $key => $group)
         {
             //						echo '<script>';
@@ -52,38 +53,50 @@ class SurveyRuntimeHelper {
                     $_SESSION[$LEMsessid]['step'] == $group['step'] ? 'current' : ''
 
                 ));
-                $sButtonSubmit=CHtml::htmlButton(gT('Go to this group'),array('type'=>'submit','value'=>$group['step'],'name'=>'move','class'=>'jshide'));
-                echo CHtml::tag('li', array(
+                $sButtonSubmit=CHtml::htmlButton(gT('Go to this group'),array('id'=>'button-'.$group['gid'],'type'=>'submit','value'=>$group['step'],'name'=>'move','class'=>'jshide'));
+
+                // Button
+                $htmlButtons[] =   CHtml::tag('li', array(
                     'data-gid' => $group['gid'],
                     'title' => $group['description'],
                     'class' => $classes,
                     ), $group['group_name'].$sButtonSubmit);
+
+                $html .=  CHtml::openTag('li');
+                $html .=  CHtml::link($group['group_name'], array('#'), array('class'=>'linkToButton', 'data-button-to-click'=>'#button-'.$group['gid'], ));
+                $html .= CHtml::closeTag('li');
             }
         }
-        echo CHtml::closeTag('ol');
-        echo CHtml::closeTag('div');
-        echo CHtml::closeTag('div');
+        $html .= CHtml::closeTag('ul');
+        $html .= CHtml::closeTag('li');
 
         App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
+
+        return array('menulist'=>$html, 'buttons'=>$htmlButtons );
     }
 
     protected function createFullQuestionIndexByQuestion($LEMsessid)
     {
-        echo CHtml::openTag('div', array('id' => 'index'));
-        echo CHtml::openTag('div', array('class' => 'container'));
-        echo CHtml::tag('h2', array(), gT("Question index"));
-        echo 'Question by question not yet supported, use incremental index.';
-        echo CHtml::closeTag('div');
-        echo CHtml::closeTag('div');
-
+        $html = '';
+        $html .=  CHtml::openTag('li', array('id' => 'index', 'class'=>'dropdown'));
+        $html .=  CHtml::link(gT("Question index").'&nbsp<span class="caret"></span>', array('#'), array('class'=>'dropdown-toggle',  'data-toggle'=>"dropdown", 'role'=>"button", 'aria-haspopup'=>"true", 'aria-expanded'=>"false"));
+        $html .=  CHtml::openTag('ul', array('class'=>'dropdown-menu'));
+        $html .=  CHtml::openTag('li');
+        $html .=  CHtml::link(gT("Question by question not yet supported, use incremental index."), array('#'));
+        $html .= CHtml::closeTag('li');
+        $html .= CHtml::closeTag('ul');
+        $html .= CHtml::closeTag('li');
         App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
+        return array('menulist'=>$html, 'buttons'=>array() );
     }
 
     protected function createIncrementalQuestionIndex($LEMsessid, $surveyMode)
     {
-        echo "\n\n<!-- PRESENT THE INDEX -->\n";
-
-        echo '<div id="index"><div class="container"><h2>' . gT("Question index") . '</h2>';
+        $html = '';
+        $html .=  "\n\n<!-- PRESENT THE INDEX -->\n";
+        $html .=  CHtml::openTag('li', array('id' => 'index', 'class'=>'dropdown'));
+        $html .=  CHtml::link(gT("Question index").'&nbsp<span class="caret"></span>', array('#'), array('class'=>'dropdown-toggle',  'data-toggle'=>"dropdown", 'role'=>"button", 'aria-haspopup'=>"true", 'aria-expanded'=>"false"));
+        $html .=  CHtml::openTag('ul', array('class'=>'dropdown-menu'));
 
         $stepIndex = LimeExpressionManager::GetStepIndexInfo();
         $lastGseq=-1;
@@ -106,7 +119,11 @@ class SurveyRuntimeHelper {
                     if ($grel)
                     {
                         $gtitle = LimeExpressionManager::ProcessString($g['group_name']);
-                        echo '<h3>' . flattenText($gtitle) . "</h3>";
+                        //$html .=  '<h3>' . flattenText($gtitle) . "</h3>";
+                        if ($n>0)
+                            $html .= '<li role="separator" class="divider"></li>';
+
+                        $html .= '<li class="dropdown-header"><a href="#">'.flattenText($gtitle).'</a></li>';
                     }
                     $lastGseq = $stepInfo['gseq'];
                 }
@@ -143,39 +160,46 @@ class SurveyRuntimeHelper {
             ++$v;
 
             $class = ($n == $_SESSION[$LEMsessid]['step'] - 1 ? 'current' : ($bGAnsw ? 'answer' : 'missing'));
-            if ($v % 2)
-                $class .= " odd";
 
             $s = $n + 1;
-            echo "<div class=\"row $class\">";
-            echo "<span class=\"hdr\">$v</span>";
-            echo "<span title=\"$sText\">$sText</span>";
-            echo CHtml::htmlButton($sButtonText,array('type'=>'submit','value'=>$s,'name'=>'move','class'=>'jshide'));
-            echo "</div>";
+
+            // Button
+            $htmlButtons[] = CHtml::htmlButton($sButtonText,array('type'=>'submit','value'=>$s,'name'=>'move','class'=>'jshide'));
+
+            $html .= '<li><a href="#">'.$sButtonText.'</a></li>';
         }
 
         if ($_SESSION[$LEMsessid]['maxstep'] == $_SESSION[$LEMsessid]['totalsteps'])
         {
-            echo CHtml::htmlButton(gT('Submit'),array('type'=>'submit','value'=>'movesubmit','name'=>'move','class'=>'submit button'));
+            $htmlButtons[] = CHtml::htmlButton(gT('Submit'),array('type'=>'submit','value'=>'movesubmit','name'=>'move','class'=>'submit button'));
+            $html .= '<li><a href="#">'.gT('Submit').'</a></li>';
         }
 
-        echo '</div></div>';
+        $html .= CHtml::closeTag('ul');
+        $html .= CHtml::closeTag('li');
+
         App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
 
+        return array('menulist'=>$html, 'buttons'=>array() );
     }
+
+
     /**
     * Main function
     *
     * @param mixed $surveyid
     * @param mixed $args
     */
-    function run($surveyid,$args) {
+    function run($surveyid,$args)
+    {
         global $errormsg;
         extract($args);
 
-        if (!$thissurvey) {
+        if (!$thissurvey)
+        {
             $thissurvey = getSurveyInfo($surveyid);
         }
+
         $LEMsessid = 'survey_' . $surveyid;
         $this->setJavascriptVar($surveyid);
 
@@ -184,6 +208,7 @@ class SurveyRuntimeHelper {
         {
             $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
         }
+
         // $LEMdebugLevel - customizable debugging for Lime Expression Manager
         $LEMdebugLevel = 0;   // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
         $LEMskipReprocessing=false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
@@ -262,16 +287,16 @@ class SurveyRuntimeHelper {
                 }
                 elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
                 {
-                    LimeExpressionManager::JumpTo(1, false, false, true);
-                    $_SESSION[$LEMsessid]['step']=1;
+                    $moveResult = LimeExpressionManager::NavigateForwards();
+                    //$_SESSION[$LEMsessid]['step']=1;
                 }
             }
             elseif($surveyid != LimeExpressionManager::getLEMsurveyId())
             {
+                $_SESSION[$LEMsessid]['step']=$_SESSION[$LEMsessid]['step']<0 ? 0 : $_SESSION[$LEMsessid]['step'];//$_SESSION[$LEMsessid]['step'] can not be less than 0, fix it always #09772
                 LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
                 LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
             }
-
             $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
 
             if (!isset($_SESSION[$LEMsessid]['totalsteps']))
@@ -840,7 +865,7 @@ class SurveyRuntimeHelper {
                     {
                         continue;
                     }
-                    $qidattributes = getQuestionAttributeValues($ia[0], $ia[4]);
+                    $qidattributes = getQuestionAttributeValues($ia[0]);
                     if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1))
                     {
                         continue;
@@ -910,6 +935,27 @@ class SurveyRuntimeHelper {
         sendCacheHeaders();
         doHeader();
 
+
+        /**
+         * Question Index
+         */
+        $aQuestionindexbuttons = null;
+        if (!$previewgrp && !$previewquestion)
+        {
+            if ($surveyMode != 'survey' && $thissurvey['questionindex'] == 1)
+            {
+                $aQuestionindex = $this->createIncrementalQuestionIndex($LEMsessid, $surveyMode);
+            }
+            elseif ($surveyMode != 'survey' && $thissurvey['questionindex'] == 2)
+            {
+                $aQuestionindex = $this->createFullQuestionIndex($LEMsessid, $surveyMode);
+            }
+            $questionindex = (isset($aQuestionindex['menulist']))?$aQuestionindex['menulist']:'';
+            $aQuestionindexbuttons = (isset($aQuestionindex['buttons']))?$aQuestionindex['buttons']:'';
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        // First call to templatereplace
         $redata = compact(array_keys(get_defined_vars()));
         echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata);
         $aPopup=array(); // We can move this part where we want now
@@ -954,11 +1000,11 @@ class SurveyRuntimeHelper {
         $hiddenfieldnames = implode("|", $inputnames);
 
         if (isset($upload_file) && $upload_file)
-            echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('enctype'=>'multipart/form-data','id'=>'limesurvey','name'=>'limesurvey', 'autocomplete'=>'off'))."\n
+            echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('enctype'=>'multipart/form-data','id'=>'limesurvey','name'=>'limesurvey', 'autocomplete'=>'off', 'class'=>'survey-form-container surveyRunTimeUploadFile'))."\n
             <!-- INPUT NAMES -->
             <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
         else
-            echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'limesurvey', 'name'=>'limesurvey', 'autocomplete'=>'off'))."\n
+            echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'limesurvey', 'name'=>'limesurvey', 'autocomplete'=>'off', 'class'=>'survey-form-container  surveyRunTime'))."\n
             <!-- INPUT NAMES -->
             <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
         // <-- END FEATURE - SAVE
@@ -993,22 +1039,23 @@ class SurveyRuntimeHelper {
         // echo "<input type='text' id='runonce' value='0' style='display: none;'/>";
 
         $showpopups=Yii::app()->getConfig('showpopups');
+
         //Display the "mandatory" message on page if necessary
         if (!$showpopups && $stepInfo['mandViolation'] && $okToShowErrors)
         {
-            echo "<p class='errormandatory'>" . gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</p>";
+            echo "<p class='errormandatory alert alert-danger' role='alert'>" . gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</p>";
         }
 
         //Display the "validation" message on page if necessary
         if (!$showpopups && !$stepInfo['valid'] && $okToShowErrors)
         {
-            echo "<p class='errormandatory'>" . gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</p>";
+            echo "<p class='errormandatory alert alert-danger' role='alert'>" . gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</p>";
         }
 
         //Display the "file validation" message on page if necessary
         if (!$showpopups && isset($filenotvalidated) && $filenotvalidated == true && $okToShowErrors)
         {
-            echo "<p class='errormandatory'>" . gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</p>";
+            echo "<p class='errormandatory alert alert-danger' role='alert'>" . gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</p>";
         }
 
         $_gseq = -1;
@@ -1026,14 +1073,14 @@ class SurveyRuntimeHelper {
 
             $redata = compact(array_keys(get_defined_vars()));
             Yii::app()->setConfig('gid',$gid);// To be used in templaterplace in whole group. Attention : it's the actual GID (not the GID of the question)
-            echo "\n\n<!-- START THE GROUP -->\n";
+            echo "\n\n<!-- START THE GROUP (in SurveyRunTime ) -->\n";
             echo "\n\n<div id='group-$_gseq'";
             $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($_gseq);
             if  ($gnoshow && !$previewgrp)
             {
                 echo " style='display: none;'";
             }
-            echo ">\n";
+            echo " class='col-lg-12'>\n";
             echo templatereplace(file_get_contents($sTemplatePath."startgroup.pstpl"), array(), $redata);
             echo "\n";
 
@@ -1043,7 +1090,7 @@ class SurveyRuntimeHelper {
             }
             echo "\n";
 
-            echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
+            echo "\n\n<!-- PRESENT THE QUESTIONS (in SurveyRunTime )  -->\n";
 
             foreach ($qanda as $qa) // one entry per QID
             {
@@ -1111,19 +1158,42 @@ class SurveyRuntimeHelper {
         echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
         LimeExpressionManager::FinishProcessingPage();
 
-        if (!$previewgrp && !$previewquestion)
-        {
-            $navigator = surveymover(); //This gets globalised in the templatereplace function
-            $redata = compact(array_keys(get_defined_vars()));
+/**
+* Navigator
+*/
+if (!$previewgrp && !$previewquestion)
+{
 
-            echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
-            echo templatereplace(file_get_contents($sTemplatePath."navigator.pstpl"), array(), $redata);
-            echo "\n";
+    $aNavigator = surveymover();
+    $moveprevbutton = $aNavigator['sMovePrevButton'];
+    $movenextbutton = $aNavigator['sMoveNextButton'];
+    $navigator = $moveprevbutton.' '.$movenextbutton;
 
-            if ($thissurvey['active'] != "Y")
-            {
-                echo "<p style='text-align:center' class='error'>" . gT("This survey is currently not active. You will not be able to save your responses.") . "</p>\n";
-            }
+
+    //$redata = compact(array_keys(get_defined_vars()));
+    $redata = compact(array_keys(get_defined_vars()));
+
+    echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
+    echo templatereplace(file_get_contents($sTemplatePath."navigator.pstpl"), array(), $redata);
+    echo "\n";
+
+    if ($thissurvey['active'] != "Y")
+    {
+        echo "<p style='text-align:center' class='error'>" . gT("This survey is currently not active. You will not be able to save your responses.") . "</p>\n";
+    }
+
+    /**
+     * Question Index buttons
+     */
+     if($aQuestionindexbuttons)
+     {
+         echo '<div class="hidden">';
+         foreach($aQuestionindexbuttons as $button)
+         {
+             echo $button;
+         }
+         echo '</div>';
+     }
 
 
             if ($surveyMode != 'survey' && $thissurvey['questionindex'] == 1)
@@ -1277,32 +1347,11 @@ class SurveyRuntimeHelper {
         $sTemplateUrl=Template::model()->getTemplateURL($oSurveyId->template);
         if(flattenText($aReplacement['QUESTIONHELP'], true,true) != '')
         {
-            if (file_exists($sTemplateDir . '/help.gif'))
-            {
-                $helpicon = $sTemplateUrl . '/help.gif';
-            }
-            elseif (file_exists($sTemplateDir . '/help.png'))
-            {
-                $helpicon = $sTemplateUrl . '/help.png';
-            }
-            else
-            {
-                $helpicon=Yii::app()->getConfig('imageurl')."/help.gif";
-            }
-            $aReplacement['QUESTIONHELP']="<img src='{$helpicon}' alt='Help' align='left' />".$aReplacement['QUESTIONHELP'];
+
+            $aReplacement['QUESTIONHELP']= '<div class="alert alert-info questionhelp"><span class="glyphicon glyphicon-question-sign"></span>&nbsp'.$aReplacement['QUESTIONHELP'].'</div>';
         }
         // Core value :the classes
         $aReplacement['QUESTION_CLASS'] = Question::getQuestionClass($sType);
-        
-        //get additional question classes from question attribute
-        $aQuestionAttributes = getQuestionAttributeValues($aQuestionQanda[4]);
-       
-        //add additional classes
-        if(isset($aQuestionAttributes['cssclass']))
-        {
-        	$aReplacement['QUESTION_CLASS'] .= " ".$aQuestionAttributes['cssclass'];
-        }
-        
         $aMandatoryClass = array();
         if ($lemQuestionInfo['info']['mandatory'] == 'Y')// $aQuestionQanda[0]['mandatory']=="*"
         {

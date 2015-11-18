@@ -1,22 +1,56 @@
-<div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS}">
-    <table class="question-wrapper">
-        <tr>
-            <td class="questiontext">
-                <span class="asterisk">{QUESTION_MANDATORY}</span><span class="qnumcode">{QUESTION_NUMBER} {QUESTION_CODE} </span>{QUESTION_TEXT}<br /><span class="questionhelp">{QUESTION_HELP}</span>
+<!-- Question -->
+<div class="row">
+    <div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS} col-sm-12">
+
+        <!-- Question title -->
+        <div class="row question-wrapper">
+            <div class="col-sm-12 questiontext">
+                <h4 class="qnumcode">
+                <span class="text-danger asterix">{QUESTION_MANDATORY}</span>{QUESTION_NUMBER} {QUESTION_CODE}  {QUESTION_TEXT}
+                </h4>
+            </div>
+        </div>
+
+        <!-- Question help -->
+        <div class="row question-wrapper">
+            <div class="col-sm-12 questionhelpcontainer">
+                <span class='glyphicon glyphicon-help'></span>{QUESTION_HELP}
+            </div>
+        </div>
+
+        <!-- Question man message -->
+        <div class="row question-wrapper">
+            <div class="col-sm-12 questionmancontainer ">
                 {QUESTION_MAN_MESSAGE}
+            </div>
+        </div>
+
+        <!-- Question valid message -->
+        <div class="row question-wrapper">
+            <div class="col-sm-12 questionvalidcontainer">
                 {QUESTION_VALID_MESSAGE}
+            </div>
+        </div>
+
+        <!-- Question file valid message -->
+        <div class="row question-wrapper">
+            <div class="col-sm-12 questionfilevalidcontainer">
                 {QUESTION_FILE_VALID_MESSAGE}
-            </td>
-        </tr>
-        <tr>
-            <td class="answer">
+            </div>
+        </div>
+
+        <!-- Answer -->
+        <div class="row question-wrapper">
+            <div class="col-sm-12 answer">
                 {ANSWER}
-            </td>
-        </tr>
-        <tr>
-            <td class="survey-question-help">
+            </div>
+        </div>
+
+        <!-- Question help -->
+        <div class="row question-wrapper">
+            <div class="col-sm-12 question-help">
                 {QUESTIONHELP}
-            </td>
-        </tr>
-    </table>
+            </div>
+        </div>
+    </div>
 </div>

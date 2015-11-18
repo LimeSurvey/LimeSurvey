@@ -29,10 +29,10 @@ class database extends Survey_Common_Action
     */
     function index($sa = null)
     {
-        
+
         $sAction=Yii::app()->request->getPost('action');
         $iSurveyID = (isset($_POST['sid'])) ? $_POST['sid'] : returnGlobal('sid') ;
-        
+
         $iQuestionGroupID=returnGlobal('gid');
         $iQuestionID=returnGlobal('qid');
         $sDBOutput = '';
@@ -129,8 +129,11 @@ class database extends Survey_Common_Action
                 echo $sDBOutput;
             }
             else
-            {                                           
-                $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+            {
+                if(Yii::app()->request->getPost('close-after-save') === 'true')
+                    $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+
+                $this->getController()->redirect(array('admin/questions/sa/editdefaultvalues/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
             }
         }
 
@@ -175,7 +178,7 @@ class database extends Survey_Common_Action
                         {
                             Yii::app()->setFlashMessage(gT("Failed to update answers"),'error');
                         }
-                    } 
+                    }
                     // Updating code (oldcode!==null) => update condition with the new code
                     $sOldCode=Yii::app()->request->getPost('oldcode_'.$iSortOrderID.'_'.$iScaleID);
                     if(isset($sOldCode) && $sCode !== $sOldCode) {
@@ -200,7 +203,12 @@ class database extends Survey_Common_Action
             }
             else
             {
+                if(Yii::app()->request->getPost('close-after-save') === 'true')
+                    $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+
                 $this->getController()->redirect(array('/admin/questions/sa/answeroptions/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+
+
             }
         }
 
@@ -292,7 +300,7 @@ class database extends Survey_Common_Action
                                 {
                                     $oSubQuestion->relevance=$aRelevance[0][$iPosition];
                                 }
-                                else 
+                                else
                                 {
                                     $oSubQuestion->relevance='';
                                 }
@@ -376,6 +384,9 @@ class database extends Survey_Common_Action
             }
             else
             {
+                if(Yii::app()->request->getPost('close-after-save') === 'true')
+                    $this->getController()->redirect(array('/admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+
                 $this->getController()->redirect(array('/admin/questions/sa/subquestions/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
             }
         }
@@ -389,7 +400,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                    
+
                 // For Bootstrap Version usin YiiWheels switch :
                 if( Yii::app()->request->getPost('mandatory') == '1' || Yii::app()->request->getPost('mandatory') == '0' )
                 {
@@ -398,8 +409,8 @@ class database extends Survey_Common_Action
                 else
                 {
                     $_POST['mandatory'] = Yii::app()->request->getPost('mandatory');
-                }                
-                
+                }
+
                 if (Yii::app()->request->getPost('questionposition',"")!="")
                 {
                     $iQuestionOrder= intval(Yii::app()->request->getPost('questionposition'));
@@ -426,7 +437,7 @@ class database extends Survey_Common_Action
                 $oQuestion->preg = Yii::app()->request->getPost('preg');
                 $oQuestion->help = $sQuestionHelp;
                 $oQuestion->other = Yii::app()->request->getPost('other');
-                
+
                 // For Bootstrap Version usin YiiWheels switch :
                 if( Yii::app()->request->getPost('mandatory') == '1' || Yii::app()->request->getPost('mandatory') == '0' )
                 {
@@ -436,8 +447,8 @@ class database extends Survey_Common_Action
                 {
                     $oQuestion->mandatory = Yii::app()->request->getPost('mandatory');
                 }
-                
-                
+
+
                 $oQuestion->relevance = Yii::app()->request->getPost('relevance');
                 $oQuestion->question_order = $iQuestionOrder;
                 $oQuestion->language = $sBaseLanguage;
@@ -644,14 +655,14 @@ class database extends Survey_Common_Action
             }
             else
             {
-                                                        //admin/survey/sa/view/surveyid/                
+                                                        //admin/survey/sa/view/surveyid/
                 $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
             }
         }
 
         if ($sAction == "updatequestion" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent','update'))
         {
-            
+
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
 
             $cqr=Question::model()->findByAttributes(array('qid'=>$iQuestionID));
@@ -849,10 +860,10 @@ class database extends Survey_Common_Action
                             }
                             //$condn = array('sid' => $surveyid, 'qid' => $qid, 'language' => $qlang);
                             $oQuestion = Question::model()->findByPk(array("qid"=>$iQuestionID,'language'=>$qlang));
-                            
-                            
-                            
-                            
+
+
+
+
                             foreach ($udata as $k => $v)
                                 $oQuestion->$k = $v;
 
@@ -964,7 +975,7 @@ class database extends Survey_Common_Action
         }
 
         /**
-         * updatesurveylocalesettings 
+         * updatesurveylocalesettings
          */
         if (($sAction == "updatesurveylocalesettings") && Permission::model()->hasSurveyPermission($iSurveyID,'surveylocale','update'))
         {
@@ -1010,7 +1021,7 @@ class database extends Survey_Common_Action
 
                 }
             }
-            Yii::app()->session['flashmessage'] = gT("Survey text elements successfully saved.");
+            //Yii::app()->session['flashmessage'] = gT("Survey text elements successfully saved.");
 
 
             ////////////////////////////////////////////////////////////////////////////////////
@@ -1018,7 +1029,7 @@ class database extends Survey_Common_Action
 
             // Preload survey
             $oSurvey=Survey::model()->findByPk($iSurveyID);
-            
+
              // Save plugin settings.
             $pluginSettings = App()->request->getPost('plugin', array());
             foreach($pluginSettings as $plugin => $settings)
@@ -1028,7 +1039,7 @@ class database extends Survey_Common_Action
                 $settingsEvent->set('survey', $iSurveyID);
                 App()->getPluginManager()->dispatchEvent($settingsEvent, $plugin);
             }
-    
+
             /* Start to fix some param before save (TODO : use models directly ?) */
             /* Date management */
             Yii::app()->loadHelper('surveytranslator');
@@ -1055,7 +1066,7 @@ class database extends Survey_Common_Action
                 $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
                 $expires=$datetimeobj->convert("Y-m-d H:i:s");
             }
-    
+
             // We have $oSurvey : update and save it
             $oSurvey->admin =  Yii::app()->request->getPost('admin');
             $oSurvey->expires =  $expires;
@@ -1109,17 +1120,17 @@ class database extends Survey_Common_Action
                 Yii::app()->setFlashMessage(gT("Survey could not be updated."),"error");
                 tracevar($oSurvey->getErrors());
             }
-    
+
             /* Reload $oSurvey (language are fixed : need it ?) */
             $oSurvey=Survey::model()->findByPk($iSurveyID);
-    
+
             /* Delete removed language cleanLanguagesFromSurvey do it already why redo it (cleanLanguagesFromSurvey must be moved to model) ?*/
             $aAvailableLanguage=$oSurvey->getAllLanguages();
             $oCriteria = new CDbCriteria;
             $oCriteria->compare('surveyls_survey_id',$iSurveyID);
             $oCriteria->addNotInCondition('surveyls_language',$aAvailableLanguage);
             SurveyLanguageSetting::model()->deleteAll($oCriteria);
-    
+
             /* Add new language fixLanguageConsistency do it ?*/
             foreach ($oSurvey->additionalLanguages as $sLang)
             {
@@ -1145,8 +1156,8 @@ class database extends Survey_Common_Action
             /* Language fix : remove and add question/group */
             cleanLanguagesFromSurvey($iSurveyID,implode(" ",$oSurvey->additionalLanguages));
             fixLanguageConsistency($iSurveyID,implode(" ",$oSurvey->additionalLanguages));
-    
-            // Url params in json 
+
+            // Url params in json
             $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
             SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$iSurveyID));
             if(isset($aURLParams))
@@ -1164,13 +1175,13 @@ class database extends Survey_Common_Action
                     if ($aURLParam['targetqid']=='') $aURLParam['targetqid']=NULL;
                     if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=NULL;
                     $aURLParam['sid']=$iSurveyID;
-    
+
                     $param = new SurveyURLParameter;
                     foreach ($aURLParam as $k => $v)
                         $param->$k = $v;
                     $param->save();
                 }
-            }            
+            }
 
             ////////////////////////////////////////
 
@@ -1182,7 +1193,10 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
+                if(Yii::app()->request->getPost('close-after-save') === 'true')
+                    $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
+
+                $this->getController()->redirect(array('/admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID));
             }
         }
 

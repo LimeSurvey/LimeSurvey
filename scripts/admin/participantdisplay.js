@@ -93,6 +93,7 @@ $(document).ready(function() {
 
     /* The main jqGrid, displaying Participants */
     jQuery("#displayparticipants").jqGrid({
+
         loadtext : sLoadText,
         align:"center",
         headertitles: true,

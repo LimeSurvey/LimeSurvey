@@ -169,28 +169,35 @@
                 $first=false; ?>
         </div>
         <?php } ?>
-    <div id='labelsetbrowser' class='labelsets-update' style='display:none;'><div style='float:left;width:260px;'>
-        <label for='labelsets'><?php eT('Available label sets:'); ?></label>
-        <select id='labelsets' size='10' style='width:250px;'><option>&nbsp;</option></select>
-        <p class='button-list'>
-        <button id='btnlsreplace' type='button'><?php eT('Replace'); ?></button>
-        <button id='btnlsinsert' type='button'><?php eT('Add'); ?></button>
-        <button id='btncancel' type='button'><?php eT('Cancel'); ?></button>
-        </p>
+
+    <div id='labelsetbrowser' class='labelsets-update row' style='display:none;'>
+        <div class='col-xs-5'>
+            <label for='labelsets'><?php eT('Available label sets:'); ?></label>
+            <select id='labelsets' size='10' style='width:250px;'>
+                <option>&nbsp;</option>
+            </select>
+            <p class='button-list'>
+                <button id='btnlsreplace' type='button' class='btn btn-default'><?php eT('Replace'); ?></button>
+                <button id='btnlsinsert' type='button' class='btn btn-default'><?php eT('Add'); ?></button>
+                <button id='btncancel' type='button' class='btn btn-default'><?php eT('Cancel'); ?></button>
+            </p>
         </div>
 
-        <div id='labelsetpreview' style='float:right;width:500px;'></div>
+        <div id='labelsetpreview' style='col-xs-6'></div>
+    </div>
+
+        <div id='quickadd' class='labelsets-update' style='display:none;'>
+            <div>
+                <label for='quickaddarea'><?php eT('Enter your answers:'); ?></label>
+                <textarea id='quickaddarea' class='tipme' title='<?php eT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab.'); ?>' cols='100' rows='10' style='width:570px;'></textarea>
+                <p class='button-list'>
+                    <button class='btn btn-default' id='btnqareplace' type='button'><?php eT('Replace'); ?></button>
+                    <button class='btn btn-default' id='btnqainsert' type='button'><?php eT('Add'); ?></button>
+                    <button class='btn btn-default' id='btnqacancel' type='button'><?php eT('Cancel'); ?></button>
+                </p>
+            </div>
         </div>
-        <div id='quickadd' class='labelsets-update' style='display:none;'><div style='float:left;'>
-        <label for='quickaddarea'><?php eT('Enter your answers:'); ?></label>
-        <textarea id='quickaddarea' class='tipme' title='<?php eT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab.'); ?>' cols='100' rows='30' style='width:570px;'></textarea>
-        <p class='button-list'>
-        <button id='btnqareplace' type='button'><?php eT('Replace'); ?></button>
-        <button id='btnqainsert' type='button'><?php eT('Add'); ?></button>
-        <button id='btnqacancel' type='button'><?php eT('Cancel'); ?></button>
-        </p>
-        </div>
-        </div>
+
         <div id="saveaslabel" style='display:none;'>
             <p>
                 <input type="radio" name="savelabeloption" id="newlabel">
@@ -201,8 +208,8 @@
                 <label for="replacelabel"><?php eT('Replace existing label set'); ?>
             </p>
             <p class='button-list'>
-                <button id='btnsave' type='button'><?php eT('Save'); ?></button>
-                <button id='btnlacancel' type='button'><?php eT('Cancel'); ?></button>
+                <button id='btnsave' class='btn btn-default' type='button'><?php eT('Save'); ?></button>
+                <button id='btnlacancel' class='btn btn-default' type='button'><?php eT('Cancel'); ?></button>
             </p>
         </div>
 

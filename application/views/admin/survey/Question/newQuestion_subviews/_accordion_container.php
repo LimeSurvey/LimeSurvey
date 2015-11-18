@@ -4,7 +4,7 @@
             <div class="panel-heading" role="tab" id="headingOne">
               <h4 class="panel-title">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                 <?php eT("General Option");?>
+                 <?php eT("General option");?>
                 </a>
               </h4>
             </div>
@@ -27,7 +27,7 @@
                                         $groups[$questionType['group']][$key] = $questionType['description'];
                                     }
                                 ?>
-                                
+
                                 <select class="form-control" id="question_type" style="display: none;">
                                 <?php foreach($groups as $name => $group):?>
                                     <optgroup label="<?php echo $name;?>">
@@ -37,35 +37,35 @@
                                     </optgroup>
                                 <?php endforeach;?>
                                 </select>
-                    
+
                                 <div class="btn-group" id="question_type_button" style="z-index: 1000">
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="z-index: 1000">
                                         <?php foreach($groups as $name => $group):?>
                                             <?php foreach($group as $type => $option):?>
                                                 <?php if($type == $eqrow['type']){echo $option;}?>
-                                            <?php endforeach;?>    
+                                            <?php endforeach;?>
                                         <?php endforeach;?>
                                         <span class="caret"></span>
                                     </button>
-                                    
+
                                     <ul class="dropdown-menu" style="z-index: 1000">
-                                        
+
                                         <?php foreach($groups as $name => $group):?>
                                             <small><?php echo $name;?></small>
-                                           
+
                                            <?php foreach($group as $type => $option):?>
                                                 <li>
                                                     <a href="#" class="questionType" <?php if($type == $eqrow['type']){echo 'active';}?>><?php echo $option;?></a>
                                                 </li>
-                                            <?php endforeach;?>    
-                                            
+                                            <?php endforeach;?>
+
                                             <li role="separator" class="divider"></li>
                                         <?php endforeach;?>
-                                        
+
                                     </ul>
                                 </div>
                             <?php else: ?>
-                                <?php 
+                                <?php
                                     $aQtypeData=array();
                                     foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
                                     {
@@ -84,40 +84,40 @@
                                 ?>
                             <?php endif; ?>
                         </div>
-                        
+
                         <div  class="form-group">
                             <label for='gid'><?php eT("Question group:"); ?></label>
                             <select name='gid' id='gid' class="form-control">
-                        
+
                                 <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
                             </select>
                         </div>
-                                    
+
                         <div  class="form-group" id="OtherSelection">
                             <label><?php eT("Option 'Other':"); ?></label>
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'optionother'));?>
                         </div>
-                
+
                         <div id='MandatorySelection'  class="form-group">
                             <label><?php eT("Mandatory:"); ?></label>
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'switchbuttontest'));?>                                            
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'switchbuttontest'));?>
                         </div>
-                        
+
                         <div  class="form-group">
                             <label for='relevance'><?php eT("Relevance equation:"); ?></label>
                             <textarea cols='1' class="form-control" rows='1' id='relevance' name='relevance' ></textarea>
                         </div>
-                        
+
                         <div id='Validation'  class="form-group">
                             <label for='preg'><?php eT("Validation:"); ?></label>
                             <input type='text' id='preg' name='preg' size='50' value="<?php echo $eqrow['preg']; ?>" />
                         </div>
-                    </div>     
+                    </div>
                 </div>
             </div>
         </div>
-    
-    
+
+
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingTwo">
                 <h4 class="panel-title">
@@ -131,17 +131,17 @@
                     <p>
                         <a id="showadvancedattributes"><?php eT("Show advanced settings"); ?></a><a id="hideadvancedattributes" style="display:none;"><?php eT("Hide advanced settings"); ?></a>
                     </p>
-                    
+
                     <div id="advancedquestionsettingswrapper" style="display:none;">
                         <div class="loader">
                             <?php eT("Loading..."); ?>
                         </div>
-                    
+
                         <div id="advancedquestionsettings">
                             <!-- Content append via ajax -->
                         </div>
                     </div>
-                    
+
                     <br />
                 <br/>
                 </div>

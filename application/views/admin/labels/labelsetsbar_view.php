@@ -79,7 +79,7 @@
 
                 <!-- return to admin pannel -->
                 <a class="btn btn-default pull-right" href="<?php echo $this->createUrl('admin/index'); ?>" role="button" style="display: block">
-                    <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-backward"></span>
                     &nbsp;&nbsp;
                     <?php eT('return to admin pannel'); ?>
                 </a>
@@ -108,12 +108,12 @@
             <!-- edition action buttons -->
             <?php if (isset($labelbar['buttons']['edition'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" aria-data-form-id="<?php echo $labelbar['savebutton']['form']; ?>">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-ok"></span>
 
                     <?php echo $labelbar['savebutton']['text'];?>
                 </a>
                 <a class="btn btn-danger" href="<?php echo $this->createUrl($labelbar['closebutton']['url']); ?>" role="button">
-                    <span class="glyphicon glyphicon-close" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-close" ></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>

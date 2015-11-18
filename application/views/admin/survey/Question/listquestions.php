@@ -2,7 +2,7 @@
    /**
     * This file render the list of groups
     */
-    
+
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 
@@ -24,7 +24,7 @@
                                     'class'=>'form-inline',
                                 ),
                             )); ?>
-                        
+
                             <!-- search input -->
                             <div class="form-group">
                                 <?php echo $form->label($model, 'search: ', array('class'=>'control-label' )); ?>
@@ -44,66 +44,72 @@
                                     </select>
                             </div>
 
-                            <?php echo CHtml::submitButton('Search', array('class'=>'btn btn-success')); ?>
-                            <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestions/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('reset');?></a>                            
-                            
+                            <?php echo CHtml::submitButton(gT('search'), array('class'=>'btn btn-success')); ?>
+                            <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestions/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('reset');?></a>
+
                         <?php $this->endWidget(); ?>
-                    </div><!-- form -->                 
+                    </div><!-- form -->
                 </div>
             </div>
-            
+
             <!-- Grid -->
-            <?php
-                $this->widget('bootstrap.widgets.TbGridView', array(
-                    'dataProvider' => $model->search(),
+            <div class="row">
+                <div class="col-lg-12">
 
-                    // Number of row per page selection
-                    'id' => 'question-grid',
-                    'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .
-                        CHtml::dropDownList(
-                            'pageSize',
-                            $pageSize,
-                            Yii::app()->params['pageSizeOptions'],
-                            array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')) .
-                        gT(' rows per page'),                    
-                    
-                    'columns' => array(
-                        array(
-                            'name' => 'Question id',
-                            'value'=>'$data->qid',
-                            'htmlOptions' => array('class' => 'col-md-1'),
-                        ),
-                        array(
-                            'name' => 'Question order',
-                            'value'=>'$data->question_order',
-                            'htmlOptions' => array('class' => 'col-md-2'),
-                        ),                                                            
-                        array(
-                            'name' => 'Title',
-                            'value'=>'$data->title',
-                            'htmlOptions' => array('class' => 'col-md-1'),
-                        ),
-                        array(
-                            'name' => 'Question',
-                            'value'=>'$data->question',
-                        ),
-                        array(
-                            'name' => 'Group',
-                            'value'=>'$data->groups->group_name',
-                            'htmlOptions' => array('class' => 'col-md-2'),
-                        ),                
+                    <?php
+                    $this->widget('bootstrap.widgets.TbGridView', array(
+                        'dataProvider' => $model->search(),
 
-                        array(            
-                            'name'=>'',
-                            'type'=>'raw',
-                            'value'=>'$data->buttons',
-                            'htmlOptions' => array('class' => 'col-md-2 text-right'),
-                        ),    
-                                                                                                        
-                    ),
-                    'ajaxUpdate' => false,
-                   )); 
-            ?>
+                        // Number of row per page selection
+                        'id' => 'question-grid',
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $pageSize,
+                                Yii::app()->params['pageSizeOptions'],
+                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')) .
+                                gT(' rows per page'),
+
+                                'columns' => array(
+                                    array(
+                                        'name' => 'Question id',
+                                        'value'=>'$data->qid',
+                                        'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
+                                    ),
+                                    array(
+                                        'name' => 'Question order',
+                                        'value'=>'$data->question_order',
+                                        'htmlOptions' => array('class' => 'col-md-2 hidden-xs'),
+                                    ),
+                                    array(
+                                        'name' => 'Title',
+                                        'value'=>'$data->title',
+                                        'htmlOptions' => array('class' => 'col-xs-1'),
+                                    ),
+                                    array(
+                                        'name' => 'Question',
+                                        'value'=>'strip_tags($data->question)',
+                                        'htmlOptions' => array('class' => 'col-xs-1 '),
+                                    ),
+                                    array(
+                                        'name' => 'Group',
+                                        'value'=>'$data->groups->group_name',
+                                        'htmlOptions' => array('class' => 'col-md-2 '),
+                                    ),
+
+                                    array(
+                                        'name'=>'',
+                                        'type'=>'raw',
+                                        'value'=>'$data->buttons',
+                                        'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right'),
+                                    ),
+
+                                ),
+                                'ajaxUpdate' => false,
+                            ));
+                            ?>
+                        </div>
+                    </div>
         </div>
     </div>
 </div>
@@ -116,7 +122,7 @@ jQuery(document).on("change", '#pageSize', function(){
     $.fn.yiiGridView.update('question-grid',{ data:{ pageSize: $(this).val() }});
     });
 });
-</script>    
+</script>
 
 
 
@@ -136,4 +142,3 @@ jQuery(document).on("change", '#pageSize', function(){
     </div>
   </div>
 </div>
-

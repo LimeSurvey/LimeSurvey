@@ -27,6 +27,7 @@ function db_upgrade_all($iOldDBVersion) {
 
     $sUserTemplateRootDir = Yii::app()->getConfig('usertemplaterootdir');
     $sStandardTemplateRootDir = Yii::app()->getConfig('standardtemplaterootdir');
+    echo str_pad(gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". gT('Please be patient...')."<br /><br />\n";
 
     $oDB = Yii::app()->getDb();
     $oDB->schemaCachingDuration=0; // Deactivate schema caching
@@ -1315,14 +1316,7 @@ function db_upgrade_all($iOldDBVersion) {
         {
             fixKCFinder184();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>184),"stg_name='DBVersion'");
-        }
-        
-        // LS 2.5 table start at 250
-        if ($iOldDBVersion < 250)
-        {
-            createBoxes250();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>250),"stg_name='DBVersion'");
-        }               
+        }        
         $oTransaction->commit();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
@@ -1340,10 +1334,11 @@ function db_upgrade_all($iOldDBVersion) {
         $oDB->schema->getTables();
         // clear the cache of all loaded tables
         $oDB->schema->refresh();
-        Yii::app()->session['dbError']=htmlspecialchars($e->getMessage());
+        echo '<br /><br />'.gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
         return false;
     }
     fixLanguageConsistencyAllSurveys();
+    echo '<br /><br />'.sprintf(gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
 }
 
@@ -1377,76 +1372,6 @@ function fixKCFinder184()
     rmdirr($sThirdPartyDir.'kcfinder/upload/.thumbs'); 
 }
 
-/**
- * Create boxes table
- */
-function createBoxes250()
-{
-    $oDB = Yii::app()->db;
-    $oDB->createCommand()->createTable('{{boxes}}',array(
-        'id' => 'pk',
-        'position' => 'integer',
-        'url' => 'text',
-        'title' => 'text',
-        'img' => 'text',
-        'desc' => 'text',
-        'page'=>'text',
-    ));
-                
-    $oDB->createCommand()->insert('{{boxes}}', array(
-        'position' =>  '1',
-        'url'      => 'admin/survey/sa/newsurvey' ,
-        'title'    => 'Creates survey' ,
-        'img'      => 'add.png' ,
-        'desc'     => 'Create a new survey' ,
-        'page'     => 'welcome',
-    )); 
-
-    $oDB->createCommand()->insert('{{boxes}}', array(
-        'position' =>  '2',
-        'url'      =>  'admin/survey/sa/listsurveys',
-        'title'    =>  'List surveys',
-        'img'      =>  'surveylist.png',
-        'desc'     =>  'List available surveys',
-        'page'     =>  'welcome',
-    )); 
-
-    $oDB->createCommand()->insert('{{boxes}}', array(
-        'position' =>  '3',
-        'url'      =>  'admin/globalsettings',
-        'title'    =>  'Global settings',
-        'img'      =>  'global.png',
-        'desc'     =>  'Edit global settings',
-        'page'     =>  'welcome',
-    )); 
-
-    $oDB->createCommand()->insert('{{boxes}}', array(
-        'position' =>  '4',
-        'url'      =>  'admin/update',
-        'title'    =>  'ComfortUpdate',
-        'img'      =>  'shield&#45;update.png',
-        'desc'     =>  'Stay safe and up to date',
-        'page'     =>  'welcome',
-    )); 
-
-    $oDB->createCommand()->insert('{{boxes}}', array(
-        'position' =>  '5',
-        'url'      =>  'admin/labels/sa/view',
-        'title'    =>  'Label sets',
-        'img'      =>  'labels.png',
-        'desc'     =>  'Edit label sets',
-        'page'     =>  'welcome',
-    )); 
-
-    $oDB->createCommand()->insert('{{boxes}}', array(
-        'position' =>  '6',
-        'url'      =>  'admin/templates/sa/view',
-        'title'    =>  'Template editor',
-        'img'      =>  'templates.png',
-        'desc'     =>  'Edit LimeSurvey templates',
-        'page'     =>  'welcome',
-    )); 
-}
 
 function upgradeSurveyTables181()
 {

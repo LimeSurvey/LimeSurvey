@@ -6,7 +6,7 @@
 ?>
 <div class='menubar surveybar' id="surveybarid">
     <div class='row container-fluid'>
-        <div class="col-md-12">
+        <div class="col-md-12 col-xs-6">
 
             <!-- Add a new group -->
             <?php if(isset($surveybar['buttons']['newgroup'])):?>
@@ -69,14 +69,14 @@
                     <!-- activate -->
                     <?php if($canactivate): ?>
                         <a class="btn btn-success" href="<?php echo $this->createUrl("admin/survey/sa/activate/surveyid/$surveyid"); ?>" role="button">
-                            <?php eT("Activate this Survey"); ?>
+                            <?php eT("Activate this survey"); ?>
                         </a>
 
                     <!-- can't activate -->
                     <?php else : ?>
                         <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                             <button type="button" class="btn btn-success btntooltip" disabled="disabled">
-                                <?php eT("Activate this Survey"); ?>
+                                <?php eT("Activate this survey"); ?>
                             </button>
                         </span>
                     <?php endif; ?>
@@ -86,13 +86,13 @@
                     <?php if($expired) : ?>
                         <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('This survey is active but expired.'); ?>">
                             <button type="button" class="btn btn-success  btntooltip" disabled="disabled">
-                                <?php eT("Activate this Survey"); ?>
+                                <?php eT("Activate this survey"); ?>
                             </button>
                         </span>
                     <?php elseif($notstarted) : ?>
                         <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title='<?php eT("This survey is active but has a start date."); ?>'>
                             <button type="button" class="btn btn-success  btntooltip" disabled="disabled" >
-                                <?php eT("Activate this Survey"); ?>
+                                <?php eT("Activate this survey"); ?>
                             </button>
                         </span>
                     <?php endif; ?>
@@ -244,7 +244,7 @@
 
 
                 <!-- TOOLS  -->
-                <div class="btn-group">
+                <div class="btn-group hidden-xs">
 
                     <!-- Main button dropdown -->
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -341,7 +341,7 @@
 
 
                 <!-- Display / Export -->
-                <div class="btn-group">
+                <div class="btn-group hidden-xs">
 
                     <!-- Main dropdown -->
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -442,7 +442,7 @@
 
                 <!-- Token -->
                 <?php if($tokenmanagement):?>
-                    <a class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>" role="button">
+                    <a class="btn btn-default  btntooltip hidden-xs" href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>" role="button">
                         <span class="glyphicon glyphicon-user"></span>
                         <?php eT("Token management");?>
                     </a>
@@ -527,7 +527,26 @@
                         </ul>
                     </div>
                 <?php endif;?>
+
+                <?php if($permission):?>
+                    <!-- List Groups -->
+                        <!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
+                        <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
+                            <span class="glyphicon glyphicon-list"></span>
+                            <?php eT("List question groups");?>
+                        </a>
+
+                    <!-- List Questions -->
+                        <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
+                            <span class="glyphicon glyphicon-list"></span>
+                            <?php eT("List questions");?>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+
             <?php endif;?>
+
         </div>
 
         <!-- right action buttons -->
@@ -535,16 +554,15 @@
             <?php if(isset($surveybar['savebutton']['form'])):?>
 
                 <!-- Save -->
-                <a class="btn btn-success" href="#" role="button" id="save-button" data-use-form-id="<?php if (isset($surveybar['savebutton']['useformid'])){ echo '1';}?>" data-form-to-save="<?php if (is_string($surveybar['savebutton']['form'])) {echo $surveybar['savebutton']['form']; }?>">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                <a class="btn btn-success" href="#" role="button" id="save-button" >
+                    <span class="glyphicon glyphicon-ok"></span>
                     <?php eT("Save");?>
                 </a>
 
-                <?php if(isset($surveybar['saveandclose'])):?>
-
+                <?php if(isset($surveybar['saveandclosebutton'])):?>
                     <!-- Save and close -->
-                    <a class="btn btn-default" href="#" role="button">
-                        <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
+                    <a class="btn btn-default" href="#" role="button" id='save-and-close-button'>
+                        <span class="glyphicon glyphicon-saved"></span>
                         <?php eT("Save and close");?>
                     </a>
                 <?php endif; ?>
@@ -554,7 +572,7 @@
 
                 <!-- Close -->
                 <a class="btn btn-danger" href="<?php echo $this->createUrl($surveybar['closebutton']['url']); ?>" role="button">
-                    <span class="glyphicon glyphicon-close" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-close"></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>

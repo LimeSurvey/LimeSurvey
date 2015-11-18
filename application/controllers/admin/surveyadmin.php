@@ -39,7 +39,7 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-    * Loads list of surveys and it's few quick properties.
+    * Loads list of surveys and its few quick properties.
     *
     * @access public
     * @return void
@@ -68,6 +68,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         $model->active = null;
+        
         // Filter state
         if (isset($_GET['active']))
         {
@@ -1028,6 +1029,8 @@ class SurveyAdmin extends Survey_Common_Action
 
             $aData['surveybar']['savebutton']['form'] = 'globalsetting';
             $aData['surveybar']['savebutton']['useformid'] = 'true';
+            $aData['surveybar']['saveandclosebutton']['form'] = true;
+
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;
 
             $aViewUrls[] = 'editLocalSettings_main_view';

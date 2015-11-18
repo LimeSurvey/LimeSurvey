@@ -18,36 +18,26 @@
  */
 function CheckForDBUpgrades($subaction = null)
 {
-	$dbversionnumber = Yii::app()->getConfig('dbversionnumber');
+    $dbversionnumber = Yii::app()->getConfig('dbversionnumber');
     $currentDBVersion=GetGlobalSetting('DBVersion');
-	$usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
-	$standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
+    $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
+    $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
     if (intval($dbversionnumber)>intval($currentDBVersion))
     {
         if(isset($subaction) && $subaction=="yes")
         {
             echo Yii::app()->getController()->_getAdminHeader();
-        	//echo "<div style='width:90%; padding:1% 5%;background-color:#eee;'>";
+            echo "<div style='width:90%; padding:1% 5%;background-color:#eee;'>";
             Yii::app()->loadHelper('update/updatedb');
             $result=db_upgrade_all(intval($currentDBVersion));
             if ($result)
             {
-                $data = '<div class="message-box jumbotron">';
-                $data .= '<h2 class="text-success">'.gT("Success").'</h2>';
-                $data .= "<p class='lead text-success'>".sprintf(gT("Database has been successfully upgraded to version %s"),$dbversionnumber).'</p>';
-                $data .= "<p><a class='btn btn-default btn-lg' href='".Yii::app()->getController()->createUrl("/admin")."'>".gT("Back to main menu")."</a></p></div>";
+                $data = "<br />".sprintf(gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
+                $data .= "<br /><a href='".Yii::app()->getController()->createUrl("/admin")."'>".gT("Back to main menu")."</a></div>";
             }
             else
             {
-                $data = '<div class="message-box jumbotron message-box-error">';
-                $data .= '<h2 class="text-warning">'.gT("Error").'</h2>';
-                $data .= '<p class="lead text-warning">';
-                $data .=     gT('An non-recoverable error happened during the update. Error details:');
-                $data .= '</p>';
-                $data .= '<p>'.Yii::app()->session['dbError'].'</p>';
-                $data .= "<p>".gT("Please fix this error in your database and try again")."</p>";
-                $data .= "<a class='btn btn-default btn-lg' href='".Yii::app()->getController()->createUrl("/admin/update/sa/db")."'>".gT("Continue")."</a>";
-                $data .= "</div>";
+                $data = "<p><a href='".Yii::app()->getController()->createUrl("/admin/databaseupdate/sa/db")."'>".gT("Please fix this error in your database and try again")."</a></p></div>";
             }
             return $data;
         }
@@ -60,10 +50,10 @@ function CheckForDBUpgrades($subaction = null)
 function ShowDBUpgradeNotice() {
     //$error=false;
 
-	//$sitename = Yii::app()->getConfig('sitename');
-	return '<div class="message-box jumbotron message-box-warning">'
-    ."<h2 class='text-warning'>".gT('Database upgrade').'</h2>'
-    .'<p class="lead text-warning">'.gT('Please verify the following information before continuing with the database upgrade:').'</p><ul class="list-unstyled">'
+    //$sitename = Yii::app()->getConfig('sitename');
+    return '<div class="messagebox">'
+    ."<div class='header'>".gT('Database upgrade').'</div><p>'
+    .gT('Please verify the following information before continuing with the database upgrade:').'</p><ul>'
     ."<li><b>" .gT('Database type') . ":</b> " . Yii::app()->db->getDriverName() . "</li>"
     ."<li><b>" .gT('Database name') . ":</b> " . getDBConnectionStringProperty('dbname') . "</li>"
     ."<li><b>" .gT('Table prefix') . ":</b> " . Yii::app()->db->tablePrefix . "</li>"
@@ -71,9 +61,9 @@ function ShowDBUpgradeNotice() {
     ."<li><b>" .gT('Root URL') . ":</b> " . Yii::app()->getController()->createUrl('') . "</li>"
     .'</ul><br/>'
     ."<p>"
-    ."<a class='btn btn-default btn-lg' href='".Yii::app()->getController()->createUrl("admin/update/sa/db/continue/yes")."'>" . gT('Continue') . "</a>"
+    ."<a href='".Yii::app()->getController()->createUrl("admin/databaseupdate/sa/db/continue/yes")."'>" . gT('Click here to continue') . "</a>"
     ."</p>"
-	.'</div>';
+    .'</div>';
 }
 
 function getDBConnectionStringProperty($sProperty)

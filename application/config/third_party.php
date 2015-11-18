@@ -21,7 +21,7 @@ return array(
             'js/jquery-ui-1.10.3.custom.min.js'
         ),
         'css' => array(
-            'css/jquery-ui.css'
+            //'css/jquery-ui.css'
         ),
         'depends' => array(
             'jquery',
@@ -38,7 +38,7 @@ return array(
             'plugins/jquery.searchFilter.js'
         ),
         'css' => array(
-            'css/ui.jqgrid.css'
+            //'css/ui.jqgrid.css'
         ),
         'depends' => array(
             'jquery'
