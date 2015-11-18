@@ -1,6 +1,6 @@
 <?php
 $aReplacementData=array();
-// ugly approach to highlighting current question in the group/question list
+// hack to highlighting current question in the group/question list
 echo "<script>$(\"#qmenu-$qid\").addClass('selected');</script>";
 ?>
 <div class='menubar-title ui-widget-header'>

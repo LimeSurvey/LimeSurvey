@@ -1,42 +1,11 @@
-<div class='survey-gqlist'>
-    <?php
-    // <ul> of groups
-    echo '<span class="gqlist-title">Group/Question:</span>';
-    echo '<ul class="gqlist-groups">';
-    $lines = explode(PHP_EOL,$groups);
-    foreach ($lines as $line){
-        //echo "LINE:".htmlspecialchars($line)."<br>";
-        if(strpos($line,'gid/')) {
-            $parts = explode("'>",substr($line,strpos($line,'gid/')+4));
-            $groupid  = htmlspecialchars($parts[0]);
-            $name = htmlspecialchars(substr($parts[1],0,strpos($parts[1],'</option>')));
-            // Group <li>
-            $isCurGrp = $gid==$groupid ? 'selected' : '';
-            echo "<li><a class=\"$isCurGrp\" href='".$this->createUrl('/admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$groupid)."'>$name</a>".PHP_EOL;
-            // <ul> of questions within current group
-            echo "<ul class='gqlist-questions'>";
-            $qlines = explode(PHP_EOL,getQuestions($surveyid,$groupid,$qid));
-            array_shift($qlines);   // first is 'Please choose...'
-            foreach ($qlines as $qline){
-                if (strpos($qline,'qid/')){
-                    $qparts = explode("'>",substr($qline,strpos($qline,'qid/')+4));
-                    $qid  = htmlspecialchars($qparts[0]);
-                    $qname = htmlspecialchars(substr($qparts[1],0,strpos($qparts[1],'</option>')));
-                    $nColon = strpos($qname,":");
-                    $qcode = substr($qname,0,$nColon);
-                    $qdesc = substr($qname,$nColon);
-                    // question <li>
-                    echo "<li><a id='qmenu-".$qid."' href='".$this->createUrl('/admin/questions/sa/editquestion/surveyid/'.$surveyid.'/gid/'.$groupid.'/qid/'.$qid)."'><em>$qcode</em>$qdesc</a></li>".PHP_EOL;
-                    //echo "<li><a href='".$this->createUrl('/admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$groupid.'/qid/'.$qid)."'>$qname</a></li>".PHP_EOL;
 
-                }
-            }
-            echo '</ul></li>';
-        }
-    }
-    echo "<li><a href='".$this->createUrl('/admin/survey/sa/view/surveyid/'.$surveyid)."'>None</a></li>";
-    echo '</ul>';
-    ?>
+<div class='survey-gqlist-wrap'>
+    <div class='survey-gqlist'>
+        <?php
+        echo '<span class="gqlist-title">Group/Question:</span>';
+        echo getGroupsAndQuestions($surveyid,$gid);
+        ?>
+    </div>
 </div>
 <div class='menubar surveybar'>
     <div class='menubar-title ui-widget-header'>
