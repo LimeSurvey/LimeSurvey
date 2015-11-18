@@ -26,6 +26,7 @@ class AdminController extends LSYii_Controller
     protected function _init()
     {
         parent::_init();
+
         App()->getComponent('bootstrap');
         $this->_sessioncontrol();
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
@@ -125,15 +126,16 @@ class AdminController extends LSYii_Controller
     */
     public function run($action)
     {
+
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}'))
         {
             $sDBVersion = getGlobalSetting('DBVersion');
-            if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'update' && $action != 'authentication')
-                $this->redirect(array('/admin/update/sa/db'));
+            if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate' && $action != 'authentication')
+                $this->redirect(array('/admin/databaseupdate/sa/db'));
         }
 
-        if ($action != "update" && $action != "db")
+        if ($action != "databaseupdate" && $action != "db")
             if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
             {
                 if (!empty($action) && $action != 'index')
@@ -183,6 +185,7 @@ class AdminController extends LSYii_Controller
         'checkintegrity'   => 'checkintegrity',
         'conditions'       => 'conditionsaction',
         'database'         => 'database',
+        'databaseupdate'   => 'databaseupdate',
         'dataentry'        => 'dataentry',
         'dumpdb'           => 'dumpdb',
         'emailtemplates'   => 'emailtemplates',

@@ -1925,7 +1925,7 @@ function do_listwithcomment($ia)
         // --> END NEW FEATURE - SAVE
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2])
         {
-            $answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]);
+            $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]);
         }
         $answer .= '</textarea>
         </p>
@@ -1982,7 +1982,7 @@ function do_listwithcomment($ia)
         // --> END NEW FEATURE - SAVE
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2])
         {
-            $answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]);
+            $answer .= htmlspecialchars( $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]);
         }
         $answer .= '</textarea>
         <input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]].'" /></p>';
@@ -2715,8 +2715,8 @@ function do_file_upload($ia)
              headTitle: '" . gT('Title','js') . "',
              headComment: '" . gT('Comment','js') . "',
              headFileName: '" . gT('File name','js') . "',
-             deleteFile : '".gt('Delete')."',
-             editFile : '".gt('Edit')."'
+             deleteFile : '".gT('Delete')."',
+             editFile : '".gT('Edit')."'
             };
         var imageurl =  '".Yii::app()->getConfig('imageurl')."';
         var uploadurl =  '".$scriptloc."';
@@ -2931,7 +2931,7 @@ function do_multipleshorttext($ia)
                     {
                         $dispVal = str_replace('.',$sSeparator,$dispVal);
                     }
-                    $answer_main .= $dispVal;
+                    $answer_main .= htmlspecialchars($dispVal);
                 }
 
                 $answer_main .= "</textarea>\n".$suffix."\n\t</span>\n"
@@ -3450,7 +3450,7 @@ function do_shortfreetext($ia)
             {
                 $dispVal = str_replace('.',$sSeparator,$dispVal);
             }
-            $answer .= $dispVal;
+            $answer .= htmlspecialchars($dispVal);
         }
 
         $answer .= "</textarea></p>\n";
@@ -3594,8 +3594,8 @@ function do_shortfreetext($ia)
             <input type=\"hidden\" class=\"location\" name=\"$ia[1]_c\" id=\"answer$ia[1]_c\" value=\"{$currentLatLong[0]} {$currentLatLong[1]}\" />
 
             <ul class=\"coordinates-list\">
-                <li class=\"coordinate-item\">".gt("Latitude:")."<input class=\"coords text\" type=\"text\" name=\"$ia[1]_c1\" id=\"answer_lat$ia[1]_c\"  value=\"{$currentLatLong[0]}\" /></li>
-                <li class=\"coordinate-item\">".gt("Longitude:")."<input class=\"coords text\" type=\"text\" name=\"$ia[1]_c2\" id=\"answer_lng$ia[1]_c\" value=\"{$currentLatLong[1]}\" /></li>
+                <li class=\"coordinate-item\">".gT("Latitude:")."<input class=\"coords text\" type=\"text\" name=\"$ia[1]_c1\" id=\"answer_lat$ia[1]_c\"  value=\"{$currentLatLong[0]}\" /></li>
+                <li class=\"coordinate-item\">".gT("Longitude:")."<input class=\"coords text\" type=\"text\" name=\"$ia[1]_c2\" id=\"answer_lng$ia[1]_c\" value=\"{$currentLatLong[1]}\" /></li>
             </ul>
 
             <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\" value = \"{$strBuild}\" > 
@@ -3603,10 +3603,10 @@ function do_shortfreetext($ia)
 
             <div>
                 <div class=\"geoname_restrict\">
-                    <input type=\"checkbox\" id=\"restrictToExtent_{$ia[1]}\"> <label for=\"restrictToExtent_{$ia[1]}\">".gt("Restrict search place to map extent")."</label>
+                    <input type=\"checkbox\" id=\"restrictToExtent_{$ia[1]}\"> <label for=\"restrictToExtent_{$ia[1]}\">".gT("Restrict search place to map extent")."</label>
                 </div>
                 <div class=\"geoname_search\" >
-                    <input id=\"searchbox_{$ia[1]}\" placeholder=\"".gt("Search")."\" width=\"15\">
+                    <input id=\"searchbox_{$ia[1]}\" placeholder=\"".gT("Search")."\" width=\"15\">
                 </div>
             </div>
             <div id=\"map_{$ia[1]}\" style=\"width: 100%; height: {$aQuestionAttributes['location_mapheight']}px;\">
@@ -3728,7 +3728,10 @@ function do_longfreetext($ia)
     .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
     // --> END NEW FEATURE - SAVE
 
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);}
+    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
+    {
+        $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
+    }
 
     $answer .= "</textarea></p>\n";
 
@@ -3802,7 +3805,10 @@ function do_hugefreetext($ia)
     .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
     // --> END NEW FEATURE - SAVE
 
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);}
+    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
+    {
+        $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
+    }
     $answer .= "</textarea>\n";
     $answer .="</p>";
     if (trim($aQuestionAttributes['time_limit']) != '')

@@ -97,7 +97,7 @@ namespace ls\pluginmanager;
                     'type' => 'select',
                     'localized' => false,
                     'advanced' => false,
-                    'label' => gt('Question type:'),
+                    'label' => gT('Question type:'),
                     'options' => CHtml::listData(App()->getPluginManager()->loadQuestionObjects(), 'guid', 'name')
                 ),
                 'code' => array(

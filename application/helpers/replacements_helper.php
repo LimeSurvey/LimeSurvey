@@ -530,7 +530,7 @@ EOD;
     $coreReplacements['ASSESSMENT_HEADING'] = gT("Your assessment");
     $coreReplacements['CHECKJAVASCRIPT'] = "<noscript><span class='warningjs'>".gT("Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters.")."</span></noscript>";
     $coreReplacements['CLEARALL'] = $_clearall;
-    $coreReplacements['CLOSEWINDOW']  =  "<a href='javascript:%20self.close()'>".gT("Close this window")."</a>";
+    $coreReplacements['CLOSEWINDOW'] = ''; // Obsolete tag - keep this line for compatibility reaons
     $coreReplacements['COMPLETED'] = isset($redata['completed']) ? $redata['completed'] : '';    // global
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['ENDTEXT'] = $_endtext;

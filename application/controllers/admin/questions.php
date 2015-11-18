@@ -1331,8 +1331,7 @@ EOD;
     */
     protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerPackage('superfish');
-        App()->getClientScript()->registerPackage('jquery-msdropdown');
+        App()->getClientScript()->registerPackage('jquery-superfish');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }

@@ -134,6 +134,20 @@ class CMssqlCommandBuilder extends CDbCommandBuilder
 	}
 
 	/**
+     * Alters the SQL to apply JOIN clause.
+     * Overrides parent implementation to comply with the DELETE command syntax required when multiple tables are referenced.
+     * @param string $sql the SQL statement to be altered
+     * @param string $join the JOIN clause (starting with join type, such as INNER JOIN)
+     * @return string the altered SQL statement
+     */
+    public function applyJoin($sql,$join)
+    {
+        if(trim($join)!=='')
+            $sql=preg_replace('/^\s*DELETE\s+FROM\s+((\[.+\])|([^\s]+))\s*/i',"DELETE \\1 FROM \\1",$sql);
+        return parent::applyJoin($sql,$join);
+    }
+
+    /**
 	 * This is a port from Prado Framework.
 	 *
 	 * Overrides parent implementation. Alters the sql to apply $limit and $offset.
@@ -203,9 +217,9 @@ class CMssqlCommandBuilder extends CDbCommandBuilder
 		$fetch = $limit+$offset;
 		$sql = preg_replace('/^([\s(])*SELECT( DISTINCT)?(?!\s*TOP\s*\()/i',"\\1SELECT\\2 TOP $fetch", $sql);
 		$ordering = $this->findOrdering($sql);
-		$orginalOrdering = $this->joinOrdering($ordering, '[__outer__]');
+		$originalOrdering = $this->joinOrdering($ordering, '[__outer__]');
 		$reverseOrdering = $this->joinOrdering($this->reverseDirection($ordering), '[__inner__]');
-		$sql = "SELECT * FROM (SELECT TOP {$limit} * FROM ($sql) as [__inner__] {$reverseOrdering}) as [__outer__] {$orginalOrdering}";
+		$sql = "SELECT * FROM (SELECT TOP {$limit} * FROM ($sql) as [__inner__] {$reverseOrdering}) as [__outer__] {$originalOrdering}";
 		return $sql;
 	}
 

@@ -56,8 +56,8 @@
             $aShowgroupinfoOptions=array(
                 "B"=>gT("Show both",'unescaped'),
                 "N"=>gT("Show group name only",'unescaped'),
-                "D"=>gt("Show group description only",'unescaped'),
-                "X"=>gt("Hide both",'unescaped')
+                "D"=>gT("Show group description only",'unescaped'),
+                "X"=>gT("Hide both",'unescaped')
             );
             $bDisableShowgroupinfo=false;
             break;

@@ -722,7 +722,8 @@
             $iSessionSurveyId=self::getLEMsurveyId();
             if($aSessionSurvey=Yii::app()->session["survey_{$iSessionSurveyId}"])
             {
-                Yii::app()->session["survey_{$iSessionSurveyId}"]['LEMtokenResume']=true;
+                $aSessionSurvey['LEMtokenResume']=true;
+                Yii::app()->session["survey_{$iSessionSurveyId}"]=$aSessionSurvey;
             }
         }
 

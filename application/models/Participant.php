@@ -125,9 +125,18 @@ class Participant extends LSActiveRecord
      * funcion for generation of unique id
      */
 
-    function gen_uuid()
+    static function gen_uuid()
     {
-        return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x', mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0x0fff) | 0x4000, mt_rand(0, 0x3fff) | 0x8000, mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+        return sprintf(
+                '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+                mt_rand(0, 0xffff),
+                mt_rand(0, 0xffff),
+                mt_rand(0, 0xffff),
+                mt_rand(0, 0x0fff) | 0x4000,
+                mt_rand(0, 0x3fff) | 0x8000,
+                mt_rand(0, 0xffff),
+                mt_rand(0, 0xffff),
+                mt_rand(0, 0xffff)
         );
     }
 
@@ -847,11 +856,21 @@ class Participant extends LSActiveRecord
             elseif (is_numeric($sFieldname)) //Searching for an attribute
             {
                 $command->addCondition('attribute'. $sFieldname . '.value ' . $operator . ' '.$param, $booloperator);
-//                $command->addCondition('(attribute_id='. $sFieldname . ' AND value ' . $operator . ' '.$param.' )', $booloperator);
             }
             else
             {
-                $command->addCondition($sFieldname . ' '.$operator.' '.$param, $booloperator);
+                // Check if fieldname exists to prevent SQL injection
+                $aSafeFieldNames=array('firstname',
+                                  'lastname',
+                                  'email',
+                                  'blacklisted',
+                                  'surveys',
+                                  'survey',
+                                  'language',
+                                  'owner_uid',
+                                  'owner_name');
+                if (!in_array($sFieldname,$aSafeFieldNames)) continue; // Skip invalid fieldname
+                $command->addCondition(Yii::app()->db->quoteColumnName($sFieldname) . ' '.$operator.' '.$param, $booloperator);
             }
 
             $i++;
@@ -1320,7 +1339,7 @@ class Participant extends LSActiveRecord
                 else
                 {
                     /* Create entry in participants table */
-                    $black = !empty($tobeinserted['blacklisted']) ? $tobeinserted['blacklised'] : 'N';
+                    $black = !empty($tobeinserted['blacklisted']) ? $tobeinserted['blacklisted'] : 'N';
                     $pid=!empty($tobeinserted['participant_id']) ? $tobeinserted['participant_id'] : $this->gen_uuid();
                     $writearray = array('participant_id' => $pid,
                                         'firstname' => $tobeinserted['firstname'],
@@ -1328,7 +1347,9 @@ class Participant extends LSActiveRecord
                                         'email' => $tobeinserted['email'],
                                         'language' => $tobeinserted['language'],
                                         'blacklisted' => $black,
-                                        'owner_uid' => Yii::app()->session['loginID']);
+                                        'owner_uid' => Yii::app()->session['loginID'],
+                                        'created_by' => Yii::app()->session['loginID'],
+                                        'created' => date('Y-m-d H:i:s', time()));
                     Yii::app()->db
                               ->createCommand()
                               ->insert('{{participants}}', $writearray);

@@ -83,7 +83,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
 */
 function checkGroup($postsid)
 {
-    
+
 
     $baselang = Survey::model()->findByPk($postsid)->language;
     $groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from {{questions}} as q RIGHT JOIN {{groups}} as g ON q.gid=g.gid AND g.language=q.language WHERE g.sid=$postsid AND g.language='$baselang' group by g.gid,g.group_name;";
@@ -109,7 +109,7 @@ function checkGroup($postsid)
 */
 function checkQuestions($postsid, $iSurveyID, $qtypes)
 {
-    
+
 
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
     //THESE QUESTION TYPES ARE:
@@ -259,6 +259,15 @@ function activateSurvey($iSurveyID, $simulate = false)
     $createsurveytimings='';
     $fieldstiming = array();
     $createsurveydirectory=false;
+    // Specify case sensitive collations for the token
+    $sCollation='';
+    if  (Yii::app()->db->driverName=='mysqli' | Yii::app()->db->driverName=='mysqli'){
+        $sCollation=" COLLATE 'utf8_bin'";
+    }
+    if  (Yii::app()->db->driverName=='sqlsrv' | Yii::app()->db->driverName=='dblib' | Yii::app()->db->driverName=='mssql'){
+        $sCollation=" COLLATE SQL_Latin1_General_CP1_CS_AS";
+    }
+
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
     $prow = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
 
@@ -343,15 +352,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                     $createsurvey[$arow['fieldname']] = "string";
                 break;
             case "token":
-                    // Specify case sensitive collations for the token
-                    $sCollation='';
-                    if  (Yii::app()->db->driverName=='mysqli' | Yii::app()->db->driverName=='mysqli'){
-                        $sCollation=" COLLATE 'utf8_bin'";
-                    }
-                    if  (Yii::app()->db->driverName=='sqlsrv' | Yii::app()->db->driverName=='dblib' | Yii::app()->db->driverName=='mssql'){
-                        $sCollation=" COLLATE SQL_Latin1_General_CP1_CS_AS";
-                    }                  
-                    $createsurvey[$arow['fieldname']] = 'string(35)'.$sCollation;
+                $createsurvey[$arow['fieldname']] = 'string(35)'.$sCollation;
                 break;
             case '*': // Equation
                 $createsurvey[$arow['fieldname']] = "text";
@@ -359,9 +360,9 @@ function activateSurvey($iSurveyID, $simulate = false)
             default:
                 $createsurvey[$arow['fieldname']] = "string(5)";
         }
-    if ($prow->anonymized == 'N' && !array_key_exists('token',$createsurvey)) {
-        $createsurvey['token'] = "string(36)";
-    }
+        if ($prow->anonymized == 'N' && !array_key_exists('token',$createsurvey)){
+            $createsurvey['token'] = 'string(35)'.$sCollation;
+        }
         if ($simulate){
             $tempTrim = trim($createsurvey);
             $brackets = strpos($tempTrim,"(");
@@ -385,7 +386,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     $tabname = "{{survey_{$iSurveyID}}}";
     Yii::app()->loadHelper("database");
     try
-    {   
+    {
         $execresult = Yii::app()->db->createCommand()->createTable($tabname, $createsurvey);
         Yii::app()->db->schema->getTable($tabname, true); // Refresh schema cache just in case the table existed in the past
     }
@@ -421,7 +422,8 @@ function activateSurvey($iSurveyID, $simulate = false)
             $sQuery = "ALTER TABLE {{survey_{$iSurveyID}}} ADD [id] int identity({$iAutoNumberStart},1)";
             Yii::app()->db->createCommand($sQuery)->execute();
             // Add back the primaryKey
-            Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY', '{{survey_'.$iSurveyID.'}}', 'id');            
+
+            Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY_'.rand(1,50000), '{{survey_'.$iSurveyID.'}}', 'id');
         }
         elseif (Yii::app()->db->driverName=='pgsql')
         {

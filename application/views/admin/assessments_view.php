@@ -49,7 +49,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
 <td><?php echo $assess['minimum'];?></td>
 <td><?php echo $assess['maximum'];?></td>
 <td><?php 
-    $aReplacement=array('PERC'=>gt('Score of the current group'),'TOTAL'=>gt('Total score'));
+    $aReplacement=array('PERC'=>gT('Score of the current group'),'TOTAL'=>gT('Total score'));
     templatereplace($assess['name'],$aReplacement);
     echo FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), true);
     ?></td>

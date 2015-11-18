@@ -33,7 +33,7 @@
         public function attributeLabels() {
             $labels = array(
                 'tid' => gT('Token ID'),
-                'partcipant' => gt('Participant ID'),
+                'partcipant' => gT('Participant ID'),
                 'firstname' => gT('First name'),
                 'lastname' => gT('Last name'),
                 'email' => gT('Email address'),

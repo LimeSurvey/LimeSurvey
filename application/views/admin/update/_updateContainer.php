@@ -10,12 +10,20 @@
  */
 ?>
 
-<!-- this view contain the input provinding to the js the inforamtion about wich content to load : check buttons or comfortUpdate -->
-<?php $this->renderPartial("./update/_ajaxVariables"); ?>
+<?php if (Permission::model()->hasGlobalPermission('superadmin')): ?>
+    <!-- this view contain the input provinding to the js the inforamtion about wich content to load : check buttons or comfortUpdate -->
+    <?php $this->renderPartial("./update/_ajaxVariables"); ?>
 
-<div id="updaterWrap">
-    <!-- The check buttons : render by ajax only if no step is required by url or post -->
-    <?php $this->renderPartial("./update/check_updates/_checkButtons", array( "thisupdatecheckperiod"=>$thisupdatecheckperiod, "updatelastcheck"=>$updatelastcheck,"UpdateNotificationForBranch"=>$UpdateNotificationForBranch )); ?>
-    <!-- The updater  -->
-    <?php $this->renderPartial("./update/updater/_updater"); ?>
-</div>
+    <div id="updaterWrap">
+        <!-- The check buttons : render by ajax only if no step is required by url or post -->
+        <?php $this->renderPartial("./update/check_updates/_checkButtons", array( "thisupdatecheckperiod"=>$thisupdatecheckperiod, "updatelastcheck"=>$updatelastcheck,"UpdateNotificationForBranch"=>$UpdateNotificationForBranch )); ?>
+        <!-- The updater  -->
+        <?php $this->renderPartial("./update/updater/_updater"); ?>
+    </div>
+<?php else: ?>
+    <div class="text-error">
+        <p class="text-center">
+            <?php eT("Only superadmin can update");?>
+        </p>
+    </div>
+<?php endif; ?>
