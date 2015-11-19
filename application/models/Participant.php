@@ -1438,7 +1438,13 @@ class Participant extends LSActiveRecord
             return false;
         }
     }
-
+    
+    /**
+     * This function inserts a participant into the CPD after CSV upload and remote import.
+     * It holds an plugin event to manipulate imported attribute fields
+     *
+     * @param $data
+     */
     function insertParticipantCSV($data)
     {
         $insertData = array(
@@ -1449,7 +1455,14 @@ class Participant extends LSActiveRecord
             'language' => $data['language'],
             'blacklisted' => $data['blacklisted'],
             'created_by' => $data['owner_uid'],
-            'owner_uid' => $data['owner_uid']);
+            'owner_uid' => $data['owner_uid']
+        );
         Yii::app()->db->createCommand()->insert('{{participants}}', $insertData);
+
+        $event = new PluginEvent('afterInsertParticipant');
+        $event->set('type', 'participant');
+        $event->set('action', 'csv');
+        $event->set('data', $insertData);
+        App()->getPluginManager()->dispatchEvent($event);
     }
 }
