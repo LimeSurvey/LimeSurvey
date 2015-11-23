@@ -131,12 +131,14 @@ div.menubar {
     clear:left;
     padding:0;
     margin: 0 0 0 0.5%; /* 0 auto !important;*/
-    width: 84%; /* 99%;*/
+    width: 99%;
     display:inline-block;
 }
 
-div.menubar.surveyadmin {
-    width:99%;
+div.menubar.surveybar,
+div.menubar.groupbar,
+div.menubar.questionbar {
+    width:84.5%;
 }
 
 div.menubar .ui-widget-header

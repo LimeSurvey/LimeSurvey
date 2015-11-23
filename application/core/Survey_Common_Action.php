@@ -386,7 +386,7 @@ class Survey_Common_Action extends CAction
             return; // Throw 404 ....
 
 
-        $questionsummary = "<div class='menubar'>\n";
+        $questionsummary = "<div class='menubar questionbar'>\n";
 
         // Check if other questions in the Survey are dependent upon this question
         $condarray = getQuestDepsForConditions($iSurveyID, "all", "all", $qid, "by-targqid", "outsidegroup");
@@ -514,7 +514,7 @@ class Survey_Common_Action extends CAction
         // Check if other questions/groups are dependent upon this group
         $condarray = getGroupDepsForConditions($iSurveyID, "all", $gid, "by-targgid");
 
-        $groupsummary = "<div class='menubar'>\n"
+        $groupsummary = "<div class='menubar groupbar'>\n"
         . "<div class='menubar-title ui-widget-header'>\n";
 
         //$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$iSurveyID"; //Getting data for this survey

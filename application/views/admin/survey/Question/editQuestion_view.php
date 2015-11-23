@@ -289,8 +289,8 @@ if ($adding || $copying) {
             </ul>
 
 			<?php if (!$copying) { ?>
-				<p><a id="showadvancedattributes"><?php eT("Show advanced settings"); ?></a><a id="hideadvancedattributes" style="display:none;"><?php eT("Hide advanced settings"); ?></a></p>
-				<div id="advancedquestionsettingswrapper" style="display:none;">
+				<p><a id="showadvancedattributes" style="display:none;"><?php eT("Show advanced settings"); ?></a><a id="hideadvancedattributes"><?php eT("Hide advanced settings"); ?></a></p>
+				<div id="advancedquestionsettingswrapper">
 					<div class="loader"><?php eT("Loading..."); ?></div>
 					<div id="advancedquestionsettings"></div>
 				</div><br />

@@ -4,7 +4,7 @@ $aReplacementData=array();
 echo "<script>$(\"#qmenu-$qid\").addClass('selected');</script>";
 ?>
 <div class='menubar-title ui-widget-header'>
-    <strong><?php eT("Question"); ?></strong> <span class='basic'><?php echo ellipsize(FlattenText($qrrow['question']),200); ?> (<?php echo gT("ID").":<span id='CurrentQid'>".$qid."</span>"; ?>)</span>
+    <strong><?php eT("Question"); ?></strong> <span class='basic'><?php echo ellipsize(FlattenText($qrrow['question']),200); ?> (<?php echo gT("ID").":".$qid; ?>)</span>
 </div>
 <div class='menubar-main'>
     <div class='menubar-left'>

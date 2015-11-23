@@ -70,12 +70,13 @@
             <?php } ?>
     </div>
     <div class='menubar-right'>
+        <!--
         <label for="questionid"><?php eT("Questions:"); ?></label> <select class="listboxquestions" name='questionid' id='questionid'
             onchange="window.open(this.options[this.selectedIndex].value, '_top')">
 
             <?php echo getQuestions($surveyid,$gid,$qid); ?>
         </select>
-
+        -->
 
 
 

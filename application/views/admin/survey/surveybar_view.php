@@ -277,12 +277,13 @@
         <div class='menubar-right'>
             <?php if ($permission)
                 { ?>
+                <!--    
                 <label for='groupselect'><?php eT("Question groups:"); ?></label>
                 <select name='groupselect' id='groupselect' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
 
                     <?php echo $groups; ?>
                 </select>
-
+                -->
                 <span class='arrow-wrapper' style='font-size:0;'>
                     <?php if ($GidPrev != "")
                         { ?>
