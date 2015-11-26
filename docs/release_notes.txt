@@ -60,6 +60,13 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.06+ (build 151109) to 2.06+ (build 151126) Nov 26, 2015
+-Fixed issue #9988: darkblue admin template is still mostly green (LouisGac)
+-Fixed issue #10008: Array/struct parameter in remote control function - list_participants (kochi)
+-Fixed issue #10029: When sending AJAX calls from Firefox, RemoteControl doesn't respond (Gabriel Jenik)
+-Fixed issue #10048: Bad link for Expression manager function (Denis Chenu)
+-Fixed issue #10052: 0 as answer code in radio list causes problems when 'No answer' is enabled (Adam Webb)
+
 Changes from 2.06+ (build 151018) to 2.06+ (build 151109) Nov 9, 2015
 -Fixed issue #10004: Using hide_tip advanced settings does not hide the tips (Denis Chenu)
 -Fixed issue #10018: [security] XSS vulnerabilities in admin section (Carsten Schmitz)
