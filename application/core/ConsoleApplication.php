@@ -8,13 +8,17 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 
 class ConsoleApplication extends CConsoleApplication
 {
-
     protected $config = array();
 
     /**
     * @var LimesurveyApi
     */
     protected $api;
+
+    public function getSession()
+    {
+        return $this->getComponent('session');
+    }
 
     public function __construct($config = null) {
         parent::__construct($config);
