@@ -107,7 +107,7 @@ class templates extends Survey_Common_Action
         {
             if (Yii::app()->getConfig('demoMode'))
             {
-                Yii::app()->session['flashmessage'] = gT("Demo mode: Uploading templates is disabled.");
+                Yii::app()->user->setFlash('error',gT("Demo mode: Uploading templates is disabled."));
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
 
@@ -121,7 +121,7 @@ class templates extends Survey_Common_Action
 
             if (!is_writeable(dirname($destdir)))
             {
-                Yii::app()->session['flashmessage'] = sprintf(gT("Incorrect permissions in your %s folder."), dirname($destdir));
+                Yii::app()->user->setFlash('error',sprintf(gT("Incorrect permissions in your %s folder."), dirname($destdir)));
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
 
@@ -129,7 +129,8 @@ class templates extends Survey_Common_Action
                 mkdir($destdir);
             else
             {
-                Yii::app()->session['flashmessage'] = sprintf(gT("Template '%s' does already exist."), $sNewDirectoryName);
+                //Yii::app()->user->setFlash('error', "Data2 failed!");
+                Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' does already exist."), $sNewDirectoryName));
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
 
@@ -144,7 +145,7 @@ class templates extends Survey_Common_Action
                 if ($aExtractResult==0)
                 {
                     //$this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed."));
-                    Yii::app()->session['flashmessage'] = gT("This file is not a valid ZIP file archive. Import failed.");
+                    Yii::app()->user->setFlash('error',gT("This file is not a valid ZIP file archive. Import failed."));
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }
                 else
@@ -161,12 +162,12 @@ class templates extends Survey_Common_Action
                 }
 
                 if (count($aErrorFilesInfo) == 0 && count($aImportedFilesInfo) == 0)
-                    Yii::app()->session['flashmessage'] = gT("This ZIP archive contains no valid template files. Import failed.");
+                    Yii::app()->user->setFlash('error',gT("This ZIP archive contains no valid template files. Import failed."));
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
             else
             {
-                Yii::app()->session['flashmessage'] = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir);
+                Yii::app()->user->setFlash('error',sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
 
@@ -426,11 +427,11 @@ class templates extends Survey_Common_Action
             $the_full_file_path = Yii::app()->getConfig('usertemplaterootdir') . "/" . $_POST['templatename'] . "/" . $sFileToDelete;
             if (@unlink($the_full_file_path))
             {
-                Yii::app()->session['flashmessage'] = sprintf(gT("The file %s was deleted."), htmlspecialchars($sFileToDelete));
+                Yii::app()->user->setFlash('error', sprintf(gT("The file %s was deleted."), htmlspecialchars($sFileToDelete)));
             }
             else
             {
-                Yii::app()->session['flashmessage'] = sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/template folder"), htmlspecialchars($sFileToDelete));
+                Yii::app()->user->setFlash('error',sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/template folder"), htmlspecialchars($sFileToDelete)));
             }
             $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . returnGlobal('editfile') . "/screenname/" . returnGlobal('screenname') . "/templatename/" . returnGlobal('templatename')));
         }
@@ -456,17 +457,17 @@ class templates extends Survey_Common_Action
             $sOldDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
             if (isStandardTemplate(returnGlobal('newname')))
             {
-                Yii::app()->session['flashmessage'] = sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("This name is reserved for standard template.", "js");
+                Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("This name is reserved for standard template.", "js"));
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
             elseif (file_exists($sNewDirectoryPath))
             {
-                Yii::app()->session['flashmessage'] = sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("A template with that name already exists.", "js");
+                Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("A template with that name already exists.", "js"));
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
             elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false)
             {
-                Yii::app()->session['flashmessage'] = sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("Maybe you don't have permission.", "js");
+                Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("Maybe you don't have permission.", "js"));
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
             else
@@ -605,7 +606,7 @@ class templates extends Survey_Common_Action
                 multiarray_search($cssfiles, 'name', $editfile) === false
                 )
                 {
-                    Yii::app()->session['flashmessage'] = gT('Invalid template name');
+                    Yii::app()->user->setFlash('error',gT('Invalid template name'));
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }
 
@@ -613,13 +614,13 @@ class templates extends Survey_Common_Action
                 if (is_writable($savefilename)) {
                     if (!$handle = fopen($savefilename, 'w'))
                     {
-                        Yii::app()->session['flashmessage'] = gT('Could not open file '). $savefilename;
+                        Yii::app()->user->setFlash('error',gT('Could not open file '). $savefilename);
                         $this->getController()->redirect(array("admin/templates/sa/upload"));
                     }
 
                     if (!fwrite($handle, $changedtext))
                     {
-                        Yii::app()->session['flashmessage'] = gT('Could not write file '). $savefilename;
+                        Yii::app()->user->setFlash('error',gT('Could not write file '). $savefilename);
                         $this->getController()->redirect(array("admin/templates/sa/upload"));
                     }
 
@@ -627,7 +628,7 @@ class templates extends Survey_Common_Action
                 }
                 else
                 {
-                    Yii::app()->session['flashmessage'] = "The file $savefilename is not writable";
+                    Yii::app()->user->setFlash('error',"The file $savefilename is not writable");
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }
 
@@ -905,7 +906,7 @@ class templates extends Survey_Common_Action
         // Checks if screen name is in the list of allowed screen names
         if (multiarray_search($screens, 'id', $screenname) === false)
         {
-            Yii::app()->session['flashmessage'] = gT('Invalid screen name');
+            Yii::app()->user->setFlash('error',gT('Invalid screen name'));
             $this->getController()->redirect(array("admin/templates/sa/upload"));
         }
 
