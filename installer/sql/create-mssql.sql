@@ -545,7 +545,7 @@ PRIMARY KEY  ([folder])
 );
 
 --
--- Table structure & data for boxes 
+-- Table structure & data for boxes
 --
 
 CREATE TABLE prefix_boxes (
@@ -554,18 +554,19 @@ CREATE TABLE prefix_boxes (
   [url] varchar(max) NOT NULL ,
   [title] varchar(max) NOT NULL ,
   [img] varchar(max) NOT NULL ,
+  [ico] varchar(max) DEFAULT NULL,
   [desc] varchar(max) NOT NULL ,
   [page] varchar(max) NOT NULL ,
   PRIMARY KEY ([id])
 )  CHARACTER SET @utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO prefix_boxes ([id], [position], [url], [title], [img], [desc], [page]) VALUES
-(1, 1, 'admin/survey/sa/newsurvey', 'Creates survey', 'add.png', 'Create a new survey', 'welcome'),
-(2, 2, 'admin/survey/sa/listsurveys', 'List surveys', 'surveylist.png', 'List available surveys', 'welcome'),
-(3, 3, 'admin/globalsettings', 'Global settings', 'global.png', 'Edit global settings', 'welcome'),
-(4, 4, 'admin/update', 'ComfortUpdate', 'shield&#45;update.png', 'Stay safe and up to date', 'welcome'),
-(5, 5, 'admin/labels/sa/view', 'Label sets', 'labels.png', 'Edit label sets', 'welcome'),
-(6, 6, 'admin/templates/sa/view', 'Template editor', 'templates.png', 'Edit LimeSurvey templates', 'welcome');
+(1, 1, 'admin/survey/sa/newsurvey', 'Creates survey', 'add.png', 'add', 'Create a new survey', 'welcome'),
+(2, 2, 'admin/survey/sa/listsurveys', 'List surveys', 'surveylist.png', 'list', 'List available surveys', 'welcome'),
+(3, 3, 'admin/globalsettings', 'Global settings', 'global.png', 'settings', 'Edit global settings', 'welcome'),
+(4, 4, 'admin/update', 'ComfortUpdate', 'shield&#45;update.png', 'shield', 'Stay safe and up to date', 'welcome'),
+(5, 5, 'admin/labels/sa/view', 'Label sets', 'labels.png', 'label','Edit label sets', 'welcome'),
+(6, 6, 'admin/templates/sa/view', 'Template editor', 'templates.png','templates', 'Edit LimeSurvey templates', 'welcome');
 
 
 
@@ -590,4 +591,4 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '250');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '251');
