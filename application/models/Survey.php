@@ -581,7 +581,7 @@ class Survey extends LSActiveRecord
 	public function getPartialAnswers()
 	{
 		$table = '{{survey_' . $this->sid . '}}';
-        Yii:: app () ->cache->flush();
+        Yii::app()->cache->flush();
 		if (!Yii::app()->db->schema->getTable($table))
 		{
 			return null;
@@ -601,7 +601,7 @@ class Survey extends LSActiveRecord
 	public function getFullAnswers()
 	{
 		$table = '{{survey_' . $this->sid . '}}';
-        Yii:: app () ->cache->flush();
+        Yii::app()->cache->flush();
 		if (!Yii::app()->db->schema->getTable($table))
 		{
 			return null;

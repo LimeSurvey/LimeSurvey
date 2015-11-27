@@ -72,7 +72,7 @@
                                             <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
 
                                             <div class="col-sm-8 btn-group" id="question_type_button" style="z-index: 1000">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="z-index: 1000">
+                                                <button type="button" class="btn btn-default dropdown-toggle " <?php if ($activated == "Y"){echo " disabled ";} ?>  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="z-index: 1000">
                                                     <?php foreach($groups as $name => $group):?>
                                                         <?php foreach($group as $type => $option):?>
                                                             <?php if($type == $eqrow['type']){echo '<span class="buttontext">' . $option . '</span>';}?>
@@ -121,7 +121,7 @@
                                     <div  class="form-group">
                                         <label class="col-sm-4 control-label" for='gid'><?php eT("Question group:"); ?></label>
 										<div class="col-sm-8">
-											<select name='gid' id='gid' class="form-control">
+											<select name='gid' id='gid' class="form-control" <?php if ($activated == "Y"){echo " disabled ";} ?> >
 												<?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
 											</select>
 										</div>
@@ -156,7 +156,10 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label" for='relevance'><?php eT("Relevance equation:"); ?></label>
 										<div class="col-sm-8">
-											<textarea class="form-control" rows='1' id='relevance' name='relevance' ></textarea>
+											<textarea class="form-control" rows='1' id='relevance' name='relevance' <?php if ($eqrow['conditions_number']) {?> readonly='readonly'<?php } ?> ><?php echo $eqrow['relevance']; ?></textarea>
+                                             <?php if ($eqrow['conditions_number']) {?>
+                                                <span class='annotation'> <?php eT("Note: You can't edit the relevance equation because there are currently conditions set for this question."); ?></span>
+                                             <?php } ?>
 										</div>
                                     </div>
 
