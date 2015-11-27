@@ -555,25 +555,26 @@ CREATE TABLE `prefix_templates` (
 --
 -- Table structure & datas for table boxes
 --
-CREATE TABLE `prefix_boxes` (
+CREATE TABLE IF NOT EXISTS `lime_boxes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `position` int(11) DEFAULT NULL COMMENT 'position of the box',
   `url` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'url the box points',
   `title` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'box title',
   `img` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'name of the image of the box',
+  `ico` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'the ico name in font',
   `desc` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'box description',
   `page` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'page name where the box should be shown ',
   PRIMARY KEY (`id`)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
-INSERT INTO `prefix_boxes` (`id`, `position`, `url`, `title`, `img`, `desc`, `page`) VALUES
-(1, 1, 'admin/survey/sa/newsurvey', 'Creates survey', 'add.png', 'Create a new survey', 'welcome'),
-(2, 2, 'admin/survey/sa/listsurveys', 'List surveys', 'surveylist.png', 'List available surveys', 'welcome'),
-(3, 3, 'admin/globalsettings', 'Global settings', 'global.png', 'Edit global settings', 'welcome'),
-(4, 4, 'admin/update', 'ComfortUpdate', 'shield&#45;update.png', 'Stay safe and up to date', 'welcome'),
-(5, 5, 'admin/labels/sa/view', 'Label sets', 'labels.png', 'Edit label sets', 'welcome'),
-(6, 6, 'admin/templates/sa/view', 'Template editor', 'templates.png', 'Edit LimeSurvey templates', 'welcome');
 
+INSERT INTO `lime_boxes` (`id`, `position`, `url`, `title`, `img`, `ico`, `desc`, `page`) VALUES
+(1, 1, 'admin/survey/sa/newsurvey', 'Creates survey', 'add.png', 'add', 'Create a new survey', 'welcome'),
+(2, 2, 'admin/survey/sa/listsurveys', 'List surveys', 'surveylist.png', 'list', 'List available surveys', 'welcome'),
+(3, 3, 'admin/globalsettings', 'Global settings', 'global.png', 'settings', 'Edit global settings', 'welcome'),
+(4, 4, 'admin/update', 'ComfortUpdate', 'shield&#45;update.png', 'shield', 'Stay safe and up to date', 'welcome'),
+(5, 5, 'admin/labels/sa/view', 'Label sets', 'labels.png', 'label', 'Edit label sets', 'welcome'),
+(6, 6, 'admin/templates/sa/view', 'Template editor', 'templates.png', 'templates', 'Edit LimeSurvey templates', 'welcome');
 --
 -- Secondary indexes
 --
@@ -588,12 +589,12 @@ CREATE INDEX `question_attributes_idx3` ON `prefix_question_attributes` (`attrib
 CREATE INDEX `questions_idx2` ON `prefix_questions` (`sid`);
 CREATE INDEX `questions_idx3` ON `prefix_questions` (`gid`);
 CREATE INDEX `questions_idx4` ON `prefix_questions` (`type`);
-CREATE INDEX `quota_idx2` ON `prefix_quota` (`sid`);
 CREATE INDEX `saved_control_idx2` ON `prefix_saved_control` (`sid`);
+CREATE INDEX `quota_idx2` ON `prefix_quota` (`sid`);
 CREATE INDEX `parent_qid_idx` ON `prefix_questions` (`parent_qid`);
 
 
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '250');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '251');
