@@ -203,5 +203,14 @@ $aReplacementData=array();
                     </a>
                 <?php endif;?>
         </div>
+        <?php if(isset($questionbar['savebuttonright'])):?>
+            <div class="col-md-12 text-right form-inline">
+                <!-- Save buttons -->
+                <a class="btn btn-success" href="#" role="button" id="save-button">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <?php eT("Save");?>
+                </a>
+            </div>
+        <?php endif;?>
     </div>
 </div>

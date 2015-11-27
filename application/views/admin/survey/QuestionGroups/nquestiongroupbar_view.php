@@ -113,6 +113,7 @@
         <div class="col-md-4 col-md-offset-8 text-right">
 
             <?php if(isset($questiongroupbar['savebutton']['form'])):?>
+                
                 <!-- Save buttons -->
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="glyphicon glyphicon-ok"></span>

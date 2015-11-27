@@ -68,7 +68,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         $model->active = null;
-        
+
         // Filter state
         if (isset($_GET['active']))
         {
@@ -1263,8 +1263,9 @@ class SurveyAdmin extends Survey_Common_Action
         $aGrouplist = QuestionGroup::model()->getGroups($iSurveyID);
         $initializedReplacementFields = false;
 
-		$aData['organizebar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/view/", array('surveyid' => $iSurveyID));
-		$aData['organizebar']['returnbutton']['text'] = gT('return to survey summary');
+        $aData['organizebar']['savebuttonright'] = true;
+		//$aData['organizebar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/view/", array('surveyid' => $iSurveyID));
+		//$aData['organizebar']['returnbutton']['text'] = gT('return to survey summary');
 
         foreach ($aGrouplist as $iGID => $aGroup)
         {
@@ -1303,6 +1304,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $AOrgData = array();
         parse_str($_POST['orgdata'], $AOrgData);
+
         $grouporder = 0;
         foreach ($AOrgData['list'] as $ID => $parent)
         {
@@ -1312,18 +1314,26 @@ class SurveyAdmin extends Survey_Common_Action
             }
             elseif ($ID[0] == 'q')
             {
-                if (!isset($questionorder[(int)substr($parent, 1)]))
-                    $questionorder[(int)substr($parent, 1)] = 0;
+                $qid = (int)substr($ID, 1);
+                $gid = (int)substr($parent, 1);
+                if (!isset($aQuestionOrder[$gid]))
+                    $aQuestionOrder[$gid] = 0;
 
-                Question::model()->updateAll(array('question_order' => $questionorder[(int)substr($parent, 1)], 'gid' => (int)substr($parent, 1)), 'qid=:qid', array(':qid' => (int)substr($ID, 1)));
+				$sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+				$oQuestion = Question::model()->findByPk(array("qid"=>$qid,'language'=>$sBaseLanguage));
+                $oldGid = $oQuestion['gid'];
 
-                Question::model()->updateAll(array('gid' => (int)substr($parent, 1)), 'parent_qid=:parent_qid', array(':parent_qid' => (int)substr($ID, 1)));
-
-                $questionorder[(int)substr($parent, 1)]++;
+                if($oldGid != $gid) {
+                        fixMovedQuestionConditions($qid,$oldGid,$gid,$iSurveyID);
+                }
+                Question::model()->updateAll(array('question_order' => $aQuestionOrder[$gid], 'gid' => $gid), 'qid=:qid', array(':qid' => $qid));
+                Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
+                $aQuestionOrder[$gid]++;
             }
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         Yii::app()->session['flashmessage'] = gT("The new question group/question order was successfully saved.");
+        $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
     }
 
     /**

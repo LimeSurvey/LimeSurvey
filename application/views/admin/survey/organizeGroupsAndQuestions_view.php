@@ -9,12 +9,14 @@
             <?php eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.");?><br />
             <?php eT("After you are done please click the bottom 'Save' button to save your changes.");?>
         </p>
+
         <div class='movableList'>
             <ol class="organizer group-list" data-level='group'>
                 <?php
                     foreach ($aGroupsAndQuestions as  $aGroupAndQuestions)
                     {?>
-                    <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='group-item' data-level='group'><div class="h4"> <?php echo flattenText($aGroupAndQuestions['group_name'],true);?></div>
+                    <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='group-item' data-level='group'>
+                        <div class="h4"> <?php echo flattenText($aGroupAndQuestions['group_name'],true);?></div>
                         <?php if (isset ($aGroupAndQuestions['questions']))
                             {?>
                             <ol class='question-list' data-level='question'>
@@ -31,11 +33,12 @@
                 }?>
             </ol>
         </div>
+
         <?php echo CHtml::form(array("admin/survey/sa/organize/surveyid/{$surveyid}"), 'post', array('id'=>'frmOrganize')); ?>
             <p>
                 <input type='hidden' id='orgdata' name='orgdata' value='' />
                 <input type='hidden' id='close-after-save' name='close-after-save' value='' />
-                <button class='hidden' id='btnSave'><?php echo eT('Save'); ?></button>
+                <button class='hidden' type="submit" id='btnSave'><?php echo eT('Save'); ?></button>
             </p>
         </form>
     </div>

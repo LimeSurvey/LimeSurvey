@@ -36,26 +36,8 @@ $(document).ready(function(){
         toleranceElement: '> div'
     });
 
-    // Old save button, not used
-    /*
     $('#btnSave').click(function(){
         $('#orgdata').val($('ol.organizer').nestedSortable('serialize'));
         frmOrganize.submit();
-    })
-    */
-
-    // Save
-    $('#organizebar-save-btn').click(function(){
-        $('#orgdata').val($('ol.organizer').nestedSortable('serialize'));
-        $('#close-after-save').val('false');
-        frmOrganize.submit();
-    })
-
-    // Save and close
-    $('#organizebar-save-and-close-btn').click(function(){
-        $('#orgdata').val($('ol.organizer').nestedSortable('serialize'));
-        $('#close-after-save').val('true');
-        frmOrganize.submit();
-    })
-
+    });
 });
