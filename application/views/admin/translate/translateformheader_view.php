@@ -16,14 +16,21 @@
 		translateJsonUrl = "<?php echo $this->createUrl("admin/translate/sa/ajaxtranslategoogleapi"); ?>";
 	</script>
 
-	<div id="translationtabs" style="display: none;" >
+	<div id="translationtabs" style="display: none;">
 		<ul class="nav nav-tabs">
 		<?php
 		for($i = 0, $len = count($tab_names); $i < $len; $i++) {
 			$amTypeOptionsTemp = $amTypeOptions[$i];
 			$type = $tab_names[$i];
-			?> <li><a href="#tab-<?php echo $type;?>"><span><?php echo $amTypeOptionsTemp["description"];?></span></a></li> <?php
+			?> <li <?php if($i==0){echo ' class="active" ';}?>>
+                    <a data-toggle="tab"  href="#tab-<?php echo $type;?>">
+                        <span>
+                            <?php echo $amTypeOptionsTemp["description"];?>
+                        </span>
+                    </a>
+                </li> <?php
 		}
 		$i = 0;
 		?>
 		</ul>
+        <div class="tab-content">

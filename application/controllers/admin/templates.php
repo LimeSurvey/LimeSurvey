@@ -129,7 +129,6 @@ class templates extends Survey_Common_Action
                 mkdir($destdir);
             else
             {
-                //Yii::app()->user->setFlash('error', "Data2 failed!");
                 Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' does already exist."), $sNewDirectoryName));
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
@@ -137,14 +136,11 @@ class templates extends Survey_Common_Action
             $aImportedFilesInfo = array();
             $aErrorFilesInfo = array();
 
-
-
             if (is_file($_FILES['the_file']['tmp_name']))
             {
-                $aExtractResult=$zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
-                if ($aExtractResult==0)
+                $aExtractResult=$zip->extract(PCLZIP_OPT_PATH, $destdir);
+                if ($aExtractResult===0)
                 {
-                    //$this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed."));
                     Yii::app()->user->setFlash('error',gT("This file is not a valid ZIP file archive. Import failed."));
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }
@@ -162,12 +158,15 @@ class templates extends Survey_Common_Action
                 }
 
                 if (count($aErrorFilesInfo) == 0 && count($aImportedFilesInfo) == 0)
+                {
                     Yii::app()->user->setFlash('error',gT("This ZIP archive contains no valid template files. Import failed."));
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
+                }
             }
             else
             {
                 Yii::app()->user->setFlash('error',sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
+
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
 
@@ -267,6 +266,8 @@ class templates extends Survey_Common_Action
         $allowedtemplateuploads=Yii::app()->getConfig('allowedtemplateuploads');
         $filename=sanitize_filename($_FILES['upload_file']['name'],false,false);// Don't force lowercase or alphanumeric
         $fullfilepath=$basedestdir."/".$templatename . "/" . $filename;
+
+
 
         if($action=="templateuploadfile")
         {
@@ -458,16 +459,19 @@ class templates extends Survey_Common_Action
             if (isStandardTemplate(returnGlobal('newname')))
             {
                 Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("This name is reserved for standard template.", "js"));
+
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
             elseif (file_exists($sNewDirectoryPath))
             {
                 Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("A template with that name already exists.", "js"));
+
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
             elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false)
             {
                 Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("Maybe you don't have permission.", "js"));
+
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
             else
@@ -607,6 +611,7 @@ class templates extends Survey_Common_Action
                 )
                 {
                     Yii::app()->user->setFlash('error',gT('Invalid template name'));
+
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }
 
@@ -615,12 +620,14 @@ class templates extends Survey_Common_Action
                     if (!$handle = fopen($savefilename, 'w'))
                     {
                         Yii::app()->user->setFlash('error',gT('Could not open file '). $savefilename);
+
                         $this->getController()->redirect(array("admin/templates/sa/upload"));
                     }
 
                     if (!fwrite($handle, $changedtext))
                     {
                         Yii::app()->user->setFlash('error',gT('Could not write file '). $savefilename);
+
                         $this->getController()->redirect(array("admin/templates/sa/upload"));
                     }
 
@@ -629,6 +636,7 @@ class templates extends Survey_Common_Action
                 else
                 {
                     Yii::app()->user->setFlash('error',"The file $savefilename is not writable");
+
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }
 
@@ -907,6 +915,7 @@ class templates extends Survey_Common_Action
         if (multiarray_search($screens, 'id', $screenname) === false)
         {
             Yii::app()->user->setFlash('error',gT('Invalid screen name'));
+
             $this->getController()->redirect(array("admin/templates/sa/upload"));
         }
 

@@ -33,10 +33,7 @@
                         <dd><?php echo $activesurveyscount; ?></dd>
                         <dt class="text-info"><?php eT('Active tokens tables');?></dt>
                         <dd><?php echo $activetokens;?></dd>
-                        <dt class="text-info"><?php eT('Deactivated result tables');?></dt>
-                        <dd><?php echo $deactivatedsurveys;?></dd>
-                        <dt class="text-info"><?php eT('Deactivated token tables');?></dt>
-                        <dd><?php echo $deactivatedtokens;?></dd>
+
                     </dl>
                 </div>
             </div>
@@ -150,7 +147,7 @@
 
                 <!-- Expression Manager -->
                 <li class="dropdown-header">
-                    <span class="icon-expression" ></span>                    
+                    <span class="icon-expression" ></span>
                     <?php eT("Expression Manager");?>
                 </li>
 

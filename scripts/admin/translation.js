@@ -4,7 +4,6 @@ var iRunningThreads=0;
 $(document).ready(function(){
 
     intThrottlingRate = 550; // 1 request per 550 ms
-    $('#translationtabs').tabs();
     $('#translationtabs').show();
     $('#translationloading').hide();
 

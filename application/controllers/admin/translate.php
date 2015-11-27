@@ -147,6 +147,7 @@ class translate extends Survey_Common_Action {
         $aViewUrls['translateformheader_view'][] = $aData;
         $aViewUrls['output'] = '';
 		// Define content of each tab
+        $count = 0;
 		foreach( $tab_names as $type )
 		{
 			$amTypeOptions = $this->setupTranslateFields($type);
@@ -171,6 +172,17 @@ class translate extends Survey_Common_Action {
 			$aData['baselangdesc'] = $baselangdesc;
 			$aData['tolangdesc'] = $tolangdesc;
 			$aData['type'] = $type;
+
+            if($count<1)
+            {
+                $aData['activeTab']=true;
+                $count++;
+            }
+            else
+            {
+                $aData['activeTab']=false;
+            }
+
 			$aData['translateTabs'] = $this->displayTranslateFieldsHeader($baselangdesc, $tolangdesc, $type);
 			$aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatetabs_view", $aData, true);
 			foreach ( $resultbase as $rowfrom )
