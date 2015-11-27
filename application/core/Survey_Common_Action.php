@@ -484,22 +484,6 @@ class Survey_Common_Action extends CAction
                 }
             }
 
-            if (isset($oldresultslist) && is_array($oldresultslist))
-            {
-                $deactivatedsurveys = count($oldresultslist);
-            }
-            else
-            {
-                $deactivatedsurveys = 0;
-            }
-            if (isset($oldtokenlist) && is_array($oldtokenlist))
-            {
-                $deactivatedtokens = count($oldtokenlist);
-            }
-            else
-            {
-                $deactivatedtokens = 0;
-            }
             if (isset($tokenlist) && is_array($tokenlist))
             {
                 $activetokens = count($tokenlist);
@@ -509,10 +493,7 @@ class Survey_Common_Action extends CAction
                 $activetokens = 0;
             }
 
-            $aData['dataForConfigMenu']['deactivatedsurveys'] = $deactivatedsurveys;
             $aData['dataForConfigMenu']['activetokens'] = $activetokens;
-            $aData['dataForConfigMenu']['deactivatedtokens'] = $deactivatedtokens;
-
             $aData['sitename'] = Yii::app()->getConfig("sitename");
 
             $updateModel = new UpdateForm();
