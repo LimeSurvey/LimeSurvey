@@ -70,7 +70,7 @@
 
 
         <div class="col-md-3 text-right">
-            <a class="btn btn-default" href="<?php echo $this->createUrl('admin/survey/sa/index'); ?>" role="button">
+            <a class="btn btn-default" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
                 <span class="glyphicon glyphicon-backward"></span>
                 &nbsp;&nbsp;
                 <?php eT('return to admin pannel'); ?>
