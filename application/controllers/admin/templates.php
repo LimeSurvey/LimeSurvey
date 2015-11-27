@@ -99,11 +99,12 @@ class templates extends Survey_Common_Action
         {
             die('No permission');
         }
-        $aViewUrls = $this->_initialise('default', 'welcome', 'startpage.pstpl', FALSE);
+        //$aViewUrls = $this->_initialise('default', 'welcome', 'startpage.pstpl', FALSE);
         $lid = returnGlobal('lid');
         $action = returnGlobal('action');
 
-        if ($action == 'templateupload') {
+        if ($action == 'templateupload')
+        {
             if (Yii::app()->getConfig('demoMode'))
                 $this->getController()->error(gT("Demo mode: Uploading templates is disabled."));
 
@@ -128,7 +129,8 @@ class templates extends Survey_Common_Action
 
 
 
-            if (is_file($_FILES['the_file']['tmp_name'])) {
+            if (is_file($_FILES['the_file']['tmp_name']))
+            {
                 $aExtractResult=$zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
                 if ($aExtractResult==0)
                 {
@@ -779,7 +781,7 @@ class templates extends Survey_Common_Action
     */
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
-        App()->getClientScript()->reset();
+        //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
 
@@ -1226,7 +1228,7 @@ class templates extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = 'templates', $aViewUrls = array(), $aData = array())
     {
-        $aData['display']['menu_bars'] = false;
+        //$aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }
