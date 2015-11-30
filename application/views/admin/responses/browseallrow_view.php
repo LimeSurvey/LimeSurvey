@@ -12,7 +12,8 @@
 <?php }
 if ($bHasFileUploadQuestion) { ?>
 <a>
-    <span id='downloadfile_<?php echo $dtrow['id']; ?>' class="downloadfile glyphicon glyphicon-download-alt text-success" title="<?php eT('Download all files in this response as a zip file'); ?>"></span>
+    <span id='downloadfile_<?php echo $dtrow['id']; ?>' class="downloadfile glyphicon glyphicon-download-alt text-success" title="<?php eT('Download all files in this response as a zip file'); ?>">
+    </span>
 </a>
 <?php }
 if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))

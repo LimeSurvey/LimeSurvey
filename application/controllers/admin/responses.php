@@ -719,10 +719,10 @@ class responses extends Survey_Common_Action
             }
             if (hasFileUploadQuestion($surveyid)) {
                 if(Response::model($surveyid)->findByPk($row['id'])->getFiles())
-                    $action_html .= CHtml::link(
-                        CHtml::tag('span', array('class'=>'glyphicon glyphicon-download-alt downloadfile'),gT('Download all files in this response as a zip file')),
-                        Yii::app()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>$surveyid,"sResponseId"=>$row['id']))
-                    );
+                {
+                    $action_url = Yii::app()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>$surveyid,"sResponseId"=>$row['id']));
+                    $action_html .='<a title="'.gT('Download all files in this response as a zip file').'" href="'.$action_url.'"><span class="glyphicon glyphicon-download-alt downloadfile"></span></a>';
+                }
             }
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete')) {
                 $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>$surveyid,"sResponseId"=>$row['id']))."' data-delete='".$row['id']."'>

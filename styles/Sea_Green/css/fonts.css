@@ -252,12 +252,16 @@ jQuery UI replacements
     content: "\e800";
 }
 
-.ui-icon-minus, .ui-icon-refresh, .ui-icon-search, .ui-icon-extlink, .ui-icon-mail-closed, .ui-icon-mail-open, .ui-bounceprocessing, .ui-participant-link, .ui-icon-carat-1-w, .ui-icon-carat-1-e {
+.ui-icon-calculator, .ui-icon-minus, .ui-icon-refresh, .ui-icon-search, .ui-icon-extlink, .ui-icon-mail-closed, .ui-icon-mail-open, .ui-bounceprocessing, .ui-participant-link, .ui-icon-carat-1-w, .ui-icon-carat-1-e {
     display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
     font-size: inherit;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
+}
+
+.ui-icon-calculator:before{
+    content: "\f1ec";
 }
 
 .ui-icon-carat-1-w:before{

@@ -55,8 +55,16 @@
 <div class="side-body">
     <h3><?php eT('Survey responses'); ?></h3>
     <div class="row">
-        <div class="col-lg-12 content-right" style="overflow-x: scroll; padding-bottom: 1em">
-            <table id="displayresponses"></table> <div id="pager"></div>
+        <div class="col-lg-12 content-right">
+            <div class="alert alert-info alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
+              <?php echo sprintf(gT('You can use %1$s %1$s shift %2$s + %1$s mouse wheel %2$s %2$s   to scroll horizontally.'), '<kbd>', '</kbd>' ); ?>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="displayResponsesContainer" class="content-right" style="overflow-x: scroll; padding-bottom: 2em">
+            <table id="displayresponses"></table> <div id="pager" style="position: relative;"></div>
         </div>
     </div>
 </div>
