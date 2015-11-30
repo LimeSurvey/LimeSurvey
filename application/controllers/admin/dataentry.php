@@ -683,10 +683,10 @@ class dataentry extends Survey_Common_Action
                             {
                                 $checked = FALSE;
                                 if ($idrow[$fname['fieldname']] == $i) { $checked = TRUE; }
-                                $aDataentryoutput .= '<div class="radio">';
-                                $aDataentryoutput .= CHtml::radioButton($fname['fieldname'], $checked, array('class'=>'radiobtn', 'value'=>$i, 'id'=>'5-point-choice-'.$i));
+                                $aDataentryoutput .= '<span class="five-point">';
+                                $aDataentryoutput .= CHtml::radioButton($fname['fieldname'], $checked, array('class'=>'', 'value'=>$i, 'id'=>'5-point-choice-'.$i));
                                 $aDataentryoutput .= '<label for="5-point-choice-'.$i.'">'.$i.'</label>';
-                                $aDataentryoutput .= '</div>';
+                                $aDataentryoutput .= '</span>   ';
                             }
                             break;
                         case "D": //DATE
@@ -1098,11 +1098,11 @@ class dataentry extends Survey_Common_Action
                                 ."<td>\n";
                                 for ($j=1; $j<=5; $j++)
                                 {
-                                    $aDataentryoutput .= '<div class="radio">';
-                                    $aDataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' id='5-point-radio-{$fname['fieldname']}' value='$j'";
+                                    $aDataentryoutput .= '<span class="five-point">';
+                                    $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' id='5-point-radio-{$fname['fieldname']}' value='$j'";
                                     if ($idrow[$fname['fieldname']] == $j) {$aDataentryoutput .= " checked";}
                                     $aDataentryoutput .= " /><label for='5-point-radio-{$fname['fieldname']}'>$j</label>&nbsp;\n";
-                                    $aDataentryoutput .= '</div>';
+                                    $aDataentryoutput .= '</span>';
                                 }
                                 $aDataentryoutput .= "</td>\n"
                                 ."\t</tr>\n";
@@ -1122,11 +1122,11 @@ class dataentry extends Survey_Common_Action
                                 ."<td>\n";
                                 for ($j=1; $j<=10; $j++)
                                 {
-                                    $aDataentryoutput .= '<div class="radio">';
-                                    $aDataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' id='ten-point-{$fname['fieldname']}-$j' value='$j'";
+                                    $aDataentryoutput .= '<span class="ten-point">';
+                                    $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' id='ten-point-{$fname['fieldname']}-$j' value='$j'";
                                     if ($idrow[$fname['fieldname']] == $j) {$aDataentryoutput .= " checked";}
                                     $aDataentryoutput .= " /><label for='ten-point-{$fname['fieldname']}-$j'>$j</label>&nbsp;\n";
-                                    $aDataentryoutput .= '</div>';
+                                    $aDataentryoutput .= '</span>';
                                 }
                                 $aDataentryoutput .= "</td>\n"
                                 ."\t</tr>\n";
@@ -1144,13 +1144,13 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= "\t<tr>\n"
                                 ."<td align='right'>{$fname['subquestion']}</td>\n"
                                 ."<td>\n"
-                                ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='Y'";
+                                ."\t<input type='radio' class='' name='{$fname['fieldname']}' value='Y'";
                                 if ($idrow[$fname['fieldname']] == "Y") {$aDataentryoutput .= " checked";}
                                 $aDataentryoutput .= " />".gT("Yes")."&nbsp;\n"
-                                ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='U'";
+                                ."\t<input type='radio' class='' name='{$fname['fieldname']}' value='U'";
                                 if ($idrow[$fname['fieldname']] == "U") {$aDataentryoutput .= " checked";}
                                 $aDataentryoutput .= " />".gT("Uncertain")."&nbsp;\n"
-                                ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='N'";
+                                ."\t<input type='radio' class='' name='{$fname['fieldname']}' value='N'";
                                 if ($idrow[$fname['fieldname']] == "N") {$aDataentryoutput .= " checked";}
                                 $aDataentryoutput .= " />".gT("No")."&nbsp;\n"
                                 ."</td>\n"
@@ -1169,13 +1169,13 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= "\t<tr>\n"
                                 ."<td align='right'>{$fname['subquestion']}</td>\n"
                                 ."<td>\n"
-                                ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='I'";
+                                ."\t<input type='radio' class='' name='{$fname['fieldname']}' value='I'";
                                 if ($idrow[$fname['fieldname']] == "I") {$aDataentryoutput .= " checked";}
                                 $aDataentryoutput .= " />Increase&nbsp;\n"
-                                ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='S'";
+                                ."\t<input type='radio' class='' name='{$fname['fieldname']}' value='S'";
                                 if ($idrow[$fname['fieldname']] == "I") {$aDataentryoutput .= " checked";}
                                 $aDataentryoutput .= " />Same&nbsp;\n"
-                                ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='D'";
+                                ."\t<input type='radio' class='' name='{$fname['fieldname']}' value='D'";
                                 if ($idrow[$fname['fieldname']] == "D") {$aDataentryoutput .= " checked";}
                                 $aDataentryoutput .= " />Decrease&nbsp;\n"
                                 ."</td>\n"
@@ -1207,12 +1207,12 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= "<td>\n";
                                 foreach ($fresult->readAll() as $frow)
                                 {
-                                    $aDataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='{$frow['code']}'";
+                                    $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' value='{$frow['code']}'";
                                     if ($idrow[$fname['fieldname']] == $frow['code']) {$aDataentryoutput .= " checked";}
                                     $aDataentryoutput .= " />".$frow['answer']."&nbsp;\n";
                                 }
                                 //Add 'No Answer'
-                                $aDataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value=''";
+                                $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' value=''";
                                 if ($idrow[$fname['fieldname']] == '') {$aDataentryoutput .= " checked";}
                                 $aDataentryoutput .= " />".gT("No answer")."&nbsp;\n";
 
