@@ -78,9 +78,9 @@ class dataentry extends Survey_Common_Action
         $aData['sidebar']['state'] = "close";
         $aData['menu']['edition'] = true;
         $aData['menu']['import'] =  true;
-        $aData['menu']['close'] =  true;        
+        $aData['menu']['close'] =  true;
        //
-        
+
         $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
         if( Permission::model()->hasSurveyPermission($iSurveyId,'responses','create') )
@@ -297,13 +297,13 @@ class dataentry extends Survey_Common_Action
                 $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
 
                 $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-                $aData["surveyinfo"] = $surveyinfo;     
-                $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];  
-                
+                $aData["surveyinfo"] = $surveyinfo;
+                $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+
                 $aData['sidebar']['state'] = "close";
                 $aData['menu']['edition'] = true;
                 $aData['menu']['import'] =  true;
-                $aData['menu']['close'] =  true;        
+                $aData['menu']['close'] =  true;
 
                 $this->_renderWrappedTemplate('dataentry', 'import', $aData);
             }
@@ -490,7 +490,7 @@ class dataentry extends Survey_Common_Action
             $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
         }
 
-        
+
         $surveyinfo = getSurveyInfo($surveyid);
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses','update'))
         {
@@ -594,7 +594,7 @@ class dataentry extends Survey_Common_Action
             'subaction' => $subaction,
             'part' => 'header'
             );
-            
+
             $aViewUrls[] = 'dataentry_header_view';
             $aViewUrls[] = 'edit';
 
@@ -1492,8 +1492,8 @@ class dataentry extends Survey_Common_Action
 
             $onerecord_link = $this->getController()->createUrl('/admin/responses/sa/view/surveyid/'.$surveyid.'/id/'.$id);
             $allrecords_link = $this->getController()->createUrl('/admin/responses/sa/index/surveyid/'.$surveyid);
-            
-            
+
+
             $aDataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".gT("Success")."</div>\n"
             .gT("Record has been updated.")."<br /><br />\n"
             ."<input type='submit' value='".gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"
@@ -1501,11 +1501,11 @@ class dataentry extends Survey_Common_Action
             ."</div>\n";
 
             $aDataentryoutput = '<div class="jumbotron message-box">';
-            $aDataentryoutput .= '<h2>'.gT("Success").'</h2>';  
+            $aDataentryoutput .= '<h2>'.gT("Success").'</h2>';
             $aDataentryoutput .= '<p class="lead">'.gT("Record has been updated.").'</p>';
             $aDataentryoutput .= "<input type='submit' class='btn btn-lg btn-default' value='".gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"
             ."<input type='submit' class='btn btn-lg btn-default' value='".gT("Browse responses")."' onclick=\"window.open('$allrecords_link', '_top')\" />\n";
-            $aDataentryoutput .= '</div>'; 
+            $aDataentryoutput .= '</div>';
 
             $aViewUrls['output'] = $aDataentryoutput;
             $this->_renderWrappedTemplate('dataentry', $aViewUrls, $aData);
@@ -1955,9 +1955,11 @@ class dataentry extends Survey_Common_Action
 
                 $deqquery = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND parent_qid=0 AND gid={$degrow['gid']} AND language='{$sDataEntryLanguage}'";
                 $deqrows = (array) dbExecuteAssoc($deqquery)->readAll();
-                $aDataentryoutput .= "\t<tr>\n"
-                ."<td colspan='3' align='center'><strong>".flattenText($degrow['group_name'],true)."</strong></td>\n"
+                $aDataentryoutput .= "\t<tr class='info'>\n"
+                ."<!-- Inside controller dataentry.php -->"
+                ."<td colspan='3'><h4>".flattenText($degrow['group_name'],true)."</h4></td>\n"
                 ."\t</tr>\n";
+
                 $gid = $degrow['gid'];
 
                 $aDataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
@@ -1985,24 +1987,22 @@ class dataentry extends Survey_Common_Action
 
                     if (($relevance != '' && $relevance != '1') || ($validation != '') || ($array_filter_help != ''))
                     {
-                        $showme = '';
+                        $showme = '<div class="alert alert-warning col-sm-8 col-sm-offset-2" role="alert">';
                         if ($bgc == "even") {$bgc = "odd";} else {$bgc = "even";} //Do no alternate on explanation row
                         if ($relevance != '' && $relevance != '1') {
-                            $showme = "[".gT("Only answer this if the following conditions are met:",'html',$sDataEntryLanguage)."]<br />$explanation\n";
-                        }
-                        if ($showme != '' && $validation != '') {
-                            $showme .= '<br/>';
+                            $showme = '<strong>'.gT("Only answer this if the following conditions are met:",'html',$sDataEntryLanguage)."</strong><br />$explanation\n";
                         }
                         if ($validation != '') {
-                            $showme .= "[".gT("The answer(s) must meet these validation criteria:",'html',$sDataEntryLanguage)."]<br />$validation\n";
+                            $showme .= '<strong>'.gT("The answer(s) must meet these validation criteria:",'html',$sDataEntryLanguage)."</strong><br />$validation\n";
                         }
                         if ($showme != '' && $array_filter_help != '') {
                             $showme .= '<br/>';
                         }
                         if ($array_filter_help != '') {
-                            $showme .= "[".gT("The answer(s) must meet these array_filter criteria:",'html',$sDataEntryLanguage)."]<br />$array_filter_help\n";
+                            $showme .= '<strong>'.gT("The answer(s) must meet these array_filter criteria:",'html',$sDataEntryLanguage)."</strong><br />$array_filter_help\n";
                         }
-                        $cdata['explanation'] = "<tr class ='data-entry-explanation danger'><td class='data-entry-small-text' colspan='3' align='left'>$showme</td></tr>\n";
+                        $showme .= '</div>';
+                        $cdata['explanation'] = "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$showme</td></tr>\n";
                     }
 
                     //END OF GETTING CONDITIONS
@@ -2324,12 +2324,12 @@ class dataentry extends Survey_Common_Action
             }
 
             $aViewUrls[] = 'active_html_view';
-            
-            $aData['sidebar']['state'] = "close";                
+
+            $aData['sidebar']['state'] = "close";
             $aData['menu']['edition'] = true;
             $aData['menu']['save'] = true;
-            $aData['menu']['close'] =  true;                        
-            
+            $aData['menu']['close'] =  true;
+
             $this->_renderWrappedTemplate('dataentry', $aViewUrls, $aData);
         }
     }
@@ -2421,19 +2421,17 @@ class dataentry extends Survey_Common_Action
         {
             if(isset($aData['surveyid']))
                 $iSurveyId = $aData['surveyid'];
-            
+
             if(isset($_POST['sid']))
                 $iSurveyId = $_POST['sid'];
-            
-            
+
+
             $aData['display']['menu_bars']['browse'] = gT("Data entry");
             $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-            $aData["surveyinfo"] = $surveyinfo;     
+            $aData["surveyinfo"] = $surveyinfo;
             $aData['title_bar']['title'] = gT("Data entry");
         }
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
 }
-
-

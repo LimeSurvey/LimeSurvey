@@ -58,7 +58,7 @@
         <div class="col-lg-12 content-right">
             <div class="alert alert-info alert-dismissible" role="alert">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-              <?php echo sprintf(gT('You can use %1$s %1$s shift %2$s + %1$s mouse wheel %2$s %2$s   to scroll horizontally.'), '<kbd>', '</kbd>' ); ?>
+              <?php echo sprintf(gT('You can use %1$s shift %2$s + %1$s mouse wheel %2$s   to scroll horizontally.'), '<kbd>', '</kbd>' ); ?>
             </div>
         </div>
     </div>

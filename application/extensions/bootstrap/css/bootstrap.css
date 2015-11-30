@@ -313,7 +313,6 @@ img {
 hr {
   margin-top: 20px;
   margin-bottom: 20px;
-  border: 0;
 }
 .sr-only {
   position: absolute;
@@ -3644,7 +3643,7 @@ a.badge:focus {
 .alert {
   padding: 15px;
   margin-bottom: 20px;
-  
+
   border-radius: 4px;
 }
 .alert h4 {

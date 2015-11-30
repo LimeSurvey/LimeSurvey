@@ -4,7 +4,6 @@
 /*
 $base-color: #328637;
 
-
 $color_green_pea_approx: #7B302E;
 $color_sea_mist_approx: #FFD9D8;
 $color_granny_smith_apple_approx: #FFC0BE;
@@ -188,7 +187,7 @@ $color_deep_fir_approx: darken( $base-color, 20% );
 $color_acapulco_approx: adjust-color($base-color, $hue: 24deg, $saturation: -22%, $lightness: 25%);
 $color_aqua_forest_approx: adjust-color($base-color, $hue: 4deg, $saturation: -24%, $lightness: 14%);
 $color_paradiso_approx:adjust-color($base-color, $lightness: 5%); ;
-//$color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $lightness: 31%);
+$color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $lightness: 31%);
 
 
 ////////
@@ -262,8 +261,8 @@ $color_moss_green_approx: adjust-color($base-color, $hue: 0deg, $saturation: -8%
 $color_mountain_mist_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: 24%);
 $color_new_york_pink_approx: adjust-color($base-color, $hue: -123deg, $saturation: 10%, $lightness: 34%);
 
-$color_opal_approx: adjust-color($base-color, $hue: 58deg, $saturation: -23%, $lightness: 37%);
-
+//$color_opal_approx: adjust-color($base-color, $hue: 58deg, $saturation: -23%, $lightness: 37%);
+$color_opal_approx: $color_aqua_forest_approx;
 
 $color_parsley_approx: adjust-color($base-color, $hue: 0deg, $saturation: 16%, $lightness: -21%);
 $color_quicksand_approx: adjust-color($base-color, $hue: -96deg, $saturation: -20%, $lightness: 28%);
@@ -4487,3 +4486,48 @@ input:focus, textarea:focus {
 .cke_skin_kama .cke_contents{
     width: 600px;
 }
+
+// Expression Manager
+.em-expression
+{
+    display:block;
+    font-weight: bold;
+}
+
+.em-function{
+    color: $base-color;
+}
+
+.em-var-string{
+    color: $color_gravel_approx;
+}
+
+
+.data-entry-explanation+tr {
+    background-color: $mercury;
+}
+
+.data-entry-tbl tr.odd, .data-entry-tbl tr.even{
+    border-bottom: 1px solid $color_cararra_approx;
+}
+
+.data-entry-tbl tr.odd td, .data-entry-tbl tr.even td {
+    padding: 20px 0 20px 0;
+}
+
+/*
+//GREYS
+$color_gravel_approx: rgb(53, 54, 63);
+$color_celeste_approx:  #cccccc;
+$mercury: #e6e6e6;
+$color_storm_dust_approx: #636363;
+$color_cornflower_blue_approx: #67afe9;
+$color_mine_shaft_approx: #333333;
+$color_cararra_approx: #ebebeb;
+$color_silver_chalice_approx: #adadad;
+$color_mercury_approx: #e3e3e3;
+$color_buccaneer_approx: $color_mercury_approx;
+$color_gunsmoke_approx: #858585;
+$color_wild_sand_approx: #f5f5f5;
+$color_norway_approx: #e3e3e3;
+*/
