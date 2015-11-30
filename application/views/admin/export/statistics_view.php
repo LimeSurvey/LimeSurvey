@@ -46,29 +46,34 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
             ?>
             <fieldset style='clear:both;'>
                 <legend><?php eT("Data selection"); ?></legend>
-                <ul class='list-unstyled'>
-                    <li>
-                        <label for='completionstate'><?php eT("Include:"); ?> </label>
-                        <select name='completionstate' id='completionstate' class='form-control'>
-                            <option value='all' <?php echo $selectshow; ?>><?php eT("All responses"); ?></option>
-                            <option value='complete' <?php echo $selecthide; ?> > <?php eT("Completed responses only"); ?></option>
-                            <option value='incomplete' <?php echo $selectinc; ?> > <?php eT("Incomplete responses only"); ?></option>
-                        </select>
-                    </li>
-                    <li>
-                        <div class='checkbox'>
-                            <input type='checkbox' id='viewsummaryall' name='viewsummaryall' <?php if (isset($_POST['viewsummaryall'])) { echo "checked='checked'";} ?> />
-                            <label for='viewsummaryall'><?php eT("View summary of all available fields"); ?></label>
-                        </div>
-                    </li>
-                    <li id='vertical_slide'>
-                        <div class='checkbox'>
-                            <input type='checkbox' id='noncompleted' name='noncompleted' <?php if (isset($_POST['noncompleted'])) {echo "checked='checked'"; } ?> />
-                            <label id='noncompletedlbl' for='noncompleted' title='<?php eT("Count stats for each question based only on the total number of responses for which the question was displayed"); ?>'><?php eT("Subtotals based on displayed questions"); ?></label>
-                        </div>
-                    </li>
-                    <?php
 
+                        <div class="form-group">
+                            <label for='completionstate' class="col-sm-5 control-label"><?php eT("Include:"); ?> </label>
+
+                            <div class="col-sm-5">
+                                <select name='completionstate' id='completionstate' class='form-control'>
+                                    <option value='all' <?php echo $selectshow; ?>><?php eT("All responses"); ?></option>
+                                    <option value='complete' <?php echo $selecthide; ?> > <?php eT("Completed responses only"); ?></option>
+                                    <option value='incomplete' <?php echo $selectinc; ?> > <?php eT("Incomplete responses only"); ?></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class='form-group'>
+                            <label class="col-sm-5 control-label" for='viewsummaryall'><?php eT("View summary of all available fields"); ?></label>
+                            <div class='col-sm-7'>
+                                <input type='checkbox' id='viewsummaryall' name='viewsummaryall' <?php if (isset($_POST['viewsummaryall'])) { echo "checked='checked'";} ?> />
+                            </div>
+                        </div>
+
+                        <div class='form-group'>
+                            <label class="col-sm-5 control-label" id='noncompletedlbl' for='noncompleted' title='<?php eT("Count stats for each question based only on the total number of responses for which the question was displayed"); ?>'><?php eT("Subtotals based on displayed questions"); ?></label>
+                            <div class='col-sm-7'>
+                                <input type='checkbox' id='noncompleted' name='noncompleted' <?php if (isset($_POST['noncompleted'])) {echo "checked='checked'"; } ?> />
+                            </div>
+                        </div>
+
+                    <?php
                         $language_options="";
                         foreach ($survlangs as $survlang)
                         {
@@ -79,29 +84,33 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
                             }
                             $temp = getLanguageNameFromCode($survlang,true);
                             $language_options .= ">".$temp[1]."</option>\n";
-
                         }
 
                     ?>
-                    <li>
-                        <label for='statlang'><?php eT("Statistics report language"); ?></label>
-                        <select name="statlang" id="statlang" class="form-control"><?php echo $language_options; ?></select>
-                    </li>
-                </ul>
+
+                    <div class='form-group'>
+                        <label for='statlang' class="col-sm-5 control-label" ><?php eT("Statistics report language"); ?></label>
+                        <div class='col-sm-5'>
+                            <select name="statlang" id="statlang" class="form-control"><?php echo $language_options; ?></select>
+                        </div>
+                    </div>
             </fieldset>
 
             <fieldset id='left'>
                 <legend><?php eT("Response ID"); ?></legend>
-                <ul class="list-unstyled">
-                    <li>
-                        <label for='idG'><?php eT("Greater than:"); ?></label>
+                <div class='form-group'>
+                    <label class="col-sm-5 control-label" for='idG'><?php eT("Greater than:"); ?></label>
+                    <div class='col-sm-5'>
                         <input type='text' id='idG' name='idG' size='10' value='<?php if (isset($_POST['idG'])){ echo  sanitize_int($_POST['idG']);} ?>' onkeypress="return goodchars(event,'0123456789')" />
-                    </li>
-                    <li>
-                        <label for='idL'><?php eT("Less than:"); ?></label>
+                    </div>
+                </div>
+
+                <div class='form-group'>
+                    <label class="col-sm-5 control-label" for='idL'><?php eT("Less than:"); ?></label>
+                    <div class='col-sm-5'>
                         <input type='text' id='idL' name='idL' size='10' value='<?php if (isset($_POST['idL'])) { echo sanitize_int($_POST['idL']);} ?>' onkeypress="return goodchars(event,'0123456789')" />
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </fieldset>
 
             <input type='hidden' name='summary[]' value='idG' />
@@ -128,63 +137,68 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
 
             <fieldset>
                 <legend><?php eT("Output options"); ?></legend>
-                <ul class="list-unstyled">
-                    <li>
-                        <div class="checkbox">
+                    <div class='form-group'>
+                        <label for='showtextinline' class="col-sm-5 control-label" ><?php eT("Show text responses inline:") ?></label>
+                        <div class='col-sm-5'>
                             <input type='checkbox' id='showtextinline' name='showtextinline'<?php if(isset($showtextinline) && $showtextinline == 1) {echo "checked='checked'"; } ?> />
-                            <label for='showtextinline'><?php eT("Show text responses inline:") ?></label>
                         </div>
-                    </li>
-                    <li>
-                        <div class="checkbox">
+                    </div>
+
+                    <div class='form-group'>
+                        <label for='usegraph'  class="col-sm-5 control-label" ><?php eT("Show graphs"); ?></label>
+                        <div class='col-sm-5'>
                             <input type='checkbox' id='usegraph' name='usegraph' <?php if (isset($usegraph) && $usegraph == 1) { echo "checked='checked'"; } ?> />
-                            <label for='usegraph'><?php eT("Show graphs"); ?></label>
-                            <?php if($error != '') { echo "<span id='grapherror' style='display:none'>$error<hr /></span>"; } ?>
                         </div>
-                    </li>
+                        <?php if($error != '') { echo "<div id='grapherror' style='display:none'>$error<hr /></div>"; } ?>
+                    </div>
 
-                    <li>
-                        <div class="form-group col-sm-12">
-
-                            <div class="alert alert-info alert-dismissible" role="alert">
-                                <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>×</span></button>
-                                <?php eT("Each question has its own graph type defined in its advanced settings.");?>
-                                <br/>
-                                <?php eT("With chart type selector, you can force the use of graph type for all selected questions)");?>
-                            </div>
-
-
-                            <label for='charttype' class='control-label'>
-                                <?php eT('Chart type:');?>
-                            </label>
-                                <select name="charttype" id='charttype' class="form-control">
-                                    <option value="default" selected="selected"><?php eT('as defined in questions\'s advanced setting');?></option>
-                                    <option value="0" ><?php eT('bar chart');?></option>
-                                    <option value="1"><?php eT('pie chart');?></option>
-                                    <option value="2"><?php eT('radar chart');?></option>
-                                    <option value="3"><?php eT('line chart');?></option>
-                                    <option value="4"><?php eT('polar chart');?></option>
-                                    <option value="5"><?php eT('doughnut chart');?></option>
-                                </select>
+                    <div class="form-group col-sm-12">
+                        <div class="col-sm-offset-1 alert alert-info alert-dismissible" role="alert">
+                            <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>×</span></button>
+                            <?php eT("Each question has its own graph type defined in its advanced settings.");?>
+                            <br/>
+                            <?php eT("With chart type selector, you can force the use of graph type for all selected questions)");?>
                         </div>
-                    </li>
+                    </div>
 
-                    <li>
-                        <label><?php eT("Select output format"); ?>:</label>
-                        <div class="radio">
+                    <div class="form-group col-sm-12">
+                        <label for='charttype' class="col-sm-5 control-label">
+                            <?php eT('Chart type:');?>
+                        </label>
+
+                        <div class='col-sm-5'>
+                            <select name="charttype" id='charttype' class="form-control">
+                                <option value="default" selected="selected"><?php eT('as defined in questions\'s advanced setting');?></option>
+                                <option value="0" ><?php eT('bar chart');?></option>
+                                <option value="1"><?php eT('pie chart');?></option>
+                                <option value="2"><?php eT('radar chart');?></option>
+                                <option value="3"><?php eT('line chart');?></option>
+                                <option value="4"><?php eT('polar chart');?></option>
+                                <option value="5"><?php eT('doughnut chart');?></option>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend><?php eT("Select output format"); ?>:</legend>
+                    <div class="form-group col-sm-12">
+                        <label  class="col-sm-5 control-label" for='outputtypehtml'>HTML</label>
+                        <div class='col-sm-5'>
                             <input type='radio' id="outputtypehtml" name='outputtype' value='html' checked='checked' />
-                            <label for='outputtypehtml'>HTML</label>
                         </div>
-                        <div class="radio">
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label  class="col-sm-5 control-label" for='outputtypepdf'>PDF</label>
+                        <div class='col-sm-5'>
                             <input type='radio' id="outputtypepdf" name='outputtype' value='pdf' />
-                            <label for='outputtypepdf'>PDF</label>
                         </div>
-                        <div class="radio">
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label class="col-sm-5 control-label" for='outputtypexls'>Excel</label>
+                        <div class='col-sm-5'>
                             <input type='radio' id="outputtypexls" onclick='nographs();' name='outputtype' value='xls' />
-                            <label for='outputtypexls'>Excel</label>
-                       </div>
-                    </li>
-                </ul>
+                        </div>
+                    </div>
             </fieldset>
         </div>
         <p>
