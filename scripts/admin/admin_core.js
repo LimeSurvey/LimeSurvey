@@ -48,6 +48,10 @@ $(document).ready(function(){
     doToolTip();
     $('.btntooltip').tooltip();
 
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
     $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
     $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
 
@@ -87,6 +91,29 @@ $(document).ready(function(){
 		});
 	};
 
+    $('.selectTemplate').click(function(){
+
+        $that = $(this);
+        $url = $that.data('url');
+        $selected = $that.data('selectedtext');;
+        $.ajax({
+            url : $url,
+            type : 'GET',
+            dataType : 'html',
+
+            // html contains the buttons
+            success : function(html, statut){
+                $that.addClass("disabled");
+                $that.empty().append($selected);
+            },
+            error :  function(html, statut){
+                alert('error');
+            }
+        });
+
+
+
+    });
 
     $('#showadvancedattributes').click(function(){
         $('#showadvancedattributes').hide();

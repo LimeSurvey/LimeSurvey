@@ -168,6 +168,55 @@
             </div>
         </div>
 
+        <h3><?php eT('Choose your template'); ?></h3>
+        <div class="row template-caroussel">
+            <?php
+                $templates = getTemplateList();
+                $count = 0;
+                $surveyid = $surveyinfo['sid'];
+                //var_dump($surveyinfo['template']);
+            ?>
+
+            <div id="carousel-example-generic" class="carousel slide col-sm-8" data-ride="carousel" data-interval="false">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <?php foreach($templates as $key=>$template):?>
+                        <li data-target="#carousel-example-generic" data-slide-to="<?php echo $count;?>" <?php if($key==$surveyinfo['template']){echo 'class="active"';}?> data-toggle="tooltip" data-placement="bottom" title="<?php echo $key;?>" ></li>
+                        <?php $count++;?>
+                    <?php endforeach; ?>
+                </ol>
+
+                <div class="carousel-inner" role="listbox">
+                    <?php foreach($templates as $key=>$template):?>
+                        <div class="item <?php if($key==$surveyinfo['template']){echo ' active ';}?>">
+                            <img src="<?php echo Yii::app()->request->baseUrl.'/templates/'.$key.'/preview.png'; ?>" alt="<?php echo $key;?>">
+
+                            <div class="carousel-caption">
+                                <h3><?php echo $key;?></h3>
+                                <?php if($key==$surveyinfo['template']):?>
+                                    <a href="#" class="selectTemplate btn btn-default btn-success btn-lg disabled"><?php eT('Selected!');?></a>
+                                <?php else:?>
+                                    <button data-selectedtext="<?php eT("Selected!");?>" data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/changetemplate/surveyid/$surveyid/template/$key" ); ?>" data-template="<?php echo $key;?>" class="selectTemplate btn btn-default btn-lg"><?php eT('Select');?> <?php echo $key;?></button>
+                                <?php endif;?>
+                            </div>
+                        </div>
+                    <?php endforeach;?>
+                </div>
+
+                <!-- Controls -->
+                  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" ></span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    <span class="sr-only">Next</span>
+                  </a>
+
+            </div>
+
+        </div>
+
     <!-- Survey summary -->
     <h3><?php eT('Survey summary'); ?></h3>
         <div class="row">

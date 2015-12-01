@@ -300,6 +300,15 @@ class SurveyAdmin extends Survey_Common_Action
         }
     }
 
+    public function changetemplate($iSurveyID, $template)
+    {
+        $iSurveyID = sanitize_int($iSurveyID);
+        $template = sanitize_paranoid_string($template);
+        $survey = Survey::model()->findByPk($iSurveyID);
+        $survey->template = $template;
+        $survey->save();
+    }
+
     /**
     * Load complete view of survey properties and actions specified by $iSurveyID
     *
@@ -344,6 +353,9 @@ class SurveyAdmin extends Survey_Common_Action
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
         $lastquestion = getGlobalSetting($setting_entry);
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
+
+        // We get the list of templates
+
 
         //$setting_entry = 'last_question_gid'.Yii::app()->user->getId().'_'.$iSurveyID;
         $lastquestiongroup = getGlobalSetting($setting_entry);
