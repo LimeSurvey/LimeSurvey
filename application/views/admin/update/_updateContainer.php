@@ -21,7 +21,7 @@
 
 <div class="col-lg-12 list-surveys">
 	<h3>
-        <span style="height : 1em; margin-right : 0.5em;" class="icon-shield text-success"></span>z
+        <span style="height : 1em; margin-right : 0.5em;" class="icon-shield text-success"></span>
 		<?php eT('ComfortUpdate'); ?>
 	</h3>
 
