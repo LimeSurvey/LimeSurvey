@@ -13,11 +13,13 @@
                     <?php
                         echo CHtml::label(gT('Please select your preferred language:'), 'installerLang');
                     ?>
+                    <br/><br/>
                 </div>
                 <div class="col-md-3">
                     <?php
                         echo CHtml::dropDownList('installerLang', 'en', $languages, array('id' => 'installerLang', 'class'=>'form-control', 'encode' => false));
                     ?>
+                    <br/><br/>
                 </div>
             </div>
             <?php
