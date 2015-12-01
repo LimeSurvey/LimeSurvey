@@ -295,7 +295,7 @@ return array(
             'css/lime-admin.css',
             'css/fonts.css',
             'css/font-awesome/font-awesome-43.min.css',
-            'css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css',
+
             'css/statistics.css',
 
         ),
@@ -322,7 +322,7 @@ return array(
             'css/lime-admin.css',
             'css/fonts.css',
             'css/font-awesome/font-awesome-43.min.css',
-            'css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css',
+
             'css/statistics.css',
 
         ),
@@ -332,5 +332,190 @@ return array(
             'bootstrap'
         ),
     ),
+
+    // LimeSurvey Bootstrap Admin Interface
+    'lime-bootstrap-Bay_of_Many' => array(
+        'baseUrl' => 'styles/Bay_of_Many/',
+
+        'js'=>array(
+            'scripts/notify.js',
+            'scripts/save.js',
+            'scripts/panelclickable.js',
+            'scripts/panelsanimation.js',
+            'scripts/sidemenu.js'
+        ),
+
+        'css' => array(
+            'css/lime-admin.css',
+            'css/fonts.css',
+            'css/font-awesome/font-awesome-43.min.css',
+
+            'css/statistics.css',
+
+        ),
+        'depends' => array(
+            'jquery',
+            'jquery-notify',
+            'bootstrap'
+        ),
+    ),
+
+    // LimeSurvey Bootstrap Admin Interface
+    'lime-bootstrap-Dark_Sky' => array(
+        'baseUrl' => 'styles/Dark_Sky/',
+
+        'js'=>array(
+            'scripts/notify.js',
+            'scripts/save.js',
+            'scripts/panelclickable.js',
+            'scripts/panelsanimation.js',
+            'scripts/sidemenu.js'
+        ),
+
+        'css' => array(
+            'css/lime-admin.css',
+            'css/fonts.css',
+            'css/font-awesome/font-awesome-43.min.css',
+
+            'css/statistics.css',
+
+        ),
+        'depends' => array(
+            'jquery',
+            'jquery-notify',
+            'bootstrap'
+        ),
+    ),
+
+    // LimeSurvey Bootstrap Admin Interface
+    'lime-bootstrap-Free_Magenta' => array(
+        'baseUrl' => 'styles/Free_Magenta/',
+
+        'js'=>array(
+            'scripts/notify.js',
+            'scripts/save.js',
+            'scripts/panelclickable.js',
+            'scripts/panelsanimation.js',
+            'scripts/sidemenu.js'
+        ),
+
+        'css' => array(
+            'css/lime-admin.css',
+            'css/fonts.css',
+            'css/font-awesome/font-awesome-43.min.css',
+            'css/statistics.css',
+
+        ),
+        'depends' => array(
+            'jquery',
+            'jquery-notify',
+            'bootstrap'
+        ),
+    ),
+
+    // LimeSurvey Bootstrap Admin Interface
+    'lime-bootstrap-Black_Pearl' => array(
+        'baseUrl' => 'styles/Black_Pearl/',
+
+        'js'=>array(
+            'scripts/notify.js',
+            'scripts/save.js',
+            'scripts/panelclickable.js',
+            'scripts/panelsanimation.js',
+            'scripts/sidemenu.js'
+        ),
+
+        'css' => array(
+            'css/lime-admin.css',
+            'css/fonts.css',
+            'css/font-awesome/font-awesome-43.min.css',
+            'css/statistics.css',
+
+        ),
+        'depends' => array(
+            'jquery',
+            'jquery-notify',
+            'bootstrap'
+        ),
+    ),
+
+    // LimeSurvey Bootstrap Admin Interface
+    'lime-bootstrap-Purple_Tentacle' => array(
+        'baseUrl' => 'styles/Purple_Tentacle/',
+
+        'js'=>array(
+            'scripts/notify.js',
+            'scripts/save.js',
+            'scripts/panelclickable.js',
+            'scripts/panelsanimation.js',
+            'scripts/sidemenu.js'
+        ),
+
+        'css' => array(
+            'css/lime-admin.css',
+            'css/fonts.css',
+            'css/font-awesome/font-awesome-43.min.css',
+            'css/statistics.css',
+
+        ),
+        'depends' => array(
+            'jquery',
+            'jquery-notify',
+            'bootstrap'
+        ),
+    ),
+
+    // LimeSurvey Bootstrap Admin Interface
+    'lime-bootstrap-Ripe_Lemon' => array(
+        'baseUrl' => 'styles/Ripe_Lemon/',
+
+        'js'=>array(
+            'scripts/notify.js',
+            'scripts/save.js',
+            'scripts/panelclickable.js',
+            'scripts/panelsanimation.js',
+            'scripts/sidemenu.js'
+        ),
+
+        'css' => array(
+            'css/lime-admin.css',
+            'css/fonts.css',
+            'css/font-awesome/font-awesome-43.min.css',
+            'css/statistics.css',
+
+        ),
+        'depends' => array(
+            'jquery',
+            'jquery-notify',
+            'bootstrap'
+        ),
+    ),
+
+    // LimeSurvey Bootstrap Admin Interface
+    'lime-bootstrap-Sunset_Orange' => array(
+        'baseUrl' => 'styles/Sunset_Orange/',
+
+        'js'=>array(
+            'scripts/notify.js',
+            'scripts/save.js',
+            'scripts/panelclickable.js',
+            'scripts/panelsanimation.js',
+            'scripts/sidemenu.js'
+        ),
+
+        'css' => array(
+            'css/lime-admin.css',
+            'css/fonts.css',
+            'css/font-awesome/font-awesome-43.min.css',
+            'css/statistics.css',
+
+        ),
+        'depends' => array(
+            'jquery',
+            'jquery-notify',
+            'bootstrap'
+        ),
+    ),
+
 
 );

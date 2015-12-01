@@ -64,7 +64,7 @@ class Template extends LSActiveRecord
         $sDefaulttemplate=Yii::app()->getConfig('defaulttemplate','default');
         $sTemplateName=empty($sTemplateName) ? $sDefaulttemplate : $sTemplateName;
 
-        /* Validate it's a real dir included in template allowed dir 
+        /* Validate it's a real dir included in template allowed dir
         *  Alternative : use realpath("$dir/$sTemplateName")=="$dir/$sTemplateName" and is_dir
         */
         if(array_key_exists($sTemplateName,self::getTemplateList()))
@@ -172,17 +172,22 @@ class Template extends LSActiveRecord
     {
         return in_array($sTemplateName,
             array(
-                'basic',
-                'bluengrey',
-                'business_grey',
-                'citronade',
-                'clear_logo',
                 'default',
-                'eirenicon',
-                'limespired',
-                'mint_idea',
-                'sherpa',
-                'vallendar',
+                'blue_sky',
+                'metro_ode',
+                'electric_black',
+                'night_mode',
+                'flat_and_modern',
+                'news_paper',
+                'light_and_shadow',
+                'material_design',
+                'readable',
+                'sandstone',
+                'minimalist',
+                'gunmetal',
+                'super_blue',
+                'ubuntu_orange',
+                'yeti'
             )
         );
     }
