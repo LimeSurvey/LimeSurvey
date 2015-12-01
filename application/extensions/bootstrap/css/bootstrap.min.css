@@ -4362,8 +4362,6 @@ button.close {
 .carousel-control.right {
   left: auto;
   right: 0;
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.0001) 0%, rgba(0, 0, 0, 0.5) 100%);
-  background-repeat: repeat-x;
 }
 .carousel-control:hover,
 .carousel-control:focus {
