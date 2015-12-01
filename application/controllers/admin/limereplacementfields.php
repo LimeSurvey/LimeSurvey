@@ -216,6 +216,8 @@ class limereplacementfields extends Survey_Common_Action
                     $replFields[] = array('TOKEN:' . strtoupper($attributefield), sprintf(gT("Token attribute: %s"), $attributedescription['description']));
                 }
                 $replFields[] = array('EXPIRY', gT("Survey expiration date"));
+                $replFields[] = array('ADMINNAME', gT("Name of the survey administrator"));
+                $replFields[] = array('ADMINEMAIL', gT("Email address of the survey administrator"));
                 return array($replFields, false);
 
             case 'email-admin_notification':
