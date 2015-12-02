@@ -87,13 +87,6 @@ class SurveyAdmin extends Survey_Common_Action
 
     }
 
-    public function listupdates()
-    {
-        echo "should call update/index";
-        //$this->_renderWrappedTemplate('update', '_updateContainer', array("thisupdatecheckperiod"=>getGlobalSetting('updatecheckperiod'),"updatelastcheck"=>getGlobalSetting('updatelastcheck'),"UpdateNotificationForBranch"=>getGlobalSetting('updatenotification')));
-        //$this->_renderWrappedTemplate('update', 'update_view');
-    }
-
 
     public function regenquestioncodes($iSurveyID, $sSubAction )
     {
@@ -307,6 +300,28 @@ class SurveyAdmin extends Survey_Common_Action
         $survey = Survey::model()->findByPk($iSurveyID);
         $survey->template = $template;
         $survey->save();
+    }
+
+    public function togglequickaction()
+    {
+        $setting_entry = 'quickaction_'.Yii::app()->user->getId();
+        $quickactionstate = getGlobalSetting($setting_entry);
+
+        switch ($quickactionstate)
+        {
+            // if the quickaction state is not set, then it's the first time user click on the chevron, then the state must be set to 0
+            case null:
+                setGlobalSetting($setting_entry, 0);
+                break;
+
+            case 0:
+                setGlobalSetting($setting_entry, 1);
+                break;
+
+            case 1:
+                setGlobalSetting($setting_entry, 0);
+                break;
+        }
     }
 
     /**

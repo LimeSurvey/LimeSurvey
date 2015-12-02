@@ -3077,27 +3077,65 @@ input:focus, textarea:focus {
 .data-entry-tbl tr.odd td, .data-entry-tbl tr.even td {
   padding: 20px 0 20px 0; }
 
+#survey-action-chevron {
+  position: absolute;
+  right: 1em;
+  top: 10px; }
+
+#survey-action-chevron {
+  cursor: pointer; }
+
 /**
  * Template selector
  */
-.selectTemplate {
-  display: inline-block;
-  position: relative;
-  top: 530px; }
+#carousel-example-generic {
+  margin-left: 20px; }
+
+#carousel-example-generic .carousel-control {
+  color: #328637;
+  font-size: 1em;
+  top: -80px; }
+
+#carousel-example-generic .left.carousel-control {
+  left: -20px; }
+
+#carousel-example-generic .right.carousel-control {
+  right: -20px; }
+
+#carousel-example-generic .panel-title {
+  color: #328637;
+  text-align: center;
+  padding-top: 0px; }
 
 #carousel-example-generic .carousel-inner img {
   margin: auto;
-  top: 100px;
+  top: 9px;
   position: relative; }
 
+#carousel-example-generic .selectTemplate {
+  display: inline-block;
+  position: relative;
+  left: 0px;
+  top: 320px; }
+
 #carousel-example-generic .carousel-caption {
-  top: 0px; }
+  width: 100%;
+  left: 0;
+  top: 0px;
+  padding-top: 0px; }
 
 #carousel-example-generic, #carousel-example-generic .carousel-inner {
-  min-height: 800px; }
+  min-height: 400px; }
 
 #carousel-example-generic .carousel-indicators {
-  top: 700px; }
+  top: 370px;
+  width: 80%;
+  left: 39%; }
+
+#carousel-example-generic .carousel-indicators li {
+  margin: 0px;
+  width: 8px;
+  height: 8px; }
 
 #carousel-example-generic .carousel-indicators .active {
   background-color: #328637; }
@@ -3107,9 +3145,5 @@ input:focus, textarea:focus {
 
 .side-body #carousel-example-generic h3 {
   border: none; }
-
-#carousel-example-generic .carousel-control {
-  color: #328637;
-  font-size: 4em; }
 
 /*# sourceMappingURL=lime-admin.css.map */

@@ -4,12 +4,29 @@
  *
  */
  $count= 0;
+
+     //TODO : move to controller
+     $templates = getTemplateList();
+     $count = 0;
+     $surveyid = $surveyinfo['sid'];
+     $setting_entry = 'quickaction_'.Yii::app()->user->getId();
+     $quickactionstate = getGlobalSetting($setting_entry);
+
+     $surveylocale = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read');
+     // EDIT SURVEY SETTINGS BUTTON
+     $surveysettings = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read');
+     $respstatsread = Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')
+         || Permission::model()->hasSurveyPermission($iSurveyID, 'statistics', 'read')
+         || Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export');
+
+
+
 ?>
 <div class="side-body">
 
     <!-- Quick Actions -->
-    <h3><?php eT('Survey quick actions'); ?></h3>
-        <div class="row welcome survey-action">
+    <h3 id="survey-action-title"><?php eT('Survey quick actions'); ?><span data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="glyphicon glyphicon-chevron-up"></span></h3>
+        <div class="row welcome survey-action" id="survey-action-container" style="<?php if($quickactionstate==0){echo 'display:none';}?>">
             <div class="col-lg-12 content-right">
 
                 <!-- Alerts, infos... -->
@@ -57,113 +74,237 @@
                 </div>
 
 
-                <!-- Add group / questions -->
+                <!-- Boxes and template -->
                 <div class="row">
 
-                    <!-- Survey active, so it's impossible to add new group/question -->
-                    <?php if ($activated == "Y"): ?>
+                    <!-- Boxes -->
+                    <div class="col-sm-6">
 
-                            <!-- Can't add new group to survey  -->
-                            <div class="col-lg-2">
-                                <div class="panel panel-primary disabled" id="pannel-1">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title"><?php eT('Add group');?></h4>
-                                </div>
-                                <div class="panel-body">
-                                    <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
-                                        <span class="icon-add text-success"  style="font-size: 3em;"></span>
-                                    </a>
-                                    <p><a href="#"><?php eT('Add new group');?></a></p>
-                                </div>
-                                </div>
-                            </div>
+                        <!-- Add Question / group -->
+                        <div class="row">
+                            <!-- Survey active, so it's impossible to add new group/question -->
+                            <?php if ($activated == "Y"): ?>
 
-                            <!-- Can't add a new question -->
-                            <div class="col-lg-2" >
-                                <div class="panel panel-primary disabled" id="pannel-2">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title  disabled"><?php eT('Add question');?></h4>
+                                    <!-- Can't add new group to survey  -->
+                                    <div class="col-lg-6">
+                                        <div class="panel panel-primary disabled" id="pannel-1">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title"><?php eT('Add group');?></h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
+                                                    <span class="icon-add text-success"  style="font-size: 3em;"></span>
+                                                </a>
+                                                <p><a href="#"><?php eT('Add new group');?></a></p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="panel-body  ">
-                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
-                                            <span class="icon-add text-success"  style="font-size: 3em;"></span>
-                                        </a>
-                                        <p>
-                                            <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
-                                                <?php eT("Add new question"); ?>
-                                            </a>
-                                        </p>
+
+                                    <!-- Can't add a new question -->
+                                    <div class="col-lg-6" >
+                                        <div class="panel panel-primary disabled" id="pannel-2">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title  disabled"><?php eT('Add question');?></h4>
+                                            </div>
+                                            <div class="panel-body  ">
+                                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
+                                                    <span class="icon-add text-success"  style="font-size: 3em;"></span>
+                                                </a>
+                                                <p>
+                                                    <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+                                                        <?php eT("Add new question"); ?>
+                                                    </a>
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
 
-                    <!-- survey is not active, and user has permissions, so buttons are shown and active -->
-                    <?php elseif(Permission::model()->hasSurveyPermission($surveyinfo['sid'],'surveycontent','create')): ?>
+                                    <!-- survey is not active, and user has permissions, so buttons are shown and active -->
+                                <?php elseif(Permission::model()->hasSurveyPermission($surveyinfo['sid'],'surveycontent','create')): ?>
 
-                        <!-- Add group -->
-                        <div class="col-lg-2">
-                            <div class="panel panel-primary panel-clickable" id="pannel-1" aria-data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>">
-                            <div class="panel-heading">
-                                <h4 class="panel-title"><?php eT('Add group');?></h4>
-                            </div>
-                            <div class="panel-body">
-                                <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>" >
-                                    <span class="icon-add text-success"  style="font-size: 3em;"></span>
-                                </a>
-                                <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>"><?php eT('Add new group');?></a></p>
-                            </div>
-                            </div>
+                                    <!-- Add group -->
+                                    <div class="col-lg-6">
+                                        <div class="panel panel-primary panel-clickable" id="pannel-1" aria-data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title"><?php eT('Add group');?></h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>" >
+                                                    <span class="icon-add text-success"  style="font-size: 3em;"></span>
+                                                </a>
+                                                <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>"><?php eT('Add new group');?></a></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Survey has no group, so can't add a question -->
+                                    <?php if(!$groups_count > 0): ?>
+                                        <div class="col-lg-6" >
+                                            <div class="panel panel-primary disabled" id="pannel-2">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title  disabled"><?php eT('Add question');?></h4>
+                                                </div>
+                                                <div class="panel-body  ">
+                                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+                                                        <span class="icon-add text-success"  style="font-size: 3em;"></span>
+                                                    </a>
+                                                    <p>
+                                                        <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
+                                                            <?php eT("Add new question"); ?>
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Survey has a group, so can add a question -->
+                                    <?php else:?>
+                                        <div class="col-lg-6">
+                                            <div class="panel panel-primary panel-clickable" id="pannel-2" aria-data-url="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title"><?php eT('Add question');?></h4>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <a  href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>" >
+                                                        <span class="icon-add text-success"  style="font-size: 3em;"></span>
+                                                    </a>
+                                                    <p><a href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>")"><?php eT("Add new question"); ?></a></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endif; ?>
                         </div>
 
-                        <!-- Survey has no group, so can't add a question -->
-                        <?php if(!$groups_count > 0): ?>
-                            <div class="col-lg-2" >
-                                <div class="panel panel-primary disabled" id="pannel-2">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title  disabled"><?php eT('Add question');?></h4>
-                                    </div>
-                                    <div class="panel-body  ">
-                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
-                                            <span class="icon-add text-success"  style="font-size: 3em;"></span>
-                                        </a>
-                                        <p>
-                                            <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
-                                                <?php eT("Add new question"); ?>
+                        <div class="row">
+                            <div class="col-lg-6">
+
+
+                                <!-- Edit text elements and general settings -->
+                                <?php if($surveylocale && $surveysettings): ?>
+                                    <div class="panel panel-primary panel-clickable" id="pannel-3" aria-data-url="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$surveyinfo['sid']); ?>">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><?php eT('Edit text elements and general settings');?></h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <a  href="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$surveyinfo['sid']); ?>" >
+                                                <span class="icon-edit text-success"  style="font-size: 3em;"></span>
                                             </a>
-                                        </p>
+                                            <p><a href="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$surveyinfo['sid']); ?>"><?php eT('Edit text elements and general settings');?></a></p>
+                                        </div>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="panel panel-primary disabled" id="pannel-3" >
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><?php eT('Edit text elements and general settings');?></h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("We are sorry but you don't have permissions to do this."); ?>" style="display: inline-block" data-toggle="tooltip" >
+                                                <span class="icon-edit text-success"  style="font-size: 3em;"></span>
+                                            </a>
+                                            <p><a href="#"><?php eT('Edit text elements and general settings');?></a></p>
+                                        </div>
+                                    </div>
+                                <?php endif;?>
+                            </div>
+
+
+                            <!-- Stats -->
+                            <?php if($respstatsread && $activated=="Y"):?>
+                                <div class="col-lg-6">
+                                    <div class="panel panel-primary panel-clickable" id="pannel-4" aria-data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><?php eT("Responses & statistics");?></h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>" >
+                                                <span class="glyphicon glyphicon-stats text-success"  style="font-size: 3em;"></span>
+                                            </a>
+                                            <p>
+                                                <a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>">
+                                                    <?php eT("Responses & statistics");?>
+                                                </a>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                        <!-- Survey has a group, so can add a question -->
-                        <?php else:?>
-                            <div class="col-lg-2">
-                                <div class="panel panel-primary panel-clickable" id="pannel-2" aria-data-url="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title"><?php eT('Add question');?></h4>
+                            <?php else: ?>
+                                <div class="col-lg-6">
+                                    <div class="panel panel-primary disabled" id="pannel-4">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title"><?php eT("Responses & statistics");?></h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <a  href="#" >
+                                                <span class="glyphicon glyphicon-stats text-success"  style="font-size: 3em;"></span>
+                                            </a>
+                                            <p>
+                                                <a href="#" title="<?php if($activated!="Y"){eT("This survey is not active - no responses are available.");}else{eT("We are sorry but you don't have permissions to do this.");} ?>" style="display: inline-block" >
+                                                    <?php eT("Responses & statistics");?>
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="panel-body">
-                                    <a  href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>" >
-                                        <span class="icon-add text-success"  style="font-size: 3em;"></span>
-                                    </a>
-                                    <p><a href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>")"><?php eT("Add new question"); ?></a></p>
-                                </div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-                    <?php endif; ?>
-                </div> <!-- row add question/group-->
-
-                <!-- last visited question -->
-                <?php if($showLastQuestion):?>
-                    <div class="row text-left">
-                        <div class="col-lg-6">
-                            <?php eT("Last visited question:");?>
-                            <a href="<?php echo $last_question_link;?>" class=""><?php echo $last_question_name;?></a>
-                            <br/><br/>
+                            <?php endif;?>
                         </div>
                     </div>
-                <?php endif;?>
+
+                    <div class="col-sm-6">
+                    <!-- Template carroussel -->
+                    <div class="row template-caroussel">
+                        <div id="carousel-example-generic" class="carousel slide col-sm-4" data-ride="carousel" data-interval="false">
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators">
+                                <?php foreach($templates as $key=>$template):?>
+                                    <li data-target="#carousel-example-generic" data-slide-to="<?php echo $count;?>" <?php if($key==$surveyinfo['template']){echo 'class="active"';}?> data-toggle="tooltip" data-placement="bottom" title="<?php echo $key;?>" ></li>
+                                    <?php $count++;?>
+                                <?php endforeach; ?>
+                            </ol>
+                            <h4 class="panel-title">Select your template</h4>
+                            <div class="carousel-inner" role="listbox">
+                                <?php foreach($templates as $key=>$template):?>
+                                    <div class="item <?php if($key==$surveyinfo['template']){echo ' active ';}?>">
+                                        <img src="<?php echo Yii::app()->request->baseUrl.'/templates/'.$key.'/preview.png'; ?>" alt="<?php echo $key;?>">
+
+                                        <div class="carousel-caption">
+
+                                            <?php if($key==$surveyinfo['template']):?>
+                                                <a href="#" class="selectTemplate btn btn-default btn-success btn-xs disabled"><?php eT('Selected!');?></a>
+                                            <?php else:?>
+                                                <button data-selectedtext="<?php eT("Selected!");?>" data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/changetemplate/surveyid/$surveyid/template/$key" ); ?>" data-template="<?php echo $key;?>" class="selectTemplate btn btn-default btn-xs"><?php eT('Select');?> <?php echo $key;?></button>
+                                            <?php endif;?>
+                                        </div>
+                                    </div>
+                                <?php endforeach;?>
+                            </div>
+
+                            <!-- Controls -->
+                              <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left" ></span>
+                                <span class="sr-only">Previous</span>
+                              </a>
+                              <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                                <span class="sr-only">Next</span>
+                              </a>
+                          </div>
+                      </div>
+                    </div>
+
+                    <!-- last visited question -->
+                    <?php if($showLastQuestion):?>
+                        <div class="row text-left">
+                            <div class="col-lg-12">
+                                <?php eT("Last visited question:");?>
+                                <a href="<?php echo $last_question_link;?>" class=""><?php echo $last_question_name;?></a>
+                                <br/><br/>
+                            </div>
+                        </div>
+                    <?php endif;?>
+
+                </div> <!-- row boxes and template-->
+
 
             </div>
         </div>

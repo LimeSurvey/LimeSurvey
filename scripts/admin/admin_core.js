@@ -92,7 +92,6 @@ $(document).ready(function(){
 	};
 
     $('.selectTemplate').click(function(){
-
         $that = $(this);
         $url = $that.data('url');
         $selected = $that.data('selectedtext');;
@@ -110,10 +109,27 @@ $(document).ready(function(){
                 alert('error');
             }
         });
+    });
 
+    $('#survey-action-chevron').click(function(){
+        $url = $(this).data('url');
+        $.ajax({
+            url : $url,
+            type : 'GET',
+            dataType : 'html',
 
+            // html contains the buttons
+            success : function(html, statut){
+                $('#survey-action-container').toggle();
+                $('#survey-action-chevron').toggleClass('glyphicon-chevron-up').toggleClass('glyphicon-chevron-down');
+            },
+            error :  function(html, statut){
+                alert('error');
+            }
+        });
 
     });
+
 
     $('#showadvancedattributes').click(function(){
         $('#showadvancedattributes').hide();
