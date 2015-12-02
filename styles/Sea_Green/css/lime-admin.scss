@@ -2552,7 +2552,7 @@ html {
 	width: 100%;
 	.dropdown-header {
 		font-size: 18px;
-		color: $color_dark_tan_approx;
+		color: $color_parsley_approx;
 		padding: 5px 60px 5px 5px;
 		line-height: 30px;
 	}
@@ -4473,4 +4473,8 @@ input:focus, textarea:focus {
 
 .side-body #carousel-example-generic h3 {
     border: none;
+}
+
+#systemoverview {
+    margin: 1em 0 1em 0;
 }

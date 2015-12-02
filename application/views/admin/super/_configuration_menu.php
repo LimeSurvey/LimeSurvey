@@ -20,7 +20,7 @@
         <li class="col-sm-3">
 
             <!-- System overview -->
-            <div class="box">
+            <div class="box" id="systemoverview">
                 <div class="box-icon">
                     <span class="glyphicon glyphicon-info-sign" id="info-header"></span>
                 </div>

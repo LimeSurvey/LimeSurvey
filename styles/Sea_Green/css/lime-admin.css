@@ -1681,7 +1681,7 @@ html {
   width: 100%; }
   .mega-dropdown-menu .dropdown-header {
     font-size: 18px;
-    color: #660b0c;
+    color: #0f3e12;
     padding: 5px 60px 5px 5px;
     line-height: 30px; }
   .mega-dropdown-menu > li > ul {
@@ -3147,5 +3147,8 @@ input:focus, textarea:focus {
 
 .side-body #carousel-example-generic h3 {
   border: none; }
+
+#systemoverview {
+  margin: 1em 0 1em 0; }
 
 /*# sourceMappingURL=lime-admin.css.map */
