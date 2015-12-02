@@ -493,6 +493,16 @@ class Survey_Common_Action extends CAction
                 $activetokens = 0;
             }
 
+            //Check if have a comfortUpdate key
+            if(getGlobalSetting('emailsmtpdebug')!=null)
+            {
+                $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('activated');
+            }
+            else
+            {
+                $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('none');
+            }
+
             $aData['dataForConfigMenu']['activetokens'] = $activetokens;
             $aData['sitename'] = Yii::app()->getConfig("sitename");
 

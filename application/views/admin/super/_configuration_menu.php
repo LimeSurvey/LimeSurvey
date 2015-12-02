@@ -3,6 +3,8 @@
  * Configuration menu. rendered from adminmenu
  * @var $userscount
  */
+
+//Todo : move to controller
 ?>
 
 <!-- Configuration -->
@@ -14,8 +16,8 @@
     </a>
     <ul class="dropdown-menu mega-dropdown-menu" id="mainmenu-dropdown">
 
-        <!-- First column -->
-        <li class="col-sm-3 ">
+        <!-- System overview -->
+        <li class="col-sm-3">
 
             <!-- System overview -->
             <div class="box">
@@ -33,116 +35,17 @@
                         <dd><?php echo $activesurveyscount; ?></dd>
                         <dt class="text-info"><?php eT('Active tokens tables');?></dt>
                         <dd><?php echo $activetokens;?></dd>
+                        <dt class="text-info"><?php eT('comfortUpdate Key:');?></dt>
+                        <dd><?php echo $comfortUpdateKey;?></dd>
 
                     </dl>
                 </div>
             </div>
         </li>
 
-        <!-- Second column -->
-        <li class="col-sm-2">
-
-            <!-- Users -->
-            <ul>
-
-                <!-- Users -->
-                <li class="dropdown-header">
-
-                    <span class="icon-user" ></span>
-                    <?php eT('Users');?>
-                </li>
-
-                <!-- Manage survey administrators -->
-                <li class="dropdown-item">
-                    <a href="<?php echo $this->createUrl("admin/user/sa/index"); ?>">
-                        <?php eT("Manage survey administrators");?>
-                    </a>
-                </li>
-
-                <!-- Create/edit user groups -->
-                <li class="dropdown-item">
-                    <a href="<?php echo $this->createUrl("admin/usergroups/sa/index"); ?>">
-                        <?php eT("Create/edit user groups");?>
-                    </a>
-                </li>
-
-                <!-- Central participant database/panel -->
-                <li class="dropdown-item">
-                    <a href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>">
-                        <?php eT("Central participant database/panel"); ?>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <!-- Third column -->
-        <li class="col-sm-2">
-            <ul>
-
-                <!-- Settings -->
-                <li class="dropdown-header">
-                    <span class="icon-global" ></span>
-                    <?php eT('Settings');?>
-                </li>
-
-                <!-- Global settings -->
-                <li class="dropdown-item">
-                    <a href="<?php echo $this->createUrl("admin/globalsettings"); ?>">
-                        <?php eT("Global settings");?>
-                    </a>
-                </li>
-
-                <!-- Edit label sets -->
-                <li class="dropdown-item">
-                    <a href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>">
-                        <?php eT("Edit label sets");?>
-                    </a>
-                </li>
-
-                <!-- Template Editor -->
-                <li class="dropdown-item">
-                    <a href="<?php echo $this->createUrl("admin/templates/sa/view"); ?>">
-                        <?php eT("Template Editor");?>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <!-- 4th column -->
-        <li class="col-sm-2">
-            <ul>
-
-                <!-- Advanced -->
-                <li class="dropdown-header">
-                    <span class="icon-tools" ></span>
-                    <?php eT('Advanced');?>
-                </li>
-
-                <!-- Check Data Integrity -->
-                <li class="dropdown-item">
-                    <a href="<?php echo $this->createUrl("admin/checkintegrity"); ?>">
-                        <?php eT("Check Data Integrity");?>
-                    </a>
-                </li>
-
-                <!-- Backup Entire Database -->
-                <li class="dropdown-item">
-                    <a href="<?php echo $this->createUrl("admin/dumpdb"); ?>">
-                        <?php eT("Backup Entire Database");?>
-                    </a>
-                </li>
-
-                <!-- Plugin manager -->
-                <li class="dropdown-item">
-                    <a href="<?php echo $this->createUrl("/admin/pluginmanager/sa/index"); ?>">
-                        <?php eT("Plugin manager");?>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <!-- 5th column -->
-        <li class="col-sm-2 ">
+        <!-- Expression Manager -->
+        <li class="col-sm-3">
+            <?php if(YII_DEBUG):?>
             <ul>
 
                 <!-- Expression Manager -->
@@ -207,6 +110,113 @@
                     </a>
                 </li>
             </ul>
+            <?php endif;?>
         </li>
+
+        <!-- Advanced -->
+        <li class="col-sm-2">
+            <ul>
+
+                <!-- Advanced -->
+                <li class="dropdown-header">
+                    <span class="icon-tools" ></span>
+                    <?php eT('Advanced');?>
+                </li>
+
+                <!-- Check Data Integrity -->
+                <li class="dropdown-item">
+                    <a href="<?php echo $this->createUrl("admin/checkintegrity"); ?>">
+                        <?php eT("Check Data Integrity");?>
+                    </a>
+                </li>
+
+                <!-- Backup Entire Database -->
+                <li class="dropdown-item">
+                    <a href="<?php echo $this->createUrl("admin/dumpdb"); ?>">
+                        <?php eT("Backup Entire Database");?>
+                    </a>
+                </li>
+
+                <!-- Plugin manager -->
+                <li class="dropdown-item">
+                    <a href="<?php echo $this->createUrl("/admin/pluginmanager/sa/index"); ?>">
+                        <?php eT("Plugin manager");?>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Users -->
+        <li class="col-sm-2">
+
+            <!-- Users -->
+            <ul>
+
+                <!-- Users -->
+                <li class="dropdown-header">
+
+                    <span class="icon-user" ></span>
+                    <?php eT('Users');?>
+                </li>
+
+                <!-- Manage survey administrators -->
+                <li class="dropdown-item">
+                    <a href="<?php echo $this->createUrl("admin/user/sa/index"); ?>">
+                        <?php eT("Manage survey administrators");?>
+                    </a>
+                </li>
+
+                <!-- Create/edit user groups -->
+                <li class="dropdown-item">
+                    <a href="<?php echo $this->createUrl("admin/usergroups/sa/index"); ?>">
+                        <?php eT("Create/edit user groups");?>
+                    </a>
+                </li>
+
+                <!-- Central participant database/panel -->
+                <li class="dropdown-item">
+                    <a href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>">
+                        <?php eT("Central participant database/panel"); ?>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+
+
+        <!-- Settings -->
+        <li class="col-sm-2">
+            <ul>
+
+                <!-- Settings -->
+                <li class="dropdown-header">
+                    <span class="icon-global" ></span>
+                    <?php eT('Settings');?>
+                </li>
+
+                <!-- Global settings -->
+                <li class="dropdown-item">
+                    <a href="<?php echo $this->createUrl("admin/globalsettings"); ?>">
+                        <?php eT("Global settings");?>
+                    </a>
+                </li>
+
+                <!-- Edit label sets -->
+                <li class="dropdown-item">
+                    <a href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>">
+                        <?php eT("Edit label sets");?>
+                    </a>
+                </li>
+
+                <!-- Template Editor -->
+                <li class="dropdown-item">
+                    <a href="<?php echo $this->createUrl("admin/templates/sa/view"); ?>">
+                        <?php eT("Template Editor");?>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+
     </ul>
 </li>
