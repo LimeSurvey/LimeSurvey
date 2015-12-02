@@ -25,7 +25,6 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'bootstrap'
         )
     ),
 
@@ -106,7 +105,6 @@ return array(
         'depends' => array(
             'jquery'
         )
-
     ),
 
     // jQuery json
@@ -272,10 +270,6 @@ return array(
         'baseUrl' => 'styles/limebootstrap/assets/',
         'js' => array('scripts/select2.js'),
         'depends' => array(
-            'bootstrap',
-            //'lime-bootstrap',
-            //'jquery',
-            //'jqueryui',
         ),
     ),
 
@@ -302,7 +296,6 @@ return array(
         'depends' => array(
             'jquery',
             'jquery-notify',
-            'bootstrap'
         ),
     ),
 
@@ -329,7 +322,6 @@ return array(
         'depends' => array(
             'jquery',
             'jquery-notify',
-            'bootstrap'
         ),
     ),
 
@@ -356,7 +348,7 @@ return array(
         'depends' => array(
             'jquery',
             'jquery-notify',
-            'bootstrap'
+
         ),
     ),
 
@@ -383,7 +375,7 @@ return array(
         'depends' => array(
             'jquery',
             'jquery-notify',
-            'bootstrap'
+
         ),
     ),
 
@@ -409,7 +401,7 @@ return array(
         'depends' => array(
             'jquery',
             'jquery-notify',
-            'bootstrap'
+
         ),
     ),
 
@@ -435,7 +427,7 @@ return array(
         'depends' => array(
             'jquery',
             'jquery-notify',
-            'bootstrap'
+
         ),
     ),
 
@@ -461,7 +453,7 @@ return array(
         'depends' => array(
             'jquery',
             'jquery-notify',
-            'bootstrap'
+
         ),
     ),
 
@@ -487,7 +479,7 @@ return array(
         'depends' => array(
             'jquery',
             'jquery-notify',
-            'bootstrap'
+
         ),
     ),
 
@@ -513,7 +505,7 @@ return array(
         'depends' => array(
             'jquery',
             'jquery-notify',
-            'bootstrap'
+
         ),
     ),
 

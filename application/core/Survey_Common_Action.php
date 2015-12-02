@@ -811,8 +811,6 @@ class Survey_Common_Action extends CAction
      */
     function _surveysidemenu($aData)
     {
-        // Side menu scripts
-        App()->getClientScript()->registerPackage('sidemenu');
 
         $iSurveyID = $aData['surveyid'];
         // TODO : create subfunctions
