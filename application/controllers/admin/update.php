@@ -59,7 +59,19 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 */
 class update extends Survey_Common_Action
 {
+    public function index()
+    {
+        //$buttons = ( getGlobalSetting('updatenotification') == "both" )?1:0;
+        $buttons = 1;
 
+        $updateModel = new UpdateForm();
+        $serverAnswer = $updateModel->getUpdateInfo($buttons);
+
+        //$aData = array("thisupdatecheckperiod"=>getGlobalSetting('updatecheckperiod'),"updatelastcheck"=>getGlobalSetting('updatelastcheck'),"UpdateNotificationForBranch"=>getGlobalSetting('updatenotification'));
+        $aData['serverAnswer'] = $serverAnswer;
+
+        $this->_renderWrappedTemplate('update', '_updateContainer', $aData);
+    }
     /**
      * This function return the update buttons for stable branch
      * @return html the button code
