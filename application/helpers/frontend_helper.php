@@ -919,12 +919,16 @@ function buildsurveysession($surveyid,$preview=false)
             echo '<div id="wrapper"><p id="tokenmessage">'.gT("This is a controlled survey. You need a valid token to participate.")."<br />";
             echo gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
             <script type='text/javascript'>var focus_element='#token';</script>"
-            .CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'tokenform','autocomplete'=>'off'))."
-            <ul>
-            <li>";?>
-            <label for='token'><?php eT("Token:");?></label><input class='text <?php echo $kpclass?>' id='token' type='password' name='token' value='' />
+            .CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'tokenform', 'class'=>'form-horizontal col-sm-4', 'autocomplete'=>'off'))."
+
+            <div class='form-group'>";?>
+            <label class="col-sm-6 control-label" for='token'><?php eT("Token:");?></label>
+            <div class="col-sm-6">
+                <input class='text form-control <?php echo $kpclass?>' id='token' type='password' name='token' value='' />
+            </div>
             <?php
-            echo "<input type='hidden' name='sid' value='".$surveyid."' id='sid' />
+            echo "
+            <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
             <input type='hidden' name='lang' value='".$sLangCode."' id='lang' />";
             if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
             {
@@ -942,18 +946,26 @@ function buildsurveysession($surveyid,$preview=false)
                 <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'],ENT_QUOTES, 'UTF-8')."' id='loadname' />
                 <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'],ENT_QUOTES, 'UTF-8')."' id='loadpass' />";
             }
-            echo "</li>";
+            echo "</div>";
 
             if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha']))
             {
-                echo "<li>
-                <label for='captchaimage'>".gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
-                </li>";
+                echo "
+                <div class='form-group'>
+                    <label class='col-sm-6 control-label' for='captchaimage'>".gT("Security Question")."</label>
+                    <div class='col-sm-6'>
+                        <img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' />
+                        <input class='form-control' type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+                    </div>
+                </div>";
             }
-            echo "<li>
-            <input class='submit button' type='submit' value='".gT("Continue")."' />
-            </li>
-            </ul>
+            echo "
+            <div class='form-group'>
+                <div class='col-sm-3'>
+                    <input class='submit btn btn-default button' type='submit' value='".gT("Continue")."' />
+                </div>
+            </div>
+
             </form></div>";
             echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
             doFooter();
@@ -1164,12 +1176,12 @@ function buildsurveysession($surveyid,$preview=false)
     ." AND {{questions}}.parent_qid=0\n";
     $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
-    $sQuery= "select count(*) from {{groups}} 
-        left join {{questions}} on  {{groups}}.gid={{questions}}.gid 
+    $sQuery= "select count(*) from {{groups}}
+        left join {{questions}} on  {{groups}}.gid={{questions}}.gid
         where {{groups}}.sid={$surveyid} and qid is null";
     $iTotalGroupsWithoutQuestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
-    
+
     // Fix totalquestions by substracting Test Display questions
     $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
     ." FROM {{questions}}"
@@ -1899,7 +1911,7 @@ function checkCompletedQuota($surveyid,$return=false)
         if(!$aQuotasInfo || empty($aQuotasInfo))
             return $aMatchedQuotas;
         // OK, we have some quota, then find if this $_SESSION have some set
-        $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update 
+        $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update
         foreach ($aQuotasInfo as $aQuotaInfo)
         {
             if(count($aQuotaInfo['members'])===0)
@@ -2097,7 +2109,7 @@ function display_first_page() {
     $moveprevbutton = $aNavigator['sMovePrevButton'];
     $movenextbutton = $aNavigator['sMoveNextButton'];
     $navigator = $moveprevbutton.' '.$movenextbutton;
-    
+
     $sitename = Yii::app()->getConfig('sitename');
     $languagechanger=makeLanguageChangerSurvey(App()->language);
 
@@ -2241,4 +2253,3 @@ function getMove()
     }
     return $move;
 }
-
