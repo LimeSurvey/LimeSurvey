@@ -36,7 +36,7 @@
                     <strong><?php echo gT("Token",'html',$sDataEntryLanguage); ?>:</strong>
                 </td>
                 <td valign='top'  align='left' style='padding-left: 20px'>
-                <input type='text' id='token' name='token' onkeyup='activateSubmit(this);' />
+                <input type='text' id='token' name='token' oninput='activateSubmit(this);' />
                 </td>
                 </tr>
 

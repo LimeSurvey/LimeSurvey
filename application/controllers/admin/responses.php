@@ -248,7 +248,7 @@ class responses extends Survey_Common_Action
                                     switch ($metadata)
                                     {
                                         case "size":
-                                            $answervalue = sprintf(gt("%s KB"),intval($phparray[$index][$metadata]));
+                                            $answervalue = sprintf(gT("%s KB"),intval($phparray[$index][$metadata]));
                                             break;
                                         case "name":
                                             $answervalue = CHtml::link(
@@ -412,9 +412,9 @@ class responses extends Survey_Common_Action
             'stype'=>'select',
             'editoptions'=>array(
                 'value'=>array(
-                    ""=>gt("All"),
-                    "Y"=>gt("Yes"),
-                    "N"=>gt("No"),
+                    ""=>gT("All"),
+                    "Y"=>gT("Yes"),
+                    "N"=>gT("No"),
                 ),
             ),
 
@@ -422,7 +422,7 @@ class responses extends Survey_Common_Action
             'hidden'=>$bHidden,
             'width'=>'100',
             'align'=>'center',
-            'label' => gt("Completed"),
+            'label' => gT("Completed"),
         );
 
         //add token to top of list if survey is not private
@@ -434,7 +434,7 @@ class responses extends Survey_Common_Action
                 'sorttype'=>'string',
                 'sortable'=>true, 'width'=>'150',
                 'align'=>'left',
-                'title'=>gt('Token')
+                'title'=>gT('Token')
             );
             $column_model[] = array(
                 'name'=>'firstname',
@@ -443,7 +443,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'150',
                 'align'=>'left',
-                'title'=>gt('First name'),
+                'title'=>gT('First name'),
             );
             $column_model[] = array(
                 'name'=>'lastname',
@@ -452,7 +452,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'150',
                 'align'=>'left',
-                'title'=>gt('Last Name'),
+                'title'=>gT('Last Name'),
             );
             $column_model[] = array(
                 'name'=>'email',
@@ -461,7 +461,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'150',
                 'align'=>'left',
-                'title'=>gt('Email'),
+                'title'=>gT('Email'),
             );
         }
 

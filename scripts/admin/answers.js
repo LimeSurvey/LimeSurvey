@@ -1,6 +1,5 @@
 var labelcache=[];
 $(document).ready(function(){
-    removeCSRFDivs();
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
         update:aftermove,
         distance:3});

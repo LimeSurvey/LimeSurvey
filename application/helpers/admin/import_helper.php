@@ -765,7 +765,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                 else
                 {
                     $aTokenCreateResults = array('tokentablecreated' => false);
-                    $aTokenImportResults['warnings'][] = gt("Unable to create token table");
+                    $aTokenImportResults['warnings'][] = gT("Unable to create token table");
 
                 }
                 $aImportResults = array_merge_recursive($aTokenImportResults, $aImportResults);
