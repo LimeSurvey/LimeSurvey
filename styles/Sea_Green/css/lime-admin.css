@@ -602,7 +602,9 @@ output {
   color: #858585; }
 
 .form-control[disabled] {
-  background-color: #9cba9e;
+  /***********/
+  color: #e3e3e3;
+  background-color: #f5f5f5;
   opacity: 1; }
 
 .form-control[readonly] {
