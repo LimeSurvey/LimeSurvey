@@ -23,6 +23,9 @@
 	<h3>
         <span style="height : 1em; margin-right : 0.5em;" class="icon-shield text-success"></span>
 		<?php eT('ComfortUpdate'); ?>
+        <?php if(YII_DEBUG):?>
+        <small>server:<em class="text-warning"> <?php echo Yii::app()->getConfig("comfort_update_server_url");?></em></small>
+        <?php endif;?>
 	</h3>
 
 	<div class="row">
