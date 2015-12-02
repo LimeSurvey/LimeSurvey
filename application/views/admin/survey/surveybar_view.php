@@ -273,7 +273,7 @@
                                     <!-- Quick-translation -->
                                     <li>
                                         <a href="<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$surveyid}");?>">
-                                        <span class="icon-translate" ></span>
+                                        <span class="fa fa-globe" ></span>
                                         <?php eT("Quick-translation");?>
                                         </a>
                                     </li>
@@ -488,7 +488,7 @@
                                     <!-- Data entry screen -->
                                     <li>
                                         <a href='<?php echo $this->createUrl("admin/dataentry/sa/view/surveyid/$surveyid");?>' >
-                                            <span class="icon-dataentry"></span>
+                                            <span class="fa fa-keyboard-o"></span>
                                             <?php eT("Data entry screen");?>
                                         </a>
                                     </li>
