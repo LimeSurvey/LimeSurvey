@@ -31,6 +31,9 @@ class Survey extends LSActiveRecord
 	public $partial_answers_account=null;
     public $searched_value;
 
+    private $fac;
+    private $pac;
+
     /**
      * init to set default
      *
@@ -620,17 +623,62 @@ class Survey extends LSActiveRecord
 
 	public function getCountFullAnswers()
 	{
-		return count($this->fullAnswers);
+        if($this->fac!==null)
+        {
+            return $this->fac;
+        }
+        else
+        {
+            $table = '{{survey_' . $this->sid . '}}';
+            Yii::app()->cache->flush();
+    		if (!Yii::app()->db->schema->getTable($table))
+    		{
+                $this->fac = 0;
+    			return '0';
+    		}
+    		else
+    		{
+                $answers = Yii::app()->db->createCommand('select count(*) from '.$table.' where submitdate IS NOT NULL')->queryScalar();
+                $this->fac = $answers;
+    	        return $answers;
+    		}
+        }
 	}
 
 	public function getCountPartialAnswers()
 	{
-		return count($this->partialAnswers);
+        if($this->pac!==null)
+        {
+            return $this->pac;
+        }
+        else
+        {
+            $table = '{{survey_' . $this->sid . '}}';
+            Yii::app()->cache->flush();
+    		if (!Yii::app()->db->schema->getTable($table))
+    		{
+                $this->pac = 0;
+    			return 0;
+    		}
+    		else
+    		{
+                $answers = Yii::app()->db->createCommand('select count(*) from '.$table.' where submitdate IS NULL')->queryScalar();
+                $this->pac = $answers;
+    	        return $answers;
+    		}
+        }
 	}
 
 	public function getCountTotalAnswers()
 	{
-		return ($this->countFullAnswers + $this->countPartialAnswers);
+        if ($this->pac!==null && $this->fac!==null)
+        {
+            return ($this->pac + $this->fac);
+        }
+        else
+        {
+		          return ($this->countFullAnswers + $this->countPartialAnswers);
+        }
 	}
 
 	public function getbuttons()
