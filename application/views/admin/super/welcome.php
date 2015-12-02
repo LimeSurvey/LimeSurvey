@@ -7,6 +7,7 @@
 
 <?php
     // Boxes are defined by user. We still want the default boxes to be translated.
+    gT('Create survey');
     gT('Create a new survey');
     gT('List surveys');
     gT('List available surveys');

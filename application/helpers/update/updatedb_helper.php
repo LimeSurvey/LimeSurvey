@@ -1355,6 +1355,7 @@ function upgradeSurveyTables251()
     // add
     $box = Boxes::model()->findByPk('1');
     $box->ico = 'add';
+    $box->title= 'Create survey';
     $box->save();
 
     // list

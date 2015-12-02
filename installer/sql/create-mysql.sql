@@ -569,7 +569,7 @@ CREATE TABLE IF NOT EXISTS `lime_boxes` (
 
 
 INSERT INTO `lime_boxes` (`id`, `position`, `url`, `title`, `img`, `ico`, `desc`, `page`) VALUES
-(1, 1, 'admin/survey/sa/newsurvey', 'Creates survey', 'add.png', 'add', 'Create a new survey', 'welcome'),
+(1, 1, 'admin/survey/sa/newsurvey', 'Create survey', 'add.png', 'add', 'Create a new survey', 'welcome'),
 (2, 2, 'admin/survey/sa/listsurveys', 'List surveys', 'surveylist.png', 'list', 'List available surveys', 'welcome'),
 (3, 3, 'admin/globalsettings', 'Global settings', 'global.png', 'settings', 'Edit global settings', 'welcome'),
 (4, 4, 'admin/update', 'ComfortUpdate', 'shield&#45;update.png', 'shield', 'Stay safe and up to date', 'welcome'),
