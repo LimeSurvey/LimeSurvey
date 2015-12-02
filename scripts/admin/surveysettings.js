@@ -147,7 +147,24 @@ function editParameter(rowid)
 
 function templatechange(template)
 {
-    standardtemplates=['basic','bluengrey','business_grey','citronade','clear_logo','default','eirenicon','limespired','mint_idea','sherpa','vallendar'];
+    standardtemplates=[
+        'default',
+        'blue_sky',
+        'metro_ode',
+        'electric_black',
+        'night_mode',
+        'flat_and_modern',
+        'news_paper',
+        'light_and_shadow',
+        'material_design',
+        'readable',
+        'sandstone',
+        'minimalist',
+        'gunmetal',
+        'super_blue',
+        'ubuntu_orange',
+        'yeti'
+];
     if (in_array(template,standardtemplates))
     {
         $("#preview").attr('src',standardtemplaterooturl+'/'+template+'/preview.png');
