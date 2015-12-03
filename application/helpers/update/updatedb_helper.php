@@ -1382,6 +1382,9 @@ function upgradeSurveyTables251()
     $box = Boxes::model()->findByPk('6');
     $box->ico = 'templates';
     $box->save();
+
+    // Update DBVersion
+    $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>251),"stg_name='DBVersion'");
 }
 
 function upgradeSurveyTables183()
