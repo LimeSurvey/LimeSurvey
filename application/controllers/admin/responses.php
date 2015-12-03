@@ -347,7 +347,7 @@ class responses extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listresponse.js");
 
         $aData = $this->_getData($iSurveyId);
-        $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read');// Boolean : show (or not) the token
+        $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
         extract($aData);
         $aViewUrls = array();
         $sBrowseLanguage = $aData['language'];
