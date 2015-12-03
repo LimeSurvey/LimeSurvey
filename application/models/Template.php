@@ -78,6 +78,13 @@ class Template extends LSActiveRecord
         return 'default';
     }
 
+
+    public static function checkIfTemplateExists($sTemplateName)
+    {
+        $sTemplatePath = self::getTemplatePath($sTemplateName);
+        return is_dir($sTemplatePath.'/'.$sTemplateName);
+    }
+
     /**
     * Get the template path for any template : test if template if exist
     *

@@ -19,9 +19,7 @@
 
         // Bootstrap
         App()->bootstrap->register();
-        //-Apple_Blossom
-        //App()->getClientScript()->registerPackage('lime-bootstrap');
-        $sAdmintheme = Yii::app()->getConfig('admintheme');
+                
         $sPackage = 'lime-bootstrap-'.$sAdmintheme;
         App()->getClientScript()->registerPackage($sPackage);
 

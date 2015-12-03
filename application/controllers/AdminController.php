@@ -292,6 +292,11 @@ class AdminController extends LSYii_Controller
         if (!empty(Yii::app()->session['dateformat']))
             $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
+        $sAdmintheme = Yii::app()->getConfig('admintheme');
+        $sAdmintheme = (Template::model()->checkIfTemplateExists($sAdmintheme))?$sAdmintheme:'Sea_Green';
+        $aData['sAdmintheme'] = $sAdmintheme;
+
+
         $sOutput = $this->renderPartial("/admin/super/header", $aData, true);
 
 
