@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.5RC2! 
+Welcome to LimeSurvey v2.5RC3! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -58,6 +58,61 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+
+Changes from 2.5RC2 (build 151008) to 2.5RC3 (build 151203) Dec 3, 2015
+-Fixed issue #10052: 0 as answer code in radio list causes problems when 'No answer' is enabled (Adam Webb)
+-Fixed issue #10001: Relevance equation on different group not working with decimal values (Denis Chenu)
+-Fixed issue #10004: Using hide_tip advanced settings does not hide the tips (Denis Chenu)
+-Fixed issue #10008: Array/struct parameter in remote control function - list_participants (kochi)
+-Fixed issue #10018: XSS vulnerabilities in admin section (Carsten Schmitz)
+-Fixed issue #10018: XSS vulnerabilities in admin section / template part (Denis Chenu)
+-Fixed issue #10022 : [security] textarea input are not filtered in public part (Denis Chenu)
+-Fixed issue #10029: When sending AJAX calls from Firefox, RemoteControl doesn't respond (Gabriel Jenik)
+-Fixed issue #10048: Bad link for Expression manager function (Denis Chenu)
+-Fixed issue #10052: 0 as answer code in radio list causes problems when 'No answer' is enabled (Adam Webb)
+-Fixed issue #9934: Survey cannot be repeatedly activated in MSSQL (Carsten Schmitz)
+-Fixed issue #9971: Integrity check showing error if MSSQL is used (Carsten Schmitz)
+-Fixed issue #9983: After "Exit and Clear survey", "Close this window" button does not consistently work (Carsten Schmitz)
+-Fixed issue #9992: Instructions on question creation page can not be translated (Carsten Schmitz)
+-Fixed issue: After deactivate a survey, List Surveys generated db error (LouisGac)
+-Fixed issue: Edition of general option while survey is active (LouisGac)
+-Fixed issue: 'blacklisted' field is not set correctly due to a typo (encelado)
+-Fixed issue: Database upgrade not working (Carsten Schmitz)
+-Fixed issue: Error after reordering a question used in condition (sieutruc)
+-Fixed issue: Non-nullable 'created_by' field is not set, violating schema requirements (encelado)
+-Fixed issue: 'token' column collation is not (always) set in survey tables (encelado)
+#Updated translation: Albanian by iebner
+#Updated translation: Bulgarian
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Taiwan) (Traditional) by linuslin, Alwaystar
+#Updated translation: Croatian
+#Updated translation: Danish
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian
+#Updated translation: French (France) by arnaud21
+#Updated translation: Georgian by Davitus
+#Updated translation: German by c_schmitz, AnnaHerwig, bardts
+#Updated translation: Hungarian
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Lithuanian
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Brazil) by valins, holch, mauriciofurtado
+#Updated translation: Portuguese (Portugal) by nostradumusfdx, sazevedo, valins, devUSIT, samarta
+#Updated translation: Romanian
+#Updated translation: Slovenian
+#Updated translation: Spanish (Argentina) (Informal) by grudolf
+#Updated translation: Spanish (Spain) by kadejo, titanio256, grudolf, aesteban
+#Updated translation: Swedish by bardts, maxzomborszki
+#Updated translation: Turkish by kayazeren
+#Updated translation: Ukrainian by exlibris69
+
 
 Changes from 2.5RC1 (build 151005) to 2.5RC2 (build 151008) Okt 8, 2015
 *Fixed issue: Interface fixes (Louis Gac)
