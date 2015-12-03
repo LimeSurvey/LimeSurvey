@@ -298,7 +298,6 @@ class Authentication extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerPackage('panels-animation');
         $aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
