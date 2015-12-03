@@ -1321,6 +1321,9 @@ function db_upgrade_all($iOldDBVersion) {
         if ( $iOldDBVersion == 250 )
         {
             upgradeSurveyTables251();
+
+            // Update DBVersion
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>251),"stg_name='DBVersion'");
         }
 
         $oTransaction->commit();
@@ -1383,8 +1386,6 @@ function upgradeSurveyTables251()
     $box->ico = 'templates';
     $box->save();
 
-    // Update DBVersion
-    Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>251),"stg_name='DBVersion'");
 }
 
 function upgradeSurveyTables183()
