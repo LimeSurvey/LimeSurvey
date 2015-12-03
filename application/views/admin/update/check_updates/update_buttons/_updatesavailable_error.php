@@ -56,16 +56,15 @@
 ?>
 
 <div class="jumbotron message-box <?php if($bError) echo 'message-box-error'; ?>">
-        <h2 class="<?php if($bError){echo 'text-danger';}else{echo 'text-success';} ?>"><?php eT($sTitle); ?></h2>
-        <p class="lead"><?php eT($sHeader); ?></p>
-        <p><?php echo eT($sMessage); ?></p>
+        <h2 class="<?php if($bError){echo 'text-danger';}else{echo 'text-success';} ?>"><?php echo $sTile; ?></h2>
+        <p class="lead"><?php echo $sHeader; ?></p>
+        <p><?php echo $sMessage; ?></p>
 	    <?php if(isset($sErrorCode)):?>
     		<p>
         		<?php echo $sErrorCode; ?>
 	        </p>
-    	<?php endif;?>        
+    	<?php endif;?>
         <p>
             <a class="btn btn-lg btn-success" href="<?php echo $this->createUrl("admin/"); ?>" role="button"><?php eT("Ok"); ?></a>
         </p>
 </div>
-
