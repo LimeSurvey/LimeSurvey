@@ -500,13 +500,15 @@ class dataentry extends Survey_Common_Action
                 $ipaddr=$fnrow['ipaddr'];
             } // Get table output into array
 
-
             // Perform a case insensitive natural sort on group name then question title of a multidimensional array
             // $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answer if exist)
 
             $fnames['completed'] = array('fieldname'=>"completed", 'question'=>gT("Completed"), 'type'=>'completed');
 
             $fnames=array_merge($fnames,createFieldMap($surveyid,'full',false,false,$sDataEntryLanguage));
+            // Fix private if disallowed to view token
+            if(!Permission::model()->hasSurveyPermission($surveyid,'tokens','read'))
+                unset($fnames['token']);
             $nfncount = count($fnames)-1;
 
             //SHOW INDIVIDUAL RECORD
@@ -592,7 +594,6 @@ class dataentry extends Survey_Common_Action
                     $nfncount--;
                 }
             }
-
             $aDataentryoutput = '';
             foreach ($results as $idrow)
             {
@@ -1279,7 +1280,15 @@ class dataentry extends Survey_Common_Action
                             $fname=prev($fnames);
                             $aDataentryoutput .= "</table>\n";
                             break;
-                        default: //This really only applies to tokens for non-private surveys
+                        case "token":
+                            if(Permission::model()->hasSurveyPermission($surveyid,'tokens','update'))
+                                $aDataentryoutput .= CHtml::textField($fname['fieldname'],$idrow[$fname['fieldname']]);
+                            else
+                                $aDataentryoutput .= CHtml::textField($fname['fieldname'],$idrow[$fname['fieldname']],array('disabled'=>'disabled'));
+                            break;
+                        case "submitdate":
+                        case "startlanguage":
+                        default:
                             $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
                             .$idrow[$fname['fieldname']] . "' />\n";
                             break;
@@ -1375,7 +1384,11 @@ class dataentry extends Survey_Common_Action
             $aDataentryoutput = "<div class='header ui-widget-header'>".gT("Data entry")."</div>\n";
 
             $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
-
+            // restet token if user is not allowed to update 
+            if(!Permission::model()->hasSurveyPermission($surveyid,'tokens','update')) // If not allowed to read: remove it
+            {
+                unset($fieldmap['token']);
+            }
             // unset timings
             foreach ($fieldmap as $fname)
             {
@@ -1504,7 +1517,7 @@ class dataentry extends Survey_Common_Action
                 $lastanswfortoken = ''; // check if a previous answer has been submitted or saved
                 $rlanguage = '';
 
-                if (isset($_POST['token']))
+                if (Yii::app()->request->getPost('token') && Permission::model()->hasSurveyPermission($surveyid,'tokens','update'))
                 {
                     $tokencompleted = "";
                     $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token=".dbQuoteAll($_POST['token']);
@@ -1865,8 +1878,6 @@ class dataentry extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create'))
         {
-
-
             $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
             $surveyinfo=getSurveyInfo($surveyid);
 
