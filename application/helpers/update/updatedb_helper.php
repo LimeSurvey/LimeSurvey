@@ -27,7 +27,6 @@ function db_upgrade_all($iOldDBVersion) {
 
     $sUserTemplateRootDir = Yii::app()->getConfig('usertemplaterootdir');
     $sStandardTemplateRootDir = Yii::app()->getConfig('standardtemplaterootdir');
-    echo str_pad(gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". gT('Please be patient...')."<br /><br />\n";
 
     $oDB = Yii::app()->getDb();
     $oDB->schemaCachingDuration=0; // Deactivate schema caching
@@ -1354,7 +1353,6 @@ function db_upgrade_all($iOldDBVersion) {
         return false;
     }
     fixLanguageConsistencyAllSurveys();
-    echo '<br /><br />'.sprintf(gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
 }
 
