@@ -1386,6 +1386,9 @@ function upgradeSurveyTables251()
     $box->ico = 'templates';
     $box->save();
 
+    // Force template to Sea_Green
+    $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>'Sea_Green'),"stg_name='admintheme'");
+
 }
 
 function upgradeSurveyTables183()
