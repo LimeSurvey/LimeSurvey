@@ -1384,7 +1384,7 @@ function upgradeSurveyTables251()
     $box->save();
 
     // Update DBVersion
-    $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>251),"stg_name='DBVersion'");
+    Yii::app()->db->createCommand()->update('{{settings_global}}',array('stg_value'=>251),"stg_name='DBVersion'");
 }
 
 function upgradeSurveyTables183()
