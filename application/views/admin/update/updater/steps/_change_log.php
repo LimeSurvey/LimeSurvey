@@ -63,7 +63,7 @@ echo $changelog;
         ?>
 
         <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
-            <span class="ui-button-text"><?php eT("Cancel"); ?></span>
+            <?php eT("Cancel"); ?>
         </a>
 
 

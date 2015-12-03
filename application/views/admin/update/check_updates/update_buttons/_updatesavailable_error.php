@@ -16,34 +16,41 @@
     switch ($serverAnswer->error)
     {
         case 'php_curl_not_loaded':
-            $sTitle = 'Error';
-            $sHeader = 'PHP_CURL not loaded !';
-            $sMessage = "it seems that your server doesn't support PHP CURL Library. Please install it before proceeding to ComfortUpdate";
+            $sTile = gT('Error!');
+            $sHeader = gT('PHP_CURL library not loaded');
+            $sMessage = gT("It seems that your server doesn't support PHP CURL Library. Please install it before proceeding to ComfortUpdate.");
             break;
 
         case 'no_server_answer':
-            $sTitle = 'Error';
-            $sHeader = 'No server answer';
-            $sMessage = "it seems that the Comfort Updater is not responding for now. Please, try again in few minutes, or contact LimeSurvey team";
+            $sTile = gT('Error!');
+            $sHeader = gT('No server answer');
+            $sMessage = gT("It seems that the ComfortUpdate server is not responding. Please try again in few minutes or contact the LimeSurvey team.");
             break;
 
         case 'no_update_available_for_your_version':
-            $sTitle = 'Up to date !';
-            $sHeader = 'No update available for your version';
-            $sMessage = 'Your version is up to date !';
-            $bError = false;
+			$bError = false;
+            $sTile = gT('Up to date!');
+            $sHeader = gT('No update available for your version.');
+            $sMessage = gT('Your version is up to date!');
             break;
 
         case 'not_updatable':
-            $sTitle = 'Error';
-            $sHeader = 'Not updatable !';
-            $sMessage = 'Your version is not updatable via ComfortUpdate. Please, update manually.';
+            $sTile = gT('Error!');
+            $sHeader = gT('Not updatable!');
+            $sMessage = gT('Your version is not updatable via ComfortUpdate. Please update manually.');
+            break;
+
+        case 'no_build':
+            $sTile = gT('Error!');
+            $sHeader = gT('No build version found!');
+            $sMessage = gT("It seems you're using a version coming from the LimeSurvey GitHub repository. You can't use ComfortUpdate.");
             break;
 
         default :
-            $sTitle = 'Error';
-            $sHeader = 'Unknown Error !';
-            $sMessage = "An unknown error occured. Please, contact LimeSurvey team <br/> error code : ".$serverAnswer->error;
+            $sTile = gT('Error!');
+            $sHeader = gT('Unknown error!');
+            $sMessage = gT('An unknown error occured.').' '.gT('Please contact the LimeSurvey team.');
+            $sErrorCode = gT('Error code:').' '.$serverAnswer->error;
             break;
     }
 ?>
@@ -52,6 +59,11 @@
         <h2 class="<?php if($bError){echo 'text-danger';}else{echo 'text-success';} ?>"><?php eT($sTitle); ?></h2>
         <p class="lead"><?php eT($sHeader); ?></p>
         <p><?php echo eT($sMessage); ?></p>
+	    <?php if(isset($sErrorCode)):?>
+    		<p>
+        		<?php echo $sErrorCode; ?>
+	        </p>
+    	<?php endif;?>        
         <p>
             <a class="btn btn-lg btn-success" href="<?php echo $this->createUrl("admin/"); ?>" role="button"><?php eT("Ok"); ?></a>
         </p>

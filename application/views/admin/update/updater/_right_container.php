@@ -6,12 +6,19 @@
 ?>
 
 	<!-- the ajax loader -->
-	<div id="ajaxContainerLoading" style="text-align : center; margin-top: 70px; margin-bottom: 100px; display: none">
-		<p><?php eT('PLease wait, data loading...');?></p>
-		<img src="<?php echo IMAGE_BASE_URL;?>ajax-loader.gif" alt="loading..."/>    <br/>
+	<div id="ajaxContainerLoading" >
+		<p><?php eT('PLease wait, loading data...');?></p>
+        <div class="preloader loading">
+            <span class="slice"></span>
+            <span class="slice"></span>
+            <span class="slice"></span>
+            <span class="slice"></span>
+            <span class="slice"></span>
+            <span class="slice"></span>
+        </div>
 	</div>
-	
+
 	<!-- Here come the different steps content. Content is loaded by the ajax request (see ./steps for html views)	-->
 	<div id="updaterContainer">
 		<!-- content loaded by ajax -->
-	</div>		
+	</div>

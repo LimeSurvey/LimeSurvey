@@ -18,14 +18,14 @@ switch ($serverAnswer->error)
         break;
 
     case 'expired':
-        $title = "Your update key is expired !";
+        $title = "Your update key has expired!";
         $message = "you should first renew this key before using it, or try to enter a new one !";
         $buttons = 1;
         break;
 
     case 'not_found':
         $title = "Unknown update key !";
-        $message = "Your key is unkown by the update server.";
+        $message = "Your key is unknown by the update server.";
         $buttons = 3;
         break;
 
@@ -35,9 +35,9 @@ switch ($serverAnswer->error)
         $buttons = 3;
         break;
 
-    case 'unkown_destination_build':
-        $title = "Unkown destination build !";
-        $message = "It seems that the ComfortUpdater don't know to which version you're trying to update. Please, restart the process.";
+    case 'unknown_destination_build':
+        $title = "Unknown destination build !";
+        $message = "It seems that the ComfortUpdate doesn't know to which version you're trying to update. Please, restart the process.";
         break;
 
     case 'file_locked':
@@ -70,20 +70,20 @@ switch ($serverAnswer->error)
 <div>
 
 <?php if( $buttons == 1 ): ?>
-        <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="https://www.limesurvey.org/en/" role="button" aria-disabled="false" target="_blank">
-            <span class="ui-button-text"><?php eT("Renew this key"); ?></span>
+        <a class="btn btn-default" href="https://www.limesurvey.org/en/" role="button" aria-disabled="false" target="_blank">
+            <?php eT("Renew this key"); ?>
         </a>
 
-        <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
-            <span class="ui-button-text"><?php eT("Enter a new key"); ?></span>
+        <a class="btn btn-default" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
+            <?php eT("Enter a new key"); ?>
         </a>
 <?php endif; ?>
 <?php if( $buttons == 3 ): ?>
-        <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
-            <span class="ui-button-text"><?php eT("Enter a new key"); ?></span>
+        <a class="btn btn-default" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
+            <?php eT("Enter a new key"); ?>
         </a>
 <?php endif;?>
-<a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
-    <span class="ui-button-text"><?php eT("Cancel"); ?></span>
+<a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+    <?php eT("Cancel"); ?>
 </a>
 </div>

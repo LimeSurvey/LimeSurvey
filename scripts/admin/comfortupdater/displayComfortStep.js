@@ -45,8 +45,6 @@ $.fn.displayComfortStep = function(options)
 
     }
 
-    $url += '?destinationBuild=' + $destinationBuild + '&access_token=' + $access_token;
-
     // Those datas are defined in _ajaxVariables view
     datas = 'destinationBuild=' + $destinationBuild + '&access_token=' + $access_token + '&'+csrf_token_name+'='+csrf_token;
 
