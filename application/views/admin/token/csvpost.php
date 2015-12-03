@@ -18,7 +18,7 @@
         <li><?php printf(gT("%s records imported"), $iRecordImported); ?></li>
     </ul>
 
-    <?php if (!empty($aDuplicateList) || !empty($aInvalidFormatList) || !empty($aInvalidEmailList) || !empty($aModelErrorList)) { ?>
+    <?php if (!empty($aDuplicateList) || !empty($aInvalidFormatList) || !empty($aInvalidEmailList) || !empty($aModelErrorList)|| !empty($invalideAttrFieldName) || !empty($missingAttrFieldName)) { ?>
 
         <div class='warningheader'><?php eT('Warnings'); ?></div>
 
@@ -76,6 +76,18 @@
                             <?php } ?>
                         </ul>
                     </div>
+                </li>
+            <?php } ?>
+
+            <?php if (isset($invalideAttrFieldName) and !empty($invalideAttrFieldName)) { ?>
+                <li>
+                    <?php echo '<b>'.implode(', ',$invalideAttrFieldName).'</b> '. gT("columns ignored") ?>
+                </li>
+            <?php } ?>
+
+            <?php if (isset($missingAttrFieldName) and !empty($missingAttrFieldName)) { ?>
+                <li>
+                    <?php echo '<b>'.implode(', ',$missingAttrFieldName).'</b> '. gT("columns missing") ?>
                 </li>
             <?php } ?>
 
