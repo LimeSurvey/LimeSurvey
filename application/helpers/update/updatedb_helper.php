@@ -1318,7 +1318,14 @@ function db_upgrade_all($iOldDBVersion) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>184),"stg_name='DBVersion'");
         }
 
-        if ( $iOldDBVersion == 250 )
+        // LS 2.5 table start at 250
+        if ($iOldDBVersion < 250)
+        {
+            createBoxes250();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>250),"stg_name='DBVersion'");
+        }
+
+        if ( $iOldDBVersion < 251 )
         {
             upgradeSurveyTables251();
 
@@ -1389,6 +1396,77 @@ function upgradeSurveyTables251()
     // Force template to Sea_Green
     $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>'Sea_Green'),"stg_name='admintheme'");
 
+}
+
+/**
+ * Create boxes table
+ */
+function createBoxes250()
+{
+    $oDB = Yii::app()->db;
+    $oDB->createCommand()->createTable('{{boxes}}',array(
+        'id' => 'pk',
+        'position' => 'integer',
+        'url' => 'text',
+        'title' => 'text',
+        'img' => 'text',
+        'desc' => 'text',
+        'page'=>'text',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '1',
+        'url'      => 'admin/survey/sa/newsurvey' ,
+        'title'    => 'Creates survey' ,
+        'img'      => 'add.png' ,
+        'desc'     => 'Create a new survey' ,
+        'page'     => 'welcome',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '2',
+        'url'      =>  'admin/survey/sa/listsurveys',
+        'title'    =>  'List surveys',
+        'img'      =>  'surveylist.png',
+        'desc'     =>  'List available surveys',
+        'page'     =>  'welcome',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '3',
+        'url'      =>  'admin/globalsettings',
+        'title'    =>  'Global settings',
+        'img'      =>  'global.png',
+        'desc'     =>  'Edit global settings',
+        'page'     =>  'welcome',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '4',
+        'url'      =>  'admin/update',
+        'title'    =>  'ComfortUpdate',
+        'img'      =>  'shield&#45;update.png',
+        'desc'     =>  'Stay safe and up to date',
+        'page'     =>  'welcome',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '5',
+        'url'      =>  'admin/labels/sa/view',
+        'title'    =>  'Label sets',
+        'img'      =>  'labels.png',
+        'desc'     =>  'Edit label sets',
+        'page'     =>  'welcome',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '6',
+        'url'      =>  'admin/templates/sa/view',
+        'title'    =>  'Template editor',
+        'img'      =>  'templates.png',
+        'desc'     =>  'Edit LimeSurvey templates',
+        'page'     =>  'welcome',
+    ));
 }
 
 function upgradeSurveyTables183()
