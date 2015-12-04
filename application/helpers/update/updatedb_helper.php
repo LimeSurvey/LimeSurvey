@@ -29,6 +29,7 @@ function db_upgrade_all($iOldDBVersion) {
     $sStandardTemplateRootDir = Yii::app()->getConfig('standardtemplaterootdir');
 
     $oDB = Yii::app()->getDb();
+    Yii::app()->setConfig('Updating',true);
     $oDB->schemaCachingDuration=0; // Deactivate schema caching
     $oTransaction = $oDB->beginTransaction();
     try
@@ -1342,6 +1343,7 @@ function db_upgrade_all($iOldDBVersion) {
     }
     catch(Exception $e)
     {
+        Yii::app()->setConfig('Updating',false);
         $oTransaction->rollback();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
@@ -1353,6 +1355,7 @@ function db_upgrade_all($iOldDBVersion) {
         return false;
     }
     fixLanguageConsistencyAllSurveys();
+    Yii::app()->setConfig('Updating',false);
     return true;
 }
 

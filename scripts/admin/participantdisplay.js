@@ -587,6 +587,7 @@ $(document).ready(function() {
 
                 if (!($("#survey_id").length > 0)) {
                     $('#addsurvey').html(addpartErrorMsg);
+                    $('div[aria-describedby="addsurvey"] div.ui-dialog-buttonset button:first-child').hide();
                 }
             }
         }
