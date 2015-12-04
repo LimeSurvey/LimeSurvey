@@ -18,6 +18,9 @@ $internalConfig = array(
     'name' => 'LimeSurvey',
     'localeClass' =>  'LSYii_Locale',
     'defaultController' => 'surveys',
+    'aliases' => array(
+        'nlac' => realpath(__DIR__ . '/../extensions/nlac'),
+    ),
     'import' => array(
         'application.core.*',
         'application.core.db.*',
@@ -26,7 +29,7 @@ $internalConfig = array(
         'application.modules.*',
         'application.extensions.nlac.*',
     ),
-    'preload' => array ('log'),
+    'preload' => array ('log', 'clientScript'),
     'components' => array(
         'bootstrap' => array(
             'class' => 'application.core.LSBootstrap',
@@ -34,7 +37,7 @@ $internalConfig = array(
             'jqueryCss' => false
         ),
         'clientScript'=>array(
-            'class' => 'ext.nlac.NLSClientScript',
+            'class' => 'nlac\NLSClientScript',
             'mergeJs' =>  isset($userConfig['config']['debug']) && $userConfig['config']['debug'] == 0,
             'mergeJsExcludePattern' => '/(jquery\/jquery|ace|map)/i',
             'packages' => require('third_party.php'),

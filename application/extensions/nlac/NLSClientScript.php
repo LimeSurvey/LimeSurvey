@@ -1,4 +1,5 @@
 <?php
+namespace nlac;
 
 /**
  * NLSClientScript 7.0.0-beta
