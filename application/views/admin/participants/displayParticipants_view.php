@@ -21,7 +21,7 @@ else
 }
 /* Build the options for additional languages */
 $j = 1;
-$lang = '{ "name":"language", "index":"language", "sorttype":"string", "sortable": true, "align":"center", "editable":true, "edittype":"select", "editoptions":{ "value":"';
+$lang = '{ "name":"language", "index":"language", "sorttype":"string", "sortable": true, "align":"center", "editable":true, "formatter":"select", "edittype":"select", "editoptions":{ "value":"';
 $getlangvalues = getLanguageData(false, Yii::app()->session['adminlang']);
 if (Yii::app()->session['adminlang'] != 'auto')
 {
@@ -231,7 +231,7 @@ echo $colModels;
 
 </div>
 <br/>
-<table id="displayparticipants"></table> 
+<table id="displayparticipants"></table>
 <div id="pager"></div>
 <div id="fieldnotselected" title="<?php eT("Error") ?>" style="display:none">
     <p>
