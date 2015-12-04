@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.5RC3! 
+Welcome to LimeSurvey v2.5RC4! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -59,6 +59,17 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.5RC2 (build 151203) to 2.5RC4 (build 151204) Dec 4, 2015
+-Fixed issue #10036: Problems when trying to update from 2.0 and using Postgres (Carsten Schmitz)
+-Fixed issue #10044: Subquestions are shown as imported even when skipped due to malformed SQL (Carsten Schmitz)
+-Fixed issue #10059: Error with answer table with limited user rights (Denis Chenu)
+-Fixed issue #10065: Error when pressing 'Next' in add-to-survey dialog in CPDB (Carsten Schmitz)
+-Fixed issue #10067: [security] Reflected XSS in survey list (Carsten Schmitz)
+-Fixed issue 10070: Language short code shown in participants list instead of full name (Carsten Schmitz)
+-Fixed issue : token still visible is user have limited right in view response id (Denis Chenu)
+-New Feature: Added ADMINNAME and ADMINEMAIL as replacement field for survey texts (Carsten Schmitz)
+-New feature : replacement field SURVEYRESOURCESURL for relative survey ressource url (Denis Chenu)
 
 Changes from 2.5RC2 (build 151008) to 2.5RC3 (build 151203) Dec 3, 2015
 -Fixed issue #10052: 0 as answer code in radio list causes problems when 'No answer' is enabled (Adam Webb)
