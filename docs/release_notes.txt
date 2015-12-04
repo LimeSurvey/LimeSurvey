@@ -59,6 +59,40 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.06+ (build 151109) to 2.06+ (build 151205) Dec 4, 2015
+-Fixed issue #10001: Relevance equation on different group not working with decimal values (Denis Chenu)
+-Fixed issue #10036: Problems when trying to update from 2.0 and using Postgres (Carsten Schmitz)
+-Fixed issue #10044: Subquestions are shown as imported even when skipped due to malformed SQL (Carsten Schmitz)
+-Fixed issue #10059: Error with answer table with limited user rights (Denis Chenu)
+-Fixed issue #10065: Error when pressing 'Next' in add-to-survey dialog in CPDB (Carsten Schmitz)
+-Fixed issue #10067: [security] Reflected XSS in survey list (Carsten Schmitz)
+-Fixed issue 10070: Language short code shown in participants list instead of full name (Carsten Schmitz)
+-Fixed issue: Token still visible is user have limited right in view response id (Denis Chenu)
+-New feature: Added ADMINNAME and ADMINEMAIL as replacement field for survey texts (Gabriel Jenik)
+-New feature: replacement field SURVEYRESOURCESURL for relative survey ressource url (Denis Chenu)
+-Updated translation: German by actxcellence
+-Updated translation: Greek by kiolalis
+-Updated translation: English by akeyser
+-Updated translation: Estonian by klaster
+-Updated translation: French (France) by arnaud21
+-Updated translation: Italian by lfanfoni
+-Updated translation: Norwegian (Bokmål) by pmonstad
+-Updated translation: Dutch by Han, cookiemonster
+-Updated translation: Polish by elisa
+-Updated translation: Portuguese (Portugal) by samarta
+-Updated translation: Portuguese (Brazil) by mauriciofurtado, victorgoncalves
+-Updated translation: Russian by ddrmoscow, vipgroup
+-Updated translation: Albanian by iebner
+-Updated translation: Swedish by maxzomborszki
+-Updated translation: Thai by adzpire, tomzt
+-Updated translation: Turkish by kayazeren
+-Updated translation: Vietnamese by quangndcet
+-Updated translation: German (Informal) by actxcellence
+-Updated translation: Italian (Informal) by lfanfoni
+-Updated translation: Dutch (Informal) by Han
+-Updated translation: Polish (Informal) by elisa
+-Updated translation: Chinese (Hong Kong) (Traditional) by wksosam
+-Updated translation: Chinese (Taiwan) (Traditional) by Alwaystar
 
 Changes from 2.06+ (build 151109) to 2.06+ (build 151126) Nov 26, 2015
 -Fixed issue #9988: darkblue admin template is still mostly green (LouisGac)
