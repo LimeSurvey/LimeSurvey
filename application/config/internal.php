@@ -24,8 +24,7 @@ $internalConfig = array(
         'application.models.*',
         'application.controllers.*',
         'application.modules.*',
-        'ext.nlac.NLSDownloader',
-        'ext.nlac.NLSCssMerge'
+        'application.extensions.nlac.*',
     ),
     'preload' => array ('log'),
     'components' => array(
@@ -36,6 +35,8 @@ $internalConfig = array(
         ),
         'clientScript'=>array(
             'class' => 'ext.nlac.NLSClientScript',
+            'mergeJs' =>  isset($userConfig['config']['debug']) && $userConfig['config']['debug'] >= 1,
+            'mergeJsExcludePattern' => '/(jquery\/jquery|ace|map)/i',
             'packages' => require('third_party.php'),
         ),
         'urlManager' => array(
