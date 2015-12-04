@@ -24,6 +24,8 @@ $internalConfig = array(
         'application.models.*',
         'application.controllers.*',
         'application.modules.*',
+        'ext.nlac.NLSDownloader',
+        'ext.nlac.NLSCssMerge'
     ),
     'preload' => array ('log'),
     'components' => array(
