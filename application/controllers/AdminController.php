@@ -295,7 +295,13 @@ class AdminController extends LSYii_Controller
         $aData['sAdmintheme'] = $oAdmintheme->name;
         $aData['sAdminthemePackageName'] = $oAdmintheme->packagename;
         Yii::setPathOfAlias($oAdmintheme->alias, realpath($oAdmintheme->path)); // We create the path alias for the package (needed to use asset manager)
-        App()->getClientScript()->packages['lime-bootstrap-'.$oAdmintheme->name]=$oAdmintheme->package; // We add the package to the list of available packages
+        App()->getClientScript()->packages['lime-bootstrap-'.$oAdmintheme->name]=$oAdmintheme->package; // We add the package to the list of available package
+
+        $aData['aPackageScripts'] = $oAdmintheme->package['js'];
+        $aData['aPackageStyles'] = $oAdmintheme->package['css'];
+
+
+
 
         $sOutput = $this->renderPartial("/admin/super/header", $aData, true);
 

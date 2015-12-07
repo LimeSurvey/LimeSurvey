@@ -18,7 +18,6 @@
         </button>
 
 
-
         <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
             <?php echo $sitename; ?>
         </a>

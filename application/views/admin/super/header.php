@@ -18,13 +18,24 @@
 
         // Bootstrap
         App()->bootstrap->register();
-        App()->getClientScript()->registerPackage($sAdminthemePackageName);
+
+        // We want the asset manager to reload the files if they are changed.
+        // Using registerPackage only publish the whole directory, and never update it (unless tmp/assets/ directories are deleted).  Command was :   App()->getClientScript()->registerPackage($sAdminthemePackageName);
+        // The way to grant the possibility for asset manager to re-publish those files when they are changed is to publish them one by one.
+        foreach ($aPackageStyles as $cssfile)
+        {
+            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$sAdmintheme.'/' . $cssfile) );
+        }
+
+        foreach ($aPackageScripts as $jsfile)
+        {
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$sAdmintheme.'/' . $jsfile) );
+        }
+
         // Right to Left
         if (getLanguageRTL($_SESSION['adminlang']))
             App()->getClientScript()->registerCssFile(Yii::app()->getBaseUrl(true)."/styles/$sAdmintheme/css/adminstyle-rtl.css");
 
-        // Printable
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');
     ?>
     <?php echo $datepickerlang;?>
     <title><?php echo $sitename;?></title>

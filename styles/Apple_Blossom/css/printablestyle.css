@@ -2,12 +2,9 @@
   #exportbutton {
     display: none;
   }
-}
 
-.statisticstable {
-  page-break-after: always;
-}
+  .statisticstable {
+    page-break-after: always;
+  }
 
-td {
-  color: #fff;
 }
