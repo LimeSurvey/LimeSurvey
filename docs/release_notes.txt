@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.5RC4! 
+Welcome to LimeSurvey v2.5RC5! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -25,7 +25,7 @@ https://manual.limesurvey.org/Installation
 Please also have a look at the "Installation security hints" section of the online manual in order to secure your installation.
 
 
-=== UPGRADING=====
+=== UPGRADING====
 
 We suggest to check out and hold close to the instructions, which can be found in our online manual:
 https://manual.limesurvey.org/Upgrading_from_a_previous_version
@@ -60,7 +60,10 @@ CHANGE LOG
 ------------------------------------------------------
 
 
-Changes from 2.5RC2 (build 151203) to 2.5RC4 (build 151204) Dec 4, 2015
+Changes from 2.5RC4 (build 151204) to 2.5RC5 (build 151207) Dec 7, 2015
+-Fixed issue: Admin theme could not be changed
+
+Changes from 2.5RC3 (build 151203) to 2.5RC4 (build 151204) Dec 4, 2015
 -Fixed issue #10036: Problems when trying to update from 2.0 and using Postgres (Carsten Schmitz)
 -Fixed issue #10044: Subquestions are shown as imported even when skipped due to malformed SQL (Carsten Schmitz)
 -Fixed issue #10059: Error with answer table with limited user rights (Denis Chenu)
