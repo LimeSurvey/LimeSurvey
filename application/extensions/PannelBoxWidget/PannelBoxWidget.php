@@ -59,7 +59,6 @@
                 'offset' => $offset,
                 'url'=> Yii::app()->createUrl($this->url),
                 'title'=> $this->title,
-                'img'=> BIG_IMAGE_URL.$this->img,
                 'ico'=> $this->ico,
                 'description'=> $this->description,
             ));

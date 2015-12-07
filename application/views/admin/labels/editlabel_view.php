@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    var sImageURL = '<?php echo IMAGE_URL ?>';
+    var sImageURL = '';
     var duplicatelabelcode='<?php eT('Error: You are trying to use duplicate label codes.','js'); ?>';
     var otherisreserved='<?php eT("Error: 'other' is a reserved keyword.",'js'); ?>';
     var quickaddtitle='<?php eT('Quick-add subquestion or answer items','js'); ?>';
@@ -95,7 +95,7 @@
 
 <?php } ?>
 
-</div>    
+</div>
 
 
 
@@ -109,8 +109,7 @@
 
 
 
-            
+
         </div>
     </div>
 </div>
-

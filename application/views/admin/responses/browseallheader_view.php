@@ -17,7 +17,6 @@
                 <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid", array('start' =>$last,'limit'=>$limit)); ?>'>
                     <span class="icon-databack text-success" title="<?php eT("Show previous.."); ?>"></span>
                 </a>
-                <img src='<?php echo IMAGE_URL; ?>blank.gif' width='13' height='20' alt='' />
 
                 <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid", array('start' =>$next,'limit'=>$limit)); ?>'>
                     <span class="icon-dataforward text-success" title="<?php eT("Show next.."); ?>"></span>
@@ -25,7 +24,7 @@
                 <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid", array('start' =>$end,'limit'=>$limit)); ?>'>
                     <span class="icon-dataend text-success" title="<?php eT("Show last.."); ?>"></span>
                 </a>
-                <img src='<?php echo IMAGE_URL; ?>separator.gif' class='separator' alt='' />
+
                 <?php
                 }
                 $selectshow = '';
@@ -46,7 +45,7 @@
                 }
             ?>
             <?php echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post', array('id'=>'browseresults')); ?>
-                    <img src='<?php echo IMAGE_URL; ?>blank.gif' width='31' height='20' alt='' />
+                    
                     <?php eT("Records displayed:"); ?><input type='text' size='4' value='<?php echo $dtcount2; ?>' name='limit' id='limit' />
                     &nbsp;&nbsp; <?php eT("Starting from:"); ?><input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
                     &nbsp;&nbsp; <input type='submit' value='<?php eT("Show"); ?>' />

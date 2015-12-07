@@ -231,8 +231,6 @@ class Survey_Common_Action extends CAction
 
         // Defingin images url
         define('IMAGE_BASE_URL', Yii::app()->getConfig('adminimagebaseurl'));
-        define('IMAGE_URL', IMAGE_BASE_URL.'/14/');
-        define('BIG_IMAGE_URL', IMAGE_BASE_URL.'/213/');
 
         //// This will be handle by subviews inclusions
         $aViewUrls = (array) $aViewUrls; $sViewPath = '/admin/';

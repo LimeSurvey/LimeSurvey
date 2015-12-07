@@ -80,9 +80,16 @@
 </div>
 
 
-<!-- TODO : check and refactore -->
 <div id='exportcsvallprocessing' title='exportcsvall' style='display:none'>
-    <img src="<?php echo IMAGE_URL; ?>ajax-loader.gif" alt="AJAX loader" />
+    <p><?php eT('PLease wait, loading data...');?></p>
+    <div class="preloader loading">
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+        <span class="slice"></span>
+    </div>
 </div>
 <div id='exportcsvallnorow' title='exportcsvallnorow' style='display:none'>
     <?php eT("There are no participants to be exported."); ?>
