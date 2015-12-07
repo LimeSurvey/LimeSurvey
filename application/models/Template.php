@@ -85,14 +85,33 @@ class Template extends LSActiveRecord
         return is_dir($sTemplatePath.'/'.$sTemplateName);
     }
 
+    /**
+     * Return the necessary datas to load the package of the admin theme
+     */
     public static function getAdminTheme()
     {
-        $oAdminTheme = new stdClass();
+        // We retrieve the admin theme in config ( {{settings_global}} or config-defaults.php )
         $sAdminThemeName = Yii::app()->getConfig('admintheme');
-        $oAdminTheme->name = (is_dir(Yii::app()->basePath.'/../styles/'.$sAdminThemeName))?$sAdminThemeName:'Sea_Green';
-        $oAdminTheme->package = 'lime-bootstrap-'.$oAdminTheme->name;
-        $oAdminTheme->path = Yii::app()->basePath.'/../styles/'.$oAdminTheme->name;
+        $oAdminTheme = new stdClass();
 
+        // If the required admin theme doesn't exist, Sea_Green will be used
+        // TODO : check also for upload directory
+        $oAdminTheme->name = (is_dir(Yii::app()->basePath.'/../styles/'.$sAdminThemeName))?$sAdminThemeName:'Sea_Green';
+
+        // The package name eg: lime-bootstrap-Sea_Green
+        $oAdminTheme->packagename = 'lime-bootstrap-'.$oAdminTheme->name;
+
+        // The path of the template files eg : /var/www/limesurvey/styles/Sea_Green
+        // TODO : add the upload directory for user template
+        $oAdminTheme->path = realpath(Yii::app()->basePath.'/../styles/'.$oAdminTheme->name);
+
+        // The package alias : it is required by the asset manager. eg: admintheme.Sea_Green
+        // It will be added to aliases from controller
+        $oAdminTheme->alias = 'admintheme.'.$oAdminTheme->name;
+
+        // The package itself.
+        $oAdminTheme->package = require($oAdminTheme->path.'/package/package.php');
+        $oAdminTheme->package['basePath']=$oAdminTheme->alias; // Defining basePath here for the package avoid the necessity to define it in each template. 
         return $oAdminTheme;
     }
 

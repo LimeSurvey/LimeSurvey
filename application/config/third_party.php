@@ -55,21 +55,6 @@ return array(
 
     ),
 
-    // jQuery Notify
-    'jquery-notify' => array(
-        'baseUrl' => 'third_party/jquery-notify',
-        'js' => array(
-            'src/jquery.notify.min.js'
-        ),
-        'css' => array(
-            'ui.notify.css'
-        ),
-        'depends' => array(
-            'jqueryui'
-        )
-
-    ),
-
     // jquery bindWithDelay
     'jquery-bindWithDelay' => array(
         'baseUrl' => 'third_party/jquery-bindWithDelay',
@@ -247,14 +232,6 @@ return array(
         'depends' => array(
             'jqueryui'
         )
-    ),
-
-    // jQuery horizontal scroll
-    'jquery-horizontal-scroll' => array(
-        'baseUrl' => 'third_party/jquery.horizontal.scroll',
-        'js' => array(
-            'jquery.horizontal.scroll.js'
-        ),
     ),
 
     // displayParticipants

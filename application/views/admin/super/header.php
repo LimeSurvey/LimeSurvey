@@ -18,12 +18,7 @@
 
         // Bootstrap
         App()->bootstrap->register();
-        App()->getClientScript()->registerPackage($sAdminthemePackage);/*
-        App()->getClientScript()->registerPackage(
-            App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.Yii::app()->getConfig('admintheme').'/' . "adminstyle.css") );
-*/
-        //Yii::app()->assetManager->publish($sAdminthemePackage, true, 0);
-
+        App()->getClientScript()->registerPackage($sAdminthemePackageName);
         // Right to Left
         if (getLanguageRTL($_SESSION['adminlang']))
             App()->getClientScript()->registerCssFile(Yii::app()->getBaseUrl(true)."/styles/$sAdmintheme/css/adminstyle-rtl.css");

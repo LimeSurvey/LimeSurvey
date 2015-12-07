@@ -3,9 +3,6 @@ class FlashMessage extends CWidget {
     public function run() {
         $aMessage=array();
         $assetUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/assets');
-        Yii::app()->clientScript->registerCssFile($assetUrl . '/css/notify.css');
-        //Yii::app()->clientScript->registerScriptFile($assetUrl . '/js/notify.js',CClientScript::POS_END);
-        //Yii::app()->clientScript->registerScriptFile($assetUrl . '/js/notify.js');
 
         if (!empty(App()->session['aFlashMessage']) && count(Yii::app()->session['aFlashMessage']))
         {
