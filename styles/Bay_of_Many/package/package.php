@@ -16,6 +16,7 @@ return array(
         'css' => array(
             'css/lime-admin.css',
             'css/fonts.css',
+            'css/statistics.css',
         ),
         'depends' => array(
             'jquery',

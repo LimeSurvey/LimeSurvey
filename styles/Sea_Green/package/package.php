@@ -16,12 +16,9 @@ return array(
         'css' => array(
             'css/lime-admin.css',
             'css/fonts.css',
-            'css/font-awesome/font-awesome-43.min.css',
             'css/statistics.css',
-
         ),
         'depends' => array(
             'jquery',
-            'jquery-notify',
         ),
 );
