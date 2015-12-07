@@ -37,7 +37,8 @@
 
         // Right to Left
         if (getLanguageRTL($_SESSION['adminlang']))
-            App()->getClientScript()->registerCssFile(Yii::app()->getBaseUrl(true)."/styles/$sAdmintheme/css/adminstyle-rtl.css");
+        App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$sAdmintheme.'/css/adminstyle-rtl.css') );
+
 
     ?>
     <?php echo $datepickerlang;?>
