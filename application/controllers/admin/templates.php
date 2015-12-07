@@ -359,9 +359,8 @@ class templates extends Survey_Common_Action
         App()->getComponent('bootstrap')->init();
 
         // After reseting, we need register again the script : maybe move it to endScripts_view for allways needed scripts ?
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'templates.js');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "admin_core.js" ));
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH  . 'templates.js'));
         App()->getClientScript()->registerPackage('ace');
         $this->_renderWrappedTemplate('templates', $aViewUrls);
 
@@ -721,7 +720,7 @@ class templates extends Survey_Common_Action
 
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('jquery-touch-punch');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH."survey_runtime.js" ));
 
             App()->getClientScript()->render($myoutput);
             @fwrite($fnew, $myoutput);
@@ -939,7 +938,7 @@ class templates extends Survey_Common_Action
             $files[] = array('name' => 'question_start.pstpl');
             $Question[] = 'question_start.pstpl';
         }
-        $editfile=sanitize_filename($editfile); // Fixed with editable file after, but put in aData before fix 
+        $editfile=sanitize_filename($editfile); // Fixed with editable file after, but put in aData before fix
         $availableeditorlanguages = array('bg', 'cs', 'de', 'dk', 'en', 'eo', 'es', 'fi', 'fr', 'hr', 'it', 'ja', 'mk', 'nl', 'pl', 'pt', 'ru', 'sk', 'zh');
         $extension = substr(strrchr($editfile, "."), 1);
         if ($extension == 'css' || $extension == 'js')
@@ -1269,7 +1268,7 @@ class templates extends Survey_Common_Action
         if ($showsummary)
             $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $otherfiles, $myoutput));
 
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'admin_core.js');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'admin_core.js' ));
         return $aViewUrls;
     }
 

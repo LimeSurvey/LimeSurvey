@@ -206,7 +206,7 @@ class labels extends Survey_Common_Action
 
         $aData['labelbar']['buttons']['edition']= TRUE;
         $aData['labelbar']['savebutton']['form'] = 'labelsetform';
-        $aData['labelbar']['savebutton']['text'] = gT("Save"); 
+        $aData['labelbar']['savebutton']['text'] = gT("Save");
         $aData['labelbar']['closebutton']['url'] = 'admin/labels/sa/view';
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
 
@@ -233,7 +233,7 @@ class labels extends Survey_Common_Action
         $aData = array();
 
         // Includes some javascript files
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'labels.js' ));
         App()->getClientScript()->registerPackage('jquery-json');
         // Checks if user have the sufficient rights to manage the labels
         if (Permission::model()->hasGlobalPermission('labelsets','read'))
@@ -305,14 +305,14 @@ class labels extends Survey_Common_Action
         {
             $aData['labelbar']['buttons']['view'] = TRUE;
         }
-        else 
+        else
         {
             $aData['labelbar']['savebutton']['form'] = 'mainform';
             $aData['labelbar']['savebutton']['text'] = gT("Save changes");
             $aData['labelbar']['closebutton']['url'] = 'admin/labels/sa/view';
-            $aData['labelbar']['buttons']['edition'] = TRUE;            
+            $aData['labelbar']['buttons']['edition'] = TRUE;
         }
-        
+
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
 
@@ -361,8 +361,8 @@ class labels extends Survey_Common_Action
     {
         if (Permission::model()->hasGlobalPermission('labelsets','export'))
         {
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
-            
+                    App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'labels.js' ));
+
             $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
             $aData['labelbar']['savebutton']['text'] = gT("Export multiple label sets");
             $aData['labelbar']['closebutton']['url'] = 'admin/labels/sa/view';

@@ -31,7 +31,7 @@ class saved extends Survey_Common_Action
         {
             die();
         }
-        
+
 
 
 
@@ -45,9 +45,9 @@ class saved extends Survey_Common_Action
         if (count($aViewUrls['savedlist_view'][0]['aResults']))
         {
             App()->getClientScript()->registerPackage('jquery-tablesorter');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'saved.js');            
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'saved.js' ));       
         }
-        
+
 
         $this->_renderWrappedTemplate('saved', $aViewUrls, $aData);
     }
@@ -74,10 +74,10 @@ class saved extends Survey_Common_Action
     {
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
         $aData['surveyid'] = $iSurveyId = $aData['iSurveyId'];
-        
+
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-        $aData["surveyinfo"] = $surveyinfo;     
-        $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];        
+        $aData["surveyinfo"] = $surveyinfo;
+        $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
         $aData['menu']['close'] =  true;
         $aData['menu']['edition'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);

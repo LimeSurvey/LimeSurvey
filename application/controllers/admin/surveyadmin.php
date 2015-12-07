@@ -1665,8 +1665,8 @@ class SurveyAdmin extends Survey_Common_Action
     {
         if (empty($files))
         {
-            $generalscripts_path = Yii::app()->getConfig('generalscripts');
-            $adminscripts_path = Yii::app()->getConfig('adminscripts');
+            $generalscripts_path = SCRIPT_PATH;
+            $adminscripts_path = ADMIN_SCRIPT_PATH;
             $styleurl = Yii::app()->getConfig('styleurl');
 
             $js_files = array(
@@ -1679,16 +1679,14 @@ class SurveyAdmin extends Survey_Common_Action
 
         foreach ($js_files as $file)
         {
-            App()->getClientScript()->registerScriptFile($file);
-
-
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $file ));
         }
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('jqgrid');
 
         foreach ($css_files as $file)
         {
-            App()->getClientScript()->registerCss($file);
+            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( $file) );
         }
     }
 

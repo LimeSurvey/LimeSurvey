@@ -28,7 +28,10 @@ class AdminController extends LSYii_Controller
         parent::_init();
         App()->getComponent('bootstrap');
         $this->_sessioncontrol();
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
+        define('ADMIN_SCRIPT_PATH', realpath ( Yii::app()->basePath .'/../scripts/admin/') . '/');
+        define('SCRIPT_PATH', realpath ( Yii::app()->basePath .'/../scripts/') . '/');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'/admin_core.js' ));
+
         $this->user_id = Yii::app()->user->getId();
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid'));}         //SurveyID
         if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid'));}                //Usergroup-ID

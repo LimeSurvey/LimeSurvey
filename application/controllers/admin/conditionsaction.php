@@ -1220,8 +1220,7 @@ class conditionsaction extends Survey_Common_Action {
 
             if ($scenariocount > 0)
             {
-
-                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("adminscripts").'checkgroup.js');
+                App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'checkgroup.js' ));
                 foreach ($scenarioresult as $scenarionr)
                 {
                     $scenariotext = "";

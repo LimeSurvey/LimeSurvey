@@ -34,8 +34,7 @@ class translate extends Survey_Common_Action {
             return;
         }
 
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("adminscripts") . 'translation.js');
-
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'translation.js' ));
 
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
         $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;

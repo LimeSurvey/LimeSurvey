@@ -45,7 +45,8 @@ class surveypermission extends Survey_Common_Action {
             $aBaseSurveyPermissions=Permission::model()->getSurveyBasePermissions();
             $userList=getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
             App()->getClientScript()->registerPackage('jquery-tablesorter');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "surveypermissions.js");
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "surveypermissions.js" ));
+
 			$surveysecurity = '<div class="side-body" id="edit-permissions">';
             $surveysecurity .="<h3>".gT("Survey permissions")."</h3>\n";
 			$surveysecurity .= '<div class="row"><div class="col-lg-12 content-right">';
@@ -465,7 +466,7 @@ class surveypermission extends Survey_Common_Action {
             $usersummary = '<div class="side-body" id="edit-permissions">';
 
             App()->getClientScript()->registerPackage('jquery-tablesorter');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "surveypermissions.js");
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "surveypermissions.js" ));
             if ($action == "setsurveysecurity")
             {
                 $query = "select users_name from {{users}} where uid=:uid";

@@ -351,7 +351,8 @@ class responses extends Survey_Common_Action
             Yii::app()->end();
         }
         App()->getClientScript()->registerPackage('jqgrid');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listresponse.js");
+
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "listresponse.js" ));
 
         $aData = $this->_getData($iSurveyId);
         $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
@@ -430,7 +431,7 @@ class responses extends Survey_Common_Action
         );
 
         //add token to top of list if survey is not private
-        if ($bHaveToken) 
+        if ($bHaveToken)
         {
             $column_model[] = array(
                 'name'=>'token',
@@ -1388,7 +1389,7 @@ class responses extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction='', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'browse.js');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'browse.js' ));
 
         $iSurveyId = $aData['iSurveyId'];
 

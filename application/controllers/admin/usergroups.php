@@ -169,7 +169,7 @@ class Usergroups extends Survey_Common_Action
                 $db_group_name = flattenText($_POST['group_name'],false,true,'UTF-8',true);
                 $db_group_description = $_POST['group_description'];
 
-                if (isset($db_group_name) && strlen($db_group_name) > 0) 
+                if (isset($db_group_name) && strlen($db_group_name) > 0)
                 {
                     if (strlen($db_group_name) > 21) {
                         list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Failed to add group! Group name length more than 20 characters.")));
@@ -183,9 +183,9 @@ class Usergroups extends Survey_Common_Action
                         Yii::app()->session['flashmessage'] = gT("User group successfully added!");
                         list($aViewUrls, $aData) = $this->index($ugid, true);
                     }
-                    
+
                     $this->getController()->redirect(array('admin/usergroups'));
-                    
+
                 }
                 else
                 {
@@ -246,7 +246,7 @@ class Usergroups extends Survey_Common_Action
         $aData['usergroupbar']['closebutton']['url'] = 'admin/usergroups/sa/view/ugid/'.$ugid;
         $aData['usergroupbar']['savebutton']['form']= 'usergroupform';
         $aData['usergroupbar']['savebutton']['text']= gT("Update user group");
-        
+
         $this->_renderWrappedTemplate('usergroup', 'editUserGroup_view', $aData);
     }
 
@@ -259,7 +259,7 @@ class Usergroups extends Survey_Common_Action
     */
     public function index($ugid = false, $header = false)
     {
-        
+
         if ($ugid != false)
             $ugid = (int)$ugid;
 
@@ -329,7 +329,7 @@ class Usergroups extends Survey_Common_Action
                 $aViewUrls[] = 'viewUserGroup_view';
             }
 
-            
+
         }
 
         if ($ugid == false)
@@ -364,7 +364,7 @@ class Usergroups extends Survey_Common_Action
         {
             $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid));
         }
-        else    
+        else
         {
             $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid, 'owner_id' => Yii::app()->session['loginID']));
         }
@@ -413,7 +413,7 @@ class Usergroups extends Survey_Common_Action
                 list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.') . '<br />' . gT('User not found.')));
             }
         }
-    
+
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
 
@@ -427,7 +427,7 @@ class Usergroups extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'usergroup', $aViewUrls = array(), $aData = array())
     {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts').'users.js');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'users.js' ));
 
         $aData['display']['menu_bars']['user_group'] = true;
 

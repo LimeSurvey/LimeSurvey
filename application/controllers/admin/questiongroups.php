@@ -146,7 +146,7 @@ class questiongroups extends Survey_Common_Action
             $baselang = Survey::model()->findByPk($surveyid)->language;
             $grplangs[] = $baselang;
             $grplangs = array_reverse($grplangs);
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'questiongroup.js');
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'questiongroup.js' ));
 
             $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
             $aData['surveyid'] = $surveyid;

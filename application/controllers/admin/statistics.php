@@ -111,8 +111,8 @@ class statistics extends Survey_Common_Action {
 
 
         //Call the javascript file
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'statistics.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'json-js/json2.min.js');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'statistics.js' ));
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'json-js/json2.min.js'));
 
         $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
 

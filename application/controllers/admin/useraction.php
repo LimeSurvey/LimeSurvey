@@ -39,7 +39,8 @@ class UserAction extends Survey_Common_Action
     public function index()
     {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts').'users.js');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'users.js' ));
+
 
         $userlist = getUserList();
         $usrhimself = $userlist[0];
@@ -522,12 +523,11 @@ class UserAction extends Survey_Common_Action
                 unset($aBasePermissions['superadmin']);
             }
             $aData['aBasePermissions']=$aBasePermissions;
-            
+
 
             $aData['oUser'] =$oUser;
             App()->getClientScript()->registerPackage('jquery-tablesorter');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "userpermissions.js");
-
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "userpermissions.js" ));
 
                 $aData['fullpagebar']['savebutton']['form'] = 'savepermissions';
                 $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';
@@ -544,7 +544,8 @@ class UserAction extends Survey_Common_Action
     function setusertemplates()
     {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'users.js');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'users.js' ));
+
         $postuserid = (int) Yii::app()->request->getPost("uid");
         $aData['postuser']  = flattenText(Yii::app()->request->getPost("user"));
         $aData['postemail'] = flattenText(Yii::app()->request->getPost("email"));
