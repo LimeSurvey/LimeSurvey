@@ -27,8 +27,6 @@ $internalConfig = array(
         // yiiwheels configuration
         'yiiwheels' => realpath(__DIR__ . '/../extensions/yiiwheels'),
         'vendor.twbs.bootstrap.dist',
-        //'admintheme.bayofmany' => realpath(__DIR__ . '/../../styles/Bay_of_Many'),
-
     ),
 
     'params'=>array(
@@ -68,15 +66,18 @@ $internalConfig = array(
             'compressJs'=>false,
             'packages' => require('third_party.php'),
         ),
+
         'urlManager' => array(
             'urlFormat' => 'get',
             'rules' => require('routes.php'),
             'showScriptName' => true,
         ),
+
         'assetManager' => array(
             'baseUrl' => '/tmp/assets',
             'basePath'=> dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'assets'
         ),
+
         'request' => array(
             'class'=>'LSHttpRequest',
             'noCsrfValidationRoutes'=>array(

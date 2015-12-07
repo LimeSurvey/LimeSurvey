@@ -87,9 +87,13 @@ class Template extends LSActiveRecord
 
     public static function getAdminTheme()
     {
+        $oAdminTheme = new stdClass();
         $sAdminThemeName = Yii::app()->getConfig('admintheme');
-        $sAdminTheme = (is_dir(Yii::app()->basePath.'/../styles/'.$sAdminThemeName))?$sAdminThemeName:'Sea_Green';
-        return $sAdminTheme;
+        $oAdminTheme->name = (is_dir(Yii::app()->basePath.'/../styles/'.$sAdminThemeName))?$sAdminThemeName:'Sea_Green';
+        $oAdminTheme->package = 'lime-bootstrap-'.$oAdminTheme->name;
+        $oAdminTheme->path = Yii::app()->basePath.'/../styles/'.$oAdminTheme->name;
+
+        return $oAdminTheme;
     }
 
     /**

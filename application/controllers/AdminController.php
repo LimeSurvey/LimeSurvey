@@ -291,11 +291,13 @@ class AdminController extends LSYii_Controller
             $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         // Register admin theme package with asset manager
-        $sAdmintheme = Template::model()->getAdminTheme();
-        $aData['sAdmintheme'] = $sAdmintheme;
-        $aData['sAdminthemePackage'] = 'lime-bootstrap-'.$sAdmintheme;
-        Yii::setPathOfAlias('admintheme.'.$sAdmintheme, realpath(__DIR__ . '/../../styles/'.$sAdmintheme));
-
+        $oAdmintheme = Template::model()->getAdminTheme();
+        $aData['sAdmintheme'] = $oAdmintheme->name;
+        $aData['sAdminthemePackage'] = $oAdmintheme->package;
+        Yii::setPathOfAlias('admintheme.'.$oAdmintheme->name, realpath($oAdmintheme->path));
+        $aPackage = require($oAdmintheme->path.'/package/package.php');
+        $aPackage['basePath']='admintheme.'.$oAdmintheme->name;
+        App()->getClientScript()->packages['lime-bootstrap-'.$oAdmintheme->name]=$aPackage;
         $sOutput = $this->renderPartial("/admin/super/header", $aData, true);
 
         if ($return)
