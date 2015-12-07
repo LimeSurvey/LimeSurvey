@@ -39,7 +39,7 @@ $internalConfig = array(
         'clientScript'=>array(
             'class' => 'nlac\NLSClientScript',
             'mergeJs' =>  isset($userConfig['config']['debug']) && $userConfig['config']['debug'] == 0,
-            'mergeJsExcludePattern' => '/(jquery\/jquery|ace|map)/i',
+            'mergeJsExcludePattern' => '/(jquery\/jquery|ace|map|script\.js|boots|runtime)/i',
             'packages' => require('third_party.php'),
         ),
         'urlManager' => array(
