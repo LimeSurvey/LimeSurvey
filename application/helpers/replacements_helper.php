@@ -548,8 +548,8 @@ EOD;
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['ENDTEXT'] = $_endtext;
     $coreReplacements['EXPIRY'] = $_dateoutput;
-    $coreReplacements['ADMINNAME'] = $thissurvey['admin'];
-    $coreReplacements['ADMINEMAIL'] = $thissurvey['adminemail'];
+    $coreReplacements['ADMINNAME'] = isset($thissurvey['admin']) ? $thissurvey['admin'] : '';
+    $coreReplacements['ADMINEMAIL'] = isset($thissurvey['adminemail']) ? $thissurvey['adminemail'] : '';
     $coreReplacements['GID'] = Yii::app()->getConfig('gid','');// Use the gid of the question, except if we are not in question (Randomization group name)
     $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;
     $coreReplacements['GOOGLE_ANALYTICS_JAVASCRIPT'] = $_googleAnalyticsJavaScript;
@@ -592,6 +592,7 @@ EOD;
     $coreReplacements['SURVEYLIST'] = (isset($surveylist))?$surveylist['list']:'';
     $coreReplacements['SURVEYLISTHEADING'] =  (isset($surveylist))?$surveylist['listheading']:'';
     $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : '');
+    $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl").'/surveys/'.$thissurvey['sid'].'/' : '');
     $coreReplacements['TEMPLATECSS'] = $_templatecss;
     $coreReplacements['TEMPLATEJS'] = CHtml::tag('script', array('type' => 'text/javascript', 'src' => $templateurl . 'template.js'), '');
     $coreReplacements['TEMPLATEURL'] = $templateurl;
