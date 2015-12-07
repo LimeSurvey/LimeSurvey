@@ -15,13 +15,14 @@
         // jQuery plugins
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-cookie');
-        App()->getClientScript()->registerPackage('qTip2');
 
         // Bootstrap
         App()->bootstrap->register();
-                
-        $sPackage = 'lime-bootstrap-'.$sAdmintheme;
-        App()->getClientScript()->registerPackage($sPackage);
+        App()->getClientScript()->registerPackage($sAdminthemePackage);/*
+        App()->getClientScript()->registerPackage(
+            App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.Yii::app()->getConfig('admintheme').'/' . "adminstyle.css") );
+*/
+        //Yii::app()->assetManager->publish($sAdminthemePackage, true, 0);
 
         // Right to Left
         if (getLanguageRTL($_SESSION['adminlang']))
@@ -42,13 +43,10 @@
 
 <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
 
-<script>
+<script type='text/javascript'>
 var frameSrc = "/login";
+    <?php if(isset($formatdata)):?>
+    var userdateformat='<?php echo $formatdata['jsdate']; ?>';
+    var userlanguage='<?php echo $adminlang; ?>';
+    <?php endif; ?>
 </script>
-
-<?php if(isset($formatdata)):?>
-    <script type='text/javascript'>
-        var userdateformat='<?php echo $formatdata['jsdate']; ?>';
-        var userlanguage='<?php echo $adminlang; ?>';
-    </script>
-<?php endif; ?>

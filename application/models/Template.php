@@ -85,6 +85,13 @@ class Template extends LSActiveRecord
         return is_dir($sTemplatePath.'/'.$sTemplateName);
     }
 
+    public static function getAdminTheme()
+    {
+        $sAdminThemeName = Yii::app()->getConfig('admintheme');
+        $sAdminTheme = (is_dir(Yii::app()->basePath.'/../styles/'.$sAdminThemeName))?$sAdminThemeName:'Sea_Green';
+        return $sAdminTheme;
+    }
+
     /**
     * Get the template path for any template : test if template if exist
     *

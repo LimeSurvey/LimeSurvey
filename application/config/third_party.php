@@ -275,7 +275,7 @@ return array(
 
     // LimeSurvey Bootstrap Admin Interface
     'lime-bootstrap-Apple_Blossom' => array(
-        'baseUrl' => 'styles/Apple_Blossom/',
+        'basePath'=>'admintheme.Apple_Blossom',
 
         'js'=>array(
             'scripts/notify.js',
@@ -301,7 +301,7 @@ return array(
 
     // LimeSurvey Bootstrap Admin Interface
     'lime-bootstrap-Sea_Green' => array(
-        'baseUrl' => 'styles/Sea_Green/',
+        'basePath'=>'admintheme.Sea_Green',
 
         'js'=>array(
             'scripts/notify.js',
@@ -327,8 +327,7 @@ return array(
 
     // LimeSurvey Bootstrap Admin Interface
     'lime-bootstrap-Bay_of_Many' => array(
-        'baseUrl' => 'styles/Bay_of_Many/',
-
+        'basePath'=>'admintheme.Bay_of_Many',
         'js'=>array(
             'scripts/notify.js',
             'scripts/save.js',
@@ -354,7 +353,7 @@ return array(
 
     // LimeSurvey Bootstrap Admin Interface
     'lime-bootstrap-Dark_Sky' => array(
-        'baseUrl' => 'styles/Dark_Sky/',
+        'basePath'=>'admintheme.Dark_Sky',
 
         'js'=>array(
             'scripts/notify.js',
@@ -381,7 +380,7 @@ return array(
 
     // LimeSurvey Bootstrap Admin Interface
     'lime-bootstrap-Free_Magenta' => array(
-        'baseUrl' => 'styles/Free_Magenta/',
+        'basePath'=>'admintheme.Free_Magenta',
 
         'js'=>array(
             'scripts/notify.js',
@@ -407,7 +406,7 @@ return array(
 
     // LimeSurvey Bootstrap Admin Interface
     'lime-bootstrap-Black_Pearl' => array(
-        'baseUrl' => 'styles/Black_Pearl/',
+        'basePath'=>'admintheme.Black_Pearl/',
 
         'js'=>array(
             'scripts/notify.js',
@@ -433,33 +432,7 @@ return array(
 
     // LimeSurvey Bootstrap Admin Interface
     'lime-bootstrap-Purple_Tentacle' => array(
-        'baseUrl' => 'styles/Purple_Tentacle/',
-
-        'js'=>array(
-            'scripts/notify.js',
-            'scripts/save.js',
-            'scripts/panelclickable.js',
-            'scripts/panelsanimation.js',
-            'scripts/sidemenu.js'
-        ),
-
-        'css' => array(
-            'css/lime-admin.css',
-            'css/fonts.css',
-            'css/font-awesome/font-awesome-43.min.css',
-            'css/statistics.css',
-
-        ),
-        'depends' => array(
-            'jquery',
-            'jquery-notify',
-
-        ),
-    ),
-
-    // LimeSurvey Bootstrap Admin Interface
-    'lime-bootstrap-Ripe_Lemon' => array(
-        'baseUrl' => 'styles/Ripe_Lemon/',
+        'basePath'=>'admintheme.Purple_Tentacle/',
 
         'js'=>array(
             'scripts/notify.js',
@@ -485,7 +458,7 @@ return array(
 
     // LimeSurvey Bootstrap Admin Interface
     'lime-bootstrap-Sunset_Orange' => array(
-        'baseUrl' => 'styles/Sunset_Orange/',
+        'basePath'=>'admintheme.Sunset_Orange/',
 
         'js'=>array(
             'scripts/notify.js',

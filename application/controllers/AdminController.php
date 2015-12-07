@@ -284,21 +284,19 @@ class AdminController extends LSYii_Controller
         if ($aData['adminlang'] != 'en')
             Yii::app()->getClientScript()->registerScriptFile(App()->baseUrl . "/third_party/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-" . $aData['adminlang'] .".js");
 
-
         $aData['sitename'] = Yii::app()->getConfig("sitename");
-        $aData['admintheme'] = Yii::app()->getConfig("admintheme");
         $aData['firebug'] = useFirebug();
 
         if (!empty(Yii::app()->session['dateformat']))
             $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
-        $sAdmintheme = Yii::app()->getConfig('admintheme');
-        $sAdmintheme = (Template::model()->checkIfTemplateExists($sAdmintheme))?$sAdmintheme:'Sea_Green';
+        // Register admin theme package with asset manager
+        $sAdmintheme = Template::model()->getAdminTheme();
         $aData['sAdmintheme'] = $sAdmintheme;
-
+        $aData['sAdminthemePackage'] = 'lime-bootstrap-'.$sAdmintheme;
+        Yii::setPathOfAlias('admintheme.'.$sAdmintheme, realpath(__DIR__ . '/../../styles/'.$sAdmintheme));
 
         $sOutput = $this->renderPartial("/admin/super/header", $aData, true);
-
 
         if ($return)
         {

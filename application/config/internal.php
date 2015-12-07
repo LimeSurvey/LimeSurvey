@@ -26,8 +26,9 @@ $internalConfig = array(
         'vendor.twbs.bootstrap.dist' => realpath(__DIR__ . '/../extensions/bootstrap'),
         // yiiwheels configuration
         'yiiwheels' => realpath(__DIR__ . '/../extensions/yiiwheels'),
+        'vendor.twbs.bootstrap.dist',
+        //'admintheme.bayofmany' => realpath(__DIR__ . '/../../styles/Bay_of_Many'),
 
-        'vendor.twbs.bootstrap.dist'
     ),
 
     'params'=>array(
