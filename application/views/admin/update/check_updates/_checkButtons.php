@@ -35,8 +35,7 @@
 
 	<!-- The js will inject inside this li the HTML of the update buttons -->
 	<li style="text-align: center" id="udapteButtonsContainer">
-		<img src="<?php echo IMAGE_BASE_URL;?>ajax-loader.gif" alt="loading..." id="ajaxLoading" style="display: none;"/>    <br/>
-        <div class="preloader loading">
+	    <div class="preloader loading">
             <span class="slice"></span>
             <span class="slice"></span>
             <span class="slice"></span>

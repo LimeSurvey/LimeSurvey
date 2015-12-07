@@ -27,7 +27,7 @@
     <!-- Jumbotron -->
     <div class="row">
         <div class="jumbotron" id="welcome-jumbotron">
-            <img src="<?php echo IMAGE_BASE_URL;?>Limesurvey_logo.png" id="lime-logo"  class="profile-img-card img-responsive center-block" />
+            <img src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" />
             <p class="hidden-xs" ><?php eT('This is the LimeSurvey admin interface. From here, you can start to build your survey.')?></p>
         </div>
     </div>

@@ -300,10 +300,10 @@ class AdminController extends LSYii_Controller
         $aData['aPackageScripts'] = $oAdmintheme->package['js'];
         $aData['aPackageStyles'] = $oAdmintheme->package['css'];
 
-
-
-
         $sOutput = $this->renderPartial("/admin/super/header", $aData, true);
+
+        // Define images url
+        define('LOGO_URL', App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$oAdmintheme->name.'/images/logo.png'));
 
         if ($return)
         {
