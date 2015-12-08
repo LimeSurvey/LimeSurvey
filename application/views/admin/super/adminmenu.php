@@ -73,6 +73,21 @@
                         <?php eT("Create a new survey");?>
                     </a>
                 </li>
+
+                <!-- Import a survey -->
+                <li>
+                  <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/import"); ?>">
+                      <?php eT("Import a survey");?>
+                  </a>
+                </li>
+
+                <!-- Import a survey -->
+                <li>
+                  <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/copy"); ?>">
+                      <?php eT("Copy a survey");?>
+                  </a>
+                </li>
+
                 <li class="divider"></li>
 
                 <!-- List surveys -->
@@ -114,8 +129,8 @@
                 </li>
             <?php endif;?>
 
-            <li class="nav-icon-btn nav-icon-btn-danger dropdown">
-                <a href="#notifications" class="dropdown-toggle" data-toggle="dropdown">
+            <li class="">
+                <a href="#notifications">
                     <?php if($showupdate): ?>
                         <span class=" label update-small-notification <?php if(Yii::app()->session['notificationstate']=='1' || Yii::app()->session['unstable_update'] ){echo 'hidden';};?>" >1</span>
                     <?php endif;?>
