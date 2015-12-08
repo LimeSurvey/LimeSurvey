@@ -1628,7 +1628,6 @@ EOD;
     */
     protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerPackage('jquery-msdropdown');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }
