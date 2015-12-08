@@ -40,20 +40,21 @@
 
     <?php
         $thisadmintheme=getGlobalSetting('admintheme');
-        $adminthemes=array_keys(getAdminThemeList());
+        $adminthemes=getAdminThemeList();
     ?>
     <div class="form-group">
     <label class="col-sm-4 control-label"  for="admintheme">
         <?php eT("Administration template:"); ?>
     </label>
     <div class="col-sm-6">
+        <?php // var_dump($adminthemes); ?>
         <select class="form-control" name="admintheme" id="admintheme">
             <?php
-                foreach ($adminthemes as $templatename)
+                foreach ($adminthemes as $templatename => $templateconfig)
                 {
                     echo "<option value='{$templatename}'";
                     if ($thisadmintheme==$templatename) { echo " selected='selected' ";}
-                    echo ">{$templatename}</option>";
+                    echo ">{$templateconfig->metadatas->name}</option>";
                 }
             ?>
         </select>

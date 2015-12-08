@@ -297,6 +297,7 @@ function getTemplateList()
 function getAdminThemeList()
 {
     $standardtemplaterootdir=Yii::app()->getConfig("styledir");
+    $list_of_files = array();
 
     if ($standardtemplaterootdir && $handle = opendir($standardtemplaterootdir))
     {
@@ -304,18 +305,17 @@ function getAdminThemeList()
         {
             if (!is_file("$standardtemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
             {
-                $list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                //$list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                $oTemplateConfig = simplexml_load_file($standardtemplaterootdir.DIRECTORY_SEPARATOR.$file.'/config.xml');
+                $list_of_files[$file] = $oTemplateConfig;
             }
         }
         closedir($handle);
     }
 
-
     ksort($list_of_files);
-
     return $list_of_files;
 }
-
 
 /**
 * getQuestions() queries the database for an list of all questions matching the current survey and group id
@@ -7527,4 +7527,3 @@ function array_diff_assoc_recursive($array1, $array2) {
     }
 
 // Closing PHP tag intentionally omitted - yes, it is okay
-
