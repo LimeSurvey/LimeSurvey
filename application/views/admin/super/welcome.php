@@ -28,11 +28,7 @@
     <div class="row">
         <div class="jumbotron" id="welcome-jumbotron">
             <img src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" />
-            <p class="hidden-xs hidden" ><?php eT('This is the LimeSurvey admin interface. From here, you can start to build your survey.')?></p>
-            <p class="hidden-xs" >
-                MARKT-FORSCHUNG.
-                    Wir bieten fundierte Antworten auf Ihre individuellen Fragestellungen.
-            </p>
+            <p class="hidden-xs" ><?php echo PRESENTATION; // Defined in AdminController?></p>
         </div>
     </div>
 

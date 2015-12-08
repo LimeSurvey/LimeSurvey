@@ -297,7 +297,6 @@ class AdminController extends LSYii_Controller
         $oAdmintheme = Template::model()->getAdminTheme(); // We get the package datas from the model
         $aData['sAdmintheme'] = $oAdmintheme->name;
         $aData['sAdminthemePackageName'] = $oAdmintheme->packagename;
-
         $aData['aPackageScripts'] = (array) $oAdmintheme->config->files->js->filename;
         $aData['aPackageStyles'] = (array) $oAdmintheme->config->files->css->filename;
 
@@ -305,6 +304,16 @@ class AdminController extends LSYii_Controller
 
         // Define images url
         define('LOGO_URL', App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$oAdmintheme->name.'/images/logo.png'));
+
+        // Define presentation text on welcome page
+        if($oAdmintheme->config->metadatas->presentation)
+        {
+            define('PRESENTATION', $oAdmintheme->config->metadatas->presentation);
+        }
+        else
+        {
+            define('PRESENTATION', gT('This is the LimeSurvey admin interface. From here, you can start to build your survey.'));
+        }
 
         if ($return)
         {
