@@ -129,6 +129,7 @@
                 </li>
             <?php endif;?>
 
+            <?php if($showupdate): ?>
             <li class="">
                 <a href="#notifications">
                     <?php if($showupdate): ?>
@@ -146,7 +147,7 @@
                 </ul> <!-- / .dropdown-menu -->
                 <?php endif;?>
             </li>
-
+            <?php endif;?>
         </ul>
     </div><!-- /.nav-collapse -->
 </nav>

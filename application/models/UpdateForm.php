@@ -582,13 +582,15 @@ class UpdateForm extends CFormModel
                 $next_update_check = $today->add(new DateInterval('P1D'));
                 Yii::app()->session['next_update_check'] = $next_update_check;
                 Yii::app()->session['update_result'] = false;
+                Yii::app()->session['unstable_update'] = false;
             }
         }
         else
         {
                $update_available = Yii::app()->session['update_result'];
+               $unstable_update_available = Yii::app()->session['unstable_update'];
                $security_update_available = Yii::app()->session['security_update'];
-               $updates = array('result'=>$update_available , 'security_update'=>$security_update_available);
+               $updates = array('result'=>$update_available , 'security_update'=>$security_update_available, 'unstable_update'=>$unstable_update_available);
         }
         return (object) $updates;
     }

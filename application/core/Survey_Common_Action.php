@@ -506,7 +506,7 @@ class Survey_Common_Action extends CAction
 
             $updateModel = new UpdateForm();
             $updateNotification = $updateModel->updateNotification;
-            $aData['showupdate'] = $updateNotification->result;
+            $aData['showupdate'] = ( $updateNotification->result && ! $updateNotification->unstable_update );
 
             $this->getController()->renderPartial("/admin/super/adminmenu", $aData);
         }
