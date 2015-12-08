@@ -980,7 +980,7 @@ class tokens extends Survey_Common_Action
 
 				$attempts = 0;
                 do {
-					$token->token = randomChars($tokenlength);
+					$token->token = Yii::app()->securityManager->generateRandomString($tokenlength);
 					$attempts++;
 				} while (isset($existingtokens[$token->token]) && $attempts < 50);
 
