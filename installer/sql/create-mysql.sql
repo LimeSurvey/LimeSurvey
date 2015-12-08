@@ -555,7 +555,7 @@ CREATE TABLE `prefix_templates` (
 --
 -- Table structure & datas for table boxes
 --
-CREATE TABLE IF NOT EXISTS `lime_boxes` (
+CREATE TABLE IF NOT EXISTS `prefix_boxes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `position` int(11) DEFAULT NULL COMMENT 'position of the box',
   `url` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'url the box points',
@@ -568,7 +568,7 @@ CREATE TABLE IF NOT EXISTS `lime_boxes` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 
-INSERT INTO `lime_boxes` (`id`, `position`, `url`, `title`, `img`, `ico`, `desc`, `page`) VALUES
+INSERT INTO `prefix_boxes` (`id`, `position`, `url`, `title`, `img`, `ico`, `desc`, `page`) VALUES
 (1, 1, 'admin/survey/sa/newsurvey', 'Create survey', 'add.png', 'add', 'Create a new survey', 'welcome'),
 (2, 2, 'admin/survey/sa/listsurveys', 'List surveys', 'surveylist.png', 'list', 'List available surveys', 'welcome'),
 (3, 3, 'admin/globalsettings', 'Global settings', 'global.png', 'settings', 'Edit global settings', 'welcome'),
