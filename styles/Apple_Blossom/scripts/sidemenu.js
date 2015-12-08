@@ -26,9 +26,14 @@ jQuery(document).on('click', '.hideside', function(){
             $('#chevronside').addClass("glyphicon-chevron-right");
     });
 
+    $thatWidth = $('.side-body').width();
+    $('.side-body').width($thatWidth);
+
 	// Move the side body
-    $('.side-body').animate({
-      left: "-125",
+    $('.side-body').animate(
+        {
+            left: "-250",
+            width: $thatWidth + 250,
         }, 500, function() {
     });
 
@@ -56,8 +61,12 @@ $(document).ready(function(){
           left: -250,
         });
 
+        $thatWidth = $('.side-body').width();
+        $('.side-body').width($thatWidth);
+
         $('.side-body').css({
-          left: -125,
+          left: -250,
+          width: $thatWidth + 250,
         });
 
         $that.removeClass("hideside");
@@ -91,9 +100,12 @@ jQuery(document).on('click', '.showside', function(){
         $('#chevronside').addClass("glyphicon-chevron-left");
     });
 
+    $thatWidth = $('.side-body').width();
+    $('.side-body').width($thatWidth);
 
 	$('.side-body').animate({
 	  left: "0",
+      width: $thatWidth - 250,
 	    }, 500, function() {
 	});
 
@@ -114,21 +126,19 @@ jQuery(document).on('click', '.showside', function(){
  */
 $(function()
 {
-    if ( $('.surveybar').length ) {
-        $(window).scroll(function() { //when window is scrolled
-            $toTop = ($('.surveybar').offset().top - $(window).scrollTop());
+  $(window).scroll(function() { //when window is scrolled
+	    $toTop = ($('.surveybar').offset().top - $(window).scrollTop());
 
-      	    if($toTop <= 0)
-      	    {
-      	        $('.surveybar').addClass('navbar-fixed-top');
-      	        $('.side-menu').css({position:"fixed", top: "45px"});
-      	    }
+	    if($toTop <= 0)
+	    {
+	        $('.surveybar').addClass('navbar-fixed-top');
+	        $('.side-menu').css({position:"fixed", top: "45px"});
+	    }
 
-      	    if( $(window).scrollTop() <= 45)
-      	    {
-      	        $('.surveybar').removeClass('navbar-fixed-top');
-      	        $('.side-menu').css({position:"absolute", top: "auto"});
-      	    }
-      	});
-    }
+	    if( $(window).scrollTop() <= 45)
+	    {
+	        $('.surveybar').removeClass('navbar-fixed-top');
+	        $('.side-menu').css({position:"absolute", top: "auto"});
+	    }
+	});
 });
