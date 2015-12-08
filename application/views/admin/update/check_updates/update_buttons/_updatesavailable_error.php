@@ -46,6 +46,12 @@
             $sMessage = gT("It seems you're using a version coming from the LimeSurvey GitHub repository. You can't use ComfortUpdate.");
             break;
 
+        case 'not_updatable':
+            $sTile = gT('Error!');
+            $sHeader = gT('No build version found!');
+            $sMessage = gT("You disabled comfortUpdate in your configuration file.");
+            break;
+
         default :
             $sTile = gT('Error!');
             $sHeader = gT('Unknown error!');
