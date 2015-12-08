@@ -3391,4 +3391,8 @@ input:focus, textarea:focus {
   color: #A0352F;
   margin-top: 1em; }
 
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+  border-bottom-color: transparent;
+  cursor: default; }
+
 /*# sourceMappingURL=lime-admin.css.map */

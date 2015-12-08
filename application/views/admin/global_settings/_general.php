@@ -47,8 +47,7 @@
         <?php eT("Administration template:"); ?>
     </label>
     <div class="col-sm-6">
-        <?php // var_dump($adminthemes); ?>
-        <select class="form-control" name="admintheme" id="admintheme">
+        <select class="form-control hidden" name="admintheme" id="admintheme">
             <?php
                 foreach ($adminthemes as $templatename => $templateconfig)
                 {
@@ -58,6 +57,7 @@
                 }
             ?>
         </select>
+
     </div>
     </div>
 
