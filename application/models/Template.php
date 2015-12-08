@@ -86,7 +86,7 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * Return the necessary datas to load the package of the admin theme
+     * Return the necessary datas to load the admin theme
      */
     public static function getAdminTheme()
     {
@@ -105,13 +105,9 @@ class Template extends LSActiveRecord
         // TODO : add the upload directory for user template
         $oAdminTheme->path = realpath(Yii::app()->basePath.'/../styles/'.$oAdminTheme->name);
 
-        // The package alias : it is required by the asset manager. eg: admintheme.Sea_Green
-        // It will be added to aliases from controller
-        $oAdminTheme->alias = 'admintheme.'.$oAdminTheme->name;
+        // The template configuration.
+        $oAdminTheme->config = simplexml_load_file($oAdminTheme->path.'/config.xml');
 
-        // The package itself.
-        $oAdminTheme->package = require($oAdminTheme->path.'/package/package.php');
-        $oAdminTheme->package['basePath']=$oAdminTheme->alias; // Defining basePath here for the package avoid the necessity to define it in each template. 
         return $oAdminTheme;
     }
 
