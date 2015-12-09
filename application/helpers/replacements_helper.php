@@ -157,6 +157,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $surveyformat = "";
     }
+
+    $surveyformat .= " bootstrap-engine ";
+
     if ((isset(Yii::app()->session['step']) && Yii::app()->session['step'] % 2) && $surveyformat!="allinone")
     {
         $surveyformat .= " page-odd";
