@@ -5,7 +5,7 @@
     /* @var $dataProvider CActiveDataProvider */
 
     $dataProvider = new CArrayDataProvider($data);
-    
+
     $gridColumns = array(
         array(// display the activation link
             'class' => 'CLinkColumn',
@@ -18,15 +18,15 @@
             'type' => 'raw',
             'header' => gT('Action'),
             'value' => function($data) {
-                if ($data['active'] == 0)
-                { 
+                if ($data['active'] == 0 && (Permission::model()->hasGlobalPermission('settings','update')))
+                {
                     $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Activate'), array('width' => 16, 'height' => 16)), array("/plugins/activate", "id" => $data['id']));
                 } else {
-                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Deactivate'), array('width' => 16, 'height' => 16)), array("/plugins/deactivate", "id" => $data['id'])); 
+                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Deactivate'), array('width' => 16, 'height' => 16)), array("/plugins/deactivate", "id" => $data['id']));
                 }
-                if(count($data['settings'])>0)
+                if(count($data['settings'])>0 && (Permission::model()->hasGlobalPermission('settings','update')))
                 {
-                    $output .= CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'survey_settings_30.png', gT('Configure'), array('width' => 16, 'height' => 16, 'style' => 'margin-left: 8px;')), array("/plugins/configure", "id" => $data['id'])); 
+                    $output .= CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'survey_settings_30.png', gT('Configure'), array('width' => 16, 'height' => 16, 'style' => 'margin-left: 8px;')), array("/plugins/configure", "id" => $data['id']));
                 }
                 return $output;
             }
@@ -41,8 +41,8 @@
             'header' => gT('Description'),
             'name' => 'description'
         ),
-    ); 
-        
+    );
+
         /*
             array(            // display a column with "view", "update" and "delete" buttons
             'class' => 'CallbackColumn',
@@ -51,7 +51,7 @@
         )
     );
         */
-        
+
     $this->widget('bootstrap.widgets.TbExtendedGridView', array(
         'dataProvider'=>$dataProvider,
         'columns'=>$gridColumns,
