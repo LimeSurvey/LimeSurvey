@@ -2082,7 +2082,7 @@ class tokens extends Survey_Common_Action
                         }
                         $aFirstLine = str_getcsv($buffer, $sSeparator, '"');
                         $aFirstLine = array_map('trim', $aFirstLine);
-                        $aIgnoredColumns = array();
+                        $aIgnoredColumns = $invalideAttrFieldName = $missingAttrFieldName= array();
                         // Now check the first line for invalid fields
                         foreach ($aFirstLine as $index => $sFieldname)
                         {
@@ -2095,6 +2095,33 @@ class tokens extends Survey_Common_Action
                             if (array_key_exists($sFieldname, $aReplacedFields))
                             {
                                 $aFirstLine[$index] = $aReplacedFields[$sFieldname];
+                            }
+                            // Attribute not in list
+                            if (strpos($aFirstLine[$index], 'attribute_') !== false and !in_array($aFirstLine[$index], $aAttrFieldNames) and Yii::app()->request->getPost('showwarningtoken')) {
+                                $invalideAttrFieldName[] = $aFirstLine[$index];
+                            }
+                        }
+                        //compare attributes with source csv
+                        if(Yii::app()->request->getPost('showwarningtoken')){
+                            $missingAttrFieldName = array_diff($aAttrFieldNames, $aFirstLine);
+                            // get list of mandatory attributes
+                            $allAttrFieldNames = GetParticipantAttributes($iSurveyId);
+                            //if it isn't mandantory field we don't need to show in warning
+                            if(!empty($aAttrFieldNames)){
+                                if(!empty($missingAttrFieldName)){
+                                    foreach ($missingAttrFieldName as $index=>$AttrFieldName) {
+                                        if (isset($allAttrFieldNames[$AttrFieldName]) and strtolower($allAttrFieldNames[$AttrFieldName]["mandatory"])!= "y") {
+                                            unset($missingAttrFieldName[$index]);
+                                        }
+                                    }
+                                }
+                                if(isset($invalideAttrFieldName) and !empty($invalideAttrFieldName)){
+                                    foreach ($invalideAttrFieldName as $index=>$AttrFieldName) {
+                                        if (isset($allAttrFieldNames[$AttrFieldName]) and strtolower($allAttrFieldNames[$AttrFieldName]["mandatory"])!= "y") {
+                                            unset($invalideAttrFieldName[$index]);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -2236,6 +2263,8 @@ class tokens extends Survey_Common_Action
                 $aData['iInvalidEmailCount']=$iInvalidEmailCount;
                 $aData['thissurvey'] = getSurveyInfo($iSurveyId);
                 $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
+                $aData['invalideAttrFieldName'] = $invalideAttrFieldName;
+                $aData['missingAttrFieldName'] = $missingAttrFieldName;
 
                 $this->_renderWrappedTemplate('token', array('tokenbar', 'csvpost'), $aData);
                 Yii::app()->end();

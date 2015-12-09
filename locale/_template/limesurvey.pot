@@ -15180,9 +15180,13 @@ msgstr ""
 msgid "Allow invalid email addresses:"
 msgstr ""
 
-#: application/views/admin/token/csvupload.php:28
+#: application/views/admin/token/csvupload.php:34
 #: application/views/admin/token/ldapform.php:35
 msgid "Filter duplicate records:"
+msgstr ""
+
+#: application/views/admin/token/csvupload.php:28
+msgid "Display warning attributes:"
 msgstr ""
 
 #: application/views/admin/token/csvupload.php:32

@@ -25,6 +25,12 @@
             <?php echo CHtml::checkBox('allowinvalidemail', false); ?>
         </li>
         <li>
+            <label for='showwarningtoken'><?php eT("Display warning attributes:"); ?></label>
+            <?php
+            echo CHtml::checkBox('showwarningtoken');
+            ?>
+        </li>
+        <li>
             <label for='filterduplicatetoken'><?php eT("Filter duplicate records:"); ?></label>
             <?php echo CHtml::checkBox('filterduplicatetoken', true); ?>
         </li>
