@@ -2306,7 +2306,6 @@ function do_multiplechoice($ia)
         /* Print out the checkbox */
         $answer .= $startitem;
         $answer .= "\t$hiddenfield\n";
-
         $answer .= "<label for=\"answer$ia[1]{$ansrow['title']}\" class=\"control-label col-xs-{$nbColLabelXs} col-lg-{$nbColLabelLg} answertext\">".  $ansrow['question'].  "</label>\n";
         $answer .= '<div class="col-lg-'.$nbColInputLg.' col-xs-'.$nbColInputXs.'">';
         $answer .= '        <input class="checkbox" type="checkbox" name="'.$ia[1].$ansrow['title'].'" id="answer'.$ia[1].$ansrow['title'].'" value="Y"';
@@ -2324,13 +2323,6 @@ function do_multiplechoice($ia)
         $answer .= ''
         .  "$checkconditionFunction(this.value, this.name, this.type)' />\n";
         $answer .= '</div>';
-        //.  "<label for=\"answer$ia[1]{$ansrow['title']}\" class=\"answertext\">"
-        //.  $ansrow['question']
-        //.  "</label>\n";
-
-
-        //        if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
-        //        if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
         ++$fn;
         /* Now add the hidden field to contain information about this answer */
@@ -2362,7 +2354,7 @@ function do_multiplechoice($ia)
     if ($other == 'Y')
     {
         $myfname = $ia[1].'other';
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li","question-item answer-item checkbox-item other-item");
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li","responsive-content question-item answer-item checkbox-item other-item ");
 
         if(substr($wrapper['item-start-other'],0,4) == "\t<li")
         {
@@ -2371,17 +2363,21 @@ function do_multiplechoice($ia)
             $startitem = $wrapper['item-start-other'];
         }
         $answer .= $startitem;
-        $answer .= $hiddenfield.'
-        <input class="checkbox other-checkbox dontread" style="visibility:hidden" type="checkbox" name="'.$myfname.'cbox" id="answer'.$myfname.'cbox"';
-        // othercbox can be not display, because only input text goes to database
 
+        $answer .= "\t$hiddenfield\n";
+        $answer .= "<label for=\"{$myfname}cbox\" class=\"answertext control-label col-xs-{$nbColLabelXs} col-lg-{$nbColLabelLg} \">".$othertext."</label>";
+        $answer .= '<div class="col-lg-'.$nbColInputLg.' col-xs-'.$nbColInputXs.'">';
+        $answer .= '    <input class="checkbox other-checkbox dontread" style="visibility:hidden" type="checkbox" name="'.$myfname.'cbox" id="answer'.$myfname.'cbox"';
+
+        // othercbox can be not display, because only input text goes to database
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])!='')
         {
             $answer .= CHECKED;
         }
-        $answer .= " />
-        <label for=\"answer$myfname\" class=\"answertext\">".$othertext."</label>
-        <input class=\"text ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
+        $answer .= " />";
+        $answer .= '</div>';
+        $answer .= '<div class="col-lg-12 col-xs-12">';
+        $answer .= "    <input class=\"text ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
@@ -2432,6 +2428,9 @@ function do_multiplechoice($ia)
         }
 
         $answer .= "\" />\n{$wrapper['item-end']}";
+
+        $answer .= '</div>';
+
         $inputnames[]=$myfname;
         ++$anscount;
 
