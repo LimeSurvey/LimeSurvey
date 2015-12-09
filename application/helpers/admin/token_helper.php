@@ -78,6 +78,7 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 
 		$fieldsarray["{ADMINNAME}"] = $oSurvey->admin;
 		$fieldsarray["{ADMINEMAIL}"] = $oSurvey->adminemail;
+		$fieldsarray["{EXPIRY}"]=$oSurvey->expires;
 		if(empty($fieldsarray["{ADMINEMAIL}"] ))
 			$fieldsarray["{ADMINEMAIL}"] = Yii::app()->getConfig('siteadminemail');
 		$from = $fieldsarray["{ADMINNAME}"] . ' <' . $fieldsarray["{ADMINEMAIL}"] . '>';
