@@ -1361,7 +1361,7 @@ function db_upgrade_all($iOldDBVersion) {
 
 function upgradeSurveyTables251()
 {
-    Yii::app()->db->createCommand()->addColumn('{{boxes}}','ico','string AFTER img');
+    Yii::app()->db->createCommand()->addColumn('{{boxes}}','ico','string');
 
     // add
     $box = Boxes::model()->findByPk('1');
