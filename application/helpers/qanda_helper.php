@@ -1613,7 +1613,8 @@ function do_list_radio($ia)
     $ansresult = dbExecuteAssoc($ansquery)->readAll();  //Checked
     $anscount = count($ansresult);
 
-    if (trim($aQuestionAttributes['display_columns'])!='') {
+    if (trim($aQuestionAttributes['display_columns'])!='')
+    {
         $dcols = $aQuestionAttributes['display_columns'];
     }
     else
@@ -1634,7 +1635,13 @@ function do_list_radio($ia)
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$anscount++;} //Count up if "No answer" is showing
 
     $wrapper = setupColumns($dcols , $anscount,"answers-list radio-list","answer-item radio-item");
-    $answer = $wrapper['whole-start'];
+
+    $iBootCols = round(12/$dcols);
+    $ansByCol = round($anscount/$dcols); $ansByCol = ($ansByCol > 0)?$ansByCol:1;
+
+    //$answer = 'IKI: '.$iBootCols.' '.$ansByCol.' '.$wrapper['whole-start'];
+    $answer = '<div class="row">';
+    $answer .= '    <div class="col-xs-'.$iBootCols.'">';
 
     //Time Limit Code
     if (trim($aQuestionAttributes['time_limit'])!='')
@@ -1657,31 +1664,37 @@ function do_list_radio($ia)
         {
             $check_ans = CHECKED;
         }
-
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li","answer-item radio-item");
-        if(substr($wrapper['item-start'],0,4) == "\t<li")
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "div","form-group answer-item radio-item");
+    /*    if(substr($wrapper['item-start'],0,4) == "\t<li")
         {
             $startitem = "\t$htmltbody2\n";
         } else {
             $startitem = $wrapper['item-start'];
         }
 
-        $answer .= $startitem;
+        $answer .= $startitem;*/
         $answer .= "\t$hiddenfield\n";
-        $answer .='        <input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
-        <label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
-        '.$wrapper['item-end'];
+
+        $answer .= '<div  class="form-group">';
+        $answer .= '    <label for="answer'.$ia[1].$ansrow['code'].'" class="answertext control-label">'.$ansrow['answer'].'</label>';
+        $answer .= '        <input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />';
+        $answer .=          $wrapper['item-end'];
+        $answer .= '</div>';
 
         ++$rowcounter;
-        if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'] || (count($ansresult)-$key)==$wrapper['cols']-$colcounter)
+        //if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'] || (count($ansresult)-$key)==$wrapper['cols']-$colcounter)
+        if ($rowcounter == $ansByCol && $colcounter < $wrapper['cols'])
         {
-            if($colcounter == $wrapper['cols'] - 1 )
+            if($colcounter == $wrapper['cols'] )
             {
-                $answer .= $wrapper['col-devide-last'];
+                //$answer .= 'là '.$wrapper['col-devide-last'];
+                $answer .= '    </div><!-- last -->';
             }
             else
             {
-                $answer .= $wrapper['col-devide'];
+                //$answer .= 'et là '.$wrapper['col-devide'];
+                $answer .= '    </div><!-- devide --> ';
+                $answer .= '    <div class="col-xs-'.$iBootCols.'">';
             }
             $rowcounter = 0;
             ++$colcounter;
@@ -1728,35 +1741,49 @@ function do_list_radio($ia)
             $answer_other = ' value=""';
         }
 
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $thisfieldname, $trbc, $myfname, "li", "answer-item radio-item other-item other");
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $thisfieldname, $trbc, $myfname, "div", "form-group answer-item radio-item other-item other");
 
+/*
         if(substr($wrapper['item-start-other'],0,4) == "\t<li")
         {
             $startitem = "\t$htmltbody2\n";
         } else {
             $startitem = $wrapper['item-start-other'];
         }
-        $answer .= $startitem;
+        $answer .= $startitem;*/
+
         $answer .= "\t$hiddenfield\n";
-        $answer .= '        <input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
-        <label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
+        $answer .= '<div  class="form-group">';
+        $answer .= '    <label for="SOTH'.$ia[1].'" class="answertext control-label">'.$othertext.'</label>';
+        $answer .= '    <input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />';
+        $answer .= '    <input type="text" class="text '.$kpclass.'" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.gT('Other').'"'.$answer_other.' onkeyup="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$ia[1].'\').click(); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />';
+        $answer .=      $wrapper['item-end'];
+        $answer .= '</div>';
+        /*
+        $answer .= "\t$hiddenfield\n";
+        $answer .= '
+
         <label for="answer'.$ia[1].'othertext">
-        <input type="text" class="text '.$kpclass.'" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.gT('Other').'"'.$answer_other.' onkeyup="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$ia[1].'\').click(); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />
+
         </label>
         '.$wrapper['item-end'];
-
+*/
         $inputnames[]=$thisfieldname;
 
         ++$rowcounter;
-        if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+        //if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+        if ($rowcounter == $ansByCol && $colcounter < $wrapper['cols'])
         {
-            if($colcounter == $wrapper['cols'] - 1)
+            if($colcounter == $wrapper['cols'] )
             {
-                $answer .= $wrapper['col-devide-last'];
+                //$answer .= $wrapper['col-devide-last'];
+                $answer .= '    </div><!-- last -->';
             }
             else
             {
-                $answer .= $wrapper['col-devide'];
+                //$answer .= $wrapper['col-devide'];
+                $answer .= '    </div><!-- devide -->';
+                $answer .= '    <div class="col-xs-'.$iBootCols.'">';
             }
             $rowcounter = 0;
             ++$colcounter;
@@ -1774,21 +1801,30 @@ function do_list_radio($ia)
             $check_ans = '';
         }
 
-        $answer .= $wrapper['item-start-noanswer'].'        <input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
-        <label for="answer'.$ia[1].'NANS" class="answertext">'.gT('No answer').'</label>
-        '.$wrapper['item-end'];
+///
+
+        $answer .= '<div  class="form-group">';
+        $answer .= '    <label for="answer'.$ia[1].'NANS" class="answertext control-label">'.gT('No answer').'</label>';
+        $answer .= '        <input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />';
+        $answer .=          $wrapper['item-end'];
+        $answer .= '</div>';
+
         // --> END NEW FEATURE - SAVE
 
         ++$rowcounter;
-        if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+        //if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+        if ($rowcounter == $ansByCol && $colcounter < $wrapper['cols'])
         {
-            if($colcounter == $wrapper['cols'] - 1)
+            if($colcounter == $wrapper['cols'] )
             {
-                $answer .= $wrapper['col-devide-last'];
+                //$answer .= $wrapper['col-devide-last'];
+                $answer .= '    </div><!-- last -->';
             }
             else
             {
-                $answer .= $wrapper['col-devide'];
+                //$answer .= $wrapper['col-devide'];
+                $answer .= '    </div><!-- devide -->';
+                $answer .= '    <div class="col-xs-'.$iBootCols.'">';
             }
             $rowcounter = 0;
             ++$colcounter;
@@ -1796,8 +1832,9 @@ function do_list_radio($ia)
 
     }
     //END OF ITEMS
-    $answer .= $wrapper['whole-end'].'
-    <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
+    //$answer .= $wrapper['whole-end'].'
+    $answer .= '    <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
+    $answer .= '</div> <!-- wrapper row -->';
 
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
@@ -2918,7 +2955,7 @@ function do_multipleshorttext($ia)
         $answer_main .= '<div class="alert alert-danger" role="alert">'."\n";
         $answer_main .= gT('Error: This question has no answers.')."\n";
         $answer_main .= '</div>';
-        
+
     }
     else
     {
