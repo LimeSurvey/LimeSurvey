@@ -51,7 +51,6 @@
     <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
 </head>
 <body>
-
 <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
 
 <script type='text/javascript'>

@@ -2257,6 +2257,35 @@ function do_multiplechoice($ia)
     $startitem='';
     $postrow = '';
     $trbc='';
+    $nbColLabelLgLog=0;
+    $nbColInputLgLog=0;
+    $nbColInputXsLog=0;
+    // We define the same col-lg and col-xs for all labels/inputs, on the base of the bigger one.
+    foreach($ansresult as $ansrow)
+    {
+        $nbCol = round(strlen($ansrow['question'])/10)+1;
+        $nbColLabelLg = ($nbCol > 12)?12:$nbCol;
+        if($nbColLabelLg > $nbColLabelLgLog)
+            $nbColLabelLgLog = $nbColLabelLg;
+
+        $nbColInputLg = 12 - $nbColLabelLgLog;
+        $nbColInputLg = ($nbColInputLg < 1)?12:$nbColInputLg;
+        // If it bigger than the biggest value logged, we update the logged value
+        if($nbColInputLg > $nbColInputLgLog)
+            $nbColInputLgLog = $nbColInputLg;
+
+        $nbColLabelXs = $nbColLabelLg + 5;
+        $nbColLabelXs = ($nbColLabelXs > 12)?12:$nbColLabelXs;
+        $nbColInputXs = 12 - $nbColLabelXs;
+        $nbColInputXs = ($nbColInputXs < 1)?12:$nbColInputXs;
+        // If it bigger than the biggest value logged, we update the logged value
+        if($nbColInputXs > $nbColInputXsLog)
+            $nbColInputXsLog = $nbColInputXs;
+    }
+    $nbColInputXs = $nbColInputXsLog;
+    $nbColInputLg = $nbColInputLgLog;
+    $nbColLabelLg = $nbColLabelLgLog;
+
     foreach ($ansresult as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
@@ -2277,19 +2306,6 @@ function do_multiplechoice($ia)
         /* Print out the checkbox */
         $answer .= $startitem;
         $answer .= "\t$hiddenfield\n";
-
-
-        $nbCol = round(strlen($ansrow['question'])/10)+1;
-        $nbColLabelLg = ($nbCol > 12)?12:$nbCol;
-        $nbColInputLg = 12 - $nbColLabelLg;
-        $nbColInputLg = ($nbColInputLg < 1)?12:$nbColInputLg;
-
-        $nbColLabelXs = $nbColLabelLg + 5;
-        $nbColLabelXs = ($nbColLabelXs > 12)?12:$nbColLabelXs;
-        $nbColInputXs = 12 - $nbColLabelXs;
-        $nbColInputXs = ($nbColInputXs < 1)?12:$nbColInputXs;
-
-
 
         $answer .= "<label for=\"answer$ia[1]{$ansrow['title']}\" class=\"control-label col-xs-{$nbColLabelXs} col-lg-{$nbColLabelLg} answertext\">".  $ansrow['question'].  "</label>\n";
         $answer .= '<div class="col-lg-'.$nbColInputLg.' col-xs-'.$nbColInputXs.'">';
