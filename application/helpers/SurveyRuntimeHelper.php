@@ -1084,7 +1084,7 @@ class SurveyRuntimeHelper {
             echo templatereplace(file_get_contents($sTemplatePath."startgroup.pstpl"), array(), $redata);
             echo "\n";
 
-            if (!$previewquestion)
+            if (!$previewquestion && !empty($redata['groupdescription']))
             {
                 echo templatereplace(file_get_contents($sTemplatePath."groupdescription.pstpl"), array(), $redata);
             }
@@ -1258,13 +1258,13 @@ if (!$previewgrp && !$previewquestion)
 
     /**
     * Construction of replacement array, actually doing it with redata
-    * 
+    *
     * @param $aQuestionQanda : array from qanda helper
     * @return aray of replacement for question.psptl
     **/
     public static function getQuestionReplacement($aQuestionQanda)
     {
-        
+
         // Get the default replacement and set empty value by default
         $aReplacement=array(
             "QID"=>"",
@@ -1298,7 +1298,7 @@ if (!$previewgrp && !$previewquestion)
         $oSurveyId=Survey::model()->findByPk($iSurveyId);
         $sType=$lemQuestionInfo['info']['type'];
 
-        // Core value : not replaced 
+        // Core value : not replaced
         $aReplacement['QID']=$iQid;
         $aReplacement['GID']=$aQuestionQanda[6];// Not sure for aleatory : it's the real gid or the updated gid ? We need original gid or updated gid ?
         $aReplacement['SGQ']=$aQuestionQanda[7];

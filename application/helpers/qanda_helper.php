@@ -4754,9 +4754,7 @@ function do_array($ia)
         }
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-
-/////////////////////////////////////// /////////////////////
-        $answer_start .= '<div class="no-more-tables">';
+        $answer_start = '<div class="no-more-tables">';
         $answer_start .= "\n<table class=\"table-in-qanda-5 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n";
         $answer_head_line= "\t<td>&nbsp;</td>\n";
             foreach ($labelans as $ld)
