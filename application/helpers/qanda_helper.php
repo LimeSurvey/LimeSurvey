@@ -2915,7 +2915,10 @@ function do_multipleshorttext($ia)
     if ($anscount==0)
     {
         $inputnames=array();
-        $answer_main .= '    <li>'.gT('Error: This question has no answers.')."</li>\n";
+        $answer_main .= '<div class="alert alert-danger" role="alert">'."\n";
+        $answer_main .= gT('Error: This question has no answers.')."\n";
+        $answer_main .= '</div>';
+        
     }
     else
     {
