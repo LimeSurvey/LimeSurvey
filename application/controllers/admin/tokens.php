@@ -2195,7 +2195,7 @@ class tokens extends Survey_Common_Action
                         }
                         if (!$bDuplicateFound && $aWriteArray['email'] != '')
                         {
-                            $aEmailaddresses = preg_split( "/(,|;)/", $aWriteArray['email'] );
+                            $aEmailAddresses = preg_split( "/(,|;)/", $aWriteArray['email'] );
                             foreach ($aEmailAddresses as $sEmailaddress)
                             {
                                 if (!validateEmailAddress($sEmailaddress))
