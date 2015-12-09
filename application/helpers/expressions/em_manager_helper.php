@@ -9143,7 +9143,7 @@ EOD;
                 $sgqas = explode('|',$q['sgqa']);
                 if (count($sgqas) == 1 && !is_null($q['info']['default']))
                 {
-                    $LEM->ProcessString(htmlspecialchars($q['info']['default']), $qid,NULL,false,1,1,false,false);// Default value is Y or answer code or go to input/textarea, then we can filter it
+                    $LEM->ProcessString($q['info']['default'], $qid,NULL,false,1,1,false,false);// Default value is Y or answer code or go to input/textarea, then we can filter it
                     $_default = $LEM->GetLastPrettyPrintExpression();
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;

@@ -3641,9 +3641,6 @@ $extraclass .=" col-sm-".trim($col);
             'longitude'=>$currentCenter[1],
 
         );
-        $oClientScript=App()->getComponent('clientScript');
-        array_push($oClientScript->excludeFiles,App()->baseUrl."/third_party/leaflet/leaflet.js",Yii::app()->getConfig('generalscripts')."map.js");
-        App()->setComponent('clientScript',$oClientScript);
         App()->getClientScript()->registerPackage('leaflet');
         Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar',"LSmap=".ls_json_encode($aGlobalMapScriptVar).";\nLSmaps= new Array();",CClientScript::POS_HEAD);
         Yii::app()->getClientScript()->registerScript('sThisMapScriptVar'.$ia[1],"LSmaps['{$ia[1]}']=".ls_json_encode($aThisMapScriptVar),CClientScript::POS_HEAD);

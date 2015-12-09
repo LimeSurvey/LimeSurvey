@@ -59,11 +59,6 @@ $internalConfig = array(
         ),
 
         'clientScript'=>array(
-            'class'=>'ext.ExtendedClientScript.ExtendedClientScript',
-            'combineCss'=>false,
-            'compressCss'=>false,
-            'combineJs'=>$userConfig['config']['debug']>0?false:true,
-            'compressJs'=>false,
             'packages' => require('third_party.php'),
         ),
 

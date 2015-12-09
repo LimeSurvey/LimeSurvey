@@ -12,7 +12,7 @@
         {
             if (!empty($lang))// Control is a real language , in restrictToLanguages ?
             {
-                App()->setLanguage(sanitize_languagecode($lang));
+                App()->setLanguage($lang);
             }
             else
             {
