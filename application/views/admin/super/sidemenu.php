@@ -8,9 +8,9 @@
        <input type="hidden" id="close-side-bar" />
     <?php endif;?>
 
-    <div class="absolute-wrapper hidden-xs"> </div>
+    <div class="absolute-wrapper hidden-xs" style="z-index: 100;"> </div>
     <!-- Menu -->
-    <div class="side-menu  hidden-xs" id="sideMenu">
+    <div class="side-menu  hidden-xs" id="sideMenu" style="z-index: 101;">
 
     <nav class="navbar navbar-default  hidden-xs" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -30,8 +30,11 @@
                     <?php eT('General');?>
                 </a>
             </div>
-            <a class="btn btn-default hide-button hideside toggleside  hidden-xs">
-                <span class="glyphicon glyphicon-chevron-left" id="chevronside"></span>
+            <a class="btn btn-default hide-button hidden-xs opened" id="chevronClose"  style="right: 30px">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
+            <a class="btn btn-default hide-button hidden-xs opened" id="chevronStretch">
+                <span class="glyphicon glyphicon-chevron-right" ></span>
             </a>
         </div>
 
