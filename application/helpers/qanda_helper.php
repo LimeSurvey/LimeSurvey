@@ -961,7 +961,7 @@ function do_date($ia)
     }
     else
     {
-        $mindate='1900-01-01'; // Why 1900 ? 
+        $mindate='1900-01-01'; // Why 1900 ?
     }
 
     // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
@@ -984,7 +984,7 @@ function do_date($ia)
     }
     else
     {
-        $maxdate='2037-12-31'; // Why 2037 ? 
+        $maxdate='2037-12-31'; // Why 2037 ?
     }
 
     if (trim($aQuestionAttributes['dropdown_dates'])==1) {
@@ -1789,7 +1789,7 @@ function do_list_radio($ia)
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
-        if ((!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' ' ))
+        if ((!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' ' ))
         {
             $check_ans = CHECKED; //Check the "no answer" radio button if there is no answer in session.
         }
@@ -1893,7 +1893,7 @@ function do_listwithcomment($ia)
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
-            if ((!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') ||($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' ' ))
+            if ((!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') ||($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' ' ))
             {
                 $check_ans = CHECKED;
             }
@@ -2109,7 +2109,7 @@ function do_ranking($ia)
     }
     // hide_tip is managed by css with EM
     $rank_help = gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.",'js');
-    
+
     $answer .= "<script type='text/javascript'>\n"
     . "  <!--\n"
     . "var aRankingTranslations = {
@@ -3577,11 +3577,8 @@ function do_shortfreetext($ia)
             'zoomLevel'=>$aQuestionAttributes['location_mapzoom'],
             'latitude'=>$currentCenter[0],
             'longitude'=>$currentCenter[1],
-            
+
         );
-        $oClientScript=App()->getComponent('clientScript');
-        array_push($oClientScript->excludeFiles,App()->baseUrl."/third_party/leaflet/leaflet.js",Yii::app()->getConfig('generalscripts')."map.js");
-        App()->setComponent('clientScript',$oClientScript);
         App()->getClientScript()->registerPackage('leaflet');
         Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar',"LSmap=".ls_json_encode($aGlobalMapScriptVar).";\nLSmaps= new Array();",CClientScript::POS_HEAD);
         Yii::app()->getClientScript()->registerScript('sThisMapScriptVar'.$ia[1],"LSmaps['{$ia[1]}']=".ls_json_encode($aThisMapScriptVar),CClientScript::POS_HEAD);
@@ -3598,7 +3595,7 @@ function do_shortfreetext($ia)
                 <li class=\"coordinate-item\">".gT("Longitude:")."<input class=\"coords text\" type=\"text\" name=\"$ia[1]_c2\" id=\"answer_lng$ia[1]_c\" value=\"{$currentLatLong[1]}\" /></li>
             </ul>
 
-            <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\" value = \"{$strBuild}\" > 
+            <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\" value = \"{$strBuild}\" >
             <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\" class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
 
             <div>

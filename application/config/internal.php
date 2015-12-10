@@ -25,7 +25,7 @@ $internalConfig = array(
         'application.controllers.*',
         'application.modules.*',
     ),
-    'preload' => array ('log'),
+    'preload' => array ('log', 'clientScript'),
     'components' => array(
         'bootstrap' => array(
             'class' => 'application.core.LSBootstrap',
@@ -33,13 +33,7 @@ $internalConfig = array(
             'jqueryCss' => false
         ),
         'clientScript'=>array(
-            'class'=>'ext.ExtendedClientScript.ExtendedClientScript',
-            'combineCss'=>false,
-            'compressCss'=>false,
-            'combineJs'=>$userConfig['config']['debug']>0?false:true,
-            'compressJs'=>false,
             'packages' => require('third_party.php'),
-            'excludeFiles' => array(), // empty array to add more easily files to exclude
         ),
         'urlManager' => array(
             'urlFormat' => 'get',
@@ -49,7 +43,7 @@ $internalConfig = array(
         'assetManager' => array(
             'baseUrl' => '/tmp/assets',
             'basePath'=> dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'assets'
-            
+
         ),
         'request' => array(
             'class'=>'LSHttpRequest',

@@ -87,7 +87,7 @@
                 <a href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" >
                     <img src='<?php echo $sImageURL;?>cpdb.png' alt='<?php eT("Central participant database/panel");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php }
-                if(Permission::model()->hasGlobalPermission('superadmin','read'))
+                if(Permission::model()->hasGlobalPermission('settings','read'))
                 {   ?>
             <a href="<?php echo $this->createUrl("plugins/"); ?>" >
                 <img src='<?php echo $sImageURL;?>plugin.png' alt='<?php eT("Plugin manager");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>

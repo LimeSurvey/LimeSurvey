@@ -3042,11 +3042,7 @@ Nutzung des Text-Separators]]></question>
     <gid><![CDATA[2016]]></gid>
     <type><![CDATA[P]]></type>
     <title><![CDATA[K]]></title>
-    <question><![CDATA[<script type="text/javascript" charset="utf-8">
-$(document).ready(function() {
-   $('#answer282267X2016X43864SQ002comment').hide();
-});
-</script>Multiple option with comments (default answers and 1 Minimum Answer)]]></question>
+    <question><![CDATA[Multiple option with comments (default answers and 1 Minimum Answer)]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -3199,13 +3195,7 @@ $(document).ready(function() {
     <gid><![CDATA[2016]]></gid>
     <type><![CDATA[R]]></type>
     <title><![CDATA[R]]></title>
-    <question><![CDATA[Ranking
-
-<script type="text/javascript" charset="utf-8">
-jQuery(document).ready(function () {
-$("#CHOICES_25 option[value='A1'").remove();
-});
-</script>]]></question>
+    <question><![CDATA[Ranking]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -3222,13 +3212,7 @@ $("#CHOICES_25 option[value='A1'").remove();
     <gid><![CDATA[2016]]></gid>
     <type><![CDATA[R]]></type>
     <title><![CDATA[R]]></title>
-    <question><![CDATA[Ranking
-
-<script type="text/javascript" charset="utf-8">
-jQuery(document).ready(function () {
-$("#CHOICES_25 option[value='A1'").remove();
-});
-</script>]]></question>
+    <question><![CDATA[Ranking]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -12509,19 +12493,19 @@ $("#CHOICES_25 option[value='A1'").remove();
    <row>
     <qid><![CDATA[43860]]></qid>
     <attribute><![CDATA[other_replace_text]]></attribute>
-    <value><![CDATA[<script>alert(bravo);</script>]]></value>
+    <value><![CDATA[]]></value>
     <language><![CDATA[de-informal]]></language>
    </row>
    <row>
     <qid><![CDATA[43860]]></qid>
     <attribute><![CDATA[other_replace_text]]></attribute>
-    <value><![CDATA[<script>alert(bravo);</script>]]></value>
+    <value><![CDATA[]]></value>
     <language><![CDATA[en]]></language>
    </row>
    <row>
     <qid><![CDATA[43860]]></qid>
     <attribute><![CDATA[other_replace_text]]></attribute>
-    <value><![CDATA[<script>alert(bravo);</script>]]></value>
+    <value><![CDATA[]]></value>
     <language><![CDATA[fr]]></language>
    </row>
    <row>

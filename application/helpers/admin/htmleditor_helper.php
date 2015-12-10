@@ -63,7 +63,7 @@
                     {
                         $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
                     }
-                    $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->getConfig('uploaddir') .DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$surveyid.DIRECTORY_SEPARATOR;
+                    $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')) .DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$surveyid.DIRECTORY_SEPARATOR;
                 }
             }
             elseif (preg_match('/^edit:label/', Yii::app()->session['FileManagerContext']) != 0)
@@ -75,7 +75,7 @@
                 {
                     $_SESSION['KCFINDER']['disabled'] = false;
                     $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/labels/{$labelid}/";
-                    $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->getConfig('uploaddir') .DIRECTORY_SEPARATOR.'labels'.DIRECTORY_SEPARATOR.$labelid.DIRECTORY_SEPARATOR;
+                    $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')) .DIRECTORY_SEPARATOR.'labels'.DIRECTORY_SEPARATOR.$labelid.DIRECTORY_SEPARATOR;
                 }
             }
         }

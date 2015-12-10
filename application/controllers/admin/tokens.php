@@ -980,7 +980,7 @@ class tokens extends Survey_Common_Action
 
 				$attempts = 0;
                 do {
-					$token->token = randomChars($tokenlength);
+					$token->token = Yii::app()->securityManager->generateRandomString($tokenlength);
 					$attempts++;
 				} while (isset($existingtokens[$token->token]) && $attempts < 50);
 
@@ -1392,7 +1392,7 @@ class tokens extends Survey_Common_Action
                 foreach ($emresult as $emrow)
                 {
                     $to = $fieldsarray = array();
-                    $aEmailaddresses = explode(';', $emrow['email']);
+                    $aEmailaddresses = preg_split( "/(,|;)/", $emrow['email'] );
                     foreach ($aEmailaddresses as $sEmailaddress)
                     {
                         $to[] = ($emrow['firstname'] . " " . $emrow['lastname'] . " <{$sEmailaddress}>");
@@ -1418,7 +1418,8 @@ class tokens extends Survey_Common_Action
                                                       ->createAbsoluteUrl("/optin/tokens",array("surveyid"=>$iSurveyId,"langcode"=>trim($emrow['language']),"token"=>$emrow['token']));
                     $fieldsarray["{SURVEYURL}"] = $this->getController()
                                                        ->createAbsoluteUrl("/survey/index",array("sid"=>$iSurveyId,"token"=>$emrow['token'],"lang"=>trim($emrow['language'])));
-
+                    // Add some var for expression : actually only EXPIRY because : it's used in limereplacement field and have good reason to have it.
+                    $fieldsarray["{EXPIRY}"]=$aData['thissurvey']["expires"];
                     $customheaders = array('1' => "X-surveyid: " . $iSurveyId,
                     '2' => "X-tokenid: " . $fieldsarray["{TOKEN}"]);
                     global $maildebug;
@@ -2153,7 +2154,7 @@ class tokens extends Survey_Common_Action
                         }
                         if (!$bDuplicateFound && $aWriteArray['email'] != '')
                         {
-                            $aEmailAddresses = explode(';', $aWriteArray['email']);
+                            $aEmailAddresses = preg_split( "/(,|;)/", $aWriteArray['email'] );
                             foreach ($aEmailAddresses as $sEmailaddress)
                             {
                                 if (!validateEmailAddress($sEmailaddress))

@@ -14,10 +14,10 @@
  */
 class LSActiveRecord extends CActiveRecord
 {
-    
+
     /**
-     * Lists the behaviors of this model 
-     * 
+     * Lists the behaviors of this model
+     *
      * Below is a list of all behaviors we register:
      * @see CTimestampBehavior
      * @see PluginEventBehavior
@@ -27,7 +27,7 @@ class LSActiveRecord extends CActiveRecord
         $aBehaviors=array();
 		$sCreateFieldName=($this->hasAttribute('created')?'created':null);
         $sUpdateFieldName=($this->hasAttribute('modified')?'modified':null);
-        $sDriverName = Yii::app()->db->getDriverName(); 
+        $sDriverName = Yii::app()->db->getDriverName();
         if ($sDriverName=='sqlsrv' || $sDriverName=='dblib')
         {
             $sTimestampExpression=new CDbExpression('GETDATE()');
@@ -42,8 +42,8 @@ class LSActiveRecord extends CActiveRecord
             'updateAttribute' => $sUpdateFieldName,
             'timestampExpression' =>  $sTimestampExpression
         );
-        // Table plugins might not exist during a database upgrade so in that case disconnect events
-        if (Yii::app()->db->schema->getTable('{{plugins}}') !== null)
+        // Some tables might not exist/not be up to date during a database upgrade so in that case disconnect plugin events
+        if (!Yii::app()->getConfig('Updating'))
         {
             $aBehaviors['PluginEventBehavior']= array(
                 'class' => 'application.models.behaviors.PluginEventBehavior'
@@ -51,7 +51,7 @@ class LSActiveRecord extends CActiveRecord
         }
         return $aBehaviors;
     }
-    
+
     /**
      * Modified version that default to do the same as the original, but allows via a
      * third parameter to retrieve the result as array instead of active records. This
@@ -100,21 +100,21 @@ class LSActiveRecord extends CActiveRecord
         $criteria = $this->getCommandBuilder()->createCriteria($condition, $params);
         return $this->query($criteria, true, false);  //Notice the third parameter 'false'
     }
-    
-    
+
+
     /**
      * Return the max value for a field
-     * 
-     * This is a convenience method, that uses the primary key of the model to 
+     *
+     * This is a convenience method, that uses the primary key of the model to
      * retrieve the highest value.
-     * 
+     *
      * @param string  $field        The field that contains the Id, when null primary key is used if it is a single field
-     * @param boolean $forceRefresh Don't use value from static cache but always requery the database 
+     * @param boolean $forceRefresh Don't use value from static cache but always requery the database
      * @return false|int
      */
     public function getMaxId($field = null, $forceRefresh = false) {
         static $maxIds = array();
-        
+
         if (is_null($field)) {
             $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
             if (is_string($primaryKey)) {
@@ -124,28 +124,28 @@ class LSActiveRecord extends CActiveRecord
                 throw new Exception(sprintf('Table %s has a composite primary key, please explicitly state what field you need the max value for.', $this->tableName()));
             }
         }
-        
+
         if ($forceRefresh || !array_key_exists($field, $maxIds)) {
             $maxId = $this->dbConnection->createCommand()
                     ->select('MAX(' .  $this->dbConnection->quoteColumnName($field) . ')')
                     ->from($this->tableName())
                     ->queryScalar();
-            
+
             // Save so we can reuse in the same request
             $maxIds[$field] = $maxId;
         }
-        
+
         return $maxIds[$field];
     }
 
 	/**
 	 * @todo This should also be moved to the behavior at some point.
 	 * This method overrides the parent in order to raise PluginEvents for Bulk delete operations.
-	 * 
+	 *
 	 * Filter Criteria are wrapped into a CDBCriteria instance so we have a single instance responsible for holding the filter criteria
-	 * to be passed to the PluginEvent, 
+	 * to be passed to the PluginEvent,
 	 * this also enables us to pass the fully configured CDBCriteria instead of the original Parameters.
-	 * 
+	 *
 	 * See {@link find()} for detailed explanation about $condition and $params.
 	 * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
 	 * An attribute value can be an array which will be used to generate an IN condition.

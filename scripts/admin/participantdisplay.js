@@ -252,7 +252,7 @@ $(document).ready(function() {
 
             /* Pager for attribute subgrid */
             jQuery("#"+subgrid_table_id).jqGrid('navGrid',"#"+pager_id,{
-                refresh: false, 
+                refresh: false,
                 edit:false,
                 add:false,
                 del:false,
@@ -275,8 +275,8 @@ $(document).ready(function() {
             search: false,
             alertcap: sWarningMsg,
             alerttext: sSelectRowMsg,
-            addtitle: createParticipantTxt, 
-            deltitle: deleteParticipantTxt, 
+            addtitle: createParticipantTxt,
+            deltitle: deleteParticipantTxt,
             refreshtitle: refreshListTxt},
         {}, //Default settings for edit
         {
@@ -286,9 +286,9 @@ $(document).ready(function() {
             bCancel: sCancel,
             afterShowForm: function(form) {
                 form.closest('div.ui-jqdialog').center();
-            }            
+            }
         }, //default settings for add
-        {msg:deleteMsg, 
+        {msg:deleteMsg,
             bCancel: sCancel,
             caption: sDeleteDialogCaption,
             bSubmit: sDeleteButtonCaption,
@@ -453,7 +453,7 @@ $(document).ready(function() {
                             width : 600,
                             height : 300,
                             open: function(event, ui) {
-                                $('#attributes').multiselect({ includeSelectAllOption:true, 
+                                $('#attributes').multiselect({ includeSelectAllOption:true,
                                     selectAllValue: '0',
                                     selectAllText: sSelectAllText,
                                     nonSelectedText: sNonSelectedText,
@@ -561,10 +561,10 @@ $(document).ready(function() {
                         if(rows=="") { /* All in grid */
                             $.post(
                                 getSearchIDs,
-                                { 
+                                {
                                     searchcondition: searchconditions,
                                     searchURL: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')
-                                },                               
+                                },
                                 function(data) {
                                     $('#count').val(totalitems);
                                     $('#participant_id').val(data);
@@ -596,6 +596,7 @@ $(document).ready(function() {
 
                 if (!($("#survey_id").length > 0)) {
                     $('#addsurvey').html(addpartErrorMsg);
+                    $('div[aria-describedby="addsurvey"] div.ui-dialog-buttonset button:first-child').hide();
                 }
             }
         }
