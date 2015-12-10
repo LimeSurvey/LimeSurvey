@@ -258,9 +258,6 @@ function activateSurvey($iSurveyID, $simulate = false)
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
     $prow = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
 
-	//reset the session data of the survey if exist
-    unset(Yii::app()->session['survey_'.$iSurveyID]);
-
     //Get list of questions for the base language
     $fieldmap = createFieldMap($iSurveyID,'full',true,false,getBaseLanguageFromSurveyID($iSurveyID));
 
