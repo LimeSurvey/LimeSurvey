@@ -2879,7 +2879,7 @@ function do_multipleshorttext($ia)
     global $thissurvey;
 
 
-    $extraclass ="";
+    $extraclass =" form-group row";
     $answer='';
     $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
 
@@ -2908,9 +2908,7 @@ function do_multipleshorttext($ia)
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $tiwidth=$aQuestionAttributes['text_input_width'];
-        //$extraclass .=" inputwidth".trim($aQuestionAttributes['text_input_width']);
-        $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-        $extraclass .=" col-sm-".trim($col);
+        $extraclass .=" inputwidth".trim($aQuestionAttributes['text_input_width']);
     }
     else
     {
@@ -2991,9 +2989,9 @@ function do_multipleshorttext($ia)
                 list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item".$extraclass);
 
                 $answer_main .= "\t$htmltbody2\n"
-                . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
+                . "<label for=\"answer$myfname\" class=\"col-sm-6\">{$ansrow['question']}</label>\n"
                 . "\t<span>\n".$prefix."\n".'
-                <textarea class="form-control  textarea '.$kpclass.'" name="'.$myfname.'" id="answer'.$myfname.'"
+                <textarea class="form-control  textarea col-sm-6'.$kpclass.'" name="'.$myfname.'" id="answer'.$myfname.'"
                 rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);">';
 
                 if($label_width < strlen(trim(strip_tags($ansrow['question']))))
@@ -3038,8 +3036,8 @@ function do_multipleshorttext($ia)
 
                 list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item".$extraclass);
                 $answer_main .= "\t$htmltbody2\n"
-                . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
-                . "\t<span>\n".$prefix."\n".'<input class="text '.$kpclass.'" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+                . "<label for=\"answer$myfname\" class=\"col-sm-6\">{$ansrow['question']}</label>\n"
+                . "\t<span class=\"col-sm-6\">\n".$prefix."\n".'<input class="text '.$kpclass.'" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
 
                 if($label_width < strlen(trim(strip_tags($ansrow['question']))))
                 {
