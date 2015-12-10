@@ -40,8 +40,8 @@
                         </ul>
                     </p>
 
-                    <?php if (!empty($aDuplicateList) || !empty($aInvalidFormatList) || !empty($aInvalidEmailList) || !empty($aModelErrorList)) { ?>
-                    <h2 class='text-warning'><?php eT('Warnings'); ?></div>
+                    <?php if (!empty($aDuplicateList) || !empty($aInvalidFormatList) || !empty($aInvalidEmailList) || !empty($aModelErrorList) || !empty($aInvalideAttrFieldName) || !empty($aMissingAttrFieldName)) { ?>
+                    <h2 class='text-warning'><?php eT('Warnings'); ?></h2>
                     <p>
                         <ul class="list-unstyled">
                             <?php if (!empty($aDuplicateList)) { ?>
@@ -49,7 +49,7 @@
                                     <?php printf(gT("%s duplicate records removed"), count($aDuplicateList)); ?>
                                     [<a href='#' onclick='$("#duplicateslist").toggle();'><?php eT("List"); ?></a>]
                                     <div class='badtokenlist' id='duplicateslist' style='display: none;'>
-                                        <ul>
+                                        <ul class="list-unstyled">
                                             <?php foreach ($aDuplicateList as $sDuplicate) { ?>
                                                 <li><?php echo $sDuplicate; ?></li>
                                             <?php } ?>
@@ -63,7 +63,7 @@
                                     <?php printf(gT("%s lines had a mismatching number of fields."), count($invalidformatlist)); ?>
                                     [<a href='#' onclick='$("#invalidformatlist").toggle();'><?php eT("List"); ?></a>]
                                     <div class='badtokenlist' id='invalidformatlist' style='display: none;'>
-                                        <ul>
+                                        <ul class="list-unstyled">
                                             <?php foreach ($aInvalidFormatList as $sInvalidFormatList) { ?>
                                                 <li><?php echo $sInvalidFormatList; ?></li>
                                             <?php } ?>
@@ -77,7 +77,7 @@
                                     <?php printf(gT("%s records with invalid email address removed"), count($aInvalidEmailList)); ?>
                                     [<a href='#' onclick='$("#invalidemaillist").toggle();'><?php eT("List"); ?></a>]
                                     <div class='badtokenlist' id='invalidemaillist' style='display: none;'>
-                                        <ul>
+                                        <ul class="list-unstyled">
                                             <?php foreach ($aInvalidEmailList as $sInvalidEmail) { ?>
                                                 <li><?php echo $sInvalidEmail; ?></li>
                                             <?php } ?>
@@ -91,8 +91,36 @@
                                     <?php printf(gT("%s records with other invalid information"), count($aModelErrorList)); ?>
                                     [<a href='#' onclick='$("#invalidmodel").toggle();'><?php eT("List"); ?></a>]
                                     <div class='badtokenlist' id='invalidmodel' style='display: none;'>
-                                        <ul>
+                                        <ul class="list-unstyled">
                                             <?php foreach ($aModelErrorList as $sModelError) { ?>
+                                                <li><?php echo $sModelError; ?></li>
+                                            <?php } ?>
+                                        </ul>
+                                    </div>
+                                </li>
+                            <?php } ?>
+
+                            <?php if (!empty($aInvalideAttrFieldName)) { ?>
+                                <li>
+                                    <?php printf(gT("%s invalid attributes"), count($aInvalideAttrFieldName)); ?>
+                                    [<a href='#' onclick='$("#invalidattr").toggle();'><?php eT("columns ignored"); ?></a>]
+                                    <div class='badtokenlist' id='invalidattr' style='display: none;'>
+                                        <ul class="list-unstyled">
+                                            <?php foreach ($aInvalideAttrFieldName as $sModelError) { ?>
+                                                <li><?php echo $sModelError; ?></li>
+                                            <?php } ?>
+                                        </ul>
+                                    </div>
+                                </li>
+                            <?php } ?>
+
+                            <?php if (!empty($aMissingAttrFieldName)) { ?>
+                                <li>
+                                    <?php printf(gT("%s missing attributes"), count($aMissingAttrFieldName)); ?>
+                                    [<a href='#' onclick='$("#missingattr").toggle();'><?php eT("columns missing"); ?></a>]
+                                    <div class='badtokenlist' id='missingattr' style='display: none;'>
+                                        <ul class="list-unstyled">
+                                            <?php foreach ($aMissingAttrFieldName as $sModelError) { ?>
                                                 <li><?php echo $sModelError; ?></li>
                                             <?php } ?>
                                         </ul>
@@ -101,13 +129,13 @@
                             <?php } ?>
                 
                         </ul>
-                    </p> 
                     <?php } ?>
-
+                    </p>
                     <p>
                         <input class="btn btn-large btn-default" type='button' value='<?php eT("Display tokens"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" /><br />
                     </p>                                  
                 </div>                
             <?php endif;?>
+        </div>
     </div>
 </div>    
