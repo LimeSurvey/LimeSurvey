@@ -193,6 +193,71 @@ jQuery(document).on('click', '#chevronStretch.opened', function(){
     chevronChangeState('opened', 'stretched');
     enableChevrons();
 });
+
+    var accordionContainer = $('#accordion-container');
+
+    /**
+    * Stretch the accordion
+    */
+    jQuery(document).on('click', '.handleAccordion.opened', function(){
+
+        $('.handleAccordion').addClass('disabled');
+
+        accordionContainer.css({
+            position: 'absolute',
+            right: 0,
+        });
+
+        accordionContainer.width(accordionContainer.width());
+        accordionContainer.height(sideBody.height());
+
+        accordionContainer.animate(
+            {
+                width: '100%',
+            }, 500, function() {
+                $('.handleAccordion span').removeClass('glyphicon-chevron-left').addClass('glyphicon-chevron-right');
+                $('.handleAccordion').removeClass('opened').addClass('stretched');
+                $('.handleAccordion').removeClass('disabled');
+        });
+
+        // jQgrid is so jQgriding its jQgrid...
+        if($('#panelintegration').length){
+            $('#gbox_urlparams').width('90%');
+            $('#gview_urlparams').width('90%');
+            $('.ui-state-default.ui-jqgrid-hdiv').width('90%');
+            $('.ui-jqgrid-htable.table').width('90%');
+            $('.ui-jqgrid-labels th').width('14%');
+            $('.ui-jqgrid-bdiv').width('100%');
+            $('#urlparams').width('90%');
+            $('.jqgfirstrow').width('14%');
+            $('#pagerurlparams').width('90%');
+        }
+    });
+
+    /**
+    * Unstretched the accordion
+    */
+    jQuery(document).on('click', '.handleAccordion.stretched', function(){
+        $('.handleAccordion').addClass('disabled');
+
+        accordionContainer.animate(
+            {
+                width: '33.33333333333333%', // Bootstrap value for col-lg-4
+            }, 500, function() {
+                $('.handleAccordion span').removeClass('glyphicon-chevron-right').addClass('glyphicon-chevron-left');
+                $('.handleAccordion').removeClass('stretched').addClass('opened');
+                $('.handleAccordion').removeClass('disabled');
+
+                accordionContainer.css({
+                    position: 'static',
+                });
+
+        });
+    });
+
+    $('#accordion').on('shown.bs.collapse', function () {
+      alert('ok');
+    })
 });
 
 

@@ -12,9 +12,9 @@
  *150413
  */
 
-$config['versionnumber'] = "2.5RC4";
+$config['versionnumber'] = "2.5RC5";
 $config['dbversionnumber'] = 251;
-$config['buildnumber'] = 151008;
+$config['buildnumber'] = 151207;
 $config['updatable'] = true;
 //$config['updaterversion'] = 1;
 return $config;
