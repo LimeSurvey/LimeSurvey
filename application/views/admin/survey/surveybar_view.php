@@ -152,7 +152,7 @@
                                 <li>
                                     <a href='<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/$surveyid");?>'>
                                         <span class="icon-edit" ></span>
-                                         <?php eT("Edit text elements and general settings");?>
+                                         <?php eT("General settings & texts");?>
                                     </a>
                                 </li>
                             <?php endif; ?>
