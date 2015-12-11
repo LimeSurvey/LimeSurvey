@@ -21,7 +21,7 @@
             </div>
 
             <!-- The Accordion -->
-            <div class="col-lg-4" style="padding-left: 0px; padding-right: 0px;">
+            <div class="col-lg-4" id="accordion-container" style="background-color: #fff;">
                 <?php
                     // TODO : find why the $groups can't be generated from controller
                     // $this->renderPartial('./survey/Question/newQuestion_subviews/_accordion_container', $accordionDatas);
@@ -35,6 +35,9 @@
                             <!-- General Options : Header  -->
                             <div class="panel-heading" role="tab" id="headingOne">
                               <h4 class="panel-title">
+                                  <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
+                                      <span class="glyphicon glyphicon-chevron-left"></span>
+                                  </a>
                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                  <?php eT("General option");?>
                                 </a>
@@ -154,6 +157,9 @@
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="headingTwo">
                                 <h4 class="panel-title">
+                                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
+                                        <span class="glyphicon glyphicon-chevron-left"></span>
+                                    </a>
                                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                         <?php eT("Advanced settings"); ?>
                                     </a>
