@@ -524,8 +524,9 @@ class database extends Survey_Common_Action
                         {
                             $aSQIDMappings = array();
                             $r1 = Question::model()->getSubQuestions(returnGlobal('oldqid'));
-
-                            while ($qr1 = $r1->read())
+                            $aSubQuestions = $r1->readAll();
+                            
+                            foreach ($aSubQuestions as $qr1)
                             {
                                 $qr1['parent_qid'] = $iQuestionID;
                                 if (isset($aSQIDMappings[$qr1['qid']]))
@@ -546,7 +547,8 @@ class database extends Survey_Common_Action
                         if (returnGlobal('copyanswers') == "Y")
                         {
                             $r1 = Answer::model()->getAnswers(returnGlobal('oldqid'));
-                            while ($qr1 = $r1->read())
+                            $aAnswerOptions = $r1->readAll();
+                            foreach ($aAnswerOptions as $qr1)
                             {
                                 Answer::model()->insertRecords(array(
                                 'qid' => $iQuestionID,

@@ -42,10 +42,49 @@
             ?>
             <div id='questionbottom'>
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+                    <?php if ($copying): ?>
+                    <!-- Copy options -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingZero">
+                            <h4 class="panel-title">
+                                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                </a>
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseZero" aria-expanded="false" aria-controls="collapseZero">
+                                    <?php eT("Copy options"); ?>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseZero" class="panel-collapse collapse  in" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <div  class="form-group">
+            						<label class="col-sm-4 control-label" for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>
+                                    <div class="col-sm-8">
+            						     <input type='checkbox' class='checkboxbtn' checked='checked' id='copysubquestions' name='copysubquestions' value='Y' />
+                                    </div>
+            					</div>
+            					<div  class="form-group">
+            						<label class="col-sm-4 control-label" for='copyanswers'><?php eT("Copy answer options?"); ?></label>
+                                    <div class="col-sm-8">
+            						    <input type='checkbox' class='checkboxbtn' checked='checked' id='copyanswers' name='copyanswers' value='Y' />
+                                    </div>
+            					</div>
+            					<div  class="form-group">
+            						<label class="col-sm-4 control-label" for='copyattributes'><?php eT("Copy advanced settings?"); ?></label>
+                                    <div class="col-sm-8">
+            						    <input type='checkbox' class='checkboxbtn' checked='checked' id='copyattributes' name='copyattributes' value='Y' />
+                                    </div>
+            					</div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endif;?>
+                    <!-- General Options -->
                     <div class="panel panel-default" id="questionTypeContainer">
                         <div class="panel-heading" role="tab" id="headingOne">
                           <h4 class="panel-title">
-                            <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
+                            <a class="btn btn-default btn-xs hide-button hidden-xs handleAccordion">
                                 <span class="glyphicon glyphicon-chevron-left"></span>
                             </a>
                             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -53,7 +92,7 @@
                             </a>
                           </h4>
                         </div>
-                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div id="collapseOne" class="panel-collapse collapse <?php if (!$copying){echo ' in '; } ?>" role="tabpanel" aria-labelledby="headingOne">
                             <div class="panel-body">
                                 <div>
                                     <div  class="form-group">
@@ -177,7 +216,7 @@
                         </div>
                     </div>
 
-
+                    <!-- Advanced settings -->
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingTwo">
                             <h4 class="panel-title">
