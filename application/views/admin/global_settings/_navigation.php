@@ -1,20 +1,17 @@
 <?php
 /**
  * This view display the navigation settings, such as the welcome page parameters
- * 
- * @var int $boxes 
- *  
+ *
+ * @var int $boxes
+ *
  */
 ?>
-<?php 
-    $startpageValue=''; 
+<?php
+    $startpageValue='';
     $startpagePlaceHolder='';
 ?>
 
-<h4><?php eT("Home page");?> : </h4>
-<div class="alert alert-info" role="alert">
-    <?php eT("Here, you can edit the boxes displayed in the home page.");?>
-</div>
+<h4><?php eT("Home page button configuration");?></h4>
 <table class="table">
     <thead>
         <tr>
@@ -22,14 +19,14 @@
                 <?php eT('Title');?>
             </th>
             <th>
-                <?php eT('Url');?>
-            </th>              
+                <?php eT('URL');?>
+            </th>
             <th>
                 <?php eT('Description');?>
             </th>
             <th>
                 <?php eT('Image');?>
-            </th>          
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -41,12 +38,12 @@
                 <td>
                     <label>
                         <?php echo Yii::app()->getBaseUrl(true);?>/
-                        <?php 
+                        <?php
                             if(Yii::app()->urlManager->getUrlFormat()=='path')
                             {
                                 echo '/index.php/';
                             }
-                            else 
+                            else
                             {
                                  echo '/index.php?r=';
                             }
@@ -62,4 +59,4 @@
                 </td>
         <?php endforeach;?>
     </tbody>
-</table>  
+</table>
