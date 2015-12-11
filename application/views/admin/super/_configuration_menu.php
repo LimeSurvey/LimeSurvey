@@ -35,7 +35,7 @@
                         <dd><?php echo $activesurveyscount; ?></dd>
                         <dt class="text-info"><?php eT('Active tokens tables');?></dt>
                         <dd><?php echo $activetokens;?></dd>
-                        <dt class="text-info"><?php eT('comfortUpdate Key:');?></dt>
+                        <dt class="text-info"><?php eT('ComfortUpdate key');?></dt>
                         <dd><?php echo $comfortUpdateKey;?></dd>
 
                     </dl>
