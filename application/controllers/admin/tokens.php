@@ -1131,7 +1131,7 @@ class tokens extends Survey_Common_Action
         Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyId . '}}', true); // Refresh schema cache just in case the table existed in the past
         LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
 
-        Yii::app()->session['flashmessage'] = sprintf(gT("%s field(s) were successfully added."), $number2add);
+        Yii::app()->session['flashmessage'] = sprintf(ngT("%s field was successfully added|%s fields were successfully added.",$number2add), $number2add);
         Yii::app()->getController()->redirect(array("/admin/tokens/sa/managetokenattributes/surveyid/$iSurveyId"));
 
     }
