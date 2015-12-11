@@ -113,7 +113,29 @@
             </td>
         </tr>
         <?php } ?>
-            </table>
+</table>
+
+    <!-- Quick Actions -->
+    <h3 id="survey-action-title"><?php eT('Survey quick actions'); ?></h3>
+    <div class="row welcome survey-action">
+        <div class="col-lg-12 content-right">
+            <!-- create new question in this group -->
+            <div class="col-lg-3">
+                <div class="panel panel-primary panel-clickable" id="pannel-1" aria-data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><?php eT("Add new question to group");?></h4>
+                    </div>
+                    <div class="panel-body">
+                        <a  href="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>" >
+                            <span class="icon-add text-success"  style="font-size: 3em;"></span>
+                        </a>
+                        <p> <a href="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
+                                <?php eT("Add new question to group");?>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
 		</div>
 	</div>
 </div>
