@@ -78,6 +78,7 @@
                                             <?php if(count($aGroups)):?>
                                                 <?php foreach($aGroups as $aGroup):?>
                                                     <li class="panel panel-default dropdownstyle" id="">
+
                                                         <!-- Group Name -->
                                                         <a data-toggle="collapse" id="" href="#questiongroup-<?php echo $aGroup->gid; ?>" class="question-group-collapse">
                                                            <span class="question-group-collapse-title"><?php echo $aGroup->group_name;?><span class="caret"></span></span>
@@ -95,7 +96,8 @@
                                                                                     <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$surveyid/gid/".$aGroup->gid."/qid/".$question->qid); ?>"">
                                                                                         <span class="question-collapse-title">
                                                                                             <span class="glyphicon glyphicon-list"></span>
-                                                                                            <?php echo $question->title;?>
+                                                                                            <strong><?php echo $question->title;?> </strong>
+                                                                                            <br/><em> <?php echo substr($question->question, 0, 40);?></em>
                                                                                         </span>
                                                                                     </a>
                                                                                 </li>
