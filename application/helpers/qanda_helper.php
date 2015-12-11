@@ -759,6 +759,55 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     return $output;
 }
 
+/**
+ * This function returns the default nb-col for bootstrap, based on the length of labels
+ */
+function return_object_nb_cols($ansresult, $minLabelSize = 11, $minInputSize=1)
+{
+
+    // We first check that $minLabelSize and $minInputSize are coherent with a 12 column grid
+    // We give the priority to defined label size
+    if(($minLabelSize + $minInputSize) > 12)
+        $minInputSize = 12 - $minLabelSize;
+
+    $nbColLabelLgLog=0;
+
+    // We define the same col-lg and col-xs for all labels/inputs, on the base of the bigger one.
+    foreach($ansresult as $ansrow)
+    {
+        // We calculate the needed row to fully display the label
+        $nbCol = round(strlen($ansrow['question'])/10)+1;
+        $nbColLabelLg = ($nbCol > $minLabelSize)?$minLabelSize:$nbCol;
+
+        // If it's the largest one until now, we log it.
+        if($nbColLabelLg > $nbColLabelLgLog)
+            $nbColLabelLgLog = $nbColLabelLg;
+
+    }
+
+    // We define the XS label size on the base of the LG width
+    $nbColLabelXs = $nbColLabelLgLog + 5;
+    $nbColLabelXs = ($nbColLabelXs > 11)?11:$nbColLabelXs;
+
+    // The input width is defined on the base of the label width
+    $nbColInputLg = 12 - $nbColLabelLgLog;
+    $nbColInputLg = ($nbColInputLg < 1)?12:$nbColInputLg;
+
+    $nbColInputXs = 12 - $nbColLabelXs;
+    $nbColInputXs = ($nbColInputXs < 1)?12:$nbColInputXs;
+
+    // We store the datas in an object before returning them
+    $oNbCols = new stdClass();
+    $oNbCols->nbColLabelXs = $nbColLabelXs;
+    $oNbCols->nbColLabelLg = $nbColLabelLgLog;
+    $oNbCols->nbColInputXs = $nbColInputXs;
+
+    $oNbCols->nbColInputLg = $nbColInputLg;
+
+
+    return $oNbCols;
+}
+
 function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
     $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
     $htmltbody2 .= ($class !== null) ? " class='$class'": "";
@@ -2143,7 +2192,6 @@ function do_multiplechoice($ia)
 {
     global $thissurvey;
 
-
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
@@ -2244,7 +2292,14 @@ function do_multiplechoice($ia)
 
     $wrapper = setupColumns($dcols, $anscount,"subquestions-list questions-list checkbox-list list-unstyled","question-item answer-item checkbox-item");
 
-    $answer = '<input type="hidden" name="MULTI'.$ia[1].'" value="'.$anscount."\" />\n\n".$wrapper['whole-start'];
+    $iBootCols = round(12/$dcols);
+    $ansByCol = round($anscount/$dcols); $ansByCol = ($ansByCol > 0)?$ansByCol:1;
+
+    $answer = '<div class="row">';
+    $answer .= '    <div class="col-xs-'.$iBootCols.' subquestions-list questions-list checkbox-list">';
+    $answer .= '    <input type="hidden" name="MULTI'.$ia[1].'" value="'.$anscount.'" />';
+
+    //$answer .= $wrapper['whole-start'];
 
     $fn = 1;
     if (!isset($multifields))
@@ -2257,34 +2312,17 @@ function do_multiplechoice($ia)
     $startitem='';
     $postrow = '';
     $trbc='';
-    $nbColLabelLgLog=0;
-    $nbColInputLgLog=0;
-    $nbColInputXsLog=0;
-    // We define the same col-lg and col-xs for all labels/inputs, on the base of the bigger one.
-    foreach($ansresult as $ansrow)
-    {
-        $nbCol = round(strlen($ansrow['question'])/10)+1;
-        $nbColLabelLg = ($nbCol > 12)?12:$nbCol;
-        if($nbColLabelLg > $nbColLabelLgLog)
-            $nbColLabelLgLog = $nbColLabelLg;
 
-        $nbColInputLg = 12 - $nbColLabelLgLog;
-        $nbColInputLg = ($nbColInputLg < 1)?12:$nbColInputLg;
-        // If it bigger than the biggest value logged, we update the logged value
-        if($nbColInputLg > $nbColInputLgLog)
-            $nbColInputLgLog = $nbColInputLg;
+    // Define label/input length
+    $oNbCols = return_object_nb_cols($ansresult);
 
-        $nbColLabelXs = $nbColLabelLg + 5;
-        $nbColLabelXs = ($nbColLabelXs > 12)?12:$nbColLabelXs;
-        $nbColInputXs = 12 - $nbColLabelXs;
-        $nbColInputXs = ($nbColInputXs < 1)?12:$nbColInputXs;
-        // If it bigger than the biggest value logged, we update the logged value
-        if($nbColInputXs > $nbColInputXsLog)
-            $nbColInputXsLog = $nbColInputXs;
-    }
-    $nbColInputXs = $nbColInputXsLog;
-    $nbColInputLg = $nbColInputLgLog;
-    $nbColLabelLg = $nbColLabelLgLog;
+    // label
+    $nbColLabelXs = $oNbCols->nbColLabelXs;
+    $nbColLabelLg = $oNbCols->nbColLabelLg;
+
+    // Inputs
+    $nbColInputXs = $oNbCols->nbColInputXs;
+    $nbColInputLg = $oNbCols->nbColInputLg;
 
     foreach ($ansresult as $ansrow)
     {
@@ -2296,15 +2334,17 @@ function do_multiplechoice($ia)
         /* Check for array_filter */
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li","responsive-content question-item answer-item checkbox-item form-group".$extra_class);
 
+        /*
         if(substr($wrapper['item-start'],0,4) == "\t<li")
         {
             $startitem = "\t$htmltbody2\n";
         } else {
             $startitem = $wrapper['item-start'];
-        }
+        }*/
 
         /* Print out the checkbox */
-        $answer .= $startitem;
+        //$answer .= $startitem;
+        $answer .= '<div  class="form-group-row row">';
         $answer .= "\t$hiddenfield\n";
         $answer .= "<label for=\"answer$ia[1]{$ansrow['title']}\" class=\"control-label col-xs-{$nbColLabelXs} col-lg-{$nbColLabelLg} answertext\">".  $ansrow['question'].  "</label>\n";
         $answer .= '<div class="col-lg-'.$nbColInputLg.' col-xs-'.$nbColInputXs.'">';
@@ -2331,20 +2371,26 @@ function do_multiplechoice($ia)
         {
             $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
         }
-        $answer .= "\" />\n{$wrapper['item-end']}";
+        $answer .= "\" />";//"\n{$wrapper['item-end']}";
 
+        // end of question group
+        $answer .= '</div>'; // form group row
         $inputnames[]=$myfname;
 
         ++$rowcounter;
-        if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+        //if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+        if ($rowcounter == $ansByCol && $colcounter < $wrapper['cols'])
         {
-            if($colcounter == $wrapper['cols'] - 1)
+            if($colcounter == $wrapper['cols'])
             {
-                $answer .= $wrapper['col-devide-last'];
+                //$answer .= $wrapper['col-devide-last'];
+                $answer .= '    </div><!-- last -->';
             }
             else
             {
-                $answer .= $wrapper['col-devide'];
+                //$answer .= $wrapper['col-devide'];
+                $answer .= '    </div><!-- devide --> ';
+                $answer .= '    <div class="col-xs-'.$iBootCols.' subquestions-list questions-list checkbox-list">';
             }
             $rowcounter = 0;
             ++$colcounter;
@@ -2356,13 +2402,13 @@ function do_multiplechoice($ia)
         $myfname = $ia[1].'other';
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li","responsive-content question-item answer-item checkbox-item other-item ");
 
-        if(substr($wrapper['item-start-other'],0,4) == "\t<li")
+        /*if(substr($wrapper['item-start-other'],0,4) == "\t<li")
         {
             $startitem = "\t$htmltbody2\n";
         } else {
             $startitem = $wrapper['item-start-other'];
         }
-        $answer .= $startitem;
+        $answer .= $startitem;*/
 
         $answer .= "\t$hiddenfield\n";
         $answer .= "<label for=\"{$myfname}cbox\" class=\"answertext control-label col-xs-{$nbColLabelXs} col-lg-{$nbColLabelLg} \">".$othertext."</label>";
@@ -2399,24 +2445,6 @@ function do_multiplechoice($ia)
         $answer .="/*]]>*/\n</script>\n";
         $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
-        //        if ($maxansw > 0)
-        //        {
-        //            // For multiplechoice question there is no DB field for the other Checkbox
-        //            // I've added a javascript which will warn a user if no other comment is given while the other checkbox is checked
-        //            // For the maxanswer script, I will alert the participant
-        //            // if the limit is reached when he checks the other cbox
-        //            // even if the -other- input field is still empty
-        //            $maxanswscript .= "\tif (document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
-        //        }
-        //        if ($minansw > 0)
-        //        {
-        //            //
-        //            // For multiplechoice question there is no DB field for the other Checkbox
-        //            // We only count the -other- as valid if both the cbox and the other text is filled
-        //            $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
-        //        }
-
-
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
@@ -2435,94 +2463,25 @@ function do_multiplechoice($ia)
         ++$anscount;
 
         ++$rowcounter;
-        if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+        //if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+        if ($rowcounter == $ansByCol && $colcounter < $wrapper['cols'])
         {
-            if($colcounter == $wrapper['cols'] - 1)
+            if($colcounter == $wrapper['cols'] )
             {
-                $answer .= $wrapper['col-devide-last'];
+                //$answer .= $wrapper['col-devide-last'];
+                $answer .= '    </div><!-- last -->';
             }
             else
             {
-                $answer .= $wrapper['col-devide'];
+                //$answer .= $wrapper['col-devide'];
+                $answer .= '    </div><!-- devide -->';
+                $answer .= '    <div class="col-xs-'.$iBootCols.' subquestions-list questions-list checkbox-list">';
             }
             $rowcounter = 0;
             ++$colcounter;
         }
     }
     $answer .= $wrapper['whole-end'];
-    //    if ( $maxansw > 0 )
-    //    {
-    //        $maxanswscript .= "
-    //        if (count > max)
-    //        {
-    //            alert('".sprintf(gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascriptEscape(str_replace(array("\n", "\r"), "", $ia[3]),true,true)))."');
-    //            if (me.type == 'checkbox') { me.checked = false; }
-    //            if (me.type == 'text') {
-    //                me.value = '';
-    //                if (document.getElementById('answer'+me.name + 'cbox') ){
-    //                    document.getElementById('answer'+me.name + 'cbox').checked = false;
-    //                }
-    //            }
-    //            return max;
-    //        }
-    //        }
-    //        //-->
-    //        </script>\n";
-    //        $answer = $maxanswscript . $answer;
-    //    }
-    //
-    //
-    //    if ( $minansw > 0 )
-    //    {
-    //        $minanswscript .=
-    //        "\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
-    //        . "alert('".sprintf(gT("Please choose at least %d answer(s) for question \"%s\"","js"),
-    //        $minansw, trim(javascriptEscape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n"
-    //        . "return false;\n"
-    //        . "\t} else {\n"
-    //        . "if (oldonsubmit_{$ia[0]}){\n"
-    //        . "\treturn oldonsubmit_{$ia[0]}();\n"
-    //        . "}\n"
-    //        . "return true;\n"
-    //        . "\t}\n"
-    //        . "}\n"
-    //        . "document.limesurvey.onsubmit = ensureminansw_{$ia[0]}\n"
-    //        . "-->\n"
-    //        . "\t</script>\n";
-    //        //$answer = $minanswscript . $answer;
-    //    }
-
-#   No need $checkotherscript : already done by check mandatory
-#   TODO move it to EM
-#    $checkotherscript = "";
-#    if ($other == 'Y')
-#    {
-#        // Multiple choice with 'other' is a specific case as the checkbox isn't recorded into DB
-#        // this means that if it is cehcked We must force the end-user to enter text in the input
-#        // box
-#        $checkotherscript = "<script type='text/javascript'>\n"
-#        . "\t<!--\n"
-#        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
-#        . "function ensureOther_{$ia[0]}()\n"
-#        . "{\n"
-#        . "\tothercboxval=document.getElementById('answer".$myfname."cbox').checked;\n"
-#        . "\totherval=document.getElementById('answer".$myfname."').value;\n"
-#        . "\tif (otherval != '' || othercboxval != true) {\n"
-#        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
-#        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
-#        . "}\n"
-#        . "\t}\n"
-#        . "\telse {\n"
-#        . "alert('".sprintf(gT("You've marked the 'Other:' field for question '%s'. Please also fill in the accompanying comment field.","js"),trim(javascriptEscape($ia[3],true,true)))."');\n"
-#        . "return false;\n"
-#        . "\t}\n"
-#        . "}\n"
-#        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
-#        . "\t-->\n"
-#        . "</script>\n";
-#    }
-
-#    $answer = $checkotherscript . $answer;
 
     $answer .= $postrow;
     return array($answer, $inputnames);
@@ -3079,8 +3038,7 @@ function do_multiplenumeric($ia)
 {
     global $thissurvey;
 
-
-    $extraclass ="";
+        $extraclass ="";
     $checkconditionFunction = "fixnum_checkconditions";
     $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
     $answer='';
