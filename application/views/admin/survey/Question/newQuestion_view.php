@@ -145,7 +145,7 @@
                                         <div id='Validation'  class="form-group">
                                             <label class="col-sm-4 control-label" for='preg'><?php eT("Validation:"); ?></label>
                                             <div class="col-sm-8">
-                                                <input type='text' id='preg' name='preg' size='50' value="<?php echo $eqrow['preg']; ?>" />
+                                                <input class="form-control" type='text' id='preg' name='preg' size='50' value="<?php echo $eqrow['preg']; ?>" />
                                             </div>
                                         </div>
                                     </div>
