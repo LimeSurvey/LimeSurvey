@@ -2837,7 +2837,6 @@ function do_multipleshorttext($ia)
 {
     global $thissurvey;
 
-
     $extraclass ="";
     $answer='';
     $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
@@ -2867,13 +2866,14 @@ function do_multipleshorttext($ia)
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $tiwidth=$aQuestionAttributes['text_input_width'];
-        //$extraclass .=" inputwidth".trim($aQuestionAttributes['text_input_width']);
-        $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-        $extraclass .=" col-sm-".trim($col);
+        $tiwidth=($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
+        $extraclass .=" inputwidth".trim($aQuestionAttributes['text_input_width']);
+        //$col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
+        //$extraclass .=" col-sm-".trim($col);
     }
     else
     {
-        $tiwidth=20;
+        $tiwidth=12;
     }
 
     if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
@@ -2933,6 +2933,12 @@ function do_multipleshorttext($ia)
     }
     else
     {
+        // Define label/input length
+        $oNbCols = return_object_nb_cols($aSubquestions);
+
+        // label
+        $nbColLabelLg = $oNbCols->nbColLabelLg;
+
         if (trim($aQuestionAttributes['display_rows'])!='')
         {
             //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
@@ -2949,11 +2955,14 @@ function do_multipleshorttext($ia)
                 //NEW: textarea instead of input=text field
                 list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item".$extraclass);
 
-                $answer_main .= "\t$htmltbody2\n"
-                . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
-                . "\t<span>\n".$prefix."\n".'
+                //$answer_main .= "\t$htmltbody2\n"
+                $answer_main .= '<div  class="form-group-row row">';
+                $answer_main .= "   <label class='control-label col-sm-$nbColLabelLg  ' for=\"answer$myfname\">{$ansrow['question']}</label>\n";
+                $answer_main .= '   <div class="col-sm-'.$tiwidth.' ">';
+                //. "\t<span>\n".$prefix."\n".'
+                $answer_main .= $prefix."\n".'
                 <textarea class="form-control  textarea '.$kpclass.'" name="'.$myfname.'" id="answer'.$myfname.'"
-                rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);">';
+                rows="'.$drows.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);">';
 
                 if($label_width < strlen(trim(strip_tags($ansrow['question']))))
                 {
@@ -2970,8 +2979,9 @@ function do_multipleshorttext($ia)
                     $answer_main .= htmlspecialchars($dispVal);
                 }
 
-                $answer_main .= "</textarea>\n".$suffix."\n\t</span>\n"
-                . "\t</li>\n";
+                $answer_main .= "</textarea>\n".$suffix."\n\t</div>\n";
+                //. "\t</li>\n";
+                $answer_main .= '</div>'; // form group row;
 
                 $fn++;
                 $inputnames[]=$myfname;
@@ -2996,9 +3006,13 @@ function do_multipleshorttext($ia)
                 }
 
                 list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item".$extraclass);
-                $answer_main .= "\t$htmltbody2\n"
-                . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
-                . "\t<span>\n".$prefix."\n".'<input class="text '.$kpclass.'" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+
+                //$answer_main .= "\t$htmltbody2\n"
+                $answer_main .= '<div  class="form-group-row row">';
+                $answer_main .= "<label class='control-label col-sm-$nbColLabelLg' for=\"col-sm-$nbColLabelLg answer$myfname\">{$ansrow['question']}</label>\n";
+                $answer_main .= '   <div class="col-sm-'.$tiwidth.' ">';
+                $answer_main .= $prefix."\n"
+                                .'<input class="text '.$kpclass.' form-control" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
 
                 if($label_width < strlen(trim(strip_tags($ansrow['question']))))
                 {
@@ -3016,8 +3030,8 @@ function do_multipleshorttext($ia)
                 }
 
                 // --> START NEW FEATURE - SAVE
-                $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$maxlength.' />'."\n".$suffix."\n\t</span>\n"
-                . "\t</li>\n";
+                $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$maxlength.' />'."\n".$suffix."\n\t</div>\n"
+                . "\t</div>\n";
                 // --> END NEW FEATURE - SAVE
 
                 $fn++;
