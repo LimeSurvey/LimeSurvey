@@ -92,13 +92,13 @@
                                                                         <?php foreach($aGroup['aQuestions'] as $question):?>
                                                                         <!-- Question  -->
                                                                             <?php if($question->parent_qid == 0):?>
-                                                                                
+
                                                                                 <li class="toWhite">
                                                                                     <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$surveyid/gid/".$aGroup->gid."/qid/".$question->qid); ?>"">
                                                                                         <span class="question-collapse-title">
                                                                                             <span class="glyphicon glyphicon-list"></span>
-                                                                                            <strong><?php echo sanitize_paranoid_string($question->title);?> </strong>
-                                                                                            <br/><em> <?php echo substr(sanitize_paranoid_string($question->question), 0, 40);?></em>
+                                                                                            <strong><?php echo sanitize_html_string($question->title);?> </strong>
+                                                                                            <br/><em> <?php echo substr(sanitize_html_string($question->question), 0, 40);?></em>
                                                                                         </span>
                                                                                     </a>
                                                                                 </li>
