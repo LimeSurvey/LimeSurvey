@@ -16,12 +16,12 @@
         <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30 form-horizontal','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
 
             <!-- The tabs & tab-fanes -->
-            <div class="col-lg-8 content-right">
+            <div class="col-lg-8 col-md-6 col-sm-5  content-right">
                 <?php $this->renderPartial('./survey/Question/newQuestion_subviews/_tabs',array('eqrow'=>$eqrow,'addlanguages'=>$addlanguages, 'surveyid'=>$surveyid, 'gid'=>NULL, 'qid'=>NULL, 'action'=>'addquestion' ));?>
             </div>
 
             <!-- The Accordion -->
-            <div class="col-lg-4" id="accordion-container" style="background-color: #fff;">
+            <div class="col-lg-4 col-md-6 col-sm-7" id="accordion-container" style="background-color: #fff;">
                 <?php
                     // TODO : find why the $groups can't be generated from controller
                     // $this->renderPartial('./survey/Question/newQuestion_subviews/_accordion_container', $accordionDatas);

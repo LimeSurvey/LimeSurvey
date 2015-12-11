@@ -31,12 +31,12 @@
 		<?php if(!$adding):?>
 
 		<!-- The tabs & tab-fanes -->
-		<div class="col-lg-8 content-right">
+		<div class="col-lg-8 col-md-6 col-sm-5 content-right">
             <?php $this->renderPartial('./survey/Question/question_subviews/_tabs',array('eqrow'=>$eqrow,'addlanguages'=>$addlanguages, 'surveyid'=>$surveyid, 'gid'=>NULL, 'qid'=>NULL, 'adding'=>$adding, 'aqresult'=>$aqresult, 'action'=>$action )); ?>
         </div>
 
         <!-- The Accordion -->
-        <div class="col-lg-4" id="accordion-container" style="background-color: #fff;">
+        <div class="col-lg-4 col-md-6 col-sm-7" id="accordion-container" style="background-color: #fff;">
             <?php
                 // TODO : find why the $groups can't be generated from controller
             ?>
