@@ -133,9 +133,10 @@
                                             <?php if($row->title) {$sPattern="^([a-zA-Z0-9]*|{$row->title})$";}else{$sPattern="^[a-zA-Z0-9]*$";} ?>
                                             <span class="glyphicon glyphicon-move"></span>
                                             </td>
-                                            <td  style="vertical-align: middle;"><input type='hidden' class='oldcode' id='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" />
-                                            <!-- -->
-                                            <input type='text' class="form-control input-lg"  id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' class='code' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='20' size='20' pattern='<?php echo $sPattern; ?>' required='required' />
+                                            <td  style="vertical-align: middle;">
+                                                <input type='hidden' class='oldcode' id='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" />
+
+                                                <input type='text' class="form-control input-lg"  id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' class='code' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='20' size='20' pattern='<?php echo $sPattern; ?>' required='required' />
 
                                             <?php }
                                             else
@@ -146,7 +147,7 @@
 
                                     </td><td style="vertical-align: middle;">
                                         <div class="col-sm-10">
-                                         <input type='text' size='20' class='answer form-control input-lg' id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' placeholder='<?php eT("Some example subquestion","js") ?>' value="<?php echo $row->question; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
+                                            <input type='text' size='20' class='answer form-control input-lg' id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' placeholder='<?php eT("Some example subquestion","js") ?>' value="<?php echo $row->question; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
                                         </div>
                                         <div style="display: inline-block; margin-top: 10px;">
                                             <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
@@ -155,7 +156,8 @@
                                         <?php if ($activated != 'Y' && $first)
                                             { ?>
                                             <td  style="vertical-align: middle;">
-                                            <span class="icon-add text-success btnaddanswer"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new subquestion after this one") ?>"></span>
+                                                <!--------------------------->
+                                            <span class="icon-add text-success btnaddanswer" data-code="<?php echo $row->title; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new subquestion after this one") ?>"></span>
                                             <span class="glyphicon glyphicon-trash text-success btndelanswer"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Delete this subquestion") ?>"></span>
                                             </td>
                                             <?php } ?>

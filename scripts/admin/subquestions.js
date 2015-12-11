@@ -131,7 +131,9 @@ function addinput()
     scale_id=removechars($(this).closest('table').attr('id'));
     newposition = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;
     languages=langs.split(';');
-    sNextCode=getNextCode($(this).parent().parent().find('.code').val());
+    //sNextCode=getNextCode($(this).parent().parent().find('.code').val());
+    sNextCode=getNextCode($(this).data('code'));
+
     while ($(this).parent().parent().parent().find('input[value="'+sNextCode+'"]').length>0 && sNextCode!=$(this).parent().parent().find('.code').val())
     {
         sNextCode=getNextCode(sNextCode);
@@ -149,15 +151,28 @@ function addinput()
                 relbutton += '<span class="icon-conditions text-success btntogglerelevance"></span>';
                 relbutton += '<input style="display: none" type="text" size="20" id="relevance_'+randomid+'_'+scale_id+'" name="relevance_'+randomid+'_'+scale_id+'" class="relevance"  value="1"></input></td>';
             }
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>';
-            inserthtml+='<span class="glyphicon glyphicon-move"></span>';
-            inserthtml+='</td>           <td><input id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" required="required" pattern="^[a-zA-Z0-9]*$" class="code" type="text" maxlength="20" size="5" value="'+htmlspecialchars(sNextCode)+'" /></td><td><input type="text" size="0" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer"  placeholder="'+htmlspecialchars(newansweroption_text)+'" value=""></input> <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
-            inserthtml+='<span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="glyphicon glyphicon-pencil btneditanswerena"></span>';
-            inserthtml+='<span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="glyphicon glyphicon-pencil btneditanswerdis" alt="Give focus to the HTML editor popup window" style="display: none;"></span>';
-            inserthtml+='</a></td><td>';
-            inserthtml+='<span class="icon-add text-success btnaddanswer"></span>';
-            inserthtml+='<span class="glyphicon glyphicon-trash text-success btndelanswer"  ></span>';
-            inserthtml+='</td>' + relbutton + '</tr>';
+
+            // Line insertion
+            inserthtml= '<tr class="row_'+newposition+'" style="display:none;">';
+            inserthtml+=' <td style="vertical-align: middle;">';
+            inserthtml+='  <span class="glyphicon glyphicon-move"></span>';
+            inserthtml+=' </td>';
+            inserthtml+=' <td style="vertical-align: middle;">';
+            inserthtml+='   <input class="form-control input-lg" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" required="required" pattern="^[a-zA-Z0-9]*$" class="code" type="text" maxlength="20" size="5" value="'+htmlspecialchars(sNextCode)+'" />';
+            inserthtml+=' </td>';
+            inserthtml+=' <td style="vertical-align: middle;">';
+            inserthtml+='   <div class="col-sm-10"><input type="text" size="0" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg"  placeholder="'+htmlspecialchars(newansweroption_text)+'" value=""></input></div>';
+            inserthtml+='   <div style="display: inline-block; margin-top: 10px;">';
+            inserthtml+='   <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
+            inserthtml+='       <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="glyphicon glyphicon-pencil btneditanswerena"></span>';
+            inserthtml+='       <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="glyphicon glyphicon-pencil btneditanswerdis" alt="Give focus to the HTML editor popup window" style="display: none;"></span>';
+            inserthtml+='   </a>';
+            inserthtml+='   </div>';
+            inserthtml+='  </td>';
+            inserthtml+='  <td style="vertical-align: middle;">';
+            inserthtml+='   <span class="icon-add text-success btnaddanswer" data-code="'+htmlspecialchars(sNextCode)+'"></span>';
+            inserthtml+='   <span class="glyphicon glyphicon-trash text-success btndelanswer"  ></span>';
+            inserthtml+='   </td>' + relbutton + '</tr>';
         }
         else
             {
