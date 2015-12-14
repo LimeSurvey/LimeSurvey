@@ -649,13 +649,53 @@
                     'assessable' => 0,
                     'answerscales' => 0),
             );
+
+
             /**
              * @todo Check if this actually does anything, since the values are arrays.
              */
             asort($questionTypes);
 
+
+
             return $questionTypes;
         }
+
+        public static function questionModuleList()
+        {
+            // For external question types
+            $sQuestionTypeDir=Yii::app()->getConfig("questiontypedir");
+            $aQuestionModules = array();
+
+            if ($sQuestionTypeDir && $handle = opendir($sQuestionTypeDir))
+            {
+                while (false !== ($file = readdir($handle)))
+                {
+                    if (!is_file("$sQuestionTypeDir/$file") && $file != "." && $file != ".." && $file!=".svn")
+                    {
+                        //$list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                        $oQuestionTypeConfig = simplexml_load_file($sQuestionTypeDir.DIRECTORY_SEPARATOR.$file.'/config.xml');
+                        $aQuestionModules[$file] = $oQuestionTypeConfig->type;
+                        //var_dump($oQuestionTypeConfig->type);
+                    }
+                }
+                closedir($handle);
+            }
+
+            // Array of question type
+            return $aQuestionModules;
+
+        }
+
+        public static function getQuestionModule($typename)
+        {
+            $sQuestionTypeDir=Yii::app()->getConfig("questiontypedir");
+            $aQuestionModules = array();
+
+            $oQuestionTypeConfig = simplexml_load_file($sQuestionTypeDir.DIRECTORY_SEPARATOR.$typename.'/config.xml');
+            return $oQuestionTypeConfig->type;
+        }
+
         /**
          * This function return the class by question type
          * @param string question type

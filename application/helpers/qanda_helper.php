@@ -116,151 +116,167 @@ function retrieveAnswers($ia)
     ,'input_error_class' => ''// provides a class.
     ,'essentials' => ''
     );
+    //var_dump($ia);
 
-    switch ($ia[4])
+    // We get the question type name if defined
+    $lang = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
+    $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$lang));
+
+    if ($oQuestion->modulename == null)
     {
-        case 'X': //BOILERPLATE QUESTION
-            $values = do_boilerplate($ia);
-            break;
-        case '5': //5 POINT CHOICE radio-buttons
-            $values = do_5pointchoice($ia);
-            break;
-        case 'D': //DATE
-            $values = do_date($ia);
-            // if a drop box style date was answered incompletely (dropbox), print an error/help message
-            if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) ||
-                ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep']))
-            {
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]]))
-                $question_text['help'] = '<span class="error">'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]].'</span>';
-            }
-            break;
-        case 'L': //LIST drop-down/radio-button list
-            $values = do_list_radio($ia);
-            if ($aQuestionAttributes['hide_tip']==0)
-            {
-                $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                . gT('Choose one of the following answers').'</span>';
-                $question_text['help'] = gT('Choose one of the following answers');
-            }
-            break;
-        case '!': //List - dropdown
-            $values=do_list_dropdown($ia);
-            if ($aQuestionAttributes['hide_tip']==0)
-            {
-                $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                . gT('Choose one of the following answers').'</span>';
-                $question_text['help'] = gT('Choose one of the following answers');
-            }
-            break;
-        case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-            $values=do_listwithcomment($ia);
-            if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
-            {
-                $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                . gT('Choose one of the following answers').'</span>';
-                $question_text['help'] = gT('Choose one of the following answers');
-            }
-            break;
-        case 'R': //RANKING STYLE
-            $values=do_ranking($ia);
-            break;
-        case 'M': //Multiple choice checkbox
-            $values=do_multiplechoice($ia);
-            if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
-            {
-                $maxansw=trim($aQuestionAttributes['max_answers']);
-                $minansw=trim($aQuestionAttributes['min_answers']);
-                if (!($maxansw || $minansw))
-                {
-                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                    . gT('Check any that apply').'</span>';
-                    $question_text['help'] = gT('Check any that apply');
-                }
-            }
-            break;
+        ///////////////////3052
+        switch ($ia[4])
+        {
+            case 'X': //BOILERPLATE QUESTION
+                $values = do_boilerplate($ia);
+                break;
+                case '5': //5 POINT CHOICE radio-buttons
+                $values = do_5pointchoice($ia);
+                break;
+                case 'D': //DATE
+                $values = do_date($ia);
+                // if a drop box style date was answered incompletely (dropbox), print an error/help message
+                if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) ||
+                    ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep']))
+                    {
+                        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]]))
+                        $question_text['help'] = '<span class="error">'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]].'</span>';
+                    }
+                    break;
+                    case 'L': //LIST drop-down/radio-button list
+                    $values = do_list_radio($ia);
+                    if ($aQuestionAttributes['hide_tip']==0)
+                    {
+                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                        . gT('Choose one of the following answers').'</span>';
+                        $question_text['help'] = gT('Choose one of the following answers');
+                    }
+                    break;
+                    case '!': //List - dropdown
+                    $values=do_list_dropdown($ia);
+                    if ($aQuestionAttributes['hide_tip']==0)
+                    {
+                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                        . gT('Choose one of the following answers').'</span>';
+                        $question_text['help'] = gT('Choose one of the following answers');
+                    }
+                    break;
+                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    $values=do_listwithcomment($ia);
+                    if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
+                    {
+                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                        . gT('Choose one of the following answers').'</span>';
+                        $question_text['help'] = gT('Choose one of the following answers');
+                    }
+                    break;
+                    case 'R': //RANKING STYLE
+                    $values=do_ranking($ia);
+                    break;
+                    case 'M': //Multiple choice checkbox
+                    $values=do_multiplechoice($ia);
+                    if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
+                    {
+                        $maxansw=trim($aQuestionAttributes['max_answers']);
+                        $minansw=trim($aQuestionAttributes['min_answers']);
+                        if (!($maxansw || $minansw))
+                        {
+                            $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                            . gT('Check any that apply').'</span>';
+                            $question_text['help'] = gT('Check any that apply');
+                        }
+                    }
+                    break;
 
-        case 'I': //Language Question
-            $values=do_language($ia);
-            if (count($values[1]) > 1)
-            {
-                $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                . gT('Choose your language').'</span>';
-                $question_text['help'] = gT('Choose your language');
-            }
-            break;
-        case 'P': //Multiple choice with comments checkbox + text
-            $values=do_multiplechoice_withcomments($ia);
-            if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
-            {
-                $maxansw=trim($aQuestionAttributes["max_answers"]);
-                $minansw=trim($aQuestionAttributes["min_answers"]);
-                if (!($maxansw || $minansw))
-                {
-                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                    . gT('Check any that apply').'</span>';
-                    $question_text['help'] = gT('Check any that apply');
-                }
-            }
-            break;
-        case '|': //File Upload
-            $values=do_file_upload($ia);
-            break;
-        case 'Q': //MULTIPLE SHORT TEXT
-            $values=do_multipleshorttext($ia);
-            break;
-        case 'K': //MULTIPLE NUMERICAL QUESTION
-            $values=do_multiplenumeric($ia);
-            break;
-        case 'N': //NUMERICAL QUESTION TYPE
-            $values=do_numerical($ia);
-            break;
-        case 'S': //SHORT FREE TEXT
-            $values=do_shortfreetext($ia);
-            break;
-        case 'T': //LONG FREE TEXT
-            $values=do_longfreetext($ia);
-            break;
-        case 'U': //HUGE FREE TEXT
-            $values=do_hugefreetext($ia);
-            break;
-        case 'Y': //YES/NO radio-buttons
-            $values=do_yesno($ia);
-            break;
-        case 'G': //GENDER drop-down list
-            $values=do_gender($ia);
-            break;
-        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-            $values=do_array_5point($ia);
-            break;
-        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-            $values=do_array_10point($ia);
-            break;
-        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-            $values=do_array_yesnouncertain($ia);
-            break;
-        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-            $values=do_array_increasesamedecrease($ia);
-            break;
-        case 'F': //ARRAY (Flexible) - Row Format
-            $values=do_array($ia);
-            break;
-        case 'H': //ARRAY (Flexible) - Column Format
-            $values=do_arraycolumns($ia);
-            break;
-        case ':': //ARRAY (Multi Flexi) 1 to 10
-            $values=do_array_multiflexi($ia);
-            break;
-        case ';': //ARRAY (Multi Flexi) Text
-            $values=do_array_multitext($ia);  //It's like the "5th element" movie, come to life
-            break;
-        case '1': //Array (Flexible Labels) dual scale
-            $values=do_array_dual($ia);
-            break;
-        case '*': // Equation
-            $values=do_equation($ia);
-            break;
-    } //End Switch
+                    case 'I': //Language Question
+                    $values=do_language($ia);
+                    if (count($values[1]) > 1)
+                    {
+                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                        . gT('Choose your language').'</span>';
+                        $question_text['help'] = gT('Choose your language');
+                    }
+                    break;
+                    case 'P': //Multiple choice with comments checkbox + text
+                    $values=do_multiplechoice_withcomments($ia);
+                    if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
+                    {
+                        $maxansw=trim($aQuestionAttributes["max_answers"]);
+                        $minansw=trim($aQuestionAttributes["min_answers"]);
+                        if (!($maxansw || $minansw))
+                        {
+                            $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                            . gT('Check any that apply').'</span>';
+                            $question_text['help'] = gT('Check any that apply');
+                        }
+                    }
+                    break;
+                    case '|': //File Upload
+                    $values=do_file_upload($ia);
+                    break;
+                    case 'Q': //MULTIPLE SHORT TEXT
+                    $values=do_multipleshorttext($ia);
+                    break;
+                    case 'K': //MULTIPLE NUMERICAL QUESTION
+                    $values=do_multiplenumeric($ia);
+                    break;
+                    case 'N': //NUMERICAL QUESTION TYPE
+                    $values=do_numerical($ia);
+                    break;
+                    case 'S': //SHORT FREE TEXT
+                    $values=do_shortfreetext($ia);
+                    break;
+                    case 'T': //LONG FREE TEXT
+                    $values=do_longfreetext($ia);
+                    break;
+                    case 'U': //HUGE FREE TEXT
+                    $values=do_hugefreetext($ia);
+                    break;
+                    case 'Y': //YES/NO radio-buttons
+                    $values=do_yesno($ia);
+                    break;
+                    case 'G': //GENDER drop-down list
+                    $values=do_gender($ia);
+                    break;
+                    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                    $values=do_array_5point($ia);
+                    break;
+                    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                    $values=do_array_10point($ia);
+                    break;
+                    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                    $values=do_array_yesnouncertain($ia);
+                    break;
+                    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                    $values=do_array_increasesamedecrease($ia);
+                    break;
+                    case 'F': //ARRAY (Flexible) - Row Format
+                    $values=do_array($ia);
+                    break;
+                    case 'H': //ARRAY (Flexible) - Column Format
+                    $values=do_arraycolumns($ia);
+                    break;
+                    case ':': //ARRAY (Multi Flexi) 1 to 10
+                    $values=do_array_multiflexi($ia);
+                    break;
+                    case ';': //ARRAY (Multi Flexi) Text
+                    $values=do_array_multitext($ia);  //It's like the "5th element" movie, come to life
+                    break;
+                    case '1': //Array (Flexible Labels) dual scale
+                    $values=do_array_dual($ia);
+                    break;
+                    case '*': // Equation
+                    $values=do_equation($ia);
+                    break;
+                } //End Switch
+    }
+    else
+    {
+        $sQuestionModuleName = $oQuestion->modulename;
+        Yii::import('questiontypes.'.'.'.$sQuestionModuleName.'.'.$sQuestionModuleName);
+        $oQuestionType = new $sQuestionModuleName;
+        $values = $oQuestionType->doQuestion($ia);
+    }
 
     if (isset($values)) //Break apart $values array returned from switch
     {
@@ -1792,15 +1808,6 @@ function do_list_radio($ia)
 
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $thisfieldname, $trbc, $myfname, "div", "form-group answer-item radio-item other-item other");
 
-/*
-        if(substr($wrapper['item-start-other'],0,4) == "\t<li")
-        {
-            $startitem = "\t$htmltbody2\n";
-        } else {
-            $startitem = $wrapper['item-start-other'];
-        }
-        $answer .= $startitem;*/
-
         $answer .= "\t$hiddenfield\n";
         $answer .= '<div  class="form-group">';
         $answer .= '    <label for="SOTH'.$ia[1].'" class="answertext control-label">'.$othertext.'</label>';
@@ -1808,29 +1815,17 @@ function do_list_radio($ia)
         $answer .= '    <input type="text" class="text '.$kpclass.'" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.gT('Other').'"'.$answer_other.' onkeyup="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$ia[1].'\').click(); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />';
         $answer .=      $wrapper['item-end'];
         $answer .= '</div>';
-        /*
-        $answer .= "\t$hiddenfield\n";
-        $answer .= '
-
-        <label for="answer'.$ia[1].'othertext">
-
-        </label>
-        '.$wrapper['item-end'];
-*/
         $inputnames[]=$thisfieldname;
 
         ++$rowcounter;
-        //if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
         if ($rowcounter == $ansByCol && $colcounter < $wrapper['cols'])
         {
             if($colcounter == $wrapper['cols'] )
             {
-                //$answer .= $wrapper['col-devide-last'];
                 $answer .= '    </div><!-- last -->';
             }
             else
             {
-                //$answer .= $wrapper['col-devide'];
                 $answer .= '    </div><!-- devide -->';
                 $answer .= '    <div class="col-xs-'.$iBootCols.'">';
             }
@@ -1849,8 +1844,6 @@ function do_list_radio($ia)
         {
             $check_ans = '';
         }
-
-///
 
         $answer .= '<div  class="form-group">';
         $answer .= '    <label for="answer'.$ia[1].'NANS" class="answertext control-label">'.gT('No answer').'</label>';
@@ -3061,7 +3054,7 @@ function do_multiplenumeric($ia)
     //Must turn on the "numbers only javascript"
     $extraclass .=" numberonly";
     if ($aQuestionAttributes['thousands_separator'] == 1) {
-        App()->clientScript->registerPackage('jquery-price-format');
+        //App()->clientScript->registerPackage('jquery-price-format');
         App()->clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts').'numerical_input.js');
         $extraclass .= " thousandsseparator";
     }
@@ -3350,7 +3343,7 @@ function do_numerical($ia)
         $prefix = '';
     }
     if ($aQuestionAttributes['thousands_separator'] == 1) {
-        App()->clientScript->registerPackage('jquery-price-format');
+        //App()->clientScript->registerPackage('jquery-price-format');
         App()->clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts').'numerical_input.js');
         $extraclass .= " thousandsseparator";
     }

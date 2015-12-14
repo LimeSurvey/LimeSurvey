@@ -1451,7 +1451,8 @@ function buildsurveysession($surveyid,$preview=false)
     // TMSW Condition->Relevance:  don't need hasconditions, or usedinconditions
 
     $_SESSION['survey_'.$surveyid]['fieldmap']=$fieldmap;
-    foreach ($fieldmap as $field)
+
+    foreach ($fieldmap as $key => $field)
     {
         if (isset($field['qid']) && $field['qid']!='')
         {
@@ -1470,6 +1471,8 @@ function buildsurveysession($surveyid,$preview=false)
             //            [8]=usedinconditions
             //            [9]=used in group.php for question count
             //            [10]=new group id for question in randomization group (GroupbyGroup Mode)
+
+
 
             if (!isset($_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]))
             {
@@ -1500,6 +1503,7 @@ function buildsurveysession($surveyid,$preview=false)
                     $usedinconditions = $field['usedinconditions'];
                 else
                     $usedinconditions = 'N';
+
                 $_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]=array($field['qid'],
                 $field['sid'].'X'.$field['gid'].'X'.$field['qid'],
                 $title,

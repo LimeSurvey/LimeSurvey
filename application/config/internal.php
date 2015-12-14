@@ -23,6 +23,7 @@ $internalConfig = array(
     'aliases' => array(
         // yiistrap configuration
         'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
+        'questiontypes' => realpath(__DIR__ . '/../extensions/questionTypes'),
         'vendor.twbs.bootstrap.dist' => realpath(__DIR__ . '/../extensions/bootstrap'),
         // yiiwheels configuration
         'yiiwheels' => realpath(__DIR__ . '/../extensions/yiiwheels'),

@@ -854,6 +854,8 @@ class SurveyRuntimeHelper {
             }
 
             // TMSW - could iterate through LEM::currentQset instead
+
+            //// To diplay one question, all the questions are processed ?
             foreach ($_SESSION[$LEMsessid]['fieldarray'] as $key => $ia)
             {
                 ++$qnumber;

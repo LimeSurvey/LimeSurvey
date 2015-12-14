@@ -613,7 +613,7 @@ $config['sCKEditorURL']            = $config['third_party'].'ckeditor';
 //$config['sCKEditorURL']            = '/scripts/admin/ckeditor.36';
 $config['usertemplaterooturl']     = $config['uploadurl'].'/templates';     // Location of the user templates
 
-$config['adminimagebaseurl']       = $config['styleurl'].$config['admintheme'].'/images/';     // for the definition of IMAGE_BASE_URL in render_wrapped_template.  
+$config['adminimagebaseurl']       = $config['styleurl'].$config['admintheme'].'/images/';     // for the definition of IMAGE_BASE_URL in render_wrapped_template.
 $config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'/images/14/';         // Location of button bar files for admin script
 
 
@@ -630,6 +630,7 @@ $config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upl
 $config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
 $config['usertemplaterootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
 $config['styledir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'styles';
+$config['questiontypedir']         = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
 
 
 // Use alias notation, we should move to this format everywhere.
