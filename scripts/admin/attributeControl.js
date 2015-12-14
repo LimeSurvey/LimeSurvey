@@ -1,9 +1,9 @@
 $(document).ready(function() {
     var CM = [
-        {name: 'actions', width: 75, align: 'center', fixed: true, sortable: false, resize: false, formatter: 'actions', search: false},
-        {name: 'attribute_name', index: 'attribute_name', width: 250, align:"center", editable: true, editrules: {"required":true}},
-        {name: 'attribute_type', index: 'attribute_type', width: 250, align:"center", editable: true, edittype:"select", editoptions:{value:attributeTypeSelections}, stype: 'select', searchoptions: {sopt: ['eq', 'ne'], value:attributeTypeSearch}},
-        {name: 'visible', index: 'visible', width: 250, align: 'center', editable: true, formatter: checkboxFormatter, edittype: 'checkbox', edittype: "checkbox", editoptions: {value: "TRUE"}, stype: 'select', searchoptions: {sopt: ['eq', 'ne'], value: "TRUE:Yes;FALSE:No"}}
+        {name: 'actions', width: 75, align: 'left', fixed: true, sortable: false, resize: false, formatter: 'actions', search: false},
+        {name: 'attribute_name', index: 'attribute_name', width: 250, align:"left", editable: true, editrules: {"required":true}},
+        {name: 'attribute_type', index: 'attribute_type', width: 250, align:"left", editable: true, edittype:"select", editoptions:{value:attributeTypeSelections}, stype: 'select', searchoptions: {sopt: ['eq', 'ne'], value:attributeTypeSearch}},
+        {name: 'visible', index: 'visible', width: 250, align: 'left', editable: true, formatter: checkboxFormatter, edittype: 'checkbox', edittype: "checkbox", editoptions: {value: "TRUE"}, stype: 'select', searchoptions: {sopt: ['eq', 'ne'], value: "TRUE:Yes;FALSE:No"}}
     ];
 
     $("#flashinfo").css("opacity", 0); //Make sure the flash message doesn't display in IE
