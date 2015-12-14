@@ -35,7 +35,7 @@ class PluginManager extends Survey_Common_Action
             }
         }
 
-        $aoPlugins = Plugin::model()->findAll();
+        $aoPlugins = Plugin::model()->findAll(array('order' => 'name'));
         $data      = array();
         foreach ($aoPlugins as $oPlugin)
         {
