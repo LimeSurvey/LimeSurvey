@@ -173,15 +173,18 @@ class Usergroups extends Survey_Common_Action
                 {
                     if (strlen($db_group_name) > 21) {
                         list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Failed to add group! Group name length more than 20 characters.")));
+                        Yii::app()->user->setFlash('error',  gT("Failed to add group! Group name length more than 20 characters."));
                     }
                     elseif (UserGroup::model()->find("name=:groupName", array(':groupName'=>$db_group_name))) {
                         list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Failed to add group! Group already exists.")));
+                        Yii::app()->user->setFlash('error',  gT("Failed to add group! Group already exists."));
                     }
                     else
                     {
                         $ugid = UserGroup::model()->addGroup($db_group_name, $db_group_description);
                         Yii::app()->session['flashmessage'] = gT("User group successfully added!");
                         list($aViewUrls, $aData) = $this->index($ugid, true);
+                        $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/' . $ugid));
                     }
 
                     $this->getController()->redirect(array('admin/usergroups'));
