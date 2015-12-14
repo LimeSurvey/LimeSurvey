@@ -812,12 +812,7 @@ class questions extends Survey_Common_Action
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestions/surveyid/'.$surveyid;
 
-        // Abort if survey is active
-        if ($surveyinfo['active'] !== 'N')
-        {
-            Yii::app()->user->setFlash('error', gT("Cannot add questions while the survey is active."));
-            $this->getController()->redirect(Yii::app()->request->urlReferrer);
-        }
+        $this->abortIfSurveyIsActive($surveyinfo);
 
         Yii::app()->session['FileManagerContext'] = "create:question:{$surveyid}";
 
@@ -1642,5 +1637,20 @@ EOD;
     protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array())
     {
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+    }
+
+    /**
+     * Show error and redirect back if survey is active
+     *
+     * @param array $surveyInfo
+     * @return void
+     */
+    protected function abortIfSurveyIsActive(array $surveyInfo)
+    {
+        if ($surveyInfo['active'] !== 'N')
+        {
+            Yii::app()->user->setFlash('error', gT("Cannot add questions while the survey is active."));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
     }
 }
