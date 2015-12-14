@@ -627,7 +627,11 @@ class Survey_Common_Action extends CAction
         }
     }
 
-
+    /**
+     * Show admin menu for question group view
+     *
+     * @param array $aData ?
+     */
     function _nquestiongroupbar($aData)
     {
         if(isset($aData['questiongroupbar']))
@@ -639,6 +643,7 @@ class Survey_Common_Action extends CAction
                    $aData['gid'] = $_GET['gid'];
                 }
             }
+
             $surveyid = $aData['surveyid'];
             $gid = $aData['gid'];
             $oSurvey = $aData['oSurvey'];
