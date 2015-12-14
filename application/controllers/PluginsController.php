@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @todo Info here?
+ * @todo Not used, copied to admin/pluginmanager.php. Delete this file?
  */
 class PluginsController extends LSYii_Controller
 {
