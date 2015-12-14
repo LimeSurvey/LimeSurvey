@@ -66,9 +66,9 @@
             $alias = $this->getTableAlias();
             return array(
 
-          'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language'),
+                'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language'),
 
-        // Seriously ????
+                // Seriously ????
                 //'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"),
                 'parents' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.parent_qid = parents.qid"),
                 'subquestions' => array(self::HAS_MANY, 'Question', 'parent_qid', 'on' => "$alias.language = subquestions.language")
@@ -775,7 +775,7 @@
         );
 
         $criteria = new CDbCriteria;
-        $criteria->condition='t.sid=:surveyid AND t.language=:language AND parent_qid=""';
+        $criteria->condition="t.sid=:surveyid AND t.language=:language AND parent_qid=NULL";
         $criteria->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
         $criteria->join='LEFT JOIN {{groups}} AS groups ON ( groups.gid = t.gid AND t.language = groups.language )';
 
