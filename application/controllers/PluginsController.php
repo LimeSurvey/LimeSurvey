@@ -1,6 +1,5 @@
 <?php
 
-d
 /**
  * @todo Info here?
  */
