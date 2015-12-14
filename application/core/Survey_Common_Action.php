@@ -644,6 +644,8 @@ class Survey_Common_Action extends CAction
                 }
             }
 
+            $aData['surveyIsActive'] = $aData['oSurvey']->active !== 'N';
+
             $surveyid = $aData['surveyid'];
             $gid = $aData['gid'];
             $oSurvey = $aData['oSurvey'];
