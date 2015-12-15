@@ -31,14 +31,13 @@
             'value' => function($data) {
                 if ($data['active'] == 0)
                 {
-                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Activate'), array('width' => 16, 'height' => 16)), array("/admin/pluginmanager/sa/activate", "id" => $data['id']));
+                    $output = "<a href='/index.php/admin/pluginmanager/sa/activate?id=" . $data["id"] . "' class='btn btn-default btn-xs btntooltip'><span class='fa fa-power-off'>&nbsp;</span>".gT('Activate')."</a>";
                 } else {
-                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Deactivate'), array('width' => 16, 'height' => 16)), array("/admin/pluginmanager/sa/deactivate", "id" => $data['id']));
+                    $output = "<a href='/index.php/admin/pluginmanager/sa/deactivate?id=" . $data["id"] . "'class='btn btn-warning btn-xs'><span class='fa fa-power-off'>&nbsp;</span>".gT('Deactivate')."</a>";
                 }
                 if(count($data['settings'])>0)
                 {
-                    $output .= CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'survey_settings.png', gT('Configure'), array('width' => 16, 'height' => 16, 'style' => 'margin-left: 8px;')), array("/admin/pluginmanager/sa/configure", "id" => $data['id']));
-                    //$output .= CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'survey_settings.png', gT('Configure'), array('width' => 16, 'height' => 16, 'style' => 'margin-left: 8px;')), array("/plugins/configure", "id" => $data['id']));
+                    $output .= "&nbsp;<a href='/index.php/admin/pluginmanager/sa/configure?id=" . $data["id"] . "' class='btn btn-default btn-xs'><span class='icon-edit'>&nbsp;</span>" . gT('Configure') . "</a>";
                 }
                 return $output;
             }

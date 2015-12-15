@@ -219,7 +219,9 @@ class questiongroups extends Survey_Common_Action
 
                         $group = new QuestionGroup;
                         foreach ($aData as $k => $v)
+                        {
                             $group->$k = $v;
+                        }
                         $group->save();
                         $groupid = $group->gid;
                         $first = false;
@@ -239,7 +241,9 @@ class questiongroups extends Survey_Common_Action
 
                         $group = new QuestionGroup;
                         foreach ($aData as $k => $v)
+                        {
                             $group->$k = $v;
+                        }
                         $group->save();
                         switchMSSQLIdentityInsert('groups',false);
                     }

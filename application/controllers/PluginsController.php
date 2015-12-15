@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @todo Not used, copied to admin/pluginmanager.php. Delete this file?
+ */
 class PluginsController extends LSYii_Controller
 {
 
@@ -27,6 +30,12 @@ class PluginsController extends LSYii_Controller
         Yii::app()->bootstrap->init();      // Make sure bootstrap css is rendered in time
     }
 
+    /**
+     * Activates plugin with $id
+     * 
+     * @param int $id
+     * @return void
+     */
     public function actionActivate($id)
     {
         if(!Permission::model()->hasGlobalPermission('settings','update'))
@@ -59,6 +68,12 @@ class PluginsController extends LSYii_Controller
         $this->redirect(array('plugins/'));
     }
 
+    /**
+     * Show configuration for plugin with $id
+     * 
+     * @param int $id
+     * @return void
+     */
     public function actionConfigure($id)
     {
         if(!Permission::model()->hasGlobalPermission('settings','update'))
@@ -108,6 +123,12 @@ class PluginsController extends LSYii_Controller
         $this->render('/plugins/configure', array('settings' => $aSettings, 'plugin' => $arPlugin, 'properties' => $aPluginProp));
     }
 
+    /**
+     * Deactivates plugin with $id
+     *
+     * @param int $id
+     * @return void
+     */
     public function actionDeactivate($id)
     {
         if(!Permission::model()->hasGlobalPermission('settings','update'))
@@ -138,6 +159,9 @@ class PluginsController extends LSYii_Controller
         $this->redirect(array('plugins/'));
     }
 
+    /**
+     * @todo Doc
+     */
     public function actionDirect($plugin, $function)
     {
         $oEvent = new PluginEvent('newDirectRequest');
@@ -161,6 +185,11 @@ class PluginsController extends LSYii_Controller
         }
     }
 
+    /**
+     * Show list of plugins
+     *
+     * @return void
+     */
     public function actionIndex()
     {
         if(!Permission::model()->hasGlobalPermission('settings','read'))
@@ -217,6 +246,9 @@ class PluginsController extends LSYii_Controller
         echo $this->render('/plugins/index', compact('data'));
     }
 
+    /**
+     * @todo Doc
+     */
     public function filters()
     {
         $aFilters = array(

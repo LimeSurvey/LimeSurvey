@@ -3,6 +3,7 @@
  * Question group bar
  * Also used for Edit question
  */
+
 ?>
 
 <!-- nquestiongroupbar -->
@@ -14,10 +15,12 @@
             <?php if(isset($questiongroupbar['buttons']['view'])):?>
                 <!-- Buttons -->
 
-               <a class="btn btn-default" href="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>" role="button">
-                   <span class="icon-add"></span>
-                   <?php eT("Add new question to group");?>
-               </a>
+                <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php if ($surveyIsActive) { echo eT("Cannot add questions while the survey is active"); } ?>" >
+                   <a class="btn btn-default <?php if ($surveyIsActive) { echo "disabled"; } ?>" href="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>" role="button">
+                       <span class="icon-add"></span>
+                       <?php eT("Add new question to group");?>
+                   </a>
+               </span>
 
                 <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
                     <?php if (count($languagelist) > 1): ?>

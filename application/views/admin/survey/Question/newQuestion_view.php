@@ -50,7 +50,7 @@
                                     <div>
                                         <div  class="form-group">
                                             <label class="col-sm-4 control-label" for='question_type_button'><?php eT("Question Type:"); ?></label>
-                                            <?php if($selectormodeclass!="none"): ?>
+                                            <?php if(isset($selectormodeclass) && $selectormodeclass != "none"): ?>
                                                 <?php
                                                     foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
                                                     {

@@ -812,6 +812,8 @@ class questions extends Survey_Common_Action
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestions/surveyid/'.$surveyid;
 
+        $this->abortIfSurveyIsActive($surveyinfo);
+
         Yii::app()->session['FileManagerContext'] = "create:question:{$surveyid}";
 
         $questlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
@@ -852,7 +854,9 @@ class questions extends Survey_Common_Action
 
         $sumresult1 = Survey::model()->findByPk($surveyid);
         if (is_null($sumresult1))
+        {
             $this->getController()->error('Invalid Survey ID');
+        }
 
         $surveyinfo = $sumresult1->attributes;
         $surveyinfo = array_map('flattenText', $surveyinfo);
@@ -970,7 +974,9 @@ class questions extends Survey_Common_Action
                 }
 
                 if (!$egresult)
+                {
                     $this->getController()->error('Invalid question id');
+                }
 
                 while (list($key, $value) = each($questlangs))
                 {
@@ -1069,7 +1075,9 @@ class questions extends Survey_Common_Action
 
             $sumresult1 = Survey::model()->findByPk($surveyid);
             if (is_null($sumresult1))
+            {
                 $this->getController()->error('Invalid Survey ID');
+            }
 
             $surveyinfo = $sumresult1->attributes;
             $surveyinfo = array_map('flattenText', $surveyinfo);
@@ -1638,5 +1646,20 @@ EOD;
     protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array())
     {
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+    }
+
+    /**
+     * Show error and redirect back if survey is active
+     *
+     * @param array $surveyInfo
+     * @return void
+     */
+    protected function abortIfSurveyIsActive(array $surveyInfo)
+    {
+        if ($surveyInfo['active'] !== 'N')
+        {
+            Yii::app()->user->setFlash('error', gT("Cannot add questions while the survey is active."));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
     }
 }
