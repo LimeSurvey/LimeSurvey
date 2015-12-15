@@ -3395,4 +3395,7 @@ input:focus, textarea:focus {
   border-bottom-color: transparent;
   cursor: default; }
 
+.answertable.table td {
+  vertical-align: middle; }
+
 /*# sourceMappingURL=lime-admin.css.map */
