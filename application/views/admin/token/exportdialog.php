@@ -73,7 +73,7 @@
                             <input size="50" type="text" value="" name="filteremail" id="filteremail" />
                         </div>
                         <div class="alert alert-info col-lg-3 col-sm-2 col-md-12 controls" role="alert">
-                            <?php eT('Email address contains the input.'); ?>
+                            <?php eT('Only export entries which contain this string in email address.'); ?>
                         </div>
 
                     </div>
@@ -87,7 +87,7 @@
                             <input type="checkbox" value="1" name="tokendeleteexported" id="tokendeleteexported" />
                         </div>
                         <div class="alert alert-warning col-lg-3 col-sm-2 col-md-12 controls" role="alert">
-                            <?php eT('Attention : the tokens are deleted from token table, you can not find it again.'); ?>
+                            <?php eT('Warning: Deleted token entries cannot be recovered.'); ?>
                         </div>
                     </div>
                 </div>
