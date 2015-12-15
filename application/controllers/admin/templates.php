@@ -34,7 +34,6 @@ class templates extends Survey_Common_Action
     }
 
 
-
     /**
     * Exports a template
     *
