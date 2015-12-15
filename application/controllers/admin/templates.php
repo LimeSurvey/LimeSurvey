@@ -365,7 +365,8 @@ class templates extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "admin_core.js" ));
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH  . 'templates.js'));
         App()->getClientScript()->registerPackage('ace');
-        $this->_renderWrappedTemplate('templates', $aViewUrls);
+        $aData['fullpagebar']['returnbutton']=true;
+        $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
 
         if ($screenname != 'welcome')
             Yii::app()->session['step'] = 1;

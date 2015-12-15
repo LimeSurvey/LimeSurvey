@@ -50,10 +50,9 @@
                         <tr class='<?php echo $currentuser["rowclass"];?>'>
                             <td align='center'>
                             <?php
-                            if(isset($currentuser["displayactions"]) && $currentuser["displayactions"] == true)
+                            if(isset($currentuser["displayactions"]) && $currentuser["displayactions"] == true && $currentuser["userid"] != '1')
                             { ?>
                                 <?php echo CHtml::form(array("admin/usergroups/sa/user/ugid/{$ugid}/action/remove"), 'post'); ?>
-
                                 <button type="submit" onclick='return confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")' class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash text-success"></span></button>
                                 <input name='uid' type='hidden' value='<?php echo $currentuser["userid"]; ?>' />
                                 </form>

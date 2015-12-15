@@ -221,6 +221,35 @@ function OSGeoInitialize(question,latLng){
 				$( this ).removeClass( "searching" );
 			}
 		});
+        
+        var mapQuestion = $('#question'+name.split('X')[2]);
+        
+        function resetMapTiles(mapQuestion) {
+        
+            //window.setTimeout(function(){
+            
+                if($(mapQuestion).css('display') == 'none' && $.support.leadingWhitespace) { // IE7-8 excluded (they work as-is)
+                    $(mapQuestion).css({
+                        'position': 'relative',
+                        'left': '-9999em'
+                    }).show();
+                    map.invalidateSize();
+                    $(mapQuestion).css({
+                        'position': 'relative',
+                        'left': 'auto'
+                    }).hide();
+                }
+                
+            //},50);            
+        }
+        
+        resetMapTiles(mapQuestion);
+        
+        jQuery(window).resize(function() {        
+            window.setTimeout(function(){                            
+                resetMapTiles(mapQuestion); 
+            },5);            
+        });
 
 	return map;
 
