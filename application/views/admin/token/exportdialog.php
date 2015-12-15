@@ -57,7 +57,7 @@
                         </label>
                         <div class="default col-lg-4 col-sm-5 col-md-7 controls">
                             <select id="tokenlanguage" name="tokenlanguage" class="form-control">
-                                <option value="" selected="selected"><?php eT('All</option>'); ?>
+                                <option value="" selected="selected"><?php eT('All'); ?>
                                 <option value="de"><?php eT('German'); ?></option>
                             </select>
                         </div>
