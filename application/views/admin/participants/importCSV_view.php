@@ -5,7 +5,7 @@
         <div class="col-lg-12 content-right">
 
             <?php echo CHtml::form(array("admin/participants/sa/attributeMapCSV"), 'post', array('id'=>'addsurvey','class'=>'col-md-6 col-md-offset-3', 'enctype'=>'multipart/form-data', 'accept-charset'=>'utf-8')); ?>
-    
+
 <div class="form-group">
     <label for="the_file" id="fileupload">
                 <?php eT("Choose the file to upload:"); ?>
@@ -17,16 +17,15 @@
                 <?php eT("Character set of file:"); ?>
             </label>
             <select name="characterset"  class="form-control">
-                <option value="auto" selected="selected">Automatic</option>
                 <?php
                 foreach (aEncodingsArray() as $key=>$encoding):
                     ?>
-                    <option value="<?php echo $key;?>"><?php echo $encoding; ?></option>
+                    <option value="<?php echo $key;?>" <?php if($encoding==gT('Automatic')){echo 'selected="selected"';}?> ><?php echo $encoding; ?></option>
                     <?php
                 endforeach;
                 ?>
             </select>
-</div>        
+</div>
 
 <div class="form-group">
             <label for="separatorused" id="separatorused">
@@ -47,24 +46,24 @@
                 endforeach;
                 ?>
             </select>
-        
-<div class="form-group">        
+
+<div class="form-group">
             <label for ="filter" id="filter">
                 <?php
                 eT("Filter blank email addresses:");
                 ?>
             </label>
-            
+
             <input type="checkbox" name="filterbea" value="accept" checked="checked"/>
 </div>
-<div class="form-group">            
+<div class="form-group">
             <p><input type="submit" value="<?php eT("Upload") ?>" class="btn btn-default" /></p>
-</div>                
-</div>            
-        
+</div>
+</div>
 
-        
-    
+
+
+
 </form>
 
 <div class="messagebox ui-corner-all col-md-6 col-md-offset-3">
@@ -81,5 +80,3 @@
         </div>
     </div>
 </div>
-
-
