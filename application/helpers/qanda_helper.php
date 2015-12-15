@@ -944,7 +944,7 @@ function do_date($ia)
     // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
     if (trim($aQuestionAttributes['date_min'])!='')
     {
-        $date_min=stripslashes(trim($aQuestionAttributes['date_min']));
+        $date_min=trim($aQuestionAttributes['date_min']);
         $date_time_em=strtotime(LimeExpressionManager::ProcessString("{".$date_min."}",$ia[0]));
         if(ctype_digit($date_min) && (strlen($date_min)==4) && ($date_min>=1900) && ($date_min<=2099))
         {
@@ -987,7 +987,6 @@ function do_date($ia)
     {
         $maxdate='2037-12-31'; // Why 2037 ?
     }
-		tracevar(array($mindate,$maxdate));
     if (trim($aQuestionAttributes['dropdown_dates'])==1) {
         if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) &
            ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]!='INVALID'))
