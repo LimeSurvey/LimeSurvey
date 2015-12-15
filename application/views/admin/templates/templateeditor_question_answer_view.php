@@ -7,20 +7,16 @@ if (isset($alt))
 <?php
 }else{
 ?>
-<ul class="answers-list radio-list">
-    <li id="javatbd1295X1X1A1" class="answer-item radio-item">
-        <input class="radio" type="radio" name='answer1295X1X1' value='A1' id='answer1295X1X1A1' />
-        <label class='answertext' for='radio1'><?php eT('One') ?></label>
-    </li>
-    <li id="javatbd1295X1X1A1" class="answer-item radio-item">
-        <input type='radio' class='radio' name='answer1295X1X1' value='A2' id='answer1295X1X1A2' />
-        <label class='answertext' for='radio2'><?php eT('Two') ?></label>
-    </li>
-    <li id="javatbd1295X1X1A1" class="answer-item radio-item">
-        <input type='radio' class='radio' name='answer1295X1X1' value='A3' id='answer1295X1X1A3' />
-        <label class='answertext' for='radio3'><?php eT('Three') ?></label>
-    </li>
-</ul>
+<div class="col-sm-12 answer">
+    <div class="row">    <div class="col-xs-12">
+        <div class="form-group">    <label for="answer975363X1X4A1" class="answertext control-label">One</label>        <input class="radio" value="A1" name="975363X1X4" id="answer975363X1X4A1" onclick="if (document.getElementById('answer975363X1X4othertext') != null) document.getElementById('answer975363X1X4othertext').value='';checkconditions(this.value, this.name, this.type)" type="radio">
+        </div>
+        <div class="form-group">    <label for="answer975363X1X4A2" class="answertext control-label">Two</label>        <input class="radio" value="A2" name="975363X1X4" id="answer975363X1X4A2" onclick="if (document.getElementById('answer975363X1X4othertext') != null) document.getElementById('answer975363X1X4othertext').value='';checkconditions(this.value, this.name, this.type)" type="radio">
+        </div>
+        <div class="form-group">    <label for="answer975363X1X4A3" class="answertext control-label">Three</label>        <input class="radio" value="A3" name="975363X1X4" id="answer975363X1X4A3" onclick="if (document.getElementById('answer975363X1X4othertext') != null) document.getElementById('answer975363X1X4othertext').value='';checkconditions(this.value, this.name, this.type)" type="radio">
+        </div> <!-- wrapper row -->
+    </div>
+</div>
 <?php
 }
 ?>
