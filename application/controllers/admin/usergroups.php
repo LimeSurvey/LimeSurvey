@@ -356,6 +356,9 @@ class Usergroups extends Survey_Common_Action
         }
     }
 
+    /**
+     * @todo Doc
+     */
     function user($ugid, $action = 'add')
     {
         if (!Permission::model()->hasGlobalPermission('usergroups','read') || !in_array($action, array('add', 'remove')))

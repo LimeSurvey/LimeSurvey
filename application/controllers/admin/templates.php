@@ -200,14 +200,14 @@ class templates extends Survey_Common_Action
 
         $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
     }
-    /**
-    * Try to correct a template with new funcyionnality.
-    *
-    * @access private
-    * @param string $templatename
-    * @return array $correction ($success,$number,array($information))
-    */
 
+    /**
+     * Try to correct a template with new functionality.
+     *
+     * @access private
+     * @param string $templatename
+     * @return array $correction ($success,$number,array($information))
+     */
     private function _templateFixes($templatename)
     {
         $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
@@ -822,15 +822,15 @@ class templates extends Survey_Common_Action
     }
 
     /**
-    * Function that initialises all data and call other functions to load default view.
-    *
-    * @access protected
-    * @param string $templatename
-    * @param string $screenname
-    * @param string $editfile
-    * @param bool $showsummary
-    * @return
-    */
+     * Function that initialises all data and call other functions to load default view.
+     *
+     * @access protected
+     * @param string $templatename
+     * @param string $screenname
+     * @param string $editfile
+     * @param bool $showsummary
+     * @return
+     */
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
         //App()->getClientScript()->reset();

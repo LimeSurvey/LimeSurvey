@@ -22,7 +22,18 @@
             'class' => 'CDataColumn',
             'header' => gT('Status'),
             'type' => 'html',
-            'value' => function($data) { return ($data['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Active'), array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Inactive'), array('width' => 32, 'height' => 32))); }
+            //'value' => function($data) { return ($data['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Active'), array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Inactive'), array('width' => 32, 'height' => 32))); }
+            'value' => function($data)
+            {
+                if ($data['active'] == 1)
+                {
+                    return "<span class='fa fa-circle'></span>";
+                }
+                else
+                {
+                    return "<span class='fa fa-circle-thin'></span>";
+                }
+            }
         ),
         array(// display the activation link
             'class' => 'CDataColumn',
@@ -31,13 +42,13 @@
             'value' => function($data) {
                 if ($data['active'] == 0)
                 {
-                    $output = "<a href='/index.php/admin/pluginmanager/sa/activate?id=" . $data["id"] . "' class='btn btn-default btn-xs btntooltip'><span class='fa fa-power-off'>&nbsp;</span>".gT('Activate')."</a>";
+                    $output = "<a href='" . $this->createUrl('/admin/pluginmanager/sa/activate') . "?id=" . $data["id"] . "' class='btn btn-default btn-xs btntooltip'><span class='fa fa-power-off'>&nbsp;</span>".gT('Activate')."</a>";
                 } else {
-                    $output = "<a href='/index.php/admin/pluginmanager/sa/deactivate?id=" . $data["id"] . "'class='btn btn-warning btn-xs'><span class='fa fa-power-off'>&nbsp;</span>".gT('Deactivate')."</a>";
+                    $output = "<a href='" . $this->createUrl('/admin/pluginmanager/sa/deactivate') . "?id=" . $data["id"] . "'class='btn btn-warning btn-xs'><span class='fa fa-power-off'>&nbsp;</span>".gT('Deactivate')."</a>";
                 }
                 if(count($data['settings'])>0)
                 {
-                    $output .= "&nbsp;<a href='/index.php/admin/pluginmanager/sa/configure?id=" . $data["id"] . "' class='btn btn-default btn-xs'><span class='icon-edit'>&nbsp;</span>" . gT('Configure') . "</a>";
+                    $output .= "&nbsp;<a href='" . $this->createUrl('/admin/pluginmanager/sa/configure') . "?id=" . $data["id"] . "' class='btn btn-default btn-xs'><span class='icon-edit'>&nbsp;</span>" . gT('Configure') . "</a>";
                 }
                 return $output;
             }

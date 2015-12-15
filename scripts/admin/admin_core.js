@@ -18,13 +18,12 @@
  * Need to be replaced by some polyfills see #8009
  */
 hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'function';
-linksInDialog();
 
 $(document).ready(function(){
 
     initializeAjaxProgress();
     tableCellAdapters();
-
+    linksInDialog();
 
     if(typeof(userdateformat) !== 'undefined')
         {
