@@ -3398,4 +3398,7 @@ input:focus, textarea:focus {
 .answertable.table td {
   vertical-align: middle; }
 
+.btnaddanswer:hover, .btndelanswer:hover {
+  cursor: pointer; }
+
 /*# sourceMappingURL=lime-admin.css.map */

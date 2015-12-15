@@ -307,11 +307,11 @@ function createNewLabelTR(alternate,first){
         + "<span class='glyphicon glyphicon-move text-success'></span>"
         + "</td><td>"
         + "<input type='hidden' class='hiddencode' value='###codeval###' />"
-        + "<input type='text' class='codeval' value='###codeval###' name='code_###next###' id='code_###next###' size='6' maxlength='5' >"
+        + "<input type='text' class='codeval form-control input-lg ' value='###codeval###' name='code_###next###' id='code_###next###' size='6' maxlength='5' >"
         + "</td><td>"
-        + "<input type=\"text\" class='assessmentval' value=\"###assessmentval###\" name=\"assessmentvalue_###next###\" id=\"assessmentvalue_###next###\" style=\"text-align: right;\" size=\"6\" maxlength=\"5\" >";
+        + "<input type=\"text\" class='assessmentval form-control input-lg ' value=\"###assessmentval###\" name=\"assessmentvalue_###next###\" id=\"assessmentvalue_###next###\" style=\"text-align: right;\" size=\"6\" maxlength=\"5\" >";
 
-    x = x + "<td><input name=\"title_###lang###_###next###\"  type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
+    x = x + "<td><input class=' form-control input-lg ' name=\"title_###lang###_###next###\"  type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
     "<a title=\"\" id=\"title_###lang###_###next###_ctrl\" href=\"javascript:start_popup_editor('title_###lang###_###next###','[Label:](###lang###)','','','','editlabel','labels')\">"+
     "<span class=\"glyphicon glyphicon-pencil  text-success\" name=\"title_###lang###_###next###_popupctrlena\" id=\"title_###lang###_###next###_popupctrlena\" alt=\"\"></span>"+
     "<span style=\"display: none;\" class=\"glyphicon glyphicon-pencil  text-success\" name=\"title_###lang###_###next###_popupctrldis\"  id=\"title_###lang###_###next###_popupctrldis\" alt=\"\"></span>"+

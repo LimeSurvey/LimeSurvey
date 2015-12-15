@@ -37,7 +37,7 @@
                                     <thead>
                                         <tr>
                                             <?php if ($first): ?>
-                                                <th>&nbsp;</th>
+                                                <th><?php eT('Position');?></th>
                                             <?php endif;?>
                                             <th><?php eT("Code") ?></th>
                                             <th><?php eT("Assessment value") ?></th>
@@ -66,16 +66,16 @@
 
                                                     <td>
                                                         <input type='hidden' class='hiddencode' value='<?php echo $row['code'] ?>' />
-                                                        <input type='text'  class='codeval' id='code_<?php echo $row['sortorder'] ?>' name='code_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['code'] ?>'/>
+                                                        <input type='text'  class='codeval  form-control input-lg ' id='code_<?php echo $row['sortorder'] ?>' name='code_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['code'] ?>'/>
                                                     </td>
 
                                                     <td>
-                                                        <input type='text' class='assessmentval' id='assessmentvalue_<?php echo $row['sortorder'] ?>' style='text-align: right;' name='assessmentvalue_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['assessment_value'] ?>' />
+                                                        <input type='text' class='assessmentval  form-control input-lg ' id='assessmentvalue_<?php echo $row['sortorder'] ?>' style='text-align: right;' name='assessmentvalue_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['assessment_value'] ?>' />
                                                     </td>
                                                 <?php endif;?>
 
                                                 <td>
-                                                    <input type='text' name='title_<?php echo $row['language'] ?>_<?php echo $row['sortorder'] ?>' maxlength='3000' size='80' value="<?php echo HTMLEscape($row['title']) ?>" />
+                                                    <input type='text' class=" form-control input-lg " name='title_<?php echo $row['language'] ?>_<?php echo $row['sortorder'] ?>' maxlength='3000' size='80' value="<?php echo HTMLEscape($row['title']) ?>" />
                                                     <?php echo getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[" . gT("Label:", "js") . "](" . $row['language'] . ")", '', '', '', $action); ?>
                                                 </td>
 
@@ -146,7 +146,7 @@
                                         <li>
                                             <label>&nbsp;</label>
                                             <div class="col-sm-6">
-                                                <?php echo CHtml::dropDownList('type', 'files', array('files' => gT('Files'), 'flash' => gT('Flash'), 'images' => gT('Images')), array('class'=>'form-control') ); ?>
+                                                <?php echo CHtml::dropDownList('type', 'files', array('files' => gT('Files'), 'flash' => gT('Flash'), 'images' => gT('Images')), array('class'=>' form-control input-lg ') ); ?>
                                             </div>
                                             <div class="col-sm-5">
                                                 <input type='submit' class="btn btn-default" value="<?php eT("Browse uploaded resources") ?>" />
