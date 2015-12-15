@@ -525,7 +525,7 @@ class database extends Survey_Common_Action
                             $aSQIDMappings = array();
                             $r1 = Question::model()->getSubQuestions(returnGlobal('oldqid'));
                             $aSubQuestions = $r1->readAll();
-                            
+
                             foreach ($aSubQuestions as $qr1)
                             {
                                 $qr1['parent_qid'] = $iQuestionID;
@@ -662,6 +662,11 @@ class database extends Survey_Common_Action
             }
         }
 
+
+
+        /**
+         * Update question
+         */
         if ($sAction == "updatequestion" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent','update'))
         {
 
@@ -839,6 +844,18 @@ class database extends Survey_Common_Action
                             'relevance' => Yii::app()->request->getPost('relevance'),
                             );
 
+                            // Update question module
+                            if(Yii::app()->request->getPost('module_name')!='')
+                            {
+                                // The question module is not empty. So it's an external question module.
+                                $udata['modulename'] = Yii::app()->request->getPost('module_name');
+                            }
+                            else
+                            {
+                                // If it was a module before, we must
+                                $udata['modulename'] = '';
+                            }
+
                             if ($oldgid!=$iQuestionGroupID)
                             {
 
@@ -902,9 +919,22 @@ class database extends Survey_Common_Action
                         // then change the cfieldname accordingly
                         fixMovedQuestionConditions($iQuestionID, $oldgid, $iQuestionGroupID);
                     }
+                    // Update subquestions
                     if ($oldtype != Yii::app()->request->getPost('type'))
                     {
                         Question::model()->updateAll(array('type'=>Yii::app()->request->getPost('type')), 'parent_qid=:qid', array(':qid'=>$iQuestionID));
+                    }
+
+                    // Update subquestions if question module
+                    if(Yii::app()->request->getPost('module_name')!='')
+                    {
+                        // The question module is not empty. So it's an external question module.
+                        Question::model()->updateAll(array('modulename'=>Yii::app()->request->getPost('module_name')), 'parent_qid=:qid', array(':qid'=>$iQuestionID));
+                    }
+                    else
+                    {
+                        // If it was a module before, we must
+                        Question::model()->updateAll(array('modulename'=>''), 'parent_qid=:qid', array(':qid'=>$iQuestionID));
                     }
 
                     Answer::model()->deleteAllByAttributes(array('qid' => $iQuestionID), 'scale_id >= :scale_id', array(':scale_id' => $iAnswerScales));

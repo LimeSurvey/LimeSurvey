@@ -1048,6 +1048,15 @@ class questions extends Survey_Common_Action
             }
             $eqrow['conditions_number'] = Condition::Model()->count("qid=:qid", array('qid' => $qid));
 
+            if($eqrow['modulename'] != null)
+            {
+                $oQuestionModule = Question::getQuestionModule($esrow['modulename']);
+                $questionTitle = (array) $oQuestionModule->title;
+                $questionModuleName = (array) $oQuestionModule->modulename;
+                $eqrow['modulename'] = $questionModuleName[0];
+                $eqrow['moduletitle'] = $questionTitle[0];
+            }
+
             $aData['eqrow'] = $eqrow;
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;

@@ -234,14 +234,6 @@ return array(
         )
     ),
 
-    // displayParticipants
-    'display-participants' => array(
-        'baseUrl' => 'styles/limebootstrap/assets/',
-        'css' => array(
-            'css/displayParticipants.css',
-        ),
-    ),
-
     // select2
     'select2' => array(
         'baseUrl' => 'styles/limebootstrap/assets/',

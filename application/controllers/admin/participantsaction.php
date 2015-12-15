@@ -250,7 +250,6 @@ class participantsaction extends Survey_Common_Action
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
         );
         App()->getClientScript()->registerPackage('jqgrid');
-        App()->getClientScript()->registerPackage('display-participants');
 
         // loads the participant panel view and display participant view
 

@@ -1625,7 +1625,8 @@ class tokens extends Survey_Common_Action
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData["surveyinfo"] = $surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
-        $aData['sidebar']["token_menu"]=TRUE;
+        $aData['sidebar']["token_menu"]=true;
+        $aData['token_bar']['exportbutton']['form']=true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
 
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
@@ -2433,18 +2434,20 @@ class tokens extends Survey_Common_Action
 
     function bouncesettings($iSurveyId)
     {
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId = $iSurveyID = sanitize_int($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
+
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
         {
             self::_newtokentable($iSurveyId);
         }
+
         $aData['thissurvey'] = $aData['settings'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
 
@@ -2468,14 +2471,20 @@ class tokens extends Survey_Common_Action
             foreach ($fieldvalue as $k => $v)
                 $survey->$k = $v;
             $test=$survey->save();
+
             App()->user->setFlash('bouncesettings', gT("Bounce settings have been saved."));
 
-            //~ $this->_renderWrappedTemplate('token', array( 'message' => array(
-            //~ 'title' => gT("Bounce settings"),
-            //~ 'message' => gT("Bounce settings have been saved."),
-            //~ 'class' => 'successheader'
-            //~ )), $aData);
+            $this->getController()->redirect(array("admin/tokens/sa/bouncesettings/surveyid/{$iSurveyId}"));
         }
+
+		$aData['sidebar']["token_menu"]=TRUE;
+        $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
+        $aData['token_bar']['savebutton']['form'] = true;
+
+        $aData['sidebar']['state'] = "close";
+        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+
         $this->_renderWrappedTemplate('token', array( 'bounce'), $aData);
     }
 
@@ -2639,9 +2648,10 @@ class tokens extends Survey_Common_Action
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 		$aData['sidebar']["token_menu"]=TRUE;
 
+        $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$surveyid;
+        $aData['token_bar']['savebutton']['form'] = true;
 		$aData['token_bar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/view/", array('surveyid'=>$iSurveyId));
 		$aData['token_bar']['returnbutton']['text'] = gT('return to survey summary');
-
         $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
         }
         Yii::app()->end();
@@ -2656,8 +2666,6 @@ class tokens extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = 'token', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerPackage('display-participants');
-
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         $aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);

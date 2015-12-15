@@ -121,10 +121,11 @@ function quoteText($sText, $sEscapeMode = 'html')
 function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
 {
     $publicurl = Yii::app()->getConfig('publicurl');
-
     $qtypes = Question::typeList();
+
     if ($ReturnType == "array")
         return $qtypes;
+
 
     if ($ReturnType == "group")
     {
@@ -162,7 +163,21 @@ function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
         }
         $qtypeselecter .= ">{$TypeProperties['description']}</option>\n";
     }
+
+
     return $qtypeselecter;
+}
+
+function getQuestionModuleList($SelectedCode = "T", $ReturnType = "selector")
+{
+    $publicurl = Yii::app()->getConfig('publicurl');
+    $qtypes = Question::questionModuleList();
+
+    if ($ReturnType == "array")
+        return $qtypes;
+
+    else return null;
+
 }
 
 /**
@@ -1911,6 +1926,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
     $qtypes=getQuestionTypeList('','array');
 
+    // Main query
     $aquery = "SELECT * "
     ." FROM {{questions}} as questions, {{groups}} as groups"
     ." WHERE questions.gid=groups.gid AND "
@@ -2294,11 +2310,16 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $fieldmap[$fieldname]['preg']=$arow['preg'];
             $fieldmap[$fieldname]['other']=$arow['other'];
             $fieldmap[$fieldname]['help']=$arow['help'];
+
+            // Set typeName
         }
         else
         {
             --$questionSeq; // didn't generate a valid $fieldmap entry, so decrement the question counter to ensure they are sequential
         }
+
+        if(isset($fieldmap[$fieldname]['typename']))
+            $fieldmap[$fieldname]['typename']=$typename[$fieldname]=$arow['typename'];
     }
     App()->setLanguage($sOldLanguage);
 
@@ -2326,6 +2347,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 }
                 $fieldmap = $mfieldmap;
             }
+
             Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]=$fieldmap;
         }
         return $fieldmap;

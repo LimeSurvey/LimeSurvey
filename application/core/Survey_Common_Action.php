@@ -522,6 +522,7 @@ class Survey_Common_Action extends CAction
 
     function _tokenbar($aData)
     {
+        //var_dump($aData['token_bar']);
         if( isset($aData['token_bar']) ) {
             $this->getController()->renderPartial("/admin/token/token_bar", $aData);
         }

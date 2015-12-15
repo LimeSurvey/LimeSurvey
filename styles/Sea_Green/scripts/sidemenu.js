@@ -34,6 +34,7 @@ $(document).ready(function(){
           left: -250,
           width: $thatWidth + 250,
         });
+        $('.side-body').parent().css( "overflow-x", "hidden" );
 
         $that.removeClass("hideside");
         $that.addClass("showside");
