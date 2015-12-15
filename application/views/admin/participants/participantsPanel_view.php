@@ -1,4 +1,5 @@
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "participantpanel.js" ?>" type="text/javascript"></script>
+
 <script type="text/javascript">
     var exporttocsvcountall = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/exporttocsvcountAll"); ?>";
     var exporttocsvall = "<?php echo Yii::app()->getController()->createUrl("exporttocsvAll"); ?>";
@@ -35,10 +36,12 @@
                 </a>
 
                 <!-- Export to CSV file -->
-                <a id="export" class="btn btn-default" href="#" role="button">
-                    <span class="icon-exportcsv text-success"></span>
-                    <?php eT("Export");?>
-                </a>
+                <?php if ($totalrecords>0): ?>
+                    <a id="export" class="btn btn-default" href="#" role="button">
+                        <span class="icon-exportcsv text-success"></span>
+                        <?php eT("Export");?>
+                    </a>
+                <?php endif;?>
 
                 <!-- Blacklist control -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/blacklistControl"); ?>" role="button">
@@ -97,7 +100,7 @@
 <div id="exportcsv" title="exportcsv" style="display:none" class='form30'>
     <ul>
         <li>
-            <label for='attributes'>Attributes to export:</label>
+            <label for='attributes'><?php eT('Attributes to export:');?></label>
             <select id="attributes" name="attributes" multiple="multiple" style='width: 350px' size=7>
                     <?php
                         foreach ($aAttributes as $value)
