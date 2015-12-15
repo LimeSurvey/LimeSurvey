@@ -21,19 +21,23 @@
         <tr >
             <td style='padding:3px;'>
                 <?php echo CHtml::form(array('admin/user/sa/modifyuser'), 'post');?>
-                    <button type='submit' class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil text-success"></span></button> <?php // eT("Edit this user");?>
-                    <input type='hidden' name='action' value='modifyuser' />
-                    <input type='hidden' name='uid' value='<?php echo htmlspecialchars($usrhimself['uid']);?>' />
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo eT("Edit this user"); ?>" >
+                        <button type='submit' class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil text-success"></span></button> <?php // eT("Edit this user");?>
+                        <input type='hidden' name='action' value='modifyuser' />
+                        <input type='hidden' name='uid' value='<?php echo htmlspecialchars($usrhimself['uid']);?>' />
+                    </span>
                 </form>
 
                 <?php if ($usrhimself['parent_id'] != 0 && Permission::model()->hasGlobalPermission('users','delete') ) { ?>
                 <?php echo CHtml::form(array('admin/user/sa/deluser'), 'post', array('onsubmit'=>'return confirm("'.gT("Are you sure you want to delete this entry?","js").'")') );?>
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo eT("Delete this user"); ?>" >
                         <button type='submit' class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash  text-danger"></span></button> <?php //<?php eT("Delete this user");?>;?>
                         <input type='hidden' name='action' value='deluser' />
                         <input type='hidden' name='user' value='<?php echo htmlspecialchars($usrhimself['user']);?>' />
                         <input type='hidden' name='uid' value='<?php echo $usrhimself['uid'];?>' />
-                    </form>
-                    <?php } ?>
+                    </span>
+                </form>
+                <?php } ?>
 
             </td>
 
@@ -61,9 +65,11 @@
                 <td style='padding:3px;'>
                     <?php if (Permission::model()->hasGlobalPermission('superadmin','read') || $usr['uid'] == Yii::app()->session['loginID'] || (Permission::model()->hasGlobalPermission('users','update') && $usr['parent_id'] == Yii::app()->session['loginID'])) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/modifyuser'), 'post', array( 'class'=>'pull-left'));?>
-                            <button type='submit' class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil  text-success"></span></button> <?php // eT("Edit this user");?>
-                            <input type='hidden' name='action' value='modifyuser' />
-                            <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
+                            <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo eT("Edit this user"); ?>" >
+                                <button type='submit' class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil  text-success"></span></button> <?php // eT("Edit this user");?>
+                                <input type='hidden' name='action' value='modifyuser' />
+                                <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
+                            </span>
                         </form>
                         <?php } ?>
 
@@ -72,27 +78,33 @@
                         (Permission::model()->hasGlobalPermission('users','update') &&
                         $usr['parent_id'] == Yii::app()->session['loginID'])) && $usr['uid']!=1) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/setuserpermissions'), 'post', array( 'class'=>'pull-left'));?>
-                            <button type='submit' class="btn btn-default btn-xs"><span class="icon-security text-success"></span></button> <?php // eT("Set global permissions for this user");?>
-                            <input type='hidden' name='action' value='setuserpermissions' />
-                            <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
-                            <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
+                            <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo eT("Set global persmissions for this user"); ?>" >
+                                <button type='submit' class="btn btn-default btn-xs"><span class="icon-security text-success"></span></button> <?php // eT("Set global permissions for this user");?>
+                                <input type='hidden' name='action' value='setuserpermissions' />
+                                <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
+                                <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
+                            </span>
                         </form>
                         <?php }
                         if ((Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read'))  && $usr['uid']!=1) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/setusertemplates'), 'post', array( 'class'=>'pull-left'));?>
-                            <button type='submit' class="btn btn-default btn-xs"><span class="icon-templatepermissions text-success"></span></button> <?php // eT("Set template permissions for this user");?>
-                            <input type='hidden' name='action' value='setusertemplates' />
-                            <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
-                            <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
+                            <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo eT("Set template permissions for this user"); ?>" >
+                                <button type='submit' class="btn btn-default btn-xs"><span class="icon-templatepermissions text-success"></span></button> <?php // eT("Set template permissions for this user");?>
+                                <input type='hidden' name='action' value='setusertemplates' />
+                                <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
+                                <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
+                            </span>
                         </form>
                         <?php }
                         if ((Permission::model()->hasGlobalPermission('superadmin','read') || (Permission::model()->hasGlobalPermission('users','delete')  && $usr['parent_id'] == Yii::app()->session['loginID']))&& $usr['uid']!=1) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/deluser'), 'post', array( 'class'=>'pull-left'));?>
 
-                            <button type='submit' class="btn btn-default btn-xs" onclick='return confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")' ><span class="glyphicon glyphicon-trash text-danger"></span></button> <?php // eT("Delete this user");?>
-                            <input type='hidden' name='action' value='deluser' />
-                            <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
-                            <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
+                            <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo eT("Delete this user"); ?>" >
+                                <button type='submit' class="btn btn-default btn-xs" onclick='return confirm("<?php eT("Are you sure you want to delete this user?","js");?>")' ><span class="glyphicon glyphicon-trash text-danger"></span></button> <?php // eT("Delete this user");?>
+                                <input type='hidden' name='action' value='deluser' />
+                                <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />
+                                <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
+                            </span>
                         </form>
                         <?php }
                         if (Yii::app()->session['loginID'] == "1" && $usr['parent_id'] !=1 ) { ?>
