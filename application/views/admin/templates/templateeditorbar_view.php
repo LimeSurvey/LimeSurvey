@@ -49,19 +49,20 @@
 
 <div class='menubar' id="templateeditorbar">
     <div class='row container-fluid'>
-        <div class="col-md-7">
 
+        <!-- Left Menu -->
+        <div class="col-md-5">
+
+            <!-- Create -->
             <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir)):?>
-                <!-- Create -->
                 <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Create new template called:"); ?>', '<?php eT("NewTemplate"); ?>', 'default', 'copy')">
                     <span class="icon-add text-success"></span>
                     <?php eT("Create new"); ?>
                 </a>
             <?php endif;?>
 
+            <!-- Import -->
             <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir)):?>
-
-                <!-- Import -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','import') && function_exists("zip_open")):?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl('admin/templates/sa/upload'); ?>" role="button">
                         <span class="icon-import text-success"></span>
@@ -147,9 +148,8 @@
         </div>
 
 
-        <!-- Menu Right -->
-
-        <div class="col-md-5 text-right form-inline">
+        <!-- Right Menu -->
+        <div class="col-md-7 text-right form-inline">
             <div class="form-group">
                 <label for='templatedir'><?php eT("Template:"); ?></label>
                 <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/view/editfile/".$editfile."/screenname/".$screenname); ?>/templatename/'+escape(this.value), '_top')">
@@ -163,9 +163,6 @@
                     <?php echo makeoptions($screens, "id", "name", HTMLEscape($screenname) ); ?>
                 </select>
             </div>
-
-
-
 
             <?php if(isset($fullpagebar['savebutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" aria-data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
@@ -184,7 +181,7 @@
                 <a class="btn btn-default" href="<?php echo $this->createUrl("/admin"); ?>" role="button">
                     <span class="glyphicon glyphicon-backward" ></span>
                     &nbsp;&nbsp;
-                    <?php eT("return to admin pannel."); ?>
+                    <?php eT("return to admin pannel"); ?>
                 </a>
             <?php endif;?>
         </div>
