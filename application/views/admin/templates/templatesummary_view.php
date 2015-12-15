@@ -14,8 +14,8 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             <div class="alert alert-warning alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <?php eT("You can't save changes because the template directory is not writable."); ?>
-            </div>                    
-        <?php endif; ?>            
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -23,14 +23,14 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
     <div class="col-lg-2" id='templateleft'>
         <div style="padding-left:1em;">
             <?php eT("Standard files:"); ?><br>
-            <select size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
+            <select class="form-control" size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
                 <?php echo makeoptions($files, "name", "name", $editfile); ?>
             </select>
-        </div>      
+        </div>
 
         <div style='margin-top:1em;padding-left:1em;'>
             <?php eT("CSS & Javascript files:"); ?>
-            <br/><select size='8' name='cssfiles' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
+            <br/><select  class="form-control"  size='8' name='cssfiles' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
                 <?php echo makeoptions($cssfiles, "name", "name", $editfile); ?>
             </select>
         </div>
@@ -55,16 +55,16 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                     <input type='submit' class='btn btn-default' value='<?php eT("Save changes"); ?>'
                             <?php if (!is_template_editable($templatename)):?>
                                 disabled='disabled' alt='<?php eT("Changes cannot be saved to a standard template."); ?>'
-                            <?php endif; ?>             
-                    />                
+                            <?php endif; ?>
+                    />
                 <?php endif; ?>
             <?php endif; ?>
         </p>
         </form>
-    </div>    
-    
-    
-    
+    </div>
+
+
+
     <div class="col-lg-2">
         <div>
             <?php eT("Other files:"); ?>
@@ -72,12 +72,12 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             <select size='11' style='width:250px; overflow: hidden;' name='otherfile' id='otherfile'>
                 <?php echo makeoptions($otherfiles, "name", "name", ""); ?>
             </select><br>
-            <?php 
+            <?php
             if (Permission::model()->hasGlobalPermission('templates','delete'))
             { ?>
 
                 <input type='submit' class='btn btn-default' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT("Are you sure you want to delete this file?","js"); ?>')"/>
-                <?php 
+                <?php
             }
             ?>
             <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
@@ -104,18 +104,18 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                 <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
                 <input type='hidden' name='action' value='templateuploadfile' />
                 </form>
-                <?php 
+                <?php
             }
             ?>
         </div>
-    </div>    
+    </div>
 </div>
 <?php endif;?>
 
 <div class="row template-sum" style="margin-bottom: 100px;">
     <div class="col-lg-12">
         <h4>
-            <?php eT("Preview:"); ?>        
+            <?php eT("Preview:"); ?>
         </h4>
         <div class="jumbotron message-box">
             <input type='button' value='<?php eT("Mobile"); ?>' id='iphone' class="btn btn-default"/>
@@ -138,12 +138,10 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                     <p><iframe id='previewiframe' src='<?php echo $this->createUrl('admin/templates/sa/tmp/',array('id'=>$time)); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe></p>
                     </div>
                     <?php } ?>
-            
-            
-            
-                        
+
+
+
+
         </div>
     </div>
-</div>    
-
-
+</div>
