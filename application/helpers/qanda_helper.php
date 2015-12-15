@@ -944,15 +944,16 @@ function do_date($ia)
     // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
     if (trim($aQuestionAttributes['date_min'])!='')
     {
-        $date_min=$aQuestionAttributes['date_min'];
-        if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/",$date_min))
-        {
-            $mindate=$date_min;
-        }
-        elseif (ctype_digit($date_min) && (strlen($date_min)==4) && ($date_min>=1900) && ($date_min<=2099))
+        $date_min=stripslashes(trim($aQuestionAttributes['date_min']));
+        $date_time_em=strtotime(LimeExpressionManager::ProcessString("{".$date_min."}",$ia[0]));
+        if(ctype_digit($date_min) && (strlen($date_min)==4) && ($date_min>=1900) && ($date_min<=2099))
         {
             // backward compatibility: if only a year is given, add month and day
             $mindate=$date_min.'-01-01';
+        }
+        elseif($date_time_em)
+        {
+            $mindate=date("Y-m-d",$date_time_em);
         }
         else
         {
@@ -963,19 +964,19 @@ function do_date($ia)
     {
         $mindate='1900-01-01'; // Why 1900 ?
     }
-
     // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
     if (trim($aQuestionAttributes['date_max'])!='')
     {
-        $date_max=$aQuestionAttributes['date_max'];
-        if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/",$date_max))
-        {
-            $maxdate=$date_max;
-        }
-        elseif (ctype_digit($date_max) && (strlen($date_max)==4) && ($date_max>=1900) && ($date_max<=2099))
+        $date_max=trim($aQuestionAttributes['date_max']);
+        $date_time_em=strtotime(LimeExpressionManager::ProcessString("{".$date_max."}",$ia[0]));
+        if (ctype_digit($date_max) && (strlen($date_max)==4) && ($date_max>=1900) && ($date_max<=2099))
         {
             // backward compatibility: if only a year is given, add month and day
             $maxdate=$date_max.'-12-31';
+        }
+        elseif($date_time_em)
+        {
+            $maxdate=date("Y-m-d",$date_time_em);
         }
         else
         {
@@ -986,7 +987,7 @@ function do_date($ia)
     {
         $maxdate='2037-12-31'; // Why 2037 ?
     }
-
+		tracevar(array($mindate,$maxdate));
     if (trim($aQuestionAttributes['dropdown_dates'])==1) {
         if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) &
            ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]!='INVALID'))
