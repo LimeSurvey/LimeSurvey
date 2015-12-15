@@ -49,7 +49,7 @@
 
 <div class='menubar' id="templateeditorbar">
     <div class='row container-fluid'>
-        <div class="col-md-8">
+        <div class="col-md-7">
 
             <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir)):?>
                 <!-- Create -->
@@ -149,7 +149,7 @@
 
         <!-- Menu Right -->
 
-        <div class="col-md-4 text-right form-inline">
+        <div class="col-md-5 text-right form-inline">
             <div class="form-group">
                 <label for='templatedir'><?php eT("Template:"); ?></label>
                 <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/view/editfile/".$editfile."/screenname/".$screenname); ?>/templatename/'+escape(this.value), '_top')">
@@ -180,11 +180,11 @@
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
-            <?php if(isset($fullpagebar['returnbutton']['url'])):?>
+            <?php if(isset($fullpagebar['returnbutton'])):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("/admin"); ?>" role="button">
                     <span class="glyphicon glyphicon-backward" ></span>
                     &nbsp;&nbsp;
-                    <?php eT("Return to survey administration."); ?>
+                    <?php eT("return to admin pannel."); ?>
                 </a>
             <?php endif;?>
         </div>
