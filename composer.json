@@ -7,12 +7,11 @@
         "vendor-dir": "protected/vendor"
     },
     "require": {
-	"2amigos/yiiwheels": "^2.0.3",
-	"yiisoft/yii" : "^1.1.16",
-	"tecnickcom/tcpdf": "^6.2",
-	"phpmailer/phpmailer": "^5.0",
-	"jsonrpc/jsonrpc" : "^1.0",
-        "ar-php/ar-php": "dev-master",
+        "2amigos/yiiwheels": "^2.0.3",
+        "yiisoft/yii" : "^1.1.16",
+        "tecnickcom/tcpdf": "^6.2",
+        "phpmailer/phpmailer": "^5.0",
+        "jsonrpc/jsonrpc" : "^1.0",
         "guzzlehttp/guzzle": "^5.3",
         "cakephp/utility": "^3.0",
         "sam-it/php-auto-update": "^1.0",
@@ -24,10 +23,9 @@
         "studio-42/elfinder": "^2.1",
         "zendframework/zend-diactoros": "1.*",
 
-
         "bower-asset/ajaxq": "^0.0.3@dev",
         "bower-asset/jquery.actual": "1.*",
-        "bower-asset/papaparse": "4.1",
+        "bower-asset/papaparse": "^4.1",
         "bower-asset/tinymce": "~4.1@dev",
         "bower-asset/remarkable-bootstrap-notify": "3.*",
         "bower-asset/select2-bootstrap-css": "1.*",

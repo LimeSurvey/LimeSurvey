@@ -8,9 +8,8 @@
         <?php
             App()->bootstrap->register();
 
-        $this->widget('ext.LimeScript.LimeScript');
-			$this->widget('ext.LimeDebug.LimeDebug');
-			$cs = App()->clientScript;
+            $this->widget(LimeScript::class);
+            $cs = App()->clientScript;
             /** @var CAssetManager $am */
             $am = App()->assetManager;
             $public = App()->publicUrl;
@@ -25,6 +24,8 @@
             App()->getComponent('yiiwheels')->registerAssetJs('bootstrap-bootbox.min.js');
             $cs->registerScriptFile($am->publish(Yii::getPathOfAlias('bower.tinymce')) . '/tinymce.js');
             $cs->registerScriptFile("$public/scripts/htmleditor.js");
+
+            // Disable disabled links.
             $cs->registerScript('links', "$('body').on('click', '.disabled a', function (e) { e.preventDefault(); });");
 
         ?>

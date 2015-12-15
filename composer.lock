@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d3f7c1be9a98735841e8864d65ac5229",
-    "content-hash": "d4d38e7044ab332c48d929dcb3a22f55",
+    "hash": "ebb7ea5df152b4614b885d996d5da28d",
+    "content-hash": "cea181f5170b2cd7effe8e4394b545d3",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -46,52 +46,6 @@
                 "yii"
             ],
             "time": "2014-09-08 09:45:36"
-        },
-        {
-            "name": "ar-php/ar-php",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tawfekov/ar-php.git",
-                "reference": "92657a9ef39cb1aad4b08364895523939dcd3803"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tawfekov/ar-php/zipball/92657a9ef39cb1aad4b08364895523939dcd3803",
-                "reference": "92657a9ef39cb1aad4b08364895523939dcd3803",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Arphp": "src/"
-                },
-                " classmap ": [
-                    "autoload_classmap.php "
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL"
-            ],
-            "authors": [
-                {
-                    "name": "Khaled Al-Sham'aa",
-                    "email": "khaled@ar-php.org",
-                    "homepage": "http://www.ar-php.org/"
-                },
-                {
-                    "name": "tawfek daghistani",
-                    "email": "tawfekov@gmail.com",
-                    "homepage": "http://www.dagho.com/"
-                }
-            ],
-            "description": "helper libaray for dealing with arabic language",
-            "homepage": "http://www.ar-php.org/",
-            "time": "2012-11-03 12:29:33"
         },
         {
             "name": "bower-asset/TinyMCE-Placeholder",
@@ -614,16 +568,16 @@
         },
         {
             "name": "bower-asset/papaparse",
-            "version": "4.1.0",
+            "version": "4.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mholt/PapaParse.git",
-                "reference": "0e0ee8dcfa5e11f251c12b377ebf572d49c8800c"
+                "reference": "6fe5c2b947870080d47425f727750928f8a045a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mholt/PapaParse/zipball/0e0ee8dcfa5e11f251c12b377ebf572d49c8800c",
-                "reference": "0e0ee8dcfa5e11f251c12b377ebf572d49c8800c",
+                "url": "https://api.github.com/repos/mholt/PapaParse/zipball/6fe5c2b947870080d47425f727750928f8a045a3",
+                "reference": "6fe5c2b947870080d47425f727750928f8a045a3",
                 "shasum": ""
             },
             "type": "bower-asset-library",
@@ -3790,7 +3744,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "ar-php/ar-php": 20,
         "bower-asset/ajaxq": 20,
         "bower-asset/tinymce": 20,
         "bower-asset/tinymce-placeholder": 20,

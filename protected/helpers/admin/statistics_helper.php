@@ -157,20 +157,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             if ($maxyvalue<10) {++$maxyvalue;}
 
 
-            if ($sLanguageCode=='ar')
-            {
-                $Arabic = new Arphp\Glyphs();
-
-                foreach($lbl as $kkey => $kval){
-                    if (preg_match("^[A-Za-z]^", $kkey)) { //auto detect if english
-                        $lblout[]=$kkey.' ('.$kval.')';
-                    }
-                    else{
-                        $lblout[]= $Arabic->utf8Glyphs( $kkey.' )'.$kval.'(');
-                    }
-                }
-            }
-            elseif (\ls\helpers\SurveyTranslator::getLanguageRTL($sLanguageCode))
+            if (\ls\helpers\SurveyTranslator::getLanguageRTL($sLanguageCode))
             {
                 foreach($lbl as $kkey => $kval){
                     $lblout[]= UTF8Strrev($kkey.' )'.$kval.'(');
@@ -251,20 +238,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             }
             $lbl = $labelTmp;
 
-            if ($sLanguageCode=='ar')
-            {
-                $Arabic = new Arphp\Glyphs();
-
-                foreach($lbl as $kkey => $kval){
-                    if (preg_match("^[A-Za-z]^", $kkey)) { //auto detect if english
-                        $lblout[]=$kkey.' ('.$kval.')';
-                    }
-                    else{
-                        $lblout[]= $Arabic->utf8Glyphs( $kkey.' )'.$kval.'(');
-                    }
-                }
-            }
-            elseif (\ls\helpers\SurveyTranslator::getLanguageRTL($sLanguageCode))
+            if (\ls\helpers\SurveyTranslator::getLanguageRTL($sLanguageCode))
             {
                 foreach($lbl as $kkey => $kval){
                     $lblout[]= UTF8Strrev(html_entity_decode($kkey,null,'UTF-8').' )'.$kval.'(');

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Class CsvImportWidget
+ *
+ * A widget that supports client side parsing of a CSV file and mapping its columns to model attributes.
+ *
+ */
 class CsvImportWidget extends CWidget
 {
     /**
@@ -52,9 +58,7 @@ class CsvImportWidget extends CWidget
     return result; }')
         ]);
         $scriptParts = [
-            "var \$widget = $('#{$this->getId()}')",
-            "var importer = new CsvImporter(\$widget, {$config});",
-            "\$widget.data('importer', importer);",
+            "$('#{$this->getId()}').data('importer', new CsvImporter($('#{$this->getId()}'), {$config}));",
 
 
         ];
