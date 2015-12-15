@@ -199,7 +199,7 @@ class Usergroups extends Survey_Common_Action
             }
         }
         $aData['usergroupbar']['savebutton']['form']= 'usergroupform';
-        $aData['usergroupbar']['savebutton']['text']= gT('Add group');
+        $aData['usergroupbar']['savebutton']['text']= gT('Save');
         $aData['usergroupbar']['closebutton']['url'] = 'admin/usergroups';
         $aData['usergroupbar']['add'] = 'admin/usergroups';
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
