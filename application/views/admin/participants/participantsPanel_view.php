@@ -41,6 +41,11 @@
                         <span class="icon-exportcsv text-success"></span>
                         <?php eT("Export");?>
                     </a>
+                <?php else:?>
+                    <a id="export" class="btn btn-default disabled" href="#" role="button">
+                        <span class="icon-exportcsv text-success"></span>
+                        <?php eT("Export");?>
+                    </a>
                 <?php endif;?>
 
                 <!-- Blacklist control -->
