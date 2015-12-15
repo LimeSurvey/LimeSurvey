@@ -1625,7 +1625,8 @@ class tokens extends Survey_Common_Action
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData["surveyinfo"] = $surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
-        $aData['sidebar']["token_menu"]=TRUE;
+        $aData['sidebar']["token_menu"]=true;
+        $aData['token_bar']['exportbutton']['form']=true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
 
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
