@@ -35,7 +35,6 @@ class PluginCommand extends CConsoleCommand
     {
         echo "Scanning plugins folders...";
         $result = $this->pluginManager->scanPlugins();
-        var_dump(array_keys($result));
         echo "OK\n";
         $plugins = $this->pluginManager->getPlugins();
         foreach($result as $pluginConfig) {
@@ -51,13 +50,30 @@ class PluginCommand extends CConsoleCommand
     public function actionEnable($id)
     {
         $result = $this->pluginManager->scanPlugins();
-//        if ()
-        $this->pluginManager->enablePlugin($id);
+        foreach($result as $pluginConfig) {
+            if ($pluginConfig->getId() === $id) {
+                echo "Plugin found. ";
+                echo $this->pluginManager->enablePlugin($id) ? "OK" : "FAILED";
+                echo "\n";
+                return;
+            }
+        }
+        echo "Plugin not found.\n";
+
     }
 
     public function actionDisable($id)
     {
-        $this->pluginManager->disablePlugin($id);
+        if ($this->pluginManager->getPlugin($id) !== null) {
+            echo "Plugin found. ";
+
+            echo $this->pluginManager->disablePlugin($id) ? "OK" : "FAILED";
+            echo "\n";
+
+        } else {
+            echo "Plugin not found.\n";
+        }
+
     }
 }
 
