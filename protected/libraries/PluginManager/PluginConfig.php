@@ -121,11 +121,11 @@ public function setEvents($value) {
         }
         return $result;
     }
-    
+
     /**
      * Scans the directory for plugins.
-     * @param string $directory
-     * @return array For each plugin an array with keys: success, name, errors.
+     * @param string $directory The directory to scan.
+     * @return static[]
      */
     public static function readAll($directory = []) {
         \Yii::beginProfile('readAll');
@@ -179,7 +179,7 @@ public function setEvents($value) {
     
     /**
      * 
-     * @return iPlugin
+     * @return PluginInterface
      */
     public function getPlugin() {
         return self::$pluginManager->getPlugin($this->id);

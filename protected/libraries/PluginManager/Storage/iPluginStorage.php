@@ -12,7 +12,7 @@ namespace ls\pluginmanager;
          * @param string $language The optional language to use
          * @return mixed The data stored.
          */
-        public function get(iPlugin $plugin, $key = null, $model = null, $id = null, $default = null, $language = null);
+        public function get(PluginInterface $plugin, $key = null, $model = null, $id = null, $default = null, $language = null);
 
         /**
          * Stores plugin data.
@@ -23,7 +23,7 @@ namespace ls\pluginmanager;
          * @param int $id Id of the model for which the data is retreived
          * @param string $language The optional language to use
          */  
-        public function set (iPlugin $plugin, $key, $data, $model = null, $id = null, $language = null);
+        public function set (PluginInterface $plugin, $key, $data, $model = null, $id = null, $language = null);
 
         
         /**

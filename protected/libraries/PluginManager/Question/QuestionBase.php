@@ -44,7 +44,7 @@ namespace ls\pluginmanager;
         
         /**
          *
-         * @var iPlugin
+         * @var PluginInterface
          */
         protected $plugin;
         
@@ -78,12 +78,12 @@ namespace ls\pluginmanager;
         protected static $signature = array();
         
         /**
-         * @param iPlugin $plugin The plugin to which this question belongs.
+         * @param PluginInterface $plugin The plugin to which this question belongs.
          * @param int $questionId
          * @param int $responseId Pass a response id to load results.
          */
         
-        public function __construct(iPlugin $plugin, LimesurveyApi $api, $questionId = null, $responseId = null) {
+        public function __construct(PluginInterface $plugin, LimesurveyApi $api, $questionId = null, $responseId = null) {
             $this->plugin = $plugin;
             $this->api = $api;
             $this->responseId = $responseId;

@@ -1,8 +1,8 @@
 <?php
 namespace ls\pluginmanager;
-interface iPlugin {
+interface PluginInterface {
 
-       /**
+    /**
      * Provides meta data on the plugin settings that are available for this plugin.
      * This does not include enable / disable; a disabled plugin is never loaded.
      * @param boolean $getValues Set to false to not get the current value for each plugin setting.
@@ -33,4 +33,7 @@ interface iPlugin {
      * @return PluginBase
      */
    public function setEvent(PluginEvent $event);
+
+
+    public function getName();
 }

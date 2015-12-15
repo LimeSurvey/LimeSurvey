@@ -10,7 +10,7 @@ class DbStorage implements iPluginStorage {
     }
     /**
      * 
-     * @param iPlugin $plugin
+     * @param PluginInterface $plugin
      * @param string $key Key for the setting; passing null will return all keys.
      * @param string $model Optional model name to which the data was attached.
      * @param int $id Optional id of the model instance to which the data was attached.
@@ -18,7 +18,7 @@ class DbStorage implements iPluginStorage {
      * @param string $language Optional language identifier used for retrieving the setting.
      * @return mixed Returns the value from the database or null if not set.
      */
-    public function get(iPlugin $plugin, $key = null, $model = null, $id = null, $default = null, $language = null) 
+    public function get(PluginInterface $plugin, $key = null, $model = null, $id = null, $default = null, $language = null)
     {
         $functionName = 'get' . ucfirst($model);
         if ($model == null || !method_exists($this, $functionName))
@@ -33,14 +33,14 @@ class DbStorage implements iPluginStorage {
 
     /**
      * 
-     * @param iPlugin $plugin
+     * @param PluginInterface $plugin
      * @param string $key
      * @param string $model Optional model name to which the data was attached.
      * @param int $id Optional id of the model instance to which the data was attached.
      * @param mixed $default Default value to return if key could not be found.
      * @return mixed Returns the value from the database or null if not set.
      */
-    protected function getGeneric(iPlugin $plugin, $key, $model, $id, $default) 
+    protected function getGeneric(PluginInterface $plugin, $key, $model, $id, $default)
     {
         $attributes = array(
             'plugin_id' => $plugin->id,
@@ -75,14 +75,14 @@ class DbStorage implements iPluginStorage {
      * This function retrieves plugin data related to the ls\models\Question model.
      * LS saves this data in a question_attributes EAV table; therefore
      * the 'ls\models\Question' model is treated specially.
-     * @param iPlugin $plugin
+     * @param PluginInterface $plugin
      * @param type $key
      * @param type $model
      * @param type $id
      * @param type $default
      * @param type $language
      */
-    protected function getQuestion(iPlugin $plugin, $key, $model, $id, $default, $language)
+    protected function getQuestion(PluginInterface $plugin, $key, $model, $id, $default, $language)
     {
         $baseAttributes = array(
             'sid',
@@ -177,7 +177,7 @@ class DbStorage implements iPluginStorage {
     
     /**
      * 
-     * @param iPlugin $plugin
+     * @param PluginInterface $plugin
      * @param string $key
      * @param mixed data Default value to return if key could not be found.
      * @param string $model Optional model name to which the data was attached.
@@ -186,7 +186,7 @@ class DbStorage implements iPluginStorage {
      * 
      * @return boolean
      */    
-    public function set(iPlugin $plugin, $key, $data, $model = null, $id = null, $language = null) 
+    public function set(PluginInterface $plugin, $key, $data, $model = null, $id = null, $language = null)
     {
         
         $functionName = 'set' . ucfirst($model);
@@ -201,7 +201,7 @@ class DbStorage implements iPluginStorage {
     }
     /**
      * 
-     * @param iPlugin $plugin
+     * @param PluginInterface $plugin
      * @param string $key
      * @param mixed data Default value to return if key could not be found.
      * @param string $model Optional model name to which the data was attached.
@@ -210,7 +210,7 @@ class DbStorage implements iPluginStorage {
      * 
      * @return boolean
      */
-    protected function setGeneric(iPlugin $plugin, $key, $data, $model, $id, $language) 
+    protected function setGeneric(PluginInterface $plugin, $key, $data, $model, $id, $language)
     {
         
         if ($id == null && $model != null)
@@ -239,7 +239,7 @@ class DbStorage implements iPluginStorage {
     
     /**
      * 
-     * @param iPlugin $plugin
+     * @param PluginInterface $plugin
      * @param string $key
      * @param mixed data Default value to return if key could not be found.
      * @param string $model Optional model name to which the data was attached.
@@ -248,7 +248,7 @@ class DbStorage implements iPluginStorage {
      * 
      * @return boolean
      */
-    protected function setQuestion(iPlugin $plugin, $key, $data, $model, $id, $language) 
+    protected function setQuestion(PluginInterface $plugin, $key, $data, $model, $id, $language)
     {
         $baseAttributes = array(
             'sid',

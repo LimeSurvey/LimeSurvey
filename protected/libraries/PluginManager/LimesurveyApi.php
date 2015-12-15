@@ -26,10 +26,10 @@ use ls\models\SurveyDynamic;
         
         /**
          * Generates the real table name from plugin and tablename.
-         * @param iPlugin $plugin
+         * @param PluginInterface $plugin
          * @param string $tableName
          */
-        protected function getTableName(iPlugin $plugin, $tableName)
+        protected function getTableName(PluginInterface $plugin, $tableName)
         {
             return App()->getDb()->tablePrefix . strtolower($plugin->getName()) . "_$tableName";
         }
@@ -81,12 +81,12 @@ use ls\models\SurveyDynamic;
 
         /**
          * Gets an activerecord object associated to the table.
-         * @param iPlugin $plugin
+         * @param PluginInterface $plugin
          * @param string $sTableName Name of the table.
          * @param string $bPluginTable True if the table is plugin specific.
          * @return \ls\models\PluginDynamic
          */
-        public function getTable(iPlugin $plugin, $sTableName, $bPluginTable = true)
+        public function getTable(PluginInterface $plugin, $sTableName, $bPluginTable = true)
         {
             if ($bPluginTable)
             {
@@ -115,13 +115,13 @@ use ls\models\SurveyDynamic;
         }
         /**
          * Creates a new active record object instance.
-         * @param iPlugin $plugin
+         * @param PluginInterface $plugin
          * @param string $sTableNamem
          * @param string $scenario
          * @param string $bPluginTable True if the table is plugin specific.
          * @return \ls\models\PluginDynamic
          */
-        public function newModel(iPlugin $plugin, $sTableName, $scenario = 'insert', $bPluginTable = true)
+        public function newModel(PluginInterface $plugin, $sTableName, $scenario = 'insert', $bPluginTable = true)
         {
             if ($bPluginTable)
             {
@@ -147,7 +147,7 @@ use ls\models\SurveyDynamic;
         * @param string $sTableName Table name to check for (without dbprefix!))
         * @return boolean True or false if table exists or not
         */
-        public function tableExists(iPlugin $plugin, $sTableName)
+        public function tableExists(PluginInterface $plugin, $sTableName)
         {
             $sTableName =  $this->getTableName($plugin, $sTableName);
             return isset($sTableName) && in_array($sTableName, App()->getDb()->getSchema()->getTableNames());

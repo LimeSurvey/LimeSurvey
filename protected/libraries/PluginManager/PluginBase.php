@@ -3,7 +3,7 @@ namespace ls\pluginmanager;
 /**
  * Base class for plugins.
  */
-abstract class PluginBase extends \CComponent implements iPlugin {
+abstract class PluginBase extends \CComponent implements PluginInterface {
     use PluginTrait;
     /**
      *
@@ -163,4 +163,9 @@ abstract class PluginBase extends \CComponent implements iPlugin {
         return $this->pluginManager->unsubscribe($this, $event);
     }
 
+
+    public function getName()
+    {
+        return $this->name;
+    }
 }

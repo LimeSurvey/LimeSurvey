@@ -1,31 +1,63 @@
 <?php
 namespace ls\cli;
 use CConsoleCommand;
-    /*
-    * LimeSurvey (tm)
-    * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
-    * All rights reserved.
-    * License: GNU/GPL License v2 or later, see LICENSE.php
-    * LimeSurvey is free software. This version may have been modified pursuant
-    * to the GNU General Public License, and as distributed it includes or
-    * is derivative of works licensed under the GNU General Public License or
-    * other free or open source software licenses.
-    * See COPYRIGHT.php for copyright notices and details.
-    *
-    */
-    class PluginCommand extends CConsoleCommand
+
+use ls\pluginmanager\PluginConfig;
+use ls\pluginmanager\PluginManager;
+use SebastianBergmann\Environment\Console;
+
+/**
+ * Class PluginCommand
+ * @package ls\cli
+ *
+ * @property PluginManager $pluginManager
+ */
+class PluginCommand extends CConsoleCommand
+{
+    public $connection;
+
+    protected function getPluginManager()
     {
-        public $connection;
+        return App()->pluginManager;
+    }
 
-        public function actionCron($interval)
-        {
+    public function actionCron($interval)
+    {
 
-            $pm = Yii::app()->getPluginManager();
-            $event = new PluginEvent('cron');
-            $event->set('interval', $interval);
-            $pm->dispatchEvent($event);
-            
-            
+        $event = new PluginEvent('cron');
+        $event->set('interval', $interval);
+        $this->pluginManager->dispatchEvent($event);
+
+
+    }
+
+    public function actionIndex()
+    {
+        echo "Scanning plugins folders...";
+        $result = $this->pluginManager->scanPlugins();
+        var_dump(array_keys($result));
+        echo "OK\n";
+        $plugins = $this->pluginManager->getPlugins();
+        foreach($result as $pluginConfig) {
+            echo "Found {$pluginConfig->name} ({$pluginConfig->getId()})";
+            if (array_key_exists($pluginConfig->getId(), $plugins)) {
+                echo " ENABLED\n";
+            } else {
+                echo " DISABLED\n";
+            }
         }
     }
+
+    public function actionEnable($id)
+    {
+        $result = $this->pluginManager->scanPlugins();
+//        if ()
+        $this->pluginManager->enablePlugin($id);
+    }
+
+    public function actionDisable($id)
+    {
+        $this->pluginManager->disablePlugin($id);
+    }
+}
 

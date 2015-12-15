@@ -12,8 +12,7 @@ use Plugin;
         public $enabledPluginDir;
         protected $_apis = [];
         public $apiMap;
-  
-        protected $configs = [];
+
         protected $plugins = [];
         
         public $pluginDirs = [];
@@ -49,13 +48,29 @@ use Plugin;
                 throw new \Exception("No authorization plugin available.");
             };
         }
-        
-        public function disablePlugin($id) {
+
+        /**
+         * @param $id
+         * @return bool True if the file no longer exists.
+         */
+        public function disablePlugin($id)
+        {
             return !empty($id) && (!file_exists("{$this->enabledPluginDir}/$id") || unlink("{$this->enabledPluginDir}/$id"));
         }
-        public function enablePlugin($id) {
+
+        /**
+         * @param $id
+         * @return bool True when the file was created.
+         */
+        public function enablePlugin($id)
+        {
             return !empty($id) && touch("{$this->enabledPluginDir}/$id");
-        }   
+        }
+
+        /**
+         * @param $id
+         * @return bool
+         */
         public function isActive($id) {
             return !empty($id) && file_exists("{$this->enabledPluginDir}/$id");
         }
@@ -123,7 +138,7 @@ use Plugin;
 
         /**
          * Unsubscribes a plugin from an event.
-         * @param iPlugin $plugin Reference to the plugin being unsubscribed.
+         * @param PluginInterface $plugin Reference to the plugin being unsubscribed.
          * @param string $event Name of the event. Use '*', to unsubscribe all events for the plugin.
          * @param string $function Optional function of the plugin that was registered.
          */
@@ -167,6 +182,7 @@ use Plugin;
 
         /**
          * Scans the plugin directories for plugins.
+         * @return PluginConfig[]
          */
         public function scanPlugins()
         {
@@ -213,7 +229,10 @@ use Plugin;
         public function getPlugin($id) {
             return isset($this->plugins[$id]) ? $this->plugins[$id] : null;
         }
-        
+
+        /**
+         * @return PluginInterface[]
+         */
         public function getPlugins() {
             return $this->plugins;
         }

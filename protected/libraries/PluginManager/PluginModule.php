@@ -1,7 +1,7 @@
 <?php
 namespace ls\pluginmanager;
 
-abstract class PluginModule extends \CWebModule implements iPlugin
+abstract class PluginModule extends \CWebModule implements PluginInterface
 {
     use PluginTrait;
     /**
