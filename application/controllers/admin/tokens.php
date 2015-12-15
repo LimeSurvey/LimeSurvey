@@ -1626,6 +1626,7 @@ class tokens extends Survey_Common_Action
         $aData["surveyinfo"] = $surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
         $aData['sidebar']["token_menu"]=true;
+        $aData['sidebar']['state'] = "close";
         $aData['token_bar']['exportbutton']['form']=true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
 
