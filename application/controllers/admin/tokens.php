@@ -1440,7 +1440,8 @@ class tokens extends Survey_Common_Action
                                                       ->createAbsoluteUrl("/optin/tokens",array("surveyid"=>$iSurveyId,"langcode"=>trim($emrow['language']),"token"=>$emrow['token']));
                     $fieldsarray["{SURVEYURL}"] = $this->getController()
                                                        ->createAbsoluteUrl("/survey/index",array("sid"=>$iSurveyId,"token"=>$emrow['token'],"lang"=>trim($emrow['language'])));
-
+                    // Add some var for expression : actually only EXPIRY because : it's used in limereplacement field and have good reason to have it.
+                    $fieldsarray["{EXPIRY}"]=$aData['thissurvey']["expires"];
                     $customheaders = array('1' => "X-surveyid: " . $iSurveyId,
                     '2' => "X-tokenid: " . $fieldsarray["{TOKEN}"]);
                     global $maildebug;

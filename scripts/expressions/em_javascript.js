@@ -485,13 +485,17 @@ function LEMval(alias)
             return '';
         }
     }
-    var whichJsName;    // correct name whether on- or off-page
-
-    if (LEMmode=='survey' || (LEMmode=='group' && attr.gseq == LEMgseq) || (LEMmode=='question' && attr.qid == LEMqid)) {
+    var whichJsName; // correct name whether on- or off-page
+    var onSamePage; // Tag if value is on same page or not (
+    if (LEMmode=='survey' || (LEMmode=='group' && attr.gseq == LEMgseq) || (LEMmode=='question' && attr.qid == LEMqid))
+    {
         whichJsName = (typeof attr.jsName_on === 'undefined') ? attr.jsName : attr.jsName_on;
+        onSamePage=true;
     }
-    else {
+    else
+    {
         whichJsName = attr.jsName;
+        onSamePage=false;
     }
 
     if (whichJsName === null || typeof document.getElementById(whichJsName) === 'undefined' || document.getElementById(whichJsName) === null) {
@@ -676,9 +680,13 @@ function LEMval(alias)
                 {
                     return "";
                 }
-                if (LEMgseq==attr.gseq && LEMradix === ',' ) {
+                // If value is on same page : value use LEMradix, else use . (dot) : bug #10001
+                if (LEMradix === ',' && onSamePage )
+                {
                     var regValidateNum = /^-?\d*\,?\d*$/;
-                }else{
+                }
+                else
+                {
                     var regValidateNum = /^-?\d*\.?\d*$/;
                 }
                 if(!regValidateNum.test(value))
