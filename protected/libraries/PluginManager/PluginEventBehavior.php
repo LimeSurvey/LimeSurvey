@@ -56,6 +56,6 @@
 			{
 				$oPluginEvent->set('filterCriteria', $criteria);
 			}
-			return App()->getPluginManager()->dispatchEvent($oPluginEvent);
+			return App()->pluginManager->dispatchEvent($oPluginEvent);
 		}
 	}

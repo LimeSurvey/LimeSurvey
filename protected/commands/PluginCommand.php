@@ -2,6 +2,7 @@
 namespace ls\cli;
 use CConsoleCommand;
 
+use ls\models\SettingGlobal;
 use ls\pluginmanager\PluginConfig;
 use ls\pluginmanager\PluginManager;
 use SebastianBergmann\Environment\Console;
@@ -60,6 +61,39 @@ class PluginCommand extends CConsoleCommand
         }
         echo "Plugin not found.\n";
 
+    }
+
+
+    public function actionAuthenticate()
+    {
+        $enabled = \ls\models\SettingGlobal::get('authenticationPlugins');
+        foreach($this->pluginManager->getAuthenticators() as $id => $plugin) {
+            echo "{$plugin->getName()} ({$id}) ";
+            if (in_array($id, $enabled)) {
+                echo "ENABLED\n";
+            } else {
+                echo "DISABLED\n";
+            }
+        }
+    }
+
+    public function actionEnableAuthenticator($id)
+    {
+        if (array_key_exists($id, $this->pluginManager->getAuthenticators())) {
+            $enabled = SettingGlobal::get('authenticationPlugins');
+            $enabled[] = $id;
+            echo SettingGlobal::set('authenticationPlugins', array_unique($enabled)) ? "SUCCESS\n" : "FAIL\n";
+        }
+    }
+
+    public function actionDisableAuthenticator($id)
+    {
+        $enabled = array_flip(SettingGlobal::get('authenticationPlugins'));
+        if (isset($id, $enabled)) {
+            array_flip($enabled);
+            unset($enabled[$id]);
+            echo SettingGlobal::set('authenticationPlugins', array_unique(array_keys($enabled))) ? "SUCCESS\n" : "FAIL\n";
+        }
     }
 
     public function actionDisable($id)

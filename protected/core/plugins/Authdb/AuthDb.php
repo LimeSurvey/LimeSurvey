@@ -5,7 +5,7 @@ use \ls\pluginmanager\PluginEvent;
 use \Yii;
 use \CHtml;
 
-class AuthDb extends PluginBase implements \ls\pluginmanager\iAuthenticationPlugin
+class AuthDb extends PluginBase implements \ls\pluginmanager\AuthenticationPluginInterface
 {
     use \ls\pluginmanager\InternalUserDbTrait;
     protected $storage = 'DbStorage';

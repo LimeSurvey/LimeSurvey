@@ -1,6 +1,6 @@
 <?php
 namespace ls\controllers;
-use ls\pluginmanager\iAuthenticationPlugin;
+use ls\pluginmanager\AuthenticationPluginInterface;
 use ls\pluginmanager\iAuthorizationPlugin;
 use ls\pluginmanager\PluginEvent;
 use Yii;
@@ -37,7 +37,7 @@ class UsersController extends Controller
             }
         } 
         // Get all active auth plugins.
-        $forms = array_map(function(iAuthenticationPlugin $authenticator) {
+        $forms = array_map(function(AuthenticationPluginInterface $authenticator) {
             return $authenticator->getLoginSettings();
         }, $authenticators);
         if (empty($forms)) {
@@ -82,7 +82,7 @@ class UsersController extends Controller
     public function actionUpdate($id, $plugin) {
         $this->layout = 'main';
         $pluginObject = App()->pluginManager->getPlugin($plugin);
-        if (isset($pluginObject) && $pluginObject instanceOf iAuthenticationPlugin) {
+        if (isset($pluginObject) && $pluginObject instanceOf AuthenticationPluginInterface) {
             $user = $pluginObject->getUser($id);
             if (isset($user)) {
                 return $this->render('update', ['user' => $user]);

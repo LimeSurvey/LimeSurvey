@@ -38,7 +38,7 @@ interface iUser {
     public function setProfileSettings($settings);
     
     /**
-     * @return iAuthenticationPlugin Returns the authenticator this user belongs to.
+     * @return AuthenticationPluginInterface Returns the authenticator this user belongs to.
      */
     public function getAuthenticator();
 }

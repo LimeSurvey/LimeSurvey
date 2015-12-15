@@ -6,7 +6,7 @@ use ls\models\User;
  * Class AuthLDAP
  * @tod Implement this. (and remove abstract)
  */
-abstract class AuthLDAP extends PluginBase implements \ls\pluginmanager\iAuthenticationPlugin
+abstract class AuthLDAP extends PluginBase implements \ls\pluginmanager\AuthenticationPluginInterface
 {
     protected $storage = 'DbStorage';
 

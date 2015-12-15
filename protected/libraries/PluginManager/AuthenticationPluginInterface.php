@@ -1,7 +1,7 @@
 <?php
 namespace ls\pluginmanager;
 
-interface iAuthenticationPlugin {
+interface AuthenticationPluginInterface extends PluginInterface{
     
     /**
      * 

@@ -1,7 +1,7 @@
 <?php
 namespace ls\components;
 
-use ls\pluginmanager\iAuthenticationPlugin;
+use ls\pluginmanager\AuthenticationPluginInterface;
 use ls\pluginmanager\iUser;
 
 /**
@@ -14,7 +14,7 @@ class WebUser extends \CWebUser
 
     /**
      * Returns the plugin responsible for authenticating the current user.
-     * @return iAuthenticationPlugin
+     * @return AuthenticationPluginInterface
      */
     public function getPlugin()
     {

@@ -9,7 +9,7 @@ use \ls\pluginmanager\PluginEvent;
  * @package ls\core\plugins
  * @todo Implement abstract methods
  */
-abstract class AuthWebServer extends PluginBase implements \ls\pluginmanager\iAuthenticationPlugin
+abstract class AuthWebServer extends PluginBase implements \ls\pluginmanager\AuthenticationPluginInterface
 {
     protected $storage = 'DbStorage';    
     

@@ -12,11 +12,11 @@ class PluginIdentity extends CBaseUserIdentity
 {
     /**
      *
-     * @var \ls\pluginmanager\iAuthenticationPlugin
+     * @var \ls\pluginmanager\AuthenticationPluginInterface
      */
     private $plugin;
 
-    public function __construct(\ls\pluginmanager\iAuthenticationPlugin $plugin)
+    public function __construct(\ls\pluginmanager\AuthenticationPluginInterface $plugin)
     {
         $this->plugin = $plugin;
     }

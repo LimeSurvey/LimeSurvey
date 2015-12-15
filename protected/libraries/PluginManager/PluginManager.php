@@ -4,7 +4,7 @@ use \Yii;
 use Plugin;
     /**
      * Factory for limesurvey plugin objects.
-     * @property-read iAuthenticationPlugin[] $authenticators
+     * @property-read AuthenticationPluginInterface[] $authenticators
      * @property-read iAuthorizationPlugin $authorizer
      */
     class PluginManager extends \CApplicationComponent{
@@ -295,11 +295,11 @@ use Plugin;
 
         /**
          * @param bool $activeOnly
-         * @return iAuthenticationPlugin[]
+         * @return AuthenticationPluginInterface[]
          */
         public function getAuthenticators($activeOnly = false) {
             $result = array_filter($this->plugins, function ($plugin) {
-                return $plugin instanceOf iAuthenticationPlugin;
+                return $plugin instanceOf AuthenticationPluginInterface;
             });
             if ($activeOnly) {
                 // If no active plugins are in the configuration we give enable AuthDb.

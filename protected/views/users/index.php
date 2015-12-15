@@ -1,7 +1,7 @@
 <?php
     
     foreach($authenticators as $authenticator) {
-        /* @var ls\pluginmanager\iAuthenticationPlugin $authenticator */
+        /* @var ls\pluginmanager\AuthenticationPluginInterface $authenticator */
         if ($authenticator->enumerable()) {
             $this->renderPartial('userList', ['authenticator' => $authenticator]);
         } else {

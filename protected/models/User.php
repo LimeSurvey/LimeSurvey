@@ -20,7 +20,7 @@ class User extends ActiveRecord implements \ls\pluginmanager\iUser
 {
     /**
      *
-     * @var \ls\pluginmanager\iAuthenticationPlugin
+     * @var \ls\pluginmanager\AuthenticationPluginInterface
      */
     protected $_authenticator;
     /**
