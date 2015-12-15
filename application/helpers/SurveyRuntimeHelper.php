@@ -1084,7 +1084,7 @@ class SurveyRuntimeHelper {
             echo templatereplace(file_get_contents($sTemplatePath."startgroup.pstpl"), array(), $redata);
             echo "\n";
 
-            if (!$previewquestion && !empty(trim($redata['groupdescription'])))
+            if (!$previewquestion && trim($redata['groupdescription'])=="")
             {
                 echo templatereplace(file_get_contents($sTemplatePath."groupdescription.pstpl"), array(), $redata);
             }
