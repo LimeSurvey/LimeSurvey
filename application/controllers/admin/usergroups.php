@@ -158,8 +158,6 @@ class Usergroups extends Survey_Common_Action
 
     public function add()
     {
-
-
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         $aData = array();
 
