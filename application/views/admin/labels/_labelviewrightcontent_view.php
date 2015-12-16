@@ -51,18 +51,21 @@
                                                                                                                 'enctype'=>'multipart/form-data',
                                                                                                                 'onsubmit'=>'return validatefilename(this, "'.gT('Please select a file to import!', 'js').'");')); ?>
                                 <ul class="list-unstyled">
-
-                                    <!-- Select ZIP file -->
                                     <li>
-                                        <label for='the_file'><?php eT("Select ZIP file:") ?></label>
-                                        <input id='the_file' name="the_file" type="file" />
-                                    </li>
+                                        <br/>
+                                        <label class="col-sm-12 label-control" for='the_file'><?php eT("Select ZIP file:") ?></label>
 
-                                    <!-- Import resources ZIP archive -->
-                                    <li>
-                                        <label>&nbsp;</label>
-                                        <input class="btn btn-default" type='button' value='<?php eT("Import resources ZIP archive") ?>'
+                                        <!-- Select ZIP file -->
+                                        <span class="col-sm-6">
+                                            <input id='the_file' name="the_file" type="file" />
+                                        </span>
+
+
+                                        <!-- Import resources ZIP archive -->
+                                        <span class="col-sm-6">
+                                            <input class="btn btn-default" type='button' value='<?php eT("Import resources ZIP archive") ?>'
                                             <?php echo !function_exists("zip_open") ? "onclick='alert(\"" . gT("zip library not supported by PHP, Import ZIP Disabled", "js") . "\");'" : "onclick='if (validatefilename(this.form,\"" . gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'" ?>/>
+                                        </span>
                                     </li>
                                 </ul>
 
