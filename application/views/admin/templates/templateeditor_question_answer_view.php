@@ -3,7 +3,7 @@ if (isset($alt))
 {
 ?>
 <p class="question answer-item text-item "><label class="hide label" for="answer1295X1X2"><?php eT('Answer') ?></label>
-<textarea cols="40" rows="5" alt="<?php eT('Answer') ?>" id="answer1295X1X2" name="1295X1X2" class="textarea"><?php eT('Some text in this answer') ?></textarea></p>
+<textarea cols="40" rows="5" alt="<?php eT('Answer') ?>" id="answer1295X1X2" name="1295X1X2" class="textarea form-control"><?php eT('Some text in this answer') ?></textarea></p>
 <?php
 }else{
 ?>

@@ -6,13 +6,12 @@
 
     $this->widget('ext.SettingsWidget.SettingsWidget', array(
         'settings' => $settings,
-        'title' => $title,
         'formHtmlOptions' => array(
             'id' => "pluginsettings-{$plugin['name']}",
         ),
         'method' => 'post',
         'additionalHtml' => "
-            <div class='col-xs-6 col-sm-3'></div>  <!-- Clear row -->
+            <div class='col-xs-6 col-sm-3'>&nbsp;</div>  <!-- Clear row -->
             <div class='col-sm-5'></div>
             <div class='col-sm-7'>
                 <button name='save' class='btn btn-success' type='submit'><span class='glyphicon glyphicon-ok'></span>&nbsp;Save</button>
