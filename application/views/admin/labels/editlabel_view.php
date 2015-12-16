@@ -30,19 +30,19 @@
                 <div id='neweditlblset0' class="tab-pane fade in active">
 
                     <!-- Form -->
-                    <?php echo CHtml::form(array("admin/labels/sa/process"), 'post',array('class'=>'form30','id'=>'labelsetform','onsubmit'=>"return isEmpty(document.getElementById('label_name'), '".gT("Error: You have to enter a name for this label set.","js")."')")); ?>
-                        <ul class="list-unstyled">
+                    <?php echo CHtml::form(array("admin/labels/sa/process"), 'post',array('class'=>'form30 form-horizontal','id'=>'labelsetform','onsubmit'=>"return isEmpty(document.getElementById('label_name'), '".gT("Error: You have to enter a name for this label set.","js")."')")); ?>
+
 
                             <!-- Set name -->
-                            <li>
-                                <label for='label_name'><?php eT("Set name:"); ?></label>
+                            <div class="form-group">
+                                <label  class="col-sm-1 control-label" for='label_name'><?php eT("Set name:"); ?></label>
                                 <input type='hidden' name='languageids' id='languageids' value='<?php echo $langids; ?>' />
                                 <?php echo CHtml::textField('label_name',isset($lbname)?$lbname:"",array('maxlength'=>100,'size'=>50)); ?>
-                            </li>
+                            </div>
 
                             <!-- Languages -->
-                            <li>
-                                <label>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">
                                     <?php eT("Languages:"); ?>
                                 </label>
 
@@ -81,8 +81,8 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </li>
-                        </ul>
+                            </div>
+
 
                         <p>
                             <input type='submit' class="hidden" value='<?php if ($action == "newlabelset") {eT("Save");}else {eT("Update");} ?>' />
@@ -96,37 +96,36 @@
                 </div>
 
 
+                <!-- Import -->
                 <?php if ($action == "newlabelset"): ?>
                     <div id='neweditlblset1' class="tab-pane fade in" >
-                        <?php echo CHtml::form(array("admin/labels/sa/import"), 'post',array('enctype'=>'multipart/form-data','id'=>'importlabels','name'=>"importlabels")); ?>
-                            <div class='header ui-widget-header'>
-                                <?php eT("Import label set(s)"); ?>
-                            </div>
-
-                            <ul>
-                                <li>
-                                    <label for='the_file'>
+                        <?php echo CHtml::form(array("admin/labels/sa/import"), 'post',array('enctype'=>'multipart/form-data', 'class'=>'form-horizontal','id'=>'importlabels','name'=>"importlabels")); ?>
+                                <div class="form-group">
+                                    <label  class="col-sm-2 control-label" for='the_file'>
                                         <?php eT("Select label set file (*.lsl):"); ?>
                                     </label>
                                     <input id='the_file' name='the_file' type='file'/>
-                                </li>
-                                <li>
-                                    <label for='checkforduplicates'>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-sm-2 control-label" for='checkforduplicates'>
                                         <?php eT("Don't import if label set already exists:"); ?>
-                                        </label>
-                                        <input name='checkforduplicates' id='checkforduplicates' type='checkbox' checked='checked' />
-                                    </li>
-                                    <li>
-                                        <label for='translinksfields'>
-                                            <?php eT("Convert resources links?"); ?>
-                                        </label>
-                                        <input name='translinksfields' id='translinksfields' type='checkbox' checked='checked' />
-                                    </li>
-                            </ul>
-                            <p>
-                                <input type='submit' value='<?php eT("Import label set(s)"); ?>' />
-                                <input type='hidden' name='action' value='importlabels' />
-                            </p>
+                                    </label>
+                                    <input name='checkforduplicates' id='checkforduplicates' type='checkbox' checked='checked' />
+                                </div>
+
+                                <div class="form-group">
+                                    <label  class="col-sm-2 control-label" for='translinksfields'>
+                                        <?php eT("Convert resources links?"); ?>
+                                    </label>
+                                    <input name='translinksfields' id='translinksfields' type='checkbox' checked='checked' />
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-offset-1">
+                                        <input type='submit' class='btn btn-default' value='<?php eT("Import label set(s)"); ?>' />
+                                        <input type='hidden' name='action' value='importlabels' />
+                                    </div>
+                                </div>
                         </form>
                     </div>
                 <?php endif; ?>
