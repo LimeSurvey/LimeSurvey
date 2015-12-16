@@ -1111,12 +1111,21 @@ class templates extends Survey_Common_Action
 
             case 'welcome':
                 unset($files);
-                $myoutput[] = "";
-                foreach ($Welcome as $qs)
-                {
+
+                foreach ($Welcome as $qs) {
                     $files[] = array("name" => $qs);
-                    $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/$qs", $aData));
                 }
+
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startpage.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/welcome.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/privacy.pstpl", $aData));
+
+                $aData['aReplacements'] = array(
+                    'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-default btn-lg ">Next</button>'
+                );
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/navigator.pstpl", $aData));
+
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/endpage.pstpl", $aData));
                 break;
 
             case 'register':
