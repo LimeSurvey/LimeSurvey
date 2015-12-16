@@ -53,11 +53,13 @@
                 <?php endif; ?>
 
                 <!-- Delete label set -->
-                <?php if (Permission::model()->hasGlobalPermission('labelsets','update')):?>
-                    <a class="btn btn-default" href='#' data-action='deletelabelset' data-url='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' data-confirm='<?php eT('Do you really want to delete this label set?'); ?>' role="button">
-                        <span class="glyphicon glyphicon-trash  text-warning"></span>
-                        <?php eT("Delete label set"); ?>
-                    </a>
+                <?php if (isset($labelbar['buttons']['delete']) && $labelbar['buttons']['delete'] == true ): ?>
+                    <?php if (Permission::model()->hasGlobalPermission('labelsets','update')):?>
+                        <a class="btn btn-default" href='#' data-action='deletelabelset' data-url='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' data-confirm='<?php eT('Do you really want to delete this label set?'); ?>' role="button">
+                            <span class="glyphicon glyphicon-trash  text-warning"></span>
+                            <?php eT("Delete label set"); ?>
+                        </a>
+                    <?php endif; ?>
                 <?php endif; ?>
 
                 <!-- Export this label set -->
@@ -70,12 +72,14 @@
             <?php endif; ?>
 
              <?php if (isset($labelbar['buttons']['edition'])):?>
-
-                <?php if (Permission::model()->hasGlobalPermission('labelsets','delete')): ?>
-                    <a class="btn btn-default" role="button" data-action='deletelabelset' data-url='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' data-confirm='<?php eT('Do you really want to delete this label set?'); ?>' >
-                        <span class="glyphicon glyphicon-trash  text-warning"></span>
-                        <?php eT("Delete label set"); ?>
-                    </a>
+                 <!-- Delete label set -->
+                <?php if (isset($labelbar['buttons']['delete']) && $labelbar['buttons']['delete'] == true ): ?>
+                    <?php if (Permission::model()->hasGlobalPermission('labelsets','delete')): ?>
+                        <a class="btn btn-default" role="button" data-action='deletelabelset' data-url='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' data-confirm='<?php eT('Do you really want to delete this label set?'); ?>' >
+                            <span class="glyphicon glyphicon-trash  text-warning"></span>
+                            <?php eT("Delete label set"); ?>
+                        </a>
+                    <?php endif; ?>
                 <?php endif; ?>
 
              <?php endif;?>
