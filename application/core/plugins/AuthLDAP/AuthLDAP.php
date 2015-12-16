@@ -7,9 +7,9 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     static protected $name = 'LDAP';
 
     /**
-     * Can we autocreate users? For the moment this is disabled, will be moved 
+     * Can we autocreate users? For the moment this is disabled, will be moved
      * to a setting when we have more robust user creation system.
-     * 
+     *
      * @var boolean
      */
     protected $autoCreate = false;
@@ -45,7 +45,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             ),
         'ldapmode' => array(
             'type' => 'select',
-            'label' => 'Select how to perform authentication.',
+            'label' => 'Perform authentication by',
             'options' => array("simplebind" => "Simple bind", "searchandbind" => "Search and bind"),
             'default' => "simplebind",
             'submitonchange'=> true
@@ -90,7 +90,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 ),
         'is_default' => array(
                 'type' => 'checkbox',
-                'label' => 'Check to make default authentication method'
+                'label' => 'Do LDAP authentication by default'
                 ),
         'autocreate' => array(
                 'type' => 'checkbox',
@@ -292,7 +292,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
 
     public function beforeLogin()
     {
-        if ($this->get('is_default', null, null, false) == true) { 
+        if ($this->get('is_default', null, null, false) == true) {
             // This is configured to be the default login method
             $this->getEvent()->set('default', get_class($this));
         }
@@ -308,7 +308,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     /**
      * Modified getPluginSettings since we have a select box that autosubmits
      * and we only want to show the relevant options.
-     * 
+     *
      * @param boolean $getValues
      * @return array
      */
@@ -318,7 +318,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         if ($getValues) {
             $ldapmode = $aPluginSettings['ldapmode']['current'];
             $ldapver = $aPluginSettings['ldapversion']['current'];
-            
+
             // If it is a post request, it could be an autosubmit so read posted
             // value over the saved value
             if (App()->request->isPostRequest) {
@@ -327,9 +327,9 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 $ldapver = App()->request->getPost('ldapversion', $ldapver);
                 $aPluginSettings['ldapversion']['current'] = $ldapver;
             }
-            
+
             if ($ldapver == '2' ) {
-               unset($aPluginSettings['ldaptls']); 
+               unset($aPluginSettings['ldaptls']);
             }
 
             if ($ldapmode == 'searchandbind') {
@@ -351,7 +351,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 unset($aPluginSettings['automaticsurveycreation']);
             }
         }
-        
+
         return $aPluginSettings;
     }
 
@@ -364,7 +364,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             return;
         }
 
-        // Here we do the actual authentication       
+        // Here we do the actual authentication
         $username = $this->getUsername();
         $password = $this->getPassword();
 
@@ -430,7 +430,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             // to foind the userDN and then we procced to the bind operation
             if (empty($binddn))
             {
-                // There is no account defined to do the LDAP search, 
+                // There is no account defined to do the LDAP search,
                 // let's use anonymous bind instead
                 $ldapbindsearch = @ldap_bind($ldapconn);
             }
@@ -443,7 +443,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 $this->setAuthFailure(100, ldap_error($ldapconn));
                 ldap_close($ldapconn); // all done? close connection
                 return;
-            }        
+            }
             // Now prepare the search fitler
             if ( $extrauserfilter != "")
             {
@@ -479,7 +479,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             $this->setAuthFailure(100, ldap_error($ldapconn));
             ldap_close($ldapconn); // all done? close connection
             return;
-        } 
+        }
 
         // Authentication was successful, now see if we have a user or that we should create one
         if (is_null($user)) {
@@ -488,7 +488,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                  * Dispatch the newUserLogin event, and hope that after this we can find the user
                  * this allows users to create their own plugin for handling the user creation
                  * we will need more methods to pass username, rdn and ldap connection.
-                 */                
+                 */
                 $this->pluginManager->dispatchEvent(new PluginEvent('newUserLogin', $this));
 
                 // Check ourselves, we do not want fake responses from a plugin
