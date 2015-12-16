@@ -16,7 +16,7 @@
             <div class='col-sm-7'>
                 <button name='save' class='btn btn-success' type='submit'><span class='glyphicon glyphicon-ok'></span>&nbsp;Save</button>
                 <button name='redirect' value='" . App()->createUrl("admin/pluginmanager/sa/index") . "' class='btn btn-default' type='submit'><span class='glyphicon glyphicon-saved'></span>&nbsp;Save and close</button>
-                <a class='btn btn-danger' href='" . App()->createurl('admin/pluginmanager/sa/index') . "'>Cancel</a>
+                <a class='btn btn-danger' href='" . App()->createurl('admin/pluginmanager/sa/index') . "'>Close</a>
             </div>"
     ));
 ?>
