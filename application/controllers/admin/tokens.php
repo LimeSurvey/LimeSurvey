@@ -1710,12 +1710,12 @@ class tokens extends Survey_Common_Action
                 'filteremail'=>array(
                     'type'=>'string',
                     'label'=>gT('Filter by email address'),
-                    'help'=>gT('Email address contains the input.'),
+                    'help'=>gT('Only export entries which contain this string in the email address.'),
                 ),
                 'tokendeleteexported'=>array(
                     'type'=>'checkbox',
                     'label'=>gT('Delete exported tokens'),
-                    'help'=>'Attention : the tokens are deleted from token table, you can not find it again.',
+                    'help'=>gT('Warning: Deleted token entries cannot be recovered.'),
                 ),
             );
             $this->_renderWrappedTemplate('token', array( 'exportdialog'), $aData);
