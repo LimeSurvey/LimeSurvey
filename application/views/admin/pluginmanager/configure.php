@@ -11,19 +11,12 @@
             'id' => "pluginsettings-{$plugin['name']}",
         ),
         'method' => 'post',
-        'buttons' => array(
-            gT('Save plugin settings'),
-            gT('Save and return to plugins list')=>array(
-                'type'=>'submit',
-                'htmlOptions'=>array(
-                    'name'=>'redirect',
-                    'value'=>App()->createUrl('admin/pluginmanager/sa/index'), // This allow to use App()->request->getPost('redirect')) for forward
-                ),
-            ),
-            gT('Cancel') => array(
-                'type' => 'link',
-                'href' => App()->createUrl('admin/pluginmanager/sa/index')
-            )
-        )
+        'additionalHtml' => "
+            <div class='col-sm-5'></div>
+            <div class='col-sm-7'>
+                <input class='btn btn-success' name='yt0' value='Save' type='submit'>
+                <button name='redirect' value='" . App()->createUrl("admin/pluginmanager/sa/index") . "' class='btn btn-default' type='submit'>Save and close</button>
+                <a class='btn btn-danger' href='" . App()->createurl('admin/pluginmanager/sa/index') . "'>Cancel</a>
+            </div>"
     ));
 ?>
