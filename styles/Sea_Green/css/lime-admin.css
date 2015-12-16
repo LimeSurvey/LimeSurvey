@@ -3407,7 +3407,4 @@ input:focus, textarea:focus {
 span[data-tooltip] {
   display: inline-block; }
 
-span[data-tooltip]:hover, .btn.disabled, .btn.disabled:hover {
-  cursor: pointer; }
-
 /*# sourceMappingURL=lime-admin.css.map */

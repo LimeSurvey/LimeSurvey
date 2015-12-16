@@ -4656,10 +4656,6 @@ input:focus, textarea:focus {
     font-weight: 300;
 }
 
-
 span[data-tooltip] {
     display: inline-block;
-}
-span[data-tooltip]:hover, .btn.disabled, .btn.disabled:hover{
-    cursor: pointer;
 }
