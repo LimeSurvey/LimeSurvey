@@ -418,7 +418,7 @@ class SettingsWidget extends CWidget
         $htmlOptions = $this->htmlOptions($metaData,$form);
         $select2Options=array_merge(
             array(
-                'minimumResultsForSearch' => 1000,
+                'minimumResultsForSearch' => 8,
                 'dropdownAutoWidth'=> true,
                 'width' => "js: function(){ return Math.max.apply(null, $(this.element).find('option').map(function() { return $(this).text().length; }))+'em' }",
             ),(isset($metaData['selectOptions']) ? $metaData['selectOptions'] : array())
@@ -427,10 +427,7 @@ class SettingsWidget extends CWidget
             'data' => $metaData['options'],
             'name' => $name,
             'value' => $value,
-            //'options' => $select2Options,
-            'pluginOptions' => array(
-                'options' => $select2Options
-            ),
+            'pluginOptions' => $select2Options,
             'htmlOptions'=>$htmlOptions,
         );
         $properties['events']=isset($metaData['events']) ? $metaData['events'] : array();
