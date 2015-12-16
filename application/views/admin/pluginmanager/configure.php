@@ -14,8 +14,8 @@
         'additionalHtml' => "
             <div class='col-sm-5'></div>
             <div class='col-sm-7'>
-                <input class='btn btn-success' name='yt0' value='Save' type='submit'>
-                <button name='redirect' value='" . App()->createUrl("admin/pluginmanager/sa/index") . "' class='btn btn-default' type='submit'>Save and close</button>
+                <button name='save' class='btn btn-success' type='submit'><span class='glyphicon glyphicon-ok'></span>&nbsp;Save</button>
+                <button name='redirect' value='" . App()->createUrl("admin/pluginmanager/sa/index") . "' class='btn btn-default' type='submit'><span class='glyphicon glyphicon-saved'></span>&nbsp;Save and close</button>
                 <a class='btn btn-danger' href='" . App()->createurl('admin/pluginmanager/sa/index') . "'>Cancel</a>
             </div>"
     ));
