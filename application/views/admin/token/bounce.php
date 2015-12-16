@@ -37,6 +37,8 @@
                                 </div>
                             </div>
 
+                            <div id="bounceparams">
+
                             <!-- Server type -->
                             <div class=" form-group setting control-group setting-select" data-name="bounceaccounttype">
                                 <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="bounceaccounttype">
@@ -111,6 +113,7 @@
                             </div>
                         </div>
 
+                        </div>
                         <!-- buttons -->
                         <div class="buttons control-group  hidden">
                             <button name="save" value="save" class="btn" type="submit">Save bounce settings</button>
