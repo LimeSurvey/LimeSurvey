@@ -42,37 +42,29 @@
 
 
             <!-- Edition buttons -->
-            <?php if (isset($labelbar['buttons']['edit'])):?>
-
-                <!-- Edit label set -->
-                <?php if (Permission::model()->hasGlobalPermission('labelsets','update')):?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/editlabelset/lid/".$lid);?>" role="button">
-                        <span class="glyphicon glyphicon-pencil  text-success"></span>
-                        <?php eT("Edit label set"); ?>
-                    </a>
-                <?php endif; ?>
-
-                <!-- Delete label set -->
-                <?php if (isset($labelbar['buttons']['delete']) && $labelbar['buttons']['delete'] == true ): ?>
-                    <?php if (Permission::model()->hasGlobalPermission('labelsets','update')):?>
-                        <a class="btn btn-default" href='#' data-action='deletelabelset' data-url='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' data-confirm='<?php eT('Do you really want to delete this label set?'); ?>' role="button">
-                            <span class="glyphicon glyphicon-trash  text-warning"></span>
-                            <?php eT("Delete label set"); ?>
-                        </a>
-                    <?php endif; ?>
-                <?php endif; ?>
-
-                <!-- Export this label set -->
-                <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/export/sa/dumplabel/lid/$lid");?>" role="button">
-                        <span class="icon-export text-success"></span>
-                        <?php eT("Export this label set"); ?>
-                    </a>
-                <?php endif; ?>
-            <?php endif; ?>
 
              <?php if (isset($labelbar['buttons']['edition'])):?>
-                 
+
+                 <?php if (isset($labelbar['buttons']['edit'])): ?>
+                     <!-- Edit label set -->
+                     <?php if (Permission::model()->hasGlobalPermission('labelsets','update')):?>
+                         <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/editlabelset/lid/".$lid);?>" role="button">
+                             <span class="glyphicon glyphicon-pencil  text-success"></span>
+                             <?php eT("Edit label set"); ?>
+                         </a>
+                     <?php endif; ?>
+
+
+                     <!-- Export this label set -->
+                     <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
+                         <a class="btn btn-default" href="<?php echo $this->createUrl("admin/export/sa/dumplabel/lid/$lid");?>" role="button">
+                             <span class="icon-export text-success"></span>
+                             <?php eT("Export this label set"); ?>
+                         </a>
+                     <?php endif; ?>
+                 <?php endif; ?>
+
+
                  <!-- Delete label set -->
                 <?php if (isset($labelbar['buttons']['delete']) && $labelbar['buttons']['delete'] == true ): ?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets','delete')): ?>
