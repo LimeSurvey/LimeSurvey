@@ -72,7 +72,9 @@
                 <?php $i++;?>
 
                 <div class="action-buttons">
-                    <button class='btnquickadd btn btn-default' id='btnquickadd_<?php echo $i ?>' type='button' ><?php eT('Quick add...') ?></button>
+                    <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-default btn-lg" data-toggle="modal" data-target="#quickadd">
+                        <?php eT('Quick add...') ?>
+                    </button>
                 </div>
                 <p>
                     <input type='submit' class='hidden' name='method' value='<?php eT("Save changes") ?>'  id='saveallbtn_<?php echo $lslanguage ?>' />

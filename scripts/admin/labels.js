@@ -19,6 +19,7 @@ $(document).on('click','[data-action="deletelabelset"]',function(event){
         sendPost($(this).data('url'),'',['action','lid'],[$(this).data('action'),$('[name="lid"]').val()]);
     }
 });
+
 $(document).ready(function(){
     $('#btnDumpLabelSets').click(function(){
         if ($('#labelsets > option:selected').size()==0)
@@ -42,21 +43,6 @@ $(document).ready(function(){
     $('#neweditlblset0 .answertable tbody').sortable({
         update:sort_complete,
         distance:2
-    });
-
-    $('#quickadd').dialog({
-        autoOpen: false,
-        modal: true,
-        width:600,
-        title: quickaddtitle
-    });
-
-    $('.btnquickadd').click(function(){
-        $('#quickadd').dialog('open');
-    });
-
-    $('#btnqacancel').click(function(){
-        $('#quickadd').dialog('close');
     });
 
 
@@ -121,7 +107,6 @@ function quickaddfunction(){
     }
 
 
-
     $(lsrows).each(function(index,element){
         code = undefined;
 
@@ -132,35 +117,37 @@ function quickaddfunction(){
             k++;
         }
 
+        event = {};
+        event.target = $(".btnaddanswer:last");
+        var retcode = add_label(event);
 
+        if(lsreplace)
+        {
+            if (index!=0 || (!lsreplace && $("div[id^='newedit']:not(:last) tbody>tr").length > 0)){
+                alert('ko');
+                event = {};
+                event.target = $(".btnaddanswer:last");
 
+            }
+            else{
+                var retcode = add_label();
+            }
 
-            event = {};
-            event.target = $(".btnaddanswer:last");
-            var retcode = add_label(event);
-		/*
-        if (index!=0 || (!lsreplace && $("div[id^='newedit']:not(:last) tbody>tr").length > 0)){
-            event = {};
-            event.target = $(".btnaddanswer:last");
-            var retcode = add_label(event);
         }
-        else{
-            var retcode = add_label();
-        }
-		*/
 
 
 
 
-
+        // seems always undefined
         if (typeof(code)!="undefined") {
             $("#code_"+retcode).val(code);
 		}
 
         $(".lslanguage").each(function(i){
-        	console.log("input[name=title_"+$(this).val()+"_"+retcode+"]");
+        	//console.log("input[name=title_"+$(this).val()+"_"+retcode+"]");
             $("input[name=title_"+$(this).val()+"_"+retcode+"]").val(params[k]);
-			if (typeof(code)!="undefined" && i > 0) {
+			if (typeof(code)!="undefined" && i > 0)
+            {
 				$("#row_"+$(this).val()+"_"+retcode+" td:first").text(code);
 			}
             k++;
@@ -169,7 +156,7 @@ function quickaddfunction(){
 
     });
     $("#quickaddarea").val('');
-    $('#quickadd').dialog('close');
+    $('#quickadd').modal('hide');
 }
 
 
@@ -218,6 +205,7 @@ function add_label(event)
         {
             next_code='L001';
         }
+
         while ($('.answertable').find('input[value="'+next_code+'"]').length>0 && next_code!=$(event.target).closest('tr').find('.codeval').val())
         {
             next_code=getNextCode(next_code);
@@ -228,7 +216,8 @@ function add_label(event)
         next_code='L001';
     }
 
-	console.log(next_code);
+    //alert('nextcode: '+next_code);
+	console.log('nextcode: '+next_code);
 
     var html = createNewLabelTR(true,true);
 
@@ -256,14 +245,17 @@ function add_label(event)
     html = str_replace("###codeval###",next_code,html);
     html = str_replace("###next###",randomid,html);
 
+    // Seems not to work
     $(".not_first").each(function(index,element){
-
         var temp_html = str_replace("###lang###",$(".lslanguage",element).val(),html);
         if (row_id >= 0){
             $($("tbody",element).children()[row_id]).after(temp_html);
         }
         else
+        {
+            alert(row_id );
             $(".answertable tbody",$(element)).append(temp_html);
+        }
 
     });
 
