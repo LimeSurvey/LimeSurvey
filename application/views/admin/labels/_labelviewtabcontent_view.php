@@ -48,7 +48,7 @@
                                     </td>
 
                                     <td>
-                                        <input type='text' class='assessmentval  form-control  ' id='assessmentvalue_<?php echo $row['sortorder'] ?>' style='text-align: right;' name='assessmentvalue_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['assessment_value'] ?>' />
+                                        <input type="number" class='assessmentval  form-control  ' id='assessmentvalue_<?php echo $row['sortorder'] ?>' style='text-align: right;' name='assessmentvalue_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['assessment_value'] ?>' />
                                     </td>
                                 <?php endif;?>
                                     <td>
