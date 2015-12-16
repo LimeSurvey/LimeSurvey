@@ -25,6 +25,10 @@ class SettingsWidget extends CWidget
 
     public $title;
     public $inlist=true;// Leave before removing
+
+    /** @var string - Raw HTML to output last */
+    public $additionalHtml = "";
+
     public function beginForm()
     {
         if ($this->form)
@@ -66,6 +70,13 @@ class SettingsWidget extends CWidget
         $this->beginForm();
     }
 
+    /**
+     * Render a button
+     *
+     * @param string $label
+     * @param string|array $metaData
+     * @return string
+     */
     protected function renderButton($label, $metaData)
     {
         //Button can come from 2 system, by pluginSettings>settings>button ot by by pluginSettings>buttons
@@ -76,6 +87,7 @@ class SettingsWidget extends CWidget
                 'htmlOptions'=>array(),
             );
         }
+
 
         $metaData['class'][]='btn';
         if (isset($metaData['type']) && $metaData['type'] == 'link')
@@ -185,8 +197,6 @@ class SettingsWidget extends CWidget
         echo CHtml::closeTag('ul');
     }
 
-
-
     public function run() {
         parent::run();
 
@@ -194,8 +204,21 @@ class SettingsWidget extends CWidget
         $this->renderSettings();
         // Render buttons
         $this->renderButtons();
+        // Render additional HTML
+        $this->renderAdditionalHtml();
         // End form
         $this->endForm();
+    }
+
+    /**
+     * Echo additional HTML, without any magic
+     * 
+     * @since 2015-12-16
+     * @author Olle Haerstedt <olle.haerstedt@limesurvey.org>
+     */
+    protected function renderAdditionalHtml()
+    {
+        echo $this->additionalHtml;
     }
 
 
