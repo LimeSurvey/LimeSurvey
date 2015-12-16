@@ -305,14 +305,15 @@ class labels extends Survey_Common_Action
 
         if($lid==0)
         {
-            $aData['labelbar']['buttons']['view'] = TRUE;
+            $aData['labelbar']['buttons']['view'] = true;
         }
         else
         {
+            $aData['labelbar']['buttons']['delete'] = true;
             $aData['labelbar']['savebutton']['form'] = 'mainform';
             $aData['labelbar']['savebutton']['text'] = gT("Save changes");
             $aData['labelbar']['closebutton']['url'] = 'admin/labels/sa/view';
-            $aData['labelbar']['buttons']['edition'] = TRUE;
+            $aData['labelbar']['buttons']['edition'] = true;
         }
 
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
