@@ -125,3 +125,4 @@
         </div> <!-- col -->
     </div> <!-- Row -->
 </div> <!-- Side body -->
+<?php App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "tokenbounce.js"); ?>
