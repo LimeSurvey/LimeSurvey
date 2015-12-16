@@ -162,26 +162,22 @@
                       }
                 ?>
 
-
-
-
-
                 <td class="col-lg-2">
                     <div class="form-group">
                         <label for="new_user"><?php eT("Username");?></label>
-                        <input type='text' id='new_user' name='new_user' />
+                        <input type='text' id='new_user' name='new_user' required />
                     </div>
                 </td>
                 <td class="col-md-2">
                     <div class="form-group">
                         <label for="new_email" ><?php eT("Email");?></label>
-                        <input type='text' id='new_email' name='new_email' />
+                        <input type='email' id='new_email' name='new_email' required />
                     </div>
                 </td>
                 <td class="col-md-2">
                     <div class="form-group">
                         <label for="new_full_name"><?php eT("Full name");?></label>
-                        <input type='text' id='new_full_name' name='new_full_name' />
+                        <input type='text' id='new_full_name' name='new_full_name' required />
                     </div>
                 </td>
                 <td class="col-md-2">
