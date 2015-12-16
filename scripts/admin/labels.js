@@ -124,7 +124,6 @@ function quickaddfunction(){
         if(lsreplace)
         {
             if (index!=0 || (!lsreplace && $("div[id^='newedit']:not(:last) tbody>tr").length > 0)){
-                alert('ko');
                 event = {};
                 event.target = $(".btnaddanswer:last");
 
@@ -216,8 +215,7 @@ function add_label(event)
         next_code='L001';
     }
 
-    //alert('nextcode: '+next_code);
-	console.log('nextcode: '+next_code);
+	//console.log('nextcode: '+next_code);
 
     var html = createNewLabelTR(true,true);
 
@@ -253,7 +251,6 @@ function add_label(event)
         }
         else
         {
-            alert(row_id );
             $(".answertable tbody",$(element)).append(temp_html);
         }
 
