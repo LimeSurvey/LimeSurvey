@@ -65,11 +65,11 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
 
 
 
-    <div class="col-lg-2">
+    <div class="col-lg-2" style="overflow-x: hidden">
         <div>
             <?php eT("Other files:"); ?>
             <?php echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post'); ?>
-            <select size='11' style='width:250px; overflow: hidden;' name='otherfile' id='otherfile'>
+            <select size='11' class="form-control" name='otherfile' id='otherfile'>
                 <?php echo makeoptions($otherfiles, "name", "name", ""); ?>
             </select><br>
             <?php
@@ -92,13 +92,14 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             { ?>
 
                 <?php echo CHtml::form(array('admin/templates/sa/uploadfile'), 'post', array('id'=>'importtemplatefile', 'name'=>'importtemplatefile', 'enctype'=>'multipart/form-data')); ?>
-                <?php eT("Upload a file:"); ?><br><input name='upload_file' id="upload_file" type="file" required="required"/><br />
+                <?php eT("Upload a file:"); ?>
+                <br>
+                <input name='upload_file' id="upload_file" type="file" required="required"/>
                 <input type='submit' value='<?php eT("Upload"); ?>' class='btn btn-default'
-                    <?php if (!is_template_editable($templatename))  { ?>
+                    <?php if (!is_template_editable($templatename)) : ?>
                         disabled='disabled'
-                        <?php } ?>
-
-                    />
+                    <?php endif; ?>
+                />
                 <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
                 <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
                 <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />

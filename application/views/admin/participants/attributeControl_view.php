@@ -49,17 +49,13 @@
 
     <div class="row">
         <div class="col-lg-12 content-right">
-            <table id="attributeControl">
+            <table id="attributeControl" class="table">
                 <tr><td>&nbsp;</td></tr>
             </table>
-            
+
             <div id="pager">
-                
-            </div>            
+
+            </div>
         </div>
     </div>
-</div>    
-
-        
-
-
+</div>

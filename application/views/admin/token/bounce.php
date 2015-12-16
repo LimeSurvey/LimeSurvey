@@ -25,10 +25,10 @@
                                 <div class="default col-lg-4 col-sm-5 col-md-7 controls">
                                     <select id="bounceprocessing" name="bounceprocessing" class="form-control">
                                         <option value="N" <?php if ($settings['bounceprocessing']=='N'){echo 'selected="selected"'; }?> >
-                                            <?php gT("None"); ?>
+                                            <?php eT("None"); ?>
                                         </option>
                                         <option value="L" <?php if ($settings['bounceprocessing']=='L'){echo 'selected="selected"'; }?> >
-                                            <?php gT("Use settings below"); ?>
+                                            <?php eT("Use settings below"); ?>
                                         </option>
                                         <option value="G" <?php if ($settings['bounceprocessing']=='G'){echo 'selected="selected"'; }?> >
                                             <?php eT("Use global settings"); ?>
