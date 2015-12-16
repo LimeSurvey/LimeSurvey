@@ -72,6 +72,7 @@
             <?php endif; ?>
 
              <?php if (isset($labelbar['buttons']['edition'])):?>
+                 
                  <!-- Delete label set -->
                 <?php if (isset($labelbar['buttons']['delete']) && $labelbar['buttons']['delete'] == true ): ?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets','delete')): ?>
