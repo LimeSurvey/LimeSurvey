@@ -42,10 +42,12 @@
                         <?php eT("Export");?>
                     </a>
                 <?php else:?>
-                    <a id="export" class="btn btn-default disabled" href="#" role="button">
-                        <span class="icon-exportcsv text-success"></span>
-                        <?php eT("Export");?>
-                    </a>
+                    <span  title="<?php eT('no participant');?>" data-toggle="tooltip" data-placement="bottom" style="display: inline-block">
+                        <a id="export" class="btn btn-default disabled" role="button">
+                            <span class="icon-exportcsv text-success"></span>
+                            <?php eT("Export");?>
+                        </a>
+                    </span>
                 <?php endif;?>
 
                 <!-- Blacklist control -->
