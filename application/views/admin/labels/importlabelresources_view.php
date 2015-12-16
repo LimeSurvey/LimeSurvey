@@ -1,8 +1,7 @@
-<div class='header ui-widget-header'><?php eT("Import label set resources") ?></div>
-<div class='messagebox ui-corner-all'>
-    <div class="successheader"><?php eT("Success") ?></div><br />
-    <?php eT("File upload succeeded.") ?><br /><br />
-    <?php eT("Reading file..") ?><br /><br />
+<div class="jumbotron message-box">
+<h2 class="text-success"><?php eT("Import label set resources") ?></h2>
+<p class="lead text-success"><?php eT("Success") ?></p>
+
 <?php
     $ImportListHeader = '';
     if (!count($aErrorFilesInfo) &&count($aImportedFilesInfo))
@@ -34,13 +33,13 @@
     }
 ?>
 
-    <strong><?php eT("Imported resources for") ?> LID:</strong><?php echo $lid ?><br /><br />
-    <div class="<?php echo $statusClass ?>"><?php echo $status ?></div><br />
-    <strong><u><?php eT("Resources import summary") ?></u></strong><br />
-    <?php echo gT("Total imported files") . ": $okfiles" ?><br />
-    <?php echo gT("Total errors") . ": $errfiles" ?><br />
-    <?php echo $ImportListHeader; ?>
-
+    <p><strong><?php eT("Imported resources for") ?> LID:</strong><?php echo $lid ?><br /><br /><p>
+    <p class="<?php echo $statusClass ?>"><?php echo $status ?></p><br />
+    <p><strong><u><?php eT("Resources import summary") ?></u></strong><br /></p>
+    <p><?php echo gT("Total imported files") . ": $okfiles" ?><br /></p>
+    <p><?php echo gT("Total errors") . ": $errfiles" ?><br /></p>
+    <p><?php echo $ImportListHeader; ?></p>
+<p><ul class="list-unstyled">
  <?php
     foreach ($aImportedFilesInfo as $entry)
     {
@@ -51,7 +50,8 @@
     if (!is_null($aImportedFilesInfo))
     {
 ?>
-        </ul><br />
+        </ul><br /></p>
+        <p><ul class="list-unstyled">
 <?php
     }
     echo $ErrorListHeader;
@@ -64,9 +64,11 @@
     if (!is_null($aErrorFilesInfo))
     {
 ?>
-        </ul><br />
+        </ul></p><br />
 <?php
     }
 ?>
-    <input type='submit' value='<?php eT("Back") ?>' onclick="window.open('<?php echo $this->createUrl('admin/labels/sa/view/lid/' . $lid) ?>', '_top')" />
+<p>
+    <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back") ?>' onclick="window.open('<?php echo $this->createUrl('admin/labels/sa/view/lid/' . $lid) ?>', '_top')" />
+</p>
 </div>
