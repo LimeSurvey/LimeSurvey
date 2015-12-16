@@ -44,15 +44,15 @@
 
                                     <td>
                                         <input type='hidden' class='hiddencode' value='<?php echo $row['code'] ?>' />
-                                        <input type='text'  class='codeval  form-control input-lg ' id='code_<?php echo $row['sortorder'] ?>' name='code_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['code'] ?>'/>
+                                        <input type='text'  class='codeval  form-control  ' id='code_<?php echo $row['sortorder'] ?>' name='code_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['code'] ?>'/>
                                     </td>
 
                                     <td>
-                                        <input type='text' class='assessmentval  form-control input-lg ' id='assessmentvalue_<?php echo $row['sortorder'] ?>' style='text-align: right;' name='assessmentvalue_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['assessment_value'] ?>' />
+                                        <input type='text' class='assessmentval  form-control  ' id='assessmentvalue_<?php echo $row['sortorder'] ?>' style='text-align: right;' name='assessmentvalue_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['assessment_value'] ?>' />
                                     </td>
                                 <?php endif;?>
                                     <td>
-                                        <input type='text' class=" form-control input-lg " name='title_<?php echo $row['language'] ?>_<?php echo $row['sortorder'] ?>' maxlength='3000' size='80' value="<?php echo HTMLEscape($row['title']) ?>" />
+                                        <input type='text' class=" form-control  " name='title_<?php echo $row['language'] ?>_<?php echo $row['sortorder'] ?>' maxlength='3000' size='80' value="<?php echo HTMLEscape($row['title']) ?>" />
                                         <?php echo getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[" . gT("Label:", "js") . "](" . $row['language'] . ")", '', '', '', $action); ?>
                                     </td>
 
@@ -72,7 +72,7 @@
                 <?php $i++;?>
 
                 <div class="action-buttons">
-                    <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-default btn-lg" data-toggle="modal" data-target="#quickadd">
+                    <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-default " data-toggle="modal" data-target="#quickadd">
                         <?php eT('Quick add...') ?>
                     </button>
                 </div>
