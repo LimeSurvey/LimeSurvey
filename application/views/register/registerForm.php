@@ -11,7 +11,7 @@
     <div class='form-group'>
         <label for='register_email'><?php eT("Email address"); ?></label>
         <?php echo CHtml::textField('register_email', $sEmail,array('id'=>'register_email','class'=>'form-control')); ?>
-    </tr>
+    </div>
     <?php foreach($aExtraAttributes as $key=>$aExtraAttribute){ ?>
         <div class='form-group'>
             <label for="register_<?php echo $key; ?>"><?php echo $aExtraAttribute['caption']; ?><?php echo $aExtraAttribute['mandatory'] == 'Y' ? '*' : ""; ?></label>

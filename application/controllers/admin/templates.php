@@ -890,7 +890,7 @@ class templates extends Survey_Common_Action
         'endpage.pstpl'
         );
         $Register = array('startpage.pstpl',
-        'survey.pstpl',
+        //'survey.pstpl',
         'register.pstpl',
         'endpage.pstpl'
         );
@@ -1130,12 +1130,21 @@ class templates extends Survey_Common_Action
 
             case 'register':
                 unset($files);
-                foreach ($Register as $qs)
+                foreach ($Register as $qs) {
                     $files[] = array("name" => $qs);
+                }
 
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/survey.pstpl"), array(), $aData);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/register.pstpl"), array(), $aData);
+                //$myoutput[] = templatereplace(file_get_contents("$templatedir/survey.pstpl"), array(), $aData);
+
+                $aData['aReplacements'] = array(
+                    'REGISTERERROR' => 'Example error message',
+                    'REGISTERMESSAGE1' => 'Register message 1',
+                    'REGISTERMESSAGE2' => 'Register message 2',
+                    'REGISTERFORM' => $this->getController()->render('/admin/templates/templateeditor_register_view', array('alt' => true), true),
+                );
+
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/register.pstpl", $aData));
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData);
                 $myoutput[] = "\n";
                 break;
