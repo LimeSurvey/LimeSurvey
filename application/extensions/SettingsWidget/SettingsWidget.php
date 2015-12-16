@@ -416,6 +416,8 @@ class SettingsWidget extends CWidget
             $properties['events']['change']='js: function(e) { this.form.submit();}';
         }
 
+        // Remove class 'form-control' because of double styling
+        // TODO: Where is this class added in the first place??
         $html = App()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', $properties, true);
         $html = str_replace('form-control', '', $html);
         return $html;
