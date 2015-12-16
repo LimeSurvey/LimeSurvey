@@ -890,7 +890,7 @@ class templates extends Survey_Common_Action
         'endpage.pstpl'
         );
         $Register = array('startpage.pstpl',
-        //'survey.pstpl',
+        'survey.pstpl',
         'register.pstpl',
         'endpage.pstpl'
         );
@@ -1135,7 +1135,13 @@ class templates extends Survey_Common_Action
                 }
 
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData);
-                //$myoutput[] = templatereplace(file_get_contents("$templatedir/survey.pstpl"), array(), $aData);
+
+                $aData = array(
+                    'aReplacements' => array(
+                        'SURVEYNAME' => 'Survey name'
+                    )
+                );
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/survey.pstpl", $aData));
 
                 $aData['aReplacements'] = array(
                     'REGISTERERROR' => 'Example error message',
