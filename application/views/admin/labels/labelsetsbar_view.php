@@ -21,13 +21,25 @@
 
 
                 <!-- Export Multiple -->
-                <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/exportmulti");?>" role="button">
-                        <span class="icon-export text-success"></span>
-                        <?php eT("Export multiple label sets"); ?>
-                    </a>
+                <?php if ( count($labelsets) > 0 ): ?>
+                    <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
+                        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/exportmulti");?>" role="button">
+                            <span class="icon-export text-success"></span>
+                            <?php eT("Export multiple label sets"); ?>
+                        </a>
+                    <?php endif; ?>
+                <?php else:?>
+                    <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
+                        <span title="<?php eT("No label set"); ?>" data-toggle="tooltip" data-placement="bottom" style="display: inline-block">
+                            <a class="btn btn-default disabled" role="button" >
+                                <span class="icon-export text-success"></span>
+                                <?php eT("Export multiple label sets"); ?>
+                            </a>
+                        </span>
+                    <?php endif; ?>
                 <?php endif; ?>
             <?php endif; ?>
+
 
             <!-- Edition buttons -->
             <?php if (isset($labelbar['buttons']['edit'])):?>
