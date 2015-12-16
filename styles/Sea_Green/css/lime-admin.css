@@ -3407,4 +3407,7 @@ input:focus, textarea:focus {
 span[data-tooltip] {
   display: inline-block; }
 
+.glyphicon-move:hover {
+  cursor: pointer; }
+
 /*# sourceMappingURL=lime-admin.css.map */
