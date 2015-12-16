@@ -204,6 +204,8 @@ class labels extends Survey_Common_Action
             $aViewUrls['editlabel_view'][] = $aData;
         }
 
+
+        $aData['labelbar']['buttons']['delete'] = ($sa != "newlabelset")?true:false;
         $aData['labelbar']['buttons']['edition']= TRUE;
         $aData['labelbar']['savebutton']['form'] = 'labelsetform';
         $aData['labelbar']['savebutton']['text'] = gT("Save");
