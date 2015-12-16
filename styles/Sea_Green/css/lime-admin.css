@@ -3404,4 +3404,7 @@ input:focus, textarea:focus {
 .jumbotron p {
   font-weight: 300; }
 
+span[data-tooltip] {
+  display: inline-block; }
+
 /*# sourceMappingURL=lime-admin.css.map */
