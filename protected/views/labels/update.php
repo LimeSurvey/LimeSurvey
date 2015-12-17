@@ -212,7 +212,8 @@
 
         result.push({
             data: '',
-            width: '300px'
+            width: '300px',
+            readOnly: true
 
         });
         console.log(result);
