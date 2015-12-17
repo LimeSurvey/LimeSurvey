@@ -53,7 +53,9 @@
 
     function isEmptyRow(instance, row) {
         var rowData = instance.getData()[row];
-
+        if (typeof rowData == 'undefined') {
+            return true;
+        }
         for (var i = 0, ilen = rowData.length; i < ilen; i++) {
             if (rowData[i] !== null) {
                 return false;
@@ -67,7 +69,7 @@
         var args = arguments;
         if (args[5] === null && isEmptyRow(instance, row)) {
             if (col === 0) {
-                args[5] = 'A' + row;
+                args[5] = 'A' + (row + 1);
             } else {
                 args[5] = tpl[col];
             }
@@ -84,30 +86,20 @@
         Handsontable.renderers.TextRenderer.apply(this, args);
     }
 
+    $('#labels').on('mousedown', 'th', function(e) {
+//        e.preventDefault;
+//        e.stopPropagation();
+        if ($(this).find('select').length > 0) {
+            hot1.deselectCell();
+        }
+    });
     hot1 = new Handsontable(container, {
         minSpareRows: 1,
         contextMenu: true,
         startCols: <?=count($model->getLanguageArray()) + 3; ?>,
         cells: function (row, col, prop) {
             var cellProperties = {};
-//            cellProperties.readOnly = (row === 0);
-//            if (row === 0 && (this.instance.countCols() - 1) === col) {
-//                cellProperties.type = 'dropdown';
-//                cellProperties.readOnly = false;
-//                var current = this.instance.getDataAtRow(0);
-//                cellProperties.source = languages.filter(function(element) {
-//                    return current.indexOf(element) == -1;
-//                });
-//
-//                cellProperties.source.unshift('Add language');
-//
-//            } else if ((this.instance.countCols() - 1) === col) {
-//                cellProperties.readOnly = true;
-//                cellProperties.renderer = defaultValueRenderer;
-//            } else {
-
                 cellProperties.renderer = defaultValueRenderer;
-//            }
 
             if (col === 1) {
                 cellProperties.type = 'numeric';
@@ -144,13 +136,7 @@
                     }
                 }
 
-                if (changes[i][0] === 0 && (changes[i][1] === clen - 1)) {
-                    if (languages.indexOf(changes[i][3]) !== - 1) {
-                        console.log('setting');
-                        this.setDataAtCell(0, clen, 'Add language');
-                    }
 
-                }
             }
             for (var r in rowsToFill) {
                 if (rowsToFill.hasOwnProperty(r)) {
@@ -166,7 +152,7 @@
         columns: createColumns(),
         autoWrapRow: true,
         allowInsertColumn: false,
-        allowInvalid: false,
+        allowInvalid: true,
         rowHeaders: true,
         colHeaders: function(index) {
 
@@ -205,7 +191,8 @@
                 row: 0,
                 col: 1
             };
-        }
+        },
+
 
 
 
@@ -268,12 +255,18 @@
         }
     });
 
-
     $('#labels').on('change', 'select', function() {
         activeLanguages.push($(this).val());
         hot1.updateSettings({columns: createColumns()});
     });
 
 
-
 </script>
+<style>
+    th {
+        pointer-events: none;
+    }
+    th button, th select {
+        pointer-events: auto;
+    }
+</style>
