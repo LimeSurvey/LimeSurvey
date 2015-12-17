@@ -1,6 +1,7 @@
 <?php
     /**
-    * Show the statistics filters
+    * Statistic main view
+    *
     */
 ?>
 

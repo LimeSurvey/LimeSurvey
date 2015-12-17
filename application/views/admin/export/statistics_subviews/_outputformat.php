@@ -4,8 +4,8 @@
         </div>
         <div class="panel-body">
             <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-default">
-                    <input name="outputtype" value="html" type="radio" checked='checked' id="outputtypehtml" ><?php eT('HTML');?>
+                <label class="btn btn-default active">
+                    <input name="outputtype" value="html" type="radio" checked='checked' id="outputtypehtml" autofocus="true" ><?php eT('HTML');?>
                 </label>
                 <label class="btn btn-default">
                     <input name="outputtype" value="pdf" type="radio" id="outputtypepdf"><?php eT('PDF');?>
@@ -15,5 +15,4 @@
                 </label>
             </div>
         </div>
-
     </div>
