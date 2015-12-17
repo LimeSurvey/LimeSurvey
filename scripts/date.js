@@ -32,6 +32,7 @@ function doDropDownDate(qId){
     $(document).on("change",'#question'+qId+' select',dateUpdater);
     $(document).ready(function(){
         $("#question"+qId+" select").filter(':first').trigger("change");
+        //dateUpdater();
     });
 }
 /* This function is called each time shortly before the picker pops up.
@@ -181,7 +182,6 @@ function dateUpdater() {
     {
         thisid=this.id.substr(6);
     }
-
     if ((!$('#year'+thisid).length || $('#year'+thisid).val()=='') &&
         (!$('#month'+thisid).length || $('#month'+thisid).val()=='') &&
         (!$('#day'+thisid).length || $('#day'+thisid).val()=='') &&
@@ -189,7 +189,6 @@ function dateUpdater() {
         (!$('#minute'+thisid).length || $('#minute'+thisid).val()==''))
     {
         //nothing filled in
-        $('#qattribute_answer'+thisid).val('');
         $('#answer'+thisid).val('');
         $('#answer'+thisid).change();
     }
@@ -200,9 +199,10 @@ function dateUpdater() {
         ($('#minute'+thisid).length && $('#minute'+thisid).val()==''))
         {
             //incomplete
-            $('#qattribute_answer'+thisid).val(translt.infoCompleteAll);
             $('#answer'+thisid).val('INVALID');
             $('#answer'+thisid).change();
+            // QCODE.NAOK return "" if real value is INVALID (because can be shown to user), then do it manually (line 721 em_javascript)
+            $("#vmsg_22_dropdown_dates").removeClass('good').addClass('error');
         }
         else
         {
@@ -251,7 +251,6 @@ function dateUpdater() {
             parseddate=parseddate.format($('#dateformat'+thisid).val());
             $('#answer'+thisid).val(parseddate); 
             $('#answer'+thisid).change();
-            $('#qattribute_answer'+thisid).val('');
         }
 }
 

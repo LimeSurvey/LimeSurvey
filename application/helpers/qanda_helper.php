@@ -127,13 +127,6 @@ function retrieveAnswers($ia)
             break;
         case 'D': //DATE
             $values = do_date($ia);
-            // if a drop box style date was answered incompletely (dropbox), print an error/help message
-            if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) ||
-                ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep']))
-            {
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]]))
-                $question_text['help'] = '<span class="error">'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]].'</span>';
-            }
             break;
         case 'L': //LIST drop-down/radio-button list
             $values = do_list_radio($ia);
@@ -931,7 +924,6 @@ function do_date($ia)
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     $sDateLangvarJS=" translt = {
          alertInvalidDate: '" . gT('Date entered is invalid!','js') . "',
-         infoCompleteAll: '" . gT('Please complete all parts of the date!','js') . "'
         };";
     App()->getClientScript()->registerScript("sDateLangvarJS",$sDateLangvarJS,CClientScript::POS_HEAD);
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
@@ -997,12 +989,15 @@ function do_date($ia)
             $currentdate = $datetimeobj->days;
             $currenthour = $datetimeobj->hours;
             $currentminute = $datetimeobj->minutes;
-        } else {
-            $currentdate='';
-            $currentmonth='';
-            $currentyear='';
-            $currenthour = '';
-            $currentminute = '';
+        }
+        else
+        {
+            // If date is invalid get the POSTED value
+            $currentdate = App()->request->getPost("day{$ia[1]}",'');
+            $currentmonth = App()->request->getPost("month{$ia[1]}",'');
+            $currentyear = App()->request->getPost("year{$ia[1]}",'');
+            $currenthour = App()->request->getPost("hour{$ia[1]}",'');
+            $currentminute = App()->request->getPost("minute{$ia[1]}",'');
         }
 
         $dateorder = preg_split('/([-\.\/ :])/', $dateformatdetails['phpdate'],-1,PREG_SPLIT_DELIM_CAPTURE );
@@ -1205,9 +1200,7 @@ function do_date($ia)
 
         $answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8').'" maxlength="10" alt="'.gT('Answer').'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" title="'.sprintf(gT('Date in the format : %s'),$dateformatdetails['dateformat']).'" />
         </p>';
-        $answer .= '
-        <input type="hidden" id="qattribute_answer'.$ia[1].'" name="qattribute_answer'.$ia[1].'" value="'.$ia[1].'"/>
-        <input type="hidden" id="dateformat'.$ia[1].'" value="'.$dateformatdetails['jsdate'].'"/>';
+        $answer .= '<input type="hidden" id="dateformat'.$ia[1].'" value="'.$dateformatdetails['jsdate'].'"/>';
         App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}","doDropDownDate({$ia[0]});",CClientScript::POS_HEAD);
         // MayDo:
         // add js code to
