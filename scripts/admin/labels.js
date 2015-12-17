@@ -38,6 +38,7 @@ $(document).ready(function(){
 
     $(document).on('click', '.btnaddanswer', add_label);
     $(document).on('click', '.btndelanswer', del_label);
+    $(document).on('keyup change', '.codeval,.assessmentval', sync_label);
 
     $('#neweditlblset0 .answertable tbody').sortable({
         update:sort_complete,
@@ -138,7 +139,7 @@ function quickaddfunction(){
 
         if (typeof(code)!="undefined") {
             $("#code_"+retcode).val(code);
-		}
+        }
 
         $(".lslanguage").each(function(i){
             $("input[name=title_"+$(this).val()+"_"+retcode+"]").val(params[k]);
@@ -186,6 +187,22 @@ function sort_complete(event, ui){
 
     fix_highlighting();
 }
+
+
+function sync_label(event)
+{
+    var $sRowID = $(event.target).parent().parent().attr('id');
+    $aRowInfo=$sRowID.split('_');// first is row, second langage and last the row number
+    $(".tab-pane").each(function(divindex,divelement){
+        var div_language = $(".lslanguage",divelement).val();
+        if (typeof(div_language)!="undefined" && div_language!=$aRowInfo[1]){
+            $("#row_"+div_language+"_"+$aRowInfo[2]+" td:first-child").text($("#code_"+$aRowInfo[2]).val()); // Sync code
+            $("#row_"+div_language+"_"+$aRowInfo[2]+" td:nth-child(2)").text($("#assessmentvalue_"+$aRowInfo[2]).val()); // Sync assessment value
+        }
+    });
+
+}
+
 
 function add_label(event)
 {
@@ -256,9 +273,15 @@ function add_label(event)
 
 function del_label(event){
 
-    var id = $(event.target).parent().parent().attr('id');
+    var $sRowID = $(event.target).parent().parent().attr('id');
 
-    $("#"+id).remove();
+    $aRowInfo=$sRowID.split('_');// first is row, second langage and last the row number
+    $(".tab-pane").each(function(divindex,divelement){
+        var div_language = $(".lslanguage",divelement).val();
+
+        if (typeof(div_language)!="undefined")
+            $("#row_"+div_language+"_"+$aRowInfo[2]).remove();
+    });
 
     fix_highlighting();
 
@@ -383,4 +406,3 @@ function code_duplicates_check()
 function is_numeric (mixed_var) {
     return (typeof(mixed_var) === 'number' || typeof(mixed_var) === 'string') && mixed_var !== '' && !isNaN(mixed_var);
 }
-
