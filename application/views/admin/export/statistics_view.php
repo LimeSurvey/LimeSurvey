@@ -7,7 +7,7 @@
 <!-- Javascript variables  -->
 <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage'=>$sStatisticsLanguage, 'surveyid'=>$surveyid, 'showtextinline'=>$showtextinline)) ; ?>
 
-<div class="side-body">
+<div class="side-body statisticsview">
     <h3>
         <span class="glyphicon glyphicon-stats"></span> &nbsp;&nbsp;&nbsp;
         <?php eT("Statistics"); ?>
@@ -21,26 +21,28 @@
                     <?php $this->renderPartial('/admin/export/statistics_subviews/_header', array()) ; ?>
 
                     <!-- AUTOSCROLLING DIV CONTAINING GENERAL FILTERS -->
-                    <div id='statisticsgeneralfilters' class='statisticsfilters jumbotron message-box box col-lg-12' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
-
+                    <div id='statisticsgeneralfilters' class='statisticsfilters' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
                         <div id='statistics_general_filter'>
 
-                            <!-- Data Selection -->
-                            <?php $this->renderPartial('/admin/export/statistics_subviews/_dataselection', array('selectshow'=>$selectshow, 'selecthide'=>$selecthide, 'selectinc'=>$selectinc, 'survlangs'=>$survlangs, 'sStatisticsLanguage'=>$sStatisticsLanguage)) ; ?>
+                            <div class="col-sm-6">
+                                <!-- Data Selection -->
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_dataselection', array('selectshow'=>$selectshow, 'selecthide'=>$selecthide, 'selectinc'=>$selectinc, 'survlangs'=>$survlangs, 'sStatisticsLanguage'=>$sStatisticsLanguage)) ; ?>
 
-                            <!-- Response ID -->
-                            <?php $this->renderPartial('/admin/export/statistics_subviews/_responseid', array()) ; ?>
+                                <!-- Response ID -->
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_responseid', array()) ; ?>
 
-                            <!-- Submission date -->
-                            <?php $this->renderPartial('/admin/export/statistics_subviews/_submissiondate', array('datestamp'=>$datestamp)) ; ?>
+                                <!-- Submission date -->
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_submissiondate', array('datestamp'=>$datestamp)) ; ?>
+                            </div>
 
-                            <!-- Output options -->
-                            <?php $this->renderPartial('/admin/export/statistics_subviews/_outputoptions', array('error'=>$error, 'showtextinline'=>$showtextinline, 'usegraph'=>$usegraph, 'showtextinline'=>$showtextinline)) ; ?>
+                            <div class="col-sm-6">
+                                <!-- Output options -->
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_outputoptions', array('error'=>$error, 'showtextinline'=>$showtextinline, 'usegraph'=>$usegraph, 'showtextinline'=>$showtextinline)) ; ?>
 
-                            <!-- Output format -->
-                            <?php $this->renderPartial('/admin/export/statistics_subviews/_outputformat', array()) ; ?>
+                                <!-- Output format -->
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_outputformat', array()) ; ?>
+                            </div>
                         </div>
-
 
                         <p>
                             <input type='hidden' name='summary[]' value='idG' />

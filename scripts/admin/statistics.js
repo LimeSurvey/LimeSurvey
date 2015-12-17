@@ -1,4 +1,21 @@
-$(document).ready(function(){
+$(document).ready(function() {
+
+    $("[name='viewsummaryall']").bootstrapSwitch();
+    $("[name='noncompleted']").bootstrapSwitch();
+    $("[name='showtextinline']").bootstrapSwitch();
+    $("[name='usegraph']").bootstrapSwitch();
+
+
+    $('#generalfilters-chevron').click(function(){
+        $('#statisticsgeneralfilters').toggle();
+        $('#generalfilters-chevron').toggleClass('glyphicon-chevron-up').toggleClass('glyphicon-chevron-down');
+    });
+
+    $('#responsefilters-chevron').click(function(){
+        $('#filterchoices').toggle();
+        $('#responsefilters-chevron').toggleClass('glyphicon-chevron-up').toggleClass('glyphicon-chevron-down');
+    });
+
     if(showTextInline==1) {
         /* Enable all the browse divs, and fill with data */
         $('.statisticsbrowsebutton').each( function (){

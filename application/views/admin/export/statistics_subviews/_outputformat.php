@@ -1,21 +1,19 @@
-<fieldset>
-    <legend><?php eT("Select output format"); ?>:</legend>
-    <div class="form-group col-sm-12">
-        <label  class="col-sm-5 control-label" for='outputtypehtml'>HTML</label>
-        <div class='col-sm-5'>
-            <input type='radio' id="outputtypehtml" name='outputtype' value='html' checked='checked' />
+    <div class="panel panel-primary " id="pannel-1">
+        <div class="panel-heading">
+            <h4 class="panel-title"><?php eT("Select output format"); ?>:</h4>
         </div>
-    </div>
-    <div class="form-group col-sm-12">
-        <label  class="col-sm-5 control-label" for='outputtypepdf'>PDF</label>
-        <div class='col-sm-5'>
-            <input type='radio' id="outputtypepdf" name='outputtype' value='pdf' />
+        <div class="panel-body">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default">
+                    <input name="outputtype" value="html" type="radio" checked='checked' id="outputtypehtml" ><?php eT('HTML');?>
+                </label>
+                <label class="btn btn-default">
+                    <input name="outputtype" value="pdf" type="radio" id="outputtypepdf"><?php eT('PDF');?>
+                </label>
+                <label class="btn btn-default">
+                    <input name="outputtype" value="xls" class="active" type="radio" id="outputtypexls"  onclick='nographs();'><?php eT('Excel'); ?>
+                </label>
+            </div>
         </div>
+
     </div>
-    <div class="form-group col-sm-12">
-        <label class="col-sm-5 control-label" for='outputtypexls'>Excel</label>
-        <div class='col-sm-5'>
-            <input type='radio' id="outputtypexls" onclick='nographs();' name='outputtype' value='xls' />
-        </div>
-    </div>
-</fieldset>
