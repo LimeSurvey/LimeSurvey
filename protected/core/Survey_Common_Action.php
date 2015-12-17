@@ -282,15 +282,7 @@ class Survey_Common_Action extends CAction
             }
         }
 
-        if (!empty($aData['display']['menu_bars']['browse']) && !empty($aData['surveyid']))
-        {
-            $this->_browsemenubar($aData['surveyid'], $aData['display']['menu_bars']['browse']);
-        }
 
-        if (!empty($aData['display']['menu_bars']['user_group']))
-        {
-            $this->_userGroupBar(!empty($aData['ugid']) ? $aData['ugid'] : 0);
-        }
 
         // Load views
         foreach ($aViewUrls as $sViewKey => $viewUrl)

@@ -119,6 +119,7 @@ class UpgradeController extends Controller
         $json = $this->getFileContentsCached(App()->params['updateServer'] . 'prepare', [
             'query' => ['from' => App()->params['version'], 'to' => $version]
         ]);
+
         $preUpdate->loadFromString($json, null);
         return ['success' => $preUpdate->run(), 'messages' => $preUpdate->getMessages(), 'changeLog' => $preUpdate->getChangeLog()];
     }

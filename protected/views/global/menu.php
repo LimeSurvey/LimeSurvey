@@ -44,7 +44,7 @@ $menu = [
             ],
             [
                 'title' => gT('Edit label sets'),
-                'url' => ['admin/labels', 'sa' => 'view'],
+                'url' => ['labels/index'],
                 'icon' => 'list',
                 'visible' => App()->user->checkAccess('labelsets')
             ],

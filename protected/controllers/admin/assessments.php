@@ -75,7 +75,7 @@ class Assessments extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = [], $aData = [])
     {
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'assessments.js');
+        App()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/admin/' . 'assessments.js');
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         
 

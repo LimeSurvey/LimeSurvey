@@ -102,7 +102,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
     <?php foreach ($assessmentlangs as $assessmentlang)
     {
 	    $position=0;
-	    echo '<li class="ui-state-default ui-corner-top" style="clear: none;"><a href="#tablang'.$assessmentlang.'">'.getLanguageNameFromCode($assessmentlang, false);
+	    echo '<li class="ui-state-default ui-corner-top" style="clear: none;"><a href="#tablang'.$assessmentlang.'">'.\ls\helpers\SurveyTranslator::getLanguageNameFromCode($assessmentlang, false);
 	    if ($assessmentlang==$baselang) {echo ' ('.gT("Base language").')';}
 	    echo '</a></li>';
     } ?>

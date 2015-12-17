@@ -79,6 +79,7 @@ class FilesController extends Controller
         return [
             'alias' => "ls\models\Survey ({$surveyId})",
             'driver' => 'LocalFileSystem',
+            'autoload' => true,
             'path'   => $dir,
             'URL' => App()->publicUrl . $relative,
             'icon' => "{$this->getAssetsUrl()}/img/volume_icon_local.png",
@@ -106,6 +107,7 @@ class FilesController extends Controller
             $result[] = [
                 'alias' => "ls\models\Template ({$template})",
                 'driver' => 'LocalFileSystem',
+                'autoload' => true,
                 'path' => $dir,
                 'URL' => App()->baseUrl . $url,
                 'mimeMap' => [

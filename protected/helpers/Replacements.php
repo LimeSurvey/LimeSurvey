@@ -89,7 +89,7 @@ class Replacements
             } elseif (file_exists($templateDir . DIRECTORY_SEPARATOR . 'jquery-ui.css')) {
                 $clientScript->registerCssFile("{$templateUrl}jquery-ui.css");
             } else {
-                $clientScript->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "jquery-ui.css");
+                $clientScript->registerCssFile(App()->publicUrl . '/styles-public/' . "jquery-ui.css");
             }
 
             $clientScript->registerCssFile("{$templateUrl}template.css");

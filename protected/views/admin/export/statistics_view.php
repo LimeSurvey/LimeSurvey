@@ -9,10 +9,10 @@
 <script type='text/javascript'>
     var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/graph"); ?>";
     var sStatisticsLanguage="<?php echo $sStatisticsLanguage; ?>";
-    var listColumnUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/listcolumn/surveyid/".$surveyid."/column/"); ?>";
+    var listColumnUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics", ['sa' => 'listcolumn', 'surveyid' => $surveyid, 'column' => '']); ?>";
     var showTextInline="<?php echo $showtextinline ?>";
 </script>
-<?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder','#'=>'start'));?>
+<?php echo CHtml::form(["admin/statistics", 'sa' => 'index', 'surveyid' => $surveyid], 'post', array('name'=>'formbuilder','#'=>'start'));?>
     <div class='header ui-widget-header header_statistics'>
         <div style='float:right;'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showgfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidegfilter' alt='<?php eT("Minimize"); ?>'/></div>
         <?php eT("General filters"); ?>
@@ -61,7 +61,7 @@
                             {
                                 $language_options .= " selected=\"selected\" " ;
                             }
-                            $temp = getLanguageNameFromCode($survlang,true);
+                            $temp = \ls\helpers\SurveyTranslator::getLanguageNameFromCode($survlang,true);
                             $language_options .= ">".$temp[1]."</option>\n";
 
                         }
@@ -523,7 +523,7 @@
                         if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($availlang, $_POST[$myfield]))
                         {echo " selected";}
 
-                        echo ">".getLanguageNameFromCode($availlang,false)."</option>\n";
+                        echo ">".\ls\helpers\SurveyTranslator::getLanguageNameFromCode($availlang,false)."</option>\n";
                     }
                     break;
 
@@ -536,7 +536,7 @@
                     echo "\t</tr>\n\t<tr>\n";
 
                     //get answers
-                    $result[$key1] = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$flt[0]' AND language = '{$language}'", 'question_order');
+                    $result[$key1] = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$flt[0]'", 'question_order');
                     $counter2=0;
 
                     //check all the results

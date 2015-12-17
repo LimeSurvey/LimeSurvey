@@ -1,4 +1,4 @@
-<script src="<?php echo Yii::app()->getConfig('adminscripts') . "participantpanel.js" ?>" type="text/javascript"></script>
+<script src="<?php echo App()->publicUrl . '/scripts/admin/' . "participantpanel.js" ?>" type="text/javascript"></script>
 <script type="text/javascript">
     var exporttocsvcountall = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/exporttocsvcountAll"); ?>";
     var exporttocsvall = "<?php echo Yii::app()->getController()->createUrl("exporttocsvAll"); ?>";

@@ -3295,8 +3295,8 @@ function languageDropdown($surveyid,$selected)
     foreach ($slangs as $lang)
     {
         $link = Yii::app()->homeUrl.("/admin/dataentry/sa/view/surveyid/".$surveyid."/lang/".$lang);
-        if ($lang == $selected) $html .= "\t<option value='{$link}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
-        if ($lang != $selected) $html .= "\t<option value='{$link}'>".getLanguageNameFromCode($lang,false)."</option>\n";
+        if ($lang == $selected) $html .= "\t<option value='{$link}' selected='selected'>".\ls\helpers\SurveyTranslator::getLanguageNameFromCode($lang,false)."</option>\n";
+        if ($lang != $selected) $html .= "\t<option value='{$link}'>".\ls\helpers\SurveyTranslator::getLanguageNameFromCode($lang,false)."</option>\n";
     }
     $html .= "</select>";
     return $html;
@@ -3310,8 +3310,8 @@ function languageDropdownClean($surveyid,$selected)
     $html = "<select class='listboxquestions' id='language' name='language'>\n";
     foreach ($slangs as $lang)
     {
-        if ($lang == $selected) $html .= "\t<option value='$lang' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
-        if ($lang != $selected) $html .= "\t<option value='$lang'>".getLanguageNameFromCode($lang,false)."</option>\n";
+        if ($lang == $selected) $html .= "\t<option value='$lang' selected='selected'>".\ls\helpers\SurveyTranslator::getLanguageNameFromCode($lang,false)."</option>\n";
+        if ($lang != $selected) $html .= "\t<option value='$lang'>".\ls\helpers\SurveyTranslator::getLanguageNameFromCode($lang,false)."</option>\n";
     }
     $html .= "</select>";
     return $html;
@@ -4494,7 +4494,7 @@ function getPrintableHeader()
     global $rooturl,$homeurl;
     $headelements = '
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <script type="text/javascript" src="'.Yii::app()->getConfig('adminscripts').'printablesurvey.js"></script>
+    <script type="text/javascript" src="'.App()->publicUrl . '/scripts/admin/'.'printablesurvey.js"></script>
     ';
     return $headelements;
 }

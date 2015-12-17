@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ebb7ea5df152b4614b885d996d5da28d",
-    "content-hash": "cea181f5170b2cd7effe8e4394b545d3",
+    "hash": "1bb198cdb54323890e6ab5232ecc6401",
+    "content-hash": "3e0e4884134c39c769bc6ae43616df8a",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -252,6 +252,60 @@
             ],
             "description": "Font Awesome",
             "time": "2015-08-19 18:38:02"
+        },
+        {
+            "name": "bower-asset/handsontable",
+            "version": "0.20.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/handsontable/handsontable.git",
+                "reference": "5a8dc8c1b903a9a8be84f2da25c7b6a85bc1fee5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/handsontable/handsontable/zipball/5a8dc8c1b903a9a8be84f2da25c7b6a85bc1fee5",
+                "reference": "5a8dc8c1b903a9a8be84f2da25c7b6a85bc1fee5",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/moment": ">=2.9.0,<3.0.0",
+                "bower-asset/pikaday": ">=1.3.2,<2.0.0",
+                "bower-asset/zeroclipboard": ">=2.2.0,<3.0.0"
+            },
+            "require-dev": {
+                "bower-asset/chroma-js": "~0.5.6"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "./dist/handsontable.js",
+                    "./dist/handsontable.css"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "components",
+                    "demo",
+                    "node_modules",
+                    "src",
+                    "test"
+                ]
+            },
+            "description": "Spreadsheet-like data grid editor that provides copy/paste functionality compatible with Excel/Google Docs",
+            "keywords": [
+                "data",
+                "data-grid",
+                "data-spreadsheet",
+                "data-table",
+                "edit-cell",
+                "editable-table",
+                "editor",
+                "excel",
+                "grid",
+                "grid-editor",
+                "spreadsheet",
+                "table",
+                "tabular-data"
+            ]
         },
         {
             "name": "bower-asset/jqgrid",
@@ -567,6 +621,43 @@
             "description": "JavaScript library for mobile-friendly interactive maps"
         },
         {
+            "name": "bower-asset/moment",
+            "version": "2.10.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moment/moment.git",
+                "reference": "f3fbef9d9875bbff340b527dbe3f1c447a942f69"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moment/moment/zipball/f3fbef9d9875bbff340b527dbe3f1c447a942f69",
+                "reference": "f3fbef9d9875bbff340b527dbe3f1c447a942f69",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "moment.js",
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "benchmarks",
+                    "bower_components",
+                    "meteor",
+                    "node_modules",
+                    "scripts",
+                    "tasks",
+                    "test",
+                    "component.json",
+                    "composer.json",
+                    "CONTRIBUTING.md",
+                    "ender.js",
+                    "Gruntfile.js",
+                    "Moment.js.nuspec",
+                    "package.js",
+                    "package.json"
+                ]
+            }
+        },
+        {
             "name": "bower-asset/papaparse",
             "version": "4.1.2",
             "source": {
@@ -617,6 +708,43 @@
                 "threading",
                 "worker",
                 "workers"
+            ]
+        },
+        {
+            "name": "bower-asset/pikaday",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dbushell/Pikaday.git",
+                "reference": "651842140ee0f872f3364c33a34e2b595fd72d43"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dbushell/Pikaday/zipball/651842140ee0f872f3364c33a34e2b595fd72d43",
+                "reference": "651842140ee0f872f3364c33a34e2b595fd72d43",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "./pikaday.js",
+                    "./css/pikaday.css"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "components"
+                ]
+            },
+            "license": [
+                "BSD",
+                "MIT"
+            ],
+            "description": "A refreshing JavaScript Datepicker — lightweight, no dependencies, modular CSS",
+            "keywords": [
+                "calendar",
+                "date",
+                "datepicker"
             ]
         },
         {
@@ -943,6 +1071,48 @@
                 "validation",
                 "video",
                 "widgets"
+            ]
+        },
+        {
+            "name": "bower-asset/zeroclipboard",
+            "version": "v2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zeroclipboard/zeroclipboard.git",
+                "reference": "039fb799c916d3730fbc898c2f5ef24581c7e9b7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zeroclipboard/zeroclipboard/zipball/039fb799c916d3730fbc898c2f5ef24581c7e9b7",
+                "reference": "039fb799c916d3730fbc898c2f5ef24581c7e9b7",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/ZeroClipboard.js",
+                    "dist/ZeroClipboard.swf"
+                ],
+                "bower-asset-ignore": [
+                    "*",
+                    "/dist/.jshintrc",
+                    "!/bower.json",
+                    "!/dist/**"
+                ]
+            },
+            "license": [
+                "https://github.com/zeroclipboard/zeroclipboard/blob/master/LICENSE"
+            ],
+            "description": "The ZeroClipboard library provides an easy way to copy text to the clipboard using an invisible Adobe Flash movie and a JavaScript interface.",
+            "keywords": [
+                "clip",
+                "clipboard",
+                "clippy",
+                "copy",
+                "cut",
+                "flash",
+                "paste",
+                "zclip"
             ]
         },
         {
@@ -1782,12 +1952,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Studio-42/elFinder.git",
-                "reference": "e1ebe5fa1eef821dc5d3b3f8c4dc219519b0e2de"
+                "reference": "89625cc1d0b57aef24de0fd334c16c514321f317"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/e1ebe5fa1eef821dc5d3b3f8c4dc219519b0e2de",
-                "reference": "e1ebe5fa1eef821dc5d3b3f8c4dc219519b0e2de",
+                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/89625cc1d0b57aef24de0fd334c16c514321f317",
+                "reference": "89625cc1d0b57aef24de0fd334c16c514321f317",
                 "shasum": ""
             },
             "require": {
@@ -1833,7 +2003,7 @@
             ],
             "description": "File manager for web",
             "homepage": "http://elfinder.org",
-            "time": "2015-12-13 11:57:14"
+            "time": "2015-12-16 13:16:26"
         },
         {
             "name": "tecnickcom/tcpdf",
@@ -1904,12 +2074,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "ad716b9ea9506456f28e2c1bcdd7b4a81b44c11c"
+                "reference": "71a0bfee8eef70999f9a2c486901b2b55a890b27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/ad716b9ea9506456f28e2c1bcdd7b4a81b44c11c",
-                "reference": "ad716b9ea9506456f28e2c1bcdd7b4a81b44c11c",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/71a0bfee8eef70999f9a2c486901b2b55a890b27",
+                "reference": "71a0bfee8eef70999f9a2c486901b2b55a890b27",
                 "shasum": ""
             },
             "replace": {
@@ -1947,7 +2117,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-12-10 23:05:45"
+            "time": "2015-12-17 05:55:54"
         },
         {
             "name": "yiisoft/yii",
@@ -2097,12 +2267,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "64cdc57b544d396b68b2db3513d3f4e701e8f3a9"
+                "reference": "edc732c7d3457b880134cc1abbaef67ae0cd0452"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/64cdc57b544d396b68b2db3513d3f4e701e8f3a9",
-                "reference": "64cdc57b544d396b68b2db3513d3f4e701e8f3a9",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/edc732c7d3457b880134cc1abbaef67ae0cd0452",
+                "reference": "edc732c7d3457b880134cc1abbaef67ae0cd0452",
                 "shasum": ""
             },
             "require": {
@@ -2119,8 +2289,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2-dev",
-                    "dev-develop": "1.3-dev"
+                    "dev-master": "1.3-dev",
+                    "dev-develop": "1.4-dev"
                 }
             },
             "autoload": {
@@ -2139,7 +2309,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2015-11-26 22:34:19"
+            "time": "2015-12-16 16:31:21"
         },
         {
             "name": "zendframework/zend-escaper",

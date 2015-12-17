@@ -180,28 +180,6 @@ class WebApplication extends CWebApplication
     }
 
     /**
-     * Set a 'flash message'.
-     *
-     * A flahs message will be shown on the next request and can contain a message
-     * to tell that the action was successful or not. The message is displayed and
-     * cleared when it is shown in the view using the widget:
-     * <code>
-     * $this->widget('application.extensions.FlashMessage.FlashMessage');
-     * </code>
-     *
-     * @param string $message
-     * @param string $type
-     * @return WebApplication Provides a fluent interface
-     */
-    public function setFlashMessage($message,$type='default')
-    {
-        $aFlashMessage=$this->session['aFlashMessage'];
-        $aFlashMessage[]=array('message'=>$message,'type'=>$type);
-        $this->session['aFlashMessage'] = $aFlashMessage;
-        return $this;
-    }
-
-    /**
     * Loads a config from a file
     *
     * @access public
@@ -228,6 +206,9 @@ class WebApplication extends CWebApplication
     */
     public function getConfig($name, $default = false)
     {
+        if ($name == 'adminstyleurl') {
+            return $this->getPublicUrl() . '/styles/gringegreen/';
+        }
         return isset($this->config[$name]) ? $this->config[$name] : $default;
     }
 

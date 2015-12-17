@@ -8,8 +8,10 @@ echo $form->dropDownListControlGroup($settings, 'defaultlang', $options);
 
 // Use checkbox list for better usability versus select2..
 $attribute = 'disabledLanguages';
-echo $form->checkBoxListControlGroup($settings, $attribute, $options);
-\TbHtml::resolveNameID($settings, $attribute, $opts);
-App()->clientScript->registerCss('languages', "#{$opts['id']} .checkbox { display:inline-block; width: 19%;}");
+echo $form->checkBoxListControlGroup($settings, $attribute, $options, [
+    'containerOptions' => [
+        'class' => 'languageList'
+    ]
+]);
 echo TbHtml::closeTag('fieldset');
 ?>

@@ -49,12 +49,12 @@ $menu = [[ // Left side
             [
                 'label' => gT('Show responses'),
                 'icon' => 'eye-open',
-
+                'disabled' => $model->responseCount == 0,
                 'url' => ["responses/index", 'id' => $model->sid],2
             ], [
                 'label' => gT('Export'),
                 'icon' => 'download',
-//                'disabled' => $model->responseCount == 0,
+                'disabled' => $model->responseCount == 0,
                 'url' => ["responses/export", 'id' => $model->sid],
             ]
 

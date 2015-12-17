@@ -26,7 +26,7 @@
                                     <?php foreach ($langidsarray as $langid)
                                         { ?>
                                         <option id='<?php echo $langid; ?>' value='<?php echo $langid; ?>'
-                                            ><?php echo getLanguageNameFromCode($langid,false); ?></option>
+                                            ><?php echo \ls\helpers\SurveyTranslator::getLanguageNameFromCode($langid,false); ?></option>
                                         <?php } ?>
 
 

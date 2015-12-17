@@ -9,7 +9,7 @@
         <?php
             foreach ($lslanguages as $i => $language)
                 echo "
-                <li><a href='#neweditlblset$i'>" . getLanguageNameFromCode($language, false) . "</a></li>";
+                <li><a href='#neweditlblset$i'>" . \ls\helpers\SurveyTranslator::getLanguageNameFromCode($language, false) . "</a></li>";
             echo "
             <li><a href='#up_resmgmt'>" . gT("Uploaded resources management") . "</a></li>";
         ?>

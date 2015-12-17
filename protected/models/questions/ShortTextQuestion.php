@@ -238,7 +238,7 @@ class ShortTextQuestion extends TextQuestion
             $clientScript->registerScript('sGlobalMapScriptVar',"LSmap=".ls_json_encode($aGlobalMapScriptVar).";\nLSmaps= new Array();",CClientScript::POS_HEAD);
             $clientScript->registerScript('sThisMapScriptVar'.$this->sgqa,"LSmaps['{$this->sgqa}']=".ls_json_encode($aThisMapScriptVar),CClientScript::POS_HEAD);
             $clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
-            $clientScript->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css');
+            $clientScript->registerCssFile(App()->publicUrl . '/styles-public/' . 'map.css');
 
             $html = "
             <div class=\"question answer-item geoloc-item {$extraclass}\">

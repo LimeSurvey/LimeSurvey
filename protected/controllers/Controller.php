@@ -64,8 +64,8 @@ abstract class Controller extends \CController
             Yii::app()->setConfig("timeadjust",$timeadjust.' hours');
         }
 
-        Yii::app()->setConfig('adminimageurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/images/');
-        Yii::app()->setConfig('adminstyleurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/');
+        Yii::app()->setConfig('adminimageurl', App()->theme->baseUrl. '/images/');
+        Yii::app()->setConfig('adminstyleurl', App()->publicUrl . '/styles/gringegreen/');
     }
 
     /**

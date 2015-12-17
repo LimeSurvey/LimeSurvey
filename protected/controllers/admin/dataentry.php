@@ -884,7 +884,7 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= '</div>';
                             App()->getClientScript()->registerPackage('jquery-actual');
                             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
-                            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
+                            App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles-public/' . 'ranking.css');
                             $aDataentryoutput .= "<script type='text/javascript'>\n"
                                 .  "  <!--\n"
                                 . "var aRankingTranslations = {
@@ -955,7 +955,7 @@ class dataentry extends Survey_Common_Action
                             {
                                 $aDataentryoutput.="<option value='{$lang}'";
                                 if ($lang == $idrow[$fname['fieldname']]) {$aDataentryoutput .= " selected='selected'";}
-                                $aDataentryoutput.=">".getLanguageNameFromCode($lang,false)."</option>\n";
+                                $aDataentryoutput.=">".\ls\helpers\SurveyTranslator::getLanguageNameFromCode($lang,false)."</option>\n";
                             }
                             $aDataentryoutput .= "</select>";
                             break;
@@ -1465,8 +1465,8 @@ class dataentry extends Survey_Common_Action
                 throw new \CHttpException(500, "Update failed:<br />\n<br />$updateqr");
             }
 
-            $onerecord_link = $this->getController()->createUrl('/admin/responses/sa/view/surveyid/'.$surveyid.'/id/'.$id);
-            $allrecords_link = $this->getController()->createUrl('/admin/responses/sa/index/surveyid/'.$surveyid);
+            $onerecord_link = $this->getController()->createUrl('admin/responses', ['sa' => 'view', 'surveyid' => $surveyid, 'id' => $id]);
+            $allrecords_link = $this->getController()->createUrl('admin/responses', ['sa' => 'index', 'surveyid' => $surveyid]);
             $aDataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".gT("Success")."</div>\n"
             .gT("Record has been updated.")."<br /><br />\n"
             ."<input type='submit' value='".gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"
@@ -2137,7 +2137,7 @@ class dataentry extends Survey_Common_Action
                             $cdata['answers']=$answers;
                             App()->getClientScript()->registerPackage('jquery-actual');
                             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
-                            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
+                            App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles-public/' . 'ranking.css');
                             unset($answers);
                             break;
                         case "M": //Multiple choice checkbox (Quite tricky really!)

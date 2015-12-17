@@ -1,4 +1,4 @@
-<script src="<?php echo Yii::app()->getConfig('adminscripts') . "userControl.js" ?>" type="text/javascript"></script>
+<script src="<?php echo App()->publicUrl . '/scripts/admin/' . "userControl.js" ?>" type="text/javascript"></script>
 <div class='header ui-widget-header'>
     <strong>
         <?php

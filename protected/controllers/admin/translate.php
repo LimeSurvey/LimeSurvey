@@ -347,7 +347,7 @@ class translate extends Survey_Common_Action {
 			foreach ( $tmp_survlangs as $tmp_lang )
 			{
 				$survey_button .= CHtml::tag('li', [],
-					CHtml::link(getLanguageNameFromCode($tmp_lang, FALSE), $menuitem_url . $tmp_lang, [
+					CHtml::link(\ls\helpers\SurveyTranslator::getLanguageNameFromCode($tmp_lang, FALSE), $menuitem_url . $tmp_lang, [
 						'target' 	=> 	'_blank',
 						'onclick' 	=> 	"$('.dosurvey').qtip('hide');",
 						'accesskey' => 	'd'

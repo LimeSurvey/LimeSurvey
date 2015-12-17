@@ -506,7 +506,7 @@ class Question extends ActiveRecord implements \ls\interfaces\iRenderable
 
     public function getQuestionsForStatistics($fields, $condition, $orderby = false)
     {
-        $command = Yii::app()->db->createCommand()
+        $command = self::getDbConnection()->createCommand()
             ->select($fields)
             ->from(self::tableName())
             ->where($condition);

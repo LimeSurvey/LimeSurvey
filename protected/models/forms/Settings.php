@@ -125,8 +125,8 @@ class Settings extends \CFormModel
             'bounceencryption' => gT("Encryption type"),
             
             // Security
-            'surveyPreview_require_Auth' => gt("ls\models\Survey preview only for administration users"),
-            'filterxsshtml' => gt("ls\models\Survey preview only for administration users"),
+            'surveyPreview_require_Auth' => gt("Survey preview only for administration users"),
+            'filterxsshtml' => gt("Survey preview only for administration users"),
             'usercontrolSameGroupPolicy' => gt("Group member can only see own group"),
             'force_ssl' => gt("Force HTTPS"),
 

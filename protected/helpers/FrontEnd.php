@@ -13,7 +13,7 @@ class FrontEnd
         bp();
 
 
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'lime-progress.css');
+        Yii::app()->getClientScript()->registerCssFile(App()->publicUrl . '/styles-public/' . 'lime-progress.css');
         $size = intval(($step) / $total * 100);
 
         $graph = '<script type="text/javascript">
@@ -215,7 +215,7 @@ class FrontEnd
         $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
         $aReplacementVars['VIEWRESPONSEURL'] = Yii::app()->createAbsoluteUrl("/admin/responses/sa/view/surveyid/{$surveyid}/id/{$srid}");
         $aReplacementVars['EDITRESPONSEURL'] = Yii::app()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$srid}");
-        $aReplacementVars['STATISTICSURL'] = Yii::app()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyid}");
+        $aReplacementVars['STATISTICSURL'] = Yii::app()->createAbsoluteUrl("admin/statistics", ['sa' => 'index', 'surveyid' => $surveyid]);
         if ($bIsHTML) {
             $aReplacementVars['VIEWRESPONSEURL'] = "<a href='{$aReplacementVars['VIEWRESPONSEURL']}'>{$aReplacementVars['VIEWRESPONSEURL']}</a>";
             $aReplacementVars['EDITRESPONSEURL'] = "<a href='{$aReplacementVars['EDITRESPONSEURL']}'>{$aReplacementVars['EDITRESPONSEURL']}</a>";

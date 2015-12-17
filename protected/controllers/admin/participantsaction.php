@@ -69,7 +69,7 @@ class participantsaction extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jqgrid');
         if (!empty($sScript))
         {
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . $sScript . '.js');
+            App()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/admin/' . $sScript . '.js');
             $this->_renderWrappedTemplate('participants', ['participantsPanel', $sScript], $aData);
         }
     }
@@ -256,7 +256,7 @@ class participantsaction extends Survey_Common_Action
             'aAttributes' => ParticipantAttributeName::model()->findAll()
         ];
         App()->getClientScript()->registerPackage('jqgrid');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl')  . 'displayParticipants.css');
+        App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/'  . 'displayParticipants.css');
 
 
         // loads the participant panel view and display participant view
@@ -951,9 +951,9 @@ class participantsaction extends Survey_Common_Action
             'attributevalues' => ParticipantAttributeName::model()->getAttributesValues($iAttributeId),
             'aAttributes' => ParticipantAttributeName::model()->findAll()
         ];
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'participants.css');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'viewAttribute.css');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "viewAttribute.js");
+        App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/'.'participants.css');
+        App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/'.'viewAttribute.css');
+        App()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/admin/' . "viewAttribute.js");
         $this->_renderWrappedTemplate('participants', ['participantsPanel', 'viewAttribute'], $aData);
     }
 
@@ -1135,7 +1135,7 @@ class participantsaction extends Survey_Common_Action
                 'participant_id_exists' => in_array('participant_id', $fieldlist)
             ];
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstysleurl') . "attributeMapCSV.css");
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "attributeMapCSV.js");
+        App()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/admin/' . "attributeMapCSV.js");
 
         $sAttributeMapJS="var copyUrl = '".App()->createUrl("admin/participants/sa/uploadCSV")."';\n"
                         ."var displayParticipants = '".App()->createUrl("admin/participants/sa/displayParticipants")."';\n"
@@ -1281,8 +1281,8 @@ class participantsaction extends Survey_Common_Action
     function attributeMap()
     {
         Yii::app()->loadHelper('common');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "attributeMap.js");
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') ."attributeMap.css");
+        App()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/admin/' . "attributeMap.js");
+        App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/' ."attributeMap.css");
 
         $iSurveyId = Yii::app()->request->getPost('survey_id');
         $redirect = Yii::app()->request->getPost('redirect');
@@ -1356,8 +1356,8 @@ class participantsaction extends Survey_Common_Action
     function attributeMapToken()
     {
         Yii::app()->loadHelper('common');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "attributeMapToken.js");
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') ."attributeMapToken.css");
+        App()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/admin/' . "attributeMapToken.js");
+        App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/' ."attributeMapToken.css");
 
         $iSurveyID = (int)Yii::app()->request->getQuery('sid');
         $aCPDBAttributes = ParticipantAttributeName::model()->getCPDBAttributes();

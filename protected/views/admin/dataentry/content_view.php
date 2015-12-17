@@ -239,7 +239,7 @@
 
             <?php foreach ($slangs as $lang)
                 { ?>
-                <option value='<?php echo $lang; ?>'><?php echo getLanguageNameFromCode($lang,false); ?></option>
+                <option value='<?php echo $lang; ?>'><?php echo \ls\helpers\SurveyTranslator::getLanguageNameFromCode($lang,false); ?></option>
                 <?php } ?>
         </select>
         <?php break;

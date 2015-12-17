@@ -284,18 +284,18 @@ class UploaderController extends Controller
         $sTemplateUrl = \ls\models\Template::getTemplateURL($aSurveyInfo['template']) . "/";
         App()->clientScript->registerScript('sNeededScriptVar', $sNeededScriptVar, CClientScript::POS_HEAD);
         App()->clientScript->registerScript('sLangScriptVar', $sLangScriptVar, CClientScript::POS_HEAD);
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'ajaxupload.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'uploader.js');
+        App()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/' . 'ajaxupload.js');
+        App()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/' . 'uploader.js');
         App()->getClientScript()->registerScriptFile("{$sTemplateUrl}template.js");
-        App()->clientScript->registerCssFile(Yii::app()->getConfig("publicstyleurl") . "uploader.css");
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "uploader-files.css");
+        App()->clientScript->registerCssFile(App()->publicUrl . '/styles-public/' . "uploader.css");
+        App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles-public/' . "uploader-files.css");
 
         if (file_exists($sTemplateDir . DIRECTORY_SEPARATOR . 'jquery-ui-custom.css')) {
             Yii::app()->getClientScript()->registerCssFile("{$sTemplateUrl}jquery-ui-custom.css");
         } elseif (file_exists($sTemplateDir . DIRECTORY_SEPARATOR . 'jquery-ui.css')) {
             Yii::app()->getClientScript()->registerCssFile("{$sTemplateUrl}jquery-ui.css");
         } else {
-            Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "jquery-ui.css");
+            Yii::app()->getClientScript()->registerCssFile(App()->publicUrl . '/styles-public/' . "jquery-ui.css");
         }
         App()->clientScript->registerCssFile("{$sTemplateUrl}template.css");
         $header = getHeader($meta);

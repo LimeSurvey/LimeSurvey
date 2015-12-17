@@ -51,7 +51,7 @@ function return_timer_script(Question $question, $ia, $disable=null) {
     global $thissurvey;
 
 
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'coookies.js');
+    Yii::app()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/'.'coookies.js');
 
     /* End */
 

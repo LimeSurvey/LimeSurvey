@@ -1632,7 +1632,8 @@ class conditionsaction extends Survey_Common_Action {
             if (isset($conditionsList) && is_array($conditionsList))
             {
                 //TIBO
-                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'jquery/jquery.multiselect.min.js');
+
+                App()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/'.'jquery/jquery.multiselect.min.js');
 
                 // TODO
                 $aViewUrls['output'] .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( { autoOpen: true, noneSelectedText: '".gT("No questions selected")."', checkAllText: '".gT("Check all")."', uncheckAllText: '".gT("Uncheck all")."', selectedText: '# ".gT("selected")."', beforeclose: function(){ return false;},height: 200 } ); });</script>";
@@ -1942,7 +1943,7 @@ class conditionsaction extends Survey_Common_Action {
 
 
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("adminscripts").'conditions.js');
-            //App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'jquery/lime-conditions-tabs.js');
+            //App()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/'.'jquery/lime-conditions-tabs.js');
 
             if ($subaction == "editthiscondition" && isset($p_cid))
             {

@@ -43,7 +43,8 @@
         "bower-asset/leaflet": "0.7.3",
         "bower-asset/jquery-ace": "1.*",
         "bower-asset/jquery": "2.*",
-        "zendframework/zend-xmlrpc": "^2.5@dev"
+        "zendframework/zend-xmlrpc": "^2.5@dev",
+        "bower-asset/handsontable": "^0.20.2"
     },
     "autoload" : {
         "classmap" : [

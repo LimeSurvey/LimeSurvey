@@ -26,7 +26,7 @@
             $cs->registerScriptFile("$public/scripts/htmleditor.js");
 
             // Disable disabled links.
-            $cs->registerScript('links', "$('body').on('click', '.disabled a', function (e) { e.preventDefault(); });");
+            $cs->registerScript('links', "$('body').on('click', '.disabled a', function (e) { console.log('noo'); e.preventDefault(); });");
 
         ?>
         <title>Limesurvey Administration</title>

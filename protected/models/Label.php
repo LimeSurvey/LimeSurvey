@@ -12,18 +12,11 @@
  *
  *
  */
-
-use ls\models\ActiveRecord;
+namespace ls\models;
 
 class Label extends ActiveRecord
 {
-    /**
-     * Used for some statistical queries
-     * @var int
-     */
-    public $maxsortorder;
-
-	/**
+ 	/**
 	 * Returns the table's name
 	 *
 	 * @access public
@@ -42,20 +35,8 @@ class Label extends ActiveRecord
 	 */
 	public function primaryKey()
 	{
-		return array('lid', 'language');
+		return ['lid', 'language'];
 	}
-    /**
-    * Returns the static model of Settings table
-    *
-    * @static
-    * @access public
-    * @param string $class
-    * @return CActiveRecord
-    */
-    public static function model($class = __CLASS__)
-    {
-        return parent::model($class);
-    }
 
     /**
     * Returns this model's validation rules
@@ -63,18 +44,20 @@ class Label extends ActiveRecord
     */
     public function rules()
     {
-        return array(
-            array('lid','numerical', 'integerOnly'=>true),
-            array('code', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
+        return [
+            ['lid', 'numerical', 'integerOnly'=>true],
+            [
+					'code', 'unique', 'caseSensitive'=>true, 'criteria'=> [
                             'condition'=>'lid = :lid AND language=:language',
-                            'params'=>array(':lid'=>$this->lid,':language'=>$this->language)
-                    ),
-                    'message'=>'{attribute} "{value}" is already in use.'),
-            array('title','required'),
-            array('sortorder','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
-            array('assessment_value','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-        );
+                            'params'=> [':lid'=>$this->lid,':language'=>$this->language]
+			],
+                    'message'=>'{attribute} "{value}" is already in use.'
+			],
+            [['title', 'code'],'required'],
+            ['sortorder','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
+            ['language','length', 'min' => 2, 'max'=>20],// in array languages ?
+            ['assessment_value','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
+		];
     }
 
 

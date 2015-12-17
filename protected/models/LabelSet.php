@@ -17,72 +17,33 @@ class LabelSet extends ActiveRecord
     }
 
     /**
-     * Returns the table's primary key
-     *
-     * @access public
-     * @return string
-     */
-    public function primaryKey()
-    {
-        return 'lid';
-    }
-
-    /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
-     * @return CActiveRecord
-     */
-    public static function model($class = __CLASS__)
-    {
-        return parent::model($class);
-    }
-
-    /**
      * Returns this model's validation rules
      *
      */
     public function rules()
     {
-        return array(
-            array('label_name', 'required'),
-            array('label_name', 'length', 'min' => 1, 'max' => 100),
-            array('label_name', 'required'),
-            array('languages', 'required'),
-            array('languages', 'required'),
-        );
+        return [
+            ['label_name', 'length', 'min' => 1, 'max' => 100],
+            ['label_name', 'required'],
+            ['languageArray', 'required'],
+        ];
     }
 
-    function getAllRecords($condition = false)
+    public function getLanguageArray()
     {
-        if ($condition != false) {
-            foreach ($condition as $item => $value) {
-                $criteria->addCondition($item . '="' . $value . '"');
-            }
-        }
-
-        $data = $this->findAll($criteria);
-
-        return $data;
+        return explode(',', $this->languages);
     }
-
-    function getLID()
+    public function setLanguageArray(array $value)
     {
-        return Yii::app()->db->createCommand()->select('lid')->order('lid asc')->from('{{labelsets}}')->query()->readAll();
+        $this->languages = implode(',', $value);
     }
 
-    function insertRecords($data)
+    public function relations()
     {
-        $lblset = new self;
-        foreach ($data as $k => $v) {
-            $lblset->$k = $v;
-        }
-        if ($lblset->save()) {
-            return $lblset->lid;
-        }
-
-        return false;
+        return [
+            'labels' => [self::HAS_MANY, Label::class, 'lid']
+        ];
     }
+
+
 }

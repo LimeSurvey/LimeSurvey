@@ -14,7 +14,6 @@ use ls\models\Question;
 use ls\models\Survey;
 use ls\models\SurveyDynamic;
 
-
 /**
 *
 *  Generate a chart for a question
@@ -80,8 +79,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
         {
             $graph = new pChart(690,200);
             $graph->loadColorPalette($homedir.DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'limesurvey.pal');
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
+            $graph->setFontProperties(\Yii::getPathOfAlias('webroot') . '/fonts/' . $chartfontfile,$chartfontsize);
+            $graph->setFontProperties(\Yii::getPathOfAlias('webroot') . '/fonts/' . $chartfontfile,$chartfontsize);
             $graph->drawTitle(0,0,gT('Sorry, but this question has too many answer options to be shown properly in a graph.','unescaped'),30,30,30,690,200);
             $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet,$graph);
             $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet));
@@ -99,8 +98,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
         {
             $graph = new pChart(690,200);
             $graph->loadColorPalette($homedir.DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'limesurvey.pal');
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
+            $graph->setFontProperties(\Yii::getPathOfAlias('webroot') . '/fonts/' . $chartfontfile,$chartfontsize);
+            $graph->setFontProperties(\Yii::getPathOfAlias('webroot') . '/fonts/' . $chartfontfile,$chartfontsize);
             $graph->drawTitle(0,0,gT('Sorry, but this question has no responses yet so a graph cannot be shown.','unescaped'),30,30,30,690,200);
             $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet,$graph);
             $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet));
@@ -142,13 +141,13 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
 
         if (!$type) // Bar chart
         {
-            $DataSet = new pData;
+            $DataSet = new pData();
             $counter=0;
             $maxyvalue=0;
             foreach ($grawdata as $datapoint)
             {
-                $DataSet->AddPoint(array($datapoint),"Serie$counter");
-                $DataSet->AddSerie("Serie$counter");
+                $DataSet->addPoint([$datapoint],"Serie$counter");
+                $DataSet->addSerie("Serie$counter");
 
                 $counter++;
                 if ($datapoint>$maxyvalue) $maxyvalue=$datapoint;
@@ -173,7 +172,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             $counter=0;
             foreach ($lblout as $sLabelName)
             {
-                $DataSet->SetSerieName(html_entity_decode($sLabelName,null,'UTF-8'), "Serie$counter");
+                $DataSet->setSerieName(html_entity_decode($sLabelName,null,'UTF-8'), "Serie$counter");
                 $counter++;
             }
 
@@ -182,30 +181,33 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             }
             else
             {
-                $graph = new pChart(1,1);
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
-                $legendsize=$graph->getLegendBoxSize($DataSet->GetDataDescription());
-
-                if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
-                $graph = new pChart(690+$legendsize[0],$gheight);
-                $graph->drawFilledRectangle(0,0,690+$legendsize[0],$gheight,254,254,254,false);
-                $graph->loadColorPalette($homedir.DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'limesurvey.pal');
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
+                $graph = new pChart(1, 1);
+                $graph->setFontProperties(\Yii::getPathOfAlias('webroot') . '/fonts/' . $chartfontfile,$chartfontsize);
+                $legendsize = $graph->getLegendBoxSize($DataSet->getData());
+                if ($legendsize['Height'] < 320) {
+                    $gheight=420;
+                }  else {
+                    $gheight = $legendsize['Height'] + 100;
+                }
+                $graph = new pChart(690+$legendsize['Width'],$gheight);
+                $graph->drawFilledRectangle(0,0,690 + $legendsize['Width'],$gheight,254,254,254,false);
+                $graph->loadColorPalette(App()->theme->basePath . '/assets/limesurvey.pal');
+                $graph->setFontProperties(\Yii::getPathOfAlias('webroot') . '/fonts/' . $chartfontfile,$chartfontsize);
                 $graph->setGraphArea(50,30,500,$gheight-60);
-                $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,254,255,254);
-                $graph->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);
+                $graph->drawFilledRoundedRectangle(7,7,523+$legendsize['Width'],$gheight-7,5,254,255,254);
+                $graph->drawRoundedRectangle(5,5,525+$legendsize['Width'],$gheight-5,5,230,230,230);
                 $graph->drawGraphArea(254,254,254,TRUE);
                 $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);
                 $graph->drawGrid(4,TRUE,230,230,230,50);
                 // Draw the 0 line
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
+                $graph->setFontProperties(\Yii::getPathOfAlias('webroot') . '/fonts/' . $chartfontfile,$chartfontsize);
                 $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
 
                 // Draw the bar graph
                 $graph->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
                 //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");
                 // Finish the graph
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+                $graph->setFontProperties(\Yii::getPathOfAlias('webroot') . '/fonts/' . $chartfontfile, $chartfontsize);
                 $graph->drawLegend(510,30,$DataSet->GetDataDescription(),250,250,250);
 
                 $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet->GetData(),$graph);
@@ -329,11 +331,10 @@ function buildSelects($allfields, $surveyid, $language) {
     $selects=[];
     $aQuestionMap=[];
 
-    $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
-    foreach ($fieldmap as $field)
+
+    foreach (Survey::model()->findByPk($surveyid)->questions as $question)
     {
-        if(isset($field['qid']) && $field['qid']!='')
-            $aQuestionMap[]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
+        $aQuestionMap[] = $question->sgqa;
     }
 
     // creates array of post variable names
@@ -603,12 +604,15 @@ class statistics_helper {
         $qtitle="";
         $qquestion="";
         $qtype="";
-        $statlang = $oLanguage;
         $firstletter = substr($rt, 0, 1);
-        $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
+
         $sDatabaseType = Yii::app()->db->getDriverName();
         $statisticsoutput="";
         $qqid = "";
+
+        if (preg_match("/^.*{$surveyid}X(?<gid>\d+)X(?<qid>\d+)$/", $rt, $matches)) {
+            $qid = $matches['qid'];
+        }
 
         /* Some variable depend on output type, actually : only line feed */
         switch($outputType)
@@ -661,13 +665,12 @@ class statistics_helper {
         elseif ($firstletter == "T" || $firstletter == "S") //Short and long text
         {
             //search for key
-            $fld = substr($rt, 1, strlen($rt));
-            $fielddata=$fieldmap[$fld];
+            $sgq = substr($rt, 1, strlen($rt));
 
             list($qanswer, $qlid)=!empty($fielddata['aid']) ? explode("_", $fielddata['aid']) : array("", "");
 
             //get question data
-            $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$fielddata['qid']));
+            $nresult = Question::model()->findByPk($qid);
             $qtitle=$nresult->title;
             $qtype=$nresult->type;
             $qquestion=flattenText($nresult->question);
@@ -1437,7 +1440,7 @@ class statistics_helper {
                     // Using previously defined $surveylanguagecodes array of language codes
                     foreach ($surveylanguagecodes as $availlang)
                     {
-                        $alist[]=array($availlang, getLanguageNameFromCode($availlang,false));
+                        $alist[]=array($availlang, \ls\helpers\SurveyTranslator::getLanguageNameFromCode($availlang,false));
                     }
                     break;
 
@@ -1575,14 +1578,13 @@ class statistics_helper {
         $TotalCompleted = 0; //Count of actually completed answers
         $statisticsoutput="";
         $sDatabaseType = Yii::app()->db->getDriverName();
-        $tempdir = Yii::app()->getConfig("tempdir");
+        $tempdir = App()->getRuntimePath();
         $tempurl = Yii::app()->getConfig("tempurl");
         $firstletter = substr($rt, 0, 1);
         $astatdata=[];
 
-        if ($usegraph==1)
-        {
-            $MyCache = new pCache($tempdir.'/');
+        if (preg_match("/^.*{$surveyid}X(?<gid>\d+)X(?<qid>\d+)$/", $rt, $matches)) {
+            $qid = $matches['qid'];
         }
 
         switch($outputType)
@@ -2654,13 +2656,10 @@ class statistics_helper {
 
 
         //-------------------------- PCHART OUTPUT ----------------------------
-        list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
-        $qsid = $surveyid;
-        $aattr = \ls\models\QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid'], substr($rt, 0, 1));
-
+        $question = Question::model()->findByPk($qid);
         //PCHART has to be enabled and we need some data
         if ($usegraph == 1) {
-            $bShowGraph = $aattr["statistics_showgraph"] == "1";
+            $bShowGraph = $question->statistics_showgraph;
             $bAllowPieChart = ($outputs['qtype'] != "M" && $outputs['qtype'] != "P");
             $bAllowMap = (isset($aattr["location_mapservice"]) && $aattr["location_mapservice"] == "1");
             $bShowMap = ($bAllowMap && $aattr["statistics_showmap"] == "1");
@@ -2685,7 +2684,7 @@ class statistics_helper {
 
             if ($bShowGraph == true)
             {
-                $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
+                $cachefilename = createChart($qid, $surveyid, $bShowPieChart, $lbl, $gdata, $grawdata, new pCache($tempdir.'/'), $sLanguage, $outputs['qtype']);
                 if($cachefilename) // Add the image only if constructed
                 {
                     //introduce new counter
@@ -2808,8 +2807,6 @@ class statistics_helper {
         //Get an array of codes of all available languages in this survey
         $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
-
-        $fieldmap=createFieldMap($surveyid, "full", false, false, $sLanguageCode);
 
         // Set language for questions and answers to base language of this survey
         $language=$sLanguageCode;
@@ -3082,13 +3079,8 @@ class statistics_helper {
 
         if (isset($summary) && $summary)
         {
-            //let's run through the survey
-            $runthrough=$summary;
-
-            //START Chop up fieldname and find matching questions
-
             //loop through all selected questions
-            foreach ($runthrough as $rt)
+            foreach ($summary as $rt)
             {
 
                 //Step 1: Get information about this response field (SGQA) for the summary

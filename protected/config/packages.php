@@ -166,5 +166,19 @@ return [
         'depends' => [
             'jquery'
         ]
+    ],
+    'handsontable' => [
+        'basePath' => 'bower.handsontable',
+        'js' => [
+            'dist/handsontable.full.min.js',
+            'plugins/jqueryHandsontable.js'
+        ],
+        'css' => [
+            'dist/handsontable.full.css',
+            'plugins/bootstrap/handsontable.bootstrap.css'
+        ],
+        'depends' => [
+            'jquery'
+        ]
     ]
 ];

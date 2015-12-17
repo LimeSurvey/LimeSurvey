@@ -194,7 +194,7 @@ class Answer extends ActiveRecord implements \ls\interfaces\iAnswer
 
     public function getQuestionsForStatistics($fields, $condition, $orderby)
     {
-        return Yii::app()->db->createCommand()
+        return self::getDbConnection()->createCommand()
             ->select($fields)
             ->from(self::tableName())
             ->where($condition)

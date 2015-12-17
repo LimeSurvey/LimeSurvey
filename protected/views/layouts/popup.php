@@ -7,17 +7,16 @@
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('qTip2');
              // Needed by admin_core : to be fixed ?
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-ui.css" );
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle.css" );
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
+            App()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/admin/' . "admin_core.js");
+            App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/' . "jquery-ui/jquery-ui.css" );
+            App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/' . "printablestyle.css", 'print');
+            App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/' . "adminstyle.css" );
+            App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/' . "adminstyle.css" );
 
         ?>
         <link rel="shortcut icon" href="<?php echo App()->baseUrl; ?>images/favicon.ico" type="image/x-icon" />
         <link rel="icon" href="<?php echo App()->baseUrl; ?>images/favicon.ico" type="image/x-icon" />
         <?php $this->widget('ext.LimeScript.LimeScript'); ?>
-        <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
         <title><?php echo $this->pageTitle; ?></title>
     </head>
     <body>
@@ -27,7 +26,7 @@
             <?php echo $content; ?>
             </div>
             <div id="ajaxprogress" title="Ajax request in progress" style="text-align: center">
-                <img src="<?php echo Yii::app()->getConfig('adminstyleurl');?>/images/ajax-loader.gif"/>
+                <img src="<?php echo App()->publicUrl . '/styles/gringegreen/';?>/images/ajax-loader.gif"/>
             </div>
         </div>
     </body>

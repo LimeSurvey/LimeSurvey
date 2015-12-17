@@ -197,7 +197,7 @@ class quotas extends Survey_Common_Action
         {
             if (!$_POST['quotals_message_' . $sLang])
             {
-                $sError .= getLanguageNameFromCode($sLang, false) . "\\n";
+                $sError .= \ls\helpers\SurveyTranslator::getLanguageNameFromCode($sLang, false) . "\\n";
             }
         }
         if ($sError != '')
@@ -250,7 +250,7 @@ class quotas extends Survey_Common_Action
         {
             if (!$_POST['quotals_message_' . $sLang])
             {
-                $sError.= getLanguageNameFromCode($sLang, false) . "\\n";
+                $sError.= \ls\helpers\SurveyTranslator::getLanguageNameFromCode($sLang, false) . "\\n";
             }
         }
         if ($sError != '')
@@ -352,7 +352,7 @@ class quotas extends Survey_Common_Action
         $first=true;
         foreach ($aLangs as $sLanguage)
         {
-            $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
+            $aTabTitles[$sLanguage] = \ls\helpers\SurveyTranslator::getLanguageNameFromCode($sLanguage, false);
             if ($first)
             {
                 $aTabTitles[$sLanguage].= ' (' . gT("Base language") . ')';
@@ -524,7 +524,7 @@ class quotas extends Survey_Common_Action
 
             while (list($key, $value) = each($slangs))
             {
-                $tmparrayans = ['Title' => $aQuestion['title'], 'Display' => getLanguageNameFromCode($value, false), $value];
+                $tmparrayans = ['Title' => $aQuestion['title'], 'Display' => \ls\helpers\SurveyTranslator::getLanguageNameFromCode($value, false), $value];
                 $aAnswerList[$value] = $tmparrayans;
             }
         }
@@ -558,7 +558,7 @@ class quotas extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'quotas', $aViewUrls = [], $aData = [])
     {
         
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . '/quotas.js');
+        App()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/admin/' . '/quotas.js');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

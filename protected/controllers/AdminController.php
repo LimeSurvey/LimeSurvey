@@ -44,7 +44,7 @@ class AdminController extends Controller
             updateCheck();
 
         //unset(Yii::app()->session['FileManagerContext']);
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
+        App()->getClientScript()->registerScriptFile(App()->getPublicUrl() . "/scripts/admin/admin_core.js");
         $this->user_id = Yii::app()->user->getId();
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid'));}         //SurveyID
         if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid'));}                //Usergroup-ID
@@ -400,7 +400,7 @@ class AdminController extends Controller
         }
         $aData['surveyid'] = $surveyid;
         $aData['iconsize'] = Yii::app()->getConfig('adminthemeiconsize');
-        $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
+        $aData['sImageURL'] = App()->theme->baseUrl. '/images';
         $this->renderPartial("/admin/super/adminmenu", $aData);
 
     }
@@ -416,6 +416,6 @@ class AdminController extends Controller
 
         unset(Yii::app()->session['metaHeader']);
 
-        return $this->renderPartial('/admin/endScripts_view', []);
+//        return $this->renderPartial('/admin/endScripts_view', []);
     }
 }

@@ -7,25 +7,24 @@
         App()->getClientScript()->registerPackage('jqueryui');
 
         App()->getClientScript()->registerPackage('qTip2');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-ui.css" );
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "superfish.css" );
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle.css" );
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
+        App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/' . "jquery-ui/jquery-ui.css" );
+        App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/' . "superfish.css" );
+        App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles-public/' . 'jquery.multiselect.css');
+        App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles-public/' . 'jquery.multiselect.filter.css');
+        App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/' .  "displayParticipants.css");
+        App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/' . "adminstyle.css" );
+        App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/' . "adminstyle.css" );
         if (\ls\helpers\SurveyTranslator::getLanguageRTL($_SESSION['adminlang']))
         {        
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle-rtl.css" );
+            App()->getClientScript()->registerCssFile(App()->getConfig('adminstyleurl') . "adminstyle-rtl.css" );
         }
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');
+        App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/' . "printablestyle.css", 'print');
     ?>
     <?php echo $datepickerlang;?>
     <title><?php echo $sitename;?></title>
     <link rel="shortcut icon" href="<?php echo $baseurl;?>images/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="<?php echo $baseurl;?>images/favicon.ico" type="image/x-icon" />
     <?php $this->widget('ext.LimeScript.LimeScript'); ?>
-    <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
 </head>
 <body>
 <?php if(isset($formatdata)) { ?>

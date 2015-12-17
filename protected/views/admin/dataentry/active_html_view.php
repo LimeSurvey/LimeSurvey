@@ -49,10 +49,10 @@ if ($thissurvey['active'] == "Y")
                     <?php foreach ($slangs as $lang)
                     {
                         if ($lang == $baselang) { ?>
-                            <option value='<?php echo $lang; ?>' selected='selected'><?php echo getLanguageNameFromCode($lang,false); ?></option>
+                            <option value='<?php echo $lang; ?>' selected='selected'><?php echo \ls\helpers\SurveyTranslator::getLanguageNameFromCode($lang,false); ?></option>
                             <?php }
                         else { ?>
-                            <option value='<?php echo $lang; ?>'><?php echo getLanguageNameFromCode($lang,false); ?></option>
+                            <option value='<?php echo $lang; ?>'><?php echo \ls\helpers\SurveyTranslator::getLanguageNameFromCode($lang,false); ?></option>
                             <?php }
                     } ?>
                     </select>

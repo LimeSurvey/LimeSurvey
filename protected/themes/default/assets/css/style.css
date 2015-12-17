@@ -76,3 +76,7 @@ body {
     position: relative;
     margin-top: 70px;
 }
+
+.languageList .checkbox {
+    display:inline-block; width: 19%;
+}

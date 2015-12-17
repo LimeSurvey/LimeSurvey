@@ -227,8 +227,8 @@ class labels extends Survey_Common_Action
         $aData = [];
 
         // Includes some javascript files
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
-        App()->getClientScript()->registerPackage('jquery-json');
+        App()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/admin/' . 'labels.js');
+//        App()->getClientScript()->registerPackage('jquery-json');
         // Checks if user have the sufficient rights to manage the labels
         if (App()->user->checkAccess('labelsets'))
         {
@@ -345,7 +345,7 @@ class labels extends Survey_Common_Action
     {
         if (Permission::model()->hasGlobalPermission('labelsets','export'))
         {
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
+            App()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/admin/' . 'labels.js');
             $this->_renderWrappedTemplate('labels', 'exportmulti_view');
         }
     }

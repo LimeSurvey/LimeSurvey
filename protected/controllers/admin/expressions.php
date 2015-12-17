@@ -35,7 +35,7 @@ class Expressions extends Survey_Common_Action {
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js");
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
+            App()->getClientScript()->registerCssFile(App()->publicUrl . '/styles/gringegreen/' . "adminstyle.css" );
             $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
             $aData['pagetitle']="ExpressionManager:  {$aData['sa']}";
             //header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding

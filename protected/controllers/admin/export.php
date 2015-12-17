@@ -149,7 +149,7 @@ class export extends Survey_Common_Action {
         Yii::app()->loadHelper("admin/exportresults");
 
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js");
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . '/exportresults.js');
+        App()->getClientScript()->registerScriptFile(App()->publicUrl . '/scripts/admin/' . '/exportresults.js');
 
         $sExportType = Yii::app()->request->getPost('type');
         $sHeadingFormat = Yii::app()->request->getPost('headstyle');
@@ -249,7 +249,7 @@ class export extends Survey_Common_Action {
             $aLanguagesCode=Survey::model()->findByPk($iSurveyID)->getAllLanguages();
             $aLanguages= [];
             foreach ($aLanguagesCode as $sLanguage){
-                $aLanguages[$sLanguage]=getLanguageNameFromCode($sLanguage,false);
+                $aLanguages[$sLanguage]=\ls\helpers\SurveyTranslator::getLanguageNameFromCode($sLanguage,false);
             }
             $data['aLanguages'] = $aLanguages;    // Pass available exports
 

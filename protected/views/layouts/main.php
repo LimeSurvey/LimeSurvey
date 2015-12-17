@@ -14,6 +14,9 @@
             $cs->registerScriptFile(App()->getBaseUrl() . Yii::getPathOfAlias('public') . '/scripts/unobtrusive.js');
             $cs->registerCssFile(App()->theme->baseUrl . '/css/style.css');
 
+            // Disable disabled links.
+            $cs->registerScript('links', "$('body').on('click', '.disabled a', function (e) { console.log('noo'); e.preventDefault(); });");
+
         ?>
         <title>Limesurvey Administration</title>
     </head>
