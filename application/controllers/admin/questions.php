@@ -53,13 +53,13 @@ class questions extends Survey_Common_Action
         // Check if other questions in the Survey are dependent upon this question
         $condarray = getQuestDepsForConditions($iSurveyID, "all", "all", $qid, "by-targqid", "outsidegroup");
 
-        $sumresult1 = Survey::model()->findByPk($iSurveyID);
-        if (is_null($sumresult1))
+        $survey = Survey::model()->findByPk($iSurveyID);
+        if (is_null($survey))
         {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
             $this->getController()->redirect(array("admin/index"));
         } //  if surveyid is invalid then die to prevent errors at a later time
-        $surveyinfo = $sumresult1->attributes;
+        $surveyinfo = $survey->attributes;
 
         $surveyinfo = array_map('flattenText', $surveyinfo);
         $aData['activated'] = $surveyinfo['active'];
@@ -133,8 +133,7 @@ class questions extends Survey_Common_Action
         $setting_entry = 'last_questiongroup_'.Yii::app()->user->getId();
         setGlobalSetting($setting_entry, $gid);
 */
-
-
+        $aData['surveyIsActive'] = $survey->active !== 'N';
 
         $this->_renderWrappedTemplate('survey/Question', 'question_view', $aData);
     }
