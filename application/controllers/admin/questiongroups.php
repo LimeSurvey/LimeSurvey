@@ -250,7 +250,15 @@ class questiongroups extends Survey_Common_Action
                 }
                 // This line sets the newly inserted group as the new group
                 if (isset($groupid))
+                {
                     $gid = $groupid;
+                }
+                else
+                {
+                    // Error, redirect back.
+                    Yii::app()->setFlashMessage(gT("Question group was not saved. Please check if the survey is active."), 'error');
+                    $this->getController()->redirect(Yii::app()->request->urlReferrer);
+                }
 
                 $questions = new Question('search');
                 $questions->gid = $gid;
@@ -259,10 +267,7 @@ class questiongroups extends Survey_Common_Action
                 if($questions->search()->itemCount<1)
                 {
                     Yii::app()->setFlashMessage(gT('You can now add a question in this group.'),'warning');
-
-                                  sprintf(gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".gT("minitab method")."</a>");
-
-
+                    sprintf(gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".gT("minitab method")."</a>");
                 }
 
 

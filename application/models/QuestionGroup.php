@@ -146,6 +146,14 @@
 
         public static function deleteWithDependency($groupId, $surveyId)
         {
+            // Abort if the survey is active
+            $surveyIsActive = Survey::model()->findByPk($surveyId)->active !== 'N';
+            if ($surveyIsActive)
+            {
+                Yii::app()->user->setFlash('error', gt("Can't delete question group when the survey is active"));
+                return null;
+            }
+
             $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
             Question::deleteAllById($questionIds);
             Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
@@ -250,6 +258,30 @@
                 ),
             ));
             return $dataProvider;
+        }
+
+        /**
+         * Make sure we don't save a new question group
+         * while the survey is active.
+         *
+         * @return bool
+         */
+        protected function beforeSave()
+        {
+            if (parent::beforeSave())
+            {
+                $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
+
+                if ($surveyIsActive && $this->getIsNewRecord())
+                {
+                    return false;
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
     }
