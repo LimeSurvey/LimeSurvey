@@ -837,4 +837,28 @@
         ));
         return $dataProvider;
     }
+
+    /**
+     * Make sure we don't save a new question group
+     * while the survey is active.
+     *
+     * @return bool
+     */
+    protected function beforeSave()
+    {
+        if (parent::beforeSave())
+        {
+            $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
+
+            if ($surveyIsActive && $this->getIsNewRecord())
+            {
+                return false;
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

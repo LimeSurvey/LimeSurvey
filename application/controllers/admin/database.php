@@ -393,7 +393,16 @@ class database extends Survey_Common_Action
 
         if (in_array($sAction, array('insertquestion', 'copyquestion')) && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent','create'))
         {
-            $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+            $survey = Survey::model()->findByPk($iSurveyID);
+            $sBaseLanguage = $survey->language;
+
+            // Abort if survey is active
+            if ($survey->active !== 'N')
+            {
+                Yii::app()->setFlashMessage(gT("Can't insert new question when the survey is active"),'error');
+                $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/" . $survey->sid), "refresh");
+            }
+
             if (strlen(Yii::app()->request->getPost('title')) < 1)
             {
                 Yii::app()->setFlashMessage(gT("The question could not be added. You must enter at least a question code."),'error');

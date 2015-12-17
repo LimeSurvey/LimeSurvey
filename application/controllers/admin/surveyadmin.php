@@ -934,7 +934,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $lastQuestionGidUser = 'last_question_gid_'.Yii::app()->user->getId();
                 $lastQuestionUser = 'last_question_'.Yii::app()->user->getId();
                 SettingGlobal::model()->deleteAll(
-                            "stg_name LIKE :stg_name  OR stg_name = :last_question_gid_user OR stg_name = :last_question_user OR stg_value = :stg_value",
+                            "stg_name LIKE ':stg_name'  OR stg_name = ':last_question_gid_user' OR stg_name = ':last_question_user' OR stg_value = ':stg_value'",
                             array(':stg_name' => $lastLikeSurvey, ':last_question_gid_user' => $lastQuestionGidUser, ':last_question_user' => $lastQuestionUser , ':stg_value' => $iSurveyID )
                         );
 

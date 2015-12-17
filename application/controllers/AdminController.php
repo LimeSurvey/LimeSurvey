@@ -54,6 +54,7 @@ class AdminController extends LSYii_Controller
     */
     public function error($message, $sURL = array())
     {
+        define('IMAGE_BASE_URL', Yii::app()->getConfig('adminimagebaseurl'));
 
         $this->_getAdminHeader();
         $sOutput = "<div class='messagebox ui-corner-all'>\n";
