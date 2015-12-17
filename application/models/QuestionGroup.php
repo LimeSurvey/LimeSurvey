@@ -193,9 +193,12 @@
 
         public function getbuttons()
         {
+            // Find out if the survey is active to disable add-button
+            $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
+
             // Add question to this group
             $url = Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$this->sid/gid/$this->gid");
-            $button = '<a class="btn btn-default list-btn"  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-plus-sign " ></span></a>';
+            $button = '<a class="btn btn-default list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-plus-sign " ></span></a>';
 
             // Group edition
             // Edit
