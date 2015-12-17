@@ -78,8 +78,8 @@
         }
 
         if (cellProperties.readOnly === true) {
-            console.log('setting');
-            td.style.background = '#555';
+            td.style.setProperty('background-color','#eee', 'important');
+            td.style.setProperty('pointer-events','none');
         }
         Handsontable.renderers.TextRenderer.apply(this, args);
     }
@@ -191,6 +191,20 @@
                 "hsep1": "---------",
                 remove_row: {},
             }
+        },
+        tabMoves: function(e) {
+            if (!e.shiftKey && hot1.getSelected()[1] == (hot1.countCols() - 2)
+                || (e.shiftKey && hot1.getSelected()[1] == 0)
+            ) {
+                return {
+                    row: 1,
+                    col: -hot1.countCols() + 2
+                };
+            }
+            return {
+                row: 0,
+                col: 1
+            };
         }
 
 
@@ -213,7 +227,8 @@
         result.push({
             data: '',
             width: '300px',
-            readOnly: true
+            readOnly: true,
+
 
         });
         console.log(result);
