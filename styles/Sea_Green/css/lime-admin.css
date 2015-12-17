@@ -608,11 +608,11 @@ output {
   opacity: 1; }
 
 .form-control[readonly] {
-  background-color: #9cba9e;
+  background-color: #f5f5f5;
   opacity: 1; }
 
 fieldset[disabled] .form-control {
-  background-color: #9cba9e;
+  background-color: #f5f5f5;
   opacity: 1; }
 fieldset[disabled] .btn-default {
   background-color: #ffffff;

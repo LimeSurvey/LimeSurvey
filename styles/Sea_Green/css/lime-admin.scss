@@ -941,12 +941,12 @@ output {
 	opacity: 1;
 }
 .form-control[readonly] {
-	background-color: $color_norway_approx;
+	background-color: $color_wild_sand_approx;
 	opacity: 1;
 }
 fieldset[disabled] {
 	.form-control {
-		background-color: $color_norway_approx;
+		background-color: $color_wild_sand_approx;
 		opacity: 1;
 	}
 	.btn-default {
