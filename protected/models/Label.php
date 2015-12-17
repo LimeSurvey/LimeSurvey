@@ -61,32 +61,13 @@ class Label extends ActiveRecord
     }
 
 
-	function getAllRecords($condition=FALSE)
-	{
-		if ($condition != FALSE)
-        {
-		    foreach ($condition as $item => $value)
-			{
-				$criteria->addCondition($item.'="'.$value.'"');
-			}
-        }
 
-		$data = $this->findAll($criteria);
-
-        return $data;
-	}
 
     function getLabelCodeInfo($lid)
     {
 		return Yii::app()->db->createCommand()->select('code, title, sortorder, language, assessment_value')->order('language, sortorder, code')->where('lid=:lid')->from(tableName())->bindParam(":lid", $lid, PDO::PARAM_INT)->query()->readAll();
     }
 
-	function insertRecords($data)
-    {
-        $lbls = new self;
-		foreach ($data as $k => $v)
-			$lbls->$k = $v;
-		$lbls->save();
-    }
+
 
 }

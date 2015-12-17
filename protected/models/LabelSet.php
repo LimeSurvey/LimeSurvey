@@ -3,6 +3,11 @@ namespace ls\models;
 
 use Yii;
 
+/**
+ * Class LabelSet
+ * @package ls\models
+ * @property Label[] $labels
+ */
 class LabelSet extends ActiveRecord
 {
     /**

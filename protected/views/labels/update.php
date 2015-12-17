@@ -1,4 +1,5 @@
 <?php
+    /** @var \ls\models\LabelSet $model */
 //    $this->renderPartial('create', ['model' => $model]);
     App()->clientScript->registerPackage('handsontable');
     echo \TbHtml::tag('div', [
@@ -27,16 +28,25 @@
         'readOnly' => true
     ];
 
-    $data = [array_values(CHtml::listData($columns, 'label', 'label'))];
+    $data = [];
+    foreach ($model->labels as $label) {
+        $data[$label->code]['code'] = $label->code;
+        $data[$label->code]['assessment_value'] = $label->assessment_value;
+        $data[$label->code][$label->language] = $label->title;
+    };
+
+
 
 ?>
 
 <script>
     var
         tpl = ['A1', 0],
-        data = <?=json_encode($data); ?>,
+        data = <?=json_encode(array_values($data)); ?>,
         container = document.getElementById('labels'),
-        languages = <?=json_encode(array_values(CHtml::listData(App()->getLocale()->data(), 'code', 'description'))); ?>;
+        languageMap = <?=json_encode(CHtml::listData(App()->getLocale()->data(), 'code', 'description')); ?>,
+        activeLanguages = <?=json_encode($model->languageArray); ?>;
+
 
 
 
@@ -75,32 +85,29 @@
     }
 
     hot1 = new Handsontable(container, {
-//        startRows: 8,
-//        columns: <?//=json_encode($columns); ?>//,
-        startCols: <?=count($columns) ?>,
         minSpareRows: 1,
-        colHeaders: false,
         contextMenu: true,
+        startCols: <?=count($model->getLanguageArray()) + 3; ?>,
         cells: function (row, col, prop) {
             var cellProperties = {};
-            cellProperties.readOnly = (row === 0);
-            if (row === 0 && (this.instance.countCols() - 1) === col) {
-                cellProperties.type = 'dropdown';
-                cellProperties.readOnly = false;
-                var current = this.instance.getDataAtRow(0);
-                cellProperties.source = languages.filter(function(element) {
-                    return current.indexOf(element) == -1;
-                });
+//            cellProperties.readOnly = (row === 0);
+//            if (row === 0 && (this.instance.countCols() - 1) === col) {
+//                cellProperties.type = 'dropdown';
+//                cellProperties.readOnly = false;
+//                var current = this.instance.getDataAtRow(0);
+//                cellProperties.source = languages.filter(function(element) {
+//                    return current.indexOf(element) == -1;
+//                });
+//
+//                cellProperties.source.unshift('Add language');
+//
+//            } else if ((this.instance.countCols() - 1) === col) {
+//                cellProperties.readOnly = true;
+//                cellProperties.renderer = defaultValueRenderer;
+//            } else {
 
-                cellProperties.source.unshift('Add language');
-
-            } else if ((this.instance.countCols() - 1) === col) {
-                cellProperties.readOnly = true;
                 cellProperties.renderer = defaultValueRenderer;
-            } else {
-
-                cellProperties.renderer = defaultValueRenderer;
-            }
+//            }
 
             if (col === 1) {
                 cellProperties.type = 'numeric';
@@ -120,9 +127,6 @@
                 readOnly: true
             }
         ],
-//        afterOnCellMouseDown: function (e, coords, TD) {
-//            debugger;
-//        },
         beforeChange: function (changes) {
             var ilen = changes.length,
                 clen = this.countCols(),
@@ -159,13 +163,25 @@
                 }
             }
         },
+        columns: createColumns(),
         autoWrapRow: true,
         allowInsertColumn: false,
         allowInvalid: false,
         rowHeaders: true,
         colHeaders: function(index) {
-            console.log(this);
-            return this.data[0][index];
+
+            if (index >= 2 && (index - 2) < activeLanguages.length) {
+
+                return languageMap[activeLanguages[index - 2]] + ' <button data-index="' + index + '" data-code="' + activeLanguages[index - 2] + '" class="btn btn-danger remove">X</button>' ;
+//                activeLanguages;
+            } else if (index === 1) {
+                return 'Assessment';
+            } else if (index === 0)
+            {
+                return 'Code';
+            } else {
+                return createDropdown();
+            }
         },
         manualRowMove: true,
         contextMenu: {
@@ -174,14 +190,6 @@
                 row_below: {},
                 "hsep1": "---------",
                 remove_row: {},
-                remove_col: {
-
-                    disabled: function () {
-                        var col = this.getSelected()[1];
-                        return col < 2 || col === (this.countCols() - 1);
-                    }
-                }
-
             }
         }
 
@@ -190,8 +198,65 @@
 
     });
 
+    function createColumns() {
+        var result = [
+            {data: 'code'},
+            {
+                data: 'assessment_value',
+                type: 'numeric'
+            }
+        ];
+        for(var i = 0; i < activeLanguages.length; i++) {
+            result.push({data: activeLanguages[i]});
+        }
+
+        result.push({
+            data: '',
+            width: '300px'
+
+        });
+        console.log(result);
+        return result;
+    }
+
+    function createDropdown() {
+        var s = $('<select />').addClass('form-control');
+        $('<option />', {value: "", text: "Add language..."}).appendTo(s);
+        for(var languageCode in languageMap) {
+            if (activeLanguages.indexOf(languageCode) === -1) {
+                $('<option />', {value: languageCode, text: languageMap[languageCode]}).appendTo(s);
+            }
+
+        }
+
+        return s.wrap('<div/>').parent().html();
+    }
+
     hot1.loadData(data);
 
+    $('#labels').on('click', '.remove', function() {
+
+        var $button = $(this);
+        var remove = function(instance, code) {
+            activeLanguages.splice(activeLanguages.indexOf(code), 1);
+            instance.updateSettings({columns: createColumns()});
+        }
+        if (hot1.getDataAtCol($button.attr('data-index')).filter(function(el) {return el !== null; }).length === 0) {
+            remove(hot1, $button.attr('data-code'));
+        } else {
+            bootbox.confirm('This will delete all translated labels for ' + languageMap[$(this).attr('data-code')], function (ok) {
+                if (ok) {
+                    remove(hot1, $button.attr('data-code'));
+                }
+            });
+        }
+    });
+
+
+    $('#labels').on('change', 'select', function() {
+        activeLanguages.push($(this).val());
+        hot1.updateSettings({columns: createColumns()});
+    });
 
 
 
