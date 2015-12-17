@@ -3413,7 +3413,7 @@ span[data-tooltip] {
 .answertable .glyphicon-pencil {
   margin-left: 3px; }
 
-.statisticsview .panel {
+#statisticsview .panel {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12); }
 
 /*# sourceMappingURL=lime-admin.css.map */
