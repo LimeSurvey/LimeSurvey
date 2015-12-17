@@ -61,9 +61,13 @@
 
                                         <!-- arrows -->
                                         <td style="padding: 1em;">
-                                            <input type="button" class="btn btn-default btn-xs" value="<< <?php eT("Add"); ?>" onclick="DoAdd()" id="AddBtn" />
+                                            <button class="btn btn-default btn-xs" onclick="DoAdd()" id="AddBtn" type="button"  data-toggle="tooltip" data-placement="top" title="<?php eT("Add"); ?>">
+                                                <span class="fa fa-long-arrow-left"></span>
+                                            </button>
                                             <br /><br />
-                                            <input type="button" class="btn btn-default btn-xs" value="<?php eT("Remove"); ?> >>" onclick="DoRemove(1,'<?php eT("You cannot remove this item since you need at least one language in a labelset.", "js"); ?>')" id="RemoveBtn"  />
+                                            <button class="btn btn-default btn-xs" type="button" onclick="DoRemove(1,'<?php eT("You cannot remove this item since you need at least one language in a labelset.", "js"); ?>')" id="RemoveBtn"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Remove"); ?>" >
+                                                <span class="fa fa-long-arrow-right"></span>
+                                            </button>
                                         </td>
 
                                         <td>

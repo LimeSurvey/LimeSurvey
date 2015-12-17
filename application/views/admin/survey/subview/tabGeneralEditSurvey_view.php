@@ -36,7 +36,17 @@
                         </select>
                         <?php echo $jsRemLang; ?>
                     </td>
-                    <td style='text-align:left'><input type="button" value="<< <?php  eT("Add"); ?>" onclick="DoAdd()" id="AddBtn" /><br /> <input type="button" value="<?php  eT("Remove"); ?> >>" onclick="DoRemove(0,'')" id="RemoveBtn"  /></td>
+
+                    <!-- Arrows -->
+                    <td style='text-align:left'>
+                        <button class="btn btn-default btn-xs" onclick="DoAdd()" id="AddBtn" type="button"  data-toggle="tooltip" data-placement="top" title="<?php eT("Add"); ?>">
+                            <span class="fa fa-long-arrow-left"></span>
+                        </button>
+                        <br /><br />
+                        <button class="btn btn-default btn-xs" type="button" onclick="DoRemove(0,'')" id="RemoveBtn"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Remove"); ?>" >
+                            <span class="fa fa-long-arrow-right"></span>
+                        </button>
+                    </td>
 
 
                     <td style='text-align:left'><select size='5' style='min-width:220px;' id='available_languages' name='available_languages'>
