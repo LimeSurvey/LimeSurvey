@@ -3654,5 +3654,40 @@ class statistics_helper {
         return $output;
     }
 
+    /* This function builds the text description of eqch question in the filter section
+    *
+    * @param string $hinttext The question text
+    *
+    * */
+    public static function _showSpeaker($hinttext)
+    {
+        global $maxchars; //Where does this come from? can it be replaced? passed with function call?
+
+        if(!isset($maxchars))
+        {
+            $maxchars = 100;
+        }
+        $htmlhinttext=str_replace("'",'&#039;',$hinttext);  //the string is already HTML except for single quotes so we just replace these only
+        $jshinttext=javascriptEscape($hinttext,true,true);  //Build a javascript safe version of the string
+
+        if(strlen($hinttext) > ($maxchars))
+        {
+            $shortstring = flattenText($hinttext);
+
+            $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring,ENT_QUOTES,'UTF-8'), 0, $maxchars, 'UTF-8'));
+
+            //output with hoover effect
+            $reshtml= "<span style='cursor: pointer' title='".$htmlhinttext."' "
+            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\">"
+            ." \"$shortstring...\" </span>"
+            ."<span class='icon-assessments'  style='cursor: pointer' ></span>"
+            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\" />";
+        }
+        else
+        {
+            $reshtml= "<span style='cursor: pointer' title='".$htmlhinttext."'> \"$htmlhinttext\"</span>";
+        }
+        return $reshtml;
+    }
 
 }
