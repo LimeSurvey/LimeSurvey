@@ -67,18 +67,6 @@
 
     function defaultValueRenderer(instance, td, row, col, prop, value, cellProperties) {
         var args = arguments;
-        if (args[5] === null && isEmptyRow(instance, row)) {
-            if (col === 0) {
-                args[5] = 'A' + (row + 1);
-            } else {
-                args[5] = tpl[col];
-            }
-            td.style.color = '#999';
-        }
-        else {
-            td.style.color = '';
-        }
-
         if (cellProperties.readOnly === true) {
             td.style.setProperty('background-color','#eee', 'important');
             td.style.setProperty('pointer-events','none');
@@ -94,6 +82,39 @@
         }
     });
     hot1 = new Handsontable(container, {
+        beforeAutofill: function(start, end, data) {
+            // Check how many rows.
+            if (start.col === 0) {
+
+                var pattern = data.slice();
+                data.length = 0;
+                for (var i = start.row; i <= end.row; i++) {
+
+                    var template = pattern[(i - start.row) % (pattern.length)].slice();
+                    template[0] = 'A' + (i + 1);
+//
+//                    for (var j = 1; j < template.length; j++) {
+//                        // Check other columns.
+//                        if (pattern.length > 1 &&  i > start.row
+//                            && typeof prev != 'undefined'
+//                            && !isNaN(template[j])
+//                            && !isNaN(prev[j])
+//                        ) {
+//                            template[j] += template[j] - prev[j];
+//                        }
+//                    }
+//                    var prev = pattern[(i - start.row) % (pattern.length)].slice();
+                    data.push(template);
+
+                }
+                return data;
+            }
+
+
+
+//            if e
+//            debugger;
+        },
         minSpareRows: 1,
         contextMenu: true,
         startCols: <?=count($model->getLanguageArray()) + 3; ?>,
@@ -218,7 +239,6 @@
 
 
         });
-        console.log(result);
         return result;
     }
 
@@ -253,6 +273,7 @@
                 }
             });
         }
+        hot1.deselectCell();
     });
 
     $('#labels').on('change', 'select', function() {
