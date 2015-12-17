@@ -67,6 +67,7 @@
                                                     array(
                                                         'filterchoice_state'=>$filterchoice_state,
                                                         'filters'=>$filters,
+                                                        'aGroups'=>$aGroups,
                                                         'surveyid'=>$surveyid,
                                                         'result'=>$result,
                                                         'fresults'=>$fresults,

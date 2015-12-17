@@ -157,6 +157,7 @@ class statistics extends Survey_Common_Action {
 
         //put the question information into the filter array
         $filters = array();
+        $aGroups = array();
         foreach ($rows as $row)
         {
             //store some column names in $filters array
@@ -166,8 +167,22 @@ class statistics extends Survey_Common_Action {
             $row['title'],
             $row['group_name'],
             flattenText($row['question']));
+
+            if (!in_array($row['group_name'], $aGroups))
+            {
+                //$aGroups[] = $row['group_name'];
+                $aGroups[$row['group_name']]['gid'] = $row['gid'];
+                $aGroups[$row['group_name']]['name'] = $row['group_name'];
+            }
+            $aGroups[$row['group_name']]['questions'][] = array($row['qid'],
+            $row['gid'],
+            $row['type'],
+            $row['title'],
+            $row['group_name'],
+            flattenText($row['question'])); ;
         }
         $aData['filters'] = $filters;
+        $aData['aGroups'] = $aGroups;
 
         //var_dump($filters);
         // SHOW ID FIELD
@@ -498,6 +513,7 @@ class statistics extends Survey_Common_Action {
 
         $aData['error'] = $error;
         $aData['oStatisticsHelper'] = $helper;
+        $aData['fresults'] = (isset($aData['fresults']))?$aData['fresults']:false;
 
         $this->_renderWrappedTemplate('export', 'statistics_view', $aData);
 
