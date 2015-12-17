@@ -39,6 +39,7 @@ $(document).ready(function(){
 
     $(document).on('click', '.btnaddanswer', add_label);
     $(document).on('click', '.btndelanswer', del_label);
+    $(document).on('keyup change', '.codeval,.assessmentval', sync_label);
 
     $('#neweditlblset0 .answertable tbody').sortable({
         update:sort_complete,
@@ -140,15 +141,15 @@ function quickaddfunction(){
         // seems always undefined
         if (typeof(code)!="undefined") {
             $("#code_"+retcode).val(code);
-		}
+        }
 
         $(".lslanguage").each(function(i){
-        	//console.log("input[name=title_"+$(this).val()+"_"+retcode+"]");
+            //console.log("input[name=title_"+$(this).val()+"_"+retcode+"]");
             $("input[name=title_"+$(this).val()+"_"+retcode+"]").val(params[k]);
-			if (typeof(code)!="undefined" && i > 0)
+            if (typeof(code)!="undefined" && i > 0)
             {
-				$("#row_"+$(this).val()+"_"+retcode+" td:first").text(code);
-			}
+                $("#row_"+$(this).val()+"_"+retcode+" td:first").text(code);
+            }
             k++;
         });
 
@@ -191,9 +192,24 @@ function sort_complete(event, ui){
     fix_highlighting();
 }
 
+
+function sync_label(event)
+{
+    var $sRowID = $(event.target).parent().parent().attr('id');
+    $aRowInfo=$sRowID.split('_');// first is row, second langage and last the row number
+    $(".tab-pane").each(function(divindex,divelement){
+        var div_language = $(".lslanguage",divelement).val();
+        if (typeof(div_language)!="undefined" && div_language!=$aRowInfo[1]){
+            $("#row_"+div_language+"_"+$aRowInfo[2]+" td:first-child").text($("#code_"+$aRowInfo[2]).val()); // Sync code
+            $("#row_"+div_language+"_"+$aRowInfo[2]+" td:nth-child(2)").text($("#assessmentvalue_"+$aRowInfo[2]).val()); // Sync assessment value
+        }
+    });
+
+}
+
+
 function add_label(event)
 {
-	console.log(event);
     if(event!=undefined)
     {
         if ($(event.target).closest('tr').find('.codeval').size()>0)
@@ -215,7 +231,7 @@ function add_label(event)
         next_code='L001';
     }
 
-	//console.log('nextcode: '+next_code);
+    //console.log('nextcode: '+next_code);
 
     var html = createNewLabelTR(true,true);
 
@@ -266,9 +282,15 @@ function add_label(event)
 
 function del_label(event){
 
-    var id = $(event.target).parent().parent().attr('id');
+    var $sRowID = $(event.target).parent().parent().attr('id');
 
-    $("#"+id).remove();
+    $aRowInfo=$sRowID.split('_');// first is row, second langage and last the row number
+    $(".tab-pane").each(function(divindex,divelement){
+        var div_language = $(".lslanguage",divelement).val();
+
+        if (typeof(div_language)!="undefined")
+            $("#row_"+div_language+"_"+$aRowInfo[2]).remove();
+    });
 
     fix_highlighting();
 
