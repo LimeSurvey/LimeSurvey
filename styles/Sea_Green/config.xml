@@ -17,6 +17,7 @@
             <filename>lime-admin.css</filename>
             <filename>fonts.css</filename>
             <filename>statistics.css</filename>
+            <filename>bootstrap-switch.min.css</filename>
         </css>
         <js>
             <filename>notify.js</filename>
@@ -24,6 +25,7 @@
             <filename>panelclickable.js</filename>
             <filename>panelsanimation.js</filename>
             <filename>sidemenu.js</filename>
+            <filename>bootstrap-switch.min.js</filename>
         </js>
     </files>
 </config>

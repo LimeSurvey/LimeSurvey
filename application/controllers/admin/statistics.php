@@ -643,6 +643,14 @@ class statistics extends Survey_Common_Action {
      */
     protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
     {
+        //$switch = realpath(__DIR__ . '/../..').'/widgets/switch/assets/js/bootstrap-switch.min.js ';
+        $switch = Yii::app()->getBaseUrl(true).'/application/extensions/yiiwheels/widgets/switch/assets/js/bootstrap-switch.min.js ';
+        //var_dump($switch);
+        //App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $switch) );
+        App()->getClientScript()->registerScriptFile( $switch );
+
+
+//
 
         $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above

@@ -4389,13 +4389,13 @@ input:focus, textarea:focus {
 }
 
 
-#survey-action-chevron {
+h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
     position: absolute;
     right: 1em;
     top: 10px;
 }
 
-#survey-action-chevron {
+h3 .glyphicon-chevron-up,  h3 .glyphicon-chevron-down {
     cursor: pointer;
 }
 
@@ -4665,4 +4665,8 @@ span[data-tooltip] {
 }
 .answertable .glyphicon-pencil {
     margin-left: 3px;
+}
+
+.statisticsview .panel{
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
