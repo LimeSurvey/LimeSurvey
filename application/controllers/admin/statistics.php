@@ -447,6 +447,7 @@ class statistics extends Survey_Common_Action {
         // ----------------------------------- END FILTER FORM ---------------------------------------
 
         Yii::app()->loadHelper('admin/statistics');
+        $helper = new statistics_helper();
         $showtextinline=isset($_POST['showtextinline']) ? 1 : 0;
         $aData['showtextinline'] = $showtextinline;
 
@@ -457,7 +458,7 @@ class statistics extends Survey_Common_Action {
             $aData['usegraph'] = $usegraph;
             $outputType = $_POST['outputtype'];
 
-            $helper = new statistics_helper();
+
             switch($outputType){
                 case 'html':
                     $statisticsoutput .= $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
@@ -476,9 +477,27 @@ class statistics extends Survey_Common_Action {
 
         }    //end if -> show summary results
 
+        $usegraph=isset($_POST['usegraph']) ? 1 : 0;
+        $aData['usegraph'] = $usegraph;
+
         $aData['sStatisticsLanguage']=$statlang;
         $aData['output'] = $statisticsoutput;
         $aData['summary'] = $summary;
+
+
+        $error = '';
+        if (!function_exists("gd_info"))
+        {
+            $error .= '<br />'.gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
+            $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
+        }
+        else if (!function_exists("imageftbbox")) {
+            $error .= '<br />'.gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
+            $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
+        }
+
+        $aData['error'] = $error;
+        $aData['oStatisticsHelper'] = $helper;
 
         $this->_renderWrappedTemplate('export', 'statistics_view', $aData);
 
