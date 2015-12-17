@@ -126,7 +126,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                         <!-- Bounce settings -->
                         <li>
                             <a href="<?php echo $this->createUrl("admin/tokens/sa/bouncesettings/surveyid/$surveyid"); ?>" >
-                                <span class="icon-bounce_settings"></span>
+                                <span class="fa fa-cogs"></span>
                                 <?php eT("Bounce settings"); ?>
                             </a>
                         </li>

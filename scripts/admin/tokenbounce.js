@@ -9,13 +9,10 @@ function hideParameters()
     $("#bounceaccountuser").attr('disabled','disabled');
     $("#bounceaccountpass").attr('disabled','disabled');
     $("#bounceaccountencryption").attr('disabled','disabled');
-
-    $('#bounceparams').hide( "fade" );
 }
 
 function showParameters()
 {
-    $('#bounceparams').show( "fade" );
     $("#bounceaccounttype").removeAttr('disabled');
     $("#bounceaccounthost").removeAttr('disabled');
     $("#bounceaccountuser").removeAttr('disabled');
