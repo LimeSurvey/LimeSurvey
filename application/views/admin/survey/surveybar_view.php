@@ -74,7 +74,7 @@
 
                     <!-- can't activate -->
                     <?php else : ?>
-                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+                        <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                             <button type="button" class="btn btn-success btntooltip" disabled="disabled">
                                 <?php eT("Activate this survey"); ?>
                             </button>
