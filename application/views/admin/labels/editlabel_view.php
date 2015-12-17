@@ -62,11 +62,11 @@
                                         <!-- arrows -->
                                         <td style="padding: 1em;">
                                             <button class="btn btn-default btn-xs" onclick="DoAdd()" id="AddBtn" type="button"  data-toggle="tooltip" data-placement="top" title="<?php eT("Add"); ?>">
-                                                <span class="fa fa-long-arrow-left"></span>
+                                                <span class="fa fa-backward"></span>  <?php eT("Add"); ?>
                                             </button>
                                             <br /><br />
                                             <button class="btn btn-default btn-xs" type="button" onclick="DoRemove(1,'<?php eT("You cannot remove this item since you need at least one language in a labelset.", "js"); ?>')" id="RemoveBtn"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Remove"); ?>" >
-                                                <span class="fa fa-long-arrow-right"></span>
+                                                <?php eT("Remove"); ?>  <span class="fa fa-forward"></span>
                                             </button>
                                         </td>
 

@@ -59,12 +59,12 @@
                     <td style='text-align:left'>
                         <div class="col-sm-4">
                             <button class="btn btn-default btn-xs" onclick="DoAdd()" id="AddBtn" type="button"  data-toggle="tooltip" data-placement="top" title="<?php eT("Add"); ?>">
-                                <span class="fa fa-long-arrow-left"></span>
+                                <span class="fa fa-backward"></span>  <?php eT("Add"); ?>
                             </button>
                             <br /><br />
                             <button class="btn btn-default btn-xs" type="button" onclick="DoRemove(0,'')" id="RemoveBtn"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Remove"); ?>" >
-                                <span class="fa fa-long-arrow-right"></span>
-                            </button>                                                        
+                                <?php eT("Remove"); ?>  <span class="fa fa-forward"></span>
+                            </button>
                         </div>
                     </td>
 
