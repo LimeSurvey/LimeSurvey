@@ -63,7 +63,7 @@
                                 ?>>
                                 <?php
                                     if (!$first) {
-                                    ?>                      <td><?php echo $row['code'] ?></td><td><?php echo $row['assessment_value'] ?></td>
+                                    ?><td><?php echo $row['code'] ?></td><td style='text-align:right;'><?php echo $row['assessment_value'] ?></td>
                                     <?php
                                     }
                                     else
