@@ -26,11 +26,12 @@ class Index extends Survey_Common_Action
         // We get the last survey visited by user
         $setting_entry = 'last_survey_'.Yii::app()->user->getId();
         $lastsurvey = getGlobalSetting($setting_entry);
-        if( $lastsurvey != null)
+        $survey = Survey::model()->findByPk($lastsurvey);
+        if( $lastsurvey != null && $survey)
         {
             $aData['showLastSurvey'] = true;
             $iSurveyID = $lastsurvey;
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+            $surveyinfo = $survey->surveyinfo;
             $aData['surveyTitle'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
             $aData['surveyUrl'] = $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}");
         }
@@ -51,9 +52,9 @@ class Index extends Survey_Common_Action
         $setting_entry = 'last_question_sid_'.Yii::app()->user->getId();
         $lastquestionsid = getGlobalSetting($setting_entry);
 
-        if( $lastquestion != null && $lastquestiongroup != null)
+        if( $lastquestion != null && $lastquestiongroup != null && $survey)
         {
-            $baselang = Survey::model()->findByPk($iSurveyID)->language;
+            $baselang = $survey->language;
             $aData['showLastQuestion'] = true;
             $qid = $lastquestion;
             $gid = $lastquestiongroup;
@@ -62,7 +63,9 @@ class Index extends Survey_Common_Action
 
             $aData['last_question_name'] = $qrrow['title'];
             if($qrrow['question'])
+            {
                 $aData['last_question_name'] .= ' : '.$qrrow['question'];
+            }
 
             $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$iSurveyID/gid/$gid/qid/$qid");
         }
