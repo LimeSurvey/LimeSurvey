@@ -967,20 +967,22 @@ class participantsaction extends Survey_Common_Action
         );
         ParticipantAttributeName::model()->saveAttribute($aData);
 
-        foreach ($_POST as $key => $value)
+        // Save translations
+        if (isset($_POST['lang']))
         {
-            // check for language code in the post variables this is a hack as the only way to check for language data
-            if (strlen($key) == 2)
+            foreach ($_POST['lang'] as $lang => $translation)
             {
                 $langdata = array(
                     'attribute_id' => $iAttributeId,
-                    'attribute_name' => $value,
-                    'lang' => $key
+                    'attribute_name' => $translation,
+                    'lang' => $lang
                 );
 
                 ParticipantAttributeName::model()->saveAttributeLanguages($langdata);
             }
         }
+
+        // TODO: What's the Difference between lang and langdata?
         if (Yii::app()->request->getPost('langdata'))
         {
             $langdata = array(
@@ -991,6 +993,7 @@ class participantsaction extends Survey_Common_Action
 
             ParticipantAttributeName::model()->saveAttributeLanguages($langdata);
         }
+
         /* Create new attribute value */
         if (Yii::app()->request->getPost('attribute_value_name_1') || Yii::app()->request->getPost('attribute_value_name_1') == "0")
         {
