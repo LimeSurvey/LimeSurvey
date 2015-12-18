@@ -3665,7 +3665,7 @@ class statistics_helper {
 
         if(!isset($maxchars))
         {
-            $maxchars = 100;
+            $maxchars = 70;
         }
         $htmlhinttext=str_replace("'",'&#039;',$hinttext);  //the string is already HTML except for single quotes so we just replace these only
         $jshinttext=javascriptEscape($hinttext,true,true);  //Build a javascript safe version of the string
