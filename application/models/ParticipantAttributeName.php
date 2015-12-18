@@ -428,9 +428,20 @@ class ParticipantAttributeName extends LSActiveRecord
         }
     }
 
+    /**
+     * @todo Doc
+     */
     function saveAttributeLanguages($data)
     {
-        $query = Yii::app()->db->createCommand()->from('{{participant_attribute_names_lang}}')->where('attribute_id = :attribute_id AND lang = :lang')->select('*')->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT)->bindParam(":lang", $data['lang'], PDO::PARAM_STR)->queryAll();
+        $query = Yii::app()->db
+            ->createCommand()
+            ->from('{{participant_attribute_names_lang}}')
+            ->where('attribute_id = :attribute_id AND lang = :lang')
+            ->select('*')
+            ->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT)
+            ->bindParam(":lang", $data['lang'], PDO::PARAM_STR)
+            ->queryAll();
+
         if (count($query) == 0)
         {
             // A record does not exist, insert one.
@@ -442,8 +453,11 @@ class ParticipantAttributeName extends LSActiveRecord
         }
         else
         {
-            $oParticipantAttributeNameLang=ParticipantAttributeNameLang::model()->findByPk(array('attribute_id'=>$data['attribute_id'],'lang'=>$data['lang']));
-            $oParticipantAttributeNameLang->attribute_name=$data['attribute_name'];
+            $oParticipantAttributeNameLang = ParticipantAttributeNameLang::model()->findByPk(array(
+                'attribute_id' => $data['attribute_id'], 
+                'lang' => $data['lang']
+            ));
+            $oParticipantAttributeNameLang->attribute_name = $data['attribute_name'];
             $oParticipantAttributeNameLang->save();
         }
     }

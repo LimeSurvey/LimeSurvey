@@ -116,9 +116,30 @@
                 </script>
             </li>
         <?php endforeach;?>
-</ul>
-
-
+    </ul>
+    <?php
+        foreach ($attributenames as $key => $value)
+        {
+        ?>
+        <div class='commonsettings'>
+            <div id="<?php echo $value['lang'] ?>">
+                <table width='400' class='nudgeleft'>
+                    <tr>
+                        <th>
+                            <label for='attname' id='attname'>
+                                <?php eT('Attribute name:'); ?>
+                            </label>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class='data'>
+                            <?php echo CHtml::textField('lang[' . $value['lang'] . ']', $value['attribute_name'], array('class'=>'languagesetting', 'style'=>'border: 1px solid #ccc')); ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <?php } ?>
 
 <div class="tab-content">
         <?php foreach ($attributenames as $key => $value): ?>
