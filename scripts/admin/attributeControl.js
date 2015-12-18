@@ -12,7 +12,7 @@ $(document).ready(function() {
     var actionsFormatter = function (cellvalue, options, rowObject) {
         var rowType = rowObject[2];
 
-        return '<span data-toggle="tooltip" data-placement="bottom" title="Edit attribute" data-original-title="Edit attribute" class="ui-pg-button icon-edit" onclick="jQuery.fn.fmatter.rowactions.call(this,\'edit\');"></span>&nbsp;<span class="ui-pg-button glyphicon text-danger glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="Delete attribute" onclick="jQuery.fn.fmatter.rowactions.call(this,\'del\');"></span>';
+        return '<span data-toggle="tooltip" data-placement="bottom" title="' + sEditAttributeMsg + '" class="ui-pg-button icon-edit" onclick="jQuery.fn.fmatter.rowactions.call(this,\'edit\');"></span>&nbsp;<span class="ui-pg-button glyphicon text-danger glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="' + deleteCaption + '" onclick="jQuery.fn.fmatter.rowactions.call(this,\'del\');"></span>';
     }
 
     var CM = [
