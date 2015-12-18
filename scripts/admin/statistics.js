@@ -89,17 +89,22 @@ $(document).ready(function() {
             $('#usegraph').prop('checked',false);
         }
      });
-     $('#viewsummaryall').click( function(){
-        if ($('#viewsummaryall').prop('checked')==true)
-        {
-            $('#filterchoices input[type=checkbox]').prop('checked', true);
-        }
-        else
-        {
-            $('#filterchoices input[type=checkbox]').prop('checked', false);
 
-        }
-     });
+    /***
+     * Select all questions
+     */
+    $("[name='viewsummaryall']").on('switchChange.bootstrapSwitch', function(event, state) {
+
+           if (state==true)
+           {
+               $('#filterchoices input[type=checkbox]').prop('checked', true);
+           }
+           else
+           {
+               $('#filterchoices input[type=checkbox]').prop('checked', false);
+
+           }
+    });
 
     /* Show and hide the three major sections of the statistics page */
     /* The response filters */

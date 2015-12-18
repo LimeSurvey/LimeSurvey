@@ -3688,7 +3688,7 @@ class statistics_helper {
             $sTextToShow = gT("Question","js").': '.$jshinttext;
 
             $reshtml = '<span>'.$shortstring.'...</span>';
-            $reshtml .= '<span  class="show_speaker icon-assessments" style="cursor: pointer" title="'.$sTextToShow.'"  data-toggle="tooltip" data-placement="bottom"  >';
+            $reshtml .= '<span  class="show_speaker icon-assessments text-success" style="cursor: pointer" title="'.$sTextToShow.'"  data-toggle="tooltip" data-placement="bottom"  >';
             $reshtml .= '</span>';
         }
         else
