@@ -543,25 +543,30 @@ class UpdateForm extends CFormModel
         {
             // Turn on the alert notification
             Yii::app()->session['notificationstate']=1;
+            
+            // get config setting
+            $updatenotification = getGlobalSetting('updatenotification');  // never, stable, both
 
             $updates = $this->getUpdateInfo('1');
             $update_available = FALSE;
-            if($updates->result)
+            $security_update_available = FALSE;
+            $unstable_update_available = FALSE;
+            
+            if($updates->result && $updatenotification != 'never')
             {
                 unset($updates->result);
 
                 if( count($updates) > 0)
                 {
-                    $update_available = TRUE;
-                    $security_update_available = FALSE;
-                    $unstable_update_available = FALSE;
                     foreach( $updates as $update )
                     {
                         if($update->security_update)
                             $security_update_available = TRUE;
 
-                        if($update->branch != 'master')
+                        if($update->branch != 'master' && $updatenotification != 'stable')
                             $unstable_update_available = TRUE;
+                        elseif ($update->branch == 'master')
+                            $update_available = TRUE;
                     }
                 }
                 Yii::app()->session['update_result'] = $update_available;
