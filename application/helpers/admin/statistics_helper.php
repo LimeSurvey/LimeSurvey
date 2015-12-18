@@ -659,6 +659,7 @@ class statistics_helper {
                 break;
         }
 
+////
         //M - Multiple choice, therefore multiple fields - one for each answer
         if ($firstletter == "M" || $firstletter == "P")
         {
@@ -887,16 +888,13 @@ class statistics_helper {
                     $headPDF = array();
                     $tablePDF = array();
                     $footPDF = array();
-
                     $pdfTitle = sprintf(gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
                     $titleDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
-
                     $headPDF[] = array(gT("Calculation"),gT("Result"));
-
                     break;
 
                 case 'html':
-                    $statisticsoutput .= "\n<table class='statisticstable table table-bordered >\n"
+                    $statisticsoutput .=  "\n<table class='statisticstable table table-bordered >\n"
                     ."\t<thead><tr class='success'><th style='text-align: center; '><strong>".sprintf(gT("Field summary for %s"),$qtitle).":</strong>"
                     ."</th></tr>\n"
                     ."\t<tr><th colspan='2' align='center'><strong>$qquestion</strong></th></tr>\n"
@@ -1606,7 +1604,8 @@ class statistics_helper {
      *
      *
     */
-    protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage) {
+    protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
+    {
 
         /* Set up required variables */
         $TotalCompleted = 0; //Count of actually completed answers
@@ -1657,18 +1656,7 @@ class statistics_helper {
 
                 break;
             case 'html':
-                //output
-                $statisticsoutput .= "<table class='statisticstable table table-bordered'>\n"
-                ."\t<thead><tr class='success'><th colspan='4' align='center' style='text-align: center; '><strong>"
-
-                //headline
-                .sprintf(gT("Field summary for %s"),$outputs['qtitle'])."</strong>"
-                ."</th></tr>\n"
-                ."\t<tr><th colspan='4' align='center' style='text-align: center; '><strong>"
-
-                //question title
-                .$outputs['qquestion']."</strong></th></tr>\n"
-                ."\t<tr>\n\t\t<th width='50%' align='center' >";
+                //output now generated in subview _statisticsoutuput_header
                 break;
             default:
 
@@ -1880,12 +1868,8 @@ class statistics_helper {
                     $fname= "$al[1]";
                 }
 
-                $statisticsoutput .= "</th>\n"
-                ."\t\t<th width='25%' align='center' >"
-                ."<strong>".gT("Count")."</strong></th>\n"
-                ."\t\t<th width='25%' align='center' >"
-                ."<strong>".gT("Percentage")."</strong></th>\n"
-                ."\t</tr></thead>\n";
+                $bAnswer = false; // For view
+                $bSum = false;
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
                     $headPDF2 = array();
@@ -1926,14 +1910,8 @@ class statistics_helper {
                                 break;
                             case 'html':
                                 //four columns
-                                $statisticsoutput .= "<strong>".gT("Answer")."</strong></th>\n"
-                                ."\t\t<th width='15%' align='center' >"
-                                ."<strong>".gT("Count")."</strong></th>\n"
-                                ."\t\t<th width='20%' align='center' >"
-                                ."<strong>".gT("Percentage")."</strong></th>\n"
-                                ."\t\t<th width='15%' align='center' >"
-                                ."<strong>".gT("Sum")."</strong></th>\n"
-                                ."\t</tr></thead>\n";
+                                $bAnswer = true;
+                                $bSum = true;
                                 break;
                             default:
 
@@ -1962,12 +1940,9 @@ class statistics_helper {
                                 break;
                             case 'html':
                                 //three columns
-                                $statisticsoutput .= "<strong>".gT("Answer")."</strong></td>\n"
-                                ."\t\t<th width='25%' align='center' >"
-                                ."<strong>".gT("Count")."</strong></th>\n"
-                                ."\t\t<th width='25%' align='center' >"
-                                ."<strong>".gT("Percentage")."</strong></th>\n"
-                                ."\t</tr></thead>\n";
+                                $bAnswer = true; // For view
+                                $bSum = false;
+
                                 break;
                             default:
 
@@ -2006,12 +1981,8 @@ class statistics_helper {
                             break;
                         case 'html':
                             //three columns
-                            $statisticsoutput .= "<strong>".gT("Answer")."</strong></th>\n"
-                            ."\t\t<th width='25%' align='center' >"
-                            ."<strong>".gT("Count")."</strong></th>\n"
-                            ."\t\t<th width='25%' align='center' >"
-                            ."<strong>".gT("Percentage")."</strong></th>\n"
-                            ."\t</tr></thead>\n";
+                            $bAnswer = true; // For view
+                            $bSum = false;
                             break;
                         default:
 
@@ -2220,9 +2191,17 @@ class statistics_helper {
         //we need to know which item we are editing
         $itemcounter = 1;
 
+        $aData['outputs'] = $outputs;
+        $aData['bSum'] = $bSum;
+        $aData['bAnswer'] = $bAnswer;
+        $statisticsoutput =  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_header', $aData, true);
+
         //loop through all available answers
         while (isset($gdata[$i]))
         {
+            $aData['i']=$i;
+            ///// We'll render at the end of this loop statisticsoutput_answer
+
             //repeat header (answer, count, ...) for each new question
             unset($showheadline);
 
@@ -2234,8 +2213,10 @@ class statistics_helper {
             * 2 (25%) = count (absolute)
             * 3 (25%) = percentage
             */
+            /*
             $statisticsoutput .= "\t<tr>\n\t\t<td align='center' >" . $label[$i] ."\n"
             ."\t\t</td>\n";
+            */
             /*
             * If there is a "browse" button in this label, let's make sure there's an extra row afterwards
             * to store the columnlist
@@ -2247,16 +2228,19 @@ class statistics_helper {
                 if ($outputs['qtype']=='P')
                 {
                     $extraline.="<div class='statisticsbrowsecolumn' id='columnlist_{$ColumnName_RM[$i]}'></div></td></tr>\n";
+                    $sColumnNameForView = $ColumnName_RM[$i];
                 }
                 else
                 {
                     $extraline.="<div class='statisticsbrowsecolumn' id='columnlist_{$sColumnName}'></div></td></tr>\n";
+                    $sColumnNameForView = $sColumnName;
                 }
             }
 
             //output absolute number of records
+            /*
             $statisticsoutput .= "\t\t<td align='center' >" . $grawdata[$i] . "\n</td>";
-
+            */
 
             //no data
             if ($gdata[$i] === "N/A")
@@ -2278,6 +2262,7 @@ class statistics_helper {
                         break;
                     case 'html':
                         //output when having no data
+                        /*
                         $statisticsoutput .= "\t\t<td  align='center' >";
 
                         //percentage = 0
@@ -2295,6 +2280,7 @@ class statistics_helper {
                         }
                         $statisticsoutput .= "</tr>\n"; //Close the row
                         if(isset($extraline)) {$statisticsoutput .= $extraline;}
+                        */
                         break;
                     default:
 
@@ -2379,6 +2365,7 @@ class statistics_helper {
 
                         case 'html':
                             //output percentage
+                            /*
                             $statisticsoutput .= "\t\t<td align='center' >";
                             $statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
 
@@ -2389,6 +2376,7 @@ class statistics_helper {
                                 $statisticsoutput .= '&nbsp;';
                             }
                             $statisticsoutput .= "</td>\t\t";
+                            */
                             break;
 
                         default:
@@ -2448,6 +2436,7 @@ class statistics_helper {
 
                                 break;
                             case 'html':
+                            /*
                                 $statisticsoutput .= "\t\t&nbsp;\n\t</tr>\n";
                                 $statisticsoutput .= "<tr><td align='center'><strong>".gT("Sum")." (".gT("Answers").")</strong></td>";
                                 $statisticsoutput .= "<td align='center' ><strong>".$sumitems."</strong></td>";
@@ -2460,6 +2449,7 @@ class statistics_helper {
                                 $statisticsoutput .= "<td align='center' >$casepercentage%</td>";
                                 //there has to be a whitespace within the table cell to display correctly
                                 $statisticsoutput .= "<td align='center' >&nbsp;</td></tr>";
+                                */
                                 break;
                             default:
 
@@ -2491,12 +2481,14 @@ class statistics_helper {
                             break;
                         case 'html':
                             //output percentage
+                            /*
                             $statisticsoutput .= "\t\t<td align='center' >";
                             $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
                             $statisticsoutput .= "\t\t";
                             //end output per line. there has to be a whitespace within the table cell to display correctly
                             $statisticsoutput .= "\t\t&nbsp;</td>\n\t</tr>\n";
                             if(isset($extraline)) {$statisticsoutput .= $extraline;}
+                            */
                             break;
                         default:
 
@@ -2517,6 +2509,20 @@ class statistics_helper {
 
             //Clear extraline
             unset($extraline);
+
+            ///// HERE RENDER statisticsoutput_answer
+            $aData['label']=$label;
+            $aData['grawdata']=$grawdata;
+            $aData['gdata']=$gdata;
+            $aData['extraline']=(isset($extraline))?$extraline:false;
+            $aData['aggregated']=(isset($aggregated))?$aggregated:false;
+            $aData['aggregatedPercentage']=(isset($aggregatedPercentage))?$aggregatedPercentage:false;
+            $aData['sumitems']=(isset($sumitems))?$sumitems:false;
+            $aData['sumpercentage']=(isset($sumpercentage))?$sumpercentage:false;
+            $aData['TotalCompleted']=(isset($TotalCompleted))?$TotalCompleted:false;
+            $aData['casepercentage']=(isset($casepercentage))?$casepercentage:false;
+
+            $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_answer', $aData, true);
 
         }    //end while
 

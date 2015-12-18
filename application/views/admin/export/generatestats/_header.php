@@ -15,11 +15,11 @@
 <!-- Message Box -->
 <div style="clear: both; margin-bottom: 10px;"></div><div class="jumbotron message-box">
     <h2><?php eT("Results"); ?></h2>
-    <p><?php eT("Number of records in this query:")?> <?php echo $results;?></p>
-    <p><?php eT("Total records in survey:"); ?> <?php echo $total; ?></p>
+    <p><?php eT("Number of records in this query:")?>&nbsp;<?php echo $results;?></p>
+    <p><?php eT("Total records in survey:"); ?>&nbsp;<?php echo $total; ?></p>
 
     <?php if($total): ?>
-        <p><?php eT("Percentage of total:"); ?> <?php echo $percent; ?>%</p>
+        <p><?php eT("Percentage of total:"); ?>&nbsp;<?php echo $percent; ?>%</p>
     <?php endif;?>
 
     <?php if($browse): ?>
