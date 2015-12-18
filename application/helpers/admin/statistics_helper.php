@@ -3098,7 +3098,239 @@ class statistics_helper {
         return $statisticsoutput;
     }
 
+    /**
+     * Generates statistics with subviews
+     */
+    public function generate_html_chartjs_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
+    {
+        $aStatisticsData=array();
 
+        //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
+        //load surveytranslator helper
+
+        Yii::import('application.helpers.surveytranslator_helper', true);
+        Yii::import('application.third_party.ar-php.Arabic', true);
+
+        $sTempDir = Yii::app()->getConfig("tempdir");
+
+        //pick the best font file if font setting is 'auto'
+        if (is_null($sLanguageCode))
+        {
+            $sLanguageCode =  getBaseLanguageFromSurveyID($surveyid);
+        }
+        Yii::app()->setLanguage($sLanguageCode);
+
+        /*
+        * this variable is used in the function shortencode() which cuts off a question/answer title
+        * after $maxchars and shows the rest as tooltip (in html mode)
+        */
+        $maxchars = 13;
+
+        //no survey ID? -> come and get one
+        if (!isset($surveyid)) {$surveyid=returnGlobal('sid');}
+
+        //Get an array of codes of all available languages in this survey
+        $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
+        $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
+
+        $fieldmap=createFieldMap($surveyid, "full", false, false, $sLanguageCode);
+
+        // Set language for questions and answers to base language of this survey
+        $language=$sLanguageCode;
+
+        if($q2show=='all' )
+        {
+            $summarySql=" SELECT gid, parent_qid, qid, type "
+            ." FROM {{questions}} WHERE parent_qid=0"
+            ." AND sid=$surveyid ";
+
+            $summaryRs = Yii::app()->db->createCommand($summarySql)->query()->readAll();
+
+            foreach($summaryRs as $field)
+            {
+                $myField = $surveyid."X".$field['gid']."X".$field['qid'];
+
+                // Multiple choice get special treatment
+                if ($field['type'] == "M") {$myField = "M$myField";}
+                if ($field['type'] == "P") {$myField = "P$myField";}
+                //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
+                if ($field['type'] == "N") {$myField = "N$myField";}
+                if ($field['type'] == "|") {$myField = "|$myField";}
+                if ($field['type'] == "Q") {$myField = "Q$myField";}
+                // textfields get special treatment
+                if ($field['type'] == "S" || $field['type'] == "T" || $field['type'] == "U"){$myField = "T$myField";}
+                //statistics for Date questions are not implemented yet.
+                if ($field['type'] == "D") {$myField = "D$myField";}
+                if ($field['type'] == "F" || $field['type'] == "H")
+                {
+                    //Get answers. We always use the answer code because the label might be too long elsewise
+                    $query = "SELECT code, answer FROM {{answers}} WHERE qid='".$field['qid']."' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
+                    $result = Yii::app()->db->createCommand($query)->query();
+                    $counter2=0;
+
+                    //check all the answers
+                    foreach ($result->readAll() as $row)
+                    {
+                        $row=array_values($row);
+                        $myField = "$myField{$row[0]}";
+                    }
+                    //$myField = "{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]";
+
+                }
+                if($q2show=='all')
+                    $summary[]=$myField;
+
+                //$allfields[]=$myField;
+            }
+        }
+        else
+        {
+            // This gets all the 'to be shown questions' from the POST and puts these into an array
+            if (!is_array($q2show))
+                $summary=returnGlobal('summary');
+            else
+                $summary = $q2show;
+
+            //print_r($_POST);
+            //if $summary isn't an array we create one
+            if (isset($summary) && !is_array($summary))
+            {
+                $summary = explode("+", $summary);
+            }
+        }
+
+        /**
+        * Start generating
+        */
+        $selects=buildSelects($allfields, $surveyid, $language);
+
+        //count number of answers
+        $query = "SELECT count(*) FROM {{survey_$surveyid}}";
+
+        //if incompleted answers should be filtert submitdate has to be not null
+        if (incompleteAnsFilterState() == "incomplete") {$query .= " WHERE submitdate is null";}
+        elseif (incompleteAnsFilterState() == "complete") {$query .= " WHERE submitdate is not null";}
+        $total = Yii::app()->db->createCommand($query)->queryScalar();
+
+        //are there any filters that have to be taken care of?
+        if (isset($selects) && $selects)
+        {
+            //Save the filters to session for use in browsing text & other features (statistics.php function listcolumn())
+            Yii::app()->session['statistics_selects_'.$surveyid] = $selects;
+            //filter incomplete answers?
+            if (incompleteAnsFilterState() == "complete" || incompleteAnsFilterState() == "incomplete") {$query .= " AND ";}
+
+            else {$query .= " WHERE ";}
+
+            //add filter criteria to SQL
+            $query .= implode(" AND ", $selects);
+        }
+
+        //get me some data Scotty
+        $results=Yii::app()->db->createCommand($query)->queryScalar();
+
+        if ($total)
+        {
+            $percent=sprintf("%01.2f", ($results/$total)*100);
+        }
+
+        if ($total)
+        {
+            $percent=sprintf("%01.2f", ($results/$total)*100);
+        }
+
+        //put everything from $selects array into a string connected by AND
+        //This string ($sql) can then be passed on to other functions so you can
+        //browse these results
+        if (isset ($selects) && $selects)
+        {
+            $sql=implode(" AND ", $selects);
+        }
+        elseif (!empty($newsql))
+        {
+            $sql = $newsql;
+        }
+
+        if (!isset($sql) || !$sql)
+        {
+            $sql= null;
+        }
+
+        //only continue if we have something to output
+        if ($results > 0)
+        {
+            if($outputType=='html' && $browse === true && Permission::model()->hasSurveyPermission($surveyid,'responses','read'))
+            {
+                //add a buttons to browse results
+                $bBrowse = true;
+            }
+        }    //end if (results > 0)
+
+        /**
+        * Show Summary results
+        * The $summary array contains each fieldname that we want to display statistics for
+        */
+
+        $aData['results'] = $results;
+        $aData['total'] = $total;
+        $aData['percent'] = $percent;
+        $aData['browse'] = $bBrowse;
+        $aData['surveyid'] = $surveyid;
+        $aData['sql'] = $sql;
+
+        // application/views/admin/export/generatestats/_header.php
+        $sOutputHTML = Yii::app()->getController()->renderPartial('/admin/export/generatestats/_header', $aData, true);
+
+
+        if (isset($summary) && $summary)
+        {
+            //let's run through the survey
+            $runthrough=$summary;
+
+            //START Chop up fieldname and find matching questions
+
+            //loop through all selected questions
+            foreach ($runthrough as $rt)
+            {
+
+                //Step 1: Get information about this response field (SGQA) for the summary
+                $outputs=$this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
+                $sOutputHTML .= $outputs['statisticsoutput'];
+                //2. Collect and Display results #######################################################################
+                if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
+                {
+                    $display=$this->displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguageCode);
+                    $sOutputHTML .= $display['statisticsoutput'];
+                    $aStatisticsData = array_merge($aStatisticsData, $display['astatdata']);
+                }    //end if -> collect and display results
+
+
+                //Delete Build Outputs data
+                unset($outputs);
+                unset($display);
+            }    // end foreach -> loop through all questions
+
+            //output
+            if($outputType=='html')
+            $sOutputHTML .= "<br />&nbsp;\n";
+
+        }    //end if -> show summary results
+
+        $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
+        if ($sGoogleMapsAPIKey!='')
+        {
+            $sGoogleMapsAPIKey='&key='.$sGoogleMapsAPIKey;
+        }
+        $sSSL='';
+        if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off"){
+            $sSSL='s';
+        }
+        $sOutputHTML .= "<script type=\"text/javascript\" src=\"http{$sSSL}://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
+        ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='".Yii::app()->getConfig("tempurl")."';var imgpath='".Yii::app()->getConfig('adminimageurl')."';var aStatData=".ls_json_encode($aStatisticsData)."</script>";
+
+
+        return $sOutputHTML;
+    }
 
     /**
     * Generates statistics
@@ -3654,7 +3886,7 @@ class statistics_helper {
         return $output;
     }
 
-    /* This function builds the text description of eqch question in the filter section
+    /* This function builds the text description of each question in the filter section
     *
     * @param string $hinttext The question text
     *
@@ -3673,20 +3905,8 @@ class statistics_helper {
         if(strlen($hinttext) > ($maxchars))
         {
             $shortstring = flattenText($hinttext);
-
             $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring,ENT_QUOTES,'UTF-8'), 0, $maxchars, 'UTF-8'));
-
-            //output with hoover effect
-            /*
-            $reshtml= "<span style='cursor: pointer' title='".$htmlhinttext."' "
-            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\">"
-            ." \"$shortstring...\" </span>"
-            ."<span class='icon-assessments'  style='cursor: pointer' ></span>"
-            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\" />";
-            */
-
             $sTextToShow = gT("Question","js").': '.$jshinttext;
-
             $reshtml = '<span>'.$shortstring.'...</span>';
             $reshtml .= '<span  class="show_speaker icon-assessments text-success" style="cursor: pointer" title="'.$sTextToShow.'"  data-toggle="tooltip" data-placement="bottom"  >';
             $reshtml .= '</span>';

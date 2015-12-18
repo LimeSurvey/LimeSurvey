@@ -882,9 +882,5 @@
 
         }   //end switch -> check question types and create filter forms
     ?>
-
-
-
-
     </div>
 <?php endif; ?>

@@ -476,7 +476,8 @@ class statistics extends Survey_Common_Action {
 
             switch($outputType){
                 case 'html':
-                    $statisticsoutput .= $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
+                    //$statisticsoutput .= $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
+                    $statisticsoutput .=  $helper->generate_html_chartjs_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
                     break;
                 case 'pdf':
                     $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'I',$statlang);
