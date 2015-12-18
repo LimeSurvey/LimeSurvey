@@ -38,7 +38,7 @@ class ParticipantAttributeNameLang extends LSActiveRecord
     */
     public function primaryKey()
     {
-        return 'attribute_id';
+        return array('attribute_id', 'lang');
     }
 
 	public static function model($class = __CLASS__)
