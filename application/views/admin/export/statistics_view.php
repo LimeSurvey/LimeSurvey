@@ -14,9 +14,10 @@
         <?php eT("Statistics"); ?>
     </h3>
 
-    <div class="row">
-            <div class="col-lg-12 content-right">
-                <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder','#'=>'start', 'class'=>'form-horizontal'));?>
+    <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder','#'=>'start', 'class'=>'form-horizontal', 'id'=>'generate-statistics'));?>
+        <!-- General filters -->
+        <div class="row">
+                <div class="col-lg-12 content-right">
 
                     <!-- Header -->
                     <?php $this->renderPartial('/admin/export/statistics_subviews/_header', array()) ; ?>
@@ -52,7 +53,12 @@
                             <input class="hidden" type='button' value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
                         </p>
                     </div>
+                </div>
+            </div>
 
+            <!-- Response filter -->
+            <div class="row">
+                <div class="col-lg-12 content-right">
                     <div style='clear: both'></div>
 
                     <!-- Response filter header -->
@@ -85,9 +91,12 @@
                         <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                         <input type='hidden' name='display' value='stats' />
                     </p>
-                </form>
             </div><!-- END OF AUTOSCROLLING DIV CONTAINING QUESTION FILTERS -->
+        </div>
+    </form>
 
+    <div class="row">
+        <div class="col-lg-12 content-right">
 
             <?php
                 // TODO : show the css loader
@@ -98,7 +107,27 @@
             <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_header', array()) ; ?>
 
             <div id='statisticsoutput' class='statisticsfilters'>
-                <?php echo $output; ?>
+                <?php if ($output==""):?>
+                    <div class="alert alert-info" role="alert" id="view-stats-alert-info">
+                        <?php eT('Please, select filters and click on the "View statistics" button to generate the statistics.');?>
+                    </div>
+
+                    <div id="statsContainerLoading" >
+                		<p><?php eT('PLease wait, loading data...');?></p>
+                        <div class="preloader loading">
+                            <span class="slice"></span>
+                            <span class="slice"></span>
+                            <span class="slice"></span>
+                            <span class="slice"></span>
+                            <span class="slice"></span>
+                            <span class="slice"></span>
+                        </div>
+                	</div>
+
+                <?php else:?>
+                    <?php echo $output; ?>
+                <?php endif;?>
             </div>
+        </div>
     </div>
 </div>

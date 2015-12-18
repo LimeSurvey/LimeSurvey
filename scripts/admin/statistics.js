@@ -1,3 +1,14 @@
+function toggleSection(chevron, section ) {
+    section.toggle();
+    chevron.toggleClass('glyphicon-chevron-up').toggleClass('glyphicon-chevron-down');
+}
+
+function hideSection(chevron, section ) {
+    section.hide();
+    chevron.removeClass('glyphicon-chevron-up');
+    chevron.addClass('glyphicon-chevron-down');
+}
+
 $(document).ready(function() {
 
     $("[name='viewsummaryall']").bootstrapSwitch();
@@ -7,13 +18,27 @@ $(document).ready(function() {
 
 
     $('#generalfilters-chevron').click(function(){
-        $('#statisticsgeneralfilters').toggle();
-        $('#generalfilters-chevron').toggleClass('glyphicon-chevron-up').toggleClass('glyphicon-chevron-down');
+        toggleSection($('#generalfilters-chevron'), $('#statisticsgeneralfilters') );
     });
 
     $('#responsefilters-chevron').click(function(){
-        $('#filterchoices').toggle();
-        $('#responsefilters-chevron').toggleClass('glyphicon-chevron-up').toggleClass('glyphicon-chevron-down');
+        toggleSection($('#responsefilters-chevron'), $('#filterchoices'));
+    });
+
+    $('#statistics-render-chevron').click(function(){
+        toggleSection($('#statistics-render-chevron') ,$('#statisticsoutput') );
+    });
+
+    $('#generate-statistics').submit(function(){
+
+        hideSection($('#generalfilters-chevron'), $('#statisticsgeneralfilters') );
+        hideSection($('#responsefilters-chevron'), $('#filterchoices'))
+        $('#statisticsoutput').show();
+        $('#statistics-render-chevron').removeClass('glyphicon-chevron-up');
+        $('#statistics-render-chevron').addClass('glyphicon-chevron-down');
+        $('#view-stats-alert-info').hide();
+        $('#statsContainerLoading').show();
+        //alert('ok');
     });
 
     if(showTextInline==1) {

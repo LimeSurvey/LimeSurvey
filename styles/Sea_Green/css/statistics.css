@@ -2,6 +2,22 @@
  *     Statistics
  *
  */
+
+#statsContainerLoading
+{
+    position: relative;
+    display: none;
+}
+
+#statisticsoutput{
+    min-height: 200px;
+}
+
+#statsContainerLoading p{
+    text-align: center;
+    padding-top: 120px;
+}
+
 #statisticsview .group-container
 {
     border-bottom: solid 1px #EEE;
