@@ -15,7 +15,7 @@
 
     <!-- CHANGE HERE THE NUMBER OF COL-SM TO CHANGE THE NUMBER OF QUESTION BY LINE -->
     <div class="col-sm-4">
-        
+
         <input type='checkbox'
             id='filter<?php echo $myfield; ?>'
             name='summary[]'
@@ -27,7 +27,10 @@
             { echo " checked='checked'"; }
             ?>
         />
-        <label for='filter<?php echo $myfield; ?>'><?php echo $oStatisticsHelper::_showSpeaker(flattenText($flt[5],true)); ?></label><br />
+        <label for='filter<?php echo $myfield; ?>'>
+            <?php echo $oStatisticsHelper::_showSpeaker(flattenText($flt[5],true)); ?>
+        </label>
+        <br />
         <?php if ($flt[2] != "N" && $flt[2] != "|"):?>
             <select name='<?php
                 if ($flt[2] == "M" ) { echo "M";};

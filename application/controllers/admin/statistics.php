@@ -666,7 +666,6 @@ class statistics extends Survey_Common_Action {
         App()->getClientScript()->registerScriptFile( $switch );
 
 
-//
 
         $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
