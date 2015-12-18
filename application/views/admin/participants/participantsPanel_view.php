@@ -36,7 +36,7 @@
                 </a>
 
                 <!-- Export to CSV file -->
-                <?php if ($totalrecords>0): ?>
+                <?php if (isset($totalrecords) && $totalrecords > 0): ?>
                     <a id="export" class="btn btn-default" href="#" role="button">
                         <span class="icon-exportcsv text-success"></span>
                         <?php eT("Export");?>
