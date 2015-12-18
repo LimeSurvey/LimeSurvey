@@ -162,7 +162,6 @@
         }
         echo CHtml::hiddenField('attname', $value['attribute_name']);
     ?>
-    <br />
 </div>
 
 <br/>

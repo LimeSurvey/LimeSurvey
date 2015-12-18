@@ -13,6 +13,7 @@ $(document).ready(function() {
             $('#ddtable').css('display','none');
         }
     });
+
     $("#tabs").tabs({
         add: function(event, ui) {
             $("#tabs").tabs('select', '#' + ui.panel.id);
@@ -22,13 +23,26 @@ $(document).ready(function() {
                 //load function to close selected tabs
         }
     });
+
     $("#add").click(function(){
         var lang = $("#langdata").val();
         if(lang != "")
         {
-            $('#tabs').append("<div class='commonsettings'><div id='"+lang+"'><table width='400px' align='center' class='nudgeleft'><tr><th>"+attname+"</th></tr><tr><td><input type='text' name='"+lang+"' id='"+lang+"' style='border: 1px solid #ccc' class='languagesetting' /></td></tr></table></div></div>");
-//            $('#tabs').append("<div id='"+lang+"'><center>"+attname+"<input type='text' name='"+lang+"' id='"+lang+"' /></center><br></div>");
-            $("#tabs").tabs("add","#"+lang,$("#langdata option:selected").text());
+            var num_tabs = $('#tabs ul li').length + 3;  // TODO: Why start counting on 3?
+
+            // Add li anchor and content
+            $('#tabs ul').append(
+                '<li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="' + lang + '" aria-labelledby="ui-id-' + num_tabs + '"aria-selected="fase"><a class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-' + num_tabs + '"href="#' + lang + '">' + $('#langdata option:selected').text() + '</a></li>'
+            );
+            $('#tabs').append('<div class="commonsettings"><div id="' + lang + '" aria-labelledby="ui-id-' + num_tabs + '" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="true" aria-hidden="true" style="display: none;"> <table width="400" class="nudgeleft"> <tbody><tr> <th> <label for="attname" id="attname"> Attribute name:                            </label> </th> </tr> <tr> <td class="data"> <input class="languagesetting" style="border: 1px solid black; background-color: rgb(255, 255, 255);" type="text" value="" name="lang[' + lang + ']" id="lang_' + lang + '">                        </td> </tr> </tbody></table> </div> </div>');
+
+            // Reload tabs
+            $('#tabs').tabs('refresh');
+
+            // Open new tab
+            $('#tabs').tabs('option', 'active', num_tabs - 3);
+
+            // Remove the language from select
             $("select#langdata option[value='"+$("#langdata").val()+"']").remove();
         }
     });
