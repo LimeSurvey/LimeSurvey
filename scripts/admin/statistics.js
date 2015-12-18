@@ -41,6 +41,13 @@ $(document).ready(function() {
         //alert('ok');
     });
 
+    $('.group-question-chevron').click(function(){
+        //alert('ok');
+        $group_to_hide = $('#'+$(this).data('grouptohide'));
+        toggleSection($(this), $group_to_hide )
+        //$('#'+group_to_hide).hide();
+    });
+
     if(showTextInline==1) {
         /* Enable all the browse divs, and fill with data */
         $('.statisticsbrowsebutton').each( function (){

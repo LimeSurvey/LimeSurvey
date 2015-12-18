@@ -9,6 +9,11 @@
     display: none;
 }
 
+.group-question-chevron {
+    float: right;
+    font-size: 0.8em;
+}
+
 #statisticsoutput{
     min-height: 200px;
 }

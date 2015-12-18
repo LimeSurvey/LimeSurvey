@@ -15,12 +15,13 @@
 
                             (<?php echo gT("Question group").$aGroup['gid']; ?>)
                         </span>
+                        <span class="glyphicon glyphicon-chevron-up group-question-chevron" data-grouptohide="grp_question_container_<?php echo $aGroup['gid']; ?>"></span>
                     </div>
                 </div>
 
 
                 <!-- Questions container -->
-                <div class="col-sm-12 questionContainer" >
+                <div class="col-sm-12 questionContainer" id="grp_question_container_<?php echo $aGroup['gid']; ?>">
                     <div id='grp_<?php echo $aGroup['gid']; ?>' class="row filtertable ">
 
                     <?php foreach($aGroup['questions'] as  $key1 => $flt ): ?>
