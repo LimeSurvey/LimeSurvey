@@ -14,6 +14,10 @@
     font-size: 0.8em;
 }
 
+.group-question-chevron:hover {
+    cursor: pointer;
+}
+
 #statisticsoutput{
     min-height: 200px;
 }
