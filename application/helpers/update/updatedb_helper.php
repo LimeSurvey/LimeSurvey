@@ -1369,8 +1369,14 @@ function fixKCFinder184()
     $sThirdPartyDir=Yii::app()->getConfig('homedir').DIRECTORY_SEPARATOR.'third_party'.DIRECTORY_SEPARATOR;
     rmdirr($sThirdPartyDir.'ckeditor/plugins/toolbar');
     rmdirr($sThirdPartyDir.'ckeditor/plugins/toolbar/ls-office2003');
-    array_map('unlink', glob($sThirdPartyDir.'kcfinder/cache/*.js'));
-    array_map('unlink', glob($sThirdPartyDir.'kcfinder/cache/*.css'));
+    $aUnlink = glob($sThirdPartyDir.'kcfinder/cache/*.js');
+    if ($aUnlink !== false) {
+        array_map('unlink', $aUnlink); 
+    }
+    $aUnlink = glob($sThirdPartyDir.'kcfinder/cache/*.css'); 
+    if ($aUnlink !== false) {
+        array_map('unlink', $aUnlink);
+    }
     rmdirr($sThirdPartyDir.'kcfinder/upload/files');
     rmdirr($sThirdPartyDir.'kcfinder/upload/.thumbs');
 }
