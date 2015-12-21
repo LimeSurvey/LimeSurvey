@@ -27,19 +27,19 @@ $(document).ready(function() {
         var lang = $("#langdata").val();
         if(lang != "")
         {
-            var num_tabs = $('#tabs ul li').length + 3;  // TODO: Why start counting on 3?
+            var num_tabs = $('#tabs ul li').length;
 
             // Add li anchor and content
             $('#tabs ul').append(
                 '<li data-toggle="tab" class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="' + lang + '" aria-labelledby="ui-id-' + num_tabs + '"aria-selected="fase"><a class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-' + num_tabs + '"href="#' + lang + '">' + $('#langdata option:selected').text() + '</a></li>'
             );
-            $('#tabs').append('<div class="commonsettings"><div id="' + lang + '" aria-labelledby="ui-id-' + num_tabs + '" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="true" aria-hidden="true" style="display: none;"> <table width="400" class="nudgeleft"> <tbody><tr> <th> <label for="attname" id="attname"> Attribute name:                            </label> </th> </tr> <tr> <td class="data"> <input class="languagesetting" style="border: 1px solid black; background-color: rgb(255, 255, 255);" type="text" value="" name="lang[' + lang + ']" id="lang_' + lang + '">                        </td> </tr> </tbody></table> </div> </div>');
+            $('#tabs').append('<div class="commonsettings"><div id="' + lang + '" aria-labelledby="ui-id-' + num_tabs + '" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="true" aria-hidden="true" style="display: none;"><div class="form-group" style="padding-top: 1em;"><label class="col-sm-3 control-label" for="attname" id="attname"> Attribute name:</label><div class="col-sm-3"><input class="languagesetting form-control" type="text" value="" name="lang[' + lang + ']" id="lang_' + lang + '"></div></div></div></div>');
 
             // Reload tabs
             $('#tabs').tabs('refresh');
 
             // Open new tab
-            $('#tabs').tabs('option', 'active', num_tabs - 3);
+            $('#tabs').tabs('option', 'active', num_tabs);
 
             // Remove the language from select
             $("select#langdata option[value='"+$("#langdata").val()+"']").remove();
