@@ -659,7 +659,6 @@ class statistics_helper {
                 break;
         }
 
-////
         //M - Multiple choice, therefore multiple fields - one for each answer
         if ($firstletter == "M" || $firstletter == "P")
         {
@@ -1234,10 +1233,12 @@ class statistics_helper {
         }
 
         // NICE SIMPLE SINGLE OPTION ANSWERS
-        else
+        elseif($fieldmap[$rt])
         {
             //search for key
+            //var_dump($firstletter); die();
             $fielddata=$fieldmap[$rt];
+
             //get SGQA IDs
             $qsid=$fielddata['sid'];
             $qgid=$fielddata['gid'];
@@ -2163,6 +2164,7 @@ class statistics_helper {
                         $fname=gT("Not displayed");
                     }
                     $label[]= $fname;
+                    $lbl[$fname] = $multiNotDisplayed;
                     //we need some data
                     if ($results > 0)
                     {
@@ -2187,9 +2189,9 @@ class statistics_helper {
         //we need to know which item we are editing
         $itemcounter = 1;
 
-        $aData['outputs'] = $outputs;
-        $aData['bSum'] = $bSum;
-        $aData['bAnswer'] = $bAnswer;
+        $aData['outputs'] = (isset($outputs))?$outputs:'';
+        $aData['bSum'] = (isset($bSum))?$bSum:'';
+        $aData['bAnswer'] = (isset($bAnswer))?$bAnswer:'';
         $statisticsoutput =  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_header', $aData, true);
 
         //loop through all available answers
@@ -2776,6 +2778,7 @@ class statistics_helper {
                 $aData['sChartname'] = '';
                 $aData['grawdata'] = $grawdata;
                 $aData['color'] = rand ( 0, 72 ); // random truc much
+                $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
 
                 $statisticsoutput .=  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_graphs', $aData, true);
 
@@ -3176,7 +3179,8 @@ class statistics_helper {
 
             // set default header data
             // Since png crashes some servers (and we can not try/catch that) we use .gif (or .jpg) instead
-            $headerlogo = 'statistics.gif';
+            //$headerlogo = '$this->pdf';
+            $headerlogo = '';
             $this->pdf->SetHeaderData($headerlogo, 10, gT("Quick statistics",'unescaped') , gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
             $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
             // set default monospaced font
