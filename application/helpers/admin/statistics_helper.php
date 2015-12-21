@@ -2522,9 +2522,13 @@ class statistics_helper {
             $aData['TotalCompleted']=(isset($TotalCompleted))?$TotalCompleted:false;
             $aData['casepercentage']=(isset($casepercentage))?$casepercentage:false;
 
+            // Generate answer
+            // _statisticsoutput_answer
             $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_answer', $aData, true);
 
         }    //end while
+
+        $aData['showaggregateddata'] = false;
 
         //only show additional values when this setting is enabled
         if(Yii::app()->getConfig('showaggregateddata') == 1 )
@@ -2623,15 +2627,13 @@ class statistics_helper {
 
                         $tablePDF[] = array(gT("Arithmetic mean"),$am,'','');
                         $tablePDF[] = array(gT("Standard deviation"),$stddev,'','');
-
                         break;
+
                     case 'html':
                         //calculate standard deviation
-                        $statisticsoutput .= "<tr><td align='center'>".gT("Arithmetic mean")."</td>";    //German: "Fallzahl"
-                        $statisticsoutput .= "<td>&nbsp;</td><td align='center'> $am</td><td>&nbsp;</td></tr>";
-                        $statisticsoutput .= "<tr><td align='center'>".gT("Standard deviation")."</td>";    //German: "Fallzahl"
-                        $statisticsoutput .= "<td>&nbsp;</td><td align='center'>$stddev</td><td>&nbsp;</td></tr>";
-
+                        $aData['am'] = $am;
+                        $aData['stddev'] = $stddev;
+                        $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_arithmetic', $aData, true);
                         break;
                     default:
 
@@ -2693,9 +2695,20 @@ class statistics_helper {
             }
         }
 
+
         if ($outputType=='html') {
-            $statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\" id='statzone_$rt'>";
+            //$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\" id='statzone_$rt'>";
         }
+
+        // _statisticsoutput_graphs.php
+
+        //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -2766,7 +2779,9 @@ class statistics_helper {
 
                             //// TODO : this is a rest of the first cycle of dev
                             //// Should be possible to use only one canvas now...
-                            $pie_visibility = $radar_visibility = $line_visibility = $polar__visibility = $doughnut_visibility = $bar_visibility = 'hidden' ;
+
+
+                            //$pie_visibility = $radar_visibility = $line_visibility = $polar__visibility = $doughnut_visibility = $bar_visibility = 'hidden' ;
                             if(isset($aattr["statistics_graphtype"]))
                             {
                                 $req_chart_type = $aattr["statistics_graphtype"];
@@ -2824,7 +2839,7 @@ class statistics_helper {
                                    $labels[] = $name;
 
                             //// As said before, one canva should be enough now. Just need to modify the init_chart functions, and to remove the visibility logic.
-                            $statisticsoutput .= '<div class="col-sm-12">
+                            /* $statisticsoutput .= '<div class="col-sm-12">
                                                     <div class="col-sm-10 vcenter" id="chartjs-container-'.$qqid.'">
                                                         <canvas class="canvas-chart '.$bar_visibility.'" id="chartjs-Bar-'.$qqid.'" width="400" height="150"></canvas>
                                                         <canvas class="canvas-chart '.$pie_visibility.'" id="chartjs-Pie-'.$qqid.'" width="400" height="150"></canvas>
@@ -2832,17 +2847,18 @@ class statistics_helper {
                                                         <canvas class="canvas-chart '.$line_visibility.'" id="chartjs-Line-'.$qqid.'" width="400" height="150"></canvas>
                                                         <canvas class="canvas-chart '.$polar__visibility.'" id="chartjs-PolarArea-'.$qqid.'" width="400" height="150"></canvas>
                                                         <canvas class="canvas-chart '.$doughnut_visibility.'" id="chartjs-Doughnut-'.$qqid.'" width="400" height="150"></canvas>
-                                                    </div>';
-                            $statisticsoutput .= $this->get_chartjs_legend($labels, $COLORS_FOR_SURVEY);
+                                                    </div>'; */
+
+                            // $statisticsoutput .= $this->get_chartjs_legend($labels, $COLORS_FOR_SURVEY);
 
                             ////TODO : animate on scroll
                             //// Here, we directly insert a <script> generating the chart for $qqid. Of course, this chart is generated on page load.
                             //// So, it could be hard for navigator if hundreds of charts are loaded... A lazy load, with nice animation on scroll will be needed
                             //// See : http://stackoverflow.com/questions/18772547/how-to-make-the-chart-js-animate-when-scrolled-to-that-section
-                            $statisticsoutput .=  $this->init_chart_js_graph($charttype,$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY, false);
+                            //$statisticsoutput .=  $this->init_chart_js_graph($charttype,$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY, false);
 
                             //// This is from the old code. Don't know if still used.
-                            $aattr = getQuestionAttributeValues($qqid, $firstletter);
+                            /*$aattr = getQuestionAttributeValues($qqid, $firstletter);
                             if ($bShowMap) {
                                 $statisticsoutput .= "<div id=\"statisticsmap_$rt\" class=\"statisticsmap\"></div>";
 
@@ -2852,7 +2868,7 @@ class statistics_helper {
                                     "width" => $aattr['location_mapwidth'],
                                     "height" => $aattr['location_mapheight']
                                 );
-                            }
+                            }*/
                             break;
                         default:
                             break;
@@ -2867,11 +2883,11 @@ class statistics_helper {
             if ($usegraph==1 && $bShowGraph && get_class(Yii::app()->getController()) !== 'Statistics_userController')
             {
 
-                $sImgUrl = Yii::app()->getConfig('adminimageurl');
-                $statisticsoutput .= "</td></tr><tr><td colspan='4'>";
+                ////$sImgUrl = Yii::app()->getConfig('adminimageurl');
+                ////$statisticsoutput .= "</td></tr><tr><td colspan='4'>";
 
                //// The buttons to switch the graph type
-               $statisticsoutput .= 'IKI<div class="chartjs-buttons" style=\"text-align:center\">';
+               /* $statisticsoutput .= '<div class="chartjs-buttons" style=\"text-align:center\">';
 
                //// Bar chart
                $statisticsoutput .= '    <button type="button" id="button-chartjs-Bar-'.$qqid.'" class="btn btn-default chart-type-control" data-canva-id="chartjs-Bar-'.$qqid.'" aria-label="Left Align">
@@ -2914,7 +2930,7 @@ class statistics_helper {
                //// Here, we directly insert the script to handle each button.
                //// Sure, we could have use statistic.js, to get the click on chart-type-control, etc etc : but we did it the fast way
                //// TODO : refactore that on a jQuery plugin, more general.
-               $statisticsoutput .= '<script>/*<![CDATA[*/';
+               $statisticsoutput .= '<script>/*<![CDATA[*/ /*';
                $statisticsoutput .= '$(document).ready(function(){';
 
                //// each button will have its own 'onclick' event, wich generate a new chartjs object
@@ -2935,12 +2951,12 @@ class statistics_helper {
 
 
                $statisticsoutput .= '})';
-               $statisticsoutput .= ' /*]]>*/ </script></div>';
+               $statisticsoutput .= ' /*]]>*/ /* </script></div>'; */
 
-               $statisticsoutput .=  "<div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">";
+               /*$statisticsoutput .=  "<div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">";
 
 
-               $statisticsoutput .= "</div></td></tr>";
+               $statisticsoutput .= "</div></td></tr>";*/
 /*
                 $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">"
                 ."<img class='stats-hidegraph' src='$sImgUrl/chart_disabled.png' title='". gT("Disable chart") ."' />"
@@ -2952,7 +2968,27 @@ class statistics_helper {
                 ."</div></td></tr>";
 */
             }
-            $statisticsoutput .= "</td></tr></table><br /> \n";
+
+            // We clean the labels
+            foreach($labels as $key => $label)
+            {
+                $cleanLabel = str_replace('"', " ", $label);
+                $cleanLabel = preg_replace( "/\r|\n/", "", $cleanLabel );
+                $labels[$key] = $cleanLabel;
+            }
+
+            $aData['rt'] = $rt;
+            $aData['qqid'] = $qqid;
+            $aData['labels'] = $labels;
+            //$aData['COLORS_FOR_SURVEY'] = COLORS_FOR_SURVEY;
+            $aData['charttype'] = $charttype;
+            $aData['sChartname'] = '';
+            $aData['grawdata'] = $grawdata;
+            $aData['color'] = rand ( 0, 72 ); // random truc much
+
+            $statisticsoutput .=  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_graphs', $aData, true);
+
+            $statisticsoutput .= "</table><br /> \n";
         }
 
         return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$this->pdf, "astatdata"=>$astatdata);

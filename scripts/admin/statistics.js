@@ -9,6 +9,141 @@ function hideSection(chevron, section ) {
     chevron.addClass('glyphicon-chevron-down');
 }
 
+/**
+ * Display chartjs graph
+ */
+var chartjs = new Array();
+var COLORS_FOR_SURVEY = new Array('20,130,200','232,95,51','34,205,33','210,211,28','134,179,129','201,171,131','251,231,221','23,169,161','167,187,213','211,151,213','147,145,246','147,39,90','250,250,201','201,250,250','94,0,94','250,125,127','0,96,201','201,202,250','0,0,127','250,0,250','250,250,0','0,250,250','127,0,127','127,0,0','0,125,127','0,0,250','0,202,250','201,250,250','201,250,201','250,250,151','151,202,250','251,149,201','201,149,250','250,202,151','45,96,250','45,202,201','151,202,0','250,202,0','250,149,0','250,96,0','184,230,115','102,128,64','220,230,207','134,191,48','184,92,161','128,64,112','230,207,224','191,48,155','230,138,115','128,77,64','230,211,207','191,77,48','80,161,126','64,128,100','207,230,220','48,191,130','25,25,179','18,18,125','200,200,255','145,145,255','255,178,0','179,125,0','255,236,191','255,217,128','255,255,0','179,179,0','255,255,191','255,255,128','102,0,153','71,0,107','234,191,255','213,128,255');
+
+/**
+ * loadGraphOnScroll jQuery plugin
+ * This plugin will load graph on scroll
+ */
+(function($)
+{
+    $.fn.loadGraphOnScroll=function()
+    {
+       this.each(function(){
+           var $elem = $(this);
+           var $type = $elem.data('type');
+           var $qid = $elem.data('qid');
+
+           $(window).scroll(function() {
+               var $window = $(window);
+               var docViewTop = $window.scrollTop();
+               var docViewBottom = docViewTop + $window.height();
+               var elemTop = $elem.offset().top;
+               var elemBottom = elemTop + $elem.height();
+
+               if((elemBottom <= docViewBottom) && (elemTop >= docViewTop))
+               {
+                   // chartjs
+                   if ( typeof chartjs[$qid] == "undefined" || typeof chartjs == "undefined" ) // typeof chartjs[$qid] == "undefined" || typeof chartjs == "undefined"
+                   {
+                       if($type == 'Bar' || $type == 'Radar' || $type == 'Line' )
+                       {
+
+                           init_chart_js_graph_with_datasets($type,$qid);
+                       }
+                       else
+                       {
+                           init_chart_js_graph_with_datas($type, $qid);
+                       }
+                   }
+
+               };
+
+           });
+
+
+       });
+       return this;
+    };
+})(jQuery);
+
+
+/**
+ * This function load the graph needing datasets (bars, etc.)
+ */
+function init_chart_js_graph_with_datasets($type,$qid)
+{
+    var canvasId = 'chartjs-'+$qid;
+    var $canvas = document.getElementById(canvasId).getContext("2d");
+    var $canva = $('#'+canvasId);
+    var $labels = eval("labels_"+$qid);
+    var $grawdata = eval("grawdata_"+$qid);
+    var $color = $canva.data('color');
+
+    if (typeof chartjs != "undefined") {
+        if (typeof chartjs[$qid] != "undefined") {
+            window.chartjs[$qid].destroy();
+        }
+    }
+
+    window.chartjs[$qid] = new Chart($canvas)[$type]({
+        labels: $labels,
+        datasets: [{
+            label: $qid,
+            data: $grawdata,
+
+            fillColor: "rgba("+COLORS_FOR_SURVEY[$color]+",0.2)",
+            strokeColor: "rgba("+COLORS_FOR_SURVEY[$color]+",1)",
+            pointColor: "rgba("+COLORS_FOR_SURVEY[$color]+",1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba("+COLORS_FOR_SURVEY[$color]+",1)",
+
+        }],
+    });
+
+    // We need to give a different color to each bar
+    if($type=='Bar')
+    {
+        for (var key in $labels )
+        {
+            $index = (parseInt(key)+$color);
+            window.chartjs[$qid].datasets[0].bars[key].fillColor = "rgba("+COLORS_FOR_SURVEY[$index]+",0.6)";
+            window.chartjs[$qid].datasets[0].bars[key].strokeColor= "rgba("+COLORS_FOR_SURVEY[$index]+",1)";
+            window.chartjs[$qid].datasets[0].bars[key].highlightFill =  "rgba("+COLORS_FOR_SURVEY[$index]+",0.9)";
+        }
+        chartjs[$qid].update();
+    }
+}
+
+/**
+ * This function load the graphs needing datas (pie chart, etc)
+ */
+function init_chart_js_graph_with_datas($type,$qid)
+{
+    var canvasId = 'chartjs-'+$qid;
+    var $canvas = document.getElementById(canvasId).getContext("2d");
+    var $canva = $('#'+canvasId);
+    var $color = $canva.data('color');
+    var $labels = eval("labels_"+$qid);
+    var $grawdata = eval("grawdata_"+$qid);
+    var $chartDef = new Array();
+
+    $.each($labels, function($i, $label) {
+        $colori = (parseInt($i)+$color);
+        $chartDef[$i] = {
+            value: $grawdata[$i],
+            color:"rgba("+COLORS_FOR_SURVEY[$colori]+",0.6)",
+            highlight: "rgba("+COLORS_FOR_SURVEY[$colori]+",0.9)",
+            label: $label,
+        };
+    });
+
+    if (typeof chartjs != "undefined") {
+        if (typeof chartjs[$qid] != "undefined") {
+            window.chartjs[$qid].destroy();
+        }
+    }
+
+    window.chartjs[$qid] = new Chart($canvas)[$type](
+        $chartDef
+    );
+}
+
 $(document).ready(function() {
 
     $("[name='viewsummaryall']").bootstrapSwitch();
@@ -47,6 +182,30 @@ $(document).ready(function() {
         toggleSection($(this), $group_to_hide )
         //$('#'+group_to_hide).hide();
     });
+
+    // If the graph are displayed
+    if($('.chartjs-container').length>1){
+
+        // On scroll, display the graph
+        $('.chartjs-container').loadGraphOnScroll();
+
+        // Buttons changing the graph type
+        $('.chart-type-control').click(function() {
+            $type = $(this).data('type');
+            $qid = $(this).data('qid');
+
+            // chartjs
+            if($type == 'Bar' || $type == 'Radar' || $type == 'Line' )
+            {
+                init_chart_js_graph_with_datasets($type,$qid);
+            }
+            else
+            {
+                init_chart_js_graph_with_datas($type, $qid);
+            }
+        });
+
+    }
 
     if(showTextInline==1) {
         /* Enable all the browse divs, and fill with data */
