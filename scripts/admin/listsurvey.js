@@ -147,14 +147,14 @@ $(document).ready(function(){
             },
             afterSubmit: function(response, postdata) {
                 var gridIdAsSelector = $.jgrid.jqID(this.id);
-                $("#load_" + gridIdAsSelector).hide()
+                $("#load_" + gridIdAsSelector).hide();
                 if (postdata.oper=='del')
                 {
                     // Remove surveys from dropdown, too
                     aSurveyIDs=postdata.id.split(",");
                     $.each(aSurveyIDs,function(iIndex, iSurveyID){
                         $("#surveylist option[value='"+iSurveyID+"']").remove();
-                    })
+                    });
                 };
                 return [true];
             }

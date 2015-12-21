@@ -146,6 +146,11 @@ $config['display_user_password_in_html'] = false;
 $config['display_user_password_in_email'] = true;
 
 
+// If no auth plugin is set as default, LS shows this auth method in login form
+// Authdb is not set as default from Authdb plugin.
+// If value of this variable is not a active plugin, 'Authdb' is used
+$config['default_displayed_auth_method']= 'Authdb';
+
 // auth_webserver
 // Enable delegation of authentication to the webserver.
 // If you set this parameter to true and set your webserver to authenticate

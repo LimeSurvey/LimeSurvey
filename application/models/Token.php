@@ -33,7 +33,7 @@
         public function attributeLabels() {
             $labels = array(
                 'tid' => gT('Token ID'),
-                'partcipant' => gt('Participant ID'),
+                'partcipant' => gT('Participant ID'),
                 'firstname' => gT('First name'),
                 'lastname' => gT('Last name'),
                 'email' => gT('Email address'),
@@ -49,7 +49,7 @@
                 'validfrom' => gT('Valid from'),
                 'validuntil' => gT('Valid until'),
             );
-			foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
+            foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
             {
                 $labels[$key] = $info['description'];
             }
@@ -104,7 +104,7 @@
             }
 
             // create fields for the custom token attributes associated with this survey
-            $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->tokenAttributes;
+            $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->getTokenAttributes();
             foreach($tokenattributefieldnames as $attrname=>$attrdetails)
             {
                 if (!isset($fields[$attrname])) {

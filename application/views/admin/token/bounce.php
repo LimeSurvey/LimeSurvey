@@ -7,7 +7,7 @@
 
     $this->widget('ext.SettingsWidget.SettingsWidget', array(
         'id'=>'bouncesettings',
-        //'title'=>gt("Bounce settings"),
+        //'title'=>gT("Bounce settings"),
         'action' => array('admin/tokens', 'sa'=>'bouncesettings','surveyid'=>$surveyid),
         'formHtmlOptions'=>array(
             'class'=>'form-core',

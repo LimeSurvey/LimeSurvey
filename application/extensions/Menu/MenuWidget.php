@@ -92,7 +92,7 @@
                     $list = 'expired';
                 } else
                 {
-                    $group = gt("Active");
+                    $group = gT("Active");
                     $list = 'active';
                 }        
                 $tmpList[$list][] = array(

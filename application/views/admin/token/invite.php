@@ -63,10 +63,16 @@
                     <label><?php eT("Send invitation email to token ID(s):"); ?></label>
                 <?php echo short_implode(", ", "-", (array) $tokenids); ?></p>
             <?php } ?>
-            <p>
+            <ul>
+            <li>
                 <label for='bypassbademails'><?php eT("Bypass token with failing email addresses"); ?>:</label>
                 <?php echo CHtml::dropDownList('bypassbademails', 'Y',array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
-            </p>
+            </li>
+            <li>
+                <?php echo CHtml::label(gT("Bypass date control before sending email."),'bypassdatecontrol', array('title'=>gT("If some tokens have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),'unescaped')); ?>
+                <?php echo CHtml::checkbox('bypassdatecontrol', false); ?>
+            </li>
+            </ul>
             <p>
                 <?php
                     echo CHtml::submitButton(gT("Send Invitations"));

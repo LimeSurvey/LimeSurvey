@@ -55,7 +55,7 @@ function dirReport($dir, $write)
         <tbody>
         <tr>
                <td><?php eT("PHP version"); ?></td>
-               <td>5.3.0+</td>
+               <td>5.3.3+</td>
                <td><?php if (isset($verror) && $verror) { ?><span style='font-weight:bold; color: red'><?php eT("Outdated"); ?>: <?php echo $phpVersion; ?></span>
                <?php } else { ?><?php echo $phpVersion ; ?> <?php } ?></td>
         </tr>

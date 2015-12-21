@@ -7,23 +7,19 @@
  * @var int $destinationBuild the destination build
  */
 ?>
-
 <?php
         $urlNew = Yii::app()->createUrl("admin/globalsettings", array("update"=>'checkLocalErrors', 'destinationBuild' => $destinationBuild, 'access_token' => $access_token));
         $errors = FALSE;
 ?>
-
 <h2 class="maintitle"><?php eT('Checking basic requirements...'); ?></h2>
-
 <?php
     if( isset($localChecks->html) )
         echo $localChecks->html;
 ?>
-
 <table class="table">
     <thead>
         <tr>
-            <th class="span10"><?php eT('Available space in directory:');?></th>
+            <th class="span8"><?php eT('Available space in directory:');?></th>
             <th class="span2"  style="text-align: right"></th>
         </tr>
     </thead>
@@ -57,7 +53,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="span10"><?php eT('PHP version required');?></th>
+            <th class="span8"><?php eT('PHP version required');?></th>
             <th class="span2"  style="text-align: right"></th>
         </tr>
     </thead>
@@ -80,7 +76,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="span10"><?php eT('Required PHP modules:');?></th>
+            <th class="span8"><?php eT('Required PHP modules:');?></th>
             <th class="span2"  style="text-align: right"></th>
         </tr>
     </thead>
@@ -104,8 +100,6 @@
         <?php endforeach; ?>
     </tbody>
 </table>
-
-<ul>
 
 <?php if($errors): ?>
     <?php

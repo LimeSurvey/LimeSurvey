@@ -413,8 +413,8 @@ class Survey_Common_Action extends CAction
             $aWarnings[]=array(
                 'url'=>App()->createUrl("admin/questions",array("sa"=>"answeroptions","surveyid"=>$iSurveyID,"gid"=>$gid,"qid"=>$qid)),
                 'img'=>'answers_20.png',
-                'text'=>gt("You need to add answer options to this question.",'unescaped'),
-                'help'=>gt("Edit answer options for this question.",'unescaped'),
+                'text'=>gT("You need to add answer options to this question.",'unescaped'),
+                'help'=>gT("Edit answer options for this question.",'unescaped'),
             );
         }
         elseif($qtypes[$qrrow['type']]['answerscales'] > 1 && !Answer::model()->count("qid=:qid AND language=:language and scale_id=1",array(':qid' => $qid, ':language' => $baselang)))
@@ -422,8 +422,8 @@ class Survey_Common_Action extends CAction
             $aWarnings[]=array(
                 'url'=>App()->createUrl("admin/questions",array("sa"=>"answeroptions","surveyid"=>$iSurveyID,"gid"=>$gid,"qid"=>$qid)),
                 'img'=>'answers_20.png',
-                'text'=>gt("You need to add answer options to this question.",'unescaped'),
-                'help'=>gt("Edit answer options for this question.",'unescaped'),
+                'text'=>gT("You need to add answer options to this question.",'unescaped'),
+                'help'=>gT("Edit answer options for this question.",'unescaped'),
             );
         }
         if($qtypes[$qrrow['type']]['subquestions'] > 0 && !Question::model()->count("parent_qid=:qid AND language=:language and scale_id=0",array(':qid' => $qid, ':language' => $baselang)))
@@ -431,8 +431,8 @@ class Survey_Common_Action extends CAction
             $aWarnings[]=array(
                 'url'=>App()->createUrl("admin/questions",array("sa"=>"subquestions","surveyid"=>$iSurveyID,"gid"=>$gid,"qid"=>$qid)),
                 'img'=>$qtypes[$qrrow['type']]['subquestions']>1 ? "subquestions2d_20.png" : "subquestions_20.png",
-                'text'=>gt("You need to add subquestions options to this question.",'unescaped'),
-                'help'=>gt("Edit subquestions options for this question.",'unescaped'),
+                'text'=>gT("You need to add subquestions options to this question.",'unescaped'),
+                'help'=>gT("Edit subquestions options for this question.",'unescaped'),
             );
         }
         elseif($qtypes[$qrrow['type']]['subquestions'] > 1 && !Question::model()->count("parent_qid=:qid AND language=:language and scale_id=1",array(':qid' => $qid, ':language' => $baselang)))
@@ -440,8 +440,8 @@ class Survey_Common_Action extends CAction
             $aWarnings[]=array(
                 'url'=>App()->createUrl("admin/questions",array("sa"=>"subquestions","surveyid"=>$iSurveyID,"gid"=>$gid,"qid"=>$qid)),
                 'img'=>'subquestions2d_20.png',
-                'text'=>gt("You need to add subquestions to this question.",'unescaped'),
-                'help'=>gt("Edit subquestions for this question.",'unescaped'),
+                'text'=>gT("You need to add subquestions to this question.",'unescaped'),
+                'help'=>gT("Edit subquestions for this question.",'unescaped'),
             );
         }
         $aData['aWarnings'] = $aWarnings;

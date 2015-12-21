@@ -183,7 +183,7 @@
     require_once 'application/Psr4AutoloaderClass.php';
     $loader = new Psr4AutoloaderClass();
     $loader->register();
-    $loader->addNamespace('ls\pluginmanager', __DIR__ . '/application/libraries/PluginManager');
+    $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/application/libraries/PluginManager');
     $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/application/libraries/PluginManager/Storage');
 /*
  * --------------------------------------------------------------------
@@ -198,8 +198,8 @@ require_once APPPATH . 'core/LSYii_Application' . EXT;
 
 $config = require_once(APPPATH . 'config/internal' . EXT);
 
-if (!file_exists(APPPATH . 'config/config' . EXT)) {    
-    // If Yii can not start due to unwritable runtimePath, present an error    
+if (!file_exists(APPPATH . 'config/config' . EXT)) {
+    // If Yii can not start due to unwritable runtimePath, present an error
     $runtimePath = $config['runtimePath'];
     if (!is_dir($runtimePath) || !is_writable($runtimePath)) {
         // @@TODO: present html page styled like the installer

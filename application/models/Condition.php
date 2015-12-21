@@ -106,15 +106,14 @@
             $oResults=$this->findAllByAttributes(array('cqid'=>$iQuestionID));
             foreach ($oResults as $oRow)
             {
-
                 $cfnregs='';
-                if (preg_match('/'.$surveyid."X".$iOldGroupID."X".$iQuestionID."(.*)/", $oRow->cfieldname, $cfnregs) > 0)
+                if (preg_match('/(\S*?)'.$iSurveyID."X".$iOldGroupID."X".$iQuestionID."(.*)/", $oRow->cfieldname, $cfnregs) > 0)
                 {
-                    $newcfn=$surveyid."X".$iNewGroupID."X".$iQuestionID.$cfnregs[1];
-                    $c2query="UPDATE ".db_table_name('conditions')
-                    ." SET cfieldname='{$newcfn}' WHERE cid={$oRow->cid}";
-
-                    Yii::app()->db->createCommand($c2query)->query();
+                    $sNewCfn=$cfnregs[1].$iSurveyID."X".$iNewGroupID."X".$iQuestionID.$cfnregs[2];
+                    Yii::app()->db->createCommand()
+                        ->update($this->tableName(), array('cfieldname' => $sNewCfn),
+                        'cid=:cid',array(':cid'=>$oRow->cid));
+                    LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID,$oRow->qid);
                 }
             }
         }

@@ -125,12 +125,7 @@ abstract class Writer implements IWriter
         if (isset($oSurvey->fieldMap[$fieldName]))
         {
             $aField=$oSurvey->fieldMap[$fieldName];
-            $aField['question']=stripTagsFull($aField['question']);
-            if ($oOptions->headingTextLength)
-            {
-              $aField['question']=ellipsize($aField['question'],$oOptions->headingTextLength,1,".. ");
-            } 
-            return $aField['question'];
+            return viewHelper::flatEllipsizeText($aField['question'],true,$oOptions->headingTextLength,".. ");
         }
         return false;
     }

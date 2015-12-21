@@ -21,6 +21,10 @@
             { ?>
                 <input type='hidden' name='maxremindercount' value="<?php echo Yii::app()->request->getPost('maxremindercount'); ?>" />
             <?php }
+            if (Yii::app()->request->getPost('bypassdatecontrol'))
+            { ?>
+                <input type='hidden' name='bypassdatecontrol' value="<?php echo Yii::app()->request->getPost('bypassdatecontrol'); ?>" />
+            <?php }
         }
         ?>
         <?php if (!empty($tids)) { ?>

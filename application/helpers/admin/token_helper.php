@@ -53,7 +53,7 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 		$found = array_search($aTokenRow['language'], $aSurveyLangs);
 		if ($aTokenRow['language'] == '' || $found == false)
 		{
-			$aTokenRow['language'] = $oSurvey['language'];
+			$aTokenRow['language'] = $oSurvey->language;
 		}
 		$sTokenLanguage = $aTokenRow['language'];
 
@@ -76,11 +76,12 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 		if ($fieldsarray["{SURVEYDESCRIPTION}"] == '')
 			$fieldsarray["{SURVEYDESCRIPTION}"] = $aSurveyLocaleData[$oSurvey['language']]['surveyls_description'];
 
-		$fieldsarray["{ADMINNAME}"] = $oSurvey['admin'];
-		$fieldsarray["{ADMINEMAIL}"] = $oSurvey['adminemail'];
+		$fieldsarray["{ADMINNAME}"] = $oSurvey->admin;
+		$fieldsarray["{ADMINEMAIL}"] = $oSurvey->adminemail;
+		$fieldsarray["{EXPIRY}"]=$oSurvey->expires;
+		if(empty($fieldsarray["{ADMINEMAIL}"] ))
+			$fieldsarray["{ADMINEMAIL}"] = Yii::app()->getConfig('siteadminemail');
 		$from = $fieldsarray["{ADMINNAME}"] . ' <' . $fieldsarray["{ADMINEMAIL}"] . '>';
-		if($from ==  '')
-			$from = Yii::app()->getConfig('siteadminemail');
 
 		foreach ($attributes as $attributefield)
 		{

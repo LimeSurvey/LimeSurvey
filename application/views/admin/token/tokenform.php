@@ -38,7 +38,7 @@
                         echo $lastname;
                 } ?>" /></li>
         <li><label for='email'><?php eT("Email"); ?>:</label>
-            <input type='email' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email))
+            <input type='email' multiple='multiple' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email))
                     {
                         echo $email;
                 } ?>" /></li>

@@ -83,7 +83,7 @@ class ExpressionValidate extends Survey_Common_Action {
             'aExpressions'=>$aExpressions,
         );
         $this->getController()->layout=$this->layout;
-        $this->getController()->pageTitle=gt("Validate quota");
+        $this->getController()->pageTitle=gT("Validate quota");
 
         $this->getController()->render("/admin/expressions/validationList", $aData);
     }
@@ -107,61 +107,61 @@ class ExpressionValidate extends Survey_Common_Action {
             'invitation'=>array(
                 'subject'=>array(
                     'attribute'=>'surveyls_email_invite_subj',
-                    'title'=>gt('Invitation email subject'),
+                    'title'=>gT('Invitation email subject'),
                 ),
                 'message'=>array(
                     'attribute'=>'surveyls_email_invite',
-                    'title'=>gt('Invitation email body'),
+                    'title'=>gT('Invitation email body'),
                 ),
             ),
             'reminder'=>array(
                 'subject'=>array(
                     'attribute'=>'surveyls_email_remind_subj',
-                    'title'=>gt('Reminder email subject'),
+                    'title'=>gT('Reminder email subject'),
                 ),
                 'message'=>array(
                     'attribute'=>'surveyls_email_remind',
-                    'title'=>gt('Reminder email body'),
+                    'title'=>gT('Reminder email body'),
                 ),
             ),
             'confirmation'=>array(
                 'subject'=>array(
                     'attribute'=>'surveyls_email_confirm_subj',
-                    'title'=>gt('Confirmation email subject'),
+                    'title'=>gT('Confirmation email subject'),
                 ),
                 'message'=>array(
                     'attribute'=>'surveyls_email_confirm',
-                    'title'=>gt('Confirmation email body'),
+                    'title'=>gT('Confirmation email body'),
                 ),
             ),
             'registration'=>array(
                 'subject'=>array(
                     'attribute'=>'surveyls_email_register_subj',
-                    'title'=>gt('Registration email subject'),
+                    'title'=>gT('Registration email subject'),
                 ),
                 'message'=>array(
                     'attribute'=>'surveyls_email_register',
-                    'title'=>gt('Registration email body'),
+                    'title'=>gT('Registration email body'),
                 ),
             ),
             'admin_notification'=>array(
                 'subject'=>array(
                     'attribute'=>'email_admin_notification_subj',
-                    'title'=>gt('Basic admin notification subject'),
+                    'title'=>gT('Basic admin notification subject'),
                 ),
                 'message'=>array(
                     'attribute'=>'email_admin_notification',
-                    'title'=>gt('Basic admin notification body'),
+                    'title'=>gT('Basic admin notification body'),
                 ),
             ),
             'admin_detailed_notification'=>array(
                 'subject'=>array(
                     'attribute'=>'email_admin_responses_subj',
-                    'title'=>gt('Detailed admin notification subject'),
+                    'title'=>gT('Detailed admin notification subject'),
                 ),
                 'message'=>array(
                     'attribute'=>'email_admin_responses',
-                    'title'=>gt('Detailed admin notification body'),
+                    'title'=>gT('Detailed admin notification body'),
                 ),
             ),
         );
@@ -176,12 +176,12 @@ class ExpressionValidate extends Survey_Common_Action {
         $aReplacement["SURVEYDESCRIPTION"] =  gT("Description of the survey");
         // Replaced when sending email with Survey 
         $aAttributes = getTokenFieldsAndNames($iSurveyId,true);
-        $aReplacement["TOKEN"] = gt("Token code for this participant");
-        $aReplacement["TOKEN:EMAIL"] = gt("Email from the token");
-        $aReplacement["TOKEN:FIRSTNAME"] = gt("First name from token");
-        $aReplacement["TOKEN:LASTNAME"] = gt("Last name from token");
-        $aReplacement["TOKEN:TOKEN"] = gt("Token code for this participant");
-        $aReplacement["TOKEN:LANGUAGE"] = gt("language of token");
+        $aReplacement["TOKEN"] = gT("Token code for this participant");
+        $aReplacement["TOKEN:EMAIL"] = gT("Email from the token");
+        $aReplacement["TOKEN:FIRSTNAME"] = gT("First name from token");
+        $aReplacement["TOKEN:LASTNAME"] = gT("Last name from token");
+        $aReplacement["TOKEN:TOKEN"] = gT("Token code for this participant");
+        $aReplacement["TOKEN:LANGUAGE"] = gT("language of token");
         foreach ($aAttributes as $sAttribute=>$aAttribute)
         {
             $aReplacement['TOKEN:'.strtoupper($sAttribute).'']=sprintf(gT("Token attribute: %s"), $aAttribute['description']);
@@ -193,23 +193,23 @@ class ExpressionValidate extends Survey_Common_Action {
             case 'reminder' :
             case 'registration' :
                 // Replaced when sending email (registration too ?)
-                $aReplacement["EMAIL"] = gt("Email from the token");
-                $aReplacement["FIRSTNAME"] = gt("First name from token");
-                $aReplacement["LASTNAME"] = gt("Last name from token");
-                $aReplacement["LANGUAGE"] = gt("language of token");
-                $aReplacement["OPTOUTURL"] = gt("URL for a respondent to opt-out of this survey");
-                $aReplacement["OPTINURL"] = gt("URL for a respondent to opt-in to this survey");
-                $aReplacement["SURVEYURL"] = gt("URL of the survey");
+                $aReplacement["EMAIL"] = gT("Email from the token");
+                $aReplacement["FIRSTNAME"] = gT("First name from token");
+                $aReplacement["LASTNAME"] = gT("Last name from token");
+                $aReplacement["LANGUAGE"] = gT("language of token");
+                $aReplacement["OPTOUTURL"] = gT("URL for a respondent to opt-out of this survey");
+                $aReplacement["OPTINURL"] = gT("URL for a respondent to opt-in to this survey");
+                $aReplacement["SURVEYURL"] = gT("URL of the survey");
                 foreach ($aAttributes as $sAttribute=>$aAttribute)
                 {
                     $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
                 }
                 break;
             case 'confirmation' :
-                $aReplacement["EMAIL"] = gt("Email from the token");
-                $aReplacement["FIRSTNAME"] = gt("First name from token");
-                $aReplacement["LASTNAME"] = gt("Last name from token");
-                $aReplacement["SURVEYURL"] = gt("URL of the survey");
+                $aReplacement["EMAIL"] = gT("Email from the token");
+                $aReplacement["FIRSTNAME"] = gT("First name from token");
+                $aReplacement["LASTNAME"] = gT("Last name from token");
+                $aReplacement["SURVEYURL"] = gT("URL of the survey");
                 foreach ($aAttributes as $sAttribute=>$aAttribute)
                 {
                     $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
@@ -226,7 +226,7 @@ class ExpressionValidate extends Survey_Common_Action {
                 // $moveResult = LimeExpressionManager::NavigateForwards(); // Seems OK without, nut need $LEM::StartSurvey
                 break;
             default:
-                throw new CHttpException(400,gt('Invalid type.'));
+                throw new CHttpException(400,gT('Invalid type.'));
                 break;
         }
 
@@ -245,7 +245,7 @@ class ExpressionValidate extends Survey_Common_Action {
         }
         $aData['aExpressions']=$aExpressions;
         $this->getController()->layout=$this->layout;
-        $this->getController()->pageTitle=sprintf(gt("Validate expression in email : %s"),$sType);
+        $this->getController()->pageTitle=sprintf(gT("Validate expression in email : %s"),$sType);
 
         $this->getController()->render("/admin/expressions/validationList", $aData);
     }

@@ -52,12 +52,6 @@ class GlobalSettings extends Survey_Common_Action
         }
     }
 
-    public function updatecheck()
-    {
-        updateCheck();
-        $this->getController()->redirect(array('admin/globalsettings'));
-    }
-
     private function _displaySettings()
     {
         Yii::app()->loadHelper('surveytranslator');

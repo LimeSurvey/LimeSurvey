@@ -151,7 +151,7 @@
                     </tr>
                     <tr>
                         <td class='data'>
-                            <?php echo CHtml::textField($value['lang'], $value['attribute_name'], array('class'=>'languagesetting', 'style'=>'border: 1px solid #ccc')); ?>
+                            <?php echo CHtml::textField('lang[' . $value['lang'] . ']', $value['attribute_name'], array('class'=>'languagesetting', 'style'=>'border: 1px solid #ccc')); ?>
                         </td>
                     </tr>
                 </table>
@@ -162,7 +162,6 @@
         }
         echo CHtml::hiddenField('attname', $value['attribute_name']);
     ?>
-    <br />
 </div>
 
 <br/>

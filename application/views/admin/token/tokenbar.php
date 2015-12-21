@@ -2,7 +2,7 @@
 App()->getClientScript()->registerPackage('jqueryui-timepicker');
 ?><div id='tokenbar' class='menubar'>
     <div class='menubar-title ui-widget-header'>
-        <strong><?php eT("Token control"); ?> </strong> <?php echo htmlspecialchars($thissurvey['surveyls_title']); ?>
+        <strong><?php eT("Token control"); ?> </strong> <?php echo htmlspecialchars($thissurvey['surveyls_title'])." (".gT("ID")." ".htmlspecialchars($thissurvey['surveyls_survey_id']).")"; ?>
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>

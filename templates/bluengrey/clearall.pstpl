@@ -5,8 +5,7 @@
     <span class="warning-text">{ANSWERSCLEARED}</span>
 	<br /><br />
 	{RESTART}<br />
-        {URL}<br />
-	{CLOSEWINDOW}</font>
+        {URL}</font>
    </td>
   </tr>
  </table>

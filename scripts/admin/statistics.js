@@ -12,7 +12,7 @@ $(document).ready(function(){
              var destinationdiv=$('#columnlist_'+this.id);
              var extra='';
              if(destinationdiv.parents("td:first").css("display") == "none") {
-                 extra='sortby/'+this.id+'/sortmethod/asc/sorttype/N/'
+                 extra='sortby/'+this.id+'/sortmethod/asc/sorttype/N/';
              }
              loadBrowse(this.id, extra);
          } else {

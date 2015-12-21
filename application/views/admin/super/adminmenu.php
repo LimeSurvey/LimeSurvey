@@ -11,11 +11,12 @@
                 </strong>
                 <?php } ?>
         </div>
-        <?php
-            if($showupdate)
-            { ?>
-            <div class='menubar-title-right'><a href='<?php echo $this->createUrl("admin/globalsettings");?>'><?php echo sprintf(ngT('Update available: %s|Updates available: %s',count($aUpdateVersions)),$sUpdateText);?></a></div>
-            <?php } ?>
+
+        <?php if($showupdate): ?>
+            <div id="update-small-notification" class='menubar-title-right <?php if(Yii::app()->session['notificationstate']=='1' || Yii::app()->session['unstable_update'] ){echo 'hidden';};?> fade in'>
+                        <strong><?php eT('New update available:');?></strong> <a href="<?php echo Yii::app()->createUrl("admin/globalsettings", array("update"=>'updatebuttons')); ?>"><?php eT('Click here to use ComfortUpdate or to download it.');?></a>
+            </div>
+        <?php endif; ?>
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>
@@ -82,11 +83,11 @@
             <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
             <?php
                 if(Permission::model()->hasGlobalPermission('participantpanel','read'))
-                { 	 ?>
+                {      ?>
                 <a href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" >
                     <img src='<?php echo $sImageURL;?>cpdb.png' alt='<?php eT("Central participant database/panel");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php }
-                if(Permission::model()->hasGlobalPermission('superadmin','read'))
+                if(Permission::model()->hasGlobalPermission('settings','read'))
                 {   ?>
             <a href="<?php echo $this->createUrl("plugins/"); ?>" >
                 <img src='<?php echo $sImageURL;?>plugin.png' alt='<?php eT("Plugin manager");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
@@ -120,3 +121,27 @@
     </div>
 </div>
 <p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>
+
+<script>
+$(document).ready(function(){
+
+    $('#update-alert').on('closed.bs.alert', function ()
+    {
+        if (!$(this).hasClass("unstable-update"))
+        {
+            $('#update-small-notification').removeClass('hidden');
+
+        }
+            $.ajax({
+                url: $(this).attr('data-url-notification-state'),
+                type: 'GET',
+                success: function(html) {
+                },
+                error :  function(html, statut){
+                },
+
+            });
+
+    });
+});
+</script>

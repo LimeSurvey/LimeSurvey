@@ -87,6 +87,10 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         'autocreate' => array(
                 'type' => 'checkbox',
                 'label' => 'Automatically create user if it exists in LDAP server'
+                ),
+        'automaticsurveycreation' => array(
+                'type' => 'checkbox',
+                'label' => 'Grant survey creation permission to automatically created users'
                 )
     );
 
@@ -121,7 +125,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     /**
      * Create a LDAP user
      *
-     * @return unknown_type
+     * @return int New user ID
      */
     private function _createNewUser($new_user)
     {
@@ -146,7 +150,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             $oEvent->set('errorCode',self::ERROR_LDAP_CONNECTION);
             $oEvent->set('errorMessageTitle','');
             $oEvent->set('errorMessageBody',$ldapconn['errorMessage']);
-            return;
+            return null;
         }
 
         if (empty($ldapmode) || $ldapmode=='simplebind')
@@ -154,7 +158,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             $oEvent->set('errorCode',self::ERROR_LDAP_MODE);
             $oEvent->set('errorMessageTitle',gT("Failed to add user"));
             $oEvent->set('errorMessageBody',gT("Simple bind LDAP configuration doesn't allow LDAP user creation"));
-            return;
+            return null;
         }
 
         // Search email address and full name
@@ -174,7 +178,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             $oEvent->set('errorMessageTitle',gT('Could not connect to LDAP server.'));
             $oEvent->set('errorMessageBody',gT(ldap_error($ldapconn)));
             ldap_close($ldapconn); // all done? close connection
-            return;
+            return null;
         }
         // Now prepare the search fitler
         if ( $extrauserfilter != "")
@@ -200,7 +204,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             $oEvent->set('errorMessageTitle',gT('Username not found in LDAP server'));
             $oEvent->set('errorMessageBody',gT('Verify username and try again'));
             ldap_close($ldapconn); // all done? close connection
-            return;
+            return null;
         }
 
         if (!validateEmailAddress($new_email))
@@ -208,7 +212,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             $oEvent->set('errorCode',self::ERROR_INVALID_EMAIL);
             $oEvent->set('errorMessageTitle',gT("Failed to add user"));
             $oEvent->set('errorMessageBody',gT("The email address is not valid."));
-            return;
+            return null;
         }
         $new_pass = createPassword();
         // If user is being auto created we set parent ID to 1 (admin user)
@@ -226,16 +230,17 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             $oEvent->set('errorCode',self::ERROR_ALREADY_EXISTING_USER);
             $oEvent->set('errorMessageTitle','');
             $oEvent->set('errorMessageBody',gT("Failed to add user"));
-            return;
+            return null;
         }
 
-        $this->setAuthPermission($iNewUID,'auth_ldap');
+        Permission::model()->setGlobalPermission($iNewUID,'auth_ldap');
 
         $oEvent->set('newUserID',$iNewUID);
         $oEvent->set('newPassword',$new_pass);
         $oEvent->set('newEmail',$new_email);
         $oEvent->set('newFullName',$new_full_name);
         $oEvent->set('errorCode',self::ERROR_NONE);
+        return $iNewUID;
     }
 
     /**
@@ -342,6 +347,8 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 unset($aPluginSettings['ldapoptreferrals']);
                 unset($aPluginSettings['mailattribute']);
                 unset($aPluginSettings['fullnameattribute']);
+                unset($aPluginSettings['autocreate']);
+                unset($aPluginSettings['automaticsurveycreation']);
             }
         }
 
@@ -361,11 +368,14 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         $username = $this->getUsername();
         $password = $this->getPassword();
 
+        $ldapmode = $this->get('ldapmode');
         $autoCreateFlag = false;
         $user = $this->api->getUserByName($username);
+        // No user found!
         if ($user === null)
         {
-            if ($this->get('autocreate', null, null, false) == true)
+            // If ldap mode is searchandbind and autocreation is enabled we can continue
+            if ($ldapmode=='searchandbind' && $this->get('autocreate', null, null, false) == true)
             {
                 $autoCreateFlag = true;
             }
@@ -393,7 +403,6 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         // Get configuration settings:
         $ldapserver 		= $this->get('server');
         $ldapport   		= $this->get('ldapport');
-        $ldapmode    		= $this->get('ldapmode');
         $suffix     		= $this->get('domainsuffix');
         $prefix     		= $this->get('userprefix');
         $searchuserattribute    = $this->get('searchuserattribute');
@@ -477,7 +486,10 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         // Finally, if user didn't exist and auto creation is enabled, we create it
         if ($autoCreateFlag)
         {
-            $this->_createNewUser($username);
+            if (($iNewUID = $this->_createNewUser($username)) && $this->get('automaticsurveycreation', null, null, false))
+            {
+                Permission::model()->setGlobalPermission($iNewUID, 'surveys', array('create_p'));
+            }
         }
         $user = $this->api->getUserByName($username);
         if ($user === null)

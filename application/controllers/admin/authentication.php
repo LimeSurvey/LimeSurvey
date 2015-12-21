@@ -70,6 +70,14 @@ class Authentication extends Survey_Common_Action
             if (!is_null($beforeLogin->get('default'))) {
                 $aData['defaultAuth'] = $beforeLogin->get('default');
             }
+            else {
+                if (App()->getPluginManager()->isPluginActive(Yii::app()->getConfig('default_displayed_auth_method'))) {
+                        $aData['defaultAuth'] = Yii::app()->getConfig('default_displayed_auth_method');
+                    }
+                    else {
+                        $aData['defaultAuth'] = 'Authdb';
+                    }
+            }
             $newLoginForm = new PluginEvent('newLoginForm');
             App()->getPluginManager()->dispatchEvent($newLoginForm);
             $aData['summary'] = $this->_getSummary('logout');

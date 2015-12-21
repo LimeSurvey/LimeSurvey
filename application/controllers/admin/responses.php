@@ -118,9 +118,14 @@ class responses extends Survey_Common_Action
 
             $fncount = 0;
             $fieldmap = createFieldMap($iSurveyID, 'full', false, false, $aData['language']);
-
+            $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID);// Boolean : show (or not) the token
+            if(!Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) // If not allowed to read: remove it
+            {
+                unset($fieldmap['token']);
+                $bHaveToken=false;
+            }
             //add token to top of list if survey is not private
-            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
+            if ($bHaveToken)
             {
                 $fnames[] = array("token", gT("Token ID"), 'code'=>'token');
                 $fnames[] = array("firstname", gT("First name"), 'code'=>'firstname');// or token:firstname ?
@@ -193,7 +198,7 @@ class responses extends Survey_Common_Action
                 $oPurifier=new CHtmlPurifier();
                 //SHOW INDIVIDUAL RECORD
                 $oCriteria = new CDbCriteria();
-                if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
+                if ($bHaveToken)
                 {
                     $oCriteria = SurveyDynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
                 }
@@ -249,7 +254,7 @@ class responses extends Survey_Common_Action
                                     switch ($metadata)
                                     {
                                         case "size":
-                                            $answervalue = sprintf(gt("%s KB"),intval($phparray[$index][$metadata]));
+                                            $answervalue = sprintf(gT("%s KB"),intval($phparray[$index][$metadata]));
                                             break;
                                         case "name":
                                             $answervalue = CHtml::link(
@@ -342,6 +347,7 @@ class responses extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listresponse.js");
 
         $aData = $this->_getData($iSurveyId);
+        $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
         extract($aData);
         $aViewUrls = array();
         $sBrowseLanguage = $aData['language'];
@@ -363,7 +369,7 @@ class responses extends Survey_Common_Action
             'width' => '100',
             'resizable' => true,
             'align' => 'left',
-            'label' => gt("Actions"),
+            'label' => gT("Actions"),
             'search' => false,
             'hidedlg'=>true,
         );
@@ -402,17 +408,18 @@ class responses extends Survey_Common_Action
             'stype'=>'select',
             'editoptions'=>array(
                 'value'=>array(
-                    ""=>gt("All"),
-                    "Y"=>gt("Yes"),
-                    "N"=>gt("No"),
+                    ""=>gT("All"),
+                    "Y"=>gT("Yes"),
+                    "N"=>gT("No"),
                 ),
             ),
             'sortable'=>true,
             'hidden'=>$bHidden,
             'width'=>'100',
             'align'=>'center',
-            'label' => gt("Completed"),
+            'label' => gT("Completed"),
         );
+        // defaultSearch is the default search done before send request in json. Actually : completed and token only. Can be extended ( js is ready) ?
         $defaultSearch=array();
         if (incompleteAnsFilterState() == "incomplete")
         {
@@ -426,9 +433,8 @@ class responses extends Survey_Common_Action
         {
             $defaultSearch['completed']="";
         }
-
         //add token to top of list if survey is not private
-        if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId)) //add token to top of list if survey is not private
+        if ($bHaveToken) 
         {
             $column_model[] = array(
                 'name'=>'token',
@@ -436,7 +442,7 @@ class responses extends Survey_Common_Action
                 'sorttype'=>'string',
                 'sortable'=>true, 'width'=>'100',
                 'align'=>'left',
-                'title'=>gt('Token')
+                'title'=>gT('Token')
             );
             $column_model[] = array(
                 'name'=>'firstname',
@@ -445,7 +451,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'100',
                 'align'=>'left',
-                'title'=>gt('First name'),
+                'title'=>gT('First name'),
             );
             $column_model[] = array(
                 'name'=>'lastname',
@@ -454,7 +460,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'100',
                 'align'=>'left',
-                'title'=>gt('Last Name'),
+                'title'=>gT('Last Name'),
             );
             $column_model[] = array(
                 'name'=>'email',
@@ -463,8 +469,13 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'100',
                 'align'=>'left',
-                'title'=>gt('Email'),
+                'title'=>gT('Email'),
             );
+            // If token exist, test if token is set in params, add it to defaultSearch
+            if($sTokenSearch= Yii::app()->request->getQuery('token'))
+            {
+                $defaultSearch['token']=$sTokenSearch;
+            }
         }
 
 
@@ -647,7 +658,7 @@ class responses extends Survey_Common_Action
         // Old behaviour : ajax default request from jqgrid need sort / rows (limit) / page (start) / sidx for order by : use javacript log please ....
         $oCriteria = new CDbCriteria;
         //Create the query
-        if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
+        if ($bHaveToken)
         {
             $oCriteria = SurveyDynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
             $aSpecificColumns=array_merge($aSpecificColumns,TokenDynamic::model($iSurveyID)->getTableSchema()->getColumnNames());

@@ -70,7 +70,7 @@ $(document).ready(function(){
             "height": "toggle", "opacity": "toggle"
         });
 
-    })
+    });
     $('#hideadvancedattributes').click(function(){
         $('#showadvancedattributes').show();
         $('#hideadvancedattributes').hide();
@@ -78,7 +78,7 @@ $(document).ready(function(){
             "height": "toggle", "opacity": "toggle"
         });
 
-    })
+    });
     $('#question_type').change(updatequestionattributes);
 
     $('#MinimizeGroupWindow').click(function(){
@@ -163,8 +163,8 @@ function qTypeDropdownInit()
             {
                 $($(e.currentTarget).data().select2Data.element).qtip('hide');
             }
-            
-            
+
+
         });
         $('#question_type').on('close', function(e) {
             $('#question_type option').qtip('hide');
@@ -289,7 +289,7 @@ function doToolTip()
         }
     });
     $("a > img[alt]").data("hasqtip", true ).removeAttr('title');
-    
+
     // Call the popuptip hover rel attribute
     $('.popuptip').each(function(){
         if($(this).attr('rel')){
@@ -427,7 +427,6 @@ function ev_gecko_select_keyup_ev(Ev) {
 }
 
 function init_gecko_select_hack() {
-    return true;
     var selects = document.getElementsByTagName("SELECT");
     for(i=0; i<selects.length; i++)
         selects.item(i).addEventListener("keyup", ev_gecko_select_keyup_ev, false);
@@ -652,7 +651,7 @@ jQuery.fn.center = function () {
     this.css("top", ( $(window).height() - this.height() ) / 2+$(window).scrollTop() + "px");
     this.css("left", ( $(window).width() - this.width() ) / 2+$(window).scrollLeft() + "px");
     return this;
-}
+};
 
 // Fix broken substr function with negative start value (in older IE)
 // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr
@@ -661,23 +660,8 @@ if ('ab'.substr(-1) != 'b') {
 		return function(start, length) {
 			if (start < 0) start = this.length + start;
 			return substr.call(this, start, length);
-		}
+		};
 	}(String.prototype.substr);
-}
-
-/**
-* Yii CSRF protection divs breaks this script so this function moves the 
-* hidden CSRF field out of the div and remove it if needed
-* 140207 : Why this function is needed ? Where is the script broken ?
-*/
-function removeCSRFDivs()
-{
-    $('input[name=YII_CSRF_TOKEN]').each(function(){
-       var parent = $(this).parent();
-       var grandfather = $(parent).parent();
-       $(grandfather).append(this);
-       $(parent).remove();
-    });
 }
 
 function linksInDialog()
@@ -723,7 +707,7 @@ function initializeAjaxProgress()
     });
     $('#ajaxprogress').bind('ajaxStop', function()
     {
-        
+
         $(this).dialog('close');
     });
 }
@@ -775,7 +759,7 @@ function addHiddenElement(theform,thename,thevalue)
     myel.value = thevalue;
     return myel;
 }
-function onlyUnique(value, index, self) { 
+function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 

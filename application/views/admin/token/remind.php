@@ -77,6 +77,10 @@
             <label for='maxremindercount'><?php eT("Max reminders"); ?>:</label>
             <?php echo CHtml::textField('maxremindercount'); ?>
         </li>
+        <li>
+              <?php echo CHtml::label(gT("Bypass date control before sending email."),'bypassdatecontrol', array('title'=>gT("If some tokens have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),'unescaped')); ?>
+              <?php echo CHtml::checkbox('bypassdatecontrol', false); ?>
+        </li>
     </ul>
     <p>
         <?php

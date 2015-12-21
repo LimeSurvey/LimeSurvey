@@ -58,8 +58,7 @@ return array(
             //'css/smoothness/jquery-ui-1.10.0.custom.min.css'
         ),
         'depends' => array(
-            'jquery',
-            'bootstrap'
+            'jquery'
         )
     ),
     'jquery-bindWithDelay' => array(
@@ -107,6 +106,9 @@ return array(
         'baseUrl' => 'third_party/jquery-blockui',
         'js' => array(
             'jquery.blockUI.js'
+        ),
+        'depends' => array(
+            'jquery'
         )
     ),
     'qTip2' => array(
@@ -222,6 +224,12 @@ return array(
         'depends' => array(
             'jqueryui'
         )
+    ),
+    'jquery-price-format' => array(
+        'baseUrl' => 'third_party/jquery-price-format/',
+        'js' => array(
+            'jquery_price_format.js'
+        ),
     ),
     'leaflet' => array(
         'baseUrl' => 'third_party/leaflet/',

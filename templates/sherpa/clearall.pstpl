@@ -3,7 +3,6 @@
 <div class="survey-cleared">
     <span class="warning-text">{ANSWERSCLEARED}</span>
 	<br /><br />
-	{RESTART}<br /><br />
-	{CLOSEWINDOW}
+	{RESTART}
 </div>
 <br />

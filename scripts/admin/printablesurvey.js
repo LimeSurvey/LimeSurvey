@@ -6,5 +6,5 @@ $(document).ready(function(){
        charcount=arrayOfClasses[0].substr(10);
        $(this).find('div.input-text').width(charcount*2+'em');
     }
-    )
+   );
 });

@@ -23,7 +23,7 @@ $(window).scroll(function(){
 firstload=true;
 $(document).on("click","[data-delete]",function(event){
     event.preventDefault();
-    var responseid=$(this).data("delete")
+    var responseid=$(this).data("delete");
     var url=$(this).attr("href"); // Or replace responseid  by post if needed
     var buttons = {};
     buttons[sDelCaption] = function(){
@@ -145,7 +145,9 @@ $(function() {
     });
     if(firstload)
     {
-        $("#gs_completed").val(defaultSearch.completed);
+        jQuery.each(defaultSearch, function(index, value) {
+          $("#gs_"+index).val(value);
+        });
         firstload=false;
     }
     /* Column button */

@@ -733,7 +733,7 @@ class printablesurvey extends Survey_Common_Action
                                 if ($deqrow['other'] == 'Y')
                                 {
                                     if(trim($qidattributes["other_replace_text"][$sLanguageCode])=='')
-                                    {$qidattributes["other_replace_text"][$sLanguageCode]=gt("Other");}
+                                    {$qidattributes["other_replace_text"][$sLanguageCode]=gT("Other");}
                                     //                    $printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".self::_input_type_image('radio' , gT("Other"))."\n\t\t\t".gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
                                     $question['ANSWER']  .= $wrapper['item-start-other'].self::_input_type_image('radio',gT($qidattributes["other_replace_text"][$sLanguageCode])).' '.gT($qidattributes["other_replace_text"][$sLanguageCode]).self::_addsgqacode(" (-oth-)")."\n\t\t\t".self::_input_type_image('other').self::_addsgqacode(" (".$deqrow['sid']."X".$deqrow['gid']."X".$deqrow['qid']."other)")."\n".$wrapper['item-end'];
                                 }

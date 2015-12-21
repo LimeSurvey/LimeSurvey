@@ -20,7 +20,8 @@
     <p class="success " style="text-align: left;">
         <strong><?php echo sprintf(gT("File backup created: %s"),''); ?></strong>
         <br/>
-        <?php echo $tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'; ?>
+        <?php echo $tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'; ?><br/>
+        <a class="btn btn-success" href="<?php echo Yii::app()->getBaseUrl(true);?>/tmp/LimeSurvey_files_backup_<?php echo $basefilename;?>.zip" title="<?php eT('Download this file');?>"><?php eT('Download this file');?></a>
     </p>
 
     
@@ -28,7 +29,9 @@
         <p class="success " style="text-align: left;">
             <strong><?php eT('DB backup created:'); ?></strong>
             <br/>
-            <?php eT($dbBackupInfos->message); ?>
+            <?php echo $dbBackupInfos->message; ?>
+            <br/>
+            <a class="btn btn-success" href="<?php echo $dbBackupInfos->fileurl;?>" title="<?php eT('Download this file');?>"><?php eT('Download this file');?></a>
         </p>            
     <?php else:?>
         <?php

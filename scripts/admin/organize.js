@@ -39,6 +39,6 @@ $(document).ready(function(){
     $('#btnSave').click(function(){
         $('#orgdata').val($('ol.organizer').nestedSortable('serialize'));
         frmOrganize.submit();
-    })
+    });
 
 });

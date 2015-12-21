@@ -26,15 +26,9 @@ class AdminController extends LSYii_Controller
     protected function _init()
     {
         parent::_init();
+
         App()->getComponent('bootstrap');
-        $sUpdateLastCheck = getGlobalSetting('updatelastcheck');
-
         $this->_sessioncontrol();
-
-        if (Yii::app()->getConfig('buildnumber') != "" && Yii::app()->getConfig('updatecheckperiod') > 0 && $sUpdateLastCheck < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-". Yii::app()->getConfig('updatecheckperiod')." days"))
-            updateCheck();
-
-        //unset(Yii::app()->session['FileManagerContext']);
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
         $this->user_id = Yii::app()->user->getId();
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid'));}         //SurveyID
@@ -132,15 +126,16 @@ class AdminController extends LSYii_Controller
     */
     public function run($action)
     {
+
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}'))
         {
             $sDBVersion = getGlobalSetting('DBVersion');
-            if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'update' && $action != 'authentication')
-                $this->redirect(array('/admin/update/sa/db'));
+            if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate' && $action != 'authentication')
+                $this->redirect(array('/admin/databaseupdate/sa/db'));
         }
 
-        if ($action != "update" && $action != "db")
+        if ($action != "databaseupdate" && $action != "db")
             if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
             {
                 if (!empty($action) && $action != 'index')
@@ -190,6 +185,7 @@ class AdminController extends LSYii_Controller
         'checkintegrity'   => 'checkintegrity',
         'conditions'       => 'conditionsaction',
         'database'         => 'database',
+        'databaseupdate'   => 'databaseupdate',
         'dataentry'        => 'dataentry',
         'dumpdb'           => 'dumpdb',
         'emailtemplates'   => 'emailtemplates',
@@ -377,21 +373,14 @@ class AdminController extends LSYii_Controller
     */
     public function _showadminmenu($surveyid = false)
     {
-        if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug")<2)  {
+        if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug")<2)
+        {
             Yii::app()->session['flashmessage'] = gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
         }
 
-        $aData['showupdate'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 && getGlobalSetting("updatenotification")!='never' && getGlobalSetting("updateavailable")==1 && Yii::app()->getConfig("updatable") );
-        if($aData['showupdate'])
-        {
-        $aData['aUpdateVersions'] = json_decode(getGlobalSetting("updateversions"),true);
-            $aUpdateTexts=array();
-            foreach ($aData['aUpdateVersions'] as $aVersion)
-            {
-               $aUpdateTexts[]=$aVersion['versionnumber'].'('.$aVersion['build'].')';
-            }
-            $aData['sUpdateText']=implode(' '.gT('or').' ',$aUpdateTexts);
-        }
+        $updateModel = new UpdateForm();
+        $updateNotification = $updateModel->updateNotification;
+        $aData['showupdate'] = $updateNotification->result;
         $aData['surveyid'] = $surveyid;
         $aData['iconsize'] = Yii::app()->getConfig('adminthemeiconsize');
         $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');

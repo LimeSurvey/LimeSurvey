@@ -47,11 +47,11 @@ class SurveyAdmin extends Survey_Common_Action
     public function index()
     {
         App()->getClientScript()->registerPackage('jqgrid');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listsurvey.js");
         if (count(getSurveyList(true)) == 0)
         {
             $this->_renderWrappedTemplate('super', 'firststeps');
         } else {
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listsurvey.js");
             Yii::app()->loadHelper('surveytranslator');
 
             $aData['issuperadmin'] = false;
@@ -333,6 +333,9 @@ class SurveyAdmin extends Survey_Common_Action
 
                 $aData['tnewtable'] = $tnewtable;
                 $aData['toldtable'] = $toldtable;
+
+                // Reset the session of the survey when deactivating it
+                killSurveySession($iSurveyID);
             }
 
             //Remove any survey_links to the CPDB
@@ -910,7 +913,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aImportResults=importSurveyFile($sFullFilepath,(isset($_POST['translinksfields'])));
                 if (is_null($aImportResults) || !empty($aImportResults['error']))
                 {
-                    $aData['sErrorMessage']=isset($aImportResults['error']) ? $aImportResults['error'] : gt("Unknow error.");
+                    $aData['sErrorMessage']=isset($aImportResults['error']) ? $aImportResults['error'] : gT("Unknow error.");
                     $aData['bFailed'] = true;
                 }
             }
@@ -1014,6 +1017,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $AOrgData = array();
         parse_str($_POST['orgdata'], $AOrgData);
+
         $grouporder = 0;
         foreach ($AOrgData['list'] as $ID => $parent)
         {
@@ -1023,14 +1027,21 @@ class SurveyAdmin extends Survey_Common_Action
             }
             elseif ($ID[0] == 'q')
             {
-                if (!isset($questionorder[(int)substr($parent, 1)]))
-                    $questionorder[(int)substr($parent, 1)] = 0;
+                $qid = (int)substr($ID, 1);
+                $gid = (int)substr($parent, 1);
+                if (!isset($aQuestionOrder[$gid]))
+                    $aQuestionOrder[$gid] = 0;
 
-                Question::model()->updateAll(array('question_order' => $questionorder[(int)substr($parent, 1)], 'gid' => (int)substr($parent, 1)), 'qid=:qid', array(':qid' => (int)substr($ID, 1)));
+				$sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+				$oQuestion = Question::model()->findByPk(array("qid"=>$qid,'language'=>$sBaseLanguage));
+                $oldGid = $oQuestion['gid'];
 
-                Question::model()->updateAll(array('gid' => (int)substr($parent, 1)), 'parent_qid=:parent_qid', array(':parent_qid' => (int)substr($ID, 1)));
-
-                $questionorder[(int)substr($parent, 1)]++;
+                if($oldGid != $gid) {
+                        fixMovedQuestionConditions($qid,$oldGid,$gid,$iSurveyID);
+                }
+                Question::model()->updateAll(array('question_order' => $aQuestionOrder[$gid], 'gid' => $gid), 'qid=:qid', array(':qid' => $qid));
+                Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
+                $aQuestionOrder[$gid]++;
             }
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting

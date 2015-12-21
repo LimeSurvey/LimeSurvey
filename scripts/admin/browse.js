@@ -66,7 +66,7 @@ $(document).ready(function(){
             }
         }
         else
-            alert(noFilesSelectedForDeletion)
+            alert(noFilesSelectedForDeletion);
     });
 
     // Download individual file bundle
@@ -85,7 +85,7 @@ $(document).ready(function(){
             $('#resulttableform').submit();
         }
         else
-            alert(noFilesSelectedForDnld)
+            alert(noFilesSelectedForDnld);
     });
 
 

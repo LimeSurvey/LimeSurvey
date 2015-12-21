@@ -58,7 +58,7 @@ class Authdb extends AuthPluginBase
             return;
         }
 
-        $this->setAuthPermission($iNewUID,'auth_db');
+        Permission::model()->setGlobalPermission($iNewUID,'auth_db');
 
         $oEvent->set('newUserID',$iNewUID);
         $oEvent->set('newPassword',$new_pass);
@@ -77,8 +77,6 @@ class Authdb extends AuthPluginBase
 
     public function beforeLogin()
     {
-        $this->getEvent()->set('default', get_class($this));   // This is the default login method, should be configurable from plugin settings
-
         // We can skip the login form here and set username/password etc.
         $request = $this->api->getRequest();
         if (!is_null($request->getParam('onepass'))) {

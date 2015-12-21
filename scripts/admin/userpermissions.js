@@ -22,7 +22,7 @@ $(document).ready(function(){
             bChecked=this.checked;
             $(this).closest('tr').find('input').prop('checked',bChecked);
         }
-    )
+    );
 
     $('.extended input,#perm_superadmin_read').click(
      function(){
@@ -45,7 +45,7 @@ $(document).ready(function(){
                 $(this).closest('tr').find('.markrow').fadeTo(1, .4); //greyed
             }
      }
-    )
+    );
 
     if ($.cookie('userpermissions')!='true')
     {
@@ -67,7 +67,7 @@ $(document).ready(function(){
                 $(this).find('.markrow').prop('checked',true);
                 $(this).find('.markrow').fadeTo(1, .4); //greyed
             }
-    })
+    });
 
     $('#btnToggleAdvanced').click(function(){
         extendoptionsvisible=$('.userpermissions .extended').is(':visible');
@@ -81,7 +81,7 @@ $(document).ready(function(){
         }
         updateExtendedButton(!extendoptionsvisible);
         $.cookie('userpermissions',!extendoptionsvisible);
-    })
+    });
     updateExtendedButton(false);
 });
 

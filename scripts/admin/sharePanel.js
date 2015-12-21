@@ -79,7 +79,7 @@ $(document).ready(function() {
         * the values are stored at the database. The only thing that can be unique accross the
         * share panel is the row id and share user id
         * */
-        return "<input type='checkbox' name='check_"+options.rowId+"_"+rowObject[4]+"' id='check_"+options.rowId+"_"+rowObject[4]+"' onclick=\"ajaxSave('" + options.rowId + "','" + rowObject[4] +"');\" " + bchk + " value='" + cellvalue + "' offval='no' />"
+        return "<input type='checkbox' name='check_"+options.rowId+"_"+rowObject[4]+"' id='check_"+options.rowId+"_"+rowObject[4]+"' onclick=\"ajaxSave('" + options.rowId + "','" + rowObject[4] +"');\" " + bchk + " value='" + cellvalue + "' offval='no' />";
     }
     jQuery('#sharePanel').jqGrid('navGrid',
         '#pager',

@@ -14,7 +14,7 @@
 		if (
 			$_SERVER['REQUEST_METHOD'] != 'POST' ||
 			empty($_SERVER['CONTENT_TYPE']) ||
-			$_SERVER['CONTENT_TYPE'] != 'application/json'
+			strpos($_SERVER['CONTENT_TYPE'], "application/json") === FALSE
 			) {
 			// This is not a JSON-RPC request
 			return false;

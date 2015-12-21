@@ -7,8 +7,6 @@
 		{RESTART}
 		<br />
 		{URL}
-		<br />
-		{CLOSEWINDOW}
    </td>
   </tr>
  </table>

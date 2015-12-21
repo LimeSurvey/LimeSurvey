@@ -26,17 +26,6 @@ class Permission extends LSActiveRecord
     }
 
     /**
-     * Returns the table's primary key
-     *
-     * @access public
-     * @return string
-     */
-    public function primaryKey()
-    {
-        return array('sid', 'uid', 'permission');
-    }
-
-    /**
      * Returns the static model of Settings table
      *
      * @static
@@ -417,6 +406,36 @@ class Permission extends LSActiveRecord
             }
         }
         return true;
+    }
+
+    /**
+     * Set global permissions to the user id
+     *
+     * @param int $iNewUID
+     * @param string $sAuthType
+     * @param array $aPermissions
+     */
+    public function setGlobalPermission($iNewUID,$sPermType,array $aPermissions=array('read_p'))
+    {
+        $aPerm = array(
+            'entity_id' => 0,
+            'entity' => 'global',
+            'uid' => $iNewUID,
+            'permission' => $sPermType,
+            'create_p' => 0,
+            'read_p' => 0,
+            'update_p' => 0,
+            'delete_p' => 0,
+            'import_p' => 0,
+            'export_p' => 0
+        );
+
+        foreach ($aPermissions as $sPermType)
+        {
+            $aPerm[$sPermType] = 1;
+        }
+
+        $this->insertSomeRecords($aPerm);
     }
 
     function giveAllSurveyPermissions($iUserID, $iSurveyID)

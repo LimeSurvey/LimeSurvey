@@ -87,5 +87,5 @@ function validateQuestion(jqObject){
                 }
             },
         dataType="json"
-    )
+    );
 }

@@ -1,6 +1,6 @@
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-        <strong><?php eT("Token control"); ?> </strong> <?php echo htmlspecialchars($thissurvey['surveyls_title']); ?>
+        <strong><?php eT("Token control"); ?> </strong> <?php echo htmlspecialchars($thissurvey['surveyls_title'])." (".gT("ID")." ".htmlspecialchars($thissurvey['surveyls_survey_id']).")"; ?>
     </div></div><div class='messagebox ui-corner-all'>
     <div class='warningheader'><?php eT("Warning"); ?></div>
     <br /><strong><?php eT("Tokens have not been initialised for this survey."); ?></strong><br /><br />
@@ -20,8 +20,10 @@
             eT("Do you want to create a token table for this survey?");
         ?>
         <br /><br />
-        <input type='submit' value='<?php eT("Initialise tokens"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid/createtable/Y"); ?>', '_top')" />
-        <input type='submit' value='<?php eT("No, thanks."); ?>' onclick="window.open('<?php echo$this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>', '_top')" /></div>
+        <?php echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$surveyid}"), 'post'); ?>
+        <button type="submit" name="createtable" value="Y"><?php eT("Initialise tokens"); ?></button>
+        <a href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>" class="btn btn-link button"><?php eT("No, thanks."); ?></a>
+        </form>
     <?php
     }
     else

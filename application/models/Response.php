@@ -66,11 +66,10 @@
             }
         }
         public function delete($deleteFiles = false) {
-            if ($deleteFiles)
-            {
+            if ($deleteFiles) {
                 $this->deleteFiles();
             }
-            parent::delete();
+            return parent::delete();
         }
 		public function relations()
 		{

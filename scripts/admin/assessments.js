@@ -47,13 +47,13 @@ $(document).ready(function(){
                 }
               }
         }
-    )
+    );
     $('#radiototal,#radiogroup').change();
     $('.numbersonly').keypress(
         function(e){
             return jquery_goodchars(e,'1234567890-');    
         }
-    )
+    );
   }
 );
 

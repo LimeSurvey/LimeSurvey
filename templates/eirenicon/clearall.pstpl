@@ -4,7 +4,6 @@
 		<td align="center">
 			<p class="warning-text">{ANSWERSCLEARED}</p>
 			<p>{RESTART}</p>
-			<p>{CLOSEWINDOW}</p>
    </td>
   </tr>
  </table>

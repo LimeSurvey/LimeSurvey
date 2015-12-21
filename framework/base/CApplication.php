@@ -403,8 +403,7 @@ abstract class CApplication extends CModule
 	 */
 	public function getLocale($localeID=null)
 	{
-		$class=$this->localeClass;
-		return $class::getInstance($localeID===null?$this->getLanguage():$localeID);
+		return call_user_func_array(array($this->localeClass, 'getInstance'),array($localeID===null?$this->getLanguage():$localeID));
 	}
 
 	/**
@@ -414,8 +413,10 @@ abstract class CApplication extends CModule
 	 */
 	public function getLocaleDataPath()
 	{
-		$class=$this->localeClass;
-		return $class::$dataPath===null ? Yii::getPathOfAlias('system.i18n.data') : $class::$dataPath;
+		$vars=get_class_vars($this->localeClass);
+		if(empty($vars['dataPath']))
+			return Yii::getPathOfAlias('system.i18n.data');
+		return $vars['dataPath'];
 	}
 
 	/**
@@ -425,8 +426,8 @@ abstract class CApplication extends CModule
 	 */
 	public function setLocaleDataPath($value)
 	{
-		$class=$this->localeClass;
-		$class::$dataPath=$value;
+		$property=new ReflectionProperty($this->localeClass,'dataPath');
+		$property->setValue($value);
 	}
 
 	/**

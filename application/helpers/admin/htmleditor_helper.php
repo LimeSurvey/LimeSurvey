@@ -63,7 +63,7 @@
                     {
                         $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
                     }
-                    $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->getConfig('uploaddir') .DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$surveyid.DIRECTORY_SEPARATOR;
+                    $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')) .DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$surveyid.DIRECTORY_SEPARATOR;
                 }
             }
             elseif (preg_match('/^edit:label/', Yii::app()->session['FileManagerContext']) != 0)
@@ -75,7 +75,7 @@
                 {
                     $_SESSION['KCFINDER']['disabled'] = false;
                     $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/labels/{$labelid}/";
-                    $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->getConfig('uploaddir') .DIRECTORY_SEPARATOR.'labels'.DIRECTORY_SEPARATOR.$labelid.DIRECTORY_SEPARATOR;
+                    $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')) .DIRECTORY_SEPARATOR.'labels'.DIRECTORY_SEPARATOR.$labelid.DIRECTORY_SEPARATOR;
                 }
             }
         }
@@ -109,7 +109,6 @@
 
     function PrepareEditorScript($load=false, $controller = null)
     {
-        App()->getClientScript()->registerCoreScript('ckeditor');
         if ($controller == null)
         {
             $controller = Yii::app()->getController();
@@ -148,14 +147,7 @@
         {
             $htmleditormode = $session['htmleditormode'];
         }
-
-        if ( ($fieldtype == 'email-inv' ||
-        $fieldtype == 'email-reg' ||
-        $fieldtype == 'email-admin-notification' ||
-        $fieldtype == 'email-admin-resp' ||
-        $fieldtype == 'email-conf' ||
-        $fieldtype == 'email-rem' ) &&
-        getEmailFormat($surveyID) != 'html')
+        if ( $surveyID && getEmailFormat($surveyID) != 'html' && substr($fieldtype,0,6)==="email-" )// email but survey as text email
         {
             return '';
         }
