@@ -946,8 +946,8 @@ class participantsaction extends Survey_Common_Action
             'attributevalues' => ParticipantAttributeName::model()->getAttributesValues($iAttributeId),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
         );
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'participants.css');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'viewAttribute.css');
+        //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'participants.css');
+        //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'viewAttribute.css');
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "viewAttribute.js"));
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'viewAttribute'), $aData);
     }
@@ -966,6 +966,8 @@ class participantsaction extends Survey_Common_Action
             'visible' => Yii::app()->request->getPost('visible')
         );
         ParticipantAttributeName::model()->saveAttribute($aData);
+
+        //echo "<pre>"; var_dump($_POST); echo "</pre>"; die;
 
         // Save translations
         if (isset($_POST['lang']))
