@@ -41,6 +41,10 @@ $(document).ready(function() {
             // Open new tab
             $('#tabs').tabs('option', 'active', num_tabs);
 
+            // Set the active-class on the new tab
+            $('#tabs ul li').removeClass('active');
+            $('#tabs ul li:last-child').addClass('active');
+
             // Remove the language from select
             $("select#langdata option[value='"+$("#langdata").val()+"']").remove();
         }
