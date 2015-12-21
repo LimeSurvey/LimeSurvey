@@ -199,7 +199,7 @@
                         <?php echo getEditor("assessment-text","assessmentmessage_$assessmentlang", "[".gT("Message:", "js")."]",$surveyid,$gid,null,$action); ?>
                         </li>
                         <li style="text-align:center;">
-                            <input type='submit' class="hidden" value='<?php eT("Save");?>'/>
+                            <input type='submit' class="btn btn-default" value='<?php eT("Save");?>'/>
                         </li>
                     </ul>
                 </div>

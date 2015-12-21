@@ -75,8 +75,10 @@ class Assessments extends Survey_Common_Action
         $aData['sidebar']['state'] = "close";
         $iSurveyID=$aData['surveyid'];
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-        $aData['surveybar']['savebutton']['form'] = true;
+        // TODO: Hide this, because submitting first form on the page means
+        // submitting the 'delete' form in the table.
+        //$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+        //$aData['surveybar']['savebutton']['form'] = true;
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;
         $aData['gid']=null;
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'assessments.js' ));
