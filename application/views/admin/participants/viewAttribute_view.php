@@ -70,10 +70,10 @@
                     </div>
                 </td>
                 <td class='actions'>
-                    <span class="glyphicon glyphicon-remove-circle text-warning cancel" title="<?php eT('Cancel editing'); ?>"></span>
-                    <span class="glyphicon glyphicon-pencil text-success edit" name="<?php echo $value['value_id']; ?>" title="<?php eT('Edit value'); ?>"></span>
+                    <span data-toggle='tooltip' data-placement='bottom' class="glyphicon glyphicon-remove-circle text-warning cancel ui-pg-button" title="<?php eT('Cancel editing'); ?>"></span>
+                    <span data-toggle='tooltip' data-placement='bottom' class="glyphicon glyphicon-pencil text-success edit ui-pg-button" name="<?php echo $value['value_id']; ?>" title="<?php eT('Edit value'); ?>"></span>
                     <a href="<?php echo $this->createUrl('admin/participants/sa/delAttributeValues/aid/' . $attributes['attribute_id'] . '/vid/' . $value['value_id']); ?>" title="<?php eT('Delete value'); ?>" >
-                        <span class="glyphicon glyphicon-trash text-warning delete" title="<?php eT('Delete value'); ?>"></span>
+                        <span data-toggle='tooltip' data-placement='bottom' class="glyphicon glyphicon-trash text-warning delete ui-pg-button" title="<?php eT('Delete value'); ?>"></span>
                     </a>
                 </td>
             </tr>
@@ -85,8 +85,8 @@
         <tr>
             <td></td>
             <td class='actions'>
-                <a href='#' class='add'>
-                    <span class="icon-add text-success" title='<?php eT("Add value") ?>' id='addsign' name='addsign'></span>
+                <a href='#' class='add' id='add_new_attribute'>
+                    <span data-toggle='tooltip' data-placement='bottom' class="icon-add text-success" title='<?php eT("Add value") ?>' id='addsign' name='addsign'></span>
                 </a>
             </td>
         </tr>

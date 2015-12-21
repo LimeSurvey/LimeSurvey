@@ -75,7 +75,7 @@ $(document).ready(function() {
     });
     $('#add').effect('pulsate', {times: 2}, 1000);
     var id = 1;
-    $('.add').click(function(){
+    $('#add_new_attribute').click(function(){
             html = "<tr>"+
             "<td colspan='2'><input type='text' name='attribute_value_name_"+id+"' id='attribute_value_name_"+id+"' size='8' style='50%;'></td></tr>";
                   $('.dd').fadeIn('slow');
@@ -85,27 +85,36 @@ $(document).ready(function() {
     $(document.body).on('dblclick', '.editable', function() {
         editAttrValue(this.id);
     });
-    $('.actions .edit').click(function(){
-       editAttrValue(this.name);
+    $('.actions .edit').click(function(ev) {
+        editAttrValue($(this).attr('name'));
     });
+
     $('.actions .cancel').click(function(){
 	   var thisRow = $(this).closest('tr');
 	   var valueText = $('td.data', thisRow).html('<div id="'+$('td.data', thisRow).attr('data-id')+'" class="editable">'+$('td.data', thisRow).attr('data-text')+'</div>');
 		$('.actions .cancel', thisRow).hide();
 		$('.actions .edit, .actions .delete', thisRow).show();
     });
-	function editAttrValue(valueId) {
-	   var valueText = $.trim($("#"+valueId).text());
-	   var thisRow = $("#"+valueId).closest('tr');
-       $("#"+valueId).replaceWith( "<div><input type='text' size='20' name='editbox' id='editbox"+valueId+"' /><input type='hidden' id='value_id' name='value_id' value='"+valueId+"' /></div>" );
-		$('#editbox'+valueId).val(valueText);
-		$('.actions .edit, .actions .delete', thisRow).hide();
-		$('.actions .cancel', thisRow).show();
-	}
+
+    /**
+     * @todo Doc
+     */
+    function editAttrValue(valueId) {
+        var valueText = $.trim($("#"+valueId).text());
+        var thisRow = $("#"+valueId).closest('tr');
+        $("#"+valueId).replaceWith( "<div><input type='text' size='20' name='editbox' id='editbox"+valueId+"' /><input type='hidden' id='value_id' name='value_id' value='"+valueId+"' /></div>" );
+        $('#editbox'+valueId).val(valueText);
+        $('.actions .edit, .actions .delete', thisRow).hide();
+        $('.actions .cancel', thisRow).show();
+    }
+
     $('.languagesetting').click(function(){
         $(".languagesetting").css('border', '1px solid black');
         $(".languagesetting").css('background-color', 'white');
     })
+
+    // Hide all cancel-buttons
+    $('.cancel').hide();
 });
 
 
