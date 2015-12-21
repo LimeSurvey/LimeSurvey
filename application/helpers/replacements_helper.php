@@ -683,6 +683,12 @@ function PassthruReplace($line, $thissurvey)
     return $line;
 }
 
+/**
+ * "Calculate" HTML for save links?
+ *
+ * @param string $move ?
+ * @return string ?
+ */
 function doHtmlSaveLinks($move="")
 {
     static $aSaveAllButtons=array();
@@ -701,7 +707,7 @@ function doHtmlSaveLinks($move="")
     }
 
     $sLoadButton = '<li><a href="#" id="loadallbtnlink" '.$aHtmlOptionsLoadall['disabled'].' >'.gT("Load unfinished survey").'</a></li>';
-    $sSaveButton = '<li><a href="#" id="loadallbtnlink" '.$aHtmlOptionsSaveall['disabled'].' >'.gT("Resume later").'</a></li>';
+    $sSaveButton = '<li><a href="#" id="saveallbtnlink" '.$aHtmlOptionsSaveall['disabled'].' >'.gT("Resume later").'</a></li>';
 
     // Fill some test here, more clear ....
     $bTokenanswerspersistence=$thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);
