@@ -18,7 +18,7 @@
         public function actionCron($interval)
         {
 
-            $pm = Yii::app()->getPluginManager();
+            $pm = \Yii::app()->pluginManager;
             $event = new PluginEvent('cron');
             $event->set('interval', $interval);
             $pm->dispatchEvent($event);
