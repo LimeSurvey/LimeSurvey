@@ -1,8 +1,10 @@
 <?php
 $aReplacementData=array();
 ?>
+
 <div class='menubar surveybar' id="questionbarid">
     <div class='row container-fluid'>
+
         <?php if(isset($questionbar['buttons']['view'])):?>
         <div class="col-md-12">
 
@@ -197,10 +199,14 @@ $aReplacementData=array();
 
         <div class="col-md-5 text-right form-inline">
                 <?php if(isset($questionbar['savebutton']['form'])):?>
-                    <a class="btn btn-success" href="#" role="button">
-                        <span class="glyphicon glyphicon-ok"></span>
-                        <?php eT("Save");?>
-                    </a>
+
+
+                    <?php if( 1==1 ):?>
+                        <a class="btn btn-success" href="#" role="button">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            <?php eT("Save");?>
+                        </a>
+                    <?php endif;?>
 
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/282267{$surveyid}"); ?>" role="button">
                         <span class="glyphicon glyphicon-saved"></span>

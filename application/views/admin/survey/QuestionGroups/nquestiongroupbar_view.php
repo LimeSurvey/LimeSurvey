@@ -116,12 +116,14 @@
         <div class="col-md-4 col-md-offset-8 text-right">
 
             <?php if(isset($questiongroupbar['savebutton']['form'])):?>
-                
+
                 <!-- Save buttons -->
+                <?php if(!isset($copying) || !$copying): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="glyphicon glyphicon-ok"></span>
                     <?php eT("Save");?>
                 </a>
+            <?php endif; ?>
 
                 <?php if(isset($questiongroupbar['saveandclosebutton'])):?>
 
