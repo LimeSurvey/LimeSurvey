@@ -1333,6 +1333,14 @@ function db_upgrade_all($iOldDBVersion) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>251),"stg_name='DBVersion'");
         }
 
+        if ( $iOldDBVersion < 252 )
+        {
+            upgradeSurveyTables252();
+
+            // Update DBVersion
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>252),"stg_name='DBVersion'");
+        }
+
         $oTransaction->commit();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
@@ -1357,6 +1365,11 @@ function db_upgrade_all($iOldDBVersion) {
     fixLanguageConsistencyAllSurveys();
     Yii::app()->setConfig('Updating',false);
     return true;
+}
+
+function upgradeSurveyTables252()
+{
+    Yii::app()->db->createCommand()->addColumn('{{questions}}','modulename','string');
 }
 
 function upgradeSurveyTables251()
@@ -1491,9 +1504,9 @@ function fixKCFinder184()
     rmdirr($sThirdPartyDir.'ckeditor/plugins/toolbar/ls-office2003');
     $aUnlink = glob($sThirdPartyDir.'kcfinder/cache/*.js');
     if ($aUnlink !== false) {
-        array_map('unlink', $aUnlink); 
+        array_map('unlink', $aUnlink);
     }
-    $aUnlink = glob($sThirdPartyDir.'kcfinder/cache/*.css'); 
+    $aUnlink = glob($sThirdPartyDir.'kcfinder/cache/*.css');
     if ($aUnlink !== false) {
         array_map('unlink', $aUnlink);
     }
