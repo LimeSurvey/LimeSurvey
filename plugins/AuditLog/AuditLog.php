@@ -188,7 +188,12 @@
             if (count(array_diff_assoc($aNewValues,$aOldValues)))
             {
                 $oAutoLog = $this->api->newModel($this, 'log');
-                $oAutoLog->uid=$oCurrentUser->uid;
+                if ($oCurrentUser) {
+                    $oAutoLog->uid=$oCurrentUser->uid;
+                }
+                else {
+                    $oAutoLog->uid='Automatic creation';
+                }
                 $oAutoLog->entity='user';
                 if ($sAction=='update') $oAutoLog->entityid=$oOldUser['uid'];
                 $oAutoLog->action=$sAction;
