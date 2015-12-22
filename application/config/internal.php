@@ -25,7 +25,7 @@ $internalConfig = array(
         'application.controllers.*',
         'application.modules.*',
     ),
-    'preload' => array ('log', 'clientScript'),
+    'preload' => array ('log'),
     'components' => array(
         'bootstrap' => array(
             'class' => 'application.core.LSBootstrap',
