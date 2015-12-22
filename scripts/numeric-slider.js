@@ -84,10 +84,11 @@ function doNumericSlider(qID,jsonOptions) {
 				}
 				$(thisinput).triggerHandler("keyup"); // Needed for EM
 			});
-			// Replace default em tip
+			// Replace default em tip 
 			$("#question"+qID).find(".em_default").text(jsonOptions.lang.tip);
 		});
 	}
     //Fix buggy chrome/webkit engine which doesn't properly apply the css rules after this insertion
     $("#question"+qID).hide().show(0);
 }
+
