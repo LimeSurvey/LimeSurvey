@@ -1681,10 +1681,10 @@ class SurveyAdmin extends Survey_Common_Action
             $css_files = array(
             );
         }
-
+//var_dump($js_files); die();
         foreach ($js_files as $file)
         {
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $file ));
+            App()->getClientScript()->registerScriptFile(  $file );
         }
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('jqgrid');
