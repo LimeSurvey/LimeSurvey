@@ -24,9 +24,10 @@
 */
 class Survey_Common_Action extends CAction
 {
-    public function __construct($controller=null, $id=null)
+    public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
+
         // Make sure viewHelper can be autoloaded
         Yii::import('application.helpers.viewHelper');
     }
@@ -1245,6 +1246,7 @@ class Survey_Common_Action extends CAction
 
         return array($aImportedFilesInfo, $aErrorFilesInfo);
     }
+
 
     /**
     * Creates a temporary directory
