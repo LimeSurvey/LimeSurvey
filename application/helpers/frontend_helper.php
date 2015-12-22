@@ -1177,12 +1177,12 @@ function buildsurveysession($surveyid,$preview=false)
     ." AND {{questions}}.parent_qid=0\n";
     $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
-    $sQuery= "select count(*) from {{groups}}
-        left join {{questions}} on  {{groups}}.gid={{questions}}.gid
+    $sQuery= "select count(*) from {{groups}} 
+        left join {{questions}} on  {{groups}}.gid={{questions}}.gid 
         where {{groups}}.sid={$surveyid} and qid is null";
     $iTotalGroupsWithoutQuestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
-
+    
     // Fix totalquestions by substracting Test Display questions
     $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
     ." FROM {{questions}}"
@@ -1916,7 +1916,7 @@ function checkCompletedQuota($surveyid,$return=false)
         if(!$aQuotasInfo || empty($aQuotasInfo))
             return $aMatchedQuotas;
         // OK, we have some quota, then find if this $_SESSION have some set
-        $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update
+        $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update 
         foreach ($aQuotasInfo as $aQuotaInfo)
         {
             if(count($aQuotaInfo['members'])===0)

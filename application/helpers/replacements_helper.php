@@ -28,7 +28,6 @@
 function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = NULL, $registerdata = array(), $bStaticReplacement = false)
 {
 
-
     /*
     global $clienttoken,$token,$sitename,$move,$showxquestions,$showqnumcode,$questioncode;
     global $s_lang,$errormsg,$saved_id, $languagechanger,$captchapath,$loadname;
@@ -528,9 +527,6 @@ EOD;
     }
 
     $_endtext = '';
-
-
-
     if (isset($thissurvey['surveyls_endtext']) && trim($thissurvey['surveyls_endtext'])!='')
     {
         $_endtext = $thissurvey['surveyls_endtext'];
@@ -815,3 +811,5 @@ function doHtmlSaveAll($move="")
     $aSaveAllButtons[$move]=$sSaveAllButtons;
     return $aSaveAllButtons[$move];
 }
+
+// Closing PHP tag intentionally omitted - yes, it is okay

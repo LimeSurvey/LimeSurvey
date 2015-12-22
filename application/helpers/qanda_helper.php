@@ -992,6 +992,10 @@ function do_date($ia)
             // backward compatibility: if only a year is given, add month and day
             $mindate=$date_min.'-01-01';
         }
+        elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/",$date_min))// it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
+        {
+            $mindate=$date_min;
+        }
         elseif($date_time_em)
         {
             $mindate=date("Y-m-d",$date_time_em);
@@ -1014,6 +1018,10 @@ function do_date($ia)
         {
             // backward compatibility: if only a year is given, add month and day
             $maxdate=$date_max.'-12-31';
+        }
+        elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/",$date_max))// it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
+        {
+            $maxdate=$date_max;
         }
         elseif($date_time_em)
         {
@@ -1038,12 +1046,15 @@ function do_date($ia)
             $currentdate = $datetimeobj->days;
             $currenthour = $datetimeobj->hours;
             $currentminute = $datetimeobj->minutes;
-        } else {
-            $currentdate='';
-            $currentmonth='';
-            $currentyear='';
-            $currenthour = '';
-            $currentminute = '';
+        }
+        else
+        {
+            // If date is invalid get the POSTED value
+            $currentdate = App()->request->getPost("day{$ia[1]}",'');
+            $currentmonth = App()->request->getPost("month{$ia[1]}",'');
+            $currentyear = App()->request->getPost("year{$ia[1]}",'');
+            $currenthour = App()->request->getPost("hour{$ia[1]}",'');
+            $currentminute = App()->request->getPost("minute{$ia[1]}",'');
         }
 
         $dateorder = preg_split('/([-\.\/ :])/', $dateformatdetails['phpdate'],-1,PREG_SPLIT_DELIM_CAPTURE );
@@ -2185,6 +2196,7 @@ function do_multiplechoice($ia)
 {
     global $thissurvey;
 
+
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
@@ -2354,8 +2366,14 @@ function do_multiplechoice($ia)
         $answer .= " onclick='cancelBubbleThis(event);";
 
         $answer .= ''
-        .  "$checkconditionFunction(this.value, this.name, this.type)' />\n";
-        $answer .= '</div>';
+        .  "$checkconditionFunction(this.value, this.name, this.type)' />\n"
+        .  "<label for=\"answer$ia[1]{$ansrow['title']}\" class=\"answertext\">"
+        .  $ansrow['question']
+        .  "</label>\n";
+
+
+        //        if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
+        //        if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
         ++$fn;
         /* Now add the hidden field to contain information about this answer */
@@ -2364,7 +2382,7 @@ function do_multiplechoice($ia)
         {
             $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
         }
-        $answer .= "\" />";//"\n{$wrapper['item-end']}";
+        $answer .= "\" />\n{$wrapper['item-end']}";
 
         // end of question group
         $answer .= '</div>'; // form group row
@@ -2829,6 +2847,7 @@ function do_file_upload($ia)
 function do_multipleshorttext($ia)
 {
     global $thissurvey;
+
 
     $extraclass ="";
     $answer='';
@@ -3329,6 +3348,7 @@ function do_numerical($ia)
 {
     global $thissurvey;
 
+
     $extraclass ="";
     $answertypeclass = "numeric";
 
@@ -3611,7 +3631,6 @@ $extraclass .=" col-sm-".trim($col);
     }
     elseif((int)($aQuestionAttributes['location_mapservice'])==100)
     {
-
         $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentCenter = $currentLatLong = null;
 
@@ -5256,7 +5275,6 @@ function do_array_multitext($ia)
         . $answer_head_line
         . "</tr>\n\t</thead>\n";
 
-// IKI
         $answer = '<div class="no-more-tables no-more-tables-array-multi-text">';
         $answer .= "\n<table$q_table_id_HTML class=\"table-in-qanda-6  question subquestions-list questions-list {$extraclass} {$num_class} {$totals_class}\"  summary=\"{$caption}\">\n"
         . $answer_cols
@@ -6140,7 +6158,6 @@ function do_array_dual($ia)
             {
                 $answer_head1 = "";
             }
-// IKI
             $answer .= '<div class="no-more-tables no-more-tables-array-dual">';
             $answer .= "\n<table class=\"table-in-qanda-9 question subquestions-list questions-list\" summary=\"{$caption}\">\n"
             . $mycolumns
@@ -6188,6 +6205,7 @@ function do_array_dual($ia)
                 {
                     $answertextcenter="";
                 }
+
                 $myfname= $ia[1].$ansrow['title'];
                 $myfname0 = $ia[1].$ansrow['title'].'#0';
                 $myfid0 = $ia[1].$ansrow['title'].'_0';
@@ -6216,14 +6234,12 @@ function do_array_dual($ia)
                 $answer .= "<input type=\"hidden\" disabled=\"disabled\" name=\"java$myfid0\" id=\"java$myfid0\" value=\"";
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0])) {$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0];}
                 $answer .= "\" />\n";
-
                 if (count($labelans1)>0) // if second label set is used
                 {
                     $answer .= "<input type=\"hidden\" disabled=\"disabled\" name=\"java$myfid1\" id=\"java$myfid1\" value=\"";
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1])) {$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];}
                     $answer .= "\" />\n";
                 }
-
                 $answer .= "\t</th>\n";
                 $hiddenanswers='';
                 $thiskey=0;

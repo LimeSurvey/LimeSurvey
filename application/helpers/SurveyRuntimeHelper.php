@@ -14,15 +14,16 @@
 
 class SurveyRuntimeHelper {
 
+
     protected function createFullQuestionIndex($LEMsessid, $surveyMode)
     {
         if ($surveyMode == 'group')
         {
-            return $this->createFullQuestionIndexByGroup($LEMsessid);
+            $this->createFullQuestionIndexByGroup($LEMsessid);
         }
         else
         {
-            return $this->createFullQuestionIndexByQuestion($LEMsessid);
+            $this->createFullQuestionIndexByQuestion($LEMsessid);
         }
 
     }
@@ -190,8 +191,8 @@ class SurveyRuntimeHelper {
     * @param mixed $surveyid
     * @param mixed $args
     */
-    function run($surveyid,$args)
-    {
+    function run($surveyid,$args) 
+	{
         global $errormsg;
         extract($args);
 
@@ -1260,13 +1261,13 @@ if (!$previewgrp && !$previewquestion)
 
     /**
     * Construction of replacement array, actually doing it with redata
-    *
+    * 
     * @param $aQuestionQanda : array from qanda helper
     * @return aray of replacement for question.psptl
     **/
     public static function getQuestionReplacement($aQuestionQanda)
     {
-
+        
         // Get the default replacement and set empty value by default
         $aReplacement=array(
             "QID"=>"",
@@ -1300,7 +1301,7 @@ if (!$previewgrp && !$previewquestion)
         $oSurveyId=Survey::model()->findByPk($iSurveyId);
         $sType=$lemQuestionInfo['info']['type'];
 
-        // Core value : not replaced
+        // Core value : not replaced 
         $aReplacement['QID']=$iQid;
         $aReplacement['GID']=$aQuestionQanda[6];// Not sure for aleatory : it's the real gid or the updated gid ? We need original gid or updated gid ?
         $aReplacement['SGQ']=$aQuestionQanda[7];

@@ -17,7 +17,7 @@
 *
 * @param mixed $iSurveyID
 * @param array  $aResultTokens
-* @param string $sType type of notification invite|remind
+* @param string $sType type of notification invite|register|remind
 * @return array of results
 */
 function emailTokens($iSurveyID,$aResultTokens,$sType)
@@ -76,13 +76,12 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 		if ($fieldsarray["{SURVEYDESCRIPTION}"] == '')
 			$fieldsarray["{SURVEYDESCRIPTION}"] = $aSurveyLocaleData[$oSurvey['language']]['surveyls_description'];
 
-		$fieldsarray["{ADMINNAME}"] = $oSurvey['admin'];
-		$fieldsarray["{ADMINEMAIL}"] = $oSurvey['adminemail'];
-		$from =  $fieldsarray["{ADMINEMAIL}"];
-		if($from ==  '')
-			$from = Yii::app()->getConfig('siteadminemail');
-		elseif (!empty($fieldsarray["{ADMINNAME}"]))
-            $from = $fieldsarray["{ADMINNAME}"]." <".$from.">";
+		$fieldsarray["{ADMINNAME}"] = $oSurvey->admin;
+		$fieldsarray["{ADMINEMAIL}"] = $oSurvey->adminemail;
+		$fieldsarray["{EXPIRY}"]=$oSurvey->expires;
+		if(empty($fieldsarray["{ADMINEMAIL}"] ))
+			$fieldsarray["{ADMINEMAIL}"] = Yii::app()->getConfig('siteadminemail');
+		$from = $fieldsarray["{ADMINNAME}"] . ' <' . $fieldsarray["{ADMINEMAIL}"] . '>';
 
 		foreach ($attributes as $attributefield)
 		{
@@ -161,7 +160,7 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 													'email'=>$fieldsarray["{EMAIL}"],
 													'status'=>'OK');
 
-				if($sType == 'invite')
+				if($sType == 'invite' || $sType == 'register')
 					$oTokens->updateByPk($aTokenRow['tid'], array('sent' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"))));
 
 				if($sType == 'remind')

@@ -121,6 +121,7 @@ function quoteText($sText, $sEscapeMode = 'html')
 function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
 {
     $publicurl = Yii::app()->getConfig('publicurl');
+
     $qtypes = Question::typeList();
 
     if ($ReturnType == "array")
@@ -328,9 +329,12 @@ function getAdminThemeList()
         closedir($handle);
     }
 
+
     ksort($list_of_files);
+
     return $list_of_files;
 }
+
 
 /**
 * getQuestions() queries the database for an list of all questions matching the current survey and group id
@@ -2785,7 +2789,7 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Display'),
         'sortorder'=>110,
         'inputtype'=>'text',
-        "help"=>gT('Minimum date selectable in calendar (YYYY-MM-DD). Only the year is used if dropdown boxes are selected.'),
+        "help"=>gT('Minimum date, valide date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page.'),
         "caption"=>gT('Minimum date'));
 
         $qattributes["date_max"]=array(
@@ -2793,7 +2797,7 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Display'),
         'sortorder'=>111,
         'inputtype'=>'text',
-        "help"=>gT('Maximum date selectable in calendar (YYYY-MM-DD). Only the year is used if dropdown boxes are selected.'),
+        "help"=>gT('Maximum date, valide date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page.'),
         "caption"=>gT('Maximum date'));
 
         $qattributes["dropdown_prepostfix"]=array(
@@ -7557,3 +7561,4 @@ function array_diff_assoc_recursive($array1, $array2) {
     }
 
 // Closing PHP tag intentionally omitted - yes, it is okay
+

@@ -118,12 +118,13 @@ function modlabelsetanswers($lid)
 
     //global  $labelsoutput;
 
+    
+
     $ajax = false;
 
     if (isset($_POST['ajax']) && $_POST['ajax'] == "1"){
         $ajax = true;
     }
-    
     if (!isset($_POST['method'])) {
         $_POST['method'] = gT("Save");
     }

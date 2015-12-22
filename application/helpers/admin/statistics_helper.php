@@ -887,9 +887,12 @@ class statistics_helper {
                     $headPDF = array();
                     $tablePDF = array();
                     $footPDF = array();
+
                     $pdfTitle = sprintf(gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
                     $titleDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
+
                     $headPDF[] = array(gT("Calculation"),gT("Result"));
+
                     break;
 
                 case 'html':

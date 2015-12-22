@@ -1546,6 +1546,55 @@
                     }
                 }
 
+                // dropdown_dates
+                // dropdown box: validate that a complete date is entered
+                if (isset($qattr['dropdown_dates']) && $qattr['dropdown_dates'])
+                {
+                    $dropdown_dates = $qattr['dropdown_dates'];
+                    if ($hasSubqs) {
+                        $subqs = $qinfo['subqs'];
+                        $sq_names = array();
+                        $subqValidEqns = array();
+                        foreach ($subqs as $sq) {
+                            $sq_name = NULL;
+                            switch ($type)
+                            {
+                                case 'D': //DATE QUESTION TYPE
+                                    $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
+                                    $sq_name = '('.$sq_name.'!="INVALID")';
+                                    $subqValidSelector = '';
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if (!is_null($sq_name)) {
+                                $sq_names[] = $sq_name;
+                                $subqValidEqns[$subqValidSelector] = array(
+                                'subqValidEqn' => $sq_name,
+                                'subqValidSelector' => $subqValidSelector,
+                                );
+                            }
+                        }
+                        if (count($sq_names) > 0) {
+                            if (!isset($validationEqn[$questionNum]))
+                            {
+                                $validationEqn[$questionNum] = array();
+                            }
+                            $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'dropdown_dates',
+                            'class' => 'dropdown_dates',
+                            'eqn' => implode(' && ', $sq_names),
+                            'qid' => $questionNum,
+                            'subqValidEqns' => $subqValidEqns,
+                            );
+                        }
+                    }
+                }
+                else
+                {
+                    $dropdown_dates='';
+                }
                 // date_min
                 // Maximum date allowed in date question
                 if (isset($qattr['date_min']) && trim($qattr['date_min']) != '')
@@ -3092,15 +3141,13 @@
                     case 'R':
                         $qtips['default']=$this->gT("All your answers must be different and you must rank in order.");
                         break;
-// Helptext is added in qanda_help.php
-/*                  case 'D':
-                        $qtips['default']=$this->gT("Please complete all parts of the date.");
-                        break;
-*/
                     default:
                         break;
                 }
-
+                if($dropdown_dates)
+                {
+                    $qtips['dropdown_dates']=$this->gT("Please complete all parts of the date.");
+                }
                 if($commented_checkbox)
                 {
                     switch ($commented_checkbox)
@@ -4841,12 +4888,13 @@
                     switch ($knownVar['type'])
                     {
                         case 'D': //DATE
-                            if (trim($value)=="" | $value=='INVALID')
+                            if (trim($value)=="")
                             {
                                 $value = NULL;
                             }
                             else
                             {
+                                // We don't really validate date here, anyone can send anything : forced too 
                                 $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
                                 $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
                                 $value=$datetimeobj->convert("Y-m-d H:i");
@@ -5342,7 +5390,7 @@
                     switch($type)
                     {
                         case 'D': //DATE
-                            if (trim($val)=='')
+                            if (trim($val)=='' || $val=="INVALID")
                             {
                                 $val=NULL;  // since some databases can't store blanks in date fields
                             }
@@ -6314,7 +6362,6 @@
             $mandatoryTip = '';
             if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y'))
             {
-                //$mandatoryTip = "<strong><br /><span class='errormandatory'>".$LEM->gT('This question is mandatory').'.  ';
                 $mandatoryTip = "<p class='errormandatory alert alert-danger' role='alert'><span class='glyphicon glyphicon-exclamation-sign'></span>&nbsp" . $LEM->gT('This question is mandatory') . "</p>";
                 switch ($qInfo['type'])
                 {
@@ -6701,7 +6748,6 @@
                     }
                 }
             }
-
 
             //////////////////////////////////////////////////////////////////////////
             // STORE METADATA NEEDED FOR SUBSEQUENT PROCESSING AND DISPLAY PURPOSES //
@@ -8502,15 +8548,25 @@ EOD;
                                     $_SESSION[$LEM->sessid]['qattribute_answer'.$sq]=($_POST['qattribute_answer'.$sq]);
                                 }
                                 $value=trim($value);
-                                if ($value!="" && $value!='INVALID')
+                                if ($value!="" && $value!="INVALID")
                                 {
                                     $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $qid,$_SESSION['LEMlang']);
                                     if (!isset($aAttributes[$qid])) {
                                         $aAttributes[$qid]=array();
                                     }
                                     $aDateFormatData=getDateFormatDataForQID($aAttributes[$qid],$LEM->surveyOptions);
+                                    // We don't really validate date here : if date is invalid : return 1999-12-01 00:00
                                     $oDateTimeConverter = new Date_Time_Converter(trim($value), $aDateFormatData['phpdate']);
-                                    $value=$oDateTimeConverter->convert("Y-m-d H:i"); // TODO : control if inverse function original value
+                                    $newValue=$oDateTimeConverter->convert("Y-m-d H:i");
+                                    $oDateTimeConverter = new Date_Time_Converter($newValue, "Y-m-d H:i");
+                                    if($value==$oDateTimeConverter->convert($aDateFormatData['phpdate'])) // control if inverse function original value
+                                    {
+                                        $value=$newValue;
+                                    }
+                                    else
+                                    {
+                                        $value="";// Or $value="INVALID" ? : dropdown is OK with this not default.
+                                    }
                                 }
                                 break;
 #                            case 'N': //NUMERICAL QUESTION TYPE

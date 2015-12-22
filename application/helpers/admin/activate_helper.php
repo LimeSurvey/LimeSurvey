@@ -392,7 +392,14 @@ function activateSurvey($iSurveyID, $simulate = false)
     }
     catch (CDbException $e)
     {
-        return array('error'=>'surveytablecreation');
+        if(App()->getConfig('debug'))
+        {
+          return array('error'=>$e->getMessage());
+        }
+        else
+        {
+          return array('error'=>'surveytablecreation');
+        }
     }
     try
     {
