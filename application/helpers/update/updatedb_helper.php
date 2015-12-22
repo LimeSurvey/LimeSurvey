@@ -1307,6 +1307,13 @@ function db_upgrade_all($iOldDBVersion) {
             upgradeSurveyTables181();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>181),"stg_name='DBVersion'");
         }
+
+        if ($iOldDBVersion < 182)
+        {
+           fixKCFinder182();
+           $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>182),"stg_name='DBVersion'");
+        }
+
         if ($iOldDBVersion < 183)
         {
             upgradeSurveyTables183();

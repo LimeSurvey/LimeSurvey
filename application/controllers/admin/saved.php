@@ -32,16 +32,13 @@ class saved extends Survey_Common_Action
             die();
         }
 
-
-
-
         $aThisSurvey = getSurveyInfo($iSurveyId);
         $aData['sSurveyName'] = $aThisSurvey['name'];
         $aData['iSurveyId'] = $iSurveyId;
         $aViewUrls[] = 'savedbar_view';
         $aViewUrls['savedlist_view'][] = $this->_showSavedList($iSurveyId);
 
-
+        // saved.js bugs if table is empty
         if (count($aViewUrls['savedlist_view'][0]['aResults']))
         {
             App()->getClientScript()->registerPackage('jquery-tablesorter');

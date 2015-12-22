@@ -34,6 +34,7 @@ class templates extends Survey_Common_Action
     }
 
 
+
     /**
     * Exports a template
     *
@@ -941,7 +942,7 @@ class templates extends Survey_Common_Action
             $files[] = array('name' => 'question_start.pstpl');
             $Question[] = 'question_start.pstpl';
         }
-        $editfile=sanitize_filename($editfile); // Fixed with editable file after, but put in aData before fix
+        $editfile=sanitize_filename($editfile); // Fixed with editable file after, but put in aData before fix 
         $availableeditorlanguages = array('bg', 'cs', 'de', 'dk', 'en', 'eo', 'es', 'fi', 'fr', 'hr', 'it', 'ja', 'mk', 'nl', 'pl', 'pt', 'ru', 'sk', 'zh');
         $extension = substr(strrchr($editfile, "."), 1);
         if ($extension == 'css' || $extension == 'js')
@@ -1114,6 +1115,7 @@ class templates extends Survey_Common_Action
 
                 foreach ($Welcome as $qs) {
                     $files[] = array("name" => $qs);
+                    $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/$qs", $aData));
                 }
 
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startpage.pstpl", $aData));

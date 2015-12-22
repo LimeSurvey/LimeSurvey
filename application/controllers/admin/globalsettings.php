@@ -258,7 +258,9 @@ class GlobalSettings extends Survey_Common_Action
 
         Yii::app()->session['flashmessage'] = $warning.gT("Global settings were saved.");
 
-        Yii::app()->getController()->redirect(Yii::app()->createUrl('admin/globalsettings'));
+	    // ref url
+        $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
+        if($url){Yii::app()->getController()->redirect($url);}
     }
 
     private function _checkSettings()

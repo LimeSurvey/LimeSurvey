@@ -80,7 +80,7 @@ class questiongroups extends Survey_Common_Action
 
             unlink($sFullFilepath);
 
-           $aData['display'] = $importgroup;
+            $aData['display'] = $importgroup;
             $aData['surveyid'] = $iSurveyID;
             $aData['aImportResults'] = $aImportResults;
             $aData['sExtension'] = $sExtension;
@@ -140,6 +140,7 @@ class questiongroups extends Survey_Common_Action
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             Yii::app()->session['FileManagerContext'] = "create:group:{$surveyid}";
+
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');
             $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;

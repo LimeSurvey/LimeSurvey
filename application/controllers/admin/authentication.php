@@ -118,7 +118,7 @@ class Authentication extends Survey_Common_Action
                     // If no message, return a default message
                     $message = gT('Incorrect username and/or password!');
                 }
-                App()->user->setFlash('error', $message);
+                App()->user->setFlash('loginError', $message);
                 $this->getController()->redirect(array('/admin/authentication/sa/login'));
             }
         }
@@ -132,7 +132,10 @@ class Authentication extends Survey_Common_Action
         /* Adding beforeLogout event */
         $beforeLogout = new PluginEvent('beforeLogout');
         App()->getPluginManager()->dispatchEvent($beforeLogout);
-
+        // Expire the CSRF cookie
+        $cookie = new CHttpCookie('YII_CSRF_TOKEN', '');
+        $cookie->expire = time()-3600; 
+        Yii::app()->request->cookies['YII_CSRF_TOKEN'] = $cookie;
         App()->user->logout();
         App()->user->setFlash('loginmessage', gT('Logout successful.'));
 
@@ -285,7 +288,7 @@ class Authentication extends Survey_Common_Action
     */
     private function _doRedirect()
     {
-        $returnUrl = App()->user->getReturnUrl(array('/admin/'));
+        $returnUrl = App()->user->getReturnUrl(array('/admin'));
         $this->getController()->redirect($returnUrl);
     }
 

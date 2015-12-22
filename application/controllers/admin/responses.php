@@ -42,6 +42,7 @@ class responses extends Survey_Common_Action
     function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
+
         Yii::app()->loadHelper('surveytranslator');
     }
 
@@ -376,9 +377,9 @@ class responses extends Survey_Common_Action
             'sorttype' => 'string',
             'sortable' => false,
             'width' => '100',
-            'resizable' => false,
-            'align' => 'center',
-            'label' => gt("Actions"),
+            'resizable' => true,
+            'align' => 'left',
+            'label' => gT("Actions"),
             'search' => false,
             'hidedlg'=>true,
         );
@@ -400,7 +401,7 @@ class responses extends Survey_Common_Action
             'index'=>'lastpage',
             'sorttype'=>'integer',
             'sortable'=>true,
-            'width'=>'150',
+            'width'=>'100',
             'resizable' => true,// Strangely : don't work
             'align'=>'center',
             'title'=>viewHelper::getFieldText($fields['lastpage']),
@@ -429,9 +430,22 @@ class responses extends Survey_Common_Action
             'align'=>'center',
             'label' => gT("Completed"),
         );
-
+        // defaultSearch is the default search done before send request in json. Actually : completed and token only. Can be extended ( js is ready) ?
+        $defaultSearch=array();
+        if (incompleteAnsFilterState() == "incomplete")
+        {
+            $defaultSearch['completed']="N";
+        }
+        elseif (incompleteAnsFilterState() == "complete")
+        {
+            $defaultSearch['completed']="Y";
+        }
+        else
+        {
+            $defaultSearch['completed']="";
+        }
         //add token to top of list if survey is not private
-        if ($bHaveToken)
+        if ($bHaveToken) 
         {
             $column_model[] = array(
                 'name'=>'token',
@@ -468,6 +482,11 @@ class responses extends Survey_Common_Action
                 'align'=>'left',
                 'title'=>gT('Email'),
             );
+            // If token exist, test if token is set in params, add it to defaultSearch
+            if($sTokenSearch= Yii::app()->request->getQuery('token'))
+            {
+                $defaultSearch['token']=$sTokenSearch;
+            }
         }
 
 
@@ -581,6 +600,9 @@ class responses extends Survey_Common_Action
             else
                 $column_names[] = $column['name'];
         }
+        $aData['sortorder']= Yii::app()->request->getQuery('order', 'asc');
+        $aData['limit']= Yii::app()->request->getQuery('limit', 25);
+        $aData['page']= intval(Yii::app()->request->getQuery('start', 0))+1;
 
         $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin');
         $aData['surveyid']= $iSurveyId;
@@ -588,12 +610,27 @@ class responses extends Survey_Common_Action
         $aData['column_names_txt']= ls_json_encode($column_names);;
         $aData['hasUpload']=hasFileUploadQuestion($iSurveyId);
 
+        $aData['jsonBaseUrl']=App()->createUrl('/admin/responses', array('surveyid'=>$iSurveyId, 'browselang'=>$sBrowseLanguage));
+        $aData['jsonUrl']=App()->createUrl('/admin/responses', array(
+            'sa'=> 'getResponses_json',
+            'surveyid' => $iSurveyId,
+            'browselang'=>$sBrowseLanguage,
+            'statfilter'=>App()->request->getQuery('statfilter',0)
+        ));
+        $aData['jsonActionUrl']=App()->createUrl('/admin/responses', array('sa'=> 'actionResponses', 'surveyid' => $iSurveyId,'browselang'=>$sBrowseLanguage));
 
-        $this->_renderWrappedTemplate('responses', 'listResponses_view', $aData);
+        $aData['defaultSearch']=json_encode($defaultSearch);
+        $aViewUrls=array();
+        if (App()->request->getQuery('statfilter'))
+        {
+            $aViewUrls[] = 'filterListResponses_view';
+        }
+        $aViewUrls[] = 'listResponses_view';
+        $this->_renderWrappedTemplate('responses', $aViewUrls, $aData);
 
     }
 
-
+    
    /**
     * Returns survey responses in json format for a given survey
     *
@@ -672,12 +709,28 @@ class responses extends Survey_Common_Action
         $oCriteria->order = "{$sOrderBy} {$sOrder}";
         if(Yii::app()->request->getParam('_search'))
         {
-            if(($value=Yii::app()->request->getParam('completed')) && !incompleteAnsFilterState()) //
+            if(($value=Yii::app()->request->getParam('completed'))) 
             {
                 if($value=='Y')
+                {
                     $oCriteria->addCondition("submitdate IS NOT NULL");
+                    Yii::app()->session['incompleteanswers']='complete';
+                }
                 elseif($value=='N')
+                {
                     $oCriteria->addCondition("submitdate IS NULL");
+                    Yii::app()->session['incompleteanswers']='incomplete';
+                }
+                else
+                    Yii::app()->session['incompleteanswers']='all';
+            }
+            //Get the filter data
+            if (App()->request->getQuery('statfilter') && is_array(Yii::app()->session['statistics_selects_'.$iSurveyID]))
+            {
+                foreach(Yii::app()->session['statistics_selects_'.$iSurveyID] as $sCondition)
+                {
+                    $oCriteria->addCondition($sCondition);
+                }
             }
             foreach($aKnowColumns as $sFiltering)
             {
@@ -800,8 +853,8 @@ class responses extends Survey_Common_Action
         echo json_encode($aSurveyEntries);
         Yii::app()->end();
     }
-
-
+   
+    
     /**
     * Saves the hidden columns for response browsing in the session
     *
@@ -813,12 +866,12 @@ class responses extends Survey_Common_Action
     {
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
-           $aHiddenFields=explode('|',Yii::app()->request->getPost('aHiddenFields'));
+           $aHiddenFields=explode('|',Yii::app()->request->getPost('aHiddenFields')); 
            $_SESSION['survey_'.$iSurveyId]['HiddenFields']=$aHiddenFields;
         }
     }
-
-
+    
+    
     /**
     * Do an actions on response
     *
@@ -855,11 +908,14 @@ class responses extends Survey_Common_Action
     {
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete'))
         {
-            $oSurvey=Survey::model()->findByPk($iSurveyId);
-            //SurveyDynamic::model($iSurveyId)->deleteByPk($sResponseId);
-            Response::model($iSurveyId)->findByPk($sResponseId)->delete(true);
-            if($oSurvey->savetimings == "Y"){// TODO : add it to response delete (maybe test if timing table exist)
-                SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
+            $aResponseId=explode(",",$sResponseId); // deleteByPk lust work with array, but seems don't work ? Maybe before delete broke this ?column_model_txt
+            foreach($aResponseId as $iResponseId)
+            {
+                Response::model($iSurveyId)->findByPk($iResponseId)->delete(true);
+                $oSurvey=Survey::model()->findByPk($iSurveyId);
+                if($oSurvey->savetimings == "Y"){// TODO : add it to response delete (maybe test if timing table exist)
+                    SurveyTimingDynamic::model($iSurveyId)->deleteByPk($iResponseId);
+                }
             }
         }
     }
@@ -903,7 +959,7 @@ class responses extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("Sorry, this file was not found."),'error');
             $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$surveyid));
         }
-
+        
     }
 
     /**

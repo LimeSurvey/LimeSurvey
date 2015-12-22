@@ -28,7 +28,7 @@ class surveypermission extends Survey_Common_Action {
     function index($surveyid)
     {
         $aData['surveyid'] = $iSurveyID = $surveyid =  sanitize_int($surveyid);
-
+        $aViewUrls = array();
 
         $imageurl = Yii::app()->getConfig('adminimageurl');
 

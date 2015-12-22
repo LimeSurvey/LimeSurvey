@@ -197,7 +197,6 @@ class questions extends Survey_Common_Action
             if (isset($fatalerror))
             {
                 unlink($sFullFilepath);
-                //echo htmlentities($aImportResults['fatalerror']); die();
                 $message = $fatalerror;
                 $message .= '<p>
                                 <a class="btn btn-default btn-lg"
@@ -261,6 +260,7 @@ class questions extends Survey_Common_Action
         $surveyid = $iSurveyID = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
+
 
         Yii::app()->loadHelper('surveytranslator');
 
@@ -347,7 +347,7 @@ class questions extends Survey_Common_Action
                         $defaultvalue = DefaultValue::model()->findByAttributes(array(
                         'specialtype' => '',
                         'qid' => $qid,
-                        'sqid' => $aSubquestion['qid'],
+						'sqid' => $aSubquestion['qid'],
                         'scale_id' => $scale_id,
                         'language' => $language
                         ));
@@ -927,7 +927,7 @@ class questions extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
-            //$surveyinfo = getSurveyInfo($surveyid);
+            $surveyinfo = getSurveyInfo($surveyid);
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');
 
@@ -1334,7 +1334,7 @@ class questions extends Survey_Common_Action
         $iLabelID = (int) Yii::app()->request->getParam('lid');
         $aNewLanguages = Yii::app()->request->getParam('languages');
         $bCheckAssessments = Yii::app()->request->getParam('bCheckAssessments',0);
-        $arLabelSet=LabelSet::model()->find('lid=:lid',array(':lid' => $iLabelID));
+        $arLabelSet=LabelSet::model()->find('lid=:lid',array(':lid' => $iLabelID)); 
         $iLabelsWithAssessmentValues=Label::model()->count('lid=:lid AND assessment_value<>0',array(':lid' => $iLabelID));
         $aLabelSetLanguages=explode(' ',$arLabelSet->languages);
         $aErrorMessages=array();
@@ -1361,7 +1361,7 @@ class questions extends Survey_Common_Action
         }
     }
 
-
+    
     /**
     * Load preview of a question screen.
     *

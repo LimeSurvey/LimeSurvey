@@ -158,6 +158,8 @@ class Usergroups extends Survey_Common_Action
 
     public function add()
     {
+
+
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         $aData = array();
 
@@ -260,7 +262,6 @@ class Usergroups extends Survey_Common_Action
     */
     public function index($ugid = false, $header = false)
     {
-
         if ($ugid != false)
             $ugid = (int)$ugid;
 
@@ -371,7 +372,7 @@ class Usergroups extends Survey_Common_Action
         {
             $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid));
         }
-        else
+        else    
         {
             $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid, 'owner_id' => Yii::app()->session['loginID']));
         }
@@ -420,7 +421,6 @@ class Usergroups extends Survey_Common_Action
                 list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.') . '<br />' . gT('User not found.')));
             }
         }
-
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
 

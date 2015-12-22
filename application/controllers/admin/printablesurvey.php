@@ -462,7 +462,7 @@ class printablesurvey extends Survey_Common_Action
                                         $thiscquestion=$fieldmap[$conrow['cfieldname']];
                                         $condition="parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$sLanguageCode}'";
                                         $ansresult= Question::model()->findAll($condition);
-                                        $cqidattributes = getQuestionAttributeValues($conrow['cqid'], $conrow['type']);
+                                        $cqidattributes = getQuestionAttributeValues($conrow['cqid']);
                                         if ($labelIndex == 0)
                                         {
                                             if (trim($cqidattributes['dualscale_headerA'][$sLanguageCode]) != '') {

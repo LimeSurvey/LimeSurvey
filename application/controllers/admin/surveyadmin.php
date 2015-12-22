@@ -39,7 +39,7 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-    * Loads list of surveys and its few quick properties.
+    * Loads list of surveys and it's few quick properties.
     *
     * @access public
     * @return void
@@ -130,15 +130,13 @@ class SurveyAdmin extends Survey_Common_Action
     * This function prepares the view for a new survey
     *
     */
-    public function newsurvey()
+    function newsurvey()
     {
+        App()->getClientScript()->registerPackage('jqgrid');
         if (!Permission::model()->hasGlobalPermission('surveys','create'))
             $this->getController()->error('No permission');
 
-
-        App()->getClientScript()->registerPackage('jqgrid');
         $this->_registerScriptFiles();
-
         Yii::app()->loadHelper('surveytranslator');
 
         $esrow = $this->_fetchSurveyInfo('newsurvey');
@@ -180,7 +178,8 @@ class SurveyAdmin extends Survey_Common_Action
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read') && !Permission::model()->hasGlobalPermission('surveys','read'))
             $this->getController()->error('No permission');
-
+        if(Yii::app()->request->isPostRequest)
+            $this->update($iSurveyID);
         $this->_registerScriptFiles();
 
         //Yii::app()->loadHelper('text');
@@ -338,6 +337,10 @@ class SurveyAdmin extends Survey_Common_Action
         // We load the panel packages for quick actions
 
         $iSurveyID = sanitize_int($iSurveyID);
+        if (isset($gid))
+            $gid = sanitize_int($gid);
+        if (isset($qid))
+            $qid = sanitize_int($qid);
 
         $survey = Survey::model()->findByPk($iSurveyID);
         $baselang = $survey->language;
@@ -537,6 +540,9 @@ class SurveyAdmin extends Survey_Common_Action
 
                 $aData['tnewtable'] = $tnewtable;
                 $aData['toldtable'] = $toldtable;
+
+                // Reset the session of the survey when deactivating it
+                killSurveySession($iSurveyID);
             }
 
             //Remove any survey_links to the CPDB
@@ -719,9 +725,9 @@ class SurveyAdmin extends Survey_Common_Action
         if (count($result) > 0)
         {
             foreach ($result as $rows)
-                $aUsers[$rows['uid']] = $rows['user'];
+                $aUsers[$rows['user']]=$rows['uid'];
         }
-        asort($aUsers);
+        ksort($aUsers);
         $ajaxoutput = ls_json_encode($aUsers) . "\n";
         echo $ajaxoutput;
     }
@@ -1650,7 +1656,6 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _deleteSurvey($iSurveyID)
     {
-
         Survey::model()->deleteSurvey($iSurveyID);
         rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyID);
     }
@@ -1665,8 +1670,8 @@ class SurveyAdmin extends Survey_Common_Action
     {
         if (empty($files))
         {
-            $generalscripts_path = SCRIPT_PATH;
-            $adminscripts_path = ADMIN_SCRIPT_PATH;
+            $generalscripts_path = Yii::app()->getConfig('generalscripts');
+            $adminscripts_path = Yii::app()->getConfig('adminscripts');
             $styleurl = Yii::app()->getConfig('styleurl');
 
             $js_files = array(
@@ -1746,16 +1751,19 @@ class SurveyAdmin extends Survey_Common_Action
         $oSurvey->admin =  Yii::app()->request->getPost('admin');
         $oSurvey->expires =  $expires;
         $oSurvey->startdate =  $startdate;
-        $oSurvey->anonymized = App()->request->getPost('anonymized');
         $oSurvey->faxto = App()->request->getPost('faxto');
         $oSurvey->format = App()->request->getPost('format');
-        $oSurvey->savetimings = App()->request->getPost('savetimings');
         $oSurvey->template = Yii::app()->request->getPost('template');
         $oSurvey->assessments = App()->request->getPost('assessments');
         $oSurvey->additional_languages = implode(' ',Yii::app()->request->getPost('additional_languages',array()));
-        $oSurvey->datestamp = App()->request->getPost('datestamp');
-        $oSurvey->ipaddr = App()->request->getPost('ipaddr');
-        $oSurvey->refurl = App()->request->getPost('refurl');
+        if ($oSurvey->active!='Y')
+        {
+            $oSurvey->anonymized = App()->request->getPost('anonymized');
+            $oSurvey->savetimings = App()->request->getPost('savetimings');
+            $oSurvey->datestamp = App()->request->getPost('datestamp');
+            $oSurvey->ipaddr = App()->request->getPost('ipaddr');
+            $oSurvey->refurl = App()->request->getPost('refurl');
+        }
         $oSurvey->publicgraphs = App()->request->getPost('publicgraphs');
         $oSurvey->usecookie = App()->request->getPost('usecookie');
         $oSurvey->allowregister = App()->request->getPost('allowregister');

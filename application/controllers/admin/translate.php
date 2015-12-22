@@ -47,6 +47,7 @@ class translate extends Survey_Common_Action {
             $tolang = $langs[0];
         }
 
+        // TODO need to do some validation here on surveyid
         $surveyinfo = getSurveyInfo($iSurveyID);
         $survey_title = $surveyinfo['name'];
 
@@ -59,7 +60,6 @@ class translate extends Survey_Common_Action {
 			"surveyid" => $iSurveyID,
 			"survey_title" => $survey_title,
 			"tolang" => $tolang,
-			//////////////////
 			"adminmenu" => $this->showTranslateAdminmenu($iSurveyID, $survey_title, $tolang)
 		);
         $aViewUrls['translateheader_view'][] = $aData;

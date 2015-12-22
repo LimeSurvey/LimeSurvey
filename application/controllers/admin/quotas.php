@@ -419,14 +419,13 @@ class quotas extends Survey_Common_Action
             {
                 $aData['newanswer_result'] = $result;
                 $aData['quota_name'] = $quota_name;
-
                 $aViewUrls[] = 'newanswer_view';
             }
         }
 
         if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
         {
-            $aResults = Quota::model()->findByPk(Yii::app()->request->getPost('quota_id'));
+            $aResults = Quota::model()->findByPk(Yii::app()->request->getPost('quota_qid'));
             $sQuotaName = $aResults['name'];
 
             $aQuestionAnswers = self::getQuotaAnswers(Yii::app()->request->getPost('quota_qid'), $iSurveyId, Yii::app()->request->getPost('quota_id'));
@@ -474,7 +473,7 @@ class quotas extends Survey_Common_Action
     }
 
     /**
-     *
+     * 
      * @param type $iQuestionId
      * @param type $iSurveyId
      * @param type $iQuotaId
@@ -488,8 +487,8 @@ class quotas extends Survey_Common_Action
         $aData       = $this->_getData($iSurveyId);
         $sBaseLang   = $aData['sBaseLang'];
         $this->_checkPermissions($iSurveyId, 'read');
-
-
+		
+			
         $aQuestion = Question::model()->findByPk(array('qid' => $iQuestionId, 'language' => $sBaseLang));
         $aQuestionType = $aQuestion['type'];
 
@@ -510,16 +509,16 @@ class quotas extends Survey_Common_Action
                 'F' => array('Title' => $aQuestion['title'], 'Display' => gT("Female"), 'code' => 'F'));
         } elseif ($aQuestionType == 'L' || $aQuestionType == 'O' || $aQuestionType == '!')
         {
-
+        	
             $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId, 'language' => $sBaseLang));
 
             $aAnswerList = array();
 
-            foreach ($aAnsResults as $aDbAnsList)
+            foreach ($aAnsResults as $aDbAnsList) 
             {
                 $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['answer'], 0, 40), 'code' => $aDbAnsList['code']);
             }
-
+			
         } elseif ($aQuestionType == 'A')
         {
             $aAnsResults = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
@@ -568,7 +567,7 @@ class quotas extends Survey_Common_Action
         if (empty($aAnswerList))
         {
             return array();
-        }
+        } 
         else
         {
             // Now we mark answers already used in this quota as such

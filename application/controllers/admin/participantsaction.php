@@ -967,8 +967,6 @@ class participantsaction extends Survey_Common_Action
         );
         ParticipantAttributeName::model()->saveAttribute($aData);
 
-        //echo "<pre>"; var_dump($_POST); echo "</pre>"; die;
-
         // Save translations
         if (isset($_POST['lang']))
         {
@@ -1462,17 +1460,17 @@ class participantsaction extends Survey_Common_Action
         $bCanEdit = Yii::app()->request->getPost('can_edit');
 
         $i = 0;
-        foreach ($iParticipantId as $iId)
-        {
-            $time = time();
-            $aData = array('participant_id' => $iId,
-                'share_uid' => $iShareUserId,
-                'date_added' => date('Y-m-d H:i:s', $time),
-                'can_edit' => $bCanEdit);
-            ParticipantShare::model()->storeParticipantShare($aData);
-            $i++;
+        if (Permission::model()->hasGlobalPermission('participantpanel','update') &&  $iShareUserId>0)
+            foreach ($iParticipantId as $iId)
+            {
+                $time = time();
+                $aData = array('participant_id' => $iId,
+                    'share_uid' => $iShareUserId,
+                    'date_added' => date('Y-m-d H:i:s', $time),
+                    'can_edit' => $bCanEdit);
+                ParticipantShare::model()->storeParticipantShare($aData);
+                $i++;
         }
-
         printf(gT("%s participants have been shared"), $i);
     }
 

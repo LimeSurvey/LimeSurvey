@@ -314,13 +314,16 @@ class export extends Survey_Common_Action {
         }
 
         if (Yii::app()->request->getPost('response_id'))
-        {
             $sFilter="{{survey_{$iSurveyID}}}.id=".(int)Yii::app()->request->getPost('response_id');
+        elseif(App()->request->getQuery('statfilter') && is_array(Yii::app()->session['statistics_selects_'.$iSurveyID]))
+        {
+            $sFilter=Yii::app()->session['statistics_selects_'.$iSurveyID];
         }
         else
         {
             $sFilter='';
-        }
+		}
+
         viewHelper::disableHtmlLogging();
         $resultsService->exportSurvey($iSurveyID, $explang, $sExportType, $options, $sFilter);
 
