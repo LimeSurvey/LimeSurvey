@@ -391,6 +391,10 @@ class database extends Survey_Common_Action
             }
         }
 
+
+        /**
+         * Insert / Copy question
+         */
         if (in_array($sAction, array('insertquestion', 'copyquestion')) && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent','create'))
         {
             $survey = Survey::model()->findByPk($iSurveyID);
@@ -661,18 +665,6 @@ class database extends Survey_Common_Action
                                 }
                             }
                         }
-
-
-
-
-
-
-
-
-
-
-
-
 
                     } else {
                         $qattributes = questionAttributes();
