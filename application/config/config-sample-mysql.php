@@ -22,24 +22,24 @@
 |
 */
 return array(
-	'components' => array(
-		'db' => array(
-			'connectionString' => 'mysql:host=localhost;port=3306;dbname=limesurvey;',
-			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
-			'charset' => 'utf8',
-			'tablePrefix' => 'lime_',
-		),
+    'components' => array(
+        'db' => array(
+            'connectionString' => 'mysql:host=localhost;port=3306;dbname=limesurvey;',
+            'emulatePrepare' => true,
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+            'tablePrefix' => 'lime_',
+        ),
 // Uncomment the following section if you wish to store sessions in the database
 // rather than in files.
 // Make sure MySQL max_allowed_packet setting is large enough, some surveys generate over 2 MB of session data.
 /*
-		'session' => array (
-			'class' => 'system.web.CDbHttpSession',
-			'connectionID' => 'db',
-			'sessionTableName' => '{{sessions}}',
-		),
+        'session' => array (
+            'class' => 'system.web.CDbHttpSession',
+            'connectionID' => 'db',
+            'sessionTableName' => '{{sessions}}',
+        ),
         */
         'urlManager' => array(
             'urlFormat' => 'get',

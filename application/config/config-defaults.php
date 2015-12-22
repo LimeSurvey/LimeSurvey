@@ -82,7 +82,7 @@ $config['allowunblacklist']     =  'N';             // Allow participant to unbl
 $config['userideditable']     =  'N';               // Allow editing of user IDs
 $config['defaulttemplate']    =  'default';         // This setting specifys the default theme used for the 'public list' of surveys
 
-$config['allowedtemplateuploads'] = 'gif,ico,jpg,png,css,js,,map,json,eot,svg,ttf,woff';  // File types allowed to be uploaded in the templates section.
+$config['allowedtemplateuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md';  // File types allowed to be uploaded in the templates section.
 
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,pstpl,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
@@ -511,6 +511,13 @@ $config['ipInfoDbAPIKey'] = '';
 // To have questions that require google Maps!
 
 $config['googleMapsAPIKey'] = '';
+
+/**
+* GeoNames username for API. http://www.geonames.org/export/web-services.html
+* default limesurvey username is limited to 2000 credits/hour and 30 000 crdits/day see : http://www.geonames.org/export/ Terms and conditions
+*/
+$config['GeoNamesUsername'] = 'limesurvey';
+
 
 // Google Translate API key:  https://code.google.com/apis/language/translate/v2/getting_started.html
 $googletranslateapikey = '';
