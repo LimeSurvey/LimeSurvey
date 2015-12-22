@@ -240,7 +240,7 @@ class Survey extends LSActiveRecord
     }
 
     /**
-    * filterTemplateSave to fix some template name
+    * filterTemplateSave to fix some template name 
     */
     public function filterTemplateSave($sTemplateName)
     {

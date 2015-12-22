@@ -64,7 +64,7 @@ class Template extends LSActiveRecord
         $sDefaulttemplate=Yii::app()->getConfig('defaulttemplate','default');
         $sTemplateName=empty($sTemplateName) ? $sDefaulttemplate : $sTemplateName;
 
-        /* Validate it's a real dir included in template allowed dir
+        /* Validate it's a real dir included in template allowed dir 
         *  Alternative : use realpath("$dir/$sTemplateName")=="$dir/$sTemplateName" and is_dir
         */
         if(array_key_exists($sTemplateName,self::getTemplateList()))

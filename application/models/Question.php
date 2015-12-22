@@ -82,7 +82,7 @@
         */
         public function rules()
         {
-
+            
             $aRules= array(
                         array('title','required','on' => 'update, insert'),// 140207 : Before was commented, put only on update/insert ?
                         array('title','length', 'min' => 1, 'max'=>20,'on' => 'update, insert'),
@@ -153,8 +153,6 @@
 
             return $aRules;
         }
-
-
 
         /**
         * Rewrites sort order for questions in a group
@@ -649,15 +647,10 @@
                     'assessable' => 0,
                     'answerscales' => 0),
             );
-
-
             /**
              * @todo Check if this actually does anything, since the values are arrays.
              */
             asort($questionTypes);
-
-
-
             return $questionTypes;
         }
 
