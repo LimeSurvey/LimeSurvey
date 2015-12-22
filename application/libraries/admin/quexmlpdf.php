@@ -82,6 +82,14 @@ class quexmlpdf extends pdf {
    */
   protected $cornerWidth = 0.5;
 
+  /**
+    * The width in MM of a corner box
+    * 4.57mm is approx 54 pixels at 300dpi
+    *
+    * @var float Defaults to 4.57
+    * @since 2014-12-22
+    */
+    protected $cornerBoxWidth = 4.57;
 
   /**
    * The TCPDF barcode type
@@ -782,6 +790,14 @@ class quexmlpdf extends pdf {
   }
 
   /**
+    * Use corner lines (default) or corner boxes
+    *
+    * @var bool Defaults to true
+    * @since 2014-12-22
+    */
+    protected $cornerLines = true;
+    
+  /**
    * Return the length of the longest word
    *
    * @param mixed $txt
@@ -895,6 +911,136 @@ class quexmlpdf extends pdf {
     $this->layout[$this->layoutCP]['boxgroup'][$this->boxGroupCP]['width'] = $width;
   }
 
+  /**
+     * Set margin before questionnare info
+     * 
+     * @param int $margin between 0 and 100mm
+     *
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2013-10-25
+     */
+    public function setQuestionnaireInfoMargin($margin) {
+        $margin = floatval($margin);
+        if ($margin >= 0 && $margin <= 100)
+            $this->questionnaireInfoMargin = $margin;
+    }
+
+    /**
+     * Get the margin before questionnaire info
+     * 
+     * @return int Height in mm between 0 and 100
+     *
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2013-10-25
+     */
+    public function getQuestionnaireInfoMargin() {
+        return $this->questionnaireInfoMargin;
+    }
+
+    /**
+     * Set the height of responses items in a sub question matrix
+     * 
+     * @param int $height Height between 1 and 100mm
+     *
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2013-10-25
+     */
+    public function setSingleResponseHorizontalHeight($height) {
+        $height = floatval($height);
+        if ($height >= 1 && $height <= 100)
+            $this->singleResponseHorizontalHeight = $height;
+    }
+
+    /**
+     * Get the height of responses in a sub question matrix
+     * 
+     * @return int Height in mm between 1 and 100
+     *
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2013-10-25
+     */
+    public function getSingleResponseHorizontalHeight() {
+        return $this->singleResponseHorizontalHeight;
+    }
+
+    /**
+     * Set vertical height of a single response item
+     * 
+     * @param int $height Height between 1 and 100mm
+     *
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2013-10-25
+     */
+    public function setSingleResponseAreaHeight($height) {
+        $height = floatval($height);
+        if ($height >= 1 && $height <= 100)
+            $this->singleResponseAreaHeight = $height;
+    }
+
+    /**
+     * Get vertical height of a single response item
+     * 
+     * @return int Height in mm between 1 and 100
+     *
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2013-10-25
+     */
+    public function getSingleResponseAreaHeight() {
+        return $this->singleResponseAreaHeight;
+    }
+
+    /**
+     * Set background colour for a question
+     * 
+     * @param int $colour Background colour between 0 and 255
+     *
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2013-10-25
+     */
+    public function setBackgroundColourQuestion($colour) {
+        $colour = intval($colour);
+        if ($colour >= 0 && $colour <= 255)
+            $this->backgroundColourQuestion = array($colour);
+    }
+
+    /**
+     * Get background colour for a question
+     * 
+     * @return int Background colour between 0 and 255
+     *
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2013-10-25
+     */
+    public function getBackgroundColourQuestion() {
+        return $this->backgroundColourQuestion[0];
+    }
+
+    /**
+     * Set background colour for a section
+     * 
+     * @param int $colour Background colour between 0 and 255
+     *
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2013-10-25
+     */
+    public function setBackgroundColourSection($colour) {
+        $colour = intval($colour);
+        if ($colour >= 0 && $colour <= 255)
+            $this->backgroundColourSection = array($colour);
+    }
+
+    /**
+     * Get background colour for a section
+     * 
+     * @return int Background colour between 0 and 255
+     *
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2013-10-25
+     */
+    public function getBackgroundColourSection() {
+        return $this->backgroundColourSection[0];
+    }
+  
   /**
    * Set allow splitting
    *
@@ -1068,30 +1214,52 @@ class quexmlpdf extends pdf {
   }
 
   /**
-   * Get the response label font sizes (normal and small)
+   * Get the response label font sizes normal
    *
-   * @return array containing the normal font size as the first element and small as second
+   * @return normal font size
    * @author Adam Zammit <adam.zammit@acspri.org.au>
    * @since  2013-04-10
    */
   public function getResponseLabelFontSize()
   {
-    return array($this->responseLabelFontSize,$this->responseLabelFontSizeSmall);
+    return $this->responseLabelFontSize;
   }
 
   /**
-   * Set the response label font sizes
+   * Set the response label normal font size
    *
-   * @param array $sizes normal font size first then small
+   * @param normal font size
    *
    * @author Adam Zammit <adam.zammit@acspri.org.au>
    * @since  2013-04-10
    */
-  public function setResponseLabelFontSize($sizes)
+  public function setResponseLabelFontSize($normalsize)
   {
-    $this->responseLabelFontSize = intval($sizes[0]);
-    $this->responseLabelFontSizeSmall = intval($sizes[1]);
+    $this->responseLabelFontSize = floatval($normalsize);
   }
+  
+  /**
+     * Set the response label small font size
+     *
+     * @param small font size
+     *
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since  2013-04-10
+     */
+    public function setResponseLabelFontSizeSmall($smallsize) {
+        $this->responseLabelFontSizeSmall = floatval($smallsize);
+    }
+
+    /**
+     * Get the response label font size small
+     *
+     * @return small font size
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since  2013-04-10
+     */
+    public function getResponseLabelFontSizeSmall() {
+        return $this->responseLabelFontSizeSmall;
+    }
 
   /**
    * Get the response text font size
@@ -1115,7 +1283,7 @@ class quexmlpdf extends pdf {
    */
   public function setResponseTextFontSize($size)
   {
-    $this->responseTextFontSize = intval($size);
+    $this->responseTextFontSize = floatval($size);
   }
 
   /**
@@ -1144,6 +1312,126 @@ class quexmlpdf extends pdf {
     $this->style = "<style>" . $style . "</style>";
   }
 
+  /**
+     * Set whether to use corner lines
+     *
+     * @return none
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2014-12-22
+     */
+    public function setCornerLines() {
+        $this->cornerLines = true;
+    }
+
+    /**
+     * Set whether to use corner boxes
+     *
+     * @return none
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2014-12-22
+     */
+    public function setCornerBoxes() {
+        $this->cornerLines = false;
+    }
+
+    /**
+     * Wrapper function for setCornerBoxes and setCornerLines methods
+     * @return none
+     * @author A A D V S Abeysinghe <venura@acspri.org.au>
+     * @param type $format lines or boxes
+     * @since 2015-07-08
+     */
+    public function setEdgeDetectionFormat($format) {
+        if ($format === 'lines') {
+            $this->cornerLines = true;
+        } else if ($format === 'boxes') {
+            $this->cornerLines = false;
+        }
+    }
+
+    /**
+     * Get whether to use corner lines
+     *
+     * @return bool whether to use corner lines
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2014-12-22
+     */
+    public function getCornerLines() {
+        return $this->cornerLines;
+    }
+
+    /**
+     * Get whether to use corner boxes
+     *
+     * @return bool whether to use corner boxes
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2014-12-22
+     */
+    public function getCornerBoxes() {
+        return !$this->cornerLines;
+    }
+
+    /**
+     * Wrapper function for getCornerBoxes and getCornerLines methods
+     * @return bool whether to use corner lines or boxes
+     * @author A A D V S Abeysinghe <venura@acspri.org.au>
+     * @since 2015-07-08
+     */
+    public function getEdgeDetectionFormat() {
+        $value = '';
+        if ($this->getCornerLines()) {
+            $value = 'lines';
+        } else {
+            $value = 'boxes';
+        }
+        return $value;
+    }
+
+    /**
+     * Get page format
+     *
+     * @return string page format
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2015-06-19
+     */
+    public function getPageFormat() {
+        return 'A4';
+    }
+
+    /**
+     * Set page format
+     *
+     * @param string $format page format
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2015-06-19
+     */
+    public function setPageFormat($format, $orientation='') {
+        parent::setPageFormat($format, $orientation);
+    }
+
+    /**
+     * Get page orientation
+     *
+     * @return string page orientation
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2015-06-19
+     */
+    public function getPageOrientation() {
+        return $this->CurOrientation;
+    }
+
+    /**
+     * Set page orientation
+     *
+     * @param string $orientation page orientation
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since 2015-06-19
+     */
+    public function setPageOrientation($orientation, $autopagebreak='', $bottommargin='') {
+        parent::setPageOrientation($orientation, $autopagebreak, $bottommargin);
+    }
+
+  
   /**
    * Export the layout as an XML file
    *
@@ -1293,6 +1581,11 @@ class quexmlpdf extends pdf {
 
     //set column pointer
     $this->columnCP = -1;
+    
+     //set corner lines values
+        if (!$this->cornerLines)
+           $this->cornerWidth = 0;
+    
   }
 
   /**
@@ -1343,7 +1636,7 @@ class quexmlpdf extends pdf {
    * @author Adam Zammit <adam.zammit@acspri.org.au>
    * @since  2010-09-02
    */
-  public function getMainPageX()
+  protected function getMainPageX()
   {
     return ($this->cornerBorder + $this->cornerWidth);
   }
@@ -1355,7 +1648,7 @@ class quexmlpdf extends pdf {
    * @author Adam Zammit <adam.zammit@acspri.org.au>
    * @since  2012-05-30
    */
-  public function getColumnX()
+  protected function getColumnX()
   {
     $border = 0;
     if ($this->columnCP > 0)
@@ -1370,7 +1663,7 @@ class quexmlpdf extends pdf {
    * @author Adam Zammit <adam.zammit@acspri.org.au>
    * @since  2010-09-02
    */
-  public function getMainPageWidth()
+  protected function getMainPageWidth()
   {
     return ($this->getPageWidth() - (($this->cornerBorder * 2.0) + ($this->cornerWidth * 2.0)));
   }
@@ -1382,7 +1675,7 @@ class quexmlpdf extends pdf {
    * @author Adam Zammit <adam.zammit@acspri.org.au>
    * @since  2012-05-30
    */
-  public function getColumnWidth()
+  protected function getColumnWidth()
   {
     $border = 0;
     if ($this->columnCP > 0)
@@ -1937,6 +2230,102 @@ class quexmlpdf extends pdf {
     $this->fillLastPageBackground();
   }
 
+  /**
+     * Import the settings/styles set from XML
+     * 
+     * @param string $xml The settings in XML format
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since  2015-06-18
+     */
+    public function importStyleXML($xmlsettings) {
+        $xml = new SimpleXMLElement($xmlsettings);
+
+        //do some reflection and find all getters with matching setters
+        $class = new ReflectionClass('queXMLPDF');
+        $methods = $class->getMethods(ReflectionMethod::IS_PUBLIC);
+        $nmethods = array();
+
+        //make an array of relevant classes
+        foreach ($methods as $m) {
+            if ($m->class == "queXMLPDF")
+                $nmethods[$m->name] = $m->name;
+        }
+
+        unset($methods);
+
+        foreach ($nmethods as $m) {
+            //if class starting with get has a matching set method
+            if (substr($m, 0, 3) == 'get' && isset($nmethods['set' . substr($m, 3)])) {
+                $itemname = substr($m, 3);
+                $setname = 'set' . $itemname;
+                $iv = $this->$m(); // get the current data
+
+                if (isset($xml->$itemname)) { //if setting exists in xml then set it
+                    if (is_bool($iv)) {
+                        if ($xml->$itemname == "true")
+                            $this->$setname(true);
+                        else
+                            $this->$setname(false);
+                    }
+                    else if (is_array($iv) || is_object($iv)) {
+                        $this->$setname(explode(',', $xml->$itemname));
+                    } else {
+                        $this->$setname($xml->$itemname);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Export the settings/styles set in XML
+     * 
+     * @author Adam Zammit <adam.zammit@acspri.org.au>
+     * @since  2015-06-18
+     */
+    public function exportStyleXML() {
+        $doc = new DomDocument('1.0');
+        $root = $doc->createElement('queXMLPDFStyle');
+
+        //do some reflection and find all getters with matching setters
+        $class = new ReflectionClass('queXMLPDF');
+        $methods = $class->getMethods(ReflectionMethod::IS_PUBLIC);
+        $nmethods = array();
+
+        //make an array of relevant classes
+        foreach ($methods as $m) {
+            if ($m->class == "quexmlpdf")
+                $nmethods[$m->name] = $m->name;
+        }
+
+        unset($methods);
+
+        foreach ($nmethods as $m) {
+            //if class starting with get has a matching set method
+            if (substr($m, 0, 3) == 'get' && isset($nmethods['set' . substr($m, 3)])) {
+                $itemname = substr($m, 3);
+                $iv = $this->$m(); // get the data
+                $itemval = "false";
+
+                if (is_bool($iv)) {
+                    if ($iv)
+                        $itemval = "true";
+                }
+                else if (is_array($iv) || is_object($iv)) {
+                    $itemval = implode(',', $iv);
+                } else
+                    $itemval = $iv;
+
+                $id = $doc->createElement($itemname);
+                $value = $doc->createTextNode($itemval);
+                $id->appendChild($value);
+                $root->appendChild($id);
+            }
+        }
+        $doc->appendChild($root);
+        $doc->formatOutput = true; //make it look nice
+        return $doc->saveXML();
+    }
 
   /**
    * Draw the questionnaire info specified
@@ -3069,11 +3458,21 @@ class quexmlpdf extends pdf {
       else if ($rnum == 1) $num = 'first';
       else if ($rnum < $total) $num = 'middle';
       else if ($rnum == $total) $num = 'last';
+      
+      $bheight = $this->singleResponseAreaHeight;
+      $skipto = false;
+      if (isset($r['skipto']))
+            $skipto = $r['skipto'];
+            $other = false;
+            if (isset($r['other']) && $rnum == $total) {
+                $other = $r['other']; //only set for last in set
+                $bheight += $this->arrowHeight;
+            }
 
       //Draw background
       $html = "<div></div>";
       $this->setBackground('question');
-      $this->writeHTMLCell($this->getColumnWidth(), $this->singleResponseAreaHeight, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
+      $this->writeHTMLCell($this->getColumnWidth(), $bheight, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
       $this->setDefaultFont($this->responseTextFontSize);
 
       //draw text
@@ -3119,10 +3518,10 @@ class quexmlpdf extends pdf {
         $this->addBox($position[0],$position[1],$position[2],$position[3],$r['value'],$r['text']);
       }
 
-      if (($this->GetY() - $currentY) > $this->singleResponseAreaHeight)
+      if (($this->GetY() - $currentY) > $bheight)
         $currentY = $this->GetY();
       else
-        $currentY = $currentY + $this->singleResponseAreaHeight;
+        $currentY = $currentY + $bheight;
 
       $this->SetY($currentY,false);
 
@@ -3347,10 +3746,14 @@ class quexmlpdf extends pdf {
       $height = $this->getPageHeight();
       $cb = $this->cornerBorder;
       $cl = $this->cornerLength;
+      
+      $calc = $this->cornerWidth;
 
       $this->SetDrawColor($this->lineColour[0]);
 
       $barcodeStyle = array('border' => false, 'padding' => '0', 'bgcolor' => false, 'text' => false, 'stretch' => true);
+      if ($this->cornerLines) {
+                //corner lines (Default)
       $lineStyle = array('width' => $this->cornerWidth, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0));
 
       //Top left
@@ -3369,6 +3772,26 @@ class quexmlpdf extends pdf {
       $this->Line($width - $cb,$height - $cb,$width - $cb - $cl,$height - $cb,$lineStyle);
       $this->Line($width - $cb,$height - $cb,$width - $cb,$height - ($cb + $cl),$lineStyle);
 
+       $calc = $cl;
+            } else {
+                //corner boxes instead
+                $cw = $this->cornerBoxWidth;
+
+                //Top left
+                $this->Rect(($cb - $cw), ($cb - $cw), $cw, $cw, 'DF', NULL, $this->lineColour);
+
+                //Top right
+                $this->Rect(($width - $cb), ($cb - $cw), $cw, $cw, 'DF', NULL, $this->lineColour);
+
+                //Bottom left
+                $this->Rect(($cb - $cw), ($height - $cb), $cw, $cw, 'DF', NULL, $this->lineColour);
+
+                //Bottom right
+                $this->Rect(($width - $cb), ($height - $cb), $cw, $cw, 'DF', NULL, $this->lineColour);
+
+                $calc = -$cw;
+            }
+            
       $barcodeValue = substr(str_pad($this->questionnaireId,$this->idLength,"0",STR_PAD_LEFT),0,$this->idLength) . substr(str_pad($this->getPage(),$this->pageLength,"0",STR_PAD_LEFT),0,$this->pageLength);
 
       //Calc X position of barcode from page width
@@ -3377,7 +3800,7 @@ class quexmlpdf extends pdf {
       $this->write1DBarcode($barcodeValue, $this->barcodeType, $barcodeX, $this->barcodeY, $this->barcodeW, $this->barcodeH,'', $barcodeStyle, 'N');
 
       //Add this page to the layout system
-      $b = $this->cornerBorder + ($this->cornerWidth / 2.0); //temp calc for middle of line
+      $b = $this->cornerBorder + ($calc / 2.0); //temp calc for middle of line
       $this->layout[$barcodeValue] = array(  'id' => $barcodeValue,
                 'tlx' => $this->mm2px($b),
                 'tly' => $this->mm2px($b),
