@@ -61,43 +61,48 @@
             <?php $this->renderPartial( "/admin/super/_configuration_menu", $dataForConfigMenu ); ?>
 
             <!-- Surveys menus -->
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                  <?php eT("Surveys");?> <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu" role="menu">
-
-                <!-- Create a new survey -->
-                <li>
-                    <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>">
-                        <?php eT("Create a new survey");?>
-                    </a>
-                </li>
-
-                <!-- Import a survey -->
-                <li>
-                  <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/import"); ?>">
-                      <?php eT("Import a survey");?>
-                  </a>
-                </li>
-
-                <!-- Import a survey -->
-                <li>
-                  <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/copy"); ?>">
-                      <?php eT("Copy a survey");?>
-                  </a>
-                </li>
-
-                <li class="divider"></li>
-
-                <!-- List surveys -->
-                <li>
-                    <a href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
-                        <?php eT("List surveys");?>
-                    </a>
-                </li>
-              </ul>
+            <li class="dropdown-split-left">
+                <a style="" href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
+                    <?php eT("Surveys");?>
+                </a>
             </li>
+            <li class="dropdown dropdown-split-right">
+                <a  style="padding-left: 5px;padding-right: 5px;" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span style="margin-left: 0px;" class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                         <!-- Create a new survey -->
+                         <li>
+                             <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>">
+                                 <?php eT("Create a new survey");?>
+                             </a>
+                         </li>
+
+                         <!-- Import a survey -->
+                         <li>
+                           <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/import"); ?>">
+                               <?php eT("Import a survey");?>
+                           </a>
+                         </li>
+
+                         <!-- Import a survey -->
+                         <li>
+                           <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/copy"); ?>">
+                               <?php eT("Copy a survey");?>
+                           </a>
+                         </li>
+
+                         <li class="divider"></li>
+
+                         <!-- List surveys -->
+                         <li>
+                             <a href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
+                                 <?php eT("List surveys");?>
+                             </a>
+                         </li>
+
+                       </ul>
+                     </li>
 
             <!-- user menu -->
             <li class="dropdown">
