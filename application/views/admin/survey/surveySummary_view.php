@@ -530,8 +530,20 @@
                             <strong><?php eT("Template:");?></strong>
                         </td>
                         <td>
-                            <?php echo $surveyinfo['template'];?>
+                            <?php $templatename = $surveyinfo['template'];
+                            if (Permission::model()->hasGlobalPermission('templates','read'))
+                            {
+                                $templateurl_url = $this->createAbsoluteUrl("admin/templates/sa/view/editfile/startpage.pstpl/screenname/welcome/templatename/$templatename"); ?>
+                                <a href='<?php echo $templateurl_url?>' target='_blank'><?php echo $templatename; ?></a>
+                                <?php
+                            }
+                            else
+                            {
+                                echo $templatename;
+                            }
+                            ?>
                         </td>
+
                     </tr>
 
                     <!-- Number of questions/groups -->

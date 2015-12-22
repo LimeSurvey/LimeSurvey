@@ -1354,6 +1354,16 @@ if (!$previewgrp && !$previewquestion)
         }
         // Core value :the classes
         $aReplacement['QUESTION_CLASS'] = Question::getQuestionClass($sType);
+
+        //get additional question classes from question attribute
+        $aQuestionAttributes = getQuestionAttributeValues($aQuestionQanda[4]);
+
+        //add additional classes
+        if(isset($aQuestionAttributes['cssclass']))
+        {
+            $aReplacement['QUESTION_CLASS'] .= " ".$aQuestionAttributes['cssclass'];
+        }
+
         $aMandatoryClass = array();
         if ($lemQuestionInfo['info']['mandatory'] == 'Y')// $aQuestionQanda[0]['mandatory']=="*"
         {
