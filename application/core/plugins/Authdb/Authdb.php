@@ -99,7 +99,6 @@ class Authdb extends AuthPluginBase
 
     public function newLoginForm()
     {
-    	
         $sUserName='';
         $sPassword='';
         if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true)

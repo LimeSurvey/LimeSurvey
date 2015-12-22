@@ -45,7 +45,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             ),
         'ldapmode' => array(
             'type' => 'select',
-            'label' => 'Perform authentication by',
+            'label' => 'Select how to perform authentication.',
             'options' => array("simplebind" => "Simple bind", "searchandbind" => "Search and bind"),
             'default' => "simplebind",
             'submitonchange'=> true
@@ -90,7 +90,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 ),
         'is_default' => array(
                 'type' => 'checkbox',
-                'label' => 'Do LDAP authentication by default'
+                'label' => 'Check to make default authentication method'
                 ),
         'autocreate' => array(
                 'type' => 'checkbox',
@@ -223,7 +223,16 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             return null;
         }
         $new_pass = createPassword();
-        $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
+        // If user is being auto created we set parent ID to 1 (admin user)
+        if (isset(Yii::app()->session['loginID']))
+        {
+            $parentID = Yii::app()->session['loginID'];
+        }
+        else
+        {
+            $parentID = 1;
+        }
+        $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, $parentID, $new_email);
         if (!$iNewUID)
         {
             $oEvent->set('errorCode',self::ERROR_ALREADY_EXISTING_USER);
@@ -241,7 +250,6 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         $oEvent->set('errorCode',self::ERROR_NONE);
         return $iNewUID;
     }
-
 
     /**
      * Create LDAP connection
@@ -264,7 +272,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         // Try to connect
         $ldapconn = ldap_connect($ldapserver, (int) $ldapport);
         if (false == $ldapconn) {
-            return [ "errorCode" => 1, "errorMessage" => gT('Error creating LDAP connection') ];
+            return array( "errorCode" => 1, "errorMessage" => gT('Error creating LDAP connection') );
         }
 
         // using LDAP version
@@ -283,7 +291,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             if(!ldap_start_tls($ldapconn))
             {
                 ldap_close($ldapconn); // all done? close connection
-                return [ "errorCode" => 100, 'errorMessage' => ldap_error($ldapconn) ];
+                return array( "errorCode" => 100, 'errorMessage' => ldap_error($ldapconn) );
             }
         }
 
