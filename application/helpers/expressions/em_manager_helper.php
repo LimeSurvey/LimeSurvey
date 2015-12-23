@@ -4319,8 +4319,16 @@
         static function GroupIsIrrelevantOrHidden($gseq)
         {
             $LEM =& LimeExpressionManager::singleton();
-            $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1);   // group-level relevance based upon grelevance equation
-            $gshow = (isset($LEM->indexGseq[$gseq]['show']) ? $LEM->indexGseq[$gseq]['show'] : true);   // default to true?
+
+            // We check again if it should really be false...
+            if(isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) && $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] == false)
+            {
+                $LEM->_ProcessGroupRelevance($gseq);
+            }
+
+            $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq])) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1;   // group-level relevance based upon grelevance equation
+            $gshow = (isset($LEM->indexGseq[$gseq]['show'])) ? $LEM->indexGseq[$gseq]['show'] : true;   // default to true?
+
             return !($grel && $gshow);
         }
 

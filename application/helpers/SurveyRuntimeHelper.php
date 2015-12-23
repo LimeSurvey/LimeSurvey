@@ -19,11 +19,11 @@ class SurveyRuntimeHelper {
     {
         if ($surveyMode == 'group')
         {
-            $this->createFullQuestionIndexByGroup($LEMsessid);
+            return $this->createFullQuestionIndexByGroup($LEMsessid);
         }
         else
         {
-            $this->createFullQuestionIndexByQuestion($LEMsessid);
+            return $this->createFullQuestionIndexByQuestion($LEMsessid);
         }
 
     }
