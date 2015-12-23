@@ -30,7 +30,7 @@
           <ul class="nav navbar-nav navbar-right">
             {SAVE_LINKS}
             {CLEARALL_LINKS}
-            {QUESTION_INDEX}
+            {QUESTION_INDEX_MENU}
           </ul>
         </div><!--/.nav-collapse -->
       </div>

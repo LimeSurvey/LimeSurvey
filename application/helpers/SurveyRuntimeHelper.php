@@ -14,21 +14,20 @@
 
 class SurveyRuntimeHelper {
 
-
-    protected function createFullQuestionIndex($LEMsessid, $surveyMode)
+    protected function createFullQuestionIndexMenu($LEMsessid, $surveyMode)
     {
         if ($surveyMode == 'group')
         {
-            return $this->createFullQuestionIndexByGroup($LEMsessid);
+            return $this->createFullQuestionIndexByGroupMenu($LEMsessid);
         }
         else
         {
-            return $this->createFullQuestionIndexByQuestion($LEMsessid);
+            return $this->createFullQuestionIndexByQuestionMenu($LEMsessid);
         }
 
     }
 
-    protected function createFullQuestionIndexByGroup($LEMsessid)
+    protected function createFullQuestionIndexByGroupMenu($LEMsessid)
     {
         // Button will be shown inside the form. Not handled by replacement.
         $htmlButtons = array();
@@ -76,7 +75,7 @@ class SurveyRuntimeHelper {
         return array('menulist'=>$html, 'buttons'=>$htmlButtons );
     }
 
-    protected function createFullQuestionIndexByQuestion($LEMsessid)
+    protected function createFullQuestionIndexByQuestionMenu($LEMsessid)
     {
         $html = '';
         $html .=  CHtml::openTag('li', array('id' => 'index', 'class'=>'dropdown'));
@@ -91,7 +90,7 @@ class SurveyRuntimeHelper {
         return array('menulist'=>$html, 'buttons'=>array() );
     }
 
-    protected function createIncrementalQuestionIndex($LEMsessid, $surveyMode)
+    protected function createIncrementalQuestionIndexMenu($LEMsessid, $surveyMode)
     {
         $html = '';
         $html .=  "\n\n<!-- PRESENT THE INDEX -->\n";
@@ -184,6 +183,154 @@ class SurveyRuntimeHelper {
         return array('menulist'=>$html, 'buttons'=>array() );
     }
 
+    protected function createFullQuestionIndex($LEMsessid, $surveyMode)
+    {
+        if ($surveyMode == 'group')
+        {
+            $this->createFullQuestionIndexByGroup($LEMsessid);
+        }
+        else
+        {
+            $this->createFullQuestionIndexByQuestion($LEMsessid);
+        }
+
+    }
+
+    protected function createFullQuestionIndexByGroup($LEMsessid)
+    {
+        echo "\n\n<!-- PRESENT THE INDEX -->\n";
+        echo CHtml::openTag('div', array('id' => 'index'));
+        echo CHtml::openTag('div', array('class' => 'container', 'id'=>'indexcontainer'));
+        echo CHtml::tag('h2', array(), gT("Question index"));
+        echo CHtml::openTag('ol');
+        foreach ($_SESSION[$LEMsessid]['grouplist'] as $key => $group)
+        {
+            //						echo '<script>';
+            //						echo 'var session = '. json_encode(LimeExpressionManager::singleton()->_ValidateGroup($key)) . ';';
+            //						echo 'console.log(session);';
+            //						echo '</script>';
+            // Better to use tracevar /
+            if (LimeExpressionManager::GroupIsRelevant($group['gid']))
+            {
+                $group['step'] = $key + 1;
+                $stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($key);
+                $classes = implode(' ', array(
+                    'row',
+                    $stepInfo['anyUnanswered'] ? 'missing' : '',
+                    $_SESSION[$LEMsessid]['step'] == $group['step'] ? 'current' : ''
+
+                ));
+                $sButtonSubmit=CHtml::htmlButton(gT('Go to this group'),array('type'=>'submit', 'id'=> 'button-'.$group['gid'],'value'=>$group['step'],'name'=>'move','class'=>'jshide'));
+                echo CHtml::tag('li', array(
+                    'data-gid' => $group['gid'],
+                    'title' => $group['description'],
+                    'class' => $classes,
+                    ), $group['group_name'].$sButtonSubmit);
+            }
+        }
+        echo CHtml::closeTag('ol');
+        echo CHtml::closeTag('div');
+        echo CHtml::closeTag('div');
+
+        App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
+    }
+
+    protected function createFullQuestionIndexByQuestion($LEMsessid)
+    {
+        echo CHtml::openTag('div', array('id' => 'index'));
+        echo CHtml::openTag('div', array('class' => 'container', 'id'=>'indexcontainer'));
+        echo CHtml::tag('h2', array(), gT("Question index"));
+        echo 'Question by question not yet supported, use incremental index.';
+        echo CHtml::closeTag('div');
+        echo CHtml::closeTag('div');
+
+        App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
+    }
+
+    protected function createIncrementalQuestionIndex($LEMsessid, $surveyMode)
+    {
+        echo "\n\n<!-- PRESENT THE INDEX -->\n";
+
+        echo '<div id="index"><div class="container" id="indexcontainer"><h2>' . gT("Question index") . '</h2>';
+
+        $stepIndex = LimeExpressionManager::GetStepIndexInfo();
+        $lastGseq=-1;
+        $gseq = -1;
+        $grel = true;
+        for($v = 0, $n = 0; $n != $_SESSION[$LEMsessid]['maxstep']; ++$n)
+        {
+            if (!isset($stepIndex[$n])) {
+                continue;   // this is an invalid group - skip it
+            }
+            $stepInfo = $stepIndex[$n];
+
+            if ($surveyMode == 'question')
+            {
+                if ($lastGseq != $stepInfo['gseq']) {
+                    // show the group label
+                    ++$gseq;
+                    $g = $_SESSION[$LEMsessid]['grouplist'][$gseq];
+                    $grel = !LimeExpressionManager::GroupIsIrrelevantOrHidden($gseq);
+                    if ($grel)
+                    {
+                        $gtitle = LimeExpressionManager::ProcessString($g['group_name']);
+                        echo '<h3>' . flattenText($gtitle) . "</h3>";
+                    }
+                    $lastGseq = $stepInfo['gseq'];
+                }
+                if (!$grel || !$stepInfo['show'])
+                {
+                    continue;
+                }
+                $q = $_SESSION[$LEMsessid]['fieldarray'][$n];
+            }
+            else
+            {
+                ++$gseq;
+                if (!$stepInfo['show'])
+                {
+                    continue;
+                }
+                $g = $_SESSION[$LEMsessid]['grouplist'][$gseq];
+            }
+
+            if ($surveyMode == 'group')
+            {
+                $indexlabel = LimeExpressionManager::ProcessString($g['group_name']);
+                $sButtonText=gT('Go to this group');
+            }
+            else
+            {
+                $indexlabel = LimeExpressionManager::ProcessString($q[3]);
+                $sButtonText=gT('Go to this question');
+            }
+
+            $sText = (($surveyMode == 'group') ? flattenText($indexlabel) : flattenText($indexlabel));
+            $bGAnsw = !$stepInfo['anyUnanswered'];
+
+            ++$v;
+
+            $class = ($n == $_SESSION[$LEMsessid]['step'] - 1 ? 'current' : ($bGAnsw ? 'answer' : 'missing'));
+            if ($v % 2)
+                $class .= " odd";
+
+            $s = $n + 1;
+            echo "<div class=\"row $class\">";
+            echo "<span class=\"hdr\">$v</span>";
+            echo "<span title=\"$sText\">$sText</span>";
+            echo CHtml::htmlButton($sButtonText,array('type'=>'submit','value'=>$s,'name'=>'move','class'=>'jshide'));
+            echo "</div>";
+        }
+
+        if ($_SESSION[$LEMsessid]['maxstep'] == $_SESSION[$LEMsessid]['totalsteps'])
+        {
+            echo CHtml::htmlButton(gT('Submit'),array('type'=>'submit','value'=>'movesubmit','name'=>'move','class'=>'submit button'));
+        }
+
+        echo '</div></div>';
+        App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
+
+    }
 
     /**
     * Main function
@@ -191,7 +338,7 @@ class SurveyRuntimeHelper {
     * @param mixed $surveyid
     * @param mixed $args
     */
-    function run($surveyid,$args) 
+    function run($surveyid,$args)
 	{
         global $errormsg;
         extract($args);
@@ -943,18 +1090,23 @@ class SurveyRuntimeHelper {
          * Question Index
          */
         $aQuestionindexbuttons = null;
+        $aQuestionindexbuttonsmenu = null;
         if (!$previewgrp && !$previewquestion)
         {
             if ($surveyMode != 'survey' && $thissurvey['questionindex'] == 1)
             {
-                $aQuestionindex = $this->createIncrementalQuestionIndex($LEMsessid, $surveyMode);
+                //$aQuestionindex = $this->createIncrementalQuestionIndex($LEMsessid, $surveyMode);
+                $aQuestionindexmenu = $this->createIncrementalQuestionIndexMenu($LEMsessid, $surveyMode);
             }
             elseif ($surveyMode != 'survey' && $thissurvey['questionindex'] == 2)
             {
-                $aQuestionindex = $this->createFullQuestionIndex($LEMsessid, $surveyMode);
+                //$aQuestionindex = $this->createFullQuestionIndex($LEMsessid, $surveyMode);
+                $aQuestionindexmenu = $this->createFullQuestionIndexMenu($LEMsessid, $surveyMode);
             }
-            $questionindex = (isset($aQuestionindex['menulist']))?$aQuestionindex['menulist']:'';
-            $aQuestionindexbuttons = (isset($aQuestionindex['buttons']))?$aQuestionindex['buttons']:'';
+            //$questionindex = (isset($aQuestionindex['menulist']))?$aQuestionindex['menulist']:'';
+            $questionindexmenu = (isset($aQuestionindexmenu['menulist']))?$aQuestionindexmenu['menulist']:'';
+            //$aQuestionindexbuttons = (isset($aQuestionindex['buttons']))?$aQuestionindex['buttons']:'';
+            $aQuestionindexbuttonsmenu = (isset($aQuestionindexmenu['buttons']))?$aQuestionindexmenu['buttons']:'';
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1161,51 +1313,38 @@ class SurveyRuntimeHelper {
         echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
         LimeExpressionManager::FinishProcessingPage();
 
-/**
-* Navigator
-*/
-if (!$previewgrp && !$previewquestion)
-{
+        /**
+        * Navigator
+        */
+        if (!$previewgrp && !$previewquestion)
+        {
 
-    $aNavigator = surveymover();
-    $moveprevbutton = $aNavigator['sMovePrevButton'];
-    $movenextbutton = $aNavigator['sMoveNextButton'];
-    $navigator = $moveprevbutton.' '.$movenextbutton;
+            $aNavigator = surveymover();
+            $moveprevbutton = $aNavigator['sMovePrevButton'];
+            $movenextbutton = $aNavigator['sMoveNextButton'];
+            $navigator = $moveprevbutton.' '.$movenextbutton;
 
+            $redata = compact(array_keys(get_defined_vars()));
 
-    //$redata = compact(array_keys(get_defined_vars()));
-    $redata = compact(array_keys(get_defined_vars()));
+            echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
+            echo templatereplace(file_get_contents($sTemplatePath."navigator.pstpl"), array(), $redata);
+            echo "\n";
 
-    echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
-    echo templatereplace(file_get_contents($sTemplatePath."navigator.pstpl"), array(), $redata);
-    echo "\n";
-
-    if ($thissurvey['active'] != "Y")
-    {
-        echo "<p style='text-align:center' class='error'>" . gT("This survey is currently not active. You will not be able to save your responses.") . "</p>\n";
-    }
-
-    /**
-     * Question Index buttons
-     */
-     if($aQuestionindexbuttons)
-     {
-         echo '<div class="hidden">';
-         foreach($aQuestionindexbuttons as $button)
-         {
-             echo $button;
-         }
-         echo '</div>';
-     }
+            if ($thissurvey['active'] != "Y")
+            {
+                echo "<p style='text-align:center' class='error'>" . gT("This survey is currently not active. You will not be able to save your responses.") . "</p>\n";
+            }
 
 
             if ($surveyMode != 'survey' && $thissurvey['questionindex'] == 1)
             {
                 $this->createIncrementalQuestionIndex($LEMsessid, $surveyMode);
+                $this->createIncrementalQuestionIndexMenu($LEMsessid, $surveyMode);
             }
             elseif ($surveyMode != 'survey' && $thissurvey['questionindex'] == 2)
             {
                 $this->createFullQuestionIndex($LEMsessid, $surveyMode);
+                $this->createFullQuestionIndexMenu($LEMsessid, $surveyMode);
             }
 
             echo "<input type='hidden' name='thisstep' value='{$_SESSION[$LEMsessid]['step']}' id='thisstep' />\n";
@@ -1261,13 +1400,13 @@ if (!$previewgrp && !$previewquestion)
 
     /**
     * Construction of replacement array, actually doing it with redata
-    * 
+    *
     * @param $aQuestionQanda : array from qanda helper
     * @return aray of replacement for question.psptl
     **/
     public static function getQuestionReplacement($aQuestionQanda)
     {
-        
+
         // Get the default replacement and set empty value by default
         $aReplacement=array(
             "QID"=>"",
@@ -1301,7 +1440,7 @@ if (!$previewgrp && !$previewquestion)
         $oSurveyId=Survey::model()->findByPk($iSurveyId);
         $sType=$lemQuestionInfo['info']['type'];
 
-        // Core value : not replaced 
+        // Core value : not replaced
         $aReplacement['QID']=$iQid;
         $aReplacement['GID']=$aQuestionQanda[6];// Not sure for aleatory : it's the real gid or the updated gid ? We need original gid or updated gid ?
         $aReplacement['SGQ']=$aQuestionQanda[7];

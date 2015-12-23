@@ -70,6 +70,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     'totalBoilerplatequestions',
     'totalquestions',
     'questionindex',
+    'questionindexmenu',
     );
 
     $varsPassed = array();
@@ -569,6 +570,7 @@ EOD;
     $coreReplacements['PRIVACY'] = isset($privacy) ? $privacy : '';    // global
     $coreReplacements['PRIVACYMESSAGE'] = "<span style='font-weight:bold; font-style: italic;'>".gT("A Note On Privacy")."</span><br />".gT("This survey is anonymous.")."<br />".gT("The record of your survey responses does not contain any identifying information about you, unless a specific survey question explicitly asked for it.").' '.gT("If you used an identifying token to access this survey, please rest assured that this token will not be stored together with your responses. It is managed in a separate database and will only be updated to indicate whether you did (or did not) complete this survey. There is no way of matching identification tokens with survey responses.");
     $coreReplacements['QUESTION_INDEX']=isset($questionindex) ? $questionindex: '';
+    $coreReplacements['QUESTION_INDEX_MENU']=isset($questionindexmenu) ? $questionindexmenu: '';
     $coreReplacements['RESTART'] = $_restart;
     $coreReplacements['RETURNTOSURVEY'] = $_return_to_survey;
     $coreReplacements['SAVE_LINKS'] = $_savelinks;
