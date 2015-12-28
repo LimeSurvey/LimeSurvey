@@ -82,7 +82,7 @@
         */
         public function rules()
         {
-            
+
             $aRules= array(
                         array('title','required','on' => 'update, insert'),// 140207 : Before was commented, put only on update/insert ?
                         array('title','length', 'min' => 1, 'max'=>20,'on' => 'update, insert'),
@@ -750,18 +750,18 @@
     public function getbuttons()
     {
 
-    	$url = Yii::app()->createUrl("/admin/questions/sa/view/surveyid/");
-    	$url .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
-    	$button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
+        $url = Yii::app()->createUrl("/admin/questions/sa/view/surveyid/");
+        $url .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
+        $button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
 
-    	$previewUrl = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
-    	$previewUrl .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
+        $previewUrl = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
+        $previewUrl .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
 
             $editurl = Yii::app()->createUrl("admin/questions/sa/editquestion/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
 
-    	$button = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="glyphicon glyphicon-eye-open"  ></span></a> ';
+        $button = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="glyphicon glyphicon-eye-open"  ></span></a> ';
         $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Edit question").'" href="'.$editurl.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
-    	$button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Question summary").'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+        $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Question summary").'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-list-alt" ></span></a>';
 
         $oSurvey = Survey::model()->findByPk($this->sid);
 
@@ -774,7 +774,7 @@
         }
 
 
-    	return $button;
+        return $button;
     }
 
 

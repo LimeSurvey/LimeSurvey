@@ -347,7 +347,7 @@ class questions extends Survey_Common_Action
                         $defaultvalue = DefaultValue::model()->findByAttributes(array(
                         'specialtype' => '',
                         'qid' => $qid,
-						'sqid' => $aSubquestion['qid'],
+                        'sqid' => $aSubquestion['qid'],
                         'scale_id' => $scale_id,
                         'language' => $language
                         ));
@@ -843,7 +843,8 @@ class questions extends Survey_Common_Action
         $eqrow['preg'] = '';
         $eqrow['relevance'] = 1;
         $eqrow['group_name'] = '';
-
+        $eqrow['modulename'] = '';
+        $eqrow['conditions_number'] = false;
         if(isset($_GET['gid']))
         {
             $eqrow['gid'] = $_GET['gid'];
@@ -861,18 +862,15 @@ class questions extends Survey_Common_Action
         $surveyinfo = array_map('flattenText', $surveyinfo);
         $aData['activated'] = $activated = $surveyinfo['active'];
 
-        if ($activated != "Y")
-        {
-            // Prepare selector Class for javascript function
-            if (Yii::app()->session['questionselectormode'] !== 'default') {
-                $selectormodeclass = Yii::app()->session['questionselectormode'];
-            } else {
-                $selectormodeclass = getGlobalSetting('defaultquestionselectormode', 'default');
-            }
-
-            $aData['accordionDatas']['selectormodeclass'] = $selectormodeclass;
-            $aData['selectormodeclass'] = $selectormodeclass;
+        // Prepare selector Class for javascript function
+        if (Yii::app()->session['questionselectormode'] !== 'default') {
+            $selectormodeclass = Yii::app()->session['questionselectormode'];
+        } else {
+            $selectormodeclass = getGlobalSetting('defaultquestionselectormode', 'default');
         }
+
+        $aData['accordionDatas']['selectormodeclass'] = $selectormodeclass;
+        $aData['selectormodeclass'] = $selectormodeclass;
 
 
         $aData['accordionDatas']['eqrow'] = $eqrow;
@@ -880,13 +878,19 @@ class questions extends Survey_Common_Action
         $aData['addlanguages']=Survey::model()->findByPk($surveyid)->additionalLanguages;
         $qattributes = array();
 
-            // Get the questions for this group
-            $aData['oqresult'] = NULL;
+        // Get the questions for this group
+        $aData['oqresult'] = NULL;
 
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'questions.js' ));
 
-        $aViewUrls['newQuestion_view'][] = $aData;
+        $aViewUrls['editQuestion_view'][] = $aData;
         $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
+        $aData['adding'] = true;
+        $aData['copying'] = false;
+
+        $aData['aqresult'] = '';
+        $aData['action'] = 'addquestion';
+
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 
@@ -1021,9 +1025,13 @@ class questions extends Survey_Common_Action
             }
             $aData['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
 
-            if (!$adding)
+
+            if (!$adding  )
             {
-                $eqrow = array_merge($eqresult->attributes, $eqresult->groups->attributes);;
+                if(is_object($eqresult->groups))
+                    $eqrow = array_merge($eqresult->attributes, $eqresult->groups->attributes);
+                else
+                    $eqrow = $eqresult->attributes;
 
                 // Todo: handler in case that record is not found
                 if ($copying)
@@ -1334,7 +1342,7 @@ class questions extends Survey_Common_Action
         $iLabelID = (int) Yii::app()->request->getParam('lid');
         $aNewLanguages = Yii::app()->request->getParam('languages');
         $bCheckAssessments = Yii::app()->request->getParam('bCheckAssessments',0);
-        $arLabelSet=LabelSet::model()->find('lid=:lid',array(':lid' => $iLabelID)); 
+        $arLabelSet=LabelSet::model()->find('lid=:lid',array(':lid' => $iLabelID));
         $iLabelsWithAssessmentValues=Label::model()->count('lid=:lid AND assessment_value<>0',array(':lid' => $iLabelID));
         $aLabelSetLanguages=explode(' ',$arLabelSet->languages);
         $aErrorMessages=array();
@@ -1361,7 +1369,7 @@ class questions extends Survey_Common_Action
         }
     }
 
-    
+
     /**
     * Load preview of a question screen.
     *

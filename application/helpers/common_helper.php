@@ -621,6 +621,7 @@ function getGroupOrder($surveyid,$gid)
 
     //$grporder_sql = "SELECT group_order FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}' AND gid=$gid" ;
     $grporder_result = QuestionGroup::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang)); //Checked
+    //var_dump($grporder_result); var_dump($surveyid); var_dump($gid); die();
     $grporder_row = $grporder_result->attributes ;
     $group_order = $grporder_row['group_order'];
     if($group_order=="")
@@ -7561,4 +7562,3 @@ function array_diff_assoc_recursive($array1, $array2) {
     }
 
 // Closing PHP tag intentionally omitted - yes, it is okay
-

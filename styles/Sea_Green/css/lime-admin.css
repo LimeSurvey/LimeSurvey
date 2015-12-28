@@ -3168,11 +3168,11 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
     transform: rotateZ(60deg) rotateY(90deg) rotateX(0deg);
     border-left-color: #163c19; }
   10%,
-		75% {
+        75% {
     transform: rotateZ(60deg) rotateY(0) rotateX(0deg);
     border-left-color: #39993f; }
   80%,
-		100% {
+        100% {
     transform: rotateZ(60deg) rotateY(90deg) rotateX(0deg);
     border-left-color: #328637; } }
 @keyframes preload-show-2 {
@@ -3188,11 +3188,11 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
     transform: rotateZ(120deg) rotateY(90deg) rotateX(0deg);
     border-left-color: #163c19; }
   15%,
-		70% {
+        70% {
     transform: rotateZ(120deg) rotateY(0) rotateX(0deg);
     border-left-color: #39993f; }
   75%,
-		100% {
+        100% {
     transform: rotateZ(120deg) rotateY(90deg) rotateX(0deg);
     border-left-color: #328637; } }
 @keyframes preload-show-3 {
@@ -3208,11 +3208,11 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
     transform: rotateZ(180deg) rotateY(90deg) rotateX(0deg);
     border-left-color: #163c19; }
   20%,
-		65% {
+        65% {
     transform: rotateZ(180deg) rotateY(0) rotateX(0deg);
     border-left-color: #39993f; }
   70%,
-		100% {
+        100% {
     transform: rotateZ(180deg) rotateY(90deg) rotateX(0deg);
     border-left-color: #328637; } }
 @keyframes preload-show-4 {
@@ -3228,11 +3228,11 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
     transform: rotateZ(240deg) rotateY(90deg) rotateX(0deg);
     border-left-color: #163c19; }
   25%,
-		60% {
+        60% {
     transform: rotateZ(240deg) rotateY(0) rotateX(0deg);
     border-left-color: #39993f; }
   65%,
-		100% {
+        100% {
     transform: rotateZ(240deg) rotateY(90deg) rotateX(0deg);
     border-left-color: #328637; } }
 @keyframes preload-show-5 {
@@ -3248,11 +3248,11 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
     transform: rotateZ(300deg) rotateY(90deg) rotateX(0deg);
     border-left-color: #163c19; }
   30%,
-		55% {
+        55% {
     transform: rotateZ(300deg) rotateY(0) rotateX(0deg);
     border-left-color: #39993f; }
   60%,
-		100% {
+        100% {
     transform: rotateZ(300deg) rotateY(90deg) rotateX(0deg);
     border-left-color: #328637; } }
 @keyframes preload-show-6 {
@@ -3268,11 +3268,11 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
     transform: rotateZ(360deg) rotateY(90deg) rotateX(0deg);
     border-left-color: #163c19; }
   35%,
-		50% {
+        50% {
     transform: rotateZ(360deg) rotateY(0) rotateX(0deg);
     border-left-color: #39993f; }
   55%,
-		100% {
+        100% {
     transform: rotateZ(360deg) rotateY(90deg) rotateX(0deg);
     border-left-color: #328637; } }
 @keyframes preload-flip {
