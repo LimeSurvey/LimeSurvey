@@ -15,7 +15,7 @@
 ?>
 <tr>
     <td colspan='4' style=\"text-align:center\" id='statzone_<?php echo $rt;?>'>
-
+    <?php if(count($labels) < 70): ?>
         <!-- Charts -->
         <div class="row">
             <div class="col-sm-9 vcenter chartjs-container" id="chartjs-container-<?php echo $qqid; ?>"
@@ -92,6 +92,15 @@
         </div>
         <div id='stats_<?php echo $rt;?>' class='graphdisplay' style="text-align:center">
         </div>
+    <?php else: ?>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="alert alert-warning" role="alert">
+                    <?php eT("Too many labels, can't generate chart");?>
+                </div>
+            </div>
+        </div>
+    <?php endif;?>
     </td>
 </tr>
 

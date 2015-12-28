@@ -917,11 +917,11 @@ output {
     background-color: $white;
     border: 1px solid $color_celeste_approx;
     //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-    //box-shadow: inset 0 1px 1px $black_75;
+    box-shadow: inset 0 1px 1px $black_75;
     &:focus {
         border: 1px solid $color_cornflower_blue_approx;
         //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-        //box-shadow: inset 0 1px 1px $black_75, 0 0 8px $color_cornflower_blue_60_approx;
+        box-shadow: inset 0 1px 1px $black_75, 0 0 8px $color_cornflower_blue_60_approx;
     }
     &:-ms-input-placeholder {
         color: $color_gunsmoke_approx;

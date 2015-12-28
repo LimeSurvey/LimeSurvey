@@ -2676,9 +2676,13 @@ class statistics_helper {
             if ($bShowGraph == true)
             {
 
-                $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
+                $cachefilename = '';
+                if($outputType == 'xls' || $outputType == 'pdf')
+                {
+                    $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
+                }
 
-                if($cachefilename) // Add the image only if constructed
+                if($cachefilename || $outputType == 'html') // Add the image only if constructed
                 {
                     //introduce new counter
                     if (!isset($ci)) {$ci=0;}
@@ -2727,8 +2731,8 @@ class statistics_helper {
                                         break;
 
                                     case '3':
-                                    	$charttype = "Line";
-                                    	break;
+                                        $charttype = "Line";
+                                        break;
 
                                     case '4':
                                         $charttype = "PolarArea";
