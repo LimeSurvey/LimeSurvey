@@ -24,7 +24,7 @@
 */
 class Survey_Common_Action extends CAction
 {
-    public function __construct($controller, $id)
+    public function __construct($controller=null, $id=null)
     {
         parent::__construct($controller, $id);
 
