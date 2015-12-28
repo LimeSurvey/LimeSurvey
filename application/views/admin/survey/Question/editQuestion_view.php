@@ -104,27 +104,26 @@
                                                 <label class="col-sm-4 control-label" for="question_type_button">
                                                     <?php
                                                         eT("Question Type:");
-                                                        if(!$adding)
-                                                            echo $eqrow['type'];
                                                     ?>
                                                 </label>
 
                                                 <?php $modulename = (isset($eqrow['modulename']))?$eqrow['modulename']:false;?>
 
-                                                <?php if(isset($selectormodeclass) && $selectormodeclass != "none"): ?>
-                                                    <?php
-                                                        foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
-                                                        {
-                                                            if (!isset($groups[$questionType['group']]))
-                                                            {
-                                                                $groups[$questionType['group']] = array();
-                                                            }
-                                                            $groups[$questionType['group']][$key] = $questionType['description'];
-                                                        }
-                                                    ?>
+                                                <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
+                                                <input type="hidden" id="question_module_name" name="module_name" value="<?php echo $modulename; ?>" />
 
-                                                    <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
-                                                    <input type="hidden" id="question_module_name" name="module_name" value="<?php echo $modulename; ?>" />
+                                                <?php
+                                                    foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
+                                                    {
+                                                        if (!isset($groups[$questionType['group']]))
+                                                        {
+                                                            $groups[$questionType['group']] = array();
+                                                        }
+                                                        $groups[$questionType['group']][$key] = $questionType['description'];
+                                                    }
+                                                ?>
+
+                                                <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
 
                                                     <div class="col-sm-8 btn-group" id="question_type_button" style="z-index: 1000">
                                                         <button type="button" class="btn btn-default dropdown-toggle " <?php if ($activated == "Y"){echo " disabled ";} ?>  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="z-index: 1000">
@@ -165,23 +164,20 @@
                                                         </ul>
                                                     </div>
                                                 <?php else: ?>
-                                                    <?php
-                                                        $aQtypeData=array();
-                                                        foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
-                                                        {
-                                                            $aQtypeData[]=array('code'=>$key,'description'=>$questionType['description'],'group'=>$questionType['group']);
-                                                        }
-                                                        echo CHtml::dropDownList(
-                                                            'type',
-                                                            'category',
-                                                            CHtml::listData($aQtypeData,'code','description','group'),
-                                                                array(
-                                                                        'class' => 'none',
-                                                                        'id'=>'question_type',
-                                                                        'options' => array($eqrow['type']=>array('selected'=>true))
-                                                                     )
-                                                        );
-                                                    ?>
+                                                    <div class="col-sm-8 ">
+                                                        <p style="padding-top: 7px;">
+                                                            <?php if(!$modulename):?>
+                                                                <?php foreach($groups as $name => $group):?>
+                                                                    <?php foreach($group as $type => $option):?>
+                                                                        <?php if($type == $eqrow['type']){echo '' . $option . '';}?>
+                                                                    <?php endforeach;?>
+                                                                <?php endforeach;?>
+                                                            <?php else:?>
+                                                                <span class="buttontext"><?php echo $eqrow['moduletitle'];?></span>
+                                                            <?php endif; ?>
+                                                        </p>
+                                                    </div>
+
                                                 <?php endif; ?>
                                             </div>
 
