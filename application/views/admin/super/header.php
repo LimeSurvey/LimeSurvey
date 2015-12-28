@@ -26,16 +26,30 @@
         // Using registerPackage only publish the whole directory, and never update it (unless tmp/assets/ directories are deleted).  Command was :   App()->getClientScript()->registerPackage($sAdminthemePackageName);
         // The way to grant the possibility for asset manager to re-publish those files when they are changed is to publish them one by one.
 
-        foreach ($aPackageStyles as $cssfile)
+        if(!YII_DEBUG)
         {
-            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$sAdmintheme.'/css/' . $cssfile) );
-        }
+            foreach ($aPackageStyles as $cssfile)
+            {
+                App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$sAdmintheme.'/css/' . $cssfile) );
+            }
 
-        foreach ($aPackageScripts as $jsfile)
+            foreach ($aPackageScripts as $jsfile)
+            {
+                App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$sAdmintheme.'/scripts/' . $jsfile) );
+            }
+        }
+        else
         {
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$sAdmintheme.'/scripts/' . $jsfile) );
-        }
+            foreach ($aPackageStyles as $cssfile)
+            {
+                App()->getClientScript()->registerCssFile( Yii::app()->getBaseUrl(true).'/styles/'.$sAdmintheme.'/css/' . $cssfile );
+            }
 
+            foreach ($aPackageScripts as $jsfile)
+            {
+                App()->getClientScript()->registerScriptFile( Yii::app()->getBaseUrl(true).'/styles/'.$sAdmintheme.'/scripts/' . $jsfile );
+            }
+        }
         // Right to Left
         if (getLanguageRTL($_SESSION['adminlang']))
         App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$sAdmintheme.'/css/adminstyle-rtl.css') );
