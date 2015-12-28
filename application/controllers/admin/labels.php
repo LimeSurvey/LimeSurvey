@@ -314,10 +314,8 @@ class labels extends Survey_Common_Action
             $aData['labelbar']['savebutton']['text'] = gT("Save changes");
             $aData['labelbar']['closebutton']['url'] = 'admin/labels/sa/view';
             $aData['labelbar']['buttons']['edition'] = true;
-            if ($sa != 'newlabelset' && $sa != 'editlabelset')
-            {
-                $aData['labelbar']['buttons']['edit'] = true;
-            }
+
+            $aData['labelbar']['buttons']['edit'] = true;
         }
 
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);

@@ -3,9 +3,11 @@ $(document).ready(function(){
 
 if ($('#save-form-button').length>0){
     $("#save-form-button").on('click', function(){
-        var formid = '#'+$(this).attr('aria-data-form-id');
+        var formid = '#'+$(this).attr('data-form-id');
         $form = $(formid);
+        //alert($form.find('[type="submit"]').attr('id'));
         $form.find('[type="submit"]').trigger('click');
+        return false;
     });
 }
 

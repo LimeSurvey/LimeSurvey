@@ -38,7 +38,7 @@
         <div class="col-lg-6 col-sm-4 text-right">
 
             <?php if(isset($usergroupbar['savebutton']['form'])):?>
-                <a class="btn btn-default" href="#" role="button" id="save-form-button" aria-data-form-id="<?php echo $usergroupbar['savebutton']['form']; ?>">
+                <a class="btn btn-default" href="#" role="button" id="save-form-button" data-form-id="<?php echo $usergroupbar['savebutton']['form']; ?>">
                     <span class="glyphicon glyphicon-ok" ></span>
                     <?php echo $usergroupbar['savebutton']['text'];?>
                 </a>
