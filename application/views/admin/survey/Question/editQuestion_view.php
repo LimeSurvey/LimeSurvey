@@ -1,5 +1,5 @@
 <?php $this->renderPartial("./survey/Question/question_subviews/_ajax_variables", $ajaxDatas); ?>
-<?php $this->renderPartial("./survey/Question/newQuestion_subviews/_ajax_variables", $ajaxDatas); ?>
+
 
 <?php if(isset($qTypeOutput)): ?>
     <script type='text/javascript'><?php echo $qTypeOutput; ?></script>
@@ -191,6 +191,9 @@
                                                     <select name='gid' id='gid' class="form-control" <?php if ($activated == "Y"){echo " disabled ";} ?> >
                                                         <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
                                                     </select>
+                                                    <?php if ($activated == "Y"): ?>
+                                                        <input type='hidden' name='gid' value='<?php echo $eqrow['gid'];?>' />
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
 
