@@ -2770,12 +2770,17 @@ class statistics_helper {
             if ($usegraph==1 && $bShowGraph && get_class(Yii::app()->getController()) !== 'Statistics_userController')
             {
                 // We clean the labels
+                $iMaxLabelLength = 0;
                 foreach($labels as $key => $label)
                 {
                     $cleanLabel = str_replace('"', " ", $label);
                     $cleanLabel = preg_replace( "/\r|\n/", "", $cleanLabel );
                     $labels[$key] = $cleanLabel;
+                    $iMaxLabelLength = (strlen( $cleanLabel ) > $iMaxLabelLength)?strlen( $cleanLabel ):$iMaxLabelLength;
                 }
+
+                $iCanvaHeight = $iMaxLabelLength * 3;
+                $aData['iCanvaHeight'] = ($iCanvaHeight > 150)?$iCanvaHeight:150;
 
                 $aData['rt'] = $rt;
                 $aData['qqid'] = $qqid;
@@ -2958,6 +2963,7 @@ class statistics_helper {
         }
 
         //only continue if we have something to output
+        $bBrowse = false;
         if ($results > 0)
         {
             if($outputType=='html' && $browse === true && Permission::model()->hasSurveyPermission($surveyid,'responses','read'))

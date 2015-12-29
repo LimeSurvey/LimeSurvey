@@ -24,7 +24,7 @@
                 data-type="<?php echo $charttype; // the chart start type (bar, donut, etc.) ?>"
                 data-color="<?php echo $color; // the background color for bar, etc. ?>"
             >
-                <canvas class="canvas-chart " id="chartjs-<?php echo $qqid; ?>" width="400" height="150"
+                <canvas class="canvas-chart " id="chartjs-<?php echo $qqid; ?>" width="400" height="<?php echo $iCanvaHeight;?>"
                     data-color="<?php echo $color; // the background color for bar, etc. ?>"></canvas>
             </div>
 
