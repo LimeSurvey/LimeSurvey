@@ -4677,3 +4677,18 @@ span[data-tooltip] {
 {
     width: auto;
 }
+
+#sideMenu #dropdown #explorer li#questionexplorer-group-container, #sideMenu #dropdown li#questionexplorer-group-container > a{
+    line-height: 1.4;
+}
+
+#sideMenu #dropdown #explorer li#questionexplorer-group-container:hover, #sideMenu #dropdown li#questionexplorer-group-container:hover > a{
+    background-color: #fafafa;
+    color: $color_deep_fir_approx;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.explorer-group-title {
+    margin-top: 1em;
+}

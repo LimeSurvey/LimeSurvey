@@ -286,6 +286,17 @@ $(document).ready(function(){
          $sidemenu.removeClass('exploring');
      });
 
+     $('.explorer-group').click(function(){
+         $that = $(this);
+         $gid = $that.data('question-group-id');
+         $questionGroup = $('#questions-group-'+$gid);
+         $groupCaret = $('#caret-'+$gid);
+         $questionGroup.toggle(500);
+         $groupCaret.toggleClass('fa-caret-right');
+         $groupCaret.toggleClass('fa-caret-down');
+         return false;
+     });
+
 });
 
 
