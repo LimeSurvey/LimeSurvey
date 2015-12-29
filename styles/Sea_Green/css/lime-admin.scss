@@ -4668,3 +4668,12 @@ span[data-tooltip] {
 #statisticsview .panel{
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
+
+#explorer-collapse{
+    border-bottom: none;
+}
+
+#explorer-collapse:hover, #sideMenu #dropdown li a#explorer-collapse[aria-expanded="true"], #sideMenu #dropdown li a.question-group-collapse[aria-expanded="true"]
+{
+    width: auto;
+}
