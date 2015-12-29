@@ -275,11 +275,9 @@ $(document).ready(function(){
          // If the side bar is fixed to top, we must unfix it first
          if ( $sidemenu.hasClass('fixed-top'))
          {
-             console.log('ok');
              toTop = ( $(window).scrollTop() + 45 ); // 45px is the heigh of the top menu bar
              $sidemenu.css({position:"absolute", top: toTop+"px"});
          }
-         console.log('okkk');
          $sidemenu.addClass('exploring');
 
      });
@@ -315,11 +313,24 @@ $(function()
                 }
             }
 
-            if( $(window).scrollTop() <= 45)
+            if ($(window).scrollTop() <= 45)
             {
                 surveybar.removeClass('navbar-fixed-top');
                 sidemenu.css({position:"absolute", top: "auto"});
                 sidemenu.removeClass('fixed-top');
+            }
+
+            // When exploring questions, we need to be sure that no empty white space will left on top of the side bar
+            if (sidemenu.hasClass('exploring'))
+            {
+                $sideMenutoTop = (sidemenu.offset().top - $(window).scrollTop());
+                console.log($sideMenutoTop);
+
+                if ($sideMenutoTop > 0 && surveybar.hasClass('navbar-fixed-top') )
+                {
+                    toTop = ( $(window).scrollTop() + 45 ); // 45px is the heigh of the top menu bar
+                    sidemenu.css({position:"absolute", top: toTop+"px"});
+                }
             }
         });
     }
