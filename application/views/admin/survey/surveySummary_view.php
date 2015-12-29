@@ -252,7 +252,7 @@
 
                     <div class="col-sm-6">
                         <!-- Template carroussel -->
-                        <?php $this->renderPartial( "/admin/super/_question_explorer", array(
+                        <?php $this->renderPartial( "/admin/survey/subview/_template_carousel", array(
                             'templates'=>$templates,
                             'surveyinfo'=>$surveyinfo,
                             'iSurveyId'=>$surveyid,

@@ -3,7 +3,7 @@
     * Sidemenu
     */
 ?>
-<?php    
+<?php
     $bSurveyIsActive = (isset($surveyIsActive))?$surveyIsActive:$surveyinfo['active']=='Y';
 ?>
 <?php //  print_r(get_defined_vars()); die();?>
