@@ -3428,6 +3428,10 @@ span[data-tooltip] {
   line-height: 1.4; }
 
 .explorer-group-title {
-  margin-top: 1em; }
+  margin-top: 1em;
+  padding: 0em 0 1em 0; }
+
+.explorer-group-title a.explorer-group, .question-collapse-title {
+  color: #163c19; }
 
 /*# sourceMappingURL=lime-admin.css.map */

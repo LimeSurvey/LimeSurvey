@@ -286,6 +286,7 @@ $(document).ready(function(){
          $sidemenu.removeClass('exploring');
      });
 
+     // Opening the questions list of the group
      $('.explorer-group').click(function(){
          $that = $(this);
          $gid = $that.data('question-group-id');

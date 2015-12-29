@@ -3,6 +3,10 @@
     * Sidemenu
     */
 ?>
+<?php    
+    $bSurveyIsActive = (isset($surveyIsActive))?$surveyIsActive:$surveyinfo['active']=='Y';
+?>
+<?php //  print_r(get_defined_vars()); die();?>
 
     <!-- State when page is loaded : for JavaScript-->
     <?php if(isset($sidebar['state'])):?>
@@ -75,6 +79,7 @@
                                     <?php $this->renderPartial( "/admin/super/_question_explorer", array(
                                         'aGroups' => $aGroups,
                                         'iSurveyId' => $surveyid,
+                                        'bSurveyIsActive' => $bSurveyIsActive
                                     )); ?>
 
                                     <?php if($permission):?>

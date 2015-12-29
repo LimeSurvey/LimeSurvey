@@ -29,12 +29,15 @@
                                         <span id="caret-<?php echo $aGroup->gid; ?>" class="fa fa-caret-right caret-explorer-group"></span>&nbsp&nbsp<?php echo $aGroup->group_name;?>
                                     </a>
                                 </div>
-                                <div class="col-sm-3">
-                                    <!-- add question to this group -->
-                                    <a class="" href="<?php echo $this->createUrl("/admin/questions/sa/newquestion/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
-                                        <span class="glyphicon glyphicon-plus-sign"></span>
-                                    </a>
-                                </div>
+
+                                <?php if (!$bSurveyIsActive): ?>
+                                    <div class="col-sm-3">
+                                        <!-- add question to this group -->
+                                        <a  data-toggle="tooltip" data-placement="top"  title="<?php eT('Add a question to this group');?>" class="" href="<?php echo $this->createUrl("/admin/questions/sa/newquestion/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
+                                            <span class="glyphicon glyphicon-plus-sign"></span>
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
                             </div>
 
                             <!-- Questions -->
@@ -46,8 +49,8 @@
                                                 <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$iSurveyId/gid/".$aGroup->gid."/qid/".$question->qid); ?>">
                                                     <span class="question-collapse-title">
                                                         <span class="glyphicon glyphicon-list"></span>
-                                                        <strong><?php echo sanitize_html_string($question->title);?> </strong>
-                                                        <br/><em> <?php echo substr(sanitize_html_string($question->question), 0, 40);?></em>
+                                                        <strong><?php echo sanitize_html_string(strip_tags($question->title));?> </strong>
+                                                        <br/><em> <?php echo substr(sanitize_html_string(strip_tags($question->question)), 0, 40);?></em>
                                                     </span>
                                                 </a>
                                             <?php endif; ?>
