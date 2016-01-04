@@ -81,16 +81,9 @@
             }
         ?>
     </table>
-    <table>
-        <tr>
-            <td></td>
-            <td class='actions'>
-                <a href='#' class='add' id='add_new_attribute'>
-                    <span data-toggle='tooltip' data-placement='bottom' class="icon-add text-success" title='<?php eT("Add value") ?>' id='addsign' name='addsign'></span>
-                </a>
-            </td>
-        </tr>
-    </table>
+    <a href='#' class='add' id='add_new_attribute'>
+        <span data-toggle='tooltip' data-placement='bottom' class="icon-add text-success" title='<?php eT("Add value") ?>' id='addsign' name='addsign'></span>
+    </a>
 </div>
 
 <div id="addlang" class='form-group'>
