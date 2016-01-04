@@ -6,7 +6,8 @@
  $count= 0;
 
      //TODO : move to controller
-     $templates = getTemplateList();
+     $templates = getTemplateListWithPreviews();
+     //print_r($templates);
      $count = 0;
      $surveyid = $surveyinfo['sid'];
      $setting_entry = 'quickaction_'.Yii::app()->user->getId();

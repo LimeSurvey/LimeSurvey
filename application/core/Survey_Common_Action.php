@@ -1120,7 +1120,6 @@ class Survey_Common_Action extends CAction
         $aData['tableusage'] = false;
         $aData['aAdditionalLanguages'] = $aAdditionalLanguages;
         $aData['surveyinfo'] = $aSurveyInfo;
-
         $aData['groups_count'] = $sumcount2;
         $this->getController()->renderPartial("/admin/survey/surveySummary_view", $aData);
     }

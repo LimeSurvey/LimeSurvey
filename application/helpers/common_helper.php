@@ -310,6 +310,13 @@ function getTemplateList()
     return Template::getTemplateList();
 }
 
+function getTemplateListWithPreviews()
+{
+    return Template::getTemplateListWithPreviews();
+}
+
+
+
 function getAdminThemeList()
 {
     $standardtemplaterootdir=Yii::app()->getConfig("styledir");
