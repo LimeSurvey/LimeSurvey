@@ -77,7 +77,7 @@ $(document).ready(function() {
     var id = 1;
     $('#add_new_attribute').click(function(){
             html = "<tr>"+
-            "<td colspan='2'><input type='text' name='attribute_value_name_"+id+"' id='attribute_value_name_"+id+"' size='8' style='50%;'></td></tr>";
+            "<td colspan='2'><input type='text' name='attribute_value_name_"+id+"' id='attribute_value_name_"+id+"' size='30'></td></tr>";
                   $('.dd').fadeIn('slow');
         $('#ddtable tr:last').after(html);
         id++;
@@ -102,7 +102,7 @@ $(document).ready(function() {
     function editAttrValue(valueId) {
         var valueText = $.trim($("#"+valueId).text());
         var thisRow = $("#"+valueId).closest('tr');
-        $("#"+valueId).replaceWith( "<div><input type='text' size='20' name='editbox' id='editbox"+valueId+"' /><input type='hidden' id='value_id' name='value_id' value='"+valueId+"' /></div>" );
+        $("#"+valueId).replaceWith( "<div><input type='text' size='30' name='editbox' id='editbox"+valueId+"' /><input type='hidden' id='value_id' name='value_id' value='"+valueId+"' /></div>" );
         $('#editbox'+valueId).val(valueText);
         $('.actions .edit, .actions .delete', thisRow).hide();
         $('.actions .cancel', thisRow).show();
