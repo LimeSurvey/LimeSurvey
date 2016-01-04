@@ -58,27 +58,27 @@
                     </div>
                 </div>
 
-                <!-- Switch : Show questions group by group -->
-                <?php $switchvalue = ($surveyinfo['format']=='G') ? 1 : 0 ; ?>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <label for="groupbygroup"><?php eT('Show questions group by group :');?></label>
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => 'groupbygroup',
-                            'id'=>'switchchangeformat',
-                            'value'=>$switchvalue,
-                        ));?>
-                        <input type="hidden" id="switch-url" data-url="<?php echo $this->createUrl("admin/survey/sa/changeFormat/surveyid/".$surveyinfo['sid']);?>" />
-                        <br/><br/>
-                    </div>
-                </div>
-
-
                 <!-- Boxes and template -->
                 <div class="row">
 
                     <!-- Boxes -->
                     <div class="col-sm-6">
+
+                        <!-- Switch : Show questions group by group -->
+                        <?php $switchvalue = ($surveyinfo['format']=='G') ? 1 : 0 ; ?>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label for="groupbygroup"><?php eT('Show questions group by group :');?></label>
+                                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                    'name' => 'groupbygroup',
+                                    'id'=>'switchchangeformat',
+                                    'value'=>$switchvalue,
+                                ));?>
+                                <input type="hidden" id="switch-url" data-url="<?php echo $this->createUrl("admin/survey/sa/changeFormat/surveyid/".$surveyinfo['sid']);?>" />
+                                <br/><br/>
+                            </div>
+                        </div>
+
 
                         <!-- Add Question / group -->
                         <div class="row">

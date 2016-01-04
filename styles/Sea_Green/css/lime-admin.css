@@ -3123,7 +3123,7 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
   padding-top: 0px; }
 
 #carousel-example-generic, #carousel-example-generic .carousel-inner {
-  min-height: 400px; }
+  min-height: 150px; }
 
 #carousel-example-generic .carousel-indicators {
   top: 370px;
@@ -3433,5 +3433,20 @@ span[data-tooltip] {
 
 .explorer-group-title a.explorer-group, .question-collapse-title {
   color: #163c19; }
+
+#item-container, #jcarousel-wrapper-container {
+  width: 300px; }
+
+#item-container h4 {
+  margin-bottom: 30px; }
+
+.jcarousel li.active {
+  border: 1px solid #328637; }
+
+.selectTemplate {
+  margin-top: 10px; }
+
+.imgSelectTemplate {
+  cursor: pointer; }
 
 /*# sourceMappingURL=lime-admin.css.map */
