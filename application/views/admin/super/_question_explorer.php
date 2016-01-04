@@ -49,8 +49,13 @@
                                                 <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$iSurveyId/gid/".$aGroup->gid."/qid/".$question->qid); ?>">
                                                     <span class="question-collapse-title">
                                                         <span class="glyphicon glyphicon-list"></span>
-                                                        <strong><?php echo sanitize_html_string(strip_tags($question->title));?> </strong>
-                                                        <br/><em> <?php echo substr(sanitize_html_string(strip_tags($question->question)), 0, 40);?></em>
+                                                        <strong>
+                                                            <?php echo sanitize_html_string(strip_tags($question->title));?>
+                                                        </strong>
+                                                        <br/>
+                                                        <em>
+                                                            <?php echo substr(strip_tags(sanitize_html_string($question->question)), 0, 40);?>
+                                                        </em>
                                                     </span>
                                                 </a>
                                             <?php endif; ?>

@@ -4,7 +4,7 @@
     */
 ?>
 <?php
-    $bSurveyIsActive = (isset($surveyIsActive))?$surveyIsActive:$surveyinfo['active']=='Y';
+    $bSurveyIsActive = (isset($surveyIsActive))?$surveyIsActive:$oSurvey->active=='Y';
 ?>
 <?php //  print_r(get_defined_vars()); die();?>
 

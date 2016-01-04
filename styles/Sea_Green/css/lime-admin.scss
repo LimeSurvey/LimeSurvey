@@ -4446,7 +4446,7 @@ h3 .glyphicon-chevron-up,  h3 .glyphicon-chevron-down {
 }
 
 #carousel-example-generic, #carousel-example-generic .carousel-inner {
-    min-height: 400px
+    min-height: 150px
 }
 
 #carousel-example-generic .carousel-indicators {
@@ -4696,4 +4696,24 @@ span[data-tooltip] {
 
 .explorer-group-title a.explorer-group, .question-collapse-title{
     color: #163c19;
+}
+
+
+#item-container,  #jcarousel-wrapper-container {
+    width: 300px;
+}
+#item-container h4 {
+    margin-bottom: 30px;
+}
+
+.jcarousel li.active {
+    border: 1px solid $base-color;
+}
+
+.selectTemplate {
+    margin-top: 10px;
+}
+
+.imgSelectTemplate {
+    cursor: pointer;
 }

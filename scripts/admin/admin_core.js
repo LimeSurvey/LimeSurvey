@@ -94,46 +94,27 @@ $(document).ready(function(){
     });
 
 
-	/* Switch format group */
-	if ($('#switchchangeformat').length>0){
-		$('#switchchangeformat').on('switchChange.bootstrapSwitch', function(event, state) {
-			//alert('ok');
-			$url = $('#switch-url').attr('data-url');
-		    $.ajax({
-		        url : $url,
-		        type : 'GET',
-		        dataType : 'html',
+    /* Switch format group */
+    if ($('#switchchangeformat').length>0){
+        $('#switchchangeformat').on('switchChange.bootstrapSwitch', function(event, state) {
+            //alert('ok');
+            $url = $('#switch-url').attr('data-url');
+            $.ajax({
+                url : $url,
+                type : 'GET',
+                dataType : 'html',
 
-		        // html contains the buttons
-		        success : function(html, statut){
-		        },
-		        error :  function(html, statut){
-		            alert('error');
-		        }
-		    });
+                // html contains the buttons
+                success : function(html, statut){
+                },
+                error :  function(html, statut){
+                    alert('error');
+                }
+            });
 
-		});
-	};
-
-    $('.selectTemplate').click(function(){
-        $that = $(this);
-        $url = $that.data('url');
-        $selected = $that.data('selectedtext');;
-        $.ajax({
-            url : $url,
-            type : 'GET',
-            dataType : 'html',
-
-            // html contains the buttons
-            success : function(html, statut){
-                $that.addClass("disabled");
-                $that.empty().append($selected);
-            },
-            error :  function(html, statut){
-                alert('error');
-            }
         });
-    });
+    };
+
 
     $('#survey-action-chevron').click(function(){
         $url = $(this).data('url');
@@ -184,7 +165,7 @@ $(document).ready(function(){
             $('#question_module_name').val('');
         }
         updatequestionattributes();
-   	});
+       });
 
     $('#MinimizeGroupWindow').click(function(){
         $('#groupdetails').hide();
@@ -251,20 +232,20 @@ function qTypeDropdownInit()
     });
     $(document).ready(function() {
 
-    	$('.questionType').on('mouseenter', function(e){
-    		//alert($(this).attr('class'));
-    		$('.questionType').qtip('hide');
-    		$(this).qtip('option', 'position.target', $(this).qtip('show'));
-    	});
+        $('.questionType').on('mouseenter', function(e){
+            //alert($(this).attr('class'));
+            $('.questionType').qtip('hide');
+            $(this).qtip('option', 'position.target', $(this).qtip('show'));
+        });
 
-    	$('.questionType').on('mouseleave', function(e){
-    		$(this).qtip('hide');
-    	});
-    	/*
+        $('.questionType').on('mouseleave', function(e){
+            $(this).qtip('hide');
+        });
+        /*
         $('#question_type').on('mouseenter mouseleave', '.questionType', function(e) {
             if (e.type == 'mouseenter')
             {
-				// Hide all others if we show a new one.
+                // Hide all others if we show a new one.
                 $('.questionType').qtip('hide');
                 $(this).qtip('option', 'position.target', $(e.currentTarget)).qtip('show');
             }
@@ -697,12 +678,12 @@ jQuery.fn.center = function () {
 // Fix broken substr function with negative start value (in older IE)
 // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr
 if ('ab'.substr(-1) != 'b') {
-	String.prototype.substr = function(substr) {
-		return function(start, length) {
-			if (start < 0) start = this.length + start;
-			return substr.call(this, start, length);
-		};
-	}(String.prototype.substr);
+    String.prototype.substr = function(substr) {
+        return function(start, length) {
+            if (start < 0) start = this.length + start;
+            return substr.call(this, start, length);
+        };
+    }(String.prototype.substr);
 }
 
 function linksInDialog()

@@ -64,7 +64,7 @@ class Template extends LSActiveRecord
         $sDefaulttemplate=Yii::app()->getConfig('defaulttemplate','default');
         $sTemplateName=empty($sTemplateName) ? $sDefaulttemplate : $sTemplateName;
 
-        /* Validate it's a real dir included in template allowed dir 
+        /* Validate it's a real dir included in template allowed dir
         *  Alternative : use realpath("$dir/$sTemplateName")=="$dir/$sTemplateName" and is_dir
         */
         if(array_key_exists($sTemplateName,self::getTemplateList()))
@@ -185,6 +185,45 @@ class Template extends LSActiveRecord
                 if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
                 {
                     $aTemplateList[$file] = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                }
+            }
+            closedir($handle);
+        }
+        ksort($aTemplateList);
+
+        return $aTemplateList;
+    }
+
+    public static function getTemplateListWithPreviews()
+    {
+        $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
+        $standardtemplaterootdir=Yii::app()->getConfig("standardtemplaterootdir");
+
+        $aTemplateList=array();
+
+        if ($handle = opendir($standardtemplaterootdir))
+        {
+            while (false !== ($file = readdir($handle)))
+            {
+                // Why not return directly standardTemplate list ?
+                if (!is_file("$standardtemplaterootdir/$file") && self::isStandardTemplate($file))
+                {
+                    $aTemplateList[$file]['directory'] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                    $aTemplateList[$file]['preview'] = Yii::app()->request->baseUrl.'/templates/'.$file.'/preview.png';
+                }
+            }
+            closedir($handle);
+        }
+
+        if ($usertemplaterootdir && $handle = opendir($usertemplaterootdir))
+        {
+            while (false !== ($file = readdir($handle)))
+            {
+                // Maybe $file[0] != "." to hide Linux hidden directory
+                if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
+                {
+                    $aTemplateList[$file]['directory']  = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                    $aTemplateList[$file]['preview'] = Yii::app()->request->baseUrl.'/upload/templates/'.$file.'/preview.png';
                 }
             }
             closedir($handle);

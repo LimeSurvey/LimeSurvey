@@ -2,7 +2,6 @@
  * Side Menu
  */
 $(document).ready(function(){
-
     var close = $('#chevronClose');
     var stretch = $('#chevronStretch');
     var sideBody = $('.side-body');
