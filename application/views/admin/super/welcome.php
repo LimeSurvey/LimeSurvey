@@ -27,7 +27,7 @@
     <!-- Jumbotron -->
     <div class="row">
         <div class="jumbotron" id="welcome-jumbotron">
-            <img src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" />
+            <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" />
             <p class="hidden-xs" ><?php echo PRESENTATION; // Defined in AdminController?></p>
         </div>
     </div>
@@ -145,7 +145,7 @@
 
     <!-- Boxes for smartphones-->
     <div class="row  hidden-sm  hidden-md hidden-lg ">
-        <div class="panel panel-primary panel-clickable" id="pannel-2" aria-data-url="/limesurvey/LimeSurveyNext/index.php/admin/survey/sa/listsurveys" style="opacity: 1; top: 0px;">
+        <div class="panel panel-primary panel-clickable" id="pannel-7" data-url="/limesurvey/LimeSurveyNext/index.php/admin/survey/sa/listsurveys" style="opacity: 1; top: 0px;">
             <div class="panel-heading">
                 <h3 class="panel-title"><?php eT('List surveys');?></h3>
             </div>
@@ -157,7 +157,7 @@
             </div>
         </div>
 
-        <div class="panel panel-primary panel-clickable" id="pannel-3" aria-data-url="/limesurvey/LimeSurveyNext/index.php/admin/globalsettings" style="opacity: 1; top: 0px;">
+        <div class="panel panel-primary panel-clickable" id="pannel-8" data-url="/limesurvey/LimeSurveyNext/index.php/admin/globalsettings" style="opacity: 1; top: 0px;">
             <div class="panel-heading">
                 <h3 class="panel-title"><?php eT('Edit global settings');?></h3>
             </div>
