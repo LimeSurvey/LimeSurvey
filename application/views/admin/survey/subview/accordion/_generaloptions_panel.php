@@ -33,7 +33,7 @@
             <table>
                 <tr>
                     <td style='text-align:left'>
-                        <select class="form-control " style='' size='5' id='additional_languages' name='additional_languages'>
+                        <select style="min-width:200px;" class="form-control " style='' size='5' id='additional_languages' name='additional_languages'>
                             <?php $jsX=0;
                                 $jsRemLang ="<script type=\"text/javascript\">
                                 var mylangs = new Array();
@@ -70,7 +70,7 @@
 
 
                     <td style='text-align:left'>
-                        <select class="form-control input-xlarge" size='5'  id='available_languages' name='available_languages'>
+                        <select style="min-width:200px;" class="form-control input-xlarge" size='5'  id='available_languages' name='available_languages'>
                             <?php $tempLang=Survey::model()->findByPk($surveyid)->additionalLanguages;
                                 foreach (getLanguageDataRestricted (false, Yii::app()->session['adminlang']) as $langkey2 => $langname) {
                                     if ($langkey2 != $esrow['language'] && in_array($langkey2, $tempLang) == false) {  // base languag must not be shown here ?>
