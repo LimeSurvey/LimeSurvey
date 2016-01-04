@@ -18,7 +18,6 @@ function loadanswers()
     global $thissurvey, $thisstep;
     global $clienttoken;
 
-
     $scid=Yii::app()->request->getQuery('scid');
     if (Yii::app()->request->getParam('loadall') == "reload")
     {
