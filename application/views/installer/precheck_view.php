@@ -41,7 +41,6 @@ function dirReport($dir, $write)
     <div class="col-md-9">
         <h2><?php echo $title; ?></h2>
         <p><?php echo $descp; ?></p>
-        <fieldset>
         <legend><?php eT("Minimum requirements"); ?></legend>
 
         <table class='table-striped'>
@@ -104,8 +103,7 @@ function dirReport($dir, $write)
         </tr>
         </tbody>
         </table>
-        </fieldset>
-        <fieldset>
+        <br/>
         <legend><?php eT('Optional modules'); ?></legend>
         <table class='table-striped'>
         <thead>
@@ -144,15 +142,14 @@ function dirReport($dir, $write)
         </tbody>
 
         </table>
-        </fieldset>
         <div class="row navigator">
-            <div class="col-md-3" >
+            <div class="col-md-4" >
                 <input class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" />
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <input class="btn btn-default" type="button" value="<?php eT('Check again'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
 
                 <?php if (isset($next) && $next== TRUE) { ?>
                 <input class="btn btn-default" type="button" value="<?php eT('Next'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
