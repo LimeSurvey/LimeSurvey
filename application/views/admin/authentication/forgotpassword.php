@@ -12,7 +12,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
-                          <img id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL;?>" />
+                          <img alt="logo" id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL;?>" />
                              <p>Dashboard</p>
                         </div>
                     </div>
