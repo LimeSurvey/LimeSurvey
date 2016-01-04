@@ -10,14 +10,16 @@
 ?>
 
 <div class="row template-caroussel">
-    <div id="carousel-example-generic" class="carousel slide col-lg-4 col-md-12 col-sm-12" data-ride="carousel" data-interval="false">
+    <div id="carousel-example-generic" class="carousel slide col-lg-5 col-md-12 col-sm-12" data-ride="carousel" data-interval="false">
         <!-- Indicators -->
-        <ol class="carousel-indicators">
+        <div class="carousel-indicators" id="template-miniature" >
             <?php foreach($templates as $key=>$template):?>
-                <li data-target="#carousel-example-generic" data-slide-to="<?php echo $count;?>" <?php if($key==$surveyinfo['template']){echo 'class="active"';}?> data-toggle="tooltip" data-placement="bottom" title="<?php echo $key;?>" ></li>
+                <a href="#" data-target="#carousel-example-generic" data-slide-to="<?php echo $count;?>" <?php if($key==$surveyinfo['template']){echo 'class="active"';}?> data-toggle="tooltip" data-placement="bottom" title="<?php echo $key;?>" >
+                    <img src="<?php echo Yii::app()->request->baseUrl.'/templates/'.$key.'/preview.png'; ?>" alt="<?php echo $key;?>"  width="42">
+                </a>
                 <?php $count++;?>
             <?php endforeach; ?>
-        </ol>
+        </div>
         <h4 class="panel-title">Select your template</h4>
         <div class="carousel-inner" role="listbox">
             <?php foreach($templates as $key=>$template):?>
