@@ -11,7 +11,6 @@
         <?php echo CHtml::errorSummary($model, null, null, array('class' => 'errors')); ?>
     </div>
     <?php  ?>
-    <fieldset>
     <legend><?php
         eT("You can leave these settings blank and change them later");
         ?>
@@ -74,13 +73,12 @@
             echo CHtml::closeTag('div');
         }
     ?>
-    </fieldset>
         <div class="row navigator">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <input class="btn btn-default" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" />
             </div>
-            <div class="col-md-3"></div>
-            <div class="col-md-3">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
                 <?php echo CHtml::submitButton(gT("Next"), array('class' => 'btn btn-default')); ?>
             </div>
         </div>

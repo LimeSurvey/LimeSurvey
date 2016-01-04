@@ -9,12 +9,12 @@
                 <?php if (isset($adminoutputText)) echo $adminoutputText; ?>
 
             <div class="row">
-                <div class="col-md-3" >
+                <div class="col-md-4" >
                     <input class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
                 </div>
-                <div class="col-md-3" style="text-align: center;">
+                <div class="col-md-4" style="text-align: center;">
                 </div>
-                <div class="col-md-3" style="text-align: right;">
+                <div class="col-md-4" style="text-align: right;">
                     <?php
                         if (isset($next))
                         {

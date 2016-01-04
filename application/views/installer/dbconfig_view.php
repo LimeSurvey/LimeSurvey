@@ -10,7 +10,6 @@
             <?php echo CHtml::errorSummary($model, null, null, array('class' => 'errors')); ?>
         </div>
         <?php eT("Note: All fields marked with (*) are required."); ?>
-        <fieldset>
             <legend><?php eT("Database configuration"); ?></legend>
             <?php
                 $rows = array();
@@ -55,14 +54,14 @@
             }
 
             ?>
-        </fieldset>
+        <br />
         <div class="row">
-            <div class="col-md-3" >
+            <div class="col-md-4" >
                 <input class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
             </div>
-            <div class="col-md-3" style="text-align: center;">
+            <div class="col-md-4" style="text-align: center;">
             </div>
-            <div class="col-md-3" style="text-align: right;">
+            <div class="col-md-4" style="text-align: right;">
                 <?php echo CHtml::submitButton(gT("Next"), array('class' => 'btn btn-default')); ?>
             </div>
         </div>
