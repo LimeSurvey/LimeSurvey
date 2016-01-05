@@ -2959,7 +2959,7 @@ html {
 .h6 .small {
     color: $color_gunsmoke_approx;
 }
-table-striped > tbody > tr:nth-child(odd) > td {
+.table-striped > tbody > tr:nth-child(odd) > td {
     background-color: $color_alabaster_approx;
 }
 .table-striped > tbody > tr:nth-child(odd) > th {

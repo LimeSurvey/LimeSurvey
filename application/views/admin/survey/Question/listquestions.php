@@ -62,6 +62,7 @@
 
                         // Number of row per page selection
                         'id' => 'question-grid',
+                        'type'=>'striped',
                         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .
                             CHtml::dropDownList(
                                 'pageSize',

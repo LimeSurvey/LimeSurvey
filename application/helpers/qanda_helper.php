@@ -2300,11 +2300,21 @@ function do_multiplechoice($ia)
     $iBootCols = round(12/$dcols);
     $ansByCol = round($anscount/$dcols); $ansByCol = ($ansByCol > 0)?$ansByCol:1;
 
+    /*** TO VIEW
     $answer = '<div class="row">';
     $answer .= '    <div class="col-xs-'.$iBootCols.' subquestions-list questions-list checkbox-list">';
     $answer .= '    <input type="hidden" name="MULTI'.$ia[1].'" value="'.$anscount.'" />';
+    */
 
     //$answer .= $wrapper['whole-start'];
+
+    $aData = array(
+                'iBootCols' => $iBootCols,
+                'ia' => $ia,
+                'anscount' => $anscount,
+            );
+
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/multiplechoice_header', $aData, true);
 
     $fn = 1;
     if (!isset($multifields))
@@ -2349,47 +2359,77 @@ function do_multiplechoice($ia)
 
         /* Print out the checkbox */
         //$answer .= $startitem;
+        /**** TO VIEW
         $answer .= '<div  class="form-group-row row">';
         $answer .= "\t$hiddenfield\n";
         $answer .= "<label for=\"answer$ia[1]{$ansrow['title']}\" class=\"control-label col-xs-{$nbColLabelXs} col-lg-{$nbColLabelLg} answertext\">".  $ansrow['question'].  "</label>\n";
         $answer .= '<div class="col-lg-'.$nbColInputLg.' col-xs-'.$nbColInputXs.'">';
         $answer .= '        <input class="checkbox" type="checkbox" name="'.$ia[1].$ansrow['title'].'" id="answer'.$ia[1].$ansrow['title'].'" value="Y"';
+        */
 
+        $checkedState = '';
         /* If the question has already been ticked, check the checkbox */
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
             if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')
             {
+                /**** TO VIEW
                 $answer .= CHECKED;
+                */
+                $checkedState = 'CHECKED';
             }
         }
+        /**** TO VIEW
         $answer .= " onclick='cancelBubbleThis(event);";
 
         $answer .= ''
-        .  "$checkconditionFunction(this.value, this.name, this.type)' />\n"
+        .  "$checkconditionFunction(this.value, this.name, this.type)' />\n";
+        */
+        $sCheckconditionFunction = $checkconditionFunction.'(this.value, this.name, this.type)';
+
+        /**** TO VIEW
+        $answer .= ''
         .  "<label for=\"answer$ia[1]{$ansrow['title']}\" class=\"answertext\">"
         .  $ansrow['question']
         .  "</label>\n";
-
+        **/
 
         //        if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
         //        if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
         ++$fn;
         /* Now add the hidden field to contain information about this answer */
+
+        /**** TO VIEW
         $answer .= '        <input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
+        **/
+
+        $sValue = '';
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
+            /**** TO VIEW
             $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+            */
+            $sValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
         }
+
+        /**** TO VIEW
         $answer .= "\" />\n{$wrapper['item-end']}";
+        */
 
         // end of question group
+        /**** TO VIEW
         $answer .= '</div>'; // form group row
+        */
+
         $inputnames[]=$myfname;
 
         ++$rowcounter;
         //if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+        /*****
+            This logic will be removed by the view. Only one closing system
+            Just should check how to manage columns
+
         if ($rowcounter == $ansByCol && $colcounter < $wrapper['cols'])
         {
             if($colcounter == $wrapper['cols'])
@@ -2406,8 +2446,27 @@ function do_multiplechoice($ia)
             $rowcounter = 0;
             ++$colcounter;
         }
+        */
+
+        $aData = array(
+            'hiddenfield'=>$hiddenfield,
+            'ia'=>$ia,
+            'ansrow'=>$ansrow,
+            'nbColLabelXs'=>$nbColLabelXs,
+            'nbColLabelLg'=>$nbColLabelLg,
+            'nbColInputLg'=>$nbColInputLg,
+            'nbColInputXs'=>$nbColInputXs,
+            'checkedState'=>$checkedState,
+            'sCheckconditionFunction' => $sCheckconditionFunction,
+            'myfname'=>$myfname,
+            'sValue'=>$sValue,
+            'wrapper'=>$wrapper,
+        );
+
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_row', $aData, true);
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
     if ($other == 'Y')
     {
         $myfname = $ia[1].'other';
@@ -2421,20 +2480,30 @@ function do_multiplechoice($ia)
         }
         $answer .= $startitem;*/
 
+        /**** TO VIEW
         $answer .= "\t$hiddenfield\n";
         $answer .= "<label for=\"{$myfname}cbox\" class=\"answertext control-label col-xs-{$nbColLabelXs} col-lg-{$nbColLabelLg} \">".$othertext."</label>";
         $answer .= '<div class="col-lg-'.$nbColInputLg.' col-xs-'.$nbColInputXs.'">';
         $answer .= '    <input class="checkbox other-checkbox dontread" style="visibility:hidden" type="checkbox" name="'.$myfname.'cbox" id="answer'.$myfname.'cbox"';
+        **/
 
+        $checkedState = '';
         // othercbox can be not display, because only input text goes to database
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])!='')
         {
+            $checkedState = 'CHECKED';
+            /**** TO VIEW
             $answer .= CHECKED;
+            */
         }
+
+        /**** TO VIEW
         $answer .= " />";
         $answer .= '</div>';
         $answer .= '<div class="col-lg-12 col-xs-12">';
         $answer .= "    <input class=\"text ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
+        **/
+        $sValue = '';
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
@@ -2442,10 +2511,15 @@ function do_multiplechoice($ia)
             {
                 $dispVal = str_replace('.',$sSeparator,$dispVal);
             }
+            /**** TO VIEW
             $answer .= htmlspecialchars($dispVal,ENT_QUOTES);
+            **/
+            $sValue .= htmlspecialchars($dispVal,ENT_QUOTES);
         }
+
+        /**** TO VIEW
         $answer .="\" />\n";
-        $answer .="<script type='text/javascript'>\n/*<![CDATA[*/\n";
+        $answer .="<script type='text/javascript'>\n<![CDATA[\n";
         $answer .="$('#answer{$myfname}cbox').prop('aria-hidden', 'true').css('visibility','');";
         $answer .="$('#answer{$myfname}').bind('keyup focusout',function(event){\n";
         $answer .= " if ($.trim($(this).val()).length>0) { $(\"#answer{$myfname}cbox\").prop(\"checked\",true); } else { \$(\"#answer{$myfname}cbox\").prop(\"checked\",false); }; $(\"#java{$myfname}\").val($(this).val());LEMflagMandOther(\"$myfname\",$('#answer{$myfname}cbox').is(\":checked\")); $oth_checkconditionFunction(this.value, this.name, this.type); \n";
@@ -2453,9 +2527,14 @@ function do_multiplechoice($ia)
         $answer .="$('#answer{$myfname}cbox').click(function(event){\n";
         $answer .= " if (($(this)).is(':checked') && $.trim($(\"#answer{$myfname}\").val()).length==0) { $(\"#answer{$myfname}\").focus();LEMflagMandOther(\"$myfname\",true);return false; } else {  $(\"#answer{$myfname}\").val('');{$checkconditionFunction}(\"\", \"{$myfname}\", \"text\");LEMflagMandOther(\"$myfname\",false); return true; }; \n";
         $answer .="});\n";
-        $answer .="/*]]>*/\n</script>\n";
-        $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
+        $answer .="]]>\n</script>\n";
+        */
 
+        /**** TO VIEW
+        $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
+        */
+        // TODO : check if $sValueHidden === $sValue
+        $sValueHidden ='';
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
@@ -2463,18 +2542,26 @@ function do_multiplechoice($ia)
             {
                 $dispVal = str_replace('.',$sSeparator,$dispVal);
             }
+            /**** TO VIEW
             $answer .= htmlspecialchars($dispVal,ENT_QUOTES);
+            */
+            $sValueHidden = htmlspecialchars($dispVal,ENT_QUOTES);;
         }
 
+        /**** TO VIEW
         $answer .= "\" />\n{$wrapper['item-end']}";
 
         $answer .= '</div>';
-
+        */
         $inputnames[]=$myfname;
         ++$anscount;
 
         ++$rowcounter;
         //if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+        /*****
+            This logic will be removed by the view. Only one closing system
+            Just should check how to manage columns
+
         if ($rowcounter == $ansByCol && $colcounter < $wrapper['cols'])
         {
             if($colcounter == $wrapper['cols'] )
@@ -2491,10 +2578,39 @@ function do_multiplechoice($ia)
             $rowcounter = 0;
             ++$colcounter;
         }
+        **/
+        $aData = array(
+            'hiddenfield'=>$hiddenfield,
+            'myfname'=>$myfname,
+            'nbColLabelXs'=>$nbColLabelXs,
+            'nbColLabelLg'=>$nbColLabelLg,
+            'othertext'=>$othertext,
+            'nbColInputLg'=>$nbColInputLg,
+            'nbColInputXs'=>$nbColInputXs,
+            'checkedState'=>$checkedState,
+            'kpclass'=>$kpclass,
+            'sValue'=>$sValue,
+            'oth_checkconditionFunction'=>$oth_checkconditionFunction,
+            'checkconditionFunction'=>$checkconditionFunction,
+            'sValueHidden'=>$sValueHidden,
+            'wrapper'=>$wrapper,
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_other_row', $aData, true);
     }
-    $answer .= $wrapper['whole-end'];
 
+
+
+    /////////////////////////
+    /**** TO VIEW
+    $answer .= $wrapper['whole-end'];
     $answer .= $postrow;
+    */
+    $aData = array(
+        'wrapper'=>$wrapper,
+        'postrow'=>$postrow,
+    );
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/multiplechoice_footer', $aData, true);
+
     return array($answer, $inputnames);
 }
 
@@ -3715,7 +3831,7 @@ $extraclass .=" col-sm-".trim($col);
             . gT('Click to set the location or drag and drop the pin. You may may also enter coordinates').'</div>';
             $question_text['help'] = gT('Click to set the location or drag and drop the pin. You may may also enter coordinates');
         }
-	}
+    }
     else
     {
         //no question attribute set, use common input text field

@@ -1970,7 +1970,7 @@ html {
 .h6 .small {
   color: #858585; }
 
-table-striped > tbody > tr:nth-child(odd) > td {
+.table-striped > tbody > tr:nth-child(odd) > td {
   background-color: #f9f9f9; }
 
 .table-striped > tbody > tr:nth-child(odd) > th {
