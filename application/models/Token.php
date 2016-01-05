@@ -151,7 +151,16 @@
                 }
             }
         }
-
+        /**
+         * Sanitize token show to the user (replace sanitize_helper sanitize_token)
+         * @param string token to sanitize
+         * @return string sanitized token
+         */
+        public static function sanitizeToken($token)
+        {
+            // According to Yii doc : http://www.yiiframework.com/doc/api/1.1/CSecurityManager#generateRandomString-detail
+            return return preg_replace('/[^0-9a-zA-Z_~]/', '', $token);
+        }
         /**
          * Generates a token for all token objects in this survey.
          * Syntax: Token::model(12345)->generateTokens();
