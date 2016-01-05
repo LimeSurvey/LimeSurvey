@@ -23,7 +23,7 @@
                 <!-- "Character set of the file -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for='csvcharset'><?php eT("Character set of the file:"); ?></label>
-                    <div class="col-lg-3">
+                    <div class="col-sm-5">
                         <?php echo CHtml::dropDownList('csvcharset', 'auto', $aEncodings, array('size' => '1', 'class'=>'form-control')); ?>
                     </div>
                 </div>
@@ -54,7 +54,15 @@
                         <?php echo CHtml::checkBox('allowinvalidemail', false); ?>
                     </div>
                 </div>
-                
+
+                <!-- show invalid attributes -->
+                <div class="form-group">
+                            <label class="col-sm-2 control-label" for='showwarningtoken'><?php eT("Display warning attributes:"); ?></label>
+                    <div class="col-sm-10">
+                           <?php echo CHtml::checkBox('showwarningtoken'); ?>
+                    </div>
+                </div>
+
                 <!-- Filter duplicate records -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for='filterduplicatetoken'><?php eT("Filter duplicate records:"); ?></label>
