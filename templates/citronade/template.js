@@ -48,6 +48,6 @@ $(document).ready(function(){
 function moveLanguageChanger(){
 	if($("#languageselect-wrapper").text()){
 		offset=$("#languageselect-wrapper").offset();
-		$("#languageselect-wrapper").css("float",'rigth').css('margin-top','-'+(offset.top)+'px')
+		$("#languageselect-wrapper").css("float",'right').css('margin-top','-'+(offset.top)+'px')
 	}
 }
