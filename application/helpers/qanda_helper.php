@@ -2189,15 +2189,9 @@ function do_ranking($ia)
     return array($answer, $inputnames);
 }
 
-
-// ---------------------------------------------------------------
-// TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_multiplechoice($ia)
+function testKeypad($sUseKeyPad)
 {
-    global $thissurvey;
-
-
-    if ($thissurvey['nokeyboard']=='Y')
+    if ($sUseKeyPad=='Y')
     {
         includeKeypad();
         $kpclass = "text-keypad";
@@ -2206,51 +2200,32 @@ function do_multiplechoice($ia)
     {
         $kpclass = "";
     }
+    return $kpclass;
+}
 
-    // Find out if any questions have attributes which reference this questions
-    // based on value of attribute. This could be array_filter and array_filter_exclude
+// ---------------------------------------------------------------
+// TMSW TODO - Can remove DB query by passing in answer list from EM
+function do_multiplechoice($ia)
+{
+    //// Init variables
 
-    $attribute_ref=false;
-    $inputnames=array();
+    // General variables
+    global $thissurvey;
+    $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
+    $inputnames             = array(); // TODO : check if really used
+    $checkconditionFunction = "checkconditions"; // name of the function to check condition TODO : check is used more than once
+    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
+    $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
 
-    $qaquery = "SELECT qid,attribute FROM {{question_attributes}} WHERE value LIKE '".strtolower($ia[2])."' and (attribute='array_filter' or attribute='array_filter_exclude')";
-    $qaresult = Yii::app()->db->createCommand($qaquery)->query();     //Checked
-    foreach ($qaresult->readAll() as $qarow)
-    {
-        $qquery = "SELECT count(qid) FROM {{questions}} WHERE sid=".$thissurvey['sid']." AND scale_id=0 AND qid=".$qarow['qid'];
-        $qresult = Yii::app()->db->createCommand($qquery)->queryScalar();     //Checked
-        if ($qresult > 0)
-        {
-            $attribute_ref = true;
-        }
-    }
-
-    $checkconditionFunction = "checkconditions";
-
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
-
-    if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
-    {
-        $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
-    }
-    else
-    {
-        $othertext=gT('Other:');
-    }
-
-    if (trim($aQuestionAttributes['display_columns'])!='')
-    {
-        $dcols = $aQuestionAttributes['display_columns'];
-    }
-    else
-    {
-        $dcols = 1;
-    }
+    // Question attribute variables
+    $aQuestionAttributes    = getQuestionAttributeValues($ia[0]); // Question attributes
+    $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang])!='')?$aQuestionAttributes['other_replace_text'][$sSurveyLang]:gT('Other:'); // text for 'other'
+    $dcols                  = (trim($aQuestionAttributes['display_columns'])!='')?$aQuestionAttributes['display_columns']:1; // number of columns
 
     if ($aQuestionAttributes['other_numbers_only']==1)
     {
         $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
-        $sSeparator= $sSeparator['separator'];
+        $sSeparator = $sSeparator['separator'];
         $oth_checkconditionFunction = "fixnum_checkconditions";
     }
     else
@@ -2258,37 +2233,13 @@ function do_multiplechoice($ia)
         $oth_checkconditionFunction = "checkconditions";
     }
 
-    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
-    $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
+    // Getting question
+    $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$sSurveyLang));
+    $other = $oQuestion->other;
 
-    if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
-    }
-    else
-    {
-        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
-    }
-
-    $ansresult = dbExecuteAssoc($ansquery)->readAll();  //Checked
+    // Getting answers
+    $ansresult = $oQuestion->getOrderedSubQuestions($aQuestionAttributes['random_order'], $aQuestionAttributes['exclude_all_others'] );
     $anscount = count($ansresult);
-
-    if (trim($aQuestionAttributes['exclude_all_others'])!='' && $aQuestionAttributes['random_order']==1)
-    {
-        //if  exclude_all_others is set then the related answer should keep its position at all times
-        //thats why we have to re-position it if it has been randomized
-        $position=0;
-        foreach ($ansresult as $answer)
-        {
-            if ((trim($aQuestionAttributes['exclude_all_others']) != '')  &&    ($answer['title']==trim($aQuestionAttributes['exclude_all_others'])))
-            {
-                if ($position==$answer['question_order']-1) break; //already in the right position
-                $tmp  = array_splice($ansresult, $position, 1);
-                array_splice($ansresult, $answer['question_order']-1, 0, $tmp);
-                break;
-            }
-            $position++;
-        }
-    }
 
     if ($other == 'Y')
     {
@@ -2299,12 +2250,6 @@ function do_multiplechoice($ia)
 
     $iBootCols = round(12/$dcols);
     $ansByCol = round($anscount/$dcols); $ansByCol = ($ansByCol > 0)?$ansByCol:1;
-
-    /*** TO VIEW
-    $answer = '<div class="row">';
-    $answer .= '    <div class="col-xs-'.$iBootCols.' subquestions-list questions-list checkbox-list">';
-    $answer .= '    <input type="hidden" name="MULTI'.$ia[1].'" value="'.$anscount.'" />';
-    */
 
     //$answer .= $wrapper['whole-start'];
 
@@ -2349,50 +2294,17 @@ function do_multiplechoice($ia)
         /* Check for array_filter */
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li","responsive-content question-item answer-item checkbox-item form-group".$extra_class);
 
-        /*
-        if(substr($wrapper['item-start'],0,4) == "\t<li")
-        {
-            $startitem = "\t$htmltbody2\n";
-        } else {
-            $startitem = $wrapper['item-start'];
-        }*/
-
-        /* Print out the checkbox */
-        //$answer .= $startitem;
-        /**** TO VIEW
-        $answer .= '<div  class="form-group-row row">';
-        $answer .= "\t$hiddenfield\n";
-        $answer .= "<label for=\"answer$ia[1]{$ansrow['title']}\" class=\"control-label col-xs-{$nbColLabelXs} col-lg-{$nbColLabelLg} answertext\">".  $ansrow['question'].  "</label>\n";
-        $answer .= '<div class="col-lg-'.$nbColInputLg.' col-xs-'.$nbColInputXs.'">';
-        $answer .= '        <input class="checkbox" type="checkbox" name="'.$ia[1].$ansrow['title'].'" id="answer'.$ia[1].$ansrow['title'].'" value="Y"';
-        */
-
         $checkedState = '';
         /* If the question has already been ticked, check the checkbox */
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
             if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')
             {
-                /**** TO VIEW
-                $answer .= CHECKED;
-                */
                 $checkedState = 'CHECKED';
             }
         }
-        /**** TO VIEW
-        $answer .= " onclick='cancelBubbleThis(event);";
 
-        $answer .= ''
-        .  "$checkconditionFunction(this.value, this.name, this.type)' />\n";
-        */
         $sCheckconditionFunction = $checkconditionFunction.'(this.value, this.name, this.type)';
-
-        /**** TO VIEW
-        $answer .= ''
-        .  "<label for=\"answer$ia[1]{$ansrow['title']}\" class=\"answertext\">"
-        .  $ansrow['question']
-        .  "</label>\n";
-        **/
 
         //        if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
         //        if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
@@ -2400,53 +2312,19 @@ function do_multiplechoice($ia)
         ++$fn;
         /* Now add the hidden field to contain information about this answer */
 
-        /**** TO VIEW
-        $answer .= '        <input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
-        **/
-
         $sValue = '';
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
-            /**** TO VIEW
-            $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-            */
             $sValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
         }
 
-        /**** TO VIEW
-        $answer .= "\" />\n{$wrapper['item-end']}";
-        */
 
         // end of question group
-        /**** TO VIEW
-        $answer .= '</div>'; // form group row
-        */
 
         $inputnames[]=$myfname;
 
         ++$rowcounter;
         //if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
-        /*****
-            This logic will be removed by the view. Only one closing system
-            Just should check how to manage columns
-
-        if ($rowcounter == $ansByCol && $colcounter < $wrapper['cols'])
-        {
-            if($colcounter == $wrapper['cols'])
-            {
-                //$answer .= $wrapper['col-devide-last'];
-                $answer .= '    </div><!-- last -->';
-            }
-            else
-            {
-                //$answer .= $wrapper['col-devide'];
-                $answer .= '    </div><!-- devide --> ';
-                $answer .= '    <div class="col-xs-'.$iBootCols.' subquestions-list questions-list checkbox-list">';
-            }
-            $rowcounter = 0;
-            ++$colcounter;
-        }
-        */
 
         $aData = array(
             'hiddenfield'=>$hiddenfield,
@@ -2466,43 +2344,18 @@ function do_multiplechoice($ia)
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_row', $aData, true);
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
     if ($other == 'Y')
     {
         $myfname = $ia[1].'other';
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li","responsive-content question-item answer-item checkbox-item other-item ");
-
-        /*if(substr($wrapper['item-start-other'],0,4) == "\t<li")
-        {
-            $startitem = "\t$htmltbody2\n";
-        } else {
-            $startitem = $wrapper['item-start-other'];
-        }
-        $answer .= $startitem;*/
-
-        /**** TO VIEW
-        $answer .= "\t$hiddenfield\n";
-        $answer .= "<label for=\"{$myfname}cbox\" class=\"answertext control-label col-xs-{$nbColLabelXs} col-lg-{$nbColLabelLg} \">".$othertext."</label>";
-        $answer .= '<div class="col-lg-'.$nbColInputLg.' col-xs-'.$nbColInputXs.'">';
-        $answer .= '    <input class="checkbox other-checkbox dontread" style="visibility:hidden" type="checkbox" name="'.$myfname.'cbox" id="answer'.$myfname.'cbox"';
-        **/
 
         $checkedState = '';
         // othercbox can be not display, because only input text goes to database
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])!='')
         {
             $checkedState = 'CHECKED';
-            /**** TO VIEW
-            $answer .= CHECKED;
-            */
         }
 
-        /**** TO VIEW
-        $answer .= " />";
-        $answer .= '</div>';
-        $answer .= '<div class="col-lg-12 col-xs-12">';
-        $answer .= "    <input class=\"text ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
-        **/
         $sValue = '';
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
@@ -2511,28 +2364,9 @@ function do_multiplechoice($ia)
             {
                 $dispVal = str_replace('.',$sSeparator,$dispVal);
             }
-            /**** TO VIEW
-            $answer .= htmlspecialchars($dispVal,ENT_QUOTES);
-            **/
             $sValue .= htmlspecialchars($dispVal,ENT_QUOTES);
         }
 
-        /**** TO VIEW
-        $answer .="\" />\n";
-        $answer .="<script type='text/javascript'>\n<![CDATA[\n";
-        $answer .="$('#answer{$myfname}cbox').prop('aria-hidden', 'true').css('visibility','');";
-        $answer .="$('#answer{$myfname}').bind('keyup focusout',function(event){\n";
-        $answer .= " if ($.trim($(this).val()).length>0) { $(\"#answer{$myfname}cbox\").prop(\"checked\",true); } else { \$(\"#answer{$myfname}cbox\").prop(\"checked\",false); }; $(\"#java{$myfname}\").val($(this).val());LEMflagMandOther(\"$myfname\",$('#answer{$myfname}cbox').is(\":checked\")); $oth_checkconditionFunction(this.value, this.name, this.type); \n";
-        $answer .="});\n";
-        $answer .="$('#answer{$myfname}cbox').click(function(event){\n";
-        $answer .= " if (($(this)).is(':checked') && $.trim($(\"#answer{$myfname}\").val()).length==0) { $(\"#answer{$myfname}\").focus();LEMflagMandOther(\"$myfname\",true);return false; } else {  $(\"#answer{$myfname}\").val('');{$checkconditionFunction}(\"\", \"{$myfname}\", \"text\");LEMflagMandOther(\"$myfname\",false); return true; }; \n";
-        $answer .="});\n";
-        $answer .="]]>\n</script>\n";
-        */
-
-        /**** TO VIEW
-        $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
-        */
         // TODO : check if $sValueHidden === $sValue
         $sValueHidden ='';
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
@@ -2542,43 +2376,14 @@ function do_multiplechoice($ia)
             {
                 $dispVal = str_replace('.',$sSeparator,$dispVal);
             }
-            /**** TO VIEW
-            $answer .= htmlspecialchars($dispVal,ENT_QUOTES);
-            */
             $sValueHidden = htmlspecialchars($dispVal,ENT_QUOTES);;
         }
 
-        /**** TO VIEW
-        $answer .= "\" />\n{$wrapper['item-end']}";
-
-        $answer .= '</div>';
-        */
         $inputnames[]=$myfname;
         ++$anscount;
 
         ++$rowcounter;
-        //if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
-        /*****
-            This logic will be removed by the view. Only one closing system
-            Just should check how to manage columns
 
-        if ($rowcounter == $ansByCol && $colcounter < $wrapper['cols'])
-        {
-            if($colcounter == $wrapper['cols'] )
-            {
-                //$answer .= $wrapper['col-devide-last'];
-                $answer .= '    </div><!-- last -->';
-            }
-            else
-            {
-                //$answer .= $wrapper['col-devide'];
-                $answer .= '    </div><!-- devide -->';
-                $answer .= '    <div class="col-xs-'.$iBootCols.' subquestions-list questions-list checkbox-list">';
-            }
-            $rowcounter = 0;
-            ++$colcounter;
-        }
-        **/
         $aData = array(
             'hiddenfield'=>$hiddenfield,
             'myfname'=>$myfname,
@@ -2598,13 +2403,6 @@ function do_multiplechoice($ia)
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_other_row', $aData, true);
     }
 
-
-
-    /////////////////////////
-    /**** TO VIEW
-    $answer .= $wrapper['whole-end'];
-    $answer .= $postrow;
-    */
     $aData = array(
         'wrapper'=>$wrapper,
         'postrow'=>$postrow,

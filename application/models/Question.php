@@ -777,6 +777,44 @@
         return $button;
     }
 
+    /**
+     * get subquestions fort the current question object in the right order
+     */
+    public function getOrderedSubQuestions($random=false, $exclude_all_others)
+    {
+        if ($random==1)
+        {
+            // TODO : USE AR PATTERN
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid='$this->qid' AND scale_id=0 AND language='$this->language' ORDER BY ".dbRandom();
+        }
+        else
+        {
+            // TODO : USE AR PATTERN
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid='$this->qid' AND scale_id=0 AND language='$this->language' ORDER BY question_order";
+        }
+
+        $ansresult = dbExecuteAssoc($ansquery)->readAll();  //Checked
+
+        //if  exclude_all_others is set then the related answer should keep its position at all times
+        //thats why we have to re-position it if it has been randomized
+        if (trim($exclude_all_others)!='' && $random==1)
+        {
+            $position=0;
+            foreach ($ansresult as $answer)
+            {
+                if (  ($answer['title']==trim($exclude_all_others)))
+                {
+                    if ($position==$answer['question_order']-1) break; //already in the right position
+                    $tmp  = array_splice($ansresult, $position, 1);
+                    array_splice($ansresult, $answer['question_order']-1, 0, $tmp);
+                    break;
+                }
+                $position++;
+            }
+        }
+
+        return $ansresult;
+    }
 
     public function search()
     {

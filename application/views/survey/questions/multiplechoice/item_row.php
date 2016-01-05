@@ -13,7 +13,6 @@
  * @var $sCheckconditionFunction
  * @var $myfname
  * @var $sValue
- * @var $wrapper // TODO : check if still necessary
  */
 ?>
 
@@ -39,7 +38,6 @@
          </label>
 
          <input type="hidden" name="java<?php echo $myfname; ?>" id="java<?php echo $myfname; ?>" value="<?php echo $sValue; ?>" />
-        <?php echo $wrapper['item-end']; ?>
     </div>
 <!-- To check -->
 </div>
