@@ -52,11 +52,9 @@
                         <?php }
                 } ?>
             </select>
-        </div>
-        <div class="col-sm-12 text-center">
-            <br/>
-            <img alt='<?php  eT("Template preview image"); ?>' name='preview' id='preview' src='<?php echo getTemplateURL($esrow['template']); ?>/preview.png' />
-            <br/>
+            <div class="col-sm-8 col-sm-offset-2 template-img">
+                <img class="img-responsive" alt='<?php  eT("Template preview image"); ?>' name='preview' id='preview' src='<?php echo getTemplateURL($esrow['template']); ?>/preview.png' />
+            </div>
         </div>
     </div>
 

@@ -3449,4 +3449,7 @@ span[data-tooltip] {
 .imgSelectTemplate {
   cursor: pointer; }
 
+.template-img {
+  padding: 1em; }
+
 /*# sourceMappingURL=lime-admin.css.map */
