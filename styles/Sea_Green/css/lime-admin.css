@@ -3452,4 +3452,10 @@ span[data-tooltip] {
 .template-img {
   padding: 1em; }
 
+#additional_languages {
+  min-width: 200px; }
+
+#available_languages {
+  min-width: 200px; }
+
 /*# sourceMappingURL=lime-admin.css.map */
