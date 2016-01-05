@@ -192,7 +192,7 @@
             <h3 id="survey-action-title"><?php eT('Survey quick actions'); ?></h3>
             <div class="row welcome survey-action">
                 <div class="col-lg-12 content-right">
-                    
+
                     <!-- create new question in this group -->
                     <div class="col-lg-3">
                         <div class="panel panel-primary <?php if ($surveyIsActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="pannel-1" aria-data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">

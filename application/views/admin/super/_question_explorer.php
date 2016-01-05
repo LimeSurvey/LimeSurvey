@@ -54,7 +54,10 @@
                                                         </strong>
                                                         <br/>
                                                         <em>
-                                                            <?php echo substr(strip_tags(sanitize_html_string($question->question)), 0, 40);?>
+                                                            <?php
+                                                                templatereplace($question->question, array(),$aReplacementData,'Unspecified', false ,$question->qid);
+                                                                echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                                                            ?>
                                                         </em>
                                                     </span>
                                                 </a>
