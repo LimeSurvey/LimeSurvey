@@ -2271,7 +2271,7 @@ function do_multiplechoice($ia)
     // Question attribute variables
     $aQuestionAttributes    = getQuestionAttributeValues($ia[0]); // Question attributes
     $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang])!='')?$aQuestionAttributes['other_replace_text'][$sSurveyLang]:gT('Other:'); // text for 'other'
-    $dcols                  = (trim($aQuestionAttributes['display_columns'])!='')?$aQuestionAttributes['display_columns']:1; // number of columns
+    $iNbCols                  = (trim($aQuestionAttributes['display_columns'])!='')?$aQuestionAttributes['display_columns']:1; // number of columns
 
     if ($aQuestionAttributes['other_numbers_only']==1)
     {
@@ -2295,41 +2295,12 @@ function do_multiplechoice($ia)
     $anscount = count($ansresult);
     $anscount = ($other == 'Y') ? $anscount++ : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
 
-    //$wrapper = setupColumns($dcols, $anscount,"subquestions-list questions-list checkbox-list list-unstyled","question-item answer-item checkbox-item");
-
-    //$iBootCols = round(12/$dcols);
-    //$ansByCol = round($anscount/$dcols); $ansByCol = ($ansByCol > 0)?$ansByCol:1;
-
-    //$answer .= $wrapper['whole-start'];
-
     $aData = array(
                 'ia' => $ia,
                 'anscount' => $anscount,
             );
 
-
     $answer = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/multiplechoice_header', $aData, true);
-
-    $fn = 1;
-    $multifields = '';
-    $rowcounter = 0;
-    $colcounter = 1;
-    $startitem='';
-    $postrow = '';
-    $trbc='';
-
-    // Define label/input length
-    //$oNbCols = return_object_nb_cols($ansresult);
-
-    // label
-    /*
-    $nbColLabelXs = $oNbCols->nbColLabelXs;
-    $nbColLabelLg = $oNbCols->nbColLabelLg;
-
-    // Inputs
-    $nbColInputXs = $oNbCols->nbColInputXs;
-    $nbColInputLg = $oNbCols->nbColInputLg;
-    */
 
     // label
     // TODO : use a question attribute var
@@ -2344,7 +2315,6 @@ function do_multiplechoice($ia)
     {
         $myfname = $ia[1].$ansrow['title'];
         $extra_class="";
-        $trbc='';
 
         /* Check for array_filter */
         //list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li","responsive-content question-item answer-item checkbox-item form-group".$extra_class);
@@ -2361,7 +2331,6 @@ function do_multiplechoice($ia)
         }
 
         $sCheckconditionFunction = $checkconditionFunction.'(this.value, this.name, this.type)';
-        ++$fn;
 
         /* Now add the hidden field to contain information about this answer */
         $sValue = '';
@@ -2371,7 +2340,6 @@ function do_multiplechoice($ia)
         }
 
         $inputnames[]=$myfname;
-        ++$rowcounter;
 
         $aData = array(
             'extra_class'=> $extra_class,
@@ -2458,7 +2426,6 @@ function do_multiplechoice($ia)
     }
 
     $aData = array(
-        'postrow'=>$postrow,
     );
     $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/multiplechoice_footer', $aData, true);
 
