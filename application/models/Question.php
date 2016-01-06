@@ -777,10 +777,35 @@
         return $button;
     }
 
+    public function getOrderedAnswers($random=0, $alpha=0)
+    {
+        //question attribute random order set?
+        if ($random==1)
+        {
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid='$this->qid' AND language='$this->language' and scale_id=0 ORDER BY ".dbRandom();
+        }
+
+        //question attribute alphasort set?
+        elseif ($alpha==1)
+        {
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid='$this->qid' AND language='$this->language' and scale_id=0 ORDER BY answer";
+        }
+
+        //no question attributes -> order by sortorder
+        else
+        {
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid='$this->qid' AND language='$this->language' and scale_id=0 ORDER BY sortorder, answer";
+        }
+
+        $ansresult = dbExecuteAssoc($ansquery)->readAll();
+        return $ansresult;
+
+    }
+
     /**
      * get subquestions fort the current question object in the right order
      */
-    public function getOrderedSubQuestions($random=false, $exclude_all_others)
+    public function getOrderedSubQuestions($random=0, $exclude_all_others='')
     {
         if ($random==1)
         {

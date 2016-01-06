@@ -35,6 +35,5 @@
     </div>
     <label for="answer<?php echo $ia[1]{$ansrow['title']}; ?>" class="control-label col-xs-<?php echo $nbColLabelXs; ?> col-lg-<?php echo $nbColLabelLg; ?> answertext">
         <?php echo $ansrow['question']; ?>
-    </label>
-    
+    </label>    
 </div>
