@@ -2255,7 +2255,6 @@ function testKeypad($sUseKeyPad)
 }
 
 // ---------------------------------------------------------------
-// TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_multiplechoice($ia)
 {
     //// Init variables
@@ -2295,6 +2294,41 @@ function do_multiplechoice($ia)
     $anscount = count($ansresult);
     $anscount = ($other == 'Y') ? $anscount++ : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
 
+    //// Label and input width
+    // TODO : use a question attribute var
+
+    // label
+    $nbColLabelXs = 10;
+    $nbColLabelLg = 10;
+
+    // Inputs
+    $nbColInputXs = 1;
+    $nbColInputLg = 1;
+
+    //// Columns containing answer rows, set by user in question attribute
+    /// TODO : move to a dedicated function
+
+
+    // setting variables
+    $iMaxRowsByColumn = 0; // How many answer rows by column
+    $iRowCount = 0;
+    $isOpen = false;       // Is a column opened
+
+    if($iNbCols > 1)
+    {
+        // First we calculate the width of each column
+        // Max number of column is 12 http://getbootstrap.com/css/#grid
+        $iColumnWidth = round(12 / $iNbCols);
+        $iColumnWidth = ($iColumnWidth >= 1 )?$iColumnWidth:1;
+        $iColumnWidth = ($iColumnWidth <= 12)?$iColumnWidth:12;
+
+        // Then, we calculate how many answer rows in each column
+        $iMaxRowsByColumn = ceil($anscount / $iNbCols);
+        $first = true; // The very first item will open a bootstrap row containing the columns
+
+    }
+
+    // Generate question header
     $aData = array(
                 'ia' => $ia,
                 'anscount' => $anscount,
@@ -2302,22 +2336,16 @@ function do_multiplechoice($ia)
 
     $answer = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/multiplechoice_header', $aData, true);
 
-    // label
-    // TODO : use a question attribute var
-    $nbColLabelXs = 11;
-    $nbColLabelLg = 11;
-
-    // Inputs
-    $nbColInputXs = 1;
-    $nbColInputLg = 1;
-
+    /// Generate answer rows
+    $i = 0;
     foreach ($ansresult as $ansrow)
     {
+        $i++; // general count of loop, to check if the item is the last one for column process. Never reset.
+        $iRowCount++; // counter of number of row by column. Is reset to zero each time a column is full.
         $myfname = $ia[1].$ansrow['title'];
         $extra_class="";
 
         /* Check for array_filter */
-        //list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li","responsive-content question-item answer-item checkbox-item form-group".$extra_class);
         $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
         $checkedState = '';
@@ -2341,6 +2369,20 @@ function do_multiplechoice($ia)
 
         $inputnames[]=$myfname;
 
+        ////
+        // Open Column
+        // The column is opened if user set more than one column in question attribute
+        // and if this is the first answer row, or if the column has been closed and the row count reset before.
+        if($iNbCols > 1 && $iRowCount == 1 )
+        {
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>$first), true);
+            $isOpen = true; // If a column is not closed, it will be closed at the end of the process
+            $first = false; // The row containing the column has been opened at the first call.
+        }
+
+        ////
+        // Insert row
+        // Display the answer row
         $aData = array(
             'extra_class'=> $extra_class,
             'sDisplayStyle' => $sDisplayStyle,
@@ -2357,10 +2399,26 @@ function do_multiplechoice($ia)
         );
 
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_row', $aData, true);
+
+        ////
+        // Close column
+        // The column is closed if the user set more than one column in question attribute
+        // and if the max answer rows by column is reached.
+        // If max answer rows by column is not reached while there is no more answer,
+        // the column will remain opened, and it will be closed by 'other' answer row if set or at the end of the process
+        if($iNbCols > 1 && $iRowCount == $iMaxRowsByColumn )
+        {
+            $last = ($i == $anscount)?true:false; // If this loop count equal to the number of answers, then this answer is the last one.
+
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_column_footer', array('last'=>$last), true);
+            $iRowCount = 0;
+            $isOpen = false;
+        }
     }
 
     if ($other == 'Y')
     {
+        $iRowCount++;
         $myfname = $ia[1].'other';
 
         /////
@@ -2406,6 +2464,19 @@ function do_multiplechoice($ia)
 
         ++$rowcounter;
 
+        ////
+        // Open Column
+        // The column is opened if user set more than one column in question attribute
+        // and if this is the first answer row (should never happen for 'other'),
+        // or if the column has been closed and the row count reset before.
+        if($iNbCols > 1 && $iRowCount == 1 )
+        {
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
+        }
+
+        ////
+        // Insert row
+        // Display the answer row
         $aData = array(
             'myfname'=>$myfname,
             'sDisplayStyle' => $sDisplayStyle,
@@ -2423,11 +2494,29 @@ function do_multiplechoice($ia)
             'wrapper'=>$wrapper,
         );
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_other_row', $aData, true);
+
+        ////
+        // Close column
+        // The column is closed if the user set more than one column in question attribute
+        // Other is always the last answer, so it's always closing the col and the bootstrap row containing the columns
+        if($iNbCols > 1 )
+        {
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_column_footer', array('last'=>true), true);
+            $iRowCount = 0;
+            $isOpen = false;
+        }
     }
 
-    $aData = array(
-    );
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/multiplechoice_footer', $aData, true);
+    ////
+    // Close column
+    // The column is closed if the user set more than one column in question attribute
+    // and if on column has been opened and not closed
+    // That can happen only when no 'other' option is set, and the maximum answer rows has not been reached in the last question
+    if($iNbCols > 1 && $isOpen )
+    {
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_column_footer', array('last'=>true), true);
+        $iRowCount = 0;
+    }
 
     return array($answer, $inputnames);
 }
