@@ -8,7 +8,6 @@
 ?>
 
 <?php
-    echo  $wrapper['whole-end']; // TODO : check if still used
     echo   $postrow;
 ?>
     </div>

@@ -824,6 +824,57 @@ function return_object_nb_cols($ansresult, $minLabelSize = 11, $minInputSize=1)
     return $oNbCols;
 }
 
+function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
+{
+    $htmltbody2 = '';
+    $surveyid=$thissurvey['sid'];
+    if (isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname])
+    {
+        // If using exclude_all_others, then need to know whether irrelevant rows should be hidden or disabled
+        if (isset($aQuestionAttributes['exclude_all_others']))
+        {
+            $disableit=false;
+            foreach(explode(';',trim($aQuestionAttributes['exclude_all_others'])) as $eo)
+            {
+                $eorow = $ia[1] . $eo;
+                if ((!isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow]) || $_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow])
+                    && (isset($_SESSION[$eorow]) && $_SESSION[$eorow] == "Y"))
+                {
+                    $disableit = true;
+                }
+            }
+            if ($disableit)
+            {
+                $htmltbody2 .= " disabled='disabled'";
+            }
+            else
+            {
+                if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0')
+                {
+                    $htmltbody2 .= " style='display: none'";
+                }
+                else
+                {
+                    $htmltbody2 .= " disabled='disabled'";
+                }
+            }
+        }
+        else
+        {
+            if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0')
+            {
+                $htmltbody2 .= " style='display: none'";
+            }
+            else
+            {
+                $htmltbody2 .= " disabled='disabled'";
+            }
+        }
+    }
+
+    return $htmltbody2;
+}
+
 function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
     $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
     $htmltbody2 .= ($class !== null) ? " class='$class'": "";
@@ -2233,6 +2284,8 @@ function do_multiplechoice($ia)
         $oth_checkconditionFunction = "checkconditions";
     }
 
+    //// Retrieving datas
+
     // Getting question
     $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$sSurveyLang));
     $other = $oQuestion->other;
@@ -2240,33 +2293,25 @@ function do_multiplechoice($ia)
     // Getting answers
     $ansresult = $oQuestion->getOrderedSubQuestions($aQuestionAttributes['random_order'], $aQuestionAttributes['exclude_all_others'] );
     $anscount = count($ansresult);
+    $anscount = ($other == 'Y') ? $anscount++ : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
 
-    if ($other == 'Y')
-    {
-        $anscount++; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
-    }
+    //$wrapper = setupColumns($dcols, $anscount,"subquestions-list questions-list checkbox-list list-unstyled","question-item answer-item checkbox-item");
 
-    $wrapper = setupColumns($dcols, $anscount,"subquestions-list questions-list checkbox-list list-unstyled","question-item answer-item checkbox-item");
-
-    $iBootCols = round(12/$dcols);
-    $ansByCol = round($anscount/$dcols); $ansByCol = ($ansByCol > 0)?$ansByCol:1;
+    //$iBootCols = round(12/$dcols);
+    //$ansByCol = round($anscount/$dcols); $ansByCol = ($ansByCol > 0)?$ansByCol:1;
 
     //$answer .= $wrapper['whole-start'];
 
     $aData = array(
-                'iBootCols' => $iBootCols,
                 'ia' => $ia,
                 'anscount' => $anscount,
             );
 
+
     $answer = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/multiplechoice_header', $aData, true);
 
     $fn = 1;
-    if (!isset($multifields))
-    {
-        $multifields = '';
-    }
-
+    $multifields = '';
     $rowcounter = 0;
     $colcounter = 1;
     $startitem='';
@@ -2274,25 +2319,36 @@ function do_multiplechoice($ia)
     $trbc='';
 
     // Define label/input length
-    $oNbCols = return_object_nb_cols($ansresult);
+    //$oNbCols = return_object_nb_cols($ansresult);
 
     // label
+    /*
     $nbColLabelXs = $oNbCols->nbColLabelXs;
     $nbColLabelLg = $oNbCols->nbColLabelLg;
 
     // Inputs
     $nbColInputXs = $oNbCols->nbColInputXs;
     $nbColInputLg = $oNbCols->nbColInputLg;
+    */
+
+    // label
+    // TODO : use a question attribute var
+    $nbColLabelXs = 11;
+    $nbColLabelLg = 11;
+
+    // Inputs
+    $nbColInputXs = 1;
+    $nbColInputLg = 1;
 
     foreach ($ansresult as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
         $extra_class="";
-
         $trbc='';
 
         /* Check for array_filter */
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li","responsive-content question-item answer-item checkbox-item form-group".$extra_class);
+        //list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li","responsive-content question-item answer-item checkbox-item form-group".$extra_class);
+        $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
         $checkedState = '';
         /* If the question has already been ticked, check the checkbox */
@@ -2305,29 +2361,21 @@ function do_multiplechoice($ia)
         }
 
         $sCheckconditionFunction = $checkconditionFunction.'(this.value, this.name, this.type)';
-
-        //        if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
-        //        if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
-
         ++$fn;
-        /* Now add the hidden field to contain information about this answer */
 
+        /* Now add the hidden field to contain information about this answer */
         $sValue = '';
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
             $sValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
         }
 
-
-        // end of question group
-
         $inputnames[]=$myfname;
-
         ++$rowcounter;
-        //if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
 
         $aData = array(
-            'hiddenfield'=>$hiddenfield,
+            'extra_class'=> $extra_class,
+            'sDisplayStyle' => $sDisplayStyle,
             'ia'=>$ia,
             'ansrow'=>$ansrow,
             'nbColLabelXs'=>$nbColLabelXs,
@@ -2338,7 +2386,6 @@ function do_multiplechoice($ia)
             'sCheckconditionFunction' => $sCheckconditionFunction,
             'myfname'=>$myfname,
             'sValue'=>$sValue,
-            'wrapper'=>$wrapper,
         );
 
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_row', $aData, true);
@@ -2347,7 +2394,14 @@ function do_multiplechoice($ia)
     if ($other == 'Y')
     {
         $myfname = $ia[1].'other';
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li","responsive-content question-item answer-item checkbox-item other-item ");
+
+        /////
+        // infos : many parameters of the function return_array_filter_strings are just not used at all in its code.
+        // This is the case of '$ansrow' (here : array("code"=>"other"))
+        // So the value of $htmltbody2, $hiddenfield would be the exact same than before. No need for a second call.
+        // By the way, this function is now replaced by return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
+
+        //list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li","responsive-content question-item answer-item checkbox-item other-item ");
 
         $checkedState = '';
         // othercbox can be not display, because only input text goes to database
@@ -2385,8 +2439,8 @@ function do_multiplechoice($ia)
         ++$rowcounter;
 
         $aData = array(
-            'hiddenfield'=>$hiddenfield,
             'myfname'=>$myfname,
+            'sDisplayStyle' => $sDisplayStyle,
             'nbColLabelXs'=>$nbColLabelXs,
             'nbColLabelLg'=>$nbColLabelLg,
             'othertext'=>$othertext,
@@ -2404,7 +2458,6 @@ function do_multiplechoice($ia)
     }
 
     $aData = array(
-        'wrapper'=>$wrapper,
         'postrow'=>$postrow,
     );
     $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/multiplechoice_footer', $aData, true);

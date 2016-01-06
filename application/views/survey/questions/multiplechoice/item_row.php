@@ -15,9 +15,7 @@
  * @var $sValue
  */
 ?>
-
-<div  class="form-group-row row">
-    <?php echo $hiddenfield; ?>
+<div id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-item form-group <?php echo $extra_class; ?>' <?php echo $sDisplayStyle; ?> >
     <label for="answer<?php echo $ia[1]{$ansrow['title']}; ?>" class="control-label col-xs-<?php echo $nbColLabelXs; ?> col-lg-<?php echo $nbColLabelLg; ?> answertext">
         <?php echo $ansrow['question']; ?>
     </label>
@@ -39,5 +37,4 @@
 
          <input type="hidden" name="java<?php echo $myfname; ?>" id="java<?php echo $myfname; ?>" value="<?php echo $sValue; ?>" />
     </div>
-<!-- To check -->
 </div>
