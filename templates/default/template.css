@@ -678,6 +678,11 @@ input[type="checkbox"]:disabled:checked:after,
 
 #indexcontainer {display : none;}
 
+.radio-list li
+{
+    display: block;
+    clear: both;
+}
 
 .checkbox, .radio
 {

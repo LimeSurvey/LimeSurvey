@@ -1973,44 +1973,29 @@ function do_list_radio($ia)
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_listwithcomment($ia)
 {
-    global $maxoptionsize, $thissurvey;
+    //// Init variables
+
+    // General variables
+    global $dropdownthreshold;
+    global $thissurvey;
     $dropdownthreshold = Yii::app()->getConfig("dropdownthreshold");
-
-    if ($thissurvey['nokeyboard']=='Y')
-    {
-        includeKeypad();
-        $kpclass = "text-keypad";
-    }
-    else
-    {
-        $kpclass = "";
-    }
-
+    $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $checkconditionFunction = "checkconditions";
-
-    $answer = '';
-
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
+    $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
     if (!isset($maxoptionsize)) {$maxoptionsize=35;}
 
-    //question attribute random order set?
-    if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
-    }
-    //question attribute alphasort set?
-    elseif ($aQuestionAttributes['alphasort']==1)
-    {
-        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY answer";
-    }
-    //no question attributes -> order by sortorder
-    else
-    {
-        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
-    }
+    // Question attribute variables
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
 
-    $ansresult=Yii::app()->db->createCommand($ansquery)->query()->readAll();
+    // Getting question
+    $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$sSurveyLang));
+
+    // Getting answers
+    $ansresult = $oQuestion->getOrderedAnswers($aQuestionAttributes['random_order'], $aQuestionAttributes['alphasort'] );
     $anscount = count($ansresult);
 
+    $answer = '';
 
     $hint_comment = gT('Please enter your comment here');
     if ($aQuestionAttributes['use_dropdown']!=1 && $anscount <= $dropdownthreshold)
