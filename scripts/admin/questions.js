@@ -11,15 +11,15 @@
 */
 
 // Collapse in editarticle
-$(document).ready(function(){ 
-	$('#questionTypeContainer').css("overflow","visible");
-	$('#collapseOne').on('shown.bs.collapse', function () {
-		$('#questionTypeContainer').css("overflow","visible");
-	});
-	
-	$('#collapseOne').on('hide.bs.collapse', function () {
-		$('#questionTypeContainer').css("overflow","hidden");
-	});
+$(document).ready(function(){
+    $('#questionTypeContainer').css("overflow","visible");
+    $('#collapseOne').on('shown.bs.collapse', function () {
+        $('#questionTypeContainer').css("overflow","visible");
+    });
+
+    $('#collapseOne').on('hide.bs.collapse', function () {
+        $('#questionTypeContainer').css("overflow","hidden");
+    });
 });
 /**
 * Validate question object on blur on title element
@@ -47,7 +47,7 @@ function validateQuestion(jqObject){
     if(typeof jqObject=="undefined"){jqObject=$([]);}
     $.post(
         validateUrl,
-        { 
+        {
             title: $('#frmeditquestion [name="title"]:first').val(),
             other: $('#frmeditquestion [name="other"]:checked:first').val(),
 
@@ -83,7 +83,7 @@ function validateQuestion(jqObject){
                         $('#frmeditquestion [type!=hidden][name="'+name+'"]').addClass("has-error");
                         if(!$('#frmeditquestion [type!=hidden][name="'+name+'"]:last').next('.errorMessage').length)// :last for radio list
                         {
-                            $("<span class='errorMessage text-error' />").insertAfter('#frmeditquestion [type!=hidden][name="'+name+'"]:last');
+                            $("<span class='errorMessage text-warning' />").insertAfter('#frmeditquestion [type!=hidden][name="'+name+'"]:last');
                         }
                         $.each(aError,function(i,error){
                             if(hasFormValidation)
