@@ -12,5 +12,4 @@
         id="java<?php echo $ia[1]; ?>"
         value="<?php echo $sJavaValue ;?>"
     />
-    </div>
 </div> <!-- Row multiple choice container (in header) -->

@@ -6,5 +6,4 @@
 ?>
 
 <!-- Multiple choice header -->
-<div class="row list-radio-container">
-    <div class="col-xs-12 subquestions-list questions-list checkbox-list">
+<div class="row list-radio-container subquestions-list questions-list checkbox-list">
