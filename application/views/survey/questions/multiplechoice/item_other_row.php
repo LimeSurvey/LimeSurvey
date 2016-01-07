@@ -3,7 +3,6 @@
  * Multiple Choice Html : item 'other' row
  *
  * @var $sDisplayStyle
- * @var $extra_class
  * @var $sDisable
  * @var $sDisplayStyle
  * @var $myfname
@@ -22,7 +21,7 @@
  */
 ?>
 
-<div id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-item form-group <?php echo $extra_class; ?>' <?php echo $sDisplayStyle; ?> >
+<div id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-item form-group' <?php echo $sDisplayStyle; ?> >
     <label for="<?php echo $myfname;?>cbox" class="answertext control-label col-xs-<?php echo $nbColLabelXs; ?> col-lg-<?php echo $nbColLabelLg; ?> ">
         <?php echo $othertext; ?>
     </label>
@@ -89,7 +88,5 @@
             id="java<?php echo $myfname; ?>"
             value="<?php echo $sValueHidden; ?>"
         />
-
-        <?php echo $wrapper['item-end']; // TODO : check if still used?>
     </div>
 </div> <!-- Form group ; item row -->

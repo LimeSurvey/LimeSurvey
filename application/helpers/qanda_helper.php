@@ -2537,8 +2537,6 @@ function do_multiplechoice($ia)
         $inputnames[]=$myfname;
         ++$anscount;
 
-        ++$rowcounter;
-
         ////
         // Open Column
         // The column is opened if user set more than one column in question attribute
@@ -2566,7 +2564,7 @@ function do_multiplechoice($ia)
             'oth_checkconditionFunction'=>$oth_checkconditionFunction,
             'checkconditionFunction'=>$checkconditionFunction,
             'sValueHidden'=>$sValueHidden,
-            'wrapper'=>$wrapper,
+
         );
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_other_row', $aData, true);
 

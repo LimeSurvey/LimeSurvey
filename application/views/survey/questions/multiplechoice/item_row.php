@@ -28,14 +28,14 @@
                 <?php echo $checkedState; ?>
                 onclick='cancelBubbleThis(event); <?php echo $sCheckconditionFunction; ?>'
                 />
-                
-                <label for="answer<?php echo $ia[1]{$ansrow['title']}; ?>" class="answertext hidden">
+
+                <label for="answer<?php echo $ia[1].$ansrow['title']; ?>" class="answertext hidden">
                     <?php echo $ansrow['question']; ?>
                 </label>
-                
+
                 <input type="hidden" name="java<?php echo $myfname; ?>" id="java<?php echo $myfname; ?>" value="<?php echo $sValue; ?>" />
             </div>
-            <label for="answer<?php echo $ia[1]{$ansrow['title']}; ?>" class="control-label col-xs-<?php echo $nbColLabelXs; ?> col-lg-<?php echo $nbColLabelLg; ?> answertext">
+            <label for="answer<?php echo $ia[1].$ansrow['title']; ?>" class="control-label col-xs-<?php echo $nbColLabelXs; ?> col-lg-<?php echo $nbColLabelLg; ?> answertext">
                 <?php echo $ansrow['question']; ?>
             </label>
         </div>
