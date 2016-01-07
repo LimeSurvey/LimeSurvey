@@ -77,24 +77,24 @@ li.responsive-content
 @media only screen and (max-width: 800px) {
 
     /* Force table to not be like tables anymore */
-	.no-more-tables table,
-	.no-more-tables thead,
-	.no-more-tables tbody,
-	.no-more-tables th,
-	.no-more-tables td,
-	.no-more-tables tr {
-		display: block;
-	}
+    .no-more-tables table,
+    .no-more-tables thead,
+    .no-more-tables tbody,
+    .no-more-tables th,
+    .no-more-tables td,
+    .no-more-tables tr {
+        display: block;
+    }
 
 
-	/* Hide table headers (but not display: none;, for accessibility) */
-	.no-more-tables thead tr {
-		position: absolute;
-		top: -9999px;
-		left: -9999px;
-	}
+    /* Hide table headers (but not display: none;, for accessibility) */
+    .no-more-tables thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
 
-	.no-more-tables tr { border: 1px solid #ccc; padding: 1em ; }
+    .no-more-tables tr { border: 1px solid #ccc; padding: 1em ; }
 
     /* Line header ; color is h4 color */
     .no-more-tables tr th { font-size: 1.1em; text-align: center; color: #317eac;}
@@ -104,38 +104,38 @@ li.responsive-content
         top: 6px;
     }
 
-	.no-more-tables td {
-		/* Behave  like a "row" */
-		border: none;
-		position: relative;
-		padding-left: 95%;
+    .no-more-tables td {
+        /* Behave  like a "row" */
+        border: none;
+        position: relative;
+        padding-left: 95%;
         padding-bottom: 1em;
-		white-space: normal;
-		text-align:left;
-	}
+        white-space: normal;
+        text-align:left;
+    }
 
     .array-multi-flexi  .no-more-tables td, .no-more-tables-array-dual-dropdown-layout  td, .no-more-tables-array-multi-text td{
         padding-left: 0%;
     }
 
 
-	.no-more-tables td:before {
-		/* Now like a table header */
-		position: absolute;
-		/* Top/left values mimic padding */
-		top: 6px;
-		left: 6px;
-		width: 45%;
-		padding-right: 10px;
-		white-space: nowrap;
-		text-align:left;
-		font-weight: bold;
-	}
+    .no-more-tables td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align:left;
+        font-weight: bold;
+    }
 
-	/*
-	Label the data
-	*/
-	.no-more-tables td:before { content: attr(data-title); }
+    /*
+    Label the data
+    */
+    .no-more-tables td:before { content: attr(data-title); }
 
     .no-more-tables-10-point tr{
         padding-bottom: 100px;
@@ -151,10 +151,10 @@ li.responsive-content
 
 
     .no-more-tables-10-point td:before {
-    	/* Now like a table header */
-    	position: relative;
+        /* Now like a table header */
+        position: relative;
         left: 2px;
-    	/* Top/left values mimic padding */
+        /* Top/left values mimic padding */
     }
 }
 
@@ -677,3 +677,15 @@ input[type="checkbox"]:disabled:checked:after,
 
 
 #indexcontainer {display : none;}
+
+
+.checkbox, .radio
+{
+    float: left;
+}
+
+.label-radio span
+{
+    display: inline-block;
+    padding-top: 3px;
+}
