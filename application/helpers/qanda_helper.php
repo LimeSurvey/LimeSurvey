@@ -2591,6 +2591,7 @@ function do_multiplechoice($ia)
         $iRowCount = 0;
     }
 
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/multiplechoice_footer', array(), true);
     return array($answer, $inputnames);
 }
 

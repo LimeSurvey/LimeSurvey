@@ -1,6 +1,5 @@
 <!-- Question -->
-<div class="row">
-    <div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS} col-sm-12">
+    <div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS} col-xs-12">
 
         <!-- Question title -->
         <div class="row question-wrapper">
@@ -53,4 +52,3 @@
             </div>
         </div>
     </div>
-</div>

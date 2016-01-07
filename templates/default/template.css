@@ -689,9 +689,3 @@ input[type="checkbox"]:disabled:checked:after,
     display: inline-block;
     padding-top: 3px;
 }
-
-.question-item .other-label
-{
-    margin: 0px;
-    padding: 0px;
-}

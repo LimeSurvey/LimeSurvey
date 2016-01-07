@@ -16,7 +16,6 @@
  */
 ?>
 <div class="col-sm-12">
-    <div class='row'>
         <div id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-item form-group <?php echo $extra_class; ?>' <?php echo $sDisplayStyle; ?> >
                 <label for="answer<?php echo $ia[1].$ansrow['title']; ?>" class="answertext hidden">
                     <?php echo $ansrow['question']; ?>
@@ -37,5 +36,4 @@
                 <?php echo $ansrow['question']; ?>
             </label>
         </div>
-    </div>
 </div>

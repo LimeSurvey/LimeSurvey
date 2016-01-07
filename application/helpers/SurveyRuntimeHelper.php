@@ -339,7 +339,7 @@ class SurveyRuntimeHelper {
     * @param mixed $args
     */
     function run($surveyid,$args)
-	{
+    {
         global $errormsg;
         extract($args);
 
@@ -1235,7 +1235,7 @@ class SurveyRuntimeHelper {
             {
                 echo " style='display: none;'";
             }
-            echo " class='col-lg-12'>\n";
+            echo " class='col-xs-12'>\n";
             echo templatereplace(file_get_contents($sTemplatePath."startgroup.pstpl"), array(), $redata);
             echo "\n";
 
