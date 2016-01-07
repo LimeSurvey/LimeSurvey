@@ -18,7 +18,13 @@
 <div class="col-sm-12">
     <div class='row'>
         <div id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-item form-group <?php echo $extra_class; ?>' <?php echo $sDisplayStyle; ?> >
-            <div class="col-lg-<?php echo $nbColInputLg; ?> col-xs-<?php echo $nbColInputXs; ?>">
+                <label for="answer<?php echo $ia[1].$ansrow['title']; ?>" class="answertext hidden">
+                    <?php echo $ansrow['question']; ?>
+                </label>
+
+                <input type="hidden" name="java<?php echo $myfname; ?>" id="java<?php echo $myfname; ?>" value="<?php echo $sValue; ?>" />
+
+            <label for="answer<?php echo $ia[1].$ansrow['title']; ?>" class="answertext">
                 <input
                 class="checkbox"
                 type="checkbox"
@@ -28,14 +34,6 @@
                 <?php echo $checkedState; ?>
                 onclick='cancelBubbleThis(event); <?php echo $sCheckconditionFunction; ?>'
                 />
-
-                <label for="answer<?php echo $ia[1].$ansrow['title']; ?>" class="answertext hidden">
-                    <?php echo $ansrow['question']; ?>
-                </label>
-
-                <input type="hidden" name="java<?php echo $myfname; ?>" id="java<?php echo $myfname; ?>" value="<?php echo $sValue; ?>" />
-            </div>
-            <label for="answer<?php echo $ia[1].$ansrow['title']; ?>" class="control-label col-xs-<?php echo $nbColLabelXs; ?> col-lg-<?php echo $nbColLabelLg; ?> answertext">
                 <?php echo $ansrow['question']; ?>
             </label>
         </div>
