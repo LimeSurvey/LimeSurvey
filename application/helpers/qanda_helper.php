@@ -1420,54 +1420,31 @@ function do_language($ia)
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_list_dropdown($ia)
 {
+    //// Init variables
+
+    // General variables
     $checkconditionFunction = "checkconditions";
 
+    // Question attribute variables
     $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
-
-    if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
-    {
-        $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
-    }
-    else
-    {
-        $othertext=gT('Other:');
-    }
-
-    if (trim($aQuestionAttributes['category_separator'])!='')
-    {
-        $optCategorySeparator = $aQuestionAttributes['category_separator'];
-    }
+    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
+    $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
+    $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang])!='')?$aQuestionAttributes['other_replace_text'][$sSurveyLang]:gT('Other:'); // text for 'other'
+    $optCategorySeparator   = (trim($aQuestionAttributes['category_separator'])!='')?$aQuestionAttributes['category_separator']:'';
+    if($optCategorySeparator=='')
+        unset($optCategorySeparator);
 
     $answer='';
 
-    //Time Limit Code
-    if (trim($aQuestionAttributes['time_limit'])!='')
-    {
-        $answer .= return_timer_script($aQuestionAttributes, $ia);
-    }
-    //End Time Limit Code
+    //// Retrieving datas
 
-    $query = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ";
-    $other = Yii::app()->db->createCommand($query)->queryScalar();     //Checked
+    // Getting question
+    $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$sSurveyLang));
+    $other = $oQuestion->other;
 
-    //question attribute random order set?
-    if ($aQuestionAttributes['random_order']==1)
-    {
-        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
-    }
-    //question attribute alphasort set?
-    elseif ($aQuestionAttributes['alphasort']==1)
-    {
-        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY answer";
-    }
-    //no question attributes -> order by sortorder
-    else
-    {
-        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
-    }
+    // Getting answers
+    $ansresult = $oQuestion->getOrderedAnswers($aQuestionAttributes['random_order'], $aQuestionAttributes['alphasort'] );
 
-    $ansresult = Yii::app()->db->createCommand($ansquery)->query() or safeDie('Couldn\'t get answers<br />'.$ansquery.'<br />');    //Checked
-    $ansresult= $ansresult->readAll();
     $dropdownSize = '';
     if (isset($aQuestionAttributes['dropdown_size']) && $aQuestionAttributes['dropdown_size'] > 0)
     {
@@ -1609,8 +1586,18 @@ function do_list_dropdown($ia)
     {
         $sselect_show_hide = '';
     }
-    $sselect = '
-    <p class="question answer-item dropdown-item"><label for="answer'.$ia[1].'" class="hide label">'.gT('Please choose').'</label>
+
+    $sselect = '';
+    //Time Limit Code
+    if (trim($aQuestionAttributes['time_limit'])!='')
+    {
+        $sselect .= return_timer_script($aQuestionAttributes, $ia);
+    }
+    //End Time Limit Code
+
+    $sselect .= '
+    <p class="question answer-item dropdown-item">
+    <label for="answer'.$ia[1].'" class="hide label">'.gT('Please choose').'</label>
     <select class="form-control list-question-select" name="'.$ia[1].'" id="answer'.$ia[1].'"'.$dropdownSize.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide.'">
     ';
     $answer = $sselect.$answer;
@@ -1634,7 +1621,8 @@ function do_list_dropdown($ia)
         ."}\n"
         ."\t}\n"
         ."//--></script>\n".$answer;
-        $answer .= '                <input type="text" id="othertext'.$ia[1].'" name="'.$ia[1].'other" style="display:';
+        $answer .= '<br/>';
+        $answer .= '                <input class="form-control" type="text" id="othertext'.$ia[1].'" name="'.$ia[1].'other" style="display:';
 
         $inputnames[]=$ia[1].'other';
 
@@ -2906,8 +2894,6 @@ function do_file_upload($ia)
 function do_multipleshorttext($ia)
 {
     global $thissurvey;
-
-
     $extraclass ="";
     $answer='';
     $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
