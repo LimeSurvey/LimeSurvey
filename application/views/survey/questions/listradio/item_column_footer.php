@@ -8,7 +8,3 @@
  ?>
         </div>
     </div> <!-- the last opened column -->
-
-<?php if($last): ?>
-    </div>  <!-- the row -->
-<?php endif; ?>

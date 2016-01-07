@@ -7,9 +7,6 @@
  * @var $iColumnWidth
  */
  ?>
-<?php if($first ): ?>
-    <div class="row column-answers-container">
-<?php endif; ?>
-    <!-- on small screen, each column is full widht, so it look like a single colunm-->
-    <div class="col-sm-<?php echo $iColumnWidth?> col-xs-12">
-        <div class="row">
+<!-- on small screen, each column is full widht, so it look like a single colunm-->
+<div class="col-sm-<?php echo $iColumnWidth?> col-xs-12">
+    <div class="row">

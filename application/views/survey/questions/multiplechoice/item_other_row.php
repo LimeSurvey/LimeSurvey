@@ -21,7 +21,6 @@
  */
 ?>
 <div class="col-sm-12">
-    <div class='row'>
         <div id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-item form-group' <?php echo $sDisplayStyle; ?> >
             <label for="<?php echo $myfname;?>cbox" class="answertext control-label col-xs-<?php echo $nbColLabelXs; ?> col-lg-<?php echo $nbColLabelLg; ?> other-label">
                 <?php echo $othertext; ?>
@@ -87,5 +86,4 @@
                 />
 
         </div> <!-- Form group ; item row -->
-    </div>
 </div>

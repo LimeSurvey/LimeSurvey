@@ -22,7 +22,6 @@
  */
 ?>
 <div class="col-sm-12">
-    <div class='row'>
         <div id='javatbd<?php echo $myfname; ?>' class='form-group answer-item radio-item other-item other' <?php echo $sDisplayStyle; ?> >
             <label for="SOTH<?php echo $ia[1]; ?>" class="answertext control-label label-radio">
                 <input
@@ -48,5 +47,4 @@
             onkeyup="if($.trim($(this).val())!=''){ $('#SOTH<?php echo $ia[1]; ?>').click(); }; <?php echo $oth_checkconditionFunction; ?>'(this.value, this.name, this.type);"
             />
         </div> <!-- Form group ; item row -->
-    </div>
 </div>
