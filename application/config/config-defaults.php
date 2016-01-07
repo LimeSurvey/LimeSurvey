@@ -637,6 +637,8 @@ $config['bFixNumAuto']             = 1;
 // (javascript) Send real value entered when using Numeric question type in Expression Manager : 0 : {NUMERIC} with bad caracters send '', 1 : {NUMERIC} send all caracters entered
 $config['bNumRealValue']             = 0;
 
+// Set default value to allow save incomplete survey.
+$config['defaultAllowSave'] ='N';
 
 return $config;
 //settings deleted
