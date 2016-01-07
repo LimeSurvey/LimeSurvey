@@ -106,6 +106,7 @@ li.responsive-content
 
     .no-more-tables td {
         /* Behave  like a "row" */
+        min-height: 2em;
         border: none;
         position: relative;
         padding-left: 95%;
