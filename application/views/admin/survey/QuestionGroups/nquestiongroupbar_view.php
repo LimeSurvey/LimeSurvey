@@ -1,7 +1,7 @@
 <?php
 /**
  * Question group bar
- * Also used for Edit question
+ * Also used to Edit question
  */
 
 ?>
@@ -112,11 +112,70 @@
             <?php endif; ?>
         </div>
 
+        <div class="col-sm-8">
+            <!-- Previews while editing a question -->
+            <?php if(isset($questiongroupbar['savebutton']['form'])&&isset($gid)):?>
+                <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
+                    <?php if (count($languagelist) > 1): ?>
+
+                        <!-- preview question -->
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span class="icon-do"></span>
+                            <?php eT("Preview"); ?> <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" style="min-width : 252px;">
+                              <?php foreach ($languagelist as $tmp_lang): ?>
+                                  <li>
+                                      <a target="_blank" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $tmp_lang); ?>' >
+                                          <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
+                                      </a>
+                                  </li>
+                              <?php endforeach; ?>
+                          </ul>
+                        </div>
+
+
+                        <!-- Preview multilangue -->
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span class="icon-do"></span>
+                            <?php eT("Preview its question group"); ?> <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" style="min-width : 252px;">
+                              <?php foreach ($languagelist as $tmp_lang): ?>
+                                  <li>
+                                      <a target="_blank" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $tmp_lang); ?>" >
+                                          <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
+                                      </a>
+                                  </li>
+                              <?php endforeach; ?>
+                          </ul>
+                        </div>
+                    <?php else:?>
+
+                        <!-- preview question -->
+                        <a class="btn btn-default" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>' role="button" target="_blank">
+                            <span class="icon-do"></span>
+                            <?php eT("Preview ");?>
+                        </a>
+                        
+                        <!-- Preview simple langue -->
+                        <a class="btn btn-default" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" role="button" target="_blank">
+                            <span class="icon-do"></span>
+                            <?php eT("Preview its question group");?>
+                        </a>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+            <?php endif;?>
+
+        </div>
+
         <!-- Right Buttons -->
-        <div class="col-md-4 col-md-offset-8 text-right">
+        <div class="col-sm-4 text-right">
 
             <?php if(isset($questiongroupbar['savebutton']['form'])):?>
-
                 <!-- Save buttons -->
                 <?php if(!isset($copying) || !$copying): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
