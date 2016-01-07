@@ -23,7 +23,8 @@
 <div class="col-sm-12">
     <div class='row'>
         <div id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-item form-group' <?php echo $sDisplayStyle; ?> >
-            <label for="<?php echo $myfname;?>cbox" class="answertext control-label col-xs-<?php echo $nbColLabelXs; ?> col-lg-<?php echo $nbColLabelLg; ?> ">
+            <label for="<?php echo $myfname;?>cbox" class="answertext control-label col-xs-<?php echo $nbColLabelXs; ?> col-lg-<?php echo $nbColLabelLg; ?> other-label">
+                <?php echo $othertext; ?>
                 <input
                 class="text <?php echo $kpclass; ?>"
                 type="text"
@@ -31,7 +32,6 @@
                 id="answer<?php echo $myfname; ?>"
                 value="<?php echo $sValue; ?>"
                 />
-                <?php echo $othertext; ?>
             </label>
             <input
                 class="checkbox other-checkbox dontread"
@@ -43,7 +43,7 @@
                 />
 
                 <script type='text/javascript'>
-                <![CDATA[
+                /*<![CDATA[
                     $('#answer<?php echo $myfname; ?>cbox').prop('aria-hidden', 'true').css('visibility','');
                     $('#answer<?php echo $myfname; ?>').bind('keyup focusout',function(event)
                     {
@@ -76,7 +76,7 @@
                             return true;
                         };
                     });
-                ]]>
+                ]]>*/
                 </script>
 
                 <input
