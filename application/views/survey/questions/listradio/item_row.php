@@ -26,7 +26,7 @@
                 onclick="if (document.getElementById('answer<?php echo $ia[1]; ?>othertext') != null) document.getElementById('answer<?php echo $ia[1]; ?>othertext').value='';checkconditions(this.value, this.name, this.type)"
                 />
             </div>
-            <label for="answer<?php echo $ia[1]{$ansrow['code']}; ?>" class="control-label col-xs-<?php echo $nbColLabelXs; ?> col-lg-<?php echo $nbColLabelLg; ?>">
+            <label for="answer<?php echo $ia[1].$ansrow['code']; ?>" class="control-label col-xs-<?php echo $nbColLabelXs; ?> col-lg-<?php echo $nbColLabelLg; ?>">
                 <?php echo $ansrow['answer']; ?>
             </label>
         </div>
