@@ -701,3 +701,7 @@ input[type="checkbox"]:disabled:checked:after,
     margin: 0px;
     padding: 0px;
 }
+
+.questions-list tbody tr {
+    height: 2.5em;
+}
