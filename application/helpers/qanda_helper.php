@@ -2654,7 +2654,7 @@ function do_multiplechoice_withcomments($ia)
         $answer_main .= $startitem;
         $answer_main .= "\t$hiddenfield\n";
         $answer_main .= "<span class=\"option\">\n"
-        . "\t<input class=\"col-xs-1 checkbox\" type=\"checkbox\" name=\"$myfname\" id=\"answer$myfname\" value=\"Y\"";
+        . "\t<input class=\"checkbox\" type=\"checkbox\" name=\"$myfname\" id=\"answer$myfname\" value=\"Y\"";
 
         /* If the question has already been ticked, check the checkbox */
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
@@ -2681,7 +2681,7 @@ function do_multiplechoice_withcomments($ia)
         /////////////////////////////
 
         $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment hide \">".gT('Make a comment on your choice here:')."</label>\n"
-        ."<input class='col-lg-{$nbColInputLg} col-xs-{$nbColInputXs} text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' value='";
+        ."<input class='form-control text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' value='";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
         $answer_main .= "' onkeyup='$checkconditionFunction(this.value,this.name,this.type);' />\n</span>\n"
         . "\t</li>\n";
@@ -2695,23 +2695,30 @@ function do_multiplechoice_withcomments($ia)
         $myfname = $ia[1].'other';
         $myfname2 = $myfname.'comment';
         $anscount = $anscount + 2;
-        $answer_main .= "\t<li class=\"other question-item answer-item checkbox-text-item other-item\" id=\"javatbd$myfname\">\n<span class=\"option\">\n"
-        . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".gT('Other').'" size="10"';
-        $answer_main .= " onkeyup='$oth_checkconditionFunction(this.value, this.name, this.type);'";
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
-        {
-            $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-            if ($aQuestionAttributes['other_numbers_only']==1)
-            {
-                $dispVal = str_replace('.',$sSeparator,$dispVal);
-            }
-            $answer_main .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
-        }
-        $fn++;
-        // --> START NEW FEATURE - SAVE
-        $answer_main .= " />\n\t</label>\n</span>\n"
-        . "<span class=\"comment\">\n\t<label for=\"answer$myfname2\" class=\"answer-comment hide\">".gT('Make a comment on your choice here:')."\t</label>\n"
-        . '<input class="text '.$kpclass.'" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'"'
+        $answer_main .= "<li class=\"other question-item answer-item checkbox-text-item other-item\" id=\"javatbd$myfname\">";
+        // SPAN LABEL OPTION
+        $answer_main .= "   <span class=\"option\">\n";
+        $answer_main .= "           <input class=\"other ".$kpclass."\" type=\"checkbox\" name=\"$myfname\" id=\"answer$myfname\" title=\"".gT('Other').'" size="10"';
+        $answer_main .= "               onkeyup='$oth_checkconditionFunction(this.value, this.name, this.type);'";
+                                        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
+                                        {
+                                            $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                                            if ($aQuestionAttributes['other_numbers_only']==1)
+                                            {
+                                                $dispVal = str_replace('.',$sSeparator,$dispVal);
+                                            }
+                                            $answer_main .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
+                                        }
+                                        $fn++;
+                                        // --> START NEW FEATURE - SAVE
+        $answer_main .= "           />";
+        $answer_main .= "       <label for=\"answer$myfname\" class=\"answertext\">\n";
+        $answer_main .=             $othertext;
+        $answer_main .= "       </label>";
+        $answer_main .= "\n</span>\n";
+        // SPAN LABEL COMMENT
+        $answer_main .=  "<span class=\"comment\">\n\t<label for=\"answer$myfname2\" class=\"answer-comment hide\">".gT('Make a comment on your choice here:')."\t</label>\n"
+        . '<input class="form-control text '.$kpclass.'" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'"'
         . " onkeyup='$checkconditionFunction(this.value,this.name,this.type);'"
         . ' title="'.gT('Make a comment on your choice here:').'" value="';
         // --> END NEW FEATURE - SAVE
