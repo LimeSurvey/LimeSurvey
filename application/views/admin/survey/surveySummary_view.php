@@ -125,7 +125,7 @@
 
                                     <!-- Add group -->
                                     <div class="col-lg-6">
-                                        <div class="panel panel-primary panel-clickable" id="pannel-1" aria-data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>">
+                                        <div class="panel panel-primary panel-clickable" id="pannel-1" data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title"><?php eT('Add group');?></h4>
                                             </div>
@@ -161,7 +161,7 @@
                                         <!-- Survey has a group, so can add a question -->
                                     <?php else:?>
                                         <div class="col-lg-6">
-                                            <div class="panel panel-primary panel-clickable" id="pannel-2" aria-data-url="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>">
+                                            <div class="panel panel-primary panel-clickable" id="pannel-2" data-url="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>">
                                                 <div class="panel-heading">
                                                     <h4 class="panel-title"><?php eT('Add question');?></h4>
                                                 </div>
@@ -183,7 +183,7 @@
 
                                 <!-- Edit text elements and general settings -->
                                 <?php if($surveylocale && $surveysettings): ?>
-                                    <div class="panel panel-primary panel-clickable" id="pannel-3" aria-data-url="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$surveyinfo['sid']); ?>">
+                                    <div class="panel panel-primary panel-clickable" id="pannel-3" data-url="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$surveyinfo['sid']); ?>">
                                         <div class="panel-heading">
                                             <h4 class="panel-title"><?php eT('Edit text elements and general settings');?></h4>
                                         </div>
@@ -213,7 +213,7 @@
                             <!-- Stats -->
                             <?php if($respstatsread && $activated=="Y"):?>
                                 <div class="col-lg-6">
-                                    <div class="panel panel-primary panel-clickable" id="pannel-4" aria-data-url="<?php echo $this->createUrl("admin/statistics/sa/index/surveyid/".$surveyinfo['sid']); ?>">
+                                    <div class="panel panel-primary panel-clickable" id="pannel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/index/surveyid/".$surveyinfo['sid']); ?>">
                                         <div class="panel-heading">
                                             <h4 class="panel-title"><?php eT("Responses & statistics");?></h4>
                                         </div>
