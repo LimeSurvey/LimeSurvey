@@ -69,9 +69,9 @@
             return $result;
         }
 
-        public static function createTable($surveyId, array $extraFields = array())
+        public static function createTable($iSurveyId, array $extraFields = array())
         {
-            $surveyId=intval($surveyId);
+            $iSurveyId=intval($iSurveyId);
             // Specify case sensitive collations for the token
             $sCollation='';
             if  (Yii::app()->db->driverName=='mysqli' | Yii::app()->db->driverName=='mysqli'){
@@ -104,7 +104,7 @@
             }
 
             // create fields for the custom token attributes associated with this survey
-            $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->getTokenAttributes();
+            $tokenattributefieldnames = Survey::model()->findByPk($iSurveyId)->getTokenAttributes();
             foreach($tokenattributefieldnames as $attrname=>$attrdetails)
             {
                 if (!isset($fields[$attrname])) {
@@ -113,14 +113,20 @@
             }
 
             $db = \Yii::app()->db;
-            $sTableName="{{tokens_{$surveyId}}}";
+            $sTableName="{{tokens_{$iSurveyId}}}";
 
             $db->createCommand()->createTable($sTableName, $fields);
             /**
              * @todo Check if this random component in the index name is needed.
              * As far as I (sam) know index names need only be unique per table.
              */
-            $db->createCommand()->createIndex("idx_token_token_{$surveyId}_".rand(1,50000),  $sTableName,'token');
+            $db->createCommand()->createIndex("idx_token_token_{$iSurveyId}_".rand(1,50000),  $sTableName,'token');
+
+            $oEvent = new PluginEvent('afterTableCreate');
+            $oEvent->set('surveyId', $iSurveyId);
+            $oEvent->set('type', 'token');
+            $oEvent->set('name', $sTableName);
+            App()->getPluginManager()->dispatchEvent($oEvent);
 
             // Refresh schema cache just in case the table existed in the past, and return if table exist
             return $db->schema->getTable($sTableName, true);

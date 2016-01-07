@@ -383,7 +383,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
     //$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 
-    $tabname = "{{survey_{$iSurveyID}}}";
+    $sTabname = "{{survey_{$iSurveyID}}}";
     Yii::app()->loadHelper("database");
     try
     {
@@ -403,7 +403,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     }
     try
     {
-        if (isset($createsurvey['token'])) Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$iSurveyID}_".rand(1,50000),$tabname,'token');
+        if (isset($createsurvey['token'])) Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$iSurveyID}_".rand(1,50000),$sTabname,'token');
     }
         catch (CDbException $e)
     {
@@ -441,26 +441,32 @@ function activateSurvey($iSurveyID, $simulate = false)
     {
         $timingsfieldmap = createTimingsFieldMap($iSurveyID,"full",false,false,getBaseLanguageFromSurveyID($iSurveyID));
 
-        $column = array();
-        $column['id'] = $createsurvey['id'];
+        $bSuccess = true;
+        $aColumn = array();
+        $aColumn['id'] = $createsurvey['id'];
         foreach ($timingsfieldmap as $field=>$fielddata)
         {
-            $column[$field] = 'FLOAT';
+            $aColumn[$field] = 'FLOAT';
         }
 
-        $tabname = "{{survey_{$iSurveyID}_timings}}";
+        $sTabname = "{{survey_{$iSurveyID}_timings}}";
         try
         {
-            $execresult = Yii::app()->db->createCommand()->createTable($tabname,$column);
-            Yii::app()->db->schema->getTable($tabname, true); // Refresh schema cache just in case the table existed in the past
+            $execresult = Yii::app()->db->createCommand()->createTable($sTabname,$aColumn);
+            Yii::app()->db->schema->getTable($sTabname, true); // Refresh schema cache just in case the table existed in the past
         }
         catch (CDbException $e)
         {
             return array('error'=>'timingstablecreation');
         }
-
-    }
-    $aResult=array('status'=>'OK');
+        if ($bSuccess){
+            $oEvent = new PluginEvent('afterTableCreate');
+            $oEvent->set('surveyId', $iSurveyID);
+            $oEvent->set('type', 'timings');
+            $oEvent->set('name', $sTabname);
+            App()->getPluginManager()->dispatchEvent($oEvent);
+        }
+    }    $aResult=array('status'=>'OK');
     // create the survey directory where the uploaded files can be saved
     if ($createsurveydirectory)
     {

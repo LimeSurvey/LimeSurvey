@@ -21,3 +21,7 @@
 .settings/org.eclipse.php.core.prefs
 .buildpath
 /application/config/config.php
+.idea
+.DS_Store
+tmp/runtime/gii-1.1.15
+tmp/runtime/URI
