@@ -1725,17 +1725,6 @@ function do_list_radio($ia)
     $anscount = ($other == 'Y') ? $anscount+1 : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
     $anscount = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)  ? $anscount+1 : $anscount; //Count up if "No answer" is showing
 
-    /*
-    $iBootCols = round(12/$dcols);
-    $ansByCol = round($anscount/$dcols); $ansByCol = ($ansByCol > 0)?$ansByCol:1;
-    */
-
-    //$answer = 'IKI: '.$iBootCols.' '.$ansByCol.' '.$wrapper['whole-start'];
-    /**** TO VIEW
-    $answer = '<div class="row">';
-    $answer .= '    <div class="col-xs-'.$iBootCols.'">';
-    */
-
     //// Label and input width
     // TODO : use a question attribute var
 
@@ -1828,13 +1817,6 @@ function do_list_radio($ia)
         );
 
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_row', $aData, true);
-        /**** MOVE TO VIEW
-        $answer .= '<div  class="form-group">';
-        $answer .= '    <label for="answer'.$ia[1].$ansrow['code'].'" class="answertext control-label">'.$ansrow['answer'].'</label>';
-        $answer .= '        <input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />';
-        $answer .=          $wrapper['item-end'];
-        $answer .= '</div>';
-        */
 
         ////
         // Close column
@@ -1925,14 +1907,6 @@ function do_list_radio($ia)
         );
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_other_row', $aData, true);
 
-        /***** TO VIEW
-        $answer .= '<div  class="form-group">';
-        $answer .= '    <label for="SOTH'.$ia[1].'" class="answertext control-label">'.$othertext.'</label>';
-        $answer .= '    <input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />';
-        $answer .= '    <input type="text" class="text '.$kpclass.'" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.gT('Other').'"'.$answer_other.' onkeyup="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$ia[1].'\').click(); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />';
-        $answer .=      $wrapper['item-end'];
-        $answer .= '</div>';
-        */
         $inputnames[]=$thisfieldname;
 
         ////
@@ -1974,13 +1948,6 @@ function do_list_radio($ia)
         );
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_noanswer_row', $aData, true);
 
-        /*** TO VIEW
-        $answer .= '<div  class="form-group">';
-        $answer .= '    <label for="answer'.$ia[1].'NANS" class="answertext control-label">'.gT('No answer').'</label>';
-        $answer .= '        <input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />';
-        $answer .=          $wrapper['item-end'];
-        $answer .= '</div>';
-        */
 
         ////
         // Close column
@@ -2007,11 +1974,6 @@ function do_list_radio($ia)
     }
 
     //END OF ITEMS
-    //$answer .= $wrapper['whole-end'].'
-    /** TO VIEW
-    $answer .= '    <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
-    $answer .= '</div> <!-- wrapper row -->';
-    ******/
     $sJavaValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
     $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/listradio_footer', array('ia'=>$ia, 'sJavaValue'=>$sJavaValue), true);
 
