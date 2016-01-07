@@ -269,7 +269,7 @@ mark {
   color: #000; }
 
 fieldset {
-  border: 1px solid #bfbfbf; }
+  /*border: 1px solid $silver;*/ }
 
 a {
   color: #328637; }
