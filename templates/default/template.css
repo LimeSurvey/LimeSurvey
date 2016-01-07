@@ -444,6 +444,12 @@ fieldset[disabled] .checkbox label {
       position: relative;
       margin-left: 0;
     }
+
+
+    .questions-list tbody tr {
+        height: 3em;
+    }
+
 }
 
 
@@ -700,8 +706,4 @@ input[type="checkbox"]:disabled:checked:after,
 {
     margin: 0px;
     padding: 0px;
-}
-
-.questions-list tbody tr {
-    height: 2.5em;
 }
