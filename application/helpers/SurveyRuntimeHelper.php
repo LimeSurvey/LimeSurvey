@@ -353,6 +353,7 @@ class SurveyRuntimeHelper {
 
         global $oTemplate;
         $sTemplatePath = $oTemplate->path;
+        $sTemplateViewPath = $oTemplate->viewPath;
 
         //$sTemplatePath=getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR;
 
