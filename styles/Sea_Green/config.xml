@@ -2,14 +2,14 @@
 <config>
     <metadatas>
         <name>Sea Green</name>
-	    <creationDate>08/12/2015</creationDate>
-	    <author>Louis-Sébastien Gac Artigas</author>
-	    <authorEmail>louis.gac@limesurvey.org</authorEmail>
-	    <authorUrl>http://www.limesurvey.org</authorUrl>
-	    <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
-	    <license>GNU General Public License version 2 or later</license>
-	    <version>1.0</version>
-	    <description>Default LimeSurvey admin interface template.</description>
+        <creationDate>08/12/2015</creationDate>
+        <author>Louis-Sébastien Gac Artigas</author>
+        <authorEmail>louis.gac@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.0</version>
+        <description>Default LimeSurvey admin interface template.</description>
         <basecolor>#328637</basecolor>
     </metadatas>
     <files>

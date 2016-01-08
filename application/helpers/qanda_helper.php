@@ -944,7 +944,7 @@ function do_boilerplate($ia)
         $answer .= return_timer_script($aQuestionAttributes, $ia);
     }
 
-    $answer .= '<input class="boilerplate" type="hidden" name="'.$ia[1].'" id="answer'.$ia[1].'" value="" />';
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/boilerplate/boilerplate', array('ia'=>$ia), true);
     $inputnames[]=$ia[1];
 
     return array($answer, $inputnames);
