@@ -1,0 +1,22 @@
+<!-- Survey Description -->
+<div class="row" id="survey-header">
+    <div class="col-sm-12 ">
+        {CHECKJAVASCRIPT}
+        <h2>{SURVEYNAME}</h2><br />
+        <p>{SURVEYDESCRIPTION}</p>
+    </div>
+</div>
+
+<!-- Graph -->
+<div class="row" id="survey-graph">
+    <div class="col-sm-12 ">
+        {PERCENTCOMPLETE}
+    </div>
+</div>
+
+<!-- Language Changer -->
+<div class="row" class="language-changer">
+    <div class="col-sm-12 ">
+        {LANGUAGECHANGER}
+    </div>
+</div>

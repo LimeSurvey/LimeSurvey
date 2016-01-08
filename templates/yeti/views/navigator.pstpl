@@ -1,0 +1,18 @@
+<!-- Navigator hidden-xs-->
+<div class="col-xs-12">
+    <div class="row" id="navigator-container">
+        <div class="col-xs-12 save-all hidden">
+            {SAVE}
+            {CLEARALL}
+        </div>
+        <div class="col-xs-12 save-all">
+            <hr/>
+        </div>
+        <div class="col-xs-6 save-all text-left">
+            {MOVEPREVBUTTON}
+        </div>
+        <div class="col-xs-6 save-all text-right">
+            {MOVENEXTBUTTON}
+        </div>
+    </div>
+</div>
