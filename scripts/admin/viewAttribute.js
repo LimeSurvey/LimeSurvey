@@ -13,6 +13,7 @@ $(document).ready(function() {
             $('#ddtable').css('display','none');
         }
     });
+
     $("#tabs").tabs({
         add: function(event, ui) {
             $("#tabs").tabs('select', '#' + ui.panel.id);

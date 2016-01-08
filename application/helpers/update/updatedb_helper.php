@@ -1504,9 +1504,9 @@ function fixKCFinder184()
     rmdirr($sThirdPartyDir.'ckeditor/plugins/toolbar/ls-office2003');
     $aUnlink = glob($sThirdPartyDir.'kcfinder/cache/*.js');
     if ($aUnlink !== false) {
-        array_map('unlink', $aUnlink);
+        array_map('unlink', $aUnlink); 
     }
-    $aUnlink = glob($sThirdPartyDir.'kcfinder/cache/*.css');
+    $aUnlink = glob($sThirdPartyDir.'kcfinder/cache/*.css'); 
     if ($aUnlink !== false) {
         array_map('unlink', $aUnlink);
     }

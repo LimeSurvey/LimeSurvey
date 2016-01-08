@@ -459,7 +459,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         if($_token)
         {
-            $returnlink=Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}",array('token'=>sanitize_token($_token)));
+            $returnlink=Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}",array('token'=>Token::sanitizeToken($_token)));
         }
         else
         {

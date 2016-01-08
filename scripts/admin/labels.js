@@ -195,13 +195,13 @@ function sort_complete(event, ui){
 
 function sync_label(event)
 {
-    var $sRowID = $(event.target).parent().parent().attr('id');
-    $aRowInfo=$sRowID.split('_');// first is row, second langage and last the row number
-    $(".tab-pane").each(function(divindex,divelement){
+    var sRowID = $(event.target).parent().parent().attr('id');
+    aRowInfo=sRowID.split('_');// first is row, second langage and last the row number
+    $(".ui-tabs-panel").each(function(divindex,divelement){
         var div_language = $(".lslanguage",divelement).val();
-        if (typeof(div_language)!="undefined" && div_language!=$aRowInfo[1]){
-            $("#row_"+div_language+"_"+$aRowInfo[2]+" td:first-child").text($("#code_"+$aRowInfo[2]).val()); // Sync code
-            $("#row_"+div_language+"_"+$aRowInfo[2]+" td:nth-child(2)").text($("#assessmentvalue_"+$aRowInfo[2]).val()); // Sync assessment value
+        if (typeof(div_language)!="undefined" && div_language!=aRowInfo[1]){
+            $("#row_"+div_language+"_"+aRowInfo[2]+" td:first-child").text($("#code_"+aRowInfo[2]).val()); // Sync code
+            $("#row_"+div_language+"_"+aRowInfo[2]+" td:nth-child(2)").text($("#assessmentvalue_"+aRowInfo[2]).val()); // Sync assessment value
         }
     });
 

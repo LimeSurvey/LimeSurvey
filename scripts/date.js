@@ -182,7 +182,6 @@ function dateUpdater() {
     {
         thisid=this.id.substr(6);
     }
-
     if ((!$('#year'+thisid).length || $('#year'+thisid).val()=='') &&
         (!$('#month'+thisid).length || $('#month'+thisid).val()=='') &&
         (!$('#day'+thisid).length || $('#day'+thisid).val()=='') &&
@@ -190,7 +189,6 @@ function dateUpdater() {
         (!$('#minute'+thisid).length || $('#minute'+thisid).val()==''))
     {
         //nothing filled in
-        $('#qattribute_answer'+thisid).val('');
         $('#answer'+thisid).val('');
         $('#answer'+thisid).change();
     }

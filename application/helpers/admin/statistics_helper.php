@@ -1471,8 +1471,7 @@ class statistics_helper {
 
 
                 case "I": //Language
-                    // Using previously defined $surveylanguagecodes array of language codes
-                    foreach ($surveylanguagecodes as $availlang)
+                    foreach (Survey::model()->findByPk($surveyid)->getAllLanguages() as $availlang)
                     {
                         $alist[]=array($availlang, getLanguageNameFromCode($availlang,false));
                     }
@@ -1619,7 +1618,6 @@ class statistics_helper {
         $tempurl = Yii::app()->getConfig("tempurl");
         $firstletter = substr($rt, 0, 1);
         $astatdata=array();
-
         if ($usegraph==1)
         {
             //for creating graphs we need some more scripts which are included here
@@ -3088,10 +3086,6 @@ class statistics_helper {
 
         //no survey ID? -> come and get one
         if (!isset($surveyid)) {$surveyid=returnGlobal('sid');}
-
-        //Get an array of codes of all available languages in this survey
-        $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
-        $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
 
         $fieldmap=createFieldMap($surveyid, "full", false, false, $sLanguageCode);
 

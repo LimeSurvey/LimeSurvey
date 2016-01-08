@@ -153,8 +153,10 @@
         * @var type
         */
         private $allOnOnePage=false;
+
         /**
         * survey mode.  One of 'survey', 'group', or 'question'
+        * @todo Please add more information here. What does the alternatives mean?
         * @var string
         */
         private $surveyMode='group';
@@ -1465,30 +1467,9 @@
                             );
                         }
                         break;
-                    case 'D':  // dropdown box: validate that a complete date is entered
-                               // TODO: generic validation as to dateformat[SGQA].value
-                        if ($hasSubqs) {
-                            $subqs = $qinfo['subqs'];
-                            $sq_equs=array();
-
-                           foreach($subqs as $sq)
-                            {
-                                $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-                                $sq_equs[] = '('.$sq_name.'!="INVALID")';
-                            }
-                            if (!isset($validationEqn[$questionNum]))
-                            {
-                                $validationEqn[$questionNum] = array();
-                            }
-                            $validationEqn[$questionNum][] = array(
-                            'qtype' => $type,
-                            'type' => 'default',
-                            'class' => 'default',
-                            'eqn' =>  implode(' and ',$sq_equs),
-                            'qid' => $questionNum,
-                            );
-                        }
-                         break;
+                    case 'D':
+                        // TODO: generic validation as to dateformat[SGQA].value : BUT not same in PHP and JS
+                        break;
                     default:
                         break;
                 }
@@ -4868,6 +4849,7 @@
             $LEM->indexQseq=array();
             $LEM->qrootVarName2arrayFilter=array();
             templatereplace("{}"); // Needed for coreReplacements in relevance equation (in all mode)
+
             if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 0)
             {
                 $startingValues = array();
@@ -4902,7 +4884,7 @@
                             }
                             else
                             {
-                                // We don't really validate date here, anyone can send anything : forced too
+                                // We don't really validate date here, anyone can send anything : forced too 
                                 $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
                                 $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
                                 $value=$datetimeobj->convert("Y-m-d H:i");
@@ -5537,6 +5519,7 @@
 
             $LEM->ParseResultCache=array();    // to avoid running same test more than once for a given group
             $LEM->updatedValues = array();
+            // TODO: Should seq be below 0? It will be -1 after survey submit and re-click on invitation link in e-mail (see issue #10162).
             --$seq; // convert to 0-based numbering
 
             switch ($LEM->surveyMode)
@@ -8551,10 +8534,6 @@ EOD;
                         switch($type)
                         {
                             case 'D': //DATE
-                                if (isset($_POST['qattribute_answer'.$sq]))       // push validation message (see qanda_helper) to $_SESSION
-                                {
-                                    $_SESSION[$LEM->sessid]['qattribute_answer'.$sq]=($_POST['qattribute_answer'.$sq]);
-                                }
                                 $value=trim($value);
                                 if ($value!="" && $value!="INVALID")
                                 {

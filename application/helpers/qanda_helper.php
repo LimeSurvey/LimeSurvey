@@ -1023,7 +1023,6 @@ function do_date($ia)
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     $sDateLangvarJS=" translt = {
          alertInvalidDate: '" . gT('Date entered is invalid!','js') . "',
-         infoCompleteAll: '" . gT('Please complete all parts of the date!','js') . "'
         };";
     App()->getClientScript()->registerScript("sDateLangvarJS",$sDateLangvarJS,CClientScript::POS_HEAD);
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
@@ -1308,9 +1307,7 @@ function do_date($ia)
 
         $answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8').'" maxlength="10" alt="'.gT('Answer').'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" title="'.sprintf(gT('Date in the format : %s'),$dateformatdetails['dateformat']).'" />
         </p>';
-        $answer .= '
-        <input type="hidden" id="qattribute_answer'.$ia[1].'" name="qattribute_answer'.$ia[1].'" value="'.$ia[1].'"/>
-        <input type="hidden" id="dateformat'.$ia[1].'" value="'.$dateformatdetails['jsdate'].'"/>';
+        $answer .= '<input type="hidden" id="dateformat'.$ia[1].'" value="'.$dateformatdetails['jsdate'].'"/>';
         App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}","doDropDownDate({$ia[0]});",CClientScript::POS_HEAD);
         // MayDo:
         // add js code to
