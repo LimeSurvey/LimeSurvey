@@ -954,10 +954,15 @@ function do_equation($ia)
 {
     $aQuestionAttributes= getQuestionAttributeValues($ia[0]);
     $sEquation=(trim($aQuestionAttributes['equation'])) ? $aQuestionAttributes['equation'] : $ia[3];
-    $answer='<input type="hidden" name="'.$ia[1].'" id="java'.$ia[1].'" value="';
-    $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES);
-    $answer .= '">';
-    $answer .="<div class='em_equation equation hidden' style='display:none;visibility:hidden'>{$sEquation}</div>";
+    $sValue = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES);
+
+    $aData = array(
+        'ia'=>$ia,
+        'sValue'=>$sValue,
+        'sEquation'=>$sEquation,
+    );
+
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/equation/equation', $aData, true);
     $inputnames[]=$ia[1];
 
     return array($answer, $inputnames);
