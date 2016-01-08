@@ -33,9 +33,13 @@ class index extends CAction {
         $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
 
         // Template configuration
+        $param = $this->_getParameters(func_get_args(), $_POST);
+        $surveyid = $param['sid'];
+
         global $oTemplate;
-        $oTemplate = Template::model()->getTemplateConfiguration(Yii::app()->getConfig("defaulttemplate"));
+        $oTemplate = Template::model()->getTemplateConfiguration('',$surveyid);
         $this->oTemplate = $oTemplate;
+
 
         App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);// Ensure all js var is set before rendering the page (User can click before $.ready)

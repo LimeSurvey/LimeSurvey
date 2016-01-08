@@ -134,8 +134,14 @@ class Template extends LSActiveRecord
         }
     }
 
-    public static function getTemplateConfiguration($sTemplateName)
+    public static function getTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
+        if($sTemplateName=='')
+        {
+            $oSurvey = Survey::model()->findByPk($iSurveyId);
+            $sTemplateName = $oSurvey->template;
+        }
+
         $oTemplate = new stdClass();
         $oTemplate->isStandard = self::isStandardTemplate($sTemplateName);
 
