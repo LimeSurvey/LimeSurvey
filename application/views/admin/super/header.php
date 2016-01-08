@@ -25,6 +25,7 @@
         // We want the asset manager to reload the files if they are changed.
         // Using registerPackage only publish the whole directory, and never update it (unless tmp/assets/ directories are deleted).  Command was :   App()->getClientScript()->registerPackage($sAdminthemePackageName);
         // The way to grant the possibility for asset manager to re-publish those files when they are changed is to publish them one by one.
+        // In debug mode, we don't use assets.
 
         if(!YII_DEBUG)
         {

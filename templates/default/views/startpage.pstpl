@@ -7,7 +7,7 @@
 {TEMPLATECSS}
 
 <!-- The following line includes jquery.js, jquery-ui.js, survey_runtime.js , template.js and needed specific js file for survey -->
-	{TEMPLATEJS}
+{TEMPLATEJS}
 <link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
 {GOOGLE_ANALYTICS_JAVASCRIPT}
 </head>

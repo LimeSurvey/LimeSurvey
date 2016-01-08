@@ -818,6 +818,11 @@ function buildsurveysession($surveyid,$preview=false)
     $_SESSION['survey_'.$surveyid]['templatepath']=getTemplatePath($thissurvey['template']).DIRECTORY_SEPARATOR;
     $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 
+    /// $oTemplate is a global variable defined in controller/survey/index
+    global $oTemplate;
+    $sTemplatePath = $oTemplate->path;
+    $sTemplateViewPath = $oTemplate->viewPath;
+
     $loadsecurity = returnGlobal('loadsecurity',true);
 
     // NO TOKEN REQUIRED BUT CAPTCHA ENABLED FOR SURVEY ACCESS
@@ -833,9 +838,9 @@ function buildsurveysession($surveyid,$preview=false)
             // No or bad answer to required security question
 
             $redata = compact(array_keys(get_defined_vars()));
-            echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[875]');
+            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[875]');
             //echo makedropdownlist();
-            echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[877]');
+            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[877]');
 
             if (isset($loadsecurity))
             { // was a bad answer
@@ -875,7 +880,7 @@ function buildsurveysession($surveyid,$preview=false)
             </table>
             </form>";
 
-            echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[1567]');
+            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1567]');
             doFooter();
             exit;
         }
@@ -912,9 +917,9 @@ function buildsurveysession($surveyid,$preview=false)
             sendCacheHeaders();
             doHeader();
             $redata = compact(array_keys(get_defined_vars()));
-            echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[1594]');
+            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1594]');
             //echo makedropdownlist();
-            echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[1596]');
+            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1596]');
             // ->renderPartial('entertoken_view');
             if (isset($secerror)) echo "<span class='error'>".$secerror."</span><br />";
             echo '<div id="wrapper"><p id="tokenmessage">'.gT("This is a controlled survey. You need a valid token to participate.")."<br />";
@@ -968,7 +973,7 @@ function buildsurveysession($surveyid,$preview=false)
             </div>
 
             </form></div>";
-            echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
+            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
             doFooter();
             exit;
         }
@@ -995,15 +1000,15 @@ function buildsurveysession($surveyid,$preview=false)
             doHeader();
 
             $redata = compact(array_keys(get_defined_vars()));
-            echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[1676]');
-            echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[1677]');
+            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1676]');
+            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1677]');
             echo '<div id="wrapper"><p id="tokenmessage">'.gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
             ."\t".gT("The token you have provided is either not valid, or has already been used.")."<br /><br />\n"
             ."\t".sprintf(gT("For further information please contact %s"), $thissurvey['adminname'])
             ." (<a href='mailto:{$thissurvey['adminemail']}'>"
             ."{$thissurvey['adminemail']}</a>)</p></div>\n";
 
-            echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[1684]');
+            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1684]');
             doFooter();
             exit;
         }
@@ -1035,8 +1040,8 @@ function buildsurveysession($surveyid,$preview=false)
                 //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
                 $redata = compact(array_keys(get_defined_vars()));
-                echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[1719]');
-                echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[1720]');
+                echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1719]');
+                echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1720]');
                 echo "\t<div id='wrapper'>\n"
                 ."\t<p id='tokenmessage'>\n"
                 ."\t".gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
@@ -1047,7 +1052,7 @@ function buildsurveysession($surveyid,$preview=false)
                 ."\t</p>\n"
                 ."\t</div>\n";
 
-                echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[1731]');
+                echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1731]');
                 doFooter();
                 exit;
             }
@@ -1061,13 +1066,13 @@ function buildsurveysession($surveyid,$preview=false)
                 doHeader();
                 // No or bad answer to required security question
                 $redata = compact(array_keys(get_defined_vars()));
-                echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[1745]');
-                echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[1746]');
+                echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1745]');
+                echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1746]');
                 // If token wasn't provided and public registration
                 // is enabled then show registration form
                 if ( !isset($gettoken) && isset($thissurvey) && $thissurvey['allowregister'] == "Y")
                 {
-                    echo templatereplace(file_get_contents($sTemplatePath."register.pstpl"),array(),$redata,'frontend_helper[1751]');
+                    echo templatereplace(file_get_contents($sTemplateViewPath."register.pstpl"),array(),$redata,'frontend_helper[1751]');
                 }
                 else
                 { // only show CAPTCHA
@@ -1133,7 +1138,7 @@ function buildsurveysession($surveyid,$preview=false)
                 </id>";
             }
 
-            echo '</div>'.templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[1817]');
+            echo '</div>'.templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1817]');
             doFooter();
             exit;
         }
@@ -1177,12 +1182,12 @@ function buildsurveysession($surveyid,$preview=false)
     ." AND {{questions}}.parent_qid=0\n";
     $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
-    $sQuery= "select count(*) from {{groups}} 
-        left join {{questions}} on  {{groups}}.gid={{questions}}.gid 
+    $sQuery= "select count(*) from {{groups}}
+        left join {{questions}} on  {{groups}}.gid={{questions}}.gid
         where {{groups}}.sid={$surveyid} and qid is null";
     $iTotalGroupsWithoutQuestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
-    
+
     // Fix totalquestions by substracting Test Display questions
     $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
     ." FROM {{questions}}"
@@ -1218,8 +1223,8 @@ function buildsurveysession($surveyid,$preview=false)
         doHeader();
 
         $redata = compact(array_keys(get_defined_vars()));
-        echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[1914]');
-        echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[1915]');
+        echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1914]');
+        echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1915]');
         echo "\t<div id='wrapper'>\n"
         ."\t<p id='tokenmessage'>\n"
         ."\t".gT("This survey cannot be tested or completed for the following reason(s):")."<br />\n";
@@ -1237,7 +1242,7 @@ function buildsurveysession($surveyid,$preview=false)
         ."\t</p>\n"
         ."\t</div>\n";
 
-        echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[1925]');
+        echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[1925]');
         doFooter();
         exit;
     }
@@ -1916,7 +1921,7 @@ function checkCompletedQuota($surveyid,$return=false)
         if(!$aQuotasInfo || empty($aQuotasInfo))
             return $aMatchedQuotas;
         // OK, we have some quota, then find if this $_SESSION have some set
-        $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update 
+        $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update
         foreach ($aQuotasInfo as $aQuotaInfo)
         {
             if(count($aQuotaInfo['members'])===0)
@@ -1965,6 +1970,12 @@ function checkCompletedQuota($surveyid,$return=false)
     // We need to construct the page and do all needed action
     $aSurveyInfo=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
     $sTemplatePath=getTemplatePath($aSurveyInfo['template']);
+
+    global $oTemplate;
+    $sTemplatePath = $oTemplate->path;
+    $sTemplateViewPath = $oTemplate->viewPath;
+
+
     $sClientToken=isset($_SESSION['survey_'.$surveyid]['token'])?$_SESSION['survey_'.$surveyid]['token']:"";
     // $redata for templatereplace
     $aDataReplacement = array(
@@ -2015,7 +2026,7 @@ function checkCompletedQuota($surveyid,$return=false)
         $sNavigator = CHtml::htmlButton(gT("Previous"),array('type'=>'submit','id'=>"moveprevbtn",'value'=>$sQuotaStep,'name'=>'move','accesskey'=>'p','class'=>"submit button btn btn-default"));
         //$sNavigator .= " ".CHtml::htmlButton(gT("Submit"),array('type'=>'submit','id'=>"movesubmit",'value'=>"movesubmit",'name'=>"movesubmit",'accesskey'=>'l','class'=>"submit button"));
         $sHtmlQuotaMessage.= CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','class'=>'survey-form-container QuotaMessage'));
-        $sHtmlQuotaMessage.= templatereplace(file_get_contents($sTemplatePath."/navigator.pstpl"),array('NAVIGATOR'=>$sNavigator,'SAVE'=>''),$aDataReplacement);
+        $sHtmlQuotaMessage.= templatereplace(file_get_contents($sTemplateViewPath."/navigator.pstpl"),array('NAVIGATOR'=>$sNavigator,'SAVE'=>''),$aDataReplacement);
         $sHtmlQuotaMessage.= CHtml::hiddenField('sid',$surveyid);
         $sHtmlQuotaMessage.= CHtml::hiddenField('token',$sClientToken);// Did we really need it ?
         $sHtmlQuotaMessage.= CHtml::endForm();
@@ -2033,9 +2044,9 @@ function checkCompletedQuota($surveyid,$return=false)
         header("Location: ".$sUrl);
     }
     doHeader();
-    echo templatereplace(file_get_contents($sTemplatePath."/startpage.pstpl"),array(),$aDataReplacement);
-    echo templatereplace(file_get_contents($sTemplatePath."/completed.pstpl"),array("COMPLETED"=>$sHtmlQuotaMessage,"URL"=>$sHtmlQuotaUrl),$aDataReplacement);
-    echo templatereplace(file_get_contents($sTemplatePath."/endpage.pstpl"),array(),$aDataReplacement);
+    echo templatereplace(file_get_contents($sTemplateViewPath."/startpage.pstpl"),array(),$aDataReplacement);
+    echo templatereplace(file_get_contents($sTemplateViewPath."/completed.pstpl"),array("COMPLETED"=>$sHtmlQuotaMessage,"URL"=>$sHtmlQuotaUrl),$aDataReplacement);
+    echo templatereplace(file_get_contents($sTemplateViewPath."/endpage.pstpl"),array(),$aDataReplacement);
     doFooter();
     if ($sAction == "1")
         killSurveySession($surveyid);
@@ -2125,18 +2136,23 @@ function display_first_page() {
     LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid);  // start on welcome page
 
     $redata = compact(array_keys(get_defined_vars()));
-    $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 
-    echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
+    global $oTemplate;
+    $sTemplatePath = $oTemplate->path;
+    $sTemplateViewPath = $oTemplate->viewPath;
+
+
+
+    echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
     echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','autocomplete'=>'off'));
     echo "\n\n<!-- START THE SURVEY -->\n";
 
-    echo templatereplace(file_get_contents($sTemplatePath."welcome.pstpl"),array(),$redata,'frontend_helper[2762]')."\n";
+    echo templatereplace(file_get_contents($sTemplateViewPath."welcome.pstpl"),array(),$redata,'frontend_helper[2762]')."\n";
     if ($thissurvey['anonymized'] == "Y")
     {
-        echo templatereplace(file_get_contents($sTemplatePath."/privacy.pstpl"),array(),$redata,'frontend_helper[2765]')."\n";
+        echo templatereplace(file_get_contents($sTemplateViewPath."/privacy.pstpl"),array(),$redata,'frontend_helper[2765]')."\n";
     }
-    echo templatereplace(file_get_contents($sTemplatePath."navigator.pstpl"),array(),$redata,'frontend_helper[2767]');
+    echo templatereplace(file_get_contents($sTemplateViewPath."navigator.pstpl"),array(),$redata,'frontend_helper[2767]');
 
     echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
     if (isset($token) && !empty($token)) {
@@ -2152,7 +2168,7 @@ function display_first_page() {
     echo "<input type='hidden' name='thisstep' id='thisstep' value='0' />\n";
 
     echo "\n</form>\n";
-    echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[2782]');
+    echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[2782]');
 
     echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
     LimeExpressionManager::FinishProcessingPage();

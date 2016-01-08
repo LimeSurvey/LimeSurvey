@@ -67,19 +67,25 @@
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
             //SET THE TEMPLATE DIRECTORY
              $sTemplate = $aSurveyInfo['template'];
+
+
+
             //Survey is not finished or don't exist
             if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid']))
             //display "sorry but your session has expired"
             {
                 sendCacheHeaders();
                 doHeader();
-                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/startpage.pstpl'),array());
+
+                /// $oTemplate is a global variable defined in controller/survey/index
+                global $oTemplate;
+                echo templatereplace(file_get_contents($oTemplate->viewPath.'/startpage.pstpl'),array());
                 echo "<center><br />\n"
                 ."\t<font color='RED'><strong>".gT("Error")."</strong></font><br />\n"
                 ."\t".gT("We are sorry but your session has expired.")."<br />".gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
                 ."\t".sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail"))."\n"
                 ."</center><br />\n";
-                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/endpage.pstpl'),array());
+                echo templatereplace(file_get_contents($oTemplate->viewPath.'/endpage.pstpl'),array());
                 doFooter();
                 exit;
             }
@@ -152,9 +158,9 @@
 
                 sendCacheHeaders();
                 doHeader();
-                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/startpage.pstpl'),array(),$sData);
-                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/printanswers.pstpl'),array('ANSWERTABLE'=>$sOutput),$sData);
-                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/endpage.pstpl'),array(),$sData);
+                echo templatereplace(file_get_contents($oTemplate->viewPath.'/startpage.pstpl'),array(),$sData);
+                echo templatereplace(file_get_contents($oTemplate->viewPath.'/printanswers.pstpl'),array('ANSWERTABLE'=>$sOutput),$sData);
+                echo templatereplace(file_get_contents($oTemplate->viewPath.'/endpage.pstpl'),array(),$sData);
                 echo "</body></html>";
 
                 ob_flush();

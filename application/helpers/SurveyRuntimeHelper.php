@@ -351,11 +351,18 @@ class SurveyRuntimeHelper {
         $LEMsessid = 'survey_' . $surveyid;
         $this->setJavascriptVar($surveyid);
 
-        $sTemplatePath=getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR;
+        global $oTemplate;
+        $sTemplatePath = $oTemplate->path;
+
+        //$sTemplatePath=getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR;
+
+        // TODO : check if necessary :
+        /*
         if (isset ($_SESSION['survey_'.$surveyid]['templatepath']))
         {
             $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
         }
+        */
 
         // $LEMdebugLevel - customizable debugging for Lime Expression Manager
         $LEMdebugLevel = 0;   // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
@@ -422,7 +429,9 @@ class SurveyRuntimeHelper {
             if (!isset($_SESSION[$LEMsessid]['step']))
             {
                 buildsurveysession($surveyid);
-                $sTemplatePath = $_SESSION[$LEMsessid]['templatepath'];
+
+                //TODO : check if necessary
+                //$sTemplatePath = $_SESSION[$LEMsessid]['templatepath'];
 
                 if($surveyid != LimeExpressionManager::getLEMsurveyId())
                     LimeExpressionManager::SetDirtyFlag();
@@ -713,12 +722,12 @@ class SurveyRuntimeHelper {
                     sendCacheHeaders();
                     doHeader();
 
-                    echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata, 'SubmitStartpageI', false, NULL, array(), true );
+                    echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpageI', false, NULL, array(), true );
 
                     //Check for assessments
                     if ($thissurvey['assessments'] == "Y" && $assessments)
                     {
-                        echo templatereplace(file_get_contents($sTemplatePath."assessment.pstpl"), array(), $redata, 'SubmitAssessmentI', false, NULL, array(), true );
+                        echo templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessmentI', false, NULL, array(), true );
                     }
 
                     // fetch all filenames from $_SESSIONS['files'] and delete them all
@@ -751,7 +760,7 @@ class SurveyRuntimeHelper {
 
 
                     $content = '';
-                    $content .= templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata, 'SubmitStartpage', false, NULL, array(), true );
+                    $content .= templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpage', false, NULL, array(), true );
 
                     //Check for assessments
                     if ($thissurvey['assessments'] == "Y")
@@ -759,7 +768,7 @@ class SurveyRuntimeHelper {
                         $assessments = doAssessment($surveyid);
                         if ($assessments)
                         {
-                            $content .= templatereplace(file_get_contents($sTemplatePath."assessment.pstpl"), array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
+                            $content .= templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
                         }
                     }
 
@@ -776,7 +785,7 @@ class SurveyRuntimeHelper {
 
                     $content = '';
 
-                    $content .= templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata, 'SubmitStartpage', false, NULL, array(), true );
+                    $content .= templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpage', false, NULL, array(), true );
 
                     //echo $thissurvey['url'];
                     //Check for assessments
@@ -785,7 +794,7 @@ class SurveyRuntimeHelper {
                         $assessments = doAssessment($surveyid);
                         if ($assessments)
                         {
-                            $content .= templatereplace(file_get_contents($sTemplatePath."assessment.pstpl"), array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
+                            $content .= templatereplace(file_get_contents($sTemplateViewPath."assessment.pstpl"), array(), $redata, 'SubmitAssessment', false, NULL, array(), true );
                         }
                     }
 
@@ -861,7 +870,7 @@ class SurveyRuntimeHelper {
                 $redata['completed'] = implode("\n", $blocks) ."\n". $redata['completed'];
                 $redata['thissurvey']['surveyls_url'] = $thissurvey['surveyls_url'];
 
-                echo templatereplace(file_get_contents($sTemplatePath."completed.pstpl"), array('completed' => $completed), $redata, 'SubmitCompleted', false, NULL, array(), true );
+                echo templatereplace(file_get_contents($sTemplateViewPath."completed.pstpl"), array('completed' => $completed), $redata, 'SubmitCompleted', false, NULL, array(), true );
                 echo "\n";
                 if ((($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING))
                 {
@@ -871,7 +880,7 @@ class SurveyRuntimeHelper {
                 {
                     echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";
                 }
-                echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"), array(), $redata, 'SubmitEndpage', false, NULL, array(), true );
+                echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"), array(), $redata, 'SubmitEndpage', false, NULL, array(), true );
                 doFooter();
 
                 // The session cannot be killed until the page is completely rendered
@@ -890,10 +899,10 @@ class SurveyRuntimeHelper {
         if ($surveyExists < 1)
         {
             //SURVEY DOES NOT EXIST. POLITELY EXIT.
-            echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata);
+            echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata);
             echo "\t<center><br />\n";
             echo "\t" . gT("Sorry. There is no matching survey.") . "<br /></center>&nbsp;\n";
-            echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"), array(), $redata);
+            echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"), array(), $redata);
             doFooter();
             exit;
         }
@@ -1112,7 +1121,7 @@ class SurveyRuntimeHelper {
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         // First call to templatereplace
         $redata = compact(array_keys(get_defined_vars()));
-        echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata);
+        echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata);
         $aPopup=array(); // We can move this part where we want now
         if (isset($backpopup))
         {
@@ -1174,19 +1183,19 @@ class SurveyRuntimeHelper {
             }
             else
             {
-                echo templatereplace(file_get_contents($sTemplatePath."welcome.pstpl"), array(), $redata) . "\n";
+                echo templatereplace(file_get_contents($sTemplateViewPath."welcome.pstpl"), array(), $redata) . "\n";
             }
 
             if ($thissurvey['anonymized'] == "Y")
             {
-                echo templatereplace(file_get_contents($sTemplatePath."privacy.pstpl"), array(), $redata) . "\n";
+                echo templatereplace(file_get_contents($sTemplateViewPath."privacy.pstpl"), array(), $redata) . "\n";
             }
         }
 
         // <-- START THE SURVEY -->
         if ($surveyMode != 'survey')
         {
-            echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"), array(), $redata);
+            echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"), array(), $redata);
         }
 
         // runonce element has been changed from a hidden to a text/display:none one. In order to workaround an not-reproduced issue #4453 (lemeur)
@@ -1236,12 +1245,12 @@ class SurveyRuntimeHelper {
                 echo " style='display: none;'";
             }
             echo " class='col-xs-12'>\n";
-            echo templatereplace(file_get_contents($sTemplatePath."startgroup.pstpl"), array(), $redata);
+            echo templatereplace(file_get_contents($sTemplateViewPath."startgroup.pstpl"), array(), $redata);
             echo "\n";
 
             if (!$previewquestion && trim($redata['groupdescription'])=="")
             {
-                echo templatereplace(file_get_contents($sTemplatePath."groupdescription.pstpl"), array(), $redata);
+                echo templatereplace(file_get_contents($sTemplateViewPath."groupdescription.pstpl"), array(), $redata);
             }
             echo "\n";
 
@@ -1280,7 +1289,7 @@ class SurveyRuntimeHelper {
                 $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
                 //===================================================================
 
-                $question_template = file_get_contents($sTemplatePath.'question.pstpl');
+                $question_template = file_get_contents($sTemplateViewPath.'question.pstpl');
                 // Fix old template : can we remove it ? Old template are surely already broken by another issue
                 if (preg_match('/\{QUESTION_ESSENTIALS\}/', $question_template) === false || preg_match('/\{QUESTION_CLASS\}/', $question_template) === false)
                 {
@@ -1304,7 +1313,7 @@ class SurveyRuntimeHelper {
             }
 
             echo "\n\n<!-- END THE GROUP -->\n";
-            echo templatereplace(file_get_contents($sTemplatePath."endgroup.pstpl"), array(), $redata);
+            echo templatereplace(file_get_contents($sTemplateViewPath."endgroup.pstpl"), array(), $redata);
             echo "\n\n</div>\n";
             Yii::app()->setConfig('gid','');
         }
@@ -1327,7 +1336,7 @@ class SurveyRuntimeHelper {
             $redata = compact(array_keys(get_defined_vars()));
 
             echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
-            echo templatereplace(file_get_contents($sTemplatePath."navigator.pstpl"), array(), $redata);
+            echo templatereplace(file_get_contents($sTemplateViewPath."navigator.pstpl"), array(), $redata);
             echo "\n";
 
             if ($thissurvey['active'] != "Y")
@@ -1369,7 +1378,7 @@ class SurveyRuntimeHelper {
         }
         echo "</form>\n";
 
-        echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"), array(), $redata);
+        echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"), array(), $redata);
 
         echo "\n";
 

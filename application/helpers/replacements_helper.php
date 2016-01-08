@@ -127,25 +127,108 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     // TEMPLATECSS
     $_templatecss="";
+    $_templatejs="";
+
+    /**
+     * Template css/js files from the template config files are loaded.
+     * It use the asset manager (so user never need to empty the cache, even if template is updated)
+     * If debug mode is on, no asset manager is used.
+     *
+     * oTemplate is defined in controller/survey/index
+     */
+    global $oTemplate;
+    $aCssFiles = (array) $oTemplate->config->files->css->filename;
+    $aJsFiles = (array) $oTemplate->config->files->js->filename;
+
     if(stripos ($line,"{TEMPLATECSS}"))
     {
-        if (file_exists($templatedir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
+        if(!YII_DEBUG) //Asset manager off in debug mode
         {
-			Yii::app()->getClientScript()->registerCssFile("{$templateurl}jquery-ui-custom.css");
-        }
-        elseif(file_exists($templatedir.DIRECTORY_SEPARATOR.'jquery-ui.css'))
-        {
-			Yii::app()->getClientScript()->registerCssFile("{$templateurl}jquery-ui.css");
+            foreach($aCssFiles as $sCssFile)
+            {
+                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
+                {
+                    Yii::app()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( $oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile  ));
+                }
+            }
         }
         else
         {
-			Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."jquery-ui.css");
-        }
+            foreach($aCssFiles as $sCssFile)
+            {
+                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
+                {
+                    Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
+                }
+            }
 
-		Yii::app()->getClientScript()->registerCssFile("{$templateurl}template.css");
-		if (getLanguageRTL(App()->language))
+        }
+        if (getLanguageRTL(App()->language))
         {
-            Yii::app()->getClientScript()->registerCssFile("{$templateurl}template-rtl.css");
+            $aCssFiles = (array) $oTemplate->config->files->rtl->css->filename;
+            $aJsFiles = (array) $oTemplate->config->files->rtl->js->filename;
+            if(!YII_DEBUG)
+            {
+                // RTL CSS
+                foreach($aCssFiles as $sCssFile)
+                {
+                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
+                    {
+                        Yii::app()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( $oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile  ));
+                    }
+                }
+
+                // RTL JS
+                foreach($aJsFiles as $aJsFile)
+                {
+                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $aJsFile))
+                    {
+                        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $oTemplate->path .DIRECTORY_SEPARATOR. $aJsFile ) );
+                    }
+                }
+            }
+            else
+            {
+                foreach($aCssFiles as $sCssFile)
+                {
+                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
+                    {
+                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
+                    }
+                }
+                foreach($aJsFiles as $sJsFile)
+                {
+                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
+                    {
+                        Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
+                    }
+                }
+            }
+        }
+    }
+
+    if(stripos ($line,"{TEMPLATEJS}"))
+    {
+        if(!YII_DEBUG) //Asset manager off in debug mode
+        {
+            foreach($aJsFiles as $sJsFile)
+            {
+                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
+                {
+                    App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile ) );
+                }
+            }
+        }
+        else
+        {
+            foreach($aJsFiles as $sJsFile)
+            {
+                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
+                {
+                    Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
+                }
+            }
+
         }
     }
     // surveyformat
@@ -595,7 +678,7 @@ EOD;
     $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : '');
     $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl").'/surveys/'.$thissurvey['sid'].'/' : '');
     $coreReplacements['TEMPLATECSS'] = $_templatecss;
-    $coreReplacements['TEMPLATEJS'] = CHtml::tag('script', array('type' => 'text/javascript', 'src' => $templateurl . 'template.js'), '');
+    $coreReplacements['TEMPLATEJS'] = $_templatejs;
     $coreReplacements['TEMPLATEURL'] = $templateurl;
     $coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
     $coreReplacements['TOKEN'] = (!$anonymized ? $_token : '');// Silently replace TOKEN by empty string

@@ -134,6 +134,34 @@ class Template extends LSActiveRecord
         }
     }
 
+    public static function getTemplateConfiguration($sTemplateName)
+    {
+        $oTemplate = new stdClass();
+        $oTemplate->isStandard = self::isStandardTemplate($sTemplateName);
+
+        // If the template doesn't exist, set to Default
+        if($oTemplate->isStandard)
+        {
+            $oTemplate->name = (is_dir(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName))?$sTemplateName:'Default';
+            $oTemplate->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
+        }
+        else
+        {
+            $oTemplate->name = (is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName))?$sTemplateName:'Default';
+            $oTemplate->path = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
+        }
+
+        // The template configuration.
+        $oTemplate->config = simplexml_load_file($oTemplate->path.'/config.xml');
+        $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->pstpldirectory.DIRECTORY_SEPARATOR;
+
+        $oTemplate->cssFramework = $oTemplate->config->engine->cssframework;
+        $oTemplate->packages = (array) $oTemplate->config->engine->packages->package;
+
+        return $oTemplate;
+    }
+
+
     /**
     * This function returns the complete URL path to a given template name
     *

@@ -105,11 +105,17 @@ class OptinController extends LSYii_Controller {
         sendCacheHeaders();
         doHeader();
         $aSupportData=array('thissurvey'=>$aSurveyInfo);
-        echo templatereplace(file_get_contents($thistpl.DIRECTORY_SEPARATOR.'startpage.pstpl'),array(), $aSupportData);
+
+        // $oTemplate is a global variable defined in controller/survey/index
+        global $oTemplate;
+        $sTemplatePath = $oTemplate->path;
+        $thistpl = $oTemplate->viewPath;
+
+        echo templatereplace(file_get_contents($thistpl.'startpage.pstpl'),array(), $aSupportData);
         $aData['html'] = $html;
         $aData['thistpl'] = $thistpl;
         $this->render('/opt_view',$aData);
-        echo templatereplace(file_get_contents($thistpl.DIRECTORY_SEPARATOR.'endpage.pstpl'),array(), $aSupportData);
+        echo templatereplace(file_get_contents($thistpl.'endpage.pstpl'),array(), $aSupportData);
         doFooter();
     }
 
