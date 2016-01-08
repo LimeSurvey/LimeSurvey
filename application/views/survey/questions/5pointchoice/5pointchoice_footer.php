@@ -4,7 +4,7 @@
  *
  * @var $ia
  * @var $sJavaValue
- * @var slider_rating
+ * @var $slider_rating
  */
 ?>
 </div>
