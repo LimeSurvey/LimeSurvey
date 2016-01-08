@@ -975,49 +975,64 @@ function do_5pointchoice($ia)
     $checkconditionFunction = "checkconditions";
     $aQuestionAttributes=  getQuestionAttributeValues($ia[0]);
     $id = 'slider'.time().rand(0,100);
-    //$answer = "\n<ul id=\"{$id}\" class=\"list-unstyled answers-list radio-list\">\n";
-    $answer = "\n<div id=\"{$id}\" class=\"answers-list five-point-choice radio-list\">\n";
+
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/5pointchoice_header', array('id'=>$id), true);
+
     for ($fp=1; $fp<=5; $fp++)
     {
-        $answer .= "\t<div class=\"col-xs-2 answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer$ia[1]$fp\" value=\"$fp\"";
+        $checkedState = '';
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $fp)
         {
-            $answer .= CHECKED;
+            //$answer .= CHECKED;
+            $checkedState = ' CHECKED ';
         }
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]$fp\" class=\"answertext\">$fp</label>\n\t</div>\n";
+
+        $aData = array(
+            'ia' => $ia,
+            'fp' => $fp,
+            'checkedState' => $checkedState,
+            'checkconditionFunction' => $checkconditionFunction,
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/item_row', $aData, true);
     }
     if ($ia[6] != "Y"  && SHOW_NO_ANSWER == 1) // Add "No Answer" option if question is not mandatory
     {
-        $answer .= "\t<div class=\"col-xs-2 answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1]."NANS\" value=\"\"";
+        $checkedState = '';
         if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
         {
-            $answer .= CHECKED;
+            $checkedState = ' CHECKED ';
         }
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer".$ia[1]."NANS\" class=\"answertext\">".gT('No answer')."</label>\n\t</div>\n";
+        $aData = array(
+            'ia' => $ia,
+            'checkedState' => $checkedState,
+            'checkconditionFunction' => $checkconditionFunction,
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/item_noanswer_row', $aData, true);
 
     }
-    $answer .= "</div>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
+    $sJavaValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+
     $inputnames[]=$ia[1];
 
     if($aQuestionAttributes['slider_rating']==1){
+        $slider_rating = 1;
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'star-rating.css');
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."star-rating.js");
-        $answer .= "<script type='text/javascript'>\n"
-        . "  <!--\n"
-        ." doRatingStar({$ia[0]});\n"
-        ." -->\n"
-        ."</script>\n";
     }
 
     if($aQuestionAttributes['slider_rating']==2){
+        $slider_rating = 2;
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'slider-rating.css');
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."slider-rating.js");
-        $answer .= "<script type='text/javascript'>\n"
-        . " <!--\n"
-        ." doRatingSlider({$ia[0]});\n"
-        ." -->\n"
-        ."</script>\n";
     }
+
+    $aData = array(
+        'ia' => $ia,
+        'sJavaValue' => $sJavaValue,
+        'slider_rating' => $slider_rating,
+    );
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/5pointchoice_footer', $aData, true);
+
     return array($answer, $inputnames);
 }
 
