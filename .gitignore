@@ -21,3 +21,5 @@
 .settings/org.eclipse.php.core.prefs
 .buildpath
 /application/config/config.php
+.idea
+.DS_Store

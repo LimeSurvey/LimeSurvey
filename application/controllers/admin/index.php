@@ -13,30 +13,46 @@
  */
 class Index extends Survey_Common_Action
 {
-
     public function run()
     {
-        
+
+        $event = new PluginEvent('modifyStartpage');
+
+        App()->getPluginManager()->dispatchEvent($event);
+
+        $event->set('viewName', $event->get('viewName'));
+        $event->set('viewUrl', $event->get('viewUrl'));
+
 
         if (Yii::app()->session['just_logged_in'])
         {
-            $aViewUrls = array('message' => array(
-                'title' => gT("Logged in"),
-                'message' => Yii::app()->session['loginsummary']
-            ));
-            unset(Yii::app()->session['just_logged_in'], Yii::app()->session['loginsummary']);
+            if(!is_null($event->get('viewName'))){
+                $this->_renderWrappedTemplate($event->get('viewUrl'), $event->get('viewName'));
 
-            $this->_renderWrappedTemplate('super', $aViewUrls);
+            }else{
+                $aViewUrls = array('message' => array(
+                    'title' => gT("Logged in"),
+                    'message' => Yii::app()->session['loginsummary']
+
+                ));
+                $this->_renderWrappedTemplate('/admin/super', $aViewUrls);
+            }
+            unset(Yii::app()->session['just_logged_in'], Yii::app()->session['loginsummary']);
         }
         elseif (count(getSurveyList(true)) == 0)
 		{
-            $this->_renderWrappedTemplate('super', 'firststeps');
+            if(!is_null($event->get('viewName')))
+            {
+                $this->_renderWrappedTemplate($event->get('viewUrl'), $event->get('viewName'));
+
+            }else{
+                $this->_renderWrappedTemplate('/admin/super', 'firststeps');
+
+            }
 		}
         else
         {
             $this->getController()->redirect(array('admin/survey/sa/index'));
         }
-
     }
-
 }
