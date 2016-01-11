@@ -790,6 +790,8 @@ class questions extends Survey_Common_Action
             }
         }
 
+        $aData['jsVariableType'] = 'subQuestions';
+        $aViewUrls['_subQuestionsAndAnwsersJsVariables'][] = $aData;
         $aViewUrls['subQuestion_view'][] = $aData;
 
         return $aViewUrls;
