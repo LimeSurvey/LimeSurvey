@@ -190,6 +190,7 @@
                 unset ($aFullResponseTable['startdate']);
                 foreach ($aFullResponseTable as $sFieldname=>$fname)
                 {
+                    $fname[2] = getExtendedAnswer($iSurveyID, $sFieldname, $fname[2], $sLanguage);
                     if (substr($sFieldname,0,4) == 'gid_')
                     {
                         $oPDF->addGidAnswer($fname[0], $fname[1]);

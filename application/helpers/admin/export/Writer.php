@@ -321,6 +321,7 @@ abstract class Writer implements IWriter
                 $value = $response[$column];
                 if (isset($oSurvey->fieldMap[$column]) && $oSurvey->fieldMap[$column]['type']!='answer_time' && $oSurvey->fieldMap[$column]['type']!='page_time' && $oSurvey->fieldMap[$column]['type']!='interview_time')
                 {
+                    $value = getExtendedAnswer($oSurvey->id, $column, $value, $sLanguageCode);
                     switch ($oOptions->answerFormat) {
                         case 'long':
                             $elementArray[] = $this->getLongAnswer($oSurvey, $oOptions, $column,$value);
