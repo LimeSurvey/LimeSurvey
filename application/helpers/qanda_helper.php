@@ -3114,6 +3114,21 @@ function do_multiplenumeric($ia)
 
     $answer_main = '';
 
+    if (trim($aQuestionAttributes['num_value_int_only'])==1)
+    {
+        $acomma="";
+        $extraclass .=" integeronly";
+        $answertypeclass .= " integeronly";
+        $integeronly=1;
+    }
+    else
+    {
+        $acomma=getRadixPointData($thissurvey['surveyls_numberformat']);
+        $acomma = $acomma['separator'];
+        $integeronly=0;
+    }
+    
+    
     if ($anscount==0)
     {
         $inputnames=array();
@@ -3166,7 +3181,7 @@ function do_multiplenumeric($ia)
                     $answer_main .= $dispVal;
                 }
 
-                $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '." {$maxlength} />\n\t".$suffix."\n</span>{$sliderright}\n\t</li>\n";
+                $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type, \'onchange\','.$integeronly.');" '." {$maxlength} />\n\t".$suffix."\n</span>{$sliderright}\n\t</li>\n";
 
             $fn++;
             $inputnames[]=$myfname;
