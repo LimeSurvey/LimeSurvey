@@ -26,6 +26,7 @@ $(document).on("click","#editsubquestionsform :submit", function() {//Validate d
 
 $(document).ready(function(){
 
+
     $('.tab-page:first .answertable tbody').sortable({
         containment:'parent',
         start:startmove,
@@ -33,6 +34,9 @@ $(document).ready(function(){
         distance:3});
     $('.btnaddanswer').click(addinput);
     $('.btndelanswer').click(deleteinput);
+
+    // Now, using Bootstrap modal rather than jQuery dialog
+    /*
     $('#labelsetbrowser').dialog({
         autoOpen: false,
         modal: true,
@@ -49,31 +53,41 @@ $(document).ready(function(){
         beforeClose: function( event, ui ) {
             $('textarea', this).hide(); // IE 8 hack
         }
-        });
+    });*/
 
     $('.btnlsbrowser').click(lsbrowser);
+
+    /*
     $('#btncancel').click(function(){
         $('#labelsetbrowser').dialog('close');
-    });
+    });*/
 
     $('#btnlsreplace').click(transferlabels);
     $('#btnlsinsert').click(transferlabels);
+
+    /*
     $('#btnqacancel').click(function(){
         $('#quickadd').dialog('close');
     });
+    */
+
     $('#btnqareplace').click(quickaddlabels);
     $('#btnqainsert').click(quickaddlabels);
     $('#labelsets').click(lspreview);
     $('#languagefilter').click(lsbrowser);
-    $('.btnquickadd').click(quickadddialog);
+
+    /*
     $('#saveaslabel').dialog({ autoOpen: false,
         modal: true,
         width: 300,
-        title: saveaslabletitle});
+        title: saveaslabletitle});*/
+
     $('.bthsaveaslabel').click(getlabel);
+    /*
     $('#btnlacancel').click(function(){
         $('#saveaslabel').dialog('close');
-    });
+    });*/
+
     $('input[name=savelabeloption]:radio').click(setlabel);
     flag = [false, false];
     $('#btnsave').click(savelabel);
@@ -322,7 +336,7 @@ function code_duplicates_check()
 function lsbrowser()
 {
     scale_id=removechars($(this).attr('id'));
-    $('#labelsetbrowser').dialog( 'open' );
+    //$('#labelsetbrowser').dialog( 'open' );
     surveyid=$('input[name=sid]').val();
     /*
     match=0;
@@ -559,7 +573,7 @@ function transferlabels()
                 $('#answertable_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
                 $('#answertable_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
             }
-            $('#labelsetbrowser').dialog('close');
+            /*$('#labelsetbrowser').dialog('close');*/
             $('.tab-page:first .answertable tbody').sortable('refresh');
             updaterowproperties();
 
@@ -583,6 +597,8 @@ function quickaddlabels()
     {
         var lsreplace=false;
     }
+    scale_id = 0;
+
 
     if (lsreplace)
     {
@@ -625,30 +641,59 @@ function quickaddlabels()
             }
             if (x==0)
             {
+                tablerows=tablerows+
+                '<tr class="row_'+k+'" >'+
+                '   <td>'+
+                '       <span class="glyphicon glyphicon-move text-success"></span>'+
+                '   </td>'+
+                '   <td>'+
+                '       <input'+
+                '           class="code" required="required" pattern="^[a-zA-Z0-9]*$" '+
+                '           type="text" maxlength="20" size="20" '+
+                '           value="'+thisrow[0]+'" pattern="^[a-zA-Z0-9]*$"  '+
+                '           id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" '+
+                '           value="'+htmlspecialchars(thisrow[0],'ENT_QUOTES')+'" />'+
+                '   </td>'+
+                '   <td>'+
+                '       <input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(thisrow[parseInt(x)+1],'ENT_QUOTES')+'"></input>'+
+                '       <a class="editorLink">'+
+                '           <span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
+                '           <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
+                '       </a></td><td>'+
+                '       <span class="btnaddanswer icon-add text-success"></span>'+
+                '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
+                '   </td>'+
+                '</tr>';
+
                 $(".relevance").toggle(false);
-                tablerows=tablerows+'<tr class="row_'+k+'" ><td><span class="glyphicon glyphicon-move"></span></td><td><input class="code" required="required" pattern="^[a-zA-Z0-9]*$" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" type="text" maxlength="20" size="5" value="'+htmlspecialchars(thisrow[0],'ENT_QUOTES')+'" /></td><td><input type="text" size="0" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(thisrow[parseInt(x)+1],'ENT_QUOTES')+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">'+
-                '<span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span><span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span></td></tr>';
+
             }
             else
                 {
-                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="0" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(thisrow[parseInt(x)+1],'ENT_QUOTES')+'"></input><a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">'+
-                '<span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena  glyphicon glyphicon-pencil text-success"></span><span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span></a></td><td>&nbsp;</td></tr>';
+
+                    tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>&nbsp;</td><td><input type="text" size="100" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer" value="'+htmlspecialchars(thisrow[parseInt(x)+1],'ENT_QUOTES')+'"></input><a class="editorLink">'+
+                    '<span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
+                    '<span class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span></a></td><td>'+
+                    '<span class="btnaddanswer  icon-add text-success"></span>'+
+                    '<span class="btndelanswer glyphicon glyphicon-trash text-warning"></span></td></tr>'
             }
         }
-        if (lsreplace) {
-            $('#answertable_'+languages[x]+'_'+scale_id+' tbody').empty();
+        if (lsreplace)
+        {
+            $('#answers_'+languages[x]+'_'+scale_id+' tbody').empty();
         }
-        $('#answertable_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
+
+        $('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
         // Unbind any previous events
-        $('#answertable_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
-        $('#answertable_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
-        $('#answertable_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
-        $('#answertable_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
-        $('#answertable_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
+        $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
+        $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
+        $('#answers_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
+        $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
+        $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
     }
-    $('#quickadd').dialog('close');
+    /*$('#quickadd').dialog('close');*/
     $('#quickaddarea').val('');
-    $('.answertable tbody').sortable('refresh');
+    $('.tab-page:first .answertable tbody').sortable('refresh');
     updaterowproperties();
 }
 
@@ -657,7 +702,7 @@ function getlabel()
     var answer_table = $(this).parent().children().eq(0);
     scale_id=removechars($(this).attr('id'));
 
-    $('#saveaslabel').dialog('open');
+    //$('#saveaslabel').dialog('open');
     updaterowproperties();
 }
 
@@ -710,6 +755,7 @@ function savelabel()
         aLanguages = langs.split(';');
         $.post(sCheckLabelURL, { languages: aLanguages, lid: lid, bCheckAssessments:1 }, function(data) {
            $('#strReplaceMessage').html(data);
+           $('#dialog-confirm-replaceModal').modal();
            $('#btnlconfirmreplace').click(function(){
                ajaxreqsave();
            });
@@ -740,8 +786,22 @@ function ajaxcheckdup()
     check = true; //set check to true everytime on call
     return jQuery.getJSON(lanameurl, function(data) {
         $.each(data, function(key, val) {
+
+            $("#saveaslabelModal").modal('hide');
+            $("#dialog-confirm-replaceModal").modal('hide');
+
             if($('#laname').val() == val)
                 {
+                    if($('#dialog-duplicate').is(":visible"))
+                    {
+                        $('#dialog-duplicate').effect( "pulsate", {times:3}, 3000 );
+                    }
+                    else
+                    {
+                        $('#dialog-duplicate').show();
+                    }
+
+                /*
                 $("#dialog-duplicate").dialog({
                     resizable: false,
                     height: 160,
@@ -753,6 +813,8 @@ function ajaxcheckdup()
                         }
                     }]
                 });
+                */
+
                 check = false;
                 return false;
             }
@@ -791,9 +853,25 @@ function ajaxreqsave() {
 
 
     $.post(lasaveurl, { laname: $('#laname').val(), lid: lid, code: code, answers: answers}, function(data) {
-        $("#saveaslabel").dialog('close');
+        //$("#saveaslabel").dialog('close');
+        $("#saveaslabelModal").modal('hide');
+        $("#dialog-confirm-replaceModal").modal('hide');
+
+
         if(jQuery.parseJSON(data) == "ok")
             {
+                if($('#dialog-result').is(":visible"))
+                {
+                    $('#dialog-result-content').empty().append(lasuccess);
+                    $('#dialog-result').effect( "pulsate", {times:3}, 3000 );
+                }
+                else
+                {
+                    $('#dialog-result').removeClass('alert-warning').addClass('alert-success');
+                    $('#dialog-result-content').empty().append(lasuccess);
+                    $('#dialog-result').show();
+                }
+            /*
             $("#dialog-result").html(lasuccess);
             $('#dialog-result').dialog({
                 height: 200,
@@ -805,9 +883,15 @@ function ajaxreqsave() {
                     }
                 }]
             });
+            */
         }
         else
-            {
+        {
+
+            $('#dialog-result').removeClass('alert-success').addClass('alert-warning');
+            $('#dialog-result-content').empty().append(lafail);
+            $('#dialog-result').show();
+            /*
             $("#dialog-result").html('lafail');
             $('#dialog-result').dialog({
                 height: 160,
@@ -819,16 +903,12 @@ function ajaxreqsave() {
                     }
                 }]
             });
+            */
         }
     });
 }
 
 
-function quickadddialog()
-{
-    scale_id=removechars($(this).attr('id'));
-    $('#quickadd').dialog('open');
-}
 
 function togglerelevance()
 {

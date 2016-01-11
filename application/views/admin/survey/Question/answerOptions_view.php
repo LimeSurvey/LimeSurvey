@@ -88,7 +88,7 @@
                                 <?php endif; ?>
 
                                 <!-- Answers/Subquestions Table -->
-                                <table class='answertable table table-responsive' id='<?php echo $tableId[$anslang][$scale_id]; ?>'>
+                                <table class='answertable table table-responsive' id='<?php echo $tableId[$anslang][$scale_id]; ?>' data-scaleid='<?php echo $scale_id; ?>'>
 
                                     <!-- Headers -->
                                     <thead>
@@ -359,40 +359,31 @@
                                 <div class="action-buttons">
                                     <?php if($viewType=='subQuestions'): ?>
                                         <?php
-                                            $disabled='';
-                                            if ($activated == 'Y')
-                                            {
-                                                $disabled="disabled='disabled'";
-                                            }
+                                            $disabled = ($activated == 'Y')?$disabled="disabled='disabled'":'';
                                         ?>
-
-                                        <br/>
-                                        <button class='btnlsbrowser btn btn-default' id='btnlsbrowser_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'>
-                                            <?php eT('Predefined label sets...'); ?>
-                                        </button>
-                                        <button class='btnquickadd btn btn-default' id='btnquickadd_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'>
-                                            <?php eT('Quick add...'); ?>
-                                        </button>
                                     <?php elseif($viewType=='answerOptions'): ?>
                                         <?php if ($first): ?>
                                             <input type='hidden' id='answercount_<?php echo $scale_id; ?>' name='answercount_<?php echo $scale_id; ?>' value='<?php echo $anscount; ?>' />
+                                            <?php $disabled=""; ?>
                                         <?php endif; ?>
                                         <br/>
-
-                                        <button id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
-                                            <?php eT('Predefined label sets...'); ?>
-                                        </button>
-
-                                        <button id='btnquickadd_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btn btn-default' type='button'  data-toggle="modal" data-target="#quickaddModal">
-                                            <?php eT('Quick add...'); ?>
-                                        </button>
                                     <?php endif;?>
+
+                                    <button <?php echo $disabled; ?>  id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
+                                        <?php eT('Predefined label sets...'); ?>
+                                    </button>
+
+                                    <button <?php echo $disabled; ?>  id='btnquickadd_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btn btn-default' type='button'  data-toggle="modal" data-target="#quickaddModal">
+                                        <?php eT('Quick add...'); ?>
+                                    </button>
+
 
                                     <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create')): ?>
                                         <button class='bthsaveaslabel btn btn-default' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button' data-toggle="modal" data-target="#saveaslabelModal">
                                             <?php eT('Save as label set'); ?>
                                         </button>
                                     <?php endif; ?>
+
                                 </div>
                                 <?php $position=sprintf("%05d", $position); $first=false; ?>
                             <?php endfor;?>
@@ -512,29 +503,7 @@
 
                 </div>
                 <input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />
-                <!-- -->
 
-                <?php if($viewType=='subQuestions'): ?>
-                    <div id="saveaslabel" style='display:none;'>
-                        <p>
-                            <input type="radio" name="savelabeloption" id="newlabel">
-                            <label for="newlabel"><?php eT('New label set'); ?></label>
-                        </p>
-                        <p>
-                            <input type="radio" name="savelabeloption" id="replacelabel">
-                            <label for="replacelabel"><?php eT('Replace existing label set'); ?></label>
-                        </p>
-                        <p class='button-list'>
-                            <button id='btnsave' type='button'><?php eT('Save'); ?></button>
-                            <button id='btnlacancel' type='button'><?php eT('Cancel'); ?></button>
-                        </p>
-                    </div>
-                    <div id="dialog-duplicate" title="<?php eT('Duplicate label set name'); ?>" style='display:none;'>
-                        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php eT('Sorry, the name you entered for the label set is already in the database. Please select a different name.'); ?></p>
-                    </div>
-                    <div id="dialog-result" title="Query Result" style='display:none;'>
-                    </div>
-            <?php endif; ?>
             </form>
         </div>
     </div>
