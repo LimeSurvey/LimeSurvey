@@ -566,6 +566,7 @@ class questions extends Survey_Common_Action
         $assessmentvisible = ($surveyinfo['assessments'] == 'Y' && $qtypes[$qtype]['assessable'] == 1);
         $aData['assessmentvisible'] = $assessmentvisible;
 
+        $aData['jsVariableType'] = 'answerOptions';
         $aViewUrls['answerOptions_view'][] = $aData;
 
         return $aViewUrls;

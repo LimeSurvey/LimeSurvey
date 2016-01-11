@@ -1,5 +1,3 @@
-
-
 <div class="side-body" id="edit-question-body">
     <h3>
         <?php eT("Edit answer options"); ?>
