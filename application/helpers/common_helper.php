@@ -1443,6 +1443,15 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                     $sValue=convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
                 }
                 break;
+            case 'K':
+                if (trim($sValue)!='')
+                {
+                    if(strpos($sValue,".")!==false)
+                    {
+                        $sValue=rtrim(rtrim($sValue,"0"),".");
+                    }
+                }
+                break;
             case 'N':
                 if (trim($sValue)!='')
                 {
