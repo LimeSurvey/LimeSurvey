@@ -3459,3 +3459,9 @@ span[data-tooltip] {
   min-width: 200px; }
 
 /*# sourceMappingURL=lime-admin.css.map */
+
+/* RTL stuff (right-to-left locale */
+.no-gutter > [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
+}
