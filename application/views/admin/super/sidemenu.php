@@ -33,20 +33,30 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    <!-- Brand -->
-                    <div class="brand-name-wrapper  hidden-xs">
-                        <a class="navbar-brand hideside toggleside" href="#">
-                            <?php eT('General');?>
-                        </a>
-                    </div>
+                    <div class='row'>
 
-                    <!-- chevrons to stretch the side menu -->
-                    <a class="btn btn-default hide-button hidden-xs opened" id="chevronClose"  style="right: 30px">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
-                    </a>
-                    <a class="btn btn-default hide-button hidden-xs opened" id="chevronStretch">
-                        <span class="glyphicon glyphicon-chevron-right" ></span>
-                    </a>
+                        <!-- chevrons to stretch the side menu -->
+                        <div class='col-sm-2'>
+                            <a class="btn btn-default hide-button hidden-xs opened" id="chevronStretch">
+                                <span class="glyphicon glyphicon-chevron-right" ></span>
+                            </a>
+                        </div>
+                        <div class='col-sm-1'>
+                            <a class="btn btn-default hide-button hidden-xs opened" id="chevronClose">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </a>
+                        </div>
+
+                        <!-- Brand -->
+                        <div class='col-sm-0'>
+                            <div class="brand-name-wrapper  hidden-xs">
+                                <a class="navbar-brand hideside toggleside" href="#">
+                                    <?php eT('General');?>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
 
             </div>

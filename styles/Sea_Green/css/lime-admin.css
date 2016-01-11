@@ -2207,7 +2207,7 @@ div.panel.disabled {
     background-color: #fafafa;
     border: 0;
     border-radius: 0;
-    position: absolute;
+    /*position: absolute;*/
     top: 0;
     right: 0;
     padding: 15px 18px; }
