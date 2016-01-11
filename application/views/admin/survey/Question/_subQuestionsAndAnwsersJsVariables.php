@@ -27,20 +27,14 @@
     var strNoLabelSet           = '<?php eT('There are no label sets which match the survey default language','js'); ?>';
 </script>
 
-<?php if ($jsVariableType=='subQuestions'): ?>
+<?php if ($viewType=='subQuestions'): ?>
     <script>
         // variables with different values in subqestions / answer options
         var newansweroption_text    = '<?php eT('New answer option','js'); ?>';
         var quickaddtitle           = '<?php eT('Quick-add answers','js'); ?>';
         var strCantDeleteLastAnswer = '<?php eT('You cannot delete the last answer option.','js'); ?>';
-
-        // answer options variables
-        var assessmentvisible       = <?php echo $assessmentvisible?'true':'false'; ?>;
-        var duplicateanswercode     = '<?php eT('Error: You are trying to use duplicate answer codes.','js'); ?>';
-        var sAssessmentValue        = '<?php eT('Assessment value','js'); ?>';
-        var scalecount              = <?php echo $scalecount; ?>;
     </script>
-<?php elseif($jsVariableType=='answerOptions'):?>
+<?php elseif($viewType=='answerOptions'):?>
     <script>
         // variables with different values in subqestions / answer options
         var newansweroption_text    = '<?php eT('New answer option','js'); ?>';

@@ -566,7 +566,35 @@ class questions extends Survey_Common_Action
         $assessmentvisible = ($surveyinfo['assessments'] == 'Y' && $qtypes[$qtype]['assessable'] == 1);
         $aData['assessmentvisible'] = $assessmentvisible;
 
-        $aData['jsVariableType'] = 'answerOptions';
+        $aData['activated'] = $activated = $surveyinfo['active'];
+
+        foreach ($anslangs as $anslang)
+        {
+            for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
+            {
+                $criteria = new CDbCriteria;
+                $criteria->condition = 'qid = :qid AND language = :language AND scale_id = :scale_id';
+                $criteria->order = 'sortorder, code ASC';
+                $criteria->params = array(':qid' => $qid, ':language' => $anslang, ':scale_id' => $scale_id);
+                $results[$anslang][$scale_id] = Answer::model()->findAll($criteria);
+                //$aData['results'][$anslang][$scale_id] = Answer::model()->findAll($criteria);
+                foreach ($results[$anslang][$scale_id] as $row)
+                {
+                    $row->code      = htmlspecialchars($row->code);
+                    $row->answer    = htmlspecialchars($row->answer);
+                }
+                $aData['tableId'][$anslang][$scale_id] = 'answers_'.$anslang.'_'.$scale_id;
+            }
+
+        }
+
+        $aData['results'] = $results;
+        $aData['viewType'] = 'answerOptions';
+        $aData['formId'] = 'editanswersform';
+        $aData['formName'] = 'editanswersform';
+        $aData['pageTitle'] = gT('Edit answer options');
+
+        $aViewUrls['_subQuestionsAndAnwsersJsVariables'][] = $aData;
         $aViewUrls['answerOptions_view'][] = $aData;
 
         return $aViewUrls;
@@ -779,6 +807,7 @@ class questions extends Survey_Common_Action
         $aData['anslangs'] = $anslangs;
         $aData['maxsortorder'] = $maxsortorder;
 
+
         foreach ($anslangs as $anslang)
         {
             for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
@@ -787,11 +816,26 @@ class questions extends Survey_Common_Action
                 $criteria->condition = 'parent_qid = :pqid AND language = :language AND scale_id = :scale_id';
                 $criteria->order = 'question_order, title ASC';
                 $criteria->params = array(':pqid' => $qid, ':language' => $anslang, ':scale_id' => $scale_id);
-                $aData['results'][$anslang][$scale_id] = Question::model()->findAll($criteria);
+                $results[$anslang][$scale_id] = Question::model()->findAll($criteria);
+
+                foreach ($results[$anslang][$scale_id] as $row)
+                {
+                    $row->title     = htmlspecialchars($row->title);
+                    $row->question  = htmlspecialchars($row->question);
+                    $row->relevance = htmlspecialchars($row->relevance);
+                }
+                $aData['tableId'][$anslang][$scale_id] = 'answers_'.$anslang.'_'.$scale_id;
             }
         }
 
-        $aData['jsVariableType'] = 'subQuestions';
+        $aData['results'] = $results;
+        $aData['pageTitle'] = gT('Edit subquestions');
+        $aData['viewType'] = 'subQuestions';
+        $aData['alternate'] = false;
+
+        $aData['formId'] = 'editsubquestionsform';
+        $aData['formName'] = 'editsubquestionsform';
+
         $aViewUrls['_subQuestionsAndAnwsersJsVariables'][] = $aData;
         $aViewUrls['subQuestion_view'][] = $aData;
 

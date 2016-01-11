@@ -2,6 +2,7 @@
     <h3>
         <?php eT("Edit subquestions"); ?>
     </h3>
+
     <div class="row">
         <div class="col-lg-12 content-right">
 
