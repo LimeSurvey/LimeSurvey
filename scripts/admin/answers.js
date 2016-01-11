@@ -1,5 +1,15 @@
 var labelcache=[];
 $(document).ready(function(){
+
+    $(document).ready(function() {
+      $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+          event.preventDefault();
+          return false;
+        }
+      });
+    });
+
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
         update:aftermove,
         distance:3});
@@ -11,17 +21,17 @@ $(document).ready(function(){
         width:800,
         title: lsbrowsertitle});
     $('#quickadd').dialog({
-		autoOpen: false,
+        autoOpen: false,
         modal: true,
         width:600,
         title: quickaddtitle,
-		open: function( event, ui ) {
-			$('textarea', this).show(); // IE 8 hack
-		},
-		beforeClose: function( event, ui ) {
-			$('textarea', this).hide(); // IE 8 hack
-		}
-	});
+        open: function( event, ui ) {
+            $('textarea', this).show(); // IE 8 hack
+        },
+        beforeClose: function( event, ui ) {
+            $('textarea', this).hide(); // IE 8 hack
+        }
+    });
     $('.btnlsbrowser').click(lsbrowser);
     $('#btncancel').click(function(){
         $('#labelsetbrowser').dialog('close');
@@ -37,14 +47,17 @@ $(document).ready(function(){
     $('#btnqareplace').click(quickaddlabels);
     $('#btnqainsert').click(quickaddlabels);
     $('.btnquickadd').click(quickadddialog);
-    $('#saveaslabel').dialog({ autoOpen: false,
+    /*$('#saveaslabel').dialog({ autoOpen: false,
         modal: true,
         width: 300,
         title: saveaslabletitle});
+
+        $('#btnlacancel').click(function(){
+            $('#saveaslabel').dialog('close');
+        });
+        */ // replaced by bootstrap modal
     $('.bthsaveaslabel').click(getlabel);
-    $('#btnlacancel').click(function(){
-        $('#saveaslabel').dialog('close');
-    });
+
     $('input[name=savelabeloption]:radio').click(setlabel);
     flag = [false, false];
     $('#btnsave').click(savelabel);
@@ -360,7 +373,7 @@ function areCodesUnique(sNewValue)
 function lsbrowser()
 {
     scale_id=removechars($(this).attr('id'));
-    $('#labelsetbrowser').dialog( 'open' );
+    //$('#labelsetbrowser').dialog( 'open' ); // replaced by bootstrap modal
     surveyid=$('input[name=sid]').val();
     /*    match=0;
     if ($('#languagefilter').attr('checked')==true)
@@ -674,7 +687,7 @@ function quickaddlabels()
                 {
                 thisrow[parseInt(x)+1]=thisrow[1];
             }
-	    var escaped_value = thisrow[parseInt(x)+1].replace('"', '&quot;');
+        var escaped_value = thisrow[parseInt(x)+1].replace('"', '&quot;');
             if (x==0) {
                 tablerows=tablerows+'<tr class="row_'+k+'" ><td><span class="glyphicon glyphicon-move text-success"></span></td><td><input class="code" type="text" maxlength="5" size="5" value="'+thisrow[0]+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" value="'+escaped_value+'"></input><a class="editorLink">'+
                 '<span class="btneditanswerena  glyphicon glyphicon-pencil text-success"></span>'+
@@ -720,7 +733,7 @@ function getlabel()
     var answer_table = $(this).parent().children().eq(0);
     scale_id=removechars($(this).attr('id'));
 
-    $('#saveaslabel').dialog('open');
+    /* $('#saveaslabel').dialog('open'); */ // replaced by bootstrap modal
     updaterowproperties();
 }
 
@@ -732,7 +745,7 @@ function setlabel()
         if(!flag[0]){
             $('#lasets').parent().remove();
             $(this).parent().after('<p class="label-name-wrapper"><label for="laname">'+sLabelSetName+':</label> ' +
-            '<input type="text" name="laname" id="laname"></p>');
+            '<input type="text" name="laname" id="laname" class="form-control"></p>');
             flag[0] = true;
             flag[1] = false;
         }
@@ -741,7 +754,7 @@ function setlabel()
         case 'replacelabel':
         if(!flag[1]){
             $('#laname').parent().remove();
-            $(this).parent().after('<p class="label-name-wrapper"><select name="laname" id="lasets"><option value=""></option></select></p>');
+            $(this).parent().after('<p class="label-name-wrapper"><select name="laname" id="lasets" class="form-control"><option value=""></option></select></p>');
             jQuery.getJSON(lanameurl, function(data) {
                 $.each(data, function(key, val) {
                     $('#lasets').append('<option value="' + key + '">' + val + '</option>');
@@ -773,6 +786,12 @@ function savelabel()
         aLanguages = langs.split(';');
         $.post(sCheckLabelURL, { languages: aLanguages, lid: lid}, function(data) {
            $('#strReplaceMessage').html(data);
+           $('#dialog-confirm-replaceModal').modal();
+           $('#btnlconfirmreplace').click(function(){
+               ajaxreqsave();
+           });
+
+           /*
             $('#dialog-confirm-replace').dialog({
                 resizable: false,
                 height: 200,
@@ -790,7 +809,7 @@ function savelabel()
                         $(this).dialog("close");
                 }}
                 ]
-            });
+            });*/
         });
     }
 }
@@ -800,8 +819,23 @@ function ajaxcheckdup()
     check = true; //set check to true everytime on call
     return jQuery.getJSON(lanameurl, function(data) {
         $.each(data, function(key, val) {
+
+            $("#saveaslabelModal").modal('hide');
+            $("#dialog-confirm-replaceModal").modal('hide');
+
+
             if($('#laname').val() == val)
                 {
+                    if($('#dialog-duplicate').is(":visible"))
+                    {
+                        $('#dialog-duplicate').effect( "pulsate", {times:3}, 3000 );
+                    }
+                    else
+                    {
+                        $('#dialog-duplicate').show();
+                    }
+
+                /*
                 $("#dialog-duplicate").dialog({
                     resizable: false,
                     height: 160,
@@ -812,7 +846,7 @@ function ajaxcheckdup()
                             $(this).dialog("close");
                         }
                     }]
-                });
+                });*/
                 check = false;
                 return false;
             }
@@ -850,10 +884,24 @@ function ajaxreqsave() {
 
 
     $.post(lasaveurl, { laname: $('#laname').val(), lid: lid, code: code, answers: answers, assessmentvalues:assessmentvalues }, function(data) {
-        $("#saveaslabel").dialog('close');
+        //$("#saveaslabel").dialog('close'); // replaced by bootstrap modal
+        $("#saveaslabelModal").modal('hide');
+        $("#dialog-confirm-replaceModal").modal('hide');
+
         if(jQuery.parseJSON(data) == "ok")
+        {
+            if($('#dialog-result').is(":visible"))
             {
-            $("#dialog-result").html(lasuccess);
+                $('#dialog-result-content').empty().append(lasuccess);
+                $('#dialog-result').effect( "pulsate", {times:3}, 3000 );
+            }
+            else
+            {
+                $('#dialog-result').removeClass('alert-warning').addClass('alert-success');
+                $('#dialog-result-content').empty().append(lasuccess);
+                $('#dialog-result').show();
+            }
+            /*$("#dialog-result").html(lasuccess);
             $('#dialog-result').dialog({
                 height: 160,
                 width: 250,
@@ -863,11 +911,16 @@ function ajaxreqsave() {
                         $(this).dialog("close");
                     }
                 }]
-            });
+            });*/
         }
         else
-            {
-            $("#dialog-result").html(lafail);
+        {
+
+            $('#dialog-result').removeClass('alert-success').addClass('alert-warning');
+            $('#dialog-result-content').empty().append(lafail);
+            $('#dialog-result').show();
+
+            /*$("#dialog-result").html(lafail);
             $('#dialog-result').dialog({
                 height: 160,
                 width: 250,
@@ -877,7 +930,7 @@ function ajaxreqsave() {
                         $(this).dialog("close");
                     }
                 }]
-            });
+            });*/
         }
     });
 }
@@ -885,5 +938,5 @@ function ajaxreqsave() {
 function quickadddialog()
 {
     scale_id=removechars($(this).attr('id'));
-    $('#quickadd').dialog('open');
+    //$('#quickadd').dialog('open'); // replace by bootstrap modal
 }

@@ -710,7 +710,10 @@ function savelabel()
         aLanguages = langs.split(';');
         $.post(sCheckLabelURL, { languages: aLanguages, lid: lid, bCheckAssessments:1 }, function(data) {
            $('#strReplaceMessage').html(data);
-            $('#dialog-confirm-replace').dialog({
+           $('#btnlconfirmreplace').click(function(){
+               ajaxreqsave();
+           });
+            /*$('#dialog-confirm-replace').dialog({
                 resizable: false,
                 height: 260,
                 width: 420,
@@ -727,7 +730,7 @@ function savelabel()
                         $(this).dialog("close");
                 }}
                 ]
-            });
+            });*/
         });
     }
 }
@@ -762,17 +765,17 @@ function ajaxreqsave() {
     // get code for the current scale
     var code = new Array();
     if($('.code').length > 0) { // Deactivated survey
-		$('.code').each(function(index) {
-			if($(this).attr('id').substr(-1) === scale_id)
-				code.push($(this).val());
-		});
-	}
+        $('.code').each(function(index) {
+            if($(this).attr('id').substr(-1) === scale_id)
+                code.push($(this).val());
+        });
+    }
     else { // Activated survey
-		$('.answertable input[name^="code_"]').each(function(index) {
-			if($(this).attr('name').substr(-1) === scale_id)
-				code.push($(this).attr('value'));
-		});
-	}
+        $('.answertable input[name^="code_"]').each(function(index) {
+            if($(this).attr('name').substr(-1) === scale_id)
+                code.push($(this).attr('value'));
+        });
+    }
 
     answers = new Object();
     languages = langs.split(';');

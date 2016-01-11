@@ -6,6 +6,20 @@
     <div class="row">
         <div class="col-lg-12 content-right">
 
+            <!-- Result of modal actions (like replace labelset) -->
+            <div id="dialog-result" title="Query Result" style='display:none;' class="alert alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
+                <span id="dialog-result-content">
+                </span>
+            </div>
+
+            <div id="dialog-duplicate" title="<?php eT('Duplicate label set name'); ?>" style='display:none;' class="alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
+                <p>
+                    <?php eT('Sorry, the name you entered for the label set is already in the database. Please select a different name.'); ?>
+                </p>
+            </div>
+
             <?php echo CHtml::form(array("admin/database"), 'post', array('id'=>$formId, 'name'=>$formName)); ?>
 
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
@@ -364,7 +378,8 @@
                                             <input type='hidden' id='answercount_<?php echo $scale_id; ?>' name='answercount_<?php echo $scale_id; ?>' value='<?php echo $anscount; ?>' />
                                         <?php endif; ?>
                                         <br/>
-                                        <button id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnlsbrowser btn btn-default' type='button'>
+
+                                        <button id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
                                             <?php eT('Predefined label sets...'); ?>
                                         </button>
 
@@ -374,7 +389,7 @@
                                     <?php endif;?>
 
                                     <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create')): ?>
-                                        <button class='bthsaveaslabel btn btn-default' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button'>
+                                        <button class='bthsaveaslabel btn btn-default' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button' data-toggle="modal" data-target="#saveaslabelModal">
                                             <?php eT('Save as label set'); ?>
                                         </button>
                                     <?php endif; ?>
@@ -386,6 +401,8 @@
 
 
                     <!-- Bootstrap modals -->
+
+                    <!-- quickaddModal -->
                     <div class="modal fade labelsets-update" id="quickaddModal" tabindex="-1" role="dialog" aria-labelledby="quickaddModal">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -409,85 +426,95 @@
                         </div>
                     </div>
 
+                    <!--labelset browser Modal -->
+                    <div class="modal fade labelsets-update" id="labelsetbrowserModal" tabindex="-1" role="dialog" aria-labelledby="labelsetbrowserModal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
+                                    <h4 class="modal-title" id="labelsetbrowserModal"><?php eT('Available label sets:'); ?></h4>
+                                </div>
 
-                    <div id='labelsetbrowser' class='labelsets-update row' style='display:none;'>
-                        <div class='col-xs-5'>
-                            <label for='labelsets'><?php eT('Available label sets:'); ?></label>
-                            <select id='labelsets' size='10' style='width:250px;'>
-                                <option>&nbsp;</option>
-                            </select>
-                            <p class='button-list'>
-                                <button id='btnlsreplace' type='button' class='btn btn-default'><?php eT('Replace'); ?></button>
-                                <button id='btnlsinsert' type='button' class='btn btn-default'><?php eT('Add'); ?></button>
-                                <button id='btncancel' type='button' class='btn btn-default'><?php eT('Cancel'); ?></button>
-                            </p>
+                                <div class="modal-body">
+                                    <select id='labelsets' size='10' style='width:250px;'>
+                                        <option>&nbsp;</option>
+                                    </select>
+                                    <div id='labelsetpreview' style='col-xs-6'></div>
+                                </div>
+                                <div class="modal-footer button-list">
+                                    <button id='btnlsreplace' type='button' class='btn btn-default'><?php eT('Replace'); ?></button>
+                                    <button id='btnlsinsert' type='button' class='btn btn-default'><?php eT('Add'); ?></button>
+                                    <button class='btn btn-warning' id='btnqacancel' type='button'  data-dismiss="modal"><?php eT('Cancel'); ?></button>
+                                </div>
+                            </div>
                         </div>
-
-                        <div id='labelsetpreview' style='col-xs-6'></div>
                     </div>
 
+                    <!-- Save as labelset Modal -->
+                    <div class="modal fade" id="saveaslabelModal" tabindex="-1" role="dialog" aria-labelledby="saveaslabelModal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
+                                    <h4 class="modal-title">
+                                        <?php eT('Save as label set:'); ?>
+                                    </h4>
 
-                    <div id="saveaslabel" style='display:none;'>
-                        <p>
-                            <input type="radio" name="savelabeloption" id="newlabel">
-                            <label for="newlabel"><?php eT('New label set'); ?></label>
-                        </p>
-                        <p>
-                            <input type="radio" name="savelabeloption" id="replacelabel">
-                            <label for="replacelabel"><?php eT('Replace existing label set'); ?>
-                        </p>
-                        <p class='button-list'>
-                            <button id='btnsave' class='btn btn-default' type='button'><?php eT('Save'); ?></button>
-                            <button id='btnlacancel' class='btn btn-default' type='button'><?php eT('Cancel'); ?></button>
-                        </p>
+                                </div>
+
+                                <div class="modal-body">
+                                    <p>
+                                        <input type="radio" name="savelabeloption" id="newlabel">
+                                        <label for="newlabel"><?php eT('New label set'); ?></label>
+                                    </p>
+                                    <p>
+                                        <input type="radio" name="savelabeloption" id="replacelabel">
+                                        <label for="replacelabel"><?php eT('Replace existing label set'); ?>
+                                    </p>
+                                </div>
+
+                                <div class="modal-footer button-list">
+                                    <button id='btnsave' class='btn btn-default' type='button'><?php eT('Save'); ?></button>
+                                    <button class='btn btn-warning' id='btnlacancel' type='button'  data-dismiss="modal"><?php eT('Cancel'); ?></button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div id="dialog-confirm-replace" title="<?php eT('Replace label set?'); ?>" style='display:none;'>
-                    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id='strReplaceMessage'></span></p>
-                    </div>
+                    <!-- Confirm labelset replacement -->
+                    <div class="modal fade" id="dialog-confirm-replaceModal" tabindex="-1" role="dialog" aria-labelledby="dialog-confirm-replaceModal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
+                                    <h4 class="modal-title">
+                                        <?php eT('Replace label set?'); ?>
+                                    </h4>
+                                </div>
 
-                    <div id="dialog-duplicate" title="<?php eT('Duplicate label set name'); ?>" style='display:none;'>
-                    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php eT('Sorry, the name you entered for the label set is already in the database. Please select a different name.'); ?></p>
-                    </div>
+                                <div class="modal-body">
+                                    <p>
+                                        <span id='strReplaceMessage'></span>
+                                    </p>
+                                </div>
 
-                    <div id="dialog-result" title="Query Result" style='display:none;'>
+                                <div class="modal-footer button-list">
+                                    <button class='btn btn-default' id='btnlconfirmreplace' type='button' data-dismiss="modal"  ><?php eT('OK'); ?></button>
+                                    <button class='btn btn-warning' id='btnlacancel' type='button'  data-dismiss="modal"><?php eT('Cancel'); ?></button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <p>
                         <input type='submit' class="hidden" id='saveallbtn_<?php echo $anslang; ?>' name='method' value='<?php eT("Save changes"); ?>' />
                     </p>
+
                 </div>
                 <input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />
                 <!-- -->
-                <div id='labelsetbrowser' class='labelsets-update row' style='display:none;'>
-                    <div class='col-xs-5'>
-                        <label for='labelsets'><?php eT('Available label sets:'); ?></label>
-                        <select id='labelsets' size='10' style='width:250px;'>
-                            <option>&nbsp;</option>
-                        </select>
-                        <p class='button-list'>
-                            <button id='btnlsreplace' type='button' class='btn btn-default'><?php eT('Replace'); ?></button>
-                            <button id='btnlsinsert' type='button' class='btn btn-default'><?php eT('Add'); ?></button>
-                            <button id='btncancel' type='button' class='btn btn-default'><?php eT('Cancel'); ?></button>
-                        </p>
-                    </div>
-
-                    <div id='labelsetpreview' style='col-xs-6'></div>
-                </div>
 
                 <?php if($viewType=='subQuestions'): ?>
-                    <div id='quickadd' class='labelsets-update' style='display:none;'>
-                        <div style='float:left;'>
-                            <label for='quickaddarea'><?php eT('Enter your subquestions:'); ?></label>
-                            <textarea id='quickaddarea' class='tipme' title='<?php eT('Enter one subquestion per line. You can provide a code by separating code and subquestion text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab.'); ?>' cols='100' rows='30' style='width:570px;'></textarea>
-                            <p class='button-list'>
-                                <button id='btnqareplace' type='button'><?php eT('Replace'); ?></button>
-                                <button id='btnqainsert' type='button'><?php eT('Add'); ?></button>
-                                <button id='btnqacancel' type='button'><?php eT('Cancel'); ?></button>
-                            </p>
-                        </div>
-                    </div>
-
                     <div id="saveaslabel" style='display:none;'>
                         <p>
                             <input type="radio" name="savelabeloption" id="newlabel">
@@ -502,69 +529,11 @@
                             <button id='btnlacancel' type='button'><?php eT('Cancel'); ?></button>
                         </p>
                     </div>
-                    <div id="dialog-confirm-replace" title="<?php eT('Replace label set?'); ?>" style='display:none;'>
-                        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id='strReplaceMessage'></span></p>
-                    </div>
                     <div id="dialog-duplicate" title="<?php eT('Duplicate label set name'); ?>" style='display:none;'>
                         <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php eT('Sorry, the name you entered for the label set is already in the database. Please select a different name.'); ?></p>
                     </div>
                     <div id="dialog-result" title="Query Result" style='display:none;'>
                     </div>
-                    <p>
-                        <input type='submit' class="hidden" id='saveallbtn_<?php echo $anslang; ?>' name='method' value='<?php eT("Save changes"); ?>' />
-                        <?php $position=sprintf("%05d", $position); ?>
-                        <?php if ($activated == 'Y')
-                            { ?>
-                            <br />
-                            <font color='red' size='1'><i><strong>
-                                    <?php eT("Warning"); ?></strong>: <?php eT("You cannot add/remove subquestions or edit their codes because the survey is active."); ?></i></font>
-                            <?php } ?>
-                    </p>
-                    <input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />
-
-                <?php elseif($viewType=='answerOptions'): ?>
-                    <div id='quickadd' class='labelsets-update' style='display:none;'>
-                        <div>
-                            <label for='quickaddarea'><?php eT('Enter your answers:'); ?></label>
-                            <textarea id='quickaddarea' class='tipme' title='<?php eT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab.'); ?>' cols='100' rows='10' style='width:570px;'></textarea>
-                            <p class='button-list'>
-                                <button class='btn btn-default' id='btnqareplace' type='button'><?php eT('Replace'); ?></button>
-                                <button class='btn btn-default' id='btnqainsert' type='button'><?php eT('Add'); ?></button>
-                                <button class='btn btn-default' id='btnqacancel' type='button'><?php eT('Cancel'); ?></button>
-                            </p>
-                        </div>
-                    </div>
-
-                    <div id="saveaslabel" style='display:none;'>
-                        <p>
-                            <input type="radio" name="savelabeloption" id="newlabel">
-                            <label for="newlabel"><?php eT('New label set'); ?></label>
-                        </p>
-                        <p>
-                            <input type="radio" name="savelabeloption" id="replacelabel">
-                            <label for="replacelabel"><?php eT('Replace existing label set'); ?>
-                        </p>
-                        <p class='button-list'>
-                            <button id='btnsave' class='btn btn-default' type='button'><?php eT('Save'); ?></button>
-                            <button id='btnlacancel' class='btn btn-default' type='button'><?php eT('Cancel'); ?></button>
-                        </p>
-                    </div>
-
-                    <div id="dialog-confirm-replace" title="<?php eT('Replace label set?'); ?>" style='display:none;'>
-                        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id='strReplaceMessage'></span></p>
-                    </div>
-
-                    <div id="dialog-duplicate" title="<?php eT('Duplicate label set name'); ?>" style='display:none;'>
-                    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php eT('Sorry, the name you entered for the label set is already in the database. Please select a different name.'); ?></p>
-                    </div>
-
-                    <div id="dialog-result" title="Query Result" style='display:none;'>
-                    </div>
-
-                    <p>
-                        <input type='submit' class="hidden" id='saveallbtn_<?php echo $anslang; ?>' name='method' value='<?php eT("Save changes"); ?>' />
-                    </p>
-                <input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />
             <?php endif; ?>
             </form>
         </div>
