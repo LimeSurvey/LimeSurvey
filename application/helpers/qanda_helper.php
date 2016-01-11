@@ -1106,7 +1106,9 @@ function do_date($ia)
     {
         $maxdate='2037-12-31'; // Why 2037 ?
     }
-    if (trim($aQuestionAttributes['dropdown_dates'])==1) {
+
+    if (trim($aQuestionAttributes['dropdown_dates'])==1)
+    {
         if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) &
            ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]!='INVALID'))
         {
@@ -1128,7 +1130,8 @@ function do_date($ia)
         }
 
         $dateorder = preg_split('/([-\.\/ :])/', $dateformatdetails['phpdate'],-1,PREG_SPLIT_DELIM_CAPTURE );
-        $answer='<p class="question date answer-item dropdown-item date-item">';
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/date_header', array(), true);
+        //$answer='<p class="question date answer-item dropdown-item date-item">';
         foreach($dateorder as $datepart)
         {
             switch($datepart)

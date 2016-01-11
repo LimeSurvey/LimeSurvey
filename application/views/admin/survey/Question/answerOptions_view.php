@@ -1,3 +1,31 @@
+<script type='text/javascript'>assessmentvisible=<?php echo $assessmentvisible?'true':'false'; ?>;
+    var cancel = '<?php eT('Cancel'); ?>';
+    var check = true;
+    var duplicateanswercode='<?php eT('Error: You are trying to use duplicate answer codes.','js'); ?>';
+    var lafail = '<?php eT('Sorry, the request failed!'); ?>';
+    var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/sa/getAllSets'); ?>';
+    var langs='<?php echo implode(';',$anslangs); ?>';
+    var languagecount=<?php echo count($anslangs); ?>;
+    var lasaveurl = '<?php echo Yii::app()->createUrl('/admin/labels/sa/ajaxSets'); ?>';
+    var lasuccess = '<?php eT('The records have been saved successfully!'); ?>';
+    var lsbrowsertitle='<?php eT('Label set browser','js'); ?>';
+    var lsdetailurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetdetails'); ?>';
+    var lspickurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetpicker'); ?>';
+    var newansweroption_text='<?php eT('New answer option','js'); ?>';
+    var ok = '<?php eT('Ok'); ?>';
+    var quickaddtitle='<?php eT('Quick-add answers','js'); ?>';
+    var sAssessmentValue='<?php eT('Assessment value','js'); ?>';
+    var saveaslabletitle  = '<?php eT('Save as label set','js'); ?>';
+    var scalecount=<?php echo $scalecount; ?>;
+    var sCheckLabelURL = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxchecklabel'); ?>';
+    var sImageURL ="<?php echo Yii::app()->getConfig('adminimageurl'); ?>";
+    var sLabelSetName='<?php eT('Label set name','js'); ?>';
+    var strCantDeleteLastAnswer='<?php eT('You cannot delete the last answer option.','js'); ?>';
+    var strcode='<?php eT('Code','js'); ?>';
+    var strlabel='<?php eT('Label','js'); ?>';
+    var strNoLabelSet='<?php eT('There are no label sets which match the survey default language','js'); ?>';
+</script>
+
 <div class="side-body" id="edit-question-body">
     <h3>
         <?php eT("Edit answer options"); ?>
@@ -12,34 +40,7 @@
     <input type='hidden' name='action' value='updateansweroptions' />
     <input type='hidden' name='sortorder' value='' />
     <?php $first=true; ?>
-    <script type='text/javascript'>
-        var languagecount=<?php echo count($anslangs); ?>;
-        var scalecount=<?php echo $scalecount; ?>;
-        var assessmentvisible=<?php echo $assessmentvisible?'true':'false'; ?>;
-        var newansweroption_text='<?php eT('New answer option','js'); ?>';
-        var sLabelSetName='<?php eT('Label set name','js'); ?>';
-        var strcode='<?php eT('Code','js'); ?>';
-        var strlabel='<?php eT('Label','js'); ?>';
-        var strCantDeleteLastAnswer='<?php eT('You cannot delete the last answer option.','js'); ?>';
-        var lsbrowsertitle='<?php eT('Label set browser','js'); ?>';
-        var quickaddtitle='<?php eT('Quick-add answers','js'); ?>';
-        var sAssessmentValue='<?php eT('Assessment value','js'); ?>';
-        var duplicateanswercode='<?php eT('Error: You are trying to use duplicate answer codes.','js'); ?>';
-        var strNoLabelSet='<?php eT('There are no label sets which match the survey default language','js'); ?>';
-        var langs='<?php echo implode(';',$anslangs); ?>';
-        var sImageURL ="<?php echo Yii::app()->getConfig('adminimageurl'); ?>";
-        var saveaslabletitle  = '<?php eT('Save as label set','js'); ?>';
-        var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/sa/getAllSets'); ?>';
-        var lasaveurl = '<?php echo Yii::app()->createUrl('/admin/labels/sa/ajaxSets'); ?>';
-        var sCheckLabelURL = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxchecklabel'); ?>';
-        var lsdetailurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetdetails'); ?>';
-        var lspickurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetpicker'); ?>';
-        var check = true;
-        var lasuccess = '<?php eT('The records have been saved successfully!'); ?>';
-        var lafail = '<?php eT('Sorry, the request failed!'); ?>';
-        var ok = '<?php eT('Ok'); ?>';
-        var cancel = '<?php eT('Cancel'); ?>';
-    </script>
+
     <div id='tabs'>
     <ul>
         <?php foreach ($anslangs as $anslang)
