@@ -46,7 +46,7 @@
              </li>
 
 
-             <li><label for='usecaptcha'><?php  eT("Use CAPTCHA for"); ?>:</label>
+             <li><label for='usecaptcha'><?php  eT("Use CAPTCHA for:"); ?></label>
              <select name='usecaptcha' id='usecaptcha'>
              <option value='A'
         <?php if ($esrow['usecaptcha'] == "A") { ?>
