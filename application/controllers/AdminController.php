@@ -304,15 +304,13 @@ class AdminController extends LSYii_Controller
         $aData['aPackageScripts'] = (array) $oAdmintheme->config->files->js->filename;
         $aData['aPackageStyles'] = (array) $oAdmintheme->config->files->css->filename;
 
-        if (true)
+        if ($aData['bIsRTL'])
         {
             foreach ($aData['aPackageStyles'] as &$filename)
             {
                 $filename = str_replace('.css', '-rtl.css', $filename);
             }
         }
-
-        var_dump($aData['aPackageStyles']);
 
         $sOutput = $this->renderPartial("/admin/super/header", $aData, true);
 
