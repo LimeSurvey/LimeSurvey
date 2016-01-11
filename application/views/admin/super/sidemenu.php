@@ -35,25 +35,25 @@
 
                     <div class='row'>
 
-                        <!-- chevrons to stretch the side menu -->
-                        <div class='col-sm-2'>
-                            <a class="btn btn-default hide-button hidden-xs opened" id="chevronStretch">
-                                <span class="glyphicon glyphicon-chevron-right" ></span>
-                            </a>
-                        </div>
-                        <div class='col-sm-1'>
-                            <a class="btn btn-default hide-button hidden-xs opened" id="chevronClose">
-                                <span class="glyphicon glyphicon-chevron-left"></span>
-                            </a>
-                        </div>
-
                         <!-- Brand -->
-                        <div class='col-sm-0'>
+                        <div class='col-sm-8'>
                             <div class="brand-name-wrapper  hidden-xs">
                                 <a class="navbar-brand hideside toggleside" href="#">
                                     <?php eT('General');?>
                                 </a>
                             </div>
+                        </div>
+
+                        <!-- chevrons to stretch the side menu -->
+                        <div class='col-sm-2'>
+                            <a class="btn btn-default hide-button hidden-xs opened" id="chevronClose">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </a>
+                        </div>
+                        <div class='col-sm-2'>
+                            <a class="btn btn-default hide-button hidden-xs opened" id="chevronStretch">
+                                <span class="glyphicon glyphicon-chevron-right" ></span>
+                            </a>
                         </div>
 
                     </div>
