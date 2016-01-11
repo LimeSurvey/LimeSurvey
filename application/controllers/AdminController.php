@@ -44,7 +44,7 @@ class AdminController extends LSYii_Controller
         if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));} // for html editor integration
 
         global $oTemplate;
-        $oTemplate = Template::model()->getTemplateConfiguration(Yii::app()->getConfig("defaulttemplate"));        
+        $oTemplate = Template::model()->getTemplateConfiguration(Yii::app()->getConfig("defaulttemplate"));
     }
 
     /**
@@ -303,6 +303,16 @@ class AdminController extends LSYii_Controller
         $aData['sAdminthemePackageName'] = $oAdmintheme->packagename;
         $aData['aPackageScripts'] = (array) $oAdmintheme->config->files->js->filename;
         $aData['aPackageStyles'] = (array) $oAdmintheme->config->files->css->filename;
+
+        if (true)
+        {
+            foreach ($aData['aPackageStyles'] as &$filename)
+            {
+                $filename = str_replace('.css', '-rtl.css', $filename);
+            }
+        }
+
+        var_dump($aData['aPackageStyles']);
 
         $sOutput = $this->renderPartial("/admin/super/header", $aData, true);
 
