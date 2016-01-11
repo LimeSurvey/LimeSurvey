@@ -368,7 +368,7 @@
                                             <?php eT('Predefined label sets...'); ?>
                                         </button>
 
-                                        <button id='btnquickadd_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnquickadd btn btn-default' type='button'>
+                                        <button id='btnquickadd_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btn btn-default' type='button'  data-toggle="modal" data-target="#quickaddModal">
                                             <?php eT('Quick add...'); ?>
                                         </button>
                                     <?php endif;?>
@@ -383,6 +383,31 @@
                             <?php endfor;?>
                         </div>
                     <?php endforeach; ?>
+
+
+                    <!-- Bootstrap modals -->
+                    <div class="modal fade labelsets-update" id="quickaddModal" tabindex="-1" role="dialog" aria-labelledby="quickaddModal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
+                                    <h4 class="modal-title" id="quickaddModal"><?php eT('Enter your answers:'); ?></h4>
+                                </div>
+
+                                <div class="modal-body">
+                                    <p>
+                                        <?php eT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab.'); ?>
+                                    </p>
+                                    <textarea id='quickaddarea' class='tipme' title='' cols='100' rows='10' style='width:570px;'></textarea>
+                                </div>
+                                <div class="modal-footer button-list">
+                                    <button class='btn btn-default' id='btnqareplace' type='button'><?php eT('Replace'); ?></button>
+                                    <button class='btn btn-default' id='btnqainsert' type='button'><?php eT('Add'); ?></button>
+                                    <button class='btn btn-warning' id='btnqacancel' type='button'  data-dismiss="modal"><?php eT('Cancel'); ?></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
                     <div id='labelsetbrowser' class='labelsets-update row' style='display:none;'>
@@ -401,17 +426,6 @@
                         <div id='labelsetpreview' style='col-xs-6'></div>
                     </div>
 
-                    <div id='quickadd' class='labelsets-update' style='display:none;'>
-                        <div>
-                            <label for='quickaddarea'><?php eT('Enter your answers:'); ?></label>
-                            <textarea id='quickaddarea' class='tipme' title='<?php eT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab.'); ?>' cols='100' rows='10' style='width:570px;'></textarea>
-                            <p class='button-list'>
-                                <button class='btn btn-default' id='btnqareplace' type='button'><?php eT('Replace'); ?></button>
-                                <button class='btn btn-default' id='btnqainsert' type='button'><?php eT('Add'); ?></button>
-                                <button class='btn btn-default' id='btnqacancel' type='button'><?php eT('Cancel'); ?></button>
-                            </p>
-                        </div>
-                    </div>
 
                     <div id="saveaslabel" style='display:none;'>
                         <p>
