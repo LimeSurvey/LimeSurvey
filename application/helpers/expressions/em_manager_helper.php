@@ -8484,6 +8484,8 @@ EOD;
             if (!isset($LEM->currentQset)) {
                 return array();
             }
+            $thissurvey = getSurveyInfo($_SESSION['LEMsid']);
+            $invertRadix=getRadixPointData(1 - $thissurvey['surveyls_numberformat']);
             $updatedValues=array();
             $radixchange = (($LEM->surveyOptions['radix']==',') ? true : false);
             foreach ($LEM->currentQset as $qinfo)
@@ -8548,8 +8550,17 @@ EOD;
                                     }
                                 }
                                 break;
-#                            case 'N': //NUMERICAL QUESTION TYPE
-#                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'N': //NUMERICAL QUESTION TYPE
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                if (trim($value)!="") {
+                                    $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $qid, $_SESSION['LEMlang']);
+                                    if (!isset($aAttributes[$qid])) {
+                                        $aAttributes[$qid]=array();
+                                    }
+                                    if($aAttributes[$qid]['thousands_separator']=='1') {
+                                        $value=str_replace($invertRadix['separator'], '', $value);
+                                    }
+                                }
 #                                if (trim($value)=="") {
 #                                    $value = "";
 #                                }

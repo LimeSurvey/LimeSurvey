@@ -12,16 +12,16 @@ $(document).ready(function () {
         var thousandsSep = ',';
     }
 
-    var selector = '.thousandsseparator input.numeric, input.integeronly, .numberonly input[type=text]';
+    var selector = '.thousandsseparator input.numeric, .thousandsseparator.numberonly input[type=text], .thousandsseparator input.integeronly';
     $(selector).unbind('keydown');
-    $('input.numeric, .numberonly input[type=text]').priceFormat({
+    $('.thousandsseparator input.numeric, .thousandsseparator.numberonly input[type=text]').priceFormat({
         'centsSeparator' : centsSep,
         'thousandsSeparator' : thousandsSep,
         'centsLimit' : 2,
         'prefix' : '',
         'allowNegative' : true
     });
-    $('input.integeronly').priceFormat({
+    $('.thousandsseparator input.integeronly').priceFormat({
         'centsSeparator' : centsSep,
         'thousandsSeparator' : thousandsSep,
         'centsLimit' : 0,
