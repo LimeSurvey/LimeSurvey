@@ -12,7 +12,7 @@
 
         <!-- Interface language -->
         <div class="form-group">
-            <?php echo CHtml::label(gT("Interface language").':', 'lang', array('class'=>"col-sm-2 control-label")); ?>
+            <?php echo CHtml::label(gT("Interface language:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
              <div class="col-sm-3">
                 <select id='lang' name='lang' class="form-control">
                     <option value='auto'<?php if ($sSavedLanguage == 'auto') { echo " selected='selected'"; } ?>>
@@ -32,7 +32,7 @@
 
         <!-- HTML editor mode -->
         <div class="form-group">
-            <?php echo CHtml::label(gT("HTML editor mode").':', 'htmleditormode', array('class'=>"col-sm-2 control-label")); ?>
+            <?php echo CHtml::label(gT("HTML editor mode:"), 'htmleditormode', array('class'=>"col-sm-2 control-label")); ?>
             <div class="col-sm-3">
                 <?php
                     echo CHtml::dropDownList('htmleditormode', Yii::app()->session['htmleditormode'], array(
@@ -47,7 +47,7 @@
 
         <!-- Question type selector -->
         <div class="form-group">
-            <?php echo CHtml::label(gT("Question type selector").':', 'questionselectormode', array('class'=>"col-sm-2 control-label")); ?>
+            <?php echo CHtml::label(gT("Question type selector:"), 'questionselectormode', array('class'=>"col-sm-2 control-label")); ?>
             <div class="col-sm-3">
                 <?php
                 echo CHtml::dropDownList('questionselectormode', Yii::app()->session['questionselectormode'], array(
@@ -61,7 +61,7 @@
 
         <!-- Template editor mode -->
         <div class="form-group">
-            <?php echo CHtml::label(gT("Template editor mode").':', 'templateeditormode', array('class'=>"col-sm-2 control-label")); ?>
+            <?php echo CHtml::label(gT("Template editor mode:"), 'templateeditormode', array('class'=>"col-sm-2 control-label")); ?>
             <div class="col-sm-3">
                 <?php
                 echo CHtml::dropDownList('templateeditormode', Yii::app()->session['templateeditormode'], array(
@@ -75,7 +75,7 @@
 
         <!-- Date format -->
         <div class="form-group">
-            <?php echo CHtml::label( gT("Date format").':', 'dateformat', array('class'=>"col-sm-2 control-label")); ?>
+            <?php echo CHtml::label( gT("Date format:"), 'dateformat', array('class'=>"col-sm-2 control-label")); ?>
              <div class="col-sm-3">
                  <select name='dateformat' id='dateformat' class="form-control">
                     <?php
