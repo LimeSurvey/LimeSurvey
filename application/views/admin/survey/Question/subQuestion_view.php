@@ -1,29 +1,29 @@
 <script type='text/javascript'>
-    var cancel = '<?php eT('Cancel'); ?>';
-    var check = true;
-    var lafail = '<?php eT('Sorry, the request failed!'); ?>';
-    var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/sa/getAllSets'); ?>';
-    var langs='<?php echo implode(';',$anslangs); ?>';
-    var languagecount=<?php echo count($anslangs); ?>;
-    var lasaveurl = '<?php echo Yii::app()->createUrl('/admin/labels/sa/ajaxSets'); ?>';
-    var lasuccess = '<?php eT('The records have been saved successfully!'); ?>';
-    var lsbrowsertitle='<?php eT('Label set browser','js'); ?>';
-    var lsdetailurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetdetails'); ?>';
-    var lspickurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetpicker'); ?>';
-    var newansweroption_text='<?php eT('New subquestion','js'); ?>';
-    var ok = '<?php eT('Ok'); ?>';
-    var quickaddtitle='<?php eT('Quick-add subquestions','js'); ?>';
-    var saveaslabletitle  = '<?php eT('Save as label set','js'); ?>';
-    var sCheckLabelURL = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxchecklabel'); ?>';
-    var sImageURL ='<?php echo Yii::app()->getConfig('adminimageurl'); ?>';
-    var sLabelSetName='<?php eT('Label set name','js'); ?>';
-    var strCantDeleteLastAnswer='<?php eT('You cannot delete the last subquestion.','js'); ?>';
-    var strcode='<?php eT('Code','js'); ?>';
-    var strlabel='<?php eT('Label','js'); ?>';
-    var strNoLabelSet='<?php eT('There are no label sets which match the survey default language','js'); ?>';
+    var cancel                  = '<?php eT('Cancel'); ?>';
+    var check                   = true;
+    var lafail                  = '<?php eT('Sorry, the request failed!'); ?>';
+    var lanameurl               = '<?php echo Yii::app()->createUrl('/admin/labels/sa/getAllSets'); ?>';
+    var langs                   = '<?php echo implode(';',$anslangs); ?>';
+    var languagecount           = <?php echo count($anslangs); ?>;
+    var lasaveurl               = '<?php echo Yii::app()->createUrl('/admin/labels/sa/ajaxSets'); ?>';
+    var lasuccess               = '<?php eT('The records have been saved successfully!'); ?>';
+    var lsbrowsertitle          = '<?php eT('Label set browser','js'); ?>';
+    var lsdetailurl             = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetdetails'); ?>';
+    var lspickurl               = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetpicker'); ?>';
+    var newansweroption_text    = '<?php eT('New subquestion','js'); ?>';
+    var ok                      = '<?php eT('Ok'); ?>';
+    var quickaddtitle           = '<?php eT('Quick-add subquestions','js'); ?>';
+    var saveaslabletitle        = '<?php eT('Save as label set','js'); ?>';
+    var sCheckLabelURL          = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxchecklabel'); ?>';
+    var sImageURL               = '<?php echo Yii::app()->getConfig('adminimageurl'); ?>';
+    var sLabelSetName           = '<?php eT('Label set name','js'); ?>';
+    var strCantDeleteLastAnswer = '<?php eT('You cannot delete the last subquestion.','js'); ?>';
+    var strcode                 = '<?php eT('Code','js'); ?>';
+    var strlabel                = '<?php eT('Label','js'); ?>';
+    var strNoLabelSet           = '<?php eT('There are no label sets which match the survey default language','js'); ?>';
 
-    var duplicatesubquestioncode='<?php eT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
-    var otherisreserved='<?php ($aParentQuestion['other']=="Y") ? printf(gT("'%s' can not be used if question allow other.",'js'),'other') : ""; ?>';    
+    var duplicatesubquestioncode    ='<?php eT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
+    var otherisreserved             ='<?php ($aParentQuestion['other']=="Y") ? printf(gT("'%s' can not be used if question allow other.",'js'),'other') : ""; ?>';
 </script>
 <?php echo PrepareEditorScript(); ?>
 
