@@ -22,7 +22,9 @@
 			            eT("Do you want to create a token table for this survey?");
 			        ?>
 			        <br /><br />
-			        <input type='submit' class="btn btn-default" value='<?php eT("Initialise tokens"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid/createtable/Y"); ?>', '_top')" />
+			        <?php echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$surveyid}"), 'post'); ?>
+			        	<button type="submit" name="createtable" class="btn btn-default" value="Y"><?php eT("Initialise tokens"); ?></button>
+			        </form>
 			        <input type='submit' class="btn btn-default" value='<?php eT("No, thanks."); ?>' onclick="window.open('<?php echo$this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>', '_top')" /></div>
 			    <?php
 			    }
