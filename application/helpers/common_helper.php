@@ -1453,7 +1453,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                     $qidattributes = getQuestionAttributeValues($fields['qid']);
                     if($qidattributes['num_value_int_only'])
                     {
-                        $sValue=number_format($sValue, 0, '', '');
+                        $sValue=number_format_double($sValue, 0, '', '');
                     }
                 }
                 break;
@@ -7525,6 +7525,72 @@ function array_diff_assoc_recursive($array1, $array2) {
     function isMd5($sMD5 ='') {
         return strlen($sMD5) == 32 && ctype_xdigit($sMD5);
     }
+
+/**
+* Format a double number like number_format()
+*
+* @param double $number
+* @param int $decimals
+* @param char $dec_point
+* @param char $thousands_sep
+* @param int $thousands_grouping
+*/
+function number_format_double($number, $decimals=3, $dec_point='.', $thousands_sep='', $thousands_grouping=3){
+    // Check input variables
+    if (!is_numeric($number)){
+        error_log("Warning! Wrong parameter type supplied in number_format_double() function. Parameter \$number is not a number.");
+        return false;
+    }
+    if (!is_numeric($decimals)){
+        error_log("Warning! Wrong parameter type supplied in number_format_double() function. Parameter \$decimals is not a number.");
+        return false;
+    }
+    if (!is_numeric($thousands_grouping)){
+        error_log("Warning! Wrong parameter type supplied in number_format_double() function. Parameter \$thousands_grouping is not a number.");
+        return false;
+    }
+
+
+    // Prepare variables
+    $decimals = $decimals * 1;
+
+
+    // Explode the string received after DOT sign (this is the ISO separator of decimals)
+    $aux = explode(".", $number);
+    // Extract decimal and integer parts
+    $integer_part = $aux[0];
+    $decimal_part = isset($aux[1]) ? $aux[1] : '';
+
+    // Adjust decimal part (increase it, or minimize it)
+    if ($decimals > 0){
+        // Check actual size of decimal_part
+        // If its length is smaller than number of decimals, add trailing zeros, otherwise round it
+        if (strlen($decimal_part) < $decimals){
+            $decimal_part = str_pad($decimal_part, $decimals, "0");
+        } else {
+            $decimal_part = substr($decimal_part, 0, $decimals);
+        }
+    } else {
+        // Completely eliminate the decimals, if there $decimals is a negative number
+        $dec_point = '';
+        $decimal_part       = '';
+    }
+
+    // Format the integer part (digits grouping)
+    if ($thousands_grouping > 0){
+        $aux = strrev($integer_part);
+        $integer_part = '';
+        for ($i=strlen($aux)-1; $i >= 0 ; $i--){
+            if ( $i % $thousands_grouping == 0 && $i != 0){
+                $integer_part .= $aux[$i].$thousands_sep;
+            } else {
+                $integer_part .= $aux[$i];
+            }
+        }
+    }
+
+    return $integer_part.$dec_point.$decimal_part;
+}
 
 // Closing PHP tag intentionally omitted - yes, it is okay
 
