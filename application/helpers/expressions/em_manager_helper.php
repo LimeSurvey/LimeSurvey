@@ -8520,11 +8520,6 @@ EOD;
                         {
                             $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
                         }
-                        if ($radixchange && isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1')
-                        {
-                            // convert from comma back to decimal
-                            $value = implode('.',explode(',',$value));
-                        }
                         switch($type)
                         {
                             case 'D': //DATE
@@ -8602,6 +8597,11 @@ EOD;
                                     }
                                 }
                                 break;
+                        }
+                        if ($radixchange && isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1')
+                        {
+                            // convert from comma back to decimal
+                            $value = implode('.',explode(',',$value));
                         }
                         $_SESSION[$LEM->sessid][$sq] = $value;
                         $_update = array (
