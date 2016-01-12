@@ -307,9 +307,6 @@
                                                             value="<?php echo $row->answer; ?>"
                                                         />
                                                     </div>
-                                                    <div style="display: inline-block; margin-top: 10px;">
-                                                        <?php echo  getEditor("editanswer","answer_".$row->language."_{$row->sortorder}_{$scale_id}", "[".gT("Answer:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
-                                                    </div>
                                                 </td>
                                             <?php endif;?>
 

@@ -113,17 +113,15 @@ function addinput()
             '       <input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/>'+
             '   </td>'+
             '   <td>'+
-            '       <div class="col-sm-11">'+
+            '       <div class="col-sm-12">'+
             '           <input type="text" size="20" class="answer first-inanswerjs form-control input-lg" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />'+
             '       </div>'+
-            '       <div style="display: inline-block; margin-top: 10px;">'+
+            '   </td>'+
+            '   <td>'+
             '           <a class="editorLink">'+
             '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
             '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
             '           </a>'+
-            '       </div>'+
-            '   </td>'+
-            '   <td>'+
             '       <span class="btnaddanswer icon-add text-success"></span>'+
             '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
             '   </td>'+
@@ -137,17 +135,16 @@ function addinput()
             '   <td>'+htmlspecialchars(sNextCode)+'</td>'+
 
             '   <td>'+
-            '       <div class="col-sm-11">'+
+            '       <div class="col-sm-12">'+
             '           <input type="text" size="20" class="answer second-in-answerjs form-control input-lg" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />'+
             '       </div>'+
-            '       <div style="display: inline-block; margin-top: 10px;">'+
+            '   </td>'+
+            '   <td>'+
             '           <a class="editorLink">'+
             '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
             '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
             '           </a>'+
-            '       </div>'+
             '   </td>'+
-            '   <td></td>'+
             '</tr>'
         }
         tablerow.after(inserthtml);
@@ -563,18 +560,17 @@ function transferlabels()
                                 '   </td>'+
 
                                 '   <td>'+
-                                '       <div class="col-sm-11">'+
+                                '       <div class="col-sm-12">'+
                                 '           <input type="text" size="20" class="answer third-in-answerjs  form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                                '       </div>'+
-                                '       <div style="display: inline-block; margin-top: 10px;">'+
-                                '           <a class="editorLink">'+
-                                '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
-                                '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-                                '           </a>'+
                                 '       </div>'+
                                 '   </td>'+
 
                                 '   <td>'+
+                                '           <a class="editorLink">'+
+                                '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
+                                '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
+                                '           </a>'+
+
                                 '       <span class="btnaddanswer icon-add text-success"></span>'+
                                 '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
                                 '   </td>'+
@@ -590,18 +586,17 @@ function transferlabels()
                                 '   </td>'+
 
                                 '   <td>'+
-                                '       <div class="col-sm-11">'+
+                                '       <div class="col-sm-12">'+
                                 '           <input type="text" size="20" class="answer fourth-in-answerjs form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                                '       </div>'+
-                                '       <div style="display: inline-block; margin-top: 10px;">'+
-                                '           <a class="editorLink">'+
-                                '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
-                                '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-                                '           </a>'+
                                 '       </div>'+
                                 '   </td>'+
 
                                 '   <td>'+
+                                '           <a class="editorLink">'+
+                                '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
+                                '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
+                                '           </a>'+
+
                                 '       <span class="btnaddanswer icon-add text-success"></span>'+
                                 '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
                                 '   </td>'+
@@ -622,18 +617,17 @@ function transferlabels()
                         '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
 
                         '   <td>'+
-                        '       <div class="col-sm-11">'+
+                        '       <div class="col-sm-12">'+
                         '           <input type="text" size="20" class="answer fifth-in-answerjs form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                        '       </div>'+
-                        '       <div style="display: inline-block; margin-top: 10px;">'+
-                        '           <a class="editorLink">'+
-                        '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
-                        '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-                        '           </a>'+
                         '       </div>'+
                         '   </td>'+
 
                         '   <td>'+
+                        '           <a class="editorLink">'+
+                        '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
+                        '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
+                        '           </a>'+
+
                         '       <span class="btnaddanswer icon-add text-success" />'+
                         '       <span class="btndelanswer  glyphicon glyphicon-trash text-warning" />'+
                         '   </td>'+
@@ -738,17 +732,16 @@ function quickaddlabels()
                 '       <input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/>'+
                 '   </td>'+
                 '   <td style="vertical-align: middle;">'+
-                '       <div class="col-sm-11">'+
+                '       <div class="col-sm-12">'+
                 '           <input type="text" size="20" class="answer form-control input-lg" value="'+escaped_value+'"></input>'+
                 '       </div>'+
-                '       <div style="display: inline-block; margin-top: 10px;">'+
+                '   </td>'+
+                '   <td>'+
                 '           <a class="editorLink">'+
                 '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
                 '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
                 '           </a>'+
-                '       </div>'+
-                '   </td>'+
-                '   <td>'+
+
                 '       <span class="btnaddanswer icon-add text-success"></span>'+
                 '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
                 '   </td>'+
@@ -761,17 +754,16 @@ function quickaddlabels()
                 '   <td>&nbsp;</td>'+
                 '   <td>&nbsp;</td>'+
                 '   <td>'+
-                '       <div class="col-sm-11">'+
+                '       <div class="col-sm-12">'+
                 '           <input type="text" size="20" class="answer sixt-in-answerjs form-control input-lg" value="'+escaped_value+'"></input>'+
                 '       </div>'+
-                '       <div style="display: inline-block; margin-top: 10px;">'+
+                '   </td>'+
+                '   <td>'+
                 '           <a class="editorLink">'+
                 '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
                 '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
                 '           </a>'+
-                '       </div>'+
-                '   </td>'+
-                '   <td>'+
+                
                 '       <span class="btnaddanswer  icon-add text-success"></span>'+
                 '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
                 '   </td>'+
