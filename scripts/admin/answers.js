@@ -800,6 +800,7 @@ function quickaddlabels()
     $('#quickaddarea').val('');
     $('.tab-page:first .answertable tbody').sortable('refresh');
     updaterowproperties();
+    $('#quickaddModal').modal('hide');
 }
 
 function getlabel()

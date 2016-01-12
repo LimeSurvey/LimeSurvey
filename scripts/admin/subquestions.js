@@ -109,7 +109,7 @@ function addinput()
             position=classes[x].substr(4);
         }
     }
-console.log('position:'+position);
+    console.log('position:'+position);
 
     scale_id=removechars($(this).closest('table').attr('id'));
     newposition = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;
@@ -794,6 +794,8 @@ function quickaddlabels()
     $('#quickaddarea').val('');
     $('.tab-page:first .answertable tbody').sortable('refresh');
     updaterowproperties();
+    $('#quickaddModal').modal('hide')
+
 }
 
 function getlabel()
