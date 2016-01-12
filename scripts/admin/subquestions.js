@@ -93,23 +93,49 @@ function deleteinput()
 
 function addinput()
 {
+    console.log('addinput start');
     var sID=$('input[name=sid]').val();
     var gID=$('input[name=gid]').val();
     var qID=$('input[name=qid]').val();
+
+    var x;
+    console.log('classes: '+$(this).parent().parent().attr('id'));
+    classes=$(this).parent().parent().attr('class').split(' ');
+
+
+    for (x in classes)
+        {
+        if (classes[x].substr(0,3)=='row'){
+            position=classes[x].substr(4);
+        }
+    }
+console.log('position:'+position);
 
     scale_id=removechars($(this).closest('table').attr('id'));
     newposition = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;
     languages=langs.split(';');
     sNextCode=getNextCode($(this).data('code'));
 
+    console.log('before while');
+
+    /*
     while ($(this).parent().parent().parent().find('input[value="'+sNextCode+'"]').length>0 && sNextCode!=$(this).parent().parent().find('.code').val())
     {
         sNextCode=getNextCode(sNextCode);
     }
+    */
+
+    sNextCode=getNextCode($(this).parent().parent().find('.code').val());
+
+    console.log('sNextCode: '+sNextCode);
+    console.log('languages: '+languages);
+
 
     for (x in languages)
-        {
-        tablerow=$('#answertable_'+languages[x]+'_'+scale_id+' tbody tr:nth-child('+newposition+')');
+    {
+        console.log('x: '+x);
+        //tablerow=$('#answertable_'+languages[x]+'_'+scale_id+' tbody tr:nth-child('+newposition+')');
+        tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
         var randomid='new'+Math.floor(Math.random()*111111);
         relbutton='';
         if (x==0) {
@@ -232,6 +258,7 @@ function updaterowproperties()
 
         $(this).children('tr').each(function()
         {
+            $(this).addClass('row_'+rownumber);
             $(this).find('.oldcode').attr('name','oldcode_'+rownumber+'_'+scale_id);
             $(this).find('.code').attr('id','code_'+rownumber+'_'+scale_id);
             $(this).find('.code').attr('name','code_'+rownumber+'_'+scale_id);

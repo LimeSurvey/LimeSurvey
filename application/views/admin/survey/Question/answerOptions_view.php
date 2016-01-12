@@ -197,7 +197,7 @@
                                                         />
                                                         <input
                                                             type='text'
-                                                            class="form-control input-lg"
+                                                            class="code form-control input-lg"
                                                             id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
                                                             class='code'
                                                             name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'

@@ -71,7 +71,8 @@ function deleteinput()
 function addinput()
 {
     var x;
-    classes=$(this).closest('tr').attr('class').split(' ');
+    classes=$(this).parent().parent().attr('class').split(' ');
+    console.log($(this).parent().parent().attr('class'));
     for (x in classes)
         {
         if (classes[x].substr(0,3)=='row'){
@@ -162,11 +163,6 @@ function addinput()
     }
     $('.row_'+newposition).fadeIn('slow');
     $('.row_'+newposition).show(); //Workaround : IE does not show with fadeIn only
-
-    if(languagecount>1)
-        {
-
-    }
 
     $('.tab-page:first .answertable tbody').sortable('refresh');
     updaterowproperties();
