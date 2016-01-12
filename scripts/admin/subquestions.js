@@ -98,13 +98,14 @@ function deleteinput()
 
 function addinput()
 {
+    console.log('------------------------------------------------------------------');
     console.log('addinput start');
     var sID=$('input[name=sid]').val();
     var gID=$('input[name=gid]').val();
     var qID=$('input[name=qid]').val();
 
     var x;
-    console.log('classes: '+$(this).parent().parent().attr('id'));
+    console.log('classes: '+$(this).parent().parent().attr('class'));
     classes=$(this).parent().parent().attr('class').split(' ');
 
 
@@ -123,26 +124,32 @@ function addinput()
 
     console.log('before while');
 
-    /*
-    while ($(this).parent().parent().parent().find('input[value="'+sNextCode+'"]').length>0 && sNextCode!=$(this).parent().parent().find('.code').val())
-    {
-        sNextCode=getNextCode(sNextCode);
-    }
-    */
-
     sNextCode=getNextCode($(this).parent().parent().find('.code').val());
 
     console.log('sNextCode: '+sNextCode);
     console.log('languages: '+languages);
+    for (x in classes)
+        {
+        if (classes[x].substr(0,3)=='row'){
+            position=classes[x].substr(4);
+        }
+    }
+    info=$(this).closest('table').attr('id').split("_");
+    language=info[1];
+    scale_id=info[2];
+    newposition=Number(position)+1;
+    languages=langs.split(';');
 
+    sNextCode=getNextCode($(this).parent().parent().find('.code').val());
 
     for (x in languages)
-    {
+        {
         console.log('x: '+x);
-        //tablerow=$('#answertable_'+languages[x]+'_'+scale_id+' tbody tr:nth-child('+newposition+')');
-        tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
         var randomid='new'+Math.floor(Math.random()*111111);
         relbutton='';
+
+        tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
+
         if (x==0) {
             $(".relevance").toggle(false);
             if (scale_id==0) {
@@ -158,7 +165,7 @@ function addinput()
             inserthtml+='       <span class="glyphicon glyphicon-move"></span>';
             inserthtml+='   </td>';
             inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <input class="form-control input-lg" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" required="required" pattern="^[a-zA-Z0-9]*$" class="code" type="text" maxlength="20" size="20" value="'+htmlspecialchars(sNextCode)+'" />';
+            inserthtml+='       <input class="code form-control input-lg" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" required="required" pattern="^[a-zA-Z0-9]*$" class="code" type="text" maxlength="20" size="20" value="'+htmlspecialchars(sNextCode)+'" />';
             inserthtml+='   </td>';
 
             inserthtml+='   <td style="vertical-align: middle;">';
@@ -203,8 +210,16 @@ function addinput()
             inserthtml+='   </td>' + relbutton + '</tr>';
         }
         tablerow.after(inserthtml);
+
         tablerow.next().find('.btnaddanswer').click(addinput);
+
         tablerow.next().find('.btndelanswer').click(deleteinput);
+        tablerow.next().find('.answer').focus(function(){
+            if ($(this).val()==newansweroption_text)
+                {
+                $(this).val('');
+            }
+        });
         tablerow.next().find('.code').blur(updatecodes);
     }
     $('.row_'+newposition).fadeIn('slow');
@@ -289,33 +304,78 @@ function updatecodes()
 
 }
 
-function getNextCode(sourcecode)
+function getNextCode(sSourceCode)
 {
-    i=1;
-    found=true;
-    foundnumber=-1;
-    sclength = sourcecode.length;
-    while (i<=sclength && found == true)
-    {
-        found=is_numeric(sourcecode.substr(sclength-i,i));
-        if (found)
-            {
-            foundnumber=sourcecode.substr(sclength-i,i);
-            i++;
-        }
-    }
-    if (foundnumber==-1)
-        {
-        return(sourcecode);
-    }
-    else
-        {
-        foundnumber++;
-        foundnumber=foundnumber+'';
-        result=sourcecode.substr(0,sclength-foundnumber.length)+foundnumber;
-        return(result);
-    }
 
+        i=1;
+        found=true;
+        mNumberFound=-1;
+        console.log('sSourceCode: '+sSourceCode);
+        while (i<=sSourceCode.length && found)
+        {
+            found=is_numeric(sSourceCode.substr(-i));
+            if (found)
+                {
+                mNumberFound=sSourceCode.substr(-i);
+                i++;
+            }
+        }
+        if (mNumberFound==-1)
+        {
+            sBaseCode=sSourceCode;
+            mNumberFound=0
+        }
+        else
+        {
+            sBaseCode=sSourceCode.substr(0,sSourceCode.length-mNumberFound.length);
+        }
+        var iNumberFound=+mNumberFound;
+        do
+        {
+            iNumberFound=iNumberFound+1;
+            sNewNumber=iNumberFound+'';
+            sResult=sBaseCode+sNewNumber;
+            if (sResult.length>5)
+            {
+              sResult=sResult.substr(sResult.length - 5);
+            }
+        }
+        while (areCodesUnique(sResult)==false);
+        return(sResult);
+}
+
+/**
+* Check if all existing codes are unique
+* If sNewValue is not empty then only sNewValue is checked for uniqueness against the existing codes
+*
+* @param sNewValue
+*
+* @returns {Boolean} False if codes are not unique
+*/
+function areCodesUnique(sNewValue)
+{
+    languages=langs.split(';');
+    var dupefound=false;
+    $('#tabpage_'+languages[0]+' .answertable tbody').each(function(){
+        var codearray=[];
+        $(this).find('tr .code').each(function(){
+            codearray.push($(this).val());
+        })
+        if (sNewValue!='')
+        {
+            codearray=codearray.filter( onlyUnique );
+            codearray.push(sNewValue);
+        }
+        if (arrHasDupes(codearray))
+            {
+            dupefound=true;
+            return;
+        }
+    })
+    if (dupefound)
+        {
+        return false;
+    }
 }
 
 function is_numeric (mixed_var) {
