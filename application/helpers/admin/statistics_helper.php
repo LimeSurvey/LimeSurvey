@@ -3188,7 +3188,7 @@ class statistics_helper {
                     return $tempfilename;
                 }
                 else
-                    return $this->pdf->Output(gT('Survey').'_'.$iSurveyId."_".$aSurveyInfo['surveyls_title'].'.pdf', $pdfOutput);
+                    return $this->pdf->Output($event->get('outputFileName').'.pdf', $pdfOutput);
 
                 break;
             case 'html':
