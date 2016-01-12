@@ -560,8 +560,10 @@ function transferlabels()
                                 '   <td>'+
                                 '       <span class="glyphicon glyphicon-move"></span>'+
                                 '   </td>'+
-                                '   <td> <!-- TODO -->'+
-                                '       <input class="code second-in-answerjs" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].code)+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].assessment_value)+'"/>'+
+                                '   <td>'+
+                                '       <input class="code second-in-answerjs form-control input-lg" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="20" value="'+htmlspecialchars(lsrows[k].code)+'" />'+
+                                '   </td>'+
+                                '   <td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].assessment_value)+'"/>'+
                                 '   </td>'+
 
                                 '   <td>'+
