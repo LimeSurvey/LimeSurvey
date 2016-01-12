@@ -7,60 +7,17 @@ $(document).ready(function(){
     $('.btnaddanswer').click(addinput);
     $('.btndelanswer').click(deleteinput);
     $('#editanswersform').submit(checkForDuplicateCodes)
-    /*$('#labelsetbrowser').dialog({ autoOpen: false,
-        modal: true,
-        width:800,
-        title: lsbrowsertitle});
-    $('#quickadd').dialog({
-        autoOpen: false,
-        modal: true,
-        width:600,
-        title: quickaddtitle,
-        open: function( event, ui ) {
-            $('textarea', this).show(); // IE 8 hack
-        },
-        beforeClose: function( event, ui ) {
-            $('textarea', this).hide(); // IE 8 hack
-        }
-    });*/
     $('.btnlsbrowser').click(lsbrowser);
-
-    /*
-    $('#btncancel').click(function(){
-        $('#labelsetbrowser').dialog('close');
-    });*/
-
     $('#btnlsreplace').click(transferlabels);
     $('#btnlsinsert').click(transferlabels);
     $('#labelsets').click(lspreview);
     $('#languagefilter').click(lsbrowser);
-
-    /*
-    $('#btnqacancel').click(function(){
-        $('#quickadd').dialog('close');
-    });
-    */
-
     $('#btnqareplace').click(quickaddlabels);
     $('#btnqainsert').click(quickaddlabels);
-
-
-    /*$('#saveaslabel').dialog({ autoOpen: false,
-        modal: true,
-        width: 300,
-        title: saveaslabletitle});
-
-        $('#btnlacancel').click(function(){
-            $('#saveaslabel').dialog('close');
-        });
-        */ // replaced by bootstrap modal
     $('.bthsaveaslabel').click(getlabel);
-
     $('input[name=savelabeloption]:radio').click(setlabel);
     flag = [false, false];
     $('#btnsave').click(savelabel);
-
-
     updaterowproperties();
 });
 
@@ -143,7 +100,8 @@ function addinput()
             assessment_type='hidden';
         }
         if (x==0) {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>'+
+            inserthtml=
+            '<tr class="row_'+newposition+'" style="display:none;"><td>'+
             '<span class="glyphicon glyphicon-move text-success"></span>'+
             '</td><td><input class="code" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="5" required value="'+htmlspecialchars(sNextCode)+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/></td><td><input type="text" size="100" class="answer" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />'+
             '<a class="editorLink">'+
