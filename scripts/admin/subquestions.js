@@ -220,15 +220,34 @@ function aftermove(event,ui)
 // if the list changed
 function updaterowproperties()
 {
-    $('.answertable tbody').each(function(){
-        var highlight=true;
-        $(this).children('tr').each(function(){
+    var sID=$('input[name=sid]').val();
+    var gID=$('input[name=gid]').val();
+    var qID=$('input[name=qid]').val();
 
-            $(this).removeClass('highlight');
-            if (highlight){
-                $(this).addClass('highlight');
-            }
-            highlight=!highlight;
+    $('.answertable tbody').each(function(){
+        info=$(this).closest('table').attr('id').split("_");
+        language=info[1];
+        scale_id=info[2];
+        var rownumber=1;
+
+        $(this).children('tr').each(function()
+        {
+            $(this).find('.oldcode').attr('name','oldcode_'+rownumber+'_'+scale_id);
+            $(this).find('.code').attr('id','code_'+rownumber+'_'+scale_id);
+            $(this).find('.code').attr('name','code_'+rownumber+'_'+scale_id);
+            $(this).find('.answer').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id);
+            $(this).find('.answer').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id);
+            $(this).find('.assessment').attr('id','assessment_'+rownumber+'_'+scale_id);
+            $(this).find('.assessment').attr('name','assessment_'+rownumber+'_'+scale_id);
+
+            // Newly inserted row editor button
+            $(this).find('.editorLink').attr('href','javascript:start_popup_editor(\'answer_'+language+'_'+rownumber+'_'+scale_id+'\',\'[Answer:]('+language+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')');
+            $(this).find('.editorLink').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_ctrl');
+            $(this).find('.btneditanswerena').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrlena');
+            $(this).find('.btneditanswerena').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrlena');
+            $(this).find('.btneditanswerdis').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrldis');
+            $(this).find('.btneditanswerdis').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrldis');
+            rownumber++;
         });
     });
 }
@@ -723,7 +742,7 @@ function quickaddlabels()
                     '           </a>'+
                     '       </div>'+
                     '   </td>'+
-                    
+
                     '   <td>'+
                     '       <span class="btnaddanswer  icon-add text-success"></span>'+
                     '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
