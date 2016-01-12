@@ -281,7 +281,7 @@
                                             ?>
                                             <?php if($viewType=='subQuestions'): ?>
                                                 <td style="vertical-align: middle;">
-                                                    <div class="col-sm-11">
+                                                    <div class="col-sm-12">
                                                         <input
                                                             type='text'
                                                             size='20'
@@ -293,13 +293,10 @@
                                                             onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}"
                                                             />
                                                     </div>
-                                                    <div style="display: inline-block; margin-top: 10px;">
-                                                        <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
-                                                    </div>
                                                 </td>
                                             <?php elseif($viewType=='answerOptions'): ?>
                                                 <td style="vertical-align: middle;">
-                                                    <div class="col-sm-11">
+                                                    <div class="col-sm-12">
                                                         <input
                                                             type='text'
                                                             size='20'
@@ -318,6 +315,9 @@
 
                                             <!-- Icons edit/delete -->
                                             <td style="vertical-align: middle;">
+
+                                                <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
+
                                                 <?php if ($activated != 'Y' && $first):?>
                                                     <?php
                                                         // TODO : remove this if statement, and merge the two td

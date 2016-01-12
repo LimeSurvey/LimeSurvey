@@ -169,18 +169,16 @@ function addinput()
             inserthtml+='   </td>';
 
             inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <div class="col-sm-11">';
+            inserthtml+='       <div class="col-sm-12">';
             inserthtml+='           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg"  placeholder="'+htmlspecialchars(newansweroption_text)+'" value=""></input>';
-            inserthtml+='       </div>';
-            inserthtml+='       <div style="display: inline-block; margin-top: 10px;">';
-            inserthtml+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
-            inserthtml+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="glyphicon glyphicon-pencil btneditanswerena"></span>';
-            inserthtml+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="glyphicon glyphicon-pencil btneditanswerdis" alt="Give focus to the HTML editor popup window" style="display: none;"></span>';
-            inserthtml+='           </a>';
             inserthtml+='       </div>';
             inserthtml+='  </td>';
 
             inserthtml+='  <td style="vertical-align: middle;">';
+            inserthtml+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
+            inserthtml+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="glyphicon glyphicon-pencil btneditanswerena"></span>';
+            inserthtml+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="glyphicon glyphicon-pencil btneditanswerdis" alt="Give focus to the HTML editor popup window" style="display: none;"></span>';
+            inserthtml+='           </a>';
             inserthtml+='       <span class="icon-add text-success btnaddanswer" data-code="'+htmlspecialchars(sNextCode)+'"></span>';
             inserthtml+='       <span class="glyphicon glyphicon-trash text-success btndelanswer"  ></span>';
             inserthtml+='  </td>' + relbutton + '</tr>';
@@ -189,8 +187,21 @@ function addinput()
             {
             if (scale_id==0) {
                 relbutton ='<td>'
+                relbutton+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
+                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>';
+                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>';
+                relbutton+='           </a>';
                 relbutton+='    <span class="icon-conditions text-success btntogglerelevance"></span>';
                 relbutton+='    <span style="display: none" class="relevance">1</span>';
+                relbutton+='</td>';
+            }
+            else
+            {
+                relbutton ='<td>'
+                relbutton+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
+                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>';
+                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>';
+                relbutton+='           </a>';
                 relbutton+='</td>';
             }
             inserthtml ='<tr class="row_'+newposition+'" style="display:none;">';
@@ -198,14 +209,8 @@ function addinput()
             inserthtml+='   <td>'+htmlspecialchars(sNextCode)+'</td>';
 
             inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <div class="col-sm-11">';
+            inserthtml+='       <div class="col-sm-12">';
             inserthtml+='           <input type="text" size="0" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />';
-            inserthtml+='       </div>';
-            inserthtml+='       <div style="display: inline-block; margin-top: 10px;">';
-            inserthtml+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
-            inserthtml+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>';
-            inserthtml+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>';
-            inserthtml+='           </a>';
             inserthtml+='       </div>';
             inserthtml+='   </td>' + relbutton + '</tr>';
         }
@@ -622,19 +627,18 @@ function transferlabels()
                                 '   </td>'+
 
                                 '   <td>'+
-                                '       <div class="col-sm-11">'+
+                                '       <div class="col-sm-12">'+
                                 '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                                '       </div>'+
-                                '       <div style="display: inline-block; margin-top: 10px;">'+
-                                '           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">'+
-                                '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
-                                '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-                                '           </a>'+
                                 '       </div>'+
                                 '   </td>'+
 
                                 '   <td>'+
-                                '       <span class="btnaddanswer icon-add text-success"></span><span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
+                                '           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">'+
+                                '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
+                                '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
+                                '           </a>'+
+                                '       <span class="btnaddanswer icon-add text-success"></span>'+
+                                '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
                                 '   </td>'+
                                 '   <td>'+
                                 '       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span> <input style="display: none" type="text" size="20" id="relevance_'+randomid+'_'+scale_id+'" name="relevance_'+randomid+'_'+scale_id+'" class="relevance"  value="1"></input>'+
@@ -649,17 +653,16 @@ function transferlabels()
                                 '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
 
                                 '   <td style="vertical-align: middle;">'+
-                                '       <div class="col-sm-11">'+
+                                '       <div class="col-sm-12">'+
                                 '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                                '       </div>'+
-                                '       <div style="display: inline-block; margin-top: 10px;">'+
-                                '           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">'+
-                                '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span><span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;" ></span>'+
-                                '           </a>'+
                                 '       </div>'+
                                 '   </td>'+
 
                                 '   <td>'+
+                                '           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">'+
+                                '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span><span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;" ></span>'+
+                                '           </a>'+
+
                                 '       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span>'+
                                 '       <span style="display: none" class="relevance">1</span>'+
                                 '   </td>'+
@@ -680,18 +683,16 @@ function transferlabels()
                         '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
 
                         '   <td style="vertical-align: middle;">'+
-                        '       <div class="col-sm-11">'+
+                        '       <div class="col-sm-12">'+
                         '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
                         '       </div>'+
-                        '       <div style="display: inline-block; margin-top: 10px;">'+
+                        '   </td>'+
+
+                        '   <td>'+
                         '           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">'+
                         '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena  glyphicon glyphicon-pencil text-success" ><span>'+
                         '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
                         '           </a>'+
-                        '       </div>';
-                        '   </td>'+
-
-                        '   <td>'+
                         '       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span>'+
                         '       <span style="display: none" class="relevance">1</span>'+
                         '   </td>'+
@@ -795,18 +796,17 @@ function quickaddlabels()
                 '   </td>'+
 
                 '   <td style="vertical-align: middle;">'+
-                '       <div class="col-sm-11">'+
+                '       <div class="col-sm-12">'+
                 '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(thisrow[parseInt(x)+1],'ENT_QUOTES')+'"></input>'+
-                '       </div>'+
-                '       <div style="display: inline-block; margin-top: 10px;">'+
-                '           <a class="editorLink">'+
-                '               <span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
-                '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-                '           </a>'+
                 '       </div>'+
                 '   </td>'+
 
                 '   <td>'+
+                '           <a class="editorLink">'+
+                '               <span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
+                '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
+                '           </a>'+
+
                 '       <span class="btnaddanswer icon-add text-success"></span>'+
                 '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
                 '   </td>'+
@@ -824,18 +824,17 @@ function quickaddlabels()
                     '   <td>&nbsp;</td>'+
 
                     '   <td style="vertical-align: middle;">'+
-                    '       <div class="col-sm-11">'+
+                    '       <div class="col-sm-12">'+
                     '          <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(thisrow[parseInt(x)+1],'ENT_QUOTES')+'"></input>'+
-                    '       </div>'+
-                    '       <div style="display: inline-block; margin-top: 10px;">'+
-                    '           <a class="editorLink">'+
-                    '               <span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
-                    '               <span class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-                    '           </a>'+
                     '       </div>'+
                     '   </td>'+
 
                     '   <td>'+
+                    '           <a class="editorLink">'+
+                    '               <span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
+                    '               <span class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
+                    '           </a>'+
+                    
                     '       <span class="btnaddanswer  icon-add text-success"></span>'+
                     '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
                     '   </td>'+
