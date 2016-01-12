@@ -53,19 +53,29 @@ $(document).ready(function(){
 function deleteinput()
 {
     // 1.) Check if there is at least one answe
+    console.log('delete input start');
     countanswers=$(this).closest("tbody").children("tr").length;//Maybe use class is better
+    console.log(countanswers);
     if (countanswers>1)
-        {
+    {
         // 2.) Remove the table row
-
-        scale_id=removechars($(this).closest('table').attr('id'));
-        index = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;
+        var x;
+        classes=$(this).closest('tr').attr('class').split(' ');
+        for (x in classes)
+            {
+            if (classes[x].substr(0,3)=='row'){
+                position=classes[x].substr(4);
+            }
+        }
+        info=$(this).closest('table').attr('id').split("_");
+        language=info[1];
+        scale_id=info[2];
         languages=langs.split(';');
 
         var x;
         for (x in languages)
-        {
-            tablerow=$('#answertable_'+languages[x]+'_'+scale_id+' tbody tr:nth-child('+index+')');
+            {
+            tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
             if (x==0) {
                 tablerow.fadeTo(400, 0, function(){
                     $(this).remove();
@@ -75,11 +85,6 @@ function deleteinput()
             else {
                 tablerow.remove();
             }
-        }
-        if ($(tablerow).is('[id]'))
-        {
-            rowinfo=$(tablerow).attr('id').split('_');
-            $('#deletedqids').val($('#deletedqids').val()+' '+rowinfo[2]);
         }
     }
     else

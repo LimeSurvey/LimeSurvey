@@ -29,7 +29,7 @@ function deleteinput()
 
     countanswers=$(this).closest("tbody").children("tr").length;//Maybe use class is better
     if (countanswers>1)
-        {
+    {
         // 2.) Remove the table row
         var x;
         classes=$(this).closest('tr').attr('class').split(' ');
