@@ -25,7 +25,13 @@
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                 <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
                 <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
-                <input type='hidden' name='action' value='updateansweroptions' />
+
+                <?php if($viewType=='subQuestions'): ?>
+                    <input type='hidden' id='action' name='action' value='updatesubquestions' />
+                <?php elseif($viewType=='answerOptions'): ?>
+                    <input type='hidden' name='action' value='updateansweroptions' />
+                <?php endif; ?>
+
                 <input type='hidden' name='sortorder' value='' />
                 <input type='hidden' id='deletedqids' name='deletedqids' value='' />
 
@@ -148,7 +154,7 @@
                                     </thead>
 
                                     <!-- Body -->
-                                    <tbody>
+                                    <tbody id="rowcontainer">
                                         <?php foreach ($result as $row): ?>
 
                                             <!-- Line tag -->

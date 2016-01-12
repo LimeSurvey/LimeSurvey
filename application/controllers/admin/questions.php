@@ -568,6 +568,7 @@ class questions extends Survey_Common_Action
 
         $aData['activated'] = $activated = $surveyinfo['active'];
 
+        $results = array();
         foreach ($anslangs as $anslang)
         {
             for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
