@@ -231,7 +231,7 @@ function addinput()
     $('.row_'+newposition).show(); //Workaround : IE does not show with fadeIn only
 
     $('.tab-page:first .answertable tbody').sortable('refresh');
-    updaterowproperties();
+
 }
 
 function startmove(event,ui)
@@ -280,17 +280,13 @@ function updaterowproperties()
         language=info[1];
         scale_id=info[2];
 
-        //alert($(this).attr('id'));
         var $firstrow = $(this).children('tr').first();
-        //alert($firstrow.attr('id'));
-        //var rownumber=$(this).;
         var datas=$firstrow.attr('id').split('_');
         var rownumber=datas[2];
 
 
         $(this).children('tr').each(function()
         {
-
             $(this).addClass('row_'+rownumber);
             $(this).find('.oldcode').attr('name','oldcode_'+rownumber+'_'+scale_id);
             $(this).find('.code').attr('id','code_'+rownumber+'_'+scale_id);
@@ -308,7 +304,8 @@ function updaterowproperties()
             $(this).find('.btneditanswerdis').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrldis');
             $(this).find('.btneditanswerdis').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrldis');
             rownumber++;
-        });
+        }
+        );
     });
 }
 

@@ -276,30 +276,8 @@ class database extends Survey_Common_Action
 
                         if (substr($subquestionkey,0,3)!='new')           //update record
                         {
+
                             $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",array(":qid"=>$subquestionkey,':language'=>$sLanguage));
-
-                            if(!is_object($oSubQuestion))   // For new rows
-                            {
-                                $oSubQuestion=new Question;
-                                $oSubQuestion->sid=$iSurveyID;
-                                $oSubQuestion->gid=$iQuestionGroupID;
-                                $oSubQuestion->question_order=$iPosition+1;
-                                $oSubQuestion->title=$aCodes[$iScaleID][$iPosition];
-                                $oSubQuestion->question=$subquestionvalue;
-                                $oSubQuestion->parent_qid=$iQuestionID;
-                                $oSubQuestion->language=$sLanguage;
-                                $oSubQuestion->scale_id=$iScaleID;
-                                if(isset($aRelevance[0][$iPosition]))
-                                {
-                                    $oSubQuestion->relevance=$aRelevance[0][$iPosition];
-                                }
-                                else
-                                {
-                                    $oSubQuestion->relevance='';
-                                }
-
-
-                            }
 
                             $oSubQuestion->question_order=$iPosition+1;
                             $oSubQuestion->title=$aCodes[$iScaleID][$iPosition];
@@ -309,7 +287,7 @@ class database extends Survey_Common_Action
                             $oSubQuestion->relevance=$aRelevance[0][$iPosition];
                         }
                         else  // new record
-                        {
+                        {                            
                             if (!isset($aInsertQID[$iScaleID][$iPosition]))     //new record: first (default) language
                             {
                                 $oSubQuestion=new Question;
