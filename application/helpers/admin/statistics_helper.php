@@ -2929,21 +2929,25 @@ class statistics_helper {
             // set default header data
             // Since png crashes some servers (and we can not try/catch that) we use .gif (or .jpg) instead
             $sHeaderlogo = 'statistics.gif';
+            $iHeaderLogoWidth = 10;
+
 
             /**
              * Plugin event 'createStatistics'
              * This event let us customize the statitics pdf
-             * TODO insert more features and layout, insert to other places if needed xls & hrml
+             * TODO insert more features and layout, insert to other places if needed xls & html
+             * TODO make image path dynamic, now iamges has to be based in admin templatefolder
              */
             $event = new PluginEvent('createStatistics');
             $event->set('type', 'pdf');
-            $event->set('author', $this->pdf->SetAuthor('LimeSurvey'));
-            $event->set('title', $this->pdf->SetTitle(sprintf(gT("Statistics survey %s"),$iSurveyId)));
-            $event->set('subject',$this->pdf->SetSubject($aSurveyInfo['surveyls_title']));
-            $event->set('keywords',$this->pdf->SetKeywords('LimeSurvey,'.gT("Statistics").', '.sprintf(gT("Survey %s"),$iSurveyId)));
+            $event->set('author','LimeSurvey');
+            $event->set('title', sprintf(gT("Statistics survey %s"),$iSurveyId));
+            $event->set('subject',$aSurveyInfo['surveyls_title']);
+            $event->set('keywords','LimeSurvey,'.gT("Statistics").', '.sprintf(gT("Survey %s"),$iSurveyId));
             $event->set('headerTitle', gT("Quick statistics",'unescaped'));
             $event->set('headerSubTitle', gT("Survey")." ".$iSurveyId ." '".flattenText($aSurveyInfo['surveyls_title'])." '");
             $event->set('headerLogo', $sHeaderlogo);
+            $event->set('headerLogoWidth', $iHeaderLogoWidth);
             $event->set('surveyId', $iSurveyId);
             $event->set('outputFileName', gT("Survey").'_'.$iSurveyId.'_'.$aSurveyInfo['surveyls_title']);
             App()->getPluginManager()->dispatchEvent($event);
@@ -2961,7 +2965,8 @@ class statistics_helper {
             $this->pdf->setHeaderFont(Array($aPdfLanguageSettings['pdffont'], '', PDF_FONT_SIZE_MAIN));
             $this->pdf->setFooterFont(Array($aPdfLanguageSettings['pdffont'], '', PDF_FONT_SIZE_DATA));
 
-            $this->pdf->SetHeaderData($sHeaderlogo, 10, $event->get('headerTitle') , $event->get('headerSubTitle'),false,true,'UTF-8'."'");            $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
+            $this->pdf->SetHeaderData($event->get('headerLogo'), $event->get('headerLogoWidth'), $event->get('headerTitle') , $event->get('headerSubTitle'),false,true,'UTF-8'."'");
+
             // set default monospaced font
             $this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
         }
