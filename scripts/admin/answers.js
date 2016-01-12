@@ -120,9 +120,19 @@ function addinput()
         }
         else
             {
-            inserthtml='<tr class="row_'+newposition+'" style="display:none;"><td>&nbsp;</td><td>'+htmlspecialchars(sNextCode)+'</td><td><input type="text" size="100" class="answer" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" /><a class="editorLink">'+
-            '<span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
-            '<span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span></a></td><td></td></tr>'
+            inserthtml=
+            '<tr class="row_'+newposition+'" style="display:none;">'+
+            '   <td>&nbsp;</td>'+
+            '   <td>'+htmlspecialchars(sNextCode)+'</td>'+
+            '   <td>'+
+            '       <input type="text" size="100" class="answer" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />'+
+            '       <a class="editorLink">'+
+            '           <span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
+            '           <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
+            '       </a>'+
+            '   </td>'+
+            '   <td></td>'+
+            '</tr>'
         }
         tablerow.after(inserthtml);
         tablerow.next().find('.btnaddanswer').click(addinput);
@@ -336,13 +346,8 @@ function areCodesUnique(sNewValue)
 function lsbrowser()
 {
     scale_id=removechars($(this).attr('id'));
-    //$('#labelsetbrowser').dialog( 'open' ); // replaced by bootstrap modal
     surveyid=$('input[name=sid]').val();
-    /*    match=0;
-    if ($('#languagefilter').attr('checked')==true)
-    {
-    match=1;
-    }*/
+
     $.getJSON(lspickurl,{sid:surveyid, match:1},function(json){
         var x=0;
         $("#labelsets").removeOption(/.*/);
@@ -535,20 +540,41 @@ function transferlabels()
                         for (k in lsrows)
                             {
                             if (x==0) {
-                                tablerows=tablerows+'<tr class="row_'+k+'" ><td>'+
-                                '<span class="glyphicon glyphicon-move text-success"></span></td><td><input class="code" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].code)+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].assessment_value)+'"/></td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a class="editorLink">'+
-                                '<span class="btneditanswerena glyphicon glyphicon-pencil text-success" ></span>'+
-                                '<span class="btneditanswerdis glyphicon glyphicon-pencil text-success" alt="Give focus to the HTML editor popup window" style="display: none;" ></span></a></td><td>'+
-                                '<span class="btnaddanswer icon-add text-success"></span>'+
-                                '<span class="btndelanswer glyphicon glyphicon-trash text-warning"></span></td></tr>'
+                                tablerows=tablerows+
+                                '<tr class="row_'+k+'" >'+
+                                '   <td>'+
+                                '       <span class="glyphicon glyphicon-move text-success"></span>'+
+                                '   </td>'+
+                                '   <td>'+
+                                '       <input class="code" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].code)+'" /></td><td '+assessment_style+'><input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="'+htmlspecialchars(lsrows[k].assessment_value)+'"/></td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
+                                '       <a class="editorLink">'+
+                                '           <span class="btneditanswerena glyphicon glyphicon-pencil text-success" ></span>'+
+                                '           <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" alt="Give focus to the HTML editor popup window" style="display: none;" ></span>'+
+                                '       </a>'+
+                                '   </td>'+
+                                '   <td>'+
+                                '       <span class="btnaddanswer icon-add text-success"></span>'+
+                                '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
+                                '   </td>'+
+                                '</tr>'
                             }
                             else
                                 {
-                                tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>'+htmlspecialchars(lsrows[k].code)+'</td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a class="editorLink">'+
-                                '<span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
-                                '<span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span></a></td><td>'+
-                                '<span class="btnaddanswer icon-add text-success"></span>'+
-                                '<span class="btndelanswer glyphicon glyphicon-trash text-warning"></span></td></tr>'
+                                tablerows=tablerows+
+                                '<tr class="row_'+k+'" ><td>&nbsp;</td><td>'+htmlspecialchars(lsrows[k].code)+
+                                '   </td>'+
+                                '   <td>'+
+                                '       <input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
+                                '       <a class="editorLink">'+
+                                '           <span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
+                                '           <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
+                                '       </a>'+
+                                '   </td>'+
+                                '   <td>'+
+                                '       <span class="btnaddanswer icon-add text-success"></span>'+
+                                '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
+                                '   </td>'+
+                                '</tr>'
                             }
                         }
                     }
@@ -559,12 +585,22 @@ function transferlabels()
                     var k=0;
                     for (k in lsrows)
                         {
-                        tablerows=tablerows+'<tr class="row_'+k+'" ><td>&nbsp;</td><td>'+htmlspecialchars(lsrows[k].code)+'</td><td><input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input><a class="editorLink">'+
-                        '<span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
-                        '<span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;" ></span>'+
-                        '</a></td><td>'+
-                        '<span class="btnaddanswer icon-add text-success" />'+
-                        '<span class="btndelanswer  glyphicon glyphicon-trash text-warning" /></td></tr>'
+                        tablerows=tablerows+
+                        '<tr class="row_'+k+'" >'+
+                        '   <td>&nbsp;</td>'+
+                        '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
+                        '   <td>'+
+                        '       <input type="text" size="100" class="answer" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
+                        '       <a class="editorLink">'+
+                        '           <span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
+                        '           <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;" ></span>'+
+                        '       </a>'+
+                        '   </td>'+
+                        '   <td>'+
+                        '       <span class="btnaddanswer icon-add text-success" />'+
+                        '       <span class="btndelanswer  glyphicon glyphicon-trash text-warning" />'+
+                        '   </td>'+
+                        '</tr>'
                     }
                 }
                 if (lsreplace) {
@@ -585,7 +621,6 @@ function transferlabels()
                     }
                 });
             }
-            $('#labelsetbrowser').dialog('close');
             $('.tab-page:first .answertable tbody').sortable('refresh');
             updaterowproperties();
 
@@ -717,7 +752,6 @@ function quickaddlabels()
             }
         });
     }
-    /*$('#quickadd').dialog('close');*/
     $('#quickaddarea').val('');
     $('.tab-page:first .answertable tbody').sortable('refresh');
     updaterowproperties();
@@ -727,8 +761,6 @@ function getlabel()
 {
     var answer_table = $(this).parent().children().eq(0);
     scale_id=removechars($(this).attr('id'));
-
-    /* $('#saveaslabel').dialog('open'); */ // replaced by bootstrap modal
     updaterowproperties();
 }
 
@@ -739,8 +771,11 @@ function setlabel()
         case 'newlabel':
         if(!flag[0]){
             $('#lasets').parent().remove();
-            $(this).parent().after('<p class="label-name-wrapper"><label for="laname">'+sLabelSetName+':</label> ' +
-            '<input type="text" name="laname" id="laname" class="form-control"></p>');
+            $(this).parent().after(
+                '<p class="label-name-wrapper">'+
+                '   <label for="laname">'+sLabelSetName+':</label> ' +
+                '   <input type="text" name="laname" id="laname" class="form-control">'+
+                '</p>');
             flag[0] = true;
             flag[1] = false;
         }
@@ -749,7 +784,12 @@ function setlabel()
         case 'replacelabel':
         if(!flag[1]){
             $('#laname').parent().remove();
-            $(this).parent().after('<p class="label-name-wrapper"><select name="laname" id="lasets" class="form-control"><option value=""></option></select></p>');
+            $(this).parent().after(
+                '<p class="label-name-wrapper">'+
+                '   <select name="laname" id="lasets" class="form-control">'+
+                '       <option value=""></option>'+
+                '   </select>'+
+                '</p>');
             jQuery.getJSON(lanameurl, function(data) {
                 $.each(data, function(key, val) {
                     $('#lasets').append('<option value="' + key + '">' + val + '</option>');
@@ -785,26 +825,6 @@ function savelabel()
            $('#btnlconfirmreplace').click(function(){
                ajaxreqsave();
            });
-
-           /*
-            $('#dialog-confirm-replace').dialog({
-                resizable: false,
-                height: 200,
-                width:350,
-                modal: true,
-                buttons: [{
-                    text: ok,
-                    click: function() {
-                        $(this).dialog("close");
-                        ajaxreqsave();
-                }},{
-                    text: cancel,
-                    click: function() {
-                        check = false;
-                        $(this).dialog("close");
-                }}
-                ]
-            });*/
         });
     }
 }
@@ -829,19 +849,6 @@ function ajaxcheckdup()
                     {
                         $('#dialog-duplicate').show();
                     }
-
-                /*
-                $("#dialog-duplicate").dialog({
-                    resizable: false,
-                    height: 160,
-                    modal: true,
-                    buttons: [{
-                        text: ok,
-                        click: function() {
-                            $(this).dialog("close");
-                        }
-                    }]
-                });*/
                 check = false;
                 return false;
             }
@@ -879,7 +886,6 @@ function ajaxreqsave() {
 
 
     $.post(lasaveurl, { laname: $('#laname').val(), lid: lid, code: code, answers: answers, assessmentvalues:assessmentvalues }, function(data) {
-        //$("#saveaslabel").dialog('close'); // replaced by bootstrap modal
         $("#saveaslabelModal").modal('hide');
         $("#dialog-confirm-replaceModal").modal('hide');
 
@@ -896,17 +902,6 @@ function ajaxreqsave() {
                 $('#dialog-result-content').empty().append(lasuccess);
                 $('#dialog-result').show();
             }
-            /*$("#dialog-result").html(lasuccess);
-            $('#dialog-result').dialog({
-                height: 160,
-                width: 250,
-                buttons: [{
-                    text: ok,
-                    click: function() {
-                        $(this).dialog("close");
-                    }
-                }]
-            });*/
         }
         else
         {
@@ -914,18 +909,6 @@ function ajaxreqsave() {
             $('#dialog-result').removeClass('alert-success').addClass('alert-warning');
             $('#dialog-result-content').empty().append(lafail);
             $('#dialog-result').show();
-
-            /*$("#dialog-result").html(lafail);
-            $('#dialog-result').dialog({
-                height: 160,
-                width: 250,
-                buttons: [{
-                    text: ok,
-                    click: function() {
-                        $(this).dialog("close");
-                    }
-                }]
-            });*/
         }
     });
 }
