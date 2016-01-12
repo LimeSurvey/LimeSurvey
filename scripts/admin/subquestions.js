@@ -157,7 +157,7 @@ console.log('position:'+position);
             inserthtml+='   </td>';
 
             inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <div class="col-sm-12">';
+            inserthtml+='       <div class="col-sm-11">';
             inserthtml+='           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg"  placeholder="'+htmlspecialchars(newansweroption_text)+'" value=""></input>';
             inserthtml+='       </div>';
             inserthtml+='       <div style="display: inline-block; margin-top: 10px;">';
@@ -185,7 +185,7 @@ console.log('position:'+position);
             inserthtml+='   <td>&nbsp;</td>';
             inserthtml+='   <td>'+htmlspecialchars(sNextCode)+'</td>';
 
-            inserthtml+='   <td class="vertical-align: middle;">';
+            inserthtml+='   <td style="vertical-align: middle;">';
             inserthtml+='       <div class="col-sm-11">';
             inserthtml+='           <input type="text" size="0" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />';
             inserthtml+='       </div>';
@@ -729,7 +729,7 @@ function quickaddlabels()
                 '       />'+
                 '   </td>'+
 
-                '   <td vertical-align: middle;>'+
+                '   <td style="vertical-align: middle;">'+
                 '       <div class="col-sm-11">'+
                 '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(thisrow[parseInt(x)+1],'ENT_QUOTES')+'"></input>'+
                 '       </div>'+
