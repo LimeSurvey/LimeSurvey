@@ -208,6 +208,23 @@ class SurveyObj
         //echo "\n$fieldName: $fieldType = $answerCode";
         switch ($fieldType)
         {
+            case 'K':
+            case 'N':
+                $fullAnswer = $answerCode;
+                if (trim($fullAnswer)!='')
+                {
+                    if(strpos($fullAnswer,".")!==false)
+                    {
+                        $fullAnswer=rtrim(rtrim($fullAnswer,"0"),".");
+                    }
+                    $qidattributes = getQuestionAttributeValues($questionId);
+                    if(isset($qidattributes['num_value_int_only']) && $qidattributes['num_value_int_only'])
+                    {
+                        $fullAnswer=number_format($fullAnswer, 0, '', '');
+                    }
+                }
+                break;
+
             case 'R':   //RANKING TYPE
                 $fullAnswer = $answer;
                 break;
@@ -363,6 +380,40 @@ class SurveyObj
         }
 
         return $fullAnswer;
+    }
+
+    /**
+    * Returns the short answer for the question.
+    *
+    * @param string $fieldName
+    * @param string $value
+    * @return string
+    */
+    public function getShortAnswer($fieldName, $value)
+    {
+        $fieldType = $this->fieldMap[$fieldName]['type'];
+        $question = $this->fieldMap[$fieldName];
+
+        switch ($fieldType)
+        {
+            case 'K':
+            case 'N':
+                if (trim($value)!='')
+                {
+                    if(strpos($value,".")!==false)
+                    {
+                        $value=rtrim(rtrim($value,"0"),".");
+                    }
+                    $qidattributes = getQuestionAttributeValues($question['qid']);
+                    if(isset($qidattributes['num_value_int_only']) && $qidattributes['num_value_int_only'])
+                    {
+                        $value=number_format($value, 0, '', '');
+                    }
+                }
+                break;
+        }
+
+        return $value;
     }
 
     /**

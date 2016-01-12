@@ -1444,14 +1444,6 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                 }
                 break;
             case 'K':
-                if (trim($sValue)!='')
-                {
-                    if(strpos($sValue,".")!==false)
-                    {
-                        $sValue=rtrim(rtrim($sValue,"0"),".");
-                    }
-                }
-                break;
             case 'N':
                 if (trim($sValue)!='')
                 {
@@ -1460,7 +1452,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                         $sValue=rtrim(rtrim($sValue,"0"),".");
                     }
                     $qidattributes = getQuestionAttributeValues($fields['qid']);
-                    if($qidattributes['num_value_int_only'])
+                    if(isset($qidattributes['num_value_int_only']) && $qidattributes['num_value_int_only'])
                     {
                         $sValue=number_format($sValue, 0, '', '');
                     }

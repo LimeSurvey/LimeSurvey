@@ -210,7 +210,7 @@ abstract class Writer implements IWriter
     public function getShortAnswer(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName,$sValue)
     {
         return $this->transformResponseValue(
-                $sValue,
+                $oSurvey->getShortAnswer($fieldName, $sValue),
                 $oSurvey->fieldMap[$fieldName]['type'],
                 $oOptions,
                 $fieldName
