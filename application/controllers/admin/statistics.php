@@ -658,52 +658,13 @@ class statistics extends Survey_Common_Action {
      {
          $iSurveyId =  sanitize_int($surveyid);
          $aData['surveyid'] = $iSurveyId;
-
-         $aData['juststatistics']=true;
-
-         /////
-         // Settings copied from run
-         //split up results to extend statistics -> NOT WORKING YET! DO NOT ENABLE THIS!
          $showcombinedresults = 0;
-
-         /*
-          * this variable is used in the function shortencode() which cuts off a question/answer title
-          * after $maxchars and shows the rest as tooltip
-          */
          $maxchars = 50;
-
-         //we collect all the output within this variable
          $statisticsoutput ='';
-
-         //output for chosing questions to cross query
          $cr_statisticsoutput = '';
 
          // Set language for questions and answers to base language of this survey
          $language = Survey::model()->findByPk($surveyid)->language;
-         $aData['language'] = $language;
-
-
-         $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
-
-         ////
-         // Basic settings (comming from post normally)
-         $aData["completionstate"]="all";
-         $aData["viewsummaryall"]="on";
-         $aData["statlang"]="en";
-         $aData["idG"]="";
-         $aData["idL"]="";
-         $aData["datestampE"]="";
-         $aData["datestampG"]="";
-         $aData["datestampL"]="";
-
-         $aData["showtextinline"] = "on";
-         $aData["charttype"]="default";
-         $aData["outputtype"]="html";
-         $aData["filterchoice_state"]="";
-         $aData['sid']="739626";
-         $aData["display"]="stats";
-         $aData["close-after-save"]="false";
-
          $summary = array();
          $summary[0] = "datestampE";
          $summary[1] = "datestampG";
@@ -725,262 +686,6 @@ class statistics extends Survey_Common_Action {
         }
 
 
-        $filters = array();
-        $aGroups = array();
-        foreach ($rows as $row)
-        {
-            //store some column names in $filters array
-            $filters[]=array($row['qid'],
-            $row['gid'],
-            $row['type'],
-            $row['title'],
-            $row['group_name'],
-            flattenText($row['question']));
-
-            if (!in_array($row['group_name'], $aGroups))
-            {
-                $aGroups[$row['group_name']]['gid'] = $row['gid'];
-                $aGroups[$row['group_name']]['name'] = $row['group_name'];
-            }
-            $aGroups[$row['group_name']]['questions'][] = array($row['qid'],
-            $row['gid'],
-            $row['type'],
-            $row['title'],
-            $row['group_name'],
-            flattenText($row['question'])); ;
-        }
-        $aData['filters'] = $filters;
-        $aData['aGroups'] = $aGroups;
-
-        //var_dump($filters);
-        // SHOW ID FIELD
-
-        $grapherror = false;
-
-
-        $aData['selecthide'] = "";
-        $aData['selectshow'] = "";
-        $aData['selectinc'] = "";
-        $aData['error'] = "";
-        $aData['survlangs'] = "";
-        $aData['datestamp'] = "";
-
-
-
-        /*
-         * let's go through the filter array which contains
-         *     ['qid'],
-         ['gid'],
-         ['type'],
-         ['title'],
-         ['group_name'],
-         ['question'],
-         ['lid'],
-         ['lid1']);
-         */
-
-        $currentgroup='';
-        $counter = 0;
-        foreach ($filters as $key1 => $flt)
-        {
-            //is there a previous question type set?
-
-
-            /*
-             * remember: $flt is structured like this
-             *  ['qid'],
-             ['gid'],
-             ['type'],
-             ['title'],
-             ['group_name'],
-             ['question'],
-             ['lid'],
-             ['lid1']);
-             */
-
-            //SGQ identifier
-
-            //full question title
-
-            /*
-             * Check question type: This question types will be used (all others are separated in the if clause)
-             *  5 - 5 Point Choice
-             G - Gender
-             I - Language Switch
-             L - List (Radio)
-             M - Multiple choice
-             N - Numerical Input
-             | - File Upload
-             O - List With Comment
-             P - Multiple choice with comments
-             Y - Yes/No
-             ! - List (Dropdown) )
-             */
-
-
-            /////////////////////////////////////////////////////////////////////////////////////////////////
-            //This section presents the filter list, in various different ways depending on the question type
-            /////////////////////////////////////////////////////////////////////////////////////////////////
-
-            //let's switch through the question type for each question
-            switch ($flt[2])
-            {
-                case "K": // Multiple Numerical
-                    //get answers
-                    $result = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
-                    $aData['result'][$key1]['key1'] = $result;
-                    break;
-
-
-
-                case "Q": // Multiple Short Text
-
-                    //get subqestions
-                    $result = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
-                    $aData['result'][$key1] = $result;
-                    break;
-
-                    //----------------------- ARRAYS --------------------------
-
-                case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
-
-                    //get answers
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
-                    $aData['result'][$key1] = $result;
-                    break;
-
-
-
-                    //just like above only a different loop
-                case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
-                    $aData['result'][$key1] = $result;
-                    break;
-
-
-
-                case "C": // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
-                    //get answers
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
-                    $aData['result'][$key1] = $result;
-                    break;
-
-
-
-                    //similiar to the above one
-                case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
-                    $aData['result'][$key1] = $result;
-                    break;
-
-                case ";":  //ARRAY (Multi Flex) (Text)
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 0", 'question_order');
-                    $aData['result'][$key1] = $result;
-                    foreach($result as $key => $row)
-                    {
-                        $fresult = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 1", 'question_order');
-                        $aData['fresults'][$key1][$key] = $fresult;
-                    }
-                    break;
-
-                case ":":  //ARRAY (Multi Flex) (Numbers)
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 0", 'question_order');
-                    $aData['result'][$key1] = $result;
-                    foreach($result as $row)
-                    {
-                        $fresult = Question::model()->getQuestionsForStatistics('*', "parent_qid=$flt[0] AND language = '{$language}' AND scale_id = 1", 'question_order, title');
-                        $aData['fresults'][$key1] = $fresult;
-                    }
-                    break;
-                    /*
-                     * For question type "F" and "H" you can use labels.
-                     * The only difference is that the labels are applied to column heading
-                     * or rows respectively
-                     */
-                case "F": // FlEXIBLE ARRAY
-                case "H": // ARRAY (By Column)
-                    //Get answers. We always use the answer code because the label might be too long elsewise
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
-                    $aData['result'][$key1] = $result;
-
-                    //check all the answers
-                    foreach($result as $row)
-                    {
-                        $fresult = Answer::model()->getQuestionsForStatistics('*', "qid=$flt[0] AND language = '{$language}'", 'sortorder, code');
-                        $aData['fresults'][$key1] = $fresult;
-                    }
-
-                    //$statisticsoutput .= "\t\t\t\t<td>\n";
-                    $counter=0;
-                    break;
-
-
-
-                case "R": //RANKING
-                    //get some answers
-                    $result = Answer::model()->getQuestionsForStatistics('code, answer', "qid=$flt[0] AND language = '{$language}'", 'sortorder, answer');
-                    $aData['result'][$key1] = $result;
-                    break;
-
-                case "1": // MULTI SCALE
-
-                    //get answers
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
-                    $aData['result'][$key1] = $result;
-                    //loop through answers
-                    foreach($result as $key => $row)
-                    {
-
-                        //check if there is a dualscale_headerA/B
-                        $dshresult = QuestionAttribute::model()->getQuestionsForStatistics('value', "qid=$flt[0] AND attribute = 'dualscale_headerA'", '');
-                        $aData['dshresults'][$key1][$key] = $dshresult;
-
-
-                        $fresult = Answer::model()->getQuestionsForStatistics('*', "qid=$flt[0] AND language = '{$language}' AND scale_id = 0", 'sortorder, code');
-
-                        $aData['fresults'][$key1][$key] = $fresult;
-
-
-                        $dshresult2 = QuestionAttribute::model()->getQuestionsForStatistics('value', "qid=$flt[0] AND attribute = 'dualscale_headerB'", '');
-                        $aData['dshresults2'][$key1][$key] = $dshresult2;
-                    }
-                    break;
-
-                case "P":  //P - Multiple choice with comments
-                case "M":  //M - Multiple choice
-
-                    //get answers
-                    $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid = $flt[0] AND language = '$language'", 'question_order');
-                    $aData['result'][$key1] = $result;
-                    break;
-
-
-                    /*
-                     * This question types use the default settings:
-                     *     L - List (Radio)
-                     O - List With Comment
-                     P - Multiple choice with comments
-                     ! - List (Dropdown)
-                     */
-                default:
-
-                    //get answers
-                    $result = Answer::model()->getQuestionsForStatistics('code, answer', "qid=$flt[0] AND language = '$language'", 'sortorder, answer');
-                    $aData['result'][$key1] = $result;
-                    break;
-
-            }    //end switch -> check question types and create filter forms
-
-            $currentgroup=$flt[1];
-
-            $counter++;
-
-            //temporary save the type of the previous question
-            //used to adjust linebreaks
-            $previousquestiontype = $flt[2];
-
-        }
-
         // ----------------------------------- END FILTER FORM ---------------------------------------
 
         Yii::app()->loadHelper('admin/statistics');
@@ -989,55 +694,23 @@ class statistics extends Survey_Common_Action {
         $aData['showtextinline'] = $showtextinline;
 
         //Show Summary results
-        if (isset($summary) && $summary)
-        {
-            $usegraph=1;
-            $aData['usegraph'] = $usegraph;
-            $outputType = 'html';
-            $statlang='en';
-
-
-            switch($outputType){
-                case 'html':
-                    $statisticsoutput .=  $helper->generate_html_chartjs_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
-                    break;
-                case 'pdf':
-                    $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'I',$statlang);
-                    exit;
-                    break;
-                case 'xls':
-                    $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
-                    exit;
-                    break;
-                default:
-                    break;
-            }
-
-        }    //end if -> show summary results
-
-        $usegraph=isset($_POST['usegraph']) ? 1 : 0;
+        $usegraph=1;
         $aData['usegraph'] = $usegraph;
+        $outputType = 'html';
+        $statlang='en';
+        $statisticsoutput .=  $helper->generate_html_chartjs_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
 
+        $aData['usegraph'] = 1;
         $aData['sStatisticsLanguage']=$statlang;
         $aData['output'] = $statisticsoutput;
         $aData['summary'] = $summary;
-
-
-
-        $aData['error'] = "";
         $aData['oStatisticsHelper'] = $helper;
-        $aData['fresults'] = (isset($aData['fresults']))?$aData['fresults']:false;
-
-
 
 
         //Call the javascript file
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'statistics.js' ));
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'json-js/json2.min.js'));
         echo $this->_renderWrappedTemplate('export', 'statistics_user_view', $aData);
-
-
-//         die();
      }
 
     /**
