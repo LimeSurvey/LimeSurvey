@@ -425,8 +425,6 @@ class TokensController extends Controller
         $survey = Survey::model()->findByPk($surveyId);
         $result = Token::model($surveyId)->generateTokens($survey->tokenlength);
         App()->user->setFlash('info', \Yii::t('', "Generated {n} token|Generated {n} tokens", $result));
-        $this->renderText('ok');
-        return;
         $this->redirect(['tokens/index', 'surveyId' => $surveyId]);
 
     }

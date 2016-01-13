@@ -237,6 +237,7 @@ abstract class Token extends Dynamic
     {
         $rules = [
             ['token', 'unique', 'allowEmpty' => true],
+
             ['firstname', 'length', 'max' => 40],
             ['lastname', 'length', 'max' => 40],
             ['remindercount', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
@@ -254,6 +255,8 @@ abstract class Token extends Dynamic
             ['email', 'unique', 'on' => 'register'],
             [['lastname', 'firstname'], 'safe', 'on' => 'register'],
             ['captcha', 'captcha', 'on' => 'register'],
+
+            ['token', \CDefaultValueValidator::class, 'value' => null]
 
         ];
         if (is_array($attributeDescriptions = json_decode($this->survey->attributedescriptions, true))) {
