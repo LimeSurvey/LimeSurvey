@@ -713,7 +713,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
     {
         return XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
     }
-    elseif ($sExtension == 'txt')
+    elseif ($sExtension == 'txt' || $sExtension == 'tsv')
     {
         return TSVImportSurvey($sFullFilePath);
     }
@@ -2378,7 +2378,7 @@ function TSVImportSurvey($sFullFilePath)
                 }
 
                 // insert default value
-                if (isset($row['default']))
+                if (isset($row['default']) && $row['default']!=="")
                 {
                     $insertdata=array();
                     $insertdata['qid'] = $qid;

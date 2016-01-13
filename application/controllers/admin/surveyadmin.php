@@ -850,7 +850,7 @@ class SurveyAdmin extends Survey_Common_Action
                     $aData['sErrorMessage'] = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
                     $aData['bFailed'] = true;
                 }
-                if (!$aData['bFailed'] && (strtolower($sExtension) != 'csv' && strtolower($sExtension) != 'lss' && strtolower($sExtension) != 'txt' && strtolower($sExtension) != 'lsa'))
+                if (!$aData['bFailed'] && !in_array(strtolower($sExtension),array('lss','txt','tsv','lsa')))
                 {
                     $aData['sErrorMessage'] = sprintf(gT("Import failed. You specified an invalid file type '%s'."), $sExtension);
                     $aData['bFailed'] = true;

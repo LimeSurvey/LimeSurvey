@@ -3,30 +3,25 @@
     <?php
         if ($bFailed){ ?>
         <div class='errorheader'><?php eT("Error");?></div>
-        <?php echo $sErrorMessage; ?><br /><br />
-		<input type='submit' value='<?php eT("Main Admin Screen");?>' onclick="window.open('<?php echo $this->createUrl('/admin');?>', '_top')"> 
+        <?php
+        if(is_array($sErrorMessage))
+        {
+            foreach($sErrorMessage as $error)
+                echo $error."<br/>";
+        }
+        else
+        {
+            echo $sErrorMessage;
+        }
+        ?>
+        <br /><br />
+        <input type='submit' value='<?php eT("Main Admin Screen");?>' onclick="window.open('<?php echo $this->createUrl('/admin');?>', '_top')">
         <input type='submit' value='<?php eT("Import again");?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/newsurvey#import');?>', '_top')"><br /><br /></div>
-    <?php } else
+    <?php }
+    else
     {?>
     <div class='successheader'><?php eT("Success");?></div>&nbsp;<br />
     <?php eT("File upload succeeded.");?> <?php eT("Reading file..");?><br />
-    <?php if (isset($aImportResults['error']) && $aImportResults['error']!=false)
-        {?>
-        <div class='warningheader'><?php eT("Error");?></div><br />
-        <?php
-        	if(is_array($aImportResults['error']))
-        	{
-        		foreach($aImportResults['error'] as $error) 
-        			echo $error."<br/>";
-      		} else 
-      		{
-	        	echo $aImportResults['error'];
-        	} 
-    		?><br /><br />
-        <input type='submit' value='<?php eT("Main Admin Screen");?>' onclick="window.open('<?php echo $this->createUrl('/admin');?>', '_top')" />
-        <?php } else
-        {?>
-
         <br /><div class='successheader'><?php eT("Success");?></div>
         <strong><?php echo $sSummaryHeader; ?></strong><br />
 
@@ -93,6 +88,5 @@
             <?php } ?>
 			<br>
         <input type='submit' value='<?php eT("Go to survey");?>' onclick="window.open('<?php echo $sLink; ?>', '_top')"><br /><br />
-        <?php } ?>
     </div><br />
     <?php }?>
