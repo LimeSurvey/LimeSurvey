@@ -86,6 +86,11 @@ function deleteinput()
                 tablerow.remove();
             }
         }
+        if ($(tablerow).is('[id]'))
+        {
+            rowinfo=$(tablerow).attr('id').split('_');
+            $('#deletedqids').val($('#deletedqids').val()+' '+rowinfo[2]);
+        }
     }
     else
         {
