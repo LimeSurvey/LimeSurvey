@@ -34,7 +34,7 @@ class statistics extends Survey_Common_Action {
      */
     public function run($surveyid = 0, $subaction = null)
     {
-        var_dump($_POST);
+        //var_dump($_POST);
         $surveyid = sanitize_int($surveyid);
         $imageurl = Yii::app()->getConfig("imageurl");
         $aData = array('imageurl' => $imageurl);
@@ -657,7 +657,9 @@ class statistics extends Survey_Common_Action {
      public function publicStatistics($surveyid)
      {
          $iSurveyId =  sanitize_int($surveyid);
+         $aData['surveyid'] = $iSurveyId;
 
+         $aData['juststatistics']=true;
 
          /////
          // Settings copied from run
@@ -989,7 +991,7 @@ class statistics extends Survey_Common_Action {
         //Show Summary results
         if (isset($summary) && $summary)
         {
-            $usegraph=isset($_POST['usegraph']) ? 1 : 0;
+            $usegraph=1;
             $aData['usegraph'] = $usegraph;
             $outputType = 'html';
             $statlang='en';
@@ -1032,7 +1034,7 @@ class statistics extends Survey_Common_Action {
         //Call the javascript file
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'statistics.js' ));
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'json-js/json2.min.js'));
-        echo $this->_renderWrappedTemplate('export', 'statistics_view', $aData);
+        echo $this->_renderWrappedTemplate('export', 'statistics_user_view', $aData);
 
 
 //         die();
@@ -1054,7 +1056,7 @@ class statistics extends Survey_Common_Action {
         App()->getClientScript()->registerScriptFile( $switch );
 
 
-
+        $aData['display'] = array();
         $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
         $aData['menu']['edition'] = true;

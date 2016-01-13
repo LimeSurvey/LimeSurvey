@@ -113,7 +113,7 @@
                     </div>
 
                     <div id="statsContainerLoading" >
-                		<p><?php eT('PLease wait, loading data...');?></p>
+                        <p><?php eT('PLease wait, loading data...');?></p>
                         <div class="preloader loading">
                             <span class="slice"></span>
                             <span class="slice"></span>
@@ -122,7 +122,7 @@
                             <span class="slice"></span>
                             <span class="slice"></span>
                         </div>
-                	</div>
+                    </div>
 
                 <?php else:?>
                     <?php echo $output; ?>

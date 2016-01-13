@@ -1236,7 +1236,7 @@ class statistics_helper {
         }
 
         // NICE SIMPLE SINGLE OPTION ANSWERS
-        elseif($fieldmap[$rt])
+        elseif(isset($fieldmap[$rt]))
         {
             //search for key
             //var_dump($firstletter); die();
@@ -2711,7 +2711,7 @@ class statistics_helper {
                             }
 
                             //// If user forced the chartype from statistics_view
-                            if ($_POST['charttype'] != 'default' )
+                            if ( isset($_POST['charttype']) && $_POST['charttype'] != 'default' )
                             {
                                 $req_chart_type = $_POST['charttype'];
                             }
