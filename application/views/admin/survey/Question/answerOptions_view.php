@@ -50,7 +50,6 @@
                     <?php endforeach;?>
                 </ul>
                 <?php
-                    $first=true;
                     $sortorderids='';
                     $codeids='';
                 ?>
@@ -90,7 +89,6 @@
                                             <?php echo sprintf(gT("Answer scale %s"),$scale_id+1); ?>
                                         </div>
                                     <?php endif; ?>
-
                                 <?php endif; ?>
 
                                 <!-- Answers/Subquestions Table -->
@@ -388,10 +386,12 @@
                                     <?php endif; ?>
 
                                 </div>
-                                <?php $position=sprintf("%05d", $position); $first=false; ?>
+                                <?php $position=sprintf("%05d", $position); ?>
                             <?php endfor;?>
                         </div>
+                        <?php $first=false; ?>
                     <?php endforeach; ?>
+
 
 
                     <!-- Bootstrap modals -->

@@ -172,7 +172,6 @@
                     </div>
 
                     <?php }
-
                     $first=false; ?>
             </div>
             <?php } ?>

@@ -280,14 +280,22 @@ class database extends Survey_Common_Action
                             $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",array(":qid"=>$subquestionkey,':language'=>$sLanguage));
 
                             $oSubQuestion->question_order=$iPosition+1;
+
+                            if($aCodes[$iScaleID][$iPosition]===null)
+                            {
+                                var_dump($subquestionkey); die();
+                            }
+
                             $oSubQuestion->title=$aCodes[$iScaleID][$iPosition];
+
+
                             $oSubQuestion->question=$subquestionvalue;
                             $oSubQuestion->scale_id=$iScaleID;
                             //dual matrix, text/number matrix: subQ relevance per line not per scale, so ScaleID is always 0
                             $oSubQuestion->relevance=$aRelevance[0][$iPosition];
                         }
                         else  // new record
-                        {                            
+                        {
                             if (!isset($aInsertQID[$iScaleID][$iPosition]))     //new record: first (default) language
                             {
                                 $oSubQuestion=new Question;
