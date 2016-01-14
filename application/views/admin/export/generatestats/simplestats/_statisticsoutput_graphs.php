@@ -27,7 +27,7 @@
             </div>
 
             <!-- legends -->
-            <?php /*
+            <?php if($charttype=='Pie'): ?>
             <div class="legend col-sm-2 vcenter">
                 <?php foreach($labels as $i=>$label): ?>
                     <?php $colorindex = $color+$i; ?>
@@ -42,10 +42,11 @@
                     </div>
                 <?php endforeach;?>
             </div>
-            */?>
+            <?php endif; ?>
         </div>
 
 <!-- Buttons to change graph type -->
+<?php /*
         <div class="chartjs-buttons" style="text-align:center">
 
             <!-- Bar chart -->
@@ -86,6 +87,7 @@
                 <?php eT('Doughnut chart'); ?>
             </button>
         </div>
+        */?>
         <div id='stats_<?php echo $rt;?>' class='graphdisplay' style="text-align:center">
         </div>
     <?php else: ?>

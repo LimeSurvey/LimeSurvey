@@ -1888,6 +1888,7 @@ class statistics_helper {
                 //noncompleted is NOT checked
                 else
                 {
+                    /*
                     //calculate total number of incompleted records
                     $TotalIncomplete = $results - $TotalCompleted;
 
@@ -1932,7 +1933,9 @@ class statistics_helper {
                     {
                         $lbl[wordwrap(flattenText(gT("Not displayed")), 20, "\n")] = $TotalIncomplete;
                     }
+                    */
                 }    //end else -> noncompleted NOT checked
+
             }
 
             // For multi question type, we have to check non completed with ALL sub question set to NULL

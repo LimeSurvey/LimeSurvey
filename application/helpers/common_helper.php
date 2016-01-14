@@ -2984,7 +2984,7 @@ function questionAttributes($returnByName=false)
         );
 
         $qattributes["statistics_graphtype"]=array(
-        "types"=>'15ABCDEFGHIKLNOQRSTUWXYZ!:;|*',
+        "types"=>'15ABCDEFGHIKLMNOQRSTUWXYZ!:;|*',
         'category'=>gT('Statistics'),
         'inputtype'=>'singleselect',
         'sortorder'=>102,
