@@ -3664,7 +3664,7 @@ class statistics_helper {
                 $aData['charttype'] = $charttype;
                 $aData['sChartname'] = '';
                 $aData['grawdata'] = $grawdata;
-                $aData['color'] = rand ( 0, 72 ); // random truc much
+                $aData['color'] = rand ( 0, 71 ); // random truc much
                 $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
 
                 $statisticsoutput .=  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_graphs', $aData, true);
