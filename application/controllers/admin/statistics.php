@@ -698,7 +698,7 @@ class statistics extends Survey_Common_Action {
         $aData['usegraph'] = $usegraph;
         $outputType = 'html';
         $statlang='en';
-        $statisticsoutput .=  $helper->generate_html_chartjs_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
+        $statisticsoutput .=  $helper->generate_simple_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
 
         $aData['usegraph'] = 1;
         $aData['sStatisticsLanguage']=$statlang;

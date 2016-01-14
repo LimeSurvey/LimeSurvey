@@ -16,9 +16,11 @@
 
     <div class="row">
         <div class="col-lg-12 content-right">
-
+            <input type="hidden" id="showGraphOnPageLoad" />
             <div id='statisticsoutput' class='statisticsfilters'>
+                <div class="row">
                     <?php echo $output; ?>
+                </div>
             </div>
         </div>
     </div>
