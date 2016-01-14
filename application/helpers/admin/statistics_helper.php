@@ -640,7 +640,6 @@ class statistics_helper {
         $qtype="";
         $statlang = $oLanguage;
         $firstletter = substr($rt, 0, 1);
-        var_dump($firstletter);
         $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
         $sDatabaseType = Yii::app()->db->getDriverName();
         $statisticsoutput="";
