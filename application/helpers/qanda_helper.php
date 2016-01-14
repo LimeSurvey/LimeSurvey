@@ -4368,7 +4368,7 @@ function do_array_10point($ia)
         }
         if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1)
         {
-            $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
+            $answer_t_content .= "\t<td  data-title='N/A' class=\"answer-item radio-item noanswer-item\">\n"
             ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {

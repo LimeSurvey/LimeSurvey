@@ -27,7 +27,7 @@
             </div>
 
             <!-- legends -->
-            <?php if($charttype=='Pie'): ?>
+            <?php if($charttype=='Pie' || $charttype=='Doughnut'): ?>
             <div class="legend col-sm-2 vcenter">
                 <?php foreach($labels as $i=>$label): ?>
                     <?php $colorindex = $color+$i; ?>
