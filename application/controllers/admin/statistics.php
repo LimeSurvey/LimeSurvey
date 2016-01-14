@@ -654,7 +654,7 @@ class statistics extends Survey_Common_Action {
     /**
      * Render satistics for users
      */
-     public function publicStatistics($surveyid)
+     public function simpleStatistics($surveyid)
      {
          $iSurveyId =  sanitize_int($surveyid);
          $aData['surveyid'] = $iSurveyId;
@@ -682,7 +682,15 @@ class statistics extends Survey_Common_Action {
         //  $summary[]=$surveyid.'X'.$question->gid.'X'.$question->qid;
         foreach($rows as $row)
         {
-            $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
+            $type=$row['type'];
+            if($type=="M" || $type=="P" || $type=="T" || $type=="S" || $type=="Q" || $type=="R" ||  $type=="|" ||  $type=="" ||  $type=="N" ||  $type=="K" || $type=="D")
+            {
+                $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
+            }
+            else // single question
+            {
+                $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
+            }
         }
 
 
