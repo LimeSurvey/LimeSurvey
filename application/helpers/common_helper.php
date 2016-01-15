@@ -367,6 +367,70 @@ function getQuestions($surveyid,$gid,$selectedqid)
 }
 
 /**
+* getGroupsAndQuestions() queries the database for a list of all groups and questions from the current survey sid
+*
+*
+* @param string $surveyid - the current survey
+* @param string $gid      - the currently selected group
+*
+* @return This string is returned containing nested <li></li> formatted lists of groups and questions to current survey
+*/
+function getGroupsAndQuestions($surveyid,$gid)
+{
+    $gqlist='<ul class="gqlist-groups">';
+    $gid=sanitize_int($gid);
+    $surveyid=sanitize_int($surveyid);
+    if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
+    $s_lang = Survey::model()->findByPk($surveyid)->language;
+
+    $gidresult = QuestionGroup::model()->findAll(array('condition'=>'sid=:surveyid AND language=:language',
+    'order'=>'group_order',
+    'params'=>array(':surveyid'=>$surveyid,':language'=>$s_lang)));   //Checked)
+    foreach ($gidresult as $gv)
+    {
+        $gv = $gv->attributes;
+        $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gv['gid']);
+        $gqlist .= "<li><a";
+        if ($gv['gid'] == $gid) {$gqlist .= " class='selected'"; $gvexist = 1;}
+        $gqlist .= " href='{$link}'>";
+        if (strip_tags($gv['group_name']))
+        {
+            $gqlist .= htmlspecialchars(strip_tags($gv['group_name']));
+        } else {
+            $gqlist .= htmlspecialchars($gv['group_name']);
+        }
+        $gqlist .= "</a>\n";
+
+        // <ul> of questions within current group
+        $gqlist .= "<ul class='gqlist-questions'>";
+        $qrows = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gv['gid'], 'language' => $s_lang, 'parent_qid' => 0),array('order'=>'question_order'));
+        foreach ($qrows as $qrow)
+        {
+            $qrow = $qrow->attributes;
+            $qrow['title'] = strip_tags($qrow['title']);
+            $link = Yii::app()->getController()->createUrl('/admin/questions/sa/editquestion/surveyid/'.$surveyid.'/gid/'.$gv['gid'].'/qid/'.$qrow['qid']);
+            $question=flattenText($qrow['question']);
+            if (strlen($question)<35)
+            {
+                $shortq = $question;
+            }
+            else
+            {
+                $shortq = htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
+            }
+            $gqlist .= "<li id='qmenu-{$qrow['qid']}' title='".htmlspecialchars($question,ENT_QUOTES,'UTF-8')."'>";
+            $gqlist .= "<a href='{$link}'>";
+            $gqlist .="<em>{$qrow['title']}</em>: $shortq";
+            $gqlist .= "</a></li>\n";
+        }
+        $gqlist .= "</ul></li>\n";
+    }
+    $gqlist .= "</ul>\n";
+    return $gqlist;
+}
+
+
+/**
 * getGidPrevious() returns the Gid of the group prior to the current active group
 *
 * @param string $surveyid

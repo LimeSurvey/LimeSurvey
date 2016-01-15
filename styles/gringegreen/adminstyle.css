@@ -36,6 +36,9 @@ hr{
     color:#efefef;
 }
 
+div.htmleditor {
+    width:84%;
+}
 
 /* Wrapper */
 .wrapper {
@@ -127,9 +130,15 @@ div.menubar {
     background-color: #fefefe;
     clear:left;
     padding:0;
-    margin:0 auto !important;
+    margin: 0 0 0 0.5%; /* 0 auto !important;*/
     width: 99%;
     display:inline-block;
+}
+
+div.menubar.surveybar,
+div.menubar.groupbar,
+div.menubar.questionbar {
+    width:84.5%;
 }
 
 div.menubar .ui-widget-header
@@ -243,13 +252,19 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 
 /* END menubar CSS */
 
+.ui-tabs {
+    width:83.5%;
+    float:left;
+    margin-left:0.5%;
+}
+
 #surveydetails, #groupdetails, #questiondetails {
     background-color: #FFF;
-    width: 100%;
+    width: 84%; /*100%;*/
     margin-top:-2px;
     margin-bottom:4px;
     padding:5px 0;
-    clear:left;
+    /*clear:left;*/
 }
 
 .extra-action{
@@ -481,7 +496,7 @@ th.admincell {
     text-align: left;
     font-size: 16px;
     font-weight: bold;
-    padding-left:1em;
+    padding-left:15.5%; /*1em;*/
     padding-bottom:0.2em;
 }
 
@@ -1199,6 +1214,15 @@ textarea.updater-changelog {
 
 .form30newtabs li label:first-child,
 .form30 li label:first-child {
+    width: 10%; /* 30%; */
+    text-align: right;
+    margin-right: 0.5em;
+    float: left;
+    color: #666;
+}
+
+.form30newtabs #advancedquestionsettings li label:first-child,
+.form30 #advancedquestionsettings li label:first-child {
     width: 30%;
     text-align: right;
     margin-right: 0.5em;
@@ -1265,7 +1289,7 @@ textarea.updater-changelog {
 }
 
 .form30 ul.editor-parent {
-    min-width:1000px;
+    /* min-width:1000px; */
 }
 
 #frmeditquestion li,
@@ -1379,7 +1403,7 @@ div.right {
 }
 
 #advancedquestionsettings fieldset {
-    width:49%;
+    width:69%;
     margin:0 15%;
     display: block;
 }
@@ -1422,7 +1446,59 @@ div.right {
     width:33%;
 }
 
-
+/* New Question/Group Selection List */
+div.survey-gqlist-wrap {
+    min-height:250px;
+    float:left;
+    width:14.5%;
+}
+div.survey-gqlist {
+    width:100%;
+    overflow-x:hidden;
+    border: 1px solid #eee;
+    border-radius:4px;
+    margin-left:0.5%;
+    float:left;
+}
+span.gqlist-title {
+    font-weight:bold;
+    padding-top:0.5em;
+}
+ul.gqlist-groups  {
+    margin-left:0.25em;
+    font-size:90%;
+    white-space:nowrap;
+}
+ul.gqlist-groups li {
+    list-style-type:none;
+    font-weight:bold;
+    width:97%;
+    overflow-x:hidden;
+}
+ul.gqlist-groups li a {
+    color:#aaa;
+}
+ul.gqlist-groups li a.selected,
+ul.gqlist-questions li.selected a {
+    color:#666;
+}
+ul.gqlist-questions li.selected {
+    background-color:#eee;
+    border-radius:3px;
+}
+ul.gqlist-questions  {
+    margin-left:0.75em;
+    font-size:85%;
+}
+ul.gqlist-questions li {
+    font-weight:normal;
+}
+#groupselect,
+label[for=groupselect],
+#questionid,
+label[for=questionid] {
+    display:none;
+}
 
 
 /* New ComfortUpdate */

@@ -1,3 +1,12 @@
+
+<div class='survey-gqlist-wrap'>
+    <div class='survey-gqlist'>
+        <?php
+        echo '<span class="gqlist-title">Group/Question:</span>';
+        echo getGroupsAndQuestions($surveyid,$gid);
+        ?>
+    </div>
+</div>
 <div class='menubar surveybar'>
     <div class='menubar-title ui-widget-header'>
         <strong><?php eT("Survey"); ?></strong>
@@ -268,12 +277,13 @@
         <div class='menubar-right'>
             <?php if ($permission)
                 { ?>
+                <!--    
                 <label for='groupselect'><?php eT("Question groups:"); ?></label>
                 <select name='groupselect' id='groupselect' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
 
                     <?php echo $groups; ?>
                 </select>
-
+                -->
                 <span class='arrow-wrapper' style='font-size:0;'>
                     <?php if ($GidPrev != "")
                         { ?>
