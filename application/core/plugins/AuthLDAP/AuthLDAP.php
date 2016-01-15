@@ -95,15 +95,30 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     );
 
     public function init() {
-
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */
+        $this->subscribe('beforeActivate');
         $this->subscribe('createNewUser');
         $this->subscribe('beforeLogin');
         $this->subscribe('newLoginForm');
         $this->subscribe('afterLoginFormSubmit');
         $this->subscribe('newUserSession');
+    }
+
+    /**
+     * Check availability of LDAP Apache Module
+     *
+     * @return unknown_type
+     */
+    public function beforeActivate()
+    {
+        if (!function_exists("ldap_connect")){
+            $event = $this->getEvent();
+            $event->set('success', false);
+
+            $event->set('message', gT("LDAP authentication failed: LDAP PHP module is not available."));
+        }
     }
 
     /**
