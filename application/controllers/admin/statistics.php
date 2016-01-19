@@ -743,7 +743,7 @@ class statistics extends Survey_Common_Action {
         $aData['menu']['edition'] = true;
         $aData['menu']['stats'] =  true;
         $aData['menu']['close'] =  true;
-        $aData['sidebar']['state'] = "close";
+        $aData['sidemenu']['state'] = "close";
         $iSurveyId = $aData['surveyid'];
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData["surveyinfo"] = $surveyinfo;

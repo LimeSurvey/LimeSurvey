@@ -69,12 +69,12 @@ class emailtemplates extends Survey_Common_Action {
             $aData['defaulttexts'][$key] = templateDefaultTexts($aData['bplangs'][$key],$sEscapeMode);
         }
 
-			$aData['sidebar']['state'] = "close";
-			$surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-			$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+            $aData['sidemenu']['state'] = "close";
+            $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 
-			$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-			$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyId;
+            $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyId;
 
         $aData['surveyid'] = $iSurveyId;
         $aData['ishtml'] = $ishtml;

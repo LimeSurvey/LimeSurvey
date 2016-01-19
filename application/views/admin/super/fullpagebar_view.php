@@ -1,6 +1,6 @@
 <?php
 /**
- * Menu Bar show for full pages (without sidebar, inside configuration menus)
+ * Menu Bar show for full pages (without sidemenu, inside configuration menus)
  */
 ?>
 

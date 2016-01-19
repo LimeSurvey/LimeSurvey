@@ -85,7 +85,7 @@ class questiongroups extends Survey_Common_Action
             $aData['aImportResults'] = $aImportResults;
             $aData['sExtension'] = $sExtension;
             //$aData['display']['menu_bars']['surveysummary'] = 'importgroup';
-            $aData['sidebar']['state'] = "close";
+            $aData['sidemenu']['state'] = "close";
 
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
@@ -106,8 +106,8 @@ class questiongroups extends Survey_Common_Action
 
             $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'addgroup';
             $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
-            $aData['sidebar']['state'] = "close";
-            $aData['sidebar']['questiongroups'] = true;
+            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['questiongroups'] = true;
 
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;
             $aData['surveybar']['savebutton']['form'] = true;
@@ -155,7 +155,7 @@ class questiongroups extends Survey_Common_Action
             $aData['grplangs'] = $grplangs;
             $aData['baselang'] = $baselang;
 
-            $aData['sidebar']['state'] = "close";
+            $aData['sidemenu']['state'] = "close";
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;
@@ -329,8 +329,8 @@ class questiongroups extends Survey_Common_Action
         $aData['gid'] = $gid;
         $aData['grow'] = $grow;
 
-        $aData['sidebar']['questiongroups'] = true;
-        $aData['sidebar']['group_name'] = $grow['group_name'];
+        $aData['sidemenu']['questiongroups'] = true;
+        $aData['sidemenu']['group_name'] = $grow['group_name'];
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData['questiongroupbar']['buttons']['view'] = TRUE;
@@ -418,7 +418,7 @@ class questiongroups extends Survey_Common_Action
                 }
             }
 
-            $aData['sidebar']['questiongroups'] = true;
+            $aData['sidemenu']['questiongroups'] = true;
             $aData['questiongroupbar']['savebutton']['form'] = true;
             $aData['questiongroupbar']['saveandclosebutton']['form'] = true;
             $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$gid;
@@ -429,7 +429,7 @@ class questiongroups extends Survey_Common_Action
             $aData['tabtitles'] = $aTabTitles;
             $aData['aBaseLanguage'] = $aBaseLanguage;
 
-            $aData['sidebar']['state'] = "close";
+            $aData['sidemenu']['state'] = "close";
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 

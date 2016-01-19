@@ -97,11 +97,11 @@ class questions extends Survey_Common_Action
         $finaldata['display'] = $questionsummary;
         $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
 
-        $aData['sidebar']['questiongroups'] = true;
-        $aData['sidebar']['listquestions'] = true;
+        $aData['sidemenu']['questiongroups'] = true;
+        $aData['sidemenu']['listquestions'] = true;
 
-        $aData['sidebar']['question'] = true;
-        $aData['sidebar']['question_name'] = $qrrow['title'].' : '.$qrrow['question'];
+        $aData['sidemenu']['question'] = true;
+        $aData['sidemenu']['question_name'] = $qrrow['title'].' : '.$qrrow['question'];
         $aData['questionbar']['buttons']['view'] = TRUE;
 
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
@@ -129,10 +129,6 @@ class questions extends Survey_Common_Action
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
         setGlobalSetting($setting_entry, $gid);
 
-/*                // Need to set the group too : By user
-        $setting_entry = 'last_questiongroup_'.Yii::app()->user->getId();
-        setGlobalSetting($setting_entry, $gid);
-*/
         $aData['surveyIsActive'] = $survey->active !== 'N';
 
         $this->_renderWrappedTemplate('survey/Question', 'question_view', $aData);
@@ -146,8 +142,8 @@ class questions extends Survey_Common_Action
         $iSurveyID = $surveyid = sanitize_int($surveyid);
         if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
         {
-            $aData['sidebar']['state'] = "close";
-            $aData['sidebar']['questiongroups'] = true;
+            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['questiongroups'] = true;
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;
             $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveyid'] = $surveyid;
@@ -238,7 +234,7 @@ class questions extends Survey_Common_Action
         }
 
         /////
-        $aData['sidebar']['state'] = "close";
+        $aData['sidemenu']['state'] = "close";
         $aData['surveyid'] = $iSurveyID;
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
@@ -387,7 +383,7 @@ class questions extends Survey_Common_Action
         );
 
 
-        $aData['sidebar']['state'] = "close";
+        $aData['sidemenu']['state'] = "close";
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
@@ -421,7 +417,7 @@ class questions extends Survey_Common_Action
         //$aData['display']['menu_bars']['gid_action'] = 'addquestion';
         //$aData['display']['menu_bars']['qid_action'] = 'editansweroptions';
 
-        $aData['sidebar']['state'] = "close";
+        $aData['sidemenu']['state'] = "close";
         $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
         $aData['questiongroupbar']['savebutton']['form'] = true;
@@ -626,7 +622,7 @@ class questions extends Survey_Common_Action
         $aData['display']['menu_bars']['qid_action'] = 'editsubquestions';
         $aViewUrls = $this->_editsubquestion($surveyid, $gid, $qid);
 
-        $aData['sidebar']['state'] = "close";
+        $aData['sidemenu']['state'] = "close";
         $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
@@ -854,7 +850,7 @@ class questions extends Survey_Common_Action
         Yii::app()->loadHelper('admin/htmleditor');
         $surveyid = $iSurveyID = $aData['surveyid'] = sanitize_int($surveyid);
 
-        $aData['sidebar']['state'] = "close";
+        $aData['sidemenu']['state'] = "close";
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
@@ -969,7 +965,7 @@ class questions extends Survey_Common_Action
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
 
 
-        $aData['sidebar']['state'] = "close";
+        $aData['sidemenu']['state'] = "close";
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';

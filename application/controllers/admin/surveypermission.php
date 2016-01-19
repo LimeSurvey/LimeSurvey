@@ -35,11 +35,11 @@ class surveypermission extends Survey_Common_Action {
         if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','read'))
         {
 
-			$aData['sidebar']['state'] = "close";
-			$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-			$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-			//$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-			$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;
+            $aData['sidemenu']['state'] = "close";
+            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+            //$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;
 
 
             $aBaseSurveyPermissions=Permission::model()->getSurveyBasePermissions();
@@ -47,9 +47,9 @@ class surveypermission extends Survey_Common_Action {
             App()->getClientScript()->registerPackage('jquery-tablesorter');
             App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "surveypermissions.js" ));
 
-			$surveysecurity = '<div class="side-body" id="edit-permissions">';
+            $surveysecurity = '<div class="side-body" id="edit-permissions">';
             $surveysecurity .="<h3>".gT("Survey permissions")."</h3>\n";
-			$surveysecurity .= '<div class="row"><div class="col-lg-12 content-right">';
+            $surveysecurity .= '<div class="row"><div class="col-lg-12 content-right">';
             $result2 = Permission::model()->getUserDetails($surveyid);
             if(count($result2) > 0)
             {
@@ -208,14 +208,14 @@ class surveypermission extends Survey_Common_Action {
             }
 
 
-			$aData['sidebar']['state'] = "close";
-			$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-			$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+            $aData['sidemenu']['state'] = "close";
+            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 
-			$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;
+            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;
 
 
-			$surveysecurity .= '</div></div></div>';
+            $surveysecurity .= '</div></div></div>';
             $aViewUrls['output'] = $surveysecurity;
         }
         else
@@ -327,7 +327,7 @@ class surveypermission extends Survey_Common_Action {
             $aViewUrls['output'] = $addsummary;
         }
 
-            $aData['sidebar']['state'] = "close";
+            $aData['sidemenu']['state'] = "close";
             $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
 
@@ -412,7 +412,7 @@ class surveypermission extends Survey_Common_Action {
             $aViewUrls['output'] = $addsummary;
         }
 
-            $aData['sidebar']['state'] = "close";
+            $aData['sidemenu']['state'] = "close";
             $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
             //$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
@@ -550,7 +550,7 @@ class surveypermission extends Survey_Common_Action {
             $this->getController()->error('Access denied');
         }
 
-            $aData['sidebar']['state'] = "close";
+            $aData['sidemenu']['state'] = "close";
             $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
@@ -620,7 +620,7 @@ class surveypermission extends Survey_Common_Action {
             $aViewUrls['output'] = $addsummary;
         }
 
-            $aData['sidebar']['state'] = "close";
+            $aData['sidemenu']['state'] = "close";
             $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
             //$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
@@ -731,7 +731,7 @@ class surveypermission extends Survey_Common_Action {
         {
             $this->getController()->error('Access denied');
         }
-            $aData['sidebar']['state'] = "close";
+            $aData['sidemenu']['state'] = "close";
             $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
 

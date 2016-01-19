@@ -30,7 +30,7 @@ class conditionsaction extends Survey_Common_Action {
         Yii::app()->loadHelper("database");
 
 
-            $aData['sidebar']['state'] = "close";
+            $aData['sidemenu']['state'] = "close";
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
             $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid;

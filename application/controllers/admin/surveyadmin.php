@@ -209,7 +209,7 @@ class SurveyAdmin extends Survey_Common_Action
         $tempData = $aData;
         $aData['data'] = $tempData;
 
-        $aData['sidebar']['state'] = "close";
+        $aData['sidemenu']['state'] = "close";
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 
@@ -365,7 +365,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveybar']['buttons']['view']= true;
         $aData['surveybar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listsurveys");
         $aData['surveybar']['returnbutton']['text'] = gT('return to survey list');
-        $aData['sidebar']["survey_menu"]=TRUE;
+        $aData['sidemenu']["survey_menu"]=TRUE;
 
         // We get the last question visited by user for this survey
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
@@ -422,8 +422,8 @@ class SurveyAdmin extends Survey_Common_Action
 
         $aData['surveyid'] = $iSurveyID;
         $aData['display']['menu_bars']['listquestiongroups'] = true;
-        $aData['sidebar']['questiongroups'] = true;
-        $aData['sidebar']['listquestiongroups'] = true;
+        $aData['sidemenu']['questiongroups'] = true;
+        $aData['sidemenu']['listquestiongroups'] = true;
         $aData['surveybar']['buttons']['newgroup']=true;
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData["surveyinfo"] = $surveyinfo;
@@ -471,7 +471,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $aData['surveyid'] = $iSurveyID;
         $aData['display']['menu_bars']['listquestions'] = true;
-        $aData['sidebar']['listquestions'] = true;
+        $aData['sidemenu']['listquestions'] = true;
         $aData['surveybar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listsurveys");
         $aData['surveybar']['returnbutton']['text'] = gT('return to survey list');
         $aData['surveybar']['buttons']['newquestion']=true;
@@ -612,7 +612,7 @@ class SurveyAdmin extends Survey_Common_Action
         $iSurveyID = (int) $iSurveyID;
 
         $aData = array();
-        $aData['sidebar']['state'] = "close";
+        $aData['sidemenu']['state'] = "close";
         $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
         $aData['surveyid'] = $iSurveyID;
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
@@ -921,10 +921,10 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $aData = $aViewUrls = array();
         $aData['surveyid'] = $iSurveyID = (int) $iSurveyID;
-        $aData['sidebar']['state'] = "close";
+        $aData['sidemenu']['state'] = "close";
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-        $aData['sidebar']['state'] = "close";
+        $aData['sidemenu']['state'] = "close";
 
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete'))
@@ -1056,7 +1056,7 @@ class SurveyAdmin extends Survey_Common_Action
 
 
 
-            $aData['sidebar']['state'] = "close";
+            $aData['sidemenu']['state'] = "close";
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 
@@ -1297,8 +1297,8 @@ class SurveyAdmin extends Survey_Common_Action
         $initializedReplacementFields = false;
 
         $aData['organizebar']['savebuttonright'] = true;
-		//$aData['organizebar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/view/", array('surveyid' => $iSurveyID));
-		//$aData['organizebar']['returnbutton']['text'] = gT('return to survey summary');
+        //$aData['organizebar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/view/", array('surveyid' => $iSurveyID));
+        //$aData['organizebar']['returnbutton']['text'] = gT('return to survey summary');
 
         foreach ($aGrouplist as $iGID => $aGroup)
         {
@@ -1352,8 +1352,8 @@ class SurveyAdmin extends Survey_Common_Action
                 if (!isset($aQuestionOrder[$gid]))
                     $aQuestionOrder[$gid] = 0;
 
-				$sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-				$oQuestion = Question::model()->findByPk(array("qid"=>$qid,'language'=>$sBaseLanguage));
+                $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+                $oQuestion = Question::model()->findByPk(array("qid"=>$qid,'language'=>$sBaseLanguage));
                 $oldGid = $oQuestion['gid'];
 
                 if($oldGid != $gid) {

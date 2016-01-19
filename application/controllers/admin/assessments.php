@@ -72,7 +72,7 @@ class Assessments extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = array(), $aData = array())
     {
-        $aData['sidebar']['state'] = "close";
+        $aData['sidemenu']['state'] = "close";
         $iSurveyID=$aData['surveyid'];
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         // TODO: Hide this, because submitting first form on the page means
@@ -111,16 +111,16 @@ class Assessments extends Survey_Common_Action
 
         Yii::app()->loadHelper('admin/htmleditor');
 
-		$urls['output'] = '        <div class="side-body">
-        	<h3>'.gT("Assesments").'</h3>
+        $urls['output'] = '        <div class="side-body">
+            <h3>'.gT("Assesments").'</h3>
 
-			<div class="row">
-				<div class="col-lg-12 content-right">';
+            <div class="row">
+                <div class="col-lg-12 content-right">';
         if ($surveyinfo['assessments']!='Y')
-		{
+        {
 
             $urls['message'] = array('title' => gT("Assessments mode not activated"), 'message' => sprintf(gT("Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="'.$this->getController()->createUrl('admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID).'">','</a>'), 'class'=> 'warningheader');
-		}
+        }
         $urls['assessments_view'][]= $aData;
         $this->_renderWrappedTemplate('', $urls, $aData);
     }
