@@ -2,10 +2,17 @@
 /**
  * This view render the question explorer
  *
+ * @var $sidemenu
  * @var $aGroups
  * @var $iSurveyId
  */
 ?>
+
+<!-- State when page is loaded : for JavaScript-->
+<?php if(isset($sidemenu['explorer']['state']) && $sidemenu['explorer']['state']==true):?>
+   <input type="hidden" id="open-explorer" />
+<?php endif;?>
+
 <li class="panel panel-default" id="explorer" class="dropdownlvl2 dropdownstyle">
     <a data-toggle="collapse" id="explorer-collapse" href="#explorer-lvl1">
         <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Questions explorer');?>

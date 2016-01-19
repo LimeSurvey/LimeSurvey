@@ -96,13 +96,14 @@ class questions extends Survey_Common_Action
         $questionsummary .= $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
         $finaldata['display'] = $questionsummary;
         $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
+        $aData['questionbar']['buttons']['view'] = TRUE;
 
+        ///////////
+        // sidemenu
         $aData['sidemenu']['questiongroups'] = true;
         $aData['sidemenu']['listquestions'] = true;
-
         $aData['sidemenu']['question'] = true;
         $aData['sidemenu']['question_name'] = $qrrow['title'].' : '.$qrrow['question'];
-        $aData['questionbar']['buttons']['view'] = TRUE;
 
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";

@@ -270,6 +270,11 @@ $(document).ready(function(){
      var $explorer = $('#explorer');
      var $sidemenu  = $('#sideMenu');
 
+
+     if ( $("#open-explorer").length ) {
+         $('#explorer-lvl1').collapse({"toggle": true, 'parent': '#explorer'});
+     }
+
      $explorer.on('shown.bs.collapse', function () {
          // If the side bar is fixed to top, we must unfix it first
          if ( $sidemenu.hasClass('fixed-top'))
