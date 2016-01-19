@@ -11,6 +11,10 @@
 <!-- State when page is loaded : for JavaScript-->
 <?php if(isset($sidemenu['explorer']['state']) && $sidemenu['explorer']['state']==true):?>
    <input type="hidden" id="open-explorer" />
+
+   <?php if(isset($sidemenu['explorer']['questiongroup'])):?>
+       <input type="hidden" id="open-questiongroup" data-gid="<?php echo $sidemenu['explorer']['questiongroup'];?>" />
+   <?php endif;?>
 <?php endif;?>
 
 <li class="panel panel-default" id="explorer" class="dropdownlvl2 dropdownstyle">
@@ -38,7 +42,7 @@
                                 </div>
 
                                 <?php if (!$bSurveyIsActive): ?>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-3" id="questions-container-<?php echo $aGroup->gid; ?>">
                                         <!-- add question to this group -->
                                         <a  data-toggle="tooltip" data-placement="top"  title="<?php eT('Add a question to this group');?>" class="" href="<?php echo $this->createUrl("/admin/questions/sa/newquestion/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
                                             <span class="glyphicon glyphicon-plus-sign"></span>

@@ -275,6 +275,17 @@ $(document).ready(function(){
          $('#explorer-lvl1').collapse({"toggle": true, 'parent': '#explorer'});
      }
 
+     if ( $("#open-questiongroup").length ) {
+         $gid = $("#open-questiongroup").data('gid');
+
+         $questionGroup = $('#questions-group-'+$gid);
+         $groupCaret = $('#caret-'+$gid);
+         $questionGroup.toggle(500);
+         $groupCaret.toggleClass('fa-caret-right');
+         $groupCaret.toggleClass('fa-caret-down');         
+
+     }
+
      $explorer.on('shown.bs.collapse', function () {
          // If the side bar is fixed to top, we must unfix it first
          if ( $sidemenu.hasClass('fixed-top'))
