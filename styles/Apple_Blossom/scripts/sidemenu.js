@@ -270,6 +270,28 @@ $(document).ready(function(){
      var $explorer = $('#explorer');
      var $sidemenu  = $('#sideMenu');
 
+
+     if ( $("#open-explorer").length ) {
+         $('#explorer-lvl1').collapse({"toggle": true, 'parent': '#explorer'});
+         if ( $sidemenu.hasClass('fixed-top'))
+         {
+             toTop = ( $(window).scrollTop() + 45 ); // 45px is the heigh of the top menu bar
+             $sidemenu.css({position:"absolute", top: toTop+"px"});
+         }
+         $sidemenu.addClass('exploring');         
+     }
+
+     if ( $("#open-questiongroup").length ) {
+         $gid = $("#open-questiongroup").data('gid');
+
+         $questionGroup = $('#questions-group-'+$gid);
+         $groupCaret = $('#caret-'+$gid);
+         $questionGroup.toggle(0);
+         $groupCaret.toggleClass('fa-caret-right');
+         $groupCaret.toggleClass('fa-caret-down');
+
+     }
+
      $explorer.on('shown.bs.collapse', function () {
          // If the side bar is fixed to top, we must unfix it first
          if ( $sidemenu.hasClass('fixed-top'))
@@ -278,7 +300,6 @@ $(document).ready(function(){
              $sidemenu.css({position:"absolute", top: toTop+"px"});
          }
          $sidemenu.addClass('exploring');
-
      });
 
      $explorer.on('hidden.bs.collapse', function(){
