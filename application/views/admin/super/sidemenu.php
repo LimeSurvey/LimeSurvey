@@ -13,7 +13,7 @@
 ?>
 
     <!-- State when page is loaded : for JavaScript-->
-    <?php if(isset($sidemenu['state'])):?>
+    <?php if(isset($sidemenu['state']) && $sidemenu['state']==false ):?>
        <input type="hidden" id="close-side-bar" />
     <?php endif;?>
 

@@ -29,11 +29,11 @@ class questions extends Survey_Common_Action
     public function view($surveyid, $gid, $qid)
     {
         $aData = array();
+
+        // Init general variables
         $aData['surveyid'] = $iSurveyID = $surveyid;
         $aData['gid'] = $gid;
         $aData['qid'] = $qid;
-
-
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
 
         //Show Question Details
@@ -100,14 +100,13 @@ class questions extends Survey_Common_Action
 
         ///////////
         // sidemenu
+        $aData['sidemenu']['state'] = true;
         $aData['sidemenu']['explorer']['state'] = true;
-        $aData['sidemenu']['explorer']['gid'] = $gid;
-        $aData['sidemenu']['explorer']['qid'] = $qid;
-
+        $aData['sidemenu']['explorer']['gid'] = (isset($gid))?$gid:false;
+        $aData['sidemenu']['explorer']['qid'] = (isset($qid))?$qid:false;
 
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-
 
         // Last question visited : By user (only one by user)
         $setting_entry = 'last_question_'.Yii::app()->user->getId();
@@ -120,7 +119,6 @@ class questions extends Survey_Common_Action
         // we need to set the gid for this question
         $setting_entry = 'last_question_gid_'.Yii::app()->user->getId();
         setGlobalSetting($setting_entry, $gid);
-
 
         // Last question for this survey (only one by survey, many by user)
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
@@ -143,7 +141,7 @@ class questions extends Survey_Common_Action
         $iSurveyID = $surveyid = sanitize_int($surveyid);
         if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
         {
-            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $aData['sidemenu']['questiongroups'] = true;
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;
             $aData['surveybar']['savebutton']['form'] = true;
@@ -235,7 +233,7 @@ class questions extends Survey_Common_Action
         }
 
         /////
-        $aData['sidemenu']['state'] = "close";
+        $aData['sidemenu']['state'] = false;
         $aData['surveyid'] = $iSurveyID;
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
@@ -384,7 +382,6 @@ class questions extends Survey_Common_Action
         );
 
 
-        $aData['sidemenu']['state'] = "close";
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
@@ -393,6 +390,14 @@ class questions extends Survey_Common_Action
         $aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
         $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
         $aData['display']['menu_bars']['qid_action'] = 'editdefaultvalues';
+
+
+        ///////////
+        // sidemenu
+        $aData['sidemenu']['state'] = false;
+        $aData['sidemenu']['explorer']['state'] = true;
+        $aData['sidemenu']['explorer']['gid'] = (isset($gid))?$gid:false;
+        $aData['sidemenu']['explorer']['qid'] = (isset($qid))?$qid:false;
 
         $this->_renderWrappedTemplate('survey/Question', 'editdefaultvalues_view', $aData);
     }
@@ -418,7 +423,6 @@ class questions extends Survey_Common_Action
         //$aData['display']['menu_bars']['gid_action'] = 'addquestion';
         //$aData['display']['menu_bars']['qid_action'] = 'editansweroptions';
 
-        $aData['sidemenu']['state'] = "close";
         $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
         $aData['questiongroupbar']['savebutton']['form'] = true;
@@ -428,10 +432,16 @@ class questions extends Survey_Common_Action
         $aData['surveyid'] = $surveyid;
         $aData['gid']      = $gid;
         $aData['qid']      = $qid;
-
         Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
-
         $aViewUrls = $this->_editansweroptions($surveyid, $gid, $qid);
+
+        ///////////
+        // sidemenu
+        $aData['sidemenu']['state'] = false;
+        $aData['sidemenu']['explorer']['state'] = true;
+        $aData['sidemenu']['explorer']['gid'] = (isset($gid))?$gid:false;
+        $aData['sidemenu']['explorer']['qid'] = (isset($qid))?$qid:false;
+
 
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
@@ -623,12 +633,19 @@ class questions extends Survey_Common_Action
         $aData['display']['menu_bars']['qid_action'] = 'editsubquestions';
         $aViewUrls = $this->_editsubquestion($surveyid, $gid, $qid);
 
-        $aData['sidemenu']['state'] = "close";
         $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
         $aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
         $aData['questiongroupbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid;
+
+        ///////////
+        // sidemenu
+        $aData['sidemenu']['state'] = false;
+        $aData['sidemenu']['explorer']['state'] = true;
+        $aData['sidemenu']['explorer']['gid'] = (isset($gid))?$gid:false;
+        $aData['sidemenu']['explorer']['qid'] = (isset($qid))?$qid:false;
+
 
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
@@ -851,7 +868,6 @@ class questions extends Survey_Common_Action
         Yii::app()->loadHelper('admin/htmleditor');
         $surveyid = $iSurveyID = $aData['surveyid'] = sanitize_int($surveyid);
 
-        $aData['sidemenu']['state'] = "close";
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
@@ -937,6 +953,15 @@ class questions extends Survey_Common_Action
         $aData['aqresult'] = '';
         $aData['action'] = 'addquestion';
 
+        ///////////
+        // sidemenu
+        ///////////
+        // sidemenu
+        $aData['sidemenu']['state'] = false;
+        $aData['sidemenu']['explorer']['state'] = true;
+        $aData['sidemenu']['explorer']['gid'] = (isset($gid))?$gid:false;
+        $aData['sidemenu']['explorer']['qid'] = (isset($qid))?$qid:false;
+
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 
@@ -965,8 +990,6 @@ class questions extends Survey_Common_Action
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
 
-
-        $aData['sidemenu']['state'] = "close";
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
@@ -1174,6 +1197,15 @@ class questions extends Survey_Common_Action
 
         $aData['ajaxDatas']['sValidateUrl'] = (isset($aData['sValidateUrl']))?$aData['sValidateUrl']:$this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate','surveyid'=>$surveyid));
         $aData['ajaxDatas']['qTypeOutput'] = $aData['qTypeOutput'];
+
+        ///////////
+        // sidemenu
+        $aData['sidemenu']['state'] = false;
+        $aData['sidemenu']['explorer']['state'] = true;
+        $aData['sidemenu']['explorer']['gid'] = (isset($gid))?$gid:false;
+        $aData['sidemenu']['explorer']['qid'] = (isset($qid))?$qid:false;
+
+
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 
