@@ -333,10 +333,14 @@ class questiongroups extends Survey_Common_Action
         $aData['sidemenu']['group_name'] = $grow['group_name'];
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-        $aData['questiongroupbar']['buttons']['view'] = TRUE;
+        $aData['questiongroupbar']['buttons']['view'] = true;
 
-        //$aData['questiongroupbar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listquestiongroups/", array('surveyid'=>$surveyid));
-        //$aData['questiongroupbar']['returnbutton']['text'] = gT('return to question group list');
+        ///////////
+        // sidemenu
+        $aData['sidemenu']['state'] = true;
+        $aData['sidemenu']['explorer']['state'] = true;
+        $aData['sidemenu']['explorer']['gid'] = (isset($gid))?$gid:false;
+        $aData['sidemenu']['explorer']['qid'] = false;
 
         $this->_renderWrappedTemplate('survey/QuestionGroups', 'group_view', $aData);
     }
@@ -429,9 +433,15 @@ class questiongroups extends Survey_Common_Action
             $aData['tabtitles'] = $aTabTitles;
             $aData['aBaseLanguage'] = $aBaseLanguage;
 
-            $aData['sidemenu']['state'] = false;
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+
+            ///////////
+            // sidemenu
+            $aData['sidemenu']['state'] = false;
+            $aData['sidemenu']['explorer']['state'] = true;
+            $aData['sidemenu']['explorer']['gid'] = (isset($gid))?$gid:false;
+            $aData['sidemenu']['explorer']['qid'] = false;
 
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'editGroup_view', $aData);
         }
