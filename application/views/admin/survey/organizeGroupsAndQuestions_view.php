@@ -34,12 +34,14 @@
             </ol>
         </div>
 
-        <?php echo CHtml::form(array("admin/survey/sa/organize/surveyid/{$surveyid}"), 'post', array('id'=>'frmOrganize')); ?>
+        <?php echo CHtml::form(array("admin/survey/sa/organize/surveyid/{$surveyid}"), 'post', array('id'=>'frmOrganize' )); ?>
             <p>
                 <input type='hidden' id='orgdata' name='orgdata' value='' />
                 <input type='hidden' id='close-after-save' name='close-after-save' value='' />
-                <button class='hidden' type="submit" id='btnSave'><?php echo eT('Save'); ?></button>
+                <button class='hidden' type="submit" id='btnSave' onclick='setFormSubmitting()'><?php echo eT('Save'); ?></button>
             </p>
         </form>
+        <!-- If user do a change in the list, and try to leave without saving, he'll be warn with this message -->
+        <input type="hidden" value="off" id="didChange" data-message="<?php eT('You didn\'t saved your changes !'); ?>" />
     </div>
 </div>
