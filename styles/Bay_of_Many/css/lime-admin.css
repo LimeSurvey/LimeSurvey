@@ -3468,4 +3468,7 @@ span[data-tooltip] {
 .modal {
   top: 50px; }
 
+#tokensidemenu {
+  border-top: 1px solid #e3e3e3; }
+
 /*# sourceMappingURL=lime-admin.css.map */

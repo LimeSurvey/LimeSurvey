@@ -131,7 +131,7 @@
 
                     <!-- Token -->
                     <?php if($tokenmanagement):?>
-                        <li class="toWhite  <?php if( isset($sidemenu["token_menu"]) ) echo 'active'; ?> ">
+                        <li id="tokensidemenu" class="toWhite  <?php if( isset($sidemenu["token_menu"]) ) echo 'active'; ?> ">
                             <a href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>">
                                 <span class="glyphicon glyphicon-user"></span>
                                 <?php eT("Token management");?>
