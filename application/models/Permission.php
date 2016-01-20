@@ -176,7 +176,6 @@ class Permission extends LSActiveRecord
         );
         $aPermissions=array(
             'surveys' => array(
-                'import' => false,
                 'title' => gT("Surveys"),
                 'description' => gT("Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"),
                 'img'=>'survey'
