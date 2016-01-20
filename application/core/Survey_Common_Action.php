@@ -672,7 +672,7 @@ class Survey_Common_Action extends CAction
             $aData['condarray'] = $condarray;
 
             $aData['languagelist'] = $oSurvey->getAllLanguages();
-            $this->getController()->renderPartial("/admin/survey/QuestionGroups/nquestiongroupbar_view", $aData);
+            $this->getController()->renderPartial("/admin/survey/QuestionGroups/questiongroupbar_view", $aData);
         }
     }
 
