@@ -31,7 +31,7 @@
         </div>
         <div class="row">
             <div class="col-sm-12" id="jcarousel-wrapper-container"> <!-- width defined in css -->
-                <div class="jcarousel-wrapper" style="z-index: 2000">
+                <div class="jcarousel-wrapper" >
                     <div class="jcarousel">
                         <ul >
                             <?php foreach($templates as $key=>$template):?>
