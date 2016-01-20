@@ -80,6 +80,7 @@
                                 <ul class="nav navbar-nav dropdown-first-level">
                                     <!-- Explorer -->
                                     <?php $this->renderPartial( "/admin/super/_question_explorer", array(
+                                        'sidemenu' => $sidemenu,
                                         'aGroups' => $aGroups,
                                         'iSurveyId' => $surveyid,
                                         'bSurveyIsActive' => $bSurveyIsActive

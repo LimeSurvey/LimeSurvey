@@ -2134,18 +2134,22 @@ div.panel.disabled {
       padding: 15px; }
       .side-menu .navbar-nav li a .glyphicon {
         padding-right: 10px; }
+      .side-menu .navbar-nav li a.question-link:hover {
+        box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.16) inset, 0 2px 1px 0px rgba(0, 0, 0, 0.12) inset; }
   .side-menu .navbar-nav .active {
+    padding: 15px 15px 15px 0px;
+    margin-bottom: 5px;
     background-color: transparent;
     margin-right: -1px;
-    border-right: 5px solid #e3e3e3; }
+    box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.16) inset, 0 2px 1px 0px rgba(0, 0, 0, 0.12) inset; }
     .side-menu .navbar-nav .active:hover {
-      background-color: transparent;
-      margin-right: -1px;
-      border-right: 5px solid #e3e3e3; }
-    .side-menu .navbar-nav .active a:hover {
-      color: #ffffff;
-      font-weight: 700;
-      background-color: black; }
+      text-decoration: none;
+      cursor: default; }
+  .side-menu .navbar-nav .question-link {
+    display: block;
+    padding-left: 0px; }
+  .side-menu .navbar-nav .question-link .question-collapse-title {
+    padding-left: 25px; }
   .side-menu #dropdown {
     border: 0;
     margin-bottom: 0;
