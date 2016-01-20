@@ -43,7 +43,7 @@ class Expressions extends Survey_Common_Action {
 
             if(isset($iSurveyID))
             {
-                $aData['sidemenu']['state'] = "close";
+                $aData['sidemenu']['state'] = false;
                 $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
                 $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
                 if(Yii::app()->request->getQuery('gid')!='')

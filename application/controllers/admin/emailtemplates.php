@@ -69,7 +69,7 @@ class emailtemplates extends Survey_Common_Action {
             $aData['defaulttexts'][$key] = templateDefaultTexts($aData['bplangs'][$key],$sEscapeMode);
         }
 
-            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 

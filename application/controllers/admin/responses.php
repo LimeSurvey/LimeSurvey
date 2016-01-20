@@ -289,7 +289,7 @@ class responses extends Survey_Common_Action
             }
 
             $aViewUrls[] = 'browseidfooter_view';
-            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
             $aData['menu']['view'] = true;
             $aData['menu']['close'] =  true;

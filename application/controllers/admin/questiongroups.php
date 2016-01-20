@@ -85,7 +85,7 @@ class questiongroups extends Survey_Common_Action
             $aData['aImportResults'] = $aImportResults;
             $aData['sExtension'] = $sExtension;
             //$aData['display']['menu_bars']['surveysummary'] = 'importgroup';
-            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
 
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
@@ -106,7 +106,7 @@ class questiongroups extends Survey_Common_Action
 
             $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'addgroup';
             $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
-            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $aData['sidemenu']['questiongroups'] = true;
 
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;
@@ -155,7 +155,7 @@ class questiongroups extends Survey_Common_Action
             $aData['grplangs'] = $grplangs;
             $aData['baselang'] = $baselang;
 
-            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;
@@ -429,7 +429,7 @@ class questiongroups extends Survey_Common_Action
             $aData['tabtitles'] = $aTabTitles;
             $aData['aBaseLanguage'] = $aBaseLanguage;
 
-            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 

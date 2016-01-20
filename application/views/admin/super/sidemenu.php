@@ -10,6 +10,7 @@
 <?php
     // TODO : move to controller
     $bSurveyIsActive = (isset($surveyIsActive))?$surveyIsActive:$oSurvey->active=='Y';
+    $sidemenu = (isset($sidemenu))?$sidemenu:array();
 ?>
 
     <!-- State when page is loaded : for JavaScript-->

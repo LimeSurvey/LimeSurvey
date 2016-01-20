@@ -82,7 +82,7 @@ class translate extends Survey_Common_Action {
             //var_dump(array_keys($aViewUrls));die();
         }
 
-            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 

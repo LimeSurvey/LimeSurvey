@@ -75,7 +75,7 @@ class dataentry extends Survey_Common_Action
 
         $aData['display']['menu_bars']['browse'] = gT("Data entry");
         $aData['title_bar']['title'] = gT("Data entry");
-        $aData['sidemenu']['state'] = "close";
+        $aData['sidemenu']['state'] = false;
         $aData['menu']['edition'] = true;
         $aData['menu']['import'] =  true;
         $aData['menu']['close'] =  true;
@@ -300,7 +300,7 @@ class dataentry extends Survey_Common_Action
                 $aData["surveyinfo"] = $surveyinfo;
                 $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
 
-                $aData['sidemenu']['state'] = "close";
+                $aData['sidemenu']['state'] = false;
                 $aData['menu']['edition'] = true;
                 $aData['menu']['import'] =  true;
                 $aData['menu']['close'] =  true;
@@ -1346,7 +1346,7 @@ class dataentry extends Survey_Common_Action
             $aDataentryoutput .= "</form>\n";
 
             $aViewUrls['output'] = $aDataentryoutput;
-            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
             $aData['menu']['save'] =  true;
             $aData['menu']['close'] =  true;
@@ -1385,7 +1385,7 @@ class dataentry extends Survey_Common_Action
             Yii::app()->loadHelper('database');
             $delresult = dbExecuteAssoc($delquery) or safeDie ("Couldn't delete record $id<br />\n");
 
-            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
             $aData['menu']['close'] =  true;
 
@@ -1900,7 +1900,7 @@ class dataentry extends Survey_Common_Action
 
                 $aData['dataentrymsgs'] = $aDataentrymsgs;
 
-                $aData['sidemenu']['state'] = "close";
+                $aData['sidemenu']['state'] = false;
 
                 $this->_renderWrappedTemplate('dataentry', 'insert', $aData);
             }
@@ -2339,7 +2339,7 @@ class dataentry extends Survey_Common_Action
 
             $aViewUrls[] = 'active_html_view';
 
-            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
             $aData['menu']['save'] = true;
             $aData['menu']['close'] =  true;

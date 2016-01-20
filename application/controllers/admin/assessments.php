@@ -72,7 +72,7 @@ class Assessments extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = array(), $aData = array())
     {
-        $aData['sidemenu']['state'] = "close";
+        $aData['sidemenu']['state'] = false;
         $iSurveyID=$aData['surveyid'];
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         // TODO: Hide this, because submitting first form on the page means

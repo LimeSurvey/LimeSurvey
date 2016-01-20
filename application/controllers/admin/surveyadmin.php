@@ -209,7 +209,7 @@ class SurveyAdmin extends Survey_Common_Action
         $tempData = $aData;
         $aData['data'] = $tempData;
 
-        $aData['sidemenu']['state'] = "close";
+        $aData['sidemenu']['state'] = false;
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 
@@ -612,7 +612,7 @@ class SurveyAdmin extends Survey_Common_Action
         $iSurveyID = (int) $iSurveyID;
 
         $aData = array();
-        $aData['sidemenu']['state'] = "close";
+        $aData['sidemenu']['state'] = false;
         $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
         $aData['surveyid'] = $iSurveyID;
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
@@ -921,10 +921,10 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $aData = $aViewUrls = array();
         $aData['surveyid'] = $iSurveyID = (int) $iSurveyID;
-        $aData['sidemenu']['state'] = "close";
+        $aData['sidemenu']['state'] = false;
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-        $aData['sidemenu']['state'] = "close";
+        $aData['sidemenu']['state'] = false;
 
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete'))
@@ -1056,7 +1056,7 @@ class SurveyAdmin extends Survey_Common_Action
 
 
 
-            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 

@@ -93,7 +93,7 @@ class quotas extends Survey_Common_Action
 
         $aData['surveyid'] = $iSurveyID = $surveyid =  sanitize_int($iSurveyId);
 
-        $aData['sidemenu']['state'] = "close";
+        $aData['sidemenu']['state'] = false;
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 
@@ -383,7 +383,7 @@ class quotas extends Survey_Common_Action
 
         $aViewUrls[] = 'editquota_view';
 
-            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 
@@ -444,7 +444,7 @@ class quotas extends Survey_Common_Action
             $aViewUrls[] = 'newanswertwo_view';
         }
 
-                $aData['sidemenu']['state'] = "close";
+                $aData['sidemenu']['state'] = false;
                 $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
                 $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
                 $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
@@ -463,7 +463,7 @@ class quotas extends Survey_Common_Action
         $aData['langs'] = $aData['aLangs'];
         $aData['baselang'] = $aData['sBaseLang'];
 
-                $aData['sidemenu']['state'] = "close";
+                $aData['sidemenu']['state'] = false;
                 $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
                 $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
                 $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';

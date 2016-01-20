@@ -674,7 +674,7 @@ class export extends Survey_Common_Action {
             $aData["surveyinfo"] = $surveyinfo;
             $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
 
-            $aData['sidemenu']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
             $aData['menu']['export'] = true;
             $aData['menu']['close'] =  true;
