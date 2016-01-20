@@ -1702,6 +1702,7 @@ html {
   z-index: 20002; }
 
 .footer {
+  z-index: 100;
   position: absolute;
   bottom: 0;
   background-color: #ffffff;
