@@ -2136,11 +2136,14 @@ div.panel.disabled {
       .side-menu .navbar-nav li a .glyphicon {
         padding-right: 10px; }
       .side-menu .navbar-nav li a.question-link:hover {
-        box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.16) inset, 0 2px 1px 0px rgba(0, 0, 0, 0.12) inset; }
+        box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.16) inset, 0 2px 1px 1px rgba(0, 0, 0, 0.12) inset; }
   .side-menu .navbar-nav .active {
-    background-color: transparent;
-    box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.16) inset, 0 2px 1px 0px rgba(0, 0, 0, 0.12) inset; }
+    background-color: #7d1344;
+    box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.16) inset, 0 2px 1px 1px rgba(0, 0, 0, 0.12) inset; }
+  .side-menu .navbar-nav .active a {
+    color: #ffffff; }
   .side-menu .navbar-nav .question-link.active {
+    background-color: transparent;
     padding: 15px 15px 15px 0px;
     margin-bottom: 5px;
     margin-right: -1px; }
@@ -2251,8 +2254,6 @@ div.panel.disabled {
           border-radius: 0;
           background-color: #fafafa;
           padding: 15px 18px; }
-  .side-menu .navbar-default .navbar-nav > li > a {
-    color: #762047; }
   .side-menu #explorer-collapse .caret {
     float: none;
     margin-bottom: 9px; }
@@ -2277,7 +2278,8 @@ div.panel.disabled {
 
 #sideMenu {
   min-height: 700px;
-  overflow: hidden; }
+  overflow: hidden;
+  box-shadow: 0 3px 3px rgba(99, 49, 48, 0.1); }
   #sideMenu a[aria-expanded="true"] {
     color: #ffffff;
     font-weight: 700;
