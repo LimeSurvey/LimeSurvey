@@ -438,7 +438,7 @@ class Permission extends LSActiveRecord
         $this->insertSomeRecords($aPerm);
     }
 
-    function giveAllSurveyPermissions($iUserID, $iSurveyID)
+    public function giveAllSurveyPermissions($iUserID, $iSurveyID)
     {
         $aPermissions=$this->getSurveyBasePermissions();
         $aPermissionsToSet=array();
@@ -456,13 +456,13 @@ class Permission extends LSActiveRecord
         $this->setPermissions($iUserID, $iSurveyID, 'survey', $aPermissionsToSet);
     }
 
-    function insertRecords($data)
+    public function insertRecords($data)
     {
         foreach ($item as $data)
             $this->insertSomeRecords($item);
     }
 
-    function insertSomeRecords($data)
+    public function insertSomeRecords($data)
     {
         $permission = new self;
         foreach ($data as $k => $v)
@@ -470,7 +470,7 @@ class Permission extends LSActiveRecord
         return $permission->save();
     }
 
-    function getUserDetails($surveyid)
+    public function getUserDetails($surveyid)
     {
         $sQuery = "SELECT p.entity_id, p.uid, u.users_name, u.full_name FROM {{permissions}} AS p INNER JOIN {{users}}  AS u ON p.uid = u.uid
             WHERE p.entity_id = :surveyid AND u.uid != :userid and p.entity='survey'
@@ -480,7 +480,7 @@ class Permission extends LSActiveRecord
         return Yii::app()->db->createCommand($sQuery)->bindParam(":userid", $iUserID, PDO::PARAM_INT)->bindParam("surveyid", $surveyid, PDO::PARAM_INT)->query()->readAll(); //Checked
     }
 
-    function copySurveyPermissions($iSurveyIDSource,$iSurveyIDTarget)
+    public function copySurveyPermissions($iSurveyIDSource,$iSurveyIDTarget)
     {
         $aRows=self::model()->findAll("entity_id=:sid AND entity='survey'", array(':sid'=>$iSurveyIDSource));
         foreach ($aRows as $aRow)
@@ -509,7 +509,7 @@ class Permission extends LSActiveRecord
     * @param $iUserID integer User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
-    function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD='read', $iUserID=null)
+    public function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD='read', $iUserID=null)
     {
         if(is_null($iUserID) && Yii::app() instanceof CConsoleApplication)
             return true;
@@ -530,7 +530,7 @@ class Permission extends LSActiveRecord
         if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
         $sCRUD=$sCRUD.'_p';
 
-        $iUserID=self::getUserId($iUserID);
+        $iUserID=$this->getUserId($iUserID);
         if(!$iUserID)
             return false;
 
@@ -575,7 +575,7 @@ class Permission extends LSActiveRecord
     * @param $iUserID integer User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
-    function hasGlobalPermission($sPermission, $sCRUD='read', $iUserID=null)
+    public function hasGlobalPermission($sPermission, $sCRUD='read', $iUserID=null)
     {
         return $this->hasPermission(0, 'global', $sPermission, $sCRUD, $iUserID);
     }
@@ -589,14 +589,14 @@ class Permission extends LSActiveRecord
     * @param $iUserID integer User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
-    function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD='read', $iUserID=null)
+    public function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD='read', $iUserID=null)
     {
         $oSurvey=Survey::Model()->findByPk($iSurveyID);
         if (!$oSurvey)
             return false;
         if(is_null($iUserID) && Yii::app() instanceof CConsoleApplication)
             return true;
-        $iUserID=self::getUserId($iUserID);
+        $iUserID=$this->getUserId($iUserID);
         // If you own a survey you have access to the whole survey
         if ($iUserID==$oSurvey->owner_id)
             return true;
@@ -612,7 +612,7 @@ class Permission extends LSActiveRecord
     * @param $iUserID integer User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
-    function hasTemplatePermission($sTemplateName, $sCRUD='read', $iUserID=null)
+    public function hasTemplatePermission($sTemplateName, $sCRUD='read', $iUserID=null)
     {
         return $this->hasPermission(0, 'global', 'templates', $sCRUD, $iUserID) || $this->hasPermission(0, 'template', $sTemplateName, $sCRUD, $iUserID);
     }
@@ -633,8 +633,10 @@ class Permission extends LSActiveRecord
     * @param iUserID optionnal user id
     * @return integer user id
     */
-    private static function getUserId($iUserID=null)
+    protected function getUserId($iUserID=null)
     {
+        if(Yii::app() instanceof CConsoleApplication)
+            throw new Exception('Permission must not be tested with console application.');
         $sOldLanguage=App()->language;// Call of Yii::app()->user reset App()->language to default. Quick fix for #09695
         if (is_null($iUserID) && !Yii::app()->user->getIsGuest())
             $iUserID = Yii::app()->session['loginID'];
