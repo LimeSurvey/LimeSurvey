@@ -213,14 +213,15 @@
             <td>
         <?php
             //Multiple choice:
-            if ($flt[2] == "M") {$myfield = "M$myfield";}
-            if ($flt[2] == "P") {$myfield = "P$myfield";}
-
             // File Upload will need special filters in future, hence the special treatment
-            if ($flt[2] == "|") {$myfield = "|$myfield";}
-
             //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-            if ($flt[2] == "N") {$myfield = "N$myfield";}
+            $specialQuestionTypes = array("M","P","T","S","Q","R","|","","N","K","D");
+            if ( in_array( $flt[2], $specialQuestionTypes))
+            {
+                $myfield = $flt[2].$myfield;
+            }
+
+            
         ?>
             <input type='checkbox'
                     id='filter<?php echo $myfield; ?>'
@@ -292,7 +293,7 @@
                             <span class='smalltext'><?php eT("Number less than");?>:</span><br>
                             <?php echo CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array('onkeypress'=>"return goodchars(event,'0123456789.,')"));?>
                             <br>
-                            <?php 
+                            <?php
                             //we added 1 form -> increase counter
                             $counter2++;
                         }
@@ -355,7 +356,7 @@
                     echo " />&nbsp;"
                     ."&nbsp;"._showSpeaker($niceqtext)
                     ."<br />\n"
-                    ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n" 
+                    ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n"
                     .CHtml::textArea($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('rows'=>'3','cols'=>'80'))
                     ."\t</td>\n";
                     break;
@@ -1266,7 +1267,7 @@ flush(); //Let's give the user something to look at while they wait for the pret
     function _showSpeaker($hinttext)
     {
         global $maxchars; //Where does this come from? can it be replaced? passed with function call?
-        
+
         $sImageURL = Yii::app()->getConfig('adminimageurl');
         if(!isset($maxchars))
         {
