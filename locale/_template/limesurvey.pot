@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-01-08 11:50:30+00:00\n"
+"POT-Creation-Date: 2016-01-21 10:13:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -69,7 +69,6 @@ msgstr ""
 #: application/views/admin/survey/deleteSurvey_view.php:8
 #: application/views/admin/survey/importSurveyResources_view.php:28
 #: application/views/admin/survey/importSurvey_view.php:5
-#: application/views/admin/survey/importSurvey_view.php:15
 #: application/views/admin/templates/importuploaded_view.php:25
 #: application/views/admin/templates/importuploaded_view.php:82
 #: application/views/admin/token/browse.php:60
@@ -98,8 +97,7 @@ msgstr ""
 #: application/views/admin/error_view.php:5
 #: application/views/admin/survey/copySurvey_view.php:8
 #: application/views/admin/survey/deleteSurvey_view.php:11
-#: application/views/admin/survey/importSurvey_view.php:7
-#: application/views/admin/survey/importSurvey_view.php:26
+#: application/views/admin/survey/importSurvey_view.php:18
 msgid "Main Admin Screen"
 msgstr ""
 
@@ -1204,8 +1202,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4325
 #: application/views/admin/dataentry/content_view.php:495
 #: application/views/admin/dataentry/content_view.php:548
-#: application/views/admin/export/statistics_view.php:504
-#: application/views/admin/export/statistics_view.php:669
+#: application/views/admin/export/statistics_view.php:505
+#: application/views/admin/export/statistics_view.php:670
 #: application/views/admin/global_settings/_interfaces.php:28
 #: application/views/admin/global_settings/_presentation.php:14
 #: application/views/admin/global_settings/_presentation.php:35
@@ -1384,7 +1382,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4282
 #: application/helpers/qanda_helper.php:4337
 #: application/views/admin/dataentry/content_view.php:549
-#: application/views/admin/export/statistics_view.php:675
+#: application/views/admin/export/statistics_view.php:676
 msgid "Uncertain"
 msgstr ""
 
@@ -1458,8 +1456,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4349
 #: application/views/admin/dataentry/content_view.php:496
 #: application/views/admin/dataentry/content_view.php:550
-#: application/views/admin/export/statistics_view.php:510
-#: application/views/admin/export/statistics_view.php:681
+#: application/views/admin/export/statistics_view.php:511
+#: application/views/admin/export/statistics_view.php:682
 #: application/views/admin/global_settings/_interfaces.php:31
 #: application/views/admin/global_settings/_presentation.php:15
 #: application/views/admin/global_settings/_presentation.php:36
@@ -1529,7 +1527,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4448
 #: application/helpers/qanda_helper.php:4493
 #: application/views/admin/dataentry/content_view.php:566
-#: application/views/admin/export/statistics_view.php:725
+#: application/views/admin/export/statistics_view.php:726
 msgid "Increase"
 msgstr ""
 
@@ -1546,7 +1544,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4449
 #: application/helpers/qanda_helper.php:4504
 #: application/views/admin/dataentry/content_view.php:567
-#: application/views/admin/export/statistics_view.php:730
+#: application/views/admin/export/statistics_view.php:731
 msgid "Same"
 msgstr ""
 
@@ -1563,7 +1561,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4450
 #: application/helpers/qanda_helper.php:4515
 #: application/views/admin/dataentry/content_view.php:568
-#: application/views/admin/export/statistics_view.php:735
+#: application/views/admin/export/statistics_view.php:736
 msgid "Decrease"
 msgstr ""
 
@@ -1655,7 +1653,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3594
 #: application/helpers/qanda_helper.php:3881
 #: application/views/admin/dataentry/content_view.php:53
-#: application/views/admin/export/statistics_view.php:486
+#: application/views/admin/export/statistics_view.php:487
 msgid "Female"
 msgstr ""
 
@@ -1672,7 +1670,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3593
 #: application/helpers/qanda_helper.php:3889
 #: application/views/admin/dataentry/content_view.php:54
-#: application/views/admin/export/statistics_view.php:492
+#: application/views/admin/export/statistics_view.php:493
 msgid "Male"
 msgstr ""
 
@@ -1757,7 +1755,7 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:1350
 #: application/controllers/admin/printablesurvey.php:242
 #: application/views/admin/survey/copySurvey_view.php:47
-#: application/views/admin/survey/importSurvey_view.php:61
+#: application/views/admin/survey/importSurvey_view.php:56
 msgid "and"
 msgstr ""
 
@@ -1843,8 +1841,8 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:2099
 #: application/controllers/admin/conditionsaction.php:2102
 #: application/controllers/admin/responses.php:1223
-#: application/views/admin/export/statistics_view.php:1286
-#: application/views/admin/export/statistics_view.php:1289
+#: application/views/admin/export/statistics_view.php:1287
+#: application/views/admin/export/statistics_view.php:1290
 #: application/views/admin/survey/Question/questionbar_view.php:5
 #: application/views/admin/templates/templateeditor_printoutput_view.php:3
 msgid "Question"
@@ -1898,7 +1896,7 @@ msgstr ""
 #: application/views/admin/survey/Question/import_view.php:9
 #: application/views/admin/survey/QuestionGroups/import_view.php:10
 #: application/views/admin/survey/copySurvey_view.php:23
-#: application/views/admin/survey/importSurvey_view.php:37
+#: application/views/admin/survey/importSurvey_view.php:32
 msgid "Questions"
 msgstr ""
 
@@ -1928,7 +1926,7 @@ msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1944
 #: application/views/admin/export/statistics_view.php:140
-#: application/views/admin/export/statistics_view.php:1240
+#: application/views/admin/export/statistics_view.php:1241
 msgid "Clear"
 msgstr ""
 
@@ -2034,7 +2032,7 @@ msgstr ""
 #: application/views/admin/survey/Question/import_view.php:4
 #: application/views/admin/survey/QuestionGroups/import_view.php:4
 #: application/views/admin/survey/importSurveyResources_view.php:4
-#: application/views/admin/survey/importSurvey_view.php:12
+#: application/views/admin/survey/importSurvey_view.php:24
 #: application/views/admin/templates/importuploaded_view.php:4
 msgid "File upload succeeded."
 msgstr ""
@@ -2220,8 +2218,8 @@ msgstr ""
 #: application/views/admin/survey/copySurvey_view.php:14
 #: application/views/admin/survey/importSurveyResources_view.php:3
 #: application/views/admin/survey/importSurveyResources_view.php:10
-#: application/views/admin/survey/importSurvey_view.php:11
-#: application/views/admin/survey/importSurvey_view.php:30
+#: application/views/admin/survey/importSurvey_view.php:23
+#: application/views/admin/survey/importSurvey_view.php:25
 #: application/views/admin/templates/importuploaded_view.php:3
 #: application/views/admin/templates/importuploaded_view.php:12
 #: application/views/admin/templates/importuploaded_view.php:87
@@ -2316,7 +2314,7 @@ msgstr ""
 #: application/controllers/admin/useraction.php:137
 #: application/controllers/admin/useraction.php:383
 #: application/controllers/admin/useraction.php:401
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:305
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:320
 #: application/core/plugins/Authdb/Authdb.php:112
 #: application/helpers/replacements_helper.php:387
 #: application/helpers/replacements_helper.php:420
@@ -3351,7 +3349,7 @@ msgstr ""
 #: application/controllers/admin/useraction.php:150
 #: application/controllers/admin/useraction.php:383
 #: application/controllers/admin/useraction.php:401
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:304
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:319
 #: application/core/plugins/Authdb/Authdb.php:111
 #: application/views/admin/user/editusers.php:8
 #: application/views/admin/user/modifyuser.php:5
@@ -4240,7 +4238,7 @@ msgstr ""
 #: application/controllers/admin/translate.php:505
 #: application/views/admin/survey/QuestionGroups/import_view.php:9
 #: application/views/admin/survey/copySurvey_view.php:22
-#: application/views/admin/survey/importSurvey_view.php:36
+#: application/views/admin/survey/importSurvey_view.php:31
 msgid "Question groups"
 msgstr ""
 
@@ -4256,7 +4254,7 @@ msgstr ""
 #: application/views/admin/survey/Question/import_view.php:10
 #: application/views/admin/survey/QuestionGroups/import_view.php:11
 #: application/views/admin/survey/copySurvey_view.php:27
-#: application/views/admin/survey/importSurvey_view.php:42
+#: application/views/admin/survey/importSurvey_view.php:37
 msgid "Subquestions"
 msgstr ""
 
@@ -4288,9 +4286,9 @@ msgstr ""
 #: application/controllers/admin/useraction.php:89
 #: application/controllers/admin/useraction.php:92
 #: application/controllers/admin/useraction.php:98
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:159
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:213
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:232
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:174
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:228
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:247
 #: application/core/plugins/Authdb/Authdb.php:46
 #: application/core/plugins/Authdb/Authdb.php:57
 msgid "Failed to add user"
@@ -4702,36 +4700,40 @@ msgstr ""
 msgid "Forbidden Extension"
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:160
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:120
+msgid "LDAP authentication failed: LDAP PHP module is not available."
+msgstr ""
+
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:175
 msgid "Simple bind LDAP configuration doesn't allow LDAP user creation"
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:178
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:193
 msgid "Could not connect to LDAP server."
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:204
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:219
 msgid "Username not found in LDAP server"
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:205
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:220
 msgid "Verify username and try again"
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:214
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:229
 #: application/core/plugins/Authdb/Authdb.php:47
 msgid "The email address is not valid."
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:267
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:282
 msgid "Error creating LDAP connection"
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:391
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:406
 msgid "LDAP authentication method is not allowed for this user"
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:497
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:512
 msgid "Credentials are valid but we failed to create a user"
 msgstr ""
 
@@ -4912,7 +4914,7 @@ msgstr ""
 #: application/extensions/Menu/MenuWidget.php:267
 #: application/models/Permission.php:69
 #: application/views/admin/survey/copySurvey_view.php:47
-#: application/views/admin/survey/importSurvey_view.php:61
+#: application/views/admin/survey/importSurvey_view.php:56
 #: application/views/admin/survey/surveybar_view.php:74
 msgid "Quotas"
 msgstr ""
@@ -4920,7 +4922,7 @@ msgstr ""
 #: application/extensions/Menu/MenuWidget.php:273
 #: application/models/Permission.php:62
 #: application/views/admin/survey/copySurvey_view.php:46
-#: application/views/admin/survey/importSurvey_view.php:60
+#: application/views/admin/survey/importSurvey_view.php:55
 #: application/views/admin/survey/surveybar_view.php:78
 msgid "Assessments"
 msgstr ""
@@ -5139,7 +5141,7 @@ msgid "One or more uploaded files are not in proper format/size. You cannot proc
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1134
-#: application/helpers/frontend_helper.php:2145
+#: application/helpers/frontend_helper.php:2153
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
 
@@ -5365,7 +5367,7 @@ msgid "Comments"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:777
-#: application/models/Question.php:568
+#: application/models/Question.php:565
 msgid "Ranking"
 msgstr ""
 
@@ -5542,7 +5544,7 @@ msgstr ""
 #: application/views/admin/survey/Question/import_view.php:11
 #: application/views/admin/survey/QuestionGroups/import_view.php:12
 #: application/views/admin/survey/copySurvey_view.php:24
-#: application/views/admin/survey/importSurvey_view.php:39
+#: application/views/admin/survey/importSurvey_view.php:34
 msgid "Answers"
 msgstr ""
 
@@ -5593,7 +5595,7 @@ msgstr ""
 #: application/helpers/common_helper.php:2954
 #: application/helpers/common_helper.php:3302
 #: application/models/Permission.php:84
-#: application/views/admin/export/statistics_view.php:1252
+#: application/views/admin/export/statistics_view.php:1253
 msgid "Statistics"
 msgstr ""
 
@@ -6098,7 +6100,7 @@ msgid "Final equation to set in database, defaults to question text."
 msgstr ""
 
 #: application/helpers/common_helper.php:2818
-#: application/models/Question.php:638
+#: application/models/Question.php:635
 msgid "Equation"
 msgstr ""
 
@@ -8164,7 +8166,7 @@ msgid "There are empty question groups in this survey - please create at least o
 msgstr ""
 
 #: application/helpers/frontend_helper.php:1657
-#: application/helpers/frontend_helper.php:2022
+#: application/helpers/frontend_helper.php:2030
 #: application/views/admin/templates/templateeditor_navigator_view.php:5
 #: application/views/installer/dbconfig_view.php:61
 #: application/views/installer/dbsettings_view.php:13
@@ -9286,7 +9288,7 @@ msgstr ""
 
 #: application/models/Permission.php:74
 #: application/views/admin/export/exportresults_view.php:123
-#: application/views/admin/survey/importSurvey_view.php:69
+#: application/views/admin/survey/importSurvey_view.php:64
 #: application/views/admin/survey/surveybar_view.php:213
 msgid "Responses"
 msgstr ""
@@ -9368,7 +9370,7 @@ msgstr ""
 #: application/views/admin/global_settings/_overview.php:21
 #: application/views/admin/participants/displayParticipants_view.php:174
 #: application/views/admin/survey/copySurvey_view.php:20
-#: application/views/admin/survey/importSurvey_view.php:34
+#: application/views/admin/survey/importSurvey_view.php:29
 #: application/views/admin/survey/listSurveys_view.php:7
 msgid "Surveys"
 msgstr ""
@@ -9408,7 +9410,7 @@ msgstr ""
 #: application/views/admin/survey/Question/import_view.php:16
 #: application/views/admin/survey/QuestionGroups/import_view.php:17
 #: application/views/admin/survey/copySurvey_view.php:39
-#: application/views/admin/survey/importSurvey_view.php:54
+#: application/views/admin/survey/importSurvey_view.php:49
 msgid "Label sets"
 msgstr ""
 
@@ -9473,141 +9475,141 @@ msgstr ""
 msgid "Subquestion codes may only contain alphanumeric characters."
 msgstr ""
 
-#: application/models/Question.php:442
+#: application/models/Question.php:439
 msgid "Array dual scale"
 msgstr ""
 
-#: application/models/Question.php:443 application/models/Question.php:457
-#: application/models/Question.php:464 application/models/Question.php:471
-#: application/models/Question.php:485 application/models/Question.php:492
-#: application/models/Question.php:506 application/models/Question.php:618
-#: application/models/Question.php:625
+#: application/models/Question.php:440 application/models/Question.php:454
+#: application/models/Question.php:461 application/models/Question.php:468
+#: application/models/Question.php:482 application/models/Question.php:489
+#: application/models/Question.php:503 application/models/Question.php:615
+#: application/models/Question.php:622
 msgid "Arrays"
 msgstr ""
 
-#: application/models/Question.php:449
+#: application/models/Question.php:446
 msgid "5 Point Choice"
 msgstr ""
 
-#: application/models/Question.php:450 application/models/Question.php:527
-#: application/models/Question.php:548 application/models/Question.php:611
+#: application/models/Question.php:447 application/models/Question.php:524
+#: application/models/Question.php:545 application/models/Question.php:608
 msgid "Single choice questions"
 msgstr ""
 
-#: application/models/Question.php:456
+#: application/models/Question.php:453
 msgid "Array (5 Point Choice)"
 msgstr ""
 
-#: application/models/Question.php:463
+#: application/models/Question.php:460
 msgid "Array (10 Point Choice)"
 msgstr ""
 
-#: application/models/Question.php:470
+#: application/models/Question.php:467
 msgid "Array (Yes/No/Uncertain)"
 msgstr ""
 
-#: application/models/Question.php:477
+#: application/models/Question.php:474
 msgid "Date/Time"
 msgstr ""
 
-#: application/models/Question.php:478 application/models/Question.php:499
-#: application/models/Question.php:513 application/models/Question.php:520
-#: application/models/Question.php:541 application/models/Question.php:569
-#: application/models/Question.php:597 application/models/Question.php:604
-#: application/models/Question.php:632 application/models/Question.php:639
+#: application/models/Question.php:475 application/models/Question.php:496
+#: application/models/Question.php:510 application/models/Question.php:517
+#: application/models/Question.php:538 application/models/Question.php:566
+#: application/models/Question.php:594 application/models/Question.php:601
+#: application/models/Question.php:629 application/models/Question.php:636
 msgid "Mask questions"
 msgstr ""
 
-#: application/models/Question.php:484
+#: application/models/Question.php:481
 msgid "Array (Increase/Same/Decrease)"
 msgstr ""
 
-#: application/models/Question.php:491
+#: application/models/Question.php:488
 msgid "Array"
 msgstr ""
 
-#: application/models/Question.php:498
+#: application/models/Question.php:495
 msgid "Gender"
 msgstr ""
 
-#: application/models/Question.php:505
+#: application/models/Question.php:502
 msgid "Array by column"
 msgstr ""
 
-#: application/models/Question.php:512
+#: application/models/Question.php:509
 msgid "Language Switch"
 msgstr ""
 
-#: application/models/Question.php:519
+#: application/models/Question.php:516
 msgid "Multiple Numerical Input"
 msgstr ""
 
-#: application/models/Question.php:526
+#: application/models/Question.php:523
 msgid "List (Radio)"
 msgstr ""
 
-#: application/models/Question.php:533
+#: application/models/Question.php:530
 msgid "Multiple choice"
 msgstr ""
 
-#: application/models/Question.php:534 application/models/Question.php:555
+#: application/models/Question.php:531 application/models/Question.php:552
 msgid "Multiple choice questions"
 msgstr ""
 
-#: application/models/Question.php:540
+#: application/models/Question.php:537
 msgid "Numerical Input"
 msgstr ""
 
-#: application/models/Question.php:547
+#: application/models/Question.php:544
 msgid "List with comment"
 msgstr ""
 
-#: application/models/Question.php:554
+#: application/models/Question.php:551
 msgid "Multiple choice with comments"
 msgstr ""
 
-#: application/models/Question.php:561
+#: application/models/Question.php:558
 msgid "Multiple Short Text"
 msgstr ""
 
-#: application/models/Question.php:562 application/models/Question.php:576
-#: application/models/Question.php:583 application/models/Question.php:590
+#: application/models/Question.php:559 application/models/Question.php:573
+#: application/models/Question.php:580 application/models/Question.php:587
 msgid "Text questions"
 msgstr ""
 
-#: application/models/Question.php:575
+#: application/models/Question.php:572
 msgid "Short Free Text"
 msgstr ""
 
-#: application/models/Question.php:582
+#: application/models/Question.php:579
 msgid "Long Free Text"
 msgstr ""
 
-#: application/models/Question.php:589
+#: application/models/Question.php:586
 msgid "Huge Free Text"
 msgstr ""
 
-#: application/models/Question.php:596
+#: application/models/Question.php:593
 msgid "Text display"
 msgstr ""
 
-#: application/models/Question.php:603
+#: application/models/Question.php:600
 msgid "Yes/No"
 msgstr ""
 
-#: application/models/Question.php:610
+#: application/models/Question.php:607
 msgid "List (Dropdown)"
 msgstr ""
 
-#: application/models/Question.php:617
+#: application/models/Question.php:614
 msgid "Array (Numbers)"
 msgstr ""
 
-#: application/models/Question.php:624
+#: application/models/Question.php:621
 msgid "Array (Texts)"
 msgstr ""
 
-#: application/models/Question.php:631
+#: application/models/Question.php:628
 msgid "File upload"
 msgstr ""
 
@@ -10489,6 +10491,10 @@ msgstr ""
 msgid "Export data"
 msgstr ""
 
+#: application/views/admin/export/generatestats/simplestats/_statisticsoutput_graphs.php:97
+msgid "Too many labels, can't generate chart"
+msgstr ""
+
 #: application/views/admin/export/spss_view.php:1
 msgid "Export result data to SPSS"
 msgstr ""
@@ -10564,13 +10570,13 @@ msgstr ""
 
 #: application/views/admin/export/statistics_view.php:17
 #: application/views/admin/export/statistics_view.php:145
-#: application/views/admin/export/statistics_view.php:1251
+#: application/views/admin/export/statistics_view.php:1252
 msgid "Maximize"
 msgstr ""
 
 #: application/views/admin/export/statistics_view.php:17
 #: application/views/admin/export/statistics_view.php:145
-#: application/views/admin/export/statistics_view.php:1251
+#: application/views/admin/export/statistics_view.php:1252
 msgid "Minimize"
 msgstr ""
 
@@ -10639,7 +10645,7 @@ msgid "Select output format"
 msgstr ""
 
 #: application/views/admin/export/statistics_view.php:139
-#: application/views/admin/export/statistics_view.php:1239
+#: application/views/admin/export/statistics_view.php:1240
 #: application/views/surveys/publicSurveyList.php:11
 msgid "View statistics"
 msgstr ""
@@ -10648,45 +10654,45 @@ msgstr ""
 msgid "Response filters"
 msgstr ""
 
-#: application/views/admin/export/statistics_view.php:289
-#: application/views/admin/export/statistics_view.php:389
+#: application/views/admin/export/statistics_view.php:290
+#: application/views/admin/export/statistics_view.php:390
 msgid "Number greater than"
 msgstr ""
 
-#: application/views/admin/export/statistics_view.php:292
-#: application/views/admin/export/statistics_view.php:392
+#: application/views/admin/export/statistics_view.php:293
+#: application/views/admin/export/statistics_view.php:393
 msgid "Number less than"
 msgstr ""
 
-#: application/views/admin/export/statistics_view.php:332
-#: application/views/admin/export/statistics_view.php:358
-#: application/views/admin/export/statistics_view.php:377
-#: application/views/admin/export/statistics_view.php:766
+#: application/views/admin/export/statistics_view.php:333
+#: application/views/admin/export/statistics_view.php:359
+#: application/views/admin/export/statistics_view.php:378
+#: application/views/admin/export/statistics_view.php:767
 msgid "Responses containing"
 msgstr ""
 
-#: application/views/admin/export/statistics_view.php:406
+#: application/views/admin/export/statistics_view.php:407
 msgid "Number of files greater than"
 msgstr ""
 
-#: application/views/admin/export/statistics_view.php:409
+#: application/views/admin/export/statistics_view.php:410
 msgid "Number of files less than"
 msgstr ""
 
-#: application/views/admin/export/statistics_view.php:447
+#: application/views/admin/export/statistics_view.php:448
 msgid "Date (YYYY-MM-DD) equals"
 msgstr ""
 
-#: application/views/admin/export/statistics_view.php:450
+#: application/views/admin/export/statistics_view.php:451
 msgid "Date is"
 msgstr ""
 
-#: application/views/admin/export/statistics_view.php:453
+#: application/views/admin/export/statistics_view.php:454
 msgid "AND/OR Date is"
 msgstr ""
 
-#: application/views/admin/export/statistics_view.php:1058
-#: application/views/admin/export/statistics_view.php:1143
+#: application/views/admin/export/statistics_view.php:1059
+#: application/views/admin/export/statistics_view.php:1144
 #: application/views/admin/survey/Question/answerOptions_view.php:19
 #: application/views/admin/survey/Question/subQuestion_view.php:6
 msgid "Label"
@@ -11267,14 +11273,14 @@ msgstr ""
 #: application/views/admin/survey/Question/import_view.php:5
 #: application/views/admin/survey/QuestionGroups/import_view.php:5
 #: application/views/admin/survey/importSurveyResources_view.php:5
-#: application/views/admin/survey/importSurvey_view.php:12
+#: application/views/admin/survey/importSurvey_view.php:24
 msgid "Reading file.."
 msgstr ""
 
 #: application/views/admin/labels/import_view.php:24
 #: application/views/admin/participants/uploadSummary_view.php:33
 #: application/views/admin/survey/copySurvey_view.php:51
-#: application/views/admin/survey/importSurvey_view.php:76
+#: application/views/admin/survey/importSurvey_view.php:71
 #: application/views/admin/token/csvpost.php:23
 msgid "Warnings"
 msgstr ""
@@ -13649,52 +13655,52 @@ msgid "Survey import summary"
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:21
-#: application/views/admin/survey/importSurvey_view.php:35
+#: application/views/admin/survey/importSurvey_view.php:30
 msgid "Languages"
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:31
-#: application/views/admin/survey/importSurvey_view.php:46
+#: application/views/admin/survey/importSurvey_view.php:41
 msgid "Default answers"
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:35
-#: application/views/admin/survey/importSurvey_view.php:50
+#: application/views/admin/survey/importSurvey_view.php:45
 msgid "Condition"
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:43
-#: application/views/admin/survey/importSurvey_view.php:58
+#: application/views/admin/survey/importSurvey_view.php:53
 msgid "Not imported label sets"
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:43
-#: application/views/admin/survey/importSurvey_view.php:58
+#: application/views/admin/survey/importSurvey_view.php:53
 msgid "(Label sets were not imported since you do not have the permission to create new label sets.)"
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:45
-#: application/views/admin/survey/importSurvey_view.php:38
+#: application/views/admin/survey/importSurvey_view.php:33
 msgid "Question attributes"
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:47
-#: application/views/admin/survey/importSurvey_view.php:61
+#: application/views/admin/survey/importSurvey_view.php:56
 msgid "quota members"
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:47
-#: application/views/admin/survey/importSurvey_view.php:61
+#: application/views/admin/survey/importSurvey_view.php:56
 msgid "quota language settings"
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:60
-#: application/views/admin/survey/importSurvey_view.php:92
+#: application/views/admin/survey/importSurvey_view.php:87
 msgid "Copy of survey is completed."
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:62
-#: application/views/admin/survey/importSurvey_view.php:95
+#: application/views/admin/survey/importSurvey_view.php:90
 msgid "Go to survey"
 msgstr ""
 
@@ -13908,15 +13914,15 @@ msgstr ""
 msgid "Total Errors"
 msgstr ""
 
-#: application/views/admin/survey/importSurvey_view.php:8
+#: application/views/admin/survey/importSurvey_view.php:19
 msgid "Import again"
 msgstr ""
 
-#: application/views/admin/survey/importSurvey_view.php:67
+#: application/views/admin/survey/importSurvey_view.php:62
 msgid "Response import summary"
 msgstr ""
 
-#: application/views/admin/survey/importSurvey_view.php:88
+#: application/views/admin/survey/importSurvey_view.php:83
 msgid "Import of survey is completed."
 msgstr ""
 

@@ -23,7 +23,6 @@ function injectglobalsettings()
     //if ($dbvaluearray!==false)
     if (count($settings) > 0)
     {
-        //foreach  ($dbvaluearray as $setting)
         foreach ($settings as $setting)
         {
             // We first check if admintheme exist
@@ -36,7 +35,6 @@ function injectglobalsettings()
                     return;
                 }
             }
-
             Yii::app()->setConfig($setting->getAttribute('stg_name'), $setting->getAttribute('stg_value'));
         }
     }

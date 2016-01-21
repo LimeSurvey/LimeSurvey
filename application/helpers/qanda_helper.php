@@ -3761,7 +3761,7 @@ $extraclass .=" col-sm-".trim($col);
                     <input id=\"searchbox_{$ia[1]}\" placeholder=\"".gT("Search")."\" width=\"15\">
                 </div>
             </div>
-            <div id=\"map_{$ia[1]}\" style=\"width: 100%; height: {$aQuestionAttributes['location_mapheight']}px;\">
+            <div id=\"map_{$ia[1]}\" style=\"width: 100%; height: {$aQuestionAttributes['location_mapheight']}px;\"></div>
         </div>
         ";
 
