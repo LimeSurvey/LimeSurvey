@@ -58,6 +58,38 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+                                                       
+Changes from 2.06+ (build 151215) to 2.06+ (build 160121) Jan 21, 2016
+-Fixed issue #10011: Date/Time "Dropdown Boxes" functionality does not respect min/max date values set to a calculated date (Denis Chenu)
+-Fixed issue #10162: Jump instead of navigate to avoid saving NULL-values for old question group cookie left-over (Olle Haerstedt)
+-Fixed issue #10174: Only create reloadurl if survey holdpass is set (Olle Haerstedt)
+-Fixed Issue #10194: Citronade template has a typo (Matthew Favetti)
+-Fixed issue #10197: token in return link can be invalid after saving survey (Denis Chenu)
+-Fixed issue #10210: Unable to get statistics of language question type (Denis Chenu)
+-Fixed issue #10225: Import TSV can send broken CDbCommand (Denis Chenu)
+-Fixed issue #9643: Date/Time question with drop down can break DB save with pgsql (Denis Chenu)
+-Fixed issue #9951: Remote import of survey archive doesn't work (Carsten Schmitz)
+-Fixed issue: Add an empty default tip for all date question (Denis Chenu)
+-Fixed issue: Label editing was not properly synchronizing across translations on deletion and code/assessments value (Carsten Schmitz)
+-Fixed issue: Initialize tokens error (Jack Warner)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han, coeneisma
+#Updated translation: Finnish by morbid
+#Updated translation: French (France) by DenisChenu, arnaud21
+#Updated translation: German by cookiemonster, holch
+#Updated translation: German (Informal) by plusQ
+#Updated translation: Italian by ritapas, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Kyrgyz by esen, kmaksat
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Slovak by c_schmitz
+#Updated translation: Spanish (Spain) by dgimeno, aesteban, valdomir
+#Updated translation: Thai by tomzt
+#Updated translation: Turkish by kayazeren
 
 Changes from 2.06+ (build 151205) to 2.06+ (build 151215) Dec 15, 2015
 -Fixed issue #10083: Location question with conditions and OpenStreetMap not showing properly (tpartner)
