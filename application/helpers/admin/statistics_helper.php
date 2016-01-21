@@ -1238,7 +1238,7 @@ class statistics_helper {
         // NICE SIMPLE SINGLE OPTION ANSWERS
         elseif(!isset($fieldmap[$rt]))
         {
-            //echo "problem, wrong question type for $rt ; $firstletter"; die();
+            echo "problem, wrong question type for $rt ; $firstletter"; die();
         }
         else
         {
@@ -3664,7 +3664,7 @@ class statistics_helper {
                 $aData['charttype'] = $charttype;
                 $aData['sChartname'] = '';
                 $aData['grawdata'] = $grawdata;
-                $aData['color'] = rand ( 0, 70 ); // random truc much
+                $aData['color'] = rand ( 0, 70 );
                 $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
 
                 $statisticsoutput .=  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_graphs', $aData, true);
@@ -4086,18 +4086,16 @@ class statistics_helper {
                 $myField = $surveyid."X".$field['gid']."X".$field['qid'];
 
                 // Multiple choice get special treatment
-                if ($field['type'] == "M") {$myField = "M$myField";}
-                if ($field['type'] == "P") {$myField = "P$myField";}
                 //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-                if ($field['type'] == "N") {$myField = "N$myField";}
-
-                if ($field['type'] == "|") {$myField = "|$myField";}
-
-                if ($field['type'] == "Q") {$myField = "Q$myField";}
                 // textfields get special treatment
-                if ($field['type'] == "S" || $field['type'] == "T" || $field['type'] == "U"){$myField = "T$myField";}
                 //statistics for Date questions are not implemented yet.
-                if ($field['type'] == "D") {$myField = "D$myField";}
+                // See buildOutputList for special treatment
+                $specialQuestionTypes = array("M","P","T","S","Q","R","|","","N","K","D");
+                if ( in_array( $field['type'], $specialQuestionTypes))
+                {
+                    $myField = $field['type'].$myField;
+                }
+
                 if ($field['type'] == "F" || $field['type'] == "H")
                 {
                     //Get answers. We always use the answer code because the label might be too long elsewise
@@ -4115,8 +4113,8 @@ class statistics_helper {
 
 
                 }
-                if($q2show=='all')
-                    $summary[]=$myField;
+
+                $summary[]=$myField;
 
                 //$allfields[]=$myField;
             }
