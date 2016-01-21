@@ -155,8 +155,8 @@ class Permission extends LSActiveRecord
         }
         return $aPermissions;
     }
-    
-    
+
+
     /**
      * Returns the global permissions including description and title
      *
@@ -267,8 +267,8 @@ class Permission extends LSActiveRecord
             $permission = array_merge($defaults, $permission);
         }
         return $aPermissions;
-    }    
-    
+    }
+
     public static function getPermissions($iUserID, $iEntityID=null, $sEntityName=null)
     {
         if ($sEntityName=='survey')
@@ -276,10 +276,10 @@ class Permission extends LSActiveRecord
             $aBasePermissions=Permission::model()->getSurveyBasePermissions();
         }
         elseif ($sEntityName=='global')
-        {   
+        {
             $aBasePermissions=Permission::model()->getGlobalBasePermissions();
         }
-        
+
         if (is_null($sEntityName))
         {
             $oPermissions=Permission::model()->findAllByAttributes(array('uid'=>$iUserID));
@@ -288,7 +288,7 @@ class Permission extends LSActiveRecord
             {
                 $aBasePermissions[$oPermission->id] = $oPermission->attributes;
             }
-        }   
+        }
         else
         {
             foreach ($aBasePermissions as $sPermission=>&$aPermissionDetail){
@@ -300,15 +300,15 @@ class Permission extends LSActiveRecord
                 if ($aPermissionDetail['import']) $aPermissionDetail['import']=($oCurrentPermissions?(boolean)$oCurrentPermissions->import_p:false);
                 if ($aPermissionDetail['export']) $aPermissionDetail['export']=($oCurrentPermissions?(boolean)$oCurrentPermissions->export_p:false);
             }
-        }     
+        }
         return $aBasePermissions;
     }
-     
+
     /**
     * Sets permissions (global or survey-specific) for a survey administrator
-    * Checks what permissions may be set and automatically filters invalid ones. 
+    * Checks what permissions may be set and automatically filters invalid ones.
     * A permission may be invalid if the permission does not exist or that particular user may not give that permission
-    * 
+    *
     * @param mixed $iUserID
     * @param mixed $iEntityID
     * @param mixed $sEntityName
@@ -342,7 +342,7 @@ class Permission extends LSActiveRecord
                         $aFilteredPermissions[$PermissionName]=$aPermission;
                     }
                 }
-                $aBasePermissions=$aFilteredPermissions;        
+                $aBasePermissions=$aFilteredPermissions;
             }
             elseif (Permission::model()->hasGlobalPermission('superadmin','read') && Yii::app()->session['loginID']!=1)
             {
@@ -364,7 +364,7 @@ class Permission extends LSActiveRecord
             $aFilteredPermissions[$sPermissionname]['import']= (isset($aPermissions[$sPermissionname]['import']) && $aPermissions[$sPermissionname]['import']);
             $aFilteredPermissions[$sPermissionname]['export']= (isset($aPermissions[$sPermissionname]['export']) && $aPermissions[$sPermissionname]['export']);
         }
-        
+
         $condition = array('entity_id' => $iEntityID, 'uid' => $iUserID);
         $oEvent=new PluginEvent('beforePermissionSetSave');
         $oEvent->set('aNewPermissions',$aFilteredPermissions);
@@ -497,8 +497,8 @@ class Permission extends LSActiveRecord
             }
         }
     }
-    
-    
+
+
     /**
     * Checks if a user has a certain permission
     *
@@ -522,7 +522,7 @@ class Permission extends LSActiveRecord
         App()->getPluginManager()->dispatchEvent($oEvent);
         $pluginbPermission=$oEvent->get('bPermission');
         // isset — Determine if a variable is set and is not NULL. And isset seems little speedest.
-        if (isset($pluginbPermission)) 
+        if (isset($pluginbPermission))
              return $pluginbPermission;
 
         if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
@@ -565,9 +565,9 @@ class Permission extends LSActiveRecord
         }
         return $aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD];
     }
-    
+
     /**
-    * Returns true if a user has global permission for a certain action. 
+    * Returns true if a user has global permission for a certain action.
     * @param $sPermission string Name of the permission - see function getGlobalPermissions
     * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
     * @param $iUserID integer User ID - if not given the one of the current user is used
@@ -590,11 +590,11 @@ class Permission extends LSActiveRecord
     function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD='read', $iUserID=null)
     {
         $oSurvey=Survey::Model()->findByPk($iSurveyID);
-        if (!$oSurvey) 
+        if (!$oSurvey)
             return false;
         $iUserID=self::getUserId($iUserID);
         // If you own a survey you have access to the whole survey
-        if ($iUserID==$oSurvey->owner_id) 
+        if ($iUserID==$oSurvey->owner_id)
             return true;
         // Get global correspondance for surveys rigth
         $sGlobalCRUD=($sCRUD=='create' || ($sCRUD=='delete' && $sPermission!='survey') ) ? 'update' : $sCRUD;
@@ -617,7 +617,7 @@ class Permission extends LSActiveRecord
     * function used to order Permission by language string
     * @param aApermission array The first permission information
     * @param aBpermission array The second permission information
-    * @return bool 
+    * @return bool
     */
     private static function comparePermissionTitle($aApermission,$aBpermission)
     {
@@ -631,11 +631,13 @@ class Permission extends LSActiveRecord
     */
     private static function getUserId($iUserID=null)
     {
-    $sOldLanguage=App()->language;// Call of Yii::app()->user reset App()->language to default. Quick fix for #09695
-    if (is_null($iUserID) && !Yii::app()->user->getIsGuest())
-        $iUserID = Yii::app()->session['loginID'];
-    App()->setLanguage($sOldLanguage);
-    return $iUserID;
+        if(Yii::app() instanceof CConsoleApplication)
+            return 1;
+        $sOldLanguage=App()->language;// Call of Yii::app()->user reset App()->language to default. Quick fix for #09695
+        if (is_null($iUserID) && !Yii::app()->user->getIsGuest())
+            $iUserID = Yii::app()->session['loginID'];
+        App()->setLanguage($sOldLanguage);
+        return $iUserID;
     }
 
 }
