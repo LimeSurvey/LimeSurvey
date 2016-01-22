@@ -59,6 +59,9 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
                                                        
+Changes from 2.06+ (build 160121) to 2.06+ (build 160123) Jan 22, 2016
+-Fixed issue: Question at the beginning of survey were skipped
+
 Changes from 2.06+ (build 151215) to 2.06+ (build 160121) Jan 21, 2016
 -Fixed issue #10011: Date/Time "Dropdown Boxes" functionality does not respect min/max date values set to a calculated date (Denis Chenu)
 -Fixed issue #10162: Jump instead of navigate to avoid saving NULL-values for old question group cookie left-over (Olle Haerstedt)
