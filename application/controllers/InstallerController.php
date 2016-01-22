@@ -1091,7 +1091,7 @@ class InstallerController extends CController {
 
             ."\t\t"   . "// Uncomment the following line if you need table-based sessions". "\n"
             ."\t\t"   . "// 'session' => array ("                      . "\n"
-            ."\t\t\t" . "// 'class' => 'system.web.CDbHttpSession',"   . "\n"
+            ."\t\t\t" . "// 'class' => 'application.core.web.DbHttpSession',"   . "\n"
             ."\t\t\t" . "// 'connectionID' => 'db',"                   . "\n"
             ."\t\t\t" . "// 'sessionTableName' => '{{sessions}}',"     . "\n"
             ."\t\t"   . "// ),"                                        . "\n"

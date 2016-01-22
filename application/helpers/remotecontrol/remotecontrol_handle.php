@@ -42,6 +42,8 @@ class remotecontrol_handle
             $session = new Session;
             $session->id = $sSessionKey;
             $session->expire = time() + Yii::app()->getConfig('iSessionExpirationTime');
+            if($sDatabasetype=='pgsql')
+                $username=new CDbExpression(Yii::app()->db->quoteValueExtended($username, PDO::PARAM_LOB)."::bytea");
             if($sDatabasetype=='sqlsrv' || $sDatabasetype=='mssql' || $sDatabasetype=='dblib')
                 $username=new CDbExpression('CONVERT(VARBINARY(MAX), '.Yii::app()->db->quoteValue($username).')');
             $session->data = $username;
