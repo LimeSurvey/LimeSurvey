@@ -1184,6 +1184,11 @@ class Survey_Common_Action extends CAction
             rsort($tmp_survlangs);
             $aData['tmp_survlangs'] = $tmp_survlangs;
 
+            if(!isset($aData['menu']['closeurl']))
+            {
+                $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']));                
+            }
+
             $this->getController()->renderPartial("/admin/responses/browsemenubar_view", $aData);
         }
     }
