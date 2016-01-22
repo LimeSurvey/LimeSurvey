@@ -680,6 +680,11 @@ class Survey_Common_Action extends CAction
     {
         if((isset($aData['fullpagebar'])))
         {
+            if(isset($aData['fullpagebar']['closebutton']['url']))
+            {
+                $sAlternativeUrl = $aData['fullpagebar']['closebutton']['url'];
+                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+            }
             $this->getController()->renderPartial("/admin/super/fullpagebar_view", $aData);
         }
     }
