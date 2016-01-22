@@ -867,7 +867,7 @@ class questions extends Survey_Common_Action
     {
         Yii::app()->loadHelper('admin/htmleditor');
         $surveyid = $iSurveyID = $aData['surveyid'] = sanitize_int($surveyid);
-
+        App()->getClientScript()->registerPackage('qTip2');
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
@@ -977,6 +977,7 @@ class questions extends Survey_Common_Action
     */
     public function index($sa, $surveyid, $gid, $qid=null)
     {
+        App()->getClientScript()->registerPackage('qTip2');
         $action = $sa;
         $surveyid = $iSurveyID = sanitize_int($surveyid);
         $gid = sanitize_int($gid);

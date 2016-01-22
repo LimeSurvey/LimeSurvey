@@ -216,25 +216,6 @@ function qTypeDropdownInit()
         $('.questionType').on('mouseleave', function(e){
             $(this).qtip('hide');
         });
-        /*
-        $('#question_type').on('mouseenter mouseleave', '.questionType', function(e) {
-            if (e.type == 'mouseenter')
-            {
-                // Hide all others if we show a new one.
-                $('.questionType').qtip('hide');
-                $(this).qtip('option', 'position.target', $(e.currentTarget)).qtip('show');
-            }
-            else
-            {
-                $($(e.currentTarget).data().select2Data.element).qtip('hide');
-            }
-
-
-        });
-        $('#question_type').on('close', function(e) {
-            $('#question_type option').qtip('hide');
-        });
-        */
     });
 }
 
@@ -262,6 +243,7 @@ function getToolTip(type){
         }
         return returnval;
     }
+
     return "<img src='" + imgurl + "/screenshots/"+code+".png' />";
 }
 
