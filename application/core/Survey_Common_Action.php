@@ -850,10 +850,10 @@ class Survey_Common_Action extends CAction
             $aData['GidNext'] = $GidNext = getGidNext($iSurveyID, $gid);
             $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
 
-            if(isset($aData['fullpagebar']['closebutton']['url']))
+            if(isset($aData['surveybar']['closebutton']['url']))
             {
-                $sAlternativeUrl = $aData['fullpagebar']['closebutton']['url'];
-                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+                $sAlternativeUrl = $aData['surveybar']['closebutton']['url'];
+                $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
             }
 
             if($aData['gid']==null)
