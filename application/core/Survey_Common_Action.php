@@ -539,8 +539,16 @@ class Survey_Common_Action extends CAction
      * @since 2014-09-30
      * @author Olle Haerstedt <olle.haerstedt@limesurvey.org>
      */
-    function _organizequestionbar($aData) {
-        if (isset($aData['organizebar'])) {
+    function _organizequestionbar($aData)
+    {
+        if (isset($aData['organizebar']))
+        {
+            if(isset($aData['questionbar']['closebutton']['url']))
+            {
+                $sAlternativeUrl = $aData['questionbar']['closebutton']['url'];
+                $aData['questionbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+            }
+                        
             $aData['questionbar'] = $aData['organizebar'];
             $this->getController()->renderPartial("/admin/survey/Question/questionbar_view", $aData);
         }
@@ -619,6 +627,11 @@ class Survey_Common_Action extends CAction
 
                 $aData['advancedsettings'] = $DisplayArray;
                 $aData['condarray'] = $condarray;
+                if(isset($aData['questionbar']['closebutton']['url']))
+                {
+                    $sAlternativeUrl = $aData['questionbar']['closebutton']['url'];
+                    $aData['questionbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+                }
                 $questionsummary .= $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
                 $finaldata['display'] = $questionsummary;
                 $this->getController()->renderPartial('/survey_view', $finaldata);

@@ -226,7 +226,7 @@ $aReplacementData=array();
 
                 <?php if(isset($questionbar['closebutton']['url'])):?>
                     <!-- $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/{$surveyid}"); ?>-->
-                    <a class="btn btn-danger" href="<?php echo $this->createUrl($questionbar['closebutton']['url']); ?>" role="button">
+                    <a class="btn btn-danger" href="<?php echo $questionbar['closebutton']['url']; ?>" role="button">
                         <span class="glyphicon glyphicon-close"></span>
                         <?php eT("Close");?>
                     </a>
