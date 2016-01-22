@@ -942,7 +942,7 @@ class templates extends Survey_Common_Action
             $files[] = array('name' => 'question_start.pstpl');
             $Question[] = 'question_start.pstpl';
         }
-        $editfile=sanitize_filename($editfile); // Fixed with editable file after, but put in aData before fix 
+        $editfile=sanitize_filename($editfile); // Fixed with editable file after, but put in aData before fix
         $availableeditorlanguages = array('bg', 'cs', 'de', 'dk', 'en', 'eo', 'es', 'fi', 'fr', 'hr', 'it', 'ja', 'mk', 'nl', 'pl', 'pt', 'ru', 'sk', 'zh');
         $extension = substr(strrchr($editfile, "."), 1);
         if ($extension == 'css' || $extension == 'js')
@@ -1301,7 +1301,7 @@ class templates extends Survey_Common_Action
         $aData['editfile'] = $editfile;
         $aData['screenname'] = $screenname;
         $aData['tempdir'] = Yii::app()->getConfig('tempdir');
-        $aData['usertemplaterootdir'] = Yii::app()->getConfig('usertemplaterootdir');
+        $aData['usertemplaterootdir'] = Yii::app()->getConfig('usertemplaterootdir');        
 
         $aViewUrls['templateeditorbar_view'][] = $aData;
 

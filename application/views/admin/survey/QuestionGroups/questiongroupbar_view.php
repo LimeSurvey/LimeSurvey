@@ -114,7 +114,7 @@
 
         <div class="col-sm-8">
             <!-- Previews while editing a question -->
-            <?php if(isset($questiongroupbar['savebutton']['form'])&&isset($gid)):?>
+            <?php if(isset($questiongroupbar['savebutton']['form'])&&isset($qid)):?>
                 <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
                     <?php if (count($languagelist) > 1): ?>
 
@@ -159,7 +159,7 @@
                             <span class="icon-do"></span>
                             <?php eT("Preview ");?>
                         </a>
-                        
+
                         <!-- Preview simple langue -->
                         <a class="btn btn-default" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" role="button" target="_blank">
                             <span class="icon-do"></span>
@@ -197,7 +197,7 @@
             <?php if(isset($questiongroupbar['closebutton']['url'])):?>
 
                 <!-- Close -->
-                <a class="btn btn-danger" href="<?php echo $this->createUrl($questiongroupbar['closebutton']['url']); ?>" role="button">
+                <a class="btn btn-danger" href="<?php echo $questiongroupbar['closebutton']['url']; ?>" role="button">
                     <span class="glyphicon glyphicon-close"></span>
                     <?php eT("Close");?>
                 </a>

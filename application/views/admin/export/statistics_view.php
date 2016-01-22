@@ -17,10 +17,10 @@
     <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder','#'=>'start', 'class'=>'form-horizontal', 'id'=>'generate-statistics'));?>
         <!-- General filters -->
         <div class="row">
-                <div class="col-lg-12 content-right">
+            <div class="col-sm-12 content-right">
 
-                    <!-- Header -->
-                    <?php $this->renderPartial('/admin/export/statistics_subviews/_header', array()) ; ?>
+                <!-- Header -->
+                <?php $this->renderPartial('/admin/export/statistics_subviews/_header', array()) ; ?>
 
                     <!-- AUTOSCROLLING DIV CONTAINING GENERAL FILTERS -->
                     <div id='statisticsgeneralfilters' class='statisticsfilters' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
@@ -113,7 +113,7 @@
                     </div>
 
                     <div id="statsContainerLoading" >
-                		<p><?php eT('PLease wait, loading data...');?></p>
+                        <p><?php eT('PLease wait, loading data...');?></p>
                         <div class="preloader loading">
                             <span class="slice"></span>
                             <span class="slice"></span>
@@ -122,7 +122,7 @@
                             <span class="slice"></span>
                             <span class="slice"></span>
                         </div>
-                	</div>
+                    </div>
 
                 <?php else:?>
                     <?php echo $output; ?>

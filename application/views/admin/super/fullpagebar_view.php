@@ -1,6 +1,6 @@
 <?php
 /**
- * Menu Bar show for full pages (without sidebar, inside configuration menus)
+ * Menu Bar show for full pages (without sidemenu, inside configuration menus)
  */
 ?>
 
@@ -33,7 +33,7 @@
 
             <!-- Close -->
             <?php if(isset($fullpagebar['closebutton']['url'])):?>
-                <a class="btn btn-danger" href="<?php echo $this->createUrl($fullpagebar['closebutton']['url']); ?>" role="button">
+                <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
                     <span class="glyphicon glyphicon-close"></span>
                     <?php eT("Close");?>
                 </a>

@@ -60,6 +60,7 @@
 
 
     ?>
+
     <?php echo $datepickerlang;?>
     <title><?php echo $sitename;?></title>
     <link rel="shortcut icon" href="<?php echo $baseurl;?>styles/favicon.ico" type="image/x-icon" />

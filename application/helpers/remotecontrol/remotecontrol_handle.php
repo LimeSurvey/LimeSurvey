@@ -209,7 +209,7 @@ class remotecontrol_handle
         {
             if (Permission::model()->hasGlobalPermission('surveys','create'))
             {
-                if (!in_array($sImportDataType,array('zip','csv','txt','lss'))) return array('status' => 'Invalid extension');
+                if (!in_array($sImportDataType,array('lsa','csv','txt','lss'))) return array('status' => 'Invalid extension');
                 Yii::app()->loadHelper('admin/import');
                 // First save the data to a temporary file
                 $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
@@ -1113,7 +1113,7 @@ class remotecontrol_handle
                         continue;
                     }
                     $oGroup->setAttribute($sFieldName,$sValue);
-                    
+
                     try
                     {
                         // save the change to database - one by one to allow for validation to work
@@ -2414,12 +2414,12 @@ class remotecontrol_handle
         }
         $oFormattingOptions=new FormattingOptions();
 
-        if($iFromResponseID !=null)   
+        if($iFromResponseID !=null)
             $oFormattingOptions->responseMinRecord=$iFromResponseID;
         else
             $oFormattingOptions->responseMinRecord=1;
 
-        if($iToResponseID !=null)   
+        if($iToResponseID !=null)
             $oFormattingOptions->responseMaxRecord=$iToResponseID;
         else
             $oFormattingOptions->responseMaxRecord = $maxId;
@@ -2685,7 +2685,7 @@ class remotecontrol_handle
     }
 
     /**
-     * This function checks the email, if it's in a valid format 
+     * This function checks the email, if it's in a valid format
      * @param $sEmail
      * @return bool
      */

@@ -527,6 +527,13 @@ class Survey_Common_Action extends CAction
     {
         //var_dump($aData['token_bar']);
         if( isset($aData['token_bar']) ) {
+
+            if(isset($aData['token_bar']['closebutton']['url']))
+            {
+                $sAlternativeUrl = $aData['token_bar']['closebutton']['url'];
+                $aData['token_bar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+            }
+
             $this->getController()->renderPartial("/admin/token/token_bar", $aData);
         }
     }
@@ -539,8 +546,16 @@ class Survey_Common_Action extends CAction
      * @since 2014-09-30
      * @author Olle Haerstedt <olle.haerstedt@limesurvey.org>
      */
-    function _organizequestionbar($aData) {
-        if (isset($aData['organizebar'])) {
+    function _organizequestionbar($aData)
+    {
+        if (isset($aData['organizebar']))
+        {
+            if(isset($aData['questionbar']['closebutton']['url']))
+            {
+                $sAlternativeUrl = $aData['questionbar']['closebutton']['url'];
+                $aData['questionbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+            }
+
             $aData['questionbar'] = $aData['organizebar'];
             $this->getController()->renderPartial("/admin/survey/Question/questionbar_view", $aData);
         }
@@ -619,6 +634,11 @@ class Survey_Common_Action extends CAction
 
                 $aData['advancedsettings'] = $DisplayArray;
                 $aData['condarray'] = $condarray;
+                if(isset($aData['questionbar']['closebutton']['url']))
+                {
+                    $sAlternativeUrl = $aData['questionbar']['closebutton']['url'];
+                    $aData['questionbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+                }
                 $questionsummary .= $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
                 $finaldata['display'] = $questionsummary;
                 $this->getController()->renderPartial('/survey_view', $finaldata);
@@ -672,7 +692,14 @@ class Survey_Common_Action extends CAction
             $aData['condarray'] = $condarray;
 
             $aData['languagelist'] = $oSurvey->getAllLanguages();
-            $this->getController()->renderPartial("/admin/survey/QuestionGroups/nquestiongroupbar_view", $aData);
+
+            if(isset($aData['questiongroupbar']['closebutton']['url']))
+            {
+                $sAlternativeUrl = $aData['questiongroupbar']['closebutton']['url'];
+                $aData['questiongroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+            }
+
+            $this->getController()->renderPartial("/admin/survey/QuestionGroups/questiongroupbar_view", $aData);
         }
     }
 
@@ -680,6 +707,11 @@ class Survey_Common_Action extends CAction
     {
         if((isset($aData['fullpagebar'])))
         {
+            if(isset($aData['fullpagebar']['closebutton']['url']))
+            {
+                $sAlternativeUrl = $aData['fullpagebar']['closebutton']['url'];
+                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+            }
             $this->getController()->renderPartial("/admin/super/fullpagebar_view", $aData);
         }
     }
@@ -817,6 +849,13 @@ class Survey_Common_Action extends CAction
 
             $aData['GidNext'] = $GidNext = getGidNext($iSurveyID, $gid);
             $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
+
+            if(isset($aData['fullpagebar']['closebutton']['url']))
+            {
+                $sAlternativeUrl = $aData['fullpagebar']['closebutton']['url'];
+                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+            }
+
             if($aData['gid']==null)
                 $this->getController()->renderPartial("/admin/survey/surveybar_view", $aData);
         }
@@ -1186,7 +1225,14 @@ class Survey_Common_Action extends CAction
             }
 
             $data['ugid'] = $ugid;
-            $data['imageurl'] = Yii::app()->getConfig("adminimageurl"); // Don't came from rendertemplate ?
+            $data['imageurl'] = Yii::app()->getConfig("adminimageurl");
+
+            if(isset($aData['usergroupbar']['closebutton']['url']))
+            {
+                $sAlternativeUrl = $aData['usergroupbar']['closebutton']['url'];
+                $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+            }
+
             $this->getController()->renderPartial('/admin/usergroup/usergroupbar_view', $data);
         }
     }

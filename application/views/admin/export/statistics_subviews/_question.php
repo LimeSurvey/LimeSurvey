@@ -1,16 +1,12 @@
 <?php $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}"; $niceqtext=flattenText($flt[5]); ?>
 
 <?php if ($flt[2]=='M' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L' || $flt[2]=='5' || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!'): ?>
-    <?
-        //Multiple choice:
-        if ($flt[2] == "M") {$myfield = "M$myfield";}
-        if ($flt[2] == "P") {$myfield = "P$myfield";}
-
-        // File Upload will need special filters in future, hence the special treatment
-        if ($flt[2] == "|") {$myfield = "|$myfield";}
-
-        //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-        if ($flt[2] == "N") {$myfield = "N$myfield";}
+    <?php
+        $specialQuestionTypes = array("M","P","T","S","Q","R","|","","N","K","D");
+        if ( in_array( $flt[2], $specialQuestionTypes))
+        {
+            $myfield = $flt[2].$myfield;
+        }
     ?>
 
     <!-- CHANGE HERE THE NUMBER OF COL-SM TO CHANGE THE NUMBER OF QUESTION BY LINE -->

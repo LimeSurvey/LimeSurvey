@@ -1702,6 +1702,7 @@ html {
   z-index: 20002; }
 
 .footer {
+  z-index: 100;
   position: absolute;
   bottom: 0;
   background-color: #ffffff;
@@ -1858,6 +1859,7 @@ html {
   border: 1px solid #d095d0;
   color: #363a3a;
   position: relative;
+  margin-top: 20px;
   animation: slidefromtop 1s; }
 
 .message-box-error {
@@ -2108,7 +2110,7 @@ div.panel.disabled {
   height: 100%;
   background-color: #ffffff;
   border-right: 1px solid #e3e3e3;
-  box-shadow: 3px 0 3px -2px rgba(132, 136, 138, 0.1); }
+  box-shadow: 3px 0px 3px rgba(132, 136, 138, 0.1); }
 
 .side-menu {
   position: absolute;
@@ -2133,18 +2135,26 @@ div.panel.disabled {
       padding: 15px; }
       .side-menu .navbar-nav li a .glyphicon {
         padding-right: 10px; }
+      .side-menu .navbar-nav li a.question-link:hover {
+        box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.16) inset, 0 2px 1px 1px rgba(0, 0, 0, 0.12) inset; }
   .side-menu .navbar-nav .active {
+    background-color: #501050;
+    box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.16) inset, 0 2px 1px 1px rgba(0, 0, 0, 0.12) inset; }
+  .side-menu .navbar-nav .active a {
+    color: #ffffff; }
+  .side-menu .navbar-nav .question-link.active {
     background-color: transparent;
-    margin-right: -1px;
-    border-right: 5px solid #e3e3e3; }
-    .side-menu .navbar-nav .active:hover {
-      background-color: transparent;
-      margin-right: -1px;
-      border-right: 5px solid #e3e3e3; }
-    .side-menu .navbar-nav .active a:hover {
-      color: #ffffff;
-      font-weight: 700;
-      background-color: #501050; }
+    padding: 15px 15px 15px 0px;
+    margin-bottom: 5px;
+    margin-right: -1px; }
+    .side-menu .navbar-nav .question-link.active:hover {
+      text-decoration: none;
+      cursor: default; }
+  .side-menu .navbar-nav .question-link {
+    display: block;
+    padding-left: 0px; }
+  .side-menu .navbar-nav .question-link .question-collapse-title {
+    padding-left: 25px; }
   .side-menu #dropdown {
     border: 0;
     margin-bottom: 0;
@@ -2244,8 +2254,6 @@ div.panel.disabled {
           border-radius: 0;
           background-color: #fafafa;
           padding: 15px 18px; }
-  .side-menu .navbar-default .navbar-nav > li > a {
-    color: #4d1a4d; }
   .side-menu #explorer-collapse .caret {
     float: none;
     margin-bottom: 9px; }
@@ -3057,7 +3065,6 @@ input:focus, textarea:focus {
   width: 600px; }
 
 .em-expression {
-  display: block;
   font-weight: bold; }
 
 .em-function {
@@ -3457,5 +3464,32 @@ span[data-tooltip] {
 
 #available_languages {
   min-width: 200px; }
+
+.modal {
+  top: 50px; }
+
+#tokensidemenu {
+  border-top: 1px solid #e3e3e3; }
+
+#survey_title a {
+  color: #ffffff; }
+
+.question-item {
+  border: 1px solid #35363f;
+  padding: 1em;
+  margin: 1em 0 1em 0;
+  cursor: pointer; }
+
+/*
+$color_deep_fir_approx: darken( $base-color, 20% );
+$color_acapulco_approx: adjust-color($base-color, $hue: 24deg, $saturation: -22%, $lightness: 25%);
+$color_aqua_forest_approx: adjust-color($base-color, $hue: 4deg, $saturation: -24%, $lightness: 14%);
+$color_paradiso_approx:adjust-color($base-color, $lightness: 5%); ;
+$color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $lightness: 31%);
+*/
+.placeholder {
+  padding: 1em;
+  margin: 1em 0 1em 0;
+  background-color: #bf8dab; }
 
 /*# sourceMappingURL=lime-admin.css.map */

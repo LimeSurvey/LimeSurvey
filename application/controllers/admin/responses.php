@@ -289,7 +289,7 @@ class responses extends Survey_Common_Action
             }
 
             $aViewUrls[] = 'browseidfooter_view';
-            $aData['sidebar']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
             $aData['menu']['view'] = true;
             $aData['menu']['close'] =  true;
@@ -445,7 +445,7 @@ class responses extends Survey_Common_Action
             $defaultSearch['completed']="";
         }
         //add token to top of list if survey is not private
-        if ($bHaveToken) 
+        if ($bHaveToken)
         {
             $column_model[] = array(
                 'name'=>'token',
@@ -630,7 +630,7 @@ class responses extends Survey_Common_Action
 
     }
 
-    
+
    /**
     * Returns survey responses in json format for a given survey
     *
@@ -709,7 +709,7 @@ class responses extends Survey_Common_Action
         $oCriteria->order = "{$sOrderBy} {$sOrder}";
         if(Yii::app()->request->getParam('_search'))
         {
-            if(($value=Yii::app()->request->getParam('completed'))) 
+            if(($value=Yii::app()->request->getParam('completed')))
             {
                 if($value=='Y')
                 {
@@ -853,8 +853,8 @@ class responses extends Survey_Common_Action
         echo json_encode($aSurveyEntries);
         Yii::app()->end();
     }
-   
-    
+
+
     /**
     * Saves the hidden columns for response browsing in the session
     *
@@ -866,12 +866,12 @@ class responses extends Survey_Common_Action
     {
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
-           $aHiddenFields=explode('|',Yii::app()->request->getPost('aHiddenFields')); 
+           $aHiddenFields=explode('|',Yii::app()->request->getPost('aHiddenFields'));
            $_SESSION['survey_'.$iSurveyId]['HiddenFields']=$aHiddenFields;
         }
     }
-    
-    
+
+
     /**
     * Do an actions on response
     *
@@ -959,7 +959,7 @@ class responses extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("Sorry, this file was not found."),'error');
             $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$surveyid));
         }
-        
+
     }
 
     /**
