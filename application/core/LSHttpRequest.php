@@ -34,9 +34,39 @@
 class LSHttpRequest extends CHttpRequest {
     public $noCsrfValidationRoutes = array();
 
+    /**
+     * Return the referal url,
+     * it's used for the close buttons.
+     * So it checks if the referrer url is the same than the current url to avoid looping.
+     * If it the case, a paramater can be set to tell what referrer to return.
+     * If the referrer is an external url, Yii return by default the current url.
+     *
+     * @param $ifNull string, the url to return if referrer url is the same than current url.
+     */
+    public function getUrlReferrer($ifNull=null)
+    {
+
+       $referrer = parent::getUrlReferrer();
+       $baseReferrer    = str_replace(Yii::app()->getBaseUrl(true), "", $referrer);
+       $baseRequestUri  = str_replace(Yii::app()->getBaseUrl(), "", Yii::app()->request->requestUri);
+
+       // If they are the same, the script calling the method will choose what to do.
+       $referrer = ($baseReferrer != $baseRequestUri)?$referrer:null;
+
+       if(isset($ifNull))
+       {
+           if(is_null($referrer))
+           {
+               $referrer = $ifNull;
+           }
+       }
+
+       return $referrer;
+    }
+
     protected function normalizeRequest(){
         parent::normalizeRequest();
-        
+
         if(!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] != 'POST') return;
 
         $route = Yii::app()->getUrlManager()->parseUrl($this);
@@ -51,5 +81,7 @@ class LSHttpRequest extends CHttpRequest {
             }
         }
     }
+
+
 
 }

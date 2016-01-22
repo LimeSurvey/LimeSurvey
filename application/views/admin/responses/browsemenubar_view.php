@@ -261,7 +261,7 @@
             <?php endif;?>
 
             <?php if(isset($menu) && $menu['close']): ?>
-                <a class="btn btn-danger" href="<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid"); ?>" role="button">
+                <a class="btn btn-danger" href="<?php echo $menu['closeurl']; ?>" role="button">
                     <span class="glyphicon glyphicon-close"></span>
                     <?php eT("Close");?>
                 </a>
