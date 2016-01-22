@@ -734,7 +734,7 @@ class statistics extends Survey_Common_Action {
         //App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $switch) );
         App()->getClientScript()->registerScriptFile( $switch );
 
-        $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']), array('simpleStatistics') );
+        $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']), array('simpleStatistics', 'admin/statistics/sa/index') );
 
         $aData['display'] = array();
         $aData['display']['menu_bars'] = false;

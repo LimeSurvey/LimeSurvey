@@ -54,7 +54,6 @@ class LSHttpRequest extends CHttpRequest {
        $referrer = parent::getUrlReferrer();
        $baseReferrer    = str_replace(Yii::app()->getBaseUrl(true), "", $referrer);
        $baseRequestUri  = str_replace(Yii::app()->getBaseUrl(), "", Yii::app()->request->requestUri);
-
        $referrer = ($baseReferrer != $baseRequestUri)?$referrer:null;
 
        // Checks if the alternative url should be used
