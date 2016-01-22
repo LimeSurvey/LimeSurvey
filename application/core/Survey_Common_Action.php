@@ -672,6 +672,13 @@ class Survey_Common_Action extends CAction
             $aData['condarray'] = $condarray;
 
             $aData['languagelist'] = $oSurvey->getAllLanguages();
+
+            if(isset($aData['questiongroupbar']['closebutton']['url']))
+            {
+                $sAlternativeUrl = $aData['questiongroupbar']['closebutton']['url'];
+                $aData['questiongroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+            }
+
             $this->getController()->renderPartial("/admin/survey/QuestionGroups/questiongroupbar_view", $aData);
         }
     }
