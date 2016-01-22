@@ -1225,7 +1225,14 @@ class Survey_Common_Action extends CAction
             }
 
             $data['ugid'] = $ugid;
-            $data['imageurl'] = Yii::app()->getConfig("adminimageurl"); // Don't came from rendertemplate ?
+            $data['imageurl'] = Yii::app()->getConfig("adminimageurl");
+
+            if(isset($aData['usergroupbar']['closebutton']['url']))
+            {
+                $sAlternativeUrl = $aData['usergroupbar']['closebutton']['url'];
+                $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+            }
+
             $this->getController()->renderPartial('/admin/usergroup/usergroupbar_view', $data);
         }
     }
