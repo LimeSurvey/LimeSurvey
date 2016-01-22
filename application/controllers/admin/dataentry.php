@@ -251,20 +251,20 @@ class dataentry extends Survey_Common_Action
                 $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
                 $tables = App()->getApi()->getOldResponseTables($iSurveyId);
                 $compatible = array();
-				$coercible = array();
+                $coercible = array();
                 foreach ($tables as $table)
                 {
                     $schema = PluginDynamic::model($table)->getTableSchema();
                     if (PluginDynamic::model($table)->count() > 0)
                     {
-						if ($this->isCompatible($baseSchema, $schema))
-						{
-							$compatible[] = $table;
-						}
-						elseif ($this->isCompatible($baseSchema, $schema, false))
-						{
-							$coercible[] = $table;
-						}
+                        if ($this->isCompatible($baseSchema, $schema))
+                        {
+                            $compatible[] = $table;
+                        }
+                        elseif ($this->isCompatible($baseSchema, $schema, false))
+                        {
+                            $coercible[] = $table;
+                        }
                     }
                 }
 
@@ -274,9 +274,9 @@ class dataentry extends Survey_Common_Action
                     'label' => gT('Source table'),
                     'type' => 'select',
                     'options' => array(
-						gT('Compatible') => $this->tableList($compatible),
-						gT('Compatible with type coercion') => $this->tableList($coercible)
-					)
+                        gT('Compatible') => $this->tableList($compatible),
+                        gT('Compatible with type coercion') => $this->tableList($coercible)
+                    )
                 );
 
 
@@ -325,7 +325,7 @@ class dataentry extends Survey_Common_Action
                     }
                 }
                 $imported = 0;
-				$sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
+                $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
                 foreach ($sourceResponses as $sourceResponse)
                 {
                    $iOldID=$sourceResponse->id;
@@ -1384,7 +1384,7 @@ class dataentry extends Survey_Common_Action
             $aDataentryoutput = "<div class='header ui-widget-header'>".gT("Data entry")."</div>\n";
 
             $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
-            // restet token if user is not allowed to update 
+            // restet token if user is not allowed to update
             if(!Permission::model()->hasSurveyPermission($surveyid,'tokens','update')) // If not allowed to read: remove it
             {
                 unset($fieldmap['token']);
@@ -2357,7 +2357,7 @@ class dataentry extends Survey_Common_Action
         {
             $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
             $output .= "\n<p class='extrahelp'>
-            ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext['question'])))."
+            ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext)))."
             </p>\n";
         }
         if(!empty($qidattributes['array_filter_exclude']))
@@ -2365,7 +2365,7 @@ class dataentry extends Survey_Common_Action
             $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
 
             $output .= "\n    <p class='extrahelp'>
-            ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext['question']))."
+            ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext))."
             </p>\n";
         }
         return $output;
@@ -2388,5 +2388,3 @@ class dataentry extends Survey_Common_Action
     }
 
 }
-
-
