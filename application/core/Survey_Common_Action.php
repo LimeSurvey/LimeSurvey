@@ -548,7 +548,7 @@ class Survey_Common_Action extends CAction
                 $sAlternativeUrl = $aData['questionbar']['closebutton']['url'];
                 $aData['questionbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
             }
-                        
+
             $aData['questionbar'] = $aData['organizebar'];
             $this->getController()->renderPartial("/admin/survey/Question/questionbar_view", $aData);
         }
@@ -842,6 +842,13 @@ class Survey_Common_Action extends CAction
 
             $aData['GidNext'] = $GidNext = getGidNext($iSurveyID, $gid);
             $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
+
+            if(isset($aData['surveybar']['closebutton']['url']))
+            {
+                $sAlternativeUrl = $aData['surveybar']['closebutton']['url'];
+                $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+            }
+
             if($aData['gid']==null)
                 $this->getController()->renderPartial("/admin/survey/surveybar_view", $aData);
         }

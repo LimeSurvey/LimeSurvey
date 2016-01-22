@@ -571,7 +571,7 @@
             <?php if(isset($surveybar['closebutton']['url'])):?>
 
                 <!-- Close -->
-                <a class="btn btn-danger" href="<?php echo $this->createUrl($surveybar['closebutton']['url']); ?>" role="button">
+                <a class="btn btn-danger" href="<?php echo $surveybar['closebutton']['url']; ?>" role="button">
                     <span class="glyphicon glyphicon-close"></span>
                     <?php eT("Close");?>
                 </a>
