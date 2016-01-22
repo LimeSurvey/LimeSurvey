@@ -153,10 +153,8 @@
         * @var type
         */
         private $allOnOnePage=false;
-
         /**
         * survey mode.  One of 'survey', 'group', or 'question'
-        * @todo Please add more information here. What does the alternatives mean?
         * @var string
         */
         private $surveyMode='group';
@@ -4841,7 +4839,6 @@
             $LEM->indexQseq=array();
             $LEM->qrootVarName2arrayFilter=array();
             templatereplace("{}"); // Needed for coreReplacements in relevance equation (in all mode)
-
             if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 0)
             {
                 $startingValues = array();
@@ -5511,7 +5508,6 @@
 
             $LEM->ParseResultCache=array();    // to avoid running same test more than once for a given group
             $LEM->updatedValues = array();
-            // TODO: Should seq be below 0? It will be -1 after survey submit and re-click on invitation link in e-mail (see issue #10162).
             --$seq; // convert to 0-based numbering
 
             switch ($LEM->surveyMode)

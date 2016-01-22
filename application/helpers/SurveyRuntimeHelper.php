@@ -223,7 +223,6 @@ class SurveyRuntimeHelper {
             'token' => (isset($clienttoken) ? $clienttoken : NULL),
         );
 
-
         //Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
         $previewgrp = false;
         if ($surveyMode == 'group' && isset($param['action']) && ($param['action'] == 'previewgroup'))
@@ -253,9 +252,7 @@ class SurveyRuntimeHelper {
                 $sTemplatePath = $_SESSION[$LEMsessid]['templatepath'];
 
                 if($surveyid != LimeExpressionManager::getLEMsurveyId())
-                {
                     LimeExpressionManager::SetDirtyFlag();
-                }
 
                 LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
                 $_SESSION[$LEMsessid]['step'] = 0;
@@ -265,13 +262,7 @@ class SurveyRuntimeHelper {
                 }
                 elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
                 {
-                    // BUG: This will CLEAR and SAVE IN DB the last question group to NULL if it's still in the cookie (which it is if same browser is used).
-                    //$moveResult = LimeExpressionManager::NavigateForwards();
-
-                    // Jump WITHOUT saving anything (needed for e-mail link).
-                    LimeExpressionManager::JumpTo(1, false, false, true);
-
-                    // TODO: Delete this line?
+                    $moveResult = LimeExpressionManager::NavigateForwards();
                     //$_SESSION[$LEMsessid]['step']=1;
                 }
             }
