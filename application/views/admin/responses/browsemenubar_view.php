@@ -1,4 +1,4 @@
-<div class='menubar surveybar' id="tokenbarid">
+<div class='menubar surveybar' id="browsermenubarid">
     <div class='row container-fluid'>
         <?php if(isset($menu) && !$menu['edition']): ?>
             <div class="col-md-12">
@@ -198,15 +198,26 @@
             <?php endif;?>
 
             <?php if(isset($menu['stats'])):?>
-                <a class="btn btn-success" href="#" role="button" id="save-button">
-                    <span class="glyphicon glyphicon-stats"></span>
-                    <?php eT("View statistics"); ?>
-                </a>
+                <?php if (isset($menu['expertstats']) && $menu['expertstats'] =  true):?>
+                    <a class="btn btn-info" href="<?php echo App()->createUrl('/admin/statistics/sa/index/surveyid/'.$surveyid); ?>" role="" id="">
+                        <span class="glyphicon glyphicon-stats"></span>
+                        <?php eT("Expert mode"); ?>
+                    </a>
+                <?php else: ?>
+                    <a class="btn btn-info" href="<?php echo App()->createUrl('/admin/statistics/sa/simpleStatistics/surveyid/'.$surveyid); ?>" role="" id="">
+                        <span class="glyphicon glyphicon-stats"></span>
+                        <?php eT("Simple mode"); ?>
+                    </a>
+                    <a class="btn btn-success" href="#" role="button" id="save-button">
+                        <span class="glyphicon"></span>
+                        <?php eT("View statistics"); ?>
+                    </a>
 
-                <a class="btn btn-default" href="#" role="button" id="save-button" onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')">
-                    <span class="glyphicon glyphicon-refresh text-success"></span>
-                    <?php eT("Clear"); ?>
-                </a>
+                    <a class="btn btn-default" href="#" role="button" id="save-button" onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')">
+                        <span class="glyphicon glyphicon-refresh text-success"></span>
+                        <?php eT("Clear"); ?>
+                    </a>
+                <?php endif; ?>
 
             <?php endif;?>
             <?php if (isset($menu['view'])): ?>

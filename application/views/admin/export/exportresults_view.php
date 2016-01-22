@@ -25,7 +25,7 @@
         <div class="row">
             <div class="col-sm-12 content-right">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12 col-md-6">
 
                         <!-- Format -->
                         <div class="panel panel-primary" id="pannel-1">
@@ -287,7 +287,7 @@
 
                     </div>
 
-                    <div class="col-sm-6">
+                    <div class="col-sm-12 col-md-6">
 
                         <!-- Column control -->
                         <div class="panel panel-primary" id="pannel-6">

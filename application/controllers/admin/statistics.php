@@ -34,7 +34,6 @@ class statistics extends Survey_Common_Action {
      */
     public function run($surveyid = 0, $subaction = null)
     {
-        //var_dump($_POST);
         $surveyid = sanitize_int($surveyid);
         $imageurl = Yii::app()->getConfig("imageurl");
         $aData = array('imageurl' => $imageurl);
@@ -679,7 +678,6 @@ class statistics extends Survey_Common_Action {
          usort($rows, 'groupOrderThenQuestionOrder');
 
         // The questions to display (all question)
-        //  $summary[]=$surveyid.'X'.$question->gid.'X'.$question->qid;
         foreach($rows as $row)
         {
             $type=$row['type'];
@@ -705,7 +703,7 @@ class statistics extends Survey_Common_Action {
         $usegraph=1;
         $aData['usegraph'] = $usegraph;
         $outputType = 'html';
-        $statlang='en';
+        $statlang=returnGlobal('statlang');
         $statisticsoutput .=  $helper->generate_simple_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
 
         $aData['usegraph'] = 1;
@@ -713,7 +711,7 @@ class statistics extends Survey_Common_Action {
         $aData['output'] = $statisticsoutput;
         $aData['summary'] = $summary;
         $aData['oStatisticsHelper'] = $helper;
-
+        $aData['menu']['expertstats'] =  true;
 
         //Call the javascript file
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'statistics.js' ));

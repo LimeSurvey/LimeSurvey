@@ -213,16 +213,16 @@
                             <!-- Stats -->
                             <?php if($respstatsread && $activated=="Y"):?>
                                 <div class="col-lg-6">
-                                    <div class="panel panel-primary panel-clickable" id="pannel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/index/surveyid/".$surveyinfo['sid']); ?>">
+                                    <div class="panel panel-primary panel-clickable" id="pannel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$surveyinfo['sid']); ?>">
                                         <div class="panel-heading">
-                                            <h4 class="panel-title"><?php eT("Responses & statistics");?></h4>
+                                            <h4 class="panel-title"><?php eT("Statistics");?></h4>
                                         </div>
                                         <div class="panel-body">
-                                            <a  href="<?php echo $this->createUrl("admin/statistics/sa/index/surveyid/".$surveyinfo['sid']); ?>" >
+                                            <a  href="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$surveyinfo['sid']); ?>" >
                                                 <span class="glyphicon glyphicon-stats text-success"  style="font-size: 3em;"></span>
                                             </a>
                                             <p>
-                                                <a href="<?php echo $this->createUrl("admin/statistics/sa/index/surveyid/".$surveyinfo['sid']); ?>">
+                                                <a href="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$surveyinfo['sid']); ?>">
                                                     <?php eT("Responses & statistics");?>
                                                 </a>
                                             </p>
