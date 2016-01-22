@@ -651,6 +651,75 @@ class statistics extends Survey_Common_Action {
     }
 
     /**
+     * Render satistics for users
+     */
+     public function simpleStatistics($surveyid)
+     {
+         $iSurveyId =  sanitize_int($surveyid);
+         $aData['surveyid'] = $iSurveyId;
+         $showcombinedresults = 0;
+         $maxchars = 50;
+         $statisticsoutput ='';
+         $cr_statisticsoutput = '';
+
+         // Set language for questions and answers to base language of this survey
+         $language = Survey::model()->findByPk($surveyid)->language;
+         $summary = array();
+         $summary[0] = "datestampE";
+         $summary[1] = "datestampG";
+         $summary[2] = "datestampL";
+         $summary[3] = "idG";
+         $summary[4] = "idL";
+
+         // 1: Get list of questions from survey
+         $rows = Question::model()->getQuestionList($surveyid, $language);
+
+         //SORT IN NATURAL ORDER!
+         usort($rows, 'groupOrderThenQuestionOrder');
+
+        // The questions to display (all question)
+        foreach($rows as $row)
+        {
+            $type=$row['type'];
+            if($type=="M" || $type=="P" || $type=="T" || $type=="S" || $type=="Q" || $type=="R" ||  $type=="|" ||  $type=="" ||  $type=="N" ||  $type=="K" || $type=="D")
+            {
+                $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
+            }
+            else // single question
+            {
+                $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
+            }
+        }
+
+
+        // ----------------------------------- END FILTER FORM ---------------------------------------
+
+        Yii::app()->loadHelper('admin/statistics');
+        $helper = new statistics_helper();
+        $showtextinline=isset($_POST['showtextinline']) ? 1 : 0;
+        $aData['showtextinline'] = $showtextinline;
+
+        //Show Summary results
+        $usegraph=1;
+        $aData['usegraph'] = $usegraph;
+        $outputType = 'html';
+        $statlang=returnGlobal('statlang');
+        $statisticsoutput .=  $helper->generate_simple_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
+
+        $aData['usegraph'] = 1;
+        $aData['sStatisticsLanguage']=$statlang;
+        $aData['output'] = $statisticsoutput;
+        $aData['summary'] = $summary;
+        $aData['oStatisticsHelper'] = $helper;
+        $aData['menu']['expertstats'] =  true;
+
+        //Call the javascript file
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'statistics.js' ));
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'json-js/json2.min.js'));
+        echo $this->_renderWrappedTemplate('export', 'statistics_user_view', $aData);
+     }
+
+    /**
      * Renders template(s) wrapped in header and footer
      *
      * @param string $sAction Current action, the folder to fetch views from
@@ -665,19 +734,21 @@ class statistics extends Survey_Common_Action {
         //App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $switch) );
         App()->getClientScript()->registerScriptFile( $switch );
 
+        $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']), array('simpleStatistics', 'admin/statistics/sa/index') );
 
-
+        $aData['display'] = array();
         $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
         $aData['menu']['edition'] = true;
         $aData['menu']['stats'] =  true;
         $aData['menu']['close'] =  true;
-        $aData['sidebar']['state'] = "close";
+        $aData['sidemenu']['state'] = false;
         $iSurveyId = $aData['surveyid'];
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData["surveyinfo"] = $surveyinfo;
         $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
+
 
 }

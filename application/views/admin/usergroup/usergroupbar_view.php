@@ -44,12 +44,14 @@
                 </a>
             <?php endif;?>
 
+            <!-- Close -->
             <?php if(isset($usergroupbar['closebutton']['url'])):?>
-                <a class="btn btn-danger" href="<?php echo $this->createUrl($usergroupbar['closebutton']['url']); ?>" role="button">
+                <a class="btn btn-danger" href="<?php echo $usergroupbar['closebutton']['url']; ?>" role="button">
                     <span class="glyphicon glyphicon-close" ></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
+
             <?php if(isset($usergroupbar['returnbutton']['url'])):?>
                 <a class="btn btn-default pull-right" href="<?php echo $this->createUrl($usergroupbar['returnbutton']['url']); ?>" role="button">
                     <span class="glyphicon glyphicon-backward" ></span>

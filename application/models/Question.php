@@ -316,26 +316,23 @@
 
         /**
         * Insert an array into the questions table
-        * Returns false if insertion fails, otherwise the new QID
+        * Returns null if insertion fails, otherwise the new QID
         *
         * @param array $data
         */
         function insertRecords($data)
         {
             // This function must be deprecated : don't find a way to have getErrors after (Shnoulle on 131206)
-            $questions = new self;
+            $oRecord = new self;
             foreach ($data as $k => $v){
-                $questions->$k = $v;
+                $oRecord->$k = $v;
                 }
-            try
+            if($oRecord->validate())
             {
-                $questions->save();
-                return $questions->qid;
+                $oRecord->save();
+                return $oRecord->qid;
             }
-            catch(Exception $e)
-            {
-                return false;
-            }
+            tracevar($oRecord->getErrors());
         }
 
         public static function deleteAllById($questionsIds)
@@ -651,6 +648,7 @@
              * @todo Check if this actually does anything, since the values are arrays.
              */
             asort($questionTypes);
+
             return $questionTypes;
         }
 

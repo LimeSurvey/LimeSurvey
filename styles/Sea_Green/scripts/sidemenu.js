@@ -68,6 +68,25 @@ $(document).ready(function(){
     }
 
     /**
+     * Adjust height of side body compared to a target, can apply a correction in pixel
+     * $target : the target element
+     * $correction : correction in pixels
+     * $timeout : time to wait before measuring the target height, can be usefull when animations apply to target
+     */
+    function adjustSideBodyHeight($target, $correction, $timeout) {
+        setTimeout(function(){
+            sideBodyHeight = sideBody.height();
+            targetHeight = $target.height();
+            console.log('targetHeight: '+targetHeight);
+            //alert(sidemenuHeight);
+            if( sideBodyHeight < ( targetHeight + $correction ) )
+            {
+                sideBody.height( sideBodyHeight + ( targetHeight - sideBodyHeight ) + $correction );
+            }
+        }, $timeout);
+    }
+
+    /**
     *  Close sidemenu
     */
     jQuery(document).on('click', '#chevronClose.opened', function(){
@@ -256,29 +275,45 @@ $(document).ready(function(){
      * Adjust height of side body when opening the accordion (to push the footer)
      */
     $('#accordion').on('shown.bs.collapse', function () {
-        sideBodyHeight = sideBody.height();
-        accordionHeight = $('#accordion').height();
-        if( sideBodyHeight < ( accordionHeight + 250 ) ){
-            sideBody.height( sideBodyHeight + ( accordionHeight - sideBodyHeight ) + 250 );
-        }
+        adjustSideBodyHeight($('#accordion'), 200, 0);
     })
 
     /**
      * Unfix the side menu when opening question explorer
      */
-
      var $explorer = $('#explorer');
      var $sidemenu  = $('#sideMenu');
 
-     $explorer.on('shown.bs.collapse', function () {
-         // If the side bar is fixed to top, we must unfix it first
-         if ( $sidemenu.hasClass('fixed-top'))
-         {
-             toTop = ( $(window).scrollTop() + 45 ); // 45px is the heigh of the top menu bar
-             $sidemenu.css({position:"absolute", top: toTop+"px"});
-         }
-         $sidemenu.addClass('exploring');
+    function afterOpenExplorer() {
 
+        // If the side bar is fixed to top, we must unfix it first
+        if ( $sidemenu.hasClass('fixed-top'))
+        {
+         toTop = ( $(window).scrollTop() + 45 ); // 45px is the heigh of the top menu bar
+         $sidemenu.css({position:"absolute", top: toTop+"px"});
+        }
+        $sidemenu.addClass('exploring');
+
+        // Adjust height of side body when opening the sidemenu (to push the footer)
+        adjustSideBodyHeight($sidemenu, 0, 500); // 500ms is the time of the show question animation
+     }
+
+     if ( $("#open-explorer").length ) {
+        $('#explorer-lvl1').collapse({"toggle": true, 'parent': '#explorer'});
+        afterOpenExplorer();
+     }
+
+     if ( $("#open-questiongroup").length ) {
+         $gid = $("#open-questiongroup").data('gid');
+         $questionGroup = $('#questions-group-'+$gid);
+         $groupCaret = $('#caret-'+$gid);
+         $questionGroup.toggle(0);
+         $groupCaret.toggleClass('fa-caret-right');
+         $groupCaret.toggleClass('fa-caret-down');
+     }
+
+     $explorer.on('shown.bs.collapse', function () {
+         afterOpenExplorer();
      });
 
      $explorer.on('hidden.bs.collapse', function(){
@@ -294,6 +329,7 @@ $(document).ready(function(){
          $questionGroup.toggle(500);
          $groupCaret.toggleClass('fa-caret-right');
          $groupCaret.toggleClass('fa-caret-down');
+         adjustSideBodyHeight($sidemenu, 0, 500); //500 ms for the open animation to complete
          return false;
      });
 

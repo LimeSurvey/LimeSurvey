@@ -1,38 +1,10 @@
-<script type='text/javascript'>
-    var sLabelSetName='<?php eT('Label set name','js'); ?>';
-    var languagecount=<?php echo count($anslangs); ?>;
-    var newansweroption_text='<?php eT('New subquestion','js'); ?>';
-    var strcode='<?php eT('Code','js'); ?>';
-    var strlabel='<?php eT('Label','js'); ?>';
-    var strCantDeleteLastAnswer='<?php eT('You cannot delete the last subquestion.','js'); ?>';
-    var lsbrowsertitle='<?php eT('Label set browser','js'); ?>';
-    var quickaddtitle='<?php eT('Quick-add subquestions','js'); ?>';
-    var duplicatesubquestioncode='<?php eT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
-    var strNoLabelSet='<?php eT('There are no label sets which match the survey default language','js'); ?>';
-    var langs='<?php echo implode(';',$anslangs); ?>';
-    var otherisreserved='<?php ($aParentQuestion['other']=="Y") ? printf(gT("'%s' can not be used if question allow other.",'js'),'other') : ""; ?>';
-    var sImageURL ='<?php echo Yii::app()->getConfig('adminimageurl'); ?>';
-    var saveaslabletitle  = '<?php eT('Save as label set','js'); ?>';
-    var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/sa/getAllSets'); ?>';
-    var lasaveurl = '<?php echo Yii::app()->createUrl('/admin/labels/sa/ajaxSets'); ?>';
-    var sCheckLabelURL = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxchecklabel'); ?>';
-    var lsdetailurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetdetails'); ?>';
-    var lspickurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetpicker'); ?>';
-    var check = true;
-    var lasuccess = '<?php eT('The records have been saved successfully!'); ?>';
-    var lafail = '<?php eT('Sorry, the request failed!'); ?>';
-    var ok = '<?php eT('Ok'); ?>';
-    var cancel = '<?php eT('Cancel'); ?>';
-</script>
-<?php echo PrepareEditorScript(); ?>
-
-
 <div class="side-body" id="edit-question-body">
     <h3>
         <?php eT("Edit subquestions"); ?>
     </h3>
+
     <div class="row">
-        <div class="col-lg-8 content-right">
+        <div class="col-lg-12 content-right">
 
 <?php echo CHtml::form(array("admin/database"), 'post', array('id'=>'editsubquestionsform', 'name'=>'editsubquestionsform')); ?>
 
@@ -200,7 +172,6 @@
                     </div>
 
                     <?php }
-
                     $first=false; ?>
             </div>
             <?php } ?>

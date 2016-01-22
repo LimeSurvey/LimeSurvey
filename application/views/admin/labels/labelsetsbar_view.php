@@ -121,7 +121,7 @@
 
                     <?php echo $labelbar['savebutton']['text'];?>
                 </a>
-                <a class="btn btn-danger" href="<?php echo $this->createUrl($labelbar['closebutton']['url']); ?>" role="button">
+                <a class="btn btn-danger" href="<?php echo $labelbar['closebutton']['url']; ?>" role="button">
                     <span class="glyphicon glyphicon-close" ></span>
                     <?php eT("Close");?>
                 </a>

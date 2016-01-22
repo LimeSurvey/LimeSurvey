@@ -5,18 +5,22 @@
 ?>
 <div class="side-body">
     <h3><?php eT("Response summary"); ?></h3>
+    <div class="row">
+        <div class="col-lg-12 content-right">
+            <table class='statisticssummary table'>
+                <tbody>
+                    <tr><th><?php eT("Full responses"); ?></th><td><?php echo $num_completed_answers; ?></td></tr>
+                    <tr><th><?php eT("Incomplete responses"); ?></th><td><?php echo ($num_total_answers - $num_completed_answers); ?></td></tr>
+                </tbody>
+                <tr><th><?php eT("Total responses"); ?></th><td><?php echo $num_total_answers; ?></td></tr>
+            </table>
+        </div>
+    </div>
+    <?php if(isset($with_token)): ?>
+        <h3><?php eT("Token summary"); ?></h3>
         <div class="row">
             <div class="col-lg-12 content-right">
                 <table class='statisticssummary table'>
-                    <tbody>
-                        <tr><th><?php eT("Full responses"); ?></th><td><?php echo $num_completed_answers; ?></td></tr>
-                        <tr><th><?php eT("Incomplete responses"); ?></th><td><?php echo ($num_total_answers - $num_completed_answers); ?></td></tr>
-                    </tbody>
-                    <tr><th><?php eT("Total responses"); ?></th><td><?php echo $num_total_answers; ?></td></tr>
-                </table>
-                <?php if(isset($with_token)){ ?>
-                <table class='statisticssummary'>
-                    <caption class="header ui-widget-header"><?php eT("Token summary"); ?></caption>
                     <tbody>
                         <tr><th><?php eT("Total invitations sent"); ?></th><td><?php echo $tokeninfo['sent']; ?></td></tr>
                         <tr><th><?php eT("Total surveys completed"); ?></th><td><?php echo $tokeninfo['completed']; ?></td></tr>
@@ -24,7 +28,7 @@
                     </tbody>
                     <tr><th><?php eT("Total records in this token table"); ?></th><td><?php echo $tokeninfo['count']; ?></td></tr>
                 </table>
-                <?php } ?>
             </div>
         </div>
+    <?php endif; ?>
 </div>

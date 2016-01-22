@@ -61,6 +61,33 @@ var COLORS_FOR_SURVEY = new Array('20,130,200','232,95,51','34,205,33','210,211,
     };
 })(jQuery);
 
+(function($)
+{
+    $.fn.loadGraph=function()
+    {
+       this.each(function(){       
+           var $elem = $(this);
+           var $type = $elem.data('type');
+           var $qid = $elem.data('qid');
+
+           // chartjs
+
+               if($type == 'Bar' || $type == 'Radar' || $type == 'Line' )
+               {
+
+                   init_chart_js_graph_with_datasets($type,$qid);
+               }
+               else
+               {
+                   init_chart_js_graph_with_datas($type, $qid);
+               }
+
+
+       });
+       return this;
+    };
+})(jQuery);
+
 
 /**
  * This function load the graph needing datasets (bars, etc.)
@@ -145,6 +172,12 @@ function init_chart_js_graph_with_datas($type,$qid)
 }
 
 $(document).ready(function() {
+
+
+    if($('#showGraphOnPageLoad').length>0)
+    {
+        $('.chartjs-container').loadGraph();
+    }
 
     $("[name='viewsummaryall']").bootstrapSwitch();
     $("[name='noncompleted']").bootstrapSwitch();
@@ -311,25 +344,25 @@ $(document).ready(function() {
 
      if (typeof aGMapData == "object") {
          for (var i in aGMapData) {
-     		gMapInit("statisticsmap_" + i, aGMapData[i]);
-	     }
-	 }
+             gMapInit("statisticsmap_" + i, aGMapData[i]);
+         }
+     }
 
-	 if (typeof aStatData == "object") {
-	    for (var i in aStatData) {
-	        statInit(aStatData[i]);
+     if (typeof aStatData == "object") {
+        for (var i in aStatData) {
+            statInit(aStatData[i]);
         }
-	 }
+     }
 
-	 $(".stats-hidegraph").click (function ()
-	 {
+     $(".stats-hidegraph").click (function ()
+     {
 
         var id = statGetId(this.parentNode);
         if (!id) {
             return;
         }
 
-	    $("#statzone_" + id).html(getWaiter());
+        $("#statzone_" + id).html(getWaiter());
         graphQuery(id, 'hidegraph', function (res) {
             if (!res) {
                 ajaxError();
@@ -347,17 +380,17 @@ $(document).ready(function() {
             aStatData[id].sg = false;
             statInit(aStatData[id]);
         });
-	 });
+     });
 
-	 $(".stats-showgraph").click(function ()
-	 {
+     $(".stats-showgraph").click(function ()
+     {
         var id = statGetId(this.parentNode);
         if (!id) {
             return;
         }
 
-	    $("#statzone_" + id).html(getWaiter()).show();
-	    graphQuery(id, 'showgraph', function (res) {
+        $("#statzone_" + id).html(getWaiter()).show();
+        graphQuery(id, 'showgraph', function (res) {
             if (!res) {
                 ajaxError();
                 return;
@@ -387,19 +420,19 @@ $(document).ready(function() {
 
             $("#statzone_" + id + " .wait").remove();
 
-	    });
+        });
      });
 
-	 $(".stats-hidemap").click (function ()
-	 {
+     $(".stats-hidemap").click (function ()
+     {
         var id = statGetId(this.parentNode);
         if (!id) {
             return;
         }
 
-	    $("#statzone_" + id + ">div").replaceWith(getWaiter());
+        $("#statzone_" + id + ">div").replaceWith(getWaiter());
 
-	    graphQuery(id, 'hidemap', function (res) {
+        graphQuery(id, 'hidemap', function (res) {
             if (!res) {
                 ajaxError();
                 return;
@@ -417,19 +450,19 @@ $(document).ready(function() {
             statInit(aStatData[id]);
 
             $("#statzone_" + id + " .wait").remove();
-	    });
-	 });
+        });
+     });
 
-	 $(".stats-showmap").click(function ()
-	 {
+     $(".stats-showmap").click(function ()
+     {
         var id = statGetId(this.parentNode);
         if (!id) {
             return;
         }
 
-	    $("#statzone_" + id).append(getWaiter());
+        $("#statzone_" + id).append(getWaiter());
 
-	    graphQuery(id, 'showmap', function (res) {
+        graphQuery(id, 'showmap', function (res) {
             if (!res) {
                 ajaxError();
                 return;
@@ -450,18 +483,18 @@ $(document).ready(function() {
             $("#statzone_" + id).append("<div id=\"statisticsmap_" + id + "\" class=\"statisticsmap\"></div>");
 
             gMapInit('statisticsmap_' + id, data.mapdata);
-	    });
-	 });
+        });
+     });
 
-	 $(".stats-showbar").click(function ()
-	 {
-	    changeGraphType('showbar', this.parentNode);
-	 });
-
-	 $(".stats-showpie").click(function ()
+     $(".stats-showbar").click(function ()
      {
-	    changeGraphType('showpie', this.parentNode);
-	 });
+        changeGraphType('showbar', this.parentNode);
+     });
+
+     $(".stats-showpie").click(function ()
+     {
+        changeGraphType('showpie', this.parentNode);
+     });
 });
 
 var isWaiting = {};
@@ -495,21 +528,21 @@ function ajaxError()
 
 function selectCheckboxes(Div, CheckBoxName, Button)
 {
-	var aDiv = document.getElementById(Div);
-	var nInput = aDiv.getElementsByTagName("input");
-	var Value = document.getElementById(Button).checked;
-	//alert(Value);
+    var aDiv = document.getElementById(Div);
+    var nInput = aDiv.getElementsByTagName("input");
+    var Value = document.getElementById(Button).checked;
+    //alert(Value);
 
-	for(var i = 0; i < nInput.length; i++)
-	{
-		if(nInput[i].getAttribute("name")==CheckBoxName)
-		nInput[i].checked = Value;
-	}
+    for(var i = 0; i < nInput.length; i++)
+    {
+        if(nInput[i].getAttribute("name")==CheckBoxName)
+        nInput[i].checked = Value;
+    }
 }
 
 function nographs()
 {
-	document.getElementById('usegraph').checked = false;
+    document.getElementById('usegraph').checked = false;
 }
 
 function gMapInit(id, data)

@@ -2984,11 +2984,18 @@ function questionAttributes($returnByName=false)
         );
 
         $qattributes["statistics_graphtype"]=array(
-        "types"=>'15ABCDEFGHIKLNOQRSTUWXYZ!:;|*',
+        "types"=>'15ABCDEFGHIKLMNOQRSTUWXYZ!:;|*',
         'category'=>gT('Statistics'),
         'inputtype'=>'singleselect',
         'sortorder'=>102,
-        'options'=>array(0=>gT('Bar chart'), 1=>gT('Pie chart')),
+        'options'=>array(
+            0=>gT('Bar chart'),
+            1=>gT('Pie chart'),
+            2=>gT('Radar'),
+            3=>gT('Line'),
+            4=>gT('PolarArea'),
+            5=>gT('Doughnut'),
+        ),
         'help'=>gT("Select the type of chart to be displayed"),
         'caption'=>gT("Chart type"),
         'default'=>0

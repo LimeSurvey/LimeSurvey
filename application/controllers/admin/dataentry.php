@@ -75,7 +75,7 @@ class dataentry extends Survey_Common_Action
 
         $aData['display']['menu_bars']['browse'] = gT("Data entry");
         $aData['title_bar']['title'] = gT("Data entry");
-        $aData['sidebar']['state'] = "close";
+        $aData['sidemenu']['state'] = false;
         $aData['menu']['edition'] = true;
         $aData['menu']['import'] =  true;
         $aData['menu']['close'] =  true;
@@ -259,20 +259,20 @@ class dataentry extends Survey_Common_Action
                 $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
                 $tables = App()->getApi()->getOldResponseTables($iSurveyId);
                 $compatible = array();
-				$coercible = array();
+                $coercible = array();
                 foreach ($tables as $table)
                 {
                     $schema = PluginDynamic::model($table)->getTableSchema();
                     if (PluginDynamic::model($table)->count() > 0)
                     {
-						if ($this->isCompatible($baseSchema, $schema))
-						{
-							$compatible[] = $table;
-						}
-						elseif ($this->isCompatible($baseSchema, $schema, false))
-						{
-							$coercible[] = $table;
-						}
+                        if ($this->isCompatible($baseSchema, $schema))
+                        {
+                            $compatible[] = $table;
+                        }
+                        elseif ($this->isCompatible($baseSchema, $schema, false))
+                        {
+                            $coercible[] = $table;
+                        }
                     }
                 }
 
@@ -282,9 +282,9 @@ class dataentry extends Survey_Common_Action
                     'label' => gT('Source table'),
                     'type' => 'select',
                     'options' => array(
-						gT('Compatible') => $this->tableList($compatible),
-						gT('Compatible with type coercion') => $this->tableList($coercible)
-					)
+                        gT('Compatible') => $this->tableList($compatible),
+                        gT('Compatible with type coercion') => $this->tableList($coercible)
+                    )
                 );
 
 
@@ -300,7 +300,7 @@ class dataentry extends Survey_Common_Action
                 $aData["surveyinfo"] = $surveyinfo;
                 $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
 
-                $aData['sidebar']['state'] = "close";
+                $aData['sidemenu']['state'] = false;
                 $aData['menu']['edition'] = true;
                 $aData['menu']['import'] =  true;
                 $aData['menu']['close'] =  true;
@@ -342,7 +342,7 @@ class dataentry extends Survey_Common_Action
                     }
                 }
                 $imported = 0;
-				$sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
+                $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
                 foreach ($sourceResponses as $sourceResponse)
                 {
                    $iOldID=$sourceResponse->id;
@@ -1346,7 +1346,7 @@ class dataentry extends Survey_Common_Action
             $aDataentryoutput .= "</form>\n";
 
             $aViewUrls['output'] = $aDataentryoutput;
-            $aData['sidebar']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
             $aData['menu']['save'] =  true;
             $aData['menu']['close'] =  true;
@@ -1385,7 +1385,7 @@ class dataentry extends Survey_Common_Action
             Yii::app()->loadHelper('database');
             $delresult = dbExecuteAssoc($delquery) or safeDie ("Couldn't delete record $id<br />\n");
 
-            $aData['sidebar']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
             $aData['menu']['close'] =  true;
 
@@ -1900,7 +1900,7 @@ class dataentry extends Survey_Common_Action
 
                 $aData['dataentrymsgs'] = $aDataentrymsgs;
 
-                $aData['sidebar']['state'] = "close";
+                $aData['sidemenu']['state'] = false;
 
                 $this->_renderWrappedTemplate('dataentry', 'insert', $aData);
             }
@@ -2339,7 +2339,7 @@ class dataentry extends Survey_Common_Action
 
             $aViewUrls[] = 'active_html_view';
 
-            $aData['sidebar']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
             $aData['menu']['save'] = true;
             $aData['menu']['close'] =  true;

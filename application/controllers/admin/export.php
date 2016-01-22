@@ -248,7 +248,7 @@ class export extends Survey_Common_Action {
             $data['aLanguages'] = $aLanguages;    // Pass available exports
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
 
-            $data['sidebar']['state'] = "close";
+            $data['sidemenu']['state'] = false;
             $data['menu']['edition'] = true;
             $data['menu']['export'] = true;
             $data['menu']['close'] =  true;
@@ -322,7 +322,7 @@ class export extends Survey_Common_Action {
         else
         {
             $sFilter='';
-		}
+        }
 
         viewHelper::disableHtmlLogging();
         $resultsService->exportSurvey($iSurveyID, $explang, $sExportType, $options, $sFilter);
@@ -419,7 +419,7 @@ class export extends Survey_Common_Action {
             $data["surveyinfo"] = $surveyinfo;
             $data['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
 
-            $data['sidebar']['state'] = "close";
+            $data['sidemenu']['state'] = false;
             $data['menu']['edition'] = true;
             $data['menu']['close'] =  true;
 
@@ -674,7 +674,7 @@ class export extends Survey_Common_Action {
             $aData["surveyinfo"] = $surveyinfo;
             $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
 
-            $aData['sidebar']['state'] = "close";
+            $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
             $aData['menu']['export'] = true;
             $aData['menu']['close'] =  true;
