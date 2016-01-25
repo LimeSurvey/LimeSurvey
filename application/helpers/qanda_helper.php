@@ -3000,6 +3000,7 @@ function do_multiplenumeric($ia)
 
 
     $extraclass ="";
+    $answertypeclass="";
     $checkconditionFunction = "fixnum_checkconditions";
     $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
     $answer='';
@@ -3007,10 +3008,11 @@ function do_multiplenumeric($ia)
     $sSeparator = $sSeparator['separator'];
     //Must turn on the "numbers only javascript"
     $extraclass .=" numberonly";
+
     if ($aQuestionAttributes['thousands_separator'] == 1) {
         App()->clientScript->registerPackage('jquery-price-format');
         App()->clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts').'numerical_input.js');
-        $extraclass .= " thousandsseparator";
+        $answertypeclass .= " thousandsseparator";
     }
 
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
@@ -3046,13 +3048,10 @@ function do_multiplenumeric($ia)
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
-        $kpclass = "num-keypad";
+        $answertypeclass = " num-keypad";
         $extraclass .=" keypad";
     }
-    else
-    {
-        $kpclass = "";
-    }
+
 
     $numbersonly_slider = ''; // DEPRECATED
 
@@ -3154,7 +3153,7 @@ function do_multiplenumeric($ia)
                 $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
                 $sSeparator = $sSeparator['separator'];
 
-                $answer_main .= "{$sliderleft}<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth."\" name=\"".$myfname."\" id=\"answer".$myfname."\" title=\"".gT('Only numbers may be entered in this field.')."\" value=\"";
+                $answer_main .= "{$sliderleft}<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $answertypeclass\" type=\"text\" size=\"".$tiwidth."\" name=\"".$myfname."\" id=\"answer".$myfname."\" title=\"".gT('Only numbers may be entered in this field.')."\" value=\"";
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
                     $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
@@ -3243,7 +3242,6 @@ function do_multiplenumeric($ia)
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
 
-
     return array($answer, $inputnames);
 }
 
@@ -3273,7 +3271,7 @@ function do_numerical($ia)
     if ($aQuestionAttributes['thousands_separator'] == 1) {
         App()->clientScript->registerPackage('jquery-price-format');
         App()->clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts').'numerical_input.js');
-        $extraclass .= " thousandsseparator";
+        $answertypeclass .= " thousandsseparator";
     }
     if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
         $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
@@ -3334,10 +3332,7 @@ function do_numerical($ia)
         $extraclass .=" inputkeypad";
         $answertypeclass .= " num-keypad";
     }
-    else
-    {
-        $kpclass = "";
-    }
+
     // --> START NEW FEATURE - SAVE
     $answer = "<p class='question answer-item text-item numeric-item {$extraclass}'>"
     . " <label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>\n$prefix\t"
