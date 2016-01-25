@@ -927,6 +927,7 @@ function do_date($ia)
     // Rem: this should generate a bug...
     //$aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+
     $sDateLangvarJS=" translt = {
          alertInvalidDate: '" . gT('Date entered is invalid!','js') . "',
         };";
@@ -1025,25 +1026,12 @@ function do_date($ia)
             {
                 // Show day select box
                 case 'j':
-                case 'd':   $answer .= '<label for="day'.$ia[1].'" class="hide">'.gT('Day').'</label><select id="day'.$ia[1].'" name="day'.$ia[1].'" class="form-control day">
-                    <option value="">'.gT('Day')."</option>\n";
-                    for ($i=1; $i<=31; $i++) {
-                        if ($i == $currentdate)
-                        {
-                            $i_date_selected = SELECTED;
-                        }
-                        else
-                        {
-                            $i_date_selected = '';
-                        }
-                        $answer .= '<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.sprintf('%02d', $i)."</option>\n";
-                    }
-                    $answer .='</select>';
+                case 'd':
+                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/day', array('dayId'=>$ia[1], 'currentdate'=>$currentdate), true);
                     break;
                     // Show month select box
                 case 'n':
-                case 'm':   $answer .= '<label for="month'.$ia[1].'" class="hide">'.gT('Month').'</label><select id="month'.$ia[1].'" name="month'.$ia[1].'" class="month form-control">
-                    <option value="">'.gT('Month')."</option>\n";
+                case 'm':
                     switch ((int)trim($aQuestionAttributes['dropdown_dates_month_style']))
                     {
                         case 0:
@@ -1081,18 +1069,7 @@ function do_date($ia)
                             break;
                     }
 
-                    for ($i=1; $i<=12; $i++) {
-                        if ($i == $currentmonth)
-                        {
-                            $i_date_selected = SELECTED;
-                        }
-                        else
-                        {
-                            $i_date_selected = '';
-                        }
-                        $answer .= '<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>';
-                    }
-                    $answer .= '</select>';
+                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/month', array('monthId'=>$ia[1], 'currentdate'=>$currentdate, 'montharray'=>$montharray), true);
                     break;
                     // Show year select box
                 case 'y':
