@@ -1843,7 +1843,7 @@ function do_listwithcomment($ia)
     // General variables
     global $dropdownthreshold;
     global $thissurvey;
-    $dropdownthreshold = Yii::app()->getConfig("dropdownthreshold");
+    $dropdownthreshold      = Yii::app()->getConfig("dropdownthreshold");
     $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $checkconditionFunction = "checkconditions";
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
@@ -1865,10 +1865,7 @@ function do_listwithcomment($ia)
     $hint_comment = gT('Please enter your comment here');
     if ($aQuestionAttributes['use_dropdown']!=1 && $anscount <= $dropdownthreshold)
     {
-        $answer .= '<div class="list">
-        <ul class="list-unstyled answers-list radio-list">
-        ';
-
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/list/header', array(), true);
         foreach ($ansresult as $ansrow)
         {
             $check_ans = '';
@@ -1876,11 +1873,15 @@ function do_listwithcomment($ia)
             {
                 $check_ans = CHECKED;
             }
-            $answer .= '        <li class="answer-item radio-item">
-            <input type="radio" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'" value="'.$ansrow['code'].'" class="radio" '.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
-            <label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
-            </li>
-            ';
+            $itemData = array(
+                'name'=>$ia[1],
+                'id'=>'answer'.$ia[1].$ansrow['code'],
+                'value'=>$ansrow['code'],
+                'check_ans'=>$check_ans,
+                'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type);',
+                'labeltext'=>$ansrow['answer'],
+            );
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/list/item', $itemData, true);
         }
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
@@ -1893,11 +1894,17 @@ function do_listwithcomment($ia)
             {
                 $check_ans = '';
             }
-            $answer .= '        <li class="answer-item radio-item noanswer-item">
-            <input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'" value=" " onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)"'.$check_ans.' />
-            <label for="answer'.$ia[1].'" class="answertext">'.gT('No answer').'</label>
-            </li>
-            ';
+
+            $itemData = array(
+                'li_classes'=>' noanswer-item',
+                'name'=>$ia[1],
+                'id'=>'answer'.$ia[1],
+                'value'=>'',
+                'check_ans'=>$check_ans,
+                'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+                'labeltext'=>gT('No answer'),
+            );
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/list/item', $itemData, true);
         }
 
         $fname2 = $ia[1].'comment';
@@ -1907,23 +1914,22 @@ function do_listwithcomment($ia)
         //        $answer .= "\t<td valign='top'>\n"
         //                 . "<textarea class='textarea' name='$ia[1]comment' id='answer$ia[1]comment' rows='$tarows' cols='30'>";
         //    --> END ORIGINAL
-        $answer .= '    </ul>
-        </div>
 
-        <p class="comment answer-item text-item">
-        <label for="answer'.$ia[1].'comment">'.$hint_comment.':</label>
+        $footerData = array(
+            'id'=>'answer'.$ia[1].'comment',
+            'hint_comment'=>$hint_comment,
+            'kpclass'=>$kpclass,
+            'name'=>$ia[1].'comment',
+            'tarows'=>floor($tarows),
+            'has_comment_saved'=>isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2],
+            'comment_saved'=>htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]),
+            'java_name'=>'java'.$ia[1],
+            'java_id'=>'java'.$ia[1],
+            'java_value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]
+        );
 
-        <textarea class="textarea form-control'.$kpclass.'" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.floor($tarows).'" cols="30" >';
-        // --> END NEW FEATURE - SAVE
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2])
-        {
-            $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]);
-        }
-        $answer .= '</textarea>
-        </p>
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/list/footer', $footerData, true);
 
-        <input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]].'" />
-        ';
         $inputnames[]=$ia[1];
         $inputnames[]=$ia[1].'comment';
     }
