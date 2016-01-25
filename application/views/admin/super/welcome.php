@@ -121,7 +121,7 @@
     </div>
 
     <!-- Second row of boxes -->
-    <div class="row hidden-xs">
+    <div class="row text-center hidden-xs">
 
         <!-- 4th defined in database -->
         <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
