@@ -93,7 +93,8 @@ function retrieveAnswers($ia)
     $qtitle=$ia[3];
     $inputnames=array();
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    //$aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     //Create the question/answer html
     $answer = "";
     // Previously in limesurvey, it was virtually impossible to control how the start of questions were formatted.
@@ -307,7 +308,7 @@ function retrieveAnswers($ia)
 
     if ($ia[6] == 'Y')
     {
-        $qtitle = Yii::app()->getController()->renderPartial('/survey/question_help/asterisk', array('message'=>$message), true);
+        $qtitle = Yii::app()->getController()->renderPartial('/survey/question_help/asterisk', array(), true);
         $qtitle .= $qtitle;
         $question_text['mandatory'] = gT('*');
     }
@@ -659,23 +660,22 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
  */
 function return_object_nb_cols($ansresult, $minLabelSize = 11, $minInputSize=1)
 {
-
     // We first check that $minLabelSize and $minInputSize are coherent with a 12 column grid
     // We give the priority to defined label size
-    if(($minLabelSize + $minInputSize) > 12)
+    if (($minLabelSize + $minInputSize) > 12)
         $minInputSize = 12 - $minLabelSize;
 
     $nbColLabelLgLog=0;
 
     // We define the same col-lg and col-xs for all labels/inputs, on the base of the bigger one.
-    foreach($ansresult as $ansrow)
+    foreach ($ansresult as $ansrow)
     {
         // We calculate the needed row to fully display the label
         $nbCol = round(strlen($ansrow['question'])/10)+1;
         $nbColLabelLg = ($nbCol > $minLabelSize)?$minLabelSize:$nbCol;
 
         // If it's the largest one until now, we log it.
-        if($nbColLabelLg > $nbColLabelLgLog)
+        if ($nbColLabelLg > $nbColLabelLgLog)
             $nbColLabelLgLog = $nbColLabelLg;
 
     }
@@ -754,7 +754,8 @@ function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
     return $htmltbody2;
 }
 
-function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
+function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null)
+{
     $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
     $htmltbody2 .= ($class !== null) ? " class='$class'": "";
     $surveyid=$thissurvey['sid'];
@@ -815,7 +816,8 @@ define('SELECTED' , ' selected="selected"' , true);
 
 function do_boilerplate($ia)
 {
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    //$aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $answer='';
 
     if (trim($aQuestionAttributes['time_limit'])!='')
@@ -831,7 +833,7 @@ function do_boilerplate($ia)
 
 function do_equation($ia)
 {
-    $aQuestionAttributes= getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $sEquation=(trim($aQuestionAttributes['equation'])) ? $aQuestionAttributes['equation'] : $ia[3];
     $sValue = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES);
 
@@ -852,7 +854,8 @@ function do_5pointchoice($ia)
 {
     $imageurl = Yii::app()->getConfig("imageurl");
     $checkconditionFunction = "checkconditions";
-    $aQuestionAttributes=  getQuestionAttributeValues($ia[0]);
+    //$aQuestionAttributes=  getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $id = 'slider'.time().rand(0,100);
 
     $answer = Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/5pointchoice_header', array('id'=>$id), true);
@@ -921,10 +924,14 @@ function do_5pointchoice($ia)
 function do_date($ia)
 {
     global $thissurvey;
-    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    // Rem: this should generate a bug...
+    //$aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+
     $sDateLangvarJS=" translt = {
          alertInvalidDate: '" . gT('Date entered is invalid!','js') . "',
         };";
+
     App()->getClientScript()->registerScript("sDateLangvarJS",$sDateLangvarJS,CClientScript::POS_HEAD);
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("third_party").'jstoolbox/date.js');
@@ -1019,25 +1026,12 @@ function do_date($ia)
             {
                 // Show day select box
                 case 'j':
-                case 'd':   $answer .= '<label for="day'.$ia[1].'" class="hide">'.gT('Day').'</label><select id="day'.$ia[1].'" name="day'.$ia[1].'" class="form-control day">
-                    <option value="">'.gT('Day')."</option>\n";
-                    for ($i=1; $i<=31; $i++) {
-                        if ($i == $currentdate)
-                        {
-                            $i_date_selected = SELECTED;
-                        }
-                        else
-                        {
-                            $i_date_selected = '';
-                        }
-                        $answer .= '<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.sprintf('%02d', $i)."</option>\n";
-                    }
-                    $answer .='</select>';
+                case 'd':
+                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/day', array('dayId'=>$ia[1], 'currentdate'=>$currentdate), true);
                     break;
                     // Show month select box
                 case 'n':
-                case 'm':   $answer .= '<label for="month'.$ia[1].'" class="hide">'.gT('Month').'</label><select id="month'.$ia[1].'" name="month'.$ia[1].'" class="month form-control">
-                    <option value="">'.gT('Month')."</option>\n";
+                case 'm':
                     switch ((int)trim($aQuestionAttributes['dropdown_dates_month_style']))
                     {
                         case 0:
@@ -1075,18 +1069,7 @@ function do_date($ia)
                             break;
                     }
 
-                    for ($i=1; $i<=12; $i++) {
-                        if ($i == $currentmonth)
-                        {
-                            $i_date_selected = SELECTED;
-                        }
-                        else
-                        {
-                            $i_date_selected = '';
-                        }
-                        $answer .= '<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>';
-                    }
-                    $answer .= '</select>';
+                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/month', array('monthId'=>$ia[1], 'currentdate'=>$currentdate, 'montharray'=>$montharray), true);
                     break;
                     // Show year select box
                 case 'y':
@@ -1277,11 +1260,7 @@ function do_date($ia)
 // ---------------------------------------------------------------
 function do_language($ia)
 {
-
-
-
     $checkconditionFunction = "checkconditions";
-
     $answerlangs = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
     $answerlangs [] = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
     // Get actual answer
@@ -1327,7 +1306,8 @@ function do_list_dropdown($ia)
     $checkconditionFunction = "checkconditions";
 
     // Question attribute variables
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    //$aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
     $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
     $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang])!='')?$aQuestionAttributes['other_replace_text'][$sSurveyLang]:gT('Other:'); // text for 'other'
@@ -1598,7 +1578,8 @@ function do_list_radio($ia)
     $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
 
     // Question attribute variables
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    //$aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang])!='')?$aQuestionAttributes['other_replace_text'][$sSurveyLang]:gT('Other:'); // text for 'other'
     $iNbCols                  = (trim($aQuestionAttributes['display_columns'])!='')?$aQuestionAttributes['display_columns']:1; // number of columns
 
@@ -1887,7 +1868,7 @@ function do_listwithcomment($ia)
     if (!isset($maxoptionsize)) {$maxoptionsize=35;}
 
     // Question attribute variables
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     // Getting question
     $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$sSurveyLang));
@@ -2031,7 +2012,7 @@ function do_ranking($ia)
 
     $checkconditionFunction = "checkconditions";
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
     } else {
@@ -2467,7 +2448,7 @@ function do_multiplechoice_withcomments($ia)
 
     $checkconditionFunction = "checkconditions";
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if ($aQuestionAttributes['other_numbers_only']==1)
     {
@@ -2653,7 +2634,7 @@ function do_file_upload($ia)
 
     $checkconditionFunction = "checkconditions";
 
-    $aQuestionAttributes=getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     // Fetch question attributes
     $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldname'] = $ia[1];
@@ -2789,7 +2770,7 @@ function do_multipleshorttext($ia)
     global $thissurvey;
     $extraclass ="";
     $answer='';
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if ($aQuestionAttributes['numbers_only']==1)
     {
@@ -3004,7 +2985,7 @@ function do_multiplenumeric($ia)
 
         $extraclass ="";
     $checkconditionFunction = "fixnum_checkconditions";
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $answer='';
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
@@ -3291,7 +3272,7 @@ function do_numerical($ia)
     $answertypeclass = "numeric";
 
     $checkconditionFunction = "fixnum_checkconditions";
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
         $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .=" withprefix";
@@ -3398,7 +3379,7 @@ function do_shortfreetext($ia)
         $sGoogleMapsAPIKey='&key='.$sGoogleMapsAPIKey;
     }
     $extraclass ="";
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if ($aQuestionAttributes['numbers_only']==1)
     {
@@ -3718,7 +3699,7 @@ function do_longfreetext($ia)
 
     $checkconditionFunction = "checkconditions";
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
@@ -3797,7 +3778,7 @@ function do_hugefreetext($ia)
 
     $checkconditionFunction = "checkconditions";
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
@@ -3907,7 +3888,7 @@ function do_gender($ia)
 
     $checkconditionFunction = "checkconditions";
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     $answer = "<div class=\"answers-list radio-list\">\n"
     . "\t<div class=\"col-xs-4 answer-item radio-item\">\n"
@@ -3965,7 +3946,7 @@ function do_array_5point($ia)
     $caption=gT("An array with sub-question on each line. The answers are value from 1 to 5 and are contained in the table header. ");
     $checkconditionFunction = "checkconditions";
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if (trim($aQuestionAttributes['answer_width'])!='')
     {
@@ -4144,7 +4125,7 @@ function do_array_10point($ia)
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
     $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     if (trim($aQuestionAttributes['answer_width'])!='')
     {
         $answerwidth=$aQuestionAttributes['answer_width'];
@@ -4284,7 +4265,9 @@ function do_array_yesnouncertain($ia)
     $qresult = dbExecuteAssoc($qquery);    //Checked
     $qrow = $qresult->readAll();
     $other = isset($qrow['other']) ? $qrow['other'] : '';
-    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    //// REM : This should generate a bug...
+    //$aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     if (trim($aQuestionAttributes['answer_width'])!='')
     {
         $answerwidth=$aQuestionAttributes['answer_width'];
@@ -4449,7 +4432,7 @@ function do_array_increasesamedecrease($ia)
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
     $qresult = dbExecuteAssoc($qquery);   //Checked
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     if (trim($aQuestionAttributes['answer_width'])!='')
     {
         $answerwidth=$aQuestionAttributes['answer_width'];
@@ -4616,7 +4599,7 @@ function do_array($ia)
     $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
     $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     if (trim($aQuestionAttributes['answer_width'])!='')
     {
         $answerwidth=$aQuestionAttributes['answer_width'];
@@ -4990,7 +4973,7 @@ function do_array_multitext($ia)
     $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
 
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     $show_grand = $aQuestionAttributes['show_grand_total'];
     $totals_class = '';
@@ -5372,7 +5355,7 @@ function do_array_multiflexi($ia)
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
     $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     if (trim($aQuestionAttributes['multiflexible_max'])!='' && trim($aQuestionAttributes['multiflexible_min']) ==''){
         $maxvalue=$aQuestionAttributes['multiflexible_max'];
         $extraclass .=" maxvalue maxvalue-".trim($aQuestionAttributes['multiflexible_max']);
@@ -5752,7 +5735,7 @@ function do_arraycolumns($ia)
     $checkconditionFunction = "checkconditions";
     $caption=gT("An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. ");
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
     $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
 
@@ -5914,7 +5897,7 @@ function do_array_dual($ia)
     $inputnames=array();
     $labelans1=array();
     $labelans=array();
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
