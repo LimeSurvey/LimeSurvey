@@ -70,9 +70,10 @@
     App()->getClientScript()->registerPackage('jquery-touch-punch');
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
     useFirebug();
-
-    echo templatereplace(file_get_contents(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/startpage.pstpl"),array(),$data,'survey['.__LINE__.']');
-    echo templatereplace(file_get_contents(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/surveylist.pstpl"),array(),$data,'survey['.__LINE__.']');
-    echo templatereplace(file_get_contents(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/endpage.pstpl"),array(),$data,'survey['.__LINE__.']');
+    global $oTemplate;
+    $oTemplate = Template::model()->getTemplateConfiguration('',$survey->sid);
+    echo templatereplace(file_get_contents($oTemplate->viewPath."/startpage.pstpl"),array(),$data,'survey['.__LINE__.']');
+    echo templatereplace(file_get_contents($oTemplate->viewPath."/surveylist.pstpl"),array(),$data,'survey['.__LINE__.']');
+    echo templatereplace(file_get_contents($oTemplate->viewPath."/endpage.pstpl"),array(),$data,'survey['.__LINE__.']');
     doFooter();
 ?>
