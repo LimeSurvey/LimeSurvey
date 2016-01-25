@@ -140,34 +140,47 @@ function retrieveAnswers($ia)
                     ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep']))
                     {
                         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]]))
-                        $question_text['help'] = '<span class="error">'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]].'</span>';
+                        {
+                            //$question_text['help'] = '<span class="error">'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]].'</span>';
+                            $message = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]];
+                            $question_text['help'] = Yii::app()->getController()->renderPartial('/survey/question_help/error.php', array('message'=>$message, 'classes'=>''), true);
+                        }
                     }
                     break;
                     case 'L': //LIST drop-down/radio-button list
                     $values = do_list_radio($ia);
                     if ($aQuestionAttributes['hide_tip']==0)
                     {
-                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                        . gT('Choose one of the following answers').'</span>';
-                        $question_text['help'] = gT('Choose one of the following answers');
+                        /*$qtitle .= "<br />\n<span class=\"questionhelp\">"
+                        . gT('Choose one of the following answers').'</span>';*/
+                        $question_text['help'] = $message = gT('Choose one of the following answers');
+                        $qtitle .= Yii::app()->getController()->renderPartial('/survey/question_help/help.php', array('message'=>$message, 'classes'=>''), true);
+
                     }
                     break;
                     case '!': //List - dropdown
                     $values=do_list_dropdown($ia);
                     if ($aQuestionAttributes['hide_tip']==0)
                     {
+                        /*
                         $qtitle .= "<br />\n<span class=\"questionhelp\">"
                         . gT('Choose one of the following answers').'</span>';
-                        $question_text['help'] = gT('Choose one of the following answers');
+                        $question_text['help'] = gT('Choose one of the following answers');*/
+                        $question_text['help'] = $message = gT('Choose one of the following answers');
+                        $qtitle .= Yii::app()->getController()->renderPartial('/survey/question_help/help.php', array('message'=>$message, 'classes'=>''), true);
                     }
                     break;
                     case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
                     $values=do_listwithcomment($ia);
                     if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
                     {
+                        /*
                         $qtitle .= "<br />\n<span class=\"questionhelp\">"
                         . gT('Choose one of the following answers').'</span>';
                         $question_text['help'] = gT('Choose one of the following answers');
+                        */
+                        $question_text['help'] = $message = gT('Choose one of the following answers');
+                        $qtitle .= Yii::app()->getController()->renderPartial('/survey/question_help/help.php', array('message'=>$message, 'classes'=>''), true);
                     }
                     break;
                     case 'R': //RANKING STYLE
@@ -181,9 +194,13 @@ function retrieveAnswers($ia)
                         $minansw=trim($aQuestionAttributes['min_answers']);
                         if (!($maxansw || $minansw))
                         {
+                            /*
                             $qtitle .= "<br />\n<span class=\"questionhelp\">"
                             . gT('Check any that apply').'</span>';
                             $question_text['help'] = gT('Check any that apply');
+                            */
+                            $question_text['help'] = $message = gT('Check any that apply');
+                            $qtitle .= Yii::app()->getController()->renderPartial('/survey/question_help/help.php', array('message'=>$message, 'classes'=>''), true);
                         }
                     }
                     break;
@@ -192,9 +209,13 @@ function retrieveAnswers($ia)
                     $values=do_language($ia);
                     if (count($values[1]) > 1)
                     {
+                        /*
                         $qtitle .= "<br />\n<span class=\"questionhelp\">"
                         . gT('Choose your language').'</span>';
                         $question_text['help'] = gT('Choose your language');
+                        */
+                        $question_text['help'] = $message = gT('Choose your language');
+                        $qtitle .= Yii::app()->getController()->renderPartial('/survey/question_help/help.php', array('message'=>$message, 'classes'=>''), true);
                     }
                     break;
                     case 'P': //Multiple choice with comments checkbox + text
@@ -205,9 +226,13 @@ function retrieveAnswers($ia)
                         $minansw=trim($aQuestionAttributes["min_answers"]);
                         if (!($maxansw || $minansw))
                         {
+                            /*
                             $qtitle .= "<br />\n<span class=\"questionhelp\">"
                             . gT('Check any that apply').'</span>';
                             $question_text['help'] = gT('Check any that apply');
+                            */
+                            $question_text['help'] = $message = gT('Check any that apply');
+                            $qtitle .= Yii::app()->getController()->renderPartial('/survey/question_help/help.php', array('message'=>$message, 'classes'=>''), true);
                         }
                     }
                     break;
@@ -287,21 +312,27 @@ function retrieveAnswers($ia)
 
     if ($ia[6] == 'Y')
     {
+
+        /*
         $qtitle = '<span class="asterisk">'.gT('*').'</span>'.$qtitle;
+        */
+        $qtitle = Yii::app()->getController()->renderPartial('/survey/question_help/asterisk.php', array('message'=>$message), true);
+        $qtitle .= $qtitle;
         $question_text['mandatory'] = gT('*');
     }
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
-    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
+    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep']))
+    {
         $mandatory_msg = mandatory_message($ia);
     }
-    else {
+    else
+    {
         $mandatory_msg = '';
     }
     $qtitle .= $mandatory_msg;
     $question_text['man_message'] = $mandatory_msg;
 
-    //    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
     if (!isset($aQuestionAttributes['hide_tip']) || $aQuestionAttributes['hide_tip']==0) {
         $_vshow = true; // whether should initially be visible - TODO should also depend upon 'hidetip'?
     }
@@ -313,10 +344,12 @@ function retrieveAnswers($ia)
     $qtitle .= $validation_msg;
     $question_text['valid_message'] = $validation_msg;
 
-    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
+    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep']))
+    {
         $file_validation_msg = file_validation_message($ia);
     }
-    else {
+    else
+    {
         $file_validation_msg = '';
         $isValid = true;    // don't want to show any validation messages.
     }
@@ -409,12 +442,14 @@ function mandatory_message($ia)
 */
 function validation_message($ia,$show)
 {
-    $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
-    $class = "questionhelp";
-    if (!$show) {
-        $class .= ' hide-tip';
-    }
-    $tip = CHtml::tag('div',array('class'=>$class,'id'=>"vmsg_{$ia[0]}"),$qinfo['validTip']); // div inside div (w3c)
+    $qinfo      = LimeExpressionManager::GetQuestionStatus($ia[0]);
+    $class      = (!$show)?' hide-tip':'';
+    $id         = "vmsg_".$ia[0];
+    $message    = $qinfo['validTip'];
+    //$tip = CHtml::tag('div',array('class'=>$class,'id'=>"vmsg_{$ia[0]}"),$qinfo['validTip']); // div inside div (w3c)
+
+    $tip = Yii::app()->getController()->renderPartial('/survey/question_help/help.php', array('message'=>$message, 'classes'=>$class, 'id'=>$id ), true);
+
     $isValid = $qinfo['valid'];
     return array($tip,$isValid);
 }
@@ -423,22 +458,18 @@ function validation_message($ia,$show)
 function file_validation_message($ia)
 {
     global $filenotvalidated;
-
-
     $qtitle = "";
     if (isset($filenotvalidated) && is_array($filenotvalidated) && $ia[4] == "|")
     {
         global $filevalidationpopup, $popup;
-
         foreach ($filenotvalidated as $k => $v)
         {
-            if ($ia[1] == $k || strpos($k, "_") && $ia[1] == substr(0, strpos($k, "_") - 1));
-            //$qtitle .= '<br /><span class="errormandatory">'.gT($filenotvalidated[$k]).'</span><br />';
-            $qtitle .= '
-                        <div class="alert alert-danger" role="alert">'.
-                                gT($filenotvalidated[$k])
-                            .'
-                        </div>';
+            if ($ia[1] == $k || strpos($k, "_") && $ia[1] == substr(0, strpos($k, "_") - 1))
+            {
+                //$qtitle .= '<br /><span class="errormandatory">'.gT($filenotvalidated[$k]).'</span><br />';
+                $message = gT($filenotvalidated[$k]);
+                $qtitle .=  Yii::app()->getController()->renderPartial('/survey/question_help/error.php', array('message'=>$message, 'classes'=>''), true);
+            }
         }
     }
     return $qtitle;
@@ -1013,6 +1044,8 @@ function do_5pointchoice($ia)
     $sJavaValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
 
     $inputnames[]=$ia[1];
+
+    $slider_rating = 0;
 
     if($aQuestionAttributes['slider_rating']==1){
         $slider_rating = 1;

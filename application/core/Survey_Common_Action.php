@@ -1171,7 +1171,6 @@ class Survey_Common_Action extends CAction
         if (!empty($aData['display']['menu_bars']['browse']) && !empty($aData['surveyid']))
         {
             //BROWSE MENU BAR
-
             $iSurveyID=$aData['surveyid'];
             $oSurvey = $aData['oSurvey'];
             $aData['title'] = $aData['display']['menu_bars']['browse'];
@@ -1186,7 +1185,7 @@ class Survey_Common_Action extends CAction
 
             if(!isset($aData['menu']['closeurl']))
             {
-                $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']));                
+                $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']) );
             }
 
             $this->getController()->renderPartial("/admin/responses/browsemenubar_view", $aData);
