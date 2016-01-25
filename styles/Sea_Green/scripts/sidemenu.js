@@ -10,6 +10,18 @@ $(document).ready(function(){
     var sidemenusContainer = $('.sidemenuscontainer');
     var accordionContainer = $('#accordion-container');
 
+    // Check if we have a right-to-left language
+    var rtl = $("html").attr('dir') === "rtl";
+
+    if (rtl) {
+        var left_or_right_250 = {right: -250};
+        var left_or_right_0 = {right: 0};
+    }
+    else {
+        var left_or_right_250 = {left: -250};
+        var left_or_right_0 = {left: 0};
+    }
+
     /**
     * If the side bar state is set to  "close" on page load, it closes the side menu
     */
@@ -22,27 +34,24 @@ $(document).ready(function(){
 
         $that = $('.toggleside');
 
-        $('.side-menu').css({
-          opacity: 0.5,
-          left: -250,
-        });
+        $('.side-menu').css($.extend({
+          opacity: 0.5
+        }, left_or_right_250));
 
         $thatWidth = $('.side-body').width();
         $('.side-body').width($thatWidth);
 
-        $('.side-body').css({
-          left: -250,
-          width: $thatWidth + 250,
-        });
+        $('.side-body').css($.extend({
+          width: $thatWidth + 250
+        }, left_or_right_250));
         $('.side-body').parent().css( "overflow-x", "hidden" );
 
         $that.removeClass("hideside");
         $that.addClass("showside");
 
-        absoluteWrapper.css({
-          opacity: 0.5,
-          left: -250,
-            });
+        absoluteWrapper.css($.extend({
+          opacity: 0.5
+        }, left_or_right_250));
 
         sidemenusContainer.css({
             opacity: 0,
@@ -93,11 +102,12 @@ $(document).ready(function(){
         disableChevrons();
 
         // Move the side menu
-        sideMenu.animate({
-            opacity: 0.5,
-            left: "-250",
-            }, 500, function() {
-        });
+        sideMenu.animate($.extend({
+            opacity: 0.5
+            }, left_or_right_250),
+            500, 
+            function() {}
+        );
 
         // To animate correctly the side body, we first must give it a fixed width
         $thatWidth = sideBody.width();
@@ -105,16 +115,16 @@ $(document).ready(function(){
 
         // Move the side body
         sideBody.animate(
-                   {
-                       left: "-250",
-                       width: $thatWidth + 250,
-                   }, 500, function() {
+                   $.extend({
+                       width: $thatWidth + 250
+                   }, left_or_right_250),
+                   500, function() {
                    });
 
-                   absoluteWrapper.animate({
-                       opacity: 0.5,
-                       left: "-250",
-                   }, 500, function() {
+                   absoluteWrapper.animate($.extend({
+                       opacity: 0.5
+                   }, left_or_right_250),
+                   500, function() {
                    });
 
                    sidemenusContainer.animate({
@@ -154,25 +164,25 @@ $(document).ready(function(){
     jQuery(document).on('click', '#chevronStretch.closed', function(){
         disableChevrons();
 
-        sideMenu.animate({
-                opacity: 1,
-                left: "0",
-            }, 500, function() {
+        sideMenu.animate($.extend({
+                opacity: 1
+            }, left_or_right_0),
+            500, function() {
             });
 
             $thatWidth = sideBody.width();
             sideBody.width($thatWidth);
 
-            sideBody.animate({
-                left: "0",
-                width: $thatWidth - 250,
-            }, 500, function() {
+            sideBody.animate($.extend({
+                width: $thatWidth - 250
+            }, left_or_right_0),
+            500, function() {
             });
 
-            absoluteWrapper.animate({
-                opacity: 1,
-                left: "0",
-            }, 500, function() {
+            absoluteWrapper.animate($.extend({
+                opacity: 1
+            }, left_or_right_0),
+            500, function() {
             });
 
             sidemenusContainer.animate({
