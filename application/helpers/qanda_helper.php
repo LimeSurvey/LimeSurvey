@@ -307,7 +307,7 @@ function retrieveAnswers($ia)
 
     if ($ia[6] == 'Y')
     {
-        $qtitle = Yii::app()->getController()->renderPartial('/survey/question_help/asterisk', array('message'=>$message), true);
+        $qtitle = Yii::app()->getController()->renderPartial('/survey/question_help/asterisk', array(), true);
         $qtitle .= $qtitle;
         $question_text['mandatory'] = gT('*');
     }
@@ -659,23 +659,22 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
  */
 function return_object_nb_cols($ansresult, $minLabelSize = 11, $minInputSize=1)
 {
-
     // We first check that $minLabelSize and $minInputSize are coherent with a 12 column grid
     // We give the priority to defined label size
-    if(($minLabelSize + $minInputSize) > 12)
+    if (($minLabelSize + $minInputSize) > 12)
         $minInputSize = 12 - $minLabelSize;
 
     $nbColLabelLgLog=0;
 
     // We define the same col-lg and col-xs for all labels/inputs, on the base of the bigger one.
-    foreach($ansresult as $ansrow)
+    foreach ($ansresult as $ansrow)
     {
         // We calculate the needed row to fully display the label
         $nbCol = round(strlen($ansrow['question'])/10)+1;
         $nbColLabelLg = ($nbCol > $minLabelSize)?$minLabelSize:$nbCol;
 
         // If it's the largest one until now, we log it.
-        if($nbColLabelLg > $nbColLabelLgLog)
+        if ($nbColLabelLg > $nbColLabelLgLog)
             $nbColLabelLgLog = $nbColLabelLg;
 
     }
