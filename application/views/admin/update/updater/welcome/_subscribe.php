@@ -18,7 +18,7 @@
         $aopen  = '<a href="https://www.limesurvey.org/en/your-account/your-details" target="_blank">';
         $aclose = '</a>';
     ?>
-    <?php echo sprintf(gT("You can get free trial update key from %syour account on the limesurvey.org website%s."),$aopen, $aclose); ?>
+    <?php echo sprintf(gT("You can get a free trial update key from %syour account on the limesurvey.org website%s."),$aopen, $aclose); ?>
     <?php
         $aopen  = '<a href="https://www.limesurvey.org/en/cb-registration/registers">';
         $aclose = '</a>';
