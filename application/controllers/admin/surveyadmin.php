@@ -122,11 +122,12 @@ class SurveyAdmin extends Survey_Common_Action
         $aViewUrls['output'] = PrepareEditorScript(false, $this->getController());
 
         $aData = $this->_generalTabNewSurvey();
+
         $aData['esrow'] = $esrow;
-        $aData = array_merge($aData, $this->_tabPresentationNavigation($esrow));
-        $aData = array_merge($aData, $this->_tabPublicationAccess($esrow));
-        $aData = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
-        $aData = array_merge($aData, $this->_tabTokens($esrow));
+        $this->_tabPresentationNavigation($aData);
+        $this->_tabPublicationAccess($aData);
+        $this->_tabNotificationDataManagement($aData);
+        $this->_tabTokens($aData);
         $arrayed_data['data'] = $aData;
         $aViewUrls[] = 'newSurvey_view';
 
@@ -163,14 +164,14 @@ class SurveyAdmin extends Survey_Common_Action
         $esrow = array();
         $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
         $aData['esrow'] = $esrow;
-
-        $aData = array_merge($aData, $this->_generalTabEditSurvey($iSurveyID, $esrow));
-        $aData = array_merge($aData, $this->_tabPresentationNavigation($esrow));
-        $aData = array_merge($aData, $this->_tabPublicationAccess($esrow));
-        $aData = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
-        $aData = array_merge($aData, $this->_tabTokens($esrow));
-        $aData = array_merge($aData, $this->_tabPanelIntegration($esrow));
-        $aData = array_merge($aData, $this->_tabResourceManagement($iSurveyID));
+		
+        $this->_generalTabEditSurvey($aData, $iSurveyID);
+        $this->_tabPresentationNavigation($aData);
+        $this->_tabPublicationAccess($aData);
+        $this->_tabNotificationDataManagement($aData);
+        $this->_tabTokens($aData);
+        $this->_tabPanelIntegration($aData);
+        $this->_tabResourceManagement($aData,$iSurveyID);
 
         $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
 
@@ -1121,94 +1122,94 @@ class SurveyAdmin extends Survey_Common_Action
     /**
     * survey::_generalTabEditSurvey()
     * Load "General" tab of edit survey screen.
+    * @param mixed &$aData
     * @param mixed $iSurveyID
-    * @param mixed $esrow
     * @return
     */
-    private function _generalTabEditSurvey($iSurveyID, $esrow)
+    private function _generalTabEditSurvey(&$aData, $iSurveyID)
     {
         $aData['action'] = "editsurveysettings";
-        $aData['esrow'] = $esrow;
         $aData['surveyid'] = $iSurveyID;
 
         $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
         $beforeSurveySettings->set('survey', $iSurveyID);
         App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
         $aData['pluginSettings'] = $beforeSurveySettings->get('surveysettings');
-        return $aData;
     }
 
     /**
     * survey::_tabPresentationNavigation()
     * Load "Presentation & navigation" tab.
-    * @param mixed $esrow
+    * @param mixed &$aData
     * @return
     */
-    private function _tabPresentationNavigation($esrow)
+    private function _tabPresentationNavigation(&$aData)
     {
-
-        $aData['esrow'] = $esrow;
-        return $aData;
+        return;
     }
 
     /**
     * survey::_tabPublicationAccess()
     * Load "Publication * access control" tab.
+    * @param mixed &$aData
     * @param mixed $esrow
     * @return
     */
-    private function _tabPublicationAccess($esrow)
+    private function _tabPublicationAccess(&$aData)
     {
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         $startdate = '';
-        if ($esrow['startdate'])
+		
+        if ($aData['esrow']['startdate'])
         {
             Yii::app()->loadLibrary('Date_Time_Converter');
-            $datetimeobj = new date_time_converter($esrow["startdate"],"Y-m-d H:i:s"); //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
+            $datetimeobj = new date_time_converter($aData['esrow']['startdate'],"Y-m-d H:i:s"); //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
             $startdate = $datetimeobj->convert("d.m.Y H:i"); //$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
         }
 
         $expires = '';
-        if ($esrow['expires'])
+        if ($aData['esrow']['expires'])
         {
             Yii::app()->loadLibrary('Date_Time_Converter');
-            $datetimeobj = new date_time_converter($esrow['expires'], "Y-m-d H:i:s"); //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
+            $datetimeobj = new date_time_converter($aData['esrow']['expires'], "Y-m-d H:i:s"); //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
             $expires = $datetimeobj->convert("d.m.Y H:i");
         }
-        $aData['esrow'] = $esrow;
+
         $aData['startdate'] = $startdate;
         $aData['expires'] = $expires;
-        return $aData;
     }
 
     /**
     * survey::_tabNotificationDataManagement()
     * Load "Notification & data management" tab.
-    * @param mixed $esrow
+    * @param mixed &$aData
     * @return
     */
-    private function _tabNotificationDataManagement($esrow)
+    private function _tabNotificationDataManagement(&$aData)
     {
-        $aData['esrow'] = $esrow;
-        return $aData;
+        $aData['esrow']['allowsave'] = getGlobalSetting('defaultAllowSave');
     }
 
     /**
     * survey::_tabTokens()
     * Load "Tokens" tab.
-    * @param mixed $esrow
+    * @param mixed &$aData
     * @return
     */
-    private function _tabTokens($esrow)
+    private function _tabTokens(&$aData)
     {
-        $aData['esrow'] = $esrow;
-        return $aData;
+        return;
     }
 
-    private function _tabPanelIntegration($esrow)
+	/**
+    * survey::_tabPanelIntegration()
+    * Load "Integration" tab.
+    * @param mixed &$aData
+    * @return
+    */
+    private function _tabPanelIntegration(&$aData)
     {
-        $aData = array();
-        return $aData;
+        return;
     }
 
     /**
@@ -1238,10 +1239,11 @@ class SurveyAdmin extends Survey_Common_Action
     /**
     * survey::_tabResourceManagement()
     * Load "Resources" tab.
+	* @param mixed &$aData
     * @param mixed $iSurveyID
     * @return
     */
-    private function _tabResourceManagement($iSurveyID)
+    private function _tabResourceManagement(&$aData,$iSurveyID)
     {
         global $sCKEditorURL;
 
@@ -1257,12 +1259,9 @@ class SurveyAdmin extends Survey_Common_Action
         {
             $disabledIfNoResources = " disabled='disabled'";
         }
-        //$aData['esrow'] = $esrow;
         $aData['ZIPimportAction'] = $ZIPimportAction;
         $aData['disabledIfNoResources'] = $disabledIfNoResources;
-        $dqata['sCKEditorURL'] = $sCKEditorURL;
-
-        return $aData;
+        $aData['sCKEditorURL'] = $sCKEditorURL;
     }
 
     function expire($iSurveyID)
