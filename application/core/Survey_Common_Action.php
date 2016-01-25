@@ -850,10 +850,10 @@ class Survey_Common_Action extends CAction
             $aData['GidNext'] = $GidNext = getGidNext($iSurveyID, $gid);
             $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
 
-            if(isset($aData['fullpagebar']['closebutton']['url']))
+            if(isset($aData['surveybar']['closebutton']['url']))
             {
-                $sAlternativeUrl = $aData['fullpagebar']['closebutton']['url'];
-                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+                $sAlternativeUrl = $aData['surveybar']['closebutton']['url'];
+                $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
             }
 
             if($aData['gid']==null)
@@ -1171,7 +1171,6 @@ class Survey_Common_Action extends CAction
         if (!empty($aData['display']['menu_bars']['browse']) && !empty($aData['surveyid']))
         {
             //BROWSE MENU BAR
-
             $iSurveyID=$aData['surveyid'];
             $oSurvey = $aData['oSurvey'];
             $aData['title'] = $aData['display']['menu_bars']['browse'];
@@ -1183,6 +1182,11 @@ class Survey_Common_Action extends CAction
             $tmp_survlangs[] = $baselang;
             rsort($tmp_survlangs);
             $aData['tmp_survlangs'] = $tmp_survlangs;
+
+            if(!isset($aData['menu']['closeurl']))
+            {
+                $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']) );
+            }
 
             $this->getController()->renderPartial("/admin/responses/browsemenubar_view", $aData);
         }

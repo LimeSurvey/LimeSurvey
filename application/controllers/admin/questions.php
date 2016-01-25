@@ -143,7 +143,7 @@ class questions extends Survey_Common_Action
         {
             $aData['sidemenu']['state'] = false;
             $aData['sidemenu']['questiongroups'] = true;
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;
+            $aData['surveybar']['closebutton']['url'] = '/admin/survey/sa/listquestiongroups/surveyid/'.$iSurveyID;
             $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveyid'] = $surveyid;
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
@@ -154,7 +154,7 @@ class questions extends Survey_Common_Action
         else
         {
             Yii::app()->session['flashmessage'] = gT("You don't have enough permissions.");
-            $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid));
+            $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $iSurveyID));
         }
     }
 
@@ -871,7 +871,7 @@ class questions extends Survey_Common_Action
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestions/surveyid/'.$surveyid;
+        $aData['surveybar']['closebutton']['url'] = '/admin/survey/sa/listquestions/surveyid/'.$iSurveyID;
 
         $this->abortIfSurveyIsActive($surveyinfo);
 
