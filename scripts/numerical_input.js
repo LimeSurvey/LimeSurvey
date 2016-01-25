@@ -14,7 +14,7 @@ $(document).ready(function () {
 
     var selector = '.thousandsseparator input.numeric, .thousandsseparator.numberonly input[type=text], .thousandsseparator input.integeronly';
     $(selector).unbind('keydown');
-    $('.thousandsseparator input.numeric, .thousandsseparator.numberonly input[type=text]').priceFormat({
+    $('.thousandsseparator input.numeric, .thousandsseparator.numberonly input[type=text]').not('.integeronly').priceFormat({
         'centsSeparator' : centsSep,
         'thousandsSeparator' : thousandsSep,
         'centsLimit' : 2,
