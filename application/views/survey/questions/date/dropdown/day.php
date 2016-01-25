@@ -1,6 +1,6 @@
 <?php
 /**
- * Day Html
+ * Day dropdown Html
  * @var $dayId = $ia[1];
  * @var $currentdate
  */

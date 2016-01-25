@@ -1069,13 +1069,11 @@ function do_date($ia)
                             break;
                     }
 
-                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/month', array('monthId'=>$ia[1], 'currentdate'=>$currentdate, 'montharray'=>$montharray), true);
+                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/month', array('monthId'=>$ia[1], 'currentmonth'=>$currentmonth, 'montharray'=>$montharray), true);
                     break;
                     // Show year select box
                 case 'y':
-                case 'Y':   $answer .= '<label for="year'.$ia[1].'" class="hide">'.gT('Year').'</label><select id="year'.$ia[1].'" name="year'.$ia[1].'" class="year form-control">
-                    <option value="">'.gT('Year').'</option>';
-
+                case 'Y':
                     /*
                     * yearmin = Minimum year value for dropdown list, if not set default is 1900
                     * yearmax = Maximum year value for dropdown list, if not set default is 2037
@@ -1113,72 +1111,16 @@ function do_date($ia)
                         $step = -1;
                         $reverse = false;
                     }
-
-                    for ($i=$yearmax; ($reverse? $i<=$yearmin: $i>=$yearmin); $i+=$step) {
-                        if ($i == $currentyear)
-                        {
-                            $i_date_selected = SELECTED;
-                        }
-                        else
-                        {
-                            $i_date_selected = '';
-                        }
-                        $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
-                    }
-                    $answer .= '</select>';
-
+                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/year', array('yearId'=>$ia[1], 'currentyear'=>$currentyear,'yearmax'=>$yearmax,'reverse'=>$reverse,'yearmin'=>$yearmin,'step'=>$step), true);
                     break;
                 case 'H':
                 case 'h':
                 case 'g':
                 case 'G':
-                    $answer .= '<label for="hour'.$ia[1].'" class="hide">'.gT('Hour').'</label><select id="hour'.$ia[1].'" name="hour'.$ia[1].'" class="hour form-control"><option value="">'.gT('Hour').'</option>';
-                    for ($i=0; $i<24; $i++) {
-                        if ($i === (int)$currenthour && is_numeric($currenthour))
-                        {
-                            $i_date_selected = SELECTED;
-                        }
-                        else
-                        {
-                            $i_date_selected = '';
-                        }
-                        if ($datepart=='H')
-                        {
-                            $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.sprintf('%02d', $i).'</option>';
-                        }
-                        else
-                        {
-                            $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
-
-                        }
-                    }
-                    $answer .= '</select>';
-
+                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/hour', array('hourId'=>$ia[1], 'currenthour'=>$currenthour,), true);
                     break;
-                case 'i':   $answer .= '<label for="minute'.$ia[1].'" class="hide">'.gT('Minute').'</label><select id="minute'.$ia[1].'" name="minute'.$ia[1].'" class="minute">
-                    <option value="">'.gT('Minute').'</option>';
-
-                    for ($i=0; $i<60; $i+=$aQuestionAttributes['dropdown_dates_minute_step']) {
-                        if ($i === (int)$currentminute && is_numeric($currentminute))
-                        {
-                            $i_date_selected = SELECTED;
-                        }
-                        else
-                        {
-                            $i_date_selected = '';
-                        }
-                        if ($datepart=='i')
-                        {
-                            $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.sprintf('%02d', $i).'</option>';
-                        }
-                        else
-                        {
-                            $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
-
-                        }
-                    }
-                    $answer .= '</select>';
-
+                case 'i':
+                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/minute', array('minuteId'=>$ia[1], 'currentminute'=>$currenthour, 'dropdown_dates_minute_step'=>$aQuestionAttributes['dropdown_dates_minute_step'], 'datepart'=>$datepartdatepart ), true);
                     break;
                 default:  $answer .= $datepart;
             }
@@ -1192,9 +1134,14 @@ function do_date($ia)
             $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
         }
 
-        $answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8').'" maxlength="10" alt="'.gT('Answer').'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" title="'.sprintf(gT('Date in the format : %s'),$dateformatdetails['dateformat']).'" />
-        </p>';
-        $answer .= '<input type="hidden" id="dateformat'.$ia[1].'" value="'.$dateformatdetails['jsdate'].'"/>';
+        $footerData = array(
+            'name'=>$ia[1],
+            'dateoutput'=>htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8'),
+            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'dateformatdetails'=>$dateformatdetails['jsdate'],
+        );
+
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/data_footer', $footerData, true);
         App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}","doDropDownDate({$ia[0]});",CClientScript::POS_HEAD);
         // MayDo:
         // add js code to
