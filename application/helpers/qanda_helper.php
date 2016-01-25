@@ -1176,28 +1176,21 @@ function do_date($ia)
         $iLength=strlen(date($dateformatdetails['phpdate'],mktime(23,59,59,12,30,1999)))+1;
 
 
+        $selectorData=array(
+            'name'=>$ia[1],
+            'iLength'=>$iLength,
+            'mindate'=>$mindate,
+            'maxdate'=>$maxdate,
+            'dateformatdetails'=>$dateformatdetails['dateformat'],
+            'dateformatdetailsjs'=>$dateformatdetails['jsdate'],
+            'goodchars'=>"return goodchars(event,'".$goodchars."')",
+            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'language'=>App()->language,
+            'hidetip'=>trim($aQuestionAttributes['hide_tip'])==0,
+        );
+
         // HTML for date question using datepicker
-        $answer="<p class='question answer-item text-item date-item'><label for='answer{$ia[1]}' class='hide label'>".sprintf(gT('Date in the format: %s'),$dateformatdetails['dateformat'])."</label>
-        <input class='popupdate' type=\"text\" size=\"{$iLength}\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"{$iLength}\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
-        <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
-        <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='".App()->language."'  />
-        </p>";
-
-        // adds min and max date as a hidden element to the page so EM creates the needed LEM_tailor_Q_XX sections
-        $answer.="<div class='hidden nodisplay' style='display:none'>"
-               . "<div id='datemin{$ia[1]}'>{$mindate}</div>"
-               . "<div id='datemax{$ia[1]}'>{$maxdate}</div>"
-               . "</div>";
-
-        if (trim($aQuestionAttributes['hide_tip'])==0) {
-            $answer.="<p class=\"tip\">".sprintf(gT('Format: %s'),$dateformatdetails['dateformat'])."</p>";
-        }
-        //App()->getClientScript()->registerScript("doPopupDate{$ia[0]}","doPopupDate({$ia[0]})",CClientScript::POS_END);// Beter if just afetre answers part
-        $answer .= "<script type='text/javascript'>\n"
-        . "  /*<![CDATA[*/\n"
-        ." doPopupDate({$ia[0]});\n"
-        ." /*]]>*/\n"
-        ."</script>\n";
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/date/selector/selector', $selectorData, true);        
     }
     $inputnames[]=$ia[1];
 
