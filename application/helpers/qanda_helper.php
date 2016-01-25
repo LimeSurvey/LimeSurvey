@@ -550,8 +550,6 @@ function file_validation_popup($ia, $filenotvalidated = null)
 
 function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     global $thissurvey;
-
-
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'coookies.js');
 
     /* The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
@@ -580,7 +578,6 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     }
 
     $time_limit=$aQuestionAttributes['time_limit'];
-
     $disable_next=trim($aQuestionAttributes['time_limit_disable_next']) != '' ? $aQuestionAttributes['time_limit_disable_next'] : 0;
     $disable_prev=trim($aQuestionAttributes['time_limit_disable_prev']) != '' ? $aQuestionAttributes['time_limit_disable_prev'] : 0;
     $time_limit_action=trim($aQuestionAttributes['time_limit_action']) != '' ? $aQuestionAttributes['time_limit_action'] : 1;
@@ -590,10 +587,16 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     $time_limit_warning_2=trim($aQuestionAttributes['time_limit_warning_2']) != '' ? $aQuestionAttributes['time_limit_warning_2'] : 0;
     $time_limit_countdown_message=trim($aQuestionAttributes['time_limit_countdown_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_countdown_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : gT("Time remaining");
     $time_limit_warning_message=trim($aQuestionAttributes['time_limit_warning_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
-    $time_limit_warning_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$ia[0]."_Warning'> </div>", $time_limit_warning_message);
+
+    //Render timer
+    $timer_html =  Yii::app()->getController()->renderPartial('/survey/question_timer/timer.php', array('iQid'=>$ia[0], 'sWarnId'=>''), true);
+    $time_limit_warning_message=str_replace("{TIME}", $timer_html, $time_limit_warning_message);
     $time_limit_warning_display_time=trim($aQuestionAttributes['time_limit_warning_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_display_time']+1 : 0;
     $time_limit_warning_2_message=trim($aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
-    $time_limit_warning_2_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$ia[0]."_Warning_2'> </div>", $time_limit_warning_2_message);
+
+    //Render timer 2
+    $timer_html =  Yii::app()->getController()->renderPartial('/survey/question_timer/timer.php', array('iQid'=>$ia[0], 'sWarnId'=>'_Warning_2'), true);
+    $time_limit_warning_2_message=str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
     $time_limit_warning_2_display_time=trim($aQuestionAttributes['time_limit_warning_2_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_2_display_time']+1 : 0;
     $time_limit_message_style=trim($aQuestionAttributes['time_limit_message_style']) != '' ? $aQuestionAttributes['time_limit_message_style'] : "";
     $time_limit_message_style.="\n        display: none;"; //Important to hide time limit message at start
@@ -603,38 +606,17 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     $time_limit_warning_2_style.="\n        display: none;"; //Important to hide time limit warning at the start
     $time_limit_timer_style=trim($aQuestionAttributes['time_limit_timer_style']) != '' ? $aQuestionAttributes['time_limit_timer_style'] : "position: relative;";
 
-
-
     $timersessionname="timer_question_".$ia[0];
-    if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname])) {
+    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname]))
+    {
         $time_limit=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname];
     }
 
-    $output = '<div class="row">';
-    $output .= '<div class="col-xs-12">';
-    $output .= "
-    <input type='hidden' name='timerquestion' value='".$timersessionname."' />
-    <input type='hidden' name='".$timersessionname."' id='".$timersessionname."' value='".$time_limit."' />\n";
+    $output =  Yii::app()->getController()->renderPartial('/survey/question_timer/timer_header.php', array('timersessionname'=>$timersessionname,'timersessionname'=>$timersessionname,'timersessionname'=>$timersessionname), true);
+
     if($thissurvey['timercount'] < 2)
     {
-        $output .="
-        <script type='text/javascript'>
-        <!--
-        function freezeFrame(elementid) {
-            $('#'+elementid).prop('readonly',true);
-        };
-        //-->
-        </script>";
-        $output .= "
-        <script type='text/javascript'>
-        <!--\n
-        function countdown(questionid,timer,action,warning,warning2,warninghide,warning2hide,disable){
-        if(!timeleft) { var timeleft=timer;}
-        if(!warning) { var warning=0;}
-        if(!warning2) { var warning2=0;}
-        if(!warninghide) { var warninghide=0;}
-        if(!warning2hide) { var warning2hide=0;}";
-
+        $iAction = '';
         if(isset($thissurvey['format']) && $thissurvey['format'] == "G")
         {
             global $gid;
@@ -648,161 +630,52 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
             }
             // Override all other options and just allow freezing, survey is presented in group by group mode
             // Why don't allow submit in Group by group mode, this surely broke 'mandatory' question, but this remove a great system for user (Denis 140224)
-            if($qcount > 1) {
-                $output .="
-                action = 3;";
+            if($qcount > 1)
+            {
+                $iAction = '3';
             }
         }
 
         /* If this is a preview, don't allow the page to submit/reload */
         $thisaction=returnglobal('action');
-        if($thisaction == "previewquestion" || $thisaction == "previewgroup") {
-            $output .="
-            action = 3;";
+        if($thisaction == "previewquestion" || $thisaction == "previewgroup")
+        {
+            $iAction = '3';
         }
 
-        $output .="
-        var timerdisplay='LS_question'+questionid+'_Timer';
-        var warningtimedisplay='LS_question'+questionid+'_Warning';
-        var warningdisplay='LS_question'+questionid+'_warning';
-        var warning2timedisplay='LS_question'+questionid+'_Warning_2';
-        var warning2display='LS_question'+questionid+'_warning_2';
-        var expireddisplay='question'+questionid+'_timer';
-        var timersessionname='timer_question_'+questionid;
-        $('#'+timersessionname).val(timeleft);
-        timeleft--;
-        cookietimer=subcookiejar.fetch('limesurvey_timers',timersessionname);
-        if(cookietimer && cookietimer <= timeleft) {
-            timeleft=cookietimer;
-        }
-        var timeleftobject=new Object();
-        subcookiejar.crumble('limesurvey_timers', timersessionname);
-        timeleftobject[timersessionname]=timeleft;
-        subcookiejar.bake('limesurvey_timers', timeleftobject, 7)\n";
-        if($disable_next > 0) {// $disable_next can be 1 or 0 (it's a select).
-            $output .= "
-            if(timeleft > $disable_next) {
-            $('#movenextbtn').prop('disabled',true);$('#movenextbtn.ui-button').button( 'option', 'disabled', true );
-            } else if ($disable_next >= 1 && timeleft <= $disable_next) {
-            $('#movenextbtn').prop('disabled',false);$('#movenextbtn.ui-button').button( 'option', 'disabled', false );
-            }\n";
-        }
-        if($disable_prev > 0) {
-            $output .= "
-            if(timeleft > $disable_prev) {
-            $('#moveprevbtn').prop('disabled',true);$('#moveprevbtn.ui-button').button( 'option', 'disabled', true );
-            } else if ($disable_prev >= 1 && timeleft <= $disable_prev) {
-            $('#moveprevbtn').prop('disabled',false);$('#moveprevbtn.ui-button').button( 'option', 'disabled', false );
-            }\n";
-        }
-        if(!is_numeric($disable_prev) && false) {
-            $output .= "
-            $('#moveprevbtn').prop('disabled',true);$('#moveprevbtn.ui-button').button( 'option', 'disabled', true );
-            ";
-        }
-        $output .="
-        if(warning > 0 && timeleft<=warning) {
-            var wsecs=warning%60;
-            if(wsecs<10) wsecs='0' + wsecs;
-            var WT1 = (warning - wsecs) / 60;
-            var wmins = WT1 % 60; if (wmins < 10) wmins = '0' + wmins;
-            var whours = (WT1 - wmins) / 60;
-            var dmins='';
-            var dhours='';
-            var dsecs='';
-            if (whours < 10) whours = '0' + whours;
-            if (whours > 0) dhours = whours + ' ".gT('hours').", ';
-            if (wmins > 0) dmins = wmins + ' ".gT('mins').", ';
-            if (wsecs > 0) dsecs = wsecs + ' ".gT('seconds')."';
-            $('#'+warningtimedisplay).html(dhours+dmins+dsecs);
-            $('#'+warningdisplay).show();
-            if(warninghide > 0 ) {
-                setTimeout(function(){ $('#'+warningdisplay).hide(); },warninghide*1000);
-            }
-            warning=0;
-        }
-        if(warning2 > 0 && timeleft<=warning2) {
-            var w2secs=warning2%60;
-            if(wsecs<10) w2secs='0' + wsecs;
-            var W2T1 = (warning2 - w2secs) / 60;
-            var w2mins = W2T1 % 60; if (w2mins < 10) w2mins = '0' + w2mins;
-            var w2hours = (W2T1 - w2mins) / 60;
-            var d2mins='';
-            var d2hours='';
-            var d2secs='';
-            if (w2hours < 10) w2hours = '0' + w2hours;
-            if (w2hours > 0) d2hours = w2hours + ' ".gT('hours').", ';
-            if (w2mins > 0) d2mins = w2mins + ' ".gT('mins').", ';
-            if (w2secs > 0) d2secs = w2secs + ' ".gT('seconds')."';
-            $('#'+warning2timedisplay).html(dhours+dmins+dsecs);
-            $('#'+warning2display).show();
-            if(warning2hide > 0 ) {
-                setTimeout(function(){ $('#'+warning2display).hide(); },warning2hide*1000);
-            }
-            warning2=0;
-        }
-        var secs = timeleft % 60;
-        if (secs < 10) secs = '0'+secs;
-        var T1 = (timeleft - secs) / 60;
-        var mins = T1 % 60; if (mins < 10) mins = '0'+mins;
-        var hours = (T1 - mins) / 60;
-        if (hours < 10) hours = '0'+hours;
-        var d2hours='';
-        var d2mins='';
-        var d2secs='';
-        if (hours > 0) d2hours = hours+' ".gT('hours').": ';
-        if (mins > 0) d2mins = mins+' ".gT('mins').": ';
-        if (secs > 0) d2secs = secs+' ".gT('seconds')."';
-        if (secs < 1) d2secs = '0 ".gT('seconds')."';
-        $('#'+timerdisplay).html('".$time_limit_countdown_message."<br />'+d2hours + d2mins + d2secs);
-        if (timeleft>0){
-            var text='countdown('+questionid+', '+timeleft+', '+action+', '+warning+', '+warning2+', '+warninghide+', '+warning2hide+', \"'+disable+'\")';
-            setTimeout(text,1000);
-        } else {
-            //Countdown is finished, now do action
-            switch(action) {
-                case 2: //Just move on, no warning
-                    $('#movenextbtn').prop('disabled',false);$('#movenextbtn.ui-button').button( 'option', 'disabled', false );
-                    $('#moveprevbtn').prop('disabled',false);$('#moveprevbtn.ui-button').button( 'option', 'disabled', false );
-                    freezeFrame(disable);
-                    subcookiejar.crumble('limesurvey_timers', timersessionname);
-                    $('#defaultbtn').click();
-                    break;
-                case 3: //Just warn, don't move on
-                    $('#'+expireddisplay).show();
-                    $('#movenextbtn').prop('disabled',false);$('#movenextbtn.ui-button').button( 'option', 'disabled', false );
-                    $('#moveprevbtn').prop('disabled',false);$('#moveprevbtn.ui-button').button( 'option', 'disabled', false );
-                    freezeFrame(disable);
-                    $('#limesurvey').submit(function(){ subcookiejar.crumble('limesurvey_timers', timersessionname); });
-                    break;
-                default: //Warn and move on
-                    $('#'+expireddisplay).show();
-                    $('#movenextbtn').prop('disabled',false);$('#movenextbtn.ui-button').button( 'option', 'disabled', false );
-                    $('#moveprevbtn').prop('disabled',false);$('#moveprevbtn.ui-button').button( 'option', 'disabled', false );
-                    freezeFrame(disable);
-                    subcookiejar.crumble('limesurvey_timers', timersessionname);
-                    setTimeout($('#defaultbtn').click(), ".$time_limit_message_delay.");
-                    break;
-            }
-        }
-        }
-        //-->
-        </script>";
+        $output .=  Yii::app()->getController()->renderPartial('/survey/question_timer/timer_javascript', array('iAction'=>$iAction, 'disable_next'=>$disable_next, 'disable_prev'=>$disable_prev ), true);
+
     }
-    $output .= "<div id='question".$ia[0]."_timer' style='".$time_limit_message_style."'>".$time_limit_message."</div>\n\n";
 
-    $output .= "<div id='LS_question".$ia[0]."_warning' style='".$time_limit_warning_style."'>".$time_limit_warning_message."</div>\n\n";
-    $output .= "<div id='LS_question".$ia[0]."_warning_2' style='".$time_limit_warning_2_style."'>".$time_limit_warning_2_message."</div>\n\n";
-    $output .= "<div id='LS_question".$ia[0]."_Timer' style='".$time_limit_timer_style."'></div>\n\n";
-    //Call the countdown script
-    $output .= "<script type='text/javascript'>
-    $(document).ready(function() {
-    countdown(".$ia[0].", ".$time_limit.", ".$time_limit_action.", ".$time_limit_warning.", ".$time_limit_warning_2.", ".$time_limit_warning_display_time.", ".$time_limit_warning_2_display_time.", '".$disable."');
-    });
-    </script>\n\n";
+    $output .=  Yii::app()->getController()->renderPartial(
+                    '/survey/question_timer/timer_content',
+                    array(
+                            'iQid'=>$ia[0],
+                            'time_limit_message_style'=>$time_limit_message_style,
+                            'time_limit_message'=>$time_limit_message,
+                            'time_limit_warning_style'=>$time_limit_warning_style,
+                            'time_limit_warning_message'=>$time_limit_warning_message,
+                            'time_limit_warning_2_style'=>$time_limit_warning_2_style,
+                            'time_limit_warning_2_message'=>$time_limit_warning_2_message,
+                            'time_limit_timer_style'=>$time_limit_timer_style,
+                        ),
+                    true
+                );
 
-    $output .= '</div></div>';
-
+    $output .=  Yii::app()->getController()->renderPartial(
+                    '/survey/question_timer/timer_footer',
+                    array(
+                            'iQid'=>$ia[0],
+                            'time_limit'=>$time_limit,
+                            'time_limit_action'=>$time_limit_action,
+                            'time_limit_warning'=>$time_limit_warning,
+                            'time_limit_warning_2'=>$time_limit_warning_2,
+                            'time_limit_warning_display_time'=>$time_limit_warning_display_time,
+                            'time_limit_warning_display_time'=>$time_limit_warning_display_time,
+                            'time_limit_warning_2_display_time'=>$time_limit_warning_2_display_time,
+                            'disable'=>$disable,
+                        ),
+                true);
     return $output;
 }
 
