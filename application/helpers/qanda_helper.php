@@ -1069,13 +1069,11 @@ function do_date($ia)
                             break;
                     }
 
-                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/month', array('monthId'=>$ia[1], 'currentdate'=>$currentdate, 'montharray'=>$montharray), true);
+                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/month', array('monthId'=>$ia[1], 'currentmonth'=>$currentmonth, 'montharray'=>$montharray), true);
                     break;
                     // Show year select box
                 case 'y':
-                case 'Y':   $answer .= '<label for="year'.$ia[1].'" class="hide">'.gT('Year').'</label><select id="year'.$ia[1].'" name="year'.$ia[1].'" class="year form-control">
-                    <option value="">'.gT('Year').'</option>';
-
+                case 'Y':
                     /*
                     * yearmin = Minimum year value for dropdown list, if not set default is 1900
                     * yearmax = Maximum year value for dropdown list, if not set default is 2037
@@ -1113,72 +1111,16 @@ function do_date($ia)
                         $step = -1;
                         $reverse = false;
                     }
-
-                    for ($i=$yearmax; ($reverse? $i<=$yearmin: $i>=$yearmin); $i+=$step) {
-                        if ($i == $currentyear)
-                        {
-                            $i_date_selected = SELECTED;
-                        }
-                        else
-                        {
-                            $i_date_selected = '';
-                        }
-                        $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
-                    }
-                    $answer .= '</select>';
-
+                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/year', array('yearId'=>$ia[1], 'currentyear'=>$currentyear,'yearmax'=>$yearmax,'reverse'=>$reverse,'yearmin'=>$yearmin,'step'=>$step), true);
                     break;
                 case 'H':
                 case 'h':
                 case 'g':
                 case 'G':
-                    $answer .= '<label for="hour'.$ia[1].'" class="hide">'.gT('Hour').'</label><select id="hour'.$ia[1].'" name="hour'.$ia[1].'" class="hour form-control"><option value="">'.gT('Hour').'</option>';
-                    for ($i=0; $i<24; $i++) {
-                        if ($i === (int)$currenthour && is_numeric($currenthour))
-                        {
-                            $i_date_selected = SELECTED;
-                        }
-                        else
-                        {
-                            $i_date_selected = '';
-                        }
-                        if ($datepart=='H')
-                        {
-                            $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.sprintf('%02d', $i).'</option>';
-                        }
-                        else
-                        {
-                            $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
-
-                        }
-                    }
-                    $answer .= '</select>';
-
+                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/hour', array('hourId'=>$ia[1], 'currenthour'=>$currenthour,), true);
                     break;
-                case 'i':   $answer .= '<label for="minute'.$ia[1].'" class="hide">'.gT('Minute').'</label><select id="minute'.$ia[1].'" name="minute'.$ia[1].'" class="minute">
-                    <option value="">'.gT('Minute').'</option>';
-
-                    for ($i=0; $i<60; $i+=$aQuestionAttributes['dropdown_dates_minute_step']) {
-                        if ($i === (int)$currentminute && is_numeric($currentminute))
-                        {
-                            $i_date_selected = SELECTED;
-                        }
-                        else
-                        {
-                            $i_date_selected = '';
-                        }
-                        if ($datepart=='i')
-                        {
-                            $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.sprintf('%02d', $i).'</option>';
-                        }
-                        else
-                        {
-                            $answer .= '<option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
-
-                        }
-                    }
-                    $answer .= '</select>';
-
+                case 'i':
+                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/minute', array('minuteId'=>$ia[1], 'currentminute'=>$currenthour, 'dropdown_dates_minute_step'=>$aQuestionAttributes['dropdown_dates_minute_step'], 'datepart'=>$datepartdatepart ), true);
                     break;
                 default:  $answer .= $datepart;
             }
@@ -1192,9 +1134,14 @@ function do_date($ia)
             $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
         }
 
-        $answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8').'" maxlength="10" alt="'.gT('Answer').'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" title="'.sprintf(gT('Date in the format : %s'),$dateformatdetails['dateformat']).'" />
-        </p>';
-        $answer .= '<input type="hidden" id="dateformat'.$ia[1].'" value="'.$dateformatdetails['jsdate'].'"/>';
+        $footerData = array(
+            'name'=>$ia[1],
+            'dateoutput'=>htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8'),
+            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'dateformatdetails'=>$dateformatdetails['jsdate'],
+        );
+
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/data_footer', $footerData, true);
         App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}","doDropDownDate({$ia[0]});",CClientScript::POS_HEAD);
         // MayDo:
         // add js code to
@@ -1229,28 +1176,21 @@ function do_date($ia)
         $iLength=strlen(date($dateformatdetails['phpdate'],mktime(23,59,59,12,30,1999)))+1;
 
 
+        $selectorData=array(
+            'name'=>$ia[1],
+            'iLength'=>$iLength,
+            'mindate'=>$mindate,
+            'maxdate'=>$maxdate,
+            'dateformatdetails'=>$dateformatdetails['dateformat'],
+            'dateformatdetailsjs'=>$dateformatdetails['jsdate'],
+            'goodchars'=>"return goodchars(event,'".$goodchars."')",
+            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'language'=>App()->language,
+            'hidetip'=>trim($aQuestionAttributes['hide_tip'])==0,
+        );
+
         // HTML for date question using datepicker
-        $answer="<p class='question answer-item text-item date-item'><label for='answer{$ia[1]}' class='hide label'>".sprintf(gT('Date in the format: %s'),$dateformatdetails['dateformat'])."</label>
-        <input class='popupdate' type=\"text\" size=\"{$iLength}\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"{$iLength}\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
-        <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
-        <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='".App()->language."'  />
-        </p>";
-
-        // adds min and max date as a hidden element to the page so EM creates the needed LEM_tailor_Q_XX sections
-        $answer.="<div class='hidden nodisplay' style='display:none'>"
-               . "<div id='datemin{$ia[1]}'>{$mindate}</div>"
-               . "<div id='datemax{$ia[1]}'>{$maxdate}</div>"
-               . "</div>";
-
-        if (trim($aQuestionAttributes['hide_tip'])==0) {
-            $answer.="<p class=\"tip\">".sprintf(gT('Format: %s'),$dateformatdetails['dateformat'])."</p>";
-        }
-        //App()->getClientScript()->registerScript("doPopupDate{$ia[0]}","doPopupDate({$ia[0]})",CClientScript::POS_END);// Beter if just afetre answers part
-        $answer .= "<script type='text/javascript'>\n"
-        . "  /*<![CDATA[*/\n"
-        ." doPopupDate({$ia[0]});\n"
-        ." /*]]>*/\n"
-        ."</script>\n";
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/date/selector/selector', $selectorData, true);
     }
     $inputnames[]=$ia[1];
 
@@ -1263,29 +1203,25 @@ function do_language($ia)
     $checkconditionFunction = "checkconditions";
     $answerlangs = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
     $answerlangs [] = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
+
     // Get actual answer
     $sLang=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
+
     if(!in_array($sLang,$answerlangs))
     {
         $sLang=Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
     }
-    $answer = "\n\t<p class=\"question answer-item dropdown-item langage-item\">\n"
-    ."<label for='answer{$ia[1]}' class='hide label'>".gT('Choose your language')."</label>"
-    ."<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"$checkconditionFunction(this.value, this.name, this.type);\" class=\"languagesurvey form-control\">\n";
-    foreach ($answerlangs as $ansrow)
-    {
-        $answer .= "\t<option value=\"{$ansrow}\"";
-        if ($sLang == $ansrow)
-        {
-            $answer .= SELECTED;
-        }
-        $aLanguage=getLanguageNameFromCode($ansrow, true);
-        $answer .= '>'.$aLanguage[1]."</option>\n";
-    }
-    $answer .= "</select>\n";
-    $answer .= "<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"{$sLang}\" />\n";
+
     $inputnames[]=$ia[1];
 
+    $languageData = array(
+        'name'=>$ia[1],
+        'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+        'answerlangs'=>$answerlangs,
+        'sLang'=>$sLang,
+    );
+
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/language/language', $languageData, true);
     $answer .= "<script type='text/javascript'>\n"
     . "/*<![CDATA[*/\n"
     ."$('#answer{$ia[1]}').change(function(){ "
@@ -1331,17 +1267,21 @@ function do_list_dropdown($ia)
     {
         $_height = sanitize_int($aQuestionAttributes['dropdown_size']) ;
         $_maxHeight = count($ansresult);
-        if ((!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])) && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+        if ((!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])) && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+        {
             ++$_maxHeight;  // for No Answer
         }
-        if (isset($other) && $other=='Y') {
+        if (isset($other) && $other=='Y')
+        {
             ++$_maxHeight;  // for Other
         }
-        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
+        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
+        {
             ++$_maxHeight;  // for 'Please choose:'
         }
 
-        if ($_height > $_maxHeight) {
+        if ($_height > $_maxHeight)
+        {
             $_height = $_maxHeight;
         }
         $dropdownSize = ' size="'.$_height.'"';
@@ -1364,10 +1304,16 @@ function do_list_dropdown($ia)
             {
                 $opt_select = SELECTED;
             }
-            if ($prefixStyle == 1) {
+            if ($prefixStyle == 1)
+            {
                 $_prefix = ++$_rowNum . ') ';
             }
-            $answer .= "<option value='{$ansrow['code']}' {$opt_select}>".flattenText($_prefix.$ansrow['answer'])."</option>\n";
+            $optionData = array(
+                'value'=>$ansrow['code'],
+                'opt_select'=>$opt_select,
+                'answer'=>flattenText($_prefix.$ansrow['answer'])
+            );
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
         }
     }
     else
@@ -1391,8 +1337,8 @@ function do_list_dropdown($ia)
 
         foreach ($optgroups as $categoryname => $optionlistarray)
         {
-            $answer .= '                                   <optgroup class="dropdowncategory" label="'.flattenText($categoryname).'">
-            ';
+            $optgroupData = array('categoryname'=>flattenText($categoryname));
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/optgroup_header', $optgroupData, true);
 
             foreach ($optionlistarray as $optionarray)
             {
@@ -1405,11 +1351,15 @@ function do_list_dropdown($ia)
                     $opt_select = '';
                 }
 
-                $answer .= '                         <option value="'.$optionarray['code'].'"'.$opt_select.'>'.flattenText($optionarray['answer']).'</option>
-                ';
+                $optionData = array(
+                    'value'=>$optionarray['code'],
+                    'opt_select'=>$opt_select,
+                    'answer'=>flattenText($optionarray['answer'])
+                );
+                $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
             }
 
-            $answer .= '                                   </optgroup>';
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/optgroup_footer', $optgroupData, true);
         }
         $opt_select='';
         foreach ($defaultopts as $optionarray)
@@ -1423,14 +1373,24 @@ function do_list_dropdown($ia)
                 $opt_select = '';
             }
 
-            $answer .= '                         <option value="'.$optionarray['code'].'"'.$opt_select.'>'.flattenText($optionarray['answer']).'</option>
-            ';
+
+            $optionData = array(
+                'value'=>$optionarray['code'],
+                'opt_select'=>$opt_select,
+                'answer'=>flattenText($optionarray['answer'])
+            );
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
         }
     }
 
     if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
     {
-        $answer = '                    <option value=""'.SELECTED.'>'.gT('Please choose...').'</option>'."\n".$answer;
+        $optionData = array(
+            'value'=>'',
+            'opt_select'=>'SELECTED',
+            'answer'=>gT('Please choose...')
+        );
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true).$answer;
     }
 
     if (isset($other) && $other=='Y')
@@ -1446,7 +1406,13 @@ function do_list_dropdown($ia)
         if ($prefixStyle == 1) {
             $_prefix = ++$_rowNum . ') ';
         }
-        $answer .= '                    <option value="-oth-"'.$opt_select.'>'.flattenText($_prefix.$othertext)."</option>\n";
+
+        $optionData = array(
+            'value'=>'-oth-',
+            'opt_select'=>$opt_select,
+            'answer'=>flattenText($_prefix.$othertext)
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
     }
 
     if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '') && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
@@ -1454,10 +1420,22 @@ function do_list_dropdown($ia)
         if ($prefixStyle == 1) {
             $_prefix = ++$_rowNum . ') ';
         }
-        $answer .= '<option class="noanswer-item" value="">'.$_prefix.gT('No answer')."</option>\n";
+
+        $optionData = array(
+            'classes'=>'noanswer-item',
+            'value'=>'',
+            'opt_select'=>$opt_select,
+            'answer'=>$_prefix.gT('No answer')
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
     }
-    $answer .= '                </select>
-    <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]].'" />';
+
+    $selectData = array(
+        'name'=>$ia[1],
+        'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+    );
+
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select_footer', $selectData, true);
 
     if (isset($other) && $other=='Y')
     {
@@ -1475,12 +1453,17 @@ function do_list_dropdown($ia)
         $sselect .= return_timer_script($aQuestionAttributes, $ia);
     }
     //End Time Limit Code
+    $sselectData = array(
 
-    $sselect .= '
-    <p class="question answer-item dropdown-item">
-    <label for="answer'.$ia[1].'" class="hide label">'.gT('Please choose').'</label>
-    <select class="form-control list-question-select" name="'.$ia[1].'" id="answer'.$ia[1].'"'.$dropdownSize.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide.'">
-    ';
+    );
+
+    $sselectData = array(
+        'name'=>$ia[1],
+        'dropdownSize'=>$dropdownSize,
+        'checkconditionFunction'=> $checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide,
+    );
+
+    $sselect .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select_footer', $sselectData, true);
     $answer = $sselect.$answer;
 
     if (isset($other) && $other=='Y')
@@ -1860,7 +1843,7 @@ function do_listwithcomment($ia)
     // General variables
     global $dropdownthreshold;
     global $thissurvey;
-    $dropdownthreshold = Yii::app()->getConfig("dropdownthreshold");
+    $dropdownthreshold      = Yii::app()->getConfig("dropdownthreshold");
     $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $checkconditionFunction = "checkconditions";
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
@@ -1882,10 +1865,7 @@ function do_listwithcomment($ia)
     $hint_comment = gT('Please enter your comment here');
     if ($aQuestionAttributes['use_dropdown']!=1 && $anscount <= $dropdownthreshold)
     {
-        $answer .= '<div class="list">
-        <ul class="list-unstyled answers-list radio-list">
-        ';
-
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/list/header', array(), true);
         foreach ($ansresult as $ansrow)
         {
             $check_ans = '';
@@ -1893,11 +1873,15 @@ function do_listwithcomment($ia)
             {
                 $check_ans = CHECKED;
             }
-            $answer .= '        <li class="answer-item radio-item">
-            <input type="radio" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'" value="'.$ansrow['code'].'" class="radio" '.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
-            <label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
-            </li>
-            ';
+            $itemData = array(
+                'name'=>$ia[1],
+                'id'=>'answer'.$ia[1].$ansrow['code'],
+                'value'=>$ansrow['code'],
+                'check_ans'=>$check_ans,
+                'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type);',
+                'labeltext'=>$ansrow['answer'],
+            );
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/list/item', $itemData, true);
         }
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
@@ -1910,11 +1894,17 @@ function do_listwithcomment($ia)
             {
                 $check_ans = '';
             }
-            $answer .= '        <li class="answer-item radio-item noanswer-item">
-            <input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'" value=" " onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)"'.$check_ans.' />
-            <label for="answer'.$ia[1].'" class="answertext">'.gT('No answer').'</label>
-            </li>
-            ';
+
+            $itemData = array(
+                'li_classes'=>' noanswer-item',
+                'name'=>$ia[1],
+                'id'=>'answer'.$ia[1],
+                'value'=>'',
+                'check_ans'=>$check_ans,
+                'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+                'labeltext'=>gT('No answer'),
+            );
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/list/item', $itemData, true);
         }
 
         $fname2 = $ia[1].'comment';
@@ -1924,35 +1914,36 @@ function do_listwithcomment($ia)
         //        $answer .= "\t<td valign='top'>\n"
         //                 . "<textarea class='textarea' name='$ia[1]comment' id='answer$ia[1]comment' rows='$tarows' cols='30'>";
         //    --> END ORIGINAL
-        $answer .= '    </ul>
-        </div>
 
-        <p class="comment answer-item text-item">
-        <label for="answer'.$ia[1].'comment">'.$hint_comment.':</label>
+        $footerData = array(
+            'id'=>'answer'.$ia[1].'comment',
+            'hint_comment'=>$hint_comment,
+            'kpclass'=>$kpclass,
+            'name'=>$ia[1].'comment',
+            'tarows'=>floor($tarows),
+            'has_comment_saved'=>isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2],
+            'comment_saved'=>htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]),
+            'java_name'=>'java'.$ia[1],
+            'java_id'=>'java'.$ia[1],
+            'java_value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]
+        );
 
-        <textarea class="textarea form-control'.$kpclass.'" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.floor($tarows).'" cols="30" >';
-        // --> END NEW FEATURE - SAVE
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2])
-        {
-            $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]);
-        }
-        $answer .= '</textarea>
-        </p>
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/list/footer', $footerData, true);
 
-        <input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]].'" />
-        ';
         $inputnames[]=$ia[1];
         $inputnames[]=$ia[1].'comment';
     }
     else //Dropdown list
     {
-        $answer .= '<p class="select answer-item dropdown-item">
-        <select class="select form-control" name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >
-        ';
-        if (is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
-        {
-            $answer .= '<option class="noanswer-item" value=""'.SELECTED.'>'.gT('Please choose...').'</option>'."\n";
-        }
+        $headerData = array(
+            'name'=> $ia[1],
+            'id'=> 'answer'.$ia[1],
+            'checkconditionFunction'=> $checkconditionFunction.'(this.value, this.name, this.type)',
+            'show_noanswer'=> is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]),
+        );
+
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/dropdown/header', $headerData, true);
+
         foreach ($ansresult as $ansrow)
         {
             $check_ans = '';
@@ -1960,7 +1951,13 @@ function do_listwithcomment($ia)
             {
                 $check_ans = SELECTED;
             }
-            $answer .= '        <option value="'.$ansrow['code'].'"'.$check_ans.'>'.$ansrow['answer']."</option>\n";
+
+            $itemData = array(
+                'value' => $ansrow['code'],
+                'check_ans' => $check_ans,
+                'option_text' => $ansrow['answer'],
+            );
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/dropdown/item', $itemData, true);
 
             if (strlen($ansrow['answer']) > $maxoptionsize)
             {
@@ -1974,27 +1971,36 @@ function do_listwithcomment($ia)
             {
                 $check_ans = SELECTED;
             }
-            $answer .= '<option class="noanswer-item" value=""'.$check_ans.'>'.gT('No answer')."</option>\n";
+            $itemData = array(
+                'classes' => ' noanswer-item ',
+                'value' => '',
+                'check_ans' => $check_ans,
+                'option_text' => gT('No answer'),
+            );
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/dropdown/item', $itemData, true);
         }
-        $answer .= '    </select>
-        </p>
-        ';
         $fname2 = $ia[1].'comment';
         if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
         if ($tarows > 15) {$tarows=15;}
         $maxoptionsize=$maxoptionsize*0.72;
         if ($maxoptionsize < 33) {$maxoptionsize=33;}
         if ($maxoptionsize > 70) {$maxoptionsize=70;}
-        $answer .= '<p class="comment answer-item text-item">
-        <label for="answer'.$ia[1].'comment">'.$hint_comment.':</label>
-        <textarea class="form-control textarea '.$kpclass.'" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.$tarows.'" cols="'.$maxoptionsize.'" >';
-        // --> END NEW FEATURE - SAVE
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2])
-        {
-            $answer .= htmlspecialchars( $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]);
-        }
-        $answer .= '</textarea>
-        <input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]].'" /></p>';
+
+        $footerData = array(
+            'id'=>'answer'.$ia[1].'comment',
+            'label_text'=>$hint_comment,
+            'kpclass'=>$kpclass,
+            'name'=>$ia[1].'comment',
+            'tarows'=>$tarows,
+            'maxoptionsize'=>$maxoptionsize,
+            'has_comment_saved'=>isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2],
+            'comment_saved'=>htmlspecialchars( $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]),
+            'java_name'=>'java'.$ia[1],
+            'java_id'=>'java'.$ia[1],
+            'java_value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/dropdown/footer', $footerData, true);
+
         $inputnames[]=$ia[1];
         $inputnames[]=$ia[1].'comment';
     }
@@ -2013,9 +2019,11 @@ function do_ranking($ia)
     $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    if ($aQuestionAttributes['random_order']==1) {
+    if ($aQuestionAttributes['random_order']==1)
+    {
         $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
-    } else {
+    } else
+    {
         $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
     $ansresult = Yii::app()->db->createCommand($ansquery)->query()->readAll();   //Checked
@@ -2023,7 +2031,8 @@ function do_ranking($ia)
     if (trim($aQuestionAttributes["max_answers"])!='')
     {
         $max_answers=trim($aQuestionAttributes["max_answers"]);
-    } else {
+    } else
+    {
         $max_answers=$anscount;
     }
     // Get the max number of line needed
@@ -2049,53 +2058,76 @@ function do_ranking($ia)
     {
         $answers[] = $ansrow;
     }
-    $answer .= '<div class="ranking-answers">
-    <ul class="list-unstyled answers-list select-list">';
+
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/header', array(), true);
     for ($i=1; $i<=$iMaxLine; $i++)
     {
         $myfname=$ia[1].$i;
-        $answer .= "\n<li class=\"select-item\">";
-        $answer .="<label for=\"answer{$myfname}\">";
-        if($i==1){
-            $answer .=gT('First choice');
-        }else{
-            $answer .=sprintf(gT('Choice of rank %s'),$i);
+        if($i==1)
+        {
+            $labeltext .=gT('First choice');
+        }else
+        {
+            $labeltext .=sprintf(gT('Choice of rank %s'),$i);
         }
-        $answer .= "</label>";
-        $answer .= "<select  class='form-control' name=\"{$myfname}\" id=\"answer{$myfname}\">\n";
+        $itemListHeaderDatas = array(
+            'myfname'=>$myfname,
+            'labeltext'=>$labeltext,
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item_list_header', $itemListHeaderDatas, true);
+
         if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
         {
-            $answer .= "\t<option value=\"\"".SELECTED.">".gT('Please choose...')."</option>\n";
+            $itemDatas = array(
+                'value' => '',
+                'selected'=>'SELECTED',
+                'classes'=>'',
+                'id'=> '',
+                'optiontext'=>gT('Please choose...'),
+            );
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item', $itemDatas, true);
         }
         foreach ($answers as $ansrow)
         {
             $thisvalue="";
-            $answer .="\t<option value=\"{$ansrow['code']}\"";
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
-                {
-                    $answer .= SELECTED;
-                    $thisvalue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                }
-            $answer .=">".flattenText($ansrow['answer'])."</option>\n";
+            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
+            {
+                $selected = SELECTED;
+                $thisvalue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+            }
+            else
+            {
+                $selected = '';
+            }
+
+            $itemDatas = array(
+                'value' => $ansrow['code'],
+                'selected'=>$selected,
+                'classes'=>'',
+                'id'=> '',
+                'optiontext'=>flattenText($ansrow['answer']),
+            );
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item', $itemDatas, true);
         }
-        $answer .="</select>";
-        // Hidden form: maybe can be replaced with ranking.js
-        $answer .="<input type=\"hidden\" id=\"java{$myfname}\" disabled=\"disabled\" value=\"{$thisvalue}\"/>";
-        $answer .="</li>";
+        $itemlistfooterDatas = array(
+            'javaname'=>'java'.$myfname,
+            'thisvalue'=>$thisvalue,
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item_list_footer', $itemlistfooterDatas, true);
         $inputnames[]=$myfname;
     }
-    $answer .="</ul>"
-        . "<div style='display:none' id='ranking-{$ia[0]}-maxans'>{".$max_answers."}</div>"
-        . "<div style='display:none' id='ranking-{$ia[0]}-minans'>{".$min_answers."}</div>"
-        . "<div style='display:none' id='ranking-{$ia[0]}-name'>".$ia[1]."</div>"
-        . "</div>";
-    // The list with HTML answers
-    $answer .="<div style=\"display:none\">";
-    foreach ($answers as $ansrow)
-    {
-        $answer.="<div id=\"htmlblock-{$ia['0']}-{$ansrow['code']}\">{$ansrow['answer']}</div>";
-    }
-    $answer .="</div>";
+
+    $itemlistfooterDatas = array(
+        'javaname'=>'java'.$myfname,
+        'thisvalue'=>$thisvalue,
+    );
+    $secondlistDatas = array(
+        'rankId'=>$ia[0],
+        'max_answers'=>$max_answers,
+        'min_answers'=>$min_answers,
+        'answers'=>$answers
+    );
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/second_list', $secondlistDatas, true);
     App()->getClientScript()->registerPackage('jquery-actual'); // Needed to with jq1.9 ?
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."ranking.js");
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "ranking.css");
@@ -2417,25 +2449,14 @@ function do_multiplechoice($ia)
 function do_multiplechoice_withcomments($ia)
 {
     global $thissurvey;
-
-
     $inputnames= array();
-    if ($thissurvey['nokeyboard']=='Y')
-    {
-        includeKeypad();
-        $kpclass = "text-keypad";
-    }
-    else
-    {
-        $kpclass = "";
-    }
-
+    $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $inputnames = array();
     $attribute_ref=false;
     $qaquery = "SELECT qid,attribute FROM {{question_attributes}} WHERE value LIKE '".strtolower($ia[2])."'";
     $qaresult = Yii::app()->db->createCommand($qaquery)->query();     //Checked
-
     $attribute_ref=false;
+
     foreach($qaresult->readAll() as $qarow)
     {
         $qquery = "SELECT qid FROM {{questions}} WHERE sid=".$thissurvey['sid']." AND qid=".$qarow['qid'];
@@ -2445,9 +2466,7 @@ function do_multiplechoice_withcomments($ia)
             $attribute_ref = true;
         }
     }
-
     $checkconditionFunction = "checkconditions";
-
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if ($aQuestionAttributes['other_numbers_only']==1)
@@ -2480,8 +2499,12 @@ function do_multiplechoice_withcomments($ia)
     $ansresult = Yii::app()->db->createCommand($ansquery)->query();  //Checked
     $anscount = count($ansresult)*2;
 
-    $answer = "<input type='hidden' name='MULTI$ia[1]' value='$anscount' />\n";
-    $answer_main = '';
+    $answer = "";
+    $headerDatas = array(
+        'name'=>'MULTI'.$ia[1],
+        'value'=> $anscount
+    );
+    $answer_main = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/header', $headerDatas, true);
 
     $fn = 1;
     if (!isset($other)){
@@ -2495,7 +2518,6 @@ function do_multiplechoice_withcomments($ia)
     {
         $label_width = 0;
     }
-
 
     // Size of elements depends on longest text item
     $toIterate = $ansresult->readAll();
@@ -2521,9 +2543,9 @@ function do_multiplechoice_withcomments($ia)
     {
         $myfname = $ia[1].$ansrow['title'];
         $trbc='';
-        /* Check for array_filter */
 
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li","responsive-content question-item answer-item checkbox-text-item");
+        /* Check for array_filter */
+        $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
         if($label_width < strlen(trim(strip_tags($ansrow['question']))))
         {
@@ -2531,93 +2553,103 @@ function do_multiplechoice_withcomments($ia)
         }
 
         $myfname2 = $myfname."comment";
-        $startitem = "\t$htmltbody2\n";
-        /* Print out the checkbox */
-        $answer_main .= $startitem;
-        $answer_main .= "\t$hiddenfield\n";
-        $answer_main .= "<span class=\"option\">\n"
-        . "\t<input class=\"checkbox\" type=\"checkbox\" name=\"$myfname\" id=\"answer$myfname\" value=\"Y\"";
 
         /* If the question has already been ticked, check the checkbox */
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
             if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')
             {
-                $answer_main .= CHECKED;
+                $checked = CHECKED;
             }
         }
-        $answer_main .=" onclick='$checkconditionFunction(this.value, this.name, this.type);' />\n";
 
-
-        $answer_main .= "\t<label for=\"answer$myfname\" class=\"answertext col-lg-{$nbColLabelLg} col-xs-{$nbColLabelXs} \">\n"
-        . $ansrow['question']."</label>\n";
-
-        $answer_main .= "<input type='hidden' name='java$myfname' id='java$myfname' value='";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
-            $answer_main .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+            $javavalue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
         }
-        $answer_main .= "' />\n";
         $fn++;
-
-        /////////////////////////////
-
-        $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment hide \">".gT('Make a comment on your choice here:')."</label>\n"
-        ."<input class='form-control text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' value='";
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
-        $answer_main .= "' onkeyup='$checkconditionFunction(this.value,this.name,this.type);' />\n</span>\n"
-        . "\t</li>\n";
-
         $fn++;
         $inputnames[]=$myfname;
         $inputnames[]=$myfname2;
+
+        $itemDatas = array(
+            'sDisplayStyle'=>$sDisplayStyle,
+            'kpclass'=>$kpclass,
+            'title'=>'',
+            'liclasses' => 'responsive-content question-item answer-item checkbox-text-item',
+            'name'=>$myfname,
+            'id'=>'answer'.$myfname,
+            'value'=>'Y', // TODO : check if it should be the same than javavalue
+            'classes'=>'',
+            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'checkconditionFunctionComment'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'labeltext'=>$ansrow['question'],
+            'javainput'=>true,
+            'javaname'=>'java'.$myfname,
+            'javavalue'=>$javavalue,
+            'checked'=>$checked,
+            'inputCommentId'=>'answer'.$myfname2,
+            'commentLabelText'=>gT('Make a comment on your choice here:'),
+            'inputCommentName'=>$myfname2,
+            'inputCOmmentValue'=>$inputCOmmentValue,
+        );
+        $answer_main = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/item', $itemDatas, true);
+
     }
     if ($other == 'Y')
     {
         $myfname = $ia[1].'other';
         $myfname2 = $myfname.'comment';
         $anscount = $anscount + 2;
-        $answer_main .= "<li class=\"other question-item answer-item checkbox-text-item other-item\" id=\"javatbd$myfname\">";
-        // SPAN LABEL OPTION
-        $answer_main .= "   <span class=\"option\">\n";
-        $answer_main .= "           <input class=\"other ".$kpclass."\" type=\"checkbox\" name=\"$myfname\" id=\"answer$myfname\" title=\"".gT('Other').'" size="10"';
-        $answer_main .= "               onkeyup='$oth_checkconditionFunction(this.value, this.name, this.type);'";
-                                        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
-                                        {
-                                            $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                                            if ($aQuestionAttributes['other_numbers_only']==1)
-                                            {
-                                                $dispVal = str_replace('.',$sSeparator,$dispVal);
-                                            }
-                                            $answer_main .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
-                                        }
-                                        $fn++;
-                                        // --> START NEW FEATURE - SAVE
-        $answer_main .= "           />";
-        $answer_main .= "       <label for=\"answer$myfname\" class=\"answertext\">\n";
-        $answer_main .=             $othertext;
-        $answer_main .= "       </label>";
-        $answer_main .= "\n</span>\n";
-        // SPAN LABEL COMMENT
-        $answer_main .=  "<span class=\"comment\">\n\t<label for=\"answer$myfname2\" class=\"answer-comment hide\">".gT('Make a comment on your choice here:')."\t</label>\n"
-        . '<input class="form-control text '.$kpclass.'" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'"'
-        . " onkeyup='$checkconditionFunction(this.value,this.name,this.type);'"
-        . ' title="'.gT('Make a comment on your choice here:').'" value="';
-        // --> END NEW FEATURE - SAVE
+        // SPAN LABEL OPTION //////////////////////////
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
+        {
+            $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+            if ($aQuestionAttributes['other_numbers_only']==1)
+            {
+                $dispVal = str_replace('.',$sSeparator,$dispVal);
+            }
+            $value = htmlspecialchars($dispVal,ENT_QUOTES);
+        }
+        $fn++;
 
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
-        $answer_main .= "\"/>\n";
-        $answer_main .= "</span>\n\t</li>\n";
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]))
+        {
+            $inputCOmmentValue = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);
+        }
 
+        $itemDatas = array(
+            'liclasses' => 'other question-item answer-item checkbox-text-item other-item',
+            'liid'=>'javatbd'.$myfname,
+            'kpclass'=>$kpclass,
+            'title'=>gT('Other'),
+            'sDisplayStyle'=>$sDisplayStyle,
+            'name'=>$myfname,
+            'id'=>'answer'.$myfname,
+            'value'=>$value, // TODO : check if it should be the same than javavalue
+            'classes'=>'',
+            'checkconditionFunction'=>$oth_checkconditionFunction.'(this.value, this.name, this.type)',
+            'checkconditionFunctionComment'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'labeltext'=>$othertext,
+            'inputCommentId'=>'answer'.$myfname2,
+            'commentLabelText'=>gT('Make a comment on your choice here:'),
+            'inputCommentName'=>$myfname2,
+            'inputCOmmentValue'=>$inputCOmmentValue,
+            'checked'=>$checked,
+            'javainput'=>false,
+            'javaname'=>'',
+            'javavalue'=>'',
+        );
+        $answer_main .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/item', $itemDatas, true);
         $inputnames[]=$myfname;
         $inputnames[]=$myfname2;
     }
-    $answer .= "<ul class=\"list-unstyled subquestions-list questions-list checkbox-text-list\">\n".$answer_main."</ul>\n";
+
+    $answer_main .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/footer', array(), true);
+
     if($aQuestionAttributes['commented_checkbox']!="allways" && $aQuestionAttributes['commented_checkbox_auto'])
     {
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."multiplechoice_withcomments.js");
-#        $script= " doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');\n";
-#        App()->getClientScript()->registerScript("doMultipleChoiceWithComments",$script,CClientScript::POS_HEAD);// Deactivate now: need to be after question, and just after
         $answer .= "<script type='text/javascript'>\n"
         . "  /*<![CDATA[*/\n"
         ." doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');\n"
@@ -2631,14 +2663,11 @@ function do_multiplechoice_withcomments($ia)
 function do_file_upload($ia)
 {
     global $thissurvey;
-
     $checkconditionFunction = "checkconditions";
-
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     // Fetch question attributes
     $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldname'] = $ia[1];
-
     $scriptloc = Yii::app()->getController()->createUrl('uploader/index');
     $bPreview=Yii::app()->request->getParam('action')=="previewgroup" || Yii::app()->request->getParam('action')=="previewquestion" || $thissurvey['active'] != "Y";
 
@@ -2646,7 +2675,6 @@ function do_file_upload($ia)
     {
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1 ;
         $questgrppreview = 1;   // Preview is launched from Question or group level
-
     }
     elseif ($thissurvey['active'] != "Y")
     {
@@ -2658,10 +2686,6 @@ function do_file_upload($ia)
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 0;
         $questgrppreview = 0;
     }
-
-    $uploadbutton = "<div class='upload-button'><a id='upload_".$ia[1]."' class='upload' ";
-    $uploadbutton .= " href='#' onclick='javascript:upload_$ia[1]();'";
-    $uploadbutton .=">" .gT('Upload files'). "</a></div>";
 
     $answer = "<script type='text/javascript'>
         function upload_$ia[1]() {
@@ -2689,26 +2713,22 @@ function do_file_upload($ia)
     // Modal dialog
     $answer .= $uploadbutton;
 
-    $answer .= "<input type='hidden' id='".$ia[1]."' name='".$ia[1]."' value='".htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES,'utf-8')."' />";
-    $answer .= "<input type='hidden' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value=";
-
+    $filecountvalue = '0';
     if (array_key_exists($ia[1]."_filecount", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]))
     {
         $tempval = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]."_filecount"];
         if (is_numeric($tempval))
         {
-            $answer .= $tempval . " />";
-        }
-        else
-        {
-            $answer .= "0 />";
+            $filecountvalue = $tempval;
         }
     }
-    else {
-        $answer .= "0 />";
-    }
-
-    $answer .= "<div id='".$ia[1]."_uploadedfiles'></div>";
+    $value = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES,'utf-8');
+    $fileuploadDatas = array(
+        'fileid' => $ia[1],
+        'value' => $value,
+        'filecountvalue'=>$filecountvalue,
+    );
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/file_upload/item', $fileuploadDatas, true);
 
     $answer .= '<script type="text/javascript">
     var surveyid = '.Yii::app()->getConfig('surveyID').';
