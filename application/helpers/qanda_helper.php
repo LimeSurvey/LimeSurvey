@@ -2819,8 +2819,7 @@ function do_multipleshorttext($ia)
         $tiwidth=$aQuestionAttributes['text_input_width'];
         $tiwidth=($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
         $extraclass .=" inputwidth".trim($aQuestionAttributes['text_input_width']);
-        //$col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-        //$extraclass .=" col-sm-".trim($col);
+
     }
     else
     {
@@ -2867,11 +2866,8 @@ function do_multipleshorttext($ia)
     $ansresult = dbExecuteAssoc($ansquery);    //Checked
     $aSubquestions = $ansresult->readAll();
     $anscount = count($aSubquestions)*2;
-    //$answer .= "\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
     $fn = 1;
-
     $answer_main = '';
-
     $label_width = 0;
 
     if ($anscount==0)
@@ -2889,7 +2885,7 @@ function do_multipleshorttext($ia)
 
         // label
         $nbColLabelLg = $oNbCols->nbColLabelLg;
-
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/header', array(), true);
         if (trim($aQuestionAttributes['display_rows'])!='')
         {
             //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
@@ -2903,23 +2899,12 @@ function do_multipleshorttext($ia)
                     $ansrow['question'] = "&nbsp;";
                 }
 
-                //NEW: textarea instead of input=text field
-                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item".$extraclass);
 
-                //$answer_main .= "\t$htmltbody2\n"
-                $answer_main .= '<div  class="form-group-row row">';
-                $answer_main .= "   <label class='control-label col-sm-$nbColLabelLg  ' for=\"answer$myfname\">{$ansrow['question']}</label>\n";
-                $answer_main .= '   <div class="col-sm-'.$tiwidth.' ">';
+                //list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item".$extraclass);
+                /* Check for array_filter */
+                $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
+
                 //. "\t<span>\n".$prefix."\n".'
-                $answer_main .= $prefix."\n".'
-                <textarea class="form-control  textarea '.$kpclass.'" name="'.$myfname.'" id="answer'.$myfname.'"
-                rows="'.$drows.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);">';
-
-                if($label_width < strlen(trim(strip_tags($ansrow['question']))))
-                {
-                    $label_width = strlen(trim(strip_tags($ansrow['question'])));
-                }
-
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
                     $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
@@ -2927,12 +2912,25 @@ function do_multipleshorttext($ia)
                     {
                         $dispVal = str_replace('.',$sSeparator,$dispVal);
                     }
-                    $answer_main .= htmlspecialchars($dispVal);
+                    $dispVal .= htmlspecialchars($dispVal);
                 }
 
-                $answer_main .= "</textarea>\n".$suffix."\n\t</div>\n";
-                //. "\t</li>\n";
-                $answer_main .= '</div>'; // form group row;
+                $itemTextareaDatas = array(
+                    'alert'=>false,
+                    'maxlength'=>'',
+                    'extraclass'=>$extraclass,
+                    'sDisplayStyle'=>$sDisplayStyle,
+                    'prefix'=>$prefix,
+                    'myfname'=>$myfname,
+                    'labelText'=>$ansrow['question'],
+                    'prefix'=>$prefix,
+                    'kpclass'=>$kpclass,
+                    'rows'=>$drows.' '.$maxlength,
+                    'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+                    'dispVal'=>$dispVal,
+                    'suffix'=>$suffix,
+                );
+                $answer = Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/item_textarea', $itemTextareaDatas, true);
 
                 $fn++;
                 $inputnames[]=$myfname;
@@ -2947,23 +2945,13 @@ function do_multipleshorttext($ia)
                 if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
 
                 // color code missing mandatory questions red
-                if ($ia[6]=='Y' &&  $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '') {
-                    //$ansrow['question'] = "<span class='errormandatory'>{$ansrow['question']}</span>";
-                    $ansrow['question'] = '
-                                <div class="alert alert-danger" role="alert">'.
-                                        $ansrow['question']
-                                    .'
-                                </div>';
+                if ($ia[6]=='Y' &&  $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '')
+                {
+                    $alert = true;
                 }
 
-                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item".$extraclass);
-
-                //$answer_main .= "\t$htmltbody2\n"
-                $answer_main .= '<div  class="form-group-row row">';
-                $answer_main .= "<label class='control-label col-sm-$nbColLabelLg' for=\"col-sm-$nbColLabelLg answer$myfname\">{$ansrow['question']}</label>\n";
-                $answer_main .= '   <div class="col-sm-'.$tiwidth.' ">';
-                $answer_main .= $prefix."\n"
-                                .'<input class="text '.$kpclass.' form-control" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+                $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
+                //list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item".$extraclass);
 
                 if($label_width < strlen(trim(strip_tags($ansrow['question']))))
                 {
@@ -2977,23 +2965,32 @@ function do_multipleshorttext($ia)
                     {
                         $dispVal = str_replace('.',$sSeparator,$dispVal);
                     }
-                    $answer_main .= htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
+                    $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
                 }
 
-                // --> START NEW FEATURE - SAVE
-                $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$maxlength.' />'."\n".$suffix."\n\t</div>\n"
-                . "\t</div>\n";
-                // --> END NEW FEATURE - SAVE
-
+                $itemInputextDatas = array(
+                    'alert'=>$alert,
+                    'maxlength'=>$maxlength,
+                    'tiwidth'=>$tiwidth,
+                    'extraclass'=>$extraclass,
+                    'sDisplayStyle'=>$sDisplayStyle,
+                    'prefix'=>$prefix,
+                    'myfname'=>$myfname,
+                    'labelText'=>$ansrow['question'],
+                    'prefix'=>$prefix,
+                    'kpclass'=>$kpclass,
+                    'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+                    'dispVal'=>$dispVal,
+                    'suffix'=>$suffix,
+                );
+                $answer = Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/item_inputext', $itemInputextDatas, true);
                 $fn++;
                 $inputnames[]=$myfname;
             }
 
         }
     }
-
-    $answer = "<ul class=\"list-unstyled subquestions-list questions-list text-list\">\n".$answer_main."</ul>\n";
-
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/footer', array(), true);
     return array($answer, $inputnames);
 }
 
