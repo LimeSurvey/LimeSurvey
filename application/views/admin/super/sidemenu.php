@@ -50,14 +50,25 @@
                         </div>
 
                         <!-- chevrons to stretch the side menu -->
-                        <div class='col-sm-5'>
-                            <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronStretch">
-                                <span class="glyphicon glyphicon-chevron-right" ></span>
-                            </a>
-                            <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronClose">
-                                <span class="glyphicon glyphicon-chevron-left"></span>
-                            </a>
-                        </div>
+                        <?php if (getLanguageRTL($_SESSION['adminlang'])): ?>
+                            <div class='col-sm-5'>
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronStretch">
+                                    <span class="glyphicon glyphicon-chevron-left" ></span>
+                                </a>
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronClose">
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                </a>
+                            </div>
+                        <?php else: ?>
+                            <div class='col-sm-5'>
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronStretch">
+                                    <span class="glyphicon glyphicon-chevron-right" ></span>
+                                </a>
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronClose">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                </a>
+                            </div>
+                        <?php endif; ?>
 
                     </div>
                 </div>
