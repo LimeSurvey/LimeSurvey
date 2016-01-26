@@ -112,10 +112,8 @@ class Assessments extends Survey_Common_Action
         Yii::app()->loadHelper('admin/htmleditor');
 
         $urls['output'] = '        <div class="side-body">
-            <h3>'.gT("Assesments").'</h3>
+            <h3>'.gT("Assesments").'</h3>';
 
-            <div class="row">
-                <div class="col-sm-12 content-right">';
         if ($surveyinfo['assessments']!='Y')
         {
 
