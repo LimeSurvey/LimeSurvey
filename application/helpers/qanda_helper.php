@@ -2999,8 +2999,7 @@ function do_multipleshorttext($ia)
 function do_multiplenumeric($ia)
 {
     global $thissurvey;
-
-        $extraclass ="";
+    $extraclass ="";
     $checkconditionFunction = "fixnum_checkconditions";
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $answer='';
@@ -3062,7 +3061,7 @@ function do_multiplenumeric($ia)
         $tiwidth=$aQuestionAttributes['text_input_width'];
         //$extraclass .=" inputwidth".trim($aQuestionAttributes['text_input_width']);
         $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-$extraclass .=" col-sm-".trim($col);
+        $extraclass .=" col-sm-".trim($col);
     }
     else
     {
@@ -3115,12 +3114,15 @@ $extraclass .=" col-sm-".trim($col);
     $anscount = count($aSubquestions)*2;
     $fn = 1;
 
+
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/header', array('prefixclass'=>$prefixclass), true);
     $answer_main = '';
 
     if ($anscount==0)
     {
         $inputnames=array();
-        $answer_main .= '    <p class="text-danger">'.gT('Error: This question has no answers.')."</p>\n";
+        $noanswer = true;
+        $answer .= '    <p class="text-danger">'.gT('Error: This question has no answers.')."</p>\n";
     }
     else
     {
@@ -3131,8 +3133,7 @@ $extraclass .=" col-sm-".trim($col);
             if ($slider_layout === false || $slider_separator == '')
             {
                 $theanswer = $ansrow['question'];
-                $sliderleft='';
-                $sliderright='';
+                $sliders = false;
             }
             else
             {
@@ -3140,65 +3141,58 @@ $extraclass .=" col-sm-".trim($col);
                 $theanswer=(isset($aAnswer[0]))?$aAnswer[0]:"";
                 $sliderleft=(isset($aAnswer[1]))?$aAnswer[1]:"";
                 $sliderright=(isset($aAnswer[2]))?$aAnswer[2]:"";
-                $sliderleft="<div class=\"slider_lefttext\">$sliderleft</div>";
+                $sliders = true;
                 $sliderright="<div class=\"slider_righttext\">$sliderright</div>";
             }
 
             // color code missing mandatory questions red
             if ($ia[6]=='Y' && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '')
             {
-                //$theanswer = "<span class='errormandatory'>{$theanswer}</span>";
-                $theanswer ='
-                            <div class="alert alert-danger" role="alert">'.
-                                    $theanswer
-                                .'
-                            </div>';
-
+                $alert = true;
             }
 
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "div","form-group question-item answer-item text-item numeric-item".$extraclass);
-            $answer_main .= "\t$htmltbody2\n";
-            $answer_main .= "<label for=\"answer$myfname\" class=\"{$prefixclass}-label numeric-label col-xs-12 \">{$theanswer}</label>\n";
+            //list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "div","form-group question-item answer-item text-item numeric-item".$extraclass);
+            $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
-                $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
-                $sSeparator = $sSeparator['separator'];
+            $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+            $sSeparator = $sSeparator['separator'];
 
-                $answer_main .= "{$sliderleft}<div class=\"input\">\n\t";
-
-                if($prefix)
+            $dispVal='';
+            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+            {
+                $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                if(strpos($dispVal,"."))
                 {
-                    $answer_main .= "<div class='col-xs-2 text-right prefix-container'>";
-                    $answer_main .= $prefix;
-                    $answer_main .= '</div>';
+                    $dispVal=rtrim(rtrim($dispVal,"0"),".");
                 }
-
-                $answer_main .= "<div class='col-xs-8'>";
-                $answer_main .= "\n\t<input class=\"form-control text $kpclass\" type=\"text\" size=\"".$tiwidth."\" name=\"".$myfname."\" id=\"answer".$myfname."\" title=\"".gT('Only numbers may be entered in this field.')."\" value=\"";
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-                {
-                    $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                    if(strpos($dispVal,"."))
-                    {
-                        $dispVal=rtrim(rtrim($dispVal,"0"),".");
-                    }
-                    $dispVal = str_replace('.',$sSeparator,$dispVal);
-                    $answer_main .= $dispVal;
-                }
-
-                $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '." {$maxlength} />\n\t";
-                $answer_main .= '</div>';
-
-                if($suffix)
-                {
-                    $answer_main .= "<div class='col-xs-2 text-left suffix-container'>";
-                    $answer_main .= $suffix;
-                    $answer_main .= '</div>';
-                }
-                $answer_main .= "\n</div>{$sliderright}\n\t</div>\n";
+                $dispVal = str_replace('.',$sSeparator,$dispVal);
+            }
+            $itemDatas = array(
+                'extraclass'=>$extraclass,
+                'sDisplayStyle'=>$sDisplayStyle,
+                'kpclass'=>$kpclass,
+                'alert'=>$alert,
+                'theanswer'=>$theanswer,
+                'labelname'=>'answer'.$myfname,
+                'prefixclass'=>$prefixclass,
+                'sliders'=>$sliders,
+                'sliderleft'=>$sliderleft,
+                'sliderright'=>$sliderright,
+                'prefix'=>$prefix,
+                'suffix'=>$suffix,
+                'tiwidth'=>$tiwidth,
+                'myfname'=>$myfname,
+                'dispVal'=>$dispVal,
+                'maxlength'=>$maxlength,
+                'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            );
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/item', $itemDatas, true);
 
             $fn++;
             $inputnames[]=$myfname;
         }
+        $displaytotal=false;
+        $equals_num_value = false;
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''
         || trim($aQuestionAttributes['max_num_value']) != ''
@@ -3207,22 +3201,20 @@ $extraclass .=" col-sm-".trim($col);
             $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
             if (trim($aQuestionAttributes['equals_num_value']) != '')
             {
-                $answer_main .= "\t<p class='multiplenumerichelp help-item text-info'>\n"
-                . "<span class=\"label\">".gT('Remaining: ')."</span>\n"
-                . "<span id=\"remainingvalue_{$ia[0]}\" class=\"dynamic_remaining\">$prefix\n"
-                . "{" . $qinfo['sumRemainingEqn'] . "}\n"
-                . "$suffix</span>\n"
-                . "\t</p>\n";
+                $equals_num_value = true;
             }
 
-            $answer_main .= "\t<p class='multiplenumerichelp  help-item text-info'>\n"
-            . "<span class=\"\">".gT('Total: ')."</span>\n"
-            . "<span id=\"totalvalue_{$ia[0]}\" class=\"dynamic_sum\">$prefix\n"
-            . "{" . $qinfo['sumEqn'] . "}\n"
-            . "$suffix</span>\n"
-            . "\t</p>\n";
+            $displaytotal = true;
         }
-        $answer .= "<div class='subquestions-list questions-list text-list {$prefixclass}-list'>\n".$answer_main."</div>\n";
+        $footerDatas = array(
+            'equals_num_value'=>$equals_num_value,
+            'id'=>$ia[0],
+            'prefix'=>$prefix,
+            'sumRemainingEqn'=>$qinfo['sumRemainingEqn'],
+            'displaytotal'=>$displaytotal,
+            'sumEqn'=>$qinfo['sumEqn']
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/footer', $footerDatas, true);
     }
 
     if($aQuestionAttributes['slider_layout']==1)
@@ -3425,7 +3417,7 @@ function do_shortfreetext($ia)
         $tiwidth=$aQuestionAttributes['text_input_width'];
         //$extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
         $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-$extraclass .=" col-sm-".trim($col);
+        $extraclass .=" col-sm-".trim($col);
     }
     else
     {
@@ -3747,7 +3739,7 @@ function do_longfreetext($ia)
         $tiwidth=$aQuestionAttributes['text_input_width'];
         //$extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
         $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-$extraclass .=" col-sm-".trim($col);
+        $extraclass .=" col-sm-".trim($col);
     }
     else
     {
@@ -3826,7 +3818,7 @@ function do_hugefreetext($ia)
         $tiwidth=$aQuestionAttributes['text_input_width'];
         //$extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
         $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-$extraclass .=" col-sm-".trim($col);
+        $extraclass .=" col-sm-".trim($col);
     }
     else
     {
