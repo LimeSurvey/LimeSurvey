@@ -228,6 +228,11 @@ $(document).ready(function(){
     */
     jQuery(document).on('click', '.handleAccordion.opened', function(){
 
+        // Disable this feature for RTL for now
+        if (rtl) {
+            return;
+        }
+
         $('.handleAccordion').addClass('disabled');
 
         accordionContainer.css({
