@@ -2019,9 +2019,11 @@ function do_ranking($ia)
     $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    if ($aQuestionAttributes['random_order']==1) {
+    if ($aQuestionAttributes['random_order']==1)
+    {
         $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
-    } else {
+    } else
+    {
         $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
     $ansresult = Yii::app()->db->createCommand($ansquery)->query()->readAll();   //Checked
@@ -2029,7 +2031,8 @@ function do_ranking($ia)
     if (trim($aQuestionAttributes["max_answers"])!='')
     {
         $max_answers=trim($aQuestionAttributes["max_answers"]);
-    } else {
+    } else
+    {
         $max_answers=$anscount;
     }
     // Get the max number of line needed
@@ -2055,53 +2058,76 @@ function do_ranking($ia)
     {
         $answers[] = $ansrow;
     }
-    $answer .= '<div class="ranking-answers">
-    <ul class="list-unstyled answers-list select-list">';
+
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/header', array(), true);
     for ($i=1; $i<=$iMaxLine; $i++)
     {
         $myfname=$ia[1].$i;
-        $answer .= "\n<li class=\"select-item\">";
-        $answer .="<label for=\"answer{$myfname}\">";
-        if($i==1){
-            $answer .=gT('First choice');
-        }else{
-            $answer .=sprintf(gT('Choice of rank %s'),$i);
+        if($i==1)
+        {
+            $labeltext .=gT('First choice');
+        }else
+        {
+            $labeltext .=sprintf(gT('Choice of rank %s'),$i);
         }
-        $answer .= "</label>";
-        $answer .= "<select  class='form-control' name=\"{$myfname}\" id=\"answer{$myfname}\">\n";
+        $itemListHeaderDatas = array(
+            'myfname'=>$myfname,
+            'labeltext'=>$labeltext,
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item_list_header', $itemListHeaderDatas, true);
+
         if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
         {
-            $answer .= "\t<option value=\"\"".SELECTED.">".gT('Please choose...')."</option>\n";
+            $itemDatas = array(
+                'value' => '',
+                'selected'=>'SELECTED',
+                'classes'=>'',
+                'id'=> '',
+                'optiontext'=>gT('Please choose...'),
+            );
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item', $itemDatas, true);
         }
         foreach ($answers as $ansrow)
         {
             $thisvalue="";
-            $answer .="\t<option value=\"{$ansrow['code']}\"";
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
-                {
-                    $answer .= SELECTED;
-                    $thisvalue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                }
-            $answer .=">".flattenText($ansrow['answer'])."</option>\n";
+            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
+            {
+                $selected = SELECTED;
+                $thisvalue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+            }
+            else
+            {
+                $selected = '';
+            }
+
+            $itemDatas = array(
+                'value' => $ansrow['code'],
+                'selected'=>$selected,
+                'classes'=>'',
+                'id'=> '',
+                'optiontext'=>flattenText($ansrow['answer']),
+            );
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item', $itemDatas, true);
         }
-        $answer .="</select>";
-        // Hidden form: maybe can be replaced with ranking.js
-        $answer .="<input type=\"hidden\" id=\"java{$myfname}\" disabled=\"disabled\" value=\"{$thisvalue}\"/>";
-        $answer .="</li>";
+        $itemlistfooterDatas = array(
+            'javaname'=>'java'.$myfname,
+            'thisvalue'=>$thisvalue,
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item_list_footer', $itemlistfooterDatas, true);
         $inputnames[]=$myfname;
     }
-    $answer .="</ul>"
-        . "<div style='display:none' id='ranking-{$ia[0]}-maxans'>{".$max_answers."}</div>"
-        . "<div style='display:none' id='ranking-{$ia[0]}-minans'>{".$min_answers."}</div>"
-        . "<div style='display:none' id='ranking-{$ia[0]}-name'>".$ia[1]."</div>"
-        . "</div>";
-    // The list with HTML answers
-    $answer .="<div style=\"display:none\">";
-    foreach ($answers as $ansrow)
-    {
-        $answer.="<div id=\"htmlblock-{$ia['0']}-{$ansrow['code']}\">{$ansrow['answer']}</div>";
-    }
-    $answer .="</div>";
+
+    $itemlistfooterDatas = array(
+        'javaname'=>'java'.$myfname,
+        'thisvalue'=>$thisvalue,
+    );
+    $secondlistDatas = array(
+        'rankId'=>$ia[0],
+        'max_answers'=>$max_answers,
+        'min_answers'=>$min_answers,
+        'answers'=>$answers
+    );
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/second_list', $secondlistDatas, true);
     App()->getClientScript()->registerPackage('jquery-actual'); // Needed to with jq1.9 ?
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."ranking.js");
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "ranking.css");
@@ -2423,7 +2449,6 @@ function do_multiplechoice($ia)
 function do_multiplechoice_withcomments($ia)
 {
     global $thissurvey;
-
 
     $inputnames= array();
     if ($thissurvey['nokeyboard']=='Y')
