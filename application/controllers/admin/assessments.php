@@ -115,7 +115,7 @@ class Assessments extends Survey_Common_Action
             <h3>'.gT("Assesments").'</h3>
 
             <div class="row">
-                <div class="col-lg-12 content-right">';
+                <div class="col-sm-12 content-right">';
         if ($surveyinfo['assessments']!='Y')
         {
 
