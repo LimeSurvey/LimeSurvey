@@ -2449,24 +2449,14 @@ function do_multiplechoice($ia)
 function do_multiplechoice_withcomments($ia)
 {
     global $thissurvey;
-
     $inputnames= array();
-    if ($thissurvey['nokeyboard']=='Y')
-    {
-        includeKeypad();
-        $kpclass = "text-keypad";
-    }
-    else
-    {
-        $kpclass = "";
-    }
-
+    $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $inputnames = array();
     $attribute_ref=false;
     $qaquery = "SELECT qid,attribute FROM {{question_attributes}} WHERE value LIKE '".strtolower($ia[2])."'";
     $qaresult = Yii::app()->db->createCommand($qaquery)->query();     //Checked
-
     $attribute_ref=false;
+
     foreach($qaresult->readAll() as $qarow)
     {
         $qquery = "SELECT qid FROM {{questions}} WHERE sid=".$thissurvey['sid']." AND qid=".$qarow['qid'];
@@ -2476,9 +2466,7 @@ function do_multiplechoice_withcomments($ia)
             $attribute_ref = true;
         }
     }
-
     $checkconditionFunction = "checkconditions";
-
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if ($aQuestionAttributes['other_numbers_only']==1)
@@ -2511,8 +2499,12 @@ function do_multiplechoice_withcomments($ia)
     $ansresult = Yii::app()->db->createCommand($ansquery)->query();  //Checked
     $anscount = count($ansresult)*2;
 
-    $answer = "<input type='hidden' name='MULTI$ia[1]' value='$anscount' />\n";
-    $answer_main = '';
+    $answer = "";
+    $headerDatas = array(
+        'name'=>'MULTI'.$ia[1],
+        'value'=> $anscount
+    );
+    $answer_main = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/header', $headerDatas, true);
 
     $fn = 1;
     if (!isset($other)){
@@ -2526,7 +2518,6 @@ function do_multiplechoice_withcomments($ia)
     {
         $label_width = 0;
     }
-
 
     // Size of elements depends on longest text item
     $toIterate = $ansresult->readAll();
@@ -2552,9 +2543,9 @@ function do_multiplechoice_withcomments($ia)
     {
         $myfname = $ia[1].$ansrow['title'];
         $trbc='';
-        /* Check for array_filter */
 
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li","responsive-content question-item answer-item checkbox-text-item");
+        /* Check for array_filter */
+        $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
         if($label_width < strlen(trim(strip_tags($ansrow['question']))))
         {
@@ -2562,88 +2553,100 @@ function do_multiplechoice_withcomments($ia)
         }
 
         $myfname2 = $myfname."comment";
-        $startitem = "\t$htmltbody2\n";
-        /* Print out the checkbox */
-        $answer_main .= $startitem;
-        $answer_main .= "\t$hiddenfield\n";
-        $answer_main .= "<span class=\"option\">\n"
-        . "\t<input class=\"checkbox\" type=\"checkbox\" name=\"$myfname\" id=\"answer$myfname\" value=\"Y\"";
 
         /* If the question has already been ticked, check the checkbox */
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
             if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')
             {
-                $answer_main .= CHECKED;
+                $checked = CHECKED;
             }
         }
-        $answer_main .=" onclick='$checkconditionFunction(this.value, this.name, this.type);' />\n";
 
-
-        $answer_main .= "\t<label for=\"answer$myfname\" class=\"answertext col-lg-{$nbColLabelLg} col-xs-{$nbColLabelXs} \">\n"
-        . $ansrow['question']."</label>\n";
-
-        $answer_main .= "<input type='hidden' name='java$myfname' id='java$myfname' value='";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
-            $answer_main .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+            $javavalue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
         }
-        $answer_main .= "' />\n";
         $fn++;
-
-        /////////////////////////////
-
-        $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment hide \">".gT('Make a comment on your choice here:')."</label>\n"
-        ."<input class='form-control text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' value='";
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
-        $answer_main .= "' onkeyup='$checkconditionFunction(this.value,this.name,this.type);' />\n</span>\n"
-        . "\t</li>\n";
-
         $fn++;
         $inputnames[]=$myfname;
         $inputnames[]=$myfname2;
+
+        $itemDatas = array(
+            'sDisplayStyle'=>$sDisplayStyle,
+            'kpclass'=>$kpclass,
+            'title'=>'',
+            'liclasses' => 'responsive-content question-item answer-item checkbox-text-item',
+            'name'=>$myfname,
+            'id'=>'answer'.$myfname,
+            'value'=>'Y', // TODO : check if it should be the same than javavalue
+            'classes'=>'',
+            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'checkconditionFunctionComment'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'labeltext'=>$ansrow['question'],
+            'javainput'=>true,
+            'javaname'=>'java'.$myfname,
+            'javavalue'=>$javavalue,
+            'checked'=>$checked,
+            'inputCommentId'=>'answer'.$myfname2,
+            'commentLabelText'=>gT('Make a comment on your choice here:'),
+            'inputCommentName'=>$myfname2,
+            'inputCOmmentValue'=>$inputCOmmentValue,
+        );
+        $answer_main = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/item', $itemDatas, true);
+
     }
     if ($other == 'Y')
     {
         $myfname = $ia[1].'other';
         $myfname2 = $myfname.'comment';
         $anscount = $anscount + 2;
-        $answer_main .= "<li class=\"other question-item answer-item checkbox-text-item other-item\" id=\"javatbd$myfname\">";
-        // SPAN LABEL OPTION
-        $answer_main .= "   <span class=\"option\">\n";
-        $answer_main .= "           <input class=\"other ".$kpclass."\" type=\"checkbox\" name=\"$myfname\" id=\"answer$myfname\" title=\"".gT('Other').'" size="10"';
-        $answer_main .= "               onkeyup='$oth_checkconditionFunction(this.value, this.name, this.type);'";
-                                        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
-                                        {
-                                            $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                                            if ($aQuestionAttributes['other_numbers_only']==1)
-                                            {
-                                                $dispVal = str_replace('.',$sSeparator,$dispVal);
-                                            }
-                                            $answer_main .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
-                                        }
-                                        $fn++;
-                                        // --> START NEW FEATURE - SAVE
-        $answer_main .= "           />";
-        $answer_main .= "       <label for=\"answer$myfname\" class=\"answertext\">\n";
-        $answer_main .=             $othertext;
-        $answer_main .= "       </label>";
-        $answer_main .= "\n</span>\n";
-        // SPAN LABEL COMMENT
-        $answer_main .=  "<span class=\"comment\">\n\t<label for=\"answer$myfname2\" class=\"answer-comment hide\">".gT('Make a comment on your choice here:')."\t</label>\n"
-        . '<input class="form-control text '.$kpclass.'" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'"'
-        . " onkeyup='$checkconditionFunction(this.value,this.name,this.type);'"
-        . ' title="'.gT('Make a comment on your choice here:').'" value="';
-        // --> END NEW FEATURE - SAVE
+        // SPAN LABEL OPTION //////////////////////////
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
+        {
+            $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+            if ($aQuestionAttributes['other_numbers_only']==1)
+            {
+                $dispVal = str_replace('.',$sSeparator,$dispVal);
+            }
+            $value = htmlspecialchars($dispVal,ENT_QUOTES);
+        }
+        $fn++;
 
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
-        $answer_main .= "\"/>\n";
-        $answer_main .= "</span>\n\t</li>\n";
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]))
+        {
+            $inputCOmmentValue = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);
+        }
 
+        $itemDatas = array(
+            'liclasses' => 'other question-item answer-item checkbox-text-item other-item',
+            'liid'=>'javatbd'.$myfname,
+            'kpclass'=>$kpclass,
+            'title'=>gT('Other'),
+            'sDisplayStyle'=>$sDisplayStyle,
+            'name'=>$myfname,
+            'id'=>'answer'.$myfname,
+            'value'=>$value, // TODO : check if it should be the same than javavalue
+            'classes'=>'',
+            'checkconditionFunction'=>$oth_checkconditionFunction.'(this.value, this.name, this.type)',
+            'checkconditionFunctionComment'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'labeltext'=>$othertext,
+            'inputCommentId'=>'answer'.$myfname2,
+            'commentLabelText'=>gT('Make a comment on your choice here:'),
+            'inputCommentName'=>$myfname2,
+            'inputCOmmentValue'=>$inputCOmmentValue,
+            'checked'=>$checked,
+            'javainput'=>false,
+            'javaname'=>'',
+            'javavalue'=>'',
+        );
+        $answer_main .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/item', $itemDatas, true);
         $inputnames[]=$myfname;
         $inputnames[]=$myfname2;
     }
-    $answer .= "<ul class=\"list-unstyled subquestions-list questions-list checkbox-text-list\">\n".$answer_main."</ul>\n";
+    
+    $answer_main .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/footer', array(), true);
+
     if($aQuestionAttributes['commented_checkbox']!="allways" && $aQuestionAttributes['commented_checkbox_auto'])
     {
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."multiplechoice_withcomments.js");
