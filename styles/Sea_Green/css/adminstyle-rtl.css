@@ -3055,20 +3055,37 @@ input[type="submit"].btn-block,input[type="reset"].btn-block,input[type="button"
 }
 
 .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    z-index: 1000;
-    display: none;
-    float: right;
-    min-width: 160px;
-    padding: 5px 0;
-    margin: 2px 0 0;
-    list-style: none;
-    font-size: 14px;
-    border-radius: 4px;
-    background-clip: padding-box;
-}
+  right: 0;
+  left: auto;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); }
+  .dropdown-menu .divider {
+    background-color: #e6e6e6; }
+  .dropdown-menu > li > a {
+    color: #35363f; }
+    .dropdown-menu > li > a:hover {
+      color: #ffffff;
+      background-color: #0f3e12; }
+    .dropdown-menu > li > a:focus {
+      color: #ffffff;
+      background-color: #0f3e12; }
+  .dropdown-menu > .active > a {
+    color: #ffffff;
+    background-color: #0f3e12; }
+    .dropdown-menu > .active > a:hover {
+      color: #ffffff;
+      background-color: #0f3e12; }
+    .dropdown-menu > .active > a:focus {
+      color: #ffffff;
+      background-color: #0f3e12; }
+  .dropdown-menu > .disabled > a {
+    color: #858585; }
+    .dropdown-menu > .disabled > a:hover {
+      color: #858585; }
+    .dropdown-menu > .disabled > a:focus {
+      color: #858585; }
 
 .dropdown-menu.pull-right {
     left: 0;
