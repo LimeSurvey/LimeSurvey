@@ -40,6 +40,10 @@
         "listheading"=> gT("The following surveys are available:"),
         "list"=> $list,
     );
+
+    global $oTemplate;
+    $oTemplate = Template::model()->getTemplateConfiguration('',$survey->sid);
+    
     $data['templatedir'] = getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
     $data['templateurl'] = getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
     $data['templatename'] = Yii::app()->getConfig("defaulttemplate");
@@ -70,8 +74,7 @@
     App()->getClientScript()->registerPackage('jquery-touch-punch');
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
     useFirebug();
-    global $oTemplate;
-    $oTemplate = Template::model()->getTemplateConfiguration('',$survey->sid);
+
     echo templatereplace(file_get_contents($oTemplate->viewPath."/startpage.pstpl"),array(),$data,'survey['.__LINE__.']');
     echo templatereplace(file_get_contents($oTemplate->viewPath."/surveylist.pstpl"),array(),$data,'survey['.__LINE__.']');
     echo templatereplace(file_get_contents($oTemplate->viewPath."/endpage.pstpl"),array(),$data,'survey['.__LINE__.']');

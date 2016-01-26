@@ -1,8 +1,8 @@
 <?php
 /**
- * Month Html
+ * Month dropdown Html
  * @var $monthId = $monthId;
- * @var $currentdate
+ * @var $currentmonth
  * @var $montharray
  */
 ?>
