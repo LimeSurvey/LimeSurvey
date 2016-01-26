@@ -2644,14 +2644,12 @@ function do_multiplechoice_withcomments($ia)
         $inputnames[]=$myfname;
         $inputnames[]=$myfname2;
     }
-    
+
     $answer_main .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/footer', array(), true);
 
     if($aQuestionAttributes['commented_checkbox']!="allways" && $aQuestionAttributes['commented_checkbox_auto'])
     {
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."multiplechoice_withcomments.js");
-#        $script= " doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');\n";
-#        App()->getClientScript()->registerScript("doMultipleChoiceWithComments",$script,CClientScript::POS_HEAD);// Deactivate now: need to be after question, and just after
         $answer .= "<script type='text/javascript'>\n"
         . "  /*<![CDATA[*/\n"
         ." doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');\n"
@@ -2665,14 +2663,11 @@ function do_multiplechoice_withcomments($ia)
 function do_file_upload($ia)
 {
     global $thissurvey;
-
     $checkconditionFunction = "checkconditions";
-
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     // Fetch question attributes
     $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldname'] = $ia[1];
-
     $scriptloc = Yii::app()->getController()->createUrl('uploader/index');
     $bPreview=Yii::app()->request->getParam('action')=="previewgroup" || Yii::app()->request->getParam('action')=="previewquestion" || $thissurvey['active'] != "Y";
 
@@ -2680,7 +2675,6 @@ function do_file_upload($ia)
     {
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1 ;
         $questgrppreview = 1;   // Preview is launched from Question or group level
-
     }
     elseif ($thissurvey['active'] != "Y")
     {
@@ -2692,10 +2686,6 @@ function do_file_upload($ia)
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 0;
         $questgrppreview = 0;
     }
-
-    $uploadbutton = "<div class='upload-button'><a id='upload_".$ia[1]."' class='upload' ";
-    $uploadbutton .= " href='#' onclick='javascript:upload_$ia[1]();'";
-    $uploadbutton .=">" .gT('Upload files'). "</a></div>";
 
     $answer = "<script type='text/javascript'>
         function upload_$ia[1]() {
@@ -2723,26 +2713,22 @@ function do_file_upload($ia)
     // Modal dialog
     $answer .= $uploadbutton;
 
-    $answer .= "<input type='hidden' id='".$ia[1]."' name='".$ia[1]."' value='".htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES,'utf-8')."' />";
-    $answer .= "<input type='hidden' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value=";
-
+    $filecountvalue = '0';
     if (array_key_exists($ia[1]."_filecount", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]))
     {
         $tempval = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]."_filecount"];
         if (is_numeric($tempval))
         {
-            $answer .= $tempval . " />";
-        }
-        else
-        {
-            $answer .= "0 />";
+            $filecountvalue = $tempval;
         }
     }
-    else {
-        $answer .= "0 />";
-    }
-
-    $answer .= "<div id='".$ia[1]."_uploadedfiles'></div>";
+    $value = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES,'utf-8');
+    $fileuploadDatas = array(
+        'fileid' => $ia[1],
+        'value' => $value,
+        'filecountvalue'=>$filecountvalue,
+    );
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/file_upload/item', $fileuploadDatas, true);
 
     $answer .= '<script type="text/javascript">
     var surveyid = '.Yii::app()->getConfig('surveyID').';
