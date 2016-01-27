@@ -2473,6 +2473,7 @@ function do_multiplechoice_withcomments($ia)
         'name'=>'MULTI'.$ia[1],
         'value'=> $anscount
     );
+
     $answer_main = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/header', $headerDatas, true);
 
     $fn = 1;
@@ -2563,7 +2564,7 @@ function do_multiplechoice_withcomments($ia)
             'inputCommentName'=>$myfname2,
             'inputCOmmentValue'=>$inputCOmmentValue,
         );
-        $answer_main = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/item', $itemDatas, true);
+        $answer_main .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/item', $itemDatas, true);
 
     }
     if ($other == 'Y')
@@ -2616,6 +2617,8 @@ function do_multiplechoice_withcomments($ia)
     }
 
     $answer_main .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/footer', array(), true);
+
+    $answer = $answer_main;
 
     if($aQuestionAttributes['commented_checkbox']!="allways" && $aQuestionAttributes['commented_checkbox_auto'])
     {
