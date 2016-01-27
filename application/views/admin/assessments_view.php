@@ -205,6 +205,7 @@
             	    $message=htmlspecialchars($editdata['message']);
                 } ?>
                 <div id="tablang<?php echo $assessmentlang;?>">
+                    <div class='col-sm-12'></div>
                     <div class='form-group'>
                         <label class='control-label col-sm-2' for='name_<?php echo $assessmentlang;?>'><?php eT("Heading");?>:</label>
                         <div class='col-sm-4'>
