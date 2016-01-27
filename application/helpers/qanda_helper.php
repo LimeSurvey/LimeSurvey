@@ -3872,7 +3872,6 @@ function do_yesno($ia)
         }
     }
 
-
     $itemDatas = array(
         'name'=>$ia[1],
         'yChecked' => $yChecked,
@@ -3880,7 +3879,7 @@ function do_yesno($ia)
         'naChecked'=> $naChecke,
         'noAnswer' => $noAnswer,
         'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-        'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$name],
+        'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
     );
     $answer .= Yii::app()->getController()->renderPartial('/survey/questions/yesno/item', $itemDatas, true);
 
@@ -3891,50 +3890,36 @@ function do_yesno($ia)
 // ---------------------------------------------------------------
 function do_gender($ia)
 {
-
-
     $checkconditionFunction = "checkconditions";
-
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
-    $answer = "<div class=\"answers-list radio-list\">\n"
-    . "\t<div class=\"col-xs-4 answer-item radio-item\">\n"
-    . '        <input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'F" value="F"';
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'F')
-    {
-        $answer .= CHECKED;
-    }
-    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-    . '        <label for="answer'.$ia[1].'F" class="answertext">'.gT('Female')."</label>\n\t</div>\n";
-
-    $answer .= "\t<div class=\"col-xs-4 answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'M" value="M"';
-
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M')
-    {
-        $answer .= CHECKED;
-    }
-    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]M\" class=\"answertext\">".gT('Male')."</label>\n\t</div>\n";
+    $fChecked = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'F')?'CHECKED':'';
+    $mChecked = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M')?'CHECKED':'';
+    $naChecked = '';
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
-        $answer .= "\t<div class=\"col-xs-4 answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'" value=""';
+        $noAnswer = true;
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '')
         {
-            $answer .= CHECKED;
+            $naChecked = CHECKED;
         }
-        // --> START NEW FEATURE - SAVE
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]\" class=\"answertext\">".gT('No answer')."</label>\n\t</div>\n";
-        // --> END NEW FEATURE - SAVE
-
     }
-    $answer .= "</div>\n\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
+
+    $itemDatas = array(
+        'name'=>$ia[1],
+        'fChecked' => $fChecked,
+        'mChecked' => $mChecked,
+        'naChecked'=> $naChecke,
+        'noAnswer' => $noAnswer,
+        'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+        'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+    );
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/gender/item', $itemDatas, true);
 
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
 }
-
-
-
 
 // ---------------------------------------------------------------
 /**
