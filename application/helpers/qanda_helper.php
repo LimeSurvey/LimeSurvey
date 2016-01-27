@@ -1251,8 +1251,6 @@ function do_list_dropdown($ia)
     if($optCategorySeparator=='')
         unset($optCategorySeparator);
 
-    $answer='';
-
     //// Retrieving datas
 
     // Getting question
@@ -1263,6 +1261,8 @@ function do_list_dropdown($ia)
     $ansresult = $oQuestion->getOrderedAnswers($aQuestionAttributes['random_order'], $aQuestionAttributes['alphasort'] );
 
     $dropdownSize = '';
+
+
     if (isset($aQuestionAttributes['dropdown_size']) && $aQuestionAttributes['dropdown_size'] > 0)
     {
         $_height = sanitize_int($aQuestionAttributes['dropdown_size']) ;
@@ -1294,6 +1294,13 @@ function do_list_dropdown($ia)
     }
     $_rowNum=0;
     $_prefix='';
+
+    $selectData = array(
+        'name'=>$ia[1],
+        'dropdownSize'=>$dropdownSize,
+        'checkconditionFunction'=>$checkconditionFunction
+    );
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select', $selectData, true);
 
     if (!isset($optCategorySeparator))
     {
@@ -1390,7 +1397,7 @@ function do_list_dropdown($ia)
             'opt_select'=>'SELECTED',
             'answer'=>gT('Please choose...')
         );
-        $answer = Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true).$answer;
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
     }
 
     if (isset($other) && $other=='Y')
@@ -1430,12 +1437,6 @@ function do_list_dropdown($ia)
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
     }
 
-    $selectData = array(
-        'name'=>$ia[1],
-        'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
-    );
-
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select_footer', $selectData, true);
 
     if (isset($other) && $other=='Y')
     {
@@ -1446,30 +1447,9 @@ function do_list_dropdown($ia)
         $sselect_show_hide = '';
     }
 
-    $sselect = '';
-    //Time Limit Code
-    if (trim($aQuestionAttributes['time_limit'])!='')
-    {
-        $sselect .= return_timer_script($aQuestionAttributes, $ia);
-    }
-    //End Time Limit Code
-    $sselectData = array(
-
-    );
-
-    $sselectData = array(
-        'name'=>$ia[1],
-        'dropdownSize'=>$dropdownSize,
-        'checkconditionFunction'=> $checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide,
-        'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
-    );
-
-    $sselect .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select_footer', $sselectData, true);
-    $answer = $sselect.$answer;
-
     if (isset($other) && $other=='Y')
     {
-        $answer = "\n<script type=\"text/javascript\">\n"
+        $answer .= "\n<script type=\"text/javascript\">\n"
         ."<!--\n"
         ."function showhideother(name, value)\n"
         ."\t{\n"
@@ -1485,7 +1465,7 @@ function do_list_dropdown($ia)
         ."document.getElementById(hiddenothername).value='';\n" // reset othercomment field
         ."}\n"
         ."\t}\n"
-        ."//--></script>\n".$answer;
+        ."//--></script>\n";
         $answer .= '<br/>';
         $answer .= '                <input class="form-control" type="text" id="othertext'.$ia[1].'" name="'.$ia[1].'other" style="display:';
 
@@ -1511,38 +1491,26 @@ function do_list_dropdown($ia)
         // --> END NEW FEATURE - SAVE
         $inputnames[]=$ia[1]."other";
     }
-    else
-    {
-        $answer .= "</p>";
-    }
 
-    //    $checkotherscript = "";
-    //    if (isset($other) && $other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1)
-    //    {
-    //        $checkotherscript = "\n<script type='text/javascript'>\n"
-    //        . "\t<!--\n"
-    //        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
-    //        . "function ensureOther_{$ia[0]}()\n"
-    //        . "{\n"
-    //        . "\tothercommentval=document.getElementById('othertext{$ia[1]}').value;\n"
-    //        . "\totherval=document.getElementById('answer{$ia[1]}').value;\n"
-    //        . "\tif (otherval == '-oth-' && othercommentval == '') {\n"
-    //        . "alert('".sprintf(gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($othertext,true,true)),trim(javascriptEscape($ia[3],true,true)))."');\n"
-    //        . "return false;\n"
-    //        . "\t}\n"
-    //        . "\telse {\n"
-    //        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
-    //        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
-    //        . "}\n"
-    //        . "\t}\n"
-    //        . "}\n"
-    //        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
-    //        . "\t-->\n"
-    //        . "</script>\n";
-    //    }
-    //    $answer = $checkotherscript . $answer;
+    $sselectData = array(
+        'name'=>$ia[1],
+        'dropdownSize'=>$dropdownSize,
+        'checkconditionFunction'=> $checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide,
+        'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+    );
+
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select_footer', $sselectData, true);
+
 
     $inputnames[]=$ia[1];
+
+    //Time Limit Code
+    if (trim($aQuestionAttributes['time_limit'])!='')
+    {
+        $sselect .= return_timer_script($aQuestionAttributes, $ia);
+    }
+    //End Time Limit Code
+
     return array($answer, $inputnames);
 }
 
@@ -2928,7 +2896,8 @@ function do_multipleshorttext($ia)
                     'labelText'=>$ansrow['question'],
                     'prefix'=>$prefix,
                     'kpclass'=>$kpclass,
-                    'rows'=>$drows.' '.$maxlength,
+                    'rows'=>$drows,
+                    'maxlength'=>$maxlength,
                     'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
                     'dispVal'=>$dispVal,
                     'suffix'=>$suffix,

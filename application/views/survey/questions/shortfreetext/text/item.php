@@ -38,4 +38,4 @@
 
     <!-- Suffix -->
     <?php echo $suffix; ?>
-</p>;
+</p>

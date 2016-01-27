@@ -5,6 +5,7 @@
  * @var $value      $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]
  */
 ?>
+<!-- list_dropdown select_footer -->
 </select>
 <input
     type="hidden"

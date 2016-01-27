@@ -16,8 +16,7 @@
 * @var $checkconditionFunction     $checkconditionFunction.'(this.value, this.name, this.type);"
 */
 ?>
-
-
+<!--item_inputtext -->
 <li class="question-item answer-item text-item <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?> >
     <?php if($alert):?>
         <!--  color code missing mandatory questions red -->

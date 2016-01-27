@@ -7,7 +7,7 @@
  * @var $slider_rating
  */
 ?>
-</div>
+
 <input
     type="hidden"
     name="java<?php echo $ia[1];?>"

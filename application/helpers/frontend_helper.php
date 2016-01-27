@@ -146,8 +146,6 @@ function makegraph($currentstep, $total)
     $size = intval(($currentstep-1)/$total*100);
 
     $graph='
-    </script>
-
     <div class="progress">
         <div class="progress-bar" role="progressbar" aria-valuenow="'.$size.'" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: '.$size.'%;">
             '.$size.'%
@@ -220,7 +218,7 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
             'sClass'    => $sClass    ,
             'sTargetURL'=> $sTargetURL,
         );
-        
+
         $sHTMLCode = Yii::app()->getController()->renderPartial('/survey/system/LanguageChanger/LanguageChanger', $languageChangerDatas, true);
         return $sHTMLCode;
     }
