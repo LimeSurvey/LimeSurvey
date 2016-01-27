@@ -1637,7 +1637,8 @@ html {
   border-bottom: 1px solid #e3e3e3;
   box-shadow: 0 3px 3px rgba(99, 49, 48, 0.1);
   background-color: #ffffff;
-  z-index: 2000; }
+  z-index: 1000;
+}
 
 .tab-content {
   padding-top: 2em; }
