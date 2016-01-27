@@ -3722,7 +3722,6 @@ function do_longfreetext($ia)
         $maxlength= "";
     }
 
-    // --> START ENHANCEMENT - DISPLAY ROWS
     if (trim($aQuestionAttributes['display_rows'])!='')
     {
         $drows=$aQuestionAttributes['display_rows'];
@@ -3731,13 +3730,10 @@ function do_longfreetext($ia)
     {
         $drows=5;
     }
-    // <-- END ENHANCEMENT - DISPLAY ROWS
-
-    // --> START ENHANCEMENT - TEXT INPUT WIDTH
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $tiwidth=$aQuestionAttributes['text_input_width'];
-        //$extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
+        $extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
         $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
         $extraclass .=" col-sm-".trim($col);
     }
@@ -3745,20 +3741,24 @@ function do_longfreetext($ia)
     {
         $tiwidth=40;
     }
-    // <-- END ENHANCEMENT - TEXT INPUT WIDTH
 
-    // --> START NEW FEATURE - SAVE
-    $answer = "<p class='question answer-item text-item {$extraclass}'><label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>";
-    $answer .='<textarea class="form-control textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
-    .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
-    // --> END NEW FEATURE - SAVE
 
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
     {
-        $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
+        $dispVal = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
     }
 
-    $answer .= "</textarea></p>\n";
+    $itemDatas = array(
+        'extraclass'=>$extraclass,
+        'name'=>$ia[1],
+        'drows'=>$drows,
+        'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+        'dispVal'=>$dispVal,
+        'tiwidth'=>$tiwidth,
+        'maxlength'=>$maxlength,
+    );
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/longfreetext/item', $itemDatas, true);
+
 
     if (trim($aQuestionAttributes['time_limit'])!='')
     {
