@@ -3493,3 +3493,9 @@ $color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $
   background-color: #84b39a; }
 
 /*# sourceMappingURL=lime-admin.css.map */
+
+/* RTL stuff (right-to-left locale */
+.no-gutter > [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
+}

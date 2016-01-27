@@ -140,7 +140,16 @@ class WhSwitch extends CInputWidget
             ? '.min'
             : '';
 
-        $cs->registerCssFile($assetsUrl . '/css/bootstrap-switch.css');
+        if (getLanguageRTL($_SESSION['adminlang']))
+        {
+            $cs->registerCssFile($assetsUrl . '/css/bootstrap-switch-rtl.css');
+        }
+        else
+        {
+            $cs->registerCssFile($assetsUrl . '/css/bootstrap-switch.css');
+        }
+
+
         $cs->registerScriptFile($assetsUrl . '/js/bootstrap-switch' . $min . '.js', CClientScript::POS_END);
         $selector = '#' . $id;
 

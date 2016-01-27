@@ -169,7 +169,7 @@
                                                     <a  href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>" >
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                                     </a>
-                                                    <p><a href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>")"><?php eT("Add new question"); ?></a></p>
+                                                    <p><a href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>"><?php eT("Add new question"); ?></a></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -263,7 +263,7 @@
                     <!-- last visited question -->
                     <?php if($showLastQuestion):?>
                         <div class="row text-left">
-                            <div class="col-lg-12">
+                            <div class="col-sm-12">
                                 <?php eT("Last visited question:");?>
                                 <a href="<?php echo $last_question_link;?>" class=""><?php echo $last_question_name;?></a>
                                 <br/><br/>

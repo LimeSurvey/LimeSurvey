@@ -38,10 +38,10 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    <div class='row'>
+                    <div class='row no-gutter'>
 
                         <!-- Brand -->
-                        <div class='col-sm-8'>
+                        <div class='col-sm-7'>
                             <div class="brand-name-wrapper  hidden-xs">
                                 <a class="navbar-brand hideside toggleside" href="#">
                                     <?php eT('General');?>
@@ -50,16 +50,25 @@
                         </div>
 
                         <!-- chevrons to stretch the side menu -->
-                        <div class='col-sm-2'>
-                            <a class="btn btn-default hide-button hidden-xs opened" id="chevronClose">
-                                <span class="glyphicon glyphicon-chevron-left"></span>
-                            </a>
-                        </div>
-                        <div class='col-sm-2'>
-                            <a class="btn btn-default hide-button hidden-xs opened" id="chevronStretch">
-                                <span class="glyphicon glyphicon-chevron-right" ></span>
-                            </a>
-                        </div>
+                        <?php if (getLanguageRTL($_SESSION['adminlang'])): ?>
+                            <div class='col-sm-5'>
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronStretch">
+                                    <span class="glyphicon glyphicon-chevron-left" ></span>
+                                </a>
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronClose">
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                </a>
+                            </div>
+                        <?php else: ?>
+                            <div class='col-sm-5'>
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronStretch">
+                                    <span class="glyphicon glyphicon-chevron-right" ></span>
+                                </a>
+                                <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronClose">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                </a>
+                            </div>
+                        <?php endif; ?>
 
                     </div>
                 </div>

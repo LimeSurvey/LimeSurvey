@@ -74,7 +74,7 @@
     <?php if($showLastSurvey || $showLastQuestion):?>
         <div class="row text-right">
             <div class="col-lg-9 col-sm-9  ">
-                <div style="float: right;">
+                <div class='pull-right'>
                 <?php if($showLastSurvey):?>
                     <span id="last_survey" class="rotateShown">
                     <?php eT("Last visited survey:");?>
@@ -121,7 +121,7 @@
     </div>
 
     <!-- Second row of boxes -->
-    <div class="row hidden-xs">
+    <div class="row text-center hidden-xs">
 
         <!-- 4th defined in database -->
         <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(

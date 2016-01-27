@@ -51,9 +51,12 @@
                 App()->getClientScript()->registerScriptFile( Yii::app()->getBaseUrl(true).'/styles/'.$sAdmintheme.'/scripts/' . $jsfile );
             }
         }
+
         // Right to Left
         if (getLanguageRTL($_SESSION['adminlang']))
-        App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$sAdmintheme.'/css/adminstyle-rtl.css') );
+        {
+            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$sAdmintheme.'/css/adminstyle-rtl.css') );
+        }
 
 
     ?>
