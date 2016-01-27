@@ -1128,8 +1128,10 @@ class SurveyRuntimeHelper {
             $aQuestionindexbuttonsmenu = (isset($aQuestionindexmenu['buttons']))?$aQuestionindexmenu['buttons']:'';
         }
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////
         // First call to templatereplace
+
+        echo "<!-- SurveyRunTimeHelper -->";
         $redata = compact(array_keys(get_defined_vars()));
         echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata);
         $aPopup=array(); // We can move this part where we want now

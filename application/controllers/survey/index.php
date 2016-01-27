@@ -699,6 +699,7 @@ class index extends CAction {
 
         $oTemplate = $this->oTemplate; //$oTemplate->viewPath;
 
+        echo "<!-- survey/index/_niceExit -->";
         $this->_printTemplateContent($oTemplate->viewPath.'/startpage.pstpl', $redata, $iDebugLine);
         $this->_printMessage($asMessage);
         $this->_printTemplateContent($oTemplate->viewPath.'/endpage.pstpl', $redata, $iDebugLine);

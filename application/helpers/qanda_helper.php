@@ -1461,6 +1461,7 @@ function do_list_dropdown($ia)
         'name'=>$ia[1],
         'dropdownSize'=>$dropdownSize,
         'checkconditionFunction'=> $checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide,
+        'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
     );
 
     $sselect .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select_footer', $sselectData, true);
@@ -2555,6 +2556,7 @@ function do_multiplechoice_withcomments($ia)
         $myfname2 = $myfname."comment";
 
         /* If the question has already been ticked, check the checkbox */
+        $checked = '';
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
             if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')
@@ -2563,14 +2565,14 @@ function do_multiplechoice_withcomments($ia)
             }
         }
 
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-        {
-            $javavalue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-        }
+        $javavalue = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))?$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]:'';
+
         $fn++;
         $fn++;
         $inputnames[]=$myfname;
         $inputnames[]=$myfname2;
+
+        $inputCOmmentValue = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname],ENT_QUOTES);
 
         $itemDatas = array(
             'sDisplayStyle'=>$sDisplayStyle,
@@ -2905,6 +2907,7 @@ function do_multipleshorttext($ia)
                 $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
                 //. "\t<span>\n".$prefix."\n".'
+                $dispVal ='';
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
                     $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
@@ -2939,6 +2942,7 @@ function do_multipleshorttext($ia)
         }
         else
         {
+            $alert = false;
             foreach ($aSubquestions as $ansrow)
             {
                 $myfname = $ia[1].$ansrow['title'];
@@ -2958,6 +2962,7 @@ function do_multipleshorttext($ia)
                     $label_width = strlen(trim(strip_tags($ansrow['question'])));
                 }
 
+                $dispVal = '';
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
                     $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
@@ -2970,20 +2975,21 @@ function do_multipleshorttext($ia)
 
                 $itemInputextDatas = array(
                     'alert'=>$alert,
+                    'labelname'=>'answer'.$myfname,
                     'maxlength'=>$maxlength,
                     'tiwidth'=>$tiwidth,
                     'extraclass'=>$extraclass,
                     'sDisplayStyle'=>$sDisplayStyle,
                     'prefix'=>$prefix,
                     'myfname'=>$myfname,
-                    'labelText'=>$ansrow['question'],
+                    'question'=>$ansrow['question'],
                     'prefix'=>$prefix,
                     'kpclass'=>$kpclass,
                     'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
                     'dispVal'=>$dispVal,
                     'suffix'=>$suffix,
                 );
-                $answer = Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/item_inputext', $itemInputextDatas, true);
+                $answer = Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/item_inputtext', $itemInputextDatas, true);
                 $fn++;
                 $inputnames[]=$myfname;
             }
@@ -3566,7 +3572,7 @@ function do_shortfreetext($ia)
             'questionHelp'=>$questionHelp,
             'question_text_help'=>$question_text['help'],
         );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/location_mapservice/item', $itemDatas, true);
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/location_mapservice/item', $itemDatas, true);
 
     }
     elseif((int)($aQuestionAttributes['location_mapservice'])==100)
@@ -3742,14 +3748,11 @@ function do_longfreetext($ia)
         $tiwidth=40;
     }
 
-
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
-    {
-        $dispVal = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
-    }
+    $dispVal = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])?htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]):'';
 
     $itemDatas = array(
         'extraclass'=>$extraclass,
+        'kpclass'=>$kpclass,
         'name'=>$ia[1],
         'drows'=>$drows,
         'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
@@ -3757,7 +3760,7 @@ function do_longfreetext($ia)
         'tiwidth'=>$tiwidth,
         'maxlength'=>$maxlength,
     );
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/longfreetext/item', $itemDatas, true);
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/longfreetext/item', $itemDatas, true);
 
 
     if (trim($aQuestionAttributes['time_limit'])!='')

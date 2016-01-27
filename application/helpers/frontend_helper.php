@@ -212,19 +212,16 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
             $aListLang[$sLangCode]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');
         }
         $sSelected=App()->language;
-
-        $sHTMLCode =CHtml::label(gT("Choose another language"), 'lang',array('class'=>'hide label'));
-
         $sClass .= ' form-control ';
 
-        $sHTMLCode = '<div class="form-group">';
-        $sHTMLCode.= '<label for="language" class="control-label">'.gT("Choose another language").': </label>';
-
-        $sHTMLCode.= CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass,'data-targeturl'=>$sTargetURL));
-
-
-        // We don't have to add this button if in previewmode
-        $sHTMLCode.= CHtml::htmlButton(gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'changelang jshide btn btn-default'));
+        $languageChangerDatas = array(
+            'sSelected' => $sSelected ,
+            'aListLang' => $aListLang ,
+            'sClass'    => $sClass    ,
+            'sTargetURL'=> $sTargetURL,
+        );
+        
+        $sHTMLCode = Yii::app()->getController()->renderPartial('/survey/system/LanguageChanger/LanguageChanger', $languageChangerDatas, true);
         return $sHTMLCode;
     }
     else
@@ -2147,19 +2144,18 @@ function display_first_page() {
     global $oTemplate;
     $sTemplatePath = $oTemplate->path;
     $sTemplateViewPath = $oTemplate->viewPath;
-
-
-
     echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
-    echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','autocomplete'=>'off'));
-    echo "\n\n<!-- START THE SURVEY -->\n";
+    echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','autocomplete'=>'off', 'class'=>'frontend_helper'));
 
     echo templatereplace(file_get_contents($sTemplateViewPath."welcome.pstpl"),array(),$redata,'frontend_helper[2762]')."\n";
+
     if ($thissurvey['anonymized'] == "Y")
     {
         echo templatereplace(file_get_contents($sTemplateViewPath."/privacy.pstpl"),array(),$redata,'frontend_helper[2765]')."\n";
     }
+
     echo templatereplace(file_get_contents($sTemplateViewPath."navigator.pstpl"),array(),$redata,'frontend_helper[2767]');
+
 
     echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
     if (isset($token) && !empty($token)) {
@@ -2174,12 +2170,14 @@ function display_first_page() {
     echo "<input type='hidden' name='LEMpostKey' value='{$_SESSION['survey_'.$surveyid]['LEMpostKey']}' id='LEMpostKey' />\n";
     echo "<input type='hidden' name='thisstep' id='thisstep' value='0' />\n";
 
-    echo "\n</form>\n";
+    echo "<!--frontendhelper --></form>";
     echo templatereplace(file_get_contents($sTemplateViewPath."endpage.pstpl"),array(),$redata,'frontend_helper[2782]');
+
 
     echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
     LimeExpressionManager::FinishProcessingPage();
     doFooter();
+    echo "<!-- end of frontend_helper /  display_first_page -->";
 }
 
 /**

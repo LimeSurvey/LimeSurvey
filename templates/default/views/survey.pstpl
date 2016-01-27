@@ -15,7 +15,7 @@
 </div>
 
 <!-- Language Changer -->
-<div class="row" class="language-changer">
+<div class="row language-changer">
     <div class="col-sm-12 ">
         {LANGUAGECHANGER}
     </div>
