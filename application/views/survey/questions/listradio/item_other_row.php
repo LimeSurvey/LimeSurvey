@@ -44,7 +44,7 @@
             id="answer<?php echo $ia[1]; ?>othertext"
             name="<?php echo $ia[1]; ?>other"
             title="<?php eT('Other'); ?>" <?php echo $answer_other;?>
-            onkeyup="if($.trim($(this).val())!=''){ $('#SOTH<?php // echo $ia[1]; ?>').click(); };  <?php echo $oth_checkconditionFunction; ?>"
+            onkeyup="if($.trim($(this).val())!=''){ $('#SOTH<?php echo $ia[1]; ?>').click(); };  <?php echo $oth_checkconditionFunction; ?>"
             />
         </div> <!-- Form group ; item row -->
 </div>
