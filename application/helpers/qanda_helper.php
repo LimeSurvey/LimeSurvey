@@ -3848,42 +3848,42 @@ function do_hugefreetext($ia)
 // ---------------------------------------------------------------
 function do_yesno($ia)
 {
-
-
     $checkconditionFunction = "checkconditions";
 
-    $answer = "<ul class=\"list-unstyled answers-list radio-list\">\n"
-    . "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}Y\" value=\"Y\"";
 
+    $yChecked = $nChecked = $naChecked = '';
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'Y')
     {
-        $answer .= CHECKED;
+        $yChecked = CHECKED;
     }
-    // --> START NEW FEATURE - SAVE
-    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}Y\" class=\"answertext\">\n\t".gT('Yes')."\n</label>\n\t</li>\n"
-    . "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}N\" value=\"N\"";
-    // --> END NEW FEATURE - SAVE
 
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'N')
     {
-        $answer .= CHECKED;
-    }
-    // --> START NEW FEATURE - SAVE
-    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}N\" class=\"answertext\" >\n\t".gT('No')."\n</label>\n\t</li>\n";
-    // --> END NEW FEATURE - SAVE
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-    {
-        $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"\"";
-        if (empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
-        {
-            $answer .= CHECKED;
-        }
-        // --> START NEW FEATURE - SAVE
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}\" class=\"answertext\">\n\t".gT('No answer')."\n</label>\n\t</li>\n";
-        // --> END NEW FEATURE - SAVE
+        $nChecked = CHECKED;
     }
 
-    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
+    $noAnswer = false;
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+    {
+        $noAnswer = true;
+        if (empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
+        {
+            $naChecked = CHECKED;
+        }
+    }
+
+
+    $itemDatas = array(
+        'name'=>$ia[1],
+        'yChecked' => $yChecked,
+        'nChecked' => $nChecked,
+        'naChecked'=> $naChecke,
+        'noAnswer' => $noAnswer,
+        'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+        'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$name],
+    );
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/yesno/item', $itemDatas, true);
+
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
 }
