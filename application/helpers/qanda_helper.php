@@ -1724,7 +1724,7 @@ function do_list_radio($ia)
             'nbColInputXs'=>$nbColInputXs,
             'checkedState'=>$checkedState,
             'kpclass'=>$kpclass,
-            'oth_checkconditionFunction'=>$oth_checkconditionFunction,
+            'oth_checkconditionFunction'=>$oth_checkconditionFunction.'(this.value, this.name, this.type)',
             'checkconditionFunction'=>$checkconditionFunction,
         );
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_other_row', $aData, true);
