@@ -2999,8 +2999,7 @@ function do_multipleshorttext($ia)
 function do_multiplenumeric($ia)
 {
     global $thissurvey;
-
-        $extraclass ="";
+    $extraclass ="";
     $checkconditionFunction = "fixnum_checkconditions";
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $answer='';
@@ -3062,7 +3061,7 @@ function do_multiplenumeric($ia)
         $tiwidth=$aQuestionAttributes['text_input_width'];
         //$extraclass .=" inputwidth".trim($aQuestionAttributes['text_input_width']);
         $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-$extraclass .=" col-sm-".trim($col);
+        $extraclass .=" col-sm-".trim($col);
     }
     else
     {
@@ -3115,12 +3114,15 @@ $extraclass .=" col-sm-".trim($col);
     $anscount = count($aSubquestions)*2;
     $fn = 1;
 
+
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/header', array('prefixclass'=>$prefixclass), true);
     $answer_main = '';
 
     if ($anscount==0)
     {
         $inputnames=array();
-        $answer_main .= '    <p class="text-danger">'.gT('Error: This question has no answers.')."</p>\n";
+        $noanswer = true;
+        $answer .= '    <p class="text-danger">'.gT('Error: This question has no answers.')."</p>\n";
     }
     else
     {
@@ -3131,8 +3133,7 @@ $extraclass .=" col-sm-".trim($col);
             if ($slider_layout === false || $slider_separator == '')
             {
                 $theanswer = $ansrow['question'];
-                $sliderleft='';
-                $sliderright='';
+                $sliders = false;
             }
             else
             {
@@ -3140,65 +3141,58 @@ $extraclass .=" col-sm-".trim($col);
                 $theanswer=(isset($aAnswer[0]))?$aAnswer[0]:"";
                 $sliderleft=(isset($aAnswer[1]))?$aAnswer[1]:"";
                 $sliderright=(isset($aAnswer[2]))?$aAnswer[2]:"";
-                $sliderleft="<div class=\"slider_lefttext\">$sliderleft</div>";
+                $sliders = true;
                 $sliderright="<div class=\"slider_righttext\">$sliderright</div>";
             }
 
             // color code missing mandatory questions red
             if ($ia[6]=='Y' && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '')
             {
-                //$theanswer = "<span class='errormandatory'>{$theanswer}</span>";
-                $theanswer ='
-                            <div class="alert alert-danger" role="alert">'.
-                                    $theanswer
-                                .'
-                            </div>';
-
+                $alert = true;
             }
 
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "div","form-group question-item answer-item text-item numeric-item".$extraclass);
-            $answer_main .= "\t$htmltbody2\n";
-            $answer_main .= "<label for=\"answer$myfname\" class=\"{$prefixclass}-label numeric-label col-xs-12 \">{$theanswer}</label>\n";
+            //list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "div","form-group question-item answer-item text-item numeric-item".$extraclass);
+            $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
-                $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
-                $sSeparator = $sSeparator['separator'];
+            $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+            $sSeparator = $sSeparator['separator'];
 
-                $answer_main .= "{$sliderleft}<div class=\"input\">\n\t";
-
-                if($prefix)
+            $dispVal='';
+            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+            {
+                $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                if(strpos($dispVal,"."))
                 {
-                    $answer_main .= "<div class='col-xs-2 text-right prefix-container'>";
-                    $answer_main .= $prefix;
-                    $answer_main .= '</div>';
+                    $dispVal=rtrim(rtrim($dispVal,"0"),".");
                 }
-
-                $answer_main .= "<div class='col-xs-8'>";
-                $answer_main .= "\n\t<input class=\"form-control text $kpclass\" type=\"text\" size=\"".$tiwidth."\" name=\"".$myfname."\" id=\"answer".$myfname."\" title=\"".gT('Only numbers may be entered in this field.')."\" value=\"";
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-                {
-                    $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                    if(strpos($dispVal,"."))
-                    {
-                        $dispVal=rtrim(rtrim($dispVal,"0"),".");
-                    }
-                    $dispVal = str_replace('.',$sSeparator,$dispVal);
-                    $answer_main .= $dispVal;
-                }
-
-                $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '." {$maxlength} />\n\t";
-                $answer_main .= '</div>';
-
-                if($suffix)
-                {
-                    $answer_main .= "<div class='col-xs-2 text-left suffix-container'>";
-                    $answer_main .= $suffix;
-                    $answer_main .= '</div>';
-                }
-                $answer_main .= "\n</div>{$sliderright}\n\t</div>\n";
+                $dispVal = str_replace('.',$sSeparator,$dispVal);
+            }
+            $itemDatas = array(
+                'extraclass'=>$extraclass,
+                'sDisplayStyle'=>$sDisplayStyle,
+                'kpclass'=>$kpclass,
+                'alert'=>$alert,
+                'theanswer'=>$theanswer,
+                'labelname'=>'answer'.$myfname,
+                'prefixclass'=>$prefixclass,
+                'sliders'=>$sliders,
+                'sliderleft'=>$sliderleft,
+                'sliderright'=>$sliderright,
+                'prefix'=>$prefix,
+                'suffix'=>$suffix,
+                'tiwidth'=>$tiwidth,
+                'myfname'=>$myfname,
+                'dispVal'=>$dispVal,
+                'maxlength'=>$maxlength,
+                'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            );
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/item', $itemDatas, true);
 
             $fn++;
             $inputnames[]=$myfname;
         }
+        $displaytotal=false;
+        $equals_num_value = false;
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''
         || trim($aQuestionAttributes['max_num_value']) != ''
@@ -3207,22 +3201,20 @@ $extraclass .=" col-sm-".trim($col);
             $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
             if (trim($aQuestionAttributes['equals_num_value']) != '')
             {
-                $answer_main .= "\t<p class='multiplenumerichelp help-item text-info'>\n"
-                . "<span class=\"label\">".gT('Remaining: ')."</span>\n"
-                . "<span id=\"remainingvalue_{$ia[0]}\" class=\"dynamic_remaining\">$prefix\n"
-                . "{" . $qinfo['sumRemainingEqn'] . "}\n"
-                . "$suffix</span>\n"
-                . "\t</p>\n";
+                $equals_num_value = true;
             }
 
-            $answer_main .= "\t<p class='multiplenumerichelp  help-item text-info'>\n"
-            . "<span class=\"\">".gT('Total: ')."</span>\n"
-            . "<span id=\"totalvalue_{$ia[0]}\" class=\"dynamic_sum\">$prefix\n"
-            . "{" . $qinfo['sumEqn'] . "}\n"
-            . "$suffix</span>\n"
-            . "\t</p>\n";
+            $displaytotal = true;
         }
-        $answer .= "<div class='subquestions-list questions-list text-list {$prefixclass}-list'>\n".$answer_main."</div>\n";
+        $footerDatas = array(
+            'equals_num_value'=>$equals_num_value,
+            'id'=>$ia[0],
+            'prefix'=>$prefix,
+            'sumRemainingEqn'=>$qinfo['sumRemainingEqn'],
+            'displaytotal'=>$displaytotal,
+            'sumEqn'=>$qinfo['sumEqn']
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/footer', $footerDatas, true);
     }
 
     if($aQuestionAttributes['slider_layout']==1)
@@ -3368,13 +3360,20 @@ function do_numerical($ia)
     {
         $kpclass = "";
     }
-    // --> START NEW FEATURE - SAVE
-    $answer = "<p class='question answer-item text-item numeric-item {$extraclass}'>"
-    . " <label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>\n$prefix\t"
-    . "<input class='form-control text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\"  title=\"".gT('Only numbers may be entered in this field.')."\" "
-    . "id=\"answer{$ia[1]}\" value=\"{$fValue}\" onkeyup=\"{$checkconditionFunction}(this.value, this.name, this.type,'onchange',{$integeronly})\" "
-    . " {$maxlength} />\t{$suffix}\n</p>\n";
-    // --> END NEW FEATURE - SAVE
+
+    $itemDatas = array(
+        'extraclass'=>$extraclass,
+        'id'=>$ia[1],
+        'prefix'=>$prefix,
+        'answertypeclass'=>$answertypeclass,
+        'tiwidth'=>$tiwidth,
+        'fValue'=>$fValue,
+        'checkconditionFunction'=>$checkconditionFunction,
+        'integeronly'=>$integeronly,
+        'maxlength'=>$maxlength,
+        'suffix'=>$suffix,
+    );
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/numerical/item', $itemDatas, true);
 
     $inputnames[]=$ia[1];
     $mandatory=null;
@@ -3389,12 +3388,12 @@ function do_shortfreetext($ia)
 {
     global $thissurvey;
 
-
     $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
     if ($sGoogleMapsAPIKey!='')
     {
         $sGoogleMapsAPIKey='&key='.$sGoogleMapsAPIKey;
     }
+
     $extraclass ="";
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
@@ -3423,9 +3422,9 @@ function do_shortfreetext($ia)
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $tiwidth=$aQuestionAttributes['text_input_width'];
-        //$extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
+        $extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
         $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-$extraclass .=" col-sm-".trim($col);
+        $extraclass .=" col-sm-".trim($col);
     }
     else
     {
@@ -3469,47 +3468,53 @@ $extraclass .=" col-sm-".trim($col);
             $tiwidth=40;
         }
 
-        //NEW: textarea instead of input=text field
-
-        // --> START NEW FEATURE - SAVE
-        $answer ="<p class='question answer-item text-item {$extraclass}'><label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>"
-        . '<textarea class="form-control  textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
-        .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);">';
-        // --> END NEW FEATURE - SAVE
-
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
             $dispVal = str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
             if ($aQuestionAttributes['numbers_only']==1)
             {
                 $dispVal = str_replace('.',$sSeparator,$dispVal);
             }
-            $answer .= htmlspecialchars($dispVal);
+            $dispVal .= htmlspecialchars($dispVal);
         }
 
-        $answer .= "</textarea></p>\n";
+        $itemDatas = array(
+            'extraclass'=>$extraclass,
+            'freeTextId'=>'answer'.$ia[1],
+            'labelText'=>gT('Your answer'),
+            'name'=>$ia[1],
+            'drows'=>$drows,
+            'tiwidth'=>$tiwidth,
+            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'dispVal'=>$dispVal,
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/textarea/item', $itemDatas, true);
     }
-    elseif((int)($aQuestionAttributes['location_mapservice'])==1){
+    elseif((int)($aQuestionAttributes['location_mapservice'])==1)
+    {
         $mapservice = $aQuestionAttributes['location_mapservice'];
         $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentLatLong = null;
-
         $floatLat = 0;
         $floatLng = 0;
 
         // Get the latitude/longtitude for the point that needs to be displayed by default
-        if (strlen($currentLocation) > 2){
+        if (strlen($currentLocation) > 2)
+        {
             $currentLatLong = explode(';',$currentLocation);
             $currentLatLong = array($currentLatLong[0],$currentLatLong[1]);
         }
-        else{
+        else
+        {
             if ((int)($aQuestionAttributes['location_nodefaultfromip'])==0)
                 $currentLatLong = getLatLongFromIp(getIPAddress());
-            if (!isset($currentLatLong) || $currentLatLong==false){
+            if (!isset($currentLatLong) || $currentLatLong==false)
+            {
                 $floatLat = 0;
                 $floatLng = 0;
                 $LatLong = explode(" ",trim($aQuestionAttributes['location_defaultcoordinates']));
 
-                if (isset($LatLong[0]) && isset($LatLong[1])){
+                if (isset($LatLong[0]) && isset($LatLong[1]))
+                {
                     $floatLat = $LatLong[0];
                     $floatLng = $LatLong[1];
                 }
@@ -3529,26 +3534,6 @@ $extraclass .=" col-sm-".trim($col);
             $strBuild .= "5";
 
         $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
-        $answer = "
-        <script type=\"text/javascript\">
-        zoom['$ia[1]'] = {$aQuestionAttributes['location_mapzoom']};
-        </script>
-
-        <div class=\"question answer-item geoloc-item {$extraclass}\">
-        <input type=\"hidden\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]}\">
-
-        <input class=\"text location ".$kpclass."\" type=\"text\" size=\"20\" name=\"$ia[1]_c\"
-        id=\"answer$ia[1]_c\" value=\"$currentLocation\"
-        onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
-
-        <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\"
-        value = \"{$strBuild}\" >
-
-        <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\"
-        class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >";
-        //<div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>
-        $answer .= "<div id=\"gmap_canvas_$ia[1]_c\" class='col-lg-12' style='height: {$aQuestionAttributes['location_mapheight']}px'></div>";
-        $answer .= '</div>';
 
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
         if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
@@ -3558,12 +3543,31 @@ $extraclass .=" col-sm-".trim($col);
         elseif ($aQuestionAttributes['location_mapservice']==2)
             Yii::app()->getClientScript()->registerScriptFile("http://www.openlayers.org/api/OpenLayers.js");
 
+        $questionHelp = false;
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
         {
-            $answer .= "<div class=\"questionhelp\">"
-            . gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.').'</div>';
+            $questionHelp = true;
             $question_text['help'] = gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
         }
+
+        $itemDatas = array(
+            'extraclass'=>$extraclass,
+            'freeTextId'=>'answer'.$ia[1],
+            'labelText'=>gT('Your answer'),
+            'name'=>$ia[1],
+            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+            'kpclass'=>$kpclass,
+            'currentLocation'=>$currentLocation,
+            'strBuild'=>$strBuild,
+            'location_mapservice'=>$aQuestionAttributes['location_mapservice'],
+            'location_mapzoom'=>$aQuestionAttributes['location_mapzoom'],
+            'location_mapheight'=>$aQuestionAttributes['location_mapheight'],
+            'questionHelp'=>$questionHelp,
+            'question_text_help'=>$question_text['help'],
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/location_mapservice/item', $itemDatas, true);
+
     }
     elseif((int)($aQuestionAttributes['location_mapservice'])==100)
     {
@@ -3586,22 +3590,12 @@ $extraclass .=" col-sm-".trim($col);
         {
             $currentLatLong = array("","");
             $currentCenter = explode(" ",trim($aQuestionAttributes['location_defaultcoordinates']));
-            if(count($currentCenter)!=2)
+            if (count($currentCenter)!=2)
             {
                 $currentCenter = array("","");
             }
         }
-        // 2 - city; 3 - state; 4 - country; 5 - postal
-        // TODO : move it to aThisMapScriptVar and use geoname reverse geocoding (http://www.geonames.org/export/reverse-geocoding.html)
         $strBuild = "";
-        /*if ($aQuestionAttributes['location_city'])
-            $strBuild .= "2";
-        if ($aQuestionAttributes['location_state'])
-            $strBuild .= "3";
-        if ($aQuestionAttributes['location_country'])
-            $strBuild .= "4";
-        if ($aQuestionAttributes['location_postal'])
-            $strBuild .= "5";*/
 
         $aGlobalMapScriptVar= array(
             'geonameUser'=>getGlobalSetting('GeoNamesUsername'),// Did we need to urlencode ?
@@ -3619,55 +3613,53 @@ $extraclass .=" col-sm-".trim($col);
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css');
 
-        $answer = "
-        <div class=\"question answer-item geoloc-item {$extraclass}\">
-            <input type=\"hidden\"  name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]}\"><!-- No javascript need a way to answer -->
-            <input type=\"hidden\" class=\"location\" name=\"$ia[1]_c\" id=\"answer$ia[1]_c\" value=\"{$currentLatLong[0]} {$currentLatLong[1]}\" />
-
-            <ul class=\"list-unstyled coordinates-list\">
-                <li class=\"coordinate-item\">".gT("Latitude:")."<input class=\"coords text\" type=\"text\" name=\"$ia[1]_c1\" id=\"answer_lat$ia[1]_c\"  value=\"{$currentLatLong[0]}\" /></li>
-                <li class=\"coordinate-item\">".gT("Longitude:")."<input class=\"coords text\" type=\"text\" name=\"$ia[1]_c2\" id=\"answer_lng$ia[1]_c\" value=\"{$currentLatLong[1]}\" /></li>
-            </ul>
-
-            <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\" value = \"{$strBuild}\" >
-            <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\" class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
-
-            <div>
-                <div class=\"geoname_restrict\">
-                    <input type=\"checkbox\" id=\"restrictToExtent_{$ia[1]}\"> <label for=\"restrictToExtent_{$ia[1]}\">".gT("Restrict search place to map extent")."</label>
-                </div>
-                <div class=\"geoname_search\" >
-                    <input id=\"searchbox_{$ia[1]}\" placeholder=\"".gT("Search")."\" width=\"15\">
-                </div>
-            </div>
-            <div id=\"map_{$ia[1]}\" style=\"width: 100%; height: {$aQuestionAttributes['location_mapheight']}px;\"></div>
-        </div>
-        ";
-
 
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
         {
-            $answer .= "<div class=\"questionhelp\">"
-            . gT('Click to set the location or drag and drop the pin. You may may also enter coordinates').'</div>';
+            $questionHelp = true;
             $question_text['help'] = gT('Click to set the location or drag and drop the pin. You may may also enter coordinates');
         }
+
+        $itemDatas = array(
+            'extraclass'=>$extraclass,
+            'name'=>$ia[1],
+            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+            'strBuild'=>$strBuild,
+            'location_mapservice'=>$aQuestionAttributes['location_mapservice'],
+            'location_mapzoom'=>$aQuestionAttributes['location_mapzoom'],
+            'location_mapheight'=>$aQuestionAttributes['location_mapheight'],
+            'questionHelp'=>$questionHelp,
+            'question_text_help'=>$question_text['help'],
+            'location_value'=> $currentLatLong[0].' '.$currentLatLong[1],
+            'currentLat'=>$currentLatLong[0],
+            'currentLong'=>$currentLatLong[1],
+        );
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/location_mapservice/item', $itemDatas, true);
     }
     else
     {
         //no question attribute set, use common input text field
-        $answer = "<p class=\"question answer-item text-item {$extraclass}\">\n"
-        ."<label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>"
-        ."$prefix\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\"";
-
         $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         if ($aQuestionAttributes['numbers_only']==1)
         {
             $dispVal = str_replace('.',$sSeparator,$dispVal);
         }
         $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
-        $answer .= " value=\"$dispVal\"";
 
-        $answer .=" {$maxlength} onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\"/>\n\t$suffix\n</p>\n";
+        $itemDatas = array(
+            'extraclass'=>$extraclass,
+            'name'=>$ia[1],
+            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'prefix'=>$prefix,
+            'suffix'=>$suffix,
+            'kpclass'=>$kpclass,
+            'tiwidth'=>$tiwidth,
+            'dispVal'=>$dispVal,
+            'maxlength'=>$maxlength,
+        );
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/text/item', $itemDatas, true);
+
     }
 
     if (trim($aQuestionAttributes['time_limit'])!='')
@@ -3730,7 +3722,6 @@ function do_longfreetext($ia)
         $maxlength= "";
     }
 
-    // --> START ENHANCEMENT - DISPLAY ROWS
     if (trim($aQuestionAttributes['display_rows'])!='')
     {
         $drows=$aQuestionAttributes['display_rows'];
@@ -3739,34 +3730,35 @@ function do_longfreetext($ia)
     {
         $drows=5;
     }
-    // <-- END ENHANCEMENT - DISPLAY ROWS
-
-    // --> START ENHANCEMENT - TEXT INPUT WIDTH
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $tiwidth=$aQuestionAttributes['text_input_width'];
-        //$extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
+        $extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
         $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-$extraclass .=" col-sm-".trim($col);
+        $extraclass .=" col-sm-".trim($col);
     }
     else
     {
         $tiwidth=40;
     }
-    // <-- END ENHANCEMENT - TEXT INPUT WIDTH
 
-    // --> START NEW FEATURE - SAVE
-    $answer = "<p class='question answer-item text-item {$extraclass}'><label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>";
-    $answer .='<textarea class="form-control textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
-    .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
-    // --> END NEW FEATURE - SAVE
 
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
     {
-        $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
+        $dispVal = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
     }
 
-    $answer .= "</textarea></p>\n";
+    $itemDatas = array(
+        'extraclass'=>$extraclass,
+        'name'=>$ia[1],
+        'drows'=>$drows,
+        'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+        'dispVal'=>$dispVal,
+        'tiwidth'=>$tiwidth,
+        'maxlength'=>$maxlength,
+    );
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/longfreetext/item', $itemDatas, true);
+
 
     if (trim($aQuestionAttributes['time_limit'])!='')
     {
@@ -3809,7 +3801,6 @@ function do_hugefreetext($ia)
         $maxlength= "";
     }
 
-    // --> START ENHANCEMENT - DISPLAY ROWS
     if (trim($aQuestionAttributes['display_rows'])!='')
     {
         $drows=$aQuestionAttributes['display_rows'];
@@ -3818,34 +3809,33 @@ function do_hugefreetext($ia)
     {
         $drows=30;
     }
-    // <-- END ENHANCEMENT - DISPLAY ROWS
-
-    // --> START ENHANCEMENT - TEXT INPUT WIDTH
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $tiwidth=$aQuestionAttributes['text_input_width'];
-        //$extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
+        $extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
         $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-$extraclass .=" col-sm-".trim($col);
+        $extraclass .=" col-sm-".trim($col);
     }
     else
     {
         $tiwidth=70;
     }
-    // <-- END ENHANCEMENT - TEXT INPUT WIDTH
-
-    // --> START NEW FEATURE - SAVE
-    $answer = "<p class=\"question answer-item text-item {$extraclass}\"><label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>";
-    $answer .='<textarea class="form-control textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
-    .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
-    // --> END NEW FEATURE - SAVE
-
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
     {
-        $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
+        $dispVal = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
     }
-    $answer .= "</textarea>\n";
-    $answer .="</p>";
+
+    $itemDatas = array(
+        'extraclass'=>$extraclass,
+        'name'=>$ia[1],
+        'drows'=>$drows,
+        'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+        'dispVal'=>$dispVal,
+        'tiwidth'=>$tiwidth,
+        'maxlength'=>$maxlength,
+    );
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/longfreetext/item', $itemDatas, true);
+
     if (trim($aQuestionAttributes['time_limit']) != '')
     {
         $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
@@ -3858,42 +3848,41 @@ $extraclass .=" col-sm-".trim($col);
 // ---------------------------------------------------------------
 function do_yesno($ia)
 {
-
-
     $checkconditionFunction = "checkconditions";
 
-    $answer = "<ul class=\"list-unstyled answers-list radio-list\">\n"
-    . "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}Y\" value=\"Y\"";
 
+    $yChecked = $nChecked = $naChecked = '';
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'Y')
     {
-        $answer .= CHECKED;
+        $yChecked = CHECKED;
     }
-    // --> START NEW FEATURE - SAVE
-    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}Y\" class=\"answertext\">\n\t".gT('Yes')."\n</label>\n\t</li>\n"
-    . "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}N\" value=\"N\"";
-    // --> END NEW FEATURE - SAVE
 
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'N')
     {
-        $answer .= CHECKED;
-    }
-    // --> START NEW FEATURE - SAVE
-    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}N\" class=\"answertext\" >\n\t".gT('No')."\n</label>\n\t</li>\n";
-    // --> END NEW FEATURE - SAVE
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-    {
-        $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"\"";
-        if (empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
-        {
-            $answer .= CHECKED;
-        }
-        // --> START NEW FEATURE - SAVE
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}\" class=\"answertext\">\n\t".gT('No answer')."\n</label>\n\t</li>\n";
-        // --> END NEW FEATURE - SAVE
+        $nChecked = CHECKED;
     }
 
-    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
+    $noAnswer = false;
+    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+    {
+        $noAnswer = true;
+        if (empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
+        {
+            $naChecked = CHECKED;
+        }
+    }
+
+    $itemDatas = array(
+        'name'=>$ia[1],
+        'yChecked' => $yChecked,
+        'nChecked' => $nChecked,
+        'naChecked'=> $naChecke,
+        'noAnswer' => $noAnswer,
+        'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+        'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+    );
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/yesno/item', $itemDatas, true);
+
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
 }
@@ -3901,50 +3890,36 @@ function do_yesno($ia)
 // ---------------------------------------------------------------
 function do_gender($ia)
 {
-
-
     $checkconditionFunction = "checkconditions";
-
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
-    $answer = "<div class=\"answers-list radio-list\">\n"
-    . "\t<div class=\"col-xs-4 answer-item radio-item\">\n"
-    . '        <input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'F" value="F"';
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'F')
-    {
-        $answer .= CHECKED;
-    }
-    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-    . '        <label for="answer'.$ia[1].'F" class="answertext">'.gT('Female')."</label>\n\t</div>\n";
-
-    $answer .= "\t<div class=\"col-xs-4 answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'M" value="M"';
-
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M')
-    {
-        $answer .= CHECKED;
-    }
-    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]M\" class=\"answertext\">".gT('Male')."</label>\n\t</div>\n";
+    $fChecked = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'F')?'CHECKED':'';
+    $mChecked = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M')?'CHECKED':'';
+    $naChecked = '';
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
-        $answer .= "\t<div class=\"col-xs-4 answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'" value=""';
+        $noAnswer = true;
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '')
         {
-            $answer .= CHECKED;
+            $naChecked = CHECKED;
         }
-        // --> START NEW FEATURE - SAVE
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]\" class=\"answertext\">".gT('No answer')."</label>\n\t</div>\n";
-        // --> END NEW FEATURE - SAVE
-
     }
-    $answer .= "</div>\n\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
+
+    $itemDatas = array(
+        'name'=>$ia[1],
+        'fChecked' => $fChecked,
+        'mChecked' => $mChecked,
+        'naChecked'=> $naChecke,
+        'noAnswer' => $noAnswer,
+        'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+        'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+    );
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/gender/item', $itemDatas, true);
 
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
 }
-
-
-
 
 // ---------------------------------------------------------------
 /**

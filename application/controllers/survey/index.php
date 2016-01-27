@@ -40,7 +40,6 @@ class index extends CAction {
         $oTemplate = Template::model()->getTemplateConfiguration('',$surveyid);
         $this->oTemplate = $oTemplate;
 
-
         App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);// Ensure all js var is set before rendering the page (User can click before $.ready)
 
@@ -168,7 +167,6 @@ class index extends CAction {
             }
         }
 
-
         // TODO can this be moved to the top?
         // (Used to be global, used in ExpressionManager, merged into amVars. If not filled in === '')
         // can this be added in the first computation of $redata?
@@ -259,9 +257,7 @@ class index extends CAction {
         }
 
         //SET THE TEMPLATE DIRECTORY
-
         $thistpl = getTemplatePath($thissurvey['templatedir']);
-
 
         $timeadjust = Yii::app()->getConfig("timeadjust");
         //MAKE SURE SURVEY HASN'T EXPIRED
@@ -286,7 +282,6 @@ class index extends CAction {
             gT("This survey is not yet started."),
             sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
-
             $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
         }
 
@@ -756,8 +751,6 @@ class index extends CAction {
     {
         echo templatereplace(file_get_contents($sTemplateFile),array(),$redata,'survey['.$iDebugLine.']');
     }
-
-
 }
 
 /* End of file survey.php */
