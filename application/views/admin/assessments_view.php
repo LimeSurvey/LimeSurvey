@@ -222,6 +222,9 @@
                     <div class='form-group'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-4'>
+                            <?php if ($action == "assessmentedit"): ?>
+                                <input class='btn btn-danger' type='submit' value='<?php echo gT('Cancel'); ?>' onclick=\"document.assessmentsform.action.value='assessments'\" />
+                            <?php endif; ?>
                             <input type='submit' class="btn btn-default" value='<?php eT("Save");?>'/>
                         </div>
                     </div>
@@ -231,7 +234,6 @@
 
         <!-- action buttons -->
         <div>
-            <?php if ($action == "assessmentedit") echo "&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".gT("Cancel")."' onclick=\"document.assessmentsform.action.value='assessments'\" />\n ";?>
             <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
             <input type='hidden' name='action' value='<?php echo $actionvalue;?>' />
             <input type='hidden' name='id' value='<?php echo $editId;?>' />
