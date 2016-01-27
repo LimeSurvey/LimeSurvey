@@ -23,6 +23,9 @@ function KCFinder_callback(url)
 
 }
 
+/**
+ *
+ */
 function editAttachmentRelevance(e)
 {
         e.preventDefault();
@@ -39,8 +42,22 @@ function editAttachmentRelevance(e)
         });
 }
 
+/**
+ * Add an attachment to this template
+ *
+ * @param target
+ * @param url
+ * @param relevance
+ * @param size
+ * @return void
+ */
 function addAttachment(target, url, relevance, size)
 {
+    console.log(target);
+    console.log(url);
+    console.log(relevance);
+    console.log(size);
+
     if (typeof relevance == 'undefined')
     {
         var relevance = '1';
@@ -53,16 +70,17 @@ function addAttachment(target, url, relevance, size)
 
 
     var baserow = '<tr>';
-        // Actions
-        baserow = baserow + '<td>';
-        baserow = baserow + '<span title="Remove attachment" class="btnattachmentremove glyphicon glyphicon-trash text-warning">';
-        baserow = baserow + '</td>';
+    // Actions
+    baserow = baserow + '<td>';
+    //<span class="ui-pg-button glyphicon text-danger glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="" onclick="if (confirm(&quot;Are you sure you want to delete this entry?&quot;)) { $(this).parent().submit(); }" data-original-title="Delete assessment">
+    baserow = baserow + '<span title="Remove attachment" class="ui-pg-button btnattachmentremove glyphicon glyphicon-trash text-warning" data-toggle="tooltip" data-placement="bottom" data-original-title="Remove attachement">';
+    baserow = baserow + '</td>';
 
-        baserow = baserow + '<td><span class="filename"></span><input class="filename" type="hidden"></td>';
-        baserow = baserow + '<td><span class="filesize"></span></td>';
-        baserow = baserow + '<td><span class="relevance"></span><input class="relevance" type="hidden"></td>';
+    baserow = baserow + '<td><span class="filename"></span><input class="filename" type="hidden"></td>';
+    baserow = baserow + '<td><span class="filesize"></span></td>';
+    baserow = baserow + '<td><span class="relevance"></span><input class="relevance" type="hidden"></td>';
 
-        baserow = baserow + '</tr>';
+    baserow = baserow + '</tr>';
 
     if ($(target).is('table'))
     {
@@ -81,7 +99,7 @@ function addAttachment(target, url, relevance, size)
 
 
     $('span.relevance').unbind('click').bind('click', editAttachmentRelevance);
-    $('img.btnattachmentremove').unbind('click').bind('click', removeAttachment);
+    $('.btnattachmentremove').unbind('click').bind('click', removeAttachment);
 
     $('span.filename').unbind('click').bind('click', function(e) {
         e.preventDefault();
@@ -93,12 +111,8 @@ function addAttachment(target, url, relevance, size)
     $(newrow).find('span.filename').text(filename);
     $(newrow).find('input.filename').val(url);
 
-
-
-
-
-
 }
+
 function removeAttachment(e)
 {
     e.preventDefault();
@@ -125,19 +139,19 @@ function openKCFinder_singleFile(target) {
     window.open(LS.data.baseUrl + '/third_party/kcfinder/browse.php?opener=custom&type=files&CKEditor=email_invite_en&langCode='+sKCFinderLanguage, 'kcfinder_single', 'height=600px, width=800px, modal=yes');
 }
 
-    $('#attachment-relevance-editor button').click(function()
+$('#attachment-relevance-editor button').click(function()
+{
+    $('#attachment-relevance-editor').dialog('close');
+    var relevance = $('#attachment-relevance-editor textarea').val();
+    $('#attachment-relevance-editor').dialog('option', 'target').val(relevance);
+    var span = $('#attachment-relevance-editor').dialog('option', 'target').parents('tr').find('span.relevance');
+    if (relevance.length > 50)
     {
-        $('#attachment-relevance-editor').dialog('close');
-        var relevance = $('#attachment-relevance-editor textarea').val();
-        $('#attachment-relevance-editor').dialog('option', 'target').val(relevance);
-        var span = $('#attachment-relevance-editor').dialog('option', 'target').parents('tr').find('span.relevance');
-        if (relevance.length > 50)
-        {
-            $(span).text(relevance.replace(/(\r\n|\n|\r)/gm,"").substr(0, 47) + '...');
-        }
-        else
-        {
-            $(span).text(relevance);
-        }
+        $(span).text(relevance.replace(/(\r\n|\n|\r)/gm,"").substr(0, 47) + '...');
+    }
+    else
+    {
+        $(span).text(relevance);
+    }
 
-    });
+});

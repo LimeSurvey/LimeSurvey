@@ -12,7 +12,9 @@ $(document).ready(function () {
     $('button.add-attachment').click(function(e)
     {
         e.preventDefault();
-        var target = $(this).parent().find('table');
+        var target = $(this).parent().parent().parent().find('table');
+        console.log("target = ");
+        console.log(target);
         openKCFinder_singleFile(target);
 
     });
@@ -32,7 +34,7 @@ $(document).ready(function () {
 	<div class="row">
 		<div class="col-lg-12 content-right">
 
-<?php echo CHtml::form(array('admin/emailtemplates/sa/update/surveyid/'.$surveyid), 'post', array('name'=>'emailtemplates', 'class'=>'form30newtabs', 'id'=>'emailtemplates'));?>
+<?php echo CHtml::form(array('admin/emailtemplates/sa/update/surveyid/'.$surveyid), 'post', array('name'=>'emailtemplates', 'class'=>'form-horizontal', 'id'=>'emailtemplates'));?>
 
         <ul class="nav nav-tabs">
             <?php foreach ($grplangs as $grouplang): ?>
