@@ -87,7 +87,8 @@ class Assessments extends Survey_Common_Action
 
     private function _showAssessments($iSurveyID, $action)
     {
-        $oAssessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyID));
+        $oCriteria = new CDbCriteria(array('order' => 'id ASC'));
+        $oAssessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyID), $oCriteria);
         $aData = $this->_collectGroupData($iSurveyID);
         $aHeadings = array(gT("Scope"), gT("Question group"), gT("Minimum"), gT("Maximum"));
         $aData['actiontitle'] = gT("Add");
