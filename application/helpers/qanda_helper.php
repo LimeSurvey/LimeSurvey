@@ -3360,7 +3360,7 @@ function do_numerical($ia)
     {
         $kpclass = "";
     }
-    
+
     $itemDatas = array(
         'extraclass'=>$extraclass,
         'id'=>$ia[1],
@@ -3422,7 +3422,7 @@ function do_shortfreetext($ia)
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $tiwidth=$aQuestionAttributes['text_input_width'];
-        //$extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
+        $extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
         $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
         $extraclass .=" col-sm-".trim($col);
     }
@@ -3468,47 +3468,53 @@ function do_shortfreetext($ia)
             $tiwidth=40;
         }
 
-        //NEW: textarea instead of input=text field
-
-        // --> START NEW FEATURE - SAVE
-        $answer ="<p class='question answer-item text-item {$extraclass}'><label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>"
-        . '<textarea class="form-control  textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
-        .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);">';
-        // --> END NEW FEATURE - SAVE
-
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
             $dispVal = str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
             if ($aQuestionAttributes['numbers_only']==1)
             {
                 $dispVal = str_replace('.',$sSeparator,$dispVal);
             }
-            $answer .= htmlspecialchars($dispVal);
+            $dispVal .= htmlspecialchars($dispVal);
         }
 
-        $answer .= "</textarea></p>\n";
+        $itemDatas = array(
+            'extraclass'=>$extraclass,
+            'freeTextId'=>'answer'.$ia[1],
+            'labelText'=>gT('Your answer'),
+            'name'=>$ia[1],
+            'drows'=>$drows,
+            'tiwidth'=>$tiwidth,
+            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'dispVal'=>$dispVal,
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/textarea/item', $itemDatas, true);
     }
-    elseif((int)($aQuestionAttributes['location_mapservice'])==1){
+    elseif((int)($aQuestionAttributes['location_mapservice'])==1)
+    {
         $mapservice = $aQuestionAttributes['location_mapservice'];
         $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentLatLong = null;
-
         $floatLat = 0;
         $floatLng = 0;
 
         // Get the latitude/longtitude for the point that needs to be displayed by default
-        if (strlen($currentLocation) > 2){
+        if (strlen($currentLocation) > 2)
+        {
             $currentLatLong = explode(';',$currentLocation);
             $currentLatLong = array($currentLatLong[0],$currentLatLong[1]);
         }
-        else{
+        else
+        {
             if ((int)($aQuestionAttributes['location_nodefaultfromip'])==0)
                 $currentLatLong = getLatLongFromIp(getIPAddress());
-            if (!isset($currentLatLong) || $currentLatLong==false){
+            if (!isset($currentLatLong) || $currentLatLong==false)
+            {
                 $floatLat = 0;
                 $floatLng = 0;
                 $LatLong = explode(" ",trim($aQuestionAttributes['location_defaultcoordinates']));
 
-                if (isset($LatLong[0]) && isset($LatLong[1])){
+                if (isset($LatLong[0]) && isset($LatLong[1]))
+                {
                     $floatLat = $LatLong[0];
                     $floatLng = $LatLong[1];
                 }
@@ -3528,26 +3534,6 @@ function do_shortfreetext($ia)
             $strBuild .= "5";
 
         $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
-        $answer = "
-        <script type=\"text/javascript\">
-        zoom['$ia[1]'] = {$aQuestionAttributes['location_mapzoom']};
-        </script>
-
-        <div class=\"question answer-item geoloc-item {$extraclass}\">
-        <input type=\"hidden\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]}\">
-
-        <input class=\"text location ".$kpclass."\" type=\"text\" size=\"20\" name=\"$ia[1]_c\"
-        id=\"answer$ia[1]_c\" value=\"$currentLocation\"
-        onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
-
-        <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\"
-        value = \"{$strBuild}\" >
-
-        <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\"
-        class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >";
-        //<div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>
-        $answer .= "<div id=\"gmap_canvas_$ia[1]_c\" class='col-lg-12' style='height: {$aQuestionAttributes['location_mapheight']}px'></div>";
-        $answer .= '</div>';
 
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
         if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
@@ -3557,12 +3543,31 @@ function do_shortfreetext($ia)
         elseif ($aQuestionAttributes['location_mapservice']==2)
             Yii::app()->getClientScript()->registerScriptFile("http://www.openlayers.org/api/OpenLayers.js");
 
+        $questionHelp = false;
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
         {
-            $answer .= "<div class=\"questionhelp\">"
-            . gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.').'</div>';
+            $questionHelp = true;
             $question_text['help'] = gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
         }
+
+        $itemDatas = array(
+            'extraclass'=>$extraclass,
+            'freeTextId'=>'answer'.$ia[1],
+            'labelText'=>gT('Your answer'),
+            'name'=>$ia[1],
+            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+            'kpclass'=>$kpclass,
+            'currentLocation'=>$currentLocation,
+            'strBuild'=>$strBuild,
+            'location_mapservice'=>$aQuestionAttributes['location_mapservice'],
+            'location_mapzoom'=>$aQuestionAttributes['location_mapzoom'],
+            'location_mapheight'=>$aQuestionAttributes['location_mapheight'],
+            'questionHelp'=>$questionHelp,
+            'question_text_help'=>$question_text['help'],
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/location_mapservice/item', $itemDatas, true);
+
     }
     elseif((int)($aQuestionAttributes['location_mapservice'])==100)
     {
@@ -3585,22 +3590,12 @@ function do_shortfreetext($ia)
         {
             $currentLatLong = array("","");
             $currentCenter = explode(" ",trim($aQuestionAttributes['location_defaultcoordinates']));
-            if(count($currentCenter)!=2)
+            if (count($currentCenter)!=2)
             {
                 $currentCenter = array("","");
             }
         }
-        // 2 - city; 3 - state; 4 - country; 5 - postal
-        // TODO : move it to aThisMapScriptVar and use geoname reverse geocoding (http://www.geonames.org/export/reverse-geocoding.html)
         $strBuild = "";
-        /*if ($aQuestionAttributes['location_city'])
-            $strBuild .= "2";
-        if ($aQuestionAttributes['location_state'])
-            $strBuild .= "3";
-        if ($aQuestionAttributes['location_country'])
-            $strBuild .= "4";
-        if ($aQuestionAttributes['location_postal'])
-            $strBuild .= "5";*/
 
         $aGlobalMapScriptVar= array(
             'geonameUser'=>getGlobalSetting('GeoNamesUsername'),// Did we need to urlencode ?
@@ -3618,55 +3613,53 @@ function do_shortfreetext($ia)
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css');
 
-        $answer = "
-        <div class=\"question answer-item geoloc-item {$extraclass}\">
-            <input type=\"hidden\"  name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]}\"><!-- No javascript need a way to answer -->
-            <input type=\"hidden\" class=\"location\" name=\"$ia[1]_c\" id=\"answer$ia[1]_c\" value=\"{$currentLatLong[0]} {$currentLatLong[1]}\" />
-
-            <ul class=\"list-unstyled coordinates-list\">
-                <li class=\"coordinate-item\">".gT("Latitude:")."<input class=\"coords text\" type=\"text\" name=\"$ia[1]_c1\" id=\"answer_lat$ia[1]_c\"  value=\"{$currentLatLong[0]}\" /></li>
-                <li class=\"coordinate-item\">".gT("Longitude:")."<input class=\"coords text\" type=\"text\" name=\"$ia[1]_c2\" id=\"answer_lng$ia[1]_c\" value=\"{$currentLatLong[1]}\" /></li>
-            </ul>
-
-            <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\" value = \"{$strBuild}\" >
-            <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\" class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
-
-            <div>
-                <div class=\"geoname_restrict\">
-                    <input type=\"checkbox\" id=\"restrictToExtent_{$ia[1]}\"> <label for=\"restrictToExtent_{$ia[1]}\">".gT("Restrict search place to map extent")."</label>
-                </div>
-                <div class=\"geoname_search\" >
-                    <input id=\"searchbox_{$ia[1]}\" placeholder=\"".gT("Search")."\" width=\"15\">
-                </div>
-            </div>
-            <div id=\"map_{$ia[1]}\" style=\"width: 100%; height: {$aQuestionAttributes['location_mapheight']}px;\"></div>
-        </div>
-        ";
-
 
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
         {
-            $answer .= "<div class=\"questionhelp\">"
-            . gT('Click to set the location or drag and drop the pin. You may may also enter coordinates').'</div>';
+            $questionHelp = true;
             $question_text['help'] = gT('Click to set the location or drag and drop the pin. You may may also enter coordinates');
         }
+
+        $itemDatas = array(
+            'extraclass'=>$extraclass,
+            'name'=>$ia[1],
+            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+            'strBuild'=>$strBuild,
+            'location_mapservice'=>$aQuestionAttributes['location_mapservice'],
+            'location_mapzoom'=>$aQuestionAttributes['location_mapzoom'],
+            'location_mapheight'=>$aQuestionAttributes['location_mapheight'],
+            'questionHelp'=>$questionHelp,
+            'question_text_help'=>$question_text['help'],
+            'location_value'=> $currentLatLong[0].' '.$currentLatLong[1],
+            'currentLat'=>$currentLatLong[0],
+            'currentLong'=>$currentLatLong[1],
+        );
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/location_mapservice/item', $itemDatas, true);
     }
     else
     {
         //no question attribute set, use common input text field
-        $answer = "<p class=\"question answer-item text-item {$extraclass}\">\n"
-        ."<label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>"
-        ."$prefix\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\"";
-
         $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         if ($aQuestionAttributes['numbers_only']==1)
         {
             $dispVal = str_replace('.',$sSeparator,$dispVal);
         }
         $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
-        $answer .= " value=\"$dispVal\"";
 
-        $answer .=" {$maxlength} onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\"/>\n\t$suffix\n</p>\n";
+        $itemDatas = array(
+            'extraclass'=>$extraclass,
+            'name'=>$ia[1],
+            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+            'prefix'=>$prefix,
+            'suffix'=>$suffix,
+            'kpclass'=>$kpclass,
+            'tiwidth'=>$tiwidth,
+            'dispVal'=>$dispVal,
+            'maxlength'=>$maxlength,
+        );
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/text/item', $itemDatas, true);
+
     }
 
     if (trim($aQuestionAttributes['time_limit'])!='')
