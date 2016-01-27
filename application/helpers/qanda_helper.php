@@ -3360,11 +3360,6 @@ function do_numerical($ia)
     {
         $kpclass = "";
     }
-    $answer = "<p class='question answer-item text-item numeric-item {$extraclass}'>"
-    . " <label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>\n$prefix\t"
-    . "<input class='form-control text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\"  title=\"".gT('Only numbers may be entered in this field.')."\" "
-    . "id=\"answer{$ia[1]}\" value=\"{$fValue}\" onkeyup=\"{$checkconditionFunction}(this.value, this.name, this.type,'onchange',{$integeronly})\" "
-    . " {$maxlength} />\t{$suffix}\n</p>\n";
     
     $itemDatas = array(
         'extraclass'=>$extraclass,
