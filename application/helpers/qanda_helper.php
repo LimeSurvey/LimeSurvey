@@ -3360,13 +3360,25 @@ function do_numerical($ia)
     {
         $kpclass = "";
     }
-    // --> START NEW FEATURE - SAVE
     $answer = "<p class='question answer-item text-item numeric-item {$extraclass}'>"
     . " <label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>\n$prefix\t"
     . "<input class='form-control text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\"  title=\"".gT('Only numbers may be entered in this field.')."\" "
     . "id=\"answer{$ia[1]}\" value=\"{$fValue}\" onkeyup=\"{$checkconditionFunction}(this.value, this.name, this.type,'onchange',{$integeronly})\" "
     . " {$maxlength} />\t{$suffix}\n</p>\n";
-    // --> END NEW FEATURE - SAVE
+    
+    $itemDatas = array(
+        'extraclass'=>$extraclass,
+        'id'=>$ia[1],
+        'prefix'=>$prefix,
+        'answertypeclass'=>$answertypeclass,
+        'tiwidth'=>$tiwidth,
+        'fValue'=>$fValue,
+        'checkconditionFunction'=>$checkconditionFunction,
+        'integeronly'=>$integeronly,
+        'maxlength'=>$maxlength,
+        'suffix'=>$suffix,
+    );
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/numerical/item', $itemDatas, true);
 
     $inputnames[]=$ia[1];
     $mandatory=null;
@@ -3381,12 +3393,12 @@ function do_shortfreetext($ia)
 {
     global $thissurvey;
 
-
     $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
     if ($sGoogleMapsAPIKey!='')
     {
         $sGoogleMapsAPIKey='&key='.$sGoogleMapsAPIKey;
     }
+
     $extraclass ="";
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
