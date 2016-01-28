@@ -21,7 +21,7 @@
                 <?php endif; ?>
             <?php endif; ?>
 
-            <?php echo CHtml::form(array("admin/tokens/sa/email/action/remind/surveyid/{$surveyid}"), 'post', array('id'=>'sendreminder', 'class'=>'form30')); ?>
+            <?php echo CHtml::form(array("admin/tokens/sa/email/action/remind/surveyid/{$surveyid}"), 'post', array('id'=>'sendreminder', 'class'=>'form-horizontal')); ?>
             <div>
                 <ul class="nav nav-tabs">
                     <?php
@@ -69,61 +69,85 @@
                         ?>
 
                         <div id="<?php echo $language; ?>" class="tab-pane fade in <?php if ($c){$c=false;echo ' active';}?>">
-                            <ul class="list-unstyled">
-                                <li><label for='from_<?php echo $language; ?>'><?php eT("From"); ?>:</label>
-                                    <?php echo CHtml::textField("from_{$language}",$thissurvey[$baselang]['adminname']." <".$thissurvey[$baselang]['adminemail'].">",array('size'=>50)); ?>
-                                </li>
-                                <li><label for='subject_<?php echo $language; ?>'><?php eT("Subject"); ?>:</label>
-                                    <?php echo CHtml::textField("subject_{$language}",$subject,array('size'=>83)); ?>
-                                </li>
 
-                                <li><label for='message_<?php echo $language; ?>'><?php eT("Message"); ?>:</label>
-                                    <div class="htmleditor">
-                                        <?php echo CHtml::textArea("message_{$language}",$textarea,array('cols'=>80,'rows'=>20)); ?>
-                                        <?php echo getEditor("email-rem", "message_$language", "[" . gT("Reminder Email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
-                                    </div>
-                                </li>
-                            </ul>
+                            <div class='form-group'>
+                                <label class='control-label col-sm-2' for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>
+                                <div class='col-sm-4'>
+                                    <?php echo CHtml::textField("from_{$language}",$thissurvey[$baselang]['adminname']." <".$thissurvey[$baselang]['adminemail'].">",array('class' => 'form-control')); ?>
+                                </div>
+                            </div>
+
+                            <div class='form-group'>
+                                <label class='control-label col-sm-2' for='subject_<?php echo $language; ?>'><?php eT("Subject:"); ?></label>
+                                <div class='col-sm-4'>
+                                    <?php echo CHtml::textField("subject_{$language}",$subject,array('class' => 'form-control')); ?>
+                                </div>
+                            </div>
+
+                            <div class='form-group'>
+                                <label class='control-label col-sm-2' for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
+                                <div class="htmleditor col-sm-6">
+                                    <?php echo CHtml::textArea("message_{$language}",$textarea,array('cols'=>80,'rows'=>20, 'class' => 'form-control')); ?>
+                                    <?php echo getEditor("email-rem", "message_$language", "[" . gT("Reminder Email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
+                                </div>
+                            </div>
                         </div>
                     <?php } ?>
                 </div>
-                <ul class="list-unstyled">
-                    <?php if (count($tokenids)>0) { ?>
-                        <li>
-                            <label><?php eT("Send reminder to token ID(s):"); ?></label>
-                            <?php echo short_implode(", ", "-", (array) $tokenids); ?>
-                        </li>
-                    <?php } ?>
-                    <li><label for='bypassbademails'>
-                            <?php eT("Bypass token with failing email addresses"); ?>:</label>
-                            <?php echo CHtml::dropDownList('bypassbademails', 'Y',array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
-                    </li>
-                    <li>
-                        <label for='minreminderdelay'><?php eT("Min days between reminders"); ?>:</label>
-                        <?php echo CHtml::textField('minreminderdelay'); ?>
-                    </li>
-                    <li>
-                        <label for='maxremindercount'><?php eT("Max reminders"); ?>:</label>
-                        <?php echo CHtml::textField('maxremindercount'); ?>
-                    </li>
-                    <li>
-                          <?php echo CHtml::label(gT("Bypass date control before sending email."),'bypassdatecontrol', array('title'=>gt("If some tokens have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),'unescaped')); ?>
-                          <?php echo CHtml::checkbox('bypassdatecontrol', false); ?>
-                    </li>
-                </ul>
+                    <?php if (count($tokenids)>0): ?>
+                        <div class='form-group'>
+                            <label class='control-label col-sm-2'><?php eT("Send reminder to token ID(s):"); ?></label>
+                            <div class='col-sm-4'>
+                                <?php echo short_implode(", ", "-", (array) $tokenids); ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
 
-                <p>
-                    <?php
-                        echo CHtml::submitButton(gT("Send Reminders"), array('class'=>'btn btn-default'));
-                        echo CHtml::hiddenField('ok','absolutely');
-                        echo CHtml::hiddenField('subaction','remind');
-                        if (!empty($tokenids))
-                            echo CHtml::hiddenField('tokenids',implode('|', (array) $tokenids));
-                    ?>
-                </p>
+                    <div class='form-group'>
+                        <label class='control-label col-sm-2' for='bypassbademails'><?php eT("Bypass token with failing email addresses:"); ?></label>
+                        <div class='col-sm-1'>
+                            <?php echo CHtml::dropDownList('bypassbademails', 'Y',array("Y"=>gT("Yes"),"N"=>gT("No")), array('class' => 'form-control')); ?>
+                        </div>
+                    </div>
 
+                    <div class='form-group'>
+                        <label class='control-label col-sm-2' for='minreminderdelay'><?php eT("Min days between reminders:"); ?></label>
+                        <div class='col-sm-4'>
+                            <?php echo CHtml::textField('minreminderdelay'); ?>
+                        </div>
+                    </div>
+
+                    <div class='form-group'>
+
+                        <label class='control-label col-sm-2' for='maxremindercount'><?php eT("Max reminders:"); ?></label>
+                        <div class='col-sm-4'>
+                            <?php echo CHtml::textField('maxremindercount'); ?>
+                        </div>
+                    </div>
+
+                    <div class='form-group'>
+                          <?php echo CHtml::label(gT("Bypass date control before sending email."),'bypassdatecontrol', array('title'=>gt("If some tokens have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),'unescaped', 'class' => 'control-label col-sm-2')); ?>
+                          <div class='col-sm-1'>
+                              <?php echo CHtml::checkbox('bypassdatecontrol', false); ?>
+                          </div>
+                          <div class='col-sm-9'></div>
+                    </div>
+
+                    <div class='form-group'>
+                        <div class='col-sm-2'></div>
+                        <div class='col-sm-1'>
+                            <?php echo CHtml::submitButton(gT("Send Reminders"), array('class'=>'btn btn-default')); ?>
+                        </div>
+
+                            <?php
+                                echo CHtml::hiddenField('ok','absolutely');
+                                echo CHtml::hiddenField('subaction','remind');
+                                if (!empty($tokenids)) {
+                                    echo CHtml::hiddenField('tokenids',implode('|', (array) $tokenids));
+                                }
+                            ?>
+                    </div>
             </div>
-</form>
-
+        </form>
     </form>
 </div>

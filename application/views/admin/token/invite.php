@@ -85,7 +85,7 @@
                                     <label class='control-label col-sm-2' for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
                                     <div class='col-sm-6'>
                                         <div class="htmleditor">
-                                            <?php echo CHtml::textArea("message_{$language}",$textarea,array('cols'=>80,'rows'=>20)); ?>
+                                            <?php echo CHtml::textArea("message_{$language}",$textarea,array('cols'=>80,'rows'=>20, 'class' => 'form-control')); ?>
                                             <?php echo getEditor("email-inv", "message_$language", "[" . gT("Invitation email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                                         </div>
                                     </div>
