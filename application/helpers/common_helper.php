@@ -3880,6 +3880,17 @@ function questionAttributes($returnByName=false)
             'default'=>0,
         );
 
+        $qattributes["display_type"]=array(
+        "types"=>"Y",
+        'category'=>gT('Display'),
+        'sortorder'=>90,
+        'inputtype'=>'singleselect',
+        'options'=>array(0=>gT('Buttons'),
+        1=>gT('Radio')),
+        'default'=>0,
+        "help"=>gT('Use buttons or radio list'),
+        "caption"=>gT('Display type'));
+
     }
     //This builds a more useful array (don't modify)
     if ($returnByName==false)

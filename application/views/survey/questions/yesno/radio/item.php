@@ -1,6 +1,6 @@
 <?php
 /**
- * Yes / No Question, item Html
+ * Yes / No Question, radio item Html
  *
  * @var $name                           $ia[1]
  * @var $yChecked

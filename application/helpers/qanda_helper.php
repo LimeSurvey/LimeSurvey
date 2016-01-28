@@ -3854,6 +3854,9 @@ function do_yesno($ia)
         }
     }
 
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $displayType = $aQuestionAttributes['display_type'];
+
     $itemDatas = array(
         'name'=>$ia[1],
         'yChecked' => $yChecked,
@@ -3862,8 +3865,16 @@ function do_yesno($ia)
         'noAnswer' => $noAnswer,
         'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
         'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+        'displayType'=>$displayType,
     );
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/yesno/item', $itemDatas, true);
+    if($displayType===0)
+    {
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/yesno/buttons/item', $itemDatas, true);
+    }
+    else
+    {
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/yesno/radio/item', $itemDatas, true);
+    }
 
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
@@ -3873,8 +3884,6 @@ function do_yesno($ia)
 function do_gender($ia)
 {
     $checkconditionFunction = "checkconditions";
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-
     $fChecked = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'F')?'CHECKED':'';
     $mChecked = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M')?'CHECKED':'';
     $naChecked = '';
