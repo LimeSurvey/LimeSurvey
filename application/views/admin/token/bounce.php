@@ -13,7 +13,7 @@
                                     <?php eT('Survey bounce email'); ?>
                                 </label>
                                 <div class="default col-lg-4 col-sm-5 col-md-7 controls">
-                                    <input size="50" type="email" value="<?php echo $settings['bounce_email'];?>" name="bounce_email" id="bounce_email" />
+                                    <input class='form-control' size="50" type="email" value="<?php echo $settings['bounce_email'];?>" name="bounce_email" id="bounce_email" />
                                 </div>
                             </div>
 
