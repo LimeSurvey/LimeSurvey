@@ -183,10 +183,10 @@ $(document).ready(function() {
                     dateFormat: userdateformat
                 });
 
-                jQuery('<input type="image" class="drop_editing" title="'+cancelBtn+'" src="' + imageurl + 'token_delete.png" />')
+                jQuery('<span class="drop_editing ui-pg-button glyphicon glyphicon-remove" title="'+cancelBtn+'"></span>')
                 .appendTo(jQuery(this).parent().parent())
                 .click(func);
-                jQuery('<input type="image" class="save" title="'+saveBtn+'" src="' + imageurl + 'ok.png" width="16" />')
+                jQuery('<span class="save ui-pg-button glyphicon glyphicon-ok" title="'+saveBtn+'"></span>')
                 .appendTo(jQuery(this).parent().parent())
                 .click(function()
                 {
