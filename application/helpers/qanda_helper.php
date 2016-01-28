@@ -4062,11 +4062,13 @@ function do_array_5point($ia)
         if (strpos($answertext2,'|'))
         {
             $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
-            $answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext2</td>\n";
+            //$answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext2</td>\n";
+            $answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' >$answertext2</td>\n";
         }
         elseif ($right_exists)
         {
-            $answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
+            //$answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
+            $answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' >&nbsp;</td>\n";
         }
 
 
@@ -4145,20 +4147,26 @@ function do_array_10point($ia)
 
     $fn = 1;
     $answer = '<div class="no-more-tables no-more-tables-10-point">';
-    $answer .= "\n<table class=\"table-in-qanda-2 question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
+    /*$answer .= "\n<table class=\"table-in-qanda-2 question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
-    . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
+    . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";*/
+    $answer .= "\n<table class=\"table-in-qanda-2 question subquestion-list questions-list {$extraclass}\">\n"
+    . "\t<colgroup class=\"col-responses\">\n"
+    . "\t<col class=\"col-answers\" />\n";
+
 
     $odd_even = '';
     for ($xc=1; $xc<=10; $xc++)
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        $answer .= "<col class=\"$odd_even\"  />\n";
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        $answer .= "<col class=\"col-no-answer $odd_even\"  />\n";
     }
     $answer .= "\t</colgroup>\n\n"
     . "\t<thead>\n<tr class=\"array1 dontread\">\n"
@@ -4285,19 +4293,24 @@ function do_array_yesnouncertain($ia)
     $aSubquestions = $ansresult->readAll();
     $anscount = count($aSubquestions);
     $fn = 1;
-    $answer = "\n<table class=\"table table-striped table-condensed table-in-qanda-3 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
+    /*$answer = "\n<table class=\"table table-striped table-condensed table-in-qanda-3 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
-    . "\n\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
+    . "\n\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";*/
+    $answer = "\n<table class=\"table table-striped table-condensed table-in-qanda-3 question subquestions-list questions-list {$extraclass}\">\n"
+    . "\t<colgroup class=\"col-responses\">\n"
+    . "\n\t<col class=\"col-answers\" />\n";
     $odd_even = '';
     for ($xc=1; $xc<=3; $xc++)
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        $answer .= "<col class=\"$odd_even\"  />\n";
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        $answer .= "<col class=\"col-no-answer $odd_even\" />\n";
     }
     $answer .= "\t</colgroup>\n\n"
     . "\t<thead>\n<tr class=\"array1\">\n"
@@ -4679,7 +4692,8 @@ function do_array($ia)
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
         $answer_start = '<div class="no-more-tables">';
-        $answer_start .= "\n<table class=\"table-in-qanda-5 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n";
+        //$answer_start .= "\n<table class=\"table-in-qanda-5 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n";
+        $answer_start .= "\n<table class=\"table-in-qanda-5 question subquestions-list questions-list {$extraclass}\">\n";
         $answer_head_line= "\t<td>&nbsp;</td>\n";
             foreach ($labelans as $ld)
             {
@@ -4788,24 +4802,29 @@ function do_array($ia)
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
         }
         $answer .= "</tbody>\n";
+        /*$answer_cols = "\t<colgroup class=\"col-responses\">\n"
+        ."\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n" ;*/
         $answer_cols = "\t<colgroup class=\"col-responses\">\n"
-        ."\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n" ;
+        ."\t<col class=\"col-answers\" />\n" ;
 
         $odd_even = '';
         foreach ($labelans as $c)
         {
             $odd_even = alternation($odd_even);
-            $answer_cols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            //$answer_cols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            $answer_cols .= "<col class=\"$odd_even\" />\n";
         }
         if ($right_exists)
         {
             $odd_even = alternation($odd_even);
-            $answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
+            //$answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
+            $answer_cols .= "<col class=\"answertextright $odd_even\" />\n";
         }
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
         {
             $odd_even = alternation($odd_even);
-            $answer_cols .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+            //$answer_cols .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+            $answer_cols .= "<col class=\"col-no-answer $odd_even\" />\n";
         }
         $answer_cols .= "\t</colgroup>\n";
 
@@ -4848,7 +4867,8 @@ function do_array($ia)
         }
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-        $answer_start = "\n<table class=\"table-in-qanda-6 question subquestions-list questions-list {$extraclass}\" summary=\"$caption\" >\n";
+        //$answer_start = "\n<table class=\"table-in-qanda-6 question subquestions-list questions-list {$extraclass}\" summary=\"$caption\" >\n";
+        $answer_start = "\n<table class=\"table-in-qanda-6 question subquestions-list questions-list {$extraclass}\" >\n";
 
         $answer = "\t<tbody>\n";
         $trbc = '';
@@ -5170,29 +5190,36 @@ function do_array_multitext($ia)
         $anscount = count($aQuestions);
         $fn=1;
 
-        $answer_cols = "\t<colgroup class=\"col-responses\">\n"
+        /*$answer_cols = "\t<colgroup class=\"col-responses\">\n"
         ."\n\t\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
-        $answer_head_line= "\t\t\t<td width='$answerwidth%'>&nbsp;</td>\n";
+        $answer_head_line= "\t\t\t<td width='$answerwidth%'>&nbsp;</td>\n";*/
+
+        $answer_cols = "\t<colgroup class=\"col-responses\">\n"
+        ."\n\t\t<col class=\"answertext\" />\n";
+        $answer_head_line= "\t\t\t<td>&nbsp;</td>\n";
 
         $odd_even = '';
         foreach ($labelans as $ld)
         {
             $answer_head_line .= "\t<th class=\"answertext\">".$ld."</th>\n";
             $odd_even = alternation($odd_even);
-            $answer_cols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            //$answer_cols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            $answer_cols .= "<col class=\"$odd_even\" />\n";
         }
         if ($right_exists)
         {
             $answer_head_line .= "\t<td>&nbsp;</td>\n";// class=\"answertextright\"
             $odd_even = alternation($odd_even);
-            $answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$cellwidth%\" />\n";
+            //$answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$cellwidth%\" />\n";
+            $answer_cols .= "<col class=\"answertextright $odd_even\"  />\n";
         }
 
         if( ($show_grand == true &&  $show_totals == 'col' ) || $show_totals == 'row' ||  $show_totals == 'both' )
         {
             $answer_head_line .= $col_head;
             $odd_even = alternation($odd_even);
-            $answer_cols .= "\t\t<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            //$answer_cols .= "\t\t<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            $answer_cols .= "\t\t<col class=\"$odd_even\" />\n";
         }
         $answer_cols .= "\t</colgroup>\n";
 
@@ -5201,7 +5228,8 @@ function do_array_multitext($ia)
         . "</tr>\n\t</thead>\n";
 
         $answer = '<div class="no-more-tables no-more-tables-array-multi-text">';
-        $answer .= "\n<table$q_table_id_HTML class=\"table-in-qanda-6  question subquestions-list questions-list {$extraclass} {$num_class} {$totals_class}\"  summary=\"{$caption}\">\n"
+        //$answer .= "\n<table$q_table_id_HTML class=\"table-in-qanda-6  question subquestions-list questions-list {$extraclass} {$num_class} {$totals_class}\"  summary=\"{$caption}\">\n"
+        $answer .= "\n<table$q_table_id_HTML class=\"table-in-qanda-6  question subquestions-list questions-list {$extraclass} {$num_class} {$totals_class}\">\n"
         . $answer_cols
         . $answer_head;
         $answer .= "<tbody>";
@@ -5283,11 +5311,13 @@ function do_array_multitext($ia)
             if (strpos($answertextsave,'|'))
             {
                 $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-                $answer .= "\t\t\t<td  class=\"answertextright\" style=\"text-align:left;\" width=\"$answerwidth%\">$answertext</td>\n";
+                //$answer .= "\t\t\t<td  class=\"answertextright\" style=\"text-align:left;\" width=\"$answerwidth%\">$answertext</td>\n";
+                $answer .= "\t\t\t<td  class=\"answertextright\" style=\"text-align:left;\">$answertext</td>\n";
             }
             elseif ($right_exists)
             {
-                $answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' width='$answerwidth%'>&nbsp;</td>\n";
+                //$answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' width='$answerwidth%'>&nbsp;</td>\n";
+                $answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' >&nbsp;</td>\n";
             }
 
             $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $row_total);
@@ -5520,20 +5550,23 @@ function do_array_multiflexi($ia)
         $fn=1;
 
         $mycols = "\t<colgroup class=\"col-responses\">\n"
-        . "\n\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
+        //. "\n\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
+        . "\n\t<col class=\"answertext\" />\n";
         $answer_head_line = "\t<th >&nbsp;</th>\n";
         $odd_even = '';
         foreach ($labelans as $ld)
         {
             $answer_head_line .= "\t<th  class='th-11'>".$ld."</th>\n";
             $odd_even = alternation($odd_even);
-            $mycols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            //$mycols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            $mycols .= "<col class=\"$odd_even\" />\n";
         }
         if ($right_exists)
         {
             $answer_head_line .= "\t<td>&nbsp;</td>";
             $odd_even = alternation($odd_even);
-            $mycols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
+            //$mycols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
+            $mycols .= "<col class=\"answertextright $odd_even\" />\n";
         }
         $answer_head = "\n\t<thead>\n<tr class=\"dontread\">\n"
         . $answer_head_line
@@ -5541,7 +5574,8 @@ function do_array_multiflexi($ia)
         $mycols .= "\t</colgroup>\n";
 
         $trbc = '';
-        $answer = "<div class='no-more-tables'>\n<table class=\"table-in-qanda-7 question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"{$caption}\">\n"
+        //$answer = "<div class='no-more-tables'>\n<table class=\"table-in-qanda-7 question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"{$caption}\">\n"
+        $answer = "<div class='no-more-tables'>\n<table class=\"table-in-qanda-7 question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\">\n"
         . $mycols
         . $answer_head . "\n";
         $answer .= "<tbody>";
@@ -5707,11 +5741,13 @@ function do_array_multiflexi($ia)
             if (strpos($answertextsave,'|'))
             {
                 $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-                $answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext</td>\n";
+                //$answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext</td>\n";
+                $answer .= "\t<td class=\"answertextright\" style='text-align:left;'>$answertext</td>\n";
             }
             elseif ($right_exists)
             {
-                $answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
+                //$answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
+                $answer .= "\t<td class=\"answertextright\" style='text-align:left;'>&nbsp;</td>\n";
             }
 
             $answer .= "</tr>\n";
@@ -5778,14 +5814,17 @@ function do_arraycolumns($ia)
             $fn=1;
             $cellwidth=$anscount;
             $cellwidth=round(( 50 / $cellwidth ) , 1);
-            $answer = "\n<table class=\"table-in-qanda-8  question subquestions-list questions-list\" summary=\"{$caption}\">\n"
+            //$answer = "\n<table class=\"table-in-qanda-8  question subquestions-list questions-list\" summary=\"{$caption}\">\n"
+            $answer = "\n<table class=\"table-in-qanda-8  question subquestions-list questions-list\">\n"
             . "\t<colgroup class=\"col-responses\">\n"
-            . "\t<col class=\"col-answers\" width=\"50%\" />\n";
+            //. "\t<col class=\"col-answers\" width=\"50%\" />\n";
+            . "\t<col class=\"col-answers\" />\n";
             $odd_even = '';
             for( $c = 0 ; $c < $anscount ; ++$c )
             {
                 $odd_even = alternation($odd_even);
-                $answer .= "<col class=\"$odd_even question-item answers-list radio-list\" width=\"$cellwidth%\" />\n";
+                //$answer .= "<col class=\"$odd_even question-item answers-list radio-list\" width=\"$cellwidth%\" />\n";
+                $answer .= "<col class=\"$odd_even question-item answers-list radio-list\" />\n";
             }
             $answer .= "\t</colgroup>\n\n"
             . "\t<thead>\n"
@@ -6018,7 +6057,8 @@ function do_array_dual($ia)
             //$cellwidth=sprintf("%02d", $cellwidth); // No reason to do this, except to leave place for separator ?  But then table can not be the same in all browser
 
             // Header row and colgroups
-            $mycolumns = "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
+            //$mycolumns = "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
+            $mycolumns = "\t<col class=\"col-answers\" />\n";
             $answer_head_line = "\t<th class=\"header_answer_text\">&nbsp;</th>\n\n";
             $mycolumns .= "\t<colgroup class=\"col-responses group-1\">\n";
             $odd_even = '';
@@ -6026,12 +6066,14 @@ function do_array_dual($ia)
             {
                 $answer_head_line .= "\t<th  class='th-12'>".$ld."</th>\n";
                 $odd_even = alternation($odd_even);
-                $mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+                //$mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+                $mycolumns .= "<col class=\"$odd_even\" />\n";
             }
             $mycolumns .= "\t</colgroup>\n";
             if (count($labelans1)>0) // if second label set is used
             {
-                $separatorwidth=($centerexists)? "width=\"$cellwidth%\" ":"";
+                //$separatorwidth=($centerexists)? "width=\"$cellwidth%\" ":"";
+                $separatorwidth='';
                 $mycolumns .=  "\t<col class=\"separator\" {$separatorwidth}/>\n";
                 $mycolumns .= "\t<colgroup class=\"col-responses group-2\">\n";
                 $answer_head_line .= "\n\t<td class=\"header_separator\">&nbsp;</td>\n\n"; // Separator : and No answer for accessibility for first colgroup
@@ -6039,19 +6081,22 @@ function do_array_dual($ia)
                 {
                     $answer_head_line .= "\t<th  class='th-13'>".$ld."</th>\n";
                     $odd_even = alternation($odd_even);
-                    $mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+                    //$mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+                    $mycolumns .= "<col class=\"$odd_even\" />\n";
                 }
                 $mycolumns .= "\t</colgroup>\n";
             }
             if($shownoanswer || $rightexists)
             {
-                $rigthwidth=($rightexists)? "width=\"$cellwidth%\" ":"";
+                //$rigthwidth=($rightexists)? "width=\"$cellwidth%\" ":"";
+                $rigthwidth="";
                 $mycolumns .=  "\t<col class=\"separator rigth_separator\" {$rigthwidth}/>\n";
                 $answer_head_line .= "\n\t<td class=\"header_separator rigth_separator\">&nbsp;</td>\n";
             }
             if($shownoanswer)
             {
-                $mycolumns .=  "\t<col class=\"col-no-answer\"  width=\"$cellwidth%\" />\n";
+                //$mycolumns .=  "\t<col class=\"col-no-answer\"  width=\"$cellwidth%\" />\n";
+                $mycolumns .=  "\t<col class=\"col-no-answer\"  />\n";
                 $answer_head_line .= "\n\t<th class=\"header_no_answer\">".gT('No answer')."</th>\n";
             }
             $answer_head2 = "\n<tr class=\"array1 header_row dontread\">\n"
@@ -6084,7 +6129,8 @@ function do_array_dual($ia)
                 $answer_head1 = "";
             }
             $answer .= '<div class="no-more-tables no-more-tables-array-dual">';
-            $answer .= "\n<table class=\"table-in-qanda-9 question subquestions-list questions-list\" summary=\"{$caption}\">\n"
+            //$answer .= "\n<table class=\"table-in-qanda-9 question subquestions-list questions-list\" summary=\"{$caption}\">\n"
+            $answer .= "\n<table class=\"table-in-qanda-9 question subquestions-list questions-list\">\n"
             . $mycolumns
             . "\n\t<thead>\n"
             . $answer_head1
@@ -6284,19 +6330,23 @@ function do_array_dual($ia)
             $colspan_2 = '';
             $suffix_cell = '';
             $answer .= '<div class="no-more-tables no-more-tables-array-dual-dropdown-layout">';
-            $answer .= "\n<table class=\"table-in-qanda-10 question subquestion-list questions-list dropdown-list\" summary=\"{$caption}\">\n"
-            . "\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
+            //$answer .= "\n<table class=\"table-in-qanda-10 question subquestion-list questions-list dropdown-list\" summary=\"{$caption}\">\n"
+            $answer .= "\n<table class=\"table-in-qanda-10 question subquestion-list questions-list dropdown-list\">\n"
+            //. "\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
+            . "\t<col class=\"answertext\"  />\n";
 
             if($ddprefix != '' || $ddsuffix != '')
             {
-                $answer .= "\t<colgroup width=\"$cellwidth%\">\n";
+                //$answer .= "\t<colgroup width=\"$cellwidth%\">\n";
+                $answer .= "\t<colgroup >\n";
             }
             if($ddprefix != '')
             {
                 $answer .= "\t\t<col class=\"ddprefix\" />\n";
                 $colspan_1 = ' colspan="2"';
             }
-            $headcolwidth=($ddprefix != '' || $ddsuffix != '')?"":" width=\"$cellwidth%\"";
+            //$headcolwidth=($ddprefix != '' || $ddsuffix != '')?"":" width=\"$cellwidth%\"";
+            $headcolwidth="";
             $answer .= "\t<col class=\"dsheader\"{$headcolwidth} />\n";
             if($ddsuffix != '')
             {
@@ -6306,10 +6356,12 @@ function do_array_dual($ia)
             {
                 $answer .= "\t</colgroup>\n";
             }
-            $answer .= "\t<col class=\"ddarrayseparator\" width=\"{$separatorwidth}%\" />\n";
+            //$answer .= "\t<col class=\"ddarrayseparator\" width=\"{$separatorwidth}%\" />\n";
+            $answer .= "\t<col class=\"ddarrayseparator\" />\n";
             if($ddprefix != '' || $ddsuffix != '')
             {
-                $answer .= "\t<colgroup width=\"$cellwidth%\">\n";
+                //$answer .= "\t<colgroup width=\"$cellwidth%\">\n";
+                $answer .= "\t<colgroup >\n";
             }
             if($ddprefix != '')
             {
