@@ -19,37 +19,28 @@ class htmleditor_pop extends Survey_Common_Action
     function index()
     {
         Yii::app()->loadHelper('admin/htmleditor');
-        $ckLanguage = sTranslateLangCode2CK(Yii::app()->session['adminlang']);
-
-        $aData['sFieldName'] = $sFieldName = sanitize_paranoid_string(App()->request->getQuery('name'));// The fieldname : an input name
-        $aData['sFieldText'] = $sFieldText = CHtml::encode(App()->request->getQuery('text')); // Not text : is description of the window
-        $aData['sFieldType'] = $sFieldType = sanitize_paranoid_string(App()->request->getQuery('type')); // Type of field : welcome email_invite question ....
-        $aData['sAction'] = $sAction = sanitize_paranoid_string(App()->request->getQuery('action'));
-        $aData['iSurveyId'] = $iSurveyId = sanitize_int(App()->request->getQuery('sid',0));
-        $aData['iGroupId'] = $iGroupId = sanitize_int(App()->request->getQuery('gid',0));
-        $aData['iQuestionId'] = $iQuestionId = sanitize_int(App()->request->getQuery('qid',0));
-        $sLanguage = sanitize_paranoid_string(App()->request->getQuery('lang')); // Not used : take the content with input name
-
-
-        //~ if (get_magic_quotes_gpc())
-            //~ $aData['sFieldText'] = $sFieldText = stripslashes($sFieldText);
-        //~ else
-            //~ $aData['sFieldText'] = $sFieldText;
-
-        if (!$sFieldName || !$sFieldText)
+        $aData = array(
+            'ckLanguage' => sTranslateLangCode2CK(Yii::app()->session['adminlang']),
+            'sFieldName' => sanitize_xss_string(App()->request->getQuery('name')),// The fieldname : an input name
+            'sFieldText' => sanitize_xss_string(App()->request->getQuery('text')), // Not text : is description of the window
+            'sFieldType' => sanitize_xss_string(App()->request->getQuery('type')), // Type of field : welcome email_invite question ....
+            'sAction' => sanitize_paranoid_string(App()->request->getQuery('action')),
+            'iSurveyId' => sanitize_int(App()->request->getQuery('sid',0)),
+            'iGroupId' => sanitize_int(App()->request->getQuery('gid',0)),
+            'iQuestionId'=> sanitize_int(App()->request->getQuery('qid',0)),
+        );
+        if (!$aData['sFieldName'])
         {
             $this->getController()->render('/admin/htmleditor/pop_nofields_view', $aData);
         }
         else
         {
-            $aData['sControlIdEna'] = $sFieldName . '_popupctrlena';
-            $aData['sControlIdDis'] = $sFieldName . '_popupctrldis';
-            $aData['ckLanguage'] = $ckLanguage;
-
+            $aData['sControlIdEna'] = $aData['sFieldName'] . '_popupctrlena';
+            $aData['sControlIdDis'] = $aData['sFieldName'] . '_popupctrldis';
             $aData['toolbarname'] = 'popup';
             $aData['htmlformatoption'] = '';
 
-            if (in_array($sFieldType, array('email-inv', 'email-reg', 'email-conf', 'email-rem')))
+            if (in_array($aData['sFieldType'], array('email-inv', 'email-reg', 'email-conf', 'email-rem')))
             {
                 $aData['htmlformatoption'] = ',fullPage:true';
             }
