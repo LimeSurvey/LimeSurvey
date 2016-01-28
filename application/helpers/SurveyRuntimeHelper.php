@@ -1256,7 +1256,7 @@ class SurveyRuntimeHelper {
             {
                 echo " style='display: none;'";
             }
-            echo " class='col-xs-12'>\n";
+            echo " class='row'>\n";
             echo templatereplace(file_get_contents($sTemplateViewPath."startgroup.pstpl"), array(), $redata);
             echo "\n";
 

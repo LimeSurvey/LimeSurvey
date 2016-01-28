@@ -5,6 +5,5 @@
  * @var $value          $anscount;
  */
 ?>
-OKOKOKOK
 <input type='hidden' name='<?php echo $name; ?>' value='<?php echo $value;?>' />
 <ul class="list-unstyled subquestions-list questions-list checkbox-text-list">

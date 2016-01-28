@@ -3858,7 +3858,7 @@ function do_yesno($ia)
         'name'=>$ia[1],
         'yChecked' => $yChecked,
         'nChecked' => $nChecked,
-        'naChecked'=> $naChecke,
+        'naChecked'=> $naChecked,
         'noAnswer' => $noAnswer,
         'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
         'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],

@@ -37,7 +37,16 @@
       </div>
     </nav>
 
-    <div class="outerframe container">
+
+    <!-- Top container -->
+    <div id="topContainer">
+        <div class="container">
+            {PERCENTCOMPLETE}
+            {LANGUAGECHANGER}
+        </div>
+    </div>
+
+    <div class="outerframe container" id="outerframeContainer">
         <div class="row" id="main-row">
             <div class="col-sm-12 col-centered" id="main-col">
 <!-- end of startpage.pstl -->

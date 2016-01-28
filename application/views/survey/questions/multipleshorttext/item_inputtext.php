@@ -17,19 +17,19 @@
 */
 ?>
 <!--item_inputtext -->
-<li class="question-item answer-item text-item <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?> >
+<div class="question-item answer-item text-item <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?> >
     <?php if($alert):?>
         <!--  color code missing mandatory questions red -->
-        <div class="alert alert-danger errormandatory" role="alert">'.
+        <div class="alert alert-danger errormandatory" role="alert">
             <?php echo $question; ?>
         </div>
     <?php endif;?>
 
-    <div  class="form-group-row row">';
+    <div  class="form-group-row row">
         <label class='control-label col-xs-12' for="answer<?php echo$myfname;?>">
             <?php echo $question; ?>
         </label>
-        <div class="col-xs-12">';
+        <div class="col-xs-12">
             <?php echo $prefix; ?>
             <input
                 class="text <?php echo $kpclass; ?> form-control"
@@ -43,4 +43,4 @@
             />
             <?php echo $suffix; ?>
         </div>
-</li>
+</div>

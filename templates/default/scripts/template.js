@@ -25,7 +25,7 @@
 function focusFirst(Event)
 {
 
-	$('#limesurvey :input:visible:enabled:first').focus();
+    $('#limesurvey :input:visible:enabled:first').focus();
 
 }
 /*
@@ -37,7 +37,7 @@ function focusFirst(Event)
 /* Uncomment below if you want to use the focusFirst function */
 /*
 $(document).ready(function(){
-	focusFirst();
+    focusFirst();
 });
 */
 
@@ -74,6 +74,37 @@ function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
 }
 
 $(document).ready(function(){
+
+    var outerframeDistanceFromTop = 50;
+    // Manage top container
+    if(!$.trim($('#topContainer .container').html()))
+    {
+        $('#topContainer').hide();
+    }
+    else
+    {
+        $topContainerHeight = $('#topContainer').height();
+        outerframeDistanceFromTop += $topContainerHeight;
+    }
+
+    if(!$.trim($('#surveynametitle').html()))
+    {
+        if(!$.trim($('#surveydescription').html()))
+        {
+            $('#survey-header').hide();
+        }
+    }
+
+    $('#outerframeContainer').css({marginTop:outerframeDistanceFromTop+'px'});
+
+    $('.questionhelp').each(function(){
+        $that = $(this);
+        if(!$.trim($that.html()))
+        {
+            $that.hide();
+        }
+    });
+
 
     // Load survey button
     if ($('#loadallbtnlink').length > 0){

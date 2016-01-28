@@ -1,6 +1,4 @@
 <!-- Start group -->
-<div class="row" id="welcome-container">
-    <div class="col-sm-12 ">
-        <h3 class="group-name">{GROUPNAME}</h3>
-    </div>
+<div class="col-xs-12" id="welcome-container">
+    <h3 class="group-name">{GROUPNAME}</h3>
 </div>
