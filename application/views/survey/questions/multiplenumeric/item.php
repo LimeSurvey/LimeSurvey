@@ -20,16 +20,16 @@
 <!-- question attribute "display_rows" is set -> we need a textarea to be able to show several rows -->
 <li class="question-item answer-item text-item <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?>>
     <?php if($alert):?>
-        <div class="alert alert-danger errormandatory"  role="alert">'.
+        <div class="alert alert-danger errormandatory"  role="alert">
             <?php echo $labelText;?>
-        </div>
+        </div> <!-- alert -->
 
     <?php endif;?>
     <div  class="form-group-row row">
         <label class='control-label col-xs-12' for="answer<?php echo $myfname; ?>">
             <?php echo $labelText;?>
         </label>
-        <div class="col-xs-12">
+        <div class="col-xs-12 input">
             <?php echo $prefix;?>
             <input
                 class="text form-control <?php echo $kpclass;?>"
@@ -42,6 +42,6 @@
                 <?php echo $maxlength; ?>
             />
             <?php echo $suffix;?>
-        </div>
-    </div>
+        </div>  <!-- xs-12 -->
+    </div> <!-- form group -->
 </li>

@@ -26,7 +26,7 @@
     type="text"
     size="<?php echo $tiwidth;?>"
     name="<?php echo $id;?>"
-    title=<?php echo eT('Only numbers may be entered in this field.');?>"
+    title="<?php echo eT('Only numbers may be entered in this field.');?>"
     id="answer<?php echo $id;?>"
     value="<?php echo $fValue;?>"
     onkeyup="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type,'onchange', <?php echo $integeronly; ?>);"

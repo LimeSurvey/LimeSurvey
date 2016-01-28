@@ -5,9 +5,10 @@
  * @var $dateoutput                     htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8')
  * @var $checkconditionFunction         $checkconditionFunction.'(this.value, this.name, this.type)
  * @var $dateformatdetails              $dateformatdetails['jsdate']
+ * @var $dateformat                      $dateformatdetails['dateformat']
  */
 ?>
-
+<!-- Date footer-->
 <input
         class="text"
         type="text"
@@ -17,9 +18,8 @@
         id="answer<?php echo $name; ?>"
         value="<?php echo $dateoutput;?>"
         maxlength="10"
-        alt="<?php eT('Answer'); ?>"
         onchange="<?php echo $checkconditionFunction; ?>"
-        title="<?php sprintf(gT('Date in the format : %s'),$dateformatdetails['dateformat']);?>"
+        title="<?php echo sprintf(gT('Date in the format : %s'),$dateformat);?>"
 />
 </p> <!-- Date item -->
 <input type="hidden" id="dateformat<?php echo $name; ?>" value="<?php echo $dateformatdetails; ?>"/>

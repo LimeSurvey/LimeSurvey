@@ -24,7 +24,7 @@
 <!--  The list with HTML answers -->
 <div style="display:none">
     <?php foreach ($answers as $ansrow):?>
-        <div id="htmlblock-<?php $rankId;?>-<?php echo $ansrow['code'];?>">
+        <div id="htmlblock-<?php echo $rankId;?>-<?php echo $ansrow['code'];?>">
             <?php echo $ansrow['answer']; ?>
         </div>
     <?php endforeach;?>

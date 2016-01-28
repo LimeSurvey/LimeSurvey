@@ -1,6 +1,7 @@
 <?php
 /**
- * List DropDown Option group footer Html
+ * List DropDown Option group header Html
+ * @var $categoryname   flattenText($categoryname)
  */
 ?>
-</optgroup>
+<optgroup class="dropdowncategory" label="<?php echo $categoryname;?>">

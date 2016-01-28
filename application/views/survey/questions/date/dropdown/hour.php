@@ -14,7 +14,7 @@
     <?php for ($i=0; $i<24; $i++): ?>
         <option value="<?php echo $i; ?>" <?php if ($i === (int)$currenthour && is_numeric($currenthour)):?>SELECTED<?php endif;?>>
             <?php if ($datepart=='H'):?>
-                <?php sprintf('%02d', $i); ?>
+                <?php echo sprintf('%02d', $i); ?>
             <?php else:?>
                 <?php echo $i;?>
             <?php endif;?>

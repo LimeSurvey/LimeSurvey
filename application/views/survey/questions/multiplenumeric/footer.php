@@ -32,4 +32,5 @@
             </span>
         </p>
     <?php endif; ?>
-</div>
+</ul>
+</div> <!-- Footer -->

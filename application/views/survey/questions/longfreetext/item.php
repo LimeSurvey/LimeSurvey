@@ -11,6 +11,7 @@
  * @var $dispVal
  */
 ?>
+<!-- longfreetext item -->
 <p class='question answer-item text-item <?php echo $extraclass; ?>'>
     <label for='answer<?php echo $name; ?>' class='hide label'>
         <?php eT('Your answer'); ?>
@@ -24,7 +25,8 @@
     cols="<?php echo $tiwidth; ?>"
     <?php echo $maxlength; ?>
     onkeyup="<?php echo $checkconditionFunction;?>"
-/>
+>
 <?php echo $dispVal;?>
 </textarea>
 </p>
+<!-- End : longfreetext item -->

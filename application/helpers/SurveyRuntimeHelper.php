@@ -1510,8 +1510,8 @@ class SurveyRuntimeHelper {
         $sTemplateUrl=Template::model()->getTemplateURL($oSurveyId->template);
         if(flattenText($aReplacement['QUESTIONHELP'], true,true) != '')
         {
+            $aReplacement['QUESTIONHELP']= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/questionhelp', array('questionHelp'=>$aReplacement['QUESTIONHELP']), true);;
 
-            $aReplacement['QUESTIONHELP']= '<div class="alert alert-info questionhelp"><span class="glyphicon glyphicon-question-sign"></span>&nbsp'.$aReplacement['QUESTIONHELP'].'</div>';
         }
         // Core value :the classes
         $aReplacement['QUESTION_CLASS'] = Question::getQuestionClass($sType);

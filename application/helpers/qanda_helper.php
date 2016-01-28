@@ -1139,9 +1139,10 @@ function do_date($ia)
             'dateoutput'=>htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8'),
             'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
             'dateformatdetails'=>$dateformatdetails['jsdate'],
+            'dateformat'=>$dateformatdetails['dateformat'],
         );
-
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/data_footer', $footerData, true);
+//
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/date_footer', $footerData, true);
         App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}","doDropDownDate({$ia[0]});",CClientScript::POS_HEAD);
         // MayDo:
         // add js code to
@@ -1164,8 +1165,7 @@ function do_date($ia)
         // Format the date  for output
         $dateoutput=trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
         if ($dateoutput!='' & $dateoutput!='INVALID')
-        {
-            $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
+        {            $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
             $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
         }
 
@@ -1187,6 +1187,8 @@ function do_date($ia)
             'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
             'language'=>App()->language,
             'hidetip'=>trim($aQuestionAttributes['hide_tip'])==0,
+            'dateoutput'=>$dateoutput,
+            'qid' => $ia[0],
         );
 
         // HTML for date question using datepicker
@@ -1251,8 +1253,6 @@ function do_list_dropdown($ia)
     if($optCategorySeparator=='')
         unset($optCategorySeparator);
 
-    $answer='';
-
     //// Retrieving datas
 
     // Getting question
@@ -1263,6 +1263,8 @@ function do_list_dropdown($ia)
     $ansresult = $oQuestion->getOrderedAnswers($aQuestionAttributes['random_order'], $aQuestionAttributes['alphasort'] );
 
     $dropdownSize = '';
+
+
     if (isset($aQuestionAttributes['dropdown_size']) && $aQuestionAttributes['dropdown_size'] > 0)
     {
         $_height = sanitize_int($aQuestionAttributes['dropdown_size']) ;
@@ -1294,6 +1296,13 @@ function do_list_dropdown($ia)
     }
     $_rowNum=0;
     $_prefix='';
+
+    $selectData = array(
+        'name'=>$ia[1],
+        'dropdownSize'=>$dropdownSize,
+        'checkconditionFunction'=>$checkconditionFunction
+    );
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select', $selectData, true);
 
     if (!isset($optCategorySeparator))
     {
@@ -1390,7 +1399,7 @@ function do_list_dropdown($ia)
             'opt_select'=>'SELECTED',
             'answer'=>gT('Please choose...')
         );
-        $answer = Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true).$answer;
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
     }
 
     if (isset($other) && $other=='Y')
@@ -1430,12 +1439,6 @@ function do_list_dropdown($ia)
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
     }
 
-    $selectData = array(
-        'name'=>$ia[1],
-        'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
-    );
-
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select_footer', $selectData, true);
 
     if (isset($other) && $other=='Y')
     {
@@ -1446,30 +1449,9 @@ function do_list_dropdown($ia)
         $sselect_show_hide = '';
     }
 
-    $sselect = '';
-    //Time Limit Code
-    if (trim($aQuestionAttributes['time_limit'])!='')
-    {
-        $sselect .= return_timer_script($aQuestionAttributes, $ia);
-    }
-    //End Time Limit Code
-    $sselectData = array(
-
-    );
-
-    $sselectData = array(
-        'name'=>$ia[1],
-        'dropdownSize'=>$dropdownSize,
-        'checkconditionFunction'=> $checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide,
-        'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
-    );
-
-    $sselect .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select_footer', $sselectData, true);
-    $answer = $sselect.$answer;
-
     if (isset($other) && $other=='Y')
     {
-        $answer = "\n<script type=\"text/javascript\">\n"
+        $answer .= "\n<script type=\"text/javascript\">\n"
         ."<!--\n"
         ."function showhideother(name, value)\n"
         ."\t{\n"
@@ -1485,7 +1467,7 @@ function do_list_dropdown($ia)
         ."document.getElementById(hiddenothername).value='';\n" // reset othercomment field
         ."}\n"
         ."\t}\n"
-        ."//--></script>\n".$answer;
+        ."//--></script>\n";
         $answer .= '<br/>';
         $answer .= '                <input class="form-control" type="text" id="othertext'.$ia[1].'" name="'.$ia[1].'other" style="display:';
 
@@ -1511,38 +1493,26 @@ function do_list_dropdown($ia)
         // --> END NEW FEATURE - SAVE
         $inputnames[]=$ia[1]."other";
     }
-    else
-    {
-        $answer .= "</p>";
-    }
 
-    //    $checkotherscript = "";
-    //    if (isset($other) && $other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1)
-    //    {
-    //        $checkotherscript = "\n<script type='text/javascript'>\n"
-    //        . "\t<!--\n"
-    //        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
-    //        . "function ensureOther_{$ia[0]}()\n"
-    //        . "{\n"
-    //        . "\tothercommentval=document.getElementById('othertext{$ia[1]}').value;\n"
-    //        . "\totherval=document.getElementById('answer{$ia[1]}').value;\n"
-    //        . "\tif (otherval == '-oth-' && othercommentval == '') {\n"
-    //        . "alert('".sprintf(gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($othertext,true,true)),trim(javascriptEscape($ia[3],true,true)))."');\n"
-    //        . "return false;\n"
-    //        . "\t}\n"
-    //        . "\telse {\n"
-    //        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
-    //        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
-    //        . "}\n"
-    //        . "\t}\n"
-    //        . "}\n"
-    //        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
-    //        . "\t-->\n"
-    //        . "</script>\n";
-    //    }
-    //    $answer = $checkotherscript . $answer;
+    $sselectData = array(
+        'name'=>$ia[1],
+        'dropdownSize'=>$dropdownSize,
+        'checkconditionFunction'=> $checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide,
+        'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+    );
+
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select_footer', $sselectData, true);
+
 
     $inputnames[]=$ia[1];
+
+    //Time Limit Code
+    if (trim($aQuestionAttributes['time_limit'])!='')
+    {
+        $sselect .= return_timer_script($aQuestionAttributes, $ia);
+    }
+    //End Time Limit Code
+
     return array($answer, $inputnames);
 }
 
@@ -1756,7 +1726,7 @@ function do_list_radio($ia)
             'nbColInputXs'=>$nbColInputXs,
             'checkedState'=>$checkedState,
             'kpclass'=>$kpclass,
-            'oth_checkconditionFunction'=>$oth_checkconditionFunction,
+            'oth_checkconditionFunction'=>$oth_checkconditionFunction.'(this.value, this.name, this.type)',
             'checkconditionFunction'=>$checkconditionFunction,
         );
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_other_row', $aData, true);
@@ -2066,10 +2036,10 @@ function do_ranking($ia)
         $myfname=$ia[1].$i;
         if($i==1)
         {
-            $labeltext .=gT('First choice');
+            $labeltext =gT('First choice');
         }else
         {
-            $labeltext .=sprintf(gT('Choice of rank %s'),$i);
+            $labeltext = sprintf(gT('Choice of rank %s'),$i);
         }
         $itemListHeaderDatas = array(
             'myfname'=>$myfname,
@@ -2108,6 +2078,7 @@ function do_ranking($ia)
                 'id'=> '',
                 'optiontext'=>flattenText($ansrow['answer']),
             );
+
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item', $itemDatas, true);
         }
         $itemlistfooterDatas = array(
@@ -2505,6 +2476,7 @@ function do_multiplechoice_withcomments($ia)
         'name'=>'MULTI'.$ia[1],
         'value'=> $anscount
     );
+
     $answer_main = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/header', $headerDatas, true);
 
     $fn = 1;
@@ -2595,7 +2567,7 @@ function do_multiplechoice_withcomments($ia)
             'inputCommentName'=>$myfname2,
             'inputCOmmentValue'=>$inputCOmmentValue,
         );
-        $answer_main = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/item', $itemDatas, true);
+        $answer_main .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/item', $itemDatas, true);
 
     }
     if ($other == 'Y')
@@ -2648,6 +2620,8 @@ function do_multiplechoice_withcomments($ia)
     }
 
     $answer_main .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/footer', array(), true);
+
+    $answer = $answer_main;
 
     if($aQuestionAttributes['commented_checkbox']!="allways" && $aQuestionAttributes['commented_checkbox_auto'])
     {
@@ -2713,7 +2687,7 @@ function do_file_upload($ia)
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."modaldialog.js");
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "uploader-files.css");
     // Modal dialog
-    $answer .= $uploadbutton;
+    //$answer .= $uploadbutton;
 
     $filecountvalue = '0';
     if (array_key_exists($ia[1]."_filecount", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]))
@@ -2928,7 +2902,8 @@ function do_multipleshorttext($ia)
                     'labelText'=>$ansrow['question'],
                     'prefix'=>$prefix,
                     'kpclass'=>$kpclass,
-                    'rows'=>$drows.' '.$maxlength,
+                    'rows'=>$drows,
+                    'maxlength'=>$maxlength,
                     'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
                     'dispVal'=>$dispVal,
                     'suffix'=>$suffix,
@@ -3014,7 +2989,7 @@ function do_multiplenumeric($ia)
     //Must turn on the "numbers only javascript"
     $extraclass .=" numberonly";
     if ($aQuestionAttributes['thousands_separator'] == 1) {
-        //App()->clientScript->registerPackage('jquery-price-format');
+        App()->clientScript->registerPackage('jquery-price-format');
         App()->clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts').'numerical_input.js');
         $extraclass .= " thousandsseparator";
     }
@@ -3152,6 +3127,7 @@ function do_multiplenumeric($ia)
             }
 
             // color code missing mandatory questions red
+            $alert='';
             if ($ia[6]=='Y' && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '')
             {
                 $alert = true;
@@ -3190,6 +3166,7 @@ function do_multiplenumeric($ia)
                 'myfname'=>$myfname,
                 'dispVal'=>$dispVal,
                 'maxlength'=>$maxlength,
+                'labelText'=>$ansrow['question'],
                 'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
             );
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/item', $itemDatas, true);
@@ -3216,15 +3193,16 @@ function do_multiplenumeric($ia)
             'equals_num_value'=>$equals_num_value,
             'id'=>$ia[0],
             'prefix'=>$prefix,
-            'sumRemainingEqn'=>$qinfo['sumRemainingEqn'],
+            'sumRemainingEqn'=>(isset($qinfo))?$qinfo['sumRemainingEqn']:'',
             'displaytotal'=>$displaytotal,
-            'sumEqn'=>$qinfo['sumEqn']
+            'sumEqn'=>(isset($qinfo))?$qinfo['sumEqn']:'',
         );
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/footer', $footerDatas, true);
     }
 
     if($aQuestionAttributes['slider_layout']==1)
     {
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."bootstrap-slider.js");
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."numeric-slider.js");
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "numeric-slider.css");
         if ($slider_default != "")
@@ -3262,6 +3240,7 @@ function do_multiplenumeric($ia)
             'slider_reset' => $slider_reset,
             'lang'=> $aJsLang,
             );
+
         $answer .= "<script type='text/javascript'><!--\n"
                     . " doNumericSlider({$ia[0]},".ls_json_encode($aJsVar).");\n"
                     . " //--></script>";
@@ -3297,7 +3276,7 @@ function do_numerical($ia)
         $prefix = '';
     }
     if ($aQuestionAttributes['thousands_separator'] == 1) {
-        //App()->clientScript->registerPackage('jquery-price-format');
+        App()->clientScript->registerPackage('jquery-price-format');
         App()->clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts').'numerical_input.js');
         $extraclass .= " thousandsseparator";
     }
@@ -3379,7 +3358,7 @@ function do_numerical($ia)
         'maxlength'=>$maxlength,
         'suffix'=>$suffix,
     );
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/numerical/item', $itemDatas, true);
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/numerical/item', $itemDatas, true);
 
     $inputnames[]=$ia[1];
     $mandatory=null;
@@ -3913,12 +3892,12 @@ function do_gender($ia)
         'name'=>$ia[1],
         'fChecked' => $fChecked,
         'mChecked' => $mChecked,
-        'naChecked'=> $naChecke,
+        'naChecked'=> $naChecked,
         'noAnswer' => $noAnswer,
         'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
         'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
     );
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/gender/item', $itemDatas, true);
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/item', $itemDatas, true);
 
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
@@ -3985,20 +3964,31 @@ function do_array_5point($ia)
     $anscount = count($aSubquestions);
 
     $fn = 1;
-    $answer = "\n<table class=\"table table-striped question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
-    . "\t<colgroup class=\"col-responses\">\n"
-    . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
+
+
+
+    $headerDatas = array(
+        'extraclass'=>$extraclass,
+        'caption'=>$caption,
+        'answerwidth'=>$answerwidth,
+    );
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/header', $headerDatas, true);
+
     $odd_even = '';
 
     for ($xc=1; $xc<=5; $xc++)
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        // width obsolete
+        $answer .= "<col class=\"$odd_even\" />\n";
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        // width obsolete
+        $answer .= "<col class=\"col-no-answer $odd_even\" />\n";
     }
     $answer .= "\t</colgroup>\n\n"
     . "\t<thead>\n<tr class=\"array1 dontread\">\n"
@@ -4007,7 +3997,11 @@ function do_array_5point($ia)
     {
         $answer .= "\t<th class='th-1'>$xc</th>\n";
     }
-    if ($right_exists) {$answer .= "\t<td width='$answerwidth%'>&nbsp;</td>\n";}
+    if ($right_exists)
+    {
+        //$answer .= "\t<td width='$answerwidth%'>&nbsp;</td>\n";
+        $answer .= "\t<td>&nbsp;</td>\n";
+    }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $answer .= "\t<th class='th-2'>".gT('No answer')."</th>\n";
@@ -4042,7 +4036,8 @@ function do_array_5point($ia)
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
 
         $answer_t_content .= $htmltbody2
-        . "\t<th class=\"answertext\" width=\"$answerwidth%\">\n$answertext\n"
+        //. "\t<th class=\"answertext\" width=\"$answerwidth%\">\n$answertext\n"
+        . "\t<th class=\"answertext\" >\n$answertext\n"
         . $hiddenfield
         . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
@@ -4067,11 +4062,13 @@ function do_array_5point($ia)
         if (strpos($answertext2,'|'))
         {
             $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
-            $answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext2</td>\n";
+            //$answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext2</td>\n";
+            $answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' >$answertext2</td>\n";
         }
         elseif ($right_exists)
         {
-            $answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
+            //$answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
+            $answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' >&nbsp;</td>\n";
         }
 
 
@@ -4150,20 +4147,26 @@ function do_array_10point($ia)
 
     $fn = 1;
     $answer = '<div class="no-more-tables no-more-tables-10-point">';
-    $answer .= "\n<table class=\"table-in-qanda-2 question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
+    /*$answer .= "\n<table class=\"table-in-qanda-2 question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
-    . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
+    . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";*/
+    $answer .= "\n<table class=\"table-in-qanda-2 question subquestion-list questions-list {$extraclass}\">\n"
+    . "\t<colgroup class=\"col-responses\">\n"
+    . "\t<col class=\"col-answers\" />\n";
+
 
     $odd_even = '';
     for ($xc=1; $xc<=10; $xc++)
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        $answer .= "<col class=\"$odd_even\"  />\n";
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        $answer .= "<col class=\"col-no-answer $odd_even\"  />\n";
     }
     $answer .= "\t</colgroup>\n\n"
     . "\t<thead>\n<tr class=\"array1 dontread\">\n"
@@ -4290,19 +4293,24 @@ function do_array_yesnouncertain($ia)
     $aSubquestions = $ansresult->readAll();
     $anscount = count($aSubquestions);
     $fn = 1;
-    $answer = "\n<table class=\"table table-striped table-condensed table-in-qanda-3 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
+    /*$answer = "\n<table class=\"table table-striped table-condensed table-in-qanda-3 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
-    . "\n\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
+    . "\n\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";*/
+    $answer = "\n<table class=\"table table-striped table-condensed table-in-qanda-3 question subquestions-list questions-list {$extraclass}\">\n"
+    . "\t<colgroup class=\"col-responses\">\n"
+    . "\n\t<col class=\"col-answers\" />\n";
     $odd_even = '';
     for ($xc=1; $xc<=3; $xc++)
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        $answer .= "<col class=\"$odd_even\"  />\n";
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        $answer .= "<col class=\"col-no-answer $odd_even\" />\n";
     }
     $answer .= "\t</colgroup>\n\n"
     . "\t<thead>\n<tr class=\"array1\">\n"
@@ -4461,20 +4469,27 @@ function do_array_increasesamedecrease($ia)
 
     $fn = 1;
 
+    /*
     $answer = "\n<table class=\"table table-condensed table-striped table-in-qanda-4 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
+*/
+$answer = "\n<table class=\"table table-condensed table-striped table-in-qanda-4 question subquestions-list questions-list {$extraclass}\" >\n"
+. "\t<colgroup class=\"col-responses\">\n"
+. "\t<col class=\"col-answers\" />\n";
 
     $odd_even = '';
     for ($xc=1; $xc<=3; $xc++)
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        $answer .= "<col class=\"$odd_even\" />\n";
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        $answer .= "<col class=\"col-no-answer $odd_even\" />\n";
     }
     $answer .= "\t</colgroup>\n"
     . "\t<thead>\n"
@@ -4516,12 +4531,19 @@ function do_array_increasesamedecrease($ia)
         $answer_body .= "\t<th class=\"answertext\">\n"
         . "$answertext\n"
         . $hiddenfield
-        . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
+        /*. "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+        {
+            $answer_body .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+        }
+        $answer_body .= "\" />\n\t</th>\n";*/
+        . "<input type=\"hidden\" name=\"thjava$myfname\" id=\"thjava$myfname\" value=\"";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
             $answer_body .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
         }
         $answer_body .= "\" />\n\t</th>\n";
+
 
         $answer_body .= "\t<td class=\"answer_cell_I answer-item radio-item\">\n"
         ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" ";
@@ -4670,7 +4692,8 @@ function do_array($ia)
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
         $answer_start = '<div class="no-more-tables">';
-        $answer_start .= "\n<table class=\"table-in-qanda-5 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n";
+        //$answer_start .= "\n<table class=\"table-in-qanda-5 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n";
+        $answer_start .= "\n<table class=\"table-in-qanda-5 question subquestions-list questions-list {$extraclass}\">\n";
         $answer_head_line= "\t<td>&nbsp;</td>\n";
             foreach ($labelans as $ld)
             {
@@ -4779,24 +4802,29 @@ function do_array($ia)
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
         }
         $answer .= "</tbody>\n";
+        /*$answer_cols = "\t<colgroup class=\"col-responses\">\n"
+        ."\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n" ;*/
         $answer_cols = "\t<colgroup class=\"col-responses\">\n"
-        ."\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n" ;
+        ."\t<col class=\"col-answers\" />\n" ;
 
         $odd_even = '';
         foreach ($labelans as $c)
         {
             $odd_even = alternation($odd_even);
-            $answer_cols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            //$answer_cols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            $answer_cols .= "<col class=\"$odd_even\" />\n";
         }
         if ($right_exists)
         {
             $odd_even = alternation($odd_even);
-            $answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
+            //$answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
+            $answer_cols .= "<col class=\"answertextright $odd_even\" />\n";
         }
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
         {
             $odd_even = alternation($odd_even);
-            $answer_cols .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+            //$answer_cols .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+            $answer_cols .= "<col class=\"col-no-answer $odd_even\" />\n";
         }
         $answer_cols .= "\t</colgroup>\n";
 
@@ -4839,7 +4867,8 @@ function do_array($ia)
         }
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-        $answer_start = "\n<table class=\"table-in-qanda-6 question subquestions-list questions-list {$extraclass}\" summary=\"$caption\" >\n";
+        //$answer_start = "\n<table class=\"table-in-qanda-6 question subquestions-list questions-list {$extraclass}\" summary=\"$caption\" >\n";
+        $answer_start = "\n<table class=\"table-in-qanda-6 question subquestions-list questions-list {$extraclass}\" >\n";
 
         $answer = "\t<tbody>\n";
         $trbc = '';
@@ -5161,29 +5190,36 @@ function do_array_multitext($ia)
         $anscount = count($aQuestions);
         $fn=1;
 
-        $answer_cols = "\t<colgroup class=\"col-responses\">\n"
+        /*$answer_cols = "\t<colgroup class=\"col-responses\">\n"
         ."\n\t\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
-        $answer_head_line= "\t\t\t<td width='$answerwidth%'>&nbsp;</td>\n";
+        $answer_head_line= "\t\t\t<td width='$answerwidth%'>&nbsp;</td>\n";*/
+
+        $answer_cols = "\t<colgroup class=\"col-responses\">\n"
+        ."\n\t\t<col class=\"answertext\" />\n";
+        $answer_head_line= "\t\t\t<td>&nbsp;</td>\n";
 
         $odd_even = '';
         foreach ($labelans as $ld)
         {
             $answer_head_line .= "\t<th class=\"answertext\">".$ld."</th>\n";
             $odd_even = alternation($odd_even);
-            $answer_cols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            //$answer_cols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            $answer_cols .= "<col class=\"$odd_even\" />\n";
         }
         if ($right_exists)
         {
             $answer_head_line .= "\t<td>&nbsp;</td>\n";// class=\"answertextright\"
             $odd_even = alternation($odd_even);
-            $answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$cellwidth%\" />\n";
+            //$answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$cellwidth%\" />\n";
+            $answer_cols .= "<col class=\"answertextright $odd_even\"  />\n";
         }
 
         if( ($show_grand == true &&  $show_totals == 'col' ) || $show_totals == 'row' ||  $show_totals == 'both' )
         {
             $answer_head_line .= $col_head;
             $odd_even = alternation($odd_even);
-            $answer_cols .= "\t\t<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            //$answer_cols .= "\t\t<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            $answer_cols .= "\t\t<col class=\"$odd_even\" />\n";
         }
         $answer_cols .= "\t</colgroup>\n";
 
@@ -5192,7 +5228,8 @@ function do_array_multitext($ia)
         . "</tr>\n\t</thead>\n";
 
         $answer = '<div class="no-more-tables no-more-tables-array-multi-text">';
-        $answer .= "\n<table$q_table_id_HTML class=\"table-in-qanda-6  question subquestions-list questions-list {$extraclass} {$num_class} {$totals_class}\"  summary=\"{$caption}\">\n"
+        //$answer .= "\n<table$q_table_id_HTML class=\"table-in-qanda-6  question subquestions-list questions-list {$extraclass} {$num_class} {$totals_class}\"  summary=\"{$caption}\">\n"
+        $answer .= "\n<table$q_table_id_HTML class=\"table-in-qanda-6  question subquestions-list questions-list {$extraclass} {$num_class} {$totals_class}\">\n"
         . $answer_cols
         . $answer_head;
         $answer .= "<tbody>";
@@ -5274,11 +5311,13 @@ function do_array_multitext($ia)
             if (strpos($answertextsave,'|'))
             {
                 $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-                $answer .= "\t\t\t<td  class=\"answertextright\" style=\"text-align:left;\" width=\"$answerwidth%\">$answertext</td>\n";
+                //$answer .= "\t\t\t<td  class=\"answertextright\" style=\"text-align:left;\" width=\"$answerwidth%\">$answertext</td>\n";
+                $answer .= "\t\t\t<td  class=\"answertextright\" style=\"text-align:left;\">$answertext</td>\n";
             }
             elseif ($right_exists)
             {
-                $answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' width='$answerwidth%'>&nbsp;</td>\n";
+                //$answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' width='$answerwidth%'>&nbsp;</td>\n";
+                $answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' >&nbsp;</td>\n";
             }
 
             $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $row_total);
@@ -5511,20 +5550,23 @@ function do_array_multiflexi($ia)
         $fn=1;
 
         $mycols = "\t<colgroup class=\"col-responses\">\n"
-        . "\n\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
+        //. "\n\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
+        . "\n\t<col class=\"answertext\" />\n";
         $answer_head_line = "\t<th >&nbsp;</th>\n";
         $odd_even = '';
         foreach ($labelans as $ld)
         {
             $answer_head_line .= "\t<th  class='th-11'>".$ld."</th>\n";
             $odd_even = alternation($odd_even);
-            $mycols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            //$mycols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+            $mycols .= "<col class=\"$odd_even\" />\n";
         }
         if ($right_exists)
         {
             $answer_head_line .= "\t<td>&nbsp;</td>";
             $odd_even = alternation($odd_even);
-            $mycols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
+            //$mycols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
+            $mycols .= "<col class=\"answertextright $odd_even\" />\n";
         }
         $answer_head = "\n\t<thead>\n<tr class=\"dontread\">\n"
         . $answer_head_line
@@ -5532,7 +5574,8 @@ function do_array_multiflexi($ia)
         $mycols .= "\t</colgroup>\n";
 
         $trbc = '';
-        $answer = "<div class='no-more-tables'>\n<table class=\"table-in-qanda-7 question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"{$caption}\">\n"
+        //$answer = "<div class='no-more-tables'>\n<table class=\"table-in-qanda-7 question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"{$caption}\">\n"
+        $answer = "<div class='no-more-tables'>\n<table class=\"table-in-qanda-7 question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\">\n"
         . $mycols
         . $answer_head . "\n";
         $answer .= "<tbody>";
@@ -5698,11 +5741,13 @@ function do_array_multiflexi($ia)
             if (strpos($answertextsave,'|'))
             {
                 $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-                $answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext</td>\n";
+                //$answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext</td>\n";
+                $answer .= "\t<td class=\"answertextright\" style='text-align:left;'>$answertext</td>\n";
             }
             elseif ($right_exists)
             {
-                $answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
+                //$answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
+                $answer .= "\t<td class=\"answertextright\" style='text-align:left;'>&nbsp;</td>\n";
             }
 
             $answer .= "</tr>\n";
@@ -5769,14 +5814,17 @@ function do_arraycolumns($ia)
             $fn=1;
             $cellwidth=$anscount;
             $cellwidth=round(( 50 / $cellwidth ) , 1);
-            $answer = "\n<table class=\"table-in-qanda-8  question subquestions-list questions-list\" summary=\"{$caption}\">\n"
+            //$answer = "\n<table class=\"table-in-qanda-8  question subquestions-list questions-list\" summary=\"{$caption}\">\n"
+            $answer = "\n<table class=\"table-in-qanda-8  question subquestions-list questions-list\">\n"
             . "\t<colgroup class=\"col-responses\">\n"
-            . "\t<col class=\"col-answers\" width=\"50%\" />\n";
+            //. "\t<col class=\"col-answers\" width=\"50%\" />\n";
+            . "\t<col class=\"col-answers\" />\n";
             $odd_even = '';
             for( $c = 0 ; $c < $anscount ; ++$c )
             {
                 $odd_even = alternation($odd_even);
-                $answer .= "<col class=\"$odd_even question-item answers-list radio-list\" width=\"$cellwidth%\" />\n";
+                //$answer .= "<col class=\"$odd_even question-item answers-list radio-list\" width=\"$cellwidth%\" />\n";
+                $answer .= "<col class=\"$odd_even question-item answers-list radio-list\" />\n";
             }
             $answer .= "\t</colgroup>\n\n"
             . "\t<thead>\n"
@@ -6009,7 +6057,8 @@ function do_array_dual($ia)
             //$cellwidth=sprintf("%02d", $cellwidth); // No reason to do this, except to leave place for separator ?  But then table can not be the same in all browser
 
             // Header row and colgroups
-            $mycolumns = "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
+            //$mycolumns = "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
+            $mycolumns = "\t<col class=\"col-answers\" />\n";
             $answer_head_line = "\t<th class=\"header_answer_text\">&nbsp;</th>\n\n";
             $mycolumns .= "\t<colgroup class=\"col-responses group-1\">\n";
             $odd_even = '';
@@ -6017,12 +6066,14 @@ function do_array_dual($ia)
             {
                 $answer_head_line .= "\t<th  class='th-12'>".$ld."</th>\n";
                 $odd_even = alternation($odd_even);
-                $mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+                //$mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+                $mycolumns .= "<col class=\"$odd_even\" />\n";
             }
             $mycolumns .= "\t</colgroup>\n";
             if (count($labelans1)>0) // if second label set is used
             {
-                $separatorwidth=($centerexists)? "width=\"$cellwidth%\" ":"";
+                //$separatorwidth=($centerexists)? "width=\"$cellwidth%\" ":"";
+                $separatorwidth='';
                 $mycolumns .=  "\t<col class=\"separator\" {$separatorwidth}/>\n";
                 $mycolumns .= "\t<colgroup class=\"col-responses group-2\">\n";
                 $answer_head_line .= "\n\t<td class=\"header_separator\">&nbsp;</td>\n\n"; // Separator : and No answer for accessibility for first colgroup
@@ -6030,19 +6081,22 @@ function do_array_dual($ia)
                 {
                     $answer_head_line .= "\t<th  class='th-13'>".$ld."</th>\n";
                     $odd_even = alternation($odd_even);
-                    $mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+                    //$mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+                    $mycolumns .= "<col class=\"$odd_even\" />\n";
                 }
                 $mycolumns .= "\t</colgroup>\n";
             }
             if($shownoanswer || $rightexists)
             {
-                $rigthwidth=($rightexists)? "width=\"$cellwidth%\" ":"";
+                //$rigthwidth=($rightexists)? "width=\"$cellwidth%\" ":"";
+                $rigthwidth="";
                 $mycolumns .=  "\t<col class=\"separator rigth_separator\" {$rigthwidth}/>\n";
                 $answer_head_line .= "\n\t<td class=\"header_separator rigth_separator\">&nbsp;</td>\n";
             }
             if($shownoanswer)
             {
-                $mycolumns .=  "\t<col class=\"col-no-answer\"  width=\"$cellwidth%\" />\n";
+                //$mycolumns .=  "\t<col class=\"col-no-answer\"  width=\"$cellwidth%\" />\n";
+                $mycolumns .=  "\t<col class=\"col-no-answer\"  />\n";
                 $answer_head_line .= "\n\t<th class=\"header_no_answer\">".gT('No answer')."</th>\n";
             }
             $answer_head2 = "\n<tr class=\"array1 header_row dontread\">\n"
@@ -6075,7 +6129,8 @@ function do_array_dual($ia)
                 $answer_head1 = "";
             }
             $answer .= '<div class="no-more-tables no-more-tables-array-dual">';
-            $answer .= "\n<table class=\"table-in-qanda-9 question subquestions-list questions-list\" summary=\"{$caption}\">\n"
+            //$answer .= "\n<table class=\"table-in-qanda-9 question subquestions-list questions-list\" summary=\"{$caption}\">\n"
+            $answer .= "\n<table class=\"table-in-qanda-9 question subquestions-list questions-list\">\n"
             . $mycolumns
             . "\n\t<thead>\n"
             . $answer_head1
@@ -6275,19 +6330,23 @@ function do_array_dual($ia)
             $colspan_2 = '';
             $suffix_cell = '';
             $answer .= '<div class="no-more-tables no-more-tables-array-dual-dropdown-layout">';
-            $answer .= "\n<table class=\"table-in-qanda-10 question subquestion-list questions-list dropdown-list\" summary=\"{$caption}\">\n"
-            . "\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
+            //$answer .= "\n<table class=\"table-in-qanda-10 question subquestion-list questions-list dropdown-list\" summary=\"{$caption}\">\n"
+            $answer .= "\n<table class=\"table-in-qanda-10 question subquestion-list questions-list dropdown-list\">\n"
+            //. "\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
+            . "\t<col class=\"answertext\"  />\n";
 
             if($ddprefix != '' || $ddsuffix != '')
             {
-                $answer .= "\t<colgroup width=\"$cellwidth%\">\n";
+                //$answer .= "\t<colgroup width=\"$cellwidth%\">\n";
+                $answer .= "\t<colgroup >\n";
             }
             if($ddprefix != '')
             {
                 $answer .= "\t\t<col class=\"ddprefix\" />\n";
                 $colspan_1 = ' colspan="2"';
             }
-            $headcolwidth=($ddprefix != '' || $ddsuffix != '')?"":" width=\"$cellwidth%\"";
+            //$headcolwidth=($ddprefix != '' || $ddsuffix != '')?"":" width=\"$cellwidth%\"";
+            $headcolwidth="";
             $answer .= "\t<col class=\"dsheader\"{$headcolwidth} />\n";
             if($ddsuffix != '')
             {
@@ -6297,10 +6356,12 @@ function do_array_dual($ia)
             {
                 $answer .= "\t</colgroup>\n";
             }
-            $answer .= "\t<col class=\"ddarrayseparator\" width=\"{$separatorwidth}%\" />\n";
+            //$answer .= "\t<col class=\"ddarrayseparator\" width=\"{$separatorwidth}%\" />\n";
+            $answer .= "\t<col class=\"ddarrayseparator\" />\n";
             if($ddprefix != '' || $ddsuffix != '')
             {
-                $answer .= "\t<colgroup width=\"$cellwidth%\">\n";
+                //$answer .= "\t<colgroup width=\"$cellwidth%\">\n";
+                $answer .= "\t<colgroup >\n";
             }
             if($ddprefix != '')
             {
