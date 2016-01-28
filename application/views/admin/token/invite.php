@@ -21,7 +21,7 @@
                 <?php endif; ?>
 
                 <div>
-                    <?php echo CHtml::form(array("admin/tokens/sa/email/surveyid/{$surveyid}"), 'post', array('id'=>'sendinvitation', 'name'=>'sendinvitation', 'class'=>'form30')); ?>
+                    <?php echo CHtml::form(array("admin/tokens/sa/email/surveyid/{$surveyid}"), 'post', array('id'=>'sendinvitation', 'name'=>'sendinvitation', 'class'=>'form-horizontal')); ?>
                     <ul class="nav nav-tabs">
                         <?php
                         $c = true;
@@ -66,52 +66,74 @@
                             ?>
                             <div id="<?php echo $language; ?>" class="tab-pane fade in <?php if ($c){$c=false;echo ' active';}?>">
 
-                                <ul  class="list-unstyled">
-                                    <li><label for='from_<?php echo $language; ?>'><?php eT("From"); ?>:</label>
-                                        <?php echo CHtml::textField("from_{$language}",$thissurvey[$baselang]['adminname']." <".$thissurvey[$baselang]['adminemail'].">",array('size'=>50)); ?>
-                                    </li>
-                                    <li><label for='subject_<?php echo $language; ?>'><?php eT("Subject"); ?>:</label>
-                                        <?php echo CHtml::textField("subject_{$language}",$subject,array('size'=>83)); ?>
-                                    </li>
+                                <div class='form-group'>
+                                    <label class='control-label col-sm-2' for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>
+                                    <div class='col-sm-4'>
+                                        <?php echo CHtml::textField("from_{$language}",$thissurvey[$baselang]['adminname']." <".$thissurvey[$baselang]['adminemail'].">",array('class' => 'form-control')); ?>
+                                    </div>
+                                </div>
 
-                                    <li><label for='message_<?php echo $language; ?>'><?php eT("Message"); ?>:</label>
+                                <div class='form-group'>
+                                    <label class='control-label col-sm-2' for='subject_<?php echo $language; ?>'><?php eT("Subject:"); ?></label>
+                                    <div class='col-sm-4'>
+                                        <?php echo CHtml::textField("subject_{$language}",$subject,array('class' => 'form-control')); ?>
+                                    </div>
+                                </div>
+
+                                <div class='form-group'>
+
+                                    <label class='control-label col-sm-2' for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
+                                    <div class='col-sm-6'>
                                         <div class="htmleditor">
                                             <?php echo CHtml::textArea("message_{$language}",$textarea,array('cols'=>80,'rows'=>20)); ?>
                                             <?php echo getEditor("email-inv", "message_$language", "[" . gT("Invitation email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                                         </div>
-                                    </li>
-                                </ul>
+                                    </div>
+                                </div>
                             </div>
                         <?php } ?>
                     </div>
-                    <?php
-                    if (count($tokenids)>0)
-                    { ?>
-                        <p>
-                            <label><?php eT("Send invitation email to token ID(s):"); ?></label>
-                        <?php echo short_implode(", ", "-", (array) $tokenids); ?></p>
-                    <?php } ?>
-                    <ul>
-                    <li>
-                        <label for='bypassbademails'><?php eT("Bypass token with failing email addresses"); ?>:</label>
-                        <?php echo CHtml::dropDownList('bypassbademails', 'Y',array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
-                    </li>
-                    <li>
-                        <?php echo CHtml::label(gT("Bypass date control before sending email."),'bypassdatecontrol', array('title'=>gt("If some tokens have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),'unescaped')); ?>
-                        <?php echo CHtml::checkbox('bypassdatecontrol', false); ?>
-                    </li>
-                    </ul>
-                        <p>
-                            <?php
-                                echo CHtml::submitButton(gT("Send Invitations"), array('class'=>'btn btn-default'));
-                                echo CHtml::hiddenField('ok','absolutely');
-                                echo CHtml::hiddenField('subaction','invite');
-                                if (!empty($tokenids))
-                                    echo CHtml::hiddenField('tokenids',implode('|', (array) $tokenids));
-                            ?>
-                        </p>
-                    </form>
-                </div>
+                    <?php if (count($tokenids)>0): ?>
+                        <div class='form-group'>
+                            <label class='control-label col-sm-2'><?php eT("Send invitation email to token ID(s):"); ?></label>
+                            <div class='col-sm-4'>
+                                <?php echo short_implode(", ", "-", (array) $tokenids); ?>
+                            </div>
+                        </div>
+
+                    <?php endif; ?>
+                    
+                    <div class='form-group'>
+
+                        <label class='control-label col-sm-2' for='bypassbademails'><?php eT("Bypass token with failing email addresses:"); ?></label>
+                        <div class='col-sm-1'>
+                            <?php echo CHtml::dropDownList('bypassbademails', 'Y',array("Y"=>gT("Yes"),"N"=>gT("No")), array('class' => 'form-control')); ?>
+                        </div>
+                    </div>
+
+                    <div class='form-group'>
+                        <?php echo CHtml::label(gT("Bypass date control before sending email:"),'bypassdatecontrol', array('title'=>gt("If some tokens have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),'unescaped', 'class' => 'control-label col-sm-2')); ?>
+                        <div class='col-sm-1'>
+                            <?php echo CHtml::checkbox('bypassdatecontrol', false); ?>
+                        </div>
+                    </div>
+
+                    <div class='form-group'>
+                        <div class='col-sm-2'></div>
+                        <div class='col-sm-1'>
+                            <?php echo CHtml::submitButton(gT("Send Invitations"), array('class'=>'btn btn-default')); ?>
+                        </div>
+
+                        <?php
+                            echo CHtml::hiddenField('ok','absolutely');
+                            echo CHtml::hiddenField('subaction','invite');
+                            if (!empty($tokenids)) {
+                                echo CHtml::hiddenField('tokenids',implode('|', (array) $tokenids));
+                            }
+                        ?>
+                    </div>
+                </form>
+            </div>
         </form>
     </div>
 </div>
