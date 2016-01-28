@@ -70,11 +70,6 @@ function editAttachmentRelevance(e)
  */
 function addAttachment(target, url, relevance, size)
 {
-    console.log(target);
-    console.log(url);
-    console.log(relevance);
-    console.log(size);
-
     if (typeof relevance == 'undefined')
     {
         var relevance = '1';
