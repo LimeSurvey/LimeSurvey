@@ -27,13 +27,11 @@ var getForm = function (that) {
     if($(that).attr('data-use-form-id')==1)
     {
         formId = '#'+$(that).attr('data-form-to-save');
-        console.log('Form to save:'.formId);
         $form = $(formId);
     }
     else
     {
       $form = $('.side-body').find('form');
-      console.log('Form to save:'+$form.attr('class'));
     }
     return $form;
 };
@@ -41,14 +39,11 @@ var getForm = function (that) {
 if ($('#save-button').length > 0){
     $('#save-button').on('click', function()
     {
-        console.log('click');
+        console.log('ok');
         var $form = getForm(this);
-        console.log('Form id:'+$form.attr('id'));
         closeAfterSaveInput.val("false");
         $form.append(closeAfterSaveInput);
-        $button = $form.find('[type="submit"]').first();
-        console.log('Button :'+$button.attr('id'));
-        $button.trigger('click');
+        $form.find('[type="submit"]').first().trigger('click');
     });
 }
 

@@ -1637,7 +1637,7 @@ html {
   border-bottom: 1px solid #e3e3e3;
   box-shadow: 0 3px 3px rgba(99, 49, 48, 0.1);
   background-color: #ffffff;
-  z-index: 2000; }
+  z-index: 1000; }
 
 .tab-content {
   padding-top: 2em; }
@@ -2217,9 +2217,6 @@ div.panel.disabled {
     background-color: #fafafa;
     border: 0;
     border-radius: 0;
-    position: absolute;
-    top: 0;
-    right: 0;
     padding: 15px 18px; }
   .side-menu .brand-name-wrapper {
     min-height: 50px; }
@@ -3491,5 +3488,10 @@ $color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $
   padding: 1em;
   margin: 1em 0 1em 0;
   background-color: #bf8dab; }
+
+/* RTL stuff (right-to-left locale) */
+.no-gutter > [class*='col-'] {
+  padding-right: 0;
+  padding-left: 0; }
 
 /*# sourceMappingURL=lime-admin.css.map */
