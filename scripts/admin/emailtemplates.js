@@ -24,22 +24,39 @@ function KCFinder_callback(url)
 }
 
 /**
+ * Edit relevance equation for attachment
  *
+ * @param e
+ * @return void
  */
 function editAttachmentRelevance(e)
 {
+        /*
+        $('#attachment-relevance-editor').on('show.bs.modal', function(event) {
+            console.log(event);
+            alert('here');
+        });
+        */
+
         e.preventDefault();
         var target = $(this).parents('tr').find('input.relevance');
         var span = $(this).parents('tr').find('span.relevance');
+
         $('#attachment-relevance-editor textarea').val($(target).val());
-        $('#attachment-relevance-editor').dialog({
-            'modal': true,
-            'minWidth' : 400,
-            'minHeight' :200,
-            'height': 300,
-            'target' : target,
-            'title' : 'Relevance equation for: ' + $(this).parents('tr').find('span.filename').text()
+
+        $('#attachment-relevance-editor').modal({
+            backdrop: 'static',
+            keyboard: false
         });
+
+        $('#attachment-relevance-editor .btn-success').one('click', function (event) {
+            var newRelevanceEquation = $('#attachment-relevance-editor textarea').val();
+            $(target).val(newRelevanceEquation);
+            $(span).html(newRelevanceEquation);
+
+            $('#attachment-relevance-editor').modal('hide');
+        });
+
 }
 
 /**

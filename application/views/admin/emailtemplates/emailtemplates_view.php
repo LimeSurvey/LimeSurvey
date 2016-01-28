@@ -78,13 +78,27 @@ $(document).ready(function () {
             </p>
         </div>
     <?php echo CHtml::endForm() ?>
-<div id="attachment-relevance-editor" style="display: none; overflow: hidden;">
-    <textarea style="resize: none; height: 90%; width: 100%; box-sizing: border-box">
-
-    </textarea>
-    <button>Apply</button>
-</div>
 
 </div>
 </div>
+</div>
+
+<div id="attachment-relevance-editor" class="modal fade">
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+                <h4 class="modal-title">Relevance equation</h4>
+            </div>
+            <div class='modal-body'>
+                <div class='form-group'>
+                    <textarea class='form-control'></textarea>
+                </div>
+            </div>
+            <div class='modal-footer'>
+                <button type="button" class='btn btn-default' data-dismiss='modal'>Close</button>
+                <button type="button" class='btn btn-success'>Apply</button>
+            </div>
+        </div>
+    </div>
 </div>
