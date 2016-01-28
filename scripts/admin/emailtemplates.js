@@ -1,11 +1,12 @@
 // $Id: saved.js 9330 2010-10-24 22:23:56Z c_schmitz $
 
 $(document).ready(function(){
-   /* handle=$('.tabsinner').tabs(
+    /* handle=$('.tabsinner').tabs(
     {
          show: loadHTMLEditor
     });
-*/
+    */
+
     // Binds the Default value buttons for each email template subject and body text
     $('.fillin').bind('click', function(e) {
         e.preventDefault;
@@ -14,13 +15,13 @@ $(document).ready(function(){
         $(target).val(newval);
         updateCKeditor($(this).attr('data-target'),newval);
     });
+
 });
 
 function KCFinder_callback(url)
 {
     addAttachment(window.KCFinder.target, url);
     window.KCFinder = null;
-
 }
 
 /**
@@ -52,7 +53,15 @@ function editAttachmentRelevance(e)
         $('#attachment-relevance-editor .btn-success').one('click', function (event) {
             var newRelevanceEquation = $('#attachment-relevance-editor textarea').val();
             $(target).val(newRelevanceEquation);
-            $(span).html(newRelevanceEquation);
+
+            if (newRelevanceEquation.length > 50)
+            {
+                $(span).html(newRelevanceEquation.replace(/(\r\n|\n|\r)/gm,"").substr(0, 47) + '...');
+            }
+            else
+            {
+                $(span).html(newRelevanceEquation);
+            }
 
             $('#attachment-relevance-editor').modal('hide');
         });
@@ -80,11 +89,10 @@ function addAttachment(target, url, relevance, size)
     }
     var filename = decodeURIComponent(url.replace(/^.*[\\\/]/, ''));
 
-
     var baserow = '<tr>';
-    // Actions
+    // Ac8ions
+    // TODO: Move edit relevance equation and change file into actions
     baserow += '<td>';
-    //<span class="ui-pg-button glyphicon text-danger glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="" onclick="if (confirm(&quot;Are you sure you want to delete this entry?&quot;)) { $(this).parent().submit(); }" data-original-title="Delete assessment">
     baserow += '<span title="Remove attachment" class="ui-pg-button btnattachmentremove glyphicon glyphicon-trash text-warning" data-toggle="tooltip" data-placement="bottom" data-original-title="Remove attachement"></span>';
     baserow += '</td>';
 
@@ -100,7 +108,16 @@ function addAttachment(target, url, relevance, size)
         var newrow = $(baserow).clone();
         var templatetype = $(target).attr('data-template');
         var index = $(target).find('tr').length - 1;
-        $(newrow).find('span.relevance').text(relevance);
+
+        if (relevance.length > 50)
+        {
+            $(newrow).find('span.relevance').html(relevance.replace(/(\r\n|\n|\r)/gm,"").substr(0, 47) + '...');
+        }
+        else
+        {
+            $(newrow).find('span.relevance').html(relevance);
+        }
+
         $(newrow).find('input.relevance').val(relevance).attr('name', 'attachments' + templatetype + '[' + index + '][relevance]');
         $(newrow).find('input.filename').attr('name', 'attachments' + templatetype + '[' + index + '][url]');
         $(newrow).appendTo(target);
@@ -123,7 +140,6 @@ function addAttachment(target, url, relevance, size)
     $(newrow).find('span.filesize').text(formatFileSize(size));
     $(newrow).find('span.filename').text(filename);
     $(newrow).find('input.filename').val(url);
-
 }
 
 function removeAttachment(e)
@@ -152,19 +168,3 @@ function openKCFinder_singleFile(target) {
     window.open(LS.data.baseUrl + '/third_party/kcfinder/browse.php?opener=custom&type=files&CKEditor=email_invite_en&langCode='+sKCFinderLanguage, 'kcfinder_single', 'height=600px, width=800px, modal=yes');
 }
 
-$('#attachment-relevance-editor button').click(function()
-{
-    $('#attachment-relevance-editor').dialog('close');
-    var relevance = $('#attachment-relevance-editor textarea').val();
-    $('#attachment-relevance-editor').dialog('option', 'target').val(relevance);
-    var span = $('#attachment-relevance-editor').dialog('option', 'target').parents('tr').find('span.relevance');
-    if (relevance.length > 50)
-    {
-        $(span).text(relevance.replace(/(\r\n|\n|\r)/gm,"").substr(0, 47) + '...');
-    }
-    else
-    {
-        $(span).text(relevance);
-    }
-
-});

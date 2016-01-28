@@ -39,8 +39,8 @@
     </div>
 
     <div class='form-group'>
-        <div class='col-sm-6 col-sm-offset-2'>
-            <table data-template="[<?php echo $grouplang; ?>][<?php echo $tab ?>]" id ="attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" class="attachments" style="width: 500px">
+        <div class='col-sm-5 col-sm-offset-2'>
+            <table data-template="[<?php echo $grouplang; ?>][<?php echo $tab ?>]" id ="attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" class="attachments" style="width: 100%;">
                 <tr>
                     <th><?php eT("Action"); ?></th>
                     <th><?php eT("File name"); ?></th>
