@@ -10,12 +10,13 @@
  * @param {number} qId The qid of the question where apply.
  */
 function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
+    console.log('doDragDropRank');
 // TODO : advanced setting in attributes
   if (typeof showpopups === 'undefined'){showpopups=true;}
   if (typeof samechoiceheight === 'undefined'){samechoiceheight=true;}
   if (typeof samelistheight === 'undefined'){ samelistheight=true;}
-  var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
-  var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text();
+  var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text().trim(),10);
+  var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text().trim();
   var rankingnamewidth=rankingname.length;
   //Add a class to the question
   $('#question'+qID+'').addClass('dragDropRanking');
@@ -51,7 +52,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
     </div>';
   $(htmlCode).insertAfter('#question'+qID+' .answers-list');
   $('#sortable-choice-'+qID+' li, #sortable-rank-'+qID+' li').remove();
-  
+
   // Get the list of choices from the LimeSurvey question and copy them as items into the sortable choices list
   var ranked =[];
   $('#question'+qID+' .answers-list .select-item option:selected').each(function(index, Element) {
@@ -72,7 +73,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   });
   loadDragDropRank(qID);
 
-  // Set up the connected sortable			
+  // Set up the connected sortable
   $('#sortable-choice-'+qID+', #sortable-rank-'+qID+'').sortable({
     connectWith: '.connectedSortable'+qID+'',
     forceHelperSize: true,
@@ -116,7 +117,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
     });
   $(function() { // Update height for IE7, maybe for other function too
     fixChoiceListHeight(qID,samechoiceheight,samelistheight);
-  }); 
+  });
   }
 
 /**
@@ -125,9 +126,9 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
  * @param {number} qId The qid of the question where apply.
  */
 function updateDragDropRank(qID){
-  var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
-  var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text();
-  var relevancename= "relevance"+$("#ranking-"+qID+"-name").text();
+  var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text().trim(),10);
+  var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text().trim();
+  var relevancename= "relevance"+$("#ranking-"+qID+"-name").text().trim();
   var rankingnamewidth=rankingname.length;
   $('#question'+qID+' .select-item select').val('');
   $('#sortable-rank-'+qID+' li').each(function(index) {
@@ -169,11 +170,11 @@ function sortableAlert (qID,showpopups)
  * @param {number} qId The qid of the question where apply.
  */
 function loadDragDropRank(qID){
-  var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
-  var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text();
-  var relevancename= "relevance"+$("#ranking-"+qID+"-name").text();
+  var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text().trim(),10);
+  var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text().trim();
+  var relevancename= "relevance"+$("#ranking-"+qID+"-name").text().trim();
   var rankingnamewidth=rankingname.length;
-  // Update #relevance 
+  // Update #relevance
   $("[id^=" + relevancename + "]").val('0');
   $('#sortable-rank-'+qID+' li').each(function(){
     $(this).appendTo('#sortable-choice-'+qID+'');

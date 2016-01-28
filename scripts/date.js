@@ -1,18 +1,22 @@
 $(document).ready(function(){
 
     // dropdown dates
-
+    $('.namecontainer').each(function(){
+        var name = $(this).data('name');
+        doPopupDate(name);
+    });
 });
-/* 
+/*
  * Function to launch timepicker in question id
  */
 function doPopupDate(qId){
+    console.log('doPopupDate qId:'+qId);
     if($("#question"+qId+" .popupdate").length){
-        //console.log($("#question"+qId+" .popupdate"));
+        console.log($("#question"+qId+" .popupdate"));
         var basename = $("#question"+qId+" .popupdate").attr("id").substr(6);
         format=$('#dateformat'+basename).val();
         language=$('#datelanguage'+basename).val();
-        $("#question"+qId+" .popupdate").datetimepicker({ 
+        $("#question"+qId+" .popupdate").datetimepicker({
             showOn: 'both',
             changeYear: true,
             changeMonth: true,
@@ -25,7 +29,7 @@ function doPopupDate(qId){
         }, $.datepicker.regional[language]);
     }
 }
-/* 
+/*
  * Function to launch timepicker in question id
  */
 function doDropDownDate(qId){
@@ -52,19 +56,19 @@ function setPickerOptions(input)
     var stimeFormat=timepattern.exec(format);
     if (stimeFormat!=null)
         stimeFormat=stimeFormat.toString().replace(/N/gi,"M");
-    
+
     var btimeOnly=false;
     var bshowButtonPanel=true;
     var bshowTimepicker=true;
     var sonSelect = '';
     var sonClose = '';
     var balwaysSetTime = true;
-    
+
     // Validate input. Necessary because datepicker also allows keyboard entry.
     $(this).blur(function() {
         validateInput(basename);
     });
-    
+
     //Configure the layout of the picker according to the format of the field
     if (stimeFormat==null) // no time component in mask: switch off timepicker
     {
@@ -72,14 +76,14 @@ function setPickerOptions(input)
         bshowButtonPanel=false;
         bshowTimepicker=false;
         balwaysSetTime=false;
-        
+
         //need this to close datetimepicker on selection of a date (mimics date picker)
         sonSelect = function () {$('#answer'+basename).datetimepicker('hide');};
-        
+
         if (!(sdateFormat.match('d'))) // no day: switch off "calender"
         {
             bshowButtonPanel=true;
-        
+
             sonClose = function(dateText, inst) {
                         var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
                         var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
@@ -94,7 +98,7 @@ function setPickerOptions(input)
                     of: $(this)
                 });
             });
-  
+
             $(this).focus(function () {
                 $(".ui-datepicker-calendar").hide();
                 $("#ui-datepicker-div").position({
@@ -110,7 +114,7 @@ function setPickerOptions(input)
         var sdateFormat="";
         btimeOnly=true;
     }
- 
+
     // set minimum and maximum dates for calender
     datemin=$('#datemin'+basename).text();
     datemax=$('#datemax'+basename).text();
@@ -133,14 +137,14 @@ function setPickerOptions(input)
    };
 }
 
-function validateInput(basename) 
+function validateInput(basename)
 {
     if(typeof showpopup=="undefined"){showpopup=1;}
     format=$('#dateformat'+basename).val();
     answer=$('#answer'+basename).val();
     //only validate if the format mask says it's a complete date and only a date
-    var str_regexp = /^[mydYD]{1,4}[-.\s\/][mydYD]{1,4}[-.\/\s][mydYD]{1,4}$/; 
-    var pattern = new RegExp(str_regexp); 
+    var str_regexp = /^[mydYD]{1,4}[-.\s\/][mydYD]{1,4}[-.\/\s][mydYD]{1,4}$/;
+    var pattern = new RegExp(str_regexp);
     if (format.match(pattern)!=null)
     {
         try
@@ -212,7 +216,7 @@ function dateUpdater() {
             }
             else
             {
-                iYear=$('#year'+thisid).val(); 
+                iYear=$('#year'+thisid).val();
             }
             if (!$('#month'+thisid).val())
             {
@@ -220,7 +224,7 @@ function dateUpdater() {
             }
             else
             {
-                iMonth=$('#month'+thisid).val(); 
+                iMonth=$('#month'+thisid).val();
             }
             if (!$('#day'+thisid).val())
             {
@@ -228,7 +232,7 @@ function dateUpdater() {
             }
             else
             {
-                iDay=$('#day'+thisid).val(); 
+                iDay=$('#day'+thisid).val();
             }
             if (!$('#hour'+thisid).val())
             {
@@ -236,20 +240,20 @@ function dateUpdater() {
             }
             else
             {
-                iHour=$('#hour'+thisid).val(); 
-            }            
+                iHour=$('#hour'+thisid).val();
+            }
             if (!$('#minute'+thisid).val())
             {
                 iMinute='00';
             }
             else
             {
-                iMinute=$('#minute'+thisid).val(); 
+                iMinute=$('#minute'+thisid).val();
             }
             ValidDate(this,iYear+'-'+iMonth+'-'+iDay);
             parseddate=Date.parseString(trim(iDay+'-'+iMonth+'-'+iYear+' '+iHour+':'+iMinute), 'dd-mm-yy H:M');
             parseddate=parseddate.format($('#dateformat'+thisid).val());
-            $('#answer'+thisid).val(parseddate); 
+            $('#answer'+thisid).val(parseddate);
             $('#answer'+thisid).change();
         }
 }
@@ -260,39 +264,39 @@ function pad (str, max) {
 
 function ValidDate(oObject, value) {// Regular expression used to check if date is in correct format
     if(typeof showpopup=="undefined"){showpopup=1;}
-    var str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/; 
-    var pattern = new RegExp(str_regexp); 
-    if ((value.match(pattern)!=null)) 
+    var str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/;
+    var pattern = new RegExp(str_regexp);
+    if ((value.match(pattern)!=null))
     {
-        var date_array = value.split('-'); 
-        var day = date_array[2]; 
-        var month = date_array[1]; 
-        var year = date_array[0]; 
-        str_regexp = /1|3|5|7|8|10|12/; 
-        pattern = new RegExp(str_regexp); 
-        if ( day <= 31 && (month.match(pattern)!=null)) 
-        { 
-            return true; 
-        } 
-        str_regexp = /4|6|9|11/; 
-        pattern = new RegExp(str_regexp); 
-        if ( day <= 30 && (month.match(pattern)!=null)) 
-        { 
-            return true; 
-        } 
-        if (day == 29 && month == 2 && (year % 4 == 0)) 
-        { 
-            return true; 
-        } 
-        if (day <= 28 && month == 2) 
-        { 
-            return true; 
-        }         
+        var date_array = value.split('-');
+        var day = date_array[2];
+        var month = date_array[1];
+        var year = date_array[0];
+        str_regexp = /1|3|5|7|8|10|12/;
+        pattern = new RegExp(str_regexp);
+        if ( day <= 31 && (month.match(pattern)!=null))
+        {
+            return true;
+        }
+        str_regexp = /4|6|9|11/;
+        pattern = new RegExp(str_regexp);
+        if ( day <= 30 && (month.match(pattern)!=null))
+        {
+            return true;
+        }
+        if (day == 29 && month == 2 && (year % 4 == 0))
+        {
+            return true;
+        }
+        if (day <= 28 && month == 2)
+        {
+            return true;
+        }
     }
     if(showpopup)
     {
         window.alert(translt.alertInvalidDate);
     }// TODO : use EM and move it to EM
-    oObject.focus(); 
-    return false; 
-} 
+    oObject.focus();
+    return false;
+}

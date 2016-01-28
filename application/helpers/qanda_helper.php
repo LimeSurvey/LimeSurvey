@@ -1139,9 +1139,10 @@ function do_date($ia)
             'dateoutput'=>htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8'),
             'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
             'dateformatdetails'=>$dateformatdetails['jsdate'],
+            'dateformat'=>$dateformatdetails['dateformat'],
         );
-
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/data_footer', $footerData, true);
+//
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/date_footer', $footerData, true);
         App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}","doDropDownDate({$ia[0]});",CClientScript::POS_HEAD);
         // MayDo:
         // add js code to
@@ -1164,8 +1165,7 @@ function do_date($ia)
         // Format the date  for output
         $dateoutput=trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
         if ($dateoutput!='' & $dateoutput!='INVALID')
-        {
-            $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
+        {            $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
             $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
         }
 
@@ -1187,6 +1187,8 @@ function do_date($ia)
             'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
             'language'=>App()->language,
             'hidetip'=>trim($aQuestionAttributes['hide_tip'])==0,
+            'dateoutput'=>$dateoutput,
+            'qid' => $ia[0],
         );
 
         // HTML for date question using datepicker
@@ -2034,10 +2036,10 @@ function do_ranking($ia)
         $myfname=$ia[1].$i;
         if($i==1)
         {
-            $labeltext .=gT('First choice');
+            $labeltext =gT('First choice');
         }else
         {
-            $labeltext .=sprintf(gT('Choice of rank %s'),$i);
+            $labeltext = sprintf(gT('Choice of rank %s'),$i);
         }
         $itemListHeaderDatas = array(
             'myfname'=>$myfname,
@@ -2076,6 +2078,7 @@ function do_ranking($ia)
                 'id'=> '',
                 'optiontext'=>flattenText($ansrow['answer']),
             );
+            
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item', $itemDatas, true);
         }
         $itemlistfooterDatas = array(
@@ -2684,7 +2687,7 @@ function do_file_upload($ia)
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."modaldialog.js");
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "uploader-files.css");
     // Modal dialog
-    $answer .= $uploadbutton;
+    //$answer .= $uploadbutton;
 
     $filecountvalue = '0';
     if (array_key_exists($ia[1]."_filecount", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]))
@@ -2986,7 +2989,7 @@ function do_multiplenumeric($ia)
     //Must turn on the "numbers only javascript"
     $extraclass .=" numberonly";
     if ($aQuestionAttributes['thousands_separator'] == 1) {
-        //App()->clientScript->registerPackage('jquery-price-format');
+        App()->clientScript->registerPackage('jquery-price-format');
         App()->clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts').'numerical_input.js');
         $extraclass .= " thousandsseparator";
     }
@@ -3124,6 +3127,7 @@ function do_multiplenumeric($ia)
             }
 
             // color code missing mandatory questions red
+            $alert='';
             if ($ia[6]=='Y' && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '')
             {
                 $alert = true;
@@ -3162,6 +3166,7 @@ function do_multiplenumeric($ia)
                 'myfname'=>$myfname,
                 'dispVal'=>$dispVal,
                 'maxlength'=>$maxlength,
+                'labelText'=>$ansrow['question'],
                 'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
             );
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/item', $itemDatas, true);
@@ -3188,15 +3193,16 @@ function do_multiplenumeric($ia)
             'equals_num_value'=>$equals_num_value,
             'id'=>$ia[0],
             'prefix'=>$prefix,
-            'sumRemainingEqn'=>$qinfo['sumRemainingEqn'],
+            'sumRemainingEqn'=>(isset($qinfo))?$qinfo['sumRemainingEqn']:'',
             'displaytotal'=>$displaytotal,
-            'sumEqn'=>$qinfo['sumEqn']
+            'sumEqn'=>(isset($qinfo))?$qinfo['sumEqn']:'',
         );
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/footer', $footerDatas, true);
     }
 
     if($aQuestionAttributes['slider_layout']==1)
     {
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."bootstrap-slider.js");
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."numeric-slider.js");
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "numeric-slider.css");
         if ($slider_default != "")
@@ -3234,6 +3240,7 @@ function do_multiplenumeric($ia)
             'slider_reset' => $slider_reset,
             'lang'=> $aJsLang,
             );
+
         $answer .= "<script type='text/javascript'><!--\n"
                     . " doNumericSlider({$ia[0]},".ls_json_encode($aJsVar).");\n"
                     . " //--></script>";
@@ -3269,7 +3276,7 @@ function do_numerical($ia)
         $prefix = '';
     }
     if ($aQuestionAttributes['thousands_separator'] == 1) {
-        //App()->clientScript->registerPackage('jquery-price-format');
+        App()->clientScript->registerPackage('jquery-price-format');
         App()->clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts').'numerical_input.js');
         $extraclass .= " thousandsseparator";
     }
@@ -3351,7 +3358,7 @@ function do_numerical($ia)
         'maxlength'=>$maxlength,
         'suffix'=>$suffix,
     );
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/numerical/item', $itemDatas, true);
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/numerical/item', $itemDatas, true);
 
     $inputnames[]=$ia[1];
     $mandatory=null;
@@ -3885,12 +3892,12 @@ function do_gender($ia)
         'name'=>$ia[1],
         'fChecked' => $fChecked,
         'mChecked' => $mChecked,
-        'naChecked'=> $naChecke,
+        'naChecked'=> $naChecked,
         'noAnswer' => $noAnswer,
         'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
         'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
     );
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/gender/item', $itemDatas, true);
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/item', $itemDatas, true);
 
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);

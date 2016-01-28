@@ -19,7 +19,7 @@
     <?php for($i=0; $i<60; $i+=$dropdown_dates_minute_step):?>
         <option value="<?php echo $i; ?>" <?php if ($i === (int)$currentminute && is_numeric($currentminute)):?>SELECTED<?php endif;?> >
             <?php if ($datepart=='i'):?>
-                <?php sprintf('%02d', $i);?>
+                <?php echo sprintf('%02d', $i);?>
             <?php else:?>
                 <?php echo $i;?>
             <?php endif;?>

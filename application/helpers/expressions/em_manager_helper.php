@@ -4884,7 +4884,7 @@
                             }
                             else
                             {
-                                // We don't really validate date here, anyone can send anything : forced too 
+                                // We don't really validate date here, anyone can send anything : forced too
                                 $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
                                 $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
                                 $value=$datetimeobj->convert("Y-m-d H:i");
@@ -6527,8 +6527,14 @@
                     $stringToParse = '';
                     foreach ($LEM->qid2validationEqn[$qid]['tips'] as $vclass=>$vtip)
                     {
-                        $stringToParse .= "<div id='vmsg_" . $qid  . '_' . $vclass . "' class='em_" . $vclass . " emtip text-info'><span class='glyphicon glyphicon-info-sign'></span>  &nbsp" . $vtip . "</div>\n";
+                        $tipsDatas = array(
+                            'qid'   =>$qid,
+                            'vclass'=>$vclass,  
+                            'vtip'  =>$vtip,
+                        );
+                        $stringToParse .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/tips', $tipsDatas, true);
                     }
+
                     $prettyPrintValidTip = $stringToParse;
                     $validTip = $LEM->ProcessString($stringToParse, $qid,NULL,false,1,1,false,false);
                     // TODO check for errors?

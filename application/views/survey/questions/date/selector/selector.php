@@ -2,6 +2,7 @@
 /**
  * Date Html, selector style :
  * @var $name                           $ia[1]
+ * @var $qid                            $ia[0]
  * @var $iLength
  * @var $dateoutput
  * @var $mindate
@@ -16,7 +17,7 @@
 ?>
 <p class='question answer-item text-item date-item'>
     <label for='answer<?php echo $name;?>' class='hide label'>
-        <?php sprintf(gT('Date in the format: %s'),$dateformatdetails); ?>
+        <?php echo sprintf(gT('Date in the format: %s'),$dateformatdetails); ?>
     </label>
 
     <input
@@ -57,12 +58,8 @@
 
 <?php if($hidetip):?>
     <p class="tip">
-        <?php sprintf(gT('Format: %s'),$dateformatdetails); ?>
+        <?php echo sprintf(gT('Format: %s'),$dateformatdetails); ?>
     </p>
 <?php endif;?>
 
-<script type='text/javascript'>
-    /*<![CDATA[*/
-        doPopupDate(<?php echo $name; ?>);
-    /*]]>*/
-</script>
+<input type='hidden' class="namecontainer" data-name="<?php echo $qid; ?>" />
