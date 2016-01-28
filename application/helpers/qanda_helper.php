@@ -4456,20 +4456,27 @@ function do_array_increasesamedecrease($ia)
 
     $fn = 1;
 
+    /*
     $answer = "\n<table class=\"table table-condensed table-striped table-in-qanda-4 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
+*/
+$answer = "\n<table class=\"table table-condensed table-striped table-in-qanda-4 question subquestions-list questions-list {$extraclass}\" >\n"
+. "\t<colgroup class=\"col-responses\">\n"
+. "\t<col class=\"col-answers\" />\n";
 
     $odd_even = '';
     for ($xc=1; $xc<=3; $xc++)
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        $answer .= "<col class=\"$odd_even\" />\n";
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        $answer .= "<col class=\"col-no-answer $odd_even\" />\n";
     }
     $answer .= "\t</colgroup>\n"
     . "\t<thead>\n"
@@ -4511,12 +4518,19 @@ function do_array_increasesamedecrease($ia)
         $answer_body .= "\t<th class=\"answertext\">\n"
         . "$answertext\n"
         . $hiddenfield
-        . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
+        /*. "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+        {
+            $answer_body .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+        }
+        $answer_body .= "\" />\n\t</th>\n";*/
+        . "<input type=\"hidden\" name=\"thjava$myfname\" id=\"thjava$myfname\" value=\"";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
             $answer_body .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
         }
         $answer_body .= "\" />\n\t</th>\n";
+
 
         $answer_body .= "\t<td class=\"answer_cell_I answer-item radio-item\">\n"
         ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" ";
