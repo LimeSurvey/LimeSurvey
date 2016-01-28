@@ -88,16 +88,17 @@ function addAttachment(target, url, relevance, size)
 
     var baserow = '<tr>';
     // Actions
-    baserow = baserow + '<td>';
+    baserow += '<td>';
     //<span class="ui-pg-button glyphicon text-danger glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="" onclick="if (confirm(&quot;Are you sure you want to delete this entry?&quot;)) { $(this).parent().submit(); }" data-original-title="Delete assessment">
-    baserow = baserow + '<span title="Remove attachment" class="ui-pg-button btnattachmentremove glyphicon glyphicon-trash text-warning" data-toggle="tooltip" data-placement="bottom" data-original-title="Remove attachement">';
-    baserow = baserow + '</td>';
+    baserow += '<span title="Remove attachment" class="ui-pg-button btnattachmentremove glyphicon glyphicon-trash text-warning" data-toggle="tooltip" data-placement="bottom" data-original-title="Remove attachement"></span>';
+    baserow += '</td>';
 
-    baserow = baserow + '<td><span class="filename"></span><input class="filename" type="hidden"></td>';
-    baserow = baserow + '<td><span class="filesize"></span></td>';
-    baserow = baserow + '<td><span class="relevance"></span><input class="relevance" type="hidden"></td>';
-
-    baserow = baserow + '</tr>';
+    baserow += '<td><span class="filename"></span><input class="filename" type="hidden"></td>';
+    baserow += '<td><span class="filesize"></span></td>';
+    baserow += '<td><span class="relevance"></span>'
+    baserow += '<span title="Edit relevance equation" class="edit-relevance-equation ui-pg-button icon-edit" data-toggle="tooltip" data-placement="bottom" data-original-title="Edit relevance equation"></span>';
+    baserow += '<input class="relevance" type="hidden"></td>';
+    baserow += '</tr>';
 
     if ($(target).is('table'))
     {
@@ -115,7 +116,7 @@ function addAttachment(target, url, relevance, size)
     }
 
 
-    $('span.relevance').unbind('click').bind('click', editAttachmentRelevance);
+    $('span.edit-relevance-equation').unbind('click').bind('click', editAttachmentRelevance);
     $('.btnattachmentremove').unbind('click').bind('click', removeAttachment);
 
     $('span.filename').unbind('click').bind('click', function(e) {
