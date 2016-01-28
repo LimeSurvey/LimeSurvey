@@ -6,26 +6,23 @@
 <script type='text/javascript'>
     var sReplaceTextConfirmation='<?php eT("This will replace the existing text. Continue?","js"); ?>';
     var sKCFinderLanguage='<?php echo sTranslateLangCode2CK(App()->language); ?>';
+    
+    var LS = LS || {};  // namespace
+    LS.lang = LS.lang || {};  // object holding translations
+    LS.lang['Remove attachment'] = '<?php echo eT("Remove attachment"); ?>';
+    LS.lang['Edit relevance equation'] = '<?php echo eT("Edit relevance equation"); ?>';
 
+    $(document).ready(function () {
+        $('button.add-attachment').click(function(e)
+        {
+            e.preventDefault();
+            var target = $(this).parent().parent().parent().find('table');
+            console.log("target = ");
+            console.log(target);
+            openKCFinder_singleFile(target);
 
-$(document).ready(function () {
-    $('button.add-attachment').click(function(e)
-    {
-        e.preventDefault();
-        var target = $(this).parent().parent().parent().find('table');
-        console.log("target = ");
-        console.log(target);
-        openKCFinder_singleFile(target);
-
+        });
     });
-
-
-
-});
-
-
-
-
 </script>
 
 <div class="side-body">

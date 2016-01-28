@@ -93,13 +93,13 @@ function addAttachment(target, url, relevance, size)
     // Ac8ions
     // TODO: Move edit relevance equation and change file into actions
     baserow += '<td>';
-    baserow += '<span title="Remove attachment" class="ui-pg-button btnattachmentremove glyphicon glyphicon-trash text-warning" data-toggle="tooltip" data-placement="bottom" data-original-title="Remove attachement"></span>';
+    baserow += '<span title="' + LS.lang['Remove attachment'] + '" class="ui-pg-button btnattachmentremove glyphicon glyphicon-trash text-warning" data-toggle="tooltip" data-placement="bottom" data-original-title="' + LS.lang['Remove attachment'] + '"></span>';
     baserow += '</td>';
 
     baserow += '<td><span class="filename"></span><input class="filename" type="hidden"></td>';
     baserow += '<td><span class="filesize"></span></td>';
     baserow += '<td><span class="relevance"></span>'
-    baserow += '<span title="Edit relevance equation" class="edit-relevance-equation ui-pg-button icon-edit" data-toggle="tooltip" data-placement="bottom" data-original-title="Edit relevance equation"></span>';
+    baserow += '<span title="' + LS.lang['Edit relevance equation'] + '" class="edit-relevance-equation ui-pg-button icon-edit" data-toggle="tooltip" data-placement="bottom" data-original-title="' + LS.lang['Edit relevance equation'] + '"></span>';
     baserow += '<input class="relevance" type="hidden"></td>';
     baserow += '</tr>';
 
