@@ -2078,7 +2078,7 @@ function do_ranking($ia)
                 'id'=> '',
                 'optiontext'=>flattenText($ansrow['answer']),
             );
-            
+
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item', $itemDatas, true);
         }
         $itemlistfooterDatas = array(
@@ -3964,20 +3964,31 @@ function do_array_5point($ia)
     $anscount = count($aSubquestions);
 
     $fn = 1;
-    $answer = "\n<table class=\"table table-striped question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
-    . "\t<colgroup class=\"col-responses\">\n"
-    . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
+
+
+
+    $headerDatas = array(
+        'extraclass'=>$extraclass,
+        'caption'=>$caption,
+        'answerwidth'=>$answerwidth,
+    );
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/header', $headerDatas, true);
+
     $odd_even = '';
 
     for ($xc=1; $xc<=5; $xc++)
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+        // width obsolete
+        $answer .= "<col class=\"$odd_even\" />\n";
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        //$answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+        // width obsolete
+        $answer .= "<col class=\"col-no-answer $odd_even\" />\n";
     }
     $answer .= "\t</colgroup>\n\n"
     . "\t<thead>\n<tr class=\"array1 dontread\">\n"
@@ -3986,7 +3997,11 @@ function do_array_5point($ia)
     {
         $answer .= "\t<th class='th-1'>$xc</th>\n";
     }
-    if ($right_exists) {$answer .= "\t<td width='$answerwidth%'>&nbsp;</td>\n";}
+    if ($right_exists)
+    {
+        //$answer .= "\t<td width='$answerwidth%'>&nbsp;</td>\n";
+        $answer .= "\t<td>&nbsp;</td>\n";
+    }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $answer .= "\t<th class='th-2'>".gT('No answer')."</th>\n";
@@ -4021,7 +4036,8 @@ function do_array_5point($ia)
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
 
         $answer_t_content .= $htmltbody2
-        . "\t<th class=\"answertext\" width=\"$answerwidth%\">\n$answertext\n"
+        //. "\t<th class=\"answertext\" width=\"$answerwidth%\">\n$answertext\n"
+        . "\t<th class=\"answertext\" >\n$answertext\n"
         . $hiddenfield
         . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
