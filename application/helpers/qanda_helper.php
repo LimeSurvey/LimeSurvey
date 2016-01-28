@@ -3888,6 +3888,9 @@ function do_gender($ia)
     $mChecked = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M')?'CHECKED':'';
     $naChecked = '';
 
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $displayType = $aQuestionAttributes['display_type'];
+
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
         $noAnswer = true;
@@ -3906,7 +3909,15 @@ function do_gender($ia)
         'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
         'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
     );
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/item', $itemDatas, true);
+
+    if($displayType===0)
+    {
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/buttons/item', $itemDatas, true);
+    }
+    else
+    {
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/radio/item', $itemDatas, true);
+    }
 
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);

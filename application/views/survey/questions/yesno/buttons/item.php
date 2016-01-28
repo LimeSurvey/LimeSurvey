@@ -16,7 +16,7 @@
       <div class="btn-group" data-toggle="buttons">
 
         <!-- Yes -->
-        <label class="btn btn-primary active">
+        <label class="btn btn-primary btn-lg active">
           <input
               class="radio"
               type="radio"
@@ -31,7 +31,7 @@
         </label>
 
         <!-- No -->
-        <label class="btn btn-primary">
+        <label class="btn btn-primary  btn-lg ">
             <input
                 class="radio"
                 type="radio"
@@ -45,7 +45,7 @@
         </label>
 
         <!-- No answer -->
-        <label class="btn btn-primary">
+        <label class="btn btn-primary  btn-lg">
 
             <input
                 class="radio"

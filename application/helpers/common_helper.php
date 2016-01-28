@@ -3881,7 +3881,7 @@ function questionAttributes($returnByName=false)
         );
 
         $qattributes["display_type"]=array(
-        "types"=>"Y",
+        "types"=>"YG",
         'category'=>gT('Display'),
         'sortorder'=>90,
         'inputtype'=>'singleselect',
