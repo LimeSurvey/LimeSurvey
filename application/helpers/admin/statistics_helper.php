@@ -3919,11 +3919,6 @@ class statistics_helper {
             $percent=sprintf("%01.2f", ($results/$total)*100);
         }
 
-        if ($total)
-        {
-            $percent=sprintf("%01.2f", ($results/$total)*100);
-        }
-
         //put everything from $selects array into a string connected by AND
         //This string ($sql) can then be passed on to other functions so you can
         //browse these results
