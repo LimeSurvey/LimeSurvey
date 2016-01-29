@@ -58,7 +58,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
-                                                       
+                               
+                               
+Changes from 2.06+ (build 160123) to 2.06+ (build 160129) Jan 29, 2016
+-Fixed issue #10233: Unable to add user to a group in a fresh install (Carsten Schmitz)
+-Fixed issue #10251: [security] Reflected XSS in admin (Thanks to Kacper Szurek - http://security.szurek.pl/ ) (Denis Chenu)
+-Fixed issue #9644: Unable to preview survey when using database sessions - link bug 09592 (Guillaume Smaha)
+#Updated translation: Albanian by andiandi
+#Updated translation: Bulgarian by jmlorenzo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by coeneisma, Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by tomzt
+                        
 Changes from 2.06+ (build 160121) to 2.06+ (build 160123) Jan 22, 2016
 -Fixed issue: Question at the beginning of survey were skipped
 
