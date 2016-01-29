@@ -45,7 +45,7 @@ class UserInGroup extends LSActiveRecord {
 	 */
 	public function primaryKey()
 	{
-		return 'uid';
+		return array('ugid', 'uid');
 	}
 
 	/**
