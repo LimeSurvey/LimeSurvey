@@ -1594,7 +1594,7 @@ class printablesurvey extends Survey_Common_Action
      */
     private function _populate_template( $template , $input  , $line = '')
     {
-        $full_path = PRINT_TEMPLATE_DIR.'print_'.$template.'.pstpl';
+        $full_path = PRINT_TEMPLATE_DIR.'/views/print_'.$template.'.pstpl';
         $full_constant = 'TEMPLATE'.$template.'.pstpl';
         if(!defined($full_constant))
         {
@@ -1611,8 +1611,8 @@ class printablesurvey extends Survey_Common_Action
             }
             else
             {
-                define($full_constant , '');
-                return "<!--\n\t$full_path is not a propper file or is missing.\n-->";
+                // No template found, abort
+                throw new \Exception("No template file found at path " . $full_path);
             }
         }
         else
@@ -1645,6 +1645,7 @@ class printablesurvey extends Survey_Common_Action
                 return '<!-- '.$line.'There was nothing to put into the template -->'."\n";
             }
         }
+
     }
 
     private function _min_max_answers_help($qidattributes, $sLanguageCode, $surveyid) {
