@@ -803,7 +803,7 @@ function doHtmlSaveLinks($move="")
         {
             $sSaveAllButtons .= $sLoadButton;
         }
-        $sSaveAllButtons .= '<li><a href="#" id="loadallbtnlink" '.$aHtmlOptionsSaveall['disabled'].' >'.gT("Resume later").'</a></li>';
+        $sSaveAllButtons .= '<li><a href="#" id="saveallbtnlink" '.$aHtmlOptionsSaveall['disabled'].' >'.gT("Resume later").'</a></li>';
     }
     elseif (!$iSessionStep) //Welcome page, show load (but not save)
     {
