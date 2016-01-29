@@ -4848,7 +4848,7 @@ function do_array($ia)
         }
         $answer_cols .= "\t</colgroup>\n";
 
-        $answer = $answer_start . $answer_cols . $answer_head .$answer ."</table><div>\n";
+        $answer = $answer_start . $answer_cols . $answer_head .$answer ."</table></div>\n";
     }
     elseif ($useDropdownLayout === true && count($lresult)> 0)
     {
@@ -4973,7 +4973,7 @@ function do_array($ia)
             $fn++;
         }
         $answer .= "\t</tbody>";
-        $answer = $answer_start . $answer . "\n</table>\n";
+        $answer = $answer_start . $answer . "\n</table></div>\n";
     }
     else
     {
@@ -5572,6 +5572,7 @@ function do_array_multiflexi($ia)
         $mycols = "\t<colgroup class=\"col-responses\">\n"
         //. "\n\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
         . "\n\t<col class=\"answertext\" />\n";
+
         $answer_head_line = "\t<th >&nbsp;</th>\n";
         $odd_even = '';
         foreach ($labelans as $ld)
@@ -5595,10 +5596,11 @@ function do_array_multiflexi($ia)
 
         $trbc = '';
         //$answer = "<div class='no-more-tables'>\n<table class=\"table-in-qanda-7 question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"{$caption}\">\n"
-        $answer = "<div class='no-more-tables'>\n<table class=\"table-in-qanda-7 question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\">\n"
+        $answer = "<div class='no-more-tables'>
+                    \n<table class=\"table-in-qanda-7 question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\">\n"
         . $mycols
         . $answer_head . "\n";
-        $answer .= "<tbody>";
+        $answer .= "      <tbody>";
         foreach ($ansresult as $ansrow)
         {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
