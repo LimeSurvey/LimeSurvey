@@ -1141,7 +1141,7 @@ function do_date($ia)
             'dateformatdetails'=>$dateformatdetails['jsdate'],
             'dateformat'=>$dateformatdetails['dateformat'],
         );
-//
+
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/date_footer', $footerData, true);
         App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}","doDropDownDate({$ia[0]});",CClientScript::POS_HEAD);
         // MayDo:
@@ -3888,6 +3888,9 @@ function do_gender($ia)
     $mChecked = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M')?'CHECKED':'';
     $naChecked = '';
 
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $displayType = $aQuestionAttributes['display_type'];
+
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
         $noAnswer = true;
@@ -3906,7 +3909,15 @@ function do_gender($ia)
         'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
         'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
     );
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/item', $itemDatas, true);
+
+    if($displayType===0)
+    {
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/buttons/item', $itemDatas, true);
+    }
+    else
+    {
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/radio/item', $itemDatas, true);
+    }
 
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
@@ -4837,7 +4848,7 @@ function do_array($ia)
         }
         $answer_cols .= "\t</colgroup>\n";
 
-        $answer = $answer_start . $answer_cols . $answer_head .$answer ."</table><div>\n";
+        $answer = $answer_start . $answer_cols . $answer_head .$answer ."</table></div>\n";
     }
     elseif ($useDropdownLayout === true && count($lresult)> 0)
     {
@@ -4962,7 +4973,7 @@ function do_array($ia)
             $fn++;
         }
         $answer .= "\t</tbody>";
-        $answer = $answer_start . $answer . "\n</table>\n";
+        $answer = $answer_start . $answer . "\n</table></div>\n";
     }
     else
     {
@@ -5561,6 +5572,7 @@ function do_array_multiflexi($ia)
         $mycols = "\t<colgroup class=\"col-responses\">\n"
         //. "\n\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
         . "\n\t<col class=\"answertext\" />\n";
+
         $answer_head_line = "\t<th >&nbsp;</th>\n";
         $odd_even = '';
         foreach ($labelans as $ld)
@@ -5584,10 +5596,11 @@ function do_array_multiflexi($ia)
 
         $trbc = '';
         //$answer = "<div class='no-more-tables'>\n<table class=\"table-in-qanda-7 question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"{$caption}\">\n"
-        $answer = "<div class='no-more-tables'>\n<table class=\"table-in-qanda-7 question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\">\n"
+        $answer = "<div class='no-more-tables'>
+                    \n<table class=\"table-in-qanda-7 question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\">\n"
         . $mycols
         . $answer_head . "\n";
-        $answer .= "<tbody>";
+        $answer .= "      <tbody>";
         foreach ($ansresult as $ansrow)
         {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)

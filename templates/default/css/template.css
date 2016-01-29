@@ -6,7 +6,12 @@
 
 div[id^="group-"]>div {
     background-color: #fff;
+    margin-bottom: 1em;
     border: none;
+ }
+
+ div[id^="group-"]>div.group-container {
+     background-color: transparent;
  }
 
 .language-changer {
@@ -32,7 +37,7 @@ div[id^="group-"]>div {
     font-size: 4em;
 }
 
-#surveydescription, #surveynametitle {
+#surveydescription, #surveynametitle, #welcome-container h1 {
     color: #2c3e50;
     text-align: center;
 }

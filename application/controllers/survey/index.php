@@ -569,7 +569,6 @@ class index extends CAction {
                 }
             }
         }
-
         // Preview action : Preview right already tested before
         if ($previewmode)
         {
@@ -600,7 +599,6 @@ class index extends CAction {
         {
             echo "<script type='text/javascript'> $(document).ready( function() { alert('".gT("Your responses were successfully saved.","js")."');}) </script>";
         }
-
     }
 
     function _getParameters($args = array(), $post = array())

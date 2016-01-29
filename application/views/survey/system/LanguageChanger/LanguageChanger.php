@@ -11,7 +11,6 @@
 
 <!-- views/survey/system/LanguageChanger -->
 <?php echo CHtml::label(gT("Choose another language"), 'lang',array('class'=>'hide label')); ?>
-
     <div class="form-group">
         <label for="lang" class="control-label">
             <?php eT("Choose another language:");?>

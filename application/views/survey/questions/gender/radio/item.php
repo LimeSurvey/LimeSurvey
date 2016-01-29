@@ -1,6 +1,6 @@
 <?php
 /**
- * Gender question, item Html
+ * Gender question, radio item Html
  *
  * $name                        $ia[1]
  * $checkconditionFunction      $checkconditionFunction $checkconditionFunction(this.value, this.name, this.type)

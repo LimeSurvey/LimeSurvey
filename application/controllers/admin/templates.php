@@ -1067,7 +1067,7 @@ class templates extends Survey_Common_Action
                 $myoutput[] = $this->getController()->render('/admin/templates/templateeditor_question_meta_view', array(), true);
 
                 $aData['aReplacements'] = array(
-                    'SAVE_LINKS' => '<li><a href="#" id="loadallbtnlink">Resume later</a></li>',
+                    'SAVE_LINKS' => '<li><a href="#" id="saveallbtnlink">Resume later</a></li>',
                     'CLEARALL_LINKS' => '<li><a href="#" id="clearallbtnlink">'.gT("Exit and clear survey").'</a></li>'
                 );
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startpage.pstpl", $aData));
@@ -1301,7 +1301,7 @@ class templates extends Survey_Common_Action
         $aData['editfile'] = $editfile;
         $aData['screenname'] = $screenname;
         $aData['tempdir'] = Yii::app()->getConfig('tempdir');
-        $aData['usertemplaterootdir'] = Yii::app()->getConfig('usertemplaterootdir');        
+        $aData['usertemplaterootdir'] = Yii::app()->getConfig('usertemplaterootdir');
 
         $aViewUrls['templateeditorbar_view'][] = $aData;
 

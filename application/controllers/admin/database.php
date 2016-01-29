@@ -276,8 +276,13 @@ class database extends Survey_Common_Action
 
                         if (substr($subquestionkey,0,3)!='new')           //update record
                         {
-
+                            //var_dump($subquestionkey); die();
                             $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",array(":qid"=>$subquestionkey,':language'=>$sLanguage));
+                            if(!is_object($oSubQuestion))
+                            {
+                                throw new CHttpException(502,"could not find subquestion $subquestionkey !");
+                            }
+
                             $oSubQuestion->question_order=$iPosition+1;
                             $oSubQuestion->title=$aCodes[$iScaleID][$iPosition];
                             $oSubQuestion->question=$subquestionvalue;
@@ -381,7 +386,7 @@ class database extends Survey_Common_Action
             LimeExpressionManager::SetDirtyFlag();
             if ($sDBOutput != '')
             {
-                echo $sDBOutput;
+                echo 'problem in database controller'; var_dump($sDBOutput);
             }
             else
             {

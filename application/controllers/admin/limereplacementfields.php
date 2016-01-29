@@ -16,35 +16,19 @@ class limereplacementfields extends Survey_Common_Action
 
     public function index()
     {
-        if (isset($_GET['surveyid'])) {
-            $surveyid = sanitize_int($_GET['surveyid']);
+        $surveyid = intval(App()->request->getQuery('surveyid'));
+        $gid = intval(App()->request->getQuery('gid'));
+        $qid = intval(App()->request->getQuery('qid'));
+        $fieldtype = sanitize_xss_string(App()->request->getQuery('fieldtype'));
+        $action = sanitize_xss_string(App()->request->getQuery('action'));
+        if (!Yii::app()->session['loginID'])
+        {
+            throw new CHttpException(401);
         }
-        if (isset($_GET['gid'])) {
-            $gid = sanitize_int($_GET['gid']);
-        }
-        if (isset($_GET['qid'])) {
-            $qid = sanitize_int($_GET['qid']);
-        }
-        if (isset($_GET['fieldtype'])) {
-            $fieldtype = $_GET['fieldtype'];
-        }
-        if (isset($_GET['action'])) {
-            $action = $_GET['action'];
-        }
-
-
-
-        if (!Yii::app()->session['loginID']) {
-            die ("Unauthenticated Access Forbiden");
-        }
-
         list($replacementFields, $isInstertAnswerEnabled) = $this->_getReplacementFields($fieldtype, $surveyid);
 
-        if ($isInstertAnswerEnabled === true) {
-            if (empty($surveyid)) {
-                safeDie("No SID provided.");
-            }
-
+        if ($isInstertAnswerEnabled === true)
+        {
             //2: Get all other questions that occur before this question that are pre-determined answer types
             $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
 
@@ -197,7 +181,8 @@ class limereplacementfields extends Survey_Common_Action
     {
 
         $replFields = array();
-
+        if(!$surveyid)
+            return array($replFields, false);
         switch ($fieldtype)
         {
             case 'survey-desc':
@@ -221,7 +206,7 @@ class limereplacementfields extends Survey_Common_Action
                 return array($replFields, false);
 
             case 'email-admin_notification':
-			case 'email-admin_detailed_notification':
+            case 'email-admin_detailed_notification':
                 $replFields[] = array('RELOADURL', gT("Reload URL"));
                 $replFields[] = array('VIEWRESPONSEURL', gT("View response URL"));
                 $replFields[] = array('EDITRESPONSEURL', gT("Edit response URL"));
