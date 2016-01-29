@@ -1,5 +1,5 @@
 <!-- Group description -->
-<div class="row" id="welcome-container">
+<div class="row" id="group-description-container">
     <div class="col-sm-12 ">
         <p class="group-description jumbotron">
             {GROUPDESCRIPTION}
