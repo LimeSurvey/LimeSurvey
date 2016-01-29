@@ -42,8 +42,15 @@
     );
 
     global $oTemplate;
-    $oTemplate = Template::model()->getTemplateConfiguration('',$survey->sid);
-    
+    if(isset($survey))
+    {
+        $oTemplate = Template::model()->getTemplateConfiguration('',$survey->sid);
+    }
+    else
+    {
+        $oTemplate = Template::model()->getTemplateConfiguration('default');
+    }
+
     $data['templatedir'] = getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
     $data['templateurl'] = getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
     $data['templatename'] = Yii::app()->getConfig("defaulttemplate");
