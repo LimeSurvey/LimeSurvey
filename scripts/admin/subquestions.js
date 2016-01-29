@@ -274,6 +274,15 @@ function aftermove(event,ui)
 
 // This function adjusts the alternating table rows
 // if the list changed
+
+function updateIfEmpty($elm, $attr, $attr_value)
+{
+    if($elm.attr($attr)=='')
+    {
+        $elm.attr($attr,$attr_value);
+    }
+}
+
 function updaterowproperties()
 {
     var sID=$('input[name=sid]').val();
@@ -293,13 +302,14 @@ function updaterowproperties()
         $(this).children('tr').each(function()
         {
             $(this).addClass('row_'+rownumber);
-            $(this).find('.oldcode').attr('name','oldcode_'+rownumber+'_'+scale_id);
-            $(this).find('.code').attr('id','code_'+rownumber+'_'+scale_id);
-            $(this).find('.code').attr('name','code_'+rownumber+'_'+scale_id);
-            $(this).find('.answer').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id);
-            $(this).find('.answer').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id);
-            $(this).find('.assessment').attr('id','assessment_'+rownumber+'_'+scale_id);
-            $(this).find('.assessment').attr('name','assessment_'+rownumber+'_'+scale_id);
+
+            updateIfEmpty($(this).find('.oldcode'), 'name', 'oldcode_'+rownumber+'_'+scale_id);
+            updateIfEmpty($(this).find('.code'), 'id', 'code_'+rownumber+'_'+scale_id);
+            updateIfEmpty($(this).find('.code'), 'name', 'code_'+rownumber+'_'+scale_id);
+            updateIfEmpty($(this).find('.answer'), 'id', 'answer_'+language+'_'+rownumber+'_'+scale_id);
+            updateIfEmpty($(this).find('.answer'), 'name', 'answer_'+language+'_'+rownumber+'_'+scale_id);
+            updateIfEmpty($(this).find('.assessment'), 'id', 'assessment_'+rownumber+'_'+scale_id);
+            updateIfEmpty($(this).find('.assessment'), 'name', 'assessment_'+rownumber+'_'+scale_id);
 
             // Newly inserted row editor button
             $(this).find('.editorLink').attr('href','javascript:start_popup_editor(\'answer_'+language+'_'+rownumber+'_'+scale_id+'\',\'[Answer:]('+language+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')');

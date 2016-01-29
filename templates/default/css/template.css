@@ -37,7 +37,7 @@ div[id^="group-"]>div {
     font-size: 4em;
 }
 
-#surveydescription, #surveynametitle {
+#surveydescription, #surveynametitle, #welcome-container h1 {
     color: #2c3e50;
     text-align: center;
 }
