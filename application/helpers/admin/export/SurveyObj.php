@@ -389,17 +389,12 @@ class SurveyObj
         $aQuestion = $this->fieldMap[$sFieldName];
         $sFieldType = $aQuestion['type'];
 
-        switch ($sFieldType)
-        {
+        switch ($sFieldType) {
             case 'K':
             case 'N':
                 if (trim($sValue)!='') {
                     if (strpos($sValue,".")!==false) {
                         $sValue=rtrim(rtrim($sValue,"0"),".");
-                    }
-                    $aQidAttributes = getQuestionAttributeValues($aQuestion['qid']);
-                    if (isset($aQidAttributes['num_value_int_only']) && $aQidAttributes['num_value_int_only']) {
-                        $sValue=number_format($sValue, 0, '', '');
                     }
                 }
                 break;
