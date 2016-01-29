@@ -6,7 +6,12 @@
 
 div[id^="group-"]>div {
     background-color: #fff;
+    margin-bottom: 1em;
     border: none;
+ }
+
+ div[id^="group-"]>div.group-container {
+     background-color: transparent;
  }
 
 .language-changer {
