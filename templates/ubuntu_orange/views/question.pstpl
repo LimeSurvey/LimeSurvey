@@ -13,7 +13,8 @@
         <!-- Question help -->
         <div class="row question-wrapper">
             <div class="col-sm-12 questionhelpcontainer">
-                <span class='glyphicon glyphicon-help'></span>{QUESTION_HELP}
+                <span class='glyphicon glyphicon-help'></span>
+                {QUESTION_HELP}
             </div>
         </div>
 

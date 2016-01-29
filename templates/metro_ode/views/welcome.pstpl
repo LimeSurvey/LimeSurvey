@@ -8,21 +8,23 @@
 </div>
 
 <!-- Language Changer -->
-<div class="row" class="language-changer">
+<div class="row language-changer">
     <div class="col-sm-12 ">
         {LANGUAGECHANGER}
     </div>
 </div>
 
 <!-- Survey Welcome -->
-<div class="row" class="survey-welcome">
+<div class="row survey-welcome">
     <div class="col-sm-12 ">
-        <p class='surveywelcome'>{WELCOME}</p>
+        <p class='surveywelcome'>
+            {WELCOME}
+        </p>
     </div>
 </div>
 
 <!-- Question number -->
-<div class="row" class="questions-number">
+<div class="row questions-number">
     <div class="col-sm-12">
         <p class="x-questions">{THEREAREXQUESTIONS}</p>
     </div>

@@ -1,7 +1,58 @@
  body {
      padding-top: 50px;
      padding-bottom: 10px;
+     background-color: #F1F1F1;
  }
+
+div[id^="group-"]>div {
+    background-color: #fff;
+    margin-bottom: 1em;
+    border: none;
+ }
+
+ div[id^="group-"]>div.group-container {
+     background-color: transparent;
+ }
+
+.language-changer {
+    background-color: #fff;
+    padding: 1em;
+}
+
+#topContainer {
+    position: absolute;
+    top: 60px;
+    width: 100%;
+    padding: 1em;
+    background-color: #A5B2BF;
+    border-bottom: none;
+}
+
+.progress {
+    height: 21px;
+    margin-bottom: 0px;
+}
+
+#surveynametitle {
+    font-size: 4em;
+}
+
+#surveydescription, #surveynametitle, #welcome-container h1 {
+    color: #2c3e50;
+    text-align: center;
+}
+
+.group-name {
+
+}
+
+#surveydescription, .group-name {
+    color: #2c3e50;
+}
+
+#main-row, #welcome-container {
+    background-color: transparent;
+}
  /**
  * Navigator
  */
