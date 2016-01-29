@@ -44,17 +44,18 @@ class templates extends Survey_Common_Action
     */
     public function templatezip($templatename)
     {
+        global $oTemplate;
         if (!Permission::model()->hasGlobalPermission('templates','export'))
         {
             die('No permission');
         }
-        $templatedir = getTemplatePath($templatename) . DIRECTORY_SEPARATOR;
+        $templatedir = $oTemplate->viewPath . DIRECTORY_SEPARATOR;
         $tempdir = Yii::app()->getConfig('tempdir');
 
         $zipfile = "$tempdir/$templatename.zip";
         Yii::app()->loadLibrary('admin.pclzip');
         $zip = new PclZip($zipfile);
-        $zip->create($templatedir, PCLZIP_OPT_REMOVE_PATH, getTemplatePath($templatename));
+        $zip->create($templatedir, PCLZIP_OPT_REMOVE_PATH, $oTemplate->viewPath);
 
         if (is_file($zipfile)) {
             // Send the file for download!
@@ -834,6 +835,7 @@ class templates extends Survey_Common_Action
      */
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
+        global $oTemplate;
         //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
@@ -1012,7 +1014,7 @@ class templates extends Survey_Common_Action
         $surveyid = '1295';
         $token = 1234567;
 
-        $templatedir = getTemplatePath($templatename);
+        $templatedir = $oTemplate->viewPath;
         $templateurl = getTemplateURL($templatename);
 
         // Save these variables in an array
@@ -1055,7 +1057,7 @@ class templates extends Survey_Common_Action
                 foreach ($SurveyList as $qs)
                 {
                     $files[] = array("name" => $qs);
-                    $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/$qs", $aData));
+                    $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath . "/$qs", $aData));
                 }
                 break;
 
@@ -1070,10 +1072,10 @@ class templates extends Survey_Common_Action
                     'SAVE_LINKS' => '<li><a href="#" id="saveallbtnlink">Resume later</a></li>',
                     'CLEARALL_LINKS' => '<li><a href="#" id="clearallbtnlink">'.gT("Exit and clear survey").'</a></li>'
                 );
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startpage.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/survey.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startgroup.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/groupdescription.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath . "/startpage.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath . "/survey.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath . "/startgroup.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath . "/groupdescription.pstpl", $aData));
 
                 $aReplacements = array(
                 'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
@@ -1087,7 +1089,7 @@ class templates extends Survey_Common_Action
                 );
                 $aReplacements['ANSWER'] = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array(), true);
                 $aData['aReplacements'] = $aReplacements;
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/question.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath . "/question.pstpl", $aData));
 
                 $aReplacements = array(
                 'QUESTION_TEXT' => gT('Please explain something in detail:'),
@@ -1098,36 +1100,37 @@ class templates extends Survey_Common_Action
                 );
                 $aReplacements['ANSWER'] = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
                 $aData['aReplacements'] = $aReplacements;
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/question.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath . "/question.pstpl", $aData));
 
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/endgroup.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath . "/endgroup.pstpl", $aData));
 
                 $aData['aReplacements'] = array(
                     'MOVEPREVBUTTON' => '<button type="submit" id="moveprevbtn" value="moveprev" name="moveprev" accesskey="p" class="submit button btn btn-default btn-lg ">Previous</button>',
                     'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-default btn-lg ">Next</button>'
                 );
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/navigator.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/endpage.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath . "/navigator.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath . "/endpage.pstpl", $aData));
                 break;
 
             case 'welcome':
                 unset($files);
 
+
                 foreach ($Welcome as $qs) {
                     $files[] = array("name" => $qs);
-                    $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/$qs", $aData));
+                    $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath . "/$qs", $aData));
                 }
 
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startpage.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/welcome.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/privacy.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath  . "/startpage.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath  . "/welcome.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath  . "/privacy.pstpl", $aData));
 
                 $aData['aReplacements'] = array(
                     'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-default btn-lg ">Next</button>'
                 );
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/navigator.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath  . "/navigator.pstpl", $aData));
 
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/endpage.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath  . "/endpage.pstpl", $aData));
                 break;
 
             case 'register':
@@ -1143,7 +1146,7 @@ class templates extends Survey_Common_Action
                         'SURVEYNAME' => 'Survey name'
                     )
                 );
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/survey.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath . "/survey.pstpl", $aData));
 
                 $aData['aReplacements'] = array(
                     'REGISTERERROR' => 'Example error message',
@@ -1152,7 +1155,7 @@ class templates extends Survey_Common_Action
                     'REGISTERFORM' => $this->getController()->render('/admin/templates/templateeditor_register_view', array('alt' => true), true),
                 );
 
-                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/register.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath . "/register.pstpl", $aData));
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData);
                 $myoutput[] = "\n";
                 break;
@@ -1196,7 +1199,7 @@ class templates extends Survey_Common_Action
                 foreach ($CompletedTemplate as $qs)
                 {
                     $files[] = array("name" => $qs);
-                    $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/$qs", $aData));
+                    $myoutput = array_merge($myoutput, doreplacement($oTemplate->viewPath . "/$qs", $aData));
                 }
                 break;
 
