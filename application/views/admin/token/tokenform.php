@@ -44,39 +44,39 @@
                 <!-- First name -->                    
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for='firstname'><?php eT("First name"); ?>:</label>
-                    <div class="col-sm-10">
-                    <input type='text' size='30' id='firstname' name='firstname' value="<?php if (isset($firstname)){echo $firstname;} ?>" /></div>
+                    <div class="col-sm-2">
+                    <input class='form-control' type='text' size='30' id='firstname' name='firstname' value="<?php if (isset($firstname)){echo $firstname;} ?>" /></div>
                 </div>
                 
                 <!-- Last name -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label"  for='lastname'><?php eT("Last name"); ?>:</label>
-                    <div class="col-sm-10">
-                        <input type='text' size='30'  id='lastname' name='lastname' value="<?php if (isset($lastname)){echo $lastname;} ?>" />
+                    <div class="col-sm-2">
+                        <input class='form-control' type='text' size='30'  id='lastname' name='lastname' value="<?php if (isset($lastname)){echo $lastname;} ?>" />
                     </div>
                 </div>
 
                 <!-- Email -->                    
                 <div class="form-group">
                     <label class="col-sm-2 control-label"  for='email'><?php eT("Email"); ?>:</label>
-                    <div class="col-sm-10">
-                        <input type='email' multiple='multiple' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email)){echo $email;} ?>" />
+                    <div class="col-sm-2">
+                        <input class='form-control' type='email' multiple='multiple' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email)){echo $email;} ?>" />
                     </div>
                 </div>
                 
                 <!-- Email Status -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label"  for='emailstatus'><?php eT("Email Status"); ?>:</label>
-                    <div class="col-sm-10">
-                        <input type='text' maxlength='320' size='50' id='emailstatus' name='emailstatus' placeholder='OK' value="<?php if (isset($emailstatus)){echo $emailstatus;}else{echo "OK";}?>" />
+                    <div class="col-sm-2">
+                        <input class='form-control' type='text' maxlength='320' size='50' id='emailstatus' name='emailstatus' placeholder='OK' value="<?php if (isset($emailstatus)){echo $emailstatus;}else{echo "OK";}?>" />
                     </div>
                 </div>
                 
                 <!-- Token -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label"  for='token'><?php eT("Token"); ?>:</label>
-                    <div class="col-sm-10">
-                        <input type='text' size='20' name='token' id='token' value="<?php if (isset($token)){echo $token;} ?>" />
+                    <div class="col-sm-2">
+                        <input class='form-control' type='text' size='20' name='token' id='token' value="<?php if (isset($token)){echo $token;} ?>" />
                         <?php if ($subaction == "addnew"): ?>
                             <span id="helpBlock" class="help-block"><?php eT("You can leave this blank, and automatically generate tokens using 'Generate Tokens'"); ?></span>
                         <?php endif; ?>
@@ -86,7 +86,7 @@
                 <!-- Language -->      
                 <div class="form-group">
                     <label class="col-sm-2 control-label"  for='language'><?php eT("Language"); ?>:</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-2">
                         <?php if (isset($language)){echo languageDropdownClean($surveyid, $language);}else{echo languageDropdownClean($surveyid, Survey::model()->findByPk($surveyid)->language);}?>
                     </div>
                 </div>
@@ -94,16 +94,16 @@
                 <!-- Invitation sent -->                    
                 <div class="form-group">
                     <label class="col-sm-2 control-label"  for='sent'><?php eT("Invitation sent?"); ?></label>
-                    <div class="col-sm-10">
-                        <input type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)){echo $sent;}else{echo "N";}?>" />
+                    <div class="col-sm-2">
+                        <input class='form-control' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)){echo $sent;}else{echo "N";}?>" />
                     </div>
                 </div>
 
                 <!-- Reminder sent -->                    
                 <div class="form-group">
                     <label class="col-sm-2 control-label"  for='remindersent'><?php eT("Reminder sent?"); ?></label>
-                    <div class="col-sm-10">
-                        <input type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent)){echo $remindersent;}else{echo "N";}?>" />
+                    <div class="col-sm-2">
+                        <input class='form-control' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent)){echo $remindersent;}else{echo "N";}?>" />
                     </div>
                 </div>
 
@@ -111,8 +111,8 @@
                 <?php if ($subaction == "edit"): ?>
                     <div class="form-group">
                         <label class="col-sm-2 control-label"  for='remindercount'><?php eT("Reminder count:"); ?></label>
-                        <div class="col-sm-10">
-                            <input type='text' size='6' id='remindercount' name='remindercount' value="<?php echo $remindercount; ?>" />
+                        <div class="col-sm-2">
+                            <input class='form-control' type='text' size='6' id='remindercount' name='remindercount' value="<?php echo $remindercount; ?>" />
                         </div>
                     </div>
                 <?php endif; ?>
@@ -120,16 +120,16 @@
                 <!-- Completed -->                    
                 <div class="form-group">
                     <label class="col-sm-2 control-label"  for='completed'><?php eT("Completed?"); ?></label>
-                    <div class="col-sm-10">
-                        <input type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)){echo $completed;}else{echo "N";}?>" />
+                    <div class="col-sm-2">
+                        <input class='form-control' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)){echo $completed;}else{echo "N";}?>" />
                     </div>
                 </div>
 
                 <!-- Uses left -->                    
                 <div class="form-group">
                     <label class="col-sm-2 control-label"  for='usesleft'><?php eT("Uses left:"); ?></label>
-                    <div class="col-sm-10">
-                        <input type='text' size='20' id='usesleft' name='usesleft' value="<?php if (isset($usesleft)){echo $usesleft;}else{echo "1";}?>" />
+                    <div class="col-sm-2">
+                        <input class='form-control' type='text' size='20' id='usesleft' name='usesleft' value="<?php if (isset($usesleft)){echo $usesleft;}else{echo "1";}?>" />
                     </div>
                 </div>
 

@@ -4512,12 +4512,19 @@ function languageDropdown($surveyid,$selected)
     return $html;
 }
 
-function languageDropdownClean($surveyid,$selected)
+/**
+ * Creates a <select> HTML element for language selection for this survey
+ * 
+ * @param int $surveyid
+ * @param string $selected The selected language
+ * @return string
+ */
+function languageDropdownClean($surveyid, $selected)
 {
     $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
     $baselang = Survey::model()->findByPk($surveyid)->language;
     array_unshift($slangs,$baselang);
-    $html = "<select class='listboxquestions' id='language' name='language'>\n";
+    $html = "<select class='form-control listboxquestions' id='language' name='language'>\n";
     foreach ($slangs as $lang)
     {
         if ($lang == $selected) $html .= "\t<option value='$lang' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
