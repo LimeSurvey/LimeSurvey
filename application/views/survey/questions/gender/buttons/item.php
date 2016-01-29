@@ -66,4 +66,5 @@
         id="java<?php echo $name; ?>"
         value="<?php echo $value;?>"
     />
-</div>
+    </div>
+</div>    

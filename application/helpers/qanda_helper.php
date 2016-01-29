@@ -1141,7 +1141,7 @@ function do_date($ia)
             'dateformatdetails'=>$dateformatdetails['jsdate'],
             'dateformat'=>$dateformatdetails['dateformat'],
         );
-//
+
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/date_footer', $footerData, true);
         App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}","doDropDownDate({$ia[0]});",CClientScript::POS_HEAD);
         // MayDo:
