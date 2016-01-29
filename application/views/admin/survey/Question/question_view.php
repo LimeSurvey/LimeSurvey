@@ -189,20 +189,20 @@
             </table>
 
             <!-- Quick Actions -->
-            <h3 id="survey-action-title"><?php eT('Survey quick actions'); ?></h3>
+            <h3 id="survey-action-title"><?php eT('Question quick actions'); ?></h3>
             <div class="row welcome survey-action">
                 <div class="col-lg-12 content-right">
 
                     <!-- create new question in this group -->
                     <div class="col-lg-3">
-                        <div class="panel panel-primary <?php if ($surveyIsActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="pannel-1" aria-data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
+                        <div class="panel panel-primary <?php if ($surveyIsActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="pannel-1" data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
                             <div class="panel-heading">
                                 <h4 class="panel-title"><?php eT("Add new question to group");?></h4>
                             </div>
                             <div class="panel-body">
                                 <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                 <p class='btn-link'>
-                                    <?php eT("Add new question to group");?>
+                                        <?php eT("Add new question to group");?>
                                 </p>
                             </div>
                         </div>
