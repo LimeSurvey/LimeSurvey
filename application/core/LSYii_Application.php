@@ -40,7 +40,6 @@ class LSYii_Application extends CWebApplication
     public function __construct($config = null)
     {
         parent::__construct($config);
-        Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
         // Load the default and environmental settings from different files into self.
         $ls_config = require(__DIR__ . '/../config/config-defaults.php');
         $email_config = require(__DIR__ . '/../config/email.php');

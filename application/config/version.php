@@ -9,14 +9,14 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- *
+ *150413
  */
 
-$config['versionnumber'] = "2.06+";
-$config['dbversionnumber'] = 184;
+$config['versionnumber'] = "2.5RC8";
+$config['dbversionnumber'] = 252;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
-
+//$config['updaterversion'] = 1;
 return $config;
 
 ?>

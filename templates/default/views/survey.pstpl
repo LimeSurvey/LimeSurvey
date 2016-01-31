@@ -1,0 +1,8 @@
+<!-- Survey Description -->
+<div class="row" id="survey-header">
+    <div class="col-sm-12 ">
+        {CHECKJAVASCRIPT}
+        <h2 id="surveynametitle">{SURVEYNAME}</h2><br />
+        <p id="surveydescription">{SURVEYDESCRIPTION}</p>
+    </div>
+</div>

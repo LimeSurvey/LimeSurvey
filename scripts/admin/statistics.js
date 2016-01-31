@@ -1,4 +1,245 @@
-$(document).ready(function(){
+function toggleSection(chevron, section ) {
+    section.toggle();
+    chevron.toggleClass('glyphicon-chevron-up').toggleClass('glyphicon-chevron-down');
+}
+
+function hideSection(chevron, section ) {
+    section.hide();
+    chevron.removeClass('glyphicon-chevron-up');
+    chevron.addClass('glyphicon-chevron-down');
+}
+
+/**
+ * Display chartjs graph
+ */
+var chartjs = new Array();
+var COLORS_FOR_SURVEY = new Array('20,130,200','232,95,51','34,205,33','210,211,28','134,179,129','201,171,131','251,231,221','23,169,161','167,187,213','211,151,213','147,145,246','147,39,90','250,250,201','201,250,250','94,0,94','250,125,127','0,96,201','201,202,250','0,0,127','250,0,250','250,250,0','0,250,250','127,0,127','127,0,0','0,125,127','0,0,250','0,202,250','201,250,250','201,250,201','250,250,151','151,202,250','251,149,201','201,149,250','250,202,151','45,96,250','45,202,201','151,202,0','250,202,0','250,149,0','250,96,0','184,230,115','102,128,64','220,230,207','134,191,48','184,92,161','128,64,112','230,207,224','191,48,155','230,138,115','128,77,64','230,211,207','191,77,48','80,161,126','64,128,100','207,230,220','48,191,130','25,25,179','18,18,125','200,200,255','145,145,255','255,178,0','179,125,0','255,236,191','255,217,128','255,255,0','179,179,0','255,255,191','255,255,128','102,0,153','71,0,107','234,191,255','213,128,255');
+
+/**
+ * loadGraphOnScroll jQuery plugin
+ * This plugin will load graph on scroll
+ */
+(function($)
+{
+    $.fn.loadGraphOnScroll=function()
+    {
+       this.each(function(){
+           var $elem = $(this);
+           var $type = $elem.data('type');
+           var $qid = $elem.data('qid');
+
+           $(window).scroll(function() {
+               var $window = $(window);
+               var docViewTop = $window.scrollTop();
+               var docViewBottom = docViewTop + $window.height();
+               var elemTop = $elem.offset().top;
+               var elemBottom = elemTop + $elem.height();
+
+               if((elemBottom <= docViewBottom) && (elemTop >= docViewTop))
+               {
+                   // chartjs
+                   if ( typeof chartjs[$qid] == "undefined" || typeof chartjs == "undefined" ) // typeof chartjs[$qid] == "undefined" || typeof chartjs == "undefined"
+                   {
+                       if($type == 'Bar' || $type == 'Radar' || $type == 'Line' )
+                       {
+
+                           init_chart_js_graph_with_datasets($type,$qid);
+                       }
+                       else
+                       {
+                           init_chart_js_graph_with_datas($type, $qid);
+                       }
+                   }
+
+               };
+
+           });
+
+
+       });
+       return this;
+    };
+})(jQuery);
+
+(function($)
+{
+    $.fn.loadGraph=function()
+    {
+       this.each(function(){       
+           var $elem = $(this);
+           var $type = $elem.data('type');
+           var $qid = $elem.data('qid');
+
+           // chartjs
+
+               if($type == 'Bar' || $type == 'Radar' || $type == 'Line' )
+               {
+
+                   init_chart_js_graph_with_datasets($type,$qid);
+               }
+               else
+               {
+                   init_chart_js_graph_with_datas($type, $qid);
+               }
+
+
+       });
+       return this;
+    };
+})(jQuery);
+
+
+/**
+ * This function load the graph needing datasets (bars, etc.)
+ */
+function init_chart_js_graph_with_datasets($type,$qid)
+{
+    var canvasId = 'chartjs-'+$qid;
+    var $canvas = document.getElementById(canvasId).getContext("2d");
+    var $canva = $('#'+canvasId);
+    var $labels = eval("labels_"+$qid);
+    var $grawdata = eval("grawdata_"+$qid);
+    var $color = $canva.data('color');
+
+    if (typeof chartjs != "undefined") {
+        if (typeof chartjs[$qid] != "undefined") {
+            window.chartjs[$qid].destroy();
+        }
+    }
+
+    window.chartjs[$qid] = new Chart($canvas)[$type]({
+        labels: $labels,
+        datasets: [{
+            label: $qid,
+            data: $grawdata,
+
+            fillColor: "rgba("+COLORS_FOR_SURVEY[$color]+",0.2)",
+            strokeColor: "rgba("+COLORS_FOR_SURVEY[$color]+",1)",
+            pointColor: "rgba("+COLORS_FOR_SURVEY[$color]+",1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba("+COLORS_FOR_SURVEY[$color]+",1)",
+
+        }],
+    });
+
+    // We need to give a different color to each bar
+    if($type=='Bar')
+    {
+        for (var key in $labels )
+        {
+            $index = (parseInt(key)+$color);
+            window.chartjs[$qid].datasets[0].bars[key].fillColor = "rgba("+COLORS_FOR_SURVEY[$index]+",0.6)";
+            window.chartjs[$qid].datasets[0].bars[key].strokeColor= "rgba("+COLORS_FOR_SURVEY[$index]+",1)";
+            window.chartjs[$qid].datasets[0].bars[key].highlightFill =  "rgba("+COLORS_FOR_SURVEY[$index]+",0.9)";
+        }
+        chartjs[$qid].update();
+    }
+}
+
+/**
+ * This function load the graphs needing datas (pie chart, etc)
+ */
+function init_chart_js_graph_with_datas($type,$qid)
+{
+    var canvasId = 'chartjs-'+$qid;
+    var $canvas = document.getElementById(canvasId).getContext("2d");
+    var $canva = $('#'+canvasId);
+    var $color = $canva.data('color');
+    var $labels = eval("labels_"+$qid);
+    var $grawdata = eval("grawdata_"+$qid);
+    var $chartDef = new Array();
+
+    $.each($labels, function($i, $label) {
+        $colori = (parseInt($i)+$color);
+        $chartDef[$i] = {
+            value: $grawdata[$i],
+            color:"rgba("+COLORS_FOR_SURVEY[$colori]+",0.6)",
+            highlight: "rgba("+COLORS_FOR_SURVEY[$colori]+",0.9)",
+            label: $label,
+        };
+    });
+
+    if (typeof chartjs != "undefined") {
+        if (typeof chartjs[$qid] != "undefined") {
+            window.chartjs[$qid].destroy();
+        }
+    }
+
+    window.chartjs[$qid] = new Chart($canvas)[$type](
+        $chartDef
+    );
+}
+
+$(document).ready(function() {
+
+
+    if($('#showGraphOnPageLoad').length>0)
+    {
+        $('.chartjs-container').loadGraph();
+    }
+
+    $("[name='viewsummaryall']").bootstrapSwitch();
+    $("[name='noncompleted']").bootstrapSwitch();
+    $("[name='showtextinline']").bootstrapSwitch();
+    $("[name='usegraph']").bootstrapSwitch();
+
+
+    $('#generalfilters-chevron').click(function(){
+        toggleSection($('#generalfilters-chevron'), $('#statisticsgeneralfilters') );
+    });
+
+    $('#responsefilters-chevron').click(function(){
+        toggleSection($('#responsefilters-chevron'), $('#filterchoices'));
+    });
+
+    $('#statistics-render-chevron').click(function(){
+        toggleSection($('#statistics-render-chevron') ,$('#statisticsoutput') );
+    });
+
+    $('#generate-statistics').submit(function(){
+
+        hideSection($('#generalfilters-chevron'), $('#statisticsgeneralfilters') );
+        hideSection($('#responsefilters-chevron'), $('#filterchoices'))
+        $('#statisticsoutput').show();
+        $('#statistics-render-chevron').removeClass('glyphicon-chevron-up');
+        $('#statistics-render-chevron').addClass('glyphicon-chevron-down');
+        $('#view-stats-alert-info').hide();
+        $('#statsContainerLoading').show();
+        //alert('ok');
+    });
+
+    $('.group-question-chevron').click(function(){
+        //alert('ok');
+        $group_to_hide = $('#'+$(this).data('grouptohide'));
+        toggleSection($(this), $group_to_hide )
+        //$('#'+group_to_hide).hide();
+    });
+
+    // If the graph are displayed
+    if($('.chartjs-container').length>1){
+
+        // On scroll, display the graph
+        $('.chartjs-container').loadGraphOnScroll();
+
+        // Buttons changing the graph type
+        $('.chart-type-control').click(function() {
+            $type = $(this).data('type');
+            $qid = $(this).data('qid');
+
+            // chartjs
+            if($type == 'Bar' || $type == 'Radar' || $type == 'Line' )
+            {
+                init_chart_js_graph_with_datasets($type,$qid);
+            }
+            else
+            {
+                init_chart_js_graph_with_datas($type, $qid);
+            }
+        });
+
+    }
+
     if(showTextInline==1) {
         /* Enable all the browse divs, and fill with data */
         $('.statisticsbrowsebutton').each( function (){
@@ -28,6 +269,7 @@ $(document).ready(function(){
 
      function loadBrowse(id,extra) {
          var destinationdiv=$('#columnlist_'+id);
+         console.log('#columnlist_'+id);
          if(extra=='') {
              destinationdiv.parents("td:first").toggle();
          } else {
@@ -46,38 +288,43 @@ $(document).ready(function(){
             $('#usegraph').prop('checked',false);
         }
      });
-     $('#viewsummaryall').click( function(){
-        if ($('#viewsummaryall').prop('checked')==true)
-        {
-            $('#filterchoices input[type=checkbox]').prop('checked', true);
-        }
-        else
-        {
-            $('#filterchoices input[type=checkbox]').prop('checked', false);
 
-        }
-     });
+    /***
+     * Select all questions
+     */
+    $("[name='viewsummaryall']").on('switchChange.bootstrapSwitch', function(event, state) {
+
+           if (state==true)
+           {
+               $('#filterchoices input[type=checkbox]').prop('checked', true);
+           }
+           else
+           {
+               $('#filterchoices input[type=checkbox]').prop('checked', false);
+
+           }
+    });
 
     /* Show and hide the three major sections of the statistics page */
     /* The response filters */
     $('#hidefilter').click( function(){
-        $('#statisticsresponsefilters').hide(1000);
+        $('#statisticsresponsefilters').hide();
         $('#filterchoices').hide();
         $('#filterchoice_state').val('1');
         $('#vertical_slide2').hide();
     });
     $('#showfilter').click( function(){
-        $('#statisticsresponsefilters').show(1000);
+        $('#statisticsresponsefilters').show();
         $('#filterchoices').show();
         $('#filterchoice_state').val('');
         $('#vertical_slide2').show();
     });
     /* The general settings/filters */
     $('#hidegfilter').click( function(){
-        $('#statisticsgeneralfilters').hide(1000);
+        $('#statisticsgeneralfilters').hide();
     });
     $('#showgfilter').click( function(){
-        $('#statisticsgeneralfilters').show(1000);
+        $('#statisticsgeneralfilters').show();
     });
     /* The actual statistics results */
     $('#hidesfilter').click( function(){
@@ -97,25 +344,25 @@ $(document).ready(function(){
 
      if (typeof aGMapData == "object") {
          for (var i in aGMapData) {
-     		gMapInit("statisticsmap_" + i, aGMapData[i]);
-	     }
-	 }
+             gMapInit("statisticsmap_" + i, aGMapData[i]);
+         }
+     }
 
-	 if (typeof aStatData == "object") {
-	    for (var i in aStatData) {
-	        statInit(aStatData[i]);
+     if (typeof aStatData == "object") {
+        for (var i in aStatData) {
+            statInit(aStatData[i]);
         }
-	 }
+     }
 
-	 $(".stats-hidegraph").click (function ()
-	 {
+     $(".stats-hidegraph").click (function ()
+     {
 
         var id = statGetId(this.parentNode);
         if (!id) {
             return;
         }
 
-	    $("#statzone_" + id).html(getWaiter());
+        $("#statzone_" + id).html(getWaiter());
         graphQuery(id, 'hidegraph', function (res) {
             if (!res) {
                 ajaxError();
@@ -133,17 +380,17 @@ $(document).ready(function(){
             aStatData[id].sg = false;
             statInit(aStatData[id]);
         });
-	 });
+     });
 
-	 $(".stats-showgraph").click(function ()
-	 {
+     $(".stats-showgraph").click(function ()
+     {
         var id = statGetId(this.parentNode);
         if (!id) {
             return;
         }
 
-	    $("#statzone_" + id).html(getWaiter()).show();
-	    graphQuery(id, 'showgraph', function (res) {
+        $("#statzone_" + id).html(getWaiter()).show();
+        graphQuery(id, 'showgraph', function (res) {
             if (!res) {
                 ajaxError();
                 return;
@@ -173,19 +420,19 @@ $(document).ready(function(){
 
             $("#statzone_" + id + " .wait").remove();
 
-	    });
+        });
      });
 
-	 $(".stats-hidemap").click (function ()
-	 {
+     $(".stats-hidemap").click (function ()
+     {
         var id = statGetId(this.parentNode);
         if (!id) {
             return;
         }
 
-	    $("#statzone_" + id + ">div").replaceWith(getWaiter());
+        $("#statzone_" + id + ">div").replaceWith(getWaiter());
 
-	    graphQuery(id, 'hidemap', function (res) {
+        graphQuery(id, 'hidemap', function (res) {
             if (!res) {
                 ajaxError();
                 return;
@@ -203,19 +450,19 @@ $(document).ready(function(){
             statInit(aStatData[id]);
 
             $("#statzone_" + id + " .wait").remove();
-	    });
-	 });
+        });
+     });
 
-	 $(".stats-showmap").click(function ()
-	 {
+     $(".stats-showmap").click(function ()
+     {
         var id = statGetId(this.parentNode);
         if (!id) {
             return;
         }
 
-	    $("#statzone_" + id).append(getWaiter());
+        $("#statzone_" + id).append(getWaiter());
 
-	    graphQuery(id, 'showmap', function (res) {
+        graphQuery(id, 'showmap', function (res) {
             if (!res) {
                 ajaxError();
                 return;
@@ -236,18 +483,18 @@ $(document).ready(function(){
             $("#statzone_" + id).append("<div id=\"statisticsmap_" + id + "\" class=\"statisticsmap\"></div>");
 
             gMapInit('statisticsmap_' + id, data.mapdata);
-	    });
-	 });
+        });
+     });
 
-	 $(".stats-showbar").click(function ()
-	 {
-	    changeGraphType('showbar', this.parentNode);
-	 });
-
-	 $(".stats-showpie").click(function ()
+     $(".stats-showbar").click(function ()
      {
-	    changeGraphType('showpie', this.parentNode);
-	 });
+        changeGraphType('showbar', this.parentNode);
+     });
+
+     $(".stats-showpie").click(function ()
+     {
+        changeGraphType('showpie', this.parentNode);
+     });
 });
 
 var isWaiting = {};
@@ -281,21 +528,21 @@ function ajaxError()
 
 function selectCheckboxes(Div, CheckBoxName, Button)
 {
-	var aDiv = document.getElementById(Div);
-	var nInput = aDiv.getElementsByTagName("input");
-	var Value = document.getElementById(Button).checked;
-	//alert(Value);
+    var aDiv = document.getElementById(Div);
+    var nInput = aDiv.getElementsByTagName("input");
+    var Value = document.getElementById(Button).checked;
+    //alert(Value);
 
-	for(var i = 0; i < nInput.length; i++)
-	{
-		if(nInput[i].getAttribute("name")==CheckBoxName)
-		nInput[i].checked = Value;
-	}
+    for(var i = 0; i < nInput.length; i++)
+    {
+        if(nInput[i].getAttribute("name")==CheckBoxName)
+        nInput[i].checked = Value;
+    }
 }
 
 function nographs()
 {
-	document.getElementById('usegraph').checked = false;
+    document.getElementById('usegraph').checked = false;
 }
 
 function gMapInit(id, data)

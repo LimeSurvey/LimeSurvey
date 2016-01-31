@@ -13,14 +13,16 @@
 
 class index extends CAction {
 
+    public $oTemplate;
+
     public function run()
     {
-		/*
-		 * Instead of manually rendering scripts after this function returns we
-		 * use the callback. This ensures that scripts are always rendered, even
-		 * if we call exit at some point in the code. (Which we shouldn't, but
-		 * it happens.)
-		 */
+        /*
+         * Instead of manually rendering scripts after this function returns we
+         * use the callback. This ensures that scripts are always rendered, even
+         * if we call exit at some point in the code. (Which we shouldn't, but
+         * it happens.)
+         */
         // Ensure to set some var, but script are replaced in SurveyRuntimeHelper
         $aLSJavascriptVar=array();
         $aLSJavascriptVar['bFixNumAuto']=(int)(bool)Yii::app()->getConfig('bFixNumAuto',1);
@@ -29,12 +31,30 @@ class index extends CAction {
         $aRadix=getRadixPointData($aLangData[ Yii::app()->getConfig('defaultlang')]['radixpoint']);
         $aLSJavascriptVar['sLEMradix']=$aRadix['separator'];
         $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
+
+        // Template configuration
+        $param = $this->_getParameters(func_get_args(), $_POST);
+        $surveyid = $param['sid'];
+
+        global $oTemplate;
+        $oTemplate = Template::model()->getTemplateConfiguration('',$surveyid);
+        $this->oTemplate = $oTemplate;
+
         App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);// Ensure all js var is set before rendering the page (User can click before $.ready)
 
-        App()->getClientScript()->registerPackage('jqueryui');
-        App()->getClientScript()->registerPackage('jquery-touch-punch');
+        foreach($oTemplate->packages as $package)
+        {
+            App()->getClientScript()->registerPackage($package);
+        }
+
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
+
+        if($oTemplate->cssFramework == 'bootstrap')
+        {
+            App()->bootstrap->register();
+        }
+
         useFirebug();
 
         ob_start(function($buffer, $phase) {
@@ -62,7 +82,6 @@ class index extends CAction {
         $this->_loadRequiredHelpersAndLibraries();
 
         $param = $this->_getParameters(func_get_args(), $_POST);
-
         $surveyid = $param['sid'];
         Yii::app()->setConfig('surveyID',$surveyid);
         $thisstep = $param['thisstep'];
@@ -70,7 +89,8 @@ class index extends CAction {
         Yii::app()->setConfig('move',$move);
         $clienttoken = trim($param['token']);
         $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
-        if (is_null($thissurvey) && !is_null($surveyid)) $thissurvey = getSurveyInfo($surveyid);
+        if (is_null($thissurvey) && !is_null($surveyid))
+            $thissurvey = getSurveyInfo($surveyid);
 
         // unused vars in this method (used in methods using compacted method vars)
         @$loadname = $param['loadname'];
@@ -147,7 +167,6 @@ class index extends CAction {
             }
         }
 
-
         // TODO can this be moved to the top?
         // (Used to be global, used in ExpressionManager, merged into amVars. If not filled in === '')
         // can this be added in the first computation of $redata?
@@ -157,7 +176,6 @@ class index extends CAction {
         }
         // recompute $redata since $saved_id used to be a global
         $redata = compact(array_keys(get_defined_vars()));
-
 
         if ( $this->_didSessionTimeOut($surveyid) )
         {
@@ -239,9 +257,7 @@ class index extends CAction {
         }
 
         //SET THE TEMPLATE DIRECTORY
-
         $thistpl = getTemplatePath($thissurvey['templatedir']);
-
 
         $timeadjust = Yii::app()->getConfig("timeadjust");
         //MAKE SURE SURVEY HASN'T EXPIRED
@@ -266,7 +282,6 @@ class index extends CAction {
             gT("This survey is not yet started."),
             sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
-
             $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
         }
 
@@ -329,6 +344,7 @@ class index extends CAction {
                 Yii::app()->setConfig('move',"loadall");// Show loading form
             }
         }
+
         //Allow loading of saved survey
         if (Yii::app()->getConfig('move')=="loadall")
         {
@@ -345,17 +361,17 @@ class index extends CAction {
         // bypass only this check at first page (Step=0) because
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
-		if ($tokensexist == 1 && isset($token) && $token!="" &&
+        if ($tokensexist == 1 && isset($token) && $token!="" &&
         isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
         {
             // check also if it is allowed to change survey after completion
-			if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-				$tokenInstance = Token::model($surveyid)->findByAttributes(array('token' => $token));
+            if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
+                $tokenInstance = Token::model($surveyid)->findByAttributes(array('token' => $token));
             } else {
-				$tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
+                $tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
             }
 
-			if (!isset($tokenInstance) && !$previewmode)
+            if (!isset($tokenInstance) && !$previewmode)
             {
                 //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
                 $asMessage = array(
@@ -678,12 +694,16 @@ class index extends CAction {
         sendCacheHeaders();
 
         doHeader();
-        $this->_printTemplateContent($sTemplateDir.'/startpage.pstpl', $redata, $iDebugLine);
+
+        $oTemplate = $this->oTemplate; //$oTemplate->viewPath;
+
+        echo "<!-- survey/index/_niceExit -->";
+        $this->_printTemplateContent($oTemplate->viewPath.'/startpage.pstpl', $redata, $iDebugLine);
         $this->_printMessage($asMessage);
-        $this->_printTemplateContent($sTemplateDir.'/endpage.pstpl', $redata, $iDebugLine);
+        $this->_printTemplateContent($oTemplate->viewPath.'/endpage.pstpl', $redata, $iDebugLine);
 
         doFooter();
-		exit;
+        exit;
     }
 
     function _createNewUserSessionAndRedirect($surveyid, &$redata, $iDebugLine, $asMessage = array())
@@ -730,8 +750,6 @@ class index extends CAction {
     {
         echo templatereplace(file_get_contents($sTemplateFile),array(),$redata,'survey['.$iDebugLine.']');
     }
-
-
 }
 
 /* End of file survey.php */

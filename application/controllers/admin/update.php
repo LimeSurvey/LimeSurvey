@@ -59,7 +59,15 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 */
 class update extends Survey_Common_Action
 {
-
+    public function index()
+    {
+        //$buttons = ( getGlobalSetting('updatenotification') == "both" )?1:0;
+        $buttons = 1;
+        $updateModel = new UpdateForm();
+        $serverAnswer = $updateModel->getUpdateInfo($buttons);
+        $aData['serverAnswer'] = $serverAnswer;
+        $this->_renderWrappedTemplate('update', '_updateContainer', $aData);
+    }
     /**
      * This function return the update buttons for stable branch
      * @return html the button code
@@ -386,12 +394,7 @@ class update extends Survey_Common_Action
     {
         if (Permission::model()->hasGlobalPermission('superadmin'))
         {
-            // We try to get the update key in the database. If it's empty, getWelcomeMessage will return subscription
-            $updateKey = NULL;
-            $updateModel = new UpdateForm();
-            $destinationBuild = $_REQUEST['destinationBuild'];
-               $welcome = $updateModel->getWelcomeMessage($updateKey, $destinationBuild); //$updateKey
-               echo $this->_renderWelcome($welcome);
+            echo $this->controller->renderPartial('//admin/update/updater/welcome/_subscribe', array(),  false, false);
         }
     }
 

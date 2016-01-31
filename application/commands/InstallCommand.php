@@ -91,6 +91,7 @@
 
                 if ($iLineLength && $sLine[0] != '#' && substr($sLine,0,2) != '--') {
                     if (substr($sLine, $iLineLength-1, 1) == ';') {
+                        $line = substr($sLine, 0, $iLineLength-1);
                         $sCommand .= $sLine;
                         $sCommand = str_replace('prefix_', $this->connection->tablePrefix, $sCommand); // Table prefixes
 

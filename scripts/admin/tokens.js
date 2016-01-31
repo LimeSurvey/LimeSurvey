@@ -152,10 +152,7 @@ $(document).ready(function() {
         loadComplete: function()
         {
             $(this).removeClass('load');
-            /* Sneaky way of adding custom icons to jqGrid pager buttons */
-            $("#pager").find(".ui-add-to-cpdb-link").css({"background-image":"url("+imageurl+"addtocpdb_12.png)", "background-position":"0", "color":"black"});
-            $("#pager").find(".ui-participant-link").css({"background-image":"url("+imageurl+"cpdb_12.png)", "background-position":"0", "color":"black"});
-            $("#pager").find(".ui-bounceprocessing").css({"background-image":"url("+imageurl+"bounce_12.png)", "background-position":"0", "color":"black"});
+
             window.editing = false;
             jQuery(".token_edit").unbind('click').bind('click', function(e)
             {
@@ -170,7 +167,7 @@ $(document).ready(function() {
                     row.find('.drop_editing').remove();
                     row.find('.save').remove();
                     window.editing = false;
-                };
+                }
 
                 jQuery('#displaytokens').editRow(row.attr('id'), true, null, null, null, null, func);
                 row.find('.inputbuttons').hide();
@@ -186,10 +183,10 @@ $(document).ready(function() {
                     dateFormat: userdateformat
                 });
 
-                jQuery('<input type="image" class="drop_editing" title="'+cancelBtn+'" src="' + imageurl + 'token_delete.png" />')
+                jQuery('<span class="drop_editing ui-pg-button glyphicon glyphicon-remove" title="'+cancelBtn+'"></span>')
                 .appendTo(jQuery(this).parent().parent())
                 .click(func);
-                jQuery('<input type="image" class="save" title="'+saveBtn+'" src="' + imageurl + 'ok.png" width="16" />')
+                jQuery('<span class="save ui-pg-button glyphicon glyphicon-ok" title="'+saveBtn+'"></span>')
                 .appendTo(jQuery(this).parent().parent())
                 .click(function()
                 {
@@ -245,7 +242,7 @@ $(document).ready(function() {
                 e.metaKey = false;
             }).selectable({
                 tolerance: 'fit'
-            });
+            })
         }
     },{
         multipleSearch:true,
@@ -341,14 +338,9 @@ $(document).ready(function() {
                 else
                 {
                     var newForm = jQuery('<form>', {
-                        'action': inviteurl,
-                        'method': 'POST',
-                        'target': '_blank',
+                        'action': remindurl,
+                        'target': 'inviteurl'
                     }).append(jQuery('<input>', {
-                        'name': 'YII_CSRF_TOKEN',
-                        'value': LS.data.csrfToken,
-                        'type': 'hidden'
-                    })).append(jQuery('<input>', {
                         'name': 'tokenids',
                         'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
                         'type': 'hidden'
@@ -372,13 +364,8 @@ $(document).ready(function() {
                 {
                     var newForm = jQuery('<form>', {
                         'action': remindurl,
-                        'method': 'POST',
                         'target': '_blank'
                     }).append(jQuery('<input>', {
-                        'name': 'YII_CSRF_TOKEN',
-                        'value': LS.data.csrfToken,
-                        'type': 'hidden'
-                    })).append(jQuery('<input>', {
                         'name': 'tokenids',
                         'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
                         'type': 'hidden'

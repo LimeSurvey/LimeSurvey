@@ -144,8 +144,9 @@ class export extends Survey_Common_Action {
 
         Yii::app()->loadHelper("admin/exportresults");
 
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js");
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . '/exportresults.js');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH . '/expressions/em_javascript.js' ));
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . '/exportresults.js' ));
+
 
         $sExportType = Yii::app()->request->getPost('type');
         $sHeadingFormat = Yii::app()->request->getPost('headstyle');
@@ -245,6 +246,16 @@ class export extends Survey_Common_Action {
                 $aLanguages[$sLanguage]=getLanguageNameFromCode($sLanguage,false);
             }
             $data['aLanguages'] = $aLanguages;    // Pass available exports
+            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+
+            $data['sidemenu']['state'] = false;
+            $data['menu']['edition'] = true;
+            $data['menu']['export'] = true;
+            $data['menu']['close'] =  true;
+
+            $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
+            $data["surveyinfo"] = $surveyinfo;
+            $data['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
 
             $this->_renderWrappedTemplate('export', 'exportresults_view', $data);
 
@@ -309,7 +320,9 @@ class export extends Survey_Common_Action {
             $sFilter=Yii::app()->session['statistics_selects_'.$iSurveyID];
         }
         else
+        {
             $sFilter='';
+        }
 
         viewHelper::disableHtmlLogging();
         $resultsService->exportSurvey($iSurveyID, $explang, $sExportType, $options, $sFilter);
@@ -400,6 +413,15 @@ class export extends Survey_Common_Action {
             $data['spssver'] = $spssver;
             $data['surveyid'] = $iSurveyID;
             $data['display']['menu_bars']['browse'] = gT('Export results');
+
+            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+            $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
+            $data["surveyinfo"] = $surveyinfo;
+            $data['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+
+            $data['sidemenu']['state'] = false;
+            $data['menu']['edition'] = true;
+            $data['menu']['close'] =  true;
 
             $this->_renderWrappedTemplate('export', 'spss_view', $data);
             return;
@@ -646,6 +668,17 @@ class export extends Survey_Common_Action {
             }
             $aData['uniquefieldcode']=(count(array_unique ($fieldcode))==count($fieldcode)); // Did we need more control ?
             $aData['vvversionseleted']=($aData['uniquefieldcode'])?2:1;
+
+            $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+            $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
+            $aData["surveyinfo"] = $surveyinfo;
+            $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+
+            $aData['sidemenu']['state'] = false;
+            $aData['menu']['edition'] = true;
+            $aData['menu']['export'] = true;
+            $aData['menu']['close'] =  true;
+
             $this->_renderWrappedTemplate('export', 'vv_view', $aData);
         }
         elseif ( isset($iSurveyId) && $iSurveyId )
@@ -760,6 +793,7 @@ class export extends Survey_Common_Action {
             exit;
         }
     }
+
 
     public function resources()
     {
@@ -994,10 +1028,10 @@ class export extends Survey_Common_Action {
      *
      * @access private
      * @return array queXML settings
-     */  
+     */
     private function _quexmlsettings()
     {
-        return array('queXMLBackgroundColourQuestion',            
+        return array('queXMLBackgroundColourQuestion',
             'queXMLPageFormat',
             'queXMLPageOrientation',
             'queXMLEdgeDetectionFormat',
@@ -1032,7 +1066,7 @@ class export extends Survey_Common_Action {
         }
         $this->getController()->redirect($this->getController()->createUrl("/admin/export/quexml/surveyid/{$iSurveyID}"));
     }
- 
+
     /**
      * Generate a queXML PDF document with provided styles/settings
      *
@@ -1077,10 +1111,10 @@ class export extends Survey_Common_Action {
             {
                 if($s!== 'queXMLStyle'){
                     setGlobalSetting($s,Yii::app()->request->getPost($s));
-                }                
-                
+                }
+
                 $method = str_replace("queXML","set",$s);
-                
+
 
 
                 $quexmlpdf->$method(Yii::app()->request->getPost($s));
@@ -1198,10 +1232,7 @@ class export extends Survey_Common_Action {
     */
     protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerPackage('jquery-superfish');
-
         $aData['display']['menu_bars']['gid_action'] = 'exportstructureGroup';
-
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }

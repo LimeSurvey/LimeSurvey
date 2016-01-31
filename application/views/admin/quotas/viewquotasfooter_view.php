@@ -7,7 +7,7 @@
     <td style="padding: 3px;">
         <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','create')) { ?>
             <?php echo CHtml::form(array("admin/quotas/sa/newquota/surveyid/{$iSurveyId}"), 'post'); ?>
-            <input name="submit" type="submit" class="quota_new" value="<?php eT("Add New Quota");?>" />
+            <input name="submit" type="submit" class="quota_new btn btn-default" value="<?php eT("Add New Quota");?>" />
             <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
             <input type="hidden" name="action" value="quotas" />
             <input type="hidden" name="subaction" value="new_quota" />
@@ -18,3 +18,5 @@
     	</tr>
 	</tbody>
 </table>
+
+</div></div></div>

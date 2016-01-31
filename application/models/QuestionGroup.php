@@ -15,6 +15,8 @@
 
     class QuestionGroup extends LSActiveRecord
     {
+
+        public $aQuestions; // to stock array of questions of the group
         /**
         * Returns the static model of Settings table
         *
@@ -77,7 +79,7 @@
         */
         public function relations()
         {
-            return array('questions' => array(self::HAS_MANY, 'Question', 'gid'));
+            return array('questions' => array(self::HAS_MANY, 'Question', 'gid, language'));
         }
 
         function getAllRecords($condition=FALSE, $order=FALSE, $return_query = TRUE)
@@ -144,6 +146,14 @@
 
         public static function deleteWithDependency($groupId, $surveyId)
         {
+            // Abort if the survey is active
+            $surveyIsActive = Survey::model()->findByPk($surveyId)->active !== 'N';
+            if ($surveyIsActive)
+            {
+                Yii::app()->user->setFlash('error', gt("Can't delete question group when the survey is active"));
+                return null;
+            }
+
             $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
             Question::deleteAllById($questionIds);
             Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
@@ -188,5 +198,91 @@
             }
             return $command->query();
         }
+
+        public function getbuttons()
+        {
+            // Find out if the survey is active to disable add-button
+            $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
+
+            // Add question to this group
+            $url = Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$this->sid/gid/$this->gid");
+            $button = '<a class="btn btn-default list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-plus-sign " ></span></a>';
+
+            // Group edition
+            // Edit
+            $url = Yii::app()->createUrl("admin/questiongroups/sa/edit/surveyid/$this->sid/gid/$this->gid");
+            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Edit group').'"><span class="glyphicon glyphicon-pencil " ></span></a>';
+
+            // View summary
+            $url = Yii::app()->createUrl("/admin/questiongroups/sa/view/surveyid/");
+            $url .= '/'.$this->sid.'/gid/'.$this->gid;
+            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><span class="glyphicon glyphicon-list-alt " ></span></a>';
+
+            return $button;
+        }
+
+
+
+        public function search()
+        {
+            $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+
+            $sort = new CSort();
+            $sort->attributes = array(
+              'Group id'=>array(
+                'asc'=>'gid',
+                'desc'=>'gid desc',
+              ),
+              'Group Order'=>array(
+                'asc'=>'group_order',
+                'desc'=>'group_order desc',
+              ),
+              'Group Name'=>array(
+                'asc'=>'group_name',
+                'desc'=>'group_name desc',
+              ),
+            );
+
+            $criteria = new CDbCriteria;
+            $criteria->condition='sid=:surveyid AND language=:language';
+            $criteria->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
+            $criteria->compare('group_name', $this->group_name, true);
+
+            $dataProvider=new CActiveDataProvider(get_class($this), array(
+                    'criteria'=>$criteria,
+
+                'sort'=>$sort,
+
+                'pagination'=>array(
+                    'pageSize'=>$pageSize,
+                ),
+            ));
+            return $dataProvider;
+        }
+
+        /**
+         * Make sure we don't save a new question group
+         * while the survey is active.
+         *
+         * @return bool
+         */
+        protected function beforeSave()
+        {
+            if (parent::beforeSave())
+            {
+                $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
+
+                if ($surveyIsActive && $this->getIsNewRecord())
+                {
+                    return false;
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 ?>

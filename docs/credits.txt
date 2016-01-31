@@ -86,6 +86,7 @@ Katarina Pavic
 Liang Zhao
 Livio Finos
 Lorenzo Vigentini
+Louis-Sébastien Gac-Artigas
 Luis M. Martinez
 Lukas
 Maarten Tielemans (ttielu)
@@ -114,6 +115,7 @@ Nikos Korfiatis
 Nino Cosic
 Odd-Jarle Kristoffersen
 Offiba Inc.
+Olle Härstedt
 Pal Monstad
 Pascal Bastien
 Patrick Drews

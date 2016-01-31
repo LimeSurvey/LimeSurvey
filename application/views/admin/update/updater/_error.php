@@ -4,8 +4,7 @@
  * @var obj $errorObject the object error
  */
 // TODO : move to the controler
-//$urlNew = Yii::app()->createUrl("admin/globalsettings", array("update"=>'newKey'));
-$urlNew = Yii::app()->createUrl("admin/globalsettings", array("update"=>'newKey', 'destinationBuild' => $_REQUEST['destinationBuild']));
+$urlNew = Yii::app()->createUrl("admin/update", array("update"=>'newKey', 'destinationBuild' => $_REQUEST['destinationBuild']));
 // We first build the error message.
 // View is right place to do this, so it's easy for further integrators to change messages.
 $buttons = 0;
@@ -137,6 +136,7 @@ switch ($errorObject->error)
 }
 ?>
 
+
 <h2 class="maintitle" style="color: red;"><?php echo $title;?></h2>
 <div style="padding: 10px">
     <?php echo $message; ?>
@@ -145,20 +145,20 @@ switch ($errorObject->error)
 <div>
 
 <?php if( $buttons == 1 ): ?>
-        <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="https://www.limesurvey.org/en/" role="button" aria-disabled="false" target="_blank">
-            <span class="ui-button-text"><?php eT("Renew this key"); ?></span>
+        <a class="btn btn-default" href="https://www.limesurvey.org/en/" role="button" aria-disabled="false" target="_blank">
+            <?php eT("Renew this key"); ?>
         </a>
 
-        <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
-            <span class="ui-button-text"><?php eT("Enter a new key"); ?></span>
+        <a class="btn btn-default" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
+			<?php eT("Enter a new key"); ?>
         </a>
 <?php endif; ?>
 <?php if( $buttons == 3 ): ?>
-        <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
-            <span class="ui-button-text"><?php eT("Enter a new key"); ?></span>
+        <a class="btn btn-default" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
+			<?php eT("Enter a new key"); ?>
         </a>
 <?php endif;?>
-<a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
-    <span class="ui-button-text"><?php eT("Cancel"); ?></span>
+<a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+	<?php eT("Cancel"); ?>
 </a>
 </div>

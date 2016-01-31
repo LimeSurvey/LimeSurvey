@@ -56,6 +56,44 @@ class viewHelper
     }
 
     /**
+     * getIconLink returns HTML needed for a link that consists of only an image with alt text.
+     *
+     * Usage: getIconLink('test.png', 'controller/action/params', 'Your description', 'optionalClass', '_blank')
+     *
+     * @return string
+     * @param string $icoClasses the classes of the icon to generate
+     * @param string $linkUrl Url we want to go to, uses CController->createUrl()
+     * @param string $linkTxt Text to show for the link
+     * @param string $linkTarget Optional target to use for the link
+     * @param string $linkclass Optional class to add to the link
+     * @param array  $attribs Optional array of attirbutes to set on the link
+     */
+    public static function getIconLink($icoClasses, $linkUrl, $linkTxt, $linkTarget = null, $linkClass = 'imagelink', $attribs = array())
+    {
+        if (!is_null($linkUrl) && $linkUrl != '#') {
+            $linkUrl = Yii::app()->getController()->createUrl($linkUrl);
+        } else {
+            $linkUrl = "#";
+        }
+        $output = '<a href="' . $linkUrl;
+        if (!empty($linkClass)) {
+            $output .= '" class="' . $linkClass . '"';
+        }
+        if (!empty($linkTarget)) {
+            $output .= ' target="' . $linkTarget . '"';
+        }
+        if (!empty($attribs)) {
+            foreach($attribs as $attrib => $value) {
+                $output .= ' ' . $attrib . '="' . str_replace('"', '&quot;', $value) . '"';
+            }
+        }
+        $output .= '><span class="'.$icoClasses.'"></span></a>';
+
+        return $output;
+    }
+
+
+    /**
      * getFieldText returns complete field information text.
      *
      * Usage: getFieldText($aField, $aOption)

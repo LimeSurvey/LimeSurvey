@@ -43,12 +43,10 @@ return array(
         */
         'urlManager' => array(
             'urlFormat' => 'get',
-            'rules' => array(
-            // You can put your own rules here
-            ),
-        'showScriptName' => true,
+            'rules' => require('routes.php'),
+            'showScriptName' => true,
         ),
-    ),
+	),
     // Use the following config variable to set modified optional settings copied from config-defaults.php
     'config'=>array(
         // debug: Set this to 1 if you are looking for errors. If you still get no errors after enabling this
@@ -56,7 +54,7 @@ return array(
         // on your webspace.
         // LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates
         'debug'=>0,
-        'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2
+        'debugsql'=>0 // Set this to 1 to enanble sql logging, only active when debug = 2
     )
 );
 /* End of file config.php */

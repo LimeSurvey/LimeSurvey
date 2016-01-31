@@ -4,11 +4,17 @@
     //-->
 </script>
 
-<div class='header ui-widget-header'><?php eT('Export multiple label sets');?></div>
-<?php echo CHtml::form(array("admin/export/sa/dumplabel"), 'post', array('id'=>'exportlabelset','class'=>'form30')); ?>
-    <ul>
-        <li><label for='labelsets'><?php eT('Please choose the label sets you want to export:');?><br /><?php eT('(Select multiple label sets by using the Ctrl key)');?></label>
-            <select id='labelsets' multiple='multiple' name='lids[]' size='20'>
+<div class="col-lg-12 list-surveys">
+    <h3><?php eT('Export multiple label sets');?></h3>
+
+    <div class="row">
+        <div class="col-lg-12 content-right text-center">
+
+<?php echo CHtml::form(array("admin/export/sa/dumplabel"), 'post', array('id'=>'exportlabelset','class'=>'')); ?>
+<div class="form-group">
+        <label for='labelsets'><?php eT('Please choose the label sets you want to export:');?><br /><?php eT('(Select multiple label sets by using the Ctrl key)');?></label>
+        <br/>
+            <select id='labelsets' multiple='multiple' name='lids[]' size='20' class="form-control">
                 <?php if (count($labelsets)>0)
                     {
                         foreach ($labelsets as $lb)
@@ -17,7 +23,15 @@
                         }
                 } ?>
 
-            </select></li>
-    </ul><p><input type='submit' id='btnDumpLabelSets' value='<?php eT('Export selected label sets');?>' />
-    <input type='hidden' name='action' value='dumplabel' />
-</form>
+            </select>
+    <p>
+        <br/>
+        <input type='submit' id='btnDumpLabelSets' value='<?php eT('Export selected label sets');?>'  class="hidden"/>
+        <input type='hidden' name='action' value='dumplabel' />
+    </p>        
+</div>    
+</form>            
+        </div>
+    </div>
+</div>            
+

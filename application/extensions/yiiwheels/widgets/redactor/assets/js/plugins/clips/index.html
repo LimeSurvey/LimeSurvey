@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redactor is awesome!</title>
+
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="http://imperavi.com/js/redactor/redactor.css" />
+
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="http://imperavi.com/js/redactor/redactor.js"></script>
+
+    <!-- Redactor's plugin -->
+    <script src="clips.js"></script>
+    <link rel="stylesheet" href="clips.css" />
+
+	 <!-- Call Redactor -->
+    <script type="text/javascript">
+    $(document).ready(
+        function()
+        {
+            $('#redactor').redactor({
+            	focus: true,
+                plugins: ['clips']
+            });
+        }
+    );
+    </script>
+
+	 <!-- Site styles -->
+	<style type="text/css">
+	html, body {
+		margin: 0;
+		padding: 0;
+	}
+	body {
+		font-family: Helvetica, Arial, sans-serif;
+		font-size: 14px;
+	}
+	#page {
+		width: 940px;
+		margin: 50px auto;
+	}
+	</style>
+
+</head>
+<body>
+    <div id="page">
+        <textarea id="redactor" name="content" style="width: 99%; height: 400px;">
+        	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </textarea>
+
+		<!-- Clips Modal HTML -->
+		<div id="clipsmodal" style="display: none;">
+			<section>
+				<ul class="redactor_clips_box">
+					<li>
+						<a href="#" class="redactor_clip_link">Lorem ipsum …</a>
+
+						<div class="redactor_clip" style="display: none;">
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+						</div>
+					</li>
+					<li>
+						<a href="#" class="redactor_clip_link">Red label</a>
+
+						<div class="redactor_clip" style="display: none;">
+							<span class="label-red">Label</span>
+						</div>
+					</li>
+				</ul>
+			</section>
+			<footer>
+				<a href="#" class="redactor_modal_btn redactor_btn_modal_close">Close</a>
+			</footer>
+		</div>
+
+    </div>
+</body>
+</html>

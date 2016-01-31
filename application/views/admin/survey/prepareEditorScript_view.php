@@ -22,6 +22,7 @@
     var sReplacementFieldTitle = '<?php eT('LimeSurvey replacement field properties','js');?>';
     var sReplacementFieldButton = '<?php eT('Insert/edit LimeSurvey replacement field','js');?>';
     var editorwindowsHash = new Object();
+
     function find_popup_editor(fieldname)
     {
         var window = null;
@@ -42,10 +43,11 @@
         controliddis = fieldname + '_popupctrldis';
         numwindows = editorwindowsHash.length;
         activepopup = find_popup_editor(fieldname);
+
         if (activepopup == null)
         {
             document.getElementsByName(fieldname)[0].readOnly=true;
-            document.getElementsByName(fieldname)[0].className='readonly';
+            document.getElementsByName(fieldname)[0].className='readonly form-control';
             document.getElementById(controlidena).style.display='none';
             document.getElementById(controliddis).style.display='';
 

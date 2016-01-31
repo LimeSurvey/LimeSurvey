@@ -7,15 +7,19 @@
  * @var int $destinationBuild the destination build
  */
 ?>
+
 <?php
-        $urlNew = Yii::app()->createUrl("admin/globalsettings", array("update"=>'checkLocalErrors', 'destinationBuild' => $destinationBuild, 'access_token' => $access_token));
+        $urlNew = Yii::app()->createUrl("admin/update", array("update"=>'checkLocalErrors', 'destinationBuild' => $destinationBuild, 'access_token' => $access_token));
         $errors = FALSE;
 ?>
-<h2 class="maintitle"><?php eT('Checking basic requirements...'); ?></h2>
+
+<h3 class="maintitle"><?php eT('Checking basic requirements...'); ?></h3>
+
 <?php
     if( isset($localChecks->html) )
         echo $localChecks->html;
 ?>
+
 <table class="table">
     <thead>
         <tr>
@@ -53,14 +57,14 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="span8"><?php eT('PHP version required');?></th>
-            <th class="span2"  style="text-align: right"></th>
+            <th class="col-sm-10"><?php eT('PHP version required');?></th>
+            <th class="col-sm-2"  style="text-align: right"></th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td><?php echo $localChecks->php->php_ver;?></td>
-            <td class="<?php if($localChecks->php->result){echo "success" ;}else{echo "error";}?>" style="text-align: right">
+            <td class="col-sm-10"><?php echo $localChecks->php->php_ver;?></td>
+            <td class="col-sm-2 <?php if($localChecks->php->result){echo "success" ;}else{echo "error";}?>" style="text-align: right">
                 <?php if($localChecks->php->result): ?>
                     <?php eT('OK');?>
                 <?php else: ?>
@@ -76,15 +80,15 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="span8"><?php eT('Required PHP modules:');?></th>
-            <th class="span2"  style="text-align: right"></th>
+            <th class="col-sm-10"><?php eT('Required PHP modules:');?></th>
+            <th class="col-sm-12"  style="text-align: right"></th>
         </tr>
     </thead>
     <tbody>
         <?php foreach($localChecks->php_modules as $name => $module):?>
         <tr>
-            <td><?php echo $name;?></td>
-            <td class="<?php if($module->installed){echo "success" ;}else{ if(isset($module->required)){echo "error";}else{echo "warning";}}?>" style="text-align: right">
+            <td class="col-sm-10"><?php echo $name;?></td>
+            <td class="col-sm-2 <?php if($module->installed){echo "success" ;}else{ if(isset($module->required)){echo "error";}else{echo "warning";}}?>" style="text-align: right">
                 <?php if($module->installed): ?>
                     <?php eT('OK');?>
                 <?php else: ?>
@@ -113,17 +117,17 @@
     ?>
 
 <p>
-    <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
-        <span class="ui-button-text"><?php eT("Cancel"); ?></span>
+    <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+        <?php eT("Cancel"); ?>
     </a>
-    <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
-        <span class="ui-button-text"><?php eT('Check again');?></span>
+    <a class="btn btn-default" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
+        <?php eT('Check again');?>
     </a>
 
     <?php if($ignore  && ! $cant_ignore): ?>
 
         <?php
-            echo CHtml::submitButton(gT('Ignore'), array('id'=>'Ignorestep1launch', "class"=>"ui-button ui-widget ui-state-default ui-corner-all"));
+            echo CHtml::submitButton(gT('Ignore'), array('id'=>'Ignorestep1launch', "class"=>"btn btn-default"));
         ?>
     <?php endif;?>
 </p>
@@ -141,20 +145,20 @@
         echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
         echo CHtml::hiddenField('access_token' , $access_token);
     ?>
-        <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
-            <span class="ui-button-text"><?php eT("Cancel"); ?></span>
+        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+            <?php eT("Cancel"); ?>
         </a>
 
     <?php
-        echo CHtml::submitButton(gT('Continue'), array('id'=>'step1launch', "class"=>"ui-button ui-widget ui-state-default ui-corner-all"));
+        echo CHtml::submitButton(gT('Continue'), array('id'=>'step1launch', "class"=>"btn btn-default"));
         echo CHtml::endForm();
     ?>
 </p>
 
 <?php endif;?>
 
-<!-- this javascript code manage the step changing. It will catch the form submission, then load the ComfortUpdate for the required build -->
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
+<!-- this javascript code manage the step changing. It will catch the form submission, then load the ComfortUpdater for the required build -->
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdater/comfortUpdateNextStep.js"></script>
 <script>
 $('#launchChangeLogForm').comfortUpdateNextStep({'step': 1});
 </script>

@@ -9,8 +9,8 @@
             <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
             <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
             <input type='hidden' name='subaction' value='updatescenario' />&nbsp;&nbsp;
-            <input type='submit' name='scenarioupdated' value='<?php eT("Update scenario"); ?>' />
-            <input type='button' name='cancel' value='<?php eT("Cancel"); ?>' onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').hide('slow');" />
+            <input type='submit' class="btn btn-default" name='scenarioupdated' value='<?php eT("Update scenario"); ?>' />
+            <input type='button' class="btn btn-default" name='cancel' value='<?php eT("Cancel"); ?>' onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').hide('slow');" />
         </form>
     </td>
     <td>

@@ -96,6 +96,12 @@ class GlobalSettings extends Survey_Common_Action
             $data['excludedLanguages'] = array_diff(array_keys($data['allLanguages']), $data['restrictToLanguages']);
         }
 
+        // Boxes
+        $data['boxes'] = Boxes::model()->findAll();
+
+        $data['fullpagebar']['savebutton']['form'] = 'frmglobalsettings';
+        $data['fullpagebar']['closebutton']['url'] = 'admin/';
+
         $this->_renderWrappedTemplate('', 'globalSettings_view', $data);
     }
 
@@ -153,8 +159,27 @@ class GlobalSettings extends Survey_Common_Action
             }
 
         }
-        setGlobalSetting('admintheme', sanitize_paranoid_string($_POST['admintheme']));
-        setGlobalSetting('adminthemeiconsize', trim(file_get_contents(Yii::app()->getConfig("styledir").DIRECTORY_SEPARATOR.sanitize_paranoid_string($_POST['admintheme']).DIRECTORY_SEPARATOR.'iconsize')));
+
+        // we set the admin theme
+        $sAdmintheme = sanitize_paranoid_string($_POST['admintheme']);
+        setGlobalSetting('admintheme', $sAdmintheme);
+
+        // we check if it's a user theme
+        $usertemplatethemerootdir = Yii::app()->getConfig("uploaddir").'/admintheme/'.$sAdmintheme;
+        if ($usertemplatethemerootdir && file_exists($usertemplatethemerootdir) && is_dir($usertemplatethemerootdir) )
+        {
+            $adminimagebaseurl = Yii::app()->getBaseUrl(true)."/upload/admintheme/$sAdmintheme/images/";
+            setGlobalSetting('adminimagebaseurl', $adminimagebaseurl);
+            setGlobalSetting('adminimageurl', $adminimagebaseurl.'images/14/');
+        }
+        else
+        {
+            $adminimagebaseurl = Yii::app()->getBaseUrl(true)."/styles/$sAdmintheme/images/";
+            setGlobalSetting('adminimagebaseurl', $adminimagebaseurl);
+            setGlobalSetting('adminimageurl', $adminimagebaseurl.'/14/');
+        }
+
+        //setGlobalSetting('adminthemeiconsize', trim(file_get_contents(Yii::app()->getConfig("styledir").DIRECTORY_SEPARATOR.sanitize_paranoid_string($_POST['admintheme']).DIRECTORY_SEPARATOR.'iconsize')));
         setGlobalSetting('emailmethod', strip_tags($_POST['emailmethod']));
         setGlobalSetting('emailsmtphost', strip_tags(returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {
@@ -218,8 +243,22 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('timeadjust', $savetime);
         setGlobalSetting('usercontrolSameGroupPolicy', strip_tags($_POST['usercontrolSameGroupPolicy']));
 
+
+        // Boxes
+        for ($i=1; $i < 7; $i++)
+        {
+            $box = Boxes::model()->find(array('condition'=>'position=:positionId', 'params'=>array(':positionId'=>$i)));
+            $box->url = sanitize_html_string($_POST['box-url-'.$i]);
+            $box->title = sanitize_html_string($_POST['box-title-'.$i]);
+            $box->img = sanitize_html_string($_POST['box-img-'.$i]);
+            $box->desc = sanitize_html_string($_POST['box-desc-'.$i]);
+            $box->save();
+        }
+
+
         Yii::app()->session['flashmessage'] = $warning.gT("Global settings were saved.");
 
+	    // ref url
         $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
         if($url){Yii::app()->getController()->redirect($url);}
     }
@@ -289,8 +328,7 @@ class GlobalSettings extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "globalsettings.js");
-
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "globalsettings.js" ));
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }

@@ -9,6 +9,7 @@
 ?>
 
 <?php if (count($existingfiles)>0): ?>
+    <br/><br/>
     <?php eT('The following files would be added by the update but already exist. This is unusual and may result from an earlier update attempt.'); ?>
     <br />
     <?php eT('These files will be backed up and then replaced by the update procedure.');?>

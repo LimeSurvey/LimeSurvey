@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="span3">
+    <div class="col-md-3">
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
-    <div class="span9">
+    <div class="col-md-9">
     <?php echo CHtml::beginForm($this->createUrl('installer/optional'), 'post', array('class' => 'form-horizontal')); ?>
     <h2><?php echo $title; ?></h2>
     <p><?php echo $descp; ?></p>
@@ -11,7 +11,6 @@
         <?php echo CHtml::errorSummary($model, null, null, array('class' => 'errors')); ?>
     </div>
     <?php  ?>
-    <fieldset>
     <legend><?php
         eT("You can leave these settings blank and change them later");
         ?>
@@ -56,7 +55,7 @@
         $rows[] = array(
             'label' => CHtml::activeLabelEx($model, 'surveylang', array('class' => 'control-label', 'label' => gT("Default language"))),
             'description' => gT("This will be your default language."),
-            'control' => CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' => 'width: 156px', 'encode' => false, 'options'=>array('en' => array('selected' => true))))
+            'control' => CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' => 'width: 156px', 'class'=>'form-control', 'encode' => false, 'options'=>array('en' => array('selected' => true))))
         );
 
         foreach ($rows as $row)
@@ -74,14 +73,13 @@
             echo CHtml::closeTag('div');
         }
     ?>
-    </fieldset>
         <div class="row navigator">
-            <div class="span3">
-                <input class="btn" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" />
+            <div class="col-md-4">
+                <input class="btn btn-default" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" />
             </div>
-            <div class="span3"></div>
-            <div class="span3">
-                <?php echo CHtml::submitButton(gT("Next"), array('class' => 'btn')); ?>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <?php echo CHtml::submitButton(gT("Next"), array('class' => 'btn btn-default')); ?>
             </div>
         </div>
 

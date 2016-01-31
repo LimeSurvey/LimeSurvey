@@ -33,8 +33,8 @@ function addcondition(newcid)
     <option value='lessthan'>"+lessthanTxt+"</option>\n\
     </select></td>\n\
     <td><input type='text' id='conditiontext_"+conditionid+"' style='margin-left:10px;' /></td>\n\
-    <td><img src="+minusbutton+" onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+" alt='"+minusbuttonTxt+"' />\n\
-    <img src="+addbutton+" id='addbutton' onclick='addcondition();' style='margin-bottom:4px' alt='"+addbuttonTxt+"' /></td></tr>\n\<tr></tr>";
+    <td><span class='glyphicon glyphicon-trash text-warning' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+" title='"+minusbuttonTxt+"' ></span>\n\
+    <span id='addbutton' onclick='addcondition();' style='margin-bottom:4px' alt='"+addbuttonTxt+"'  class='icon-add text-success'></span></td></tr>\n\<tr></tr>";
     //$('#searchtable > tbody > tr').eq(id).after(html);
     $('#searchtable > tbody > tr').eq(conditionid).after(html);
     conditionid++;
@@ -75,8 +75,8 @@ $(document).ready(function() {
         <option value='lessthan'>"+lessthanTxt+"</option>\n\
         </select></td>\n\
         <td><input type='text' id='conditiontext_"+conditionid+"' style='margin-left:10px;' /></td>\n\
-        <td><img src="+minusbutton+" onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+" alt='"+minusbuttonTxt+"' />\n\
-        <img src="+addbutton+" id='addbutton' onclick='addcondition();' style='margin-bottom:4px' alt='"+addbuttonTxt+"' /></td></tr>\n\<tr></tr>";
+        <td><span class='glyphicon glyphicon-trash text-warning' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+" title='"+minusbuttonTxt+"' ></span>\n\
+        <span  id='addbutton' onclick='addcondition();' style='margin-bottom:4px' alt='"+addbuttonTxt+"' class='icon-add text-success'></span></td></tr>\n\<tr></tr>";
         $('#searchtable tr:last').after(html);
     });
 
@@ -93,6 +93,7 @@ $(document).ready(function() {
 
     /* The main jqGrid, displaying Participants */
     jQuery("#displayparticipants").jqGrid({
+
         loadtext : sLoadText,
         align:"center",
         headertitles: true,
@@ -117,11 +118,6 @@ $(document).ready(function() {
         rowList: [25,50,100,250,500,1000,2500,5000],
         multiselect: true,
         loadComplete : function() {
-            /* Sneaky way of adding custom icons to jqGrid pager buttons */
-            $("#pager").find(".ui-share-icon")
-            .css({"background-image":"url("+imageurl+"share_12.png)", "background-position":"0", "color":"black"});
-            $("#pager").find(".ui-addtosurvey-icon")
-            .css({"background-image":"url("+imageurl+"tokens_12.png)", "background-position":"0", "color":"black"});
         },
         loadError : function(xhr, st, str) {
             var dialog_buttons={};
@@ -256,7 +252,7 @@ $(document).ready(function() {
                 edit:false,
                 add:false,
                 del:false,
-                search:false});
+                search:false})
             jQuery("#"+subgrid_table_id).jqGrid('filterToolbar', {searchOnEnter : false, defaultSearch: 'cn'});
         }
     });
@@ -491,11 +487,6 @@ $(document).ready(function() {
                     /* Needed because it's the only way to label a button with a variable */
                     var dialog_buttons={};
                     dialog_buttons[spAddBtn]=function(){
-                        if ($('#shareuser').val()=='')
-                        {
-                            alert(sSelectUserAlert);
-                            return;
-                        }
                         var row = myGrid .getGridParam('selarrrow');
                         shareParticipants(row);
                     };

@@ -14,37 +14,66 @@ if (!file_exists(dirname(__FILE__) .  '/config.php')) {
 @date_default_timezone_set(@date_default_timezone_get());
 $internalConfig = array(
     'basePath' => dirname(dirname(__FILE__)),
+
     'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
     'name' => 'LimeSurvey',
     'localeClass' =>  'LSYii_Locale',
     'defaultController' => 'surveys',
+
+    'aliases' => array(
+        // yiistrap configuration
+        'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
+        'questiontypes' => realpath(__DIR__ . '/../extensions/questionTypes'),
+        'vendor.twbs.bootstrap.dist' => realpath(__DIR__ . '/../extensions/bootstrap'),
+        // yiiwheels configuration
+        'yiiwheels' => realpath(__DIR__ . '/../extensions/yiiwheels'),
+        'vendor.twbs.bootstrap.dist',
+    ),
+
+    'params'=>array(
+        'defaultPageSize'=>10	,
+        'pageSizeOptions'=>array(5=>5,10=>10,20=>20,50=>50,100=>100),
+    ),
+
     'import' => array(
         'application.core.*',
         'application.core.db.*',
         'application.models.*',
         'application.controllers.*',
         'application.modules.*',
+
+    	'bootstrap.helpers.*',
+    	'bootstrap.widgets.*',
+    	'bootstrap.behaviors.*',
+    	'yiiwheels.widgets.select2.WhSelect2',
+
     ),
     'preload' => array ('log'),
     'components' => array(
+	  // yiistrap configuration
         'bootstrap' => array(
-            'class' => 'application.core.LSBootstrap',
-            'responsiveCss' => false,
-            'jqueryCss' => false
+            'class' => 'bootstrap.components.TbApi',
         ),
+        // yiiwheels configuration
+        'yiiwheels' => array(
+            'class' => 'yiiwheels.YiiWheels',
+        ),
+
         'clientScript'=>array(
             'packages' => require('third_party.php'),
         ),
+
         'urlManager' => array(
             'urlFormat' => 'get',
             'rules' => require('routes.php'),
             'showScriptName' => true,
         ),
+
         'assetManager' => array(
             'baseUrl' => '/tmp/assets',
             'basePath'=> dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'assets'
-
         ),
+
         'request' => array(
             'class'=>'LSHttpRequest',
             'noCsrfValidationRoutes'=>array(
@@ -102,6 +131,7 @@ $internalConfig = array(
 $result = CMap::mergeArray($internalConfig, $userConfig);
 /**
  * Some workarounds for erroneous settings in user config.php.
+ * seems not to be used anymore...
  */
 $result['defaultController']=($result['defaultController']=='survey') ? $internalConfig['defaultController'] : $result['defaultController'];
 /**

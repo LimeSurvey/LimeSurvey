@@ -1,21 +1,16 @@
-$(document).ready(function(){
-    $notifycontainer=$("#notify-container").notify({
-      speed: 500,
-      custom: true,
-      expires: 5000
-    });
-    $.each(LS.messages,function(key, oMessage){
-        if(typeof oMessage.message ==="string")
-        {
-            if(typeof oMessage.type !="string")
-            {
-                oMessage.template="default-notify";
-            }
-            else
-            {
-                oMessage.template=oMessage.type+"-notify";
-            }
-        }
-        $notifycontainer.notify("create", oMessage.template, { message:oMessage.message});
-    });
+$(document).ready(function(){	
+		if($('.side-body').length){
+			//$('#update-container').removeClass();
+			
+			$('#notif-container .alert').attr('style', 'margin-top: 20px');			
+			$('#notif-container .alert').prependTo('.side-body');
+		}
+
+		if($('.login-content').length){
+			$('#notif-container .alert').prependTo('.login-content-form');
+		}
+
+
+//		window.setTimeout(function() { $("#notif-container .alert").alert('close'); }, 2000);
+
 });

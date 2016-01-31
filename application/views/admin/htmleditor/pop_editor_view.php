@@ -93,7 +93,7 @@
                     html_transfert();
 
                     window.opener.document.getElementsByName('<?php echo $sFieldName; ?>')[0].readOnly= false;
-                    window.opener.document.getElementsByName('<?php echo $sFieldName; ?>')[0].className='htmlinput';
+                    window.opener.document.getElementsByName('<?php echo $sFieldName; ?>')[0].className='htmlinput  form-control  ';
                     window.opener.document.getElementById('<?php echo $sControlIdEna; ?>').style.display='';
                     window.opener.document.getElementById('<?php echo $sControlIdDis; ?>').style.display='none';
                     window.opener.focus();

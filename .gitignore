@@ -3,6 +3,8 @@
 /upload/surveys/*
 /styles/gringegreen/images/Thumbs.db
 /upload/templates/*
+/upload/labels/*
+!/upload/labels/readme.txt
 /tmp/runtime/HTML
 /application/controllers/admin/updater.php
 /tmp/*.html
@@ -14,6 +16,8 @@
 /upload/.htaccess
 /nbproject
 /tmp/assets/*
+!/tmp/assets/.gitignore
+!/tmp/assets/index.html
 /tmp/runtime/cache/*
 /framework
 .svn
@@ -21,3 +25,4 @@
 .settings/org.eclipse.php.core.prefs
 .buildpath
 /application/config/config.php
+application/config/_config.php

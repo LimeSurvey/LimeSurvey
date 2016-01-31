@@ -10,10 +10,9 @@
 
         <?php
         App()->getClientScript()->registerPackage('jqueryui');
+        App()->bootstrap->register();
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/styles/Sea_Green/css/lime-admin.css');
         App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/main.css');
-        //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . 'grid.css', 'all');
-
-        //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . 'adminstyle.css', 'all');
 
         $script = "$(function() {
         $('.on').animate({

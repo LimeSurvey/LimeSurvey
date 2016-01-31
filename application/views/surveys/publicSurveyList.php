@@ -40,6 +40,17 @@
         "listheading"=> gT("The following surveys are available:"),
         "list"=> $list,
     );
+
+    global $oTemplate;
+    if(isset($survey))
+    {
+        $oTemplate = Template::model()->getTemplateConfiguration('',$survey->sid);
+    }
+    else
+    {
+        $oTemplate = Template::model()->getTemplateConfiguration('default');
+    }
+
     $data['templatedir'] = getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
     $data['templateurl'] = getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
     $data['templatename'] = Yii::app()->getConfig("defaulttemplate");
@@ -71,8 +82,8 @@
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
     useFirebug();
 
-    echo templatereplace(file_get_contents(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/startpage.pstpl"),array(),$data,'survey['.__LINE__.']');
-    echo templatereplace(file_get_contents(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/surveylist.pstpl"),array(),$data,'survey['.__LINE__.']');
-    echo templatereplace(file_get_contents(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/endpage.pstpl"),array(),$data,'survey['.__LINE__.']');
+    echo templatereplace(file_get_contents($oTemplate->viewPath."/startpage.pstpl"),array(),$data,'survey['.__LINE__.']');
+    echo templatereplace(file_get_contents($oTemplate->viewPath."/surveylist.pstpl"),array(),$data,'survey['.__LINE__.']');
+    echo templatereplace(file_get_contents($oTemplate->viewPath."/endpage.pstpl"),array(),$data,'survey['.__LINE__.']');
     doFooter();
 ?>

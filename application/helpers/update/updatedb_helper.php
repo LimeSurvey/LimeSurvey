@@ -27,7 +27,6 @@ function db_upgrade_all($iOldDBVersion) {
 
     $sUserTemplateRootDir = Yii::app()->getConfig('usertemplaterootdir');
     $sStandardTemplateRootDir = Yii::app()->getConfig('standardtemplaterootdir');
-    echo str_pad(gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". gT('Please be patient...')."<br /><br />\n";
 
     $oDB = Yii::app()->getDb();
     Yii::app()->setConfig('Updating',true);
@@ -1318,6 +1317,30 @@ function db_upgrade_all($iOldDBVersion) {
             fixKCFinder184();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>184),"stg_name='DBVersion'");
         }
+
+        // LS 2.5 table start at 250
+        if ($iOldDBVersion < 250)
+        {
+            createBoxes250();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>250),"stg_name='DBVersion'");
+        }
+
+        if ( $iOldDBVersion < 251 )
+        {
+            upgradeSurveyTables251();
+
+            // Update DBVersion
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>251),"stg_name='DBVersion'");
+        }
+
+        if ( $iOldDBVersion < 252 )
+        {
+            upgradeSurveyTables252();
+
+            // Update DBVersion
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>252),"stg_name='DBVersion'");
+        }
+
         $oTransaction->commit();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
@@ -1341,10 +1364,120 @@ function db_upgrade_all($iOldDBVersion) {
     }
     fixLanguageConsistencyAllSurveys();
     Yii::app()->setConfig('Updating',false);
-    echo '<br /><br />'.sprintf(gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
 }
 
+function upgradeSurveyTables252()
+{
+    Yii::app()->db->createCommand()->addColumn('{{questions}}','modulename','string');
+}
+
+function upgradeSurveyTables251()
+{
+    Yii::app()->db->createCommand()->addColumn('{{boxes}}','ico','string');
+
+    // add
+    $box = Boxes::model()->findByPk('1');
+    $box->ico = 'add';
+    $box->title= 'Create survey';
+    $box->save();
+
+    // list
+    $box = Boxes::model()->findByPk('2');
+    $box->ico = 'list';
+    $box->save();
+
+    //settings
+    $box = Boxes::model()->findByPk('3');
+    $box->ico = 'settings';
+    $box->save();
+
+    //shield
+    $box = Boxes::model()->findByPk('4');
+    $box->ico = 'shield';
+    $box->save();
+
+    //label
+    $box = Boxes::model()->findByPk('5');
+    $box->ico = 'label';
+    $box->save();
+
+    //templates
+    $box = Boxes::model()->findByPk('6');
+    $box->ico = 'templates';
+    $box->save();
+}
+
+/**
+ * Create boxes table
+ */
+function createBoxes250()
+{
+    $oDB = Yii::app()->db;
+    $oDB->createCommand()->createTable('{{boxes}}',array(
+        'id' => 'pk',
+        'position' => 'integer',
+        'url' => 'text',
+        'title' => 'text',
+        'img' => 'text',
+        'desc' => 'text',
+        'page'=>'text',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '1',
+        'url'      => 'admin/survey/sa/newsurvey' ,
+        'title'    => 'Creates survey' ,
+        'img'      => 'add.png' ,
+        'desc'     => 'Create a new survey' ,
+        'page'     => 'welcome',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '2',
+        'url'      =>  'admin/survey/sa/listsurveys',
+        'title'    =>  'List surveys',
+        'img'      =>  'surveylist.png',
+        'desc'     =>  'List available surveys',
+        'page'     =>  'welcome',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '3',
+        'url'      =>  'admin/globalsettings',
+        'title'    =>  'Global settings',
+        'img'      =>  'global.png',
+        'desc'     =>  'Edit global settings',
+        'page'     =>  'welcome',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '4',
+        'url'      =>  'admin/update',
+        'title'    =>  'ComfortUpdate',
+        'img'      =>  'shield&#45;update.png',
+        'desc'     =>  'Stay safe and up to date',
+        'page'     =>  'welcome',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '5',
+        'url'      =>  'admin/labels/sa/view',
+        'title'    =>  'Label sets',
+        'img'      =>  'labels.png',
+        'desc'     =>  'Edit label sets',
+        'page'     =>  'welcome',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '6',
+        'url'      =>  'admin/templates/sa/view',
+        'title'    =>  'Template editor',
+        'img'      =>  'templates.png',
+        'desc'     =>  'Edit LimeSurvey templates',
+        'page'     =>  'welcome',
+    ));
+}
 
 function upgradeSurveyTables183()
 {

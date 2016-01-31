@@ -1,291 +1,371 @@
-<?php
+<div id='presentation' class="tab-pane fade in"><ul>
 
-    /* Preparing some array
-    /* Template list : find User template, allways add existing template */
-    $aTemplateOptions=array();
-    foreach (array_keys(getTemplateList()) as $sTemplateName) {
-        if(Permission::model()->hasTemplatePermission($sTemplateName) || htmlspecialchars($sTemplateName) == $esrow['template'])
-            $aTemplateOptions[$sTemplateName]=$sTemplateName;
-    }
-    /* showxquestion */
-    $sValShowxquestions=$esrow['showxquestions'];
-    switch (Yii::app()->getConfig('showxquestions')) 
-    {
-        case 'show':
-            $aShowxquestionsOptions=array("Y"=>gT('Yes (Forced by the system administrator)','unescaped'));
-            $bDisableShowxquestions=true;
-            $sValShowxquestions="Y";
-            break;
-        case 'hide':
-            $aShowxquestionsOptions=array("N"=>gT('No (Forced by the system administrator)','unescaped'));
-            $bDisableShowxquestions=true;
-            $sValShowxquestions="N";
-            break;
-        case 'choose':
-        default:
-            $aShowxquestionsOptions=array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped'));
-            $bDisableShowxquestions=false;
-            break;
-    }
-    /* showgroupinfo */
-    $sValShowgroupinfo=$esrow['showgroupinfo'];
-    switch (Yii::app()->getConfig('showgroupinfo')) 
-    {
-        case 'show':
-            $aShowgroupinfoOptions=array("B"=>gT('Show both (Forced by the system administrator)','unescaped'));
-            $bDisableShowgroupinfo=true;
-            $sValShowgroupinfo="B";
-            break;
-        case 'name':
-            $aShowgroupinfoOptions=array("N"=>gT('Show group name only (Forced by the system administrator)','unescaped'));
-            $bDisableShowgroupinfo=true;
-            $sValShowgroupinfo="N";
-            break;
-        case 'description':
-            $aShowgroupinfoOptions=array("D"=>gT('Show group description only (Forced by the system administrator)','unescaped'));
-            $bDisableShowgroupinfo=true;
-            $sValShowgroupinfo="D";
-            break;
-        case 'none':
-            $aShowgroupinfoOptions=array("X"=>gT("Hide both (Forced by the system administrator)",'unescaped'));
-            $bDisableShowgroupinfo=true;
-            $sValShowgroupinfo="X";
-            break;
-        case 'choose':
-        default:
-            $aShowgroupinfoOptions=array(
-                "B"=>gT("Show both",'unescaped'),
-                "N"=>gT("Show group name only",'unescaped'),
-                "D"=>gT("Show group description only",'unescaped'),
-                "X"=>gT("Hide both",'unescaped')
-            );
-            $bDisableShowgroupinfo=false;
-            break;
-    }
-    /* showqnumcode */
-    $sValShowqnumcode=$esrow['showqnumcode'];
-    switch (Yii::app()->getConfig('showqnumcode')) 
-    {
-        case 'show':
-            $aShowqnumcodeOptions=array("B"=>gT('Show both (Forced by the system administrator)','unescaped'));
-            $bDisableShowqnumcode=true;
-            $sValShowqnumcode="B";
-            break;
-        case 'number':
-            $aShowqnumcodeOptions=array("N"=>gT('Show question number only (Forced by the system administrator)','unescaped'));
-            $bDisableShowqnumcode=true;
-            $sValShowqnumcode="N";
-            break;
-        case 'code':
-            $aShowqnumcodeOptions=array("C"=>gT('Show question code only (Forced by the system administrator)','unescaped'));
-            $bDisableShowqnumcode=true;
-            $sValShowqnumcode="C";
-            break;
-        case 'none':
-            $aShowqnumcodeOptions=array("X"=>gT('Hide both (Forced by the system administrator)','unescaped'));
-            $bDisableShowqnumcode=true;
-            $sValShowqnumcode="X";
-            break;
-        case 'choose':
-        default:
-            $aShowqnumcodeOptions=array(
-                "B"=>gT('Show both','unescaped'),
-                "N"=>gT('Show question number only','unescaped'),
-                "C"=>gT('Show question code only','unescaped'),
-                "X"=>gT('Hide both'),
-            );
-            $bDisableShowqnumcode=false;
-            if(!in_array($sValShowqnumcode,array("B","N","C","X")))
-                $sValShowqnumcode="X";
-            break;
-    }
-    /* shownoanswer */
-    $sValShownoanswer=$esrow['shownoanswer'];
-    $shownoanswer=!is_null(Yii::app()->getConfig('shownoanswer')) ? Yii::app()->getConfig('shownoanswer') : 1;
-    switch ($shownoanswer) 
-    {
-        case '1':
-            $aShownoanswerOptions=array("Y"=>gT('Yes (Forced by the system administrator)','unescaped'));
-            $bDisableShownoanswer=true;
-            $sValShownoanswer="Y";
-            break;
-        case '0':
-            $aShownoanswerOptions=array("N"=>gT('No (Forced by the system administrator)','unescaped'));
-            $bDisableShownoanswer=true;
-            $sValShownoanswer="N";
-            break;
-        case '2':
-        default:
-            $aShownoanswerOptions=array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped'));
-            $bDisableShownoanswer=false;
-            break;
-    }
-    /* Need some javascript var */
-    $sTemplateUrlScriptVar="standardtemplaterooturl='".Yii::app()->getConfig('standardtemplaterooturl')."'\n"
-                          ."templaterooturl='".Yii::app()->getConfig('usertemplaterooturl')."'\n";
-    Yii::app()->getClientScript()->registerScript("sTemplateUrlScriptVar", $sTemplateUrlScriptVar, CClientScript::POS_BEGIN);
-    /* Presentation & navigation settings */
-    $this->widget('ext.SettingsWidget.SettingsWidget', array(
-        'id'=>'presentation',
-        'title'=>gT("Presentation & navigation"),
-        'form' => false,
-        'formHtmlOptions'=>array(
-            'class'=>'form-core',
-        ),
-        'settings' => array(
-            'format'=>array(
-                'type'=>'select',
-                'label'=>gT("Format"),
-                'options'=>array(
-                    "S"=>gT("Question by Question",'unescaped'),
-                    "G"=>gT("Group by Group",'unescaped'),
-                    "A"=>gT("All in one",'unescaped'),
-                ),
-                'current'=>$esrow['format'],
-            ),
-            'template'=>array(
-                'type'=>'select',
-                'label'=>gT("Template"),
-                'options'=>$aTemplateOptions,
-                'current'=>$esrow['template'],
-                'selectOptions'=>array(
-                    'minimumResultsForSearch'=>15,
-                ),
-                'events'=>array(
-                    'change'=>'js: function(event) {  templatechange(event.val) } ',
-                ),
-            ),
-            'preview'=>array(
-                'type'=>'info',
-                'label'=>gT("Template preview"),
-                'content'=>CHtml::image(getTemplateURL($esrow['template']).'/preview.png',gT("Template preview image"),array('id'=>'preview','class'=>'img-thumbnail')),
-            ),
-            'showwelcome'=>array(
-                'type'=>'select',
-                'label'=>gT("Show welcome screen?"),
-                'options'=>array(
-                    "Y"=>gT("Yes",'unescaped'),
-                    "N"=>gT("No",'unescaped'),
-                ),
-                'current'=>$esrow['showwelcome'],
-            ),
-            'navigationdelay'=>array(
-                'type'=>'int',
-                'label'=>gT("Navigation delay (seconds)"),
-                'htmlOptions'=>array(
-                    'style'=>'width:12em',
-                ),
-                'current'=>$esrow['navigationdelay'],
-            ),
-            'allowprev'=>array(
-                'type'=>'select',
-                'label'=>gT("Show [Previous] button"),
-                'options'=>array(
-                    "Y"=>gT("Yes",'unescaped'),
-                    "N"=>gT("No",'unescaped'),
-                ),
-                'current'=>$esrow['allowprev'],
-            ),
-            'questionindex'=>array(
-                'type'=>'select',
-                'label'=>gT("Show question index / allow jumping"),
-                'options'=>array(
-                    0 => gT('Disabled','unescaped'),
-                    1 => gT('Incremental','unescaped'),
-                    2 => gT('Full','unescaped'),
-                ),
-                'current'=>$esrow['questionindex'],
-            ),
-            'nokeyboard'=>array(// This settings MUST be moved to an external plugin : including a SUrvey parameteres  register a script, nothing else
-                'type'=>'select',
-                'label'=>gT("Keyboard-less operation"),
-                'options'=>array(
-                    "Y"=>gT("Yes",'unescaped'),
-                    "N"=>gT("No",'unescaped'),
-                ),
-                'current'=>($esrow['nokeyboard'] ? $esrow['nokeyboard']:"N"),
-            ),
-            'showprogress'=>array(
-                'type'=>'select',
-                'label'=>gT("Show progress bar"),
-                'options'=>array(
-                    "Y"=>gT("Yes",'unescaped'),
-                    "N"=>gT("No",'unescaped'),
-                ),
-                'current'=>$esrow['showprogress'],
-            ),
-            'printanswers'=>array(
-                'type'=>'select',
-                'label'=>gT("Participants may print answers?"),
-                'options'=>array(
-                    "Y"=>gT("Yes",'unescaped'),
-                    "N"=>gT("No",'unescaped'),
-                ),
-                'current'=>$esrow['printanswers'],
-            ),
-            'publicstatistics'=>array(
-                'type'=>'select',
-                'label'=>gT("Public statistics?"),
-                'options'=>array(
-                    "Y"=>gT("Yes",'unescaped'),
-                    "N"=>gT("No",'unescaped'),
-                ),
-                'current'=>$esrow['publicstatistics'],
-            ),
-            'publicgraphs'=>array(
-                'type'=>'select',
-                'label'=>gT("Show graphs in public statistics?"),
-                'options'=>array(
-                    "Y"=>gT("Yes",'unescaped'),
-                    "N"=>gT("No",'unescaped'),
-                ),
-                'current'=>$esrow['publicgraphs'],
-            ),
-            'autoredirect'=>array(
-                'type'=>'select',
-                'label'=>gT("Automatically load URL when survey complete?"),
-                'options'=>array(
-                    "Y"=>gT("Yes",'unescaped'),
-                    "N"=>gT("No",'unescaped'),
-                ),
-                'current'=>$esrow['autoredirect'],
-            ),
-            'showxquestions'=>array(
-                'type'=>'select',
-                'label'=>gT('Show "There are X questions in this survey"'),
-                'options'=>$aShowxquestionsOptions,
-                'current'=>$sValShowxquestions,
-                'htmlOptions'=>array(
-                    'readonly'=>$bDisableShowxquestions,
-                )
-            ),
-            'showgroupinfo'=>array(
-                'type'=>'select',
-                'label'=>gT('Show group name and/or group description'),
-                'options'=>$aShowgroupinfoOptions,
-                'current'=>$sValShowgroupinfo,
-                'htmlOptions'=>array(
-                    'readonly'=>$bDisableShowgroupinfo,
-                )
-            ),
-            'showqnumcode'=>array(
-                'type'=>'select',
-                'label'=>gT('Show question number and/or code'),
-                'options'=>$aShowqnumcodeOptions,
-                'current'=>$sValShowqnumcode,
-                'htmlOptions'=>array(
-                    'readonly'=>$bDisableShowqnumcode,
-                )
-            ),
-            'shownoanswer'=>array(
-                'type'=>'select',
-                'label'=>gT('Show "No answer"'),
-                'options'=>$aShownoanswerOptions,
-                'current'=>$sValShownoanswer,
-                'htmlOptions'=>array(
-                    'readonly'=>$bDisableShownoanswer,
-                )
-            ),
-        ),
-    ));
-?>
+
+        <li><label for='format'><?php  eT("Format:"); ?></label>
+            <select id='format' name='format'>
+                <option value='S'
+                    <?php if ($esrow['format'] == "S" || !$esrow['format']) { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("Question by Question"); ?>
+                </option>
+                <option value='G'
+                    <?php if ($esrow['format'] == "G") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("Group by Group"); ?>
+                </option>
+                <option value='A'
+                    <?php if ($esrow['format'] == "A") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("All in one"); ?>
+                </option>
+            </select>
+        </li>
+
+
+        <li>
+        	<label for='template'><?php  eT("Template:"); ?></label>
+            <select id='template' name='template'>
+                <?php foreach (array_keys(getTemplateList()) as $tname) {
+
+                        if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $esrow['template']==htmlspecialchars($tname) ) { ?>
+                        <option value='<?php echo $tname; ?>'
+                            <?php if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) { ?>
+                                selected='selected'
+                                <?php   } elseif (!$esrow['template'] && $tname == Yii::app()->getConfig('defaulttemplate')) { ?>
+                                selected='selected'
+                                <?php } ?>
+                            ><?php echo $tname; ?></option>
+                        <?php }
+                } ?>
+            </select>
+        </li>
+
+        <li><label for='preview'><?php  eT("Template Preview:"); ?></label>
+            <span class="icon-do text-success" name='preview' id='preview' ></span>
+        </li>
+
+
+        <li><label for='showwelcome'><?php  eT("Show welcome screen?") ; ?></label>
+            <select id='showwelcome' name='showwelcome'>
+                <option value='Y'
+                    <?php if (!$esrow['showwelcome'] || $esrow['showwelcome'] == "Y") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("Yes") ; ?>
+                </option>
+                <option value='N'
+                    <?php if ($esrow['showwelcome'] == "N") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("No") ; ?>
+                </option>
+            </select>
+        </li>
+
+
+
+        <li><label for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
+            <input type='text' value="<?php echo $esrow['navigationdelay']; ?>" name='navigationdelay' id='navigationdelay' size='12' maxlength='2' onkeypress="return goodchars(event,'0123456789')" />
+        </li>
+
+
+        <li><label for='allowprev'><?php  eT("Show [<< Prev] button"); ?></label>
+            <select id='allowprev' name='allowprev'>
+                <option value='Y'
+                    <?php if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("Yes"); ?>
+                </option>
+                <option value='N'
+                    <?php if (isset($esrow['allowprev']) && $esrow['allowprev'] == "N") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("No"); ?>
+                </option>
+            </select>
+        </li>
+
+        <li><label for='questionindex'><?php  eT("Show question index / allow jumping"); ?></label>
+			<?php
+				$data = array(
+					0 => gT('Disabled'),
+					1 => gT('Incremental'),
+					2 => gT('Full')
+				);
+				echo CHtml::dropDownList('questionindex', $esrow['questionindex'], $data, array(
+					'id' => 'questionindex'
+				));
+			?>
+        </li>
+
+
+        <li><label for='nokeyboard'><?php  eT("Keyboard-less operation"); ?></label>
+            <select id='nokeyboard' name='nokeyboard'>
+                <option value='Y'
+                    <?php if (!isset($esrow['nokeyboard']) || !$esrow['nokeyboard'] || $esrow['nokeyboard'] == "Y") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("Yes"); ?>
+                </option>
+                <option value='N'
+                    <?php if (isset($esrow['nokeyboard']) && $esrow['nokeyboard'] == "N") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("No"); ?>
+                </option>
+            </select>
+        </li>
+
+        <li><label for='showprogress'><?php  eT("Show progress bar"); ?></label>
+            <select id='showprogress' name='showprogress'>
+                <option value='Y'
+                    <?php if (!isset($esrow['showprogress']) || !$esrow['showprogress'] || $esrow['showprogress'] == "Y") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("Yes"); ?>
+                </option>
+                <option value='N'
+                    <?php if (isset($esrow['showprogress']) && $esrow['showprogress'] == "N") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("No"); ?></option>
+            </select>
+        </li>
+
+
+        <li><label for='printanswers'><?php  eT("Participants may print answers?"); ?></label>
+            <select id='printanswers' name='printanswers'>
+                <option value='Y'
+                    <?php if (!isset($esrow['printanswers']) || !$esrow['printanswers'] || $esrow['printanswers'] == "Y") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("Yes"); ?>
+                </option>
+                <option value='N'
+                    <?php if (isset($esrow['printanswers']) && $esrow['printanswers'] == "N") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("No"); ?>
+                </option>
+            </select>
+        </li>
+
+
+        <li><label for='publicstatistics'><?php  eT("Public statistics?"); ?></label>
+            <select id='publicstatistics' name='publicstatistics'>
+                <option value='Y'
+                    <?php if (!isset($esrow['publicstatistics']) || !$esrow['publicstatistics'] || $esrow['publicstatistics'] == "Y") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("Yes"); ?>
+                </option>
+                <option value='N'
+                    <?php if (isset($esrow['publicstatistics']) && $esrow['publicstatistics'] == "N") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("No"); ?>
+                </option>
+            </select>
+        </li>
+
+
+        <li><label for='publicgraphs'><?php  eT("Show graphs in public statistics?"); ?></label>
+            <select id='publicgraphs' name='publicgraphs'>
+                <option value='Y'
+                    <?php if (!isset($esrow['publicgraphs']) || !$esrow['publicgraphs'] || $esrow['publicgraphs'] == "Y") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("Yes"); ?>
+                </option>
+                <option value='N'
+                    <?php if (isset($esrow['publicgraphs']) && $esrow['publicgraphs'] == "N") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("No"); ?></option>
+            </select>
+        </li>
+
+
+        <li><label for='autoredirect'><?php  eT("Automatically load URL when survey complete?"); ?></label>
+            <select id='autoredirect' name='autoredirect'>
+                <option value='Y'
+                    <?php if (isset($esrow['autoredirect']) && $esrow['autoredirect'] == "Y") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("Yes"); ?>
+                </option>
+                <option value='N'
+                    <?php if (!isset($esrow['autoredirect']) || $esrow['autoredirect'] != "Y") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php  eT("No"); ?>
+                </option>
+            </select>
+        </li>
+
+        <!-- $show_dis_pre =<li><label for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showxquestions" id="" value="
+        $show_dis_mid = " /> <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="
+        $show_dis_post = " size="70" /></li> -->
+        <?php switch ($showxquestions) {
+                case 'show': ?>
+                <li><label for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showxquestions" id="" value="Y" /> <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="
+                        <?php  eT('Yes (Forced by the system administrator)'); ?>
+                        " size="70" /></li>
+                <?php   break;
+                case 'hide': ?>
+                <li><label for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showxquestions" id="" value="N" /> <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="
+                        <?php  eT('No (Forced by the system administrator)'); ?>
+                        " size="70" /></li>
+                <?php  break;
+                case 'choose':
+                default:
+                    $sel_showxq = array( 'Y' => '' , 'N' => '' );
+                    if (isset($esrow['showxquestions'])) {
+                        $set_showxq = $esrow['showxquestions'];
+                        $sel_showxq[$set_showxq] = ' selected="selected"';
+                    }
+                    if (empty($sel_showxq['Y']) && empty($sel_showxq['N'])) {
+                        $sel_showxq['Y'] = ' selected="selected"';
+                    }; ?>
+                <li><label for="showxquestions"><?php  eT('Show "There are X questions in this survey"'); ?></label>
+                    <select id="showxquestions" name="showxquestions">
+                        <option value="Y" <?php echo $sel_showxq['Y']; ?>><?php  eT('Yes'); ?></option>
+                        <option value="N" <?php echo $sel_showxq['N']; ?>><?php  eT('No'); ?></option>
+                    </select>
+                </li>
+                <?php unset($sel_showxq,$set_showxq);
+                    break;
+            }; ?>
+
+        <!--            // Show {GROUPNAME} and/or {GROUPDESCRIPTION} block
+        $show_dis_pre =<li><label for="dis_showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="
+        $show_dis_mid = " /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value=" -->
+        <?php switch ($showgroupinfo) {
+                case 'both': ?>
+                <li><label for="dis_showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="B" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
+                        <?php  eT('Show both (Forced by the system administrator)'); ?>
+
+                        " size="70" /></li>
+                <?php    break;
+                case 'name': ?>
+                <li><label for="dis_showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="N" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
+                        <?php  eT('Show group name only (Forced by the system administrator)'); ?>
+
+                        " size="70" /></li>
+                <?php     break;
+                case 'description': ?>
+                <li><label for="dis_showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="D" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
+                        <?php  eT('Show group description only (Forced by the system administrator)'); ?>
+
+                        " size="70" /></li>
+                <?php    break;
+                case 'none': ?>
+                <li><label for="dis_showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="X" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
+                        <?php  eT('Hide both (Forced by the system administrator)'); ?>
+
+                        " size="70" /></li>
+
+                <?php    break;
+                case 'choose':
+                default:
+                    $sel_showgri = array( 'B' => '' , 'D' => '' , 'N' => '' , 'X' => '' );
+                    if (isset($esrow['showgroupinfo'])) {
+                        $set_showgri = $esrow['showgroupinfo'];
+                        $sel_showgri[$set_showgri] = ' selected="selected"';
+                    }
+                    if (empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X'])) {
+                        $sel_showgri['C'] = ' selected="selected"';
+                    }; ?>
+                <li><label for="showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label>
+                    <select id="showgroupinfo" name="showgroupinfo">
+                        <option value="B"<?php echo $sel_showgri['B']; ?>><?php  eT('Show both'); ?></option>
+                        <option value="N"<?php echo $sel_showgri['N']; ?>><?php  eT('Show group name only'); ?></option>
+                        <option value="D"<?php echo $sel_showgri['D']; ?>><?php  eT('Show group description only'); ?></option>
+                        <option value="X"<?php echo $sel_showgri['X']; ?>><?php  eT('Hide both'); ?></option>
+                    </select></li>
+                <?php unset($sel_showgri,$set_showgri);
+                    break;
+            }; ?>
+
+
+        <!--$show_dis_pre =<li><label for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="
+        $show_dis_mid = " /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value=" -->
+        <?php switch ($showqnumcode) {
+                case 'none': ?>
+                <li><label for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="X" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
+                        <?php  eT('Hide both (Forced by the system administrator)'); ?>
+                        " size="70" /></li>
+                <?php    break;
+                case 'number': ?>
+                <li><label for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="N" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
+                        <?php  eT('Show question number only (Forced by the system administrator)') ; ?>
+                        " size="70" /></li>
+                <?php    break;
+                case 'code': ?>
+                <li><label for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="C" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
+                        <?php  eT('Show question code only (Forced by the system administrator)'); ?>
+                        " size="70" /></li>
+                <?php    break;
+                case 'both': ?>
+                <li><label for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="B" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
+                        <?php  eT('Show both (Forced by the system administrator)'); ?>
+                        " size="70" /></li>
+                <?php    break;
+                case 'choose':
+                default:
+                    $sel_showqnc = array( 'B' => '' , 'C' => '' , 'N' => '' , 'X' => '' );
+                    if (isset($esrow['showqnumcode'])) {
+                        $set_showqnc = $esrow['showqnumcode'];
+                        $sel_showqnc[$set_showqnc] = ' selected="selected"';
+                    }
+                    if (empty($sel_showqnc['B']) && empty($sel_showqnc['C']) && empty($sel_showqnc['N']) && empty($sel_showqnc['X'])) {
+                        $sel_showqnc['X'] = ' selected="selected"';
+                    }; ?>
+                <li><label for="showqnumcode"><?php  eT('Show question number and/or code'); ?></label>
+                    <select id="showqnumcode" name="showqnumcode">
+                        <option value="B"<?php echo $sel_showqnc['B']; ?>><?php  eT('Show both'); ?></option>
+                        <option value="N"<?php echo $sel_showqnc['N']; ?>><?php  eT('Show question number only'); ?></option>
+                        <option value="C"<?php echo $sel_showqnc['C']; ?>><?php  eT('Show question code only'); ?></option>
+                        <option value="X"<?php echo $sel_showqnc['X']; ?>><?php  eT('Hide both'); ?></option>
+                    </select></li>
+                <?php unset($sel_showqnc,$set_showqnc);
+                    break;
+            }; ?>
+
+
+
+        <!--    $show_dis_pre =<li><label for="dis_shownoanswer"><?php  eT('Show "No answer"'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer" value="
+        $show_dis_mid = " /> <input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value=" -->
+        <?php switch ($shownoanswer) {
+                case 0: ?>
+                <li><label for="dis_shownoanswer"><?php  eT('Show "No answer"'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer" value="N" /> <input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php  eT('Off (Forced by the system administrator)'); ?>
+                        " size="70" /></li>
+                <?php  break;
+                case 2:
+                    $sel_showno = array( 'Y' => '' , 'N' => '' );
+                    if (isset($esrow['shownoanswer'])) {
+                        $set_showno = $esrow['shownoanswer'];
+                        $sel_showno[$set_showno] = ' selected="selected"';
+                    };
+                    if (empty($sel_showno)) {
+                        $sel_showno['Y'] = ' selected="selected"';
+                    }; ?>
+                <li><label for="shownoanswer"><?php  eT('Show "No answer"'); ?></label>
+                    <select id="shownoanswer" name="shownoanswer">
+                        <option value="Y"<?php echo $sel_showno['Y']; ?>><?php  eT('Yes'); ?></option>
+                        <option value="N"<?php echo $sel_showno['N']; ?>><?php  eT('No'); ?></option>
+                    </select></li>
+                <?php  break;
+                default: ?>
+                <li><label for="dis_shownoanswer"><?php  eT('Show "No answer"'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer"
+                        value="Y" /> <input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php  eT('On (Forced by the system administrator)'); ?>
+                        " size="70" /></li>
+                <?php    break;
+            }; ?>
+
+
+    </ul></div>

@@ -10,6 +10,7 @@
 <?php
 if (count($modifiedfiles)>0): ?>
     <p>
+        <br/><br/>
         <?php eT('The following files will be modified or deleted but were already modified by someone else.');?>
         <br/>
         <?php eT('These files will be backed up and then replaced by the update procedure.');?>

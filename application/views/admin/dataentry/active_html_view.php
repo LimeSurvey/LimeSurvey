@@ -5,47 +5,52 @@ if ($thissurvey['active'] == "Y")
             { ?>
 
                 <script type='text/javascript'>
-    				  <!--
-    					function saveshow(value)
-    						{
-    						if (document.getElementById(value).checked == true)
-    							{
-    							document.getElementById("closerecord").checked=false;
-    							document.getElementById("closerecord").disabled=true;
-    							document.getElementById("saveoptions").style.display="";
-    							}
-    						else
-    							{
-    							document.getElementById("saveoptions").style.display="none";
-    							 document.getElementById("closerecord").disabled=false;
-    							}
-    						}
-    				  //-->
-    				  </script>
+                      <!--
+                        function saveshow(value)
+                            {
+                            if (document.getElementById(value).checked == true)
+                                {
+                                document.getElementById("closerecord").checked=false;
+                                document.getElementById("closerecord").disabled=true;
+                                document.getElementById("saveoptions").style.display="";
+                                }
+                            else
+                                {
+                                document.getElementById("saveoptions").style.display="none";
+                                 document.getElementById("closerecord").disabled=false;
+                                }
+                            }
+                      //-->
+                      </script>
                 <tr>
                 <td colspan='3' align='center'>
                 <table><tr><td align='left'>
-                <input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'><?php eT("Finalize response submission"); ?></label></td></tr>
-                <input type='hidden' name='closedate' value='<?php echo dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $yii->getConfig('timeadjust')); ?>' />
-
+                <div class="checkbox">
+                    <input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'><?php eT("Finalize response submission"); ?></label></td></tr>
+                    <input type='hidden' name='closedate' value='<?php echo dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $yii->getConfig('timeadjust')); ?>' />
+                </div>
                 <?php if ($thissurvey['allowsave'] == "Y")
                 { ?>
 
-                    <tr><td align='left'><input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' /><label for='save'><?php eT("Save for further completion by survey user"); ?></label>
+                    <tr><td align='left'>
+                        <div class="checkbox">
+                            <input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' />
+                            <label for='save'><?php eT("Save for further completion by survey user"); ?></label>
+                        </div>
                     </td></tr></table>
                     <div name='saveoptions' id='saveoptions' style='display: none'>
                     <table align='center' class='outlinetable'>
-    					  <tr><td align='right'><?php eT("Identifier:"); ?></td>
-    					  <td><input type='text' name='save_identifier' /></td></tr>
-    					  <tr><td align='right'><?php eT("Password:"); ?></td>
-    					  <td><input type='password' name='save_password' /></td></tr>
-    					  <tr><td align='right'><?php eT("Confirm Password:"); ?></td>
-    					  <td><input type='password' name='save_confirmpassword' /></td></tr>
-    					  <tr><td align='right'><?php eT("Email:"); ?></td>
-    					  <td><input type='email' name='save_email' /></td></tr>
-    					  <tr><td align='right'><?php eT("Start language:"); ?></td>
-    					  <td>
-                    <select name='save_language'>
+                          <tr><td align='right'><?php eT("Identifier:"); ?></td>
+                          <td><input type='text' name='save_identifier' /></td></tr>
+                          <tr><td align='right'><?php eT("Password:"); ?></td>
+                          <td><input type='password' name='save_password' /></td></tr>
+                          <tr><td align='right'><?php eT("Confirm Password:"); ?></td>
+                          <td><input type='password' name='save_confirmpassword' /></td></tr>
+                          <tr><td align='right'><?php eT("Email:"); ?></td>
+                          <td><input type='email' name='save_email' /></td></tr>
+                          <tr><td align='right'><?php eT("Start language:"); ?></td>
+                          <td>
+                    <select name='save_language' class="form-control">
                     <?php foreach ($slangs as $lang)
                     {
                         if ($lang == $baselang) { ?>
@@ -64,7 +69,7 @@ if ($thissurvey['active'] == "Y")
                 <?php } ?>
                 <tr>
                 <td colspan='3' align='center'>
-                <input type='submit' id='submitdata' value='<?php eT("Submit"); ?>'
+                <input type='submit' id='submitdata' class="btn btn-default hidden" value='<?php eT("Submit"); ?>'
 
                 <?php if (tableExists('tokens_'.$thissurvey['sid']))
                 { ?>
@@ -107,3 +112,6 @@ if ($thissurvey['active'] == "Y")
             </tr>
             </table>
             </form>
+            
+
+</div></div></div>

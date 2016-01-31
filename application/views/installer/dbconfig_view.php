@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="span3">
+    <div class="col-md-3">
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
-    <div class="span9">
+    <div class="col-md-9">
         <?php echo CHtml::beginForm($this->createUrl('installer/database'), 'post', array('class' => 'form-horizontal')); ?>
         <h2><?php echo $title; ?></h2>
         <p><?php echo $descp; ?></p>
@@ -10,13 +10,12 @@
             <?php echo CHtml::errorSummary($model, null, null, array('class' => 'errors')); ?>
         </div>
         <?php eT("Note: All fields marked with (*) are required."); ?>
-        <fieldset>
             <legend><?php eT("Database configuration"); ?></legend>
             <?php
                 $rows = array();
                 $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dbtype', array('class' => 'control-label', 'label' => gT("Database type"))),
-                    'control' => CHtml::activeDropDownList($model, 'dbtype', $model->supported_db_types, array('required' => 'required', 'autofocus' => 'autofocus')),
+                    'control' => CHtml::activeDropDownList($model, 'dbtype', $model->supported_db_types, array('required' => 'required', 'class'=>'form-control', 'autofocus' => 'autofocus')),
                     'description' => gT("The type of your database management system")
                 );
                 $rows[] = array(
@@ -55,15 +54,15 @@
             }
 
             ?>
-        </fieldset>
+        <br />
         <div class="row">
-            <div class="span3" >
-                <input class="btn" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
+            <div class="col-md-4" >
+                <input class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
             </div>
-            <div class="span3" style="text-align: center;">
+            <div class="col-md-4" style="text-align: center;">
             </div>
-            <div class="span3" style="text-align: right;">
-                <?php echo CHtml::submitButton(gT("Next"), array('class' => 'btn')); ?>
+            <div class="col-md-4" style="text-align: right;">
+                <?php echo CHtml::submitButton(gT("Next"), array('class' => 'btn btn-default')); ?>
             </div>
         </div>
         <?php echo CHtml::endForm(); ?>

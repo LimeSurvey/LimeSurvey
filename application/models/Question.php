@@ -1,5 +1,4 @@
 <?php
-
     if (!defined('BASEPATH'))
         exit('No direct script access allowed');
     /*
@@ -15,9 +14,11 @@
     *
         * 	Files Purpose: lots of common functions
     */
-
     class Question extends LSActiveRecord
     {
+
+        // Stock the active group_name for questions list filtering
+        public $group_name;
 
         /**
         * Returns the static model of Settings table
@@ -64,7 +65,11 @@
         {
             $alias = $this->getTableAlias();
             return array(
-                'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"),
+
+                'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language'),
+
+                // Seriously ????
+                //'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"),
                 'parents' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.parent_qid = parents.qid"),
                 'subquestions' => array(self::HAS_MANY, 'Question', 'parent_qid', 'on' => "$alias.language = subquestions.language")
 
@@ -646,6 +651,42 @@
 
             return $questionTypes;
         }
+
+        public static function questionModuleList()
+        {
+            // For external question types
+            $sQuestionTypeDir=Yii::app()->getConfig("questiontypedir");
+            $aQuestionModules = array();
+
+            if ($sQuestionTypeDir && $handle = opendir($sQuestionTypeDir))
+            {
+                while (false !== ($file = readdir($handle)))
+                {
+                    if (!is_file("$sQuestionTypeDir/$file") && $file != "." && $file != ".." && $file!=".svn")
+                    {
+                        //$list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                        $oQuestionTypeConfig = simplexml_load_file($sQuestionTypeDir.DIRECTORY_SEPARATOR.$file.'/config.xml');
+                        $aQuestionModules[$file] = $oQuestionTypeConfig->type;
+                        //var_dump($oQuestionTypeConfig->type);
+                    }
+                }
+                closedir($handle);
+            }
+
+            // Array of question type
+            return $aQuestionModules;
+
+        }
+
+        public static function getQuestionModule($typename)
+        {
+            $sQuestionTypeDir=Yii::app()->getConfig("questiontypedir");
+            $aQuestionModules = array();
+
+            $oQuestionTypeConfig = simplexml_load_file($sQuestionTypeDir.DIRECTORY_SEPARATOR.$typename.'/config.xml');
+            return $oQuestionTypeConfig->type;
+        }
+
         /**
          * This function return the class by question type
          * @param string question type
@@ -692,6 +733,186 @@
                 default:  return 'generic_question'; // fallback
             };
         }
+
+    /**
+     * Return all group of the active survey
+     * Used to render group filter in questions list
+     */
+    public function getAllGroups()
+    {
+        $language = Survey::model()->findByPk($this->sid)->language;
+        return QuestionGroup::model()->findAll("sid=:sid and language=:lang",array(':sid'=>$this->sid, ':lang'=>$language));
+        //return QuestionGroup::model()->getGroups($this->sid);
     }
 
-?>
+    public function getbuttons()
+    {
+
+        $url = Yii::app()->createUrl("/admin/questions/sa/view/surveyid/");
+        $url .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
+        $button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
+
+        $previewUrl = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
+        $previewUrl .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
+
+            $editurl = Yii::app()->createUrl("admin/questions/sa/editquestion/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
+
+        $button = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="glyphicon glyphicon-eye-open"  ></span></a> ';
+        $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Edit question").'" href="'.$editurl.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
+        $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Question summary").'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+
+        $oSurvey = Survey::model()->findByPk($this->sid);
+
+        if($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid,'surveycontent','delete' ))
+        {
+                $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
+                            onclick="if (confirm(\' '.gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js").' \' )){ '.convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/surveyid/$this->sid/gid/$this->gid/qid/$this->qid")).'} ">
+                                <span class="text-danger glyphicon glyphicon-trash"></span>
+                            </a>';
+        }
+
+
+        return $button;
+    }
+
+    public function getOrderedAnswers($random=0, $alpha=0)
+    {
+        //question attribute random order set?
+        if ($random==1)
+        {
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid='$this->qid' AND language='$this->language' and scale_id=0 ORDER BY ".dbRandom();
+        }
+
+        //question attribute alphasort set?
+        elseif ($alpha==1)
+        {
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid='$this->qid' AND language='$this->language' and scale_id=0 ORDER BY answer";
+        }
+
+        //no question attributes -> order by sortorder
+        else
+        {
+            $ansquery = "SELECT * FROM {{answers}} WHERE qid='$this->qid' AND language='$this->language' and scale_id=0 ORDER BY sortorder, answer";
+        }
+
+        $ansresult = dbExecuteAssoc($ansquery)->readAll();
+        return $ansresult;
+
+    }
+
+    /**
+     * get subquestions fort the current question object in the right order
+     */
+    public function getOrderedSubQuestions($random=0, $exclude_all_others='')
+    {
+        if ($random==1)
+        {
+            // TODO : USE AR PATTERN
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid='$this->qid' AND scale_id=0 AND language='$this->language' ORDER BY ".dbRandom();
+        }
+        else
+        {
+            // TODO : USE AR PATTERN
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid='$this->qid' AND scale_id=0 AND language='$this->language' ORDER BY question_order";
+        }
+
+        $ansresult = dbExecuteAssoc($ansquery)->readAll();  //Checked
+
+        //if  exclude_all_others is set then the related answer should keep its position at all times
+        //thats why we have to re-position it if it has been randomized
+        if (trim($exclude_all_others)!='' && $random==1)
+        {
+            $position=0;
+            foreach ($ansresult as $answer)
+            {
+                if (  ($answer['title']==trim($exclude_all_others)))
+                {
+                    if ($position==$answer['question_order']-1) break; //already in the right position
+                    $tmp  = array_splice($ansresult, $position, 1);
+                    array_splice($ansresult, $answer['question_order']-1, 0, $tmp);
+                    break;
+                }
+                $position++;
+            }
+        }
+
+        return $ansresult;
+    }
+
+    public function search()
+    {
+        $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+
+        $sort = new CSort();
+        $sort->attributes = array(
+          'Question id'=>array(
+            'asc'=>'qid',
+            'desc'=>'qid desc',
+          ),
+          'Question order'=>array(
+            'asc'=>'question_order',
+            'desc'=>'question_order desc',
+          ),
+          'Title'=>array(
+            'asc'=>'title',
+            'desc'=>'title desc',
+          ),
+          'Question'=>array(
+            'asc'=>'question',
+            'desc'=>'question desc',
+          ),
+
+          'Group'=>array(
+            'asc'=>'groups.group_name',
+            'desc'=>'groups.group_name desc',
+          ),
+        );
+
+        $criteria = new CDbCriteria;
+        $criteria->condition="t.sid=:surveyid AND t.language=:language AND parent_qid=0";
+        $criteria->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
+        $criteria->join='LEFT JOIN {{groups}} AS groups ON ( groups.gid = t.gid AND t.language = groups.language )';
+
+        if($this->group_name != '')
+        {
+            $criteria->addCondition('groups.group_name = :group_name');
+            $criteria->params=(array(':surveyid'=>$this->sid,':language'=>$this->language, ':group_name'=>$this->group_name));
+        }
+
+        $criteria->compare('title', $this->title, true, 'AND');
+        $criteria->compare('question', $this->title, true, 'OR');
+
+        $dataProvider=new CActiveDataProvider('Question', array(
+            'criteria'=>$criteria,
+            'sort'=>$sort,
+            'pagination'=>array(
+                'pageSize'=>$pageSize,
+            ),
+        ));
+        return $dataProvider;
+    }
+
+    /**
+     * Make sure we don't save a new question group
+     * while the survey is active.
+     *
+     * @return bool
+     */
+    protected function beforeSave()
+    {
+        if (parent::beforeSave())
+        {
+            $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
+
+            if ($surveyIsActive && $this->getIsNewRecord())
+            {
+                return false;
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}

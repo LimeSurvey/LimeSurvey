@@ -42,14 +42,20 @@
     var sOperator13= '<?php eT("contains",'js');?>';
     var sOperator14= '<?php eT("does not contain",'js');?>';
 </script>
-<div class='header ui-widget-header'><strong><?php eT("Attribute management"); ?></strong></div>
 
-<br/>
 
-<table id="attributeControl">
-    <tr><td>&nbsp;</td></tr>
-</table>
+<div class="col-lg-12 attribute-control">
+    <h3 class="pagetitle"><?php eT("Attribute management"); ?></h3>
 
-<div id="pager"></div>
+    <div class="row">
+        <div class="col-lg-12 content-right">
+            <table id="attributeControl" class="table">
+                <tr><td>&nbsp;</td></tr>
+            </table>
 
-<br />
+            <div id="pager">
+
+            </div>
+        </div>
+    </div>
+</div>

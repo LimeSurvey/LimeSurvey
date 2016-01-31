@@ -231,7 +231,7 @@ echo $colModels;
 
 </div>
 <br/>
-<table id="displayparticipants"></table>
+<table id="displayparticipants" class="table"></table>
 <div id="pager"></div>
 <div id="fieldnotselected" title="<?php eT("Error") ?>" style="display:none">
     <p>
@@ -334,6 +334,3 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
 <?php eT("You do not have the permission to edit this participant."); ?></p>
 
 </div>
-
-
-

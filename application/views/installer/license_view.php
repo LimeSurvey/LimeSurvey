@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="span3">
+    <div class="col-md-3">
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
-    <div class="span9">
+    <div class="col-md-9">
         <?php
             echo CHtml::tag('h2', array(), $title);
             echo CHtml::tag('p', array(), $descp);
@@ -12,12 +12,12 @@
 
 
             <div class="row navigator">
-            <div class="span3">
-                <input class="btn" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/install/welcome"); ?>', '_top')" />
+            <div class="col-md-4">
+                <input class="btn btn-default" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/install/welcome"); ?>', '_top')" />
             </div>
-            <div class="span3"></div>
-            <div class="span3">
-                <input class="btn"  type="submit" value="<?php eT('I accept'); ?>" />
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <input class="btn btn-default"  type="submit" value="<?php eT('I accept'); ?>" />
             </div>
             </div>
         </form>

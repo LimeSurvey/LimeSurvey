@@ -7,6 +7,10 @@ $(document).on('submit',"#addnewsurvey",function(){
 });
 $(document).ready(function(){
 
+	$('#template').on('change keyup', function(event){
+		templatechange($(this).val());
+	});
+
     $("[data-copy]").each(function(){
         $(this).html($("#"+$(this).data('copy')).html());
     });
@@ -15,13 +19,13 @@ $(document).ready(function(){
     $("#urlparams").jqGrid({ url:jsonUrl,
         datatype: "json",
         colNames:[sAction,'','',sParameter,'','',sTargetQuestion],
-        colModel:[ {name:'act',index:'act', width:50,sortable:false},
+        colModel:[ {name:'act',index:'act', width:80,sortable:false},
                    {name:'id',index:'id', hidden:true},
                    {name:'sid',index:'sid', hidden:true},
-                   {name:'parameter',index:'parameter', width:120},
+                   {name:'parameter',index:'parameter', width:100},
                    {name:'targetqid',index:'targetqid', hidden:true},
                    {name:'targetsqid',index:'targetsqid', hidden:true},
-                   {name:'title',index:'title', width:400}
+                   {name:'title',index:'title', width:240}
                    ],
         direction: $('html').attr('dir'),
         sortname: 'parameter',
@@ -31,6 +35,8 @@ $(document).ready(function(){
         pginput: false,
         pgbuttons: false,
         viewrecords: true,
+        width: 420,
+        shrinkToFit: true,
         rowNum: 100,
         sortorder: "asc",
         editurl: jsonUrl, // this is dummy existing url
@@ -40,8 +46,8 @@ $(document).ready(function(){
                                     for(var i=0;i < ids.length;i++)
                                     {
                                         var cl = ids[i];
-                                        be = "<image style='cursor:pointer;' src='"+imageUrl+"/edit_16.png' value='E' onclick=\"editParameter('"+cl+"');\" />";
-                                        de = "<image style='cursor:pointer;' src='"+imageUrl+"/token_delete.png' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+cl+"');\" />";
+                                        be = "<span style='cursor:pointer;' class='glyphicon glyphicon-edit text-success' value='E' onclick=\"editParameter('"+cl+"');\"></span>";
+                                        de = "<span style='cursor:pointer;' class='glyphicon glyphicon-trash text-warning' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+cl+"');\"></span>";
                                         jQuery("#urlparams").jqGrid('setRowData',ids[i],{act:be+de});
                                     }
         }
@@ -100,8 +106,8 @@ function saveParameter()
     if ($("#dlgEditParameter").data('action')=='add')
     {
        sGUID=guidGenerator();
-       jQuery("#urlparams").addRowData(sGUID, { act: "<image style='cursor:pointer;' src='"+imageUrl+"/edit_16.png' value='E' onclick=\"editParameter('"+sGUID+"');\" />"
-                                                    +"<image style='cursor:pointer;' src='"+imageUrl+"/token_delete.png' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+sGUID+"');\" />",
+       jQuery("#urlparams").addRowData(sGUID, { act: "<span style='cursor:pointer;' class='glyphicon glyphicon-pencil text-success' value='E' onclick=\"editParameter('"+sGUID+"');\"></span>"
+                                                    +"<span style='cursor:pointer;' class='glyphicon glyphicon-trash text-warning' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+sGUID+"');\" ></span>",
                                                 id:sGUID,
                                                 sid:$('#id').val(),
                                                 parameter:sParamname,
@@ -141,14 +147,31 @@ function editParameter(rowid)
 
 function templatechange(template)
 {
-    standardtemplates=['basic','bluengrey','business_grey','citronade','clear_logo','default','eirenicon','limespired','mint_idea','sherpa','vallendar'];
+    standardtemplates=[
+        'default',
+        'blue_sky',
+        'metro_ode',
+        'electric_black',
+        'night_mode',
+        'flat_and_modern',
+        'news_paper',
+        'light_and_shadow',
+        'material_design',
+        'readable',
+        'sandstone',
+        'minimalist',
+        'gunmetal',
+        'super_blue',
+        'ubuntu_orange',
+        'yeti'
+];
     if (in_array(template,standardtemplates))
     {
         $("#preview").attr('src',standardtemplaterooturl+'/'+template+'/preview.png');
     }
     else
     {
-    $("#preview").attr('src',templaterooturl+'/'+template+'/preview.png');
+        $("#preview").attr('src',templaterooturl+'/'+template+'/preview.png');
     }
 }
 
