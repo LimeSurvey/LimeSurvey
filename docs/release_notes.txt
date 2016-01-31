@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.5RC7! 
+Welcome to LimeSurvey v2.5RC8! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -58,6 +58,27 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 2.5RC7 (build 151215) to 2.5RC8 (build 160122) Jan 31, 2016
+-Fixed issue #10162: Jump instead of navigate to avoid saving NULL-values for old question group cookie left-over (reverted from commit 2460c6945576e8f5843bc1f3e7137d2df45f9023) (Carsten Schmitz)
+-Fixed issue #10237: unclosed div (LouisGac)
+-Fixed issue #10240: added missing fonts to templates (LouisGac)
+-Fixed issue #10246: updatequestion function only for new items (LouisGac)
+-Fixed issue #10251: [security] Reflected XSS in admin (Thanks to Kacper Szurek - http://security.szurek.pl/ ) (Denis Chenu)
+-Fixed issue #9644: Unable to preview survey when using database sessions - link bug 09592 (Guillaume Smaha)
+#Updated translation: Albanian by andiandi
+#Updated translation: Bulgarian by jmlorenzo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by coeneisma, Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by tomzt
+
 
 Changes from 2.5RC6 (build 151215) to 2.5RC7 (build 160122) Jan 21, 2016
 -Fixed issue #10213: initialise tokens (LouisGac)
