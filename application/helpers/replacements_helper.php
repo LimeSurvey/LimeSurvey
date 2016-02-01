@@ -853,7 +853,6 @@ function doHtmlSaveAll($move="")
     $aHtmlOptionsLoadall=array('type'=>'submit','id'=>'loadallbtn','value'=>'loadall','name'=>'loadall','class'=>"saveall btn btn-default col-xs-12 col-sm-4 submit button hidden");
     $aHtmlOptionsSaveall=array('type'=>'submit','id'=>'saveallbtn','value'=>'saveall','name'=>'saveall','class'=>"saveall btn btn-default col-xs-12 col-sm-4 submit button hidden");
     if($thissurvey['active'] != "Y")
-    {
         $sLoadButton=CHtml::htmlButton(gT("Load unfinished survey"),$aHtmlOptionsLoadall);
         $sSaveButton=CHtml::htmlButton(gT("Resume later"),$aHtmlOptionsSaveall);
     }

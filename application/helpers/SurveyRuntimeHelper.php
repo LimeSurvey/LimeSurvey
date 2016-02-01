@@ -32,24 +32,18 @@ class SurveyRuntimeHelper {
         // Button will be shown inside the form. Not handled by replacement.
         $htmlButtons = array();
         $html = '';
-        $html .=  "\n\n<!-- PRESENT THE INDEX -->\n";
-        $html .=  CHtml::openTag('li', array('id' => 'index', 'class'=>'dropdown'));
+        $html .=  "\n\n<!-- PRESENT THE INDEX MENU -->\n";
+        $html .=  CHtml::openTag('li', array('id' => 'index-menu', 'class'=>'dropdown'));
         $html .=  CHtml::link(gT("Question index").'&nbsp<span class="caret"></span>', array('#'), array('class'=>'dropdown-toggle', 'data-toggle'=>"dropdown", 'role'=>"button", 'aria-haspopup'=>"true", 'aria-expanded'=>"false"));
         $html .=  CHtml::openTag('ul', array('class'=>'dropdown-menu'));
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $key => $group)
         {
-            //						echo '<script>';
-            //						echo 'var session = '. json_encode(LimeExpressionManager::singleton()->_ValidateGroup($key)) . ';';
-            //						echo 'console.log(session);';
-            //						echo '</script>';
-            // Better to use tracevar /
+
             if (LimeExpressionManager::GroupIsRelevant($group['gid']))
             {
                 $group['step'] = $key + 1;
-                $stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($key);
                 $classes = implode(' ', array(
                     'row',
-                    $stepInfo['anyUnanswered'] ? 'missing' : '',
                     $_SESSION[$LEMsessid]['step'] == $group['step'] ? 'current' : ''
 
                 ));
@@ -65,12 +59,15 @@ class SurveyRuntimeHelper {
                 $html .=  CHtml::openTag('li');
                 $html .=  CHtml::link($group['group_name'], array('#'), array('class'=>'linkToButton', 'data-button-to-click'=>'#button-'.$group['gid'], ));
                 $html .= CHtml::closeTag('li');
+
             }
         }
+
+
         $html .= CHtml::closeTag('ul');
         $html .= CHtml::closeTag('li');
 
-        App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
+        //App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
 
         return array('menulist'=>$html, 'buttons'=>$htmlButtons );
     }
