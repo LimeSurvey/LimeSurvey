@@ -1443,6 +1443,8 @@ class tokens extends Survey_Common_Action
             }
 
             $tokenoutput = "";
+            $bInvalidDate = false;
+            $bSendError=false;
             if ($emcount > 0)
             {
                 foreach ($emresult as $emrow)
@@ -1604,6 +1606,7 @@ class tokens extends Survey_Common_Action
                             }
                         } else {
                             $tokenoutput .= htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error message:",'unescaped') . " " . $maildebug , $fieldsarray)). "<br />";
+                            $bSendError=true;
                         }
                     }
                     unset($fieldsarray);
@@ -1630,10 +1633,23 @@ class tokens extends Survey_Common_Action
                 }
                 else
                 {
-                    if(isset($bInvalidDate))
-                      $aData['tokenoutput'].="<strong class='result success text-success'>".gT("Except those with invalid date, all emails were sent.")."<strong>";
+                    if (!$bInvalidDate && !$bSendError)
+                    {
+                        $aData['tokenoutput'].="<strong class='result success text-success'>".gT("All emails were sent.")."<strong>";
+                    }
                     else
-                      $aData['tokenoutput'].="<strong class='result success text-success'>".gT("All emails were sent.")."<strong>";
+                    {
+                        $aData['tokenoutput'].="<strong class='result warning text-warning'>".gT("Not all emails were sent:")."<strong><ul>";
+                        if ($bInvalidDate)
+                        {
+                            $aData['tokenoutput'].="<li>".gT("Some entries had a validity date set which was not yet valid or not valid anymore.")."</li>";
+                        }
+                        if ($bSendError)
+                        {
+                            $aData['tokenoutput'].="<li>".gT("Some emails were not sent because the server did not accept the email(s) or some other error occured.")."</li>";
+                        }
+                        $aData['tokenoutput'].='/ul';
+                    }
                 }
 
                 $this->_renderWrappedTemplate('token', $aViewUrls, $aData);
