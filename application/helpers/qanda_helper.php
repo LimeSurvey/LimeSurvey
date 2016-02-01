@@ -3949,7 +3949,7 @@ function do_array_5point($ia)
     }
     else
     {
-        $answerwidth = 20;
+        $answerwidth = 50;
     }
     $cellwidth  = 5; // number of columns
 
@@ -4001,14 +4001,14 @@ function do_array_5point($ia)
         $odd_even = alternation($odd_even);
         //$answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
         // width obsolete
-        $answer .= "<col class=\"$odd_even\" />\n";
+        $answer .= "<col class=\"$odd_even\" style='width: $cellwidth%;' />\n";
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         //$answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
         // width obsolete
-        $answer .= "<col class=\"col-no-answer $odd_even\" />\n";
+        $answer .= "<col class=\"col-no-answer $odd_even\" style='width: $cellwidth%;' />\n";
     }
     $answer .= "\t</colgroup>\n\n"
     . "\t<thead>\n<tr class=\"array1 dontread\">\n"
@@ -4020,7 +4020,7 @@ function do_array_5point($ia)
     if ($right_exists)
     {
         //$answer .= "\t<td width='$answerwidth%'>&nbsp;</td>\n";
-        $answer .= "\t<td>&nbsp;</td>\n";
+        $answer .= "\t<td style='width: $answerwidth%;'>&nbsp;</td>\n";
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
@@ -4057,7 +4057,7 @@ function do_array_5point($ia)
 
         $answer_t_content .= $htmltbody2
         //. "\t<th class=\"answertext\" width=\"$answerwidth%\">\n$answertext\n"
-        . "\t<th class=\"answertext\" >\n$answertext\n"
+        . "\t<th class=\"answertext\" style='width: $answerwidth%;'>\n$answertext\n"
         . $hiddenfield
         . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
@@ -4068,14 +4068,14 @@ function do_array_5point($ia)
         for ($i=1; $i<=5; $i++)
         {
             $answer_t_content .= "\t<td class=\"answer-cell-1 answer_cell_00$i answer-item radio-item\">\n"
-            ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\"";
+            ."\n\t<label for=\"answer$myfname-$i\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\"";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)
             {
                 $answer_t_content .= CHECKED;
             }
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />"
-            . "<label class=\"hide read\" for=\"answer$myfname-$i\">{$i}</label>\n"
-            . "\n</td>\n";
+            //. "<label class=\"hide read\" for=\"answer$myfname-$i\">{$i}</label>\n"
+            . "</label>\n</td>\n";
         }
 
         $answertext2 = $ansrow['question'];
@@ -4083,26 +4083,26 @@ function do_array_5point($ia)
         {
             $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
             //$answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext2</td>\n";
-            $answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' >$answertext2</td>\n";
+            $answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left; width: $answerwidth%;' >$answertext2</td>\n";
         }
         elseif ($right_exists)
         {
             //$answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
-            $answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' >&nbsp;</td>\n";
+            $answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left; width: $answerwidth%;' >&nbsp;</td>\n";
         }
 
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-            ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
+            ."\n\t<label for=\"answer$myfname-\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {
                 $answer_t_content .= CHECKED;
             }
             $answer_t_content .= " onclick='$checkconditionFunction(this.value, this.name, this.type)'  />\n"
-            ."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>"
-            ."</td>\n";
+            //."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>"
+            ."</label></td>\n";
         }
 
         $answer_t_content .= "</tr>\n";
@@ -4166,13 +4166,14 @@ function do_array_10point($ia)
     $anscount = count($aSubquestions);
 
     $fn = 1;
-    $answer = '<div class="no-more-tables no-more-tables-10-point">';
+    $answer .= '<!-- Array 10 points question -->';
+    $answer .= '<div class="no-more-tables no-more-tables-10-point">';
     /*$answer .= "\n<table class=\"table-in-qanda-2 question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";*/
     $answer .= "\n<table class=\"table-in-qanda-2 question subquestion-list questions-list {$extraclass}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
-    . "\t<col class=\"col-answers\" />\n";
+    . "\t<col class=\"col-answers\" style='width: $answerwidth%;'/>\n";
 
 
     $odd_even = '';
@@ -4180,13 +4181,14 @@ function do_array_10point($ia)
     {
         $odd_even = alternation($odd_even);
         //$answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-        $answer .= "<col class=\"$odd_even\"  />\n";
+        $answer .= "<col class=\"$odd_even\" style='width: $cellwidth%;' />\n";
     }
+
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         //$answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
-        $answer .= "<col class=\"col-no-answer $odd_even\"  />\n";
+        $answer .= "<col class=\"col-no-answer $odd_even\"  style='width: $cellwidth%;' />\n";
     }
     $answer .= "\t</colgroup>\n\n"
     . "\t<thead>\n<tr class=\"array1 dontread\">\n"
@@ -4235,28 +4237,28 @@ function do_array_10point($ia)
         for ($i=1; $i<=10; $i++)
         {
             $answer_t_content .= "\t<td data-title='$i' class=\"answer-cell-2 answer_cell_00$i answer-item radio-item\">\n"
-            ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\"";
+            ."\t<label for=\"answer$myfname-$i\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\"";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)
             {
                 $answer_t_content .= CHECKED;
             }
             // --> START NEW FEATURE - SAVE
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t"
-            ."<label class=\"hide read\" for=\"answer$myfname-$i\">{$i}</label>\n"
-            ."</td>\n";
+            //."<label class=\"hide read\" for=\"answer$myfname-$i\">{$i}</label>\n"
+            ."</label></td>\n";
             // --> END NEW FEATURE - SAVE
         }
         if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1)
         {
             $answer_t_content .= "\t<td  data-title='N/A' class=\"answer-item radio-item noanswer-item\">\n"
-            ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
+            ."\t<label for=\"answer$myfname-\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {
                 $answer_t_content .= CHECKED;
             }
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />"
-            ."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>"
-            ."\n\t</td>\n";
+            //."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>"
+            ."\n\t</label></td>\n";
 
         }
         $answer_t_content .= "</tr>\n";
@@ -4318,19 +4320,19 @@ function do_array_yesnouncertain($ia)
     . "\n\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";*/
     $answer = "\n<table class=\"table table-striped table-condensed table-in-qanda-3 question subquestions-list questions-list {$extraclass}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
-    . "\n\t<col class=\"col-answers\" />\n";
+    . "\n\t<col class=\"col-answers\" style='width: $answerwidth%;'/>\n";
     $odd_even = '';
     for ($xc=1; $xc<=3; $xc++)
     {
         $odd_even = alternation($odd_even);
         //$answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-        $answer .= "<col class=\"$odd_even\"  />\n";
+        $answer .= "<col class=\"$odd_even\"  style='width: $cellwidth%;' />\n";
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         //$answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
-        $answer .= "<col class=\"col-no-answer $odd_even\" />\n";
+        $answer .= "<col class=\"col-no-answer $odd_even\" style='width: $cellwidth%;'/>\n";
     }
     $answer .= "\t</colgroup>\n\n"
     . "\t<thead>\n<tr class=\"array1\">\n"
@@ -4378,17 +4380,17 @@ function do_array_yesnouncertain($ia)
             . $hiddenfield
             . "\t\t\t\t$answertext</th>\n"
             . "\t<td class=\"answer_cell_Y answer-item radio-item\">\n"
-            . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-Y\" value=\"Y\" ";
+            . "\t<label for=\"answer$myfname-Y\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-Y\" value=\"Y\" ";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')
             {
                 $answer_t_content .= CHECKED;
             }
             // --> START NEW FEATURE - SAVE
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />"
-            . "<label class=\"hide read\" for=\"answer$myfname-Y\">".gT('Yes')."</label>\n"
-            . "\n\t</td>\n"
+            //. "<label class=\"hide read\" for=\"answer$myfname-Y\">".gT('Yes')."</label>\n"
+            . "\n\t</label></td>\n"
             . "\t<td class=\"answer_cell_U answer-item radio-item\">\n"
-            . "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-U\" value=\"U\" ";
+            . "<label for=\"answer$myfname-U\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-U\" value=\"U\" ";
             // --> END NEW FEATURE - SAVE
 
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'U')
@@ -4397,10 +4399,10 @@ function do_array_yesnouncertain($ia)
             }
             // --> START NEW FEATURE - SAVE
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-            . "<label class=\"hide read\" for=\"answer$myfname-U\">".gT('Uncertain')."</label>\n"
-            . "\t</td>\n"
+            //. "<label class=\"hide read\" for=\"answer$myfname-U\">".gT('Uncertain')."</label>\n"
+            . "\t</label></td>\n"
             . "\t<td class=\"answer_cell_N answer-item radio-item\">\n"
-            . "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-N\" value=\"N\" ";
+            . "<label for=\"answer$myfname-N\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-N\" value=\"N\" ";
             // --> END NEW FEATURE - SAVE
 
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'N')
@@ -4409,7 +4411,7 @@ function do_array_yesnouncertain($ia)
             }
             // --> START NEW FEATURE - SAVE
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />"
-            . "<label class=\"hide read\" for=\"answer$myfname-N\">".gT('No')."</label>\n"
+            //. "<label class=\"hide read\" for=\"answer$myfname-N\">".gT('No')."</label>\n"
             . "\n"
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
             // --> END NEW FEATURE - SAVE
@@ -4417,20 +4419,20 @@ function do_array_yesnouncertain($ia)
             {
                 $answer_t_content .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
             }
-            $answer_t_content .= "\" />\n\t</td>\n";
+            $answer_t_content .= "\" />\n\t</label></td>\n";
 
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
                 $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-                . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
+                . "\t<label for=\"answer$myfname-\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
                 if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
                 {
                     $answer_t_content .= CHECKED;
                 }
                 // --> START NEW FEATURE - SAVE
                 $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-                . "\t<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
-                ."\n\t</td>\n";
+                //. "\t<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
+                ."\n\t</label></td>\n";
                 // --> END NEW FEATURE - SAVE
             }
             $answer_t_content .= "</tr>";
@@ -4496,20 +4498,20 @@ function do_array_increasesamedecrease($ia)
 */
 $answer = "\n<table class=\"table table-condensed table-striped table-in-qanda-4 question subquestions-list questions-list {$extraclass}\" >\n"
 . "\t<colgroup class=\"col-responses\">\n"
-. "\t<col class=\"col-answers\" />\n";
+. "\t<col class=\"col-answers\" style='width: $answerwidth%;' />\n";
 
     $odd_even = '';
     for ($xc=1; $xc<=3; $xc++)
     {
         $odd_even = alternation($odd_even);
         //$answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-        $answer .= "<col class=\"$odd_even\" />\n";
+        $answer .= "<col class=\"$odd_even\" style='width: $cellwidth%;'/>\n";
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         //$answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
-        $answer .= "<col class=\"col-no-answer $odd_even\" />\n";
+        $answer .= "<col class=\"col-no-answer $odd_even\" style='width: $cellwidth%;' />\n";
     }
     $answer .= "\t</colgroup>\n"
     . "\t<thead>\n"
@@ -4566,16 +4568,16 @@ $answer = "\n<table class=\"table table-condensed table-striped table-in-qanda-4
 
 
         $answer_body .= "\t<td class=\"answer_cell_I answer-item radio-item\">\n"
-        ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" ";
+        ."\t<label for=\"answer$myfname-I\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" ";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'I')
         {
             $answer_body .= CHECKED;
         }
         $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-        . "<label class=\"hide read\" for=\"answer$myfname-I\">".gT('Increase')."</label>\n"
-        . "\t</td>\n"
+        //. "<label class=\"hide read\" for=\"answer$myfname-I\">".gT('Increase')."</label>\n"
+        . "\t</label></td>\n"
         . "\t<td class=\"answer_cell_S answer-item radio-item\">\n"
-        . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-S\" value=\"S\" ";
+        . "\t<label for=\"answer$myfname-S\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-S\" value=\"S\" ";
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'S')
         {
@@ -4583,10 +4585,10 @@ $answer = "\n<table class=\"table table-condensed table-striped table-in-qanda-4
         }
 
         $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-        . "<label class=\"hide read\" for=\"answer$myfname-S\">".gT('Same')."</label>\n"
-        . "\t</td>\n"
+        //. "<label class=\"hide read\" for=\"answer$myfname-S\">".gT('Same')."</label>\n"
+        . "\t</label></td>\n"
         . "\t<td class=\"answer_cell_D answer-item radio-item\">\n"
-        . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" ";
+        . "\t<label for=\"answer$myfname-D\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" ";
         // --> END NEW FEATURE - SAVE
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'D')
         {
@@ -4594,23 +4596,23 @@ $answer = "\n<table class=\"table table-condensed table-striped table-in-qanda-4
         }
 
         $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-        . "<label class=\"hide read\" for=\"answer$myfname-D\">".gT('Decrease')."</label>\n"
+        //. "<label class=\"hide read\" for=\"answer$myfname-D\">".gT('Decrease')."</label>\n"
         . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {$answer_body .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];}
-        $answer_body .= "\" />\n\t</td>\n";
+        $answer_body .= "\" />\n\t</label></td>\n";
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $answer_body .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-            . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
+            . "\t<label for=\"answer$myfname-\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {
                 $answer_body .= CHECKED;
             }
             $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-            . "<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
-            . "\t</td>\n";
+            //. "<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
+            . "\t</label></td>\n";
         }
         $answer_body .= "</tr>\n";
         $inputnames[]=$myfname;
@@ -4711,7 +4713,8 @@ function do_array($ia)
         }
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-        $answer_start = '<div class="no-more-tables">';
+        $answer_start .= '<!-- Array Question, no dropdown -->';
+        $answer_start .= '<div class="no-more-tables">';
         //$answer_start .= "\n<table class=\"table-in-qanda-5 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n";
         $answer_start .= "\n<table class=\"table-in-qanda-5 question subquestions-list questions-list {$extraclass}\">\n";
         $answer_head_line= "\t<td>&nbsp;</td>\n";
@@ -4779,15 +4782,15 @@ function do_array($ia)
             foreach ($labelcode as $ld)
             {
                 $answer .= "\t\t\t<td data-title='{$labelans[$thiskey]}' class=\"answer-cell-3 answer_cell_00$ld answer-item radio-item\">\n"
-                . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\"";
+                . "\t<label for=\"answer$myfname-$ld\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\"";
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ld)
                 {
                     $answer .= CHECKED;
                 }
                 // --> START NEW FEATURE - SAVE
                 $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-                . "<label class=\"hide read\" for=\"answer$myfname-$ld\">{$labelans[$thiskey]}</label>\n"
-                . "\t</td>\n";
+                //. "<label class=\"hide read\" for=\"answer$myfname-$ld\">{$labelans[$thiskey]}</label>\n"
+                . "\t</label></td>\n";
                 // --> END NEW FEATURE - SAVE
 
                 $thiskey++;
@@ -4805,15 +4808,15 @@ function do_array($ia)
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
                 $answer .= "\t<td data-title='".gT('No answer')."' class=\"answer-item radio-item noanswer-item\">\n"
-                ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" ";
+                ."\t<label for=\"answer$myfname-\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" ";
                 if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
                 {
                     $answer .= CHECKED;
                 }
                 // --> START NEW FEATURE - SAVE
                 $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\"  />\n"
-                ."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
-                . "\t</td>\n";
+                //."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
+                . "</label>\t</td>\n";
                 // --> END NEW FEATURE - SAVE
             }
 
@@ -4824,7 +4827,7 @@ function do_array($ia)
         $answer .= "</tbody>\n";
         /*$answer_cols = "\t<colgroup class=\"col-responses\">\n"
         ."\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n" ;*/
-        $answer_cols = "\t<colgroup class=\"col-responses\">\n"
+        $answer_cols = "\t<colgroup class=\"col-responses\" style='width: $answerwidth%;'>\n"
         ."\t<col class=\"col-answers\" />\n" ;
 
         $odd_even = '';
@@ -4832,19 +4835,19 @@ function do_array($ia)
         {
             $odd_even = alternation($odd_even);
             //$answer_cols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-            $answer_cols .= "<col class=\"$odd_even\" />\n";
+            $answer_cols .= "<col class=\"$odd_even\" style='width: $cellwidth%;'/>\n";
         }
         if ($right_exists)
         {
             $odd_even = alternation($odd_even);
             //$answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
-            $answer_cols .= "<col class=\"answertextright $odd_even\" />\n";
+            $answer_cols .= "<col class=\"answertextright $odd_even\" style='width: $answerwidth%;' />\n";
         }
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
         {
             $odd_even = alternation($odd_even);
             //$answer_cols .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
-            $answer_cols .= "<col class=\"col-no-answer $odd_even\" />\n";
+            $answer_cols .= "<col class=\"col-no-answer $odd_even\" style='width: $cellwidth%;' />\n";
         }
         $answer_cols .= "\t</colgroup>\n";
 
@@ -4888,7 +4891,8 @@ function do_array($ia)
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
         //$answer_start = "\n<table class=\"table-in-qanda-6 question subquestions-list questions-list {$extraclass}\" summary=\"$caption\" >\n";
-        $answer_start = "\n<table class=\"table-in-qanda-6 question subquestions-list questions-list {$extraclass}\" >\n";
+        $answer_start .= "<!-- Array Question, dropdown layout -->\n";
+        $answer_start .= "\n<table class=\"table-in-qanda-6 question subquestions-list questions-list {$extraclass}\" >\n";
 
         $answer = "\t<tbody>\n";
         $trbc = '';
@@ -4919,7 +4923,7 @@ function do_array($ia)
             list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc question-item answer-item dropdown-item");
             $answer .= $htmltbody2;
 
-            $answer .= "\t<th class=\"answertext\">\n<label for=\"answer{$myfname}\">{$answertext}</label>"
+            $answer .= "\t<th class=\"answertext\" style='padding: 1em;;'>\n<label for=\"answer{$myfname}\">{$answertext}</label>"
             . $hiddenfield
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
@@ -5215,8 +5219,8 @@ function do_array_multitext($ia)
         $answer_head_line= "\t\t\t<td width='$answerwidth%'>&nbsp;</td>\n";*/
 
         $answer_cols = "\t<colgroup class=\"col-responses\">\n"
-        ."\n\t\t<col class=\"answertext\" />\n";
-        $answer_head_line= "\t\t\t<td>&nbsp;</td>\n";
+        ."\n\t\t<col class=\"answertext\" style='width: $answerwidth%;'/>\n";
+        $answer_head_line= "\t\t\t<td style='width: $answerwidth%;'>&nbsp;</td>\n";
 
         $odd_even = '';
         foreach ($labelans as $ld)
@@ -5224,14 +5228,14 @@ function do_array_multitext($ia)
             $answer_head_line .= "\t<th class=\"answertext\">".$ld."</th>\n";
             $odd_even = alternation($odd_even);
             //$answer_cols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-            $answer_cols .= "<col class=\"$odd_even\" />\n";
+            $answer_cols .= "<col class=\"$odd_even\" style='width: $cellwidth%;'/>\n";
         }
         if ($right_exists)
         {
             $answer_head_line .= "\t<td>&nbsp;</td>\n";// class=\"answertextright\"
             $odd_even = alternation($odd_even);
             //$answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$cellwidth%\" />\n";
-            $answer_cols .= "<col class=\"answertextright $odd_even\"  />\n";
+            $answer_cols .= "<col class=\"answertextright $odd_even\" style='width: $cellwidth%;' />\n";
         }
 
         if( ($show_grand == true &&  $show_totals == 'col' ) || $show_totals == 'row' ||  $show_totals == 'both' )
@@ -5239,7 +5243,7 @@ function do_array_multitext($ia)
             $answer_head_line .= $col_head;
             $odd_even = alternation($odd_even);
             //$answer_cols .= "\t\t<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-            $answer_cols .= "\t\t<col class=\"$odd_even\" />\n";
+            $answer_cols .= "\t\t<col class=\"$odd_even\" style='width: $cellwidth%;' />\n";
         }
         $answer_cols .= "\t</colgroup>\n";
 
@@ -5332,12 +5336,12 @@ function do_array_multitext($ia)
             {
                 $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
                 //$answer .= "\t\t\t<td  class=\"answertextright\" style=\"text-align:left;\" width=\"$answerwidth%\">$answertext</td>\n";
-                $answer .= "\t\t\t<td  class=\"answertextright\" style=\"text-align:left;\">$answertext</td>\n";
+                $answer .= "\t\t\t<td  class=\"answertextright\" style=\"text-align:left; width: $answerwidth%;\" >$answertext</td>\n";
             }
             elseif ($right_exists)
             {
                 //$answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' width='$answerwidth%'>&nbsp;</td>\n";
-                $answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' >&nbsp;</td>\n";
+                $answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left; width: $answerwidth%;' >&nbsp;</td>\n";
             }
 
             $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $row_total);
@@ -5571,7 +5575,7 @@ function do_array_multiflexi($ia)
 
         $mycols = "\t<colgroup class=\"col-responses\">\n"
         //. "\n\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
-        . "\n\t<col class=\"answertext\" />\n";
+        . "\n\t<col class=\"answertext\"style='width: $answerwidth%;' />\n";
 
         $answer_head_line = "\t<th >&nbsp;</th>\n";
         $odd_even = '';
@@ -5580,14 +5584,14 @@ function do_array_multiflexi($ia)
             $answer_head_line .= "\t<th  class='th-11'>".$ld."</th>\n";
             $odd_even = alternation($odd_even);
             //$mycols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-            $mycols .= "<col class=\"$odd_even\" />\n";
+            $mycols .= "<col class=\"$odd_even\" style='width: $cellwidth%;' />\n";
         }
         if ($right_exists)
         {
             $answer_head_line .= "\t<td>&nbsp;</td>";
             $odd_even = alternation($odd_even);
             //$mycols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
-            $mycols .= "<col class=\"answertextright $odd_even\" />\n";
+            $mycols .= "<col class=\"answertextright $odd_even\"  style='width: $answerwidth%;' />\n";
         }
         $answer_head = "\n\t<thead>\n<tr class=\"dontread\">\n"
         . $answer_head_line
@@ -5664,7 +5668,7 @@ function do_array_multiflexi($ia)
             // table-in-qanda-7
             // $labelans
             //$answer .= "\t<th data-title=\" \" class=\"answertext\" width=\"$answerwidth%\">\n"
-            $answer .= "\t<th data-title=\" \" class=\"answertext\">\n"
+            $answer .= "\t<th data-title=\" \" class=\"answertext\" style='width: $answerwidth%;'>\n"
             . "$answertext\n"
             . $hiddenfield
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
@@ -5690,8 +5694,8 @@ function do_array_multiflexi($ia)
                         $myfname2_java_value = "";
                     }
                     $answer .= "\t<td class=\"answer-cell-5 answer_cell_00$ld question-item answer-item {$answertypeclass}-item $extraclass\">\n"
-                    . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n"
-                    . "<label class=\"hidden-sm hidden-md hidden-lg read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n";
+                    . "\t<label for=\"answer{$myfname2}\"><input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n";
+                    //. "<label class=\"hidden-sm hidden-md hidden-lg read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n";
                     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
                     $sSeparator = $sSeparator['separator'];
                     if($inputboxlayout == false) {
@@ -5717,7 +5721,7 @@ function do_array_multiflexi($ia)
                         }
                         $answer .= "\" />\n";
                     }
-                    $answer .= "\t</td>\n";
+                    $answer .= "\t</label></td>\n";
 
                     $inputnames[]=$myfname2;
                     $thiskey++;
@@ -5764,12 +5768,12 @@ function do_array_multiflexi($ia)
             {
                 $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
                 //$answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext</td>\n";
-                $answer .= "\t<td class=\"answertextright\" style='text-align:left;'>$answertext</td>\n";
+                $answer .= "\t<td class=\"answertextright\" style='text-align:left; width: $answerwidth; '>$answertext</td>\n";
             }
             elseif ($right_exists)
             {
                 //$answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
-                $answer .= "\t<td class=\"answertextright\" style='text-align:left;'>&nbsp;</td>\n";
+                $answer .= "\t<td class=\"answertextright\" style='text-align:left; width: $answerwidth;'>&nbsp;</td>\n";
             }
 
             $answer .= "</tr>\n";
@@ -5840,13 +5844,13 @@ function do_arraycolumns($ia)
             $answer = "\n<table class=\"table-in-qanda-8  question subquestions-list questions-list\">\n"
             . "\t<colgroup class=\"col-responses\">\n"
             //. "\t<col class=\"col-answers\" width=\"50%\" />\n";
-            . "\t<col class=\"col-answers\" />\n";
+            . "\t<col class=\"col-answers\" style='width: 50%' />\n";
             $odd_even = '';
             for( $c = 0 ; $c < $anscount ; ++$c )
             {
                 $odd_even = alternation($odd_even);
                 //$answer .= "<col class=\"$odd_even question-item answers-list radio-list\" width=\"$cellwidth%\" />\n";
-                $answer .= "<col class=\"$odd_even question-item answers-list radio-list\" />\n";
+                $answer .= "<col class=\"$odd_even question-item answers-list radio-list\" style='width: $cellwidth%;' />\n";
             }
             $answer .= "\t</colgroup>\n\n"
             . "\t<thead>\n"
@@ -5898,7 +5902,7 @@ function do_arraycolumns($ia)
                     //if (!isset($trbc) || $trbc == 'array1') {$trbc = 'array2';} else {$trbc = 'array1';}
                     $myfname=$ia[1].$ld;
                     $answer .= "\t<td class=\"answer-cell-7 answer_cell_00$ld answer-item radio-item\">\n"
-                    . "\t<input class=\"radio\" type=\"radio\" name=\"".$myfname.'" value="'.$ansrow['code'].'" '
+                    . "\t<label for=\"answer".$myfname.'-'.$ansrow['code']."\"><input class=\"radio\" type=\"radio\" name=\"".$myfname.'" value="'.$ansrow['code'].'" '
                     . 'id="answer'.$myfname.'-'.$ansrow['code'].'" ';
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
                     {
@@ -5912,8 +5916,8 @@ function do_arraycolumns($ia)
                         // should remove the !isset part I think !!
                     }
                     $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-                    . "<label class=\"hide read\" for=\"answer".$myfname.'-'.$ansrow['code']."\">{$ansrow['answer']}</label>\n"
-                    . "\t</td>\n";
+                    //. "<label class=\"hide read\" for=\"answer".$myfname.'-'.$ansrow['code']."\">{$ansrow['answer']}</label>\n"
+                    . "\t</label></td>\n";
                 }
                 unset($trbc);
                 $answer .= "</tr>\n";
@@ -6075,12 +6079,12 @@ function do_array_dual($ia)
             }
             if($rightexists) {$numrows++;}
             if($centerexists) {$numrows++;}
-            $cellwidth=$columnswidth/$numrows;
-            //$cellwidth=sprintf("%02d", $cellwidth); // No reason to do this, except to leave place for separator ?  But then table can not be the same in all browser
+            //$cellwidth=$columnswidth/$numrows;
+            $cellwidth=sprintf("%02d", $cellwidth); // No reason to do this, except to leave place for separator ?  But then table can not be the same in all browser
 
             // Header row and colgroups
             //$mycolumns = "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
-            $mycolumns = "\t<col class=\"col-answers\" />\n";
+            $mycolumns = "\t<col class=\"col-answers\" style='width: $answerwidth%;'/>\n";
             $answer_head_line = "\t<th class=\"header_answer_text\">&nbsp;</th>\n\n";
             $mycolumns .= "\t<colgroup class=\"col-responses group-1\">\n";
             $odd_even = '';
@@ -6089,13 +6093,13 @@ function do_array_dual($ia)
                 $answer_head_line .= "\t<th  class='th-12'>".$ld."</th>\n";
                 $odd_even = alternation($odd_even);
                 //$mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-                $mycolumns .= "<col class=\"$odd_even\" />\n";
+                $mycolumns .= "<col class=\"$odd_even\" style='width: $cellwidth%;' />\n";
             }
             $mycolumns .= "\t</colgroup>\n";
             if (count($labelans1)>0) // if second label set is used
             {
-                //$separatorwidth=($centerexists)? "width=\"$cellwidth%\" ":"";
-                $separatorwidth='';
+                $separatorwidth=($centerexists)? "style='width:$cellwidth%;' ":"";
+                //$separatorwidth='';
                 $mycolumns .=  "\t<col class=\"separator\" {$separatorwidth}/>\n";
                 $mycolumns .= "\t<colgroup class=\"col-responses group-2\">\n";
                 $answer_head_line .= "\n\t<td class=\"header_separator\">&nbsp;</td>\n\n"; // Separator : and No answer for accessibility for first colgroup
@@ -6104,21 +6108,21 @@ function do_array_dual($ia)
                     $answer_head_line .= "\t<th  class='th-13'>".$ld."</th>\n";
                     $odd_even = alternation($odd_even);
                     //$mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-                    $mycolumns .= "<col class=\"$odd_even\" />\n";
+                    $mycolumns .= "<col class=\"$odd_even\" style='width: $cellwidth%;' />\n";
                 }
                 $mycolumns .= "\t</colgroup>\n";
             }
             if($shownoanswer || $rightexists)
             {
-                //$rigthwidth=($rightexists)? "width=\"$cellwidth%\" ":"";
-                $rigthwidth="";
+                $rigthwidth=($rightexists)? "style='width: $cellwidth%;' ":"";
+                //$rigthwidth="";
                 $mycolumns .=  "\t<col class=\"separator rigth_separator\" {$rigthwidth}/>\n";
                 $answer_head_line .= "\n\t<td class=\"header_separator rigth_separator\">&nbsp;</td>\n";
             }
             if($shownoanswer)
             {
                 //$mycolumns .=  "\t<col class=\"col-no-answer\"  width=\"$cellwidth%\" />\n";
-                $mycolumns .=  "\t<col class=\"col-no-answer\"  />\n";
+                $mycolumns .=  "\t<col class=\"col-no-answer\"  style='width: $cellwidth%;'/>\n";
                 $answer_head_line .= "\n\t<th class=\"header_no_answer\">".gT('No answer')."</th>\n";
             }
             $answer_head2 = "\n<tr class=\"array1 header_row dontread\">\n"
@@ -6239,14 +6243,14 @@ function do_array_dual($ia)
                 foreach ($labelcode0 as $ld)
                 {
                     $answer .= "\t<td <td data-title='$labelans0[$thiskey]' class=\"answer_cell_1_00$ld answer-item {$answertypeclass}-item\">\n"
-                    . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname0\" value=\"$ld\" id=\"answer$myfid0-$ld\" ";
+                    . "\t<label for=\"answer{$myfid0}-{$ld}\"><input class=\"radio\" type=\"radio\" name=\"$myfname0\" value=\"$ld\" id=\"answer$myfid0-$ld\" ";
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == $ld)
                     {
                         $answer .= CHECKED;
                     }
                     $answer .= "  />\n"
-                    . "<label class=\"hide read\" for=\"answer{$myfid0}-{$ld}\">$labelans0[$thiskey]</label>\n"
-                    . "\n\t</td>\n";
+                    //. "<label class=\"hide read\" for=\"answer{$myfid0}-{$ld}\">$labelans0[$thiskey]</label>\n"
+                    . "\n\t</label></td>\n";
                     $thiskey++;
                 }
                 if (count($labelans1)>0) // if second label set is used
@@ -6254,28 +6258,28 @@ function do_array_dual($ia)
                     $answer .= "\t<td data-title='' class=\"dual_scale_separator information-item\">";
                     if ($shownoanswer)// No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
                     {
-                        $answer .= "\t<input class='radio jshide read' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
+                        $answer .= "\t<label for='answer$myfid0-'><input class='radio jshide read' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "")
                         {
                             $answer .= CHECKED;
                         }
                         $answer .= " />\n";
                     }
-                    $answer .=  "<label for='answer$myfid0-' class= \"hide read\">".gT("No answer")."</label>";
-                    $answer .= "\t{$answertextcenter}</td>\n"; // separator
+                    //$answer .=  "<label for='answer$myfid0-' class= \"hide read\">".gT("No answer")."</label>";
+                    $answer .= "\t{$answertextcenter}</label></td>\n"; // separator
                     array_push($inputnames,$myfname1);
                     $thiskey=0;
                     foreach ($labelcode1 as $ld) // second label set
                     {
                         $answer .= "\t<td data-title='{$labelans1[$thiskey]}' class=\"answer_cell_2_00$ld  answer-item radio-item\">\n"
-                        . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname1\" value=\"$ld\" id=\"answer$myfid1-$ld\" ";
+                        . "\t<label for=\"answer{$myfid1}-{$ld}\"><input class=\"radio\" type=\"radio\" name=\"$myfname1\" value=\"$ld\" id=\"answer$myfid1-$ld\" ";
                         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $ld)
                         {
                             $answer .= CHECKED;
                         }
                         $answer .= " />\n"
-                        . "<label class=\"hide read\" for=\"answer{$myfid1}-{$ld}\">{$labelans1[$thiskey]}</label>\n"
-                        . "\t</td>\n";
+                        //. "<label class=\"hide read\" for=\"answer{$myfid1}-{$ld}\">{$labelans1[$thiskey]}</label>\n"
+                        . "\t</label></td>\n";
                         $thiskey++;
                     }
                 }
@@ -6288,26 +6292,26 @@ function do_array_dual($ia)
                     $answer .= "\t<td  data-title='".gT("No answer")."' class=\"dual_scale_no_answer answer-item radio-item noanswer-item\">\n";
                     if (count($labelans1)>0)
                     {
-                        $answer .= "\t<input class='radio' type='radio' name='$myfname1' value='' id='answer$myfid1-' ";
+                        $answer .= "\t<label for='answer$myfid1-'><input class='radio' type='radio' name='$myfname1' value='' id='answer$myfid1-' ";
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == "")
                         {
                             $answer .= CHECKED;
                         }
                         // --> START NEW FEATURE - SAVE
                         $answer .= " />\n";
-                        $answer .= "<label class='hide read' for='answer$myfid1-'>".gT("No answer")."</label>";
+                        //$answer .= "<label class='hide read' for='answer$myfid1-'>".gT("No answer")."</label>";
                     }
                     else
                     {
-                        $answer .= "\t<input   data-title='".gT("No answer")."' class='radio' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
+                        $answer .= "\t<label for='answer$myfid0-'><input   data-title='".gT("No answer")."' class='radio' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "")
                         {
                             $answer .= CHECKED;
                         }
-                        $answer .= "<label class='hide read' for='answer$myfid0-'>".gT("No answer")."<label>\n";
+                        //$answer .= "<label class='hide read' for='answer$myfid0-'>".gT("No answer")."<label>\n";
                         $answer .= " />\n";
                     }
-                    $answer .= "\t</td>\n";
+                    $answer .= "\t</label></td>\n";
                 }
                 $answer .= "</tr>\n";
                 $fn++;
@@ -6355,21 +6359,22 @@ function do_array_dual($ia)
             //$answer .= "\n<table class=\"table-in-qanda-10 question subquestion-list questions-list dropdown-list\" summary=\"{$caption}\">\n"
             $answer .= "\n<table class=\"table-in-qanda-10 question subquestion-list questions-list dropdown-list\">\n"
             //. "\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
-            . "\t<col class=\"answertext\"  />\n";
+            . "\t<col class=\"answertext\" style='width: $answerwidth%;' />\n";
 
             if($ddprefix != '' || $ddsuffix != '')
             {
                 //$answer .= "\t<colgroup width=\"$cellwidth%\">\n";
-                $answer .= "\t<colgroup >\n";
+                $answer .= "\t<colgroup style='width: $cellwidth%;' >\n";
             }
             if($ddprefix != '')
             {
                 $answer .= "\t\t<col class=\"ddprefix\" />\n";
                 $colspan_1 = ' colspan="2"';
             }
-            //$headcolwidth=($ddprefix != '' || $ddsuffix != '')?"":" width=\"$cellwidth%\"";
-            $headcolwidth="";
-            $answer .= "\t<col class=\"dsheader\"{$headcolwidth} />\n";
+            ////// TODO: check in prev headcolwidth if style='width:$cellwidth' and not style='width:\"$cellwidth\"'
+            $headcolwidth=($ddprefix != '' || $ddsuffix != '')?"":" style='width:$cellwidth%';";
+            //$headcolwidth="";
+            $answer .= "\t<col class=\"dsheader\" {$headcolwidth} />\n";
             if($ddsuffix != '')
             {
                 $answer .= "\t<col class=\"ddsuffix\" />\n";
@@ -6379,11 +6384,11 @@ function do_array_dual($ia)
                 $answer .= "\t</colgroup>\n";
             }
             //$answer .= "\t<col class=\"ddarrayseparator\" width=\"{$separatorwidth}%\" />\n";
-            $answer .= "\t<col class=\"ddarrayseparator\" />\n";
+            $answer .= "\t<col class=\"ddarrayseparator\" style='width: $separatorwidth%'/>\n";
             if($ddprefix != '' || $ddsuffix != '')
             {
                 //$answer .= "\t<colgroup width=\"$cellwidth%\">\n";
-                $answer .= "\t<colgroup >\n";
+                $answer .= "\t<colgroup style='width: $cellwidth%;' >\n";
             }
             if($ddprefix != '')
             {
