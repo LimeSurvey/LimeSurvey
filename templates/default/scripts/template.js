@@ -150,9 +150,9 @@ $(document).ready(function(){
     if($('.linkToButton').length > 0){
         $('.linkToButton').on('click', function()
         {
-            event.preventDefault();
             $btnToClick = $($(this).attr('data-button-to-click'));
             $btnToClick.trigger('click');
+            return false;
         });
     }
 
