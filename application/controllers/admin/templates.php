@@ -623,7 +623,7 @@ class templates extends Survey_Common_Action
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }
 
-                $savefilename = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sTemplateName . "/" . $editfile;
+                $savefilename = gettemplatefilename(Yii::app()->getConfig('usertemplaterootdir') . "/" . $sTemplateName, $editfile);
                 if (is_writable($savefilename)) {
                     if (!$handle = fopen($savefilename, 'w'))
                     {
