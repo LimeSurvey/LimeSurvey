@@ -55,7 +55,7 @@
 
             <!-- Create -->
             <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir)):?>
-                <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Create new template called:"); ?>', '<?php eT("NewTemplate"); ?>', 'default', 'copy')">
+                <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Create template called:"); ?>', '<?php eT("NewTemplate"); ?>', 'default', 'copy')">
                     <span class="icon-add text-success"></span>
                     <?php eT("Create new"); ?>
                 </a>

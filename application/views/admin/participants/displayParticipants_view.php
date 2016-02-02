@@ -108,7 +108,7 @@ else
     var attributeValueColTxt="<?php eT("Attribute value", 'js') ?>";
     var attributePosValColTxt="<?php eT("Possible attribute values", 'js') ?>";
     var addToSurveyTxt="<?php eT("Add participants to a survey", 'js') ?>";
-    var createParticipantTxt="<?php eT("Create new participant", 'js') ?>";
+    var createParticipantTxt="<?php eT("Create participant", 'js') ?>";
     var deleteParticipantTxt="<?php eT("Delete selected participants", 'js') ?>";
     var refreshListTxt="<?php eT("Refresh list", 'js') ?>";
     var pageViewTxt= "<?php eT("Page {0} of {1}", 'js') ?>";
