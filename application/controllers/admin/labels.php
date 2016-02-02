@@ -184,7 +184,7 @@ class labels extends Survey_Common_Action
             if ($sa == "newlabelset" && Permission::model()->hasGlobalPermission('labelsets','create'))
             {
                 $langids = Yii::app()->session['adminlang'];
-                $tabitem = gT("Create new label set");
+                $tabitem = gT("New label set");
             }
             else
                 $tabitem = gT("Edit label set");

@@ -53,7 +53,7 @@
                             <div class="alert alert-info alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
                                 <span class="glyphicon glyphicon-info-sign" ></span>&nbsp;&nbsp;&nbsp;
-                                <?php eT('In the survey options you can set later if your questions are shown one at a time, group by group or all on one page.');?>
+                                <?php eT('Set below if your questions are shown one at a time, group by group or all on one page.');?>
                             </div>
                         <?php endif;?>
                     </div>
@@ -372,7 +372,7 @@
 
                     <!-- Survey's texts -->
                     <tr>
-                        <td><strong><?php eT("Survey's texts");?> :</strong></td>
+                        <td><strong><?php eT("Survey texts");?> :</strong></td>
                         <td></td>
                     </tr>
 

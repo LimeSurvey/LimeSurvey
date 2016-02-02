@@ -174,7 +174,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $iSurveyID = (int) $iSurveyID;
         if (is_null($iSurveyID) || !$iSurveyID)
-            $this->getController()->error('Invalid survey id');
+            $this->getController()->error('Invalid survey ID');
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read') && !Permission::model()->hasGlobalPermission('surveys','read'))
             $this->getController()->error('No permission');

@@ -67,7 +67,7 @@ class Survey_Common_Action extends CAction
         {
             if(!Survey::model()->findByPk($params['iSurveyId']))
             {
-                Yii::app()->setFlashMessage(gT("Invalid survey id"),'error');
+                Yii::app()->setFlashMessage(gT("Invalid survey ID"),'error');
                 $this->getController()->redirect(array("admin/index"));
             }
             elseif (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read'))

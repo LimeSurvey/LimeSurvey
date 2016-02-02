@@ -808,7 +808,7 @@ class questions extends Survey_Common_Action
 
         $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->together()->findByAttributes(array('sid' => $surveyid));
         if ($sumresult1 == null)
-            $this->getController()->error('Invalid survey id');
+            $this->getController()->error('Invalid survey ID');
 
         $surveyinfo = $sumresult1->attributes;
         $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
