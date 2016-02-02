@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-02-02 13:05:36+00:00\n"
+"POT-Creation-Date: 2016-02-02 13:54:42+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1007,6 +1007,7 @@ msgid "You do not have sufficient rights to access this page."
 msgstr ""
 
 #: application/controllers/admin/checkintegrity.php:44
+#: application/controllers/admin/usergroups.php:343
 msgid "Return to admin panel"
 msgstr ""
 
@@ -4756,10 +4757,6 @@ msgstr ""
 msgid "Update user group"
 msgstr ""
 
-#: application/controllers/admin/usergroups.php:343
-msgid "return to admin panel"
-msgstr ""
-
 #: application/controllers/admin/usergroups.php:381
 #: application/controllers/admin/usergroups.php:389
 #: application/controllers/admin/usergroups.php:421
@@ -5135,6 +5132,7 @@ msgid "Visit our website!"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:42
+#: application/views/admin/authentication/login.php:16
 #: application/views/installer/success_view.php:12
 msgid "Administration"
 msgstr ""
@@ -5322,7 +5320,7 @@ msgid "Plugin manager"
 msgstr ""
 
 #: application/extensions/PannelBoxWidget/PannelBoxWidget.php:47
-msgid "Unknown box id!"
+msgid "Unknown box ID!"
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:37
@@ -6500,11 +6498,13 @@ msgstr ""
 
 #: application/helpers/common_helper.php:2992
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:58
+#: application/views/admin/export/statistics_subviews/_outputoptions.php:38
 msgid "Bar chart"
 msgstr ""
 
 #: application/helpers/common_helper.php:2993
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:65
+#: application/views/admin/export/statistics_subviews/_outputoptions.php:39
 msgid "Pie chart"
 msgstr ""
 
@@ -9424,6 +9424,7 @@ msgid "All %s user templates updated."
 msgstr ""
 
 #: application/libraries/PluginManager/Question/QuestionBase.php:100
+#: application/views/admin/survey/Question/editQuestion_view.php:106
 msgid "Question type:"
 msgstr ""
 
@@ -9958,7 +9959,7 @@ msgid "Check data"
 msgstr ""
 
 #: application/views/admin/authentication/login.php:24
-msgid "Log In"
+msgid "Log in"
 msgstr ""
 
 #: application/views/admin/authentication/login.php:49
@@ -10749,18 +10750,22 @@ msgid "Export data"
 msgstr ""
 
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:71
+#: application/views/admin/export/statistics_subviews/_outputoptions.php:40
 msgid "Radar chart"
 msgstr ""
 
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:78
+#: application/views/admin/export/statistics_subviews/_outputoptions.php:41
 msgid "Line chart"
 msgstr ""
 
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:84
+#: application/views/admin/export/statistics_subviews/_outputoptions.php:42
 msgid "Polar chart"
 msgstr ""
 
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:90
+#: application/views/admin/export/statistics_subviews/_outputoptions.php:43
 msgid "Doughnut chart"
 msgstr ""
 
@@ -10903,31 +10908,7 @@ msgid "Chart type:"
 msgstr ""
 
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:37
-msgid "as defined in questions's advanced setting"
-msgstr ""
-
-#: application/views/admin/export/statistics_subviews/_outputoptions.php:38
-msgid "bar chart"
-msgstr ""
-
-#: application/views/admin/export/statistics_subviews/_outputoptions.php:39
-msgid "pie chart"
-msgstr ""
-
-#: application/views/admin/export/statistics_subviews/_outputoptions.php:40
-msgid "radar chart"
-msgstr ""
-
-#: application/views/admin/export/statistics_subviews/_outputoptions.php:41
-msgid "line chart"
-msgstr ""
-
-#: application/views/admin/export/statistics_subviews/_outputoptions.php:42
-msgid "polar chart"
-msgstr ""
-
-#: application/views/admin/export/statistics_subviews/_outputoptions.php:43
-msgid "doughnut chart"
+msgid "As defined in question settings"
 msgstr ""
 
 #: application/views/admin/export/statistics_subviews/_question.php:77
@@ -13640,15 +13621,7 @@ msgid "Copy advanced settings?"
 msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:95
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:10
-#: application/views/admin/survey/subview/accordion/_accordion_container.php:19
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:68
-msgid "General option"
-msgstr ""
-
-#: application/views/admin/survey/Question/editQuestion_view.php:106
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:19
-msgid "Question Type:"
+msgid "General options"
 msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:157
@@ -13772,6 +13745,16 @@ msgstr ""
 #: application/views/admin/survey/QuestionGroups/listquestiongroups.php:51
 #: application/views/admin/survey/listSurveys_view.php:58
 msgid "%s rows per page"
+msgstr ""
+
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:10
+#: application/views/admin/survey/subview/accordion/_accordion_container.php:19
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:68
+msgid "General option"
+msgstr ""
+
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:19
+msgid "Question Type:"
 msgstr ""
 
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:138
@@ -17101,11 +17084,11 @@ msgid "Restrict search place to map extent"
 msgstr ""
 
 #: application/views/survey/system/LanguageChanger/LanguageChanger.php:13
-msgid "Choose another language"
+msgid "Select a language"
 msgstr ""
 
 #: application/views/survey/system/LanguageChanger/LanguageChanger.php:16
-msgid "Choose another language:"
+msgid "Select a language:"
 msgstr ""
 
 #: application/views/surveys/publicSurveyList.php:18
