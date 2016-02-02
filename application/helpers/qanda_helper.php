@@ -4315,10 +4315,10 @@ function do_array_yesnouncertain($ia)
     $aSubquestions = $ansresult->readAll();
     $anscount = count($aSubquestions);
     $fn = 1;
-    /*$answer = "\n<table class=\"table table-striped table-condensed table-in-qanda-3 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
+    /*$answer = "\n<table class=\"table  table-condensed table-in-qanda-3 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\n\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";*/
-    $answer = "\n<table class=\"table table-striped table-condensed table-in-qanda-3 question subquestions-list questions-list {$extraclass}\">\n"
+    $answer = "\n<table class=\"table  table-condensed table-in-qanda-3 question subquestions-list questions-list {$extraclass}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\n\t<col class=\"col-answers\" style='width: $answerwidth%;'/>\n";
     $odd_even = '';
@@ -4492,11 +4492,11 @@ function do_array_increasesamedecrease($ia)
     $fn = 1;
 
     /*
-    $answer = "\n<table class=\"table table-condensed table-striped table-in-qanda-4 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
+    $answer = "\n<table class=\"table table-condensed  table-in-qanda-4 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 */
-$answer = "\n<table class=\"table table-condensed table-striped table-in-qanda-4 question subquestions-list questions-list {$extraclass}\" >\n"
+$answer = "\n<table class=\"table table-condensed  table-in-qanda-4 question subquestions-list questions-list {$extraclass}\" >\n"
 . "\t<colgroup class=\"col-responses\">\n"
 . "\t<col class=\"col-answers\" style='width: $answerwidth%;' />\n";
 
@@ -5849,8 +5849,9 @@ function do_arraycolumns($ia)
             for( $c = 0 ; $c < $anscount ; ++$c )
             {
                 $odd_even = alternation($odd_even);
+                $odd_even_well = ($odd_even == 'odd')?$odd_even.' well':$odd_even;
                 //$answer .= "<col class=\"$odd_even question-item answers-list radio-list\" width=\"$cellwidth%\" />\n";
-                $answer .= "<col class=\"$odd_even question-item answers-list radio-list\" style='width: $cellwidth%;' />\n";
+                $answer .= "<col class=\"$odd_even_well question-item answers-list radio-list\" style='width: $cellwidth%;' />\n";
             }
             $answer .= "\t</colgroup>\n\n"
             . "\t<thead>\n"

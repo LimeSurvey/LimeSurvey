@@ -861,7 +861,7 @@ function alternation($alternate = '' , $type = 'col')
     */
     if($type == 'row')
     {
-        $odd  = 'array2'; // should be row_odd
+        $odd  = 'array2 well'; // should be row_odd
         $even = 'array1'; // should be row_even
     }
     else
@@ -4514,7 +4514,7 @@ function languageDropdown($surveyid,$selected)
 
 /**
  * Creates a <select> HTML element for language selection for this survey
- * 
+ *
  * @param int $surveyid
  * @param string $selected The selected language
  * @return string
