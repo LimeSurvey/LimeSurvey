@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-02-02 09:54:52+00:00\n"
+"POT-Creation-Date: 2016-02-02 10:28:33+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2133,6 +2133,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:2447
 #: application/views/admin/dataentry/caption_view.php:5
 #: application/views/admin/dataentry/dataentry_header_view.php:3
+#: application/views/admin/responses/browsemenubar_view.php:71
 msgid "Data entry"
 msgstr ""
 
@@ -5284,7 +5285,6 @@ msgid "Global settings"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:571
-#: application/views/admin/super/_configuration_menu.php:129
 msgid "Check Data Integrity"
 msgstr ""
 
@@ -5293,7 +5293,6 @@ msgid "Create, import, or copy a survey"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:597
-#: application/views/admin/super/_configuration_menu.php:136
 msgid "Backup Entire Database"
 msgstr ""
 
@@ -5308,7 +5307,6 @@ msgid "Edit label sets"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:629
-#: application/views/admin/super/_configuration_menu.php:214
 msgid "Template Editor"
 msgstr ""
 
@@ -9826,7 +9824,7 @@ msgid "File upload"
 msgstr ""
 
 #: application/models/Question.php:760
-#: application/views/admin/survey/Question/listquestions.php:135
+#: application/views/admin/survey/Question/listquestions.php:134
 msgid "Question preview"
 msgstr ""
 
@@ -9992,6 +9990,7 @@ msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:1
 #: application/views/admin/checkintegrity/fix_view.php:1
+#: application/views/admin/super/_configuration_menu.php:129
 msgid "Check data integrity"
 msgstr ""
 
@@ -13102,16 +13101,12 @@ msgid "Total records in this token table"
 msgstr ""
 
 #: application/views/admin/responses/browsemenubar_view.php:20
-msgid "Display Responses"
+msgid "Display responses"
 msgstr ""
 
 #: application/views/admin/responses/browsemenubar_view.php:45
 #: application/views/admin/responses/browsemenubar_view.php:51
-msgid "Last 50 Responses"
-msgstr ""
-
-#: application/views/admin/responses/browsemenubar_view.php:71
-msgid "Dataentry"
+msgid "Last 50 responses"
 msgstr ""
 
 #: application/views/admin/responses/browsemenubar_view.php:86
@@ -13283,39 +13278,48 @@ msgid "Expression Manager"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:60
-msgid "Expression Manager Descriptions"
+msgid "Expression Manager descriptions"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:67
-msgid "Available Functions"
+msgid "Available functions"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:74
-msgid "Unit Tests of Expressions Within Strings"
+msgid "Unit tests of expressions within strings"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:81
-msgid "Unit Test Dynamic Relevance Processing"
+msgid "Unit test dynamic relevance processing"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:88
-msgid "Preview Conversion of Conditions to Relevance"
+msgid "Preview conversion of conditions to relevance"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:95
-msgid "Bulk Convert Conditions to Relevance"
+msgid "Bulk convert conditions to relevance"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:102
-msgid "Test Navigation"
+msgid "Test navigation"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:109
-msgid "Show Survey logic file"
+msgid "Show survey logic file"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:123
 msgid "Advanced"
+msgstr ""
+
+#: application/views/admin/super/_configuration_menu.php:136
+msgid "Backup entire database"
+msgstr ""
+
+#: application/views/admin/super/_configuration_menu.php:214
+#: application/views/admin/super/welcome.php:20
+msgid "Template editor"
 msgstr ""
 
 #: application/views/admin/super/_question_explorer.php:22
@@ -13327,7 +13331,7 @@ msgid "Add a question to this group"
 msgstr ""
 
 #: application/views/admin/super/_question_explorer.php:101
-msgid "no questions in this group"
+msgid "There are no questions in this group."
 msgstr ""
 
 #: application/views/admin/super/_question_explorer.php:113
@@ -13358,7 +13362,7 @@ msgid "Copy a survey"
 msgstr ""
 
 #: application/views/admin/super/adminmenu.php:150
-msgid "a new update is available"
+msgid "A new update is available."
 msgstr ""
 
 #: application/views/admin/super/adminmenu.php:150
@@ -13418,10 +13422,6 @@ msgstr ""
 
 #: application/views/admin/super/welcome.php:17
 msgid "Stay safe and up to date"
-msgstr ""
-
-#: application/views/admin/super/welcome.php:20
-msgid "Template editor"
 msgstr ""
 
 #: application/views/admin/super/welcome.php:21
@@ -13760,7 +13760,7 @@ msgid "Questions in this survey"
 msgstr ""
 
 #: application/views/admin/survey/Question/listquestions.php:38
-msgid "any group"
+msgid "(Any group)"
 msgstr ""
 
 #: application/views/admin/survey/Question/listquestions.php:47
@@ -13781,10 +13781,10 @@ msgstr ""
 msgid "Displaying {start}-{end} of {count} result(s)."
 msgstr ""
 
-#: application/views/admin/survey/Question/listquestions.php:72
-#: application/views/admin/survey/QuestionGroups/listquestiongroups.php:57
-#: application/views/admin/survey/listSurveys_view.php:64
-msgid " rows per page"
+#: application/views/admin/survey/Question/listquestions.php:66
+#: application/views/admin/survey/QuestionGroups/listquestiongroups.php:51
+#: application/views/admin/survey/listSurveys_view.php:58
+msgid "%s rows per page"
 msgstr ""
 
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:138
@@ -13848,7 +13848,10 @@ msgid "Question quick actions"
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:19
+#: application/views/admin/survey/Question/questionbar_view.php:56
+#: application/views/admin/survey/Question/questionbar_view.php:68
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:125
+#: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:160
 msgid "Preview"
 msgstr ""
 
@@ -13857,12 +13860,6 @@ msgstr ""
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:143
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:166
 msgid "Preview its question group"
-msgstr ""
-
-#: application/views/admin/survey/Question/questionbar_view.php:56
-#: application/views/admin/survey/Question/questionbar_view.php:68
-#: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:160
-msgid "Preview "
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:86
