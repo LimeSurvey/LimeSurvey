@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-02-02 15:05:26+00:00\n"
+"POT-Creation-Date: 2016-02-02 16:22:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -593,7 +593,9 @@ msgstr ""
 #: application/views/admin/assessments_view.php:37
 #: application/views/admin/global_settings/_navigation.php:19
 #: application/views/admin/labels/_labelviewtabcontent_view.php:20
+#: application/views/admin/survey/Question/listquestions.php:87
 #: application/views/admin/survey/QuestionGroups/group_view.php:8
+#: application/views/admin/survey/listSurveys_view.php:74
 #: application/views/admin/survey/subview/tabCreate_view.php:38
 #: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:21
 #: application/views/admin/survey/surveySummary_view.php:299
@@ -1948,6 +1950,7 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:2141
 #: application/controllers/admin/responses.php:1248
 #: application/helpers/admin/statistics_helper.php:4585
+#: application/views/admin/survey/Question/listquestions.php:93
 #: application/views/admin/templates/templateeditor_printoutput_view.php:3
 msgid "Question"
 msgstr ""
@@ -3337,6 +3340,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:1246
 #: application/helpers/admin/export/HtmlWriter.php:78
 #: application/views/admin/assessments_view.php:136
+#: application/views/admin/survey/Question/listquestions.php:99
 msgid "Group"
 msgstr ""
 
@@ -5162,6 +5166,7 @@ msgstr ""
 #: application/extensions/Menu/MenuWidget.php:95
 #: application/helpers/common_helper.php:285
 #: application/views/admin/quotas/viewquotasrow_view.php:10
+#: application/views/admin/survey/listSurveys_view.php:102
 msgid "Active"
 msgstr ""
 
@@ -8752,6 +8757,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:5120
 #: application/views/admin/assessments_view.php:87
 #: application/views/admin/assessments_view.php:132
+#: application/views/admin/survey/listSurveys_view.php:123
 msgid "Total"
 msgstr ""
 
@@ -9816,7 +9822,7 @@ msgid "File upload"
 msgstr ""
 
 #: application/models/Question.php:760
-#: application/views/admin/survey/Question/listquestions.php:134
+#: application/views/admin/survey/Question/listquestions.php:140
 msgid "Question preview"
 msgstr ""
 
@@ -11324,6 +11330,7 @@ msgstr ""
 
 #: application/views/admin/global_settings/_navigation.php:25
 #: application/views/admin/pluginmanager/index.php:63
+#: application/views/admin/survey/QuestionGroups/listquestiongroups.php:88
 msgid "Description"
 msgstr ""
 
@@ -11709,6 +11716,7 @@ msgstr ""
 
 #: application/views/admin/labels/importlabelresources_view.php:18
 #: application/views/admin/survey/importSurveyResources_view.php:18
+#: application/views/admin/survey/listSurveys_view.php:109
 #: application/views/admin/templates/importuploaded_view.php:18
 msgid "Partial"
 msgstr ""
@@ -12250,6 +12258,7 @@ msgid "Participant's survey information"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:94
+#: application/views/admin/survey/listSurveys_view.php:67
 msgid "Survey ID"
 msgstr ""
 
@@ -12590,6 +12599,7 @@ msgid "Shared user id"
 msgstr ""
 
 #: application/views/admin/participants/sharePanel_view.php:12
+#: application/views/admin/survey/listSurveys_view.php:88
 msgid "Owner"
 msgstr ""
 
@@ -13724,6 +13734,15 @@ msgstr ""
 msgid "Questions in this survey"
 msgstr ""
 
+#: application/views/admin/survey/Question/listquestions.php:30
+#: application/views/admin/survey/listSurveys_view.php:28
+msgid "Search:"
+msgstr ""
+
+#: application/views/admin/survey/Question/listquestions.php:36
+msgid "Group:"
+msgstr ""
+
 #: application/views/admin/survey/Question/listquestions.php:38
 msgid "(Any group)"
 msgstr ""
@@ -13738,6 +13757,14 @@ msgstr ""
 #: application/views/admin/survey/QuestionGroups/listquestiongroups.php:51
 #: application/views/admin/survey/listSurveys_view.php:58
 msgid "%s rows per page"
+msgstr ""
+
+#: application/views/admin/survey/Question/listquestions.php:75
+msgid "Question ID"
+msgstr ""
+
+#: application/views/admin/survey/Question/listquestions.php:81
+msgid "Question order"
 msgstr ""
 
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:19
@@ -13968,6 +13995,18 @@ msgstr ""
 
 #: application/views/admin/survey/QuestionGroups/listquestiongroups.php:12
 msgid "Question groups in this survey"
+msgstr ""
+
+#: application/views/admin/survey/QuestionGroups/listquestiongroups.php:64
+msgid "Group ID"
+msgstr ""
+
+#: application/views/admin/survey/QuestionGroups/listquestiongroups.php:72
+msgid "Group order"
+msgstr ""
+
+#: application/views/admin/survey/QuestionGroups/listquestiongroups.php:80
+msgid "Group name"
 msgstr ""
 
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:18
@@ -14365,8 +14404,31 @@ msgstr ""
 msgid "Surveys list"
 msgstr ""
 
+#: application/views/admin/survey/listSurveys_view.php:34
+msgid "Active:"
+msgstr ""
+
 #: application/views/admin/survey/listSurveys_view.php:36
 msgid "(Any state)"
+msgstr ""
+
+#: application/views/admin/survey/listSurveys_view.php:81
+msgid "Created"
+msgstr ""
+
+#: application/views/admin/survey/listSurveys_view.php:95
+msgid "Anonymized responses"
+msgstr ""
+
+#: application/views/admin/survey/listSurveys_view.php:116
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:122
+#: application/views/admin/survey/subview/tabPresentation_view.php:97
+#: application/views/admin/templates/templatesummary_view.php:126
+msgid "Full"
+msgstr ""
+
+#: application/views/admin/survey/listSurveys_view.php:130
+msgid "Uses tokens"
 msgstr ""
 
 #: application/views/admin/survey/newSurveyBrowserMessage.php:3
@@ -14683,12 +14745,6 @@ msgstr ""
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:121
 #: application/views/admin/survey/subview/tabPresentation_view.php:96
 msgid "Incremental"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:122
-#: application/views/admin/survey/subview/tabPresentation_view.php:97
-#: application/views/admin/templates/templatesummary_view.php:126
-msgid "Full"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:135
