@@ -92,7 +92,7 @@ class PluginManager extends Survey_Common_Action
             }
             $oPlugin->active = $iStatus;
             $oPlugin->save();
-            Yii::app()->user->setFlash('success', gT('Plugin was activated'));
+            Yii::app()->user->setFlash('success', gT('Plugin was activated.'));
         }
         $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
     }
@@ -123,7 +123,7 @@ class PluginManager extends Survey_Common_Action
             }
             $oPlugin->active = $iStatus;
             $oPlugin->save();
-            Yii::app()->user->setFlash('success', gT('Plugin was deactivated'));
+            Yii::app()->user->setFlash('success', gT('Plugin was deactivated.'));
         }
         $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
     }
@@ -140,7 +140,7 @@ class PluginManager extends Survey_Common_Action
 
         if ($arPlugin === null)
         {
-            Yii::app()->user->setFlash('error', gT('Plugin not found'));
+            Yii::app()->user->setFlash('error', gT('The plugin was not found.'));
             $this->getController()->redirect(array('admin/pluginmanager/sa/index'));
         }
 
@@ -155,7 +155,7 @@ class PluginManager extends Survey_Common_Action
                 $aSave[$name] = App()->request->getPost($name, null);
             }
             $oPluginObject->saveSettings($aSave);
-            Yii::app()->user->setFlash('success', gT('Settings saved'));
+            Yii::app()->user->setFlash('success', gT('The plugin settings were saved.'));
             if(App()->request->getPost('redirect'))
             {
                 $this->getController()->redirect(App()->request->getPost('redirect'), true);
@@ -167,7 +167,7 @@ class PluginManager extends Survey_Common_Action
         if (empty($aSettings))
         {
             // And show a message
-            Yii::app()->user->setFlash('notice', gt('This plugin has no settings'));
+            Yii::app()->user->setFlash('notice', gt('This plugin has no settings.'));
             $this->getController()->redirect('admin/pluginmanager/sa/index', true);
         }
 

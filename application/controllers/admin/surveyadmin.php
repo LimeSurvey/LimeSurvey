@@ -1167,7 +1167,7 @@ class SurveyAdmin extends Survey_Common_Action
                 }
                 elseif (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export'))
                 {
-                    $aData['sErrorMessage'] = gT("You don't have sufficient permissions.");
+                    $aData['sErrorMessage'] = gT("We are sorry but you don't have permissions to do this.");
                     $aData['bFailed'] = true;
                 }
                 else

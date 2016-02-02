@@ -153,7 +153,7 @@ class questions extends Survey_Common_Action
         }
         else
         {
-            Yii::app()->session['flashmessage'] = gT("You don't have enough permissions.");
+            Yii::app()->session['flashmessage'] = gT("We are sorry but you don't have permissions to do this.");
             $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $iSurveyID));
         }
     }

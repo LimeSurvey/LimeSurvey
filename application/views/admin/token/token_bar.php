@@ -31,7 +31,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <li>
                     <a href="<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$surveyid"); ?>" >
                         <span class="icon-add"></span>
-                        <?php eT("Add new token entry"); ?>
+                        <?php eT("Add token entry"); ?>
                     </a>
                 </li>
 
@@ -47,13 +47,13 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <!-- Import tokens -->
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'import')): ?>
                     <li role="separator" class="divider"></li>
-                    <small><?php eT("Import tokens"); ?> : </small>
+                    <small><?php eT("Import tokens from:"); ?></small>
 
                     <!-- from CSV file -->
                     <li>
                        <a href="<?php echo $this->createUrl("admin/tokens/sa/import/surveyid/$surveyid") ?>" >
                            <span class="icon-importcsv"></span>
-                           <?php eT("from CSV file"); ?>
+                           <?php eT("CSV file"); ?>
                        </a>
                     </li>
 
@@ -61,7 +61,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                     <li>
                         <a href="<?php echo $this->createUrl("admin/tokens/sa/importldap/surveyid/$surveyid") ?>" >
                             <span class="icon-importldap"></span>
-                            <?php eT("from LDAP query"); ?>
+                            <?php eT("LDAP query"); ?>
                         </a>
                     </li>
                 <?php endif; ?>
@@ -72,7 +72,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$surveyid"); ?>' role="button">
                        <span class="icon-token_manage text-success"></span>
-                       <?php eT("Manage additional attribute fields"); ?>
+                       <?php eT("Manage additional attributes"); ?>
                     </a>
                 <?php endif; ?>
 
@@ -80,7 +80,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'export')): ?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/tokens/sa/exportdialog/surveyid/$surveyid"); ?>" role="button">
                        <span class="icon-exportcsv"></span>
-                       <?php eT("Export tokens to CSV file"); ?>
+                       <?php eT("Export tokens"); ?>
                     </a>
                 <?php endif; ?>
 
@@ -89,7 +89,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="icon-emailtemplates text-success"></span>
-                        <?php eT("Tokens email");?> <span class="caret"></span>
+                        <?php eT("Invitations & reminders");?> <span class="caret"></span>
                     </button>
 
                     <ul class="dropdown-menu">
@@ -136,7 +136,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 <!-- Generate tokens -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/tokens/sa/tokenify/surveyid/$surveyid"); ?>" role="button">
                     <span class="icon-do text-success"></span>
-                    <?php eT("Generate tokens"); ?>
+                    <?php eT("Generate access token"); ?>
                 </a>
                 <?php endif; ?>
             <?php endif;?>

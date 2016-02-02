@@ -39,10 +39,10 @@ class CheckIntegrity extends Survey_Common_Action
     {
         $aData = $this->_checkintegrity();
 
-           
+
         $aData['fullpagebar']['returnbutton']['url']='admin/index';
-        $aData['fullpagebar']['returnbutton']['text']=gT('return to admin panel');
-        
+        $aData['fullpagebar']['returnbutton']['text']=gT('Return to admin panel');
+
         $this->_renderWrappedTemplate('checkintegrity', 'check_view', $aData);
     }
 

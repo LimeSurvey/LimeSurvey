@@ -2,8 +2,8 @@
 	<h3><?php eT("Token summary"); ?></h3>
 
 	<div class="row">
-		<div class="col-lg-12 content-right">
-			<table class="items table"  >
+		<div class="col-lg-4 content-right">
+			<table class="items table table-striped"  >
 			    <tr>
 			        <th>
 			            <?php eT("Total records in this token table"); ?>
@@ -55,7 +55,7 @@
 			</table>
 		</div>
 	</div>
-				
+
 	<script type='text/javascript'>
 	    surveyid = '<?php echo $surveyid; ?>'
 	</script>

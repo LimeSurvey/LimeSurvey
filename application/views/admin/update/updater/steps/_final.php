@@ -20,7 +20,7 @@
   <br />
 
 	<a id="backToMainMenu" class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/authentication/sa/logout"); ?>" role="button" aria-disabled="false">
-		<?php eT('Please, click this button to logout '); ?>
+		<?php eT('Click this button to log out.'); ?>
 	</a>
 
 

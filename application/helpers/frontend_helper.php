@@ -263,7 +263,7 @@ function makeLanguageChanger($sSelectedLanguage)
         $sSelected=$sSelectedLanguage;
 
         $sHTMLCode= CHtml::beginForm(App()->createUrl('surveys/publiclist'),'get');
-        $sHTMLCode.=CHtml::label(gT("Choose another language"), 'lang',array('class'=>'hide label'));
+        $sHTMLCode.=CHtml::label(gT("Select your language"), 'lang',array('class'=>'hide label'));
         $sHTMLCode.= CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass));
         //$sHTMLCode.= CHtml::htmlButton(gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'jshide'));
         $sHTMLCode.="<button class='changelang jshide' value='changelang' id='changelangbtn' type='submit'>".gT("Change the language")."</button>";

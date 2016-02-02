@@ -31,7 +31,7 @@
     <thead>
         <tr>
             <th>
-                <?php eT('LimeSurvey Version'); ?>
+                <?php eT('LimeSurvey version'); ?>
             </th>
             <th>
                 <?php eT('Branch'); ?>
@@ -71,7 +71,7 @@
             <!-- security / regular -->
             <?php if($aUpdateVersion['security_update']):?>
             <td class="text-warning">
-                    <?php eT("Security Udpdate");?>
+                    <?php eT("Security update");?>
             </td>
             <?php else: ?>
             <td>
