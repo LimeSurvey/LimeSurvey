@@ -16,7 +16,7 @@
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </a>
                 <a role="button" data-toggle="collapse" href="#generaloptions" aria-expanded="true" aria-controls="generaloptions">
-                    <?php eT("General option");?>
+                    <?php eT("General options");?>
                 </a>
             </h4>
         </div>

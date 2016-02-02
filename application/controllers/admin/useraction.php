@@ -69,9 +69,9 @@ class UserAction extends Survey_Common_Action
     //    $aData['imageurl'] = IMAGE_BASE_URL;
         $aData['noofsurveyslist'] = $noofsurveyslist;
 
-        $aData['title_bar']['title'] = gT('User Control');
+        $aData['title_bar']['title'] = gT('User administration');
         $aData['fullpagebar']['returnbutton']['url'] = 'admin/survey/sa/index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('return to admin pannel');
+        $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin panel');
 
         $this->_renderWrappedTemplate('user', 'editusers', $aData);
     }
@@ -514,7 +514,7 @@ class UserAction extends Survey_Common_Action
 
         if ($oUser && (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','update') &&  Yii::app()->session['loginID'] != $iUserID) )
         {
-            // Only the original superadmin (UID 1) may create new superadmins
+            // Only the original superadmin (UID 1) may create superadmins
             if (Yii::app()->session['loginID']!=1)
             {
                 unset($aBasePermissions['superadmin']);

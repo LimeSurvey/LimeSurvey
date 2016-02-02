@@ -396,7 +396,7 @@ class labels extends Survey_Common_Action
         $answers = Yii::app()->getRequest()->getPost('answers');
         $code = Yii::app()->getRequest()->getPost('code');
         $aAssessmentValues = Yii::app()->getRequest()->getPost('assessmentvalues',array());
-        //Create new label set
+        //Create label set
         $language = "";
         foreach ($answers as $lang => $answer) {
             $language .= $lang." ";

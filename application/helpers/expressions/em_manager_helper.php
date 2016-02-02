@@ -688,7 +688,7 @@
                     // does exist, and OK to cache
                     return self::$instance;
             }
-            // only record duration if have to create new (or unserialize) an instance
+            // only record duration if have to create (or unserialize) an instance
             self::$instance->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
             return self::$instance;
         }
@@ -6525,7 +6525,7 @@
                     {
                         $tipsDatas = array(
                             'qid'   =>$qid,
-                            'vclass'=>$vclass,  
+                            'vclass'=>$vclass,
                             'vtip'  =>$vtip,
                         );
                         $stringToParse .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/tips', $tipsDatas, true);

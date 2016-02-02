@@ -65,7 +65,7 @@
 				<div class="panel-heading" role="tab" id="headingOne">
 					<h4 class="panel-title">
 					<a role="button" data-toggle="collapse" data-parent="#accordion" href="#generaloptions" aria-expanded="true" aria-controls="generaloptions">
-					<?php eT("General option");?>
+					<?php eT("General options");?>
 					</a>
 					</h4>
 				</div>

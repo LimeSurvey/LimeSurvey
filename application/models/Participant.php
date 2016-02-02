@@ -1276,7 +1276,7 @@ class Participant extends LSActiveRecord
         {
             $tokenattributefieldnames = array();
         }
-        /* Create new CPDB attributes */
+        /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated))
         {
             foreach ($aAttributesToBeCreated as $key => $value) //creating new central attribute

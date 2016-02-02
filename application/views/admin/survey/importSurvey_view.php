@@ -3,9 +3,9 @@
  * Render the result of the import survey action
  */
  ?>
- 
 
-<!-- Import Failed --> 
+
+<!-- Import Failed -->
 <?php if ($bFailed):?>
 
     <div class="jumbotron message-box message-box-error">
@@ -13,21 +13,21 @@
         <p class="lead danger">
             <?php eT("Error"); ?>
         </p>
-        
+
         <!-- error message -->
         <p>
             <?php echo $sErrorMessage; ?>
         </p>
-        
+
         <!-- buttons -->
         <p>
             <input type='submit' class="btn btn-default btn-large" value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin'); ?>', '_top')" />
         </p>
-    </div>    
+    </div>
 
 <!-- Import success but errors -->
 <?php elseif ( isset($aImportResults['error']) && $aImportResults['error']!=false ): ?>
-    
+
     <div class="jumbotron message-box message-box-error">
         <h2 class="text-success"> <?php eT("Success"); ?></h2>
         <p class="lead"><?php eT("File upload succeeded.");?> </p>
@@ -37,29 +37,29 @@
             <?php
             if(is_array($aImportResults['error']))
             {
-                foreach($aImportResults['error'] as $error) 
+                foreach($aImportResults['error'] as $error)
                     echo '<p>'.$error."<p/>";
-            } 
-            else 
+            }
+            else
             {
                 echo '<p>'.$aImportResults['error'].'</p>';
-            } 
+            }
             ?>
-            
+
             <!-- buttons -->
             <p>
                 <input type='submit' value='<?php eT("Main Admin Screen");?>' class="btn btn-large btn-default" onclick="window.open('<?php echo $this->createUrl('/admin');?>', '_top')" />
             </p>
-        
+
     </div>
 
-<!-- Success -->    
+<!-- Success -->
 <?php else:?>
     <div class="jumbotron message-box ">
         <h2 class="text-success"><?php eT("Success"); ?></h2>
-    
+
         <p class="lead"><?php echo $sSummaryHeader; ?></p>
-        
+
         <!-- Import result messages -->
         <p>
             <ul class="list-unstyled">
@@ -87,19 +87,19 @@
                     <?php }
                     if (isset($aImportResults['deniedcountls']) && $aImportResults['deniedcountls']>0)
                     {?>
-                    <li><?php eT("Not imported label sets");?>: <?php echo $aImportResults['deniedcountls'];?> <?php eT("(Label sets were not imported since you do not have the permission to create new label sets.)"); ?> </li>
+                    <li><?php eT("Not imported label sets");?>: <?php echo $aImportResults['deniedcountls'];?> <?php eT("(Label sets were not imported since you do not have the permission to create label sets.)"); ?> </li>
                     <?php }?>
                 <li><?php eT("Assessments");?>: <?php echo $aImportResults['assessments'];?></li>
                 <li><?php eT("Quotas");?>: <?php echo $aImportResults['quota'];?> (<?php echo $aImportResults['quotamembers']?> <?php eT("quota members");?> <?php eT("and");?> <?php echo $aImportResults['quotals']?> <?php eT("quota language settings"); ?></li>
             </ul>
-        </p>    
-            
+        </p>
+
         <!-- Response import summary -->
         <?php if (isset($aImportResults['responses'])): ?>
             <strong><?php eT("Response import summary"); ?></strong><br />
             <ul class="list-unstyled">
                 <li><?php eT("Responses");?>: <?php echo $aImportResults['responses'];?></li>
-            </ul>            
+            </ul>
         <?php endif;?>
 
         <!-- Warnings -->
@@ -121,10 +121,10 @@
         <?php elseif($action == 'copysurvey'): ?>
             <p class="text-info"><?php eT("Copy of survey is completed.");?></p>
         <?php endif; ?>
-        
-        <!-- Buttons -->                
+
+        <!-- Buttons -->
         <p>
-            <input type='submit' class="btn btn-default btn-large" value='<?php eT("Go to survey");?>' onclick="window.open('<?php echo $sLink; ?>', '_top')"><br /><br />            
-        </p>    
-    </div>    
-<?php endif;?>   
+            <input type='submit' class="btn btn-default btn-large" value='<?php eT("Go to survey");?>' onclick="window.open('<?php echo $sLink; ?>', '_top')"><br /><br />
+        </p>
+    </div>
+<?php endif;?>

@@ -497,11 +497,11 @@ class Survey_Common_Action extends CAction
             //Check if have a comfortUpdate key
             if(getGlobalSetting('emailsmtpdebug')!=null)
             {
-                $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('activated');
+                $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('Activated');
             }
             else
             {
-                $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('none');
+                $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('None');
             }
 
             $aData['dataForConfigMenu']['activetokens'] = $activetokens;

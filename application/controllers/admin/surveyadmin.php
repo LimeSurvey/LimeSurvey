@@ -364,7 +364,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $aData['surveybar']['buttons']['view']= true;
         $aData['surveybar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listsurveys");
-        $aData['surveybar']['returnbutton']['text'] = gT('return to survey list');
+        $aData['surveybar']['returnbutton']['text'] = gT('Return to survey list');
         $aData['sidemenu']["survey_menu"]=TRUE;
 
         // We get the last question visited by user for this survey
@@ -473,7 +473,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['display']['menu_bars']['listquestions'] = true;
         $aData['sidemenu']['listquestions'] = true;
         $aData['surveybar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listsurveys");
-        $aData['surveybar']['returnbutton']['text'] = gT('return to survey list');
+        $aData['surveybar']['returnbutton']['text'] = gT('Return to survey list');
         $aData['surveybar']['buttons']['newquestion']=true;
 
 
@@ -1167,7 +1167,7 @@ class SurveyAdmin extends Survey_Common_Action
                 }
                 elseif (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export'))
                 {
-                    $aData['sErrorMessage'] = gT("You don't have sufficient permissions.");
+                    $aData['sErrorMessage'] = gT("We are sorry but you don't have permissions to do this.");
                     $aData['bFailed'] = true;
                 }
                 else
@@ -1301,7 +1301,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $aData['organizebar']['savebuttonright'] = true;
         //$aData['organizebar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/view/", array('surveyid' => $iSurveyID));
-        //$aData['organizebar']['returnbutton']['text'] = gT('return to survey summary');
+        //$aData['organizebar']['returnbutton']['text'] = gT('Return to survey summary');
 
         foreach ($aGrouplist as $iGID => $aGroup)
         {
@@ -1581,7 +1581,7 @@ class SurveyAdmin extends Survey_Common_Action
         $ZIPimportAction = " onclick='if (validatefilename(this.form,\"" . gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'";
         if (!function_exists("zip_open"))
         {
-            $ZIPimportAction = " onclick='alert(\"" . gT("zip library not supported by PHP, Import ZIP Disabled", "js") . "\");'";
+            $ZIPimportAction = " onclick='alert(\"" . gT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") . "\");'";
         }
 
         $disabledIfNoResources = '';

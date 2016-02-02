@@ -23,7 +23,7 @@
                     <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>×</span></button>
                     <?php eT("Each question has its own graph type defined in its advanced settings.");?>
                     <br/>
-                    <?php eT("With chart type selector, you can force the use of graph type for all selected questions)");?>
+                    <?php eT("Using the chart type selector you can force the graph type for all selected questions.");?>
                 </div>
             </div>
 
@@ -34,13 +34,13 @@
 
                 <div class='col-sm-5'>
                     <select name="charttype" id='charttype' class="form-control">
-                        <option value="default" selected="selected"><?php eT('as defined in questions\'s advanced setting');?></option>
-                        <option value="0" ><?php eT('bar chart');?></option>
-                        <option value="1"><?php eT('pie chart');?></option>
-                        <option value="2"><?php eT('radar chart');?></option>
-                        <option value="3"><?php eT('line chart');?></option>
-                        <option value="4"><?php eT('polar chart');?></option>
-                        <option value="5"><?php eT('doughnut chart');?></option>
+                        <option value="default" selected="selected"><?php eT("As defined in question settings");?></option>
+                        <option value="0" ><?php eT('Bar chart');?></option>
+                        <option value="1"><?php eT('Pie chart');?></option>
+                        <option value="2"><?php eT('Radar chart');?></option>
+                        <option value="3"><?php eT('Line chart');?></option>
+                        <option value="4"><?php eT('Polar chart');?></option>
+                        <option value="5"><?php eT('Doughnut chart');?></option>
                     </select>
                 </div>
             </div>

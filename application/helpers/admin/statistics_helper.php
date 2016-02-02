@@ -277,7 +277,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             }
 
 
-            //create new 3D pie chart
+            //create 3D pie chart
             $DataSet = new pData;
             $DataSet->AddPoint($gdata,"Serie1");
             $DataSet->AddPoint($lblout,"Serie2");
@@ -2107,7 +2107,7 @@ class statistics_helper {
 
 
                         if ($itemcounter == 5) {
-                            // create new row "sum"
+                            // new row "sum"
                             //calculate sum of items 1-5
                             $sumitems = $grawdata[0]
                             + $grawdata[1]
@@ -3221,7 +3221,7 @@ class statistics_helper {
                     }
 
                     if ($itemcounter == 5) {
-                        // create new row "sum"
+                        // new row "sum"
                         //calculate sum of items 1-5
                         $sumitems = $grawdata[0]
                         + $grawdata[1]

@@ -49,7 +49,7 @@
         case 'not_updatable':
             $sTile = gT('Error!');
             $sHeader = gT('No build version found!');
-            $sMessage = gT("You disabled comfortUpdate in your configuration file.");
+            $sMessage = gT("You disabled ComfortUpdate in your configuration file.");
             break;
 
         default :

@@ -236,6 +236,21 @@ jQuery UI replacements
 
 
 /* for jQgrid */
+.ui-icon-pencil:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f040";
+}
+
+.ui-icon-cancel:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f1f8";
+}
+
+.ui-icon-disk:before {
+    font: normal normal normal 14px/1 FontAwesome;
+    content: "\f0c7";
+}
+
 .ui-icon-plus, .ui-addtosurvey-icon {
     font-family: 'icomoon';
     speak: none;

@@ -409,7 +409,7 @@ class database extends Survey_Common_Action
             // Abort if survey is active
             if ($survey->active !== 'N')
             {
-                Yii::app()->setFlashMessage(gT("Can't insert new question when the survey is active"),'error');
+                Yii::app()->setFlashMessage(gT("You can't insert a new question when the survey is active."),'error');
                 $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/" . $survey->sid), "refresh");
             }
 

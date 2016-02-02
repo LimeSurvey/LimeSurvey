@@ -7,7 +7,7 @@
 
 	<!-- the ajax loader -->
 	<div id="ajaxContainerLoading" >
-		<p><?php eT('PLease wait, loading data...');?></p>
+		<p><?php eT('Please wait, loading data...');?></p>
         <div class="preloader loading">
             <span class="slice"></span>
             <span class="slice"></span>

@@ -90,7 +90,7 @@
                 <a class="btn btn-default pull-right" href="<?php echo $this->createUrl('admin/index'); ?>" role="button" style="display: block">
                     <span class="glyphicon glyphicon-backward"></span>
                     &nbsp;&nbsp;
-                    <?php eT('return to admin pannel'); ?>
+                    <?php eT('Return to admin panel'); ?>
                 </a>
 
                 <!-- labelsetchanger -->

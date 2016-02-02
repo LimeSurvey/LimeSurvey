@@ -25,13 +25,13 @@
 
                     <!-- search input -->
                     <div class="form-group">
-                        <?php echo $form->label($model, 'search: ', array('class'=>'control-label')); ?>
+                        <?php echo $form->label($model, 'search', array('label'=>gT('Search:'),'class'=>'control-label')); ?>
                         <?php echo $form->textField($model, 'searched_value', array('class'=>'form-control')); ?>
                     </div>
 
                     <!-- select state -->
                     <div class="form-group">
-                        <?php echo $form->label($model, 'Active:', array('class'=>'control-label')); ?>
+                        <?php echo $form->label($model, 'active', array('label'=>gT('Active:'),'class'=>'control-label')); ?>
                             <select name="active" class="form-control">
                                 <option value="" <?php if( $model->active!="Y" && $model->active!="N" ){echo "selected";}?>><?php eT('(Any state)');?></option>
                                 <option value="Y" <?php if( $model->active=="Y"){echo "selected";}?>><?php eT('Yes');?></option>
@@ -64,67 +64,78 @@
 
                     'columns' => array(
                         array(
-                            'name' => 'Survey id',
+                            'header' => gT('Survey ID'),
+                            'name' => 'survey_id',
                             'value'=>'$data->sid',
                             'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
                         ),
 
                         array(
-                            'name' => 'Title',
+                            'header' => gT('Title'),
+                            'name' => 'title',
                             'value'=>'$data->defaultlanguage->surveyls_title',
                             'htmlOptions' => array('class' => 'col-md-1'),
                         ),
 
                         array(
-                            'name' => 'Creation date',
+                            'header' => gT('Created'),
+                            'name' => 'created',
                             'value'=>'$data->creationdate',
                             'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
                         ),
 
                         array(
-                            'name' => 'Owner',
+                            'header' => gT('Owner'),
+                            'name' => 'owner',
                             'value'=>'$data->owner->users_name',
                             'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
                         ),
 
                         array(
-                            'name' => 'Anonymized responses',
+                            'header' => gT('Anonymized responses'),
+                            'name' => 'anonymized_responses',
                             'value'=>'$data->anonymizedResponses',
                             'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
                         ),
 
                         array(
-                            'name' => 'Active',
+                            'header' => gT('Active'),
+                            'name' => 'active',
                             'value'=>'$data->activeWord',
                             'htmlOptions' => array('class' => 'col-md-1  hidden-xs'),
                         ),
 
                         array(
-                            'name' => 'Partial',
+                            'header' => gT('Partial'),
+                            'name' => 'partial',
                             'value'=>'$data->countPartialAnswers',
                             'htmlOptions' => array('class' => 'col-md-1'),
                         ),
 
                         array(
-                            'name' => 'Full',
+                            'header' => gT('Full'),
+                            'name' => 'full',
                             'value'=>'$data->countFullAnswers',
                             'htmlOptions' => array('class' => 'col-md-1'),
                         ),
 
                         array(
-                            'name' => 'Total',
+                            'header' => gT('Total'),
+                            'name' => 'total',
                             'value'=>'$data->countTotalAnswers',
                             'htmlOptions' => array('class' => 'col-md-1'),
                         ),
 
                         array(
-                            'name' => 'Tokens available',
+                            'header' => gT('Uses tokens'),
+                            'name' => 'uses_tokens',
                             'value'=>'$data->hasTokens',
                             'htmlOptions' => array('class' => 'col-md-1'),
                         ),
 
                         array(
                             'name' => '',
+                            'name' => 'actions',
                             'value'=>'$data->buttons',
                             'type'=>'raw',
                             'htmlOptions' => array('class' => 'col-md-1'),

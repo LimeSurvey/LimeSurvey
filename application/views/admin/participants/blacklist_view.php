@@ -61,7 +61,7 @@
         }
         else
         {
-            echo "<div class='messagebox ui-corner-all'>" . gT("You don't have sufficient permissions.") . "</div>";
+            echo "<div class='messagebox ui-corner-all'>" . gT("We are sorry but you don't have permissions to do this.") . "</div>";
         }
         ?>
     </div>
@@ -69,7 +69,7 @@
 
         </div>
     </div>
-    
-</div>    
+
+</div>
 
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * Import tokens from CSV file
- * 
+ *
  */
 ?>
 
@@ -19,7 +19,7 @@
                         <?php echo CHtml::fileField('the_file','',array('required'=>'required','accept'=>'.csv')); ?>
                     </div>
                 </div>
-    
+
                 <!-- "Character set of the file -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for='csvcharset'><?php eT("Character set of the file:"); ?></label>
@@ -27,7 +27,7 @@
                         <?php echo CHtml::dropDownList('csvcharset', 'auto', $aEncodings, array('size' => '1', 'class'=>'form-control')); ?>
                     </div>
                 </div>
-                
+
                 <!-- Separator used -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for='separator'><?php eT("Separator used:"); ?> </label>
@@ -38,7 +38,7 @@
                         ?>
                     </div>
                 </div>
-                
+
                 <!-- Filter blank email addresses -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for='filterblankemail'><?php eT("Filter blank email addresses:"); ?></label>
@@ -46,7 +46,7 @@
                         <?php echo CHtml::checkBox('filterblankemail', true); ?>
                     </div>
                 </div>
-                
+
                 <!-- Allow invalid email addresses -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for='allowinvalidemail'><?php eT("Allow invalid email addresses:"); ?></label>
@@ -57,7 +57,7 @@
 
                 <!-- show invalid attributes -->
                 <div class="form-group">
-                            <label class="col-sm-2 control-label" for='showwarningtoken'><?php eT("Display warning attributes:"); ?></label>
+                            <label class="col-sm-2 control-label" for='showwarningtoken'><?php eT("Display attribute warnings:"); ?></label>
                     <div class="col-sm-10">
                            <?php echo CHtml::checkBox('showwarningtoken'); ?>
                     </div>
@@ -70,7 +70,7 @@
                         <?php echo CHtml::checkBox('filterduplicatetoken', true); ?>
                     </div>
                 </div>
-                
+
                 <!-- Duplicates are determined by -->
                 <div class="form-group" id='lifilterduplicatefields'>
                     <label class="col-sm-2 control-label" for='filterduplicatefields'><?php eT("Duplicates are determined by:"); ?></label>
@@ -80,8 +80,8 @@
                         ?>
                     </div>
                 </div>
-    
-                <!-- Buttons -->            
+
+                <!-- Buttons -->
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <?php echo CHtml::htmlButton(gT("Upload"),array('type'=>'submit','name'=>'upload','value'=>'import', 'class'=>'btn btn-default')); ?>
@@ -99,5 +99,5 @@
             </div>
         </div>
     </div>
-</div>    
+</div>
 

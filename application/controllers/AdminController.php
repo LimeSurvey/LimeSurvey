@@ -324,7 +324,7 @@ class AdminController extends LSYii_Controller
         }
         else
         {
-            define('PRESENTATION', gT('This is the LimeSurvey admin interface. From here, you can start to build your survey.'));
+            define('PRESENTATION', gT('This is the LimeSurvey admin interface. Start to build your survey from here.'));
         }
 
         if ($return)
