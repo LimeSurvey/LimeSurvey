@@ -2070,6 +2070,34 @@ class ExpressionManager {
                                         $result = NAN;
                                     }
                                     break;
+                                case 'rand':
+
+                                    // Get unique hash for this rand usage, from question id, group id, params and tokens
+                                    // TODO: Add user id too?
+                                    $flattened_tokens = implode(flattenrec($this->RDP_tokens));
+                                    $randHash = hash('md5', $this->sid . $this->questionSeq . $this->groupSeq . $params[0] . $params[1] . $flattened_tokens);
+
+                                    // Create cache if it's not there
+                                    if (!isset($_SESSION['randResultCache']))
+                                    {
+                                        $_SESSION['randResultCache'] = array();
+                                    }
+
+                                    // Return cache result if it's there; otherwise, store and return
+                                    if (isset($_SESSION['randResultCache'][$randHash]))
+                                    {
+                                        $result = $_SESSION['randResultCache'][$randHash];
+                                    }
+                                    else
+                                    {
+                                        $result = $funcName($params[0], $params[1]);
+                                        $_SESSION['randResultCache'][$randHash] = $result;
+                                    }
+
+                                    // Cache is cleared in function killSurveySession
+
+                                    break;
+
                                 default:
                                     $result = $funcName($params[0], $params[1]);
                                      break;
@@ -2925,4 +2953,11 @@ function exprmgr_unique($args)
     }
     return true;
 }
+
+function flattenrec(array $array) {
+    $return = array();
+    array_walk_recursive($array, function($a) use (&$return) { $return[] = $a; });
+    return $return;
+}
+
 ?>

@@ -2187,6 +2187,7 @@ function killSurveySession($iSurveyID)
 {
     // Unset the session
     unset($_SESSION['survey_'.$iSurveyID]);
+    unset($_SESSION['randResultCache']);
     // Force EM to refresh
     LimeExpressionManager::SetDirtyFlag();
 }

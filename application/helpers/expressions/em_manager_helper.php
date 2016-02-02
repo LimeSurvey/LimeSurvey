@@ -4749,7 +4749,6 @@
         /**
         * Should be first function called on each page - sets/clears internally needed variables
         * @param <type> $allOnOnePage - true if StartProcessingGroup will be called multiple times on this page - does some optimizatinos
-        * @param <type> $rooturl - if set, this tells LEM to enable hyperlinking of syntax highlighting to ease editing of questions
         * @param <boolean> $initializeVars - if true, initializes the replacement variables to enable syntax highlighting on admin pages
         */
         static function StartProcessingPage($allOnOnePage=false,$initializeVars=false)
@@ -5552,6 +5551,7 @@
                     return $LEM->lastMoveResult;
                     break;
                 case 'group':
+
                     // First validate the current group
                     $LEM->StartProcessingPage();
                     if ($processPOST)
@@ -6798,6 +6798,7 @@
             'valid' => $qvalid,
             );
             $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $qrel;
+
             return $qStatus;
         }
 
