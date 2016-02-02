@@ -26,7 +26,7 @@
                         )); ?>
                         <div class="form-group">
                             <?php echo $form->label($model, 'name', array('class'=>'col-sm-2 control-label text-right col-sm-offset-6')); ?>
-                            <div class="col-sm-2 text-right">
+                            <div class="col-sm-1 text-right">
                                 <?php echo $form->textField($model, 'group_name', array('class'=>'form-control')); ?>
                             </div>
                             <div class="col-sm-2">
@@ -61,28 +61,32 @@
 
                             // Group Id
                             array(
-                                'name'=>'Group id',
+                                'header'=>gT('Group ID'),
+                                'name'=>'group_id',
                                 'value'=>'$data->gid',
                                 'htmlOptions' => array('class' => 'col-md-1'),
                             ),
 
                             // Group Order
                             array(
-                                'name'=>'Group Order',
+                                'header'=>gT('Group order'),
+                                'name'=>'group_order',
                                 'value'=>'$data->group_order',
                                 'htmlOptions' => array('class' => 'col-md-1'),
                             ),
 
                             // Group Name
                             array(
-                                'name'=>'Group Name',
+                                'header'=>gT('Group name'),
+                                'name'=>'group_name',
                                 'value'=>'$data->group_name',
                                 'htmlOptions' => array('class' => 'col-md-2'),
                             ),
 
                             // Description
                             array(
-                                'name'=>'Description',
+                                'header'=>gT('Description'),
+                                'name'=>'description',
                                 'type'=>'raw',
                                 'value'=>'$data->description',
                                 'htmlOptions' => array('class' => 'col-md-2'),
@@ -90,7 +94,8 @@
 
                             // Action buttons (defined in model)
                             array(
-                                'name'=>'',
+                                'header'=>'',
+                                'name'=>'actions',
                                 'type'=>'raw',
                                 'value'=>'$data->buttons',
                                 'htmlOptions' => array('class' => 'col-md-2 text-right'),

@@ -27,13 +27,13 @@
 
                             <!-- search input -->
                             <div class="form-group">
-                                <?php echo $form->label($model, 'search: ', array('class'=>'control-label' )); ?>
+                                <?php echo $form->label($model, 'search', array('label'=>gt('Search:'),'class'=>'control-label' )); ?>
                                 <?php echo $form->textField($model, 'title', array('class'=>'form-control')); ?>
                             </div>
 
                             <!-- select group -->
                             <div class="form-group">
-                                <?php echo $form->label($model, 'Group:', array('class'=>'control-label')); ?>
+                                <?php echo $form->label($model, 'group', array('label'=>gt('Group:'),'class'=>'control-label')); ?>
                                     <select name="group_name" class="form-control">
                                         <option value=""><?php eT('(Any group)');?></option>
                                         <?php foreach($model->AllGroups as $group): ?>
@@ -72,33 +72,39 @@
 
                                 'columns' => array(
                                     array(
-                                        'name' => 'Question id',
+                                        'header' => gt('Question ID'),
+                                        'name' => 'question_id',
                                         'value'=>'$data->qid',
                                         'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
                                     ),
                                     array(
-                                        'name' => 'Question order',
+                                        'header' => gt('Question order'),
+                                        'name' => 'question_order',
                                         'value'=>'$data->question_order',
                                         'htmlOptions' => array('class' => 'col-md-2 hidden-xs'),
                                     ),
                                     array(
-                                        'name' => 'Title',
+                                        'header' => gt('Title'),
+                                        'name' => 'title',
                                         'value'=>'$data->title',
                                         'htmlOptions' => array('class' => 'col-xs-1'),
                                     ),
                                     array(
-                                        'name' => 'Question',
+                                        'header' => gt('Question'),
+                                        'name' => 'question',
                                         'value'=>'strip_tags($data->question)',
                                         'htmlOptions' => array('class' => 'col-xs-1 '),
                                     ),
                                     array(
-                                        'name' => 'Group',
+                                        'header' => gt('Group'),
+                                        'name' => 'group',
                                         'value'=>'$data->groups->group_name',
                                         'htmlOptions' => array('class' => 'col-md-2 '),
                                     ),
 
                                     array(
-                                        'name'=>'',
+                                        'header'=>'',
+                                        'name'=>'actions',
                                         'type'=>'raw',
                                         'value'=>'$data->buttons',
                                         'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right'),
