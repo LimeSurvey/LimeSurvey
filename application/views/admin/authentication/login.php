@@ -12,8 +12,8 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
-                          <img alt="logo" id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL;?>" />                                  
-                             <p>Dashboard</p>
+                          <img alt="logo" id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL;?>" />
+                             <p><?php eT("Administration");?></p>
                         </div>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                 <!-- Action Name -->
                 <div class="row login-title login-content">
                       <div class="col-lg-12">
-                       <h3><?php eT("Log In");?></h3>
+                       <h3><?php eT("Log in");?></h3>
                     </div>
                 </div>
 

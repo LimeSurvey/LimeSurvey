@@ -340,7 +340,7 @@ class Usergroups extends Survey_Common_Action
         if ($ugid == false)
         {
             $aData['usergroupbar']['returnbutton']['url']='admin/index';
-            $aData['usergroupbar']['returnbutton']['text']=gT('return to admin panel');
+            $aData['usergroupbar']['returnbutton']['text']=gT('Return to admin panel');
         }
         else
         {
@@ -372,7 +372,7 @@ class Usergroups extends Survey_Common_Action
         {
             $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid));
         }
-        else    
+        else
         {
             $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid, 'owner_id' => Yii::app()->session['loginID']));
         }

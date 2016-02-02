@@ -92,7 +92,7 @@
                                             <span class="glyphicon glyphicon-chevron-left"></span>
                                         </a>
                                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            <?php eT("General option");?>
+                                            <?php eT("General options");?>
                                         </a>
                                     </h4>
                                 </div>
@@ -103,7 +103,7 @@
                                             <div  class="form-group">
                                                 <label class="col-sm-4 control-label" for="question_type_button">
                                                     <?php
-                                                        eT("Question Type:");
+                                                        eT("Question type:");
                                                     ?>
                                                 </label>
 

@@ -44,7 +44,7 @@
                 $this->url = '';
                 $this->title = gT('Error');
                 $this->img = '';
-                $this->description = gT('Unknown box id!');
+                $this->description = gT('Unknown box ID!');
             }
         }
 
