@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-02-02 13:54:42+00:00\n"
+"POT-Creation-Date: 2016-02-02 14:27:58+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1007,7 +1007,11 @@ msgid "You do not have sufficient rights to access this page."
 msgstr ""
 
 #: application/controllers/admin/checkintegrity.php:44
+#: application/controllers/admin/useraction.php:74
 #: application/controllers/admin/usergroups.php:343
+#: application/views/admin/labels/labelsetsbar_view.php:93
+#: application/views/admin/participants/participantsPanel_view.php:86
+#: application/views/admin/templates/templateeditorbar_view.php:211
 msgid "Return to admin panel"
 msgstr ""
 
@@ -2273,6 +2277,7 @@ msgid "Next choice"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:879
+#: application/core/Survey_Common_Action.php:504
 #: application/core/Survey_Common_Action.php:845
 #: application/helpers/common_helper.php:303
 #: application/helpers/common_helper.php:390
@@ -3375,7 +3380,8 @@ msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:367
 #: application/controllers/admin/surveyadmin.php:476
-msgid "return to survey list"
+#: application/views/admin/super/sidemenu.php:165
+msgid "Return to survey list"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:513
@@ -4438,7 +4444,7 @@ msgid "A token table has been created for this survey and the old tokens were im
 msgstr ""
 
 #: application/controllers/admin/tokens.php:2737
-msgid "return to survey summary"
+msgid "Return to survey summary"
 msgstr ""
 
 #: application/controllers/admin/translate.php:76
@@ -4574,14 +4580,7 @@ msgid "Question code / ID"
 msgstr ""
 
 #: application/controllers/admin/useraction.php:72
-msgid "User Control"
-msgstr ""
-
-#: application/controllers/admin/useraction.php:74
-#: application/views/admin/labels/labelsetsbar_view.php:93
-#: application/views/admin/participants/participantsPanel_view.php:86
-#: application/views/admin/templates/templateeditorbar_view.php:211
-msgid "return to admin pannel"
+msgid "User administration"
 msgstr ""
 
 #: application/controllers/admin/useraction.php:94
@@ -4905,12 +4904,7 @@ msgid "No permission"
 msgstr ""
 
 #: application/core/Survey_Common_Action.php:500
-msgid "activated"
-msgstr ""
-
-#: application/core/Survey_Common_Action.php:504
-#: application/views/admin/token/managetokenattributes.php:135
-msgid "none"
+msgid "Activated"
 msgstr ""
 
 #: application/core/Survey_Common_Action.php:1002
@@ -7324,15 +7318,15 @@ msgid "Thousands separator"
 msgstr ""
 
 #: application/helpers/common_helper.php:3888
-msgid "Buttons"
+msgid "Button group"
 msgstr ""
 
 #: application/helpers/common_helper.php:3889
-msgid "Radio"
+msgid "Radio list"
 msgstr ""
 
 #: application/helpers/common_helper.php:3891
-msgid "Use buttons or radio list"
+msgid "Use button group or radio list"
 msgstr ""
 
 #: application/helpers/common_helper.php:3892
@@ -13382,10 +13376,6 @@ msgstr ""
 msgid "Token management"
 msgstr ""
 
-#: application/views/admin/super/sidemenu.php:165
-msgid "Return to survey list"
-msgstr ""
-
 #: application/views/admin/super/welcome.php:10
 msgid "Create survey"
 msgstr ""
@@ -15861,6 +15851,10 @@ msgstr ""
 msgid "Delete this attribute:"
 msgstr ""
 
+#: application/views/admin/token/managetokenattributes.php:135
+msgid "none"
+msgstr ""
+
 #: application/views/admin/token/remind.php:8
 #: application/views/admin/token/token_bar.php:110
 msgid "Send email reminder"
@@ -17084,11 +17078,11 @@ msgid "Restrict search place to map extent"
 msgstr ""
 
 #: application/views/survey/system/LanguageChanger/LanguageChanger.php:13
-msgid "Select a language"
+msgid "Select language"
 msgstr ""
 
 #: application/views/survey/system/LanguageChanger/LanguageChanger.php:16
-msgid "Select a language:"
+msgid "Select language:"
 msgstr ""
 
 #: application/views/surveys/publicSurveyList.php:18
