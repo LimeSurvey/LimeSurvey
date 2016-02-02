@@ -91,6 +91,18 @@ $(document).ready(function() {
 
     var lastSel,lastSel2;
 
+    /**
+     * Callback to format action cell, with edit buttons
+     *
+     * @param cellvalue
+     * @param options
+     * @param rowObject
+     * @return string
+     */
+    var actionsFormatter = function (cellvalue, options, rowObject) {
+        return '<span data-toggle="tooltip" data-placement="bottom" title="' + sEditAttributeValueMsg + '" class="ui-pg-button icon-edit" onclick="jQuery.fn.fmatter.rowactions.call(this,\'edit\');"></span>';
+    }
+
     /* The main jqGrid, displaying Participants */
     jQuery("#displayparticipants").jqGrid({
 
@@ -210,7 +222,7 @@ $(document).ready(function() {
                 editable: true,
                 loadonce : true,
                 colNames: [actionsColTxt,participantIdColTxt,attributeTypeColTxt,attributeIdColTxt,attributeNameColTxt,attributeValueColTxt,attributePosValColTxt],
-                colModel: [ { name:'act',index:'act',width:65,align:'center',search: false,sortable:false, formatter:'actions',
+                colModel: [ { name:'act',index:'act',width:65,align:'center',search: false,sortable:false, formatter: actionsFormatter,
                     formatoptions : { keys:true,onEdit:function(id){
                         var iRow = $('#' + $.jgrid.jqID(id))[0].rowIndex;
                         editModifier(id,iRow, method='edit');
