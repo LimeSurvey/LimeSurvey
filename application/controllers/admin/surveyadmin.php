@@ -364,7 +364,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $aData['surveybar']['buttons']['view']= true;
         $aData['surveybar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listsurveys");
-        $aData['surveybar']['returnbutton']['text'] = gT('return to survey list');
+        $aData['surveybar']['returnbutton']['text'] = gT('Return to survey list');
         $aData['sidemenu']["survey_menu"]=TRUE;
 
         // We get the last question visited by user for this survey
@@ -473,7 +473,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['display']['menu_bars']['listquestions'] = true;
         $aData['sidemenu']['listquestions'] = true;
         $aData['surveybar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listsurveys");
-        $aData['surveybar']['returnbutton']['text'] = gT('return to survey list');
+        $aData['surveybar']['returnbutton']['text'] = gT('Return to survey list');
         $aData['surveybar']['buttons']['newquestion']=true;
 
 
@@ -1301,7 +1301,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $aData['organizebar']['savebuttonright'] = true;
         //$aData['organizebar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/view/", array('surveyid' => $iSurveyID));
-        //$aData['organizebar']['returnbutton']['text'] = gT('return to survey summary');
+        //$aData['organizebar']['returnbutton']['text'] = gT('Return to survey summary');
 
         foreach ($aGrouplist as $iGID => $aGroup)
         {

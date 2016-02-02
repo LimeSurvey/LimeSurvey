@@ -69,9 +69,9 @@ class UserAction extends Survey_Common_Action
     //    $aData['imageurl'] = IMAGE_BASE_URL;
         $aData['noofsurveyslist'] = $noofsurveyslist;
 
-        $aData['title_bar']['title'] = gT('User Control');
+        $aData['title_bar']['title'] = gT('User administration');
         $aData['fullpagebar']['returnbutton']['url'] = 'admin/survey/sa/index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('return to admin pannel');
+        $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin panel');
 
         $this->_renderWrappedTemplate('user', 'editusers', $aData);
     }

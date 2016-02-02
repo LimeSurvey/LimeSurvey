@@ -2734,7 +2734,7 @@ class tokens extends Survey_Common_Action
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
         $aData['token_bar']['savebutton']['form'] = true;
         $aData['token_bar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/view/", array('surveyid'=>$iSurveyId));
-        $aData['token_bar']['returnbutton']['text'] = gT('return to survey summary');
+        $aData['token_bar']['returnbutton']['text'] = gT('Return to survey summary');
         $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
         }
         Yii::app()->end();

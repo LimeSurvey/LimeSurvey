@@ -3885,10 +3885,10 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Display'),
         'sortorder'=>90,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('Buttons'),
-        1=>gT('Radio')),
+        'options'=>array(0=>gT('Button group'),
+        1=>gT('Radio list')),
         'default'=>0,
-        "help"=>gT('Use buttons or radio list'),
+        "help"=>gT('Use button group or radio list'),
         "caption"=>gT('Display type'));
 
     }
