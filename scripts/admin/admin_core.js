@@ -71,9 +71,15 @@ $(document).ready(function(){
 
     /* Switch format group */
     if ($('#switchchangeformat').length>0){
-        $('#switchchangeformat').on('switchChange.bootstrapSwitch', function(event, state) {
+        $('#switchchangeformat button').on('click', function(event, state) {
             //alert('ok');
-            $url = $('#switch-url').attr('data-url');
+            $('#switchchangeformat button.active').removeClass('active');
+            $value = $(this).data('value');
+            $url = $('#switch-url').attr('data-url')+'/format/'+$value;
+
+            console.log('required format: '+$value);
+            console.log('format url: '+$url);
+
             $.ajax({
                 url : $url,
                 type : 'GET',

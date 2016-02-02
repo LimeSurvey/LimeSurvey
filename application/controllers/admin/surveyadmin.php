@@ -1265,14 +1265,17 @@ class SurveyAdmin extends Survey_Common_Action
      * Called via ajax request from survey summary quick action "Show questions group by group"
      *
      */
-    public function changeFormat($iSurveyID)
+    public function changeFormat($iSurveyID, $format)
     {
         if ( Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update') )
         {
-            $survey = Survey::model()->findByPk($iSurveyID);
-            $survey->format = ($survey->format == 'G')? 'S' : 'G';
-            $survey->save();
-            echo $survey->format;
+            if(in_array($format, array('S','G','A')))
+            {
+                $survey = Survey::model()->findByPk($iSurveyID);
+                $survey->format = $format;
+                $survey->save();
+                echo $survey->format;
+            }
         }
     }
 
