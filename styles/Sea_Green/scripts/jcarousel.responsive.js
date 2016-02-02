@@ -4,10 +4,9 @@
 
         function selectTemplate($that) {
                 url = $that.data('url');
-                selected = $that.data('selectedtext');
-
+                $selected = $that.data('selectedtext');
                 $lastSelected = $('.item .disabled');
-                //alert($lastSelected.data('unselectedtext'));
+                $unselectedtext = $lastSelected.data('unselectedtext');
 
                 $.ajax({
                     url : url,
@@ -18,8 +17,8 @@
                     success : function(html, statut){
                         $lastSelected.removeClass("disabled").removeClass("btn-success");
                         $that.addClass("disabled").addClass("btn-success");
-                        $that.empty().append(selected);
-                        $lastSelected.empty().append($lastSelected.data('unselectedtext'));
+                        $that.empty().append($selected);
+                        $lastSelected.empty().append($unselectedtext);
                     },
                     error :  function(html, statut){
                         alert('error');
@@ -31,10 +30,8 @@
             $bigPicture = $($(this).data('big'));
             $('#carrousel-container .item.active').removeClass('active').addClass('inactive').hide();
             $bigPicture.show().addClass('active');
-
             $('.jcarousel li').removeClass('active');
             $(this).addClass('active');
-
         });
 
 
