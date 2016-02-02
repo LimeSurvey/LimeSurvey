@@ -23,7 +23,7 @@
                     <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>×</span></button>
                     <?php eT("Each question has its own graph type defined in its advanced settings.");?>
                     <br/>
-                    <?php eT("With chart type selector, you can force the use of graph type for all selected questions)");?>
+                    <?php eT("Using the chart type selector you can force the graph type for all selected questions.");?>
                 </div>
             </div>
 

@@ -42,7 +42,7 @@
                         <?php eT("Export");?>
                     </a>
                 <?php else:?>
-                    <span  title="<?php eT('no participant');?>" data-toggle="tooltip" data-placement="bottom" style="display: inline-block">
+                    <span  title="<?php eT('No participants');?>" data-toggle="tooltip" data-placement="bottom" style="display: inline-block">
                         <a id="export" class="btn btn-default disabled" role="button">
                             <span class="icon-exportcsv text-success"></span>
                             <?php eT("Export");?>
@@ -91,7 +91,7 @@
 
 
 <div id='exportcsvallprocessing' title='exportcsvall' style='display:none'>
-    <p><?php eT('PLease wait, loading data...');?></p>
+    <p><?php eT('Please wait, loading data...');?></p>
     <div class="preloader loading">
         <span class="slice"></span>
         <span class="slice"></span>

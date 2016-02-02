@@ -78,7 +78,7 @@
                         (Permission::model()->hasGlobalPermission('users','update') &&
                         $usr['parent_id'] == Yii::app()->session['loginID'])) && $usr['uid']!=1) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/setuserpermissions'), 'post', array( 'class'=>'pull-left'));?>
-                            <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo eT("Set global persmissions for this user"); ?>" >
+                            <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo eT("Set global permissions for this user"); ?>" >
                                 <button type='submit' class="btn btn-default btn-xs"><span class="icon-security text-success"></span></button> <?php // eT("Set global permissions for this user");?>
                                 <input type='hidden' name='action' value='setuserpermissions' />
                                 <input type='hidden' name='user' value='<?php echo htmlspecialchars($usr['user']);?>' />

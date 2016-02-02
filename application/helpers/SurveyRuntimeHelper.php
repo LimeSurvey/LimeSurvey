@@ -79,7 +79,7 @@ class SurveyRuntimeHelper {
         $html .=  CHtml::link(gT("Question index").'&nbsp<span class="caret"></span>', array('#'), array('class'=>'dropdown-toggle',  'data-toggle'=>"dropdown", 'role'=>"button", 'aria-haspopup'=>"true", 'aria-expanded'=>"false"));
         $html .=  CHtml::openTag('ul', array('class'=>'dropdown-menu'));
         $html .=  CHtml::openTag('li');
-        $html .=  CHtml::link(gT("Question by question not yet supported, use incremental index."), array('#'));
+        $html .=  CHtml::link(gT("Question by question mode not yet supported."), array('#'));
         $html .= CHtml::closeTag('li');
         $html .= CHtml::closeTag('ul');
         $html .= CHtml::closeTag('li');
