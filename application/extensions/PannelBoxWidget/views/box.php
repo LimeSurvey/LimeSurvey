@@ -8,7 +8,7 @@
             <span class="icon-<?php echo $ico;?>" style="font-size: 4em">
             </span>
         </a><br/><br/>
-        <a href="<?php echo $url; ?>"><?php echo $description;?></a>
+        <a href="<?php echo $url; ?>"><?php eT($description);?></a>
     </div>
     </div>
 </div>
