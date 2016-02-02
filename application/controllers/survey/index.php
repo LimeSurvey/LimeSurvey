@@ -36,6 +36,8 @@ class index extends CAction {
         $param = $this->_getParameters(func_get_args(), $_POST);
         $surveyid = $param['sid'];
 
+        App()->getClientScript()->registerCssFile( Yii::app()->getBaseUrl(true).'/styles-public/font-awesome-43.min.css' );
+
         global $oTemplate;
         $oTemplate = Template::model()->getTemplateConfiguration('',$surveyid);
         $this->oTemplate = $oTemplate;
