@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-02-02 11:04:44+00:00\n"
+"POT-Creation-Date: 2016-02-02 11:17:41+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2555,7 +2555,9 @@ msgid "Uploaded label set file needs to have an .lsl extension."
 msgstr ""
 
 #: application/controllers/admin/labels.php:187
-msgid "Create new label set"
+#: application/views/admin/survey/Question/answerOptions_view.php:462
+#: application/views/admin/survey/Question/subQuestion_view.php:210
+msgid "New label set"
 msgstr ""
 
 #: application/controllers/admin/labels.php:190
@@ -3035,6 +3037,7 @@ msgstr ""
 #: application/controllers/admin/questions.php:59
 #: application/controllers/admin/responses.php:72
 #: application/controllers/admin/surveyadmin.php:1165
+#: application/core/Survey_Common_Action.php:70
 #: application/core/Survey_Common_Action.php:648
 #: application/core/Survey_Common_Action.php:925
 #: application/models/Survey.php:555
@@ -4894,10 +4897,6 @@ msgstr ""
 
 #: application/core/LSYii_EmailIDNAValidator.php:41
 msgid "Invalid email address."
-msgstr ""
-
-#: application/core/Survey_Common_Action.php:70
-msgid "Invalid survey id"
 msgstr ""
 
 #: application/core/Survey_Common_Action.php:75
@@ -12317,7 +12316,7 @@ msgid "Add participants to a survey"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:111
-msgid "Create new participant"
+msgid "Create participant"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:112
@@ -13605,11 +13604,6 @@ msgstr ""
 msgid "Save as label set:"
 msgstr ""
 
-#: application/views/admin/survey/Question/answerOptions_view.php:462
-#: application/views/admin/survey/Question/subQuestion_view.php:210
-msgid "New label set"
-msgstr ""
-
 #: application/views/admin/survey/Question/answerOptions_view.php:466
 #: application/views/admin/survey/Question/subQuestion_view.php:214
 msgid "Replace existing label set"
@@ -13860,7 +13854,7 @@ msgid "Check logic"
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:94
-msgid "Deleting will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
+msgid "Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:101
@@ -15077,7 +15071,7 @@ msgid "Before you can add questions you must add a question group first."
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:56
-msgid "In the survey options you can set later if your questions are shown one at a time, group by group or all on one page."
+msgid "Set below if your questions are shown one at a time, group by group or all on one page."
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:72
@@ -15160,7 +15154,7 @@ msgid "End URL"
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:365
-msgid "Survey's texts"
+msgid "Survey texts"
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:440
@@ -15356,7 +15350,7 @@ msgid "Some text in this answer"
 msgstr ""
 
 #: application/views/admin/templates/templateeditorbar_view.php:58
-msgid "Create new template called:"
+msgid "Create template called:"
 msgstr ""
 
 #: application/views/admin/templates/templateeditorbar_view.php:58
