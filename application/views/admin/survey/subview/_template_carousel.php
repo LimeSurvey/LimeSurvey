@@ -42,8 +42,10 @@
                         </ul>
                     </div>
 
-                    <a href="#" class="jcarousel-control-prev">&lsaquo;</a>
-                    <a href="#" class="jcarousel-control-next">&rsaquo;</a>
+                    <?php if(count($templates)>5):?>
+                        <a href="#" class="jcarousel-control-prev">&lsaquo;</a>
+                        <a href="#" class="jcarousel-control-next">&rsaquo;</a>
+                    <?php endif;?>
                 </div>
 
             </div>
