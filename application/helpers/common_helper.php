@@ -3490,13 +3490,22 @@ function questionAttributes($returnByName=false)
         $qattributes["slider_handle"]=array(
         "types"=>"K",
         'category'=>gT('Slider'),
-        'sortorder'=>2,
+        'sortorder'=>3,
         'inputtype'=>'singleselect',
         'options'=>array(0=>gT('round'),
-        1=>gT('square'), 2=>gT('triangle')),
+        1=>gT('square'), 2=>gT('triangle'), 3=>gT('custom')),
         'default'=>0,
-        "help"=>gT('Set the handle shape.'),
+        "help"=>gT('Set the handle shape. Custom is defined in CSS, using Font Awesome font'),
         "caption"=>gT('Handle shape'));
+
+        $qattributes["slider_custom_handle"]=array(
+        "types"=>"K",
+        'category'=>gT('Slider'),
+        'sortorder'=>4,
+        'inputtype'=>'text',
+        'default'=>'f1ae',
+        "help"=>gT('Accept Font Awesome unicode characters.'),
+        "caption"=>gT('Custom handle unicode characters'));
 
 
         $qattributes["slider_rating"]=array(

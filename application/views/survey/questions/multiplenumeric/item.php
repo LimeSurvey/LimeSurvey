@@ -68,6 +68,23 @@
 </li>
 
 <?php if($sliders): ?>
+    <style media="screen" type="text/css">
+    /**
+    * Slider custom handle
+    */
+    .slider-handle.custom {
+    background: transparent none;
+    /* You can customize the handle and set a background image */
+    }
+    .slider-handle.custom::before
+    {
+        line-height: 20px;
+        font-size: 20px;
+        font-family: FontAwesome;
+        content: '\<?php echo $slider_custom_handle;?>';  /*unicode character ;*/
+    }
+    </style>
+
     <script type='text/javascript'>
         <!--
             $(document).ready(function(){

@@ -3063,6 +3063,7 @@ function do_multiplenumeric($ia)
         $slider_default=trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_default']}}",$ia[0],array(),false,1,1,false,false,true));
         $slider_default =  (is_numeric($slider_default))?$slider_default:"";
         $slider_orientation= (trim($aQuestionAttributes['slider_orientation'])==0)?'horizontal':'vertical';
+        $slider_custom_handle = (trim($aQuestionAttributes['slider_custom_handle']));
 
         switch(trim($aQuestionAttributes['slider_handle']))
         {
@@ -3076,6 +3077,10 @@ function do_multiplenumeric($ia)
 
             case 2:
                 $slider_handle = 'triangle';
+                break;
+
+            case 3:
+                $slider_handle = 'custom';
                 break;
         }
 
@@ -3105,6 +3110,7 @@ function do_multiplenumeric($ia)
         $slider_default = '';
         $slider_orientation= '';
         $slider_handle = '';
+        $slider_custom_handle = '';
     }
     $hidetip=$aQuestionAttributes['hide_tip'];
 
@@ -3207,6 +3213,7 @@ function do_multiplenumeric($ia)
                 'slider_maxtext' => $slider_maxtext ,
                 'slider_default' => $slider_default ,
                 'slider_handle' => $slider_handle,
+                'slider_custom_handle' => $slider_custom_handle,
             );
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/item', $itemDatas, true);
 

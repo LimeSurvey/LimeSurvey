@@ -200,15 +200,6 @@
 .slider-handle.triangle {
   background: transparent none;
 }
-.slider-handle.custom {
-  background: transparent none;
-}
-.slider-handle.custom::before {
-  line-height: 20px;
-  font-size: 20px;
-  content: '\2605';
-  color: #726204;
-}
 .slider-tick {
   position: absolute;
   width: 20px;
