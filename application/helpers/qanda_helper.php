@@ -4166,7 +4166,7 @@ function do_array_10point($ia)
     $anscount = count($aSubquestions);
 
     $fn = 1;
-    $answer .= '<!-- Array 10 points question -->';
+    $answer = '<!-- Array 10 points question -->';
     $answer .= '<div class="no-more-tables no-more-tables-10-point">';
     /*$answer .= "\n<table class=\"table-in-qanda-2 question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
@@ -4713,7 +4713,7 @@ function do_array($ia)
         }
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-        $answer_start .= '<!-- Array Question, no dropdown -->';
+        $answer_start = '<!-- Array Question, no dropdown -->';
         $answer_start .= '<div class="no-more-tables">';
         //$answer_start .= "\n<table class=\"table-in-qanda-5 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n";
         $answer_start .= "\n<table class=\"table-in-qanda-5 question subquestions-list questions-list {$extraclass}\">\n";
@@ -6080,7 +6080,7 @@ function do_array_dual($ia)
             }
             if($rightexists) {$numrows++;}
             if($centerexists) {$numrows++;}
-            //$cellwidth=$columnswidth/$numrows;
+            $cellwidth=$columnswidth/$numrows;
             $cellwidth=sprintf("%02d", $cellwidth); // No reason to do this, except to leave place for separator ?  But then table can not be the same in all browser
 
             // Header row and colgroups
