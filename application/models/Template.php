@@ -64,17 +64,20 @@ class Template extends LSActiveRecord
         $sDefaulttemplate=Yii::app()->getConfig('defaulttemplate','default');
         $sTemplateName=empty($sTemplateName) ? $sDefaulttemplate : $sTemplateName;
 
-        /* Validate it's a real dir included in template allowed dir
-        *  Alternative : use realpath("$dir/$sTemplateName")=="$dir/$sTemplateName" and is_dir
-        */
-        if(array_key_exists($sTemplateName,self::getTemplateList()))
+        /* Standard Template return it without testing */
+        if(self::isStandardTemplate($sTemplateName))
+        {
             return $sTemplateName;
-
-        // If needed recall the function with default template
+        }
+        /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
+        if(is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName.DIRECTORY_SEPARATOR.'config.xml'))
+        {
+            return $sTemplateName;
+        }
+        /* Then try with the global default template */
         if($sTemplateName!=$sDefaulttemplate)
             return self::templateNameFilter($sDefaulttemplate);
-
-        // Last solution is default
+        /* Last solution : default */
         return 'default';
     }
 
@@ -152,7 +155,7 @@ class Template extends LSActiveRecord
         }
         else
         {
-            if(is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName).DIRECTORY_SEPARATOR.'config.xml')
+            if(is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName.DIRECTORY_SEPARATOR.'config.xml'))
             {
                 $oTemplate->name = $sTemplateName;
                 $oTemplate->path = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
@@ -286,21 +289,11 @@ class Template extends LSActiveRecord
         return in_array($sTemplateName,
             array(
                 'default',
-                'blue_sky',
-                'metro_ode',
-                'electric_black',
-                'night_mode',
-                'flat_and_modern',
-                'news_paper',
-                'light_and_shadow',
                 'material_design',
-                'readable',
-                'sandstone',
-                'minimalist',
-                'gunmetal',
-                'super_blue',
+                'metro_ode',
+                'news_paper',
+                'night_mode',
                 'ubuntu_orange',
-                'yeti'
             )
         );
     }
