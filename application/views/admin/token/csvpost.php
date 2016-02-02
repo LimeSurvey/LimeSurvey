@@ -9,21 +9,21 @@
             <?php if (empty($aTokenListArray) || $iRecordImported == 0 ):?>
                 <div class="jumbotron message-box message-box-error">
                     <h2 class="text-danger">
-                        <?php 
+                        <?php
                                 if (empty($aTokenListArray))
                                 {
-                                    eT("Failed to open the uploaded file!");                                    
+                                    eT("Failed to open the uploaded file!");
                                 }
-                                else 
+                                else
                                 {
                                     eT("Failed to create token entries");
                                 }
-                        ?> 
+                        ?>
                     </h2>
                     <p>
                         <input class="btn btn-large btn-default" type='button' value='<?php eT("Display tokens"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" /><br />
-                    </p>                                                      
-                </div>                
+                    </p>
+                </div>
             <?php else:?>
                 <div class="jumbotron message-box">
                     <h2 class="text-success"><?php eT("Uploaded CSV file successfully"); ?></h2>
@@ -57,7 +57,7 @@
                                     </div>
                                 </li>
                             <?php } ?>
-                
+
                             <?php if (!empty($aInvalidFormatList)) { ?>
                                 <li>
                                     <?php printf(gT("%s lines had a mismatching number of fields."), count($invalidformatlist)); ?>
@@ -71,7 +71,7 @@
                                     </div>
                                 </li>
                             <?php } ?>
-                
+
                             <?php if (!empty($aInvalidEmailList)) { ?>
                                 <li>
                                     <?php printf(gT("%s records with invalid email address removed"), count($aInvalidEmailList)); ?>
@@ -85,7 +85,7 @@
                                     </div>
                                 </li>
                             <?php } ?>
-                
+
                             <?php if (!empty($aModelErrorList)) { ?>
                                 <li>
                                     <?php printf(gT("%s records with other invalid information"), count($aModelErrorList)); ?>
@@ -103,7 +103,7 @@
                             <?php if (!empty($aInvalideAttrFieldName)) { ?>
                                 <li>
                                     <?php printf(gT("%s invalid attributes"), count($aInvalideAttrFieldName)); ?>
-                                    [<a href='#' onclick='$("#invalidattr").toggle();'><?php eT("columns ignored"); ?></a>]
+                                    [<a href='#' onclick='$("#invalidattr").toggle();'><?php eT("Ignored columns"); ?></a>]
                                     <div class='badtokenlist' id='invalidattr' style='display: none;'>
                                         <ul class="list-unstyled">
                                             <?php foreach ($aInvalideAttrFieldName as $sModelError) { ?>
@@ -117,7 +117,7 @@
                             <?php if (!empty($aMissingAttrFieldName)) { ?>
                                 <li>
                                     <?php printf(gT("%s missing attributes"), count($aMissingAttrFieldName)); ?>
-                                    [<a href='#' onclick='$("#missingattr").toggle();'><?php eT("columns missing"); ?></a>]
+                                    [<a href='#' onclick='$("#missingattr").toggle();'><?php eT("Missing columns"); ?></a>]
                                     <div class='badtokenlist' id='missingattr' style='display: none;'>
                                         <ul class="list-unstyled">
                                             <?php foreach ($aMissingAttrFieldName as $sModelError) { ?>
@@ -127,15 +127,15 @@
                                     </div>
                                 </li>
                             <?php } ?>
-                
+
                         </ul>
                     <?php } ?>
                     </p>
                     <p>
                         <input class="btn btn-large btn-default" type='button' value='<?php eT("Display tokens"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" /><br />
-                    </p>                                  
-                </div>                
+                    </p>
+                </div>
             <?php endif;?>
         </div>
     </div>
-</div>    
+</div>
