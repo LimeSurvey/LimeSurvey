@@ -29,19 +29,50 @@
         <label class='control-label col-xs-12' for="answer<?php echo $myfname; ?>">
             <?php echo $labelText;?>
         </label>
+                        <br/><br/><br/>
         <div class="col-xs-12 input">
             <?php echo $prefix;?>
-            <input
-                class="text form-control <?php echo $kpclass;?>"
-                type="text"
-                size="<?php echo $tiwidth;?>"
-                name="<?php echo $myfname;?>"
-                id="answer<?php echo $myfname; ?>"
-                value="<?php echo $dispVal;?>"
-                onkeyup="<?php echo $checkconditionFunction; ?>"
-                <?php echo $maxlength; ?>
-            />
+            <?php if(!$sliders): ?>
+                <input
+                    class="text form-control <?php echo $kpclass;?>"
+                    type="text"
+                    size="<?php echo $tiwidth;?>"
+                    name="<?php echo $myfname;?>"
+                    id="answer<?php echo $myfname; ?>"
+                    value="<?php echo $dispVal;?>"
+                    onkeyup="<?php echo $checkconditionFunction; ?>"
+                    <?php echo $maxlength; ?>
+                />
+            <?php else:?>
+                <input
+                    class="text form-control <?php echo $kpclass;?>"
+                    type="text"
+                    size="<?php echo $tiwidth;?>"
+                    name="<?php echo $myfname;?>"
+                    id="answer<?php echo $myfname; ?>"
+                    value="<?php echo $dispVal;?>"
+                    onkeyup="<?php echo $checkconditionFunction; ?>"
+                    <?php echo $maxlength; ?>
+                    data-slider-min='<?php echo $slider_min;?>'
+                    data-slider-max='<?php echo $slider_max;?>'
+                    data-slider-step='<?php echo $slider_step;?>'
+                    data-slider-value='<?php echo $slider_default;?>'
+                    data-slider-orientation='<?php echo $slider_orientation;?>'
+                    data-slider-handle='<?php echo $slider_handle;?>'
+                    data-slider-tooltip='always'
+                />
+            <?php endif;?>
             <?php echo $suffix;?>
         </div>  <!-- xs-12 -->
     </div> <!-- form group -->
 </li>
+
+<?php if($sliders): ?>
+    <script type='text/javascript'>
+        <!--
+            $(document).ready(function(){
+            var mySlider = $("#answer<?php echo $myfname; ?>").bootstrapSlider();
+        });
+        -->
+    </script>
+<?php endif; ?>

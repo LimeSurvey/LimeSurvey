@@ -200,7 +200,7 @@ function retrieveAnswers($ia)
                     $qtitle .= Yii::app()->getController()->renderPartial('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
                 }
                 break;
-                case 'P': //Multiple choice with comments checkbox + text
+            case 'P': //Multiple choice with comments checkbox + text
                 $values=do_multiplechoice_withcomments($ia);
                 if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
                 {
@@ -3062,6 +3062,22 @@ function do_multiplenumeric($ia)
         $slider_maxtext = $slider_max =  (is_numeric($slider_max))?$slider_max:100;
         $slider_default=trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_default']}}",$ia[0],array(),false,1,1,false,false,true));
         $slider_default =  (is_numeric($slider_default))?$slider_default:"";
+        $slider_orientation= (trim($aQuestionAttributes['slider_orientation'])==0)?'horizontal':'vertical';
+
+        switch(trim($aQuestionAttributes['slider_handle']))
+        {
+            case 0:
+                $slider_handle = 'round';
+                break;
+
+            case 1:
+                $slider_handle = 'square';
+                break;
+
+            case 2:
+                $slider_handle = 'triangle';
+                break;
+        }
 
         if ($slider_default == '' && $aQuestionAttributes['slider_middlestart']==1)
         {
@@ -3078,6 +3094,17 @@ function do_multiplenumeric($ia)
     else
     {
         $slider_layout = false;
+
+        $slider_step    = '';
+        $slider_step    = '';
+        $slider_min     = '';
+        $slider_mintext = '';
+        $slider_max     = '';
+        $slider_maxtext = '';
+        $slider_default = '';
+        $slider_default = '';
+        $slider_orientation= '';
+        $slider_handle = '';
     }
     $hidetip=$aQuestionAttributes['hide_tip'];
 
@@ -3126,6 +3153,10 @@ function do_multiplenumeric($ia)
                 $sliderright="<div class=\"slider_righttext\">$sliderright</div>";
             }
 
+            $aAnswer=(isset($aAnswer))?$aAnswer:'';
+            $sliderleft=(isset($sliderleft))?$sliderleft:"";
+            $sliderright=(isset($sliderright))?$sliderright:"";
+
             // color code missing mandatory questions red
             $alert='';
             if ($ia[6]=='Y' && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '')
@@ -3168,6 +3199,14 @@ function do_multiplenumeric($ia)
                 'maxlength'=>$maxlength,
                 'labelText'=>$ansrow['question'],
                 'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+                'slider_orientation' => $slider_orientation,
+                'slider_step'    => $slider_step    ,
+                'slider_min'     => $slider_min     ,
+                'slider_mintext' => $slider_mintext ,
+                'slider_max'     => $slider_max     ,
+                'slider_maxtext' => $slider_maxtext ,
+                'slider_default' => $slider_default ,
+                'slider_handle' => $slider_handle,
             );
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/item', $itemDatas, true);
 
@@ -3193,6 +3232,7 @@ function do_multiplenumeric($ia)
             'equals_num_value'=>$equals_num_value,
             'id'=>$ia[0],
             'prefix'=>$prefix,
+            'suffix'=>$suffix,
             'sumRemainingEqn'=>(isset($qinfo))?$qinfo['sumRemainingEqn']:'',
             'displaytotal'=>$displaytotal,
             'sumEqn'=>(isset($qinfo))?$qinfo['sumEqn']:'',
@@ -3241,9 +3281,11 @@ function do_multiplenumeric($ia)
             'lang'=> $aJsLang,
             );
 
+        /*
         $answer .= "<script type='text/javascript'><!--\n"
                     . " doNumericSlider({$ia[0]},".ls_json_encode($aJsVar).");\n"
                     . " //--></script>";
+        */
     }
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];

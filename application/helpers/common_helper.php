@@ -3476,6 +3476,29 @@ function questionAttributes($returnByName=false)
         "help"=>gT('The handle is displayed at the middle of the slider except if Slider initial value is set (this will not set the initial value).'),
         "caption"=>gT('Slider starts at the middle position'));
 
+        $qattributes["slider_orientation"]=array(
+        "types"=>"K",
+        'category'=>gT('Slider'),
+        'sortorder'=>2,
+        'inputtype'=>'singleselect',
+        'options'=>array(0=>gT('horizontal'),
+        1=>gT('vertical')),
+        'default'=>0,
+        "help"=>gT('Set the orientation.'),
+        "caption"=>gT('Orientation'));
+
+        $qattributes["slider_handle"]=array(
+        "types"=>"K",
+        'category'=>gT('Slider'),
+        'sortorder'=>2,
+        'inputtype'=>'singleselect',
+        'options'=>array(0=>gT('round'),
+        1=>gT('square'), 2=>gT('triangle')),
+        'default'=>0,
+        "help"=>gT('Set the handle shape.'),
+        "caption"=>gT('Handle shape'));
+
+
         $qattributes["slider_rating"]=array(
         "types"=>"5",
         'category'=>gT('Display'),
