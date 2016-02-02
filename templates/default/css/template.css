@@ -760,13 +760,7 @@ table.question.subquestion-list.questions-list tr.answers-list th
 /**
  * TODO : color should be different for each template
  */
-.table-striped>tbody>tr:nth-of-type(odd), .array2
-{
-    background-color: #ecf0f1;
-}
-
-
-.array-flexible-column col.odd, .array-flexible-column th.odd
+.table-striped>tbody>tr:nth-of-type(odd), .array2, .array-flexible-column col.odd, .array-flexible-column th.odd
 {
     background-color: #ecf0f1;
 }
