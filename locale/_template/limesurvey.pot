@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-02-02 11:54:55+00:00\n"
+"POT-Creation-Date: 2016-02-02 12:32:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15634,7 +15634,7 @@ msgid "%s invalid attributes"
 msgstr ""
 
 #: application/views/admin/token/csvpost.php:106
-msgid "columns ignored"
+msgid "Ignored columns"
 msgstr ""
 
 #: application/views/admin/token/csvpost.php:119
@@ -15642,7 +15642,7 @@ msgid "%s missing attributes"
 msgstr ""
 
 #: application/views/admin/token/csvpost.php:120
-msgid "columns missing"
+msgid "Missing columns"
 msgstr ""
 
 #: application/views/admin/token/csvupload.php:9
@@ -15659,7 +15659,7 @@ msgid "Allow invalid email addresses:"
 msgstr ""
 
 #: application/views/admin/token/csvupload.php:60
-msgid "Display warning attributes:"
+msgid "Display attribute warnings:"
 msgstr ""
 
 #: application/views/admin/token/csvupload.php:68
