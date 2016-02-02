@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-02-02 10:28:33+00:00\n"
+"POT-Creation-Date: 2016-02-02 11:04:44+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1704,11 +1704,11 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4941
 #: application/helpers/qanda_helper.php:5825
 #: application/helpers/qanda_helper.php:5826
-#: application/helpers/qanda_helper.php:6126
-#: application/helpers/qanda_helper.php:6292
-#: application/helpers/qanda_helper.php:6306
-#: application/helpers/qanda_helper.php:6479
-#: application/helpers/qanda_helper.php:6515
+#: application/helpers/qanda_helper.php:6127
+#: application/helpers/qanda_helper.php:6293
+#: application/helpers/qanda_helper.php:6307
+#: application/helpers/qanda_helper.php:6480
+#: application/helpers/qanda_helper.php:6516
 #: application/views/admin/dataentry/content_view.php:41
 #: application/views/survey/questions/5pointchoice/item_noanswer_row.php:22
 #: application/views/survey/questions/gender/buttons/item.php:59
@@ -4473,8 +4473,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:1400
 #: application/helpers/qanda_helper.php:2057
 #: application/helpers/qanda_helper.php:4945
-#: application/helpers/qanda_helper.php:6466
-#: application/helpers/qanda_helper.php:6502
+#: application/helpers/qanda_helper.php:6467
+#: application/helpers/qanda_helper.php:6503
 #: application/views/admin/dataentry/content_view.php:124
 #: application/views/admin/dataentry/content_view.php:136
 #: application/views/admin/labels/labelsetsbar_view.php:102
@@ -8678,6 +8678,9 @@ msgstr ""
 #: application/views/admin/participants/displayParticipants_view.php:120
 #: application/views/admin/participants/sharePanel_view.php:26
 #: application/views/admin/responses/listResponses_view.php:32
+#: application/views/admin/survey/Question/listquestions.php:48
+#: application/views/admin/survey/QuestionGroups/listquestiongroups.php:34
+#: application/views/admin/survey/listSurveys_view.php:42
 #: application/views/admin/token/browse.php:65
 #: application/views/admin/usergroup/mailUserGroup_view.php:28
 msgid "Reset"
@@ -8716,7 +8719,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4303
 #: application/helpers/qanda_helper.php:4473
 #: application/helpers/qanda_helper.php:4712
-#: application/helpers/qanda_helper.php:6078
+#: application/helpers/qanda_helper.php:6079
 msgid "The last cell are for no answer. "
 msgstr ""
 
@@ -8743,8 +8746,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4984
 #: application/helpers/qanda_helper.php:5391
 #: application/helpers/qanda_helper.php:5787
-#: application/helpers/qanda_helper.php:5948
-#: application/helpers/qanda_helper.php:6533
+#: application/helpers/qanda_helper.php:5949
+#: application/helpers/qanda_helper.php:6534
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
@@ -8805,15 +8808,15 @@ msgstr ""
 msgid "An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5942
+#: application/helpers/qanda_helper.php:5943
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5996
+#: application/helpers/qanda_helper.php:5997
 msgid "An array with sub-question on each line, with 2 answers to provide on each line. You have to select the answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:6004
+#: application/helpers/qanda_helper.php:6005
 msgid "An array with sub-question on each line, with 2 answers to provide on each line. The answers are contained in the table header. "
 msgstr ""
 
@@ -9839,7 +9842,6 @@ msgid "Question summary"
 msgstr ""
 
 #: application/models/Question.php:769
-#: application/views/admin/survey/Question/questionbar_view.php:94
 msgid "Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
 msgstr ""
 
@@ -12426,6 +12428,9 @@ msgid "Delete participant(s) from central panel, tokens tables and all associate
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:148
+#: application/views/admin/survey/Question/listquestions.php:47
+#: application/views/admin/survey/QuestionGroups/listquestiongroups.php:33
+#: application/views/admin/survey/listSurveys_view.php:41
 #: application/views/admin/token/browse.php:67
 #: application/views/survey/questions/shortfreetext/location_mapservice/item_100.php:92
 msgid "Search"
@@ -13763,18 +13768,6 @@ msgstr ""
 msgid "(Any group)"
 msgstr ""
 
-#: application/views/admin/survey/Question/listquestions.php:47
-#: application/views/admin/survey/QuestionGroups/listquestiongroups.php:33
-#: application/views/admin/survey/listSurveys_view.php:41
-msgid "search"
-msgstr ""
-
-#: application/views/admin/survey/Question/listquestions.php:48
-#: application/views/admin/survey/QuestionGroups/listquestiongroups.php:34
-#: application/views/admin/survey/listSurveys_view.php:42
-msgid "reset"
-msgstr ""
-
 #: application/views/admin/survey/Question/listquestions.php:66
 #: application/views/admin/survey/QuestionGroups/listquestiongroups.php:51
 #: application/views/admin/survey/listSurveys_view.php:58
@@ -13866,8 +13859,12 @@ msgstr ""
 msgid "Check logic"
 msgstr ""
 
+#: application/views/admin/survey/Question/questionbar_view.php:94
+msgid "Deleting will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
+msgstr ""
+
 #: application/views/admin/survey/Question/questionbar_view.php:101
-msgid "You can't delete  because the survey is currently active."
+msgid "You can't delete this question group because the survey is currently active."
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:103
@@ -13897,7 +13894,7 @@ msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:130
 #: application/views/admin/survey/Question/questionbar_view.php:143
-msgid "You don't have necessary permission"
+msgid "You don't have the necessary permission."
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:140
@@ -13926,7 +13923,7 @@ msgid "Add and edit conditions"
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:221
-msgid "Move to question"
+msgid "Move to question:"
 msgstr ""
 
 #: application/views/admin/survey/Question/subQuestion_view.php:198
@@ -14404,7 +14401,7 @@ msgid "Surveys list"
 msgstr ""
 
 #: application/views/admin/survey/listSurveys_view.php:36
-msgid "any state"
+msgid "(Any state)"
 msgstr ""
 
 #: application/views/admin/survey/newSurveyBrowserMessage.php:3
@@ -14428,7 +14425,7 @@ msgid "After you are done please click the bottom 'Save' button to save your cha
 msgstr ""
 
 #: application/views/admin/survey/organizeGroupsAndQuestions_view.php:45
-msgid "You didn't saved your changes !"
+msgid "You didn't save your changes!"
 msgstr ""
 
 #: application/views/admin/survey/subview/_template_carousel.php:16
@@ -14525,8 +14522,7 @@ msgid "Fax to:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:134
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:85
-msgid "describe this redirection"
+msgid "Some description text"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:172
@@ -15031,6 +15027,10 @@ msgstr ""
 msgid "*This setting cannot be changed later!"
 msgstr ""
 
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:85
+msgid "Some description"
+msgstr ""
+
 #: application/views/admin/survey/subview/tabImport_view.php:13
 msgid "Select survey structure file (*.lss, *.csv, *.txt) or survey archive (*.lsa):"
 msgstr ""
@@ -15069,19 +15069,19 @@ msgid "Warning!"
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:41
-msgid "While survey is activated, you can't add or remove group or question"
+msgid "While the survey is activated, you can't add or remove a group or question."
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:49
-msgid "To add questions, first, you must add a question group."
+msgid "Before you can add questions you must add a question group first."
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:56
-msgid "If you want a single page survey, just add a single group, and switch on \"Show questions group by group\""
+msgid "In the survey options you can set later if your questions are shown one at a time, group by group or all on one page."
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:72
-msgid "Show questions group by group :"
+msgid "Show questions:"
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:93
