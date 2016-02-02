@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-02-02 14:27:58+00:00\n"
+"POT-Creation-Date: 2016-02-02 15:05:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5334,7 +5334,7 @@ msgid "Go to this group"
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:82
-msgid "Question by question not yet supported, use incremental index."
+msgid "Question by question mode not yet supported."
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:151
@@ -10894,7 +10894,7 @@ msgid "Each question has its own graph type defined in its advanced settings."
 msgstr ""
 
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:26
-msgid "With chart type selector, you can force the use of graph type for all selected questions)"
+msgid "Using the chart type selector you can force the graph type for all selected questions."
 msgstr ""
 
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:32
@@ -10980,13 +10980,13 @@ msgid "View statistics"
 msgstr ""
 
 #: application/views/admin/export/statistics_view.php:112
-msgid "Please, select filters and click on the \"View statistics\" button to generate the statistics."
+msgid "Please select filters and click on the \"View statistics\" button to generate the statistics."
 msgstr ""
 
 #: application/views/admin/export/statistics_view.php:116
 #: application/views/admin/participants/participantsPanel_view.php:94
 #: application/views/admin/update/updater/_right_container.php:10
-msgid "PLease wait, loading data..."
+msgid "Please wait, loading data..."
 msgstr ""
 
 #: application/views/admin/export/vv_view.php:2
@@ -12552,7 +12552,7 @@ msgid "List"
 msgstr ""
 
 #: application/views/admin/participants/participantsPanel_view.php:45
-msgid "no participant"
+msgid "No participants"
 msgstr ""
 
 #: application/views/admin/participants/participantsPanel_view.php:56
@@ -12908,7 +12908,7 @@ msgid "Survey quotas"
 msgstr ""
 
 #: application/views/admin/quotas/viewquotas_view.php:11
-msgid "Quota could not be added !"
+msgid "Quota could not be added!"
 msgstr ""
 
 #: application/views/admin/quotas/viewquotas_view.php:11
@@ -13611,6 +13611,9 @@ msgid "Copy advanced settings?"
 msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:95
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:10
+#: application/views/admin/survey/subview/accordion/_accordion_container.php:19
+#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:68
 msgid "General options"
 msgstr ""
 
@@ -13735,12 +13738,6 @@ msgstr ""
 #: application/views/admin/survey/QuestionGroups/listquestiongroups.php:51
 #: application/views/admin/survey/listSurveys_view.php:58
 msgid "%s rows per page"
-msgstr ""
-
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:10
-#: application/views/admin/survey/subview/accordion/_accordion_container.php:19
-#: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:68
-msgid "General option"
 msgstr ""
 
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:19
@@ -16536,11 +16533,11 @@ msgid "All files in local directories are writable."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_error_files_update_updater.php:11
-msgid "Write error !"
+msgid "Write error!"
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_error_files_update_updater.php:17
-msgid "Those files/directories are not writable :"
+msgid "Those files/directories are not writable:"
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_key_updated.php:6
@@ -16662,7 +16659,7 @@ msgid "Delete this user"
 msgstr ""
 
 #: application/views/admin/user/editusers.php:81
-msgid "Set global persmissions for this user"
+msgid "Set global permissions for this user"
 msgstr ""
 
 #: application/views/admin/user/editusers.php:91
