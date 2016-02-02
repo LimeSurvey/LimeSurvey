@@ -514,7 +514,7 @@ class UserAction extends Survey_Common_Action
 
         if ($oUser && (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','update') &&  Yii::app()->session['loginID'] != $iUserID) )
         {
-            // Only the original superadmin (UID 1) may create new superadmins
+            // Only the original superadmin (UID 1) may create superadmins
             if (Yii::app()->session['loginID']!=1)
             {
                 unset($aBasePermissions['superadmin']);

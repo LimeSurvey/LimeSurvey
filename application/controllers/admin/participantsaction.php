@@ -994,7 +994,7 @@ class participantsaction extends Survey_Common_Action
             ParticipantAttributeName::model()->saveAttributeLanguages($langdata);
         }
 
-        /* Create new attribute value */
+        /* New attribute value */
         if (Yii::app()->request->getPost('attribute_value_name_1') || Yii::app()->request->getPost('attribute_value_name_1') == "0")
         {
             $i = 1;
@@ -1193,7 +1193,7 @@ class participantsaction extends Survey_Common_Action
         $separator = Yii::app()->request->getPost('separatorused');
         $uploadcharset = Yii::app()->request->getPost('characterset');
         /* The $newarray contains a list of fields that will be used
-        to create new attributes */
+        to create attributes */
         if (!empty($newarray))
         {
             /* Create a new entry in the lime_participant_attribute_names table,

@@ -54,22 +54,40 @@
         <div class="col-md-5">
 
             <!-- Create -->
-            <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir)):?>
-                <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Create template called:"); ?>', '<?php eT("NewTemplate"); ?>', 'default', 'copy')">
-                    <span class="icon-add text-success"></span>
-                    <?php eT("Create new"); ?>
-                </a>
+            <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
+                <?php if(is_writable($usertemplaterootdir)):?>
+                    <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Create template called:"); ?>', '<?php eT("NewTemplate"); ?>', 'default', 'copy')">
+                        <span class="icon-add text-success"></span>
+                        <?php eT("Create"); ?>
+                    </a>
+                <?php else: ?>
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The template upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
+                        <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                            <span class="icon-addt text-success"></span>
+                            <?php eT("Create"); ?>
+                        </button>
+                    </span>
+                <?php endif;?>
             <?php endif;?>
 
             <!-- Import -->
-            <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir)):?>
-                <?php if(Permission::model()->hasGlobalPermission('templates','import') && function_exists("zip_open")):?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl('admin/templates/sa/upload'); ?>" role="button">
-                        <span class="icon-import text-success"></span>
-                        <?php eT("Import"); ?>
-                    </a>
+            <?php if(is_writable($tempdir) && function_exists("zip_open")):?>
+                <?php if(Permission::model()->hasGlobalPermission('templates','import')):?>
+                    <?php if (is_writable($usertemplaterootdir)):?>
+                        <a class="btn btn-default" href="<?php echo $this->createUrl('admin/templates/sa/upload'); ?>" role="button">
+                            <span class="icon-import text-success"></span>
+                            <?php eT("Import"); ?>
+                        </a>
+                    <?php else: ?>
+                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The template upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
+                            <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                                <span class="icon-import text-success"></span>
+                                <?php eT("Import"); ?>
+                            </button>
+                        </span>
+                    <?php endif;?>
                 <?php else: ?>
-                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("We are sorry but you don't have permissions to do this."); eT(" Or: "); eT("zip library not supported by PHP, Import ZIP Disabled"); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("We are sorry but you don't have permissions to do this."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                             <span class="icon-import text-success"></span>
                             <?php eT("Import"); ?>
@@ -87,10 +105,19 @@
 
                <!-- Copy -->
                <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
-                    <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the copied template:"); ?>', '<?php echo gT("copy_of_")."$templatename"; ?>',            '<?php echo $templatename; ?>', 'copy')">
-                        <span class="icon-copy text-success"></span>
-                        <?php eT("Copy"); ?>
-                    </a>
+                    <?php if (is_writable($usertemplaterootdir)):?>
+                        <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the copied template:"); ?>', '<?php echo gT("copy_of_")."$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
+                            <span class="icon-copy text-success"></span>
+                            <?php eT("Copy"); ?>
+                        </a>
+                    <?php else: ?>
+                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The template upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
+                            <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                                <span class="icon-copy text-success"></span>
+                                <?php eT("Copy"); ?>
+                            </button>
+                        </span>
+                    <?php endif;?>
                <?php endif;?>
 
             <?php else: ?>

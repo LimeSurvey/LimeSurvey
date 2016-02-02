@@ -64,7 +64,7 @@
                                         <!-- Import resources ZIP archive -->
                                         <span class="col-sm-6">
                                             <input class="btn btn-default" type='button' value='<?php eT("Import resources ZIP archive") ?>'
-                                            <?php echo !function_exists("zip_open") ? "onclick='alert(\"" . gT("zip library not supported by PHP, Import ZIP Disabled", "js") . "\");'" : "onclick='if (validatefilename(this.form,\"" . gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'" ?>/>
+                                            <?php echo !function_exists("zip_open") ? "onclick='alert(\"" . gT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") . "\");'" : "onclick='if (validatefilename(this.form,\"" . gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'" ?>/>
                                         </span>
                                     </li>
                                 </ul>

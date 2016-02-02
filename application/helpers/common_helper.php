@@ -6064,7 +6064,7 @@ function accessDenied($action,$sid='')
         }
         elseif($action == "newsurvey")
         {
-            $accesssummary .= "<p>".gT("You are not allowed to create new surveys!")."<br />";
+            $accesssummary .= "<p>".gT("You are not allowed to create surveys!")."<br />";
             $accesssummary .= "<a href='$scriptname'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "deletesurvey")
