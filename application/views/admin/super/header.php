@@ -17,7 +17,14 @@
         App()->getClientScript()->registerPackage('jquery-cookie');
 
         // Font awesome
-        App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles-public/font-awesome-43.min.css') );
+        if(!YII_DEBUG)
+        {
+            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles-public/font-awesome-43.min.css') );
+        }
+        else
+        {
+            App()->getClientScript()->registerCssFile( Yii::app()->getBaseUrl(true).'/styles-public/font-awesome-43.min.css' );
+        }
 
         // Bootstrap
         App()->bootstrap->register();
