@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-02-02 16:22:30+00:00\n"
+"POT-Creation-Date: 2016-02-02 16:40:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28,12 +28,12 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:1652
 #: application/controllers/admin/questions.php:200
 #: application/controllers/admin/questions.php:222
-#: application/controllers/survey/index.php:143
-#: application/controllers/survey/index.php:162
-#: application/controllers/survey/index.php:184
-#: application/controllers/survey/index.php:268
-#: application/controllers/survey/index.php:281
-#: application/controllers/survey/index.php:295
+#: application/controllers/survey/index.php:145
+#: application/controllers/survey/index.php:164
+#: application/controllers/survey/index.php:186
+#: application/controllers/survey/index.php:270
+#: application/controllers/survey/index.php:283
+#: application/controllers/survey/index.php:297
 #: application/extensions/PannelBoxWidget/PannelBoxWidget.php:45
 #: application/helpers/admin/import_helper.php:919
 #: application/helpers/admin/import_helper.php:963
@@ -351,22 +351,22 @@ msgid "Plugin '%s' was missing and is removed from the database."
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:85
-#: application/controllers/survey/index.php:185
+#: application/controllers/survey/index.php:187
 msgid "We are sorry but your session has expired."
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:85
-#: application/controllers/survey/index.php:186
+#: application/controllers/survey/index.php:188
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:86
 #: application/controllers/admin/templates.php:1050
-#: application/controllers/survey/index.php:164
-#: application/controllers/survey/index.php:187
-#: application/controllers/survey/index.php:270
-#: application/controllers/survey/index.php:283
-#: application/controllers/survey/index.php:297
+#: application/controllers/survey/index.php:166
+#: application/controllers/survey/index.php:189
+#: application/controllers/survey/index.php:272
+#: application/controllers/survey/index.php:285
+#: application/controllers/survey/index.php:299
 #: application/helpers/replacements_helper.php:267
 #: application/views/surveys/publicSurveyList.php:36
 msgid "Please contact %s ( %s ) for further assistance."
@@ -443,7 +443,7 @@ msgid "ID"
 msgstr ""
 
 #: application/controllers/RegisterController.php:134
-#: application/controllers/survey/index.php:329
+#: application/controllers/survey/index.php:331
 #: application/helpers/frontend_helper.php:842
 #: application/helpers/frontend_helper.php:1078
 #: application/libraries/Save.php:130
@@ -1722,7 +1722,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:6516
 #: application/views/admin/dataentry/content_view.php:41
 #: application/views/survey/questions/5pointchoice/item_noanswer_row.php:22
-#: application/views/survey/questions/gender/buttons/item.php:59
+#: application/views/survey/questions/gender/buttons/item.php:30
+#: application/views/survey/questions/gender/buttons/item.php:77
 #: application/views/survey/questions/gender/radio/item.php:64
 #: application/views/survey/questions/listradio/item_noanswer_row.php:23
 #: application/views/survey/questions/yesno/buttons/item.php:59
@@ -1769,7 +1770,8 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3592
 #: application/views/admin/dataentry/content_view.php:75
 #: application/views/admin/export/statistics_subviews/_question.php:259
-#: application/views/survey/questions/gender/buttons/item.php:29
+#: application/views/survey/questions/gender/buttons/item.php:18
+#: application/views/survey/questions/gender/buttons/item.php:47
 #: application/views/survey/questions/gender/radio/item.php:29
 msgid "Female"
 msgstr ""
@@ -1787,7 +1789,8 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3591
 #: application/views/admin/dataentry/content_view.php:76
 #: application/views/admin/export/statistics_subviews/_question.php:265
-#: application/views/survey/questions/gender/buttons/item.php:44
+#: application/views/survey/questions/gender/buttons/item.php:24
+#: application/views/survey/questions/gender/buttons/item.php:62
 #: application/views/survey/questions/gender/radio/item.php:46
 msgid "Male"
 msgstr ""
@@ -2993,8 +2996,8 @@ msgstr ""
 #: application/controllers/admin/tokens.php:373
 #: application/controllers/admin/tokens.php:548
 #: application/controllers/admin/tokens.php:647
-#: application/controllers/survey/index.php:144
-#: application/controllers/survey/index.php:163
+#: application/controllers/survey/index.php:146
+#: application/controllers/survey/index.php:165
 #: application/views/admin/participants/blacklist_view.php:64
 #: application/views/admin/survey/surveySummary_view.php:213
 #: application/views/admin/survey/surveySummary_view.php:253
@@ -4794,58 +4797,58 @@ msgstr ""
 msgid "User not found."
 msgstr ""
 
-#: application/controllers/survey/index.php:117
+#: application/controllers/survey/index.php:119
 msgid "Token mismatch"
 msgstr ""
 
-#: application/controllers/survey/index.php:118
+#: application/controllers/survey/index.php:120
 msgid "The token you provided doesn't match the one in your session."
 msgstr ""
 
-#: application/controllers/survey/index.php:119
-#: application/controllers/survey/index.php:132
+#: application/controllers/survey/index.php:121
+#: application/controllers/survey/index.php:134
 msgid "Click here to start the survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:130
+#: application/controllers/survey/index.php:132
 msgid "Previous session is set to be finished."
 msgstr ""
 
-#: application/controllers/survey/index.php:131
+#: application/controllers/survey/index.php:133
 msgid "Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning."
 msgstr ""
 
-#: application/controllers/survey/index.php:269
+#: application/controllers/survey/index.php:271
 msgid "This survey is no longer available."
 msgstr ""
 
-#: application/controllers/survey/index.php:282
+#: application/controllers/survey/index.php:284
 msgid "This survey is not yet started."
 msgstr ""
 
-#: application/controllers/survey/index.php:296
+#: application/controllers/survey/index.php:298
 msgid "You have already completed this survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:311
+#: application/controllers/survey/index.php:313
 msgid "You did not provide a name"
 msgstr ""
 
-#: application/controllers/survey/index.php:315
+#: application/controllers/survey/index.php:317
 msgid "You did not provide a password"
 msgstr ""
 
-#: application/controllers/survey/index.php:325
+#: application/controllers/survey/index.php:327
 msgid "You did not answer to the security question."
 msgstr ""
 
-#: application/controllers/survey/index.php:340
+#: application/controllers/survey/index.php:342
 msgid "There is no matching saved survey"
 msgstr ""
 
-#: application/controllers/survey/index.php:379
-#: application/controllers/survey/index.php:414
-#: application/controllers/survey/index.php:419
+#: application/controllers/survey/index.php:381
+#: application/controllers/survey/index.php:416
+#: application/controllers/survey/index.php:421
 #: application/helpers/frontend_helper.php:920
 #: application/helpers/frontend_helper.php:1000
 #: application/helpers/frontend_helper.php:1042
@@ -4854,31 +4857,31 @@ msgstr ""
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
 
-#: application/controllers/survey/index.php:380
-#: application/controllers/survey/index.php:424
+#: application/controllers/survey/index.php:382
+#: application/controllers/survey/index.php:426
 #: application/helpers/frontend_helper.php:1002
 #: application/helpers/frontend_helper.php:1044
 #: application/helpers/frontend_helper.php:1234
 msgid "For further information please contact %s"
 msgstr ""
 
-#: application/controllers/survey/index.php:402
+#: application/controllers/survey/index.php:404
 msgid "This invitation has already been used."
 msgstr ""
 
-#: application/controllers/survey/index.php:406
+#: application/controllers/survey/index.php:408
 msgid "This invitation is not valid yet."
 msgstr ""
 
-#: application/controllers/survey/index.php:410
+#: application/controllers/survey/index.php:412
 msgid "This invitation is not valid anymore."
 msgstr ""
 
-#: application/controllers/survey/index.php:423
+#: application/controllers/survey/index.php:425
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:600
+#: application/controllers/survey/index.php:602
 msgid "Your responses were successfully saved."
 msgstr ""
 

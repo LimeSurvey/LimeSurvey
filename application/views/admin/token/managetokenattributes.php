@@ -75,7 +75,7 @@
                                 <td><?php
                                     if ($sLanguage == $thissurvey['language'])
                                     {
-                                        echo CHtml::dropDownList('cpdbmap_'.$sTokenField,$tokenvalues['cpdbmap'],$aCPDBAttributes);
+                                        echo CHtml::dropDownList('cpdbmap_'.$sTokenField,$tokenvalues['cpdbmap'],$aCPDBAttributes, array('class' => 'form-control'));
                                     }
                                     else
                                     {
@@ -119,7 +119,9 @@
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
             <p>
                 <label for="addnumber"><?php eT('Number of attribute fields to add:'); ?></label>
-                <input type="text" id="addnumber" name="addnumber" size="3" maxlength="3" value="1" />
+                <div class='col-sm-1'>
+                    <input class='form-control' type="text" id="addnumber" name="addnumber" size="3" maxlength="3" value="1" />
+                </div>
             </p>
             <p>
                 <?php echo CHtml::submitButton(gT('Add fields'), array('class'=>'btn btn-default')); ?>
@@ -132,7 +134,9 @@
                 <?php echo CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'attributenumber')); ?>
                 <p>
                     <label for="deleteattribute"><?php eT('Delete this attribute:'); ?></label>
-                    <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','descrition'),array('empty' => gT('none'), 'class'=>'form-control')); ?>
+                    <div class='col-sm-2'>
+                        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','descrition'),array('empty' => gT('none'), 'class'=>'form-control')); ?>
+                    </div>
                 </p>
                 <p>
                     <?php echo CHtml::submitButton(gT('Delete attribute'), array('class'=>'btn btn-default')); ?>
