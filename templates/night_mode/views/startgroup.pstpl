@@ -1,4 +1,6 @@
 <!-- Start group -->
 <div class="col-xs-12 group-container">
-    <h3 class="group-name">{GROUPNAME}</h3>
+    <blockquote>
+        <h3 class="group-name">{GROUPNAME}</h3>
+    </blockquote>
 </div>

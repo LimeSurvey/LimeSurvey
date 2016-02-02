@@ -39,7 +39,7 @@
 
 
     <!-- Top container -->
-    <div id="topContainer">
+    <div id="topContainer" class="jumbotron">
         <div class="container">
             {PERCENTCOMPLETE}
             {LANGUAGECHANGER}

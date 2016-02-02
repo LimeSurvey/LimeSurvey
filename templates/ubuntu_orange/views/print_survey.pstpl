@@ -4,7 +4,7 @@
         <title>{SITENAME} - {SURVEYNAME}</title>
         {HEADELEMENTS}
 
-        <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}print_template.css" />
+        <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}css/print_template.css" />
     </head>
     <body>
         <div id="limesurvey">

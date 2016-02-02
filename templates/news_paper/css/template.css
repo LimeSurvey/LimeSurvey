@@ -1,7 +1,6 @@
  body {
      padding-top: 50px;
      padding-bottom: 10px;
-     background-color: #F1F1F1;
  }
 
 div[id^="group-"]>div {
@@ -21,10 +20,9 @@ div[id^="group-"]>div {
 
 #topContainer {
     position: absolute;
-    top: 60px;
+    top: 55px;
     width: 100%;
     padding: 1em;
-    background-color: #A5B2BF;
     border-bottom: none;
 }
 
@@ -755,12 +753,4 @@ table.question.subquestion-list.questions-list th,table.question.subquestion-lis
 table.question.subquestion-list.questions-list tr.answers-list th
 {
  text-align: left;
-}
-
-/**
- * TODO : color should be different for each template
- */
-.table-striped>tbody>tr:nth-of-type(odd), .array2, .array-flexible-column col.odd, .array-flexible-column th.odd
-{
-    background-color: #f5f5f5;
 }
