@@ -17,7 +17,7 @@
                 <?php if (count($tmp_survlangs) < 2): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>' role="button">
                         <span class="glyphicon glyphicon-list text-success"></span>
-                        <?php eT("Display Responses"); ?>
+                        <?php eT("Display responses"); ?>
                     </a>
                 <?php else:?>
                 <div class="btn-group">
@@ -42,13 +42,13 @@
                 <?php if (count($tmp_survlangs) < 2): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/start/0/limit/50/order/desc"); ?>' role="button">
                         <span class="icon-viewlast text-success"></span>
-                        <?php eT("Last 50 Responses"); ?>
+                        <?php eT("Last 50 responses"); ?>
                     </a>
                 <?php else:?>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="icon-viewlast text-success"></span>
-                        <?php eT("Last 50 Responses");?> <span class="caret"></span>
+                        <?php eT("Last 50 responses");?> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
                         <?php foreach ($tmp_survlangs as $tmp_lang):?>
@@ -68,7 +68,7 @@
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create')): ?>
                 <a class="btn btn-default" href='<?php echo $this->createUrl("admin/dataentry/sa/view/surveyid/$surveyid"); ?>' role="button">
                     <span class="fa fa-keyboard-o text-success"></span>
-                    <?php eT("Dataentry"); ?>
+                    <?php eT("Data entry"); ?>
                 </a>
             <?php endif;?>
 

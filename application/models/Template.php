@@ -144,17 +144,24 @@ class Template extends LSActiveRecord
 
         $oTemplate = new stdClass();
         $oTemplate->isStandard = self::isStandardTemplate($sTemplateName);
-
         // If the template doesn't exist, set to Default
         if($oTemplate->isStandard)
         {
-            $oTemplate->name = (is_dir(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName))?$sTemplateName:'Default';
+            $oTemplate->name = $sTemplateName;
             $oTemplate->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
         }
         else
         {
-            $oTemplate->name = (is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName))?$sTemplateName:'Default';
-            $oTemplate->path = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
+            if(is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName).DIRECTORY_SEPARATOR.'config.xml')
+            {
+                $oTemplate->name = $sTemplateName;
+                $oTemplate->path = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
+            }
+            else
+            {
+                $oTemplate->name = 'default';
+                $oTemplate->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
+            }
         }
 
         // The template configuration.

@@ -53,7 +53,7 @@ $aReplacementData=array();
                     <!-- preview question -->
                     <a class="btn btn-default" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>' role="button" target="_blank">
                         <span class="icon-do"></span>
-                        <?php eT("Preview ");?>
+                        <?php eT("Preview");?>
                     </a>
 
                     <!-- preview question group -->
@@ -65,7 +65,7 @@ $aReplacementData=array();
             <?php else: ?>
                 <a class="btn disabled" href="#" role="button">
                     <span class="icon-do"></span>
-                    <?php eT("Preview ");?>
+                    <?php eT("Preview");?>
                 </a>
             <?php endif; ?>
 
