@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-02-02 12:32:14+00:00\n"
+"POT-Creation-Date: 2016-02-02 13:05:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -113,7 +113,7 @@ msgid "LimeSurvey online manual"
 msgstr ""
 
 #: application/controllers/AdminController.php:327
-msgid "This is the LimeSurvey admin interface. From here, you can start to build your survey."
+msgid "This is the LimeSurvey admin interface. Start to build your survey from here."
 msgstr ""
 
 #: application/controllers/AdminController.php:367
@@ -909,7 +909,12 @@ msgid "Add"
 msgstr ""
 
 #: application/controllers/admin/assessments.php:116
-msgid "Assesments"
+#: application/extensions/Menu/MenuWidget.php:273
+#: application/models/Permission.php:62
+#: application/views/admin/survey/copySurvey_view.php:54
+#: application/views/admin/survey/importSurvey_view.php:92
+#: application/views/admin/survey/surveybar_view.php:188
+msgid "Assessments"
 msgstr ""
 
 #: application/controllers/admin/assessments.php:121
@@ -1002,8 +1007,7 @@ msgid "You do not have sufficient rights to access this page."
 msgstr ""
 
 #: application/controllers/admin/checkintegrity.php:44
-#: application/controllers/admin/usergroups.php:343
-msgid "return to admin panel"
+msgid "Return to admin panel"
 msgstr ""
 
 #: application/controllers/admin/checkintegrity.php:62
@@ -2062,7 +2066,7 @@ msgid "Subquestions were successfully saved."
 msgstr ""
 
 #: application/controllers/admin/database.php:412
-msgid "Can't insert new question when the survey is active"
+msgid "You can't insert a new question when the survey is active."
 msgstr ""
 
 #: application/controllers/admin/database.php:418
@@ -2750,23 +2754,23 @@ msgid "Attribute values for existing participants have been updated from the par
 msgstr ""
 
 #: application/controllers/admin/pluginmanager.php:95
-msgid "Plugin was activated"
+msgid "Plugin was activated."
 msgstr ""
 
 #: application/controllers/admin/pluginmanager.php:126
-msgid "Plugin was deactivated"
+msgid "Plugin was deactivated."
 msgstr ""
 
 #: application/controllers/admin/pluginmanager.php:143
-msgid "Plugin not found"
+msgid "The plugin was not found."
 msgstr ""
 
 #: application/controllers/admin/pluginmanager.php:158
-msgid "Settings saved"
+msgid "The plugin settings were saved."
 msgstr ""
 
 #: application/controllers/admin/pluginmanager.php:170
-msgid "This plugin has no settings"
+msgid "This plugin has no settings."
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:75
@@ -2975,7 +2979,18 @@ msgstr ""
 
 #: application/controllers/admin/questiongroups.php:124
 #: application/controllers/admin/questions.php:156
-msgid "You don't have enough permissions."
+#: application/controllers/admin/surveyadmin.php:1170
+#: application/controllers/admin/tokens.php:87
+#: application/controllers/admin/tokens.php:373
+#: application/controllers/admin/tokens.php:548
+#: application/controllers/admin/tokens.php:647
+#: application/controllers/survey/index.php:144
+#: application/controllers/survey/index.php:163
+#: application/views/admin/participants/blacklist_view.php:64
+#: application/views/admin/survey/surveySummary_view.php:213
+#: application/views/admin/survey/surveySummary_view.php:253
+#: application/views/admin/templates/templateeditorbar_view.php:90
+msgid "We are sorry but you don't have permissions to do this."
 msgstr ""
 
 #: application/controllers/admin/questiongroups.php:260
@@ -3499,12 +3514,6 @@ msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:1160
 msgid "No survey ID has been provided. Cannot copy survey"
-msgstr ""
-
-#: application/controllers/admin/surveyadmin.php:1170
-#: application/views/admin/participants/blacklist_view.php:64
-#: application/views/admin/participants/userControl_view.php:32
-msgid "You don't have sufficient permissions."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:1188
@@ -4059,18 +4068,6 @@ msgstr ""
 msgid "No token table."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:87
-#: application/controllers/admin/tokens.php:373
-#: application/controllers/admin/tokens.php:548
-#: application/controllers/admin/tokens.php:647
-#: application/controllers/survey/index.php:144
-#: application/controllers/survey/index.php:163
-#: application/views/admin/survey/surveySummary_view.php:213
-#: application/views/admin/survey/surveySummary_view.php:253
-#: application/views/admin/templates/templateeditorbar_view.php:90
-msgid "We are sorry but you don't have permissions to do this."
-msgstr ""
-
 #: application/controllers/admin/tokens.php:94
 msgid "The imap PHP library is not installed. Please contact your system administrator."
 msgstr ""
@@ -4253,6 +4250,7 @@ msgstr ""
 
 #: application/controllers/admin/tokens.php:1712
 #: application/views/admin/token/exportdialog.php:94
+#: application/views/admin/token/token_bar.php:83
 #: application/views/admin/token/token_bar.php:170
 msgid "Export tokens"
 msgstr ""
@@ -4758,6 +4756,10 @@ msgstr ""
 msgid "Update user group"
 msgstr ""
 
+#: application/controllers/admin/usergroups.php:343
+msgid "return to admin panel"
+msgstr ""
+
 #: application/controllers/admin/usergroups.php:381
 #: application/controllers/admin/usergroups.php:389
 #: application/controllers/admin/usergroups.php:421
@@ -5199,14 +5201,6 @@ msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:255
 msgid "General settings"
-msgstr ""
-
-#: application/extensions/Menu/MenuWidget.php:273
-#: application/models/Permission.php:62
-#: application/views/admin/survey/copySurvey_view.php:54
-#: application/views/admin/survey/importSurvey_view.php:92
-#: application/views/admin/survey/surveybar_view.php:188
-msgid "Assessments"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:279
@@ -8375,8 +8369,7 @@ msgid "This question, by itself, does not contain any syntax errors."
 msgstr ""
 
 #: application/helpers/frontend_helper.php:266
-#: application/views/survey/system/LanguageChanger/LanguageChanger.php:13
-msgid "Choose another language"
+msgid "Select your language"
 msgstr ""
 
 #: application/helpers/frontend_helper.php:269
@@ -12746,6 +12739,10 @@ msgstr ""
 msgid "User ID editable:"
 msgstr ""
 
+#: application/views/admin/participants/userControl_view.php:32
+msgid "You don't have sufficient permissions."
+msgstr ""
+
 #: application/views/admin/participants/viewAttribute_view.php:3
 #: application/views/admin/participants/viewAttribute_view.php:119
 msgid "Attribute name:"
@@ -15477,7 +15474,6 @@ msgid "Add another token entry"
 msgstr ""
 
 #: application/views/admin/token/addtokenpost.php:31
-#: application/views/admin/token/token_bar.php:34
 msgid "Add new token entry"
 msgstr ""
 
@@ -15911,28 +15907,30 @@ msgstr ""
 msgid "Send Reminders"
 msgstr ""
 
+#: application/views/admin/token/token_bar.php:34
+#: application/views/admin/token/tokenform.php:20
+#: application/views/admin/token/tokenform.php:171
+msgid "Add token entry"
+msgstr ""
+
 #: application/views/admin/token/token_bar.php:50
-msgid "Import tokens"
+msgid "Import tokens from:"
 msgstr ""
 
 #: application/views/admin/token/token_bar.php:56
-msgid "from CSV file"
+msgid "CSV file"
 msgstr ""
 
 #: application/views/admin/token/token_bar.php:64
-msgid "from LDAP query"
+msgid "LDAP query"
 msgstr ""
 
 #: application/views/admin/token/token_bar.php:75
-msgid "Manage additional attribute fields"
-msgstr ""
-
-#: application/views/admin/token/token_bar.php:83
-msgid "Export tokens to CSV file"
+msgid "Manage additional attributes"
 msgstr ""
 
 #: application/views/admin/token/token_bar.php:92
-msgid "Tokens email"
+msgid "Invitations & reminders"
 msgstr ""
 
 #: application/views/admin/token/token_bar.php:102
@@ -15940,16 +15938,11 @@ msgid "Send email invitation"
 msgstr ""
 
 #: application/views/admin/token/token_bar.php:139
-msgid "Generate tokens"
+msgid "Generate access token"
 msgstr ""
 
 #: application/views/admin/token/token_bar.php:154
 msgid "Delete tokens table"
-msgstr ""
-
-#: application/views/admin/token/tokenform.php:20
-#: application/views/admin/token/tokenform.php:171
-msgid "Add token entry"
 msgstr ""
 
 #: application/views/admin/token/tokenform.php:69
@@ -16059,7 +16052,7 @@ msgid "The following LimeSurvey updates are available:"
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:34
-msgid "LimeSurvey Version"
+msgid "LimeSurvey version"
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:37
@@ -16079,7 +16072,7 @@ msgid "stable"
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:74
-msgid "Security Udpdate"
+msgid "Security update"
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:78
@@ -16150,7 +16143,7 @@ msgid "It seems you're using a version coming from the LimeSurvey GitHub reposit
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:52
-msgid "You disabled comfortUpdate in your configuration file."
+msgid "You disabled ComfortUpdate in your configuration file."
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:57
@@ -16503,7 +16496,7 @@ msgid "As a last step you should clear your browser cache now."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_final.php:23
-msgid "Please, click this button to logout "
+msgid "Click this button to log out."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_old_step4b.php:7
@@ -17105,6 +17098,10 @@ msgstr ""
 
 #: application/views/survey/questions/shortfreetext/location_mapservice/item_100.php:85
 msgid "Restrict search place to map extent"
+msgstr ""
+
+#: application/views/survey/system/LanguageChanger/LanguageChanger.php:13
+msgid "Choose another language"
 msgstr ""
 
 #: application/views/survey/system/LanguageChanger/LanguageChanger.php:16
