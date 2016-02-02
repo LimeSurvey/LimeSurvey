@@ -98,7 +98,7 @@
                                         <?php endforeach;?>
                                     <?php else:?>
                                         <a href="" onclick="event.preventDefault();" style="cursor: default;">
-                                            <?php eT('no questions in this group');?>
+                                            <?php eT('There are no questions in this group.');?>
                                         </a>
                                     <?php endif;?>
                                 </div>

@@ -35,7 +35,7 @@
                             <div class="form-group">
                                 <?php echo $form->label($model, 'Group:', array('class'=>'control-label')); ?>
                                     <select name="group_name" class="form-control">
-                                        <option value=""><?php eT('any group');?></option>
+                                        <option value=""><?php eT('(Any group)');?></option>
                                         <?php foreach($model->AllGroups as $group): ?>
                                             <option value="<?php echo $group->group_name;?>" <?php if( $group->group_name == $model->group_name){echo 'selected';} ?>>
                                                 <?php echo $group->group_name;?>
@@ -63,13 +63,12 @@
                         // Number of row per page selection
                         'id' => 'question-grid',
                         'type'=>'striped',
-                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
                                 $pageSize,
                                 Yii::app()->params['pageSizeOptions'],
-                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')) .
-                                gT(' rows per page'),
+                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
 
                                 'columns' => array(
                                     array(

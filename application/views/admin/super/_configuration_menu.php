@@ -57,56 +57,56 @@
                 <!-- Expression Manager Descriptions -->
                 <li class="dropdown-item">
                     <a href="<?php echo $this->createUrl("admin/expressions"); ?>">
-                        <?php eT("Expression Manager Descriptions");?>
+                        <?php eT("Expression Manager descriptions");?>
                     </a>
                 </li>
 
                 <!--Available Functions -->
                 <li class="dropdown-item">
                     <a href="<?php echo $this->createUrl('admin/expressions/sa/functions'); ?>">
-                        <?php eT("Available Functions");?>
+                        <?php eT("Available functions");?>
                     </a>
                 </li>
 
                 <!--Unit Tests of Expressions Within Strings -->
                 <li class="dropdown-item">
                     <a href="<?php echo $this->createUrl('admin/expressions/sa/strings_with_expressions'); ?>">
-                        <?php eT("Unit Tests of Expressions Within Strings");?>
+                        <?php eT("Unit tests of expressions within strings");?>
                     </a>
                 </li>
 
                 <!-- Unit Test Dynamic Relevance Processing -->
                 <li class="dropdown-item">
                     <a href="<?php echo $this->createUrl('admin/expressions/sa/relevance'); ?>">
-                        <?php eT("Unit Test Dynamic Relevance Processing");?>
+                        <?php eT("Unit test dynamic relevance processing");?>
                     </a>
                 </li>
 
                 <!-- Preview Conversion of Conditions to Relevance -->
                 <li class="dropdown-item">
                     <a href="<?php echo $this->createUrl('admin/expressions/sa/conditions2relevance'); ?>">
-                        <?php eT("Preview Conversion of Conditions to Relevance");?>
+                        <?php eT("Preview conversion of conditions to relevance");?>
                     </a>
                 </li>
 
                 <!-- Bulk Convert Conditions to Relevance -->
                 <li class="dropdown-item">
                     <a href="<?php echo $this->createUrl('admin/expressions/sa/upgrade_conditions2relevance'); ?>">
-                        <?php eT("Bulk Convert Conditions to Relevance");?>
+                        <?php eT("Bulk convert conditions to relevance");?>
                     </a>
                 </li>
 
                 <!-- Test Navigation -->
                 <li class="dropdown-item">
                     <a href="<?php echo $this->createUrl('admin/expressions/sa/navigation_test'); ?>">
-                        <?php eT("Test Navigation");?>
+                        <?php eT("Test navigation");?>
                     </a>
                 </li>
 
                 <!-- Show Survey logic file -->
                 <li class="dropdown-item">
                     <a href="<?php echo $this->createUrl('admin/expressions/sa/survey_logic_file'); ?>">
-                        <?php eT("Show Survey logic file");?>
+                        <?php eT("Show survey logic file");?>
                     </a>
                 </li>
             </ul>
@@ -126,14 +126,14 @@
                 <!-- Check Data Integrity -->
                 <li class="dropdown-item">
                     <a href="<?php echo $this->createUrl("admin/checkintegrity"); ?>">
-                        <?php eT("Check Data Integrity");?>
+                        <?php eT("Check data integrity");?>
                     </a>
                 </li>
 
                 <!-- Backup Entire Database -->
                 <li class="dropdown-item">
                     <a href="<?php echo $this->createUrl("admin/dumpdb"); ?>">
-                        <?php eT("Backup Entire Database");?>
+                        <?php eT("Backup entire database");?>
                     </a>
                 </li>
 
@@ -211,7 +211,7 @@
                 <!-- Template Editor -->
                 <li class="dropdown-item">
                     <a href="<?php echo $this->createUrl("admin/templates/sa/view"); ?>">
-                        <?php eT("Template Editor");?>
+                        <?php eT("Template editor");?>
                     </a>
                 </li>
             </ul>

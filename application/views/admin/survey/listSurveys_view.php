@@ -55,13 +55,12 @@
 
                     // Number of row per page selection
                     'id' => 'survey-grid',
-                    'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .
+                    'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                         CHtml::dropDownList(
                             'pageSize',
                             $pageSize,
                             Yii::app()->params['pageSizeOptions'],
-                            array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')) .
-                        gT(' rows per page'),
+                            array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
 
                     'columns' => array(
                         array(
