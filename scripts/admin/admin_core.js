@@ -74,6 +74,7 @@ $(document).ready(function(){
         $('#switchchangeformat button').on('click', function(event, state) {
             //alert('ok');
             $('#switchchangeformat button.active').removeClass('active');
+            $(this).addClass('active');
             $value = $(this).data('value');
             $url = $('#switch-url').attr('data-url')+'/format/'+$value;
 

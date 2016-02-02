@@ -18,9 +18,11 @@
             <filename>css/print_template.css</filename>
             <filename>css/flat_and_modern.css</filename>
             <filename>css/template.css</filename>
+            <filename>css/bootstrap-slider.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
+            <filename>scripts/bootstrap-slider.js</filename>
         </js>
         <rtl>
             <css>
