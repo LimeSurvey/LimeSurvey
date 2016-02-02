@@ -33,13 +33,13 @@
                     <div class="form-group">
                         <?php echo $form->label($model, 'Active:', array('class'=>'control-label')); ?>
                             <select name="active" class="form-control">
-                                <option value="" <?php if( $model->active!="Y" && $model->active!="N" ){echo "selected";}?>><?php eT('any state');?></option>
+                                <option value="" <?php if( $model->active!="Y" && $model->active!="N" ){echo "selected";}?>><?php eT('(Any state)');?></option>
                                 <option value="Y" <?php if( $model->active=="Y"){echo "selected";}?>><?php eT('Yes');?></option>
                                 <option value="N" <?php if( $model->active=="N"){echo "selected";}?>><?php eT('No');?></option>
                             </select>
                     </div>
-                            <?php echo CHtml::submitButton(gT('search'), array('class'=>'btn btn-success')); ?>
-                            <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listsurveys');?>" class="btn btn-warning"><?php eT('reset');?></a>
+                            <?php echo CHtml::submitButton(gT('Search'), array('class'=>'btn btn-success')); ?>
+                            <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listsurveys');?>" class="btn btn-warning"><?php eT('Reset');?></a>
 
                 <?php $this->endWidget(); ?>
             </div>

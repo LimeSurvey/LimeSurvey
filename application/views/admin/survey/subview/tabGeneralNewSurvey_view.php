@@ -82,7 +82,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label" for='urldescrip'><?php  eT("URL description:") ; ?></label>
 								<div class="col-sm-9">
-									<input type='text' maxlength='255' size='50' id='urldescrip' name='urldescrip' value=''  class="form-control"  placeholder="<?php eT('describe this redirection');?>" />
+									<input type='text' maxlength='255' size='50' id='urldescrip' name='urldescrip' value=''  class="form-control"  placeholder="<?php eT('Some description');?>" />
 								</div>
 							</div>
 

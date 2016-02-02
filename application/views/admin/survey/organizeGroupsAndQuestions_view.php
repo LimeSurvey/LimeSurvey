@@ -42,6 +42,6 @@
             </p>
         </form>
         <!-- If user do a change in the list, and try to leave without saving, he'll be warn with this message -->
-        <input type="hidden" value="off" id="didChange" data-message="<?php eT('You didn\'t saved your changes !'); ?>" />
+        <input type="hidden" value="off" id="didChange" data-message="<?php eT("You didn't save your changes!"); ?>" />
     </div>
 </div>

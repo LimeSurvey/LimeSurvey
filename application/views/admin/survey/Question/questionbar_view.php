@@ -91,14 +91,14 @@ $aReplacementData=array();
             <!-- Delete -->
             <?php if( $activated != "Y" && Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete' )):?>
                 <a class="btn btn-default"
-                onclick="if (confirm('<?php eT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/questions/sa/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
+                onclick="if (confirm('<?php eT("Deleting will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/questions/sa/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
                     <span class="glyphicon glyphicon-trash text-danger"></span>
                     <?php eT("Delete"); ?>
                 </a>
             <?php else:?>
                 <a href='<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
                     class="btn btn-default"
-                    onclick="alert('<?php eT("You can't delete  because the survey is currently active.","js"); ?>')">
+                    onclick="alert('<?php eT("You can't delete this question group because the survey is currently active.","js"); ?>')">
                     <span class="glyphicon glyphicon-trash"></span>
                     <?php eT("Delete current question group"); ?>
                 </a>
@@ -127,7 +127,7 @@ $aReplacementData=array();
                     </a>
                 <?php endif;?>
             <?php else:?>
-                    <a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You don't have necessary permission","js"); ?>'>
+                    <a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You don't have the necessary permission.","js"); ?>'>
                         <span class="icon-copy"></span>
                         <?php eT("Copy"); ?>
                     </a>
@@ -140,7 +140,7 @@ $aReplacementData=array();
                         <?php eT("Set conditions "); ?>
                     </a>
             <?php else:?>
-                    <a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You don't have necessary permission","js"); ?>')">
+                    <a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You don't have the necessary permission.","js"); ?>')">
                         <span class="icon-conditions"></span>
                         <?php eT("Set conditions "); ?>
                     </a>
@@ -218,7 +218,7 @@ $aReplacementData=array();
                 <?php if(isset($questionbar['buttons']['conditions'])):?>
 
                     <div class="form-group">
-                        <label for='questionNav'><?php eT("Move to question");?>:</label>
+                        <label for='questionNav'><?php eT("Move to question:");?></label>
                         <select id='questionNav' class="form-control"  onchange="window.open(this.options[this.selectedIndex].value,'_top')"><?php echo $quesitonNavOptions;?></select>
                     </div>
 

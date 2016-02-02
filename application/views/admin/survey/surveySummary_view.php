@@ -38,7 +38,7 @@
                         <?php if ($activated == "Y"): ?>
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-                                <strong><?php eT('Warning!');?></strong> <?php eT('While survey is activated, you can\'t add or remove group or question');?>
+                                <strong><?php eT('Warning!');?></strong> <?php eT("While the survey is activated, you can't add or remove a group or question.");?>
                             </div>
 
                         <?php elseif(!$groups_count > 0):?>
@@ -46,14 +46,14 @@
                             <!-- To add questions, first, you must add a question group -->
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-                                <strong><?php eT('Warning!');?></strong> <?php eT('To add questions, first, you must add a question group.');?>
+                                <strong><?php eT('Warning!');?></strong> <?php eT('Before you can add questions you must add a question group first.');?>
                             </div>
 
                             <!-- If you want a single page survey, just add a single group, and switch on "Show questions group by group -->
                             <div class="alert alert-info alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
                                 <span class="glyphicon glyphicon-info-sign" ></span>&nbsp;&nbsp;&nbsp;
-                                <?php eT('If you want a single page survey, just add a single group, and switch on "Show questions group by group"');?>
+                                <?php eT('In the survey options you can set later if your questions are shown one at a time, group by group or all on one page.');?>
                             </div>
                         <?php endif;?>
                     </div>
@@ -69,7 +69,7 @@
                         <?php $switchvalue = ($surveyinfo['format']=='G') ? 1 : 0 ; ?>
                         <div class="row">
                             <div class="col-sm-12">
-                                <label for="groupbygroup"><?php eT('Show questions group by group :');?></label>
+                                <label for="groupbygroup"><?php eT('Show questions:');?></label>
                                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                     'name' => 'groupbygroup',
                                     'id'=>'switchchangeformat',
