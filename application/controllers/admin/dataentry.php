@@ -898,8 +898,8 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= '</div>';
                             App()->getClientScript()->registerPackage('jquery-actual');
 
-                            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'ranking.js' ));
-                            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'ranking.css' ));
+                            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH.'ranking.js' ));
+                            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles-public/ranking.css') );
                             $aDataentryoutput .= "<script type='text/javascript'>\n"
                                 .  "  <!--\n"
                                 . "var aRankingTranslations = {
