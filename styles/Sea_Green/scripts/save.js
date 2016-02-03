@@ -39,7 +39,6 @@ var getForm = function (that) {
 if ($('#save-button').length > 0){
     $('#save-button').on('click', function()
     {
-        console.log('ok');
         var $form = getForm(this);
         closeAfterSaveInput.val("false");
         $form.append(closeAfterSaveInput);
