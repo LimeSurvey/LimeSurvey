@@ -7,11 +7,11 @@
     $subaction == "updatescenario" ||
     $subaction == "renumberscenarios")  : ?>
 
-    <div class="col-lg-4">
+    <div class="col-sm-4">
         <?php echo $onlyshow;?>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-sm-4">
         <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deleteallconditions/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;','id'=>'deleteallconditions','name'=>'deleteallconditions'));?>
             <input type='hidden' name='qid' value='<?php echo $qid;?>' />
             <input type='hidden' name='gid' value='<?php echo $gid;?>' />
@@ -36,6 +36,7 @@
     </div>
 
 <?php else :?>
+
             <strong><?php echo $onlyshow;?></strong>
             <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deleteallconditions/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;','id'=>'deleteallconditions','name'=>'deleteallconditions'));?>
                 <input type='hidden' name='qid' value='<?php echo $qid;?>' />

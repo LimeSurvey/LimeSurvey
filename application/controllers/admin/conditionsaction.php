@@ -1613,8 +1613,8 @@ class conditionsaction extends Survey_Common_Action {
             }
             else
             { // no condition ==> disable delete all conditions button, and display a simple comment
-                $aViewUrls['output'] = 	CHtml::openTag('tr') . CHtml::tag('td', array(),
-                gT("This question is always shown.")).CHtml::tag('td', array(),'&nbsp;').CHtml::closeTag('tr');
+                // no_conditions
+                $aViewUrls['output'] = $this->getController()->renderPartial('/admin/conditions/no_condition',$aData, true);
             }
 
             $aViewUrls['output'] .= CHtml::closeTag('table');
@@ -1732,56 +1732,23 @@ class conditionsaction extends Survey_Common_Action {
         $subaction == "updatescenario" ||
         $subaction == "editthiscondition" || $subaction == "delete")
         {
-            $aViewUrls['output'] .= CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"), 'post', array('id'=>"editconditions",'name'=>"editconditions"));
-            if ($subaction == "editthiscondition" &&  isset($p_cid))
-            {
-                $mytitle = gT("Edit condition");
-            }
-            else
-            {
-                $mytitle = gT("Add condition");
-            }
-            $aViewUrls['output'] .= "<h4>".$mytitle."</h4>";
+            $mytitle = ($subaction == "editthiscondition" &&  isset($p_cid))?gT("Edit condition"):gT("Add condition");
+            $showScenario = ( ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) || ( $subaction == "editthiscondition" && isset($scenario) && $scenario == 1) )?true:false;
 
-            ///////////////////////////////////////////////////////////////////////////////////////////
+            $aDataEditconditions = array(
+                'subaction'=>$subaction,
+                'iSurveyID'=>$iSurveyID,
+                'gid'=>$gid,
+                'qid'=>$qid,
+                'mytitle'=>$mytitle,
+                'showScenario'=>$showScenario,
+                'qcountI'=>$qcount+1,
+            );
+            $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $aDataEditconditions, true);
 
-            // Begin "Scenario" row
-            if  ( ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) ||
-            ( $subaction == "editthiscondition" && isset($scenario) && $scenario == 1) )
-            {
-                $scenarioAddBtn =
-                "\t<a id='scenarioaddbtn' href='#' onclick=\"$('#scenarioaddbtn').hide();$('#defaultscenariotxt').hide('slow');$('#scenario').show('slow');\">"
-                ."<span class='icon-add'></span></a>\n";
-                $scenarioTxt = "<span id='defaultscenariotxt'>".gT("Default scenario")."</span>";
-                $scenarioInputStyle = "style = 'display: none;'";
-            }
-            else
-            {
-                $scenarioAddBtn = "";
-                $scenarioTxt = "";
-                $scenarioInputStyle = "style = ''";
-            }
 
-            $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
-            ."<div class='condition-tbl-left'>$scenarioAddBtn&nbsp;".gT("Scenario")."</div>\n"
-            ."<div class='condition-tbl-right'><input type='text' name='scenario' id='scenario' value='1' size='2' $scenarioInputStyle/>"
-            ."$scenarioTxt\n"
-            ."</div>\n"
-            ."</div>\n";
+            //form_editconditions_header
 
-            // Begin "Question" row
-            $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
-            ."<div class='condition-tbl-left'>".gT("Question")."</div>\n"
-            ."<div class='condition-tbl-right'>\n"
-            ."\t<div id=\"conditionsource\">\n"
-            ."\t<ul class='nav nav-tabs'>\n"
-            ."\t<li  role='presentation' class='active'><a data-toggle='tab' href=\"#SRCPREVQUEST\"><span>".gT("Previous questions")."</span></a></li>\n"
-            ."\t<li role='presentation'><a data-toggle='tab'href=\"#SRCTOKENATTRS\"><span>".gT("Token fields")."</span></a></li>\n"
-            ."\t</ul>\n";
-
-            // Previous question tab
-            $aViewUrls['output'] .= '<div class="tab-content">';
-            $aViewUrls['output'] .= "<div id='SRCPREVQUEST' class='tab-pane fade in active'><select class='form-control' name='cquestions' id='cquestions' size='".($qcount+1)."' >\n";
             if (isset($cquestions))
             {
                 $js_getAnswers_onload = "";
