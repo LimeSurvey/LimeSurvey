@@ -703,31 +703,31 @@ class Survey extends LSActiveRecord
 
         $sort = new CSort();
         $sort->attributes = array(
-          'Survey id'=>array(
+          'survey_id'=>array(
             'asc'=>'sid',
             'desc'=>'sid desc',
           ),
-          'Title'=>array(
+          'title'=>array(
             'asc'=>'surveys_languagesettings.surveyls_title',
             'desc'=>'surveys_languagesettings.surveyls_title desc',
           ),
 
-          'Creation date'=>array(
+          'creation_date'=>array(
             'asc'=>'datecreated',
             'desc'=>'datecreated desc',
           ),
 
-          'Owner'=>array(
+          'owner'=>array(
             'asc'=>'users.users_name',
             'desc'=>'users.users_name desc',
           ),
 
-          'Anonymized responses'=>array(
+          'anonymized_responses'=>array(
             'asc'=>'anonymized',
             'desc'=>'anonymized desc',
           ),
 
-          'Active'=>array(
+          'active'=>array(
             'asc'=>'active',
             'desc'=>'active desc',
           ),

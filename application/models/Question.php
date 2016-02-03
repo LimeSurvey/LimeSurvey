@@ -845,24 +845,24 @@
 
         $sort = new CSort();
         $sort->attributes = array(
-          'Question id'=>array(
+          'question_id'=>array(
             'asc'=>'qid',
             'desc'=>'qid desc',
           ),
-          'Question order'=>array(
+          'question_order'=>array(
             'asc'=>'question_order',
             'desc'=>'question_order desc',
           ),
-          'Title'=>array(
+          'title'=>array(
             'asc'=>'title',
             'desc'=>'title desc',
           ),
-          'Question'=>array(
+          'question'=>array(
             'asc'=>'question',
             'desc'=>'question desc',
           ),
 
-          'Group'=>array(
+          'group'=>array(
             'asc'=>'groups.group_name',
             'desc'=>'groups.group_name desc',
           ),

@@ -229,15 +229,15 @@
 
             $sort = new CSort();
             $sort->attributes = array(
-              'Group ID'=>array(
+              'group_id'=>array(
                 'asc'=>'gid',
                 'desc'=>'gid desc',
               ),
-              'Group order'=>array(
+              'group_order'=>array(
                 'asc'=>'group_order',
                 'desc'=>'group_order desc',
               ),
-              'Group name'=>array(
+              'group_name'=>array(
                 'asc'=>'group_name',
                 'desc'=>'group_name desc',
               ),
