@@ -3111,6 +3111,7 @@ function do_multiplenumeric($ia)
         $slider_orientation= '';
         $slider_handle = '';
         $slider_custom_handle = '';
+        $slider_separator = '';
     }
     $hidetip=$aQuestionAttributes['hide_tip'];
 

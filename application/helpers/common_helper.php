@@ -3552,6 +3552,7 @@ function questionAttributes($returnByName=false)
         'sortorder'=>110,
         'inputtype'=>'text',
         "help"=>gT('Answer|Left-slider-text|Right-slider-text separator character'),
+        'default'=>'|',
         "caption"=>gT('Slider left/right text separator'));
 
         $qattributes["suffix"]=array(
