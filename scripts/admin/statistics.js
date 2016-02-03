@@ -65,7 +65,7 @@ var COLORS_FOR_SURVEY = new Array('20,130,200','232,95,51','34,205,33','210,211,
 {
     $.fn.loadGraph=function()
     {
-       this.each(function(){       
+       this.each(function(){
            var $elem = $(this);
            var $type = $elem.data('type');
            var $qid = $elem.data('qid');

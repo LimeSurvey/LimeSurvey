@@ -621,6 +621,7 @@ class statistics extends Survey_Common_Action {
                     QuestionAttribute::model()->setQuestionAttribute($qqid, 'statistics_graphtype', 0);
 
                     $adata = Yii::app()->session['stats'][$_POST['id']];
+
                     $aData['chartdata'] =  createChart($qqid, $qsid, 0, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache, $sStatisticsLanguage, $qtype);
 
                     break;

@@ -3073,6 +3073,7 @@ class statistics_helper {
         $statisticsoutput =  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_header', $aData, true);
 
         //loop through all available answers
+        ////
         while (isset($gdata[$i]))
         {
             $aData['i']=$i;
@@ -3646,6 +3647,7 @@ class statistics_helper {
             {
                 // We clean the labels
                 $iMaxLabelLength = 0;
+
                 foreach($labels as $key => $label)
                 {
                     $cleanLabel = str_replace('"', " ", $label);
@@ -3666,6 +3668,8 @@ class statistics_helper {
                 $aData['grawdata'] = $grawdata;
                 $aData['color'] = rand ( 0, 70 );
                 $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
+                $aData['lbl'] =$lbl;
+                ///
 
                 $statisticsoutput .=  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_graphs', $aData, true);
 

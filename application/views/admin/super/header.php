@@ -23,7 +23,7 @@
         }
         else
         {
-            App()->getClientScript()->registerCssFile( Yii::app()->getBaseUrl(true).'/styles-public/font-awesome-43.min.css' );
+            App()->getClientScript()->registerCssFile( Yii::app()->getBaseUrl(true).'/styles-public/font-awesome-43-debugmode.min.css' );
         }
 
         // Bootstrap

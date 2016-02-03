@@ -24,12 +24,16 @@
                 data-type="<?php echo $charttype; // the chart start type (bar, donut, etc.) ?>"
                 data-color="<?php echo $color; // the background color for bar, etc. ?>"
             >
+
+            <div class="chartjs-container">
                 <canvas class="canvas-chart " id="chartjs-<?php echo $qqid; ?>" width="400" height="<?php echo $iCanvaHeight;?>"
                     data-color="<?php echo $color; // the background color for bar, etc. ?>"></canvas>
             </div>
-
+<!-- maintainAspectRatio: false -->
+            </div>
             <!-- legends -->
             <div class="legend col-sm-2 vcenter">
+                <?php  var_dump($lbl);?>
                 <?php foreach($labels as $i=>$label): ?>
                     <?php $colorindex = $color+$i; $colorindex = ($colorindex < 72)?$colorindex:0;?>
                     <div class="row" style="margin-bottom: 10px;">
@@ -38,7 +42,7 @@
                             </span>
                         </div>
                         <div class="col-sm-10">
-                            <?php echo $label; ?>
+                            A<?php echo $label; var_dump($label);?>
                         </div>
                     </div>
                 <?php endforeach;?>
