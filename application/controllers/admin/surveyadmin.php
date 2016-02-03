@@ -674,38 +674,22 @@ class SurveyAdmin extends Survey_Common_Action
             }
             else
             {
-                $aViewUrls['output']= "<br />\n<div class='jumbotron message-box'>\n"
-                ."<h3>".gT("Activate Survey")." ({$iSurveyID})</h3>\n"
-                ."<div class='alert alert-success' role='alert'>".gT("Survey has been activated. Results table has been successfully created.")."</div><br /><br />\n";
+                $warning = (isset($aResult['warning']))?true:false;
+                $allowregister = ($survey->allowregister=='Y')?true:false;
+                $onclickAction = convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID));
+                $closedOnclickAction = convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID));
+                $noOnclickAction = convertGETtoPOST(Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID));
 
-                if (isset($aResult['warning']))
-                {
-                    $aViewUrls['output'] .= "<strong class='text-warning'>"
-                    .gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the /upload/surveys directory.")
-                    ."</strong>";
-                }
+                $activationData = array(
+                    'iSurveyID'=>$iSurveyID,
+                    'warning'=>$warning,
+                    'allowregister'=>$allowregister,
+                    'onclickAction'=>$onclickAction,
+                    'closedOnclickAction'=>$closedOnclickAction,
+                    'noOnclickAction'=>$noOnclickAction,
+                );
+                $aViewUrls['output'] = $this->getController()->renderPartial('/admin/survey/_activation_feedback', $activationData, true);
 
-                if ($survey->allowregister=='Y')
-                {
-                    $aViewUrls['output'] .= gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n"
-                        ."<input type='submit' value='".gT("Initialise tokens")
-                        ."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))."\" />\n";
-                }
-                else
-                {
-                    $aViewUrls['output'] .= gT("This survey is now active, and responses can be recorded.")."<br /><br />\n"
-                        ."<strong>".gT("Open-access mode").":</strong> "
-                        .gT("No invitation code is needed to complete the survey.")."<br />"
-                        .gT("You can switch to the closed-access mode by initialising a token table with the button below.")."<br /><br />\n"
-                        ."<input type='submit' class='btn btn-default'  value='"
-                        .gT("Switch to closed-access mode")
-                        ."' onclick=\""
-                        .convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))."\" />\n"
-                        ."<input type='submit' class='btn btn-default' value='"
-                        .gT("No, thanks.")."' onclick=\""
-                        .convertGETtoPOST(Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID))."\" />\n";
-                }
-                $aViewUrls['output'] .= "</div><br />&nbsp;\n";
             }
             $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
         }
