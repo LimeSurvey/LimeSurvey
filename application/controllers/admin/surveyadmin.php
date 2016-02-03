@@ -1305,7 +1305,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $relevance = ($q['relevance'] == '') ? 1 : $q['relevance'];
                 $question = '[{' . $relevance . '}] ' . $q['question'];
                 LimeExpressionManager::ProcessString($question, $q['qid']);
-                $q['question'] = LimeExpressionManager::GetLastPrettyPrintExpression();
+                $q['question'] = viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                 $q['gid'] = $aGroup['gid'];
                 $qs[] = $q;
             }
