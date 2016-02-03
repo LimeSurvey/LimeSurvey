@@ -8,6 +8,7 @@
  */
 ?>
 
+<!-- 5 point choice footer -->
 <input
     type="hidden"
     name="java<?php echo $ia[1];?>"
