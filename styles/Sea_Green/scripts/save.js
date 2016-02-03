@@ -39,6 +39,7 @@ var getForm = function (that) {
 if ($('#save-button').length > 0){
     $('#save-button').on('click', function()
     {
+        ev.preventDefault();
         var $form = getForm(this);
         closeAfterSaveInput.val("false");
         $form.append(closeAfterSaveInput);
@@ -50,6 +51,7 @@ if ($('#save-button').length > 0){
 if ($('#save-and-close-button').length > 0){
     $('#save-and-close-button').on('click', function()
     {
+        ev.preventDefault();
         var $form = getForm(this);
         closeAfterSaveInput.val("true");
         $form.append(closeAfterSaveInput);
