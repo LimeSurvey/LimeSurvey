@@ -7,7 +7,7 @@
  * @var $checkconditionFunction
  */
 ?>
-
+<!-- 5 point choice no answer -->
 <div class="col-xs-2 answer-item radio-item noanswer-item">
     <input
         class="radio"

@@ -915,7 +915,7 @@ function do_5pointchoice($ia)
         'sJavaValue' => $sJavaValue,
         'slider_rating' => $slider_rating,
     );
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/5pointchoice_footer', $aData, true);
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/5pointchoice_footer', $aData, true);
 
     return array($answer, $inputnames);
 }
