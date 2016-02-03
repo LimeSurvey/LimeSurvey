@@ -1335,10 +1335,16 @@ function db_upgrade_all($iOldDBVersion) {
 
         if ( $iOldDBVersion < 252 )
         {
-            upgradeSurveyTables252();
-
+            Yii::app()->db->createCommand()->addColumn('{{questions}}','modulename','string');
             // Update DBVersion
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>252),"stg_name='DBVersion'");
+        }
+        if ( $iOldDBVersion < 253 )
+        {
+            upgradeSurveyTables253();
+
+            // Update DBVersion
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>253),"stg_name='DBVersion'");
         }
 
         $oTransaction->commit();
@@ -1367,9 +1373,22 @@ function db_upgrade_all($iOldDBVersion) {
     return true;
 }
 
-function upgradeSurveyTables252()
+function upgradeSurveyTables253()
 {
-    Yii::app()->db->createCommand()->addColumn('{{questions}}','modulename','string');
+    $oSchema = Yii::app()->db->schema;
+    $aTables = dbGetTablesLike("survey\_%");
+    foreach ( $aTables as $sTable )
+    {
+        $oTableSchema=$oSchema->getTable($sTable);
+        if (in_array('refurl',$oTableSchema->columnNames))
+        {
+            alterColumn($sTable,'refurl',"text");
+        }
+        if (in_array('ipaddr',$oTableSchema->columnNames))
+        {
+            alterColumn($sTable,'ipaddr',"text");
+        }
+    }
 }
 
 function upgradeSurveyTables251()
@@ -1504,9 +1523,9 @@ function fixKCFinder184()
     rmdirr($sThirdPartyDir.'ckeditor/plugins/toolbar/ls-office2003');
     $aUnlink = glob($sThirdPartyDir.'kcfinder/cache/*.js');
     if ($aUnlink !== false) {
-        array_map('unlink', $aUnlink); 
+        array_map('unlink', $aUnlink);
     }
-    $aUnlink = glob($sThirdPartyDir.'kcfinder/cache/*.css'); 
+    $aUnlink = glob($sThirdPartyDir.'kcfinder/cache/*.css');
     if ($aUnlink !== false) {
         array_map('unlink', $aUnlink);
     }
