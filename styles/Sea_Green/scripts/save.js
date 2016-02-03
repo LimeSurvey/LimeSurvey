@@ -37,7 +37,7 @@ var getForm = function (that) {
 };
 
 if ($('#save-button').length > 0){
-    $('#save-button').on('click', function()
+    $('#save-button').on('click', function(ev)
     {
         ev.preventDefault();
         var $form = getForm(this);
@@ -49,7 +49,7 @@ if ($('#save-button').length > 0){
 
 // Save-and-close button
 if ($('#save-and-close-button').length > 0){
-    $('#save-and-close-button').on('click', function()
+    $('#save-and-close-button').on('click', function(ev)
     {
         ev.preventDefault();
         var $form = getForm(this);
