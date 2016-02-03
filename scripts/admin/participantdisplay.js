@@ -187,6 +187,14 @@ $(document).ready(function() {
                     { name:'date_invited',index:'date_invited', width:100,align:'center', sorttype:"string", sortable: true},
                     { name:'date_completed',index:'date_invited', width:100,align:'center', sorttype:"string", sortable: true}],
                 caption: linksHeadingTxt,
+                pager: second_pager_id,
+                viewrecords: true,
+                pgbuttons: true,
+                pginput: true,
+                recordtext:'',
+                pgtext:'',
+                rowNum:10,
+                rowList:[10,25,50,100,250,500,1000,2500,5000],  /* start with 10 to keep it smaller */
                 gridComplete: function () {
                     var recs = $("#"+second_subgrid_table_id).jqGrid('getGridParam','reccount');
                     if (recs == 0 || recs == null) {

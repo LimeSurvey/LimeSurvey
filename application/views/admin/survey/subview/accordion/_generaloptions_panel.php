@@ -123,7 +123,7 @@
     <div class="form-group">
         <label class="col-sm-3 control-label" for='url'><?php  eT("End URL:"); ?></label>
         <div class="col-sm-9">
-            <input type='text' class="form-control"  id='url' name='url' placeholder="http://<?php eT('your.redirection.com');?>"  />
+            <input type='text' class="form-control"  id='url' name='url' placeholder="http://example.com" />
         </div>
     </div>
 
