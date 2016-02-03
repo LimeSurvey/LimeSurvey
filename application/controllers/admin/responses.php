@@ -769,12 +769,19 @@ class responses extends Survey_Common_Action
         $dtresult = SurveyDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
         $all_rows = array();
         foreach ($dtresult as $row) {
-            $action_html  = "<a href='" . Yii::app()->createUrl("admin/responses/view/surveyid/$surveyid/id/{$row['id']}") . "'>";
-            $action_html  += "<span class='glyphicon glyphicon-list-alt text-success' title='" . gT('View response details') . "'></span></a>";
+
+            // View detail icon
+            $action_html = '<a href="' . Yii::app()->createUrl("admin/responses/view/surveyid/$surveyid/id/{$row['id']}")
+                . '"><span class="glyphicon glyphicon-list-alt text-success" title="'
+                . gT('View response details') . '"></span></a>';
+
+            // Edit icon
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','update')) {
                 $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$row['id']}") . "'>
                 <span class='glyphicon glyphicon-pencil text-success' title='" . gT('Edit this response') . "'></span></a>";
             }
+
+            // Download icon
             if (hasFileUploadQuestion($surveyid)) {
                 if(Response::model($surveyid)->findByPk($row['id'])->getFiles())
                 {
@@ -782,6 +789,8 @@ class responses extends Survey_Common_Action
                     $action_html .='<a title="'.gT('Download all files in this response as a zip file').'" href="'.$action_url.'"><span class="glyphicon glyphicon-download-alt downloadfile"></span></a>';
                 }
             }
+
+            // Delete icon
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete')) {
                 $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>$surveyid,"sResponseId"=>$row['id']))."' data-delete='".$row['id']."'>
                 <span title='" . sprintf(gT('Delete response %s'),$row['id']) . "' class='deleteresponse glyphicon glyphicon-trash text-warning'></span></a>";
