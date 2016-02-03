@@ -3481,8 +3481,8 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Slider'),
         'sortorder'=>2,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('horizontal'),
-        1=>gT('vertical')),
+        'options'=>array(0=>gT('Horizontal'),
+        1=>gT('Vertical')),
         'default'=>0,
         "help"=>gT('Set the orientation.'),
         "caption"=>gT('Orientation'));
@@ -3492,10 +3492,10 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Slider'),
         'sortorder'=>3,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('round'),
-        1=>gT('square'), 2=>gT('triangle'), 3=>gT('custom')),
+        'options'=>array(0=>gT('Circle'),
+        1=>gT('Square'), 2=>gT('Triangle'), 3=>gT('Custom')),
         'default'=>0,
-        "help"=>gT('Set the handle shape. Custom is defined in CSS, using Font Awesome font'),
+        "help"=>gT("Set the handle shape. 'Custom' is defined in CSS using the Font Awesome font."),
         "caption"=>gT('Handle shape'));
 
         $qattributes["slider_custom_handle"]=array(
@@ -3504,9 +3504,8 @@ function questionAttributes($returnByName=false)
         'sortorder'=>4,
         'inputtype'=>'text',
         'default'=>'f1ae',
-        "help"=>gT('Accept Font Awesome unicode characters.'),
-        "caption"=>gT('Custom handle unicode characters'));
-
+        "help"=>gT('Accepts Font Awesome Unicode characters.'),
+        "caption"=>gT('Custom handle Unicode code'));
 
         $qattributes["slider_rating"]=array(
         "types"=>"5",
