@@ -19,6 +19,7 @@
             <filename>statistics.css</filename>
             <filename>bootstrap-switch.min.css</filename>
             <filename>jcarousel.responsive.css</filename>
+            <filename>lime-admin-misc.css</filename>
         </css>
         <js>
             <filename>notify.js</filename>

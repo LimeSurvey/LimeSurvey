@@ -1,0 +1,13 @@
+/**
+ * OBS! NO COLOURS IN THIS FILE.
+ */
+
+.inputbuttons {
+    width: 100px;
+}
+
+.inputbuttons-square {
+    width: 20px;
+    height: 16px;
+    float: left;
+}
