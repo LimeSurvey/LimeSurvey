@@ -216,7 +216,12 @@ function getSurveyList($returnarray=false, $surveyid=false)
         $surveynames = array();
         foreach ($surveyidresult as $result)
         {
-            $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
+            $auxatt = $result->attributes;
+            if (!empty($result->defaultlanguage->attributes))
+            {
+              $auxatt = array_merge($auxatt, $result->defaultlanguage->attributes);  
+            } 
+            $surveynames[] = $auxatt;
         }
 
         $cached = $surveynames;
@@ -232,8 +237,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
     {
         foreach($surveynames as $sv)
         {
-
-            $surveylstitle=flattenText($sv['surveyls_title']);
+            $surveylstitle = empty($sv['surveyls_title']) ? '' : flattenText($sv['surveyls_title']);
             if (strlen($surveylstitle)>45)
             {
                 $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle,ENT_QUOTES,'UTF-8'), 0, 45, 'UTF-8'))."...";
