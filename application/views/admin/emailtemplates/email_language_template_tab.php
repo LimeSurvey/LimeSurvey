@@ -11,19 +11,19 @@
         <div class='col-sm-4'>
             <?php echo CHtml::textField("email_{$tab}_subj_{$grouplang}",$esrow->$details['field']['subject'],array('class' => 'form-control', 'size'=>80)); ?>
         </div>
-        <div class='col-sm-1'>
+        <div class='col-sm-1 text-right'>
             <?php echo CHtml::button(gT("Reset"),array('class'=>'fillin btn btn-default','data-target'=>"email_{$tab}_subj_{$grouplang}",'data-value'=>$details['default']['subject'])); ?>
         </div>
     </div>
 
     <div class='form-group'>
         <label class='col-sm-2 control-label' for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
-        <div class='col-sm-5'>
+        <div class='col-sm-4'>
             <?php echo CHtml::textArea("email_{$tab}_{$grouplang}",$esrow->$details['field']['body'],array('cols'=>80,'rows'=>20, 'class'=>'form-control')); ?>
             <?php echo getEditor("email-$tab","email_{$tab}_$grouplang", $details['body'].'('.$grouplang.')',$surveyid,'','','editemailtemplates'); ?>
         </div>
-        <div class='col-sm-1'>
-            <?php 
+        <div class='col-sm-1  text-right'>
+            <?php
                 $details['default']['body']=($tab=='admin_detailed_notification') ? $details['default']['body'] : conditionalNewlineToBreak($details['default']['body'],$ishtml) ;
                 echo CHtml::button(gT("Reset"),array('class'=>'fillin btn btn-default','data-target'=>"email_{$tab}_{$grouplang}",'data-value'=>$details['default']['body']));
             ?>
@@ -48,13 +48,13 @@
                     <th><?php eT("Relevance"); ?></th>
                 </tr>
                 <?php
-                
+
                     if (isset($esrow->attachments[$tab]))
                     {
                         $script = array();
                         foreach ($esrow->attachments[$tab] as $attachment)
                         {
-                            
+
                             $script[] = sprintf("addAttachment($('#attachments-%s-%s'), %s, %s, %s );", $grouplang, $tab, json_encode($attachment['url']), json_encode($attachment['relevance']), json_encode($attachment['size']));
                         }
                         echo '<script type="text/javascript">';
