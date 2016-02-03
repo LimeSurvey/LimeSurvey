@@ -273,7 +273,7 @@
                                     <!-- Quick-translation -->
                                     <li>
                                         <a href="<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$surveyid}");?>">
-                                        <span class="fa fa-globe" ></span>
+                                        <span class="fa fa-language" ></span>
                                         <?php eT("Quick-translation");?>
                                         </a>
                                     </li>
@@ -283,7 +283,7 @@
                                     <!-- Quick-translation disabled -->
                                     <li>
                                         <a href="#" onclick="alert('<?php eT("Currently there are no additional languages configured for this survey.", "js");?>');" >
-                                          <span class="icon-translate" ></span>
+                                          <span class="fa fa-language" ></span>
                                           <?php eT("Quick-translation");?>
                                         </a>
                                     </li>
