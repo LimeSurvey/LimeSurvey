@@ -590,6 +590,9 @@ $(document).ready(function() {
                     modal: true,
                     open: function(event, ui) {
                         $('#addsurvey').dialog('option', 'title', addsurvey + ' ('+totalitems+')');
+
+                        // Add Bootstrap classes to buttons ad hoc
+                        $('.ui-dialog-buttonpane button').addClass('btn btn-default');
                     },
                     buttons: dialog_buttons
                 });
