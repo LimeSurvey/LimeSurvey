@@ -1284,7 +1284,7 @@ class Participant extends LSActiveRecord
                 /* $key is the fieldname from the token table (ie "attribute_1")
                  * $value is the 'friendly name' for the attribute (ie "Gender")
                  */
-                $insertnames = array('attribute_type' => 'TB', 'visible' => 'Y');
+                $insertnames = array('attribute_type' => 'TB', 'visible' => 'Y', 'defaultname' => $value);
                 Yii::app()->db
                           ->createCommand()
                           ->insert('{{participant_attribute_names}}', $insertnames);
