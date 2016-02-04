@@ -58,6 +58,29 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 2.06+ (build 160202) to 2.50+ (build 160204) Feb 4, 2016
+-Fixed issue #10242: Reordernig can be broken with some HTML in question (Denis Chenu)
+-Fixed issue #10244: Internal Server Error on RemoteControl add_survey call (Carsten Schmitz)
+-Fixed issue #10273: added . to $answer = (LouisGac)
+-Fixed issue #10276: Survey crash when the referrer URL is longer than 255 characters and using Postgres (Carsten Schmitz)
+-Fixed issue #10278: translate redirection url (LouisGac)
+-Fixed issue #10281: Add preventDefault() to save button event handler, which fixes issue on Firefox (Olle Haerstedt)
+-Fixed issue #10281: Missing ev argument (Olle Haerstedt)
+-Fixed issue #10282: Make proper spacing between icons (Olle Haerstedt)
+-Fixed issue #10283: quick translation icons (LouisGac)
+-Fixed issue #10284: position of reset buttons in email template (LouisGac)
+-Fixed issue #10289: Replace 0 with actual icon for viewing details (Olle Haerstedt)
+-Fixed issue #9970: Add pager to survey list of participant (Olle Haerstedt)
+-Fixed issue: Sorting in survey,question group and questions list not working (Carsten Schmitz)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han, coeneisma
+#Updated translation: German by c_schmitz
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Kyrgyz by kmaksat                               
                                
 Changes from 2.06+ (build 160129) to 2.50+ (build 160202) Feb 2, 2016
 -New feature: New administration interface using Bootstrap
