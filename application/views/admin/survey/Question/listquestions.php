@@ -2,7 +2,6 @@
    /**
     * This file render the list of groups
     */
-
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 
@@ -63,6 +62,8 @@
                         // Number of row per page selection
                         'id' => 'question-grid',
                         'type'=>'striped',
+
+                        
                         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
@@ -111,7 +112,7 @@
                                     ),
 
                                 ),
-                                'ajaxUpdate' => false,
+                                'ajaxUpdate' => true,
                             ));
                             ?>
                         </div>
