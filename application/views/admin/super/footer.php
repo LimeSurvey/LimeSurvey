@@ -11,7 +11,7 @@
 		<div class="row">
 		    <!-- Link to manual -->
 		    <div class="col-xs-6 col-md-4 col-lg-1 ">
-		    	<a href='http://manual.limesurvey.org'>
+		    	<a href='http://manual.limesurvey.org' onclick='function go(ev) { ev.preventDefault(); var win = window.open("http://manual.limesurvey.org", "_blank"); win.focus(); }; go(event);'>
                     <span class="glyphicon glyphicon-info-sign" id="info-footer"></span>
                 </a>
 		    </div>
