@@ -57,9 +57,9 @@
 }
 
 div.mappable-attribute-wrapper {
-	width : 90%;
-	margin: 2px auto;
-	padding:2px;
+	width : 80%;
+	margin: 6px auto;
+	padding:6px;
 }
 
 div.attribute-item {
@@ -70,10 +70,6 @@ div.attribute-item {
 }
 
 div.mappable-attribute-wrapper div.attribute-item {
-	width : 88.88888888888889%;
-	margin: 0 auto;
-	padding:4px;
-	text-align:center;
 }
 
 

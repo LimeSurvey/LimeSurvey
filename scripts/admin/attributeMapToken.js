@@ -74,13 +74,15 @@ $(document).ready(function(){
             // Remove the text input if dropped out of the new attributes column
             if(!$(this).hasClass('newcreate') && $('input[type="text"]', newDraggable).length > 0) { 
                 $('input[type="text"]', newDraggable).remove();
-                $(newDraggable).text($(newDraggable).attr('data-name'));
+                $(newDraggable).html('<div class="panel-body">' + $(newDraggable).attr('data-name') + "</div>");
             }        
+
             // Dropped in new attributes
             if($(this).hasClass('newcreate')) { 
                 $(newDraggable).html($(newDraggable).attr('id').replace('t_',''));
                 $(newDraggable).prepend('<input type="text" id="td_'+$(newDraggable).attr('id')+'" value=\"'+$(newDraggable).attr('data-name')+'\">');
             }            
+
             // Reset the mappable attribute classes        
             $('.mappable-attribute-wrapper').removeClass('paired');
             $('.mappable-attribute-wrapper .token-attribute').closest('.mappable-attribute-wrapper').addClass('paired');
