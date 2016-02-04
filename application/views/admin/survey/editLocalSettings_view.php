@@ -1,12 +1,12 @@
 <?php
 /**
  * Edit the survey text elements of a survey for one given language
- * It is rendered from editLocalSettings_main_view. 
+ * It is rendered from editLocalSettings_main_view.
  */
 ?>
 
 <div id="edittxtele-<?php echo $i;?>" class="tab-pane fade in <?php if($i==0){echo "active";}?> col-lg-6 center-box">
-    
+
     <!-- Survey title -->
 	<div class="form-group">
         <label class="col-sm-3" for="short_title<?php echo $esrow['surveyls_language']; ?>" id="question-group-title"><?php eT("Survey title"); ?>:</label>
@@ -14,14 +14,12 @@
             <input class="form-control" type='text' size='80' id='short_title_<?php echo $esrow['surveyls_language']; ?>' name='short_title_<?php echo $esrow['surveyls_language']; ?>' value="<?php echo $esrow['surveyls_title']; ?>" />
         </div>
 	</div>
-	
+
 	<!-- Description -->
 	<div class="form-group">
 		<label class="col-sm-3"  for="description_<?php echo $esrow['surveyls_language']; ?>"><?php eT("Description:"); ?></label>
 		<div class="col-sm-12">
-	        <textarea cols='80' rows='15' id='description_<?php echo $esrow['surveyls_language']; ?>' name='description_<?php echo $esrow['surveyls_language']; ?>'>
-	        	<?php echo $esrow['surveyls_description']; ?>
-	        </textarea>
+		<?php echo CHtml::textArea("description_{$esrow['surveyls_language']}",$esrow['surveyls_description'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"description_{$esrow['surveyls_language']}")); ?>
 	        <?php echo getEditor("survey-desc","description_".$esrow['surveyls_language'], "[".gT("Description:", "js")."](".$esrow['surveyls_language'].")",$surveyid,'','',$action); ?>
 		</div>
 	</div>
@@ -31,9 +29,7 @@
 		<label class="col-sm-4" for='welcome_<?php echo $esrow['surveyls_language']; ?>'><?php eT("Welcome message:"); ?></label>
 
 		<div class="col-sm-12">
-        	<textarea cols='80' rows='15' id='welcome_<?php echo $esrow['surveyls_language']; ?>' name='welcome_<?php echo $esrow['surveyls_language']; ?>'>
-        		<?php echo $esrow['surveyls_welcometext']; ?>
-        	</textarea>
+		<?php echo CHtml::textArea("welcome_{$esrow['surveyls_language']}",$esrow['surveyls_welcometext'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"welcome_{$esrow['surveyls_language']}")); ?>
         	<?php echo getEditor("survey-welc","welcome_".$esrow['surveyls_language'], "[".gT("Welcome:", "js")."](".$esrow['surveyls_language'].")",$surveyid,'','',$action); ?>
 		</div>
 	</div>
@@ -43,9 +39,7 @@
 		<label class="col-sm-3" for='endtext_<?php echo $esrow['surveyls_language']; ?>'><?php eT("End message:"); ?></label>
 
 		<div class="col-sm-12">
-        	<textarea cols='80' rows='15' id='endtext_<?php echo $esrow['surveyls_language']; ?>' name='endtext_<?php echo $esrow['surveyls_language']; ?>'>
-        		<?php echo $esrow['surveyls_endtext']; ?>
-        	</textarea>
+		<?php echo CHtml::textArea("endtext_{$esrow['surveyls_language']}",$esrow['surveyls_endtext'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"endtext_{$esrow['surveyls_language']}")); ?>
         	<?php echo getEditor("survey-endtext","endtext_".$esrow['surveyls_language'], "[".gT("End message:", "js")."](".$esrow['surveyls_language'].")",$surveyid,'','',$action); ?>
 		</div>
 	</div>
