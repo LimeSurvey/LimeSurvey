@@ -157,8 +157,7 @@ $(document).ready(function(){
         }, function(msg){
             alert(msg);
 
-            // TODO: Enable after debugging done
-            //$(location).attr('href',redUrl);
+            $(location).attr('href',redUrl);
         });
     });
 
