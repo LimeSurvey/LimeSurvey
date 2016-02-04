@@ -79,7 +79,7 @@
 
                         array(
                             'header' => gT('Created'),
-                            'name' => 'created',
+                            'name' => 'creation_date',
                             'value'=>'$data->creationdate',
                             'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
                         ),
