@@ -241,7 +241,9 @@ class Template extends LSActiveRecord
     public static function getTemplateListWithPreviews()
     {
         $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
+        $usertemplaterooturl = Yii::app()->getConfig("usertemplaterooturl");
         $standardtemplaterootdir=Yii::app()->getConfig("standardtemplaterootdir");
+        $standardtemplaterooturl=Yii::app()->getConfig("standardtemplaterooturl");
 
         $aTemplateList=array();
 
@@ -253,7 +255,7 @@ class Template extends LSActiveRecord
                 if (!is_file("$standardtemplaterootdir/$file") && self::isStandardTemplate($file))
                 {
                     $aTemplateList[$file]['directory'] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
-                    $aTemplateList[$file]['preview'] = Yii::app()->request->baseUrl.'/templates/'.$file.'/preview.png';
+                    $aTemplateList[$file]['preview'] = $standardtemplaterooturl.'/'.$file.'/preview.png';
                 }
             }
             closedir($handle);
@@ -267,7 +269,7 @@ class Template extends LSActiveRecord
                 if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
                 {
                     $aTemplateList[$file]['directory']  = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
-                    $aTemplateList[$file]['preview'] = Yii::app()->request->baseUrl.'/upload/templates/'.$file.'/preview.png';
+                    $aTemplateList[$file]['preview'] = $usertemplaterooturl.'/'.$file.'/'.'preview.png';
                 }
             }
             closedir($handle);
