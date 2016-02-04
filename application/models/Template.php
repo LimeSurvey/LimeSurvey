@@ -95,6 +95,9 @@ class Template extends LSActiveRecord
     {
         // We retrieve the admin theme in config ( {{settings_global}} or config-defaults.php )
         $sAdminThemeName = Yii::app()->getConfig('admintheme');
+        // If the template doesn't exist, set to Default
+        $sAdminThemeName = (self::isStandardTemplate($sAdminThemeName ))?$sAdminThemeName:'default';
+
         $oAdminTheme = new stdClass();
 
         // If the required admin theme doesn't exist, Sea_Green will be used
