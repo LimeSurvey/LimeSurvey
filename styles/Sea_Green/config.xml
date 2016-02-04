@@ -20,6 +20,7 @@
             <filename>bootstrap-switch.min.css</filename>
             <filename>jcarousel.responsive.css</filename>
             <filename>lime-admin-misc.css</filename>
+            <filename>attributeMap.css</filename>
         </css>
         <js>
             <filename>notify.js</filename>
