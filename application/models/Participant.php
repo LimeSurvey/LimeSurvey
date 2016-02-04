@@ -885,16 +885,35 @@ class Participant extends LSActiveRecord
     }
 
     /**
-    * Returns true if participant_id has ownership or shared rights over this participant false if not
-    *
-    * @param mixed $participant_id
-    * @returns bool true/false
-    */
+     * Returns true if participant_id has ownership or shared rights over this participant false if not
+     *
+     * @param mixed $participant_id
+     * @returns bool true/false
+     */
     function is_owner($participant_id)
     {
         $userid = Yii::app()->session['loginID'];
-        $is_owner = Yii::app()->db->createCommand()->select('count(*)')->where('participant_id = :participant_id AND owner_uid = :userid')->from('{{participants}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
-        $is_shared = Yii::app()->db->createCommand()->select('count(*)')->where('participant_id = :participant_id AND share_uid = :userid')->from('{{participant_shares}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
+
+        $is_owner = Yii::app()
+            ->db
+            ->createCommand()
+            ->select('count(*)')
+            ->where('participant_id = :participant_id AND owner_uid = :userid')
+            ->from('{{participants}}')
+            ->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)
+            ->bindParam(":userid", $userid, PDO::PARAM_INT)
+            ->queryScalar();
+
+        $is_shared = Yii::app()
+            ->db
+            ->createCommand()
+            ->select('count(*)')
+            ->where('participant_id = :participant_id AND share_uid = :userid')
+            ->from('{{participant_shares}}')
+            ->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)
+            ->bindParam(":userid", $userid, PDO::PARAM_INT)
+            ->queryScalar();
+
         if ($is_shared > 0 || $is_owner > 0)
         {
             return true;
@@ -905,19 +924,17 @@ class Participant extends LSActiveRecord
         }
     }
 
-    /*
+    /**
      * This funciton is responsible for showing all the participant's shared by a particular user based on the user id
      */
-
     function getParticipantShared($userid)
     {
         return Yii::app()->db->createCommand()->select('{{participants}}.*, {{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = :userid')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
     }
 
-    /*
+    /**
      * This funciton is responsible for showing all the participant's shared to the superadmin
      */
-
     function getParticipantSharedAll()
     {
         return Yii::app()->db->createCommand()->select('{{participants}}.*,{{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->queryAll();
@@ -1170,6 +1187,7 @@ class Participant extends LSActiveRecord
      * @return bool true/false
      */
     function updateTokenAttributeValue($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
+
         //Get the value from the participant_attribute field
         $val = Yii::app()->db
                          ->createCommand()
