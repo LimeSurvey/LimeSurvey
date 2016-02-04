@@ -871,16 +871,30 @@
         $criteria = new CDbCriteria;
         $criteria->condition="t.sid=:surveyid AND t.language=:language AND parent_qid=0";
         $criteria->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
-        $criteria->join='LEFT JOIN {{groups}} AS groups ON ( groups.gid = t.gid AND t.language = groups.language )';
+        $criteria->join='LEFT JOIN {{groups}} AS groups ON ( groups.gid = t.gid AND t.language = groups.language AND groups.sid = t.sid)';
 
         if($this->group_name != '')
         {
             $criteria->addCondition('groups.group_name = :group_name');
-            $criteria->params=(array(':surveyid'=>$this->sid,':language'=>$this->language, ':group_name'=>$this->group_name));
+            $criteria->params=(array(':group_name'=>$this->group_name));
         }
 
         $criteria->compare('title', $this->title, true, 'AND');
-        $criteria->compare('question', $this->title, true, 'OR');
+
+        $criteria2 = new CDbCriteria;
+        $criteria2->condition="t.sid=:surveyid AND t.language=:language AND parent_qid=0";
+        $criteria2->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
+        $criteria2->join='LEFT JOIN {{groups}} AS groups ON ( groups.gid = t.gid AND t.language = groups.language AND groups.sid = t.sid)';
+
+        if($this->group_name != '')
+        {
+            $criteria2->addCondition('groups.group_name = :group_name');
+            $criteria2->params=(array(':group_name'=>$this->group_name));
+        }
+
+        $criteria2->compare('question', $this->title, true, 'AND');
+
+        $criteria->mergeWith($criteria2, 'OR');
 
         $dataProvider=new CActiveDataProvider('Question', array(
             'criteria'=>$criteria,

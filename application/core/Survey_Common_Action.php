@@ -962,8 +962,8 @@ class Survey_Common_Action extends CAction
                 Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
 
             // We filter the current survey id
-            $model['sid'] = $iSurveyID;
-            $model['language'] = $baselang;
+            $model->sid = $iSurveyID;
+            $model->language = $baselang;
 
             $aData['model']=$model;
 
