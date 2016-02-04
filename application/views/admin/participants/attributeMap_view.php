@@ -71,7 +71,7 @@
                         <?php eT("Existing token attributes"); ?> 
                     </div>
                     <div class='panel-body'>
-                        <div class="tokenatt">
+                        <div class="tokenatt ui-sortable">
                             <?php
                                 foreach ($selectedtokenattribute as $key => $value)
                                 {
