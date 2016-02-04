@@ -3061,15 +3061,6 @@ input:focus, textarea:focus {
 .cke_skin_kama .cke_contents {
   width: 600px; }
 
-.em-expression {
-  font-weight: bold; }
-
-.em-function {
-  color: #214F7E; }
-
-.em-var-string {
-  color: #35363f; }
-
 .data-entry-explanation + tr {
   background-color: #e6e6e6; }
 

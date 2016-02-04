@@ -1,4 +1,4 @@
-.ui-datepicker {
+em-expression.ui-datepicker {
   width: 17em;
   padding: .2em .2em 0;
   display: none; }
@@ -3060,15 +3060,6 @@ input:focus, textarea:focus {
 
 .cke_skin_kama .cke_contents {
   width: 600px; }
-
-.em-expression {
-  font-weight: bold; }
-
-.em-function {
-  color: #C63678; }
-
-.em-var-string {
-  color: #35363f; }
 
 .data-entry-explanation + tr {
   background-color: #e6e6e6; }
