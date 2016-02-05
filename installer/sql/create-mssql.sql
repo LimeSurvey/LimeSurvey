@@ -559,7 +559,7 @@ CREATE TABLE prefix_boxes (
   [desc] varchar(max) NOT NULL ,
   [page] varchar(max) NOT NULL ,
   PRIMARY KEY ([id])
-)  CHARACTER SET @utf8 COLLATE utf8_unicode_ci;
+);
 
 INSERT INTO prefix_boxes ([id], [position], [url], [title], [img], [desc], [page]) VALUES
 (1, 1, 'admin/survey/sa/newsurvey', 'Create survey', 'add.png', 'add', 'Create a new survey', 'welcome'),
