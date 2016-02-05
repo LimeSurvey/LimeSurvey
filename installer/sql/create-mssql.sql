@@ -561,7 +561,7 @@ CREATE TABLE prefix_boxes (
   PRIMARY KEY ([id])
 );
 
-INSERT INTO prefix_boxes ([position], [url], [title], [img], [desc], [page], [ico]) VALUES
+INSERT INTO prefix_boxes ([position], [url], [title], [img], [ico], [desc], [page]) VALUES
 (1, 'admin/survey/sa/newsurvey', 'Create survey', 'add.png', 'add', 'Create a new survey', 'welcome'),
 (2, 'admin/survey/sa/listsurveys', 'List surveys', 'surveylist.png', 'list', 'List available surveys', 'welcome'),
 (3, 'admin/globalsettings', 'Global settings', 'global.png', 'settings', 'Edit global settings', 'welcome'),
