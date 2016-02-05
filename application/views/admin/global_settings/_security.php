@@ -1,15 +1,15 @@
 <?php
 /**
  * This view generate the 'security' tab inside global settings.
- * 
+ *
  */
 ?>
 <?php $thissurveyPreview_require_Auth=getGlobalSetting('surveyPreview_require_Auth'); ?>
 <div class="form-group">
-            
-	<label class="col-sm-5 control-label"  for='surveyPreview_require_Auth'><?php eT("Survey preview only for administration users"); ?></label>
+
+	<label class="col-sm-5 control-label"  for='surveyPreview_require_Auth'><?php eT("Survey preview only for administration users:"); ?></label>
             <div class="col-sm-6">
-                    
+
 <select class="form-control"  id='surveyPreview_require_Auth' name='surveyPreview_require_Auth'>
         <option value='1'
             <?php if ($thissurveyPreview_require_Auth == true) { echo " selected='selected'";}?>
@@ -17,10 +17,10 @@
         <option value='0'
             <?php if ($thissurveyPreview_require_Auth == false) { echo " selected='selected'";}?>
             ><?php eT("No"); ?></option>
-    </select>    
-        </div>    
+    </select>
+        </div>
     </div>
-            
+
 
 <?php $thisfilterxsshtml=getGlobalSetting('filterxsshtml'); ?>
 <div class="form-group">
@@ -33,10 +33,10 @@
         <option value='0'
             <?php if ( $thisfilterxsshtml == false) { echo " selected='selected'";}?>
             ><?php eT("No"); ?></option>
-</select>&nbsp;<span class='hint'><?php eT("(XSS filtering is always disabled for the superadministrator.)"); ?></span>    
-        </div>    
+</select>&nbsp;<span class='hint'><?php eT("(XSS filtering is always disabled for the superadministrator.)"); ?></span>
+        </div>
     </div>
-            
+
 
 <?php $thisusercontrolSameGroupPolicy=getGlobalSetting('usercontrolSameGroupPolicy'); ?>
 <div class="form-group">
@@ -49,10 +49,10 @@
         <option value='0'
             <?php if ( $thisusercontrolSameGroupPolicy == false) { echo " selected='selected'";}?>
             ><?php eT("No"); ?></option>
-    </select>    
-        </div>    
+    </select>
+        </div>
     </div>
-            
+
 
 <?php $thisforce_ssl = getGlobalSetting('force_ssl');
     $opt_force_ssl_on = $opt_force_ssl_off = $opt_force_ssl_neither = '';
@@ -79,16 +79,16 @@
         <option value="on" <?php echo $opt_force_ssl_on; ?>><?php eT('On'); ?></option>
         <option value="off" <?php echo $opt_force_ssl_off; ?>><?php eT('Off'); ?></option>
         <option value="neither" <?php echo $opt_force_ssl_neither; ?>><?php eT("Don't force on or off"); ?></option>
-    </select>    
-        </div>    
+    </select>
+        </div>
     </div>
-            
+
 <div class="form-group">
-            <span style='font-size:0.7em;'><?php echo $warning_force_ssl; ?></span>    
+            <span style='font-size:0.7em;'><?php echo $warning_force_ssl; ?></span>
     </div>
-            
+
 <?php unset($thisforce_ssl,$opt_force_ssl_on,$opt_force_ssl_off,$opt_force_ssl_neither,$warning_force_ssl,$this_opt); ?>
 
 <?php if (Yii::app()->getConfig("demoMode")==true):?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
-<?php endif; ?>        
+<?php endif; ?>

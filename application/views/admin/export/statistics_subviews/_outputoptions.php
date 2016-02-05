@@ -11,7 +11,7 @@
             </div>
 
             <div class='form-group'>
-                <label for='usegraph'  class="col-sm-5 control-label" ><?php eT("Show graphs"); ?></label>
+                <label for='usegraph'  class="col-sm-5 control-label" ><?php eT("Show graphs:"); ?></label>
                 <div class='col-sm-1'>
                     <input type='checkbox' id='usegraph' name='usegraph' <?php if (isset($usegraph) && $usegraph == 1) { echo "checked='checked'"; } ?> />
                 </div>

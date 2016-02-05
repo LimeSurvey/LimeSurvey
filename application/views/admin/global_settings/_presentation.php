@@ -1,8 +1,8 @@
 <?php
 /**
  * This view generate the presentation tab inside global settings.
- * 
- *  
+ *
+ *
  */
 ?>
     <?php $shownoanswer=getGlobalSetting('shownoanswer');
@@ -15,19 +15,19 @@
             <option value="1" <?php echo $sel_na[1]; ?> ><?php eT('Yes'); ?></option>
             <option value="0" <?php echo $sel_na[0]; ?> ><?php eT('No'); ?></option>
             <option value="2" <?php echo $sel_na[2]; ?> ><?php eT('Survey admin can choose'); ?></option>
-        </select>    
-        </div>    
+        </select>
+        </div>
     </div>
-            
+
 
     <?php $thisrepeatheadings=getGlobalSetting('repeatheadings'); ?>
     <div class="form-group">
             <label class="col-sm-6 control-label"  for='repeatheadings'><?php eT("Repeating headings in array questions every X subquestions:"); ?></label>
             <div class="col-sm-6">
-                <input class="form-control"  id='repeatheadings' name='repeatheadings' value='<?php echo $thisrepeatheadings; ?>' size='4' maxlength='4' />    
-        </div>    
+                <input class="form-control"  id='repeatheadings' name='repeatheadings' value='<?php echo $thisrepeatheadings; ?>' size='4' maxlength='4' />
+        </div>
     </div>
-            
+
 
     <?php
         // showxquestions
@@ -40,16 +40,16 @@
         };
     ?>
     <div class="form-group">
-            <label class="col-sm-6 control-label"  for="showxquestions"><?php eT('Show "There are X questions in this survey"'); ?></label>
+            <label class="col-sm-6 control-label"  for="showxquestions"><?php eT('Show "There are X questions in this survey":'); ?></label>
             <div class="col-sm-6">
                 <select class="form-control"  id="showxquestions" name="showxquestions">
             <option value="show"<?php echo $sel_xq['show']; ?>><?php eT('Yes'); ?></option>
             <option value="hide"<?php echo $sel_xq['hide']; ?>><?php eT('No'); ?></option>
             <option value="choose"<?php echo $sel_xq['choose']; ?>><?php eT('Survey admin can choose'); ?></option>
-        </select>    
-        </div>    
+        </select>
+        </div>
     </div>
-            
+
     <?php unset($set_xq,$sel_xq);
         $set_gri=getGlobalSetting('showgroupinfo');
         $sel_gri = array( 'both' => '' , 'choose' =>'' , 'description' => '' , 'name' => '' , 'none' => '' );
@@ -59,7 +59,7 @@
             $sel_gri['choose'] = ' selected="selected"';
         }; ?>
     <div class="form-group">
-            <label class="col-sm-6 control-label"  for="showgroupinfo"><?php eT('Show question group name and/or description'); ?></label>
+            <label class="col-sm-6 control-label"  for="showgroupinfo"><?php eT('Show question group name and/or description:'); ?></label>
             <div class="col-sm-6">
                 <select class="form-control"  id="showgroupinfo" name="showgroupinfo">
             <option value="both"<?php echo $sel_gri['both']; ?>><?php eT('Show both'); ?></option>
@@ -67,8 +67,8 @@
             <option value="description"<?php echo $sel_gri['description']; ?>><?php eT('Show group description only'); ?></option>
             <option value="none"<?php echo $sel_gri['none']; ?>><?php eT('Hide both'); ?></option>
             <option value="choose"<?php echo $sel_gri['choose']; ?>><?php eT('Survey admin can choose'); ?></option>
-        </select>    
-        </div>    
+        </select>
+        </div>
     </div>
             <?php
         unset($set_gri,$sel_gri);
@@ -83,7 +83,7 @@
         };
     ?>
     <div class="form-group">
-            <label class="col-sm-6 control-label"  for="showqnumcode"><?php eT('Show question number and/or question code'); ?></label>
+            <label class="col-sm-6 control-label"  for="showqnumcode"><?php eT('Show question number and/or question code:'); ?></label>
             <div class="col-sm-6">
                 <select class="form-control"  id="showqnumcode" name="showqnumcode">
             <option value="both"<?php echo $sel_qnc['both']; ?>><?php eT('Show both'); ?></option>
@@ -91,22 +91,22 @@
             <option value="code"<?php echo $sel_qnc['code']; ?>><?php eT('Show question code only'); ?></option>
             <option value="none"<?php echo $sel_qnc['none']; ?>><?php eT('Hide both'); ?></option>
             <option value="choose"<?php echo $sel_qnc['choose']; ?>><?php eT('Survey admin can choose'); ?></option>
-        </select>    
-        </div>    
+        </select>
+        </div>
     </div>
             <?php
         unset($set_qnc,$sel_qnc);
     ?>
     <div class="form-group">
-            <label class="col-sm-6 control-label"  for='pdffontsize'><?php eT("Font size of PDFs"); ?></label>
+            <label class="col-sm-6 control-label"  for='pdffontsize'><?php eT("Font size of PDFs:"); ?></label>
             <div class="col-sm-6">
                 <input class="form-control"  type='text' size='5' id='pdffontsize' name='pdffontsize' value="<?php echo htmlspecialchars(getGlobalSetting('pdffontsize')); ?>" />
-        
-        </div>    
+
+        </div>
     </div>
-            
+
     <div class="form-group">
-            <label class="col-sm-6 control-label"  for='pdfshowheader'><?php eT("Show header in answers export PDFs?") ; ?></label>
+            <label class="col-sm-6 control-label"  for='pdfshowheader'><?php eT("Show header in answers export PDFs:") ; ?></label>
             <div class="col-sm-6">
                 <select class="form-control"  id='pdfshowheader' name='pdfshowheader'>
             <option value='Y'
@@ -122,34 +122,34 @@
                 ><?php eT("No") ; ?>
             </option>
         </select>
-        
-        </div>    
+
+        </div>
     </div>
-            
+
     <div class="form-group">
-            <label class="col-sm-6 control-label"  for='pdflogowidth'><?php eT("Width of PDF header logo"); ?></label>
+            <label class="col-sm-6 control-label"  for='pdflogowidth'><?php eT("Width of PDF header logo:"); ?></label>
             <div class="col-sm-6">
                 <input class="form-control"  type='text' size='5' id='pdflogowidth' name='pdflogowidth' value="<?php echo htmlspecialchars(getGlobalSetting('pdflogowidth')); ?>" />
-        
-        </div>    
+
+        </div>
     </div>
-            
+
     <div class="form-group">
-            <label class="col-sm-6 control-label"  for='pdfheadertitle'><?php eT("PDF header title (if empty, site name will be used)"); ?></label>
+            <label class="col-sm-6 control-label"  for='pdfheadertitle'><?php eT("PDF header title (if empty, site name will be used):"); ?></label>
             <div class="col-sm-6">
                 <input class="form-control"  type='text' id='pdfheadertitle' size='50' maxlength='256' name='pdfheadertitle' value="<?php echo htmlspecialchars(getGlobalSetting('pdfheadertitle')); ?>" />
-        
-        </div>    
+
+        </div>
     </div>
-            
+
     <div class="form-group">
-            <label class="col-sm-6 control-label"  for='pdfheaderstring'><?php eT("PDF header string (if empty, survey name will be used)"); ?></label>
+            <label class="col-sm-6 control-label"  for='pdfheaderstring'><?php eT("PDF header string (if empty, survey name will be used):"); ?></label>
             <div class="col-sm-6">
                 <input class="form-control"  type='text' id='pdfheaderstring' size='50' maxlength='256' name='pdfheaderstring' value="<?php echo htmlspecialchars(getGlobalSetting('pdfheaderstring')); ?>" />
-        
-        </div>    
+
+        </div>
     </div>
-            
+
 
 <?php if (Yii::app()->getConfig("demoMode")==true):?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
