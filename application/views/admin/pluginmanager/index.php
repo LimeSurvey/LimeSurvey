@@ -1,17 +1,18 @@
 <?php
 
 /**
- * Index view for plugin manager
- *
- * @since 2015-10-02
- * @author Olle Haerstedt
- */
+* Index view for plugin manager
+*
+* @since 2015-10-02
+* @author Olle Haerstedt
+*/
 
 ?>
+<?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 
 <h3 class="pagetitle"><?php eT('Plugin manager'); ?></h3>
 <div style="width: 75%; margin: auto;">
-<?php
+    <?php
     /* @var $this ConfigController */
     /* @var $dataProvider CActiveDataProvider */
 
@@ -65,20 +66,26 @@
         ),
     );
 
-        /*
-            array(            // display a column with "view", "update" and "delete" buttons
-            'class' => 'CallbackColumn',
-            'label' => function($data) { return ($data->active == 1) ? "deactivate": "activate"; },
-            'url' => function($data) { return array("/plugins/activate", "id"=>$data["id"]); }
-        )
+    /*
+    array(            // display a column with "view", "update" and "delete" buttons
+    'class' => 'CallbackColumn',
+    'label' => function($data) { return ($data->active == 1) ? "deactivate": "activate"; },
+    'url' => function($data) { return array("/plugins/activate", "id"=>$data["id"]); }
+    )
     );
-        */
+    */
 
     $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider'=>$dataProvider,
+        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
+            CHtml::dropDownList(
+                'pageSize',
+                $pageSize,
+                Yii::app()->params['pageSizeOptions'],
+                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
         'columns'=>$gridColumns,
         'rowCssClassExpression'=> function ($data, $row) { return ($row % 2 ? 'even' : 'odd') . ' ' . ($data['new']==1 ? "new" : "old"); },
         'itemsCssClass' => 'items table-condensed table-bordered'
     ));
-?>
+    ?>
 </div>
