@@ -1236,10 +1236,12 @@ class statistics_helper {
         }
 
         // NICE SIMPLE SINGLE OPTION ANSWERS
+        /*
+        TO DEBUG QUESTION TYPES FIRSTLETTER, UNCOMMENT THOSE LINES
         elseif(!isset($fieldmap[$rt]))
         {
             echo "problem, wrong question type for $rt ; $firstletter"; die();
-        }
+        }*/
         else
         {
             //search for key
