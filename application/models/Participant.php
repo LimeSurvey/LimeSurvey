@@ -892,6 +892,12 @@ class Participant extends LSActiveRecord
      */
     function is_owner($participant_id)
     {
+        // Superadmins can edit all participants
+        if (Permission::model()->hasGlobalPermission('superadmin'))
+        {
+            return true;
+        }
+
         $userid = Yii::app()->session['loginID'];
 
         $is_owner = Yii::app()
