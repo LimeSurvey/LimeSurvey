@@ -228,6 +228,7 @@
             $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
 
             $sort = new CSort();
+            $sort->defaultOrder = array('group_order'=> false);
             $sort->attributes = array(
               'group_id'=>array(
                 'asc'=>'gid',
