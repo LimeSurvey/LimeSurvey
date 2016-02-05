@@ -33,7 +33,7 @@
     </div>
 
     <!-- Message when first start -->
-    <?php if($countSurveyList==0):?>
+    <?php if($countSurveyList==0  && Permission::model()->hasGlobalPermission('surveys','create') ):?>
         <script type="text/javascript">
             $(window).load(function(){
                 $('#welcomeModal').modal('show');
