@@ -560,6 +560,14 @@ class templates extends Survey_Common_Action
         {
             if (rmdirr(Yii::app()->getConfig('usertemplaterootdir') . "/" . $templatename) == true) {
                 $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
+
+                // The default template could be the same as the one we're trying to remove
+                $globalDefaultIsGettingDeleted = Yii::app()->getConfig('defaulttemplate') == $templatename;
+                if ($globalDefaultIsGettingDeleted)
+                {
+                    setGlobalSetting('defaulttemplate', 'default');
+                }
+
                 foreach ($surveys as $s)
                 {
                     $s->template = Yii::app()->getConfig('defaulttemplate');
