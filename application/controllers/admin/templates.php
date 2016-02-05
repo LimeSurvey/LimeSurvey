@@ -358,6 +358,13 @@ class templates extends Survey_Common_Action
         {
             $templatename = Yii::app()->getConfig("defaulttemplate");
         }
+
+        // This can happen if the global default template is deleted
+        if (!Template::checkIfTemplateExists($templatename))
+        {
+            $templatename = 'default';
+        }
+
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile);
         App()->getClientScript()->reset();
         App()->getComponent('bootstrap')->init();
