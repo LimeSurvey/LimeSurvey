@@ -4,7 +4,7 @@
  * Index view for plugin manager
  *
  * @since 2015-10-02
- * @author Olle Haerstedt <olle.haerstedt@limesurvey.org>
+ * @author Olle Haerstedt
  */
 
 ?>
