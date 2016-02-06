@@ -48,12 +48,9 @@
 </p>
 
 <div class='hidden nodisplay' style='display:none'>
-    <div id='datemin<?php echo $name;?>'>
-        <?php echo $mindate; ?>
-    </div>
-    <div id='datemax<?php echo $name;?>'>
-        <?php echo $maxdate; ?>
-    </div>
+    <!-- Obs: No spaces in the div - it will mess up Javascript string parsing -->
+    <div id='datemin<?php echo $name;?>'><?php echo $mindate; ?></div>
+    <div id='datemax<?php echo $name;?>'><?php echo $maxdate; ?></div>
 </div>
 
 <?php if($hidetip):?>

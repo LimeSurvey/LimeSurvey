@@ -1165,7 +1165,8 @@ function do_date($ia)
         // Format the date  for output
         $dateoutput=trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
         if ($dateoutput!='' & $dateoutput!='INVALID')
-        {            $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
+        {            
+            $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
             $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
         }
 

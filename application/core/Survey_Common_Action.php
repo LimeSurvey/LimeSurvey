@@ -544,7 +544,7 @@ class Survey_Common_Action extends CAction
      * @param array $aData
      *
      * @since 2014-09-30
-     * @author Olle Haerstedt <olle.haerstedt@limesurvey.org>
+     * @author Olle Haerstedt
      */
     function _organizequestionbar($aData)
     {
