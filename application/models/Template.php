@@ -173,10 +173,11 @@ class Template extends LSActiveRecord
             {
                 $oTemplate->name = $sTemplateName;
                 $oTemplate->path = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
-                $oTemplate->config = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'/minimal-config.xml';
+                $oTemplate->config = simplexml_load_file(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'/minimal-config.xml');
                 /* /./ working for linux, untested with windows
                 $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->pstpldirectory.DIRECTORY_SEPARATOR;
                 * */
+                $oTemplate->cssFramework = null;
                 $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR;
                 $oTemplate->packages = (array) $oTemplate->config->engine->packages->package;
                 return $oTemplate;

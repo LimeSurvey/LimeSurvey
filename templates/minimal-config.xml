@@ -24,8 +24,8 @@
     </files>
     <engine>
         <packages>
-            <!-- If need a specific system for 206 template -->
-            <!-- <cssframework>206</cssframework> -->
+            <cssframework></cssframework>
+            <pstpldirectory>.</pstpldirectory>
             <package>jqueryui</package>
             <package>jquery-touch-punch</package>
         </packages>
