@@ -267,12 +267,12 @@ class InstallerController extends CController {
                 $bDBConnectionWorks = false;
                 $aDbConfig = compact('sDatabaseType', 'sDatabaseName', 'sDatabaseUser', 'sDatabasePwd', 'sDatabasePrefix', 'sDatabaseLocation', 'sDatabasePort');
 
-                if (self::_dbConnect($aDbConfig, array())) {
+                if (self::_dbConnect($aDbConfig, $aData)) {
                     $bDBExists = true;
                     $bDBConnectionWorks = true;
                 } else {
                     $aDbConfig['sDatabaseName'] = '';
-                    if (self::_dbConnect($aDbConfig, array())) {
+                    if (self::_dbConnect($aDbConfig, $aData)) {
                         $bDBConnectionWorks = true;
                     } else {
                         $oModel->addError('dblocation', gT('Connection with database failed. Please check database location, user name and password and try again.'));
@@ -418,7 +418,7 @@ class InstallerController extends CController {
     function stepCreateDb()
     {
         // check status. to be called only when database don't exist else redirect to proper link.
-        if(!Yii::app()->session['databaseDontExist']) 
+        if(!Yii::app()->session['databaseDontExist'])
         {
             $this->redirect(array('installer/welcome'));
         }
@@ -1262,7 +1262,8 @@ class InstallerController extends CController {
         $sDatabaseName = empty($sDatabaseName) ? '' : $sDatabaseName;
         $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
 
-        try {
+        if(self::dbTest($aDbConfig, $aData))
+        {
             $this->connection = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
             if($sDatabaseType!='sqlsrv' && $sDatabaseType!='dblib'){
                 $this->connection->emulatePrepare = true;
@@ -1271,14 +1272,31 @@ class InstallerController extends CController {
             $this->connection->active = true;
             $this->connection->tablePrefix = $sDatabasePrefix;
             return true;
-        } catch(Exception $e) {
-            if (!empty($aData['model']) && !empty($aData['clang'])) {
-                $aData['model']->addError('dblocation', $aData['clang']->gT('Try again! Connection with database failed. Reason: ') . $e->getMessage());
+        }
+        else
+        {
+            return false;
+        }
+    }
+    private function dbTest($aDbConfig = array(), $aData = array())
+    {
+        extract(empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig);
+        $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
+        try
+        {
+            $testPdo = new PDO($sDsn,$sDatabaseUser,$sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        }
+        catch(Exception $e)
+        {
+            if (!empty($aData['model'])) {
+                $aData['model']->addError('dblocation', gT('Try again! Connection with database failed.'));
+                $aData['model']->addError('dblocation', gT('Reason: ') . $e->getMessage());
                 $this->render('/installer/dbconfig_view', $aData);
+                Yii::app()->end();
             } else {
                 return false;
             }
         }
+        return true;
     }
-
 }
