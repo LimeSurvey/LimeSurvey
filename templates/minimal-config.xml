@@ -9,7 +9,6 @@
             <filename>jquery-ui-custom.css</filename>
             <filename>jquery-ui.css</filename>
             <filename>template.css</filename>
-            <filename media="print">print_template.css</filename>
         </css>
         <js>
             <filename>template.js</filename>
