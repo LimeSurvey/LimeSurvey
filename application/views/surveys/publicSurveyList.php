@@ -41,19 +41,11 @@
         "list"=> $list,
     );
 
-    global $oTemplate;
-    if(isset($survey))
-    {
-        $oTemplate = Template::model()->getTemplateConfiguration('',$survey->sid);
-    }
-    else
-    {
-        $oTemplate = Template::model()->getTemplateConfiguration('default');
-    }
+    $oTemplate = Template::model()->getTemplateConfiguration(Yii::app()->getConfig("defaulttemplate"));
 
-    $data['templatedir'] = getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
-    $data['templateurl'] = getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
-    $data['templatename'] = Yii::app()->getConfig("defaulttemplate");
+    $data['templatedir'] = Template::getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
+    $data['templateurl'] = Template::getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
+    $data['templatename'] = $oTemplate->name;
     $data['sitename'] = Yii::app()->getConfig("sitename");
     $data['languagechanger'] = makeLanguageChanger(App()->language);
 
