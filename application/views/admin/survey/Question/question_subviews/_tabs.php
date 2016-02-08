@@ -33,12 +33,8 @@
         <div class="form-group">
             <div class="col-lg-offset-1">
                 <label class="col-sm-2 control-label"  for='title'><?php eT("Code:"); ?></label>
-
                 <div class="col-sm-5">
                     <?php echo CHtml::textField("title",$eqrow['title'],array('class'=>'form-control','size'=>"20",'maxlength'=>'20','pattern'=>$sPattern,"autofocus"=>"autofocus",'id'=>"title")); ?>
-                </div>
-
-                <div class="col-sm-6">
                     <span class='text-warning'><?php  eT("Required"); ?> </span>
                 </div>
             </div>
