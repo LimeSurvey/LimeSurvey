@@ -26,11 +26,11 @@ $surveyid = $surveyinfo['sid'];
     <!-- Quick Actions -->
     <h3 id="survey-action-title"><?php eT('Survey quick actions'); ?><span data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="glyphicon glyphicon-chevron-up"></span></h3>
         <div class="row welcome survey-action" id="survey-action-container" style="<?php if($quickactionstate==0){echo 'display:none';}?>">
-            <div class="col-lg-12 content-right">
+            <div class="col-sm-12 content-right">
 
                 <!-- Alerts, infos... -->
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-sm-12">
 
                         <!-- While survey is activated, you can't add or remove group or question -->
                         <?php if ($activated == "Y"): ?>
@@ -95,7 +95,7 @@ $surveyid = $surveyinfo['sid'];
                             <?php if ($activated == "Y"): ?>
 
                                     <!-- Can't add new group to survey  -->
-                                    <div class="col-lg-6">
+                                    <div class="col-sm-6">
                                         <div class="panel panel-primary disabled" id="pannel-1">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title"><?php eT('Add group');?></h4>
@@ -110,7 +110,7 @@ $surveyid = $surveyinfo['sid'];
                                     </div>
 
                                     <!-- Can't add a new question -->
-                                    <div class="col-lg-6" >
+                                    <div class="col-sm-6" >
                                         <div class="panel panel-primary disabled" id="pannel-2">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title  disabled"><?php eT('Add question');?></h4>
@@ -132,7 +132,7 @@ $surveyid = $surveyinfo['sid'];
                                 <?php elseif(Permission::model()->hasSurveyPermission($surveyinfo['sid'],'surveycontent','create')): ?>
 
                                     <!-- Add group -->
-                                    <div class="col-lg-6">
+                                    <div class="col-sm-6">
                                         <div class="panel panel-primary panel-clickable" id="pannel-1" data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title"><?php eT('Add group');?></h4>
@@ -148,7 +148,7 @@ $surveyid = $surveyinfo['sid'];
 
                                     <!-- Survey has no group, so can't add a question -->
                                     <?php if(!$groups_count > 0): ?>
-                                        <div class="col-lg-6" >
+                                        <div class="col-sm-6" >
                                             <div class="panel panel-primary disabled" id="pannel-2">
                                                 <div class="panel-heading">
                                                     <h4 class="panel-title  disabled"><?php eT('Add question');?></h4>
@@ -168,7 +168,7 @@ $surveyid = $surveyinfo['sid'];
 
                                         <!-- Survey has a group, so can add a question -->
                                     <?php else:?>
-                                        <div class="col-lg-6">
+                                        <div class="col-sm-6">
                                             <div class="panel panel-primary panel-clickable" id="pannel-2" data-url="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>">
                                                 <div class="panel-heading">
                                                     <h4 class="panel-title"><?php eT('Add question');?></h4>
@@ -186,7 +186,7 @@ $surveyid = $surveyinfo['sid'];
                         </div>
 
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-sm-6">
 
 
                                 <!-- Edit text elements and general settings -->
@@ -220,7 +220,7 @@ $surveyid = $surveyinfo['sid'];
 
                             <!-- Stats -->
                             <?php if($respstatsread && $activated=="Y"):?>
-                                <div class="col-lg-6">
+                                <div class="col-sm-6">
                                     <div class="panel panel-primary panel-clickable" id="pannel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$surveyinfo['sid']); ?>">
                                         <div class="panel-heading">
                                             <h4 class="panel-title"><?php eT("Statistics");?></h4>
@@ -238,7 +238,7 @@ $surveyid = $surveyinfo['sid'];
                                     </div>
                                 </div>
                             <?php else: ?>
-                                <div class="col-lg-6">
+                                <div class="col-sm-6">
                                     <div class="panel panel-primary disabled" id="pannel-4">
                                         <div class="panel-heading">
                                             <h4 class="panel-title"><?php eT("Responses & statistics");?></h4>
@@ -289,7 +289,7 @@ $surveyid = $surveyinfo['sid'];
     <!-- Survey summary -->
     <h3><?php eT('Survey summary'); ?></h3>
         <div class="row">
-            <div class="col-lg-12 content-right">
+            <div class="col-sm-12 content-right">
 
                 <!-- for very small screens -->
                 <div class="hidden-sm  hidden-md hidden-lg ">
@@ -320,7 +320,7 @@ $surveyid = $surveyinfo['sid'];
 
                         <!-- Title -->
                         <tr>
-                            <th><?php eT("Title");?>:</th>
+                            <th  class="col-md-4"><?php eT("Title");?>:</th>
                             <th><?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?></th>
                         </tr>
                     </thead>
