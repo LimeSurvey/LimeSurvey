@@ -2909,7 +2909,7 @@ function do_multipleshorttext($ia)
                     'dispVal'=>$dispVal,
                     'suffix'=>$suffix,
                 );
-                $answer = Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/item_textarea', $itemTextareaDatas, true);
+                $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/item_textarea', $itemTextareaDatas, true);
 
                 $fn++;
                 $inputnames[]=$myfname;
@@ -2965,7 +2965,7 @@ function do_multipleshorttext($ia)
                     'dispVal'=>$dispVal,
                     'suffix'=>$suffix,
                 );
-                $answer = Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/item_inputtext', $itemInputextDatas, true);
+                $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/item_inputtext', $itemInputextDatas, true);
                 $fn++;
                 $inputnames[]=$myfname;
             }
