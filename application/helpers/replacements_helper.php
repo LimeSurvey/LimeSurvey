@@ -136,7 +136,12 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
      *
      * oTemplate is defined in controller/survey/index
      */
+
     global $oTemplate;
+    if(empty($oTemplate))
+    {
+        $oTemplate = Template::model()->getTemplateConfiguration($templatename);
+    }
     $aCssFiles = $oTemplate->config->files->css->filename;
     $aJsFiles = $oTemplate->config->files->js->filename;
     if(stripos ($line,"{TEMPLATECSS}"))
