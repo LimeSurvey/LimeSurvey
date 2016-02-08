@@ -939,7 +939,8 @@ class InstallerController extends CController {
     */
     function _setup_tables($sFileName, $aDbConfig = array(), $sDatabasePrefix = '')
     {
-        extract(empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig);
+        $aDbConfig= empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig;
+        extract($aDbConfig);
         try{
             switch ($sDatabaseType) {
                 case 'mysql':
@@ -1260,11 +1261,12 @@ class InstallerController extends CController {
     */
     function _dbConnect($aDbConfig = array(), $aData = array())
     {
-        extract(empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig);
-        $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
+        $aDbConfig= empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig;
+        extract($aDbConfig);
         $sDatabaseName = empty($sDatabaseName) ? '' : $sDatabaseName;
         $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
 
+        $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
         if(self::dbTest($aDbConfig, $aData))
         {
             $this->connection = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
@@ -1283,11 +1285,15 @@ class InstallerController extends CController {
     }
     private function dbTest($aDbConfig = array(), $aData = array())
     {
-        extract(empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig);
+        $aDbConfig= empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig;
+        extract($aDbConfig);
+        $sDatabaseName = empty($sDatabaseName) ? '' : $sDatabaseName;
+        $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
         $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
         try
         {
             $testPdo = new PDO($sDsn,$sDatabaseUser,$sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            $testPdo = null;
         }
         catch(Exception $e)
         {
