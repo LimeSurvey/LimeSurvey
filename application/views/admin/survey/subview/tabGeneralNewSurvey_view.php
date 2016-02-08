@@ -30,8 +30,8 @@
                 <br/><br/>
                 <div class='htmleditor col-sm-offset-2' style="position: relative; top: -30px; left: 1em;" >
                     <textarea cols='80' rows='10' id='description' name='description'></textarea>
+                    <?php echo getEditor("survey-desc", "description", "[" .  gT("Description:", "js") . "]", '', '', '', $action); ?>
                 </div>
-                <?php echo getEditor("survey-desc", "description", "[" .  gT("Description:", "js") . "]", '', '', '', $action); ?>
             </div>
 
             <div class="form-group">
