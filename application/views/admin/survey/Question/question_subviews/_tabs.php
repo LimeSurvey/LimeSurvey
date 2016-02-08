@@ -35,7 +35,7 @@
                 <label class="col-sm-2 control-label"  for='title'><?php eT("Code:"); ?></label>
 
                 <div class="col-sm-5">
-                    <?php echo CHtml::textField("title",$esrow['title'],array('class'=>'form-control','size'=>"20",'maxlength'=>'20','pattern'=>$sPattern,"autofocus"=>"autofocus",'id'=>"title")); ?>
+                    <?php echo CHtml::textField("title",$eqrow['title'],array('class'=>'form-control','size'=>"20",'maxlength'=>'20','pattern'=>$sPattern,"autofocus"=>"autofocus",'id'=>"title")); ?>
                 </div>
 
                 <div class="col-sm-6">
