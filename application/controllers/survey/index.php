@@ -259,7 +259,8 @@ class index extends CAction {
         }
 
         //SET THE TEMPLATE DIRECTORY
-        $thistpl = getTemplatePath($thissurvey['templatedir']);
+        global $oTemplate;
+        $thistpl = $oTemplate->viewPath;
 
         $timeadjust = Yii::app()->getConfig("timeadjust");
         //MAKE SURE SURVEY HASN'T EXPIRED
@@ -687,11 +688,11 @@ class index extends CAction {
         if(isset($redata['surveyid']) && $redata['surveyid'] && !isset($thisurvey))
         {
             $thissurvey=getSurveyInfo($redata['surveyid']);
-            $sTemplateDir= getTemplatePath($thissurvey['template']);
+            $sTemplateDir= $oTemplate->viewPath;
         }
         else
         {
-            $sTemplateDir= getTemplatePath($sTemplateDir);
+            $sTemplateDir= $oTemplate->viewPath;
         }
         sendCacheHeaders();
 

@@ -267,12 +267,12 @@ class InstallerController extends CController {
                 $bDBConnectionWorks = false;
                 $aDbConfig = compact('sDatabaseType', 'sDatabaseName', 'sDatabaseUser', 'sDatabasePwd', 'sDatabasePrefix', 'sDatabaseLocation', 'sDatabasePort');
 
-                if (self::_dbConnect($aDbConfig, array())) {
+                if (self::_dbConnect($aDbConfig, $aData)) {
                     $bDBExists = true;
                     $bDBConnectionWorks = true;
                 } else {
                     $aDbConfig['sDatabaseName'] = '';
-                    if (self::_dbConnect($aDbConfig, array())) {
+                    if (self::_dbConnect($aDbConfig, $aData)) {
                         $bDBConnectionWorks = true;
                     } else {
                         $oModel->addError('dblocation', gT('Connection with database failed. Please check database location, user name and password and try again.'));
@@ -418,7 +418,7 @@ class InstallerController extends CController {
     function stepCreateDb()
     {
         // check status. to be called only when database don't exist else redirect to proper link.
-        if(!Yii::app()->session['databaseDontExist']) 
+        if(!Yii::app()->session['databaseDontExist'])
         {
             $this->redirect(array('installer/welcome'));
         }
@@ -939,7 +939,8 @@ class InstallerController extends CController {
     */
     function _setup_tables($sFileName, $aDbConfig = array(), $sDatabasePrefix = '')
     {
-        extract(empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig);
+        $aDbConfig= empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig;
+        extract($aDbConfig);
         try{
             switch ($sDatabaseType) {
                 case 'mysql':
@@ -1106,8 +1107,10 @@ class InstallerController extends CController {
 
             ."\t\t"   . "'urlManager' => array("                    . "\n"
             ."\t\t\t" . "'urlFormat' => '{$sURLFormat}',"           . "\n"
-            ."\t\t\t" . "'rules' => require('routes.php'),"         . "\n"
-            ."\t\t\t" . "'showScriptName' => $sShowScriptName,"      . "\n"
+            ."\t\t\t" . "'rules' => array("                         . "\n"
+            ."\t\t\t\t" . "// You can add your own rules here"      . "\n"
+            ."\t\t\t" . "),"                                        . "\n"
+            ."\t\t\t" . "'showScriptName' => $sShowScriptName,"     . "\n"
             ."\t\t"   . "),"                                        . "\n"
             ."\t"     . ""                                          . "\n"
 
@@ -1118,8 +1121,9 @@ class InstallerController extends CController {
             ."\t"     . "// then please check your error-logs - either in your hosting provider admin panel or in some /logs directory". "\n"
             ."\t"     . "// on your webspace.". "\n"
             ."\t"     . "// LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates". "\n"
-            ."\t\t"   . "'debug'=>0,"                                . "\n"
-            ."\t\t"   . "'debugsql'=>0 // Set this to 1 to enanble sql logging, only active when debug = 2" . "\n"
+            ."\t\t"   . "'debug'=>0,"                               . "\n"
+            ."\t\t"   . "'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2" . "\n"
+            ."\t\t"   . "// Update default LimeSurvey config here"  . "\n"
             ."\t"     . ")"                                         . "\n"
             . ");"                                        . "\n"
             . "/* End of file config.php */"              . "\n"
@@ -1252,17 +1256,20 @@ class InstallerController extends CController {
 
     /**
     * Connect to the database
-    *
-    * Throw an error if there's an error
+    * @param array $aDbConfig : The config to be tested
+    * @param array $aData
+    * @return bool
     */
     function _dbConnect($aDbConfig = array(), $aData = array())
     {
-        extract(empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig);
-        $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
+        $aDbConfig= empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig;
+        extract($aDbConfig);
         $sDatabaseName = empty($sDatabaseName) ? '' : $sDatabaseName;
         $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
 
-        try {
+        $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
+        if(self::dbTest($aDbConfig, $aData))
+        {
             $this->connection = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
             if($sDatabaseType!='sqlsrv' && $sDatabaseType!='dblib'){
                 $this->connection->emulatePrepare = true;
@@ -1271,14 +1278,41 @@ class InstallerController extends CController {
             $this->connection->active = true;
             $this->connection->tablePrefix = $sDatabasePrefix;
             return true;
-        } catch(Exception $e) {
-            if (!empty($aData['model']) && !empty($aData['clang'])) {
-                $aData['model']->addError('dblocation', $aData['clang']->gT('Try again! Connection with database failed. Reason: ') . $e->getMessage());
+        }
+        else
+        {
+            return false;
+        }
+    }
+    /**
+    * Trye a connexion to the DB and add errorn in model if exist
+    * @param array $aDbConfig : The config to be tested
+    * @param array $aData
+    * @return bool
+    */
+    private function dbTest($aDbConfig = array(), $aData = array())
+    {
+        $aDbConfig= empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig;
+        extract($aDbConfig);
+        $sDatabaseName = empty($sDatabaseName) ? '' : $sDatabaseName;
+        $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
+        $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
+        try
+        {
+            $testPdo = new PDO($sDsn,$sDatabaseUser,$sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            $testPdo = null;
+        }
+        catch(Exception $e)
+        {
+            if (!empty($aData['model'])) {
+                $aData['model']->addError('dblocation', gT('Try again! Connection with database failed.'));
+                $aData['model']->addError('dblocation', gT('Reason: ') . $e->getMessage());
                 $this->render('/installer/dbconfig_view', $aData);
+                Yii::app()->end();
             } else {
                 return false;
             }
         }
+        return true;
     }
-
 }

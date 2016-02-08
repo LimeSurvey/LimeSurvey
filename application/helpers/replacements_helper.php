@@ -136,10 +136,14 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
      *
      * oTemplate is defined in controller/survey/index
      */
-    global $oTemplate;
-    $aCssFiles = (array) $oTemplate->config->files->css->filename;
-    $aJsFiles = (array) $oTemplate->config->files->js->filename;
 
+    global $oTemplate;
+    if(empty($oTemplate))
+    {
+        $oTemplate = Template::model()->getTemplateConfiguration($templatename);
+    }
+    $aCssFiles = $oTemplate->config->files->css->filename;
+    $aJsFiles = $oTemplate->config->files->js->filename;
     if(stripos ($line,"{TEMPLATECSS}"))
     {
         if(!YII_DEBUG) //Asset manager off in debug mode
@@ -148,7 +152,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             {
                 if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
                 {
-                    Yii::app()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( $oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile  ));
+                    Yii::app()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( $oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile  ),$sCssFile['media']);
                 }
             }
         }
@@ -158,32 +162,22 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             {
                 if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
                 {
-                    Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
+                    Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile",$sCssFile['media']);
                 }
             }
 
         }
+        /* RTL CSS */
         if (getLanguageRTL(App()->language))
         {
             $aCssFiles = (array) $oTemplate->config->files->rtl->css->filename;
-            $aJsFiles = (array) $oTemplate->config->files->rtl->js->filename;
             if(!YII_DEBUG)
             {
-                // RTL CSS
                 foreach($aCssFiles as $sCssFile)
                 {
                     if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
                     {
-                        Yii::app()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( $oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile  ));
-                    }
-                }
-
-                // RTL JS
-                foreach($aJsFiles as $aJsFile)
-                {
-                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $aJsFile))
-                    {
-                        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $oTemplate->path .DIRECTORY_SEPARATOR. $aJsFile ) );
+                        Yii::app()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( $oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile  ),$sCssFile['media']);
                     }
                 }
             }
@@ -193,14 +187,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                 {
                     if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
                     {
-                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
-                    }
-                }
-                foreach($aJsFiles as $sJsFile)
-                {
-                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
-                    {
-                        Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
+                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile",$sCssFile['media']);
                     }
                 }
             }
@@ -230,6 +217,31 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             }
 
         }
+        /* RTL JS */
+        if (getLanguageRTL(App()->language))
+        {
+            $aJsFiles = (array) $oTemplate->config->files->rtl->js->filename;
+            if(!YII_DEBUG)
+            {
+                foreach($aJsFiles as $aJsFile)
+                {
+                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $aJsFile))
+                    {
+                        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $oTemplate->path .DIRECTORY_SEPARATOR. $aJsFile ) );
+                    }
+                }
+            }
+            else
+            {
+                foreach($aJsFiles as $sJsFile)
+                {
+                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
+                    {
+                        Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
+                    }
+                }
+            }
+        }
     }
     // surveyformat
     if (isset($thissurvey['format']))
@@ -240,8 +252,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $surveyformat = "";
     }
-
-    $surveyformat .= " bootstrap-engine ";
+    if($oTemplate->config->engine->cssframework)
+    {
+        $surveyformat .= " ".$oTemplate->config->engine->cssframework."-engine ";
+    }
 
     if ((isset(Yii::app()->session['step']) && Yii::app()->session['step'] % 2) && $surveyformat!="allinone")
     {

@@ -19,14 +19,15 @@ $(document).ready(function(){
     $("#urlparams").jqGrid({ url:jsonUrl,
         datatype: "json",
         colNames:[sAction,'','',sParameter,'','',sTargetQuestion],
-        colModel:[ {name:'act',index:'act', width:80,sortable:false},
-                   {name:'id',index:'id', hidden:true},
-                   {name:'sid',index:'sid', hidden:true},
-                   {name:'parameter',index:'parameter', width:100},
-                   {name:'targetqid',index:'targetqid', hidden:true},
-                   {name:'targetsqid',index:'targetsqid', hidden:true},
-                   {name:'title',index:'title', width:240}
-                   ],
+        colModel:[
+            {name:'act',index:'act', width:80,sortable:false},
+            {name:'id',index:'id', hidden:true},
+            {name:'sid',index:'sid', hidden:true},
+            {name:'parameter',index:'parameter', width:100},
+            {name:'targetqid',index:'targetqid', hidden:true},
+            {name:'targetsqid',index:'targetsqid', hidden:true},
+            {name:'title',index:'title', width:240}
+        ],
         direction: $('html').attr('dir'),
         sortname: 'parameter',
         pager: '#pagerurlparams',
@@ -42,41 +43,58 @@ $(document).ready(function(){
         editurl: jsonUrl, // this is dummy existing url
         emptyrecords : sNoParametersDefined,
         caption: sURLParameters,
-        gridComplete: function(){   var ids = jQuery("#urlparams").jqGrid('getDataIDs');
-                                    for(var i=0;i < ids.length;i++)
-                                    {
-                                        var cl = ids[i];
-                                        be = "<span style='cursor:pointer;' class='glyphicon glyphicon-edit text-success' value='E' onclick=\"editParameter('"+cl+"');\"></span>";
-                                        de = "<span style='cursor:pointer;' class='glyphicon glyphicon-trash text-warning' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+cl+"');\"></span>";
-                                        jQuery("#urlparams").jqGrid('setRowData',ids[i],{act:be+de});
-                                    }
+        gridComplete: function() {
+            var ids = jQuery("#urlparams").jqGrid('getDataIDs');
+            for(var i=0;i < ids.length;i++)
+            {
+                var cl = ids[i];
+                be = "<span data-toggle='tooltip' data-placement='top' data-original-title='Edit' title='Edit' style='cursor:pointer;' class='glyphicon glyphicon-edit text-success' value='E' onclick=\"editParameter('"+cl+"');\"></span>";
+                de = "<span data-toggle='tooltip' data-placement='top' data-original-title='Delete' title='Delete' style='cursor:pointer;' class='glyphicon glyphicon-trash text-warning' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+cl+"');\"></span>";
+                jQuery("#urlparams").jqGrid('setRowData',ids[i],{act:be+de});
+            }
+            //$('[data-toggle="tooltip"]').tooltip(); // TODO: Does not work - why?
         }
-    }).navGrid('#pagerurlparams',{  del:false,
-                                    edit:false,
-                                    refresh:false,
-                                    search:false,
-                                    add:false}, {})
-    .jqGrid('navButtonAdd',"#pagerurlparams",{buttonicon:'ui-icon-plusthick',
-                                              caption: sAddParam,
-                                              id: 'btnAddParam',
-                                              onClickButton: newParameter});
-    $("#dlgEditParameter").dialog({ autoOpen: false,
-                                    width: 700 });
+    }).navGrid('#pagerurlparams', {
+        del:false,
+        edit:false,
+        refresh:false,
+        search:false,
+        add:false
+    }, {}).jqGrid('navButtonAdd',"#pagerurlparams", {
+        buttonicon:'ui-icon-plusthick',
+        caption: sAddParam,
+        id: 'btnAddParam',
+        onClickButton: newParameter
+    });
+
+    $("#dlgEditParameter").dialog({
+        autoOpen: false,
+        width: 700
+    });
+
     $('#btnCancelParams').click(function(){
         $("#dlgEditParameter").dialog("close");
     });
 
     $('#btnSaveParams').click(saveParameter);
     $('#addnewsurvey').submit(PostParameterGrid);
+    $('#globalsetting').submit(PostParameterGrid);  // This is the name of survey settings update form
     $( "#tabs" ).bind( "tabsactivate", function(event, ui) {
-        if (ui.newTab.index()>4)    // Hide on import and copy tab, otherwise show
-        {$('#btnSave').hide();}
+        if (ui.newTab.index() > 4)    // Hide on import and copy tab, otherwise show
+        {
+            $('#btnSave').hide();
+        }
         else
-        {$('#btnSave').show();}
-});
+        {
+            $('#btnSave').show();
+        }
+    });
 
 });
 
+/**
+ * Bind to submit event
+ */
 function PostParameterGrid()
 {
     rows= jQuery("#urlparams").jqGrid('getRowData');
@@ -90,6 +108,11 @@ function PostParameterGrid()
     }
 }
 
+/**
+ * Save row to table
+ *
+ * @return void
+ */
 function saveParameter()
 {
     sParamname=$.trim($('#paramname').val());
@@ -105,26 +128,30 @@ function saveParameter()
     sTargetSQID=aIDs[1];
     if ($("#dlgEditParameter").data('action')=='add')
     {
-       sGUID=guidGenerator();
-       jQuery("#urlparams").addRowData(sGUID, { act: "<span style='cursor:pointer;' class='glyphicon glyphicon-pencil text-success' value='E' onclick=\"editParameter('"+sGUID+"');\"></span>"
-                                                    +"<span style='cursor:pointer;' class='glyphicon glyphicon-trash text-warning' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+sGUID+"');\" ></span>",
-                                                id:sGUID,
-                                                sid:$('#id').val(),
-                                                parameter:sParamname,
-                                                targetqid:sTargetQID,
-                                                targetsqid:sTargetSQID,
-                                                title:$("#targetquestion option:selected").text()});
+       sGUID = guidGenerator();
+       jQuery("#urlparams").addRowData(sGUID, {
+        act: "<span style='cursor:pointer;' class='glyphicon glyphicon-pencil text-success' value='E' onclick=\"editParameter('"+sGUID+"');\"></span>"
+            +"<span style='cursor:pointer;' class='glyphicon glyphicon-trash text-warning' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+sGUID+"');\" ></span>",
+        id: sGUID,
+        sid: $('#id').val(),
+        parameter: sParamname,
+        targetqid: sTargetQID,
+        targetsqid: sTargetSQID,
+        title: $("#targetquestion option:selected").text()});
     }
     else
     {
-        jQuery("#urlparams").setRowData($("#dlgEditParameter").data('rowid'),{  parameter:sParamname,
-                                                                                targetqid:sTargetQID,
-                                                                                targetsqid:sTargetSQID,
-                                                                                title:$("#targetquestion option:selected").text()
-                                                                                });
+        var rowId = $('#dlgEditParameter').data('rowid');
+        jQuery("#urlparams").setRowData(rowId, {
+            parameter: sParamname,
+            targetqid: sTargetQID,
+            targetsqid: sTargetSQID,
+            title: $("#targetquestion option:selected").text()
+        });
 
     }
 }
+
 function newParameter(event)
 {
     $("#targetquestion").val('');

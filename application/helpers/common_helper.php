@@ -594,23 +594,29 @@ function getGroupSum($surveyid, $lang)
 
 
 /**
-* getMaxGroupOrder($surveyid) queries the database for the maximum sortorder of a group and returns the next higher one.
-*
-* @param mixed $surveyid
-*/
+ * Queries the database for the maximum sortorder of a group and returns the next higher one.
+ *
+ * @param string|int $surveyid
+ * @return int
+ */
 function getMaxGroupOrder($surveyid)
 {
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
+    $queryResult = QuestionGroup::model()->find(array(
+        'order' => 'group_order desc',
+        'limit' => '1'
+    ));
 
-    //$max_sql = "SELECT max( group_order ) AS max FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}'" ;
-    $query = QuestionGroup::model()->find(array('order' => 'group_order desc'));
-    $current_max = !is_null($query) ? $query->group_order : '';
+    $current_max = !is_null($queryResult) ? $queryResult->group_order : "";
 
-    if($current_max!="")
+    if($current_max !== "")
     {
-        return ++$current_max ;
+        $current_max += 1;
+        return $current_max;
     }
-    else return "0" ;
+    else
+    {
+        return 0;
+    }
 }
 
 

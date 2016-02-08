@@ -173,7 +173,7 @@
         </li>
 
 
-        <li><label for='publicgraphs'><?php  eT("Show graphs in public statistics?"); ?></label>
+        <li><label for='publicgraphs'><?php  eT("Show graphs in public statistics:"); ?></label>
             <select id='publicgraphs' name='publicgraphs'>
                 <option value='Y'
                     <?php if (!isset($esrow['publicgraphs']) || !$esrow['publicgraphs'] || $esrow['publicgraphs'] == "Y") { ?>
@@ -207,17 +207,17 @@
             </select>
         </li>
 
-        <!-- $show_dis_pre =<li><label for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showxquestions" id="" value="
+        <!-- $show_dis_pre =<li><label for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label> <input type="hidden" name="showxquestions" id="" value="
         $show_dis_mid = " /> <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="
         $show_dis_post = " size="70" /></li> -->
         <?php switch ($showxquestions) {
                 case 'show': ?>
-                <li><label for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showxquestions" id="" value="Y" /> <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="
+                <li><label for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label> <input type="hidden" name="showxquestions" id="" value="Y" /> <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="
                         <?php  eT('Yes (Forced by the system administrator)'); ?>
                         " size="70" /></li>
                 <?php   break;
                 case 'hide': ?>
-                <li><label for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showxquestions" id="" value="N" /> <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="
+                <li><label for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label> <input type="hidden" name="showxquestions" id="" value="N" /> <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="
                         <?php  eT('No (Forced by the system administrator)'); ?>
                         " size="70" /></li>
                 <?php  break;
@@ -231,7 +231,7 @@
                     if (empty($sel_showxq['Y']) && empty($sel_showxq['N'])) {
                         $sel_showxq['Y'] = ' selected="selected"';
                     }; ?>
-                <li><label for="showxquestions"><?php  eT('Show "There are X questions in this survey"'); ?></label>
+                <li><label for="showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
                     <select id="showxquestions" name="showxquestions">
                         <option value="Y" <?php echo $sel_showxq['Y']; ?>><?php  eT('Yes'); ?></option>
                         <option value="N" <?php echo $sel_showxq['N']; ?>><?php  eT('No'); ?></option>
@@ -242,29 +242,29 @@
             }; ?>
 
         <!--            // Show {GROUPNAME} and/or {GROUPDESCRIPTION} block
-        $show_dis_pre =<li><label for="dis_showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="
+        $show_dis_pre =<li><label for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="
         $show_dis_mid = " /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value=" -->
         <?php switch ($showgroupinfo) {
                 case 'both': ?>
-                <li><label for="dis_showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="B" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
+                <li><label for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="B" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
                         <?php  eT('Show both (Forced by the system administrator)'); ?>
 
                         " size="70" /></li>
                 <?php    break;
                 case 'name': ?>
-                <li><label for="dis_showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="N" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
+                <li><label for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="N" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
                         <?php  eT('Show group name only (Forced by the system administrator)'); ?>
 
                         " size="70" /></li>
                 <?php     break;
                 case 'description': ?>
-                <li><label for="dis_showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="D" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
+                <li><label for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="D" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
                         <?php  eT('Show group description only (Forced by the system administrator)'); ?>
 
                         " size="70" /></li>
                 <?php    break;
                 case 'none': ?>
-                <li><label for="dis_showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="X" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
+                <li><label for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="X" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
                         <?php  eT('Hide both (Forced by the system administrator)'); ?>
 
                         " size="70" /></li>
@@ -280,7 +280,7 @@
                     if (empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X'])) {
                         $sel_showgri['C'] = ' selected="selected"';
                     }; ?>
-                <li><label for="showgroupinfo"><?php  eT('Show group name and/or group description'); ?></label>
+                <li><label for="showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
                     <select id="showgroupinfo" name="showgroupinfo">
                         <option value="B"<?php echo $sel_showgri['B']; ?>><?php  eT('Show both'); ?></option>
                         <option value="N"<?php echo $sel_showgri['N']; ?>><?php  eT('Show group name only'); ?></option>
@@ -292,26 +292,26 @@
             }; ?>
 
 
-        <!--$show_dis_pre =<li><label for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="
+        <!--$show_dis_pre =<li><label for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="
         $show_dis_mid = " /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value=" -->
         <?php switch ($showqnumcode) {
                 case 'none': ?>
-                <li><label for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="X" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
+                <li><label for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="X" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
                         <?php  eT('Hide both (Forced by the system administrator)'); ?>
                         " size="70" /></li>
                 <?php    break;
                 case 'number': ?>
-                <li><label for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="N" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
+                <li><label for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="N" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
                         <?php  eT('Show question number only (Forced by the system administrator)') ; ?>
                         " size="70" /></li>
                 <?php    break;
                 case 'code': ?>
-                <li><label for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="C" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
+                <li><label for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="C" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
                         <?php  eT('Show question code only (Forced by the system administrator)'); ?>
                         " size="70" /></li>
                 <?php    break;
                 case 'both': ?>
-                <li><label for="dis_showqnumcode"><?php  eT('Show question number and/or code'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="B" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
+                <li><label for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="B" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
                         <?php  eT('Show both (Forced by the system administrator)'); ?>
                         " size="70" /></li>
                 <?php    break;
@@ -325,7 +325,7 @@
                     if (empty($sel_showqnc['B']) && empty($sel_showqnc['C']) && empty($sel_showqnc['N']) && empty($sel_showqnc['X'])) {
                         $sel_showqnc['X'] = ' selected="selected"';
                     }; ?>
-                <li><label for="showqnumcode"><?php  eT('Show question number and/or code'); ?></label>
+                <li><label for="showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
                     <select id="showqnumcode" name="showqnumcode">
                         <option value="B"<?php echo $sel_showqnc['B']; ?>><?php  eT('Show both'); ?></option>
                         <option value="N"<?php echo $sel_showqnc['N']; ?>><?php  eT('Show question number only'); ?></option>
@@ -338,11 +338,11 @@
 
 
 
-        <!--    $show_dis_pre =<li><label for="dis_shownoanswer"><?php  eT('Show "No answer"'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer" value="
+        <!--    $show_dis_pre =<li><label for="dis_shownoanswer"><?php  eT('Show "No answer":'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer" value="
         $show_dis_mid = " /> <input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value=" -->
         <?php switch ($shownoanswer) {
                 case 0: ?>
-                <li><label for="dis_shownoanswer"><?php  eT('Show "No answer"'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer" value="N" /> <input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php  eT('Off (Forced by the system administrator)'); ?>
+                <li><label for="dis_shownoanswer"><?php  eT('Show "No answer":'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer" value="N" /> <input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php  eT('Off (Forced by the system administrator)'); ?>
                         " size="70" /></li>
                 <?php  break;
                 case 2:
@@ -354,14 +354,14 @@
                     if (empty($sel_showno)) {
                         $sel_showno['Y'] = ' selected="selected"';
                     }; ?>
-                <li><label for="shownoanswer"><?php  eT('Show "No answer"'); ?></label>
+                <li><label for="shownoanswer"><?php  eT('Show "No answer":'); ?></label>
                     <select id="shownoanswer" name="shownoanswer">
                         <option value="Y"<?php echo $sel_showno['Y']; ?>><?php  eT('Yes'); ?></option>
                         <option value="N"<?php echo $sel_showno['N']; ?>><?php  eT('No'); ?></option>
                     </select></li>
                 <?php  break;
                 default: ?>
-                <li><label for="dis_shownoanswer"><?php  eT('Show "No answer"'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer"
+                <li><label for="dis_shownoanswer"><?php  eT('Show "No answer":'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer"
                         value="Y" /> <input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php  eT('On (Forced by the system administrator)'); ?>
                         " size="70" /></li>
                 <?php    break;

@@ -59,6 +59,27 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.06+ (build 160204) to 2.50+ (build 160206) Feb 6, 2016
+-Fixed issue #10196: Superadmins should be able to edit participants without sharing (Olle Haerstedt)
+-Fixed issue #10201: Set sorttype to date, not string, for dates (Olle Haerstedt)
+-Fixed issue #10270: Open online manual in new tab (Olle Haerstedt)
+-Fixed issue #10300: Remove spaces in divs that have min- and maxdate, so Javascript gets correct substrings (Olle Haerstedt)
+-Fixed Issue #10302: Unable to rank by date in survey listing (Matthew Favetti)
+-Fixed issue #10303: Possible to change survey owner in general survey settings (Olle Haerstedt)
+-Fixed issue #10310: Inconsistent use of colon (Carsten Schmitz)
+-Fixed Issue #10311: Question group list is unsorted by default (Matthew Favetti)
+-Fixed issue #9925: Check if deleted template is the same as global default template (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by coeneisma, Han
+#Updated translation: French (France) by c_schmitz, arnaud21
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
 Changes from 2.06+ (build 160202) to 2.50+ (build 160204) Feb 4, 2016
 -Fixed issue #10242: Reordernig can be broken with some HTML in question (Denis Chenu)
 -Fixed issue #10244: Internal Server Error on RemoteControl add_survey call (Carsten Schmitz)

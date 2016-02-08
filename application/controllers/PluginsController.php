@@ -32,7 +32,7 @@ class PluginsController extends LSYii_Controller
 
     /**
      * Activates plugin with $id
-     * 
+     *
      * @param int $id
      * @return void
      */
@@ -70,7 +70,7 @@ class PluginsController extends LSYii_Controller
 
     /**
      * Show configuration for plugin with $id
-     * 
+     *
      * @param int $id
      * @return void
      */
@@ -160,9 +160,11 @@ class PluginsController extends LSYii_Controller
     }
 
     /**
-     * @todo Doc
+     * Launch the event newDirectRequest
+     * @param $plugin : the target
+     * @param $function : the fuinction to call from the plugin
      */
-    public function actionDirect($plugin, $function)
+    public function actionDirect($plugin, $function=null)
     {
         $oEvent = new PluginEvent('newDirectRequest');
         // The intended target of the call.

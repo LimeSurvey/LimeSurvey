@@ -30,7 +30,7 @@
              <input type='text' class='popupdatetime' id='expires' size='20' name='expires' value="<?php echo $expires; ?>" /></li>
 
 
-             <li><label for='usecookie'><?php  eT("Set cookie to prevent repeated participation?"); ?></label>
+             <li><label for='usecookie'><?php  eT("Set cookie to prevent repeated participation:"); ?></label>
             <select name='usecookie' id='usecookie'>
             <option value='Y'
         <?php if ($esrow['usecookie'] == "Y") { ?>

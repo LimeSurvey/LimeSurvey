@@ -1437,6 +1437,17 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['esrow'] = $esrow;
         $aData['surveyid'] = $iSurveyID;
 
+        // Get users, but we only need id and name (NOT password etc)
+        $users = getUserList();
+        $aData['users'] = array();
+        foreach ($users as $user)
+        {
+            $aData['users'][] = array(
+                'username' => $user['user'],
+                'uid' => $user['uid'],
+            );
+        }
+
         $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
         $beforeSurveySettings->set('survey', $iSurveyID);
         App()->getPluginManager()->dispatchEvent($beforeSurveySettings);

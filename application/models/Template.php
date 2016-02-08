@@ -74,6 +74,11 @@ class Template extends LSActiveRecord
         {
             return $sTemplateName;
         }
+        /* Old template */
+        if(is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName.DIRECTORY_SEPARATOR.'startpage.pstpl'))
+        {
+            return $sTemplateName;
+        }
         /* Then try with the global default template */
         if($sTemplateName!=$sDefaulttemplate)
             return self::templateNameFilter($sDefaulttemplate);
@@ -85,7 +90,8 @@ class Template extends LSActiveRecord
     public static function checkIfTemplateExists($sTemplateName)
     {
         $sTemplatePath = self::getTemplatePath($sTemplateName);
-        return is_dir($sTemplatePath.'/'.$sTemplateName);
+
+        return is_dir($sTemplatePath);
     }
 
     /**
@@ -162,6 +168,19 @@ class Template extends LSActiveRecord
             {
                 $oTemplate->name = $sTemplateName;
                 $oTemplate->path = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
+            }
+            elseif(is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName.DIRECTORY_SEPARATOR.'startpage.pstpl'))
+            {
+                $oTemplate->name = $sTemplateName;
+                $oTemplate->path = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
+                $oTemplate->config = simplexml_load_file(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'/minimal-config.xml');
+                /* /./ working for linux, untested with windows
+                $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->pstpldirectory.DIRECTORY_SEPARATOR;
+                * */
+                $oTemplate->cssFramework = null;
+                $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR;
+                $oTemplate->packages = (array) $oTemplate->config->engine->packages->package;
+                return $oTemplate;
             }
             else
             {

@@ -5,26 +5,26 @@
 ?>
 <!-- Notification panel -->
 <div id='notification'  class="tab-pane fade in">
-    
+
     <!-- email basic to -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
         <div class="col-sm-8">
             <?php echo CHtml::textField('emailnotificationto',$esrow['emailnotificationto'],array('size'=>70, 'class'=>"form-control")); ?>
         </div>
-    </div>    
-    
+    </div>
+
     <!-- email detail to  -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
         <div class="col-sm-8">
             <?php echo CHtml::textField('emailresponseto',$esrow['emailresponseto'],array('size'=>70, 'class'=>"form-control")) ?>
         </div>
-    </div>            
-    
+    </div>
+
     <!-- Date Stamp -->
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='datestamp'><?php  eT("Date Stamp?"); ?></label>
+        <label class="col-sm-4 control-label" for='datestamp'><?php  eT("Date Stamp:"); ?></label>
         <div class="col-sm-8">
             <?php if ($esrow['active'] == "Y") { ?>
                 <?php if ($esrow['datestamp'] != "Y") {
@@ -38,11 +38,11 @@
                     <?php echo CHtml::dropDownList('datestamp', $esrow['datestamp'],array("Y"=>gT("Yes"),"N"=>gT("No")),array('onchange'=>'alertDateStampAnonymization();', 'class'=>"form-control" )); ?>
             <?php } ?>
         </div>
-    </div>                    
-    
+    </div>
+
     <!-- Save IP Address -->
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='ipaddr'><?php  eT("Save IP Address?"); ?></label>
+        <label class="col-sm-4 control-label" for='ipaddr'><?php  eT("Save IP Address:"); ?></label>
         <div class="col-sm-8">
             <?php if ($esrow['active'] == "Y") { ?>
                 <?php  if ($esrow['ipaddr'] != "Y") {
@@ -56,11 +56,11 @@
                     <?php echo CHtml::dropDownList('ipaddr', $esrow['ipaddr'],array("Y"=>gT("Yes"),"N"=>gT("No")), array('class'=>"form-control")); ?>
                 <?php } ?>
         </div>
-    </div>            
-    
+    </div>
+
     <!-- Save referrer URL -->
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='refurl'><?php  eT("Save referrer URL?"); ?></label>
+        <label class="col-sm-4 control-label" for='refurl'><?php  eT("Save referrer URL:"); ?></label>
         <div class="col-sm-8">
             <?php if ($esrow['active'] == "Y") { ?>
                 <?php  if ($esrow['refurl'] != "Y") {
@@ -74,11 +74,11 @@
                     <?php echo CHtml::dropDownList('refurl', $esrow['refurl'],array("Y"=>gT("Yes"),"N"=>gT("No")), array('class'=>"form-control")); ?>
             <?php } ?>
         </div>
-    </div>                        
-    
+    </div>
+
     <!-- Save timings -->
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='savetimings'><?php  eT("Save timings?"); ?></label>
+        <label class="col-sm-4 control-label" for='savetimings'><?php  eT("Save timings:"); ?></label>
         <div class="col-sm-8">
             <?php
             if ($esrow['active']=="Y")
@@ -93,37 +93,37 @@
                     <?php echo CHtml::dropDownList('savetimings', $esrow['savetimings'],array("Y"=>gT("Yes"),"N"=>gT("No")), array('class'=>"form-control")); ?>
             <?php } ?>
         </div>
-    </div>                                
-    
+    </div>
+
     <!-- Enable assessment mode -->
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='assessments'><?php  eT("Enable assessment mode?"); ?></label>
+        <label class="col-sm-4 control-label" for='assessments'><?php  eT("Enable assessment mode:"); ?></label>
         <div class="col-sm-8">
             <?php echo CHtml::dropDownList('assessments', $esrow['assessments'],array("Y"=>gT("Yes"),"N"=>gT("No")), array('class'=>"form-control")); ?>
         </div>
-    </div>            
-    
+    </div>
+
     <!-- Participant may save and resume  -->
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='allowsave'><?php  eT("Participant may save and resume later?"); ?></label>
+        <label class="col-sm-4 control-label" for='allowsave'><?php  eT("Participant may save and resume later:"); ?></label>
         <div class="col-sm-8">
             <?php echo CHtml::dropDownList('allowsave', $esrow['allowsave'],array("Y"=>gT("Yes"),"N"=>gT("No")), array('class'=>"form-control")); ?>
         </div>
-    </div>            
-            
+    </div>
+
     <!-- Google Analytics -->
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='googleanalyticsapikey'><?php  eT("Google Analytics API key for this survey?"); ?></label>
+        <label class="col-sm-4 control-label" for='googleanalyticsapikey'><?php  eT("Google Analytics API key for this survey:"); ?></label>
         <div class="col-sm-8">
-            <?php echo CHtml::textField('googleanalyticsapikey',$esrow['googleanalyticsapikey'],array('size'=>20), array('class'=>"form-control")); ?>                
+            <?php echo CHtml::textField('googleanalyticsapikey',$esrow['googleanalyticsapikey'],array('size'=>20), array('class'=>"form-control")); ?>
         </div>
-    </div>            
-        
+    </div>
+
     <!-- Google Analytics style -->
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='googleanalyticsstyle'><?php  eT("Google Analytics style for this survey?"); ?></label>
+        <label class="col-sm-4 control-label" for='googleanalyticsstyle'><?php  eT("Google Analytics style for this survey:"); ?></label>
         <div class="col-sm-8">
-            <?php echo CHtml::dropDownList('googleanalyticsstyle', $esrow['googleanalyticsstyle'],array("0"=>gT("Do not use Google Analytics"),"1"=>gT("Default Google Analytics"),"2"=>gT("Survey name-[SID]/Group name")), array('class'=>"form-control")); ?>                                
+            <?php echo CHtml::dropDownList('googleanalyticsstyle', $esrow['googleanalyticsstyle'],array("0"=>gT("Do not use Google Analytics"),"1"=>gT("Default Google Analytics"),"2"=>gT("Survey name-[SID]/Group name")), array('class'=>"form-control")); ?>
         </div>
-    </div>                    
+    </div>
 </div>

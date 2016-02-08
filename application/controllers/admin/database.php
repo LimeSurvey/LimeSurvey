@@ -1198,6 +1198,7 @@ class database extends Survey_Common_Action
             }
 
             // We have $oSurvey : update and save it
+            $oSurvey->owner_id = Yii::app()->request->getPost('owner_id');
             $oSurvey->admin =  Yii::app()->request->getPost('admin');
             $oSurvey->expires =  $expires;
             $oSurvey->startdate =  $startdate;

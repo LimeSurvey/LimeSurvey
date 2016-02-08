@@ -214,7 +214,7 @@ class SettingsWidget extends CWidget
      * Echo additional HTML, without any magic
      * 
      * @since 2015-12-16
-     * @author Olle Haerstedt <olle.haerstedt@limesurvey.org>
+     * @author Olle Haerstedt
      */
     protected function renderAdditionalHtml()
     {

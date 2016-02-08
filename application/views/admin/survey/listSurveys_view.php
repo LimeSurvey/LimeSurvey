@@ -134,7 +134,7 @@
                         ),
 
                         array(
-                            'name' => '',
+                            'header' => '',
                             'name' => 'actions',
                             'value'=>'$data->buttons',
                             'type'=>'raw',
