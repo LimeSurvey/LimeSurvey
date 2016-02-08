@@ -372,13 +372,6 @@ function ev_gecko_select_keyup_ev(Ev) {
     return true;
 }
 
-function init_gecko_select_hack() {
-    return true;
-    var selects = document.getElementsByTagName("SELECT");
-    for(i=0; i<selects.length; i++)
-        selects.item(i).addEventListener("keyup", ev_gecko_select_keyup_ev, false);
-    return true;
-}
 
 
 function getkey(e)
