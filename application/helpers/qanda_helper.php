@@ -2546,7 +2546,7 @@ function do_multiplechoice_withcomments($ia)
         $inputnames[]=$myfname;
         $inputnames[]=$myfname2;
 
-        $inputCOmmentValue = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname],ENT_QUOTES);
+        $inputCOmmentValue = ''; //still no default values for comments
 
         $itemDatas = array(
             'sDisplayStyle'=>$sDisplayStyle,
