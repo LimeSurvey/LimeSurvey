@@ -311,10 +311,7 @@ class Template extends LSActiveRecord
         return in_array($sTemplateName,
             array(
                 'default',
-                'material_design',
-                'metro_ode',
                 'news_paper',
-                'night_mode',
                 'ubuntu_orange',
             )
         );
