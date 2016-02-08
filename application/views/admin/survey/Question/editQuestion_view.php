@@ -163,6 +163,27 @@
                                                             <?php endforeach;?>
                                                         </ul>
                                                     </div>
+                                                <?php elseif(isset($selectormodeclass) && $selectormodeclass == "none" && $activated != "Y"): ?>
+                                                    <div class="col-sm-8 btn-group" id="question_type_button" style="z-index: 1000">
+                                                        <?php
+                                                            $aQtypeData=array();
+                                                            foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
+                                                            {
+                                                                $aQtypeData[]=array('code'=>$key,'description'=>$questionType['description'],'group'=>$questionType['group']);
+                                                            }
+                                                            echo CHtml::dropDownList(
+                                                                                        'type',
+                                                                                        'category',
+                                                                                        CHtml::listData($aQtypeData,'code','description','group'),
+                                                                                        array(
+                                                                                                'class' => 'form-control',
+                                                                                                'id'=>'question_type',
+
+                                                                                                'options' => array($eqrow['type']=>array('selected'=>true))
+                                                                                            )
+                                                                                        );
+                                                                                        ?>
+                                                    </div>
                                                 <?php else: ?>
                                                     <div class="col-sm-8 ">
                                                         <p style="padding-top: 7px;">
