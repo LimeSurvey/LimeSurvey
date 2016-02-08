@@ -84,14 +84,16 @@
 
                     <!-- activate expired survey -->
                     <?php if($expired) : ?>
-                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('This survey is active but expired.'); ?>">
-                            <button type="button" class="btn btn-success  btntooltip" disabled="disabled">
+                        <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('This survey is active but expired.'); ?>">
+                            <button type="button" class="btn btn-success btntooltip" disabled="disabled">
+                                <span class="fa fa-ban">&nbsp;</span>
                                 <?php eT("Activate this survey"); ?>
                             </button>
                         </span>
                     <?php elseif($notstarted) : ?>
-                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title='<?php eT("This survey is active but has a start date."); ?>'>
-                            <button type="button" class="btn btn-success  btntooltip" disabled="disabled" >
+                        <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title='<?php eT("This survey is active but has a start date."); ?>'>
+                            <button type="button" class="btn btn-success btntooltip" disabled="disabled" >
+                                <span class="fa fa-clock-o">&nbsp;</span>
                                 <?php eT("Activate this survey"); ?>
                             </button>
                         </span>
