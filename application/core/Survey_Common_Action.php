@@ -1160,6 +1160,13 @@ class Survey_Common_Action extends CAction
         $aData['aAdditionalLanguages'] = $aAdditionalLanguages;
         $aData['surveyinfo'] = $aSurveyInfo;
         $aData['groups_count'] = $sumcount2;
+
+        // We get the state of the quickaction
+        // If the survey is new (ie: it has no group), it is opened by default
+        $setting_entry = 'quickaction_'.Yii::app()->user->getId();
+        $aData['quickactionstate'] = ($sumcount2<1)?1:getGlobalSetting($setting_entry);
+
+
         $this->getController()->renderPartial("/admin/survey/surveySummary_view", $aData);
     }
 

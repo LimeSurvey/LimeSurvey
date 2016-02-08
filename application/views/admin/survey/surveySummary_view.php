@@ -5,13 +5,11 @@
  */
  $count= 0;
 
-     //TODO : move to controller
-     $templates = getTemplateListWithPreviews();
-     //print_r($templates);
-     $count = 0;
-     $surveyid = $surveyinfo['sid'];
-     $setting_entry = 'quickaction_'.Yii::app()->user->getId();
-     $quickactionstate = getGlobalSetting($setting_entry);
+//TODO : move to controller
+$templates = getTemplateListWithPreviews();
+//print_r($templates);
+$count = 0;
+$surveyid = $surveyinfo['sid'];
 
      $surveylocale = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read');
      // EDIT SURVEY SETTINGS BUTTON
