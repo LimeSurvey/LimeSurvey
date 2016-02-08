@@ -2,6 +2,7 @@
     App()->getClientScript()->registerPackage('jquery-nestedSortable');
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'organize.js');
 ?>
+
 <div class="side-body" id="edit-survey-text-element">
     <div class="row">
         <h3><?php eT('Organize question groups/questions');?></h3>
@@ -34,11 +35,13 @@
             </ol>
         </div>
 
-        <?php echo CHtml::form(array("admin/survey/sa/organize/surveyid/{$surveyid}"), 'post', array('id'=>'frmOrganize' )); ?>
+        <?php echo CHtml::form(array("admin/survey/sa/organize/surveyid/{$surveyid}"), 'post', array('id'=>'frmOrganize', 'onsubmit'=>'setFormSubmitting();' )); ?>
             <p>
                 <input type='hidden' id='orgdata' name='orgdata' value='' />
                 <input type='hidden' id='close-after-save' name='close-after-save' value='' />
-                <button class='hidden' type="submit" id='btnSave' onclick='setFormSubmitting()'><?php echo eT('Save'); ?></button>
+                <button class='hidden' type="submit" id='btnSave' onclick='setFormSubmitting();'>
+                    <?php echo eT('Save'); ?>
+                </button>
             </p>
         </form>
         <!-- If user do a change in the list, and try to leave without saving, he'll be warn with this message -->

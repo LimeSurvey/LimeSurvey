@@ -1,5 +1,5 @@
+var formSubmitting = false;
 $(document).ready(function(){
-
 
 if ($('#save-form-button').length>0){
     $("#save-form-button").on('click', function(){
@@ -43,6 +43,7 @@ if ($('#save-button').length > 0){
         var $form = getForm(this);
         closeAfterSaveInput.val("false");
         $form.append(closeAfterSaveInput);
+        formSubmitting = true;
         $form.find('[type="submit"]').first().trigger('click');
     });
 }
@@ -55,7 +56,6 @@ if ($('#save-and-close-button').length > 0){
         var $form = getForm(this);
         closeAfterSaveInput.val("true");
         $form.append(closeAfterSaveInput);
-        //$form.submit();
         $form.find('[type="submit"]').first().trigger('click');
     });
 }

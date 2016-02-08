@@ -1,5 +1,5 @@
+var formSubmitting = false;
 $(document).ready(function(){
-
 
 if ($('#save-form-button').length>0){
     $("#save-form-button").on('click', function(){
@@ -37,24 +37,25 @@ var getForm = function (that) {
 };
 
 if ($('#save-button').length > 0){
-    $('#save-button').on('click', function()
+    $('#save-button').on('click', function(ev)
     {
-        console.log('ok');
+        ev.preventDefault();
         var $form = getForm(this);
         closeAfterSaveInput.val("false");
         $form.append(closeAfterSaveInput);
+        formSubmitting = true;
         $form.find('[type="submit"]').first().trigger('click');
     });
 }
 
 // Save-and-close button
 if ($('#save-and-close-button').length > 0){
-    $('#save-and-close-button').on('click', function()
+    $('#save-and-close-button').on('click', function(ev)
     {
+        ev.preventDefault();
         var $form = getForm(this);
         closeAfterSaveInput.val("true");
         $form.append(closeAfterSaveInput);
-        //$form.submit();
         $form.find('[type="submit"]').first().trigger('click');
     });
 }

@@ -1,6 +1,6 @@
 var formSubmitting = false;
 var changed = false;
-var setFormSubmitting = function() { formSubmitting = true; };
+var setFormSubmitting = function() { };
 $(document).ready(function(){
     var sourceItem;
     $('ol.organizer').nestedSortable({
