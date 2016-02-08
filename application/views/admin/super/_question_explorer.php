@@ -31,6 +31,24 @@
                 <?php if(count($aGroups)):?>
                     <li class="panel panel-default dropdownstyle" id="questionexplorer-group-container">
 
+
+                        <?php if (!$bSurveyIsActive): ?>
+                        <div class="row ">
+                            <div class="col-sm-8" >
+                                <!-- add group -->
+                                <a class="btn btn-link"
+                                    data-toggle="tooltip"
+                                    data-placement="bottom"
+                                    title="<?php eT('Add a group');?>"
+                                    class="" href="<?php echo $this->createUrl("/admin/questiongroups/sa/add/surveyid/$iSurveyId"); ?>">
+                                    <span class="glyphicon glyphicon-plus-sign"></span>
+                                    ADD GROUP
+                                </a>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+
+
                         <?php foreach($aGroups as $aGroup):?>
 
                             <!-- Group -->
