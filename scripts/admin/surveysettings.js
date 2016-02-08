@@ -46,10 +46,11 @@ $(document).ready(function(){
                                     for(var i=0;i < ids.length;i++)
                                     {
                                         var cl = ids[i];
-                                        be = "<span style='cursor:pointer;' class='glyphicon glyphicon-edit text-success' value='E' onclick=\"editParameter('"+cl+"');\"></span>";
-                                        de = "<span style='cursor:pointer;' class='glyphicon glyphicon-trash text-warning' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+cl+"');\"></span>";
+                                        be = "<span data-toggle='tooltip' data-placement='top' data-original-title='Edit' title='Edit' style='cursor:pointer;' class='glyphicon glyphicon-edit text-success' value='E' onclick=\"editParameter('"+cl+"');\"></span>";
+                                        de = "<span data-toggle='tooltip' data-placement='top' data-original-title='Delete' title='Delete' style='cursor:pointer;' class='glyphicon glyphicon-trash text-warning' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+cl+"');\"></span>";
                                         jQuery("#urlparams").jqGrid('setRowData',ids[i],{act:be+de});
                                     }
+                                    //$('[data-toggle="tooltip"]').tooltip();
         }
     }).navGrid('#pagerurlparams',{  del:false,
                                     edit:false,
