@@ -25,6 +25,18 @@ $(document).ready(function(){
     tableCellAdapters();
     linksInDialog();
 
+    if($('.htmleditor').length>0)
+    {
+        setTimeout(function(){
+            $('.cke_contents').width('100%');
+            $iframes = $('.htmleditor').find('iframe');
+            //console.log('OK '+JSON.stringify($iframes));
+            $iframes.each(function(){
+                $(this).width('500px').zIndex('10000');
+            });
+        },500);
+    }
+
     if(typeof(userdateformat) !== 'undefined')
         {
         $(".popupdate").each(function(i,e) {
