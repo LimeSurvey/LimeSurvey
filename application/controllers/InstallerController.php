@@ -1256,8 +1256,9 @@ class InstallerController extends CController {
 
     /**
     * Connect to the database
-    *
-    * Throw an error if there's an error
+    * @param array $aDbConfig : The config to be tested
+    * @param array $aData
+    * @return bool
     */
     function _dbConnect($aDbConfig = array(), $aData = array())
     {
@@ -1283,6 +1284,12 @@ class InstallerController extends CController {
             return false;
         }
     }
+    /**
+    * Trye a connexion to the DB and add errorn in model if exist
+    * @param array $aDbConfig : The config to be tested
+    * @param array $aData
+    * @return bool
+    */
     private function dbTest($aDbConfig = array(), $aData = array())
     {
         $aDbConfig= empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig;
