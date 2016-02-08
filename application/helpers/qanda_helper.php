@@ -583,12 +583,13 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
     $time_limit_timer_style=trim($aQuestionAttributes['time_limit_timer_style']) != '' ? $aQuestionAttributes['time_limit_timer_style'] : "position: relative;";
 
     $timersessionname="timer_question_".$ia[0];
+    $time_limit=0; // ?
     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname]))
     {
         $time_limit=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname];
     }
 
-    $output =  Yii::app()->getController()->renderPartial('/survey/question_timer/timer_header', array('timersessionname'=>$timersessionname,'timersessionname'=>$timersessionname,'timersessionname'=>$timersessionname), true);
+    $output =  Yii::app()->getController()->renderPartial('/survey/question_timer/timer_header', array('timersessionname'=>$timersessionname,'timersessionname'=>$timersessionname,'timersessionname'=>$timersessionname,'time_limit'=>$time_limit), true);
 
     if ($thissurvey['timercount'] < 2)
     {
@@ -1165,7 +1166,7 @@ function do_date($ia)
         // Format the date  for output
         $dateoutput=trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
         if ($dateoutput!='' & $dateoutput!='INVALID')
-        {            
+        {
             $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
             $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
         }
@@ -3503,7 +3504,7 @@ function do_shortfreetext($ia)
         {
             $tiwidth=40;
         }
-
+        $dispVal = "";
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
             $dispVal = str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
             if ($aQuestionAttributes['numbers_only']==1)
@@ -3853,6 +3854,7 @@ function do_hugefreetext($ia)
     {
         $tiwidth=70;
     }
+    $dispVal="";
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
     {
         $dispVal = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
@@ -3860,6 +3862,7 @@ function do_hugefreetext($ia)
 
     $itemDatas = array(
         'extraclass'=>$extraclass,
+        'kpclass'=>$kpclass,
         'name'=>$ia[1],
         'drows'=>$drows,
         'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
@@ -3867,7 +3870,7 @@ function do_hugefreetext($ia)
         'tiwidth'=>$tiwidth,
         'maxlength'=>$maxlength,
     );
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/longfreetext/item', $itemDatas, true);
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/longfreetext/item', $itemDatas, true);
 
     if (trim($aQuestionAttributes['time_limit']) != '')
     {
