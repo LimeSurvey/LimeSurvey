@@ -105,9 +105,9 @@ class Boxes extends CActiveRecord
     public function getUsergroupname()
     {
         $usergroupid = $this->usergroup;
-        if($usergroupid==="0")
+        if(empty($usergroupid))
         {
-            return   gT('anybody');
+            return gT('anybody');
         }
         else
         {
