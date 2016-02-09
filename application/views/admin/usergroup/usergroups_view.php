@@ -46,7 +46,7 @@
                             'name' => 'description',
                             'value'=> '$data->description',
                             'type' => 'LongText',
-                            'htmlOptions' => array('class' => 'col-md-1'),
+                            'htmlOptions' => array('class' => 'col-md-5'),
                         ),
 
                         array(

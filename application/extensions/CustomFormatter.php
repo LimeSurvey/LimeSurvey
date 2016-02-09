@@ -3,7 +3,7 @@
 // Build the expanded list of languages
 class CustomFormatter extends CFormatter {
 
-	public $maxLength = 50;
+	public $maxLength = 125;
 
 	public function formatLanguageList($value) {
 
