@@ -31,6 +31,13 @@
                 </a>
             <?php endif;?>
 
+            <?php if(isset($fullpagebar['saveandclosebutton']['form'])):?>
+                <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
+                    <span class="glyphicon glyphicon-saved"></span>
+                    <?php eT("Save and close");?>
+                </a>
+            <?php endif; ?>
+
             <!-- Close -->
             <?php if(isset($fullpagebar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
