@@ -110,7 +110,6 @@
                 // If it is the last box, we should close the box
                 if($boxcount == $this->boxesbyrow)
                 {
-                        //echo '</div>';
                         $this->render('row_footer');
                         $boxcount = 0;
                         $bIsRowOpened = false;
