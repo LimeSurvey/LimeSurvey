@@ -602,6 +602,8 @@ function getGroupSum($surveyid, $lang)
 function getMaxGroupOrder($surveyid)
 {
     $queryResult = QuestionGroup::model()->find(array(
+        'condition' => 'sid = :sid',
+        'params' => array(':sid' => $surveyid),
         'order' => 'group_order desc',
         'limit' => '1'
     ));
