@@ -12,6 +12,8 @@
 ?>
 
 <h4><?php eT("Home page button configuration");?></h4>
+<h5><?php eT('Default boxes:');?></h5>
+<p>
 <table class="table">
     <thead>
         <tr>
@@ -25,7 +27,7 @@
                 <?php eT('Description');?>
             </th>
             <th>
-                <?php eT('Image');?>
+                <?php eT('Icon');?>
             </th>
         </tr>
     </thead>
@@ -55,8 +57,12 @@
                     <input type="text" name="box-desc-<?php echo $box->id;?>" id="box-desc-<?php echo $box->id;?>" value="<?php echo $box->desc;?>"/>
                 </td>
                 <td>
-                    <input type="text" name="box-img-<?php echo $box->id;?>" id="box-img-<?php echo $box->id;?>" value="<?php echo $box->img;?>"/>
+                    <input type="text" name="box-ico-<?php echo $box->id;?>" id="box-ico-<?php echo $box->id;?>" value="<?php echo $box->ico;?>"/>
                 </td>
         <?php endforeach;?>
     </tbody>
 </table>
+</p>
+<h5><?php eT('Boxes for specific user groups:');?></h5>
+<p>
+</p>
