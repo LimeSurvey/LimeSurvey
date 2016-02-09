@@ -216,14 +216,14 @@ CREATE TABLE prefix_participants (
 --
 CREATE TABLE prefix_permissions (
     "id" serial NOT NULL,
-	"entity" character varying(50) NOT NULL,
-	"entity_id" integer NOT NULL,
-	"uid" integer NOT NULL,
-	"permission" character varying(100) NOT NULL,
-	"create_p" integer DEFAULT 0 NOT NULL,
+    "entity" character varying(50) NOT NULL,
+    "entity_id" integer NOT NULL,
+    "uid" integer NOT NULL,
+    "permission" character varying(100) NOT NULL,
+    "create_p" integer DEFAULT 0 NOT NULL,
     "read_p" integer DEFAULT 0 NOT NULL,
-	"update_p" integer DEFAULT 0 NOT NULL,
-	"delete_p" integer DEFAULT 0 NOT NULL,
+    "update_p" integer DEFAULT 0 NOT NULL,
+    "delete_p" integer DEFAULT 0 NOT NULL,
     "import_p" integer DEFAULT 0 NOT NULL,
     "export_p" integer DEFAULT 0 NOT NULL,
     CONSTRAINT prefix_permissions_pkey PRIMARY KEY (id)
@@ -396,11 +396,11 @@ CREATE TABLE prefix_survey_links (
 -- Table structure for table survey_url_parameters
 --
 CREATE TABLE prefix_survey_url_parameters (
-	"id" serial PRIMARY KEY NOT NULL,
-	"sid" integer NOT NULL,
-	"parameter" character varying(50) NOT NULL,
-	"targetqid" integer NULL,
-	"targetsqid" integer NULL
+    "id" serial PRIMARY KEY NOT NULL,
+    "sid" integer NOT NULL,
+    "parameter" character varying(50) NOT NULL,
+    "targetqid" integer NULL,
+    "targetsqid" integer NULL
 );
 
 
@@ -444,9 +444,9 @@ CREATE TABLE prefix_surveys (
     "usetokens" character varying(1) DEFAULT 'N' NOT NULL,
     "bounce_email" character varying(254),
     "attributedescriptions" text,
-	"emailresponseto" text,
+    "emailresponseto" text,
     "emailnotificationto" text,
-	"tokenlength" integer DEFAULT '15' NOT NULL,
+    "tokenlength" integer DEFAULT '15' NOT NULL,
     "showxquestions" character varying(1) DEFAULT 'Y',
     "showgroupinfo" character varying(1) DEFAULT 'B',
     "shownoanswer" character varying(1) DEFAULT 'Y',
@@ -537,7 +537,7 @@ CREATE TABLE prefix_users (
     "htmleditormode" character varying(7) DEFAULT 'default',
     "templateeditormode" character varying(7) DEFAULT 'default' NOT NULL,
     "questionselectormode" character varying(7) DEFAULT 'default' NOT NULL,
-	"one_time_pw" bytea,
+    "one_time_pw" bytea,
     "dateformat" integer DEFAULT 1 NOT NULL,
     "created" timestamp,
     "modified" timestamp
@@ -563,20 +563,20 @@ CREATE TABLE prefix_boxes (
   "position" int DEFAULT NULL ,
   "url" text NOT NULL ,
   "title" text NOT NULL ,
-  "img" text NOT NULL ,
   "ico" text DEFAULT NULL,
   "desc" text NOT NULL ,
   "page" text NOT NULL ,
+  "usergroup" integer NOT NULL,
   PRIMARY KEY (id)
 );
 
-INSERT INTO "prefix_boxes" ("id", "position", "url", "title", "img", "ico", "desc", "page") VALUES
-(1, 1, 'admin/survey/sa/newsurvey', 'Create survey', 'add.png', 'add', 'Create a new survey', 'welcome'),
-(2, 2, 'admin/survey/sa/listsurveys', 'List surveys', 'surveylist.png', 'list', 'List available surveys', 'welcome'),
-(3, 3, 'admin/globalsettings', 'Global settings', 'global.png', 'settings', 'Edit global settings', 'welcome'),
-(4, 4, 'admin/update', 'ComfortUpdate', 'shield&#45;update.png', 'shield', 'Stay safe and up to date', 'welcome'),
-(5, 5, 'admin/labels/sa/view', 'Label sets', 'labels.png', 'label', 'Edit label sets', 'welcome'),
-(6, 6, 'admin/templates/sa/view', 'Template editor', 'templates.png', 'templates', 'Edit LimeSurvey templates', 'welcome');
+INSERT INTO "prefix_boxes" ("id", "position", "url", "title", "ico", "desc", "page") VALUES
+(1, 1, 'admin/survey/sa/newsurvey', 'Create survey', 'add', 'Create a new survey', 'welcome'),
+(2, 2, 'admin/survey/sa/listsurveys', 'List surveys', 'list', 'List available surveys', 'welcome'),
+(3, 3, 'admin/globalsettings', 'Global settings', 'settings', 'Edit global settings', 'welcome'),
+(4, 4, 'admin/update', 'ComfortUpdate', 'shield', 'Stay safe and up to date', 'welcome'),
+(5, 5, 'admin/labels/sa/view', 'Label sets', 'label', 'Edit label sets', 'welcome'),
+(6, 6, 'admin/templates/sa/view', 'Template editor', 'templates', 'Edit LimeSurvey templates', 'welcome');
 
 --
 -- Secondary indexes
@@ -602,4 +602,4 @@ create unique index permissions_idx2 ON prefix_permissions (entity_id, entity, u
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '253');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '254');
