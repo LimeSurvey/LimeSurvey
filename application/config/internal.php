@@ -30,6 +30,16 @@ $internalConfig = array(
         'vendor.twbs.bootstrap.dist',
     ),
 
+    'modules'=>array(
+            'gii'=>array(
+                'class'=>'system.gii.GiiModule',
+                'password'=>'toto',
+                // 'ipFilters'=>array(...a list of IPs...),
+                // 'newFileMode'=>0666,
+                // 'newDirMode'=>0777,
+            ),
+        ),
+
     'params'=>array(
         'defaultPageSize'=>10	,
         'pageSizeOptions'=>array(5=>5,10=>10,20=>20,50=>50,100=>100),
@@ -42,15 +52,15 @@ $internalConfig = array(
         'application.controllers.*',
         'application.modules.*',
 
-    	'bootstrap.helpers.*',
-    	'bootstrap.widgets.*',
-    	'bootstrap.behaviors.*',
-    	'yiiwheels.widgets.select2.WhSelect2',
+        'bootstrap.helpers.*',
+        'bootstrap.widgets.*',
+        'bootstrap.behaviors.*',
+        'yiiwheels.widgets.select2.WhSelect2',
 
     ),
     'preload' => array ('log'),
     'components' => array(
-	  // yiistrap configuration
+      // yiistrap configuration
         'bootstrap' => array(
             'class' => 'bootstrap.components.TbApi',
         ),

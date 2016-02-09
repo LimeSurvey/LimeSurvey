@@ -200,6 +200,7 @@ class AdminController extends LSYii_Controller
         'validate'         => 'ExpressionValidate',
         'globalsettings'   => 'globalsettings',
         'htmleditor_pop'   => 'htmleditor_pop',
+        'homepagesettings'   => 'homepagesettings',
         'limereplacementfields' => 'limereplacementfields',
         'index'            => 'index',
         'labels'           => 'labels',

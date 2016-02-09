@@ -683,8 +683,6 @@ class Survey extends LSActiveRecord
 
     public function getbuttons()
     {
-
-
         $url = Yii::app()->createUrl("/admin/survey/sa/view/surveyid/");
         $url .= '/'.$this->sid;
         $button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';

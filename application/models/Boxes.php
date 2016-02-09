@@ -96,6 +96,31 @@ class Boxes extends CActiveRecord
         ));
     }
 
+    public function getSpanIcon()
+    {
+        $spanicon = '<span class="icon-'.$this->ico.' text-success"></span>';
+        return $spanicon;
+    }
+
+    public function getUsergroupname()
+    {
+        $usergroupid = $this->usergroup;
+        if($usergroupid==="0")
+        {
+            return   gT('anybody');
+        }
+        else
+        {
+            $oUsergroup = UserGroup::model()->findByPk($usergroupid);
+            return $oUsergroup->name;
+        }
+    }
+
+    public function getbuttons()
+    {
+    }
+
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
