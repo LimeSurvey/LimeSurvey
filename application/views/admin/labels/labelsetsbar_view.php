@@ -93,25 +93,6 @@
                     <?php eT('Return to admin panel'); ?>
                 </a>
 
-                <!-- labelsetchanger -->
-                <div class="form-group form-inline col-md-6 pull-right">
-                    <label for='labelsetchanger'><?php eT("Label sets:");?> </label>
-                    <select id='labelsetchanger' onchange="window.open(this.options[this.selectedIndex].value,'_top')" class="form-control">
-                        <option value=''
-                            <?php if (!isset($lid) || $lid<1) { ?> selected='selected' <?php } ?>
-                            ><?php eT("Please choose..."); ?></option>
-
-                        <?php if (count($labelsets)>0)
-                            {
-                                foreach ($labelsets as $lb)
-                                { ?>
-                                <option data-labelset-id='<?php echo $lb[0]; ?>' value='<?php echo $this->createUrl("admin/labels/sa/view/lid/".$lb[0]); ?>'
-                                    <?php if ($lb[0] == $lid) { ?> selected='selected' <?php } ?>
-                                    ><?php echo htmlspecialchars($lb[1],ENT_QUOTES); ?></option>
-                                <?php }
-                        } ?>
-                    </select>
-                </div>
             <?php endif; ?>
 
             <!-- edition action buttons -->
