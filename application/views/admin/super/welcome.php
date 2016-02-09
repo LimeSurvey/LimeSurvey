@@ -94,54 +94,41 @@
         </div>
     <?php endif;?>
 
+    <!-- Rendering all boxes in database -->
+    <?php $boxes = Boxes::model()->findAll(); $boxcount = 0;?>
+
+    <?php foreach($boxes as $box):?>
+        <?php $boxcount=$boxcount+1; ?>
+            <?php if($boxcount == 1): ?>
+                <div class="row text-center hidden-xs">
+                <?php $bIsRowOpened = true;?>
+            <?php endif;?>
+                <?php if($boxcount == 1):?>
+                <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
+                        'fromDb'=> true,
+                        'dbPosition'=>$box->position,
+                        'offset' =>'3',
+                ));?>
+                <?php else: ?>
+                    <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
+                            'fromDb'=> true,
+                            'dbPosition'=>$box->position,
+                    ));?>
+                <?php endif; ?>
 
 
-    <!-- First row of boxes -->
-    <div class="row text-center hidden-xs">
+            <?php if($boxcount == 3): ?>
+                </div>
+                <?php
+                    $boxcount = 0;
+                    $bIsRowOpened = false;
+                ?>
+            <?php endif;?>
+        <?php endforeach;?>
 
-        <!-- First box defined in database -->
-        <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
-                'fromDb'=> true,
-                'dbPosition'=>'1',
-                'offset' =>'3',
-        ));?>
-
-        <!-- 2nd  defined in database -->
-        <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
-                'fromDb'=> true,
-                'dbPosition'=>'2',
-        ));?>
-
-        <!-- 3rd defined in database -->
-        <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
-                'fromDb'=> true,
-                'dbPosition'=>'3',
-        ));?>
-
-    </div>
-
-    <!-- Second row of boxes -->
-    <div class="row text-center hidden-xs">
-
-        <!-- 4th defined in database -->
-        <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
-                'fromDb'=> true,
-                'dbPosition'=>'4',
-                'offset' =>'3',
-        ));?>
-
-        <!-- 5th defined in database -->
-        <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
-                'fromDb'=> true,
-                'dbPosition'=>'5',
-        ));?>
-
-        <!-- 6th defined in database -->
-        <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
-                'fromDb'=> true,
-                'dbPosition'=>'6',
-        ));?>
-    </div>
+        <?php if($bIsRowOpened == true):?>
+            </div>
+        <?php endif;?>
 
     <!-- Boxes for smartphones-->
     <div class="row  hidden-sm  hidden-md hidden-lg ">

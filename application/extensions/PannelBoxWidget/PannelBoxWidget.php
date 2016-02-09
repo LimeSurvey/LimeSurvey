@@ -24,6 +24,7 @@
         public function getBoxes()
         {
             $boxes = Boxes::model()->findAll();
+            return $boxes;
         }
 
         protected function setValuesFromDb()
