@@ -30,7 +30,7 @@
                 <input type='hidden' name='action' value='modlabelsetanswers' />
 
                 <!-- tab content -->
-                <?php $this->renderPartial("./labels/_labelviewtabcontent_view", array('lslanguages'=>$lslanguages, 'results'=>$results)); ?>
+                <?php $this->renderPartial("./labels/_labelviewtabcontent_view", array('lslanguages'=>$lslanguages, 'results'=>$results, 'action' => $action)); ?>
             </form>
         </div>
 
