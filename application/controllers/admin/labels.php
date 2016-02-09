@@ -301,6 +301,11 @@ class labels extends Survey_Common_Action
                     'action' => $action,
                 );
             }
+            else {
+                //show listing
+                $aViewUrls['labelsets_view'][] = array();
+                $aData['model']  =  LabelSet::model();
+            }
         }
 
         if($lid==0)
@@ -316,6 +321,11 @@ class labels extends Survey_Common_Action
             $aData['labelbar']['buttons']['edition'] = true;
 
             $aData['labelbar']['buttons']['edit'] = true;
+        }
+
+        if (isset($_GET['pageSize']))
+        {
+            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
         }
 
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
@@ -354,6 +364,33 @@ class labels extends Survey_Common_Action
                 $this->getController()->redirect(array("admin/labels/sa/view/lid/" . $lid));
             else
                 $this->getController()->redirect(array("admin/labels/sa/view"));
+    }
+
+    /**
+     * Delete a label set
+     *
+     * @access public
+     * @return void
+     */
+    public function delete()
+    {
+            $lid = returnGlobal('lid');
+
+            if (Permission::model()->hasGlobalPermission('labelsets','delete'))
+            {
+                Yii::app()->loadHelper('admin/label');
+
+                if (deletelabelset($lid))
+                {
+                    Yii::app()->setFlashMessage(gT("Label set sucessfully deleted."));
+                }
+            }
+            else
+            {
+                Yii::app()->setFlashMessage(gT("You are not authorized to delete label sets."));
+            }
+
+            $this->getController()->redirect(array("admin/labels/sa/view"));
     }
 
     /**

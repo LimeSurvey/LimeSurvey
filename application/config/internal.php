@@ -122,7 +122,10 @@ $internalConfig = array(
         'pluginManager' => array(
             'class' => "\\ls\\pluginmanager\\PluginManager",
             'api' => "\\ls\\pluginmanager\\LimesurveyApi"
-        )
+        ),
+        'format'=>array(
+            'class'=>'application.extensions.CustomFormatter'
+        ),
     )
 );
 
