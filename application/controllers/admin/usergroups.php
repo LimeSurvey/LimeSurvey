@@ -113,7 +113,7 @@ class Usergroups extends Survey_Common_Action
             $aViewUrls = 'mailUserGroup_view';
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = 'admin/usergroups/sa/view/ugid/'.$ugid;
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer();
 
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
@@ -202,7 +202,7 @@ class Usergroups extends Survey_Common_Action
         }
         $aData['usergroupbar']['savebutton']['form']= 'usergroupform';
         $aData['usergroupbar']['savebutton']['text']= gT('Save');
-        $aData['usergroupbar']['closebutton']['url'] = 'admin/usergroups';
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer();
         $aData['usergroupbar']['add'] = 'admin/usergroups';
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
@@ -246,7 +246,7 @@ class Usergroups extends Survey_Common_Action
             }
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = 'admin/usergroups/sa/view/ugid/'.$ugid;
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer();
         $aData['usergroupbar']['savebutton']['form']= 'usergroupform';
         $aData['usergroupbar']['savebutton']['text']= gT("Update user group");
 
@@ -333,6 +333,11 @@ class Usergroups extends Survey_Common_Action
                 }
                 $aViewUrls[] = 'viewUserGroup_view';
             }
+            else {
+                //show listing
+                $aViewUrls['usergroups_view'][] = array();
+                $aData['model']  =  UserGroup::model();
+            }
 
 
         }
@@ -345,7 +350,12 @@ class Usergroups extends Survey_Common_Action
         else
         {
             $aData['usergroupbar']['edit'] = TRUE;
-            $aData['usergroupbar']['closebutton']['url'] = 'admin/usergroups';
+            $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createUrl('admin/usergroups/sa/view');
+        }
+
+        if (isset($_GET['pageSize']))
+        {
+            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
         }
 
         if (!empty($header))

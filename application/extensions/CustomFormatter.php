@@ -2,6 +2,9 @@
 
 // Build the expanded list of languages
 class CustomFormatter extends CFormatter {
+
+	public $maxLength = 50;
+
 	public function formatLanguageList($value) {
 
 		$langArr = explode(' ', trim($value));
@@ -14,6 +17,14 @@ class CustomFormatter extends CFormatter {
 		sort($expandedArr);
 
 		return implode(', ', $expandedArr);
+	}
+
+	public function formatLongText($value) {
+		if(strlen($value) > $this->maxLength) {
+			$truncated = substr($value, 0, $this->maxLength-3);
+			return trim($truncated)."...";
+		}
+		return $value;
 	}
 }
 
