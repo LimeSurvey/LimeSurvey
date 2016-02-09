@@ -7,9 +7,9 @@
         public $position; // Position of the box in the list
         public $url;
         public $title;
-        public $img;
         public $ico;
         public $description;
+        public $usergroup;
         public $offset='';
 
         public function run()
@@ -34,16 +34,15 @@
                 $this->position = $box->position;
                 $this->url = $box->url;
                 $this->title = $box->title;
-                $this->img = $box->img;
                 $this->ico = $box->ico;
                 $this->description = $box->desc;
+                $this->usergroup = $box->usergroup;
             }
             else
             {
                 $this->position = '1';
                 $this->url = '';
                 $this->title = gT('Error');
-                $this->img = '';
                 $this->description = gT('Unknown box ID!');
             }
         }
