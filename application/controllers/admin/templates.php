@@ -88,7 +88,6 @@ class templates extends Survey_Common_Action
       }
 
       readfile($sFile);
-
     }
 
     /**
@@ -718,7 +717,9 @@ class templates extends Survey_Common_Action
         // Prepare textarea class for optional javascript
         $templateclasseditormode = getGlobalSetting('defaulttemplateeditormode'); // default
         if (Yii::app()->session['templateeditormode'] == 'none')
+        {
             $templateclasseditormode = 'none';
+        }
 
         $aData['templateclasseditormode'] = $templateclasseditormode;
 
@@ -1324,7 +1325,9 @@ class templates extends Survey_Common_Action
         $aViewUrls['templateeditorbar_view'][] = $aData;
 
         if ($showsummary)
+        {
             $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $otherfiles, $myoutput));
+        }
 
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'admin_core.js' ));
         return $aViewUrls;

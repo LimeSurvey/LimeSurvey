@@ -692,6 +692,7 @@ class index extends CAction {
 
     function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array())
     {
+        global $oTemplate;
 
         if(isset($redata['surveyid']) && $redata['surveyid'] && !isset($thisurvey))
         {
