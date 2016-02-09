@@ -1346,6 +1346,12 @@ function db_upgrade_all($iOldDBVersion) {
             // Update DBVersion
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>253),"stg_name='DBVersion'");
         }
+        if ( $iOldDBVersion < 254 )
+        {
+            upgradeSurveyTables254();
+            // Update DBVersion
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>254),"stg_name='DBVersion'");
+        }
 
         $oTransaction->commit();
         // Activate schema caching
@@ -1371,6 +1377,12 @@ function db_upgrade_all($iOldDBVersion) {
     fixLanguageConsistencyAllSurveys();
     Yii::app()->setConfig('Updating',false);
     return true;
+}
+
+function upgradeSurveyTables254()
+{
+    Yii::app()->db->createCommand()->dropColumn('{{boxes}}','img');
+    Yii::app()->db->createCommand()->addColumn('{{boxes}}','usergroup','integer');
 }
 
 function upgradeSurveyTables253()

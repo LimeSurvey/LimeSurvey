@@ -554,20 +554,20 @@ CREATE TABLE prefix_boxes (
   [position] int DEFAULT NULL ,
   [url] varchar(max) NOT NULL ,
   [title] varchar(max) NOT NULL ,
-  [img] varchar(max) NOT NULL ,
   [ico] varchar(max) DEFAULT NULL,
   [desc] varchar(max) NOT NULL ,
   [page] varchar(max) NOT NULL ,
+  [usergroup] int NOT NULL,
   PRIMARY KEY ([id])
 );
 
-INSERT INTO prefix_boxes ([position], [url], [title], [img], [ico], [desc], [page]) VALUES
-(1, 'admin/survey/sa/newsurvey', 'Create survey', 'add.png', 'add', 'Create a new survey', 'welcome'),
-(2, 'admin/survey/sa/listsurveys', 'List surveys', 'surveylist.png', 'list', 'List available surveys', 'welcome'),
-(3, 'admin/globalsettings', 'Global settings', 'global.png', 'settings', 'Edit global settings', 'welcome'),
-(4, 'admin/update', 'ComfortUpdate', 'shield&#45;update.png', 'shield', 'Stay safe and up to date', 'welcome'),
-(5, 'admin/labels/sa/view', 'Label sets', 'labels.png', 'label','Edit label sets', 'welcome'),
-(6, 'admin/templates/sa/view', 'Template editor', 'templates.png','templates', 'Edit LimeSurvey templates', 'welcome');
+INSERT INTO prefix_boxes ([position], [url], [title], [ico], [desc], [page]) VALUES
+(1, 'admin/survey/sa/newsurvey', 'Create survey', 'add', 'Create a new survey', 'welcome'),
+(2, 'admin/survey/sa/listsurveys', 'List surveys', 'list', 'List available surveys', 'welcome'),
+(3, 'admin/globalsettings', 'Global settings', 'settings', 'Edit global settings', 'welcome'),
+(4, 'admin/update', 'ComfortUpdate', 'shield', 'Stay safe and up to date', 'welcome'),
+(5, 'admin/labels/sa/view', 'Label sets', 'label','Edit label sets', 'welcome'),
+(6, 'admin/templates/sa/view', 'Template editor', 'templates', 'Edit LimeSurvey templates', 'welcome');
 
 
 
@@ -592,4 +592,4 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '253');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '254');

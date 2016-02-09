@@ -477,20 +477,26 @@ class UserAction extends Survey_Common_Action
     function setuserpermissions()
     {
         $iUserID = (int) Yii::app()->request->getPost('uid');
+
         // Can not update initial superadmin permissions (with findByAttributes : found the first user without parent)
         $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
-        if ($oInitialAdmin && $oInitialAdmin->uid == $iUserID) // it's the original superadmin !!!
+
+        if ($oInitialAdmin && $oInitialAdmin->uid == $iUserID) // Trying to update the original superadmin !!!
         {
             Yii::app()->setFlashMessage(gT("Initial Superadmin permissions cannot be updated!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
+
         $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
-        if ($iUserID) {//Never update 1st admin
+        if ($iUserID)
+        {
+            //Never update 1st admin
             if(Permission::model()->hasGlobalPermission('superadmin','read'))
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID));
             else
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
         }
+
         // Check permissions
         $aBasePermissions=Permission::model()->getGlobalBasePermissions();
         if (!Permission::model()->hasGlobalPermission('superadmin','read')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
@@ -526,8 +532,8 @@ class UserAction extends Survey_Common_Action
             App()->getClientScript()->registerPackage('jquery-tablesorter');
             App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "userpermissions.js" ));
 
-                $aData['fullpagebar']['savebutton']['form'] = 'savepermissions';
-                $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';
+            $aData['fullpagebar']['savebutton']['form'] = 'savepermissions';
+            $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';
 
             $this->_renderWrappedTemplate('user', 'setuserpermissions', $aData);
         }
