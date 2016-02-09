@@ -166,6 +166,7 @@ class labels extends Survey_Common_Action
         {
             if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('labelsets','update'))
             {
+                App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish(ADMIN_SCRIPT_PATH . 'labels.js' ));
                 $result = LabelSet::model()->findAllByAttributes(array('lid' => $lid));
                 foreach ($result as $row)
                 {
