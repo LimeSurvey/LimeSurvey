@@ -36,7 +36,15 @@ class index extends CAction {
         $param = $this->_getParameters(func_get_args(), $_POST);
         $surveyid = $param['sid'];
 
-        App()->getClientScript()->registerCssFile( Yii::app()->getBaseUrl(true).'/styles-public/font-awesome-43.min.css' );
+        // Font awesome
+        if(!YII_DEBUG)
+        {
+            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles-public/font-awesome-43.min.css') );
+        }
+        else
+        {
+            App()->getClientScript()->registerCssFile( Yii::app()->getBaseUrl(true).'/styles-public/font-awesome-43-debugmode.min.css' );
+        }
 
         global $oTemplate;
         $oTemplate = Template::model()->getTemplateConfiguration('',$surveyid);
