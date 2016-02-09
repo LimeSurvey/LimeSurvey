@@ -33,7 +33,7 @@ class Boxes extends CActiveRecord
             array('position', 'numerical', 'integerOnly'=>true),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, position, url, title, ico, desc, page', 'safe', 'on'=>'search'),
+            array('id, position, url, title, ico, desc, page, usergroup', 'safe', 'on'=>'search'),
         );
     }
 
@@ -60,7 +60,8 @@ class Boxes extends CActiveRecord
             'title' => 'title of the box',
             'ico' => 'icon to use in the box (you can use font-awesome, bootstrap glyphicons, or limesurvey icons)',
             'desc' => 'description of the box',
-            'page' => 'name of the page where the box should be shown ',            
+            'page' => 'name of the page where the box should be shown ',
+            'usergroup'=> 'those boxes will be shown for that user group'
         );
     }
 
