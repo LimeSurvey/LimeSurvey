@@ -95,40 +95,11 @@
     <?php endif;?>
 
     <!-- Rendering all boxes in database -->
-    <?php $boxes = Boxes::model()->findAll(); $boxcount = 0;?>
+    <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
+            'display'=>'allboxesinrows',
+        ));
+    ?>
 
-    <?php foreach($boxes as $box):?>
-        <?php $boxcount=$boxcount+1; ?>
-            <?php if($boxcount == 1): ?>
-                <div class="row text-center hidden-xs">
-                <?php $bIsRowOpened = true;?>
-            <?php endif;?>
-                <?php if($boxcount == 1):?>
-                <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
-                        'fromDb'=> true,
-                        'dbPosition'=>$box->position,
-                        'offset' =>'3',
-                ));?>
-                <?php else: ?>
-                    <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
-                            'fromDb'=> true,
-                            'dbPosition'=>$box->position,
-                    ));?>
-                <?php endif; ?>
-
-
-            <?php if($boxcount == 3): ?>
-                </div>
-                <?php
-                    $boxcount = 0;
-                    $bIsRowOpened = false;
-                ?>
-            <?php endif;?>
-        <?php endforeach;?>
-
-        <?php if($bIsRowOpened == true):?>
-            </div>
-        <?php endif;?>
 
     <!-- Boxes for smartphones-->
     <div class="row  hidden-sm  hidden-md hidden-lg ">

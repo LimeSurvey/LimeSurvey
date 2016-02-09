@@ -11,14 +11,24 @@
         public $description;
         public $usergroup;
         public $offset='';
+        public $display='singlebox';
+        public $boxesbyrow=3;
 
         public function run()
         {
-            if($this->fromDb)
+            if($this->display=='singlebox')
             {
-                $this->setValuesFromDb();
+                if($this->fromDb)
+                {
+                    $this->setValuesFromDb();
+                }
+
+                return $this->renderBox();
             }
-            return $this->renderContent();
+            elseif($this->display='allboxesinrows')
+            {
+                return $this->renderRows();
+            }
         }
 
         public function getBoxes()
@@ -48,11 +58,12 @@
             }
         }
 
-        protected function renderContent()
+        /**
+         * Render a single box
+         */
+        protected function renderBox()
         {
             $offset = ($this->offset != '') ? 'col-sm-offset-1 col-lg-offset-'.$this->offset : '';
-
-
 
             $this->render('box', array(
                 'position'=> $this->position,
@@ -62,5 +73,54 @@
                 'ico'=> $this->ico,
                 'description'=> $this->description,
             ));
+        }
+
+        /**
+         * Render all boxes in row
+         */
+        protected function renderRows()
+        {
+            // We get all the boxes in the database
+            $boxes = Boxes::model()->findAll();
+            $boxcount = 0;
+            foreach($boxes as $box)
+            {
+                $boxcount=$boxcount+1;
+                // It's the first box, it mus be inside a row header, and have an offset
+                if($boxcount == 1)
+                {
+                    $this->render('row_header');
+                    $bIsRowOpened = true;
+                    $this->controller->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
+                                'display'=>'singlebox',
+                                'fromDb'=> true,
+                                'dbPosition'=>$box->position,
+                                'offset' =>'3',
+                        ));
+                }
+                else
+                {
+                    $this->controller->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
+                                    'display'=>'singlebox',
+                                    'fromDb'=> true,
+                                    'dbPosition'=>$box->position,
+                        ));
+                }
+
+                // If it is the last box, we should close the box
+                if($boxcount == $this->boxesbyrow)
+                {
+                        //echo '</div>';
+                        $this->render('row_footer');
+                        $boxcount = 0;
+                        $bIsRowOpened = false;
+                }
+            }
+
+            // If the last row has not been closed, we close it
+            if($bIsRowOpened == true)
+            {
+                $this->render('row_footer');
+            }
         }
     }
