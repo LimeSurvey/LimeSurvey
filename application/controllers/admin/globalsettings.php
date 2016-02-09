@@ -256,7 +256,7 @@ class GlobalSettings extends Survey_Common_Action
             $box = Boxes::model()->find(array('condition'=>'position=:positionId', 'params'=>array(':positionId'=>$i)));
             $box->url = sanitize_html_string($_POST['box-url-'.$i]);
             $box->title = sanitize_html_string($_POST['box-title-'.$i]);
-            $box->img = sanitize_html_string($_POST['box-img-'.$i]);
+            $box->ico = sanitize_html_string($_POST['box-ico-'.$i]);
             $box->desc = sanitize_html_string($_POST['box-desc-'.$i]);
             $box->save();
         }
