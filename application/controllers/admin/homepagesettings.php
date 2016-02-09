@@ -38,7 +38,7 @@ class homepagesettings extends Survey_Common_Action
         {
             $model->attributes=$_POST['Boxes'];
             if($model->save())
-                $this->redirect(array('view','id'=>$model->id));
+                $this->getController()->redirect(array('admin/homepagesettings'));
         }
 
         $this->_renderWrappedTemplate('homepagesettings', 'create', array(
@@ -63,7 +63,7 @@ class homepagesettings extends Survey_Common_Action
         {
             $model->attributes=$_POST['Boxes'];
             if($model->save())
-                $this->redirect(array('view','id'=>$model->id));
+                $this->getController()->redirect(array('admin/homepagesettings','id'=>$model->id));
         }
 
         $this->_renderWrappedTemplate('homepagesettings', 'update', array(
@@ -83,7 +83,7 @@ class homepagesettings extends Survey_Common_Action
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if(!isset($_GET['ajax']))
-            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+            $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
     }
 
     /**
