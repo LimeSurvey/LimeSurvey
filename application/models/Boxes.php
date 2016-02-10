@@ -31,7 +31,7 @@ class Boxes extends CActiveRecord
         return array(
             array('url, title, ico, desc, page', 'required'),
             array('position', 'numerical', 'integerOnly'=>true),
-            array('usergroup', 'numerical', 'integerOnly'=>true),
+            array('usergroup', 'numerical', 'integerOnly'=>true, 'min'=>-2),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, position, url, title, ico, desc, page, usergroup', 'safe', 'on'=>'search'),
@@ -106,9 +106,15 @@ class Boxes extends CActiveRecord
     public function getUsergroupname()
     {
         $usergroupid = $this->usergroup;
-        if(empty($usergroupid) || $usergroupid==0)
+
+        // Can't use switch because of empty case
+        if ( empty($usergroupid) || $usergroupid=='-2'  )
         {
-            return gT('anybody');
+            return gT('Only admin');
+        }
+        elseif ( $usergroupid=='-1' )
+        {
+            return gT('nobody');
         }
         else
         {
@@ -116,7 +122,7 @@ class Boxes extends CActiveRecord
 
             // The group doesn't exist anymore
             if(!is_object($oUsergroup))
-                return gT('nobody');
+                return gT('Only admin');
 
             return $oUsergroup->name;
         }

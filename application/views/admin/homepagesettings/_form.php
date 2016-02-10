@@ -118,16 +118,15 @@
                 <div class="form-group">
                     <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'usergroup'); ?></label>
                     <div class='col-sm-2'>
+                        <?php
+                            $options_array = CHtml::listData(UserGroup::model()->findAll(), 'ugid', 'name');
+                            $options_array[-1]=gT('Everybody');
+                            $options_array[-2]=gT('Only admin');
+                        ?>
                         <?php echo $form->dropDownList(
                             $model,
                             'usergroup',
-                            array_merge(
-                                array(
-                                    '-1' => gT('Everybody'),
-                                    '-2' => gT('Nobody'),
-                                ),
-                                CHtml::listData(UserGroup::model()->findAll(), 'ugid', 'name')
-                            ),
+                            $options_array,
                             array(
                                 'class' => 'form-control',
                                 'options' => array(

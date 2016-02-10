@@ -63,7 +63,7 @@
          */
         protected function renderBox()
         {
-            if(Yii::app()->user->isInUserGroup($this->usergroup) || $this->usergroup == 0 || empty($this->usergroup) )
+            if ( self::canSeeBox())
             {
                 $offset = ($this->offset != '') ? 'col-sm-offset-1 col-lg-offset-'.$this->offset : '';
                 $this->render('box', array(
@@ -125,4 +125,54 @@
                 $this->render('row_footer');
             }
         }
+
+        protected function canSeeBox()
+        {
+            if ( $this->usergroup=='-1'  )
+            {
+                return true;
+            }
+            // If the usergroup is not set, or set to -2, only admin can see the box
+            elseif ( empty($this->usergroup) || $this->usergroup=='-2'  )
+            {
+                if(Permission::model()->hasGlobalPermission('superadmin','read') ? 1 : 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            // If usergroup is set to -1, nobody can see the box
+            elseif ( $usergroupid=='-1' )
+            {
+                return false;
+            }
+            // If usegroup is set and exist, if the user belong to it, he can see the box
+            else
+            {
+                $oUsergroup = UserGroup::model()->findByPk($this->usergroup);
+
+                // The group doesn't exist anymore, so only admin can see it
+                if(!is_object($oUsergroup))
+                {
+                    if(Permission::model()->hasGlobalPermission('superadmin','read') ? 1 : 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                if(Yii::app()->user->isInUserGroup($this->usergroup))
+                {
+                    return true;
+                }
+            }
+            //Yii::app()->user->isInUserGroup($this->usergroup) || $this->usergroup == 0 || empty($this->usergroup)
+        }
+
     }
