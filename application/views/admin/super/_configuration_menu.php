@@ -194,6 +194,13 @@
                     <?php eT('Settings');?>
                 </li>
 
+                <!-- Home page settings -->
+                <li class="dropdown-item">
+                    <a href="<?php echo $this->createUrl("admin/homepagesettings"); ?>">
+                        <?php eT("Home page settings");?>
+                    </a>
+                </li>
+
                 <!-- Global settings -->
                 <li class="dropdown-item">
                     <a href="<?php echo $this->createUrl("admin/globalsettings"); ?>">
