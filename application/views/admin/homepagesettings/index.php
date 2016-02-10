@@ -41,6 +41,7 @@
 
 
     <!-- Grid -->
+    <h3><?php eT('Boxes');?></h3>
     <div class="row">
         <div class="col-sm-12 content-right">
             <?php $this->widget('bootstrap.widgets.TbGridView', array(
