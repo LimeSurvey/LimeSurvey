@@ -326,7 +326,7 @@ function getAdminThemeList()
     {
         while (false !== ($file = readdir($handle)))
         {
-            if (!is_file("$standardtemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
+            if (is_file("$standardtemplaterootdir/$file/config.xml"))
             {
                 //$list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
                 $oTemplateConfig = simplexml_load_file($standardtemplaterootdir.DIRECTORY_SEPARATOR.$file.'/config.xml');
