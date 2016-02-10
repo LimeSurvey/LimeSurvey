@@ -39,7 +39,12 @@ class homepagesettings extends Survey_Common_Action
             $model->attributes=$_POST['Boxes'];
             if($model->save())
             {
+                Yii::app()->user->setFlash('success', gT('New box created'));
                 $this->getController()->redirect(array('admin/homepagesettings'));
+            }
+            else
+            {
+                Yii::app()->user->setFlash('error', gT('Could not create new box'));
             }
         }
 
@@ -66,10 +71,16 @@ class homepagesettings extends Survey_Common_Action
             $model->attributes=$_POST['Boxes'];
             if($model->save())
             {
+                Yii::app()->user->setFlash('success', gT('Box updated'));
+
                 if (isset($_POST['saveandclose']))
                 {
                     $this->getController()->redirect(array('admin/homepagesettings','id'=>$model->id));
                 }
+            }
+            else
+            {
+                Yii::app()->user->setFlash('error', gT('Could not update box'));
             }
         }
 
@@ -87,10 +98,13 @@ class homepagesettings extends Survey_Common_Action
     public function delete($id)
     {
         $this->loadModel($id)->delete();
+        Yii::app()->user->setFlash('success', gT('Box deleted'));
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if(!isset($_GET['ajax']))
+        {
             $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+        }
     }
 
     /**

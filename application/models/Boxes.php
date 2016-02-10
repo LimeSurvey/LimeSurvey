@@ -56,13 +56,13 @@ class Boxes extends CActiveRecord
     {
         return array(
             'id' => 'ID',
-            'position' => 'position of the box',
-            'url' => 'url that the box points',
-            'title' => 'title of the box',
-            'ico' => 'icon to use in the box (you can use font-awesome, bootstrap glyphicons, or limesurvey icons)',
-            'desc' => 'description of the box',
-            'page' => 'name of the page where the box should be shown ',
-            'usergroup'=> 'those boxes will be shown for that user group'
+            'position' => gT('Position'),
+            'url' => gT('URL that the box points to'),
+            'title' => gT('Title'),
+            'ico' => gT('Icon to use in the box'),
+            'desc' => gT('Description'),
+            'page' => gT('Name of the page where the box should be shown'),
+            'usergroup'=> gT('Box will be shown for that user group')
         );
     }
 
