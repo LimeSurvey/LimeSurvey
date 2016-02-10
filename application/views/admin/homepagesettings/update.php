@@ -9,7 +9,7 @@
         'fullpagebar' => array(
             'savebutton' => array('form' => 'boxes-form'),
             'saveandclosebutton' => array('form' => 'boxes-form'),
-            'closebutton' => array('url' => true)
+            'closebutton' => array('url' => Yii::app()->createUrl('admin/homepagesettings'))
         )
     )); ?>
 
