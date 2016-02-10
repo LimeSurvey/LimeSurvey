@@ -111,7 +111,6 @@ class homepagesettings extends Survey_Common_Action
      */
     public function index()
     {
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'homepagesettings.js' ));
         $dataProvider=new CActiveDataProvider('Boxes');
         $aData = array(
             'dataProvider'=>$dataProvider,
@@ -214,6 +213,7 @@ class homepagesettings extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'homepagesettings.js' ));
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

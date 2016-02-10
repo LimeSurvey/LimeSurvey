@@ -756,23 +756,6 @@ function onlyUnique(value, index, self) {
 /** For homepagesettings button edit */
 $(document).ready(function() {
 
-    // Bind icon to click event
-    $('.option-icon').on('click', function (ev, that) {
-        var fullIconName = $(ev.currentTarget).attr('data-icon');
-        var iconName = fullIconName.substr(5)
-
-        // Set icon preview and hidden input
-        $('input[name="Boxes[ico]"]').val(iconName);
-        $('#chosen-icon').attr('class', fullIconName + ' text-success');
-    });
-
-    // Show current icon
-    var currentIcon = $('input[name="Boxes[ico]"]').val();
-    if (currentIcon !== '')
-    {
-        var fullCurrentIconName = 'icon-' + currentIcon;
-        $('#chosen-icon').attr('class', fullCurrentIconName + ' text-success');
-    }
 });
 
 // @license-end

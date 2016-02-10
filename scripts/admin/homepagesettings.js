@@ -78,4 +78,24 @@ $(document).ready(function(){
         return false;
     });
 
+
+    // Create Update : icons
+    if($('.option-icon').length>1){
+        $('.option-icon').on('click', function (ev, that) {
+            var fullIconName = $(ev.currentTarget).attr('data-icon');
+            var iconName = fullIconName.substr(5)
+
+            // Set icon preview and hidden input
+            $('input[name="Boxes[ico]"]').val(iconName);
+            $('#chosen-icon').attr('class', fullIconName + ' text-success');
+        });
+
+        // Show current icon
+        var currentIcon = $('input[name="Boxes[ico]"]').val();
+        if (currentIcon !== '')
+        {
+            var fullCurrentIconName = 'icon-' + currentIcon;
+            $('#chosen-icon').attr('class', fullCurrentIconName + ' text-success');
+        }
+    }
 });
