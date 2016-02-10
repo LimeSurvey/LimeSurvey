@@ -38,7 +38,9 @@ class homepagesettings extends Survey_Common_Action
         {
             $model->attributes=$_POST['Boxes'];
             if($model->save())
+            {
                 $this->getController()->redirect(array('admin/homepagesettings'));
+            }
         }
 
         $this->_renderWrappedTemplate('homepagesettings', 'create', array(
@@ -63,7 +65,12 @@ class homepagesettings extends Survey_Common_Action
         {
             $model->attributes=$_POST['Boxes'];
             if($model->save())
-                $this->getController()->redirect(array('admin/homepagesettings','id'=>$model->id));
+            {
+                if (isset($_POST['saveandclose']))
+                {
+                    $this->getController()->redirect(array('admin/homepagesettings','id'=>$model->id));
+                }
+            }
         }
 
         $this->_renderWrappedTemplate('homepagesettings', 'update', array(

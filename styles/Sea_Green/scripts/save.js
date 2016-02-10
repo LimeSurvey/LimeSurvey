@@ -17,15 +17,12 @@ if ($('#save-and-close-form-button').length>0){
         ev.preventDefault();
         var formid = '#'+$(this).attr('data-form-id');
         $form = $(formid);
-        //alert($form.find('[type="submit"]').attr('id'));
 
         // Add input to tell us to not redirect
         $('<input type="hidden">').attr({
             name: 'saveandclose',
             value: '1'
         }).appendTo($form);
-
-        console.log($form);
 
         $form.find('[type="submit"]').trigger('click');
         return false;

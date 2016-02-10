@@ -8,9 +8,8 @@
 <div class='menubar' id="fullpagebar">
     <div class='row container-fluid'>
 
-        <!-- Right Actions -->
+        <!-- Left Actions -->
         <div class="col-md-8">
-
             <!-- Create a new survey  -->
             <?php if (isset($fullpagebar['button']['newsurvey'])):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>" role="button">
@@ -20,7 +19,7 @@
             <?php endif;?>
         </div>
 
-        <!-- Left actions -->
+        <!-- Right actions -->
         <div class="col-md-4 text-right">
 
             <!-- Save -->
