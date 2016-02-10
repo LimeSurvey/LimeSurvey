@@ -69,11 +69,19 @@
 
 </div>
 
-<!-- To update rows per page via ajax -->
 <script type="text/javascript">
 jQuery(function($) {
-jQuery(document).on("change", '#pageSize', function(){
-    $.fn.yiiGridView.update('labelsets-grid',{ data:{ pageSize: $(this).val() }});
+    // To update rows per page via ajax
+    $(document).on("change", '#pageSize', function() {
+        $.fn.yiiGridView.update('labelsets-grid',{ data:{ pageSize: $(this).val() }});
+    });
+    //Delete button
+    $(document).ready(function() {
+        $('a[data-confirm]').click(function() {
+            if (!confirm($(this).attr('data-confirm'))) {
+              return false;
+            }
+        });
     });
 });
 </script>
