@@ -763,7 +763,7 @@ $(document).ready(function() {
 
         // Set icon preview and hidden input
         $('input[name="Boxes[ico]"]').val(iconName);
-        $('#choosen-icon').attr('class', fullIconName + ' text-success');
+        $('#chosen-icon').attr('class', fullIconName + ' text-success');
     });
 
     // Show current icon
@@ -771,7 +771,7 @@ $(document).ready(function() {
     if (currentIcon !== '')
     {
         var fullCurrentIconName = 'icon-' + currentIcon;
-        $('#choosen-icon').attr('class', fullCurrentIconName + ' text-success');
+        $('#chosen-icon').attr('class', fullCurrentIconName + ' text-success');
     }
 });
 

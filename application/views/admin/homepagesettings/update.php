@@ -164,7 +164,7 @@ $icons_length = count($icons);
                                 </li>
                             </ul>
                         </div>
-                        <span>&nbsp;<?php echo eT('Choosen icon:'); ?></span>&nbsp;<span id='choosen-icon'></span>
+                        <span>&nbsp;<?php echo eT('Chosen icon:'); ?></span>&nbsp;<span id='chosen-icon'></span>
                         <?php echo $form->textField($model,'ico',array('size'=>60,'maxlength'=>255, 'class' => 'form-control hidden')); ?>
                     </div>
                     <div class='col-sm-2'>
