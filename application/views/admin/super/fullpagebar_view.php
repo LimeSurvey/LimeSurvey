@@ -45,6 +45,13 @@
                 </a>
             <?php endif;?>
 
+            <?php if(isset($fullpagebar['boxbuttons'])):?>
+                <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/create/');?>" class="btn btn-default">
+                    <span class="icon-add  text-success"></span>
+                    <?php eT("Create a new box");?>
+                </a>
+            <?php endif;?>
+
             <!-- Return -->
             <?php if(isset($fullpagebar['returnbutton']['url'])):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button">

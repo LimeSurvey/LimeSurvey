@@ -4,6 +4,17 @@
 
 ?>
 <div class="col-lg-12 list-surveys">
+
+    <?php $this->renderPartial('super/fullpagebar_view', array(
+        'fullpagebar' => array(
+            'boxbuttons'=>true,
+            'returnbutton'=>array(
+                'url'=>true,
+                'text'=>gT('Return to admin panel'),
+            ),
+        )
+    )); ?>
+
     <h3><?php eT('Home Page settings'); ?></h3>
 
     <div class="row">
@@ -42,14 +53,7 @@
 
     <!-- Grid -->
     <h3><?php eT('Boxes');?></h3>
-    <div class="row">
-        <div class="col-sm-12 content-right">
-            <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/create/');?>" class="btn btn-default">
-                <span class="icon-pencil"></span>
-                <?php eT("Create a new box");?>
-            </a>
-        </div>
-    </div>
+
     <div class="row">
         <div class="col-sm-12 content-right">
 

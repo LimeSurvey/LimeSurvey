@@ -49,7 +49,6 @@ $(document).ready(function(){
         $iBoxesByRow = $('#iBoxesByRow').val();
         $iBoxesOffset = $('#iBoxesOffset').val();
         $successMessage = $('#boxesupdatemessage').data('ajaxsuccessmessage');
-        console.log($successMessage);
         $.ajax({
             url : $url+'/boxesbyrow/'+$iBoxesByRow+'/boxesoffset/'+$iBoxesOffset,
             type : 'GET',
