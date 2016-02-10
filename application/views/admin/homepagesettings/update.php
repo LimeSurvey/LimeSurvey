@@ -101,7 +101,7 @@ $icons_length = count($icons);
                 <div class="form-group">
                     <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'position'); ?></label>
                     <div class='col-sm-2'>
-                        <?php echo $form->textField($model,'position', array('class' => 'form-control')); ?>
+                        <?php echo $form->numberField($model,'position', array('class' => 'form-control')); ?>
                     </div>
                     <div class='col-sm-2'>
                         <?php echo $form->error($model,'position'); ?>
