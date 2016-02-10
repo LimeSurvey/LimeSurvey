@@ -58,6 +58,37 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 2.06+ (build 160206) to 2.50+ (build 160210) Feb 10, 2016
+-Fixed issue #10343: Fixed js variables for firefox (LouisGac)
+-Fixed issue #10286: Missing translations in plugin manager (Carsten Schmitz)
+-Fixed issue #10296: Problem with 0 equals empty string fixed (Olle Haerstedt)
+-Fixed issue #10305: Question and group (Denis Chenu)
+-Fixed issue #10308: Missing translation (Carsten Schmitz)
+-Fixed issue #10317: Glyphicons and/or font-awesome. (LouisGac)
+-Fixed issue #10318: Removed gecko hack (LouisGac)
+-Fixed issue #10320: Added width for survey summary table title (LouisGac)
+-Fixed issue #10321: Submit panel integration form when updating survey settings (Olle Haerstedt)
+-Fixed issue #10322: Boxes permission system (LouisGac)
+-Fixed issue #10326: Answer concatenation (LouisGac)
+-Fixed issue #10328: Use oTemplate->viewPath instead of getTemplatePath (Olle Haerstedt)
+-Fixed issue #10331: When installing : DB error don't show whole information (Denis Chenu)
+-Fixed issue #10333: Force width of htmleditor iframe (LouisGac)
+-Fixed issue #10336: No redirection after global setting saved (LouisGac)
+-Fixed issue #10337: Delete survey don't delete all user's settings (Denis Chenu)
+-Fixed issue #10339: Add icon and tooltip text to active but expired survey (Olle Haerstedt)
+-Fixed issue #10340: Remove search on SID to satisfy postgresql (LouisGac)
+-Fixed issue #10344: Added a link to create group from explorer (LouisGac)
+-Fixed issue #10344: Display quick actions when survey is new (LouisGac)
+-Fixed issue #10346: Removed default comment values for multiple text with comments (LouisGac)
+-Fixed issue #10346: Used $myfname2 insteas of $myfname (LouisGac)
+-Fixed issue #10349: Restored selectormodeclass none (LouisGac)
+-Fixed issue #10354: Add missing action variable (Olle Haerstedt)
+-Fixed issue #10362: Re-add position of question when adding it (Olle Haerstedt)
+-Fixed issue #10376: Data consistency check not done if url is set to get (Denis Chenu)
+-Fixed issue #9752: Sometimes it can be impossible to move a question after another one. (Denis Chenu)
+-Fixed issue: Old admin template or broken template are shown in admin list (Denis Chenu)
+-Fixed issue: Public survey list loads bootstrap even if template don't ask it (Denis Chenu)
+-New feature: Old template compatibility (Denis Chenu)
 
 Changes from 2.06+ (build 160204) to 2.50+ (build 160206) Feb 6, 2016
 -Fixed issue #10196: Superadmins should be able to edit participants without sharing (Olle Haerstedt)
