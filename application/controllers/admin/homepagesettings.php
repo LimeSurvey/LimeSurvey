@@ -98,7 +98,7 @@ class homepagesettings extends Survey_Common_Action
      */
     public function index()
     {
-        Yii::app()->loadHelper('surveytranslator');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'homepagesettings.js' ));        
         $dataProvider=new CActiveDataProvider('Boxes');
         $aData = array(
             'dataProvider'=>$dataProvider,
@@ -138,6 +138,30 @@ class homepagesettings extends Survey_Common_Action
         if($model===null)
             throw new CHttpException(404,'The requested page does not exist.');
         return $model;
+    }
+
+    /**
+     * Performs the AJAX toggle of show_logo setting
+     */
+    public function toggleShowLogoStatus()
+    {
+
+    }
+
+    /**
+     * Performs the AJAX toggle of show_last_survey_and_question setting
+     */
+    public function toggleShowLastSurveyAndQuestion()
+    {
+
+    }
+
+    /**
+     * Performs the AJAX update of box setting
+     */
+    public function setBoxesSettings()
+    {
+
     }
 
     /**

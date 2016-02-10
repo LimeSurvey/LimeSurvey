@@ -9,11 +9,11 @@
     <div class="row">
         <label class="col-sm-2 control-label"><?php eT("Display logo: ");?></label>
         <div class="col-sm-2">
-            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_logo', 'value'=>$bShowLogo));?>
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_logo', 'id'=>'show_logo', 'value'=>$bShowLogo));?>
         </div>
         <label class="col-sm-2 control-label"><?php eT("Show last visited survey and question: ");?></label>
         <div class="col-sm-2">
-            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_last_survey_and_question', 'value'=>$bShowLastSurveyAndQuestion));?>
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_last_survey_and_question', 'id'=>'show_last_survey_and_question', 'value'=>$bShowLastSurveyAndQuestion));?>
         </div>
         <br/><br/>
     </div>

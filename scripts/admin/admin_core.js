@@ -84,7 +84,6 @@ $(document).ready(function(){
     /* Switch format group */
     if ($('#switchchangeformat').length>0){
         $('#switchchangeformat button').on('click', function(event, state) {
-            //alert('ok');
             $('#switchchangeformat button.active').removeClass('active');
             $(this).addClass('active');
             $value = $(this).data('value');
