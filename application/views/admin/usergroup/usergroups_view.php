@@ -92,9 +92,7 @@ jQuery(function($) {
     //Delete button
     $(document).ready(function() {
         $('a[data-confirm]').click(function() {
-            if (!confirm($(this).attr('data-confirm'))) {
-              return false;
-            }
+            return confirm($(this).attr('data-confirm'));
         });
     });
 });
