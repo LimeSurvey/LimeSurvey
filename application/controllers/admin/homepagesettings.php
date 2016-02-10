@@ -172,7 +172,12 @@ class homepagesettings extends Survey_Common_Action
      */
     public function toggleShowLastSurveyAndQuestion()
     {
-
+        if ( Permission::model()->hasGlobalPermission('settings', 'update') )
+        {
+            $bNewShowLastSurveyAndQuestion = (getGlobalSetting('show_last_survey_and_question')=="show")?"hide":"show";
+            setGlobalSetting('show_last_survey_and_question', $bNewShowLastSurveyAndQuestion);
+            echo $bNewShowLastSurveyAndQuestion;
+        }
     }
 
     /**
