@@ -101,9 +101,6 @@ class GlobalSettings extends Survey_Common_Action
             $data['excludedLanguages'] = array_diff(array_keys($data['allLanguages']), $data['restrictToLanguages']);
         }
 
-        // Boxes
-        $data['boxes'] = Boxes::model()->findAll();
-
         $data['fullpagebar']['savebutton']['form'] = 'frmglobalsettings';
         $data['fullpagebar']['saveandclosebutton']['form'] = 'frmglobalsettings';
         $data['fullpagebar']['closebutton']['url'] = 'admin/';
