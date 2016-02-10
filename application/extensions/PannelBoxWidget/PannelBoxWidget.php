@@ -33,7 +33,7 @@
 
         public function getBoxes()
         {
-            $boxes = Boxes::model()->findAll();
+            $boxes = Boxes::model()->findAll(array('order' => 'position ASC'));
             return $boxes;
         }
 
@@ -83,7 +83,7 @@
         protected function renderRows()
         {
             // We get all the boxes in the database
-            $boxes = Boxes::model()->findAll();
+            $boxes = Self::getBoxes();
             $boxcount = 0;
             foreach($boxes as $box)
             {
