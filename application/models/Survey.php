@@ -495,13 +495,27 @@ class Survey extends LSActiveRecord
             $aGroupId=CHtml::listData(QuestionGroup::model()->findAll(array('select'=>'gid','condition'=>'sid=:sid','params'=>array(':sid'=>$iSurveyID))),'gid','gid');
             $oCriteria = new CDbCriteria();
             $oCriteria->compare('stg_name','last_question_gid_%',true,'AND',false);
-            $oCriteria->addInCondition('stg_value',$aGroupId);
+            if(Yii::app()->db->getDriverName() == 'pgsql' || Yii::app()->db->getDriverName() == 'mssql') // pgsql need casting, unsure for mssql, but cast as int is OK
+            {
+                $oCriteria->addInCondition('CAST(stg_value as '.App()->db->schema->getColumnType("integer").')',$aGroupId);
+            }
+            else //mysql App()->db->schema->getColumnType("integer") give int(11)
+            {
+                $oCriteria->addInCondition('stg_value',$aGroupId);
+            }
             SettingGlobal::model()->deleteAll($oCriteria);
             // All Question id from this survey for ALL users
             $aQuestionId=CHtml::listData(Question::model()->findAll(array('select'=>'qid','condition'=>'sid=:sid','params'=>array(':sid'=>$iSurveyID))),'qid','qid');
             $oCriteria = new CDbCriteria();
             $oCriteria->compare('stg_name','last_question_%',true,'OR',false);
-            $oCriteria->addInCondition('stg_value',$aQuestionId);
+            if(Yii::app()->db->getDriverName() == 'pgsql' || Yii::app()->db->getDriverName() == 'mssql')
+            {
+                $oCriteria->addInCondition('CAST(stg_value as '.App()->db->schema->getColumnType("integer").')',$aQuestionId);
+            }
+            else
+            {
+                $oCriteria->addInCondition('stg_value',$aQuestionId);
+            }
             SettingGlobal::model()->deleteAll($oCriteria);
 
             $oResult = Question::model()->findAllByAttributes(array('sid' => $iSurveyID));
