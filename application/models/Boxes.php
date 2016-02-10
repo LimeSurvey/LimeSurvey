@@ -115,7 +115,7 @@ class Boxes extends CActiveRecord
 
             // The group doesn't exist anymore
             if(!is_object($oUsergroup))
-                return gT('anybody');
+                return gT('nobody');
 
             return $oUsergroup->name;
         }

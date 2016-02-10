@@ -46,7 +46,7 @@
         }
 
         public function getFlashes($delete = true)
-       	{
+           {
             $result = $this->getState('flash', array());
             $this->removeState('flash');
             return $result;
@@ -91,6 +91,31 @@
         public function hasState($key)
         {
             return isset($_SESSION[$this->sessionVariable]) && Hash::check($_SESSION[$this->sessionVariable], $key);
+        }
+
+        /**
+         * Test if a user is in a group
+         * @param int $gid
+         * @return boolean
+         */
+        public function isInUserGroup($gid)
+        {
+            $oUsergroup = UserGroup::model()->findByPk($gid);
+
+            // The group doesn't exist anymore
+            if(!is_object($oUsergroup))
+                return false;
+
+            $users = $oUsergroup->users;
+            foreach($users as $user)
+            {
+                $aUids[]=$user->uid;
+            }
+
+            if (in_array($this->id, $aUids))
+                return true;
+            else
+                return false;
         }
 
     }
