@@ -27,33 +27,53 @@
                 <?php echo $form->errorSummary($model); ?>
 
                 <div class="form-group">
-                    <?php echo $form->labelEx($model,'position'); ?>
-                    <?php echo $form->textField($model,'position'); ?>
-                    <?php echo $form->error($model,'position'); ?>
+                    <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'position'); ?></label>
+                    <div class='col-sm-4'>
+                        <?php echo $form->textField($model,'position'); ?>
+                    </div>
+                    <div class='col-sm-2'>
+                        <?php echo $form->error($model,'position'); ?>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <?php echo $form->labelEx($model,'url'); ?>
-                    <?php echo $form->textField($model,'url',array()); ?>
-                    <?php echo $form->error($model,'url'); ?>
+                    <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'url'); ?></label>
+                    <div class='col-sm-4'>
+                        <?php echo $form->textField($model,'url',array()); ?>
+                    </div>
+                    <div class='col-sm-4'>
+                        <?php echo $form->error($model,'url'); ?>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <?php echo $form->labelEx($model,'title'); ?>
-                    <?php echo $form->textField($model,'title',array()); ?>
-                    <?php echo $form->error($model,'title'); ?>
+                    <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'title'); ?></label>
+                    <div class='col-sm-4'>
+                        <?php echo $form->textField($model,'title',array()); ?>
+                    </div>
+                    <div class='col-sm-4'>
+                        <?php echo $form->error($model,'title'); ?>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <?php echo $form->labelEx($model,'ico'); ?>
-                    <?php echo $form->textField($model,'ico',array('size'=>60,'maxlength'=>255)); ?>
-                    <?php echo $form->error($model,'ico'); ?>
+                    <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'ico'); ?></label>
+                    <div class='col-sm-4'>
+                        <?php echo $form->textField($model,'ico',array('size'=>60,'maxlength'=>255)); ?>
+                    </div>
+                    <div class='col-sm-4'>
+                        <?php echo $form->error($model,'ico'); ?>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <?php echo $form->labelEx($model,'desc'); ?>
-                    <?php echo $form->textArea($model,'desc',array('rows'=>6, 'cols'=>50)); ?>
-                    <?php echo $form->error($model,'desc'); ?>
+                    <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'desc'); ?></label>
+                    <div class='col-sm-4'>
+                        <?php echo $form->textArea($model,'desc',array('rows'=>6, 'cols'=>50)); ?>
+                    </div>
+                    <div class='col-sm-4'>
+                        <?php echo $form->error($model,'desc'); ?>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -61,9 +81,13 @@
                 </div>
 
                 <div class="form-group">
-                    <?php echo $form->labelEx($model,'usergroup'); ?>
-                    <?php echo $form->textField($model,'usergroup'); ?>
-                    <?php echo $form->error($model,'usergroup'); ?>
+                    <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'usergroup'); ?></label>
+                    <div class='col-sm-4'>
+                        <?php echo $form->textField($model,'usergroup'); ?>
+                    </div>
+                    <div class='col-sm-4'>
+                        <?php echo $form->error($model,'usergroup'); ?>
+                    </div>
                 </div>
 
                 <div class="form-group buttons">
