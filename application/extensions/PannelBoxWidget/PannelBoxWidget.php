@@ -63,16 +63,18 @@
          */
         protected function renderBox()
         {
-            $offset = ($this->offset != '') ? 'col-sm-offset-1 col-lg-offset-'.$this->offset : '';
-
-            $this->render('box', array(
-                'position'=> $this->position,
-                'offset' => $offset,
-                'url'=> Yii::app()->createUrl($this->url),
-                'title'=> $this->title,
-                'ico'=> $this->ico,
-                'description'=> $this->description,
-            ));
+            if(Yii::app()->user->isInUserGroup($this->usergroup) || $this->usergroup == 0 || empty($this->usergroup) )
+            {
+                $offset = ($this->offset != '') ? 'col-sm-offset-1 col-lg-offset-'.$this->offset : '';
+                $this->render('box', array(
+                    'position'=> $this->position,
+                    'offset' => $offset,
+                    'url'=> Yii::app()->createUrl($this->url),
+                    'title'=> $this->title,
+                    'ico'=> $this->ico,
+                    'description'=> $this->description,
+                ));
+            }
         }
 
         /**
