@@ -8,6 +8,7 @@
 ?>
 
 <!-- Configuration -->
+<?php if(Permission::model()->hasGlobalPermission('superadmin','read')): ?>
 <li class="dropdown mega-dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <span class="icon-settings" ></span>
@@ -227,3 +228,4 @@
 
     </ul>
 </li>
+<?php endif;?>
