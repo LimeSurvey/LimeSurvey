@@ -2,6 +2,69 @@
 /* @var $this BoxesController */
 /* @var $model Boxes */
 
+/** List of all icons available for user */
+/** Command to generate this list: grep -oh "icon-[a-z]*" styles/Sea_Green/css/fonts.css | sort -u > ~/my_icon_list.txt */
+
+$icons = array(
+    'icon-active',
+    'icon-add',
+    'icon-assessments',
+    'icon-browse',
+    'icon-conditions',
+    'icon-copy',
+    'icon-cpdb',
+    'icon-databack',
+    'icon-databegin',
+    'icon-dataend',
+    'icon-dataforward',
+    'icon-defaultanswers',
+    'icon-do',
+    'icon-edit',
+    'icon-emailtemplates',
+    'icon-expired',
+    'icon-export',
+    'icon-exportcsv',
+    'icon-exportr',
+    'icon-exportspss',
+    'icon-exportvv',
+    'icon-expression',
+    'icon-expressionmanagercheck',
+    'icon-global',
+    'icon-import',
+    'icon-importcsv',
+    'icon-importldap',
+    'icon-importvv',
+    'icon-inactive',
+    'icon-invite',
+    'icon-label',
+    'icon-labels',
+    'icon-list',
+    'icon-logout',
+    'icon-maximize',
+    'icon-minimize',
+    'icon-organize',
+    'icon-quota',
+    'icon-remind',
+    'icon-renumber',
+    'icon-resetsurveylogic',
+    'icon-responses',
+    'icon-saved',
+    'icon-security',
+    'icon-settings',
+    'icon-shield',
+    'icon-superadmin',
+    'icon-survey',
+    'icon-takeownership',
+    'icon-template',
+    'icon-templatepermissions',
+    'icon-templates',
+    'icon-tools',
+    'icon-user',
+    'icon-usergroup',
+    'icon-viewlast'
+);
+$icons_length = count($icons);
+
 ?>
 <div class="col-lg-12 list-surveys">
 
@@ -68,7 +131,41 @@
                 <div class="form-group">
                     <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'ico'); ?></label>
                     <div class='col-sm-2'>
-                        <?php echo $form->textField($model,'ico',array('size'=>60,'maxlength'=>255, 'class' => 'form-control')); ?>
+                        <div class='btn-group'>
+                            <button type='button' class='btn btn-default dropdown-toggle limebutton form-control' data-toggle='dropdown' aria-hashpopup='true' aria-expanded='false'>
+                                Icon
+                                <span class='caret'></span>
+                            </button>
+                            <ul class='dropdown-menu'>
+                                <li>
+                                <div class='row' style='width: 400px;'>
+                                    <div class='col-sm-4'>
+                                        <ul class='list-unstyled'>
+                                            <?php for ($i = 0; $i < $icons_length / 3; $i++): ?>
+                                                <li class='icon-'><a href="#"><span data-icon='<?php echo $icons[$i]; ?>' class='option-icon <?php echo $icons[$i]; ?>'></span></a></li>
+                                            <?php endfor; ?>
+                                        </ul>
+                                    </div>
+                                    <div class='col-sm-4'>
+                                        <ul class='list-unstyled'>
+                                            <?php for ($i = $icons_length / 3; $i < $icons_length / 3 + $icons_length / 3; $i++): ?>
+                                                <li class='icon-'><a href="#"><span data-icon='<?php echo $icons[$i]; ?>' class='option-icon <?php echo $icons[$i]; ?>'></span></a></li>
+                                            <?php endfor; ?>
+                                        </ul>
+                                    </div>
+                                    <div class='col-sm-4'>
+                                        <ul class='list-unstyled'>
+                                            <?php for ($i = $icons_length / 3 + $icons_length / 3; $i < $icons_length; $i++): ?>
+                                                <li class='icon-'><a href="#"><span data-icon='<?php echo $icons[$i]; ?>' class='option-icon <?php echo $icons[$i]; ?>'></span></a></li>
+                                            <?php endfor; ?>
+                                        </ul>
+                                    </div>
+                                </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <span>&nbsp;<?php echo eT('Choosen icon:'); ?></span>&nbsp;<span id='choosen-icon'></span>
+                        <?php echo $form->textField($model,'ico',array('size'=>60,'maxlength'=>255, 'class' => 'form-control hidden')); ?>
                     </div>
                     <div class='col-sm-2'>
                         <?php echo $form->error($model,'ico'); ?>

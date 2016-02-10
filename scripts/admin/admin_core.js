@@ -754,4 +754,23 @@ function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
+/** For homepagesettings button edit */
+$(document).ready(function() {
+    $('.option-icon').on('click', function (ev, that) {
+        var fullIconName = $(ev.currentTarget).attr('data-icon');
+        var iconName = fullIconName.substr(5)
+
+        // Set icon preview and hidden input
+        $('input[name="Boxes[ico]"]').val(iconName);
+        $('#choosen-icon').attr('class', fullIconName + ' text-success');
+    });
+
+    var currentIcon = $('input[name="Boxes[ico]"]').val();
+    if (currentIcon !== '')
+    {
+        var fullCurrentIconName = 'icon-' + currentIcon;
+        $('#choosen-icon').attr('class', fullCurrentIconName + ' text-success');
+    }
+});
+
 // @license-end
