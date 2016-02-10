@@ -10,6 +10,9 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
+* Home Page boxes can respect user permissions.
+* To that goal, create user groups corresponding (like 'administrator', 'publisher', 'templateeditor') related to the permissions
+* Inspired by ACL pattern, see : https://en.wikipedia.org/wiki/Access_control_list
 */
 
 if (!defined('BASEPATH'))
