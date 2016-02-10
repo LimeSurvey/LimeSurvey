@@ -192,10 +192,15 @@ $icons_length = count($icons);
                         <?php echo $form->dropDownList(
                             $model,
                             'usergroup',
-                            CHtml::listData(UserGroup::model()->findAll(), 'ugid', 'name'),
+                            array_merge(
+                                array(
+                                    '-1' => gT('Everybody'),
+                                    '-2' => gT('Nobody'),
+                                ),
+                                CHtml::listData(UserGroup::model()->findAll(), 'ugid', 'name')
+                            ),
                             array(
                                 'class' => 'form-control',
-                                'prompt' => eT('All groups'),
                                 'options' => array(
                                     $model['usergroup'] => array('selected' => true)
                                 )
