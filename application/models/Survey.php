@@ -769,6 +769,8 @@ class Survey extends LSActiveRecord
         $criteria->join .='LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
         $criteria->compare('t.active', $this->active, true, 'AND');
         $criteria->compare('surveys_languagesettings.surveyls_title', $this->searched_value, true, 'AND');
+        $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.sid::varchar' : 't.sid');
+        $criteria->compare($sid_reference, $this->searched_value, true, 'OR');
         $criteria->compare('t.admin', $this->searched_value, true, 'OR');
 
 
