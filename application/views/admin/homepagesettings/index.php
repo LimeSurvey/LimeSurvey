@@ -44,6 +44,15 @@
     <h3><?php eT('Boxes');?></h3>
     <div class="row">
         <div class="col-sm-12 content-right">
+            <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/create/');?>" class="btn btn-default">
+                <span class="icon-pencil"></span>
+                <?php eT("Create a new box");?>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 content-right">
+
             <?php $this->widget('bootstrap.widgets.TbGridView', array(
                 'dataProvider'=>$dataProvider,
                 'columns' => array(
