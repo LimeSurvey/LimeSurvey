@@ -190,7 +190,7 @@ $config['auth_webserver_autocreate_profile'] = Array(
 );
 
 $config['auth_webserver_autocreate_permissions'] = Array(
-	'surveys' => array('create'=>true,'read'=>true,'update'=>true,'delete'=>true)
+    'surveys' => array('create'=>true,'read'=>true,'update'=>true,'delete'=>true)
 );
 
 // hook_get_auth_webserver_profile
@@ -647,6 +647,12 @@ $config['plugindir']               = 'webroot.plugins';
 $config['bFixNumAuto']             = 1;
 // (javascript) Send real value entered when using Numeric question type in Expression Manager : 0 : {NUMERIC} with bad caracters send '', 1 : {NUMERIC} send all caracters entered
 $config['bNumRealValue']             = 0;
+
+// Home page default Settings
+$config['show_logo'] = 'show';
+$config['show_last_survey_and_question'] = 'show';
+$config['boxes_by_row'] = '3';
+$config['boxes_offset'] = '3';
 
 
 return $config;

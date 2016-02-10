@@ -24,13 +24,15 @@
 <!-- Welcome view -->
 <div class="container-fluid welcome full-page-wrapper">
 
-    <!-- Jumbotron -->
-    <div class="row">
-        <div class="jumbotron" id="welcome-jumbotron">
-            <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" style="display: inline;" />
-            <p class="hidden-xs" ><?php echo PRESENTATION; // Defined in AdminController?></p>
+    <!-- Logo & Presentation -->
+    <?php if($bShowLogo):?>
+        <div class="row">
+            <div class="jumbotron" id="welcome-jumbotron">
+                <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" style="display: inline;" />
+                <p class="hidden-xs" ><?php echo PRESENTATION; // Defined in AdminController?></p>
+            </div>
         </div>
-    </div>
+    <?php endif;?>
 
     <!-- Message when first start -->
     <?php if($countSurveyList==0  && Permission::model()->hasGlobalPermission('surveys','create') ):?>
@@ -71,7 +73,7 @@
     <?php endif;?>
 
     <!-- Last visited survey/question -->
-    <?php if($showLastSurvey || $showLastQuestion):?>
+    <?php if( $bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)): // bShowLastSurveyAndQuestion is the homepage setting, showLastSurvey & showLastQuestion are about if infos are available ?>
         <div class="row text-right">
             <div class="col-lg-9 col-sm-9  ">
                 <div class='pull-right'>
@@ -97,11 +99,13 @@
     <!-- Rendering all boxes in database -->
     <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
             'display'=>'allboxesinrows',
+            'boxesbyrow'=>$iBoxesByRow,
+            'offset'=>$sBoxesOffSet,
         ));
     ?>
 
 
-    <!-- Boxes for smartphones-->
+    <!-- Boxes for smartphones -->
     <div class="row  hidden-sm  hidden-md hidden-lg ">
         <div class="panel panel-primary panel-clickable" id="pannel-7" data-url="/limesurvey/LimeSurveyNext/index.php/admin/survey/sa/listsurveys" style="opacity: 1; top: 0px;">
             <div class="panel-heading">

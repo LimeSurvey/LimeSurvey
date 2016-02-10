@@ -10,7 +10,7 @@
         public $ico;
         public $description;
         public $usergroup;
-        public $offset='';
+        public $offset=3;
         public $display='singlebox';
         public $boxesbyrow=3;
 
@@ -86,7 +86,7 @@
             foreach($boxes as $box)
             {
                 $boxcount=$boxcount+1;
-                // It's the first box, it mus be inside a row header, and have an offset
+                // It's the first box, we must display row header, and have an offset
                 if($boxcount == 1)
                 {
                     $this->render('row_header');
@@ -95,7 +95,7 @@
                                 'display'=>'singlebox',
                                 'fromDb'=> true,
                                 'dbPosition'=>$box->position,
-                                'offset' =>'3',
+                                'offset' =>$this->offset,
                         ));
                 }
                 else
@@ -104,6 +104,7 @@
                                     'display'=>'singlebox',
                                     'fromDb'=> true,
                                     'dbPosition'=>$box->position,
+                                    'offset' =>'',
                         ));
                 }
 

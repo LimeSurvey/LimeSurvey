@@ -76,6 +76,11 @@ class Index extends Survey_Common_Action
 
         $aData['countSurveyList'] = count(getSurveyList(true));
 
+        // We get the home page display setting
+        $aData['bShowLogo'] = (getGlobalSetting('show_logo')=="show");
+        $aData['bShowLastSurveyAndQuestion'] = (getGlobalSetting('show_last_survey_and_question')=="show");
+        $aData['iBoxesByRow']=(int) getGlobalSetting('boxes_by_row');
+        $aData['sBoxesOffSet']=(string) getGlobalSetting('boxes_offset');
         $this->_renderWrappedTemplate('super', 'welcome', $aData);
     }
 
