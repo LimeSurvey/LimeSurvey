@@ -495,11 +495,11 @@ class Survey extends LSActiveRecord
             $aGroupId=CHtml::listData(QuestionGroup::model()->findAll(array('select'=>'gid','condition'=>'sid=:sid','params'=>array(':sid'=>$iSurveyID))),'gid','gid');
             $oCriteria = new CDbCriteria();
             $oCriteria->compare('stg_name','last_question_gid_%',true,'AND',false);
-            if(Yii::app()->db->getDriverName() == 'pgsql' || Yii::app()->db->getDriverName() == 'mssql') // pgsql need casting, unsure for mssql, but cast as int is OK
+            if(Yii::app()->db->getDriverName() == 'pgsql') // pgsql need casting, unsure for mssql
             {
                 $oCriteria->addInCondition('CAST(stg_value as '.App()->db->schema->getColumnType("integer").')',$aGroupId);
             }
-            else //mysql App()->db->schema->getColumnType("integer") give int(11)
+            else //mysql App()->db->schema->getColumnType("integer") give int(11), mssql seems to have issue if cast alpha to numeric
             {
                 $oCriteria->addInCondition('stg_value',$aGroupId);
             }
@@ -508,7 +508,7 @@ class Survey extends LSActiveRecord
             $aQuestionId=CHtml::listData(Question::model()->findAll(array('select'=>'qid','condition'=>'sid=:sid','params'=>array(':sid'=>$iSurveyID))),'qid','qid');
             $oCriteria = new CDbCriteria();
             $oCriteria->compare('stg_name','last_question_%',true,'OR',false);
-            if(Yii::app()->db->getDriverName() == 'pgsql' || Yii::app()->db->getDriverName() == 'mssql')
+            if(Yii::app()->db->getDriverName() == 'pgsql')
             {
                 $oCriteria->addInCondition('CAST(stg_value as '.App()->db->schema->getColumnType("integer").')',$aQuestionId);
             }
