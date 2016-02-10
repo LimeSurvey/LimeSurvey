@@ -183,9 +183,13 @@ class homepagesettings extends Survey_Common_Action
     /**
      * Performs the AJAX update of box setting
      */
-    public function setBoxesSettings()
+    public function setBoxesSettings($boxesbyrow, $boxesoffset)
     {
-
+        if ( Permission::model()->hasGlobalPermission('settings', 'update') )
+        {
+            setGlobalSetting('boxes_by_row', $boxesbyrow);
+            setGlobalSetting('boxes_offse', $boxesoffset);
+        }
     }
 
     /**

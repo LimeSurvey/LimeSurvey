@@ -46,6 +46,19 @@ $(document).ready(function(){
      */
     $('#save_boxes_setting').on('click', function(){
         $url = $(this).attr('data-url');
+        $iBoxesByRow = $('#iBoxesByRow').val();
+        $iBoxesOffset = $('#iBoxesOffset').val();
+        $.ajax({
+            url : $url+'/boxesbyrow/'+$iBoxesByRow+'/boxesoffset/'+$iBoxesOffset,
+            type : 'GET',
+            dataType : 'html',
 
+            // html contains the buttons
+            success : function(html, statut){
+            },
+            error :  function(html, statut){
+                alert('error');
+            }
+        });
     });
 });

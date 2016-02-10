@@ -25,11 +25,11 @@
     <div class="row">
         <label class="col-sm-2 control-label"><?php eT("Boxes by row:");?></label>
         <div class="col-sm-1">
-            <input class="form-control" type="number" value="<?php echo $iBoxesByRow;?>" max="6" min="0" name="boxes_by_row"/>
+            <input class="form-control" type="number" id="iBoxesByRow" value="<?php echo $iBoxesByRow;?>" max="6" min="0" name="boxes_by_row"/>
         </div>
         <label class="col-sm-2 col-sm-offset-1 control-label"><?php eT("Boxes offset:");?></label>
         <div class="col-sm-1">
-            <input  class="form-control" type="number" value="<?php echo $iBoxesOffset;?>" max="10" min="0" name="boxes_offset"/>
+            <input  class="form-control" type="number" id="iBoxesOffset" value="<?php echo $iBoxesOffset;?>" max="10" min="0" name="boxes_offset"/>
         </div>
         <div class="col-sm-1">
             <button class="btn btn-default" type="button" id="save_boxes_setting" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/setBoxesSettings');?>"><?php eT('Save boxes settings');?></button>
