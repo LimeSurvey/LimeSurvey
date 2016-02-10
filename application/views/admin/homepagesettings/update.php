@@ -189,7 +189,18 @@ $icons_length = count($icons);
                 <div class="form-group">
                     <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'usergroup'); ?></label>
                     <div class='col-sm-2'>
-                        <?php echo $form->textField($model,'usergroup', array('class' => 'form-control')); ?>
+                        <?php echo $form->dropDownList(
+                            $model,
+                            'usergroup',
+                            CHtml::listData(UserGroup::model()->findAll(), 'ugid', 'name'),
+                            array(
+                                'class' => 'form-control',
+                                'prompt' => eT('All groups'),
+                                'options' => array(
+                                    $model['usergroup'] => array('selected' => true)
+                                )
+                            )
+                        ); ?>
                     </div>
                     <div class='col-sm-2'>
                         <?php echo $form->error($model,'usergroup'); ?>
