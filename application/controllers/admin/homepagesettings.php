@@ -100,10 +100,14 @@ class homepagesettings extends Survey_Common_Action
     {
         Yii::app()->loadHelper('surveytranslator');
         $dataProvider=new CActiveDataProvider('Boxes');
-
-        $this->_renderWrappedTemplate('homepagesettings', 'index', array(
+        $aData = array(
             'dataProvider'=>$dataProvider,
-        ));
+            'bShowLogo'=>(getGlobalSetting('show_logo')=="show"),
+            'bShowLastSurveyAndQuestion'=>(getGlobalSetting('show_last_survey_and_question')=="show"),
+            'iBoxesByRow'=>(int) getGlobalSetting('boxes_by_row'),
+            'iBoxesOffset'=>(int) getGlobalSetting('boxes_offset'),
+        );
+        $this->_renderWrappedTemplate('homepagesettings', 'index', $aData);
     }
 
     /**

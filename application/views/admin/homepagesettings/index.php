@@ -8,11 +8,32 @@
 
     <div class="row">
         <label class="col-sm-2 control-label"><?php eT("Display logo: ");?></label>
-        <div class="col-sm-8">
-            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'displaylogoswitch'));?>
+        <div class="col-sm-2">
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_logo', 'value'=>$bShowLogo));?>
         </div>
-        <br/><br/><br/>
+        <label class="col-sm-2 control-label"><?php eT("Show last visited survey and question: ");?></label>
+        <div class="col-sm-2">
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_last_survey_and_question', 'value'=>$bShowLastSurveyAndQuestion));?>
+        </div>
+        <br/><br/>
     </div>
+
+
+    <div class="row">
+        <label class="col-sm-2 control-label"><?php eT("Boxes by row:");?></label>
+        <div class="col-sm-1">
+            <input class="form-control" type="number" value="<?php echo $iBoxesByRow;?>" max="6" min="0" name="boxes_by_row"/>
+        </div>
+        <label class="col-sm-2 col-sm-offset-1 control-label"><?php eT("Boxes offset:");?></label>
+        <div class="col-sm-1">
+            <input  class="form-control" type="number" value="<?php echo $iBoxesOffset;?>" max="10" min="0" name="boxes_offset"/>
+        </div>
+        <div class="col-sm-1">
+            <button class="btn btn-default" type="button" id="save_boxes_setting"><?php eT('Save boxes settings');?></button>
+        </div>
+        <br/><br/><br/><br/>
+    </div>
+
 
 <!--
     <div class="row">
@@ -73,7 +94,7 @@
                         'value'=>'$data->buttons',
                         'type'=>'raw',
                         'htmlOptions' => array('class' => 'col-md-1'),
-                    ),                    
+                    ),
                 ),
             ));
             ?>
