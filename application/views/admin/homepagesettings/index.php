@@ -10,10 +10,13 @@
         <label class="col-sm-2 control-label"><?php eT("Display logo: ");?></label>
         <div class="col-sm-2">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_logo', 'id'=>'show_logo', 'value'=>$bShowLogo));?>
+
+            <input type="hidden" id="show_logo-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowLogoStatus');?>" />
         </div>
         <label class="col-sm-2 control-label"><?php eT("Show last visited survey and question: ");?></label>
         <div class="col-sm-2">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_last_survey_and_question', 'id'=>'show_last_survey_and_question', 'value'=>$bShowLastSurveyAndQuestion));?>
+            <input type="hidden" id="show_last_survey_and_question-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowLastSurveyAndQuestion');?>" />
         </div>
         <br/><br/>
     </div>
@@ -29,21 +32,11 @@
             <input  class="form-control" type="number" value="<?php echo $iBoxesOffset;?>" max="10" min="0" name="boxes_offset"/>
         </div>
         <div class="col-sm-1">
-            <button class="btn btn-default" type="button" id="save_boxes_setting"><?php eT('Save boxes settings');?></button>
+            <button class="btn btn-default" type="button" id="save_boxes_setting" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/setBoxesSettings');?>"><?php eT('Save boxes settings');?></button>
         </div>
         <br/><br/><br/><br/>
     </div>
 
-
-<!--
-    <div class="row">
-        <label class="col-sm-2 control-label" for="boxbyrow"><?php eT("Number of boxes by row: ");?></label>
-        <div class="col-sm-1">
-            <input type="text" class="form-control" value="3" name="boxbyrow"/>
-        </div>
-        <br/><br/><br/>
-    </div>
--->
 
     <!-- Grid -->
     <div class="row">
