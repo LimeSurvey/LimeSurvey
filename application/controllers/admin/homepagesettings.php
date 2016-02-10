@@ -188,7 +188,8 @@ class homepagesettings extends Survey_Common_Action
         if ( Permission::model()->hasGlobalPermission('settings', 'update') )
         {
             setGlobalSetting('boxes_by_row', $boxesbyrow);
-            setGlobalSetting('boxes_offse', $boxesoffset);
+            setGlobalSetting('boxes_offset', $boxesoffset);
+            return true;
         }
     }
 

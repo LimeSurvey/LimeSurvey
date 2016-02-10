@@ -32,6 +32,8 @@
             <input  class="form-control" type="number" id="iBoxesOffset" value="<?php echo $iBoxesOffset;?>" max="10" min="0" name="boxes_offset"/>
         </div>
         <div class="col-sm-1">
+
+            <input type="hidden" id="boxesupdatemessage" data-ajaxsuccessmessage="<?php eT('Boxes setting updated !');?>" />
             <button class="btn btn-default" type="button" id="save_boxes_setting" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/setBoxesSettings');?>"><?php eT('Save boxes settings');?></button>
         </div>
         <br/><br/><br/><br/>

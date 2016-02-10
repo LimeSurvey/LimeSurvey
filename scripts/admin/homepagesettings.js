@@ -48,13 +48,15 @@ $(document).ready(function(){
         $url = $(this).attr('data-url');
         $iBoxesByRow = $('#iBoxesByRow').val();
         $iBoxesOffset = $('#iBoxesOffset').val();
+        $successMessage = $('#boxesupdatemessage').data('ajaxsuccessmessage');
+        console.log($successMessage);
         $.ajax({
             url : $url+'/boxesbyrow/'+$iBoxesByRow+'/boxesoffset/'+$iBoxesOffset,
             type : 'GET',
             dataType : 'html',
-
             // html contains the buttons
             success : function(html, statut){
+                $('#notif-container').append('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>×</span></button>'+$successMessage+'</div>');
             },
             error :  function(html, statut){
                 alert('error');
