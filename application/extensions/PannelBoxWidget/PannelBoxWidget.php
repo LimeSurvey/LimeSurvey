@@ -83,7 +83,7 @@
         protected function renderRows()
         {
             // We get all the boxes in the database
-            $boxes = Self::getBoxes();
+            $boxes = self::getBoxes();
             $boxcount = 0;
             foreach($boxes as $box)
             {
