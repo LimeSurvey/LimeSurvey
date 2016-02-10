@@ -13,6 +13,8 @@
  */
 class UserGroup extends LSActiveRecord {
 
+    public $member_count=null;
+
     /**
      * Returns the static model of Settings table
      *
@@ -56,7 +58,8 @@ class UserGroup extends LSActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'Users' => array(self::HAS_MANY, 'User','uid')
+            'Users' => array(self::HAS_MANY, 'User','uid'),
+            'owner' => array(self::BELONGS_TO, 'User', 'owner_id'),
         );
     }
 
@@ -207,6 +210,87 @@ class UserGroup extends LSActiveRecord {
             return false;
         else
             return true;
+    }
+
+    public function getbuttons()
+    {
+
+        // View users
+        $url = Yii::app()->createUrl("admin/usergroups/sa/view/ugid/$this->ugid");
+        $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View users').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+
+        // Edit user group
+        if(Permission::model()->hasGlobalPermission('users','update'))
+        {
+            $url = Yii::app()->createUrl("admin/usergroups/sa/edit/ugid/$this->ugid");
+            $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit user group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
+        }
+
+        // Mail to user group
+        // Which permission should be checked for this button to be available?
+        $url = Yii::app()->createUrl("admin/usergroups/sa/mail/ugid/$this->ugid");
+        $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Email user group').'" href="'.$url.'" role="button"><span class="icon-invite" ></span></a>';
+
+        // Delete user group
+        if(Permission::model()->hasGlobalPermission('users','delete'))
+        {
+            $url = Yii::app()->createUrl("admin/usergroups/sa/delete/ugid/$this->ugid");
+            $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Delete user group').'" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this user group?').'"><span class="glyphicon glyphicon-trash text-warning"></span></a>';
+        }
+
+        return $button;
+    }
+
+    function search()
+    {
+        $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+
+        $sort = new CSort();
+        $sort->attributes = array(
+          'usergroup_id'=>array(
+            'asc'=>'ugid',
+            'desc'=>'ugid desc',
+          ),
+          'name'=>array(
+            'asc'=>'name',
+            'desc'=>'name desc',
+          ),
+          'description'=>array(
+            'asc'=>'description',
+            'desc'=>'description desc',
+          ),
+          'owner'=>array(
+            'asc'=>'users.users_name',
+            'desc'=>'users.users_name desc',
+          ),
+          'members'=>array(
+            'asc'=>'member_count',
+            'desc'=>'member_count desc',
+          ),
+        );
+
+        $user_in_groups_table = UserInGroup::model()->tableName();
+        $member_count_sql = "(SELECT count(*) FROM $user_in_groups_table AS users_in_groups WHERE users_in_groups.ugid = t.ugid)";
+
+        $criteria = new CDbCriteria;
+
+        // select
+        $criteria->select = array(
+            '*',
+            $member_count_sql . " as member_count",
+        );
+
+        $criteria->join .='LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
+
+        $dataProvider=new CActiveDataProvider('UserGroup', array(
+            'sort'=>$sort,
+            'criteria'=>$criteria,
+            'pagination'=>array(
+                'pageSize'=>$pageSize,
+            ),
+        ));
+
+        return $dataProvider;
     }
 
     /*
