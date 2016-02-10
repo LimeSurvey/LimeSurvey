@@ -911,7 +911,6 @@ class questions extends Survey_Common_Action
         {
             $eqrow['gid'] = $_GET['gid'];
         }
-
         $aData['eqrow'] = $eqrow;
 
         $sumresult1 = Survey::model()->findByPk($surveyid);
@@ -941,7 +940,15 @@ class questions extends Survey_Common_Action
         $qattributes = array();
 
         // Get the questions for this group
-        $aData['oqresult'] = NULL;
+        $oqresult = Question::model()->findAllByAttributes(array(
+            'sid' => $surveyid,
+            'gid' => $_GET['gid'],
+            'language' => $baselang,
+            'parent_qid'=> 0
+        ), array(
+            'order' => 'question_order'
+        ));
+        $aData['oqresult'] = $oqresult;
 
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'questions.js' ));
 
