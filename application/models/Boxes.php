@@ -114,7 +114,7 @@ class Boxes extends CActiveRecord
         }
         elseif ( $usergroupid=='-1' )
         {
-            return gT('nobody');
+            return gT('Everybody');
         }
         else
         {
