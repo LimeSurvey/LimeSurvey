@@ -30,7 +30,6 @@ class homepagesettings extends Survey_Common_Action
     public function create()
     {
         $model=new Boxes;
-
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 

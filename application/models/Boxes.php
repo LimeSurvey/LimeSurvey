@@ -135,6 +135,77 @@ class Boxes extends CActiveRecord
         return $button;
     }
 
+    /**
+     * List of all icons available for user
+     * Command to generate this list: grep -oh "icon-[a-z]*" styles/Sea_Green/css/fonts.css | sort -u > ~/my_icon_list.txt
+     * @return array
+     */
+    public function getIcons()
+    {
+        return array(
+            'icon-active',
+            'icon-add',
+            'icon-assessments',
+            'icon-browse',
+            'icon-conditions',
+            'icon-copy',
+            'icon-cpdb',
+            'icon-databack',
+            'icon-databegin',
+            'icon-dataend',
+            'icon-dataforward',
+            'icon-defaultanswers',
+            'icon-do',
+            'icon-edit',
+            'icon-emailtemplates',
+            'icon-expired',
+            'icon-export',
+            'icon-exportcsv',
+            'icon-exportr',
+            'icon-exportspss',
+            'icon-exportvv',
+            'icon-expression',
+            'icon-expressionmanagercheck',
+            'icon-global',
+            'icon-import',
+            'icon-importcsv',
+            'icon-importldap',
+            'icon-importvv',
+            'icon-inactive',
+            'icon-invite',
+            'icon-label',
+            'icon-labels',
+            'icon-list',
+            'icon-logout',
+            'icon-maximize',
+            'icon-minimize',
+            'icon-organize',
+            'icon-quota',
+            'icon-remind',
+            'icon-renumber',
+            'icon-resetsurveylogic',
+            'icon-responses',
+            'icon-saved',
+            'icon-security',
+            'icon-settings',
+            'icon-shield',
+            'icon-superadmin',
+            'icon-survey',
+            'icon-takeownership',
+            'icon-template',
+            'icon-templatepermissions',
+            'icon-templates',
+            'icon-tools',
+            'icon-user',
+            'icon-usergroup',
+            'icon-viewlast'
+        );
+    }
+
+    public function getIcons_length()
+    {
+        return count($this->icons);
+    }
 
     /**
      * Returns the static model of the specified AR class.
