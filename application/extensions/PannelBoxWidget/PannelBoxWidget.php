@@ -172,7 +172,6 @@
                     return true;
                 }
             }
-            //Yii::app()->user->isInUserGroup($this->usergroup) || $this->usergroup == 0 || empty($this->usergroup)
         }
 
     }

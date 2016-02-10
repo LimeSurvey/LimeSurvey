@@ -50,6 +50,10 @@
                     <span class="icon-add  text-success"></span>
                     <?php eT("Create a new box");?>
                 </a>
+                <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/resetall/');?>" class="btn btn-danger" data-confirm="<?php eT('This will delete all curent boxes to restore the default ones. Are you sur you want to continue ?'); ?>">
+                    <span class="fa fa-refresh"></span>
+                    <?php eT("Reset to default boxes");?>
+                </a>
             <?php endif;?>
 
             <!-- Return -->
