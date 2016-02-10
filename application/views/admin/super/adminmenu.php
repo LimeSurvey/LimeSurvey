@@ -71,6 +71,7 @@
                     <span style="margin-left: 0px;" class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
+                         <?php if (Permission::model()->hasGlobalPermission('surveys','create')): ?>
                          <!-- Create a new survey -->
                          <li>
                              <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>">
@@ -93,7 +94,7 @@
                          </li>
 
                          <li class="divider"></li>
-
+                        <?php endif;?>
                          <!-- List surveys -->
                          <li>
                              <a href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
@@ -103,7 +104,6 @@
 
                        </ul>
                      </li>
-
             <!-- user menu -->
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" ><?php echo Yii::app()->session['user'];?> <span class="caret"></span></a>
