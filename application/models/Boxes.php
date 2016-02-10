@@ -105,13 +105,18 @@ class Boxes extends CActiveRecord
     public function getUsergroupname()
     {
         $usergroupid = $this->usergroup;
-        if(empty($usergroupid))
+        if(empty($usergroupid) || $usergroupid==0)
         {
             return gT('anybody');
         }
         else
         {
             $oUsergroup = UserGroup::model()->findByPk($usergroupid);
+
+            // The group doesn't exist anymore
+            if(!is_object($oUsergroup))
+                return gT('anybody');
+
             return $oUsergroup->name;
         }
     }
