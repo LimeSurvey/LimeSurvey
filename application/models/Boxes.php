@@ -116,13 +116,17 @@ class Boxes extends CActiveRecord
         {
             return gT('Everybody');
         }
+        elseif ( $usergroupid=='-3' )
+        {
+            return gT('Nobody');
+        }
         else
         {
             $oUsergroup = UserGroup::model()->findByPk($usergroupid);
 
             // The group doesn't exist anymore
             if(!is_object($oUsergroup))
-                return gT('Only admin');
+                return gT("Can't find group ! Only admin");
 
             return $oUsergroup->name;
         }
