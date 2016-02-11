@@ -771,22 +771,35 @@ class Survey extends LSActiveRecord
 
         $criteria = new CDbCriteria;
 
-        // select
+        // Answers
         $criteria->select = array(
             '*',
             $this->getCountFullAnswers() . " as full_answers_account",
             $this->getCountPartialAnswers() . " as partial_answers_account",
         );
 
+        $criteria->join  = 'LEFT JOIN {{surveys_languagesettings}} AS surveys_languagesettings ON ( surveys_languagesettings.surveyls_language = t.language AND t.sid = surveys_languagesettings.surveyls_survey_id )';
+        $criteria->join .= 'LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
 
-        $criteria->join  ='LEFT JOIN {{surveys_languagesettings}} AS surveys_languagesettings ON ( surveys_languagesettings.surveyls_language = t.language AND t.sid = surveys_languagesettings.surveyls_survey_id )';
-        $criteria->join .='LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
-        $criteria->compare('t.active', $this->active, true, 'AND');
-        $criteria->compare('surveys_languagesettings.surveyls_title', $this->searched_value, true, 'AND');
+        // Permission
+        $criteria->join .= "LEFT JOIN {{permissions}} AS permissions ON ( permissions.entity_id=t.sid AND permissions.entity='survey' AND permissions.permission='surveycontent' AND permissions.uid=:userid  ) ";
+        $criteria->condition = 'permissions.read_p=1';
+        $criteria->params=(array(':userid'=>Yii::app()->user->id ));
+
+        // Search filter
+        $criteria2 = new CDbCriteria;
         $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.sid::varchar' : 't.sid');
-        $criteria->compare($sid_reference, $this->searched_value, true, 'OR');
-        $criteria->compare('t.admin', $this->searched_value, true, 'OR');
+        $criteria2->compare($sid_reference, $this->searched_value, true, 'OR');
+        $criteria2->compare('surveys_languagesettings.surveyls_title', $this->searched_value, true, 'OR');
+        $criteria2->compare('t.admin', $this->searched_value, true, 'OR');
 
+        // Active filter
+        if(isset($this->active))
+        {
+            $criteria->addCondition("t.active='$this->active'");
+        }
+
+        $criteria->mergeWith($criteria2, 'AND');
 
         $dataProvider=new CActiveDataProvider('Survey', array(
             'sort'=>$sort,

@@ -153,8 +153,8 @@
                     return false;
                 }
             }
-            // If usergroup is set to -1, nobody can see the box
-            elseif ( $usergroupid=='-1' )
+            // If usergroup is set to -3, nobody can see the box
+            elseif ( $usergroupid=='-3' )
             {
                 return false;
             }
