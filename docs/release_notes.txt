@@ -58,6 +58,30 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 2.06+ (build 160210) to 2.50+ (build 160212) Feb 12, 2016
+-Fixed issue #10325: Survey list respects user permissions (LouisGac)
+-Fixed issue #10358: Can search question with question group (LouisGac)
+-Fixed issue #10369: Break tokenify close button loop (LouisGac)
+-Fixed issue #10378: Correct display for 5point choice question (LouisGac)
+-Fixed issue #10385: Add condition button (LouisGac)
+-Fixed issue #10386: Possible again to to edit text of answer option in active survey (LouisGac)
+-Fixed issue #10388: Hide tip parameter for questions (LouisGac)
+-Fixed issue #10389: Animate emtip changes (LouisGac)
+-Fixed issue #9890: Broken survey can break admin page if debug is set (Denis Chenu)
+#Updated translation: Croatian by kmilojev, rovinj
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21, tendanceh
+#Updated translation: German by actxcellence
+#Updated translation: German (Informal) by actxcellence
+#Updated translation: Greek by kiolalis
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmal) by pmonstad, peterhol
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Swedish by maxzomborszki
+
 Changes from 2.06+ (build 160206) to 2.50+ (build 160210) Feb 10, 2016
 -Fixed issue #10343: Fixed js variables for firefox (LouisGac)
 -Fixed issue #10286: Missing translations in plugin manager (Carsten Schmitz)
