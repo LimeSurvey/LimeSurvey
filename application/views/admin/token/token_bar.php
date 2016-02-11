@@ -173,7 +173,7 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
 
             <!-- Close -->
             <?php if(isset($token_bar['closebutton']['url'])):?>
-                <a class="btn btn-danger" href="<?php echo $token_bar['closebutton']['url']; ?>" role="button">
+                <a class="btn btn-danger" href="<?php echo $this->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId); ?>" role="button">
                     <span class="glyphicon glyphicon-close" ></span>
                     <?php eT("Close");?>
                 </a>
