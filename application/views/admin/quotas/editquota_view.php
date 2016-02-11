@@ -12,7 +12,7 @@
         <li><label for='quota_limit'><?php eT("Quota limit:");?></label><input id="quota_limit" name="quota_limit" type="text" size="12" maxlength="8" value="<?php echo $quotainfo['qlimit'];?>" /></li>
         <li><label for='quota_action'><?php eT("Quota action:");?></label> <select name="quota_action" id="quota_action" class="form-control">
             <option value ="1" <?php if($quotainfo['action'] == 1) echo "selected='selected'"; ?>><?php eT("Terminate survey");?></option>
-            <option value ="2" <?php if($quotainfo['action'] == 2) echo "selected='selected'"; ?>><?php eT("Terminate survey with warning");?></option>
+            <option value ="2" <?php if($quotainfo['action'] == 2) echo "selected='selected'"; ?>><?php eT("Show warning, this allow update answers");?></option>
         </select></li>
         <li><label for='autoload_url'><?php eT("Autoload URL:");?></label><input id="autoload_url" name="autoload_url" type="checkbox" value="1"<?php if($quotainfo['autoload_url'] == "1") {echo " checked";}?> /></li>
     </ul>
