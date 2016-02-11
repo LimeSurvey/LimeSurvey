@@ -153,7 +153,7 @@
                 <table id="displaytokens"></table>
                 <div id="pager"></div>
 
-                <div id ="search">
+                <div id="search">
                     <?php
                         $aOptionSearch = array('' => gT('Select...'));
                         foreach($aTokenColumns as $sTokenColumn => $aTokenInformation)

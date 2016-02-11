@@ -144,7 +144,7 @@ $(document).ready(function() {
         sortname: 'tid',
         sortorder: 'asc',
         viewrecords : true,
-        //rowList: [25,50,100,250,500,1000,2500,5000],
+        rowList: [10,25,50,100,250,500,1000,2500,5000],
         multiselect: true,
         beforeRequest : function(){
             $(this).addClass('load');
@@ -330,7 +330,7 @@ $(document).ready(function() {
             $('.ui-dialog-buttonset').addClass('text-center');
             $('.ui-dialog-buttonset button').wrap('<div class="col-sm-2"></div>');
             $('.ui-dialog-buttonset button').addClass('form-control');
-            $('.ui-widget-content').addClass('row');
+            $('.ui-widget-content').has('#search').addClass('row');
         }
     });
     if(showInviteButton) {
