@@ -365,9 +365,10 @@ class CheckIntegrity extends Survey_Common_Action
         $oSurveys = Survey::model()->findAll();
         foreach ($oSurveys as $oSurvey)
         {
+
             if ($oSurvey->active=='Y' && !tableExists("{{survey_{$oSurvey->sid}}}"))
             {
-                Survey::model()->updateByPk($survey->sid,array('active'=>'N'));
+                Survey::model()->updateByPk($oSurvey->sid,array('active'=>'N'));
                 $bDirectlyFixed=true;
             }
         }

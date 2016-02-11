@@ -306,7 +306,7 @@ class update extends Survey_Common_Action
                                 Yii::app()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
 
                                 // TODO : aData should contains information about each step
-                                return $this->controller->renderPartial('update/updater/steps/_final', array(), false, false);
+                                return $this->controller->renderPartial('update/updater/steps/_final', array('destinationBuild'=>$destinationBuild), false, false);
                             }
                             else
                             {

@@ -36,6 +36,8 @@
         <?php
             switch ($dbBackupInfos->message)
             {
+                case 'db_changes':
+                    $db_message = gT('And the and of the process, the database will be updated.');
                 case 'db_too_big':
                     $db_message = gT('Your database is too big to be saved!').' '.gT('Before proceeding please backup your database using a backup tool!');
                     break;
