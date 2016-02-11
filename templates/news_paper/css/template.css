@@ -754,3 +754,14 @@ table.question.subquestion-list.questions-list tr.answers-list th
 {
  text-align: left;
 }
+
+/**
+ * For em-type
+ */
+ .strong
+ {
+     font-weight: bold;
+     font-size: 1.2em;
+     display: inline-block;
+     padding: 0.2em;
+ }

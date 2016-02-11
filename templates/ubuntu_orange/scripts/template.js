@@ -156,4 +156,34 @@ $(document).ready(function(){
         });
     }
 
+    if($('.emtip').length>0)
+    {
+        // On Document Load
+        $('.emtip').each(function(){
+            if($(this).hasClass('error'))
+            {
+                $(this).parent().removeClass('alert-info').addClass('alert-danger');
+                $(this).addClass('strong');
+            }
+        });
+
+        // On em change
+        $('.emtip').each(function(){
+            $(this).on('classChangeError', function() {
+                $parent = $(this).parent();
+                $parent.removeClass('alert-info');
+                $(this).addClass('strong');
+                $parent.addClass('alert-danger');
+
+            });
+            $(this).on('classChangeGood', function() {
+                $parent = $(this).parent();
+                $parent.removeClass('alert-danger');
+                $(this).removeClass('strong');
+                $parent.addClass('alert-info');
+
+            });
+
+        });
+    }
 });

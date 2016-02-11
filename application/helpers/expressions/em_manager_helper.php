@@ -7279,9 +7279,9 @@
                         if($validationJS!='')
                         {
                             $valParts[] = "\n  if(" . $validationJS . "){\n";
-                            $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('error').addClass('good');;\n";
+                            $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('error').addClass('good').trigger('classChangeGood');;\n";
                             $valParts[] = "  }\n  else {\n";
-                            $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
+                            $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('good').addClass('error').trigger('classChangeError');\n";
                             $valParts[] = "  }\n";
                         }
                     }
@@ -7320,9 +7320,9 @@
                             if($_validationJS!='')
                             {
                                 $valParts[] = "\n  if(" . $_validationJS . "){\n";
-                                $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass . "').removeClass('error').addClass('good');\n";
+                                $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass . "').removeClass('error').addClass('good').trigger('classChangeGood');\n";
                                 $valParts[] = "  }\n  else {\n";
-                                $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass ."').removeClass('good').addClass('error');\n";
+                                $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass ."').removeClass('good').addClass('error').trigger('classChangeError');\n";
                                 switch ($vclass)
                                 {
                                     case 'sum_range':
@@ -7346,9 +7346,9 @@
                         }
 
                         $valParts[] = "\n  if(isValidSum" . $arg['qid'] . "){\n";
-                        $valParts[] = "    $('#totalvalue_" . $arg['qid'] . "').removeClass('error').addClass('good');\n";
+                        $valParts[] = "    $('#totalvalue_" . $arg['qid'] . "').removeClass('error').addClass('good').trigger('classChangeGood');\n";
                         $valParts[] = "  }\n  else {\n";
-                        $valParts[] = "    $('#totalvalue_" . $arg['qid'] . "').removeClass('good').addClass('error');\n";
+                        $valParts[] = "    $('#totalvalue_" . $arg['qid'] . "').removeClass('good').addClass('error').trigger('classChangeError');\n";
                         $valParts[] = "  }\n";
 
                         // color-code single-entry fields as needed
@@ -7360,9 +7360,9 @@
                             case 'T':
                             case 'U':
                                 $valParts[] = "\n  if(isValidOther" . $arg['qid'] . "){\n";
-                                $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('error').addClass('good');\n";
+                                $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('error').addClass('good').trigger('classChangeGood');\n";
                                 $valParts[] = "  }\n  else {\n";
-                                $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
+                                $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('good').addClass('error').trigger('classChangeError');\n";
                                 $valParts[] = "  }\n";
                                 break;
                             default:
@@ -7388,9 +7388,9 @@
                                     break;
                             }
                             $valParts[] = "\n  if(isValidOtherComment" . $arg['qid'] . "){\n";
-                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('error').addClass('good');\n";
+                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('error').addClass('good').trigger('classChangeGood');\n";
                             $valParts[] = "  }\n  else {\n";
-                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
+                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('good').addClass('error').trigger('classChangeError');\n";
                             $valParts[] = "  }\n";
                             break;
                             default:
