@@ -765,3 +765,8 @@ table.question.subquestion-list.questions-list tr.answers-list th
      display: inline-block;
      padding: 0.2em;
  }
+
+ .hide-tip
+ {
+     display: none;
+ }

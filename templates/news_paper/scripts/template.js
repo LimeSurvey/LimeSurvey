@@ -162,25 +162,39 @@ $(document).ready(function(){
         $('.emtip').each(function(){
             if($(this).hasClass('error'))
             {
-                $(this).parent().removeClass('alert-info').addClass('alert-danger');
+                $(this).parents('div.alert.questionhelp').removeClass('alert-info').addClass('alert-danger');
                 $(this).addClass('strong');
             }
         });
 
         // On em change
         $('.emtip').each(function(){
+
             $(this).on('classChangeError', function() {
-                $parent = $(this).parent();
-                $parent.removeClass('alert-info');
+                $parent = $(this).parent('div.alert.questionhelp');
+                $parent.removeClass('alert').removeClass('alert-info',1);
+                $parent.addClass('alert-danger',1).addClass('alert');
+
+                if ($parent.hasClass('hide-tip'))
+                {
+                    $parent.removeClass('hide-tip',1);
+                    $parent.addClass('tip-was-hidden',1);
+                }
+
                 $(this).addClass('strong');
-                $parent.addClass('alert-danger');
+
 
             });
+
             $(this).on('classChangeGood', function() {
-                $parent = $(this).parent();
+                $parent = $(this).parents('div.alert.questionhelp');
                 $parent.removeClass('alert-danger');
                 $(this).removeClass('strong');
                 $parent.addClass('alert-info');
+                if ($parent.hasClass('tip-was-hidden'))
+                {
+                    $parent.removeClass('tip-was-hidden').addClass('hide-tip');
+                }
 
             });
 
