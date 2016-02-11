@@ -26,3 +26,9 @@
 .scrolling-wrapper {
     overflow-x: scroll;
 }
+
+/** Search criteria pop-up for token table */
+#search {
+    display: none;
+    overflow-y: auto;
+}

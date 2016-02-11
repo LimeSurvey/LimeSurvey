@@ -95,6 +95,8 @@
     var showBounceButton = <?php echo $showBounceButton; ?>;
     var showInviteButton = <?php echo $showInviteButton; ?>;
     var showRemindButton = <?php echo $showRemindButton; ?>;
+    var sDelete = "<?php eT('Delete this search criteria'); ?>";
+    var sAdd = "<?php eT("Add another search criteria"); ?>";
     <?php if (!Permission::model()->hasGlobalPermission('participantpanel','read')){?>
     var bParticipantPanelPermission=false;
     <?php
@@ -151,7 +153,7 @@
                 <table id="displaytokens"></table>
                 <div id="pager"></div>
 
-                <div id ="search" style="display:none">
+                <div id ="search">
                     <?php
                         $aOptionSearch = array('' => gT('Select...'));
                         foreach($aTokenColumns as $sTokenColumn => $aTokenInformation)
@@ -171,11 +173,11 @@
                     ?>
                     <table id='searchtable'>
                         <tr>
-                            <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $aOptionSearch); ?></td>
-                            <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $aOptionCondition); ?></td>
-                            <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
+                            <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $aOptionSearch, array('class' => 'form-control')); ?></td>
+                            <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $aOptionCondition, array('class' => 'form-control')); ?></td>
+                            <td><input class='form-control' type="text" id="conditiontext_1" /></td>
                             <td>
-                                <span title='<?php eT("Add another search criteria");?>' class="addcondition-button icon-add text-success" style="margin-bottom:4px">
+                                <span data-toggle='tooltip' title='<?php eT("Add another search criteria");?>' class="ui-pg-button addcondition-button icon-add text-success" style="">
                             </td>
                         </tr>
                     </table>
