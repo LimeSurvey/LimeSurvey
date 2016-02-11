@@ -888,12 +888,10 @@
 
         if($this->group_name != '')
         {
-            $criteria2->addCondition('groups.group_name = :group_name');
-            $criteria2->params=(array(':group_name'=>$this->group_name));
+            $criteria->addCondition("groups.group_name = '$this->group_name'");
         }
 
         $criteria2->compare('question', $this->title, true, 'AND');
-
         $criteria->mergeWith($criteria2, 'OR');
 
         $dataProvider=new CActiveDataProvider('Question', array(

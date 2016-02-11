@@ -693,8 +693,6 @@ class index extends CAction {
     function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array())
     {
         global $oTemplate;
-
-
         $asMessage[]="<input type='hidden' class='hidemenubutton'/>";
 
         if(isset($redata['surveyid']) && $redata['surveyid'] && !isset($thisurvey))
