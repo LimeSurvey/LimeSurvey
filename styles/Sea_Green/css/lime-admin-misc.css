@@ -12,6 +12,17 @@
     float: left;
 }
 
+/* Avoid numerical right aligned to be too close to word left aligned */
 .jqgrid-tokens-number-padding {
     padding-right: 4px;
+}
+
+/* z-index fix */
+.tooltip {
+    position: fixed;
+}
+
+/** For token table */
+.scrolling-wrapper {
+    overflow-x: scroll;
 }

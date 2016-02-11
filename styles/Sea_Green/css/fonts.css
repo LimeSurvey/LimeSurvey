@@ -267,7 +267,22 @@ jQuery UI replacements
     content: "\e800";
 }
 
-.ui-icon-calculator, .ui-icon-minus, .ui-icon-refresh, .ui-icon-search, .ui-icon-extlink, .ui-icon-mail-closed, .ui-icon-mail-open, .ui-bounceprocessing, .ui-participant-link, .ui-icon-carat-1-w, .ui-icon-carat-1-e, .ui-add-to-cpdb-link  {
+.ui-icon-calculator,
+.ui-icon-minus,
+.ui-icon-refresh,
+.ui-icon-search,
+.ui-icon-extlink,
+.ui-icon-mail-closed,
+.ui-icon-mail-open,
+.ui-bounceprocessing,
+.ui-participant-link,
+.ui-icon-carat-1-w,
+.ui-icon-carat-1-e,
+.ui-add-to-cpdb-link,
+.ui-icon-seek-next,
+.ui-icon-seek-end,
+.ui-icon-seek-prev,
+.ui-icon-seek-first {
     display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
     font-size: inherit;
@@ -303,7 +318,6 @@ jQuery UI replacements
      content: "\f0c1";
 }
 
-
 .ui-addtosurvey-icon:before {
     content: "\e809";
 }
@@ -325,6 +339,22 @@ jQuery UI replacements
 
 .ui-add-to-cpdb-link:before {
     content: "\f234";
+}
+
+.ui-icon-seek-next:before {
+    content: "\f04e";
+}
+
+.ui-icon-seek-end:before {
+    content: "\f051";
+}
+
+.ui-icon-seek-prev:before {
+    content: "\f04a";
+}
+
+.ui-icon-seek-first:before {
+    content: "\f048";
 }
 
 /*

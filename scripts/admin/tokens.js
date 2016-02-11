@@ -136,14 +136,14 @@ $(document).ready(function() {
         colNames : colNames,
         colModel: colModels,
         height: "100%",
-        rowNum: 25,
+        rowNum: 10,
         editable:true,
         scrollOffset:0,
         sortable : true,
         sortname: 'tid',
         sortorder: 'asc',
         viewrecords : true,
-        rowList: [25,50,100,250,500,1000,2500,5000],
+        //rowList: [25,50,100,250,500,1000,2500,5000],
         multiselect: true,
         beforeRequest : function(){
             $(this).addClass('load');
@@ -435,6 +435,10 @@ $(document).ready(function() {
     $.jgrid.jqModal = $.extend($.jgrid.jqModal || {}, {
         beforeOpen: centerInfoDialog
     });
+
+    // jQgrid defaults to placement bottom, so we have to fix that
+    $('[data-toggle="tooltip"]').attr('data-placement', 'top');
+    $('[data-toggle="tooltip"]').tooltip()
 });
 
 function centerInfoDialog() {

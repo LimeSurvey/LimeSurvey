@@ -140,86 +140,88 @@
 <div class="side-body">
 	<h3><?php eT("Survey participants",'js'); ?></h3>
 
-	<div  class="row">
-		<div class="col-lg-12" style="margin-top: 1em;">
-			<?php
-			    // Add some script for gridsearch
-			    App()->getClientScript()->registerPackage('jquery-bindWithDelay');
-			    App()->getClientScript()->registerPackage('jqgrid.addons');
-			?>
-			<table id="displaytokens"></table>
-			<div id="pager"></div>
+    <div class='scrolling-wrapper'
+        <div  class="row">
+            <div class="col-lg-12" style="margin-top: 1em;">
+                <?php
+                    // Add some script for gridsearch
+                    App()->getClientScript()->registerPackage('jquery-bindWithDelay');
+                    App()->getClientScript()->registerPackage('jqgrid.addons');
+                ?>
+                <table id="displaytokens"></table>
+                <div id="pager"></div>
 
-			<div id ="search" style="display:none">
-			    <?php
-			        $aOptionSearch = array('' => gT('Select...'));
-			        foreach($aTokenColumns as $sTokenColumn => $aTokenInformation)
-			        {
-			            if($aTokenInformation['search'])
-			            {
-			                $aOptionSearch[$sTokenColumn]=$aTokenInformation['description'];
-			            }
-			        }
-			        $aOptionCondition = array('' => gT('Select...'),
-			        'equal' => gT("Equals"),
-			        'contains' => gT("Contains"),
-			        'notequal' => gT("Not equal"),
-			        'notcontains' => gT("Not contains"),
-			        'greaterthan' => gT("Greater than"),
-			        'lessthan' => gT("Less than"));
-			    ?>
-			    <table id='searchtable'>
-			        <tr>
-			            <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $aOptionSearch); ?></td>
-			            <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $aOptionCondition); ?></td>
-			            <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
-			            <td>
-                            <span title='<?php eT("Add another search criteria");?>' class="addcondition-button icon-add text-success" style="margin-bottom:4px">
-                        </td>
-			        </tr>
-			    </table>
-			</div>
+                <div id ="search" style="display:none">
+                    <?php
+                        $aOptionSearch = array('' => gT('Select...'));
+                        foreach($aTokenColumns as $sTokenColumn => $aTokenInformation)
+                        {
+                            if($aTokenInformation['search'])
+                            {
+                                $aOptionSearch[$sTokenColumn]=$aTokenInformation['description'];
+                            }
+                        }
+                        $aOptionCondition = array('' => gT('Select...'),
+                        'equal' => gT("Equals"),
+                        'contains' => gT("Contains"),
+                        'notequal' => gT("Not equal"),
+                        'notcontains' => gT("Not contains"),
+                        'greaterthan' => gT("Greater than"),
+                        'lessthan' => gT("Less than"));
+                    ?>
+                    <table id='searchtable'>
+                        <tr>
+                            <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $aOptionSearch); ?></td>
+                            <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $aOptionCondition); ?></td>
+                            <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
+                            <td>
+                                <span title='<?php eT("Add another search criteria");?>' class="addcondition-button icon-add text-success" style="margin-bottom:4px">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
 
-			<?php if (Permission::model()->hasGlobalPermission('participantpanel','read')) { ?>
-			    <div id="addcpdb" title="addsurvey" style="display:none">
-			        <p><?php eT("Please select the attributes that are to be added to the central database"); ?></p>
-			        <p>
-			            <select id="attributeid" name="attributeid" multiple="multiple">
-			                <?php
-			                    if(!empty($attrfieldnames))
-			                    {
-			                        foreach($attrfieldnames as $key=>$value)
-			                        {
-			                            echo "<option value='".$key."'>".$value."</option>";
-			                        }
-			                    }
+                <?php if (Permission::model()->hasGlobalPermission('participantpanel','read')) { ?>
+                    <div id="addcpdb" title="addsurvey" style="display:none">
+                        <p><?php eT("Please select the attributes that are to be added to the central database"); ?></p>
+                        <p>
+                            <select id="attributeid" name="attributeid" multiple="multiple">
+                                <?php
+                                    if(!empty($attrfieldnames))
+                                    {
+                                        foreach($attrfieldnames as $key=>$value)
+                                        {
+                                            echo "<option value='".$key."'>".$value."</option>";
+                                        }
+                                    }
 
-			                ?>
-			            </select>
-			        </p>
+                                ?>
+                            </select>
+                        </p>
 
-			    </div>
-			<?php } ?>
+                    </div>
+                <?php } ?>
 
-			<div id="fieldnotselected" title="<?php eT("Error") ?>" style="display:none">
-			    <p>
-			        <?php eT("Please select a field."); ?>
-			    </p>
-			</div>
-			<div id="conditionnotselected" title="<?php eT("Error") ?>" style="display:none">
-			    <p>
-			        <?php eT("Please select a condition."); ?>
-			    </p>
-			</div>
-			<div id="norowselected" title="<?php eT("Error") ?>" style="display:none">
-			    <p>
-			        <?php eT("Please select at least one participant."); ?>
-			    </p>
-			</div>
-			<div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none"></div>
-			<div>
-			<div id ='dialog-modal'></div>
-		</div>
-		</div>
-	</div>
+                <div id="fieldnotselected" title="<?php eT("Error") ?>" style="display:none">
+                    <p>
+                        <?php eT("Please select a field."); ?>
+                    </p>
+                </div>
+                <div id="conditionnotselected" title="<?php eT("Error") ?>" style="display:none">
+                    <p>
+                        <?php eT("Please select a condition."); ?>
+                    </p>
+                </div>
+                <div id="norowselected" title="<?php eT("Error") ?>" style="display:none">
+                    <p>
+                        <?php eT("Please select at least one participant."); ?>
+                    </p>
+                </div>
+                <div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none"></div>
+                <div>
+                <div id ='dialog-modal'></div>
+            </div>
+            </div>
+        </div>
+    </div>
 </div>
