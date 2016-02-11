@@ -197,7 +197,12 @@ $(document).ready(function(){
                 }
 
             });
-
         });
+    }
+
+    // Hide the menu buttons at the end of the Survey
+    if($(".hidemenubutton").length>0)
+    {
+        $('.navbar-right').hide();
     }
 });
