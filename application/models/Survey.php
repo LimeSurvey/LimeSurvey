@@ -778,7 +778,6 @@ class Survey extends LSActiveRecord
             $this->getCountPartialAnswers() . " as partial_answers_account",
         );
 
-
         $criteria->join  = 'LEFT JOIN {{surveys_languagesettings}} AS surveys_languagesettings ON ( surveys_languagesettings.surveyls_language = t.language AND t.sid = surveys_languagesettings.surveyls_survey_id )';
         $criteria->join .= 'LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
 
