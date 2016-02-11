@@ -172,7 +172,8 @@
                                                 <td  style="vertical-align: middle;">
                                                     <input
                                                         type='hidden'
-                                                        name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
+
+                                                        name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                                                         value="<?php echo $title; ?>"
                                                         maxlength='20'
                                                         size='5'
@@ -319,7 +320,7 @@
 
                                                 <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
 
-                                                <?php if ($activated != 'Y' && $first):?>
+                                                <?php if ($activated != 'Y' && $first ):?>
                                                     <?php
                                                         // TODO : remove this if statement, and merge the two td
                                                         // implies : define in controller titles

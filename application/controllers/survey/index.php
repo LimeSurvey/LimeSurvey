@@ -694,6 +694,9 @@ class index extends CAction {
     {
         global $oTemplate;
 
+
+        $asMessage[]="<input type='hidden' class='hidemenubutton'/>";
+
         if(isset($redata['surveyid']) && $redata['surveyid'] && !isset($thisurvey))
         {
             $thissurvey=getSurveyInfo($redata['surveyid']);
