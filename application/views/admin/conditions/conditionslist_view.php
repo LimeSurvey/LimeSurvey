@@ -1,11 +1,10 @@
 <?php echo $conditionsoutput;?>
-
 <div class="row">
-<?php if ($subaction== "editconditionsform" || $subaction=='insertcondition' ||
-    $subaction == "editthiscondition" || $subaction == "delete" ||
-    $subaction == "updatecondition" || $subaction == "deletescenario" ||
-    $subaction == "updatescenario" ||
-    $subaction == "renumberscenarios")  : ?>
+    <?php if ($subaction== "editconditionsform" || $subaction=='insertcondition' ||
+        $subaction == "editthiscondition" || $subaction == "delete" ||
+        $subaction == "updatecondition" || $subaction == "deletescenario" ||
+        $subaction == "updatescenario" ||
+        $subaction == "renumberscenarios")  : ?>
 
     <div class="col-sm-4">
         <?php echo $onlyshow;?>
@@ -36,7 +35,6 @@
     </div>
 
 <?php else :?>
-
             <strong><?php echo $onlyshow;?></strong>
             <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deleteallconditions/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;','id'=>'deleteallconditions','name'=>'deleteallconditions'));?>
                 <input type='hidden' name='qid' value='<?php echo $qid;?>' />

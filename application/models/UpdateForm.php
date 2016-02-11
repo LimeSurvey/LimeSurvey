@@ -507,6 +507,7 @@ class UpdateForm extends CFormModel
                 if( $currentDbVersion < $dbChecks->dbVersion )
                 {
                     $dbSize = $this->_getDbTotalSize();
+                    $backupDb->message = 'db_change';
 
                     if( $dbSize <= $dbChecks->dbSize )
                     {
