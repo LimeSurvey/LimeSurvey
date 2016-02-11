@@ -28,3 +28,4 @@
     -->
     </script>
 <?php endif;?>
+</div>
