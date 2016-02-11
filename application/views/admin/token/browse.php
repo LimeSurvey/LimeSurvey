@@ -111,20 +111,20 @@
     var colNames = ["ID","<?php eT("Action") ?>","<?php eT("First name") ?>","<?php eT("Last name") ?>","<?php eT("Email address") ?>","<?php eT("Email status") ?>","<?php eT("Token") ?>","<?php eT("Language") ?>","<?php eT("Invitation sent?") ?>","<?php eT("Reminder sent?") ?>","<?php eT("Reminder count") ?>","<?php eT("Completed?") ?>","<?php eT("Uses left") ?>","<?php eT("Valid from") ?>","<?php eT("Valid until") ?>"<?php if (count($columnNames)) echo ','.$columnNames; ?>];
     var colModels = [
     { "name":"tid", "index":"tid", "width":30, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":false},
-    { "name":"action", "index":"action", "sorttype":"string", "sortable": false, "width":100, "align":"center", "editable":false},
+    { "name":"action", "index":"action", "sorttype":"string", "sortable": false, "width":120, "align":"center", "editable":false},
     { "name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":100, "align":"left", "editable":true},
     { "name":"lastname", "index":"lastname", "sorttype":"string", "sortable": true,"width":100, "align":"left", "editable":true},
-    { "name":"email", "index":"email","align":"left","width":120, "sorttype":"string", "sortable": true, "editable":true},
-    { "name":"emailstatus", "index":"emailstatus","align":"left","sorttype":"string", "sortable": true, "editable":true},
-    { "name":"token", "index":"token","align":"left", "sorttype":"int", "sortable": true,"width":100,"editable":true},
-    { "name":"language", "index":"language","align":"left", "sorttype":"int", "sortable": true,"width":55,"editable":true, "formatter":'select', "edittype":"select", "editoptions":{"value":"<?php echo $aLanguageNames; ?>"}},
-    { "name":"sent", "index":"sent","align":"left", "sorttype":"int", "sortable": true,"editable":true},
-    { "name":"remindersent", "index":"remindersent","align":"left", "sorttype":"int", "sortable": true,"width":85,"editable":true},
-    { "name":"remindercount", "index":"remindercount","align":"right", "sorttype":"int", "sortable": true,"width":85,"editable":true},
-    { "name":"completed", "index":"completed","align":"left", "sorttype":"int", "sortable": true,"width":65,"editable":true},
-    { "name":"usesleft", "index":"usesleft","align":"right", "sorttype":"int", "sortable": true,"width":50,"editable":true},
-    { "name":"validfrom", "index":"validfrom","align":"left", "sorttype":"int", "sortable": true,"width":100,"editable":true},
-    { "name":"validuntil", "index":"validuntil","align":"left", "sorttype":"int", "sortable": true,"width":100,"editable":true}
+    { "name":"email", "index":"email","align":"left","width":170, "sorttype":"string", "sortable": true, "editable":true},
+    { "name":"emailstatus", "index":"emailstatus","align":"left","width": 80,"sorttype":"string", "sortable": true, "editable":true},
+    { "name":"token", "index":"token","align":"left", "sorttype":"int", "sortable": true,"width":150,"editable":true},
+    { "name":"language", "index":"language","align":"left", "sorttype":"int", "sortable": true,"width":100,"editable":true, "formatter":'select', "edittype":"select", "editoptions":{"value":"<?php echo $aLanguageNames; ?>"}},
+    { "name":"sent", "index":"sent","align":"left", "sorttype":"int", "sortable": true,"width":130,"editable":true},
+    { "name":"remindersent", "index":"remindersent","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"remindercount", "index":"remindercount","align":"right", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"completed", "index":"completed","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"usesleft", "index":"usesleft","align":"right", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"validfrom", "index":"validfrom","align":"left", "sorttype":"int", "sortable": true,"width":160,"editable":true},
+    { "name":"validuntil", "index":"validuntil","align":"left", "sorttype":"int", "sortable": true,"width":160,"editable":true}
     <?php if (count($uidNames)) echo ','.implode(",\n", $uidNames); ?>];
     var colInformation=<?php echo $sJsonColumnInformation ?>
 
