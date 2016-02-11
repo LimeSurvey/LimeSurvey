@@ -771,7 +771,7 @@ class Survey extends LSActiveRecord
 
         $criteria = new CDbCriteria;
 
-        // select
+        // Answers
         $criteria->select = array(
             '*',
             $this->getCountFullAnswers() . " as full_answers_account",
@@ -787,17 +787,20 @@ class Survey extends LSActiveRecord
         $criteria->condition = 'permissions.read_p=1';
         $criteria->params=(array(':userid'=>Yii::app()->user->id ));
 
-
-        // Wrong concatenation...
-        // TODO : subcriterias....
-        $criteria->compare('t.active', $this->active, true, 'AND');
-        $criteria->compare('surveys_languagesettings.surveyls_title', $this->searched_value, true, 'AND');
+        // Search filter
+        $criteria2 = new CDbCriteria;
         $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.sid::varchar' : 't.sid');
-        $criteria->compare($sid_reference, $this->searched_value, true, 'OR');
-        $criteria->compare('t.admin', $this->searched_value, true, 'OR');
+        $criteria2->compare($sid_reference, $this->searched_value, true, 'OR');
+        $criteria2->compare('surveys_languagesettings.surveyls_title', $this->searched_value, true, 'OR');
+        $criteria2->compare('t.admin', $this->searched_value, true, 'OR');
 
+        // Active filter
+        if(isset($this->active))
+        {
+            $criteria->addCondition("t.active='$this->active'");
+        }
 
-//!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read');
+        $criteria->mergeWith($criteria2, 'AND');
 
         $dataProvider=new CActiveDataProvider('Survey', array(
             'sort'=>$sort,
