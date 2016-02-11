@@ -216,7 +216,19 @@ function getSurveyList($returnarray=false, $surveyid=false)
         $surveynames = array();
         foreach ($surveyidresult as $result)
         {
-            $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
+            if(!empty($result->defaultlanguage))
+            {
+                $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
+            }
+            elseif(empty($bCheckIntegrity))
+            {
+                $bCheckIntegrity=true;
+                Yii::app()->setFlashMessage(
+                    sprintf(gT("One or more surveys seem broken, you must %s of the LimeSurvey database."),
+                        CHtml::link(gT('check data integrity'),array("admin/checkintegrity"))
+                    ),
+                'error');
+            }
         }
 
         $cached = $surveynames;
