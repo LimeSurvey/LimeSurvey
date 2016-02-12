@@ -201,7 +201,7 @@ CREATE TABLE prefix_participants (
   "participant_id" character varying(50) PRIMARY KEY NOT NULL,
   "firstname" character varying(150),
   "lastname" character varying(150),
-  "email" character varying(254),
+  "email" text,
   "language" character varying(40),
   "blacklisted" character varying(1) NOT NULL,
   "owner_uid" integer NOT NULL,
@@ -602,4 +602,4 @@ create unique index permissions_idx2 ON prefix_permissions (entity_id, entity, u
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '255');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '256');

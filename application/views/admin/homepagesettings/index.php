@@ -38,7 +38,7 @@
         <div class="col-sm-1">
             <input class="form-control" type="number" id="iBoxesByRow" value="<?php echo $iBoxesByRow;?>" max="6" min="0" name="boxes_by_row"/>
         </div>
-        <label class="col-sm-2 col-sm-offset-1 control-label"><?php eT("Boxes offset:");?></label>
+        <label class="col-sm-2 col-sm-offset-1 control-label"><?php eT("Box offset:");?></label>
         <div class="col-sm-1">
             <input  class="form-control" type="number" id="iBoxesOffset" value="<?php echo $iBoxesOffset;?>" max="10" min="0" name="boxes_offset"/>
         </div>

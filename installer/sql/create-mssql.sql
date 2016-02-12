@@ -195,7 +195,7 @@ CREATE TABLE [prefix_participants] (
 [participant_id] varchar(50) NOT NULL,
 [firstname] nvarchar(150) NULL,
 [lastname] nvarchar(150) NULL,
-[email] nvarchar(254) NULL,
+[email] nvarchar(max) NULL,
 [language] varchar(40) NULL,
 [blacklisted] varchar(1) NOT NULL,
 [owner_uid] int NOT NULL,
@@ -592,4 +592,4 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '255');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '256');
