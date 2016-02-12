@@ -6,7 +6,7 @@
 
 <?php
     $aOptions = array();
-    $aOptions[''] = gT('Select...');
+    $aOptions[''] = gT('Select...','unescaped');
     foreach (getLanguageData(false, Yii::app()->session['adminlang']) as $langkey2 => $langname)
     {
         $aOptions[$langkey2] = $langname['description'];

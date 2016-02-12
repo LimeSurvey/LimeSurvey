@@ -18,7 +18,7 @@
                 <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
                 <?php echo CHtml::hiddenField('datestamp',$esrow['datestamp']); // Maybe use a readonly dropdown ? ?>
                 <?php } else { ?>
-                    <?php echo CHtml::dropDownList('datestamp', $esrow['datestamp'],array("Y"=>gT("Yes"),"N"=>gT("No")),array('onchange'=>'alertDateStampAnonymization();')); ?>
+                    <?php echo CHtml::dropDownList('datestamp', $esrow['datestamp'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped')),array('onchange'=>'alertDateStampAnonymization();')); ?>
                 <?php } ?>
         </li>
 
@@ -32,7 +32,7 @@
                 <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
                 <?php echo CHtml::hiddenField('ipaddr',$esrow['ipaddr']); // Maybe use a readonly dropdown ??>
                 <?php } else { ?>
-                    <?php echo CHtml::dropDownList('ipaddr', $esrow['ipaddr'],array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
+                    <?php echo CHtml::dropDownList('ipaddr', $esrow['ipaddr'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped'))); ?>
                 <?php } ?>
         </li>
 
@@ -47,7 +47,7 @@
                 <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
                 <?php echo CHtml::hiddenField('refurl',$esrow['refurl']); // Maybe use a readonly dropdown ??>
                 <?php } else { ?>
-                    <?php echo CHtml::dropDownList('refurl', $esrow['refurl'],array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
+                    <?php echo CHtml::dropDownList('refurl', $esrow['refurl'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped'))); ?>
                 <?php } ?>
         </li>
 
@@ -62,16 +62,16 @@
                 <?php }
                 else
                 { ?>
-                    <?php echo CHtml::dropDownList('savetimings', $esrow['savetimings'],array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
+                    <?php echo CHtml::dropDownList('savetimings', $esrow['savetimings'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped'))); ?>
             <?php } ?>
         </li>
 
         <li><label for='assessments'><?php  eT("Enable assessment mode?"); ?></label>
-            <?php echo CHtml::dropDownList('assessments', $esrow['assessments'],array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
+            <?php echo CHtml::dropDownList('assessments', $esrow['assessments'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped'))); ?>
         </li>
 
         <li><label for='allowsave'><?php  eT("Participant may save and resume later?"); ?></label>
-            <?php echo CHtml::dropDownList('allowsave', $esrow['allowsave'],array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
+            <?php echo CHtml::dropDownList('allowsave', $esrow['allowsave'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped'))); ?>
         </li>
 
         <li><label for='googleanalyticsapikey'><?php  eT("Google Analytics API key for this survey?"); ?></label>
@@ -79,7 +79,7 @@
         </li>
 
         <li><label for='googleanalyticsstyle'><?php  eT("Google Analytics style for this survey?"); ?></label>
-            <?php echo CHtml::dropDownList('googleanalyticsstyle', $esrow['googleanalyticsstyle'],array("0"=>gT("Do not use Google Analytics"),"1"=>gT("Default Google Analytics"),"2"=>gT("Survey name-[SID]/Group name"))); ?>
+            <?php echo CHtml::dropDownList('googleanalyticsstyle', $esrow['googleanalyticsstyle'],array("0"=>gT("Do not use Google Analytics",'unescaped'),"1"=>gT("Default Google Analytics",'unescaped'),"2"=>gT("Survey name-[SID]/Group name",'unescaped'))); ?>
         </li>
 
     </ul>

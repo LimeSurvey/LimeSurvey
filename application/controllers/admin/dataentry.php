@@ -661,8 +661,8 @@ class dataentry extends Survey_Common_Action
                             $selected = (empty($idrow['submitdate'])) ? 'N' : $completedate;
 
                             $select_options = array(
-                            'N' => gT('No'),
-                            $completedate => gT('Yes')
+                            'N' => gT('No','unescaped'),
+                            $completedate => gT('Yes','unescaped')
                             );
 
                             $aDataentryoutput .= CHtml::dropDownList('completed', $selected, $select_options, array('class'=>'form-control'));

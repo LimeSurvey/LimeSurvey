@@ -59,9 +59,9 @@
                 $sElement_id = 'defaultanswerscale_0_' . $language;
 
                 $aList = array(
-                    'N'    => gT('No'),
-                    'Y'    => gT('YES'),
-                    'EM'   => gT('EM Value')
+                    'N'    => gT('No','unescaped'),
+                    'Y'    => gT('Yes','unescaped'),
+                    'EM'   => gT('EM value','unescaped')
                 );
 
                 $aHtmlOptions = array(

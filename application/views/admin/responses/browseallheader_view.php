@@ -45,15 +45,15 @@
                 }
             ?>
             <?php echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post', array('id'=>'browseresults')); ?>
-                    
+
                     <?php eT("Records displayed:"); ?><input type='text' size='4' value='<?php echo $dtcount2; ?>' name='limit' id='limit' />
                     &nbsp;&nbsp; <?php eT("Starting from:"); ?><input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
                     &nbsp;&nbsp; <input type='submit' value='<?php eT("Show"); ?>' />
                     &nbsp;&nbsp; <?php eT("Display:"); ?>
                     <?php echo CHtml::dropDownList('completionstate',$sCompletionStateValue,
-                        array('all'=> gT("All responses"),
-                        'complete'=> gT("Completed responses only"),
-                        'incomplete'=> gT("Incomplete responses only"))
+                        array('all'=> gT("All responses",'unescaped'),
+                        'complete'=> gT("Completed responses only",'unescaped'),
+                        'incomplete'=> gT("Incomplete responses only",'unescaped'))
                     ); ?>
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                 <input type='hidden' name='action' value='browse' />

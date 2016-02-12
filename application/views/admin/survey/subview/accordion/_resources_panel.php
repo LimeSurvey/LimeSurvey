@@ -10,7 +10,7 @@
         <ul class="list-unstyled">
             <li>
                 <label>&nbsp;</label>
-                <?php echo CHtml::dropDownList('type', 'files', array('files' =>  gT('Files'), 'flash' =>  gT('Flash'), 'images' =>  gT('Images'))); ?>
+                <?php echo CHtml::dropDownList('type', 'files', array('files' =>  gT('Files','unescaped'), 'flash' =>  gT('Flash','unescaped'), 'images' =>  gT('Images','unescaped'))); ?>
                 <input type='submit' class="btn btn-default" value="<?php  eT("Browse Uploaded Resources") ?>" />
             </li>
             <li>

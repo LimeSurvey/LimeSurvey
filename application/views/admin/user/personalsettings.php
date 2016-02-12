@@ -36,10 +36,10 @@
             <div class="col-sm-3">
                 <?php
                     echo CHtml::dropDownList('htmleditormode', Yii::app()->session['htmleditormode'], array(
-                        'default' => gT("Default"),
-                        'inline' => gT("Inline HTML editor"),
-                        'popup' => gT("Popup HTML editor"),
-                        'none' => gT("No HTML editor")
+                        'default' => gT("Default",'unescaped'),
+                        'inline' => gT("Inline HTML editor",'unescaped'),
+                        'popup' => gT("Popup HTML editor",'unescaped'),
+                        'none' => gT("No HTML editor",'unescaped')
                     ), array('class'=>"form-control"));
                 ?>
             </div>
@@ -51,10 +51,10 @@
             <div class="col-sm-3">
                 <?php
                 echo CHtml::dropDownList('questionselectormode', Yii::app()->session['questionselectormode'], array(
-                    'default' => gT("Default"),
-                    'full' => gT("Full selector"),
-                    'none' => gT("Simple selector")
-                ), array('class'=>"form-control"));
+                    'default' => gT("Default",'unescaped'),
+                    'full' => gT("Full selector",'unescaped'),
+                    'none' => gT("Simple selector",'unescaped')
+                ), array('class'=>"form-control",'unescaped'));
                 ?>
             </div>
         </div>

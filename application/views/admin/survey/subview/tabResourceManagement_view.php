@@ -3,7 +3,7 @@
         <ul>
             <li>
                 <label>&nbsp;</label>
-                <?php echo CHtml::dropDownList('type', 'files', array('files' =>  gT('Files'), 'flash' =>  gT('Flash'), 'images' =>  gT('Images'))); ?>
+                <?php echo CHtml::dropDownList('type', 'files', array('files' =>  gT('Files','unescaped'), 'flash' =>  gT('Flash','unescaped'), 'images' =>  gT('Images','unescaped'))); ?>
                 <input type='submit' value="<?php  eT("Browse Uploaded Resources") ?>" />
             </li>
             <li>

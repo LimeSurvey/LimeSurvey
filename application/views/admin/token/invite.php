@@ -107,7 +107,7 @@
 
                         <label class='control-label col-sm-2' for='bypassbademails'><?php eT("Bypass token with failing email addresses:"); ?></label>
                         <div class='col-sm-1'>
-                            <?php echo CHtml::dropDownList('bypassbademails', 'Y',array("Y"=>gT("Yes"),"N"=>gT("No")), array('class' => 'form-control')); ?>
+                            <?php echo CHtml::dropDownList('bypassbademails', 'Y',array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped')), array('class' => 'form-control')); ?>
                         </div>
                     </div>
 

@@ -153,7 +153,7 @@
         <table class='users table table-responsive' id="user-control-table"><tr class='oddrow'>
                 <?php if (App()->getPluginManager()->isPluginActive('AuthLDAP')) {
                           echo "<td  class='col-md-1'>";
-                          echo CHtml::dropDownList('user_type', 'DB', array('DB' => gT("Internal database authentication"), 'LDAP' => gT("LDAP authentication")));
+                          echo CHtml::dropDownList('user_type', 'DB', array('DB' => gT("Internal database authentication",'unescaped'), 'LDAP' => gT("LDAP authentication",'unescaped')));
                           echo "</td>";
                       }
                       else

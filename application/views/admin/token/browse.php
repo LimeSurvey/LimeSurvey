@@ -155,7 +155,7 @@
 
                 <div id="search">
                     <?php
-                        $aOptionSearch = array('' => gT('Select...'));
+                        $aOptionSearch = array('' => gT('Select...','unescaped'));
                         foreach($aTokenColumns as $sTokenColumn => $aTokenInformation)
                         {
                             if($aTokenInformation['search'])
@@ -163,13 +163,13 @@
                                 $aOptionSearch[$sTokenColumn]=$aTokenInformation['description'];
                             }
                         }
-                        $aOptionCondition = array('' => gT('Select...'),
-                        'equal' => gT("Equals"),
-                        'contains' => gT("Contains"),
-                        'notequal' => gT("Not equal"),
-                        'notcontains' => gT("Not contains"),
-                        'greaterthan' => gT("Greater than"),
-                        'lessthan' => gT("Less than"));
+                        $aOptionCondition = array('' => gT('Select...','unescaped'),
+                        'equal' => gT("Equals",'unescaped'),
+                        'contains' => gT("Contains",'unescaped'),
+                        'notequal' => gT("Not equal",'unescaped'),
+                        'notcontains' => gT("Not contains",'unescaped'),
+                        'greaterthan' => gT("Greater than",'unescaped'),
+                        'lessthan' => gT("Less than",'unescaped'));
                     ?>
                     <table id='searchtable'>
                         <tr>

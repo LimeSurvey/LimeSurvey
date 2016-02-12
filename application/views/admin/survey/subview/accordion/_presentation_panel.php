@@ -117,9 +117,9 @@
 
             <?php
                 $data = array(
-                    0 => gT('Disabled'),
-                    1 => gT('Incremental'),
-                    2 => gT('Full')
+                    0 => gT('Disabled','unescaped'),
+                    1 => gT('Incremental','unescaped'),
+                    2 => gT('Full','unescaped')
                 );
                 echo CHtml::dropDownList('questionindex', $esrow['questionindex'], $data, array(
                     'id' => 'questionindex',

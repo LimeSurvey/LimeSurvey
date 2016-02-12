@@ -33,7 +33,7 @@
                     <label class="col-sm-2 control-label" for='separator'><?php eT("Separator used:"); ?> </label>
                     <div class="col-sm-3">
                         <?php
-                            $aSeparator = array('auto' => gT("(Autodetect)"), 'comma' => gT("Comma"), 'semicolon' => gT("Semicolon"));
+                            $aSeparator = array('auto' => gT("(Autodetect)",'unescaped'), 'comma' => gT("Comma",'unescaped'), 'semicolon' => gT("Semicolon",'unescaped'));
                             echo CHtml::dropDownList('separator', returnGlobal('separator'), $aSeparator, array('size' => '1','class'=>'form-control'));
                         ?>
                     </div>

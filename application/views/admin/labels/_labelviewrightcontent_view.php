@@ -25,7 +25,7 @@
                                     <li>
                                         <label>&nbsp;</label>
                                         <div class="col-sm-6">
-                                            <?php echo CHtml::dropDownList('type', 'files', array('files' => gT('Files'), 'flash' => gT('Flash'), 'images' => gT('Images')), array('class'=>' form-control') ); ?>
+                                            <?php echo CHtml::dropDownList('type', 'files', array('files' => gT('Files','unescaped'), 'flash' => gT('Flash','unescaped'), 'images' => gT('Images','unescaped')), array('class'=>' form-control') ); ?>
                                         </div>
                                         <div class="col-sm-5">
                                             <input type='submit' class="btn btn-default" value="<?php eT("Browse uploaded resources") ?>" />

@@ -11,7 +11,7 @@
         {
             $attribute = array('class' => 'col-md-6 col-md-offset-3');
             echo CHtml::beginForm($this->createUrl('/admin/participants/sa/storeUserControlValues'), 'post', $attribute);
-            $options = array('Y' => gT('Yes'), 'N' => gT('No'));
+            $options = array('Y' => gT('Yes','unescaped'), 'N' => gT('No','unescaped'));
             ?>
                 <div class="form-group">
                     <label for='userideditable' id='userideditable'>
@@ -33,8 +33,8 @@
         }
         ?>
     </div>
-            
+
         </div>
     </div>
-</div>            
+</div>
 
