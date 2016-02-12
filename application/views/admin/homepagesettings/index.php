@@ -15,16 +15,16 @@
         )
     )); ?>
 
-    <h3><?php eT('Home Page settings'); ?></h3>
+    <h3><?php eT('Home page settings'); ?></h3>
 
     <div class="row">
-        <label class="col-sm-2 control-label"><?php eT("Display logo: ");?></label>
+        <label class="col-sm-2 control-label"><?php eT("Display logo:");?> </label>
         <div class="col-sm-2">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_logo', 'id'=>'show_logo', 'value'=>$bShowLogo));?>
 
             <input type="hidden" id="show_logo-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowLogoStatus');?>" />
         </div>
-        <label class="col-sm-2 control-label"><?php eT("Show last visited survey and question: ");?></label>
+        <label class="col-sm-2 control-label"><?php eT("Show last visited survey and question:");?> </label>
         <div class="col-sm-2">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_last_survey_and_question', 'id'=>'show_last_survey_and_question', 'value'=>$bShowLastSurveyAndQuestion));?>
             <input type="hidden" id="show_last_survey_and_question-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowLastSurveyAndQuestion');?>" />
@@ -44,7 +44,7 @@
         </div>
         <div class="col-sm-1">
 
-            <input type="hidden" id="boxesupdatemessage" data-ajaxsuccessmessage="<?php eT('Boxes setting updated !');?>" />
+            <input type="hidden" id="boxesupdatemessage" data-ajaxsuccessmessage="<?php eT('Box settings updated!');?>" />
             <button class="btn btn-default" type="button" id="save_boxes_setting" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/setBoxesSettings');?>"><?php eT('Save boxes settings');?></button>
         </div>
         <br/><br/><br/><br/>
@@ -86,7 +86,7 @@
                         'htmlOptions' => array('class' => 'col-md-1'),
                     ),
                     array(
-                        'header' => gT('Pointed url'),
+                        'header' => gT('URL'),
                         'name' => 'url',
                         'value'=>'$data->url',
                         'htmlOptions' => array('class' => 'col-md-1'),

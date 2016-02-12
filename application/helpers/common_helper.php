@@ -224,10 +224,9 @@ function getSurveyList($returnarray=false, $surveyid=false)
             {
                 $bCheckIntegrity=true;
                 Yii::app()->setFlashMessage(
-                    sprintf(gT("One or more surveys seem broken, you must %s of the LimeSurvey database."),
-                        CHtml::link(gT('check data integrity'),array("admin/checkintegrity"))
-                    ),
-                'error');
+                    CHtml::link(gT("One or more surveys seem to be broken, please check data integrity of the LimeSurvey database."),array("admin/checkintegrity"))
+                    ,
+                    'error');
             }
         }
 
