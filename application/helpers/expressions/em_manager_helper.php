@@ -8156,9 +8156,9 @@ EOD;
         }
 
 
-        private function ngT($sText, $number, $escapemode = 'html')
+        private function ngT($sTextToTranslateSingular, $sTextToTranslatePlural, $number, $escapemode = 'html')
         {
-            return ngT($sText, $number, $escapemode);
+            return ngT($sTextToTranslateSingular, $sTextToTranslatePlural, $number, $escapemode);
         }
 
         /**
