@@ -759,11 +759,18 @@ class InstallerController extends CController {
         * check image HTML template
         *
         * @param bool $result
+        * @return string Span with check if $result is true; otherwise a span with warning
         */
         function check_HTML_image($result)
         {
-            $aLabelYesNo = array('wrong', 'right');
-            return sprintf('<img src="%s/installer/images/tick-%s.png" alt="Found" />', Yii::app()->baseUrl, $aLabelYesNo[$result]);
+            if ($result)
+            {
+                return "<span class='fa fa-check text-success' alt='right'></span>";
+            }
+            else
+            {
+                return "<span class='fa fa-exclamation-triangle text-danger' alt='wrong'></span>";
+            }
         }
 
 

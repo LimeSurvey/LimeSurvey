@@ -1,23 +1,18 @@
 .on {
-    font: 'Lucida Grande',Verdana,'Lucida Sans Unicode','Sans Serif' !important;
     color: #000000 !important;
     font-weight: bold;
     font-size: 15px;
     line-height: 1.6em;
-    font-family: 'Lucida Grande',Verdana,'Lucida Sans Unicode','Sans Serif' !important;
 }
 
 .off {
-    font: 'Lucida Grande',Verdana,'Lucida Sans Unicode','Sans Serif' !important;
     color: #A7A7A7;
     font-size: 15px;
     line-height: 1.6em;
-    font-family: 'Lucida Grande',Verdana,'Lucida Sans Unicode','Sans Serif' !important;
 }
 
 .body {
     color: #536482;
-    font-family: 'Lucida Grande',Verdana,'Lucida Sans Unicode','Sans Serif' !important;
     font-size: 13px;
 
 
@@ -50,7 +45,6 @@
 
 .content-table-heading {
     color: #536482;
-    font-family: Tahoma,arial,Verdana,Sans-serif;
     font-size: 13px;
     font-weight: bold;
 
@@ -87,14 +81,14 @@ div.messagebox .header{
     font-size: 13px;
     font-weight: 700;
     background-color: #D2E0F2;
-    color: #1D2D45;
+    color: #328637;
 }
 
 h1 {
     font-size: 16px;
 }
 h2 {
-    color: #8CCE00;
+    color: #328637;
 }
 table {
     width: 100%;

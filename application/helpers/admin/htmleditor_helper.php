@@ -149,6 +149,8 @@
         }
         if ( $surveyID && getEmailFormat($surveyID) != 'html' && substr($fieldtype,0,6)==="email-" )// email but survey as text email
         {
+            //echo '<pre>'; var_dump(getEmailFormat($surveyID)); echo '</pre>';
+            //echo '<pre>'; var_dump('here'); echo '</pre>';die;
             return '';
         }
 
