@@ -58,7 +58,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
-Changes from 2.06+ (build 160210) to 2.50+ (build 160212) Feb 12, 2016
+
+Changes from 2.50+ (build 160212) to 2.50+ (build 160213) Feb 12, 2016
+-Fixed issue #10368: Missing translations (Carsten Schmitz)
+-Fixed issue #10382: Some buttons in ComfortUpdate not properly labeled when using French translation (Carsten Schmitz)
+-Fixed issue #10387: Token firstname and lastname field length too short (Carsten Schmitz)
+-Fixed issue #10397: Update fails from versions beofore 2.50 (Carsten Schmitz)
+-Fixed issue #10398: Stats on Global Settings Overview do not tie up with list under configuration drop down (Olle Haerstedt)
+-Fixed issue #10400: No plugin settings in survey (Olle Haerstedt)
+-Fixed issue #10402: Superadmin not seeing all surveys in survey list (Carsten Schmitz)
+-Fixed issue #10404: Missing translation on home page (Carsten Schmitz)
+-Fixed issue #10405: Missing tranlsation/tyop on front page (Carsten Schmitz)
+-Fixed issue #10408: Mix of two ways to select on/off yes/no when editing a question (Carsten Schmitz)
+-Fixed issue #10409: missing inline html-editor when editing mail templates (fix reset button position) (Olle Haerstedt)
+-Fixed issue #10412: Installer still partially unstyled (Olle Haerstedt)
+-Fixed issue : User with global read surveys permission don't see all surveys (Denis Chenu)
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+
+Changes from 2.50+ (build 160210) to 2.50+ (build 160212) Feb 12, 2016
 -Fixed issue #10325: Survey list respects user permissions (LouisGac)
 -Fixed issue #10358: Can search question with question group (LouisGac)
 -Fixed issue #10369: Break tokenify close button loop (LouisGac)
@@ -82,7 +100,7 @@ Changes from 2.06+ (build 160210) to 2.50+ (build 160212) Feb 12, 2016
 #Updated translation: Polish (Informal) by elisa
 #Updated translation: Swedish by maxzomborszki
 
-Changes from 2.06+ (build 160206) to 2.50+ (build 160210) Feb 10, 2016
+Changes from 2.50+ (build 160206) to 2.50+ (build 160210) Feb 10, 2016
 -Fixed issue #10343: Fixed js variables for firefox (LouisGac)
 -Fixed issue #10286: Missing translations in plugin manager (Carsten Schmitz)
 -Fixed issue #10296: Problem with 0 equals empty string fixed (Olle Haerstedt)
@@ -114,7 +132,7 @@ Changes from 2.06+ (build 160206) to 2.50+ (build 160210) Feb 10, 2016
 -Fixed issue: Public survey list loads bootstrap even if template don't ask it (Denis Chenu)
 -New feature: Old template compatibility (Denis Chenu)
 
-Changes from 2.06+ (build 160204) to 2.50+ (build 160206) Feb 6, 2016
+Changes from 2.50+ (build 160204) to 2.50+ (build 160206) Feb 6, 2016
 -Fixed issue #10196: Superadmins should be able to edit participants without sharing (Olle Haerstedt)
 -Fixed issue #10201: Set sorttype to date, not string, for dates (Olle Haerstedt)
 -Fixed issue #10270: Open online manual in new tab (Olle Haerstedt)
@@ -135,7 +153,7 @@ Changes from 2.06+ (build 160204) to 2.50+ (build 160206) Feb 6, 2016
 #Updated translation: Polish by elisa
 #Updated translation: Polish (Informal) by elisa
 
-Changes from 2.06+ (build 160202) to 2.50+ (build 160204) Feb 4, 2016
+Changes from 2.50+ (build 160202) to 2.50+ (build 160204) Feb 4, 2016
 -Fixed issue #10242: Reordernig can be broken with some HTML in question (Denis Chenu)
 -Fixed issue #10244: Internal Server Error on RemoteControl add_survey call (Carsten Schmitz)
 -Fixed issue #10273: added . to $answer = (LouisGac)
