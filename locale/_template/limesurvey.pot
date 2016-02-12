@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-02-11 23:26:01+00:00\n"
+"POT-Creation-Date: 2016-02-12 10:18:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2674,6 +2674,12 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:322
 msgid "Assessment group score"
 msgstr ""
+
+#: application/controllers/admin/participantsaction.php:162
+msgid "Export %s participant to CSV"
+msgid_plural "Export %s participants to CSV"
+msgstr[0] ""
+msgstr[1] ""
 
 #: application/controllers/admin/participantsaction.php:391
 #: application/views/admin/participants/attributeControl_view.php:27
