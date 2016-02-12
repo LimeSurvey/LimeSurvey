@@ -452,20 +452,19 @@ class Survey_Common_Action extends CAction
         if( !Yii::app()->user->isGuest )
         {
             // Default password notification
-            if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug")<2)
+            if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug") < 2)
+            {
                 Yii::app()->session['flashmessage'] = gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
+            }
 
             // Count active survey
-            $model =  new Survey('search');
-            $model->active = 'Y';
-            $aData['dataForConfigMenu']['activesurveyscount'] = $aData['activesurveyscount'] = $model->search()->itemCount;
+            $aData['dataForConfigMenu']['activesurveyscount'] = $aData['activesurveyscount'] = Survey::model()->count("active = 'Y'");
 
             // Count survey
-            $model->active = '';
-            $aData['dataForConfigMenu']['surveyscount'] = $model->search()->itemCount;
+            $aData['dataForConfigMenu']['surveyscount'] = Survey::model()->count();
 
             // Count user
-            $aData['dataForConfigMenu']['userscount'] = count(User::model()->findAll());
+            $aData['dataForConfigMenu']['userscount'] = User::model()->count();
 
             // Count tokens and deactivated surveys
             $tablelist = Yii::app()->db->schema->getTableNames();
