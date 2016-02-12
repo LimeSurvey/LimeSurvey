@@ -1327,7 +1327,7 @@ function db_upgrade_all($iOldDBVersion) {
 
         if ( $iOldDBVersion < 251 )
         {
-            upgradeSurveyTables251();
+            upgradeBoxesTable251();
 
             // Update DBVersion
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>251),"stg_name='DBVersion'");
@@ -1499,40 +1499,22 @@ function upgradeSurveyTables253()
     }
 }
 
-function upgradeSurveyTables251()
+function upgradeBoxesTable251()
 {
     Yii::app()->db->createCommand()->addColumn('{{boxes}}','ico','string');
-
-    // add
-    $box = Boxes::model()->findByPk('1');
-    $box->ico = 'add';
-    $box->title= 'Create survey';
-    $box->save();
-
-    // list
-    $box = Boxes::model()->findByPk('2');
-    $box->ico = 'list';
-    $box->save();
-
-    //settings
-    $box = Boxes::model()->findByPk('3');
-    $box->ico = 'settings';
-    $box->save();
-
-    //shield
-    $box = Boxes::model()->findByPk('4');
-    $box->ico = 'shield';
-    $box->save();
-
-    //label
-    $box = Boxes::model()->findByPk('5');
-    $box->ico = 'label';
-    $box->save();
-
-    //templates
-    $box = Boxes::model()->findByPk('6');
-    $box->ico = 'templates';
-    $box->save();
+    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'add',
+                                                              'title'=>'Create survey')
+                                                              ,"id=1");
+    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'list')
+                                                              ,"id=2");
+    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'settings')
+                                                              ,"id=3");
+    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'shield')
+                                                              ,"id=4");
+    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'label')
+                                                              ,"id=5");
+    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'templates')
+                                                              ,"id=6");
 }
 
 /**
