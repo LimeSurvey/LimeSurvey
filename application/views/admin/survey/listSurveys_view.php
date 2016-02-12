@@ -38,7 +38,7 @@
                                 <option value="N" <?php if( $model->active=="N"){echo "selected";}?>><?php eT('No');?></option>
                             </select>
                     </div>
-                            <?php echo CHtml::submitButton(gT('Search'), array('class'=>'btn btn-success')); ?>
+                            <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
                             <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listsurveys');?>" class="btn btn-warning"><?php eT('Reset');?></a>
 
                 <?php $this->endWidget(); ?>

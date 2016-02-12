@@ -76,7 +76,7 @@
             <?php eT("Cancel"); ?>
         </a>
 
-        <?php echo CHtml::submitButton(sprintf(gT('Proceed to step %s'),'4'), array("class"=>"btn btn-default")); ?>
+        <?php echo CHtml::submitButton(gT('Continue','unescaped'), array("class"=>"btn btn-default")); ?>
     <?php echo CHtml::endForm(); ?>
 </div>
 

@@ -30,7 +30,7 @@
                                 <?php echo $form->textField($model, 'group_name', array('class'=>'form-control')); ?>
                             </div>
                             <div class="col-sm-2">
-                                <?php echo CHtml::submitButton(gT('Search'), array('class'=>'btn btn-success')); ?>
+                                <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
                                 <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('Reset');?></a>
                             </div>
                         </div>
