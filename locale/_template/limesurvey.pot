@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-02-11 23:26:01+00:00\n"
+"POT-Creation-Date: 2016-02-12 10:23:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2675,6 +2675,12 @@ msgstr ""
 msgid "Assessment group score"
 msgstr ""
 
+#: application/controllers/admin/participantsaction.php:162
+msgid "Export %s participant to CSV"
+msgid_plural "Export %s participants to CSV"
+msgstr[0] ""
+msgstr[1] ""
+
 #: application/controllers/admin/participantsaction.php:391
 #: application/views/admin/participants/attributeControl_view.php:27
 #: application/views/admin/participants/attributeControl_view.php:28
@@ -4365,6 +4371,24 @@ msgstr ""
 #: application/controllers/admin/tokens.php:2442
 msgid "Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?"
 msgstr ""
+
+#: application/controllers/admin/tokens.php:2459
+msgid "Only %s token has been created."
+msgid_plural "Only %s tokens have been created."
+msgstr[0] ""
+msgstr[1] ""
+
+#: application/controllers/admin/tokens.php:2460
+msgid "Need %s token."
+msgid_plural "Need %s tokens."
+msgstr[0] ""
+msgstr[1] ""
+
+#: application/controllers/admin/tokens.php:2465
+msgid "%s token has been created."
+msgid_plural "%s tokens have been created."
+msgstr[0] ""
+msgstr[1] ""
 
 #: application/controllers/admin/tokens.php:2504
 #: application/controllers/admin/tokens.php:2523
@@ -8388,6 +8412,18 @@ msgstr ""
 msgid "Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
+#: application/helpers/expressions/em_manager_helper.php:9523
+msgid "This question has at least %s error."
+msgid_plural "This question has at least %s errors."
+msgstr[0] ""
+msgstr[1] ""
+
+#: application/helpers/expressions/em_manager_helper.php:9562
+msgid "%s question contains errors that need to be corrected."
+msgid_plural "%s questions contain errors that need to be corrected."
+msgstr[0] ""
+msgstr[1] ""
+
 #: application/helpers/expressions/em_manager_helper.php:9568
 msgid "No syntax errors detected in this survey."
 msgstr ""
@@ -12204,6 +12240,12 @@ msgstr ""
 #: application/views/admin/participants/attributeControl_view.php:48
 msgid "Attribute management"
 msgstr ""
+
+#: application/views/admin/participants/attributeMapCSV_view.php:2
+msgid "Select which fields to import as attributes with your participant."
+msgid_plural "Select which fields to import as attributes with your %s participants."
+msgstr[0] ""
+msgstr[1] ""
 
 #: application/views/admin/participants/attributeMapCSV_view.php:6
 msgid "CSV field names "

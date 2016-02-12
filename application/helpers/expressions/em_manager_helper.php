@@ -8156,9 +8156,9 @@ EOD;
         }
 
 
-        private function ngT($sText, $number, $escapemode = 'html')
+        private function ngT($sTextToTranslateSingular, $sTextToTranslatePlural, $number, $escapemode = 'html')
         {
-            return ngT($sText, $number, $escapemode);
+            return ngT($sTextToTranslateSingular, $sTextToTranslatePlural, $number, $escapemode);
         }
 
         /**
@@ -9520,7 +9520,7 @@ EOD;
                 //////
                 // FINALLY, SHOW THE QUESTION ROW(S), COLOR-CODING QUESTIONS THAT CONTAIN ERRORS
                 //////
-                $errclass = ($errorCount > 0) ? "class='LEMerror' title='" . sprintf($LEM->ngT("This question has at least %s error.|This question has at least %s errors.",$errorCount), $errorCount) . "'" : '';
+                $errclass = ($errorCount > 0) ? "class='LEMerror' title='" . sprintf($LEM->ngT("This question has at least %s error.","This question has at least %s errors.",$errorCount), $errorCount) . "'" : '';
 
                 $questionRow = "<tr class='LEMquestion'>"
                 . "<td $errclass>Q-" . $q['info']['qseq'] . "</td>"
@@ -9559,7 +9559,7 @@ EOD;
             }
 
             if (count($allErrors) > 0) {
-                $out = "<p class='LEMerror'>". sprintf($LEM->ngT("%s question contains errors that need to be corrected.|%s questions contain errors that need to be corrected.",count($allErrors)), count($allErrors)) . "</p>\n" . $out;
+                $out = "<p class='LEMerror'>". sprintf($LEM->ngT("%s question contains errors that need to be corrected.","%s questions contain errors that need to be corrected.",count($allErrors)), count($allErrors)) . "</p>\n" . $out;
             }
             else {
                 switch ($surveyMode)

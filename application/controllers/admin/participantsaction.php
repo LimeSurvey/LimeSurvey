@@ -159,7 +159,7 @@ class participantsaction extends Survey_Common_Action
         $count = Participant::model()->getParticipantsCount($attid, $search, $iUserID);
 
         if ($count > 0) {
-            return sprintf(ngT("Export %s participant to CSV|Export %s participants to CSV", $count),$count);
+            return sprintf(ngT("Export %s participant to CSV","Export %s participants to CSV", $count),$count);
         } else {
             return $count;
         }
