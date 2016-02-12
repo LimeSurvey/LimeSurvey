@@ -11,10 +11,10 @@
         <?php
         App()->getClientScript()->registerPackage('jqueryui');
         App()->bootstrap->register();
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/styles/Sea_Green/css/lime-admin.css');
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/main.css');
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/fonts.css');
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/third_party/font-awesome/css/font-awesome.min.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl . 'styles/Sea_Green/css/lime-admin.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl . 'installer/css/main.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl . 'installer/css/fonts.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl . 'third_party/font-awesome/css/font-awesome.min.css');
 
         $script = "$(function() {
         $('.on').animate({
