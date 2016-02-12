@@ -11,7 +11,7 @@
         <div class='col-sm-4'>
             <?php echo CHtml::textField("email_{$tab}_subj_{$grouplang}",$esrow->$details['field']['subject'],array('class' => 'form-control', 'size'=>80)); ?>
         </div>
-        <div class='col-sm-1 text-right'>
+        <div class='col-sm-1'>
             <?php echo CHtml::button(gT("Reset"),array('class'=>'fillin btn btn-default','data-target'=>"email_{$tab}_subj_{$grouplang}",'data-value'=>$details['default']['subject'])); ?>
         </div>
     </div>
@@ -22,13 +22,17 @@
             <?php echo CHtml::textArea("email_{$tab}_{$grouplang}",$esrow->$details['field']['body'],array('cols'=>80,'rows'=>20, 'class'=>'form-control')); ?>
             <?php echo getEditor("email-$tab","email_{$tab}_$grouplang", $details['body'].'('.$grouplang.')',$surveyid,'','','editemailtemplates'); ?>
         </div>
-        <div class='col-sm-1  text-right'>
+        <div class='col-sm-6'></div>
+    </div>
+    <div class='form-group'>
+        <div class='col-sm-2'></div>
+        <div class='col-sm-1'>
             <?php
                 $details['default']['body']=($tab=='admin_detailed_notification') ? $details['default']['body'] : conditionalNewlineToBreak($details['default']['body'],$ishtml) ;
                 echo CHtml::button(gT("Reset"),array('class'=>'fillin btn btn-default','data-target'=>"email_{$tab}_{$grouplang}",'data-value'=>$details['default']['body']));
             ?>
         </div>
-        <div class='col-sm-4'></div>
+        <div class='col-sm-9'></div>
     </div>
 
     <div class='form-group'>
