@@ -782,10 +782,12 @@ class Survey extends LSActiveRecord
         $criteria->join .= 'LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
 
         // Permission
-        $criteria->join .= "LEFT JOIN {{permissions}} AS permissions ON ( permissions.entity_id=t.sid AND permissions.entity='survey' AND permissions.permission='surveycontent' AND permissions.uid=:userid  ) ";
-        $criteria->condition = 'permissions.read_p=1';
-        $criteria->params=(array(':userid'=>Yii::app()->user->id ));
-
+        if(!Permission::model()->hasGlobalPermission("surveys"))
+        {
+            $criteria->join .= "LEFT JOIN {{permissions}} AS permissions ON ( permissions.entity_id=t.sid AND permissions.entity='survey' AND permissions.permission='surveycontent' AND permissions.uid=:userid  ) ";
+            $criteria->condition = 'permissions.read_p=1';
+            $criteria->params=(array(':userid'=>Yii::app()->user->id ));
+        }
         // Search filter
         $criteria2 = new CDbCriteria;
         $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.sid::varchar' : 't.sid');
