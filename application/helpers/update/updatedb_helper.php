@@ -1395,7 +1395,7 @@ function upgradeSurveyTables255()
     $oDB->createCommand()->insert('{{boxes}}', array(
         'position' =>  '1',
         'url'      => 'admin/survey/sa/newsurvey' ,
-        'title'    => 'Creates survey' ,
+        'title'    => 'Create survey' ,
         'ico'      => 'add' ,
         'desc'     => 'Create a new survey' ,
         'page'     => 'welcome',
@@ -1533,7 +1533,7 @@ function createBoxes250()
     $oDB->createCommand()->insert('{{boxes}}', array(
         'position' =>  '1',
         'url'      => 'admin/survey/sa/newsurvey' ,
-        'title'    => 'Creates survey' ,
+        'title'    => 'Create survey' ,
         'img'      => 'add.png' ,
         'desc'     => 'Create a new survey' ,
         'page'     => 'welcome',
