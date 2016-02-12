@@ -1358,7 +1358,12 @@ function db_upgrade_all($iOldDBVersion) {
             // Update DBVersion
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>255),"stg_name='DBVersion'");
         }
-
+        if ( $iOldDBVersion < 256 )
+        {
+            upgradeTokenTables256();
+            alterColumn('{{participants}}', 'email', "text", false);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>256),"stg_name='DBVersion'");
+        }
         $oTransaction->commit();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
@@ -1384,6 +1389,22 @@ function db_upgrade_all($iOldDBVersion) {
     Yii::app()->setConfig('Updating',false);
     return true;
 }
+
+
+function upgradeTokenTables256()
+{
+    $surveyidresult = dbGetTablesLike("tokens%");
+    if ($surveyidresult)
+    {
+        foreach ( $surveyidresult as $sTableName )
+        {
+            alterColumn($sTableName, 'email', "text");
+            alterColumn($sTableName, 'firstname', "string(150)");
+            alterColumn($sTableName, 'lastname', "string(150)");
+        }
+    }
+}
+
 
 function upgradeSurveyTables255()
 {
