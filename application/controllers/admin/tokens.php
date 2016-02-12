@@ -2456,13 +2456,13 @@ class tokens extends Survey_Common_Action
             if($neededtokencount>$newtokencount)
             {
                 $aData['success'] = false;
-                $message = sprintf(ngT('Only %s token has been created.|Only %s tokens have been created.',$newtokencount),$newtokencount)
-                         .sprintf(ngT('Need %s token.|Need %s tokens.',$neededtokencount),$neededtokencount);
+                $message = sprintf(ngT('Only %s token has been created.','Only %s tokens have been created.',$newtokencount),$newtokencount)
+                         .sprintf(ngT('Need %s token.','Need %s tokens.',$neededtokencount),$neededtokencount);
             }
             else
             {
                 $aData['success'] = true;
-                $message = sprintf(ngT('%s token has been created.|%s tokens have been created.',$newtokencount),$newtokencount);
+                $message = sprintf(ngT('%s token has been created.','%s tokens have been created.',$newtokencount),$newtokencount);
             }
             $this->_renderWrappedTemplate('token', array( 'message' => array(
             'title' => gT("Create tokens"),

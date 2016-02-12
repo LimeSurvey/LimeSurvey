@@ -115,7 +115,7 @@
 
     <div class="row">
         <div class="col-lg-12 content-right">
-            <p><?php echo sprintf(ngT('There is %s user attribute field in this token table.|There are %s user attribute fields in this token table.', $nrofattributes), $nrofattributes); ?></p>
+            <p><?php echo sprintf(ngT('There is %s user attribute field in this token table.","There are %s user attribute fields in this token table.', $nrofattributes), $nrofattributes); ?></p>
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
             <p>
                 <label for="addnumber"><?php eT('Number of attribute fields to add:'); ?></label>
