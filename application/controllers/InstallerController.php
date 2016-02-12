@@ -262,23 +262,18 @@ class InstallerController extends CController {
                 {
                     $sDatabasePort = self::_getDbPort($sDatabaseType, $sDatabasePort);
                 }
-
-                $bDBExists = false;
                 $bDBConnectionWorks = false;
                 $aDbConfig = compact('sDatabaseType', 'sDatabaseName', 'sDatabaseUser', 'sDatabasePwd', 'sDatabasePrefix', 'sDatabaseLocation', 'sDatabasePort');
-
-                if (self::_dbConnect($aDbConfig, $aData)) {
-                    $bDBExists = true;
+                $bDBExists = self::dbTest($aDbConfig, $aData);
+                if (self::_dbConnect($aDbConfig, $aData))
+                {
                     $bDBConnectionWorks = true;
-                } else {
-                    $aDbConfig['sDatabaseName'] = '';
-                    if (self::_dbConnect($aDbConfig, $aData)) {
-                        $bDBConnectionWorks = true;
-                    } else {
-                        $oModel->addError('dblocation', gT('Connection with database failed. Please check database location, user name and password and try again.'));
-                        $oModel->addError('dbpwd','');
-                        $oModel->addError('dbuser','');
-                    }
+                }
+                else
+                {
+                    $oModel->addError('dblocation', gT('Connection with database failed. Please check database location, user name and password and try again.'));
+                    $oModel->addError('dbpwd','');
+                    $oModel->addError('dbuser','');
                 }
 
                 //if connection with database fail
@@ -1275,10 +1270,15 @@ class InstallerController extends CController {
         $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
 
         $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
-        if(self::dbTest($aDbConfig, $aData))
+        if(!self::dbTest($aDbConfig, $aData))// Remove sDatabaseName from the connexion is not exist
+        {
+            $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, "", $sDatabaseUser, $sDatabasePwd);
+        }
+        try // Not needed
         {
             $this->connection = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
-            if($sDatabaseType!='sqlsrv' && $sDatabaseType!='dblib'){
+            if($sDatabaseType!='sqlsrv' && $sDatabaseType!='dblib')
+            {
                 $this->connection->emulatePrepare = true;
             }
 
@@ -1286,19 +1286,17 @@ class InstallerController extends CController {
             $this->connection->tablePrefix = $sDatabasePrefix;
             return true;
         }
-        else
+        catch(Exception $e)
         {
             return false;
         }
     }
-
     /**
-     * Try a connection to the DB and add error in model if it exists
-     *
-     * @param array $aDbConfig : The config to be tested
-     * @param array $aData
-     * @return bool
-     */
+    * Trye a connexion to the DB and add error in model if exist
+    * @param array $aDbConfig : The config to be tested
+    * @param array $aData
+    * @return void, bool if connection is done
+    */
     private function dbTest($aDbConfig = array(), $aData = array())
     {
         $aDbConfig= empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig;
@@ -1313,12 +1311,22 @@ class InstallerController extends CController {
         }
         catch(Exception $e)
         {
-            if (!empty($aData['model'])) {
-                $aData['model']->addError('dblocation', gT('Try again! Connection with database failed.'));
-                $aData['model']->addError('dblocation', gT('Reason: ') . $e->getMessage());
-                $this->render('/installer/dbconfig_view', $aData);
-                Yii::app()->end();
-            } else {
+            if($e->getCode()!=1049) // Database don't exist
+            {
+                if (!empty($aData['model'])) {
+                    $aData['model']->addError('dblocation', gT('Try again! Connection with database failed.'));
+                    $aData['model']->addError('dblocation', gT('Reason: ') . $e->getMessage());
+                    $this->render('/installer/dbconfig_view', $aData);
+                    Yii::app()->end();
+                }
+                else
+                {
+                    // Use same exception than Yii ? unclear
+                    throw new CDbException('CDbConnection failed to open the DB connection.',(int)$e->getCode(),$e->errorInfo);
+                }
+            }
+            else
+            {
                 return false;
             }
         }
