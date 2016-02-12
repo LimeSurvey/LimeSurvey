@@ -124,7 +124,7 @@
                 </div>
             </p>
             <p>
-                <?php echo CHtml::submitButton(gT('Add fields'), array('class'=>'btn btn-default')); ?>
+                <?php echo CHtml::submitButton(gT('Add fields','unescaped'), array('class'=>'btn btn-default')); ?>
                 <?php echo CHtml::hiddenField('action','tokens'); ?>
                 <?php echo CHtml::hiddenField('subaction','updatetokenattributes'); ?>
                 <?php echo CHtml::hiddenField('sid',$surveyid); ?>
@@ -139,7 +139,7 @@
                     </div>
                 </p>
                 <p>
-                    <?php echo CHtml::submitButton(gT('Delete attribute'), array('class'=>'btn btn-default')); ?>
+                    <?php echo CHtml::submitButton(gT('Delete attribute','unescaped'), array('class'=>'btn btn-default')); ?>
                     <?php echo CHtml::hiddenField('action','tokens'); ?>
                     <?php echo CHtml::hiddenField('subaction','deletetokenattributes'); ?>
                     <?php echo CHtml::hiddenField('sid',$surveyid); ?>

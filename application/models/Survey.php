@@ -782,7 +782,7 @@ class Survey extends LSActiveRecord
         $criteria->join .= 'LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
 
         // Permission
-        if(!Permission::model()->hasGlobalPermission("surveys"))
+        if(!Permission::model()->hasGlobalPermission("surveys",'read'))
         {
             $criteria->join .= "LEFT JOIN {{permissions}} AS permissions ON ( permissions.entity_id=t.sid AND permissions.entity='survey' AND permissions.permission='surveycontent' AND permissions.uid=:userid  ) ";
             $criteria->condition = 'permissions.read_p=1';

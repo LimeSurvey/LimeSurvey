@@ -212,14 +212,14 @@ class homepagesettings extends Survey_Common_Action
         {
 
             // We delete all the old boxes, and reinsert new ones
-            Boxes::model()->deleteAll();
+            Boxes::model()->dvleteAll();
 
             // Then we recreate them
             $oDB = Yii::app()->db;
             $oDB->createCommand()->insert('{{boxes}}', array(
                 'position' =>  '1',
                 'url'      => 'admin/survey/sa/newsurvey' ,
-                'title'    => 'Creates survey' ,
+                'title'    => 'Create survey' ,
                 'ico'      => 'add' ,
                 'desc'     => 'Create a new survey' ,
                 'page'     => 'welcome',

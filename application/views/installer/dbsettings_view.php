@@ -19,7 +19,7 @@
                         if (isset($next))
                         {
                             echo CHtml::form(array($next['action']), 'post');
-                            echo CHtml::submitButton(gT($next['label']), array(
+                            echo CHtml::submitButton($next['label'], array(
                                 'name' => $next['name'],
                                 'class' => 'btn btn-default'
                             ));

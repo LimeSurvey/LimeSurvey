@@ -383,7 +383,7 @@ class InstallerController extends CController {
 
                         $aValues['next'] =  array(
                             'action' => 'installer/populatedb',
-                            'label' => gT("Populate database"),
+                            'label' => gT("Populate database",'unescaped'),
                             'name' => 'createdbstep2',
                         );
                     }

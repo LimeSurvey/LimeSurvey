@@ -62,7 +62,7 @@
             <div class="col-md-4" style="text-align: center;">
             </div>
             <div class="col-md-4" style="text-align: right;">
-                <?php echo CHtml::submitButton(gT("Next"), array('class' => 'btn btn-default')); ?>
+                <?php echo CHtml::submitButton(gT("Next",'unescaped'), array('class' => 'btn btn-default')); ?>
             </div>
         </div>
         <?php echo CHtml::endForm(); ?>

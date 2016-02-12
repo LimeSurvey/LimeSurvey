@@ -136,7 +136,7 @@
                     <div class='form-group'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-1'>
-                            <?php echo CHtml::submitButton(gT("Send Reminders"), array('class'=>'btn btn-default')); ?>
+                            <?php echo CHtml::submitButton(gT("Send Reminders",'unescaped'), array('class'=>'btn btn-default')); ?>
                         </div>
 
                             <?php

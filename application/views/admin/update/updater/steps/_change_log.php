@@ -68,7 +68,7 @@ echo $changelog;
 
 
     <?php
-        echo CHtml::submitButton(gT('Continue'), array('id'=>'step2launch', "class"=>"btn btn-default ajax_button launch_update"));
+        echo CHtml::submitButton(gT('Continue','unescaped'), array('id'=>'step2launch', "class"=>"btn btn-default ajax_button launch_update"));
         echo CHtml::endForm();
     ?>
 

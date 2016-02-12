@@ -33,7 +33,7 @@
             <?php if ($activesurveyscount > 0): ?>
                 <li>
                     <a href="<?php echo $this->createUrl('admin/survey/sa/listsurveys/active/Y');?>">
-                        <?php echo $activesurveyscount; ?> active surveys
+                        <?php printf(ngT("%s active survey","%s active surveys",$activesurveyscount),$activesurveyscount); ?>
                     </a>
                 </li>
             <?php endif;?>
@@ -129,7 +129,7 @@
             <?php if ($activesurveyscount > 0): ?>
                 <li>
                     <a href="<?php echo $this->createUrl('admin/survey/sa/listsurveys/active/Y');?>">
-                        <?php echo $activesurveyscount; ?> active surveys
+                        <?php printf(ngT("%s active survey","%s active surveys",$activesurveyscount),$activesurveyscount); ?>
                     </a>
                 </li>
             <?php endif;?>

@@ -102,7 +102,7 @@
                         </div>
 
                     <?php endif; ?>
-                    
+
                     <div class='form-group'>
 
                         <label class='control-label col-sm-2' for='bypassbademails'><?php eT("Bypass token with failing email addresses:"); ?></label>
@@ -121,7 +121,7 @@
                     <div class='form-group'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-1'>
-                            <?php echo CHtml::submitButton(gT("Send Invitations"), array('class'=>'btn btn-default')); ?>
+                            <?php echo CHtml::submitButton(gT("Send Invitations",'unescaped'), array('class'=>'btn btn-default')); ?>
                         </div>
 
                         <?php

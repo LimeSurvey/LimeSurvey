@@ -97,7 +97,7 @@
         <!-- Buttons -->
         <p>
             <?php echo CHtml::hiddenField('action', 'savepersonalsettings'); ?>
-            <?php echo CHtml::submitButton(gT("Save settings"),array('class' => 'hidden')); ?>
+            <?php echo CHtml::submitButton(gT("Save settings",'unescaped'),array('class' => 'hidden')); ?>
         </p>
     <?php echo CHtml::endForm(); ?>
 </div>

@@ -147,7 +147,7 @@ class conditionsaction extends Survey_Common_Action {
         if (!isset($iSurveyID) || !$iSurveyID)
         {
             $conditionsoutput = gT("You have not selected a survey").str_repeat($br, 2);
-            $conditionsoutput .= CHtml::submitButton(gT("Main admin screen"), array(
+            $conditionsoutput .= CHtml::submitButton(gT("Main admin screen",'unescaped'), array(
             'onclick' => "window.open('".$this->getController()->createUrl("admin/")."', '_top')"
             )).$br;
             safeDie($conditionsoutput);
@@ -167,10 +167,10 @@ class conditionsaction extends Survey_Common_Action {
 
             if (!isset($_GET['ok']))
             {
-                $button_yes = CHtml::submitButton(gT("Yes"), array(
+                $button_yes = CHtml::submitButton(gT("Yes",'unescaped'), array(
                 'onclick' => "window.open('".$this->getController()->createUrl("admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/$iSurveyID")."?ok=Y"."', '_top')"
                 ));
-                $button_cancel = CHtml::submitButton(gT("Cancel"), array(
+                $button_cancel = CHtml::submitButton(gT("Cancel",'unescaped'), array(
                 'onclick' => "window.open('".$this->getController()->createUrl("admin/survey/sa/view/surveyid/$iSurveyID")."', '_top')"
                 ));
 
@@ -201,7 +201,7 @@ class conditionsaction extends Survey_Common_Action {
         if ( !isset($qid) || !$qid )
         {
             $conditionsoutput = gT("You have not selected a question").str_repeat($br, 2);
-            $conditionsoutput .= CHtml::submitButton(gT("Main admin screen"), array(
+            $conditionsoutput .= CHtml::submitButton(gT("Main admin screen",'unescaped'), array(
             'onclick' => "window.open('".$this->getController()->createUrl("admin/")."', '_top')"
             )).$br;
             safeDie($conditionsoutput);

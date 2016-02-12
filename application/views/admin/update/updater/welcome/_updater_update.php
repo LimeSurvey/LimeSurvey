@@ -25,7 +25,7 @@
     <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
         <?php eT("Cancel"); ?>
     </a>
-    <?php echo CHtml::submitButton(gT("Continue"), array('class'=>"ajax_button btn btn-default",)); ?>
+    <?php echo CHtml::submitButton(gT("Continue",'unescaped'), array('class'=>"ajax_button btn btn-default",)); ?>
 <?php echo CHtml::endForm(); ?>
 
 <!-- this javascript code manage the step changing. It will catch the form submission, then load the ComfortUpdater for the required build -->

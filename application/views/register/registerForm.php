@@ -26,6 +26,6 @@
     </div>
     <?php } ?>
     <div class='form-group'>
-        <?php echo CHtml::submitButton(gT("Continue"),array('class'=>'btn-default btn','id'=>'register','name'=>'register')); ?>
+        <?php echo CHtml::submitButton(gT("Continue",'unescaped'),array('class'=>'btn-default btn','id'=>'register','name'=>'register')); ?>
     </div>
 <?php echo CHtml::endForm(); ?>

@@ -39,7 +39,7 @@
                     echo '<a class="btn btn-default" href="'.Yii::app()->createUrl("admin/update").'" role="button" aria-disabled="false">
                             '.gT("Cancel").'
                         </a>';
-                    echo CHtml::submitButton(gT('Check again'), array("class"=>"btn btn-default"));
+                    echo CHtml::submitButton(gT('Check again','unescaped'), array("class"=>"btn btn-default"));
                     echo CHtml::endForm();
                 ?>
             </p>

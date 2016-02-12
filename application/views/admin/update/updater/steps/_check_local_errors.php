@@ -127,7 +127,7 @@
     <?php if($ignore  && ! $cant_ignore): ?>
 
         <?php
-            echo CHtml::submitButton(gT('Ignore'), array('id'=>'Ignorestep1launch', "class"=>"btn btn-default"));
+            echo CHtml::submitButton(gT('Ignore','unescaped'), array('id'=>'Ignorestep1launch', "class"=>"btn btn-default"));
         ?>
     <?php endif;?>
 </p>
@@ -150,7 +150,7 @@
         </a>
 
     <?php
-        echo CHtml::submitButton(gT('Continue'), array('id'=>'step1launch', "class"=>"btn btn-default"));
+        echo CHtml::submitButton(gT('Continue','unescaped'), array('id'=>'step1launch', "class"=>"btn btn-default"));
         echo CHtml::endForm();
     ?>
 </p>
