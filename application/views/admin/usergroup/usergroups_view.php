@@ -8,7 +8,7 @@
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 <div class="col-lg-12">
-	<h3><?php eT('User Groups list'); ?></h3>
+	<h3><?php eT('User groups list'); ?></h3>
 
 	<div class="row">
         <div class="col-lg-12 content-right">
@@ -28,7 +28,7 @@
                     'columns' => array(
 
                     	array(
-                            'header' => gT('User Group ID'),
+                            'header' => gT('User group ID'),
                             'name' => 'usergroup_id',
                             'value'=>'$data->ugid',
                             'htmlOptions' => array('class' => 'col-md-1'),

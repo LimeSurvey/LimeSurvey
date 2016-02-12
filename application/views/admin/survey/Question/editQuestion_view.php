@@ -217,8 +217,9 @@
                                             <div  class="form-group" id="OtherSelection">
                                                 <label class="col-sm-4 control-label"><?php eT("Option 'Other':"); ?></label>
                                                 <?php if ($activated != "Y"): ?>
-                                                    <label for='OY'><?php eT("Yes"); ?></label><input id='OY' type='radio' class='radiobtn' name='other' value='Y' <?php if ($eqrow['other'] == "Y"){ echo ' checked '; }?> />&nbsp;&nbsp;
-                                                    <label for='ON'><?php eT("No"); ?></label><input id='ON' type='radio' class='radiobtn' name='other' value='N' <?php if ($eqrow['other'] == "N" || $eqrow['other'] == "" ) { echo "checked='checked'";} ?> />
+                                                    <div class="col-sm-8">
+                                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'other', 'value'=> $eqrow['other'] === "Y"));?>
+                                                    </div>
                                                 <?php else:?>
                                                     <?php eT("Cannot be changed (survey is active)");?>
                                                     <input type='hidden' name='other' value="<?php echo $eqrow['other']; ?>" />
@@ -249,7 +250,7 @@
                                                     <input class="form-control" type='text' id='preg' name='preg' size='50' value="<?php echo $eqrow['preg']; ?>" />
                                                 </div>
                                             </div>
-                                            
+
                                             <?php if ($adding): ?>
                                                 <div id='Position' class='form-group'>
                                                     <label class="col-sm-4 control-label" for='pos'><?php eT("Position:"); ?></label>

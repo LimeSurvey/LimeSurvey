@@ -793,7 +793,7 @@ class CheckIntegrity extends Survey_Common_Action
         /* Show a alert message is some fix is done */
         if($bDirectlyFixed)
         {
-            Yii::app()->setFlashMessage(gT("Some needed fix are already done."),'info');
+            Yii::app()->setFlashMessage(gT("Some automatic fixes were already applied."),'info');
         }
 
         return $aDelete;

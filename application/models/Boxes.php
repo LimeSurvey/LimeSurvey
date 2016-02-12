@@ -110,7 +110,7 @@ class Boxes extends CActiveRecord
         // Can't use switch because of empty case
         if ( empty($usergroupid) || $usergroupid=='-2'  )
         {
-            return gT('Only admin');
+            return gT('Only Superadmin');
         }
         elseif ( $usergroupid=='-1' )
         {
@@ -126,7 +126,7 @@ class Boxes extends CActiveRecord
 
             // The group doesn't exist anymore
             if(!is_object($oUsergroup))
-                return gT("Can't find group ! Only admin");
+                return gT("Can't find user group!");
 
             return $oUsergroup->name;
         }
