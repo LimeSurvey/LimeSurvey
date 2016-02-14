@@ -108,7 +108,7 @@
             foreach($tokenattributefieldnames as $attrname=>$attrdetails)
             {
                 if (!isset($fields[$attrname])) {
-                    $fields[$attrname] = 'string(255)';
+                    $fields[$attrname] = 'text';
                 }
             }
 
