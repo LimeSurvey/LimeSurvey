@@ -85,7 +85,7 @@
                                         'htmlOptions' => array('class' => 'col-md-2 hidden-xs'),
                                     ),
                                     array(
-                                        'header' => gt('Title'),
+                                        'header' => gt('Code'),
                                         'name' => 'title',
                                         'value'=>'$data->title',
                                         'htmlOptions' => array('class' => 'col-xs-1'),
