@@ -212,7 +212,7 @@ class homepagesettings extends Survey_Common_Action
         {
 
             // We delete all the old boxes, and reinsert new ones
-            Boxes::model()->dvleteAll();
+            Boxes::model()->deleteAll();
 
             // Then we recreate them
             $oDB = Yii::app()->db;
