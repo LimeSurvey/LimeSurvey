@@ -1245,7 +1245,6 @@ class statistics_helper {
         else
         {
             //search for key
-            //var_dump($firstletter); die();
             $fielddata=$fieldmap[$rt];
 
             //get SGQA IDs
