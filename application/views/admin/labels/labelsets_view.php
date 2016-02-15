@@ -8,7 +8,7 @@
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 <div class="col-lg-12">
-	<h3><?php eT('Label Sets list'); ?></h3>
+	<h3><?php eT('Label sets list'); ?></h3>
 
 	<div class="row">
         <div class="col-lg-12 content-right">
@@ -28,7 +28,7 @@
                     'columns' => array(
 
                     	array(
-                            'header' => gT('Label Set ID'),
+                            'header' => gT('Label set ID'),
                             'name' => 'labelset_id',
                             'value'=>'$data->lid',
                             'htmlOptions' => array('class' => 'col-md-1'),
