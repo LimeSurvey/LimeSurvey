@@ -24,7 +24,7 @@
 
     <!-- Date Stamp -->
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='datestamp'><?php  eT("Date Stamp:"); ?></label>
+        <label class="col-sm-4 control-label" for='datestamp'><?php  eT("Date stamp:"); ?></label>
         <div class="col-sm-8">
             <?php if ($esrow['active'] == "Y") { ?>
                 <?php if ($esrow['datestamp'] != "Y") {
