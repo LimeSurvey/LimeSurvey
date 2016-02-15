@@ -55,7 +55,7 @@
                             <div class="row explorer-group-title">
                                 <div class="col-sm-8">
                                     <a href="#" data-question-group-id="<?php echo $aGroup->gid; ?>" class="explorer-group">
-                                        <span id="caret-<?php echo $aGroup->gid; ?>" class="fa fa-caret-right caret-explorer-group"></span>&nbsp&nbsp<?php echo $aGroup->group_name;?>
+                                        <span id="caret-<?php echo $aGroup->gid; ?>" class="fa fa-caret-right caret-explorer-group"></span>&nbsp;&nbsp;<?php echo $aGroup->group_name;?>
                                     </a>
                                 </div>
 

@@ -121,13 +121,13 @@ $aReplacementData=array();
                         <?php eT("Copy"); ?>
                     </a>
                 <?php else:?>
-                    <a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You can't copy a question if the survey is active.","js"); ?>'>
+                    <a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You can't copy a question if the survey is active.","js"); ?>');">
                         <span class="icon-copy"></span>
                         <?php eT("Copy"); ?>
                     </a>
                 <?php endif;?>
             <?php else:?>
-                    <a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You don't have the necessary permission.","js"); ?>'>
+                    <a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You don't have the necessary permission.","js"); ?>');">
                         <span class="icon-copy"></span>
                         <?php eT("Copy"); ?>
                     </a>
