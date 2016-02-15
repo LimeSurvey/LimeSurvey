@@ -42,7 +42,7 @@
                                     title="<?php eT('Add a group');?>"
                                     class="" href="<?php echo $this->createUrl("/admin/questiongroups/sa/add/surveyid/$iSurveyId"); ?>">
                                     <span class="glyphicon glyphicon-plus-sign"></span>
-                                    ADD GROUP
+                                    <?php eT('Add group');?>
                                 </a>
                             </div>
                         </div>
