@@ -276,7 +276,6 @@ class database extends Survey_Common_Action
 
                         if (substr($subquestionkey,0,3)!='new')           //update record
                         {
-                            //var_dump($subquestionkey); die();
                             $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",array(":qid"=>$subquestionkey,':language'=>$sLanguage));
                             if(!is_object($oSubQuestion))
                             {
@@ -421,14 +420,8 @@ class database extends Survey_Common_Action
             {
 
                 // For Bootstrap Version usin YiiWheels switch :
-                if( Yii::app()->request->getPost('mandatory') == '1' || Yii::app()->request->getPost('mandatory') == '0' )
-                {
-                    $_POST['mandatory'] = ( Yii::app()->request->getPost('mandatory') == '1' ) ? 'Y' : 'N' ;
-                }
-                else
-                {
-                    $_POST['mandatory'] = Yii::app()->request->getPost('mandatory');
-                }
+                $_POST['mandatory'] = ( Yii::app()->request->getPost('mandatory') == '1' ) ? 'Y' : 'N' ;
+                $_POST['other'] = ( Yii::app()->request->getPost('other') == '1' ) ? 'Y' : 'N' ;
 
                 if (Yii::app()->request->getPost('questionposition',"")!="")
                 {
@@ -458,14 +451,8 @@ class database extends Survey_Common_Action
                 $oQuestion->other = Yii::app()->request->getPost('other');
 
                 // For Bootstrap Version usin YiiWheels switch :
-                if( Yii::app()->request->getPost('mandatory') == '1' || Yii::app()->request->getPost('mandatory') == '0' )
-                {
-                    $oQuestion->mandatory = ( Yii::app()->request->getPost('mandatory') == '1' ) ? 'Y' : 'N' ;
-                }
-                else
-                {
-                    $oQuestion->mandatory = Yii::app()->request->getPost('mandatory');
-                }
+                $oQuestion->mandatory = ( Yii::app()->request->getPost('mandatory') == '1' ) ? 'Y' : 'N' ;
+                $oQuestion->other = ( Yii::app()->request->getPost('other') == '1' ) ? 'Y' : 'N' ;
 
 
                 $oQuestion->relevance = Yii::app()->request->getPost('relevance');
@@ -878,14 +865,8 @@ class database extends Survey_Common_Action
 
 
             // For Bootstrap Version usin YiiWheels switch :
-            if( Yii::app()->request->getPost('mandatory') == '1' || Yii::app()->request->getPost('mandatory') == '0' )
-            {
-                $_POST['mandatory'] = ( Yii::app()->request->getPost('mandatory') == '1' ) ? 'Y' : 'N' ;
-            }
-            else
-            {
-                $_POST['mandatory'] = Yii::app()->request->getPost('mandatory');
-            }
+            $_POST['mandatory'] = ( Yii::app()->request->getPost('mandatory') == '1' ) ? 'Y' : 'N' ;
+            $_POST['other'] = ( Yii::app()->request->getPost('other') == '1' ) ? 'Y' : 'N' ;
 
             // These are the questions types that have no mandatory property - so zap it accordingly
             if (Yii::app()->request->getPost('type')== "X" || Yii::app()->request->getPost('type')== "|")

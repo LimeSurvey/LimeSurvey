@@ -269,6 +269,9 @@ function getToolTip(type){
 
 function updatequestionattributes()
 {
+    var type = $('#question_type').val();
+    OtherSelection(type);
+
     $('.loader').show();
     $('#advancedquestionsettings').html('');
     var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
