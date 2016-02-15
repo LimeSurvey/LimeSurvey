@@ -57,7 +57,7 @@
                     <div class='col-sm-2'>
                         <div class='btn-group'>
                             <button type='button' class='btn btn-default dropdown-toggle limebutton form-control' data-toggle='dropdown' aria-hashpopup='true' aria-expanded='false'>
-                                <?php eT('Icon'); ?>
+                                <?php eT('Select icon'); ?>
                                 <span class='caret'></span>
                             </button>
                             <ul class='dropdown-menu'>
@@ -122,7 +122,7 @@
                             $options_array = CHtml::listData(UserGroup::model()->findAll(), 'ugid', 'name');
                             $options_array[-1]=gT('Everybody');
                             $options_array[-2]=gT('Only admin');
-                            $options_array[-3]=gT('Nobody');                            
+                            $options_array[-3]=gT('Nobody');
                         ?>
                         <?php echo $form->dropDownList(
                             $model,
