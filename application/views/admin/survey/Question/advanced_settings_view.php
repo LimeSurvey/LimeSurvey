@@ -16,8 +16,7 @@
         }?>
             <div class="form-group">
                 <label class="col-sm-4 control-label" for='<?php echo $aAttribute['name'];?>' title='<?php echo $aAttribute['help'];?>'><?php echo $aAttribute['caption'];
-                        if ($aAttribute['i18n']==true) { ?> (<?php echo $aAttribute['language'] ?>)<?php }?>
-                </label>
+                        if ($aAttribute['i18n']==true) { ?> (<?php echo $aAttribute['language'] ?>)<?php }?>:</label>
                 <div class="col-sm-8">
                 <?php
                     if ($aAttribute['readonly'] && $bIsActive)
