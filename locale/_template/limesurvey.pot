@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-02-12 16:15:22+00:00\n"
+"POT-Creation-Date: 2016-02-15 09:11:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -151,113 +151,113 @@ msgid "Pre-installation check for LimeSurvey "
 msgstr ""
 
 #: application/controllers/InstallerController.php:231
-#: application/controllers/InstallerController.php:427
-#: application/controllers/InstallerController.php:519
-#: application/controllers/InstallerController.php:549
-#: application/controllers/InstallerController.php:646
+#: application/controllers/InstallerController.php:422
+#: application/controllers/InstallerController.php:514
+#: application/controllers/InstallerController.php:544
+#: application/controllers/InstallerController.php:641
 #: application/views/installer/dbconfig_view.php:15
 msgid "Database configuration"
 msgstr ""
 
 #: application/controllers/InstallerController.php:232
-#: application/controllers/InstallerController.php:428
-#: application/controllers/InstallerController.php:520
-#: application/controllers/InstallerController.php:550
-#: application/controllers/InstallerController.php:647
+#: application/controllers/InstallerController.php:423
+#: application/controllers/InstallerController.php:515
+#: application/controllers/InstallerController.php:545
+#: application/controllers/InstallerController.php:642
 msgid "Please enter the database settings you want to use for LimeSurvey:"
 msgstr ""
 
-#: application/controllers/InstallerController.php:278
+#: application/controllers/InstallerController.php:274
 msgid "Connection with database failed. Please check database location, user name and password and try again."
 msgstr ""
 
-#: application/controllers/InstallerController.php:316
+#: application/controllers/InstallerController.php:311
 msgid "The database you specified does already exist."
 msgstr ""
 
-#: application/controllers/InstallerController.php:324
+#: application/controllers/InstallerController.php:319
 msgid "The database does exists and contains LimeSurvey tables. You'll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click <a href=\"%s\">here</a>."
 msgstr ""
 
-#: application/controllers/InstallerController.php:349
-#: application/controllers/InstallerController.php:350
-#: application/controllers/InstallerController.php:528
-#: application/controllers/InstallerController.php:529
+#: application/controllers/InstallerController.php:344
+#: application/controllers/InstallerController.php:345
+#: application/controllers/InstallerController.php:523
+#: application/controllers/InstallerController.php:524
 #: application/views/installer/sidebar_view.php:25
 msgid "Database settings"
 msgstr ""
 
-#: application/controllers/InstallerController.php:365
+#: application/controllers/InstallerController.php:360
 msgid "Database doesn't exist!"
 msgstr ""
 
-#: application/controllers/InstallerController.php:366
+#: application/controllers/InstallerController.php:361
 msgid "The database you specified does not exist:"
 msgstr ""
 
-#: application/controllers/InstallerController.php:367
+#: application/controllers/InstallerController.php:362
 msgid "LimeSurvey can attempt to create this database for you."
 msgstr ""
 
-#: application/controllers/InstallerController.php:371
+#: application/controllers/InstallerController.php:366
 msgid "Create database"
 msgstr ""
 
-#: application/controllers/InstallerController.php:381
+#: application/controllers/InstallerController.php:376
 msgid "A database named \"%s\" already exists."
 msgstr ""
 
-#: application/controllers/InstallerController.php:382
+#: application/controllers/InstallerController.php:377
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr ""
 
-#: application/controllers/InstallerController.php:386
-#: application/controllers/InstallerController.php:504
+#: application/controllers/InstallerController.php:381
+#: application/controllers/InstallerController.php:499
 msgid "Populate database"
 msgstr ""
 
-#: application/controllers/InstallerController.php:397
+#: application/controllers/InstallerController.php:392
 msgid "LimeSurvey database is up to date. No action needed"
 msgstr ""
 
-#: application/controllers/InstallerController.php:399
+#: application/controllers/InstallerController.php:394
 msgid "Please <a href=\"%s\">log in</a>."
 msgstr ""
 
-#: application/controllers/InstallerController.php:500
+#: application/controllers/InstallerController.php:495
 msgid "Database has been created."
 msgstr ""
 
-#: application/controllers/InstallerController.php:501
+#: application/controllers/InstallerController.php:496
 msgid "Please continue with populating the database."
 msgstr ""
 
-#: application/controllers/InstallerController.php:517
+#: application/controllers/InstallerController.php:512
 msgid "Try again! Creation of database failed."
 msgstr ""
 
-#: application/controllers/InstallerController.php:582
+#: application/controllers/InstallerController.php:577
 msgid "Try again! Connection with database failed. Reason: "
 msgstr ""
 
-#: application/controllers/InstallerController.php:590
+#: application/controllers/InstallerController.php:585
 msgid "Database %s has been successfully populated."
 msgstr ""
 
-#: application/controllers/InstallerController.php:594
+#: application/controllers/InstallerController.php:589
 msgid "There were errors when trying to populate the database:"
 msgstr ""
 
-#: application/controllers/InstallerController.php:620
+#: application/controllers/InstallerController.php:615
 #: application/views/installer/sidebar_view.php:28
 msgid "Optional settings"
 msgstr ""
 
-#: application/controllers/InstallerController.php:621
+#: application/controllers/InstallerController.php:616
 msgid "Optional settings to give you a head start"
 msgstr ""
 
-#: application/controllers/InstallerController.php:697
+#: application/controllers/InstallerController.php:692
 #: application/controllers/admin/surveypermission.php:606
 #: application/controllers/admin/useraction.php:308
 #: application/controllers/admin/useraction.php:390
@@ -266,23 +266,23 @@ msgstr ""
 msgid "Success!"
 msgstr ""
 
-#: application/controllers/InstallerController.php:698
+#: application/controllers/InstallerController.php:693
 msgid "LimeSurvey has been installed successfully."
 msgstr ""
 
-#: application/controllers/InstallerController.php:705
+#: application/controllers/InstallerController.php:700
 msgid "The password you have chosen at the optional settings step."
 msgstr ""
 
-#: application/controllers/InstallerController.php:713
+#: application/controllers/InstallerController.php:708
 msgid "Passwords don't match."
 msgstr ""
 
-#: application/controllers/InstallerController.php:1147
+#: application/controllers/InstallerController.php:1142
 msgid "Configuration directory is not writable"
 msgstr ""
 
-#: application/controllers/InstallerController.php:1148
+#: application/controllers/InstallerController.php:1143
 msgid "You will be redirected in about 5 secs. If not, click <a href=\"%s\">here</a>."
 msgstr ""
 
@@ -1302,6 +1302,7 @@ msgstr ""
 #: application/views/admin/participants/userControl_view.php:14
 #: application/views/admin/survey/Question/question_view.php:132
 #: application/views/admin/survey/Question/question_view.php:150
+#: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:63
 #: application/views/admin/survey/activateSurvey_view.php:108
 #: application/views/admin/survey/activateSurvey_view.php:129
 #: application/views/admin/survey/activateSurvey_view.php:153
@@ -3434,6 +3435,7 @@ msgid "Database error!!"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:778
+#: application/views/admin/token/managetokenattributes.php:138
 msgid "(None)"
 msgstr ""
 
@@ -11527,6 +11529,7 @@ msgid "Repeating headings in array questions every X subquestions:"
 msgstr ""
 
 #: application/views/admin/global_settings/_presentation.php:43
+#: application/views/admin/survey/subview/accordion/_presentation_panel.php:265
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:276
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:287
 #: application/views/admin/survey/subview/tabPresentation_view.php:210
@@ -11953,7 +11956,7 @@ msgid "File"
 msgstr ""
 
 #: application/views/admin/labels/labelsets_view.php:11
-msgid "Label Sets list"
+msgid "Label sets list"
 msgstr ""
 
 #: application/views/admin/labels/labelsets_view.php:21
@@ -11975,7 +11978,7 @@ msgid "%s rows per page"
 msgstr ""
 
 #: application/views/admin/labels/labelsets_view.php:31
-msgid "Label Set ID"
+msgid "Label set ID"
 msgstr ""
 
 #: application/views/admin/labels/labelsets_view.php:45
@@ -13552,6 +13555,13 @@ msgstr ""
 msgid "Add a group"
 msgstr ""
 
+#: application/views/admin/super/_question_explorer.php:45
+#: application/views/admin/survey/surveySummary_view.php:101
+#: application/views/admin/survey/surveySummary_view.php:138
+#: application/views/admin/usergroup/addUserGroup_view.php:33
+msgid "Add group"
+msgstr ""
+
 #: application/views/admin/super/_question_explorer.php:65
 msgid "Add a question to this group"
 msgstr ""
@@ -14186,12 +14196,8 @@ msgstr ""
 msgid "You cannot add/remove subquestions or edit their codes because the survey is active."
 msgstr ""
 
-#: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:63
-msgid "YES"
-msgstr ""
-
 #: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:64
-msgid "EM Value"
+msgid "EM value"
 msgstr ""
 
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:9
@@ -15065,10 +15071,6 @@ msgstr ""
 msgid "Automatically load URL when survey complete:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_presentation_panel.php:265
-msgid "Show \"There are X questions in this survey:\""
-msgstr ""
-
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:267
 #: application/views/admin/survey/subview/tabPresentation_view.php:216
 msgid "Yes (Forced by the system administrator)"
@@ -15478,12 +15480,6 @@ msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:74
 msgid "Group by group"
-msgstr ""
-
-#: application/views/admin/survey/surveySummary_view.php:101
-#: application/views/admin/survey/surveySummary_view.php:138
-#: application/views/admin/usergroup/addUserGroup_view.php:33
-msgid "Add group"
 msgstr ""
 
 #: application/views/admin/survey/surveySummary_view.php:107
@@ -16277,10 +16273,6 @@ msgstr ""
 
 #: application/views/admin/token/managetokenattributes.php:136
 msgid "Delete this attribute:"
-msgstr ""
-
-#: application/views/admin/token/managetokenattributes.php:138
-msgid "none"
 msgstr ""
 
 #: application/views/admin/token/remind.php:8
