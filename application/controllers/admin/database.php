@@ -978,11 +978,10 @@ class database extends Survey_Common_Action
                             //$condn = array('sid' => $surveyid, 'qid' => $qid, 'language' => $qlang);
                             $oQuestion = Question::model()->findByPk(array("qid"=>$iQuestionID,'language'=>$qlang));
 
-
-
-
                             foreach ($udata as $k => $v)
+                            {
                                 $oQuestion->$k = $v;
+                            }
 
                             $uqresult = $oQuestion->save();//($uqquery); // or safeDie ("Error Update Question: ".$uqquery."<br />");  // Checked)
                             if (!$uqresult)
