@@ -6,10 +6,9 @@
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 
 
-/*
-* Scroll the pager and the footer when scrolling horizontally
-* Maybe for token table too
-*/
+/**
+ * Scroll the pager and the footer when scrolling horizontally
+ */
 $(document).ready(function(){
     $('#displayResponsesContainer').scroll(function(){
         $('#pager').css({
@@ -58,7 +57,7 @@ $(function() {
         height : "100%",
         //shrinkToFit : false,
         ignoreCase : true,
-        rowNum : 25,
+        rowNum : 10,
         editable : false,
         scrollOffset : 0,
         sortable : true,
@@ -66,7 +65,7 @@ $(function() {
         sortname : 'id',
         sortorder : 'asc',
         viewrecords : true,
-        rowList : [ 25, 50, 100, 250, 500, 1000 ],
+        rowList : [ 10, 25, 50, 100, 250, 500, 1000 ],
         multiselect : true,
         loadonce : false, // use ajax request
         pager : "#pager",

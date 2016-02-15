@@ -1,9 +1,11 @@
-/*
-* Scroll the pager when scrolling horizontally
-*/
-$(window).scroll(function(){
-    $('.ui-jqgrid-pager').css({
-        'left': $(this).scrollLeft()
+/**
+ * Scroll the pager and the footer when scrolling horizontally
+ */
+$(document).ready(function(){
+    $('.scrolling-wrapper').scroll(function(){
+        $('#pager').css({
+            'left': $(this).scrollLeft() ,
+        });
     });
 });
 
