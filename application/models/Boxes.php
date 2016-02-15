@@ -56,13 +56,13 @@ class Boxes extends CActiveRecord
     {
         return array(
             'id' => 'ID',
-            'position' => gT('Position'),
-            'url' => gT('URL that the box points to'),
-            'title' => gT('Title'),
-            'ico' => gT('Icon to use in the box'),
-            'desc' => gT('Description'),
+            'position' => gT('Position:'),
+            'url' => gT('Destination URL:'),
+            'title' => gT('Title:'),
+            'ico' => gT('Icon:'),
+            'desc' => gT('Description:'),
             'page' => gT('Name of the page where the box should be shown'),
-            'usergroup'=> gT('Box will be shown for that user group')
+            'usergroup'=> gT('Display this box to:')
         );
     }
 
