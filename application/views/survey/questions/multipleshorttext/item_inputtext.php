@@ -1,6 +1,6 @@
 <?php
 /**
- * Multiple short texts question, item input text Html
+* Multiple short texts question, item input text Html
 
 * @var $question $ansrow['question']
 * @var $alert
@@ -23,7 +23,7 @@
         <div class="alert alert-danger errormandatory" role="alert">
             <?php echo $question; ?>
         </div>
-    <?php endif;?>
+        <?php endif;?>
 
     <div  class="form-group-row row">
         <label class='control-label col-xs-12' for="answer<?php echo$myfname;?>">
@@ -40,7 +40,8 @@
                 value="<?php echo $dispVal; ?>"
                 onkeyup="<?php echo $checkconditionFunction; ?>"
                 <?php echo $maxlength; ?>
-            />
+                />
             <?php echo $suffix; ?>
         </div>
+    </div>
 </div>
