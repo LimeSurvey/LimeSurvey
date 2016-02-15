@@ -32,3 +32,9 @@
     display: none;
     overflow-y: auto;
 }
+
+/** Popup when validating email template */
+iframe#dialog {
+    width: 100%;
+    height: 100%;
+}
