@@ -280,7 +280,8 @@ class InstallerController extends CController {
                 if ($bDBConnectionWorks)
                 {
                     //saving the form data
-                    foreach(array('dbname', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
+                    foreach(array('dbname', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey)
+                    {
                         Yii::app()->session[$sStatusKey] = $oModel->$sStatusKey;
                     }
                     Yii::app()->session['dbport'] = $sDatabasePort;
@@ -290,7 +291,8 @@ class InstallerController extends CController {
                     $bTablesDoNotExist = false;
 
                     // Check if the surveys table exists or not
-                    if ($bDBExists == true) {
+                    if ($bDBExists == true)
+                    {
                         try {
                             if ($dataReader=$this->connection->createCommand()->select()->from('{{users}}')->query()->rowCount==0)  // DBLIB does not throw an exception on a missing table
                             $bTablesDoNotExist = true;
@@ -1273,15 +1275,15 @@ class InstallerController extends CController {
         if(!self::dbTest($aDbConfig, $aData))// Remove sDatabaseName from the connexion is not exist
         {
             $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, "", $sDatabaseUser, $sDatabasePwd);
+            $bDbExist=false;
         }
-        try // Not needed
+        try
         {
             $this->connection = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
             if($sDatabaseType!='sqlsrv' && $sDatabaseType!='dblib')
             {
                 $this->connection->emulatePrepare = true;
             }
-
             $this->connection->active = true;
             $this->connection->tablePrefix = $sDatabasePrefix;
             return true;
@@ -1311,8 +1313,26 @@ class InstallerController extends CController {
         }
         catch(Exception $e)
         {
-            if($e->getCode()!=1049) // Database don't exist
+            if($sDatabaseType=='mysql' && $e->getCode()==1049)
             {
+                return false;
+            }
+            if($sDatabaseType=='pgsql' && $e->getCode()==7)
+            {
+                return false;
+            }
+            /* @todo : find the good error code for dblib and sqlsrv in exactly same situation : user can read the DB but DB don't exist*/
+            /* using same behaviuor than before : test without dbname : db creation can break */
+            $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, "", $sDatabaseUser, $sDatabasePwd);
+            try
+            {
+                $testPdo = new PDO($sDsn,$sDatabaseUser,$sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+                $testPdo = null;
+            }
+            catch(Exception $e)
+            {
+                /* With pgsql : sending "" to tablename => tablename==username , we are unsure if this must be OK */
+                /* But Yii sedn exception in same condition : the show this error */
                 if (!empty($aData['model'])) {
                     $aData['model']->addError('dblocation', gT('Try again! Connection with database failed.'));
                     $aData['model']->addError('dblocation', gT('Reason: ') . $e->getMessage());
@@ -1325,10 +1345,7 @@ class InstallerController extends CController {
                     throw new CDbException('CDbConnection failed to open the DB connection.',(int)$e->getCode(),$e->errorInfo);
                 }
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
         return true;
     }
