@@ -22,16 +22,14 @@
             || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
             { echo " checked='checked'"; }
             ?>
-        />
-        <label for='filter<?php echo $myfield; ?>'>
-            <?php echo $oStatisticsHelper::_showSpeaker(flattenText($flt[5],true)); ?>
+        /><label for='filter<?php echo $myfield; ?>'>&nbsp;<?php echo $flt[3].' - '.$oStatisticsHelper::_showSpeaker(flattenText($flt[5],true)); ?>
         </label>
         <br />
         <?php if ($flt[2] != "N" && $flt[2] != "|"):?>
             <select name='<?php
                 if ($flt[2] == "M" ) { echo "M";};
                 if ($flt[2] == "P" ) { echo "P";};
-                echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]'";?>' multiple='multiple' class='form-control'>
+                echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]";?>' multiple='multiple' class='form-control'>
         <?php endif; ?>
 
         <!-- QUESTION TYPE = <?php echo $flt[2]; ?> -->
