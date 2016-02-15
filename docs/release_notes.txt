@@ -59,6 +59,31 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160213) to 2.50+ (build 160215) Feb 15, 2016
+-Fixed issue #10411: Option 'Other' always visible (Olle Haerstedt)
+-Fixed issue #10415: Better design when validating expression in mail templates (Olle Haerstedt)
+-Fixed issue #10417: Installer does not create new database when it should (Denis Chenu)
+-Fixed issue #10418: Quotation marks are not rendered correctly in dropdowns in admin interface (Carsten Schmitz)
+-Fixed issue #10425: Error when resetting boxes (Carsten Schmitz)
+-Fixed issue #10426: Missing colon after strings (Carsten Schmitz)
+-Fixed issue #10427: Missing translation (Carsten Schmitz)
+-Fixed issue #10432: Inconsistent/wrong naming in question list (Carsten Schmitz)
+-Fixed issue #10441: Multiple short text question embeds subsequent question (Carsten Schmitz)
+-Fixed issue #10445: "Display responses" screen - pagination not visible (Olle Haerstedt)
+-Fixed issue #10446: "Display statistics" screen - debug information is displayed (Carsten Schmitz)
+-Fixed issue #6923: User can accidentally change certain survey settings after survey is already active (Carsten Schmitz)
+-Fixed issue: On/Off switches not translated (Carsten Schmitz)
+-Fixed issue: Question code not visible in statistics (Carsten Schmitz)
+-Fixed issue: Survey title column too narrow in surveylist (Carsten Schmitz)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by DenisChenu, arnaud21, cestmoimeme
+#Updated translation: German by c_schmitz, actxcellence, cookiemonster
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+
 Changes from 2.50+ (build 160212) to 2.50+ (build 160213) Feb 12, 2016
 -Fixed issue #10368: Missing translations (Carsten Schmitz)
 -Fixed issue #10382: Some buttons in ComfortUpdate not properly labeled when using French translation (Carsten Schmitz)
