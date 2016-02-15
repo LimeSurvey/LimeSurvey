@@ -218,7 +218,7 @@
                                                 <label class="col-sm-4 control-label"><?php eT("Option 'Other':"); ?></label>
                                                 <?php if ($activated != "Y"): ?>
                                                     <div class="col-sm-8">
-                                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'other', 'value'=> $eqrow['other'] === "Y"));?>
+                                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'other', 'value'=> $eqrow['other'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                                                     </div>
                                                 <?php else:?>
                                                     <?php eT("Cannot be changed (survey is active)");?>
@@ -230,7 +230,7 @@
                                                 <label class="col-sm-4 control-label"><?php eT("Mandatory:"); ?></label>
                                                 <div class="col-sm-8">
                                                     <!-- Todo : replace by direct use of bootstrap switch. See statistics -->
-                                                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'value'=> $eqrow['mandatory'] === "Y"));?>
+                                                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'value'=> $eqrow['mandatory'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                                                 </div>
                                             </div>
 
