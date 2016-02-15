@@ -299,7 +299,7 @@ $surveyid = $surveyinfo['sid'];
                     </p>
 
                     <p>
-                        <strong><?php echo gT("Survey URL");?> :</strong><br/>
+                        <strong><?php echo gT("Survey URL");?>:</strong><br/>
                         <small><em><?php echo getLanguageNameFromCode($surveyinfo['language'],false); ?></em></small><br/>
                             <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language'])); ?>
                             <?php
@@ -320,7 +320,7 @@ $surveyid = $surveyinfo['sid'];
 
                         <!-- Title -->
                         <tr>
-                            <th  class="col-md-4"><?php eT("Title");?>:</th>
+                            <th  class="col-md-3"><?php eT("Title");?>:</th>
                             <th><?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?></th>
                         </tr>
                     </thead>
@@ -328,7 +328,7 @@ $surveyid = $surveyinfo['sid'];
                     <!-- Survey URL -->
                     <tr>
                         <td>
-                            <strong> <?php echo gT("Survey URL");?> :</strong>
+                            <strong> <?php echo gT("Survey URL");?>:</strong>
                         </td>
                         <td>
                         </td>
@@ -337,7 +337,7 @@ $surveyid = $surveyinfo['sid'];
                     <!-- Base language -->
                     <tr>
                         <td style="border-top: none; padding-left: 2em">
-                            <small><?php echo getLanguageNameFromCode($surveyinfo['language'],false); ?></small>
+                            <small><?php echo getLanguageNameFromCode($surveyinfo['language'],false); ?>:</small>
                         </td>
                         <td style="border-top: none;" >
                             <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language'])); ?>
@@ -370,7 +370,7 @@ $surveyid = $surveyinfo['sid'];
 
                     <!-- Survey's texts -->
                     <tr>
-                        <td><strong><?php eT("Survey texts");?> :</strong></td>
+                        <td><strong><?php eT("Survey texts");?>:</strong></td>
                         <td></td>
                     </tr>
 

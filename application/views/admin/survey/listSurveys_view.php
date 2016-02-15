@@ -67,70 +67,70 @@
                         'header' => gT('Survey ID'),
                         'name' => 'survey_id',
                         'value'=>'$data->sid',
-                        'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
+                        'htmlOptions' => array('class' => 'hidden-xs'),
                     ),
 
                     array(
                         'header' => gT('Title'),
                         'name' => 'title',
                         'value'=>'$data->defaultlanguage->surveyls_title',
-                        'htmlOptions' => array('class' => 'col-md-1'),
+                        'htmlOptions' => array('class' => 'col-md-4'),
                     ),
 
                     array(
                         'header' => gT('Created'),
                         'name' => 'creation_date',
                         'value'=>'$data->creationdate',
-                        'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
+                        'htmlOptions' => array('class' => 'hidden-xs'),
                     ),
 
                     array(
                         'header' => gT('Owner'),
                         'name' => 'owner',
                         'value'=>'$data->owner->users_name',
-                        'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
+                        'htmlOptions' => array('class' => 'hidden-xs'),
                     ),
 
                     array(
                         'header' => gT('Anonymized responses'),
                         'name' => 'anonymized_responses',
                         'value'=>'$data->anonymizedResponses',
-                        'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
+                        'htmlOptions' => array('class' => 'hidden-xs'),
                     ),
 
                     array(
                         'header' => gT('Active'),
                         'name' => 'active',
                         'value'=>'$data->activeWord',
-                        'htmlOptions' => array('class' => 'col-md-1  hidden-xs'),
+                        'htmlOptions' => array('class' => 'hidden-xs'),
                     ),
 
                     array(
                         'header' => gT('Partial'),
                         'name' => 'partial',
                         'value'=>'$data->countPartialAnswers',
-                        'htmlOptions' => array('class' => 'col-md-1'),
+                        'htmlOptions' => array('class' => ''),
                     ),
 
                     array(
                         'header' => gT('Full'),
                         'name' => 'full',
                         'value'=>'$data->countFullAnswers',
-                        'htmlOptions' => array('class' => 'col-md-1'),
+                        'htmlOptions' => array('class' => ''),
                     ),
 
                     array(
                         'header' => gT('Total'),
                         'name' => 'total',
                         'value'=>'$data->countTotalAnswers',
-                        'htmlOptions' => array('class' => 'col-md-1'),
+                        'htmlOptions' => array('class' => ''),
                     ),
 
                     array(
                         'header' => gT('Uses tokens'),
                         'name' => 'uses_tokens',
                         'value'=>'$data->hasTokens',
-                        'htmlOptions' => array('class' => 'col-md-1'),
+                        'htmlOptions' => array('class' => ''),
                     ),
 
                     array(
@@ -138,7 +138,7 @@
                         'name' => 'actions',
                         'value'=>'$data->buttons',
                         'type'=>'raw',
-                        'htmlOptions' => array('class' => 'col-md-1'),
+                        'htmlOptions' => array('class' => ''),
                     ),
 
                 ),
