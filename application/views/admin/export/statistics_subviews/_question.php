@@ -630,7 +630,6 @@
 
                 //get some answers
 
-
                 //get number of answers
                 $count = count($result[$key1]);
 
@@ -650,7 +649,7 @@
                     //myfield2 is just used as comment in HTML like "R40X34X1721-1"
                     $myfield2 = "R" . $myfield . $i . "-" . strlen($i);
                     $myfield3 = $myfield . $i;
-                    echo "<!-- $myfield2 - ";
+                    echo "<!-- $myfield2 --> ";
 
                     if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
 
