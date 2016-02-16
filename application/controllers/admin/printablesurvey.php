@@ -1591,6 +1591,7 @@ class printablesurvey extends Survey_Common_Action
      * keywords replaced by variables.
      *
      * How:
+     * @param string $template
      */
     private function _populate_template( $template , $input  , $line = '')
     {
@@ -1660,6 +1661,9 @@ class printablesurvey extends Survey_Common_Action
     }
 
 
+    /**
+     * @param string $type
+     */
     private function _input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
     {
         if($type == 'other' or $type == 'othercomment')
