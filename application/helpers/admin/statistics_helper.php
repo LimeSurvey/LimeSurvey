@@ -2600,6 +2600,7 @@ class statistics_helper {
                 }
                 else
                 {
+
                     $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2])." =";
 
                     //ranking question?

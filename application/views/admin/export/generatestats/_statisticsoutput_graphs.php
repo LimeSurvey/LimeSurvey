@@ -12,6 +12,8 @@
  * @var $color
  *
  */
+ // TODO: move to controller
+ $qqid = str_replace ( '-', '__' , $qqid );
 ?>
 <tr>
     <td colspan='4' style=\"text-align:center\" id='statzone_<?php echo $rt;?>'>
