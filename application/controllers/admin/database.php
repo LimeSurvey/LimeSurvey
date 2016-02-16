@@ -1323,8 +1323,8 @@ class database extends Survey_Common_Action
     * $defaultvalue is empty then the entry is removed from table defaultvalues
     *
     * @param mixed $qid   Question ID
-    * @param mixed $scale_id  Scale ID
-    * @param mixed $specialtype  Special type (i.e. for  'Other')
+    * @param integer $scale_id  Scale ID
+    * @param string $specialtype  Special type (i.e. for  'Other')
     * @param mixed $language     Language (defaults are language specific)
     * @param mixed $defaultvalue    The default value itself
     * @param boolean $ispost   If defaultvalue is from a $_POST set this to true to properly quote things
