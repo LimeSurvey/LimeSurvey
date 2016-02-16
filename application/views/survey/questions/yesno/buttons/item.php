@@ -1,7 +1,7 @@
 <?php
 /**
  * Yes / No Question, buttons item Html
- *
+ * 
  * @var $name                           $ia[1]
  * @var $yChecked
  * @var $nChecked
