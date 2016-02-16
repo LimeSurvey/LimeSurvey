@@ -1,37 +1,41 @@
 <?php $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}"; $niceqtext=flattenText($flt[5]); ?>
+<?php
+    $specialQuestionTypes = array("M","P","T","S","Q","R","|","","N","K","D");
+    if ( in_array( $flt[2], $specialQuestionTypes))
+    {
+        $myfield = $flt[2].$myfield;
+    }
+?>
 
-<?php if ($flt[2]=='M' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L' || $flt[2]=='5' || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!'): ?>
-    <?php
-        $specialQuestionTypes = array("M","P","T","S","Q","R","|","","N","K","D");
-        if ( in_array( $flt[2], $specialQuestionTypes))
-        {
-            $myfield = $flt[2].$myfield;
-        }
-    ?>
+
+
 
     <!-- CHANGE HERE THE NUMBER OF COL-SM TO CHANGE THE NUMBER OF QUESTION BY LINE -->
     <div class="col-sm-4">
+        <?php if ($flt[2]=='M' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L' || $flt[2]=='5' || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!'): ?>
+            <input type='checkbox'
+                id='filter<?php echo $myfield; ?>'
+                name='summary[]'
+                value='<?php echo $myfield; ?>' <?php
+                if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
+                || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
+                || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
+                || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+                { echo " checked='checked'"; }
+                ?>
+                />
+            <label for='filter<?php echo $myfield; ?>'>&nbsp;<?php echo $flt[3].' - '.$oStatisticsHelper::_showSpeaker(flattenText($flt[5],true)); ?>
+            </label>
+            <br />
 
-        <input type='checkbox'
-            id='filter<?php echo $myfield; ?>'
-            name='summary[]'
-            value='<?php echo $myfield; ?>' <?php
-            if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-            || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-            || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
-            || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
-            { echo " checked='checked'"; }
-            ?>
-        /><label for='filter<?php echo $myfield; ?>'>&nbsp;<?php echo $flt[3].' - '.$oStatisticsHelper::_showSpeaker(flattenText($flt[5],true)); ?>
-        </label>
-        <br />
-        <?php if ($flt[2] != "N" && $flt[2] != "|"):?>
-            <select name='<?php
-                if ($flt[2] == "M" ) { echo "M";};
-                if ($flt[2] == "P" ) { echo "P";};
-                echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]";?>' multiple='multiple' class='form-control'>
+            <?php if ($flt[2] != "N" && $flt[2] != "|"):?>
+                <select name='<?php
+                    if ($flt[2] == "M" ) { echo "M";};
+                    if ($flt[2] == "P" ) { echo "P";};
+                    echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]";?>' multiple='multiple' class='form-control'>
+            <?php endif; ?>
+
         <?php endif; ?>
-
         <!-- QUESTION TYPE = <?php echo $flt[2]; ?> -->
         <?php
         switch ($flt[2])
@@ -877,4 +881,3 @@
         }   //end switch -> check question types and create filter forms
     ?>
     </div>
-<?php endif; ?>

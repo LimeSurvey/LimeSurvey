@@ -37,7 +37,8 @@
                                 'result'=>$result,
                                 'fresults'=>$fresults,
                                 'summary'=>$summary,
-                                'oStatisticsHelper'=>$oStatisticsHelper
+                                'oStatisticsHelper'=>$oStatisticsHelper,
+                                'language'=>$language
                              )) ; ?>
                     <?php endforeach; ?>
                     </div>
