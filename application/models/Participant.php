@@ -322,7 +322,7 @@ class Participant extends LSActiveRecord
             // We are not superadmin so we need to limit to our own or shared with us
             $selectValue[] = '{{participant_shares}}.can_edit';
             $joinValue[]   = 'LEFT JOIN {{participant_shares}} ON p.participant_id={{participant_shares}}.participant_id';
-            $aConditions[] = 'p.owner_uid = :userid1 OR {{participant_shares}}.share_uid = :userid2';
+            $aConditions[] = 'p.owner_uid = :userid1 OR {{participant_shares}}.share_uid = :userid2 OR {{participant_shares}}.share_uid = 0';
         }
 
         if ($count) {
@@ -914,7 +914,7 @@ class Participant extends LSActiveRecord
             ->db
             ->createCommand()
             ->select('count(*)')
-            ->where('participant_id = :participant_id AND share_uid = :userid')
+            ->where('participant_id = :participant_id AND ( share_uid = :userid oOR share_uid = 0)')
             ->from('{{participant_shares}}')
             ->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)
             ->bindParam(":userid", $userid, PDO::PARAM_INT)

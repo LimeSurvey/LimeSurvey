@@ -315,10 +315,17 @@ class participantsaction extends Survey_Common_Action
 
             foreach ($records as $row)
             {
-                $oShared = User::model()->getName($row['share_uid']); //for conversion of uid to human readable names
+                //for conversion of uid to human readable names
+                $iShareUserId = $row['share_uid'];
+                if ($iShareUserId != 0) { 
+                    $oShared = User::model()->getName($iShareUserId); 
+                    $sSharename = $oShared[0]['full_name'];
+                } else {
+                    $sSharename = 'All users';
+                }
                 $owner = User::model()->getName($row['owner_uid']);
                 $aData->rows[$i]['id'] = $row['participant_id']."--".$row['share_uid']; //This is the unique combination per record
-                $aData->rows[$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $oShared[0]['full_name'], $row['share_uid'], $owner[0]['full_name'], $row['date_added'], $row['can_edit']);
+                $aData->rows[$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $sSharename, $row['share_uid'], $owner[0]['full_name'], $row['date_added'], $row['can_edit']);
                 $i++;
             }
 
@@ -334,9 +341,15 @@ class participantsaction extends Survey_Common_Action
 
             foreach ($records as $row)
             {
-                $sharename = User::model()->getName($row['share_uid']); //for conversion of uid to human readable names
+                $iShareUserId = $row['share_uid'];//for conversion of uid to human readable names
+                if ($iShareUserId != 0) { 
+                    $oShared = User::model()->getName($iShareUserId); 
+                    $sSharename = $oShared[0]['full_name'];
+                } else {
+                    $sSharename = 'All users';
+                }
                 $aData->rows[$i]['id'] = $row['participant_id'];
-                $aData['rows'][$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $sharename['full_name'], $row['share_uid'], $row['date_added'], $row['can_edit']);
+                $aData['rows'][$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $sSharename, $row['share_uid'], $row['date_added'], $row['can_edit']);
                 $i++;
             }
 
@@ -1458,6 +1471,12 @@ class participantsaction extends Survey_Common_Action
         $iParticipantId = Yii::app()->request->getPost('participantid');
         $iShareUserId = Yii::app()->request->getPost('shareuser');
         $bCanEdit = Yii::app()->request->getPost('can_edit');
+	
+	    // Some input validation needed
+        if ($iShareUserId == '') {
+            printf($clang->gT("Please select a user"));
+            return;
+        }
 
         $i = 0;
         if (Permission::model()->hasGlobalPermission('participantpanel','update') &&  $iShareUserId>0)
