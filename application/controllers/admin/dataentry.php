@@ -930,7 +930,6 @@ class dataentry extends Survey_Common_Action
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
-                                $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 //$aDataentryoutput .= substr($fname['fieldname'], strlen($fname['fieldname'])-5, 5)."<br />\n";
                                 if (substr($fname['fieldname'], -5) == "other")
                                 {
@@ -1116,7 +1115,6 @@ class dataentry extends Survey_Common_Action
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
-                                $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 $aDataentryoutput .= "\t<tr>\n"
                                 ."<td align='right'>{$fname['subquestion']}</td>\n"
                                 ."<td>\n";
@@ -1140,7 +1138,6 @@ class dataentry extends Survey_Common_Action
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
-                                $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 $aDataentryoutput .= "\t<tr>\n"
                                 ."<td align='right'>{$fname['subquestion']}</td>\n"
                                 ."<td>\n"
@@ -1165,7 +1162,6 @@ class dataentry extends Survey_Common_Action
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
-                                $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 $aDataentryoutput .= "\t<tr>\n"
                                 ."<td align='right'>{$fname['subquestion']}</td>\n"
                                 ."<td>\n"
@@ -1192,7 +1188,6 @@ class dataentry extends Survey_Common_Action
                             $thisqid=$fname['qid'];
                             while (isset($fname['qid']) && $fname['qid'] == $thisqid)
                             {
-                                $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 $aDataentryoutput .= "\t<tr>\n"
                                 ."<td>{$fname['subquestion']}";
                                 if (isset($fname['scale']))
@@ -1259,7 +1254,6 @@ class dataentry extends Survey_Common_Action
                             $thisqid=$fname['qid'];
                             while (isset($fname['qid']) && $fname['qid'] == $thisqid)
                             {
-                                $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 $aDataentryoutput .= "\t<tr>\n"
                                 . "<td>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
                                 $aDataentryoutput .= "<td>\n";
@@ -1290,7 +1284,6 @@ class dataentry extends Survey_Common_Action
                             $thisqid=$fname['qid'];
                             while (isset($fname['qid']) && $fname['qid'] == $thisqid)
                             {
-                                $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 $aDataentryoutput .= "\t<tr>\n"
                                 . "<td>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
                                 $aDataentryoutput .= "<td>\n";
