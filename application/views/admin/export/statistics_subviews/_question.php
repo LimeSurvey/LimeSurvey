@@ -1,7 +1,7 @@
 <?php $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}"; $niceqtext=flattenText($flt[5]); ?>
 
 <?php
-    $specialQuestionTypes = array("M","P","T","S","Q","R","|","","N","K","D");
+    $specialQuestionTypes = array("M","P","T","S","Q","|","","N","K","D");
     if ( in_array( $flt[2], $specialQuestionTypes))
     {
         $myfield = $flt[2].$myfield;
