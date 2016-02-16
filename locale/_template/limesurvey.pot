@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-02-16 00:17:55+00:00\n"
+"POT-Creation-Date: 2016-02-16 00:37:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2673,7 +2673,7 @@ msgid "Assessment group score"
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:162
-msgid "Export %s participant to CSV"
+msgid "Export {n} participant to CSV|Export {n} participants to CSV"
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:391
@@ -4370,15 +4370,15 @@ msgid "Clicking 'Yes' will generate tokens for all those in this token list that
 msgstr ""
 
 #: application/controllers/admin/tokens.php:2459
-msgid "Only %s token has been created."
+msgid "Only {n} token has been created.|Only {n} tokens have been created."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:2460
-msgid "Need %s token."
+msgid "Need {n} token.|Need {n} tokens."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:2465
-msgid "%s token has been created."
+msgid "{n} token has been created.|{n} tokens have been created."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:2504
@@ -8403,11 +8403,11 @@ msgid "Starting in 2.05, variable names should only contain letters and numbers;
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9523
-msgid "This question has at least %s error."
+msgid "This question has at least {n} error.|This question has at least {n} errors."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9562
-msgid "%s question contains errors that need to be corrected."
+msgid "{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9568
@@ -12253,7 +12253,7 @@ msgid "Attribute management"
 msgstr ""
 
 #: application/views/admin/participants/attributeMapCSV_view.php:2
-msgid "Select which fields to import as attributes with your participant."
+msgid "Select which fields to import as attributes with your {n} participant.|Select which fields to import as attributes with your {n} participants."
 msgstr ""
 
 #: application/views/admin/participants/attributeMapCSV_view.php:6
@@ -13577,6 +13577,11 @@ msgstr ""
 
 #: application/views/admin/super/_question_explorer.php:131
 msgid "No question group in this survey"
+msgstr ""
+
+#: application/views/admin/super/adminmenu.php:36
+#: application/views/admin/super/adminmenu.php:132
+msgid "{n} active survey|{n} active surveys"
 msgstr ""
 
 #: application/views/admin/super/adminmenu.php:44
@@ -16259,7 +16264,7 @@ msgid "Add or delete token attributes"
 msgstr ""
 
 #: application/views/admin/token/managetokenattributes.php:118
-msgid "There is %s user attribute field in this token table.\",\"There are %s user attribute fields in this token table."
+msgid "There is {n} user attribute field in this token table.|There are {n} user attribute fields in this token table."
 msgstr ""
 
 #: application/views/admin/token/managetokenattributes.php:121
