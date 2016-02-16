@@ -367,6 +367,7 @@ class responses extends Survey_Common_Action
             'token', // Replaced by tokens.token
             'id', // Allways adding it at start
             'lastpage', // After id, before completed
+            'startlanguage'
         );
         // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
         $column_model = array();
@@ -392,8 +393,8 @@ class responses extends Survey_Common_Action
             'sortable'=>true,
             'width'=>'100',
             'resizable' => true,
-            'align'=>'center',
-            'title'=>viewHelper::getFieldText($fields['id']),
+            'align'=>'right',
+            'label'=>viewHelper::getFieldText($fields['id']),
             'hidedlg'=>true,
         );
         $column_model[] = array(
@@ -403,9 +404,10 @@ class responses extends Survey_Common_Action
             'sortable'=>true,
             'width'=>'100',
             'resizable' => true,// Strangely : don't work
-            'align'=>'center',
-            'title'=>viewHelper::getFieldText($fields['lastpage']),
+            'align'=>'right',
+            'label'=>viewHelper::getFieldText($fields['lastpage']),
         );
+
         $bHidden=false;
         if (isset($_SESSION['survey_'.$iSurveyId]['HiddenFields']))
         {
@@ -427,9 +429,21 @@ class responses extends Survey_Common_Action
             'sortable'=>true,
             'hidden'=>$bHidden,
             'width'=>'100',
-            'align'=>'center',
+            'align'=>'left',
             'label' => gT("Completed"),
         );
+
+        $column_model[] = array(
+            'name'=>'startlanguage',
+            'index'=>'startlanguage',
+            'sorttype'=>'string',
+            'sortable'=>true,
+            'width'=>'50',
+            'resizable' => true,// Strangely : don't work
+            'align'=>'left',
+            'label'=>viewHelper::getFieldText($fields['startlanguage']),
+        );
+
         // defaultSearch is the default search done before send request in json. Actually : completed and token only. Can be extended ( js is ready) ?
         $defaultSearch=array();
         if (incompleteAnsFilterState() == "incomplete")
@@ -453,7 +467,7 @@ class responses extends Survey_Common_Action
                 'sorttype'=>'string',
                 'sortable'=>true, 'width'=>'150',
                 'align'=>'left',
-                'title'=>gT('Token')
+                'label'=>gT('Token')
             );
             $column_model[] = array(
                 'name'=>'firstname',
@@ -462,7 +476,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'150',
                 'align'=>'left',
-                'title'=>gT('First name'),
+                'label'=>gT('First name'),
             );
             $column_model[] = array(
                 'name'=>'lastname',
@@ -471,7 +485,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'150',
                 'align'=>'left',
-                'title'=>gT('Last Name'),
+                'label'=>gT('Last Name'),
             );
             $column_model[] = array(
                 'name'=>'email',
@@ -480,7 +494,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'150',
                 'align'=>'left',
-                'title'=>gT('Email'),
+                'label'=>gT('Email'),
             );
             // If token exist, test if token is set in params, add it to defaultSearch
             if($sTokenSearch= Yii::app()->request->getQuery('token'))
@@ -505,9 +519,6 @@ class responses extends Survey_Common_Action
                 continue;
             if ($fielddetails['type'] == 'answer_time')
                 continue;
-
-
-
             $question = $fielddetails['question'];
             if ($fielddetails['type'] == "|")
             {
