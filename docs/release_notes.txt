@@ -26,38 +26,33 @@ Please also have a look at the "Installation security hints" section of the onli
 
 
 === UPGRADING=====
-
 We suggest to check out and hold close to the instructions, which can be found in our online manual:
 https://manual.limesurvey.org/Upgrading_from_a_previous_version
  
-
-HOW TO UPGRADE from earlier versions of LimeSurvey (<=1.08)
--------------------------------------------------------------
-Since the data structure and a lot of other things were changed, upgrading from any version previous to v1.50 is NOT possible. 
-If you have old survey structure files with a *.sql extension the only way to get these into a newer version is to install version 1.50, import the .sql file(s) there, then upgrade that version to the most recent LimeSurvey version. 
-
-
-HOW TO UPGRADE from LimeSurvey 1.50 or later (<=1.70)
-------------------------------------------------------
-1. Make backups of your files and database. REALLY, create backups FIRST!
-3. Delete all old files 
-4. Upload the new version to the same place.
-6. Run the installer by visiting http://<yourdomain>/<yourlimesurveypath>/admin and follow the instructions
-7. Restore any customized templates from your backup to /upload/templates (old version older than 1.70 either from /templates or from /upload/templates (>1.70)). You might have to adjust your templates since the CSS/structure might been changed since. 
-   It is usually easier to customize a default templates, again, instead of fixing your old template! 
-8. Done.
-
-TEMPLATE modification between LimeSurvey 1.8
-------------------------------------------------------
-LimeSurvey 2 use a new placeholder for javascript inclusion: {TEMPLATEJS}.
-Old template can be incompatible with the new javascript inclusion system. LimeSurvey need a placeholder to include js file for public survey.
-The update process and the template upload process try to update your template. If there are javascript issue with your custom template, control you have the placeholder {TEMPLACEJS} in your starpage.pstpl.
-
 Thank you to everyone who helped with this new release!
 
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 2.50+ (build 160213) to 2.50+ (build 160215) Feb 16, 2016
+-Fixed issue #10411: Option Other always visible (Olle Haerstedt)
+-Fixed issue #10436: Display the question correctly in question explorer (LouisGac)
+-Fixed issue #10436: Question rendering in question explorer improvement (LouisGac)
+-Fixed issue #10449: HTML markups in array question's answers correctly displaying in small screens (LouisGac)
+-Fixed issue #10453: "Show group name and/or group description = Show both" but group description is hidden (Olle Haerstedt)
+-Fixed issue #10463: Still not translated: x active surveys (Carsten Schmitz)
+-Fixed issue #10468: Missing translations (Carsten Schmitz)
+-Fixed issue #10482: Yes/no question button display, correct preselection (LouisGac)
+-Fixed issue #10484: Yes/No question, button display working (LouisGac)
+-Fixed issue: Statistics filter questions for ranking (LouisGac)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Italian by ritapas, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
 
 Changes from 2.50+ (build 160213) to 2.50+ (build 160215) Feb 15, 2016
 -Fixed issue #10411: Option 'Other' always visible (Olle Haerstedt)
