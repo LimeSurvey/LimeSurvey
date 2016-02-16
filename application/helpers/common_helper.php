@@ -67,7 +67,7 @@ function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
  * @param integer $iCount
  * @param string $sEscapeMode
  */
-function egT($sToTranslate, $iCount, $sEscapeMode = 'html')
+function neT($sToTranslate, $iCount, $sEscapeMode = 'html')
 {
     echo ngT($sToTranslate,$iCount,$sEscapeMode);
 }
