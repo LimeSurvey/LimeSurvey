@@ -56,9 +56,9 @@ function eT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
  * @param integer $iCount
  * @param string $sEscapeMode
  */
-function ngT($sTextToTranslateSingular,$sTextToTranslatePlural, $iCount, $sEscapeMode = 'html')
+function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
 {
-    return quoteText(Yii::t('',$sTextToTranslateSingular.'|'.$sTextToTranslatePlural,$iCount),$sEscapeMode);
+    return quoteText(Yii::t('',$sTextToTranslate,$iCount),$sEscapeMode);
 }
 
 /**
