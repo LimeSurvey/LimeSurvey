@@ -358,10 +358,10 @@ class InstallerController extends CController {
                     {
                         Yii::app()->session['databaseDontExist'] = true;
 
-                        $aValues['adminoutputText'].= "\t<tr bgcolor='#efefef'><td align='center'>\n"
-                        ."<strong>".gT("Database doesn't exist!")."</strong><br /><br />\n"
-                        .gT("The database you specified does not exist:")."<br /><br />\n<strong>".$oModel->dbname."</strong><br /><br />\n"
-                        .gT("LimeSurvey can attempt to create this database for you.")."<br /><br />\n";
+                        $aValues['dbname'] = $oModel->dbname;
+                        
+                        // The database doesn't exist, etc. TODO: renderPartial should be done in the view, really.
+                        $aValues['adminoutputText'] = $this->renderPartial('/installer/nodatabase_view', $aValues, true);
 
                         $aValues['next'] =  array(
                             'action' => 'installer/createdb',
