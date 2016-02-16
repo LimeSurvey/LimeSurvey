@@ -3,7 +3,7 @@
  * Login Form
  */
 ?>
-<noscript>Your browser does not support JavaScript!</noscript>
+<noscript>If you see this you have probably JavaScript deactivated. LimeSurvey does not work without Javascript being activated in the browser!</noscript>
 <div class="container-fluid welcome">
     <div class="row text-center">
         <div class="col-lg-3 col-lg-offset-4 col-sm-6 col-sm-offset-3">
