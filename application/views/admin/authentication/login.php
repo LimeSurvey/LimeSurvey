@@ -3,6 +3,7 @@
  * Login Form
  */
 ?>
+<noscript>Your browser does not support JavaScript!</noscript>
 <div class="container-fluid welcome">
     <div class="row text-center">
         <div class="col-lg-3 col-lg-offset-4 col-sm-6 col-sm-offset-3">
