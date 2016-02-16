@@ -254,7 +254,10 @@ echo $colModels;
 <?php eT("User with whom the participants are to be shared"); ?></p>
     <p>
         <?php
+
         $options[''] = gT("Select...");
+        $options[0]  = gT("All users");
+
         foreach ($names as $row)
         {
             if (!(Yii::app()->session['loginID'] == $row['uid']))
