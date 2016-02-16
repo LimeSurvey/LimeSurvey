@@ -20,13 +20,13 @@
     <div class="row">
         <label class="col-sm-2 control-label"><?php eT("Display logo:");?> </label>
         <div class="col-sm-2">
-            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_logo', 'id'=>'show_logo', 'value'=>$bShowLogo));?>
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_logo', 'id'=>'show_logo', 'value'=>$bShowLogo, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
 
             <input type="hidden" id="show_logo-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowLogoStatus');?>" />
         </div>
         <label class="col-sm-2 control-label"><?php eT("Show last visited survey and question:");?> </label>
         <div class="col-sm-2">
-            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_last_survey_and_question', 'id'=>'show_last_survey_and_question', 'value'=>$bShowLastSurveyAndQuestion));?>
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_last_survey_and_question', 'id'=>'show_last_survey_and_question', 'value'=>$bShowLastSurveyAndQuestion, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
             <input type="hidden" id="show_last_survey_and_question-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowLastSurveyAndQuestion');?>" />
         </div>
         <br/><br/>

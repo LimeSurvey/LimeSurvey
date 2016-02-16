@@ -98,12 +98,12 @@
 
                         <div  class="form-group" id="OtherSelection">
                             <label><?php eT("Option 'Other':"); ?></label>
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'optionother'));?>
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'optionother', 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                         </div>
 
                         <div id='MandatorySelection'  class="form-group">
                             <label><?php eT("Mandatory:"); ?></label>
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'switchbuttontest'));?>
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'switchbuttontest', 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                         </div>
 
                         <div  class="form-group">
