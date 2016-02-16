@@ -13,10 +13,10 @@
 ?>
 
 <div class="list-unstyled answers-list radio-list">
-      <div class="btn-group" data-toggle="buttons">
+      <div class="btn-group" data-toggle="buttons" id="<?php echo $name;?>-container">
 
         <!-- Yes -->
-        <label class="btn btn-primary btn-lg active">
+        <label class="btn btn-primary btn-lg <?php if($yChecked){ echo "active";}?> ">
           <input
               class="radio"
               type="radio"
@@ -25,13 +25,12 @@
               value="Y"
               <?php echo $yChecked; ?>
               onclick="<?php echo $checkconditionFunction; ?>"
-              autocomplete="off"
           />
           <?php eT('Yes');?>
         </label>
 
         <!-- No -->
-        <label class="btn btn-primary  btn-lg ">
+        <label class="btn btn-primary  btn-lg <?php if($nChecked){ echo "active";}?> ">
             <input
                 class="radio"
                 type="radio"
@@ -45,7 +44,7 @@
         </label>
 
         <!-- No answer -->
-        <label class="btn btn-primary  btn-lg">
+        <label class="btn btn-primary btn-lg  <?php if($naChecked){ echo "active";}?>">
 
             <input
                 class="radio"
@@ -60,4 +59,18 @@
 
         </label>
       </div>
+
+      <input
+          type="hidden"
+          name="java<?php echo $name;?>"
+          id="java<?php echo $name;?>"
+          value="<?php echo $value;?>"
+      />
+
 </div>
+
+<script>
+$(document).on('change', 'div#<?php echo $name;?>-container input:radio', function (event) {
+    checkconditions(this.value, this.name, this.type);
+});
+</script>
