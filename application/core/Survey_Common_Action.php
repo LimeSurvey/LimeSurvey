@@ -916,11 +916,13 @@ class Survey_Common_Action extends CAction
 
                     foreach($group->aQuestions as $question)
                     {
-                        if(strlen($question->question)>100)
+                        if(strlen($question->question)>60 && is_object($question) )
                         {
-                            $question->question = substr($question->question, 0, 50);
-                            $question->question .= ' <br>...<br> ';
-                            $question->question .= substr($question->question, 0, 50);
+                            $sOldQuestion = $question->question;
+                            $sNewQuestion = substr($sOldQuestion, 0, 30);
+                            $sNewQuestion .= ' <br>...<br> ';
+                            $sNewQuestion .= substr($sOldQuestion, -30);
+                            $question->question = $sNewQuestion;
                         }
                     }
                 }
