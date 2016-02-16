@@ -52,7 +52,6 @@ class AdminController extends LSYii_Controller
     *
     * @access public
     * @param string $message The error message
-    * @param string|array $url URL. Either a string. Or array with keys url and title
     * @return void
     */
     public function error($message, $sURL = array())

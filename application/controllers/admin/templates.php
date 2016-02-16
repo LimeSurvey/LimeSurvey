@@ -309,7 +309,7 @@ class templates extends Survey_Common_Action
     * @access protected
     * @param string $dir
     * @param string $prefix
-    * @param string $mode
+    * @param integer $mode
     * @return string
     */
     protected function _tempdir($dir, $prefix = '', $mode = 0700)

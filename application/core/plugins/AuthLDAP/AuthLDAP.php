@@ -148,7 +148,8 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     /**
      * Create a LDAP user
      *
-     * @return int New user ID
+     * @param string $new_user
+     * @return null|string New user ID
      */
     private function _createNewUser($new_user)
     {

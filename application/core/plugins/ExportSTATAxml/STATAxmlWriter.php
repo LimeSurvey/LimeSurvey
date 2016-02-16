@@ -69,6 +69,9 @@ class STATAxmlWriter extends Writer
     }
 
 
+    /**
+     * @param string $content
+     */
     protected function out($content)
     {
         fwrite($this->handle, $content . "\n");
@@ -88,6 +91,11 @@ class STATAxmlWriter extends Writer
      *
      * Some things depending on the responses (eg. STATA data type and format, some reoding),
      * are done later in updateResponsemap()
+     */
+
+    /**
+     * @param SurveyObj $survey
+     * @param FormattingOptions $oOptions
      */
     function createStataFieldmap($survey, $sLanguage, $oOptions)
     {
