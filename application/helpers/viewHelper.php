@@ -191,7 +191,7 @@ class viewHelper
 
     /**
     * Return a string with the good separator before and after
-    * 
+    *
     * @param $sString :the string
     * @param : string/array : the string to put before of the array (before,after)
     */
@@ -207,13 +207,13 @@ class viewHelper
     }
     /**
     * Return a string fixed according to option
-    * 
+    *
     * @param $sString :the string
     * @param $bFlat : flattenText or not : completely flat (not like flattenText from common_helper)
     * @param $iAbbreviated : max string text (if true : allways flat), 0 or false : don't abbreviated
     * @param $sEllipsis if abbreviated : the char to put at end (or middle)
     * @param $fPosition if abbreviated position to split (in % : 0 to 1)
-    * 
+    *
     */
     public static function flatEllipsizeText($sString,$bFlat,$iAbbreviated,$sEllipsis='...',$fPosition = 1){
         if($bFlat || $iAbbreviated)
