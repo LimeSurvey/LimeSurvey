@@ -873,11 +873,6 @@
         $criteria->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
         $criteria->join='LEFT JOIN {{groups}} AS groups ON ( groups.gid = t.gid AND t.language = groups.language AND groups.sid = t.sid)';
 
-        if($this->group_name != '')
-        {
-            $criteria->addCondition('groups.group_name = :group_name');
-            $criteria->params=(array(':group_name'=>$this->group_name));
-        }
 
         $criteria->compare('title', $this->title, true, 'AND');
 
@@ -886,9 +881,12 @@
         $criteria2->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
         $criteria2->join='LEFT JOIN {{groups}} AS groups ON ( groups.gid = t.gid AND t.language = groups.language AND groups.sid = t.sid)';
 
+
+
         if($this->group_name != '')
         {
             $criteria->addCondition("groups.group_name = '$this->group_name'");
+            $criteria2->addCondition("groups.group_name = '$this->group_name'");
         }
 
         $criteria2->compare('question', $this->title, true, 'AND');

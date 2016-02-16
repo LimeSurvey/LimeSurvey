@@ -913,6 +913,18 @@ class Survey_Common_Action extends CAction
                 foreach($aGroups as $group)
                 {
                     $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$sumresult1->defaultlanguage->surveyls_language), array('order'=>'question_order ASC'));
+
+                    foreach($group->aQuestions as $question)
+                    {
+                        if(strlen($question->question)>60 && is_object($question) )
+                        {
+                            $sOldQuestion = $question->question;
+                            $sNewQuestion = substr($sOldQuestion, 0, 30);
+                            $sNewQuestion .= ' <br>...<br> ';
+                            $sNewQuestion .= substr($sOldQuestion, -30);
+                            $question->question = $sNewQuestion;
+                        }
+                    }
                 }
             }
             $aData['aGroups'] = $aGroups;

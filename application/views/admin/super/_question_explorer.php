@@ -87,8 +87,7 @@
                                                             <br/>
                                                             <em>
                                                                 <?php
-                                                                    templatereplace($question->question, array(),$aReplacementData,'Unspecified', false ,$question->qid);
-                                                                    echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                                                                    echo $question->question;
                                                                 ?>
                                                             </em>
                                                         </span>
@@ -105,8 +104,7 @@
                                                             <br/>
                                                             <em>
                                                                 <?php
-                                                                    templatereplace($question->question, array(),$aReplacementData,'Unspecified', false ,$question->qid);
-                                                                    echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                                                                    echo $question->question;
                                                                 ?>
                                                             </em>
                                                         </span>
