@@ -52,6 +52,9 @@
             return $result;
         }
 
+        /**
+         * @param string $key
+         */
         public function getState($key, $defaultValue = null)
         {
             if (!isset($_SESSION[$this->sessionVariable]) || !Hash::check($_SESSION[$this->sessionVariable], $key))
