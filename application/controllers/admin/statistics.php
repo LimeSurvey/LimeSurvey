@@ -686,6 +686,19 @@ class statistics extends Survey_Common_Action {
             {
                 $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
             }
+            if($type=="A")
+            {
+                $qid = $row['qid'];
+                $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
+                //$counter2=0;
+
+                //check all the results
+                foreach($results as $result)
+                {
+                    $result = array_values($result);
+                    $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$result[0];
+                }
+            }
             else // single question
             {
                 $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'];

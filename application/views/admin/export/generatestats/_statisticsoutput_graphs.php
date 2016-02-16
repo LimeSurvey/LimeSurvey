@@ -26,7 +26,7 @@
             >
 
             <div class="chartjs-container">
-                <canvas class="canvas-chart " id="chartjs-<?php echo $qqid; ?>" width="400" height="<?php echo $iCanvaHeight;?>"
+                <canvas class="canvas-chart " id="chartjs-<?php echo $qqid; ?>" width="1000" height="500"
                     data-color="<?php echo $color; // the background color for bar, etc. ?>"></canvas>
             </div>
 <!-- maintainAspectRatio: false -->
