@@ -1699,6 +1699,10 @@ EOD;
     */
     public function ajaxValidate($surveyid,$qid=false){
 
+        // Stupid hack since Bootstrap switch is a checkbox and 'other' used to be radio button
+        // TODO: Longterm, change 'other' to boolean; change the model rules
+        $_POST['other'] = ( Yii::app()->request->getPost('other') == '1' ) ? 'Y' : 'N' ;
+
         $iSurveyId=$surveyid;
         $iQid=$qid;
         $oSurvey=Survey::model()->findByPk($surveyid);
