@@ -119,6 +119,9 @@ li.responsive-content
         display: block;
     }
 
+    .no-more-tables table.subquestions-list td {
+        text-align: left;
+    }
 
     /* Hide table headers (but not display: none;, for accessibility) */
     .no-more-tables thead tr {
@@ -142,7 +145,7 @@ li.responsive-content
         min-height: 2em;
         border: none;
         position: relative;
-        padding-left: 95%;
+        /*padding-left: 95%;*/
         padding-bottom: 1em;
         white-space: normal;
         text-align:left;
@@ -169,7 +172,7 @@ li.responsive-content
     /*
     Label the data
     */
-    .no-more-tables td:before { content: attr(data-title); }
+    /*.no-more-tables td:before { content: attr(data-title); }*/
 
     .no-more-tables-10-point tr{
         padding-bottom: 100px;

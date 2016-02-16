@@ -912,7 +912,7 @@ class Survey_Common_Action extends CAction
             {
                 foreach($aGroups as $group)
                 {
-                    $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$sumresult1->defaultlanguage->surveyls_language));
+                    $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$sumresult1->defaultlanguage->surveyls_language), array('order'=>'question_order ASC'));
                 }
             }
             $aData['aGroups'] = $aGroups;

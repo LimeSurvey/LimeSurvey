@@ -75,6 +75,22 @@ function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
 
 $(document).ready(function(){
 
+    if($(window).width() < 800)
+    {
+        if($('.no-more-tables').length > 0)
+        {
+            $('.no-more-tables').find('td').each(function(){
+                $that = $(this);
+                //$content = '<td>'+$that.data('title')+'</td>';
+                $label = $that.data('title');
+                $input = $that.find('input');
+
+                //$that.empty().prepend($content);
+                $that.find('label').prepend($label);
+            });
+        }
+    }
+
     var outerframeDistanceFromTop = 50;
     // Manage top container
     if(!$.trim($('#topContainer .container').html()))
