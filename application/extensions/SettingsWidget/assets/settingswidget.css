@@ -94,7 +94,6 @@ width: 8.33333333%;
     min-height:10em;
 }
 .form-horizontal .control-label:after{
-    content: ':';
 }
 
 .form-horizontal input + .help-block, .form-horizontal select + .help-block, .form-horizontal textarea + .help-block {
