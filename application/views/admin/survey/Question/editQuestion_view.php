@@ -1,10 +1,6 @@
+<?php PrepareEditorScript(true, $this); ?>
 <?php $this->renderPartial("./survey/Question/question_subviews/_ajax_variables", $ajaxDatas); ?>
 
-
-<?php if(isset($qTypeOutput)): ?>
-    <script type='text/javascript'><?php echo $qTypeOutput; ?></script>
-    <?php PrepareEditorScript(true, $this); ?>
-<?php endif; ?>
 
 
 <div class="side-body" id="edit-question-body">

@@ -39,6 +39,7 @@
 
     function start_popup_editor(fieldname, fieldtext, sid, gid, qid, fieldtype, action)
     {
+        console.log('gid'+gid);
         controlidena = fieldname + '_popupctrlena';
         controliddis = fieldname + '_popupctrldis';
         numwindows = editorwindowsHash.length;
