@@ -919,9 +919,9 @@ class Survey_Common_Action extends CAction
                         if(strlen($question->question)>60 && is_object($question) )
                         {
                             $sOldQuestion = strip_tags($question->question);
-                            $sNewQuestion = substr($sOldQuestion, 0, 30);
+                            $sNewQuestion = mb_substr($sOldQuestion, 0, 30);
                             $sNewQuestion .= ' <br>...<br> ';
-                            $sNewQuestion .= substr($sOldQuestion, -30);
+                            $sNewQuestion .= mb_substr($sOldQuestion, -30);
                             $question->question = $sNewQuestion;
                         }
                     }

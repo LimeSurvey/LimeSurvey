@@ -12,6 +12,15 @@ if (!file_exists(dirname(__FILE__) .  '/config.php')) {
     $userConfig = require(dirname(__FILE__) . '/config.php');
 }
 @date_default_timezone_set(@date_default_timezone_get());
+
+if (function_exists('mb_internal_encoding')) {
+    // Needed to substring arabic etc
+    mb_internal_encoding('UTF-8');
+}
+else {
+    // Do nothing, will be checked in installation
+}
+
 $internalConfig = array(
     'basePath' => dirname(dirname(__FILE__)),
 
