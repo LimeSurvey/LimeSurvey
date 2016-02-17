@@ -34,7 +34,34 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
-Changes from 2.50+ (build 160213) to 2.50+ (build 160215) Feb 16, 2016
+
+
+Changes from 2.50+ (build 160216) to 2.50+ (build 160217) Feb 17, 2016
+-Fixed issue #10381: Problems when using emoji icons (Carsten Schmitz)
+-Fixed issue #10412: Installer still partially unstyled (Olle Haerstedt)
+-Fixed issue #10439: right subquestion selector in statistics response filters (LouisGac)
+-Fixed issue #10454: restored slider middle start function (LouisGac)
+-Fixed issue #10487: label sets for subquestions (LouisGac)
+-Fixed issue #10488: Missing translation (Carsten Schmitz)
+-Fixed issue #10491: Missing translation for on/off switches in statistics (Carsten Schmitz)
+-Fixed issue #10492: Double labels in columns when browsing responses (Carsten Schmitz)
+-Fixed issue #10493: empty column position in answer options (LouisGac)
+-Fixed issue #10495: Missing padding when browsing responses (Olle Haerstedt)
+-Fixed issue #10497: Question list in the left bar has problems with arabic survey (Olle Haerstedt)
+-Fixed issue #10504: Token table, send invitation goes to reminder form (Olle Haerstedt)
+-Fixed issue #10505: LimeSurvey Replacement  in question editing (LouisGac)
+-Fixed issue #10506 : added import group/question button in 'add new' related views (LouisGac)
+-Fixed issue #9461: share a participant without selecting a user (Gabriele Mambrini)
+#Updated translation: French (France) by arnaud21
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Swedish by maxzomborszki
+
+Changes from 2.50+ (build 160215) to 2.50+ (build 160216) Feb 16, 2016
 -Fixed issue #10411: Option Other always visible (Olle Haerstedt)
 -Fixed issue #10436: Display the question correctly in question explorer (LouisGac)
 -Fixed issue #10436: Question rendering in question explorer improvement (LouisGac)
