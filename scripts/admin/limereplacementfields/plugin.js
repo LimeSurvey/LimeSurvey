@@ -135,9 +135,9 @@ CKEDITOR.plugins.limereplacementfields =
         var element = new CKEDITOR.dom.element( 'span', editor.document );
         element.setAttributes(
             {
-                contentEditable		: 'false',
-                'data-cke-limereplacementfields'	: 1,
-                'class'			: 'cke_limereplacementfields'
+                contentEditable        : 'false',
+                'data-cke-limereplacementfields'    : 1,
+                'class'            : 'cke_limereplacementfields'
             }
         );
 
