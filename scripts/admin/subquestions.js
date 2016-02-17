@@ -457,9 +457,9 @@ function lsbrowser()
         }
         else
         {
-            $("#labelsetpreview").html("<p class='ui-state-highlight ui-corner-all ui-notify-message'>"+strNoLabelSet+"</p>");
-            $('#btnlsreplace').addClass('ui-state-disabled');
-            $('#btnlsinsert').addClass('ui-state-disabled');
+            $("#labelsetpreview").html("<p class='alert alert-warning'>"+strNoLabelSet+"</p>");
+            $('#btnlsreplace').addClass('disabled');
+            $('#btnlsinsert').addClass('disabled');
             $('#btnlsreplace').prop( "disabled", true );
             $('#btnlsinsert').prop( "disabled", true );
         }
@@ -479,7 +479,7 @@ function lspreview()
     surveyid=$('input[name=sid]').val();
     // check if this label set is already cached
     if (!isset(labelcache[lsid]))
-        {
+    {
         $.ajax({
             url: lsdetailurl,
             dataType: 'json',
@@ -488,28 +488,49 @@ function lspreview()
             success: function(json){
                 //$("#labelsetpreview").tabs('destroy');
                 $("#labelsetpreview").empty();
-                var tabindex='';
-                var tabbody='';
+                var tabindex='<ul class="nav nav-tabs">';
+                var tabbody='<div class="tab-content">';
+                var count=0;
                 for ( x in json)
-                    {
-
+                {
                     language=json[x];
                     for (y in language)
+                    {
+                        console.log('language:'+y);
+                        console.log('tabindex:'+tabindex);
+                        if(count==0)
                         {
-                        tabindex=tabindex+'<li><a href="#language_'+y+'">'+language[y][1]+'</a></li>';
-                        tabbody=tabbody+"<div id='language_"+y+"'><table class='limetable'>";
+                            active="active";
+                            bodyactive="in active";
+                            count++;
+                        }
+                        else
+                        {
+                            active = bodyactive = "";
+                        }
+
+                        tabindex=tabindex+
+                            '<li role="presentation" class="'+active+'">'+
+                            '   <a data-toggle="tab" href="#language_'+y+'">'+
+                                    language[y][1]+
+                            '   </a>'+
+                            '</li>';
+
+                        tabbody=tabbody+
+                                '<div id="language_'+y+'" class="tab-page tab-pane fade '+bodyactive+'">'+
+                                '   <table class="limetable">';
                         lsrows=language[y][0];
                         tablerows='';
                         var highlight=true;
                         for (z in lsrows)
-                            {
+                        {
                             highlight=!highlight;
                             tabbody=tabbody+'<tbody><tr';
                             if (highlight==true) {
                                 tabbody=tabbody+" class='highlight' ";
                             }
                             if (lsrows[z].title==null)
-                                {
+                            {
                                 lsrows[z].title='';
                             }
                             tabbody=tabbody+'><td>'+lsrows[z].code+'</td><td>'+htmlspecialchars(lsrows[z].title)+'</td></tr><tbody>';
@@ -517,10 +538,16 @@ function lspreview()
                         tabbody=tabbody+'<thead><tr><th>'+strcode+'</th><th>'+strlabel+'</th></tr></thead></table></div>';
                     }
                 }
-                $("#labelsetpreview").append('<ul>'+tabindex+'</ul>'+tabbody);
-                labelcache[lsid]='<ul>'+tabindex+'</ul>'+tabbody;
-                $("#labelsetpreview").tabs();
-                $("#labelsetpreview").tabs( "refresh" );
+                //$("#labelsetpreview").append('<ul>'+tabindex+'</ul>'+tabbody);
+                //labelcache[lsid]='<ul>'+tabindex+'</ul>'+tabbody;
+                tabindex=tabindex+'</ul>';
+                tabbody=tabbody+'</div>';
+                $("#labelsetpreview").append(tabindex+tabbody);
+                labelcache[lsid]=tabindex+tabbody;
+
+
+                //$("#labelsetpreview").tabs();
+                //$("#labelsetpreview").tabs( "refresh" );
         }}
         );
     }
@@ -529,8 +556,8 @@ function lspreview()
         //$("#labelsetpreview").tabs('destroy');
         $("#labelsetpreview").empty();
         $("#labelsetpreview").append(labelcache[lsid]);
-        $("#labelsetpreview").tabs();
-        $("#labelsetpreview").tabs( "refresh" );
+        //$("#labelsetpreview").tabs();
+        //$("#labelsetpreview").tabs( "refresh" );
     }
 
 
