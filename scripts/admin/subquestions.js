@@ -496,8 +496,6 @@ function lspreview()
                     language=json[x];
                     for (y in language)
                     {
-                        console.log('language:'+y);
-                        console.log('tabindex:'+tabindex);
                         if(count==0)
                         {
                             active="active";
@@ -538,26 +536,17 @@ function lspreview()
                         tabbody=tabbody+'<thead><tr><th>'+strcode+'</th><th>'+strlabel+'</th></tr></thead></table></div>';
                     }
                 }
-                //$("#labelsetpreview").append('<ul>'+tabindex+'</ul>'+tabbody);
-                //labelcache[lsid]='<ul>'+tabindex+'</ul>'+tabbody;
                 tabindex=tabindex+'</ul>';
                 tabbody=tabbody+'</div>';
                 $("#labelsetpreview").append(tabindex+tabbody);
                 labelcache[lsid]=tabindex+tabbody;
-
-
-                //$("#labelsetpreview").tabs();
-                //$("#labelsetpreview").tabs( "refresh" );
         }}
         );
     }
     else
     {
-        //$("#labelsetpreview").tabs('destroy');
         $("#labelsetpreview").empty();
         $("#labelsetpreview").append(labelcache[lsid]);
-        //$("#labelsetpreview").tabs();
-        //$("#labelsetpreview").tabs( "refresh" );
     }
 
 

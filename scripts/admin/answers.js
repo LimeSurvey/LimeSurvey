@@ -403,15 +403,39 @@ function lspreview()
             cache: true,
             success: function(json){
                 $("#labelsetpreview").empty();
-                var tabindex='';
-                var tabbody='';
+                var tabindex='<ul class="nav nav-tabs">';
+                var tabbody='<div class="tab-content">';
+                var count=0;
                 for ( x in json)
                 {
                     language=json[x];
                     for (y in language)
                     {
-                        tabindex=tabindex+'<li><a href="#language_'+y+'">'+language[y][1]+'</a></li>';
-                        tabbody=tabbody+"<div id='language_"+y+"'><table class='limetable'>";
+                        if(count==0)
+                        {
+                            active="active";
+                            bodyactive="in active";
+                            count++;
+                        }
+                        else
+                        {
+                            active = bodyactive = "";
+                        }
+
+                        //tabindex=tabindex+'<li><a href="#language_'+y+'">'+language[y][1]+'</a></li>';
+                        //tabbody=tabbody+"<div id='language_"+y+"'><table class='limetable'>";
+
+                        tabindex=tabindex+
+                            '<li role="presentation" class="'+active+'">'+
+                            '   <a data-toggle="tab" href="#language_'+y+'">'+
+                                    language[y][1]+
+                            '   </a>'+
+                            '</li>';
+
+                        tabbody=tabbody+
+                                '<div id="language_'+y+'" class="tab-page tab-pane fade '+bodyactive+'">'+
+                                '   <table class="limetable">';
+
                         lsrows=language[y][0];
                         tablerows='';
                         var highlight=true;
@@ -442,10 +466,10 @@ function lspreview()
                         tabbody=tabbody+'<th>'+strlabel+'</th></tr></thead></table></div>';
                     }
                 }
-                $("#labelsetpreview").append('<ul>'+tabindex+'</ul>'+tabbody);
-                labelcache[lsid]='<ul>'+tabindex+'</ul>'+tabbody;
-                $("#labelsetpreview").tabs();
-                $("#labelsetpreview").tabs('refresh');
+                tabindex=tabindex+'</ul>';
+                tabbody=tabbody+'</div>';
+                $("#labelsetpreview").append(tabindex+tabbody);
+                labelcache[lsid]=tabindex+tabbody;
             }
         });
     }
@@ -453,11 +477,7 @@ function lspreview()
     {
         $("#labelsetpreview").empty();
         $("#labelsetpreview").append(labelcache[lsid]);
-        $("#labelsetpreview").tabs();
-        $("#labelsetpreview").tabs('refresh');
     }
-
-
 }
 
 /**
@@ -763,7 +783,7 @@ function quickaddlabels()
                 '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
                 '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
                 '           </a>'+
-                
+
                 '       <span class="btnaddanswer  icon-add text-success"></span>'+
                 '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
                 '   </td>'+
