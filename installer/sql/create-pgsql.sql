@@ -547,7 +547,7 @@ CREATE TABLE prefix_users (
 -- Table structure for table templates
 --
 CREATE TABLE prefix_templates (
-  "folder" character varying(255) NOT NULL,
+  "folder" character varying(50) NOT NULL,
   "creator" integer NOT NULL,
   CONSTRAINT prefix_templates_pkey PRIMARY KEY ("folder")
 );
@@ -602,4 +602,4 @@ create unique index permissions_idx2 ON prefix_permissions (entity_id, entity, u
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '256');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '257');

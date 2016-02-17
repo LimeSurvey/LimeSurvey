@@ -66,8 +66,7 @@ function db_upgrade_all($iOldDBVersion) {
             if (Yii::app()->db->driverName=='mysql')
             {
                 $sDatabaseName=getDBConnectionStringProperty('dbname');
-                fixMySQLCollations();
-                modifyDatabase("","ALTER DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");echo $modifyoutput; flush();@ob_flush();
+                fixMySQLCollations('utf8','utf8_unicode_ci');
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>113),"stg_name='DBVersion'");
         }
@@ -1303,8 +1302,8 @@ function db_upgrade_all($iOldDBVersion) {
         }
         if ($iOldDBVersion < 181)
         {
-            upgradeTokenTables181();
-            upgradeSurveyTables181();
+            upgradeTokenTables181('utf8_bin');
+            upgradeSurveyTables181('utf8_bin');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>181),"stg_name='DBVersion'");
         }
         if ($iOldDBVersion < 183)
@@ -1364,6 +1363,35 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{participants}}', 'email', "text", false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>256),"stg_name='DBVersion'");
         }
+
+        if ($iOldDBVersion < 257) {
+            switch (Yii::app()->db->driverName){
+                case 'pgsql':
+                    $sSubstringCommand='substr';
+                    break;
+                default:
+                    $sSubstringCommand='substring';
+            }
+            $oDB->createCommand("UPDATE {{templates}} set folder={$sSubstringCommand}(folder,1,50)")->execute();
+            dropPrimaryKey('templates');
+            alterColumn('{{templates}}', 'folder', "string(50)", false);
+            addPrimaryKey('templates', 'folder');
+            dropPrimaryKey('participant_attribute_names_lang');
+            alterColumn('{{participant_attribute_names_lang}}', 'lang', "string(20)", false);
+            addPrimaryKey('participant_attribute_names_lang', array('attribute_id','lang'));
+            //Fixes the collation for the complete DB, tables and columns
+            if (Yii::app()->db->driverName=='mysql')
+            {
+                $sDatabaseName=getDBConnectionStringProperty('dbname');
+                fixMySQLCollations('utf8mb4','utf8mb4_unicode_ci');
+                // Also apply again fixes from DBVersion 181 again for case sensitive token fields
+                upgradeSurveyTables181('utf8mb4_bin');
+                upgradeTokenTables181('utf8mb4_bin');
+            }
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>257),"stg_name='DBVersion'");
+        }
+
+
         $oTransaction->commit();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
@@ -1624,7 +1652,7 @@ function fixKCFinder184()
 }
 
 
-function upgradeSurveyTables181()
+function upgradeSurveyTables181($sMySQLCollation)
 {
     $oDB = Yii::app()->db;
     $oSchema = Yii::app()->db->schema;
@@ -1646,7 +1674,7 @@ function upgradeSurveyTables181()
                         break;
                     case 'mysql':
                     case 'mysqli':
-                        alterColumn($sTableName, 'token', "string(35) COLLATE 'utf8_bin'");
+                        alterColumn($sTableName, 'token', "string(35) COLLATE '{$sMySQLCollation}'");
                         break;
                     default: die('Unknown database driver');
                 }
@@ -1655,7 +1683,7 @@ function upgradeSurveyTables181()
     }
 }
 
-function upgradeTokenTables181()
+function upgradeTokenTables181($sMySQLCollation)
 {
     $oDB = Yii::app()->db;
     $oSchema = Yii::app()->db->schema;
@@ -1675,7 +1703,7 @@ function upgradeTokenTables181()
                         break;
                     case 'mysql':
                     case 'mysqli':
-                        alterColumn($sTableName, 'token', "string(35) COLLATE 'utf8_bin'");
+                        alterColumn($sTableName, 'token', "string(35) COLLATE '{$sMySQLCollation}'");
                         break;
                     default: die('Unknown database driver');
                 }
@@ -1690,13 +1718,11 @@ function upgradeTokenTables179()
     $oDB = Yii::app()->db;
     $oSchema = Yii::app()->db->schema;
     switch (Yii::app()->db->driverName){
-        case 'sqlsrv':
-        case 'dblib':
-        case 'mssql':
-            $sSubstringCommand='substring';
+        case 'pgsql':
+            $sSubstringCommand='substr';
             break;
         default:
-            $sSubstringCommand='substr';
+            $sSubstringCommand='substring';
     }
     $surveyidresult = dbGetTablesLike("tokens%");
     if ($surveyidresult)
@@ -2353,52 +2379,18 @@ function upgradeTokens128()
 }
 
 
-function fixMySQLCollations()
+function fixMySQLCollations($sEncoding, $sCollation)
 {
-    global $modifyoutput;
-    $oDB = Yii::app()->db;
-    $sql = 'SHOW TABLE STATUS';
-    $dbprefix = Yii::app()->getDb()->tablePrefix;
-    $result = Yii::app()->getDb()->createCommand($sql)->queryAll();
-    foreach ( $result as $tables ) {
-        // Loop through all tables in this database
-        $table = $tables['Name'];
-        $tablecollation=$tables['Collation'];
-        if (strpos($table,'old_')===false  && ($dbprefix==''  || ($dbprefix!='' && strpos($table,$dbprefix)!==false)))
+    $surveyidresult = dbGetTablesLike("%");
+    if ($surveyidresult)
+    {
+        foreach ( $surveyidresult as $sTableName )
         {
-            if ($tablecollation!='utf8_unicode_ci')
-            {
-                modifyDatabase("","ALTER TABLE $table COLLATE utf8_unicode_ci");
-                echo $modifyoutput; flush();@ob_flush();
-            }
-
-            # Now loop through all the fields within this table
-            $result2 = Yii::app()->getDb()->createCommand("SHOW FULL COLUMNS FROM ".$table)->queryAll();
-            foreach ( $result2 as $column )
-            {
-                if ($column['Collation']!= 'utf8_unicode_ci' )
-                {
-                    $field_name = $column['Field'];
-                    $field_type = $column['Type'];
-                    $field_default = $column['Default'];
-                    if ($field_default!='NULL') {$field_default="'".$field_default."'";}
-                    # Change text based fields
-                    $skipped_field_types = array('char', 'text', 'enum', 'set');
-
-                    foreach ( $skipped_field_types as $type )
-                    {
-                        if ( strpos($field_type, $type) !== false )
-                        {
-                            $modstatement="ALTER TABLE $table CHANGE `$field_name` `$field_name` $field_type CHARACTER SET utf8 COLLATE utf8_unicode_ci";
-                            if ($type!='text') {$modstatement.=" DEFAULT $field_default";}
-                            modifyDatabase("",$modstatement);
-                            echo $modifyoutput; flush();@ob_flush();
-                        }
-                    }
-                }
-            }
+            Yii::app()->getDb()->createCommand("ALTER TABLE {$sTableName} CONVERT TO CHARACTER SET {$sEncoding} COLLATE {$sCollation};")->execute();
         }
     }
+    $sDatabaseName=getDBConnectionStringProperty('dbname');
+    Yii::app()->getDb()->createCommand("ALTER DATABASE `$sDatabaseName` DEFAULT CHARACTER SET {$sEncoding} COLLATE {$sCollation};");
 }
 
 function upgradeSurveyTables126()
@@ -2548,6 +2540,14 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
             if ($bAllowNull!=true && $sDefault!='NULL')
             {
                 $oDB->createCommand("UPDATE {$sTable} SET [{$sColumn}]='{$sDefault}' where [{$sColumn}] is NULL;")->execute();
+            }
+            if ($bAllowNull!=true)
+            {
+                $sType.=' NOT NULL';
+            }
+            else
+            {
+                $sType.=' NULL';
             }
             $oDB->createCommand()->alterColumn($sTable,$sColumn,$sType);
             if ($sDefault!='NULL')

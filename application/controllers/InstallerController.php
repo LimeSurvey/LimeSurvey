@@ -359,7 +359,7 @@ class InstallerController extends CController {
                         Yii::app()->session['databaseDontExist'] = true;
 
                         $aValues['dbname'] = $oModel->dbname;
-                        
+
                         // The database doesn't exist, etc. TODO: renderPartial should be done in the view, really.
                         $aValues['adminoutputText'] = $this->renderPartial('/installer/nodatabase_view', $aValues, true);
 
@@ -441,7 +441,7 @@ class InstallerController extends CController {
             case 'mysql':
             try
             {
-                $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
+                $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")->execute();
             }
             catch(Exception $e)
             {
@@ -949,7 +949,7 @@ class InstallerController extends CController {
             switch ($sDatabaseType) {
                 case 'mysql':
                 case 'mysqli':
-                    $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;")->execute();
+                    $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
                     break;
             }
         } catch(Exception $e) {
