@@ -316,9 +316,10 @@ class InstallerController extends CController {
                         //wrte config file! as we no longer redirect to optional view
                         $this->_writeConfigFile();
 
-                        //$this->redirect(array("installer/loadOptView"));
                         header("refresh:5;url=".$this->createUrl("/admin"));
-                        echo sprintf( gT('The database does exists and contains LimeSurvey tables. You\'ll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click <a href="%s">here</a>.', 'unescaped'), $this->createUrl("/admin"));
+                        $aData['noticeMessage'] = gT('The database exists and contains LimeSurvey tables.');
+                        $aData['text'] = sprintf( gT('You\'ll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click <a href="%s">here</a>.', 'unescaped'), $this->createUrl("/admin"));
+                        $this->render('/installer/redirectmessage_view',$aData);
                         exit();
                     }
 
