@@ -6,14 +6,14 @@
             <div class='form-group'>
                 <label for='showtextinline' class="col-sm-5 control-label" ><?php eT("Show text responses inline:") ?></label>
                 <div class='col-sm-1'>
-                    <input type='checkbox' id='showtextinline' name='showtextinline' <?php if(isset($showtextinline) && $showtextinline == 1) {echo "checked='checked'"; } ?> />
+                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'showtextinline', 'id'=>'showtextinline', 'value'=>($showtextinline==1), 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                 </div>
             </div>
 
             <div class='form-group'>
                 <label for='usegraph'  class="col-sm-5 control-label" ><?php eT("Show graphs:"); ?></label>
                 <div class='col-sm-1'>
-                    <input type='checkbox' id='usegraph' name='usegraph' <?php if (isset($usegraph) && $usegraph == 1) { echo "checked='checked'"; } ?> />
+                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'usegraph', 'id'=>'usegraph', 'value'=>($usegraph==1), 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                 </div>
                 <?php if($error != '') { echo "<div id='grapherror' style='display:none'>$error<hr /></div>"; } ?>
             </div>
@@ -35,7 +35,7 @@
                 <div class='col-sm-5'>
                     <select name="charttype" id='charttype' class="form-control">
                         <option value="default" selected="selected"><?php eT("As defined in question settings");?></option>
-                        <option value="0" ><?php eT('Bar chart');?></option>
+                        <option value="0"><?php eT('Bar chart');?></option>
                         <option value="1"><?php eT('Pie chart');?></option>
                         <option value="2"><?php eT('Radar chart');?></option>
                         <option value="3"><?php eT('Line chart');?></option>

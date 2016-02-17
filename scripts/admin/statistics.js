@@ -179,12 +179,6 @@ $(document).ready(function() {
         $('.chartjs-container').loadGraph();
     }
 
-    $("[name='viewsummaryall']").bootstrapSwitch();
-    $("[name='noncompleted']").bootstrapSwitch();
-    $("[name='showtextinline']").bootstrapSwitch();
-    $("[name='usegraph']").bootstrapSwitch();
-
-
     $('#generalfilters-chevron').click(function(){
         toggleSection($('#generalfilters-chevron'), $('#statisticsgeneralfilters') );
     });

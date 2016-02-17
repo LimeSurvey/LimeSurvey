@@ -19,14 +19,14 @@
             <div class='form-group'>
                 <label class="col-sm-4 control-label" for='viewsummaryall'><?php eT("View summary of all available fields:"); ?></label>
                 <div class='col-sm-1'>
-                    <input type='checkbox' id='viewsummaryall' name='viewsummaryall' <?php if (isset($_POST['viewsummaryall'])) { echo "checked='checked'";} ?> />
+                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'viewsummaryall', 'id'=>'viewsummaryall', 'value'=>(isset($_POST['viewsummaryall'])), 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                 </div>
             </div>
 
             <div class='form-group'>
                 <label class="col-sm-4 control-label" id='noncompletedlbl' for='noncompleted' title='<?php eT("Count stats for each question based only on the total number of responses for which the question was displayed"); ?>'><?php eT("Subtotals based on displayed questions:"); ?></label>
                 <div class='col-sm-1'>
-                    <input type='checkbox' id='noncompleted' name='noncompleted' <?php if (isset($_POST['noncompleted'])) {echo "checked='checked'"; } ?> />
+                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'noncompleted', 'id'=>'noncompleted', 'value'=>(isset($_POST['noncompleted'])), 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                 </div>
             </div>
 
