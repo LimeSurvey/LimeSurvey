@@ -448,17 +448,6 @@ class responses extends Survey_Common_Action
             'label' => gT("Completed"),
         );
 
-        $column_model[] = array(
-            'name'=>'startlanguage',
-            'index'=>'startlanguage',
-            'sorttype'=>'string',
-            'sortable'=>true,
-            'width'=>'50',
-            'resizable' => true,// Strangely : don't work
-            'align'=>'left',
-            'label'=>viewHelper::getFieldText($fields['startlanguage']),
-        );
-
         // defaultSearch is the default search done before send request in json. Actually : completed and token only. Can be extended ( js is ready) ?
         $defaultSearch=array();
         if (incompleteAnsFilterState() == "incomplete")
@@ -517,7 +506,16 @@ class responses extends Survey_Common_Action
                 $defaultSearch['token']=$sTokenSearch;
             }
         }
-
+        $column_model[] = array(
+            'name'=>'startlanguage',
+            'index'=>'startlanguage',
+            'sorttype'=>'string',
+            'sortable'=>true,
+            'width'=>'50',
+            'resizable' => true,// Strangely : don't work
+            'align'=>'left',
+            'label'=>viewHelper::getFieldText($fields['startlanguage']),
+        );
 
         // All other columns are based on the questions.
         // An array to control unicity of $code (EM code)
