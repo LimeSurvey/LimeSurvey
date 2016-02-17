@@ -348,8 +348,8 @@ $(document).ready(function() {
                 else
                 {
                     var newForm = jQuery('<form>', {
-                        'action': remindurl,
-                        'target': 'inviteurl'
+                        'action': inviteurl,
+                        'target': '_blank'
                     }).append(jQuery('<input>', {
                         'name': 'tokenids',
                         'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
