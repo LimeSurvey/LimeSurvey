@@ -158,9 +158,11 @@ class statistics extends Survey_Common_Action {
         //put the question information into the filter array
         $filters = array();
         $aGroups = array();
+        $keyone = 0;
         foreach ($rows as $row)
         {
             //store some column names in $filters array
+
             $filters[]=array($row['qid'],
             $row['gid'],
             $row['type'],
@@ -174,12 +176,13 @@ class statistics extends Survey_Common_Action {
                 $aGroups[$row['group_name']]['gid'] = $row['gid'];
                 $aGroups[$row['group_name']]['name'] = $row['group_name'];
             }
-            $aGroups[$row['group_name']]['questions'][] = array($row['qid'],
+            $aGroups[$row['group_name']]['questions'][$keyone] = array($row['qid'],
             $row['gid'],
             $row['type'],
             $row['title'],
             $row['group_name'],
             flattenText($row['question'])); ;
+            $keyone = $keyone+1;
         }
         $aData['filters'] = $filters;
         $aData['aGroups'] = $aGroups;
