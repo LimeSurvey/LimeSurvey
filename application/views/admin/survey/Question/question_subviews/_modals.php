@@ -38,12 +38,19 @@
             </div>
 
             <div class="modal-body">
-                <select id='labelsets' size='10' style='width:250px;'>
-                    <option>&nbsp;</option>
-                </select>
-                <div id='labelsetpreview' style='col-xs-6'>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <select id='labelsets' size='10' style='width:250px;'>
+                            <option>&nbsp;</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <div id='labelsetpreview'>
 
+                        </div>
+                    </div>
                 </div>
+
             </div>
             <div class="modal-footer button-list">
                 <button id='btnlsreplace' type='button' class='btn btn-default'><?php eT('Replace'); ?></button>
