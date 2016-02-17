@@ -1310,7 +1310,6 @@ class InstallerController extends CController {
         try
         {
             $testPdo = new PDO($sDsn,$sDatabaseUser,$sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-            $testPdo = null;
         }
         catch(Exception $e)
         {
@@ -1328,7 +1327,6 @@ class InstallerController extends CController {
             try
             {
                 $testPdo = new PDO($sDsn,$sDatabaseUser,$sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-                $testPdo = null;
             }
             catch(Exception $e)
             {
@@ -1336,7 +1334,7 @@ class InstallerController extends CController {
                 /* But Yii sedn exception in same condition : the show this error */
                 if (!empty($aData['model'])) {
                     $aData['model']->addError('dblocation', gT('Try again! Connection with database failed.'));
-                    $aData['model']->addError('dblocation', gT('Reason: ') . $e->getMessage());
+                    $aData['model']->addError('dblocation', gT('Reason:').' ' . $e->getMessage());
                     $this->render('/installer/dbconfig_view', $aData);
                     Yii::app()->end();
                 }
@@ -1346,8 +1344,20 @@ class InstallerController extends CController {
                     throw new CDbException('CDbConnection failed to open the DB connection.',(int)$e->getCode(),$e->errorInfo);
                 }
             }
+            $testPdo = null;
             return false;
         }
+        $sMinimumMySQLVersion='5.5.3';
+        if ($sDatabaseType=='mysql' && version_compare($testPdo->getAttribute(constant("PDO::ATTR_SERVER_VERSION")),$sMinimumMySQLVersion)==-1)
+        {
+            if (!empty($aData['model'])) {
+                $aData['model']->addError('dblocation', sprintf(gT('The database does not meet the minimum MySQL server version requirement for LimeSurvey (%s).'),$sMinimumMySQLVersion));
+                $this->render('/installer/dbconfig_view', $aData);
+                Yii::app()->end();
+            }
+        }
+        $testPdo = null;
+
         return true;
     }
 }
