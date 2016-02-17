@@ -65,57 +65,43 @@
         </div>
     </div>
 
-    <!-- Use CAPTCHA for -->
+    <!-- Use CAPTCHA for survey access -->
+    <?php $usecap = $esrow['usecaptcha']; // Just a short-hand ?>
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='usecaptcha'><?php  eT("Use CAPTCHA for"); ?>:</label>
+        <label class="col-sm-4 control-label" for='usecaptcha'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
         <div class="col-sm-8">
-            <select name='usecaptcha' id='usecaptcha'  class="form-control" >
-                <option value='A'
-                <?php if ($esrow['usecaptcha'] == "A") { ?>
-                      selected='selected'
-                <?php } ?>
-                     ><?php  eT("Survey Access"); ?> / <?php  eT("Registration"); ?> / <?php echo gT("Save & Load"); ?></option>
-                <option value='B'
-                <?php if ($esrow['usecaptcha'] == "B") { ?>
-                      selected='selected'
-                <?php } ?>
-
-                     ><?php  eT("Survey Access"); ?> / <?php  eT("Registration"); ?> / ---------</option>
-                <option value='C'
-                <?php if ($esrow['usecaptcha'] == "C") { ?>
-                      selected='selected'
-                <?php } ?>
-
-                     ><?php  eT("Survey Access"); ?> / ------------ / <?php  eT("Save & Load"); ?></option>
-                <option value='D'
-                <?php if ($esrow['usecaptcha'] == "D") { ?>
-                      selected='selected'
-                <?php } ?>
-
-                     >------------- / <?php  eT("Registration"); ?> / <?php  eT("Save & Load"); ?></option>
-                <option value='X'
-
-                <?php if ($esrow['usecaptcha'] == "X") { ?>
-                      selected='selected'
-                <?php } ?>
-
-                     ><?php  eT("Survey Access"); ?> / ------------ / ---------</option>
-                <option value='R'
-                <?php if ($esrow['usecaptcha'] == "R") { ?>
-                      selected='selected'
-                <?php } ?>
-                     >------------- / <?php  eT("Registration"); ?> / ---------</option>
-                <option value='S'
-                <?php if ($esrow['usecaptcha'] == "S") { ?>
-                      selected='selected'
-                <?php } ?>
-                     >------------- / ------------ / <?php  eT("Save & Load"); ?></option>
-                <option value='N'
-                <?php if ($esrow['usecaptcha'] == "N") { ?>
-                      selected='selected'";
-                <?php } ?>
-                     >------------- / ------------ / ---------</option>
-            </select>
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'usecaptcha_surveyaccess', 
+                'value'=> $usecap === 'A' || $usecap === 'B' || $usecap === 'C' || $usecap === 'X',
+                'onLabel'=>gT('On'),'offLabel'=>gT('Off')));
+            ?>
         </div>
     </div>
+
+    <!-- Use CAPTCHA for registration -->
+    <div class="form-group">
+        <label class="col-sm-4 control-label" for='usecaptcha'><?php  eT("Use CAPTCHA for registration:"); ?></label>
+        <div class="col-sm-8">
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'usecaptcha_registration', 
+                'value'=> $usecap === 'A' || $usecap === 'B' || $usecap === 'D' || $usecap === 'R',
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')));
+            ?>
+        </div>
+    </div>
+
+    <!-- Use CAPTCHA for save and load -->
+    <div class="form-group">
+        <label class="col-sm-4 control-label" for='usecaptcha'><?php  eT("Use CAPTCHA for save and load:"); ?></label>
+        <div class="col-sm-8">
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'usecaptcha_saveandload', 
+                'value'=> $usecap === 'A' || $usecap === 'C' || $usecap === 'D' || $usecap === 'S',
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')));
+            ?>
+        </div>
+    </div>
+
 </div>

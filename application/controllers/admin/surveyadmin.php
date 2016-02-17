@@ -1003,31 +1003,24 @@ class SurveyAdmin extends Survey_Common_Action
             $aData['aTabContents'] = $aTabContents;
             $aData['aTabTitles'] = $aTabTitles;
 
+            $esrow = array();
+            $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
+            $aData['esrow'] = $esrow;
 
+            $aData = array_merge($aData, $this->_generalTabEditSurvey($iSurveyID, $esrow));
+            $aData = array_merge($aData, $this->_tabPresentationNavigation($esrow));
+            $aData = array_merge($aData, $this->_tabPublicationAccess($esrow));
+            $aData = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
+            $aData = array_merge($aData, $this->_tabTokens($esrow));
+            $aData = array_merge($aData, $this->_tabPanelIntegration($esrow));
+            $aData = array_merge($aData, $this->_tabResourceManagement($iSurveyID));
 
-        $esrow = array();
-        $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
-        $aData['esrow'] = $esrow;
+            $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
 
-        $aData = array_merge($aData, $this->_generalTabEditSurvey($iSurveyID, $esrow));
-        $aData = array_merge($aData, $this->_tabPresentationNavigation($esrow));
-        $aData = array_merge($aData, $this->_tabPublicationAccess($esrow));
-        $aData = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
-        $aData = array_merge($aData, $this->_tabTokens($esrow));
-        $aData = array_merge($aData, $this->_tabPanelIntegration($esrow));
-        $aData = array_merge($aData, $this->_tabResourceManagement($iSurveyID));
-
-
-        $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
-
-        $aData['questions'] = $oResult;
-        $aData['display']['menu_bars']['surveysummary'] = "editsurveysettings";
-        $tempData = $aData;
-        $aData['settings_data'] = $tempData;
-
-
-
-
+            $aData['questions'] = $oResult;
+            $aData['display']['menu_bars']['surveysummary'] = "editsurveysettings";
+            $tempData = $aData;
+            $aData['settings_data'] = $tempData;
 
             $aData['sidemenu']['state'] = false;
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
@@ -1042,7 +1035,9 @@ class SurveyAdmin extends Survey_Common_Action
             $aViewUrls[] = 'editLocalSettings_main_view';
         }
         else
+        {
             $this->getController()->error('Access denied');
+        }
 
         $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
     }
