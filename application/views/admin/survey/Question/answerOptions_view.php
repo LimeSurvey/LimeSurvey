@@ -98,7 +98,7 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                <?php if( $first): ?>
+                                                <?php if( $first && $activated != 'Y'): ?>
                                                     <?php eT("Position");?>
                                                 <?php else: ?>
                                                     &nbsp;
