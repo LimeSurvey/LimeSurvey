@@ -3188,6 +3188,12 @@ function do_multiplenumeric($ia)
                 }
                 $dispVal = str_replace('.',$sSeparator,$dispVal);
             }
+
+            if($slider_middlestart!='')
+            {
+                $slider_default = $slider_middlestart;
+            }
+
             $itemDatas = array(
                 'extraclass'=>$extraclass,
                 'sDisplayStyle'=>$sDisplayStyle,
