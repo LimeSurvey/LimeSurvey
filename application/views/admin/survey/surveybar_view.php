@@ -6,7 +6,7 @@
 ?>
 <div class='menubar surveybar' id="surveybarid">
     <div class='row container-fluid'>
-        <div class="col-md-12 col-xs-6">
+        <div class="col-md-8 col-xs-6">
 
             <!-- Add a new group -->
             <?php if(isset($surveybar['buttons']['newgroup'])):?>
@@ -548,11 +548,23 @@
 
 
             <?php endif;?>
+            <?php if(isset($surveybar['importquestion'])):?>
+                <a class="btn btn-default" href="<?php echo Yii::App()->createUrl('admin/questions/sa/importview/surveyid/'.$surveyid);?>" role="button">
+                    <span class="icon-import"></span>
+                    <?php eT('Import a question'); ?>
+                </a>
+            <?php endif;?>
 
+            <?php if(isset($surveybar['importquestiongroup'])):?>
+                <a class="btn btn-default" href="<?php echo Yii::App()->createUrl('admin/questiongroups/sa/importview/surveyid/'.$surveyid);?>" role="button">
+                    <span class="icon-import"></span>
+                    <?php eT('Import a group'); ?>
+                </a>
+            <?php endif;?>
         </div>
 
         <!-- right action buttons -->
-        <div class="col-md-offset-8 col-md-4 text-right">
+        <div class=" col-md-4 text-right">
             <?php if(isset($surveybar['savebutton']['form'])):?>
 
                 <!-- Save -->
