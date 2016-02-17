@@ -1217,7 +1217,7 @@ class database extends Survey_Common_Action
             $oSurvey->sendconfirmation = App()->request->getPost('sendconfirmation');
             $oSurvey->tokenanswerspersistence = App()->request->getPost('tokenanswerspersistence');
             $oSurvey->alloweditaftercompletion = App()->request->getPost('alloweditaftercompletion');
-            $oSurvey->usecaptcha = $this->transcribeCaptchaOptions();
+            $oSurvey->usecaptcha = Survey::transcribeCaptchaOptions();
             $oSurvey->emailresponseto = App()->request->getPost('emailresponseto');
             $oSurvey->emailnotificationto = App()->request->getPost('emailnotificationto');
             $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
@@ -1351,55 +1351,4 @@ class database extends Survey_Common_Action
         }
     }
 
-    /**
-     * Transcribe from 3 checkboxes to 1 char for captcha usages
-     *
-     * 'A' = All three captcha enabled
-     * 'B' = All but save and load
-     * 'C' = All but registration
-     * 'D' = All but survey access
-     * 'X' = Only survey access
-     * 'R' = Only registration
-     * 'S' = Only save and load
-     * 'N' = None
-     *
-     * @return string One character that corresponds to captcha usage
-     * @todo Should really be saved as three fields in the database!
-     */
-    private function transcribeCaptchaOptions() {
-        $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess');
-        $registration = App()->request->getPost('usecaptcha_registration');
-        $saveandload = App()->request->getPost('usecaptcha_saveandload');
-
-        if ($surveyaccess && $registration && $saveandload)
-        {
-            return 'A';
-        }
-        elseif ($surveyaccess && $registration)
-        {
-            return 'B';
-        }
-        elseif ($surveyaccess && $saveandload)
-        {
-            return 'C';
-        }
-        elseif ($registration && $saveandload)
-        {
-            return 'D';
-        }
-        elseif ($surveyaccess)
-        {
-            return 'X';
-        }
-        elseif ($registration)
-        {
-            return 'R';
-        }
-        elseif ($saveandload)
-        {
-            return 'S';
-        }
-
-        return 'N';
-    }
 }

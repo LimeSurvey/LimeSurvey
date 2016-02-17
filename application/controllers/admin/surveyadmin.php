@@ -1768,7 +1768,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oSurvey->sendconfirmation = App()->request->getPost('sendconfirmation');
         $oSurvey->tokenanswerspersistence = App()->request->getPost('tokenanswerspersistence');
         $oSurvey->alloweditaftercompletion = App()->request->getPost('alloweditaftercompletion');
-        $oSurvey->usecaptcha = App()->request->getPost('usecaptcha');
+        $oSurvey->usecaptcha = Survey::transcribeCaptchaOptions();
         $oSurvey->emailresponseto = App()->request->getPost('emailresponseto');
         $oSurvey->emailnotificationto = App()->request->getPost('emailnotificationto');
         $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
@@ -1939,7 +1939,7 @@ class SurveyAdmin extends Survey_Common_Action
             'sendconfirmation' => App()->request->getPost('sendconfirmation'),
             'tokenanswerspersistence' => App()->request->getPost('tokenanswerspersistence'),
             'alloweditaftercompletion' => App()->request->getPost('alloweditaftercompletion'),
-            'usecaptcha' => App()->request->getPost('usecaptcha'),
+            'usecaptcha' => Survey::transcribeCaptchaOptions(),
             'publicstatistics' => App()->request->getPost('publicstatistics'),
             'publicgraphs' => App()->request->getPost('publicgraphs'),
             'assessments' => App()->request->getPost('assessments'),
