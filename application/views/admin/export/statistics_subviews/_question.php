@@ -861,7 +861,7 @@
                 ! - List (Dropdown)
                 */
             default:
-
+                echo "<!-- Default rendering in _question view -->";
                 //loop through answers
                 foreach($result[$key1] as $row)
                 {
