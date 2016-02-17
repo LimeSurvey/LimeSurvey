@@ -31,7 +31,36 @@
 
                 <!-- The tabs & tab-fanes -->
                 <div class="col-lg-8 col-md-6 col-sm-5 content-right">
-                    <?php $this->renderPartial('./survey/Question/question_subviews/_tabs',array('eqrow'=>$eqrow,'addlanguages'=>$addlanguages, 'surveyid'=>$surveyid, 'gid'=>NULL, 'qid'=>NULL, 'adding'=>$adding, 'aqresult'=>$aqresult, 'action'=>$action )); ?>
+                    <?php if($adding):?>
+                        <?php
+                            $this->renderPartial(
+                                './survey/Question/question_subviews/_tabs',
+                                array(
+                                    'eqrow'=>$eqrow,
+                                    'addlanguages'=>$addlanguages,
+                                    'surveyid'=>$surveyid,
+                                    'gid'=>NULL, 'qid'=>NULL,
+                                    'adding'=>$adding,
+                                    'aqresult'=>$aqresult,
+                                    'action'=>$action
+                                )
+                            ); ?>
+                    <?php else:?>
+                        <?php
+                            $this->renderPartial(
+                                './survey/Question/question_subviews/_tabs',
+                                array(
+                                    'eqrow'=>$eqrow,
+                                    'addlanguages'=>$addlanguages,
+                                    'surveyid'=>$surveyid,
+                                    'gid'=>$gid, 'qid'=>$qid,
+                                    'adding'=>$adding,
+                                    'aqresult'=>$aqresult,
+                                    'action'=>$action
+                                )
+                            ); ?>
+
+                    <?php endif;?>
                 </div>
 
                 <!-- The Accordion -->

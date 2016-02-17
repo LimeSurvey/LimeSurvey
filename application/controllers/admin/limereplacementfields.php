@@ -61,11 +61,13 @@ class limereplacementfields extends Survey_Common_Action
 
         foreach ($fieldmap as $question)
         {
-            if (empty($question['qid'])) {
+            if (empty($question['qid']))
+            {
                 continue;
             }
 
-            if (is_null($qid) || $this->_shouldAddQuestion($action, $gid, $qid, $question, $previousQuestion)) {
+            if (is_null($qid) || $this->_shouldAddQuestion($action, $gid, $qid, $question, $previousQuestion))
+            {
                 $isPreviousPageQuestion = $this->_addQuestionToList($action, $gid, $question, $questionType, $surveyformat, $isPreviousPageQuestion, $questionList);
                 $previousQuestion = $question;
             }
