@@ -46,6 +46,13 @@ class responses extends Survey_Common_Action
         Yii::app()->loadHelper('surveytranslator');
     }
 
+    /**
+     * Used to get responses data for browse etc
+     *
+     * @param mixed $params ?
+     * @return array
+     * @todo Don't use extract
+     */
     private function _getData($params)
     {
         if (is_numeric($params))
@@ -105,6 +112,9 @@ class responses extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * @todo View what?
+     */
     public function view($iSurveyID, $iId, $sBrowseLang = '')
     {
         if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
@@ -337,9 +347,13 @@ class responses extends Survey_Common_Action
         $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
 
-
-
-    function browse($iSurveyId)
+    /**
+     * Show responses for survey using jQgrid
+     *
+     * @param int $iSurveyId
+     * @return void
+     */
+    public function browse($iSurveyId)
     {
 
         if(!Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
@@ -354,6 +368,7 @@ class responses extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jqgrid');
 
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "listresponse.js" ));
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "css/jqgrid.css" );
 
         $aData = $this->_getData($iSurveyId);
         $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
