@@ -165,7 +165,7 @@ function addinput()
             }
 
             // Line insertion
-            inserthtml= '<tr class="row_'+newposition+'" style="display:none;">';
+            inserthtml= '<tr id="row_'+newposition+'" style="display:none;">';
             inserthtml+='   <td style="vertical-align: middle;">';
             inserthtml+='       <span class="glyphicon glyphicon-move"></span>';
             inserthtml+='   </td>';
@@ -209,7 +209,7 @@ function addinput()
                 relbutton+='           </a>';
                 relbutton+='</td>';
             }
-            inserthtml ='<tr class="row_'+newposition+'" style="display:none;">';
+            inserthtml ='<tr id="row_'+newposition+'" style="display:none;">';
             inserthtml+='   <td>&nbsp;</td>';
             inserthtml+='   <td>'+htmlspecialchars(sNextCode)+'</td>';
 
@@ -574,18 +574,23 @@ function transferlabels()
     var qID=$('input[name=qid]').val();
 
     surveyid=$('input[name=sid]').val();
+
     if ($(this).attr('id')=='btnlsreplace')
-        {
+    {
         var lsreplace=true;
+
     }
     else
-        {
+    {
         var lsreplace=false;
     }
 
+    console.log('lsreplace: '+lsreplace);
+
     if (lsreplace)
+    {
+        $('.answertable:eq('+scale_id+') tbody tr').each(function()
         {
-        $('.answertable:eq('+scale_id+') tbody tr').each(function(){
             aRowInfo=this.id.split('_');
             $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
         });
@@ -601,13 +606,14 @@ function transferlabels()
             languages=langs.split(';');
             var x;
             var defaultdata_labels = null;
+
             for (x in languages)
-                {
+            {
                 lang_x_found_in_label=false;
                 var tablerows='';
                 var y;
                 for (y in json)
-                    {
+                {
                     language=json[y];
                     var lsrows = new Array();
                     //defaultdata=language[languages[0]][0];
@@ -631,7 +637,7 @@ function transferlabels()
                             {
                                 $(".relevance").toggle(false);
                                 tablerows=tablerows+
-                                '<tr class="row_'+k+'_'+scale_id+'" >'+
+                                '<tr id="row_'+k+'_'+scale_id+'" >'+
                                 '   <td>'+
                                 '       <span class="glyphicon glyphicon-move text-success"></span>'+
                                 '   </td>'+
@@ -661,9 +667,9 @@ function transferlabels()
                                 '</tr>';
                             }
                             else
-                                {
+                            {
                                 tablerows=tablerows+
-                                '<tr class="row_'+k+'_'+scale_id+'" >'+
+                                '<tr id="row_'+k+'_'+scale_id+'" >'+
                                 '   <td>&nbsp;</td>'+
                                 '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
 
@@ -687,13 +693,13 @@ function transferlabels()
                     }
                 }
                 if (lang_x_found_in_label === false)
-                    {
+                {
                     lsrows=defaultdata_labels[0];
                     k=0;
                     for (k in lsrows)
-                        {
+                    {
                         tablerows=tablerows+
-                        '<tr class="row_'+k+'_'+scale_id+'" >'+
+                        '<tr id="row_'+k+'_'+scale_id+'" >'+
                         '   <td>&nbsp;</td>'+
                         '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
 
@@ -714,16 +720,21 @@ function transferlabels()
                         '</tr>';
                     }
                 }
-                if (lsreplace) {
-                    $('#answertable_'+languages[x]+'_'+scale_id+' tbody').empty();
+
+                $('#labelsetbrowserModal').modal('hide');
+                if (lsreplace)
+                {
+                    $('#answers_'+languages[x]+'_'+scale_id+' tbody').empty();
                 }
-                $('#answertable_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
+
+                $('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
                 // Unbind any previous events
-                $('#answertable_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
-                $('#answertable_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
-                $('#answertable_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
-                $('#answertable_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
-                $('#answertable_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
+                $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
+                $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
+                $('#answers_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
+                $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
+                $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
+
             }
             /*$('#labelsetbrowser').dialog('close');*/
             $('.tab-page:first .answertable tbody').sortable('refresh');
@@ -794,7 +805,7 @@ function quickaddlabels()
             if (x==0)
             {
                 tablerows=tablerows+
-                '<tr class="row_'+k+'" >'+
+                '<tr id="row_'+k+'" >'+
                 '   <td>'+
                 '       <span class="glyphicon glyphicon-move text-success"></span>'+
                 '   </td>'+
@@ -834,7 +845,7 @@ function quickaddlabels()
                 {
 
                     tablerows=tablerows+
-                    '<tr class="row_'+k+'" >'+
+                    '<tr id="row_'+k+'" >'+
                     '   <td>&nbsp;</td>'+
                     '   <td>&nbsp;</td>'+
 
