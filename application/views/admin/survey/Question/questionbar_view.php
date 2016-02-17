@@ -152,7 +152,7 @@ $aReplacementData=array();
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')):?>
                 <?php if($qtypes[$qrrow['type']]['subquestions'] >0):?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
-                        <span class="icon-subquestions"></span>
+                        <span class="icon-defaultanswers"></span>
                         <?php eT("Edit subquestions "); ?>
                     </a>
                 <?php endif;?>

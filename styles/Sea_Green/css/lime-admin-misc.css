@@ -54,3 +54,12 @@ iframe#dialog {
 #pager {
     position: relative;
 }
+
+#labelsetpreview {
+    overflow-x: hidden;
+}
+
+#labelsetbrowserModal .modal-dialog
+{
+    width: 80%;
+}

@@ -112,7 +112,7 @@
                                 <?php eT("Warning"); ?>:
                                 <a href='<?php echo $this->createUrl("admin/questions/sa/subquestions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'>
                                     <?php eT("You need to add subquestions to this question"); ?>
-                                    <span class="icon-subquestions text-success" title='<?php eT("Edit subquestions for this question"); ?>' ></span>
+                                    <span class="icon-defaultanswers text-success" title='<?php eT("Edit subquestions for this question"); ?>' ></span>
                                 </a>
                             </span>
                         </td>

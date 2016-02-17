@@ -39,12 +39,12 @@
 
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-3">
                         <select id='labelsets' size='10' style='width:250px;'>
                             <option>&nbsp;</option>
                         </select>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-9">
                         <div id='labelsetpreview'>
 
                         </div>
