@@ -2911,6 +2911,7 @@ input[type="checkbox"]:disabled:checked:after,
 
 .container-fluid .ui-widget-content .ui-state-default, .container-fluid .ui-jqgrid .ui-jqgrid-bdiv {
   padding-top: 0.5em;
+  padding-bottom: 0.5em;
 }
 
 .ui-dialog, .ui-jqdialog, .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable {

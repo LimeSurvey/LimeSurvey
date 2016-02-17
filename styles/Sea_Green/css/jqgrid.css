@@ -316,14 +316,10 @@ tr.ui-search-toolbar select {
 }
 
 .ui-jqgrid .ui-pg-input {
-    height: 13px;
-    margin: 0
 }
 
 .ui-jqgrid .ui-pg-selbox {
-    line-height: 18px;
     display: block;
-    height: 18px;
     margin: 0
 }
 
