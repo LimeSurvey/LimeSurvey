@@ -746,7 +746,7 @@ class participantsaction extends Survey_Common_Action
     */
     function exporttocsv()
     {
-        if (Yii::app()->request->getPost('searchcondition','') != '') // if there is a search condition then only the participants that match the search criteria are counted
+        if (Yii::app()->request->getPost('searchcondition','') !== '') // if there is a search condition then only the participants that match the search criteria are counted
         {
             $condition = explode("%7C%7C", Yii::app()->request->getPost('searchcondition',''));
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
@@ -1479,7 +1479,8 @@ class participantsaction extends Survey_Common_Action
         }
 
         $i = 0;
-        if (Permission::model()->hasGlobalPermission('participantpanel','update') &&  $iShareUserId>0)
+	//  $iShareUserId == 0 means any user 
+        if (Permission::model()->hasGlobalPermission('participantpanel','update') && $iShareUserId !== '') 
             foreach ($iParticipantId as $iId)
             {
                 $time = time();
