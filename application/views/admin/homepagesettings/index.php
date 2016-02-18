@@ -9,8 +9,8 @@
         'fullpagebar' => array(
             'boxbuttons'=>true,
             'returnbutton'=>array(
-                'url'=>true,
-                'text'=>gT('Return to admin panel'),
+                'url'=>'index',
+                'text'=>gT('Close'),
             ),
         )
     )); ?>

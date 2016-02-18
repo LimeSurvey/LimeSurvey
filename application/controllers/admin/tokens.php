@@ -1746,12 +1746,12 @@ class tokens extends Survey_Common_Action
             $aData['aSettings']=array(
                 'tokenstatus'=>array(
                     'type'=>'select',
-                    'label'=>gT('Survey status'),
+                    'label'=>gT('Survey status:'),
                     'options'=>$aOptionsStatus,
                 ),
                 'invitationstatus'=>array(
                     'type'=>'select',
-                    'label'=>gT('Invitation status'),
+                    'label'=>gT('Invitation status:'),
                     'options'=>array(
                         '0'=>gT('All'),
                         '1'=>gT('Invited'),
@@ -1760,7 +1760,7 @@ class tokens extends Survey_Common_Action
                 ),
                 'reminderstatus'=>array(
                     'type'=>'select',
-                    'label'=>gT('Reminder status'),
+                    'label'=>gT('Reminder status:'),
                     'options'=>array(
                         '0'=>gT('All'),
                         '1'=>gT('Reminder(s) sent'),
@@ -1769,17 +1769,17 @@ class tokens extends Survey_Common_Action
                 ),
                 'tokenlanguage'=>array(
                     'type'=>'select',
-                    'label'=>gT('Filter by language'),
+                    'label'=>gT('Filter by language:'),
                     'options'=>$aFilterByLanguage,
                 ),
                 'filteremail'=>array(
                     'type'=>'string',
-                    'label'=>gT('Filter by email address'),
+                    'label'=>gT('Filter by email address:'),
                     'help'=>gT('Only export entries which contain this string in the email address.'),
                 ),
                 'tokendeleteexported'=>array(
                     'type'=>'checkbox',
-                    'label'=>gT('Delete exported tokens'),
+                    'label'=>gT('Delete exported tokens:'),
                     'help'=>'Attention: If selected the exported tokens are deleted permanently from the token table.',
                 ),
             );

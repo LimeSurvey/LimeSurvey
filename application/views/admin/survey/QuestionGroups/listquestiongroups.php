@@ -25,7 +25,7 @@
                             ),
                         )); ?>
                         <div class="form-group">
-                            <?php echo $form->label($model, 'name', array('class'=>'col-sm-2 control-label text-right col-sm-offset-6')); ?>
+                            <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class'=>'col-sm-2 control-label text-right col-sm-offset-6')); ?>
                             <div class="col-sm-1 text-right">
                                 <?php echo $form->textField($model, 'group_name', array('class'=>'form-control')); ?>
                             </div>
@@ -46,8 +46,7 @@
                     $this->widget('bootstrap.widgets.TbGridView', array(
                         'id'=>'question-group-grid',
                         'dataProvider' => $model->search(),
-
-                        // Number of row per page selection
+                        'emptyText'=>gT('No questions groups found.'),
                         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
@@ -77,7 +76,6 @@
 
                             // Group Name
                             array(
-                                'header'=>gT('Group name'),
                                 'name'=>'group_name',
                                 'value'=>'$data->group_name',
                                 'htmlOptions' => array('class' => 'col-md-2'),

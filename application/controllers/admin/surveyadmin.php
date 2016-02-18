@@ -70,7 +70,7 @@ class SurveyAdmin extends Survey_Common_Action
         $model->active = null;
 
         // Filter state
-        if (isset($_GET['active']))
+        if (isset($_GET['active']) && !empty($_GET['active']))
         {
             $model->active = $_GET['active'];
         }

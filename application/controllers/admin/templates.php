@@ -367,7 +367,8 @@ class templates extends Survey_Common_Action
 //var_dump($templatename); echo "<hr/>";var_dump($editfile); echo "<hr/>";var_dump($screenname); die();
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile);
         App()->getClientScript()->reset();
-        App()->getComponent('bootstrap')->init();
+        // This was useless : it tried to load again bootstrap for admin interface, not for the iFramed survey...
+        //App()->getComponent('bootstrap')->init();
 
         // After reseting, we need register again the script : maybe move it to endScripts_view for allways needed scripts ?
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "admin_core.js" ));
@@ -748,7 +749,7 @@ class templates extends Survey_Common_Action
 
 
             App()->getClientScript()->registerPackage('jqueryui');
-            App()->getClientScript()->registerPackage('jquery-touch-punch');
+            //App()->getClientScript()->registerPackage('jquery-touch-punch');
             App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH."survey_runtime.js" ));
 
             App()->getClientScript()->render($myoutput);
@@ -865,6 +866,12 @@ class templates extends Survey_Common_Action
         // LimeSurvey style
         global $oEditedTemplate;
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+
+        // In survey mode, bootstrap is loaded via the app init.
+        // From template editor, we just add the bootstrap files to the js/css to load for template_helper::templatereplace()
+        $oEditedTemplate->config->files->css->filename[]="../../styles-public/bootstrap-for-template-editor.css";
+        $oEditedTemplate->config->files->js->filename[]="../../scripts/bootstrap-for-template-editor.js";
+
         //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
@@ -1151,13 +1158,14 @@ class templates extends Survey_Common_Action
                     $files[] = array("name" => $qs);
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
                 }
-
+                /*
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath  . "/startpage.pstpl", $aData, $oEditedTemplate));
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath  . "/welcome.pstpl", $aData, $oEditedTemplate));
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath  . "/privacy.pstpl", $aData, $oEditedTemplate));
+                */
 
                 $aData['aReplacements'] = array(
-                    'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-default btn-lg ">Next</button>'
+                    'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-default btn-lg">Next</button>'
                 );
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath  . "/navigator.pstpl", $aData, $oEditedTemplate));
 

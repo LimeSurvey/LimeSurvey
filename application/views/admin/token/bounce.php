@@ -10,7 +10,7 @@
                             <!-- Survey bounce email -->
                             <div class=" form-group setting control-group setting-email" data-name="bounce_email">
                                 <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="bounce_email">
-                                    <?php eT('Survey bounce email'); ?>
+                                    <?php eT('Survey bounce email address:'); ?>
                                 </label>
                                 <div class="default col-lg-4 col-sm-5 col-md-7 controls">
                                     <input class='form-control' size="50" type="email" value="<?php echo $settings['bounce_email'];?>" name="bounce_email" id="bounce_email" />
@@ -20,7 +20,7 @@
                             <!-- Bounce settings to be used -->
                             <div class=" form-group setting control-group setting-select" data-name="bounceprocessing">
                                 <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="bounceprocessing">
-                                    <?php eT('Bounce settings to be used');?>
+                                    <?php eT('Used bounce settings:');?>
                                 </label>
                                 <div class="default col-lg-4 col-sm-5 col-md-7 controls">
                                     <select id="bounceprocessing" name="bounceprocessing" class="form-control">
@@ -42,7 +42,7 @@
                             <!-- Server type -->
                             <div class=" form-group setting control-group setting-select" data-name="bounceaccounttype">
                                 <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="bounceaccounttype">
-                                    <?php eT("Server type"); ?>
+                                    <?php eT("Server type:"); ?>
                                 </label>
                                 <div class="default col-lg-4 col-sm-5 col-md-7 controls">
                                     <select id="bounceaccounttype" name="bounceaccounttype" class="form-control">
@@ -60,7 +60,7 @@
                             <!-- Server name port -->
                             <div class=" form-group setting control-group setting-string" data-name="bounceaccounthost">
                                 <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="bounceaccounthost">
-                                    <?php eT('Server name & port'); ?>
+                                    <?php eT('Server name & port:'); ?>
                                 </label>
                                 <div class="default col-lg-4 col-sm-5 col-md-7 controls">
                                     <input size="50" type="text" value="<?php echo $settings['bounceaccounthost']; ?>" name="bounceaccounthost" id="bounceaccounthost" />
@@ -73,7 +73,7 @@
                             <!-- User name -->
                             <div class=" form-group setting control-group setting-string" data-name="bounceaccountuser">
                                 <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="bounceaccountuser">
-                                    <?php eT('User name'); ?>
+                                    <?php eT('User name:'); ?>
                                 </label>
                                 <div class="default col-lg-4 col-sm-5 col-md-7 controls">
                                     <input size="50" type="text" value="<?php echo $settings['bounceaccountuser'];?>" name="bounceaccountuser" id="bounceaccountuser" />
@@ -83,7 +83,7 @@
                             <!-- Password -->
                             <div class=" form-group setting control-group setting-password" data-name="bounceaccountpass">
                                 <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="bounceaccountpass">
-                                    <?php eT('Password'); ?>
+                                    <?php eT('Password:'); ?>
                                 </label>
 
                                 <div class="default col-lg-4 col-sm-5 col-md-7 controls">
@@ -94,7 +94,7 @@
                             <!-- Encryption type  -->
                             <div class=" form-group setting control-group setting-select" data-name="bounceaccountencryption">
                                 <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="bounceaccountencryption">
-                                    <?php eT('Encryption type'); ?>
+                                    <?php eT('Encryption type:'); ?>
                                 </label>
                                 <div class="default col-lg-4 col-sm-5 col-md-7 controls">
                                     <select id="bounceaccountencryption" name="bounceaccountencryption" class="form-control">

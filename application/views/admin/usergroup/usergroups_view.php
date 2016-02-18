@@ -15,9 +15,8 @@
             <?php
                 $this->widget('bootstrap.widgets.TbGridView', array(
                     'dataProvider' => $model->search(),
-
-                    // Number of row per page selection
                     'id' => 'usergroups-grid',
+                    'emptyText'=>gT('No user groups found.'),
                     'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                         CHtml::dropDownList(
                             'pageSize',

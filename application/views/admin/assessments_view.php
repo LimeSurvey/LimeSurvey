@@ -126,7 +126,7 @@
 
             <!-- Scope, Total, Group -->
             <div class='form-group'>
-                <label class='control-label col-sm-2'><?php eT("Scope");?></label>
+                <label class='control-label col-sm-2'><?php eT("Scope:");?></label>
                 <div class='col-sm-10'>
                     <div class='radio'>
                         <label class='radio-inline'><input class='' type='radio' id='radiototal' name='scope' value='T' <?php if (!isset($editdata) || $editdata['scope'] == "T") {echo "checked='checked' ";} ?>/><?php eT("Total"); ?></label>
@@ -140,7 +140,7 @@
 
             <!-- Question group -->
             <div class='form-group'>
-                <label class='control-label col-sm-2' for='gid'><?php eT("Question group");?></label>
+                <label class='control-label col-sm-2' for='gid'><?php eT("Question group:");?></label>
                 <div class='col-sm-4'>
                     <?php
                     if (isset($groups))
@@ -163,7 +163,7 @@
 
             <!-- Minimum -->
             <div class='form-group'>
-                <label class='control-label col-sm-2' for='minimum'><?php eT("Minimum");?></label>
+                <label class='control-label col-sm-2' for='minimum'><?php eT("Minimum:");?></label>
                 <div class='col-sm-4'>
                     <input class='form-control' type='text' id='minimum' name='minimum' class='numbersonly'<?php if (isset($editdata)) {echo " value='{$editdata['minimum']}' ";} ?>/>
                 </div>
@@ -172,7 +172,7 @@
 
             <!-- Maximum -->
             <div class='form-group'>
-                <label class='control-label col-sm-2' for='maximum'><?php eT("Maximum");?></label>
+                <label class='control-label col-sm-2' for='maximum'><?php eT("Maximum:");?></label>
                 <div class='col-sm-4'>
                     <input class='form-control' type='text' id='maximum' name='maximum' class='numbersonly'<?php if (isset($editdata)) {echo " value='{$editdata['maximum']}' ";} ?>/>
                 </div>
