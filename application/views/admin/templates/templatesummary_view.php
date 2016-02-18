@@ -41,6 +41,8 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
     <div class="col-lg-8 templateeditor">
         <?php echo CHtml::form(array('admin/templates/sa/templatesavechanges'), 'post', array('id'=>'editTemplate', 'name'=>'editTemplate')); ?>
 
+        <input type='hidden' name='editfileindex' value='<?php echo $_GET['editfile']; ?>' />
+        <input type='hidden' name='useindex' value='<?php echo $_GET['useindex']; ?>' />
         <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
         <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
         <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
@@ -86,6 +88,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
             <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
             <input type='hidden' name='action' value='templatefiledelete' />
+
             </form>
         </div>
         <div style='margin-top:1em;'>
@@ -142,11 +145,8 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                         <iframe id='previewiframe' src='<?php echo $this->createUrl('admin/templates/sa/tmp/',array('id'=>$time)); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe>
                     </p>
                     </div>
-                    <?php } ?>
-
-
-
-
+                    <?php
+                } ?>
         </div>
     </div>
 </div>

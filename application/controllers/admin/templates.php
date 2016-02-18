@@ -596,6 +596,7 @@ class templates extends Survey_Common_Action
     */
     public function templatesavechanges()
     {
+
         if (!Permission::model()->hasGlobalPermission('templates','update'))
         {
             die('No permission');
@@ -615,9 +616,18 @@ class templates extends Survey_Common_Action
         }
 
         $action = returnGlobal('action');
-        $editfile = sanitize_filename(returnGlobal('editfile'));
+        //$editfile = sanitize_filename(returnGlobal('editfile'));
+        $editfile = returnGlobal('editfile');
         $sTemplateName = Template::templateNameFilter(App()->request->getPost('templatename'));
+        $editfileindex = App()->request->getPost('editfileindex');
+        $useindex = App()->request->getPost('useindex');
+        
         $screenname = returnGlobal('screenname');
+
+        global $oEditedTemplate;
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName);
+
+
         $files = $this->_initfiles($sTemplateName);
         $cssfiles = $this->_initcssfiles($oEditedTemplate);
 
@@ -625,7 +635,8 @@ class templates extends Survey_Common_Action
             Yii::app()->loadHelper('admin/template');
             $changedtext = str_replace("\r\n", "\n", $changedtext);
 
-            if ($editfile) {
+            if ($editfile)
+            {
                 // Check if someone tries to submit a file other than one of the allowed filenames
                 if (multiarray_search($files, 'name', $editfile) === false &&
                 multiarray_search($cssfiles, 'name', $editfile) === false
@@ -637,6 +648,7 @@ class templates extends Survey_Common_Action
                 }
 
                 $savefilename = gettemplatefilename(Yii::app()->getConfig('usertemplaterootdir') . "/" . $sTemplateName, $editfile);
+
                 if (is_writable($savefilename)) {
                     if (!$handle = fopen($savefilename, 'w'))
                     {
@@ -663,8 +675,11 @@ class templates extends Survey_Common_Action
 
             }
         }
-
-        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $sTemplateName));
+        //      'admin/templates/sa/view/editfile/'.$_GET['editfile'].'/screenname/'.$screenname.'/templatename/'.$sTemplateName.'/useindex/'.$_GET['useindex'];
+        //echo "admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $sTemplateName;
+        //die("OK");
+        //$this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $sTemplateName));
+        $this->getController()->redirect(array('admin/templates/sa/view/editfile/'.$editfileindex.'/screenname/'.$screenname.'/templatename/'.$sTemplateName.'/useindex/'.$useindex));
     }
 
     /**
