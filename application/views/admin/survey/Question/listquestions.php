@@ -63,7 +63,7 @@
                         'id' => 'question-grid',
                         'type'=>'striped',
 
-
+                        'emptyText'=>gT('No questions found.'),
                         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
