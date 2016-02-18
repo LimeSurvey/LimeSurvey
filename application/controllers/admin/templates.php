@@ -621,7 +621,7 @@ class templates extends Survey_Common_Action
         $sTemplateName = Template::templateNameFilter(App()->request->getPost('templatename'));
         $editfileindex = App()->request->getPost('editfileindex');
         $useindex = App()->request->getPost('useindex');
-        
+
         $screenname = returnGlobal('screenname');
 
         global $oEditedTemplate;
@@ -630,6 +630,7 @@ class templates extends Survey_Common_Action
 
         $files = $this->_initfiles($sTemplateName);
         $cssfiles = $this->_initcssfiles($oEditedTemplate);
+        $jsfiles =  $this->_getEditableJsFiles($oEditedTemplate);
 
         if ($action == "templatesavechanges" && $changedtext) {
             Yii::app()->loadHelper('admin/template');
@@ -638,8 +639,10 @@ class templates extends Survey_Common_Action
             if ($editfile)
             {
                 // Check if someone tries to submit a file other than one of the allowed filenames
-                if (multiarray_search($files, 'name', $editfile) === false &&
-                multiarray_search($cssfiles, 'name', $editfile) === false
+                if (
+                    multiarray_search($files, 'name', $editfile) === false &&
+                    multiarray_search($cssfiles, 'name', $editfile) === false &&
+                    multiarray_search($jsfiles, 'name', $editfile) === false
                 )
                 {
                     Yii::app()->user->setFlash('error',gT('Invalid template name'));
