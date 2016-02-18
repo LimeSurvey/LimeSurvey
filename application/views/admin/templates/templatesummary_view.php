@@ -41,8 +41,10 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
     <div class="col-lg-8 templateeditor">
         <?php echo CHtml::form(array('admin/templates/sa/templatesavechanges'), 'post', array('id'=>'editTemplate', 'name'=>'editTemplate')); ?>
 
-        <input type='hidden' name='editfileindex' value='<?php echo $_GET['editfile']; ?>' />
-        <input type='hidden' name='useindex' value='<?php echo $_GET['useindex']; ?>' />
+        <?php if(isset($_GET['editfile'])):?>
+            <input type='hidden' name='editfileindex' value='<?php echo $_GET['editfile']; ?>' />
+            <input type='hidden' name='useindex' value='<?php echo $_GET['useindex']; ?>' />
+        <?php endif;?>
         <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
         <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
         <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
