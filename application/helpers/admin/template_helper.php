@@ -54,7 +54,6 @@ function textarea_encode($html_code)
  */
 function filetext($templatename,$templatefile,$templates) {
     $sFileName = gettemplatefilename($templates[$templatename],$templatefile);
-    //var_dump($sFileName);
     if (file_exists($sFileName))
     {
         return file_get_contents($sFileName);

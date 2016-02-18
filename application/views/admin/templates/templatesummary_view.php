@@ -33,8 +33,9 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             <br/>
             <select  class="form-control"  size='8' name='cssfiles' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value)+'/useindex/true/', '_top')">
                 <?php echo makeoptionswithindex($cssfiles, "name", "name", $editfile, 'css'); ?>
-                <?php // echo makeoptions($cssfiles, "name", "name", $editfile); ?>
+                <?php echo makeoptionswithindex($jsfiles, "name", "name", $editfile, 'js'); ?>
             </select>
+            <br/>
         </div>
     </div>
     <div class="col-lg-8 templateeditor">
@@ -45,8 +46,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
         <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
         <input type='hidden' name='action' value='templatesavechanges' />
         <textarea name='changes' id='changes' rows='20' cols='40' data-filetype="<?php echo $sEditorFileType; ?>" class="ace <?php echo $sTemplateEditorMode; ?>" style='width:100%'>
-
-            <?php if (isset($editfile)) {
+        <?php if (isset($editfile)) {
             echo textarea_encode(filetext($templatename,$editfile,$templates));
         } ?>
         </textarea>
