@@ -33,6 +33,14 @@
         </rtl>
     </files>
 
+    <!-- For template editor -->
+    <files_editable>
+            <css>
+                <filename>css/flat_and_modern.css</filename>
+                <filename>css/template.css</filename>
+            </css>
+    </files_editable>
+
     <engine>
         <cssframework>bootstrap</cssframework>
         <pstpldirectory>views</pstpldirectory>

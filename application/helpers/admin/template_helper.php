@@ -54,13 +54,13 @@ function textarea_encode($html_code)
  */
 function filetext($templatename,$templatefile,$templates) {
     $sFileName = gettemplatefilename($templates[$templatename],$templatefile);
+    //var_dump($sFileName);
     if (file_exists($sFileName))
     {
         return file_get_contents($sFileName);
     }
     else
     {
-        return '';
     }
 }
 
@@ -88,6 +88,18 @@ function makeoptions($array, $value, $text, $selectedvalue) {
     $return='';
     foreach ($array as $ar) {
         $return .= "<option value='".HTMLEscape($ar[$value])."'";
+        if (HTMLEscape($ar[$value]) == $selectedvalue) {
+            $return .= " selected='selected'";
+        }
+        $return .= '>'.$ar[$text]."</option>\n";
+    }
+    return $return;
+}
+
+function makeoptionswithindex($array, $value, $text, $selectedvalue, $prefix) {
+    $return='';
+    foreach ($array as $index => $ar) {
+        $return .= "<option value='".HTMLEscape($prefix.'_'.$index)."'";
         if (HTMLEscape($ar[$value]) == $selectedvalue) {
             $return .= " selected='selected'";
         }
@@ -178,10 +190,10 @@ function gettemplatefilename($template, $templatefile) {
             return $template.'/views/'.$templatefile;
             break;
         case 'css':
-            return $template.'/css/'.$templatefile;
+            return $template.'/'.$templatefile;
             break;
         case 'js':
-            return $template.'/scripts/'.$templatefile;
+            return $template.'/'.$templatefile;
             break;
         default:
             return $template.'/'.$templatefile;
