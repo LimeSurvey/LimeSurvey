@@ -94,7 +94,10 @@ $internalConfig = array(
             'class' => "\\ls\\pluginmanager\\PluginManager",
             'api' => "\\ls\\pluginmanager\\LimesurveyApi"
         )
-    )
+    ),
+    'config'=>array(
+        'updatable'=>false,
+    ),
 );
 
 

@@ -60,6 +60,14 @@ class UpdateForm extends CFormModel
      */
     public function getUpdateInfo($crosscheck="1")
     {
+        if(!getGlobalSetting('updatable'))
+        {
+            $content = new stdClass();
+            $content->result = null;
+            $content->error = 'no_update_available_for_your_version';
+            $content->html = null;
+            return $content;
+        }
         if( $this->build != '' )
         {
             $crosscheck = (int) $crosscheck;
@@ -72,6 +80,7 @@ class UpdateForm extends CFormModel
             $content->result = FALSE;
             $content->error = "no_build";
         }
+
         return $content;
     }
 

@@ -1,14 +1,14 @@
 <?php
 /**
  * This view generate the 'overview' tab inside global settings.
- * 
+ *
  * @var int $usercount
  * @var int $surveycount
  * @var int $activesurveycount
  * @var int $deactivatedsurveys
  * @var int $activetokens
  * @var int $deactivatedtokens
- *  
+ *
  */
 ?>
 
@@ -52,8 +52,10 @@
     <?php
     }
     ?>
+<?php if(App()->getConfig('updatable')){ ?>
 <p>
 		<?php $urlUpdate = Yii::app()->createUrl("admin/globalsettings", array("update"=>'updatebuttons')); ?>
 		<a href="<?php echo $urlUpdate; ?>"><?php eT('Click here to use ComfortUpdate.');?></a>
 </p>
+<?php } ?>
 
