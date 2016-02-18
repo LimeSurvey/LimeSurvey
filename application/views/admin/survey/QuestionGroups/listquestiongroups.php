@@ -48,6 +48,7 @@
                         'dataProvider' => $model->search(),
 
                         // Number of row per page selection
+                        'emptyText'=>gT('No questions groups found.'),
                         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
