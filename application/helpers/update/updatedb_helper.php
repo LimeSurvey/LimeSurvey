@@ -2384,7 +2384,10 @@ function fixMySQLCollations($sEncoding, $sCollation)
         {
             try{
                 Yii::app()->getDb()->createCommand("ALTER TABLE {$sTableName} CONVERT TO CHARACTER SET {$sEncoding} COLLATE {$sCollation};")->execute();
-            } catch(Exception $e){};
+            } catch(Exception $e){
+                // There are some big survey response tables that cannot be converted because the new charset probably uses
+                // more bytes per character than the old one - we just leave them as they are for now.
+            };
         }
     }
     $sDatabaseName=getDBConnectionStringProperty('dbname');
