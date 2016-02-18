@@ -1004,7 +1004,7 @@ class templates extends Survey_Common_Action
 
             // The file name is now based on the index of the oTemplate files
             $file_index = $file_datas[1];
-            $aTemplateCssFiles = (array) $oEditedTemplate->config->files->css->filename;
+            $aTemplateCssFiles = (array) $oEditedTemplate->config->files_editable->css->filename;
             $editfile = $aTemplateCssFiles[$file_index];
         }
 

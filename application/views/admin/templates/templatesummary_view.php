@@ -23,7 +23,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
     <div class="col-lg-2" id='templateleft'>
         <div style="padding-left:1em;">
             <?php eT("Standard files:"); ?><br>
-            <select class="form-control" size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
+            <select class="form-control" size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value)+'/useindex/0/', '_top')">
                 <?php echo makeoptions($files, "name", "name", $editfile); ?>
             </select>
         </div>
@@ -33,6 +33,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             <br/>
             <select  class="form-control"  size='8' name='cssfiles' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value)+'/useindex/true/', '_top')">
                 <?php echo makeoptionswithindex($cssfiles, "name", "name", $editfile, 'css'); ?>
+                <?php // echo makeoptions($cssfiles, "name", "name", $editfile); ?>
             </select>
         </div>
     </div>

@@ -96,12 +96,24 @@ function makeoptions($array, $value, $text, $selectedvalue) {
     return $return;
 }
 
+/**
+ * Index is the file index in the Template configuration file
+ */
 function makeoptionswithindex($array, $value, $text, $selectedvalue, $prefix)
 {
 
     $editfile = (string) $_GET['editfile'];
     $editfile_infos = explode('_',$editfile);
-    $selectedindex = $editfile_infos[1];
+
+    // If user is editing a file requiring an index, $_GET['editfile'] will have a prefix (like css or js)
+    // If it's the same prefix than the one asked here, then it means he's editing one of the files of the list
+    // The edited file will have an index corresponding to the suffix of $_GET['editfile']
+    // e.g : admin/templates/sa/view/editfile/css_1/ ....
+    // Mean user is editing a css file with index 1 in the template's configuration file
+    if(isset($editfile_infos[0]) && $editfile_infos[0] == $prefix)
+        $selectedindex = $editfile_infos[1];
+    else
+        $selectedindex = -1;
 
     $return='';
     foreach ($array as $index => $ar)
