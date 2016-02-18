@@ -1151,11 +1151,12 @@ class templates extends Survey_Common_Action
                     $files[] = array("name" => $qs);
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
                 }
-
+                /*
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath  . "/startpage.pstpl", $aData, $oEditedTemplate));
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath  . "/welcome.pstpl", $aData, $oEditedTemplate));
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath  . "/privacy.pstpl", $aData, $oEditedTemplate));
-
+                */
+                
                 $aData['aReplacements'] = array(
                     'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-default btn-lg ">Next</button>'
                 );
