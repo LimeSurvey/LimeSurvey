@@ -96,13 +96,23 @@ function makeoptions($array, $value, $text, $selectedvalue) {
     return $return;
 }
 
-function makeoptionswithindex($array, $value, $text, $selectedvalue, $prefix) {
+function makeoptionswithindex($array, $value, $text, $selectedvalue, $prefix)
+{
+
+    $editfile = (string) $_GET['editfile'];
+    $editfile_infos = explode('_',$editfile);
+    $selectedindex = $editfile_infos[1];
+
     $return='';
-    foreach ($array as $index => $ar) {
+    foreach ($array as $index => $ar)
+    {
         $return .= "<option value='".HTMLEscape($prefix.'_'.$index)."'";
-        if (HTMLEscape($ar[$value]) == $selectedvalue) {
+
+        if ($index == $selectedindex)
+        {
             $return .= " selected='selected'";
         }
+
         $return .= '>'.$ar[$text]."</option>\n";
     }
     return $return;
@@ -112,7 +122,8 @@ function templateoptions($optionarray, $selectedvalue) {
     $return='';
     foreach ($optionarray as $arkey=>$arvalue) {
         $return .= "<option value='".HTMLEscape($arkey)."'";
-        if ($arkey == $selectedvalue) {
+        if ($arkey == $selectedvalue)
+        {
             $return .= " selected='selected'";
         }
         $return .= '>'.HTMLEscape($arkey)."</option>\n";

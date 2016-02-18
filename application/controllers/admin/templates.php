@@ -839,19 +839,17 @@ class templates extends Survey_Common_Action
     */
     protected function _initcssfiles($oEditedTemplate, $editable=false)
     {
-//IKI
-        if($editable)
+        // If editable CSS files are required, and if they are defined in the template config file
+        if($editable && is_object($oEditedTemplate->config->files_editable->css))
         {
             $aCssFiles = (array) $oEditedTemplate->config->files_editable->css->filename;
         }
+        // Else we get all the CSS files
         else
         {
             $aCssFiles = (array) $oEditedTemplate->config->files->css->filename;
         }
-        // For retrocompatibility
-        // TODO : remove initcssfile,
-        //        replace it by a direct call to $oEditedTemplate->config->files->css->filename,
-        //        remove the need of index 'name'
+
         $aNamedCssFiles = array();
         foreach($aCssFiles as $file)
         {
