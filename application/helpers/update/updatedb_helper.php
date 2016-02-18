@@ -2382,7 +2382,9 @@ function fixMySQLCollations($sEncoding, $sCollation)
     {
         foreach ( $surveyidresult as $sTableName )
         {
-            Yii::app()->getDb()->createCommand("ALTER TABLE {$sTableName} CONVERT TO CHARACTER SET {$sEncoding} COLLATE {$sCollation};")->execute();
+            try{
+                Yii::app()->getDb()->createCommand("ALTER TABLE {$sTableName} CONVERT TO CHARACTER SET {$sEncoding} COLLATE {$sCollation};")->execute();
+            } catch(Exception $e){};
         }
     }
     $sDatabaseName=getDBConnectionStringProperty('dbname');
