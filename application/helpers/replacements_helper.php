@@ -25,7 +25,7 @@
 * @param bStaticReplacement - Default off, forces non-dynamic replacements without <SPAN> tags (e.g. for the Completed page)
 * @return string  Text with replaced strings
 */
-function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = NULL, $registerdata = array(), $bStaticReplacement = false)
+function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = NULL, $registerdata = array(), $bStaticReplacement = false, $oTemplate='')
 {
 
     /*
@@ -135,13 +135,23 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
      * If debug mode is on, no asset manager is used.
      *
      * oTemplate is defined in controller/survey/index
+     *
+     * If templatereplace is called from the template editor, a $oTemplate is provided.
      */
 
-    global $oTemplate;
-    if(empty($oTemplate))
+    // We check if a oTemplate has been provided to the method (means it has been called from template editor)
+
+    if($oTemplate=='')
     {
-        $oTemplate = Template::model()->getTemplateConfiguration($templatename);
+        // If it not the case, then we get the global oTemplate object defined from SurveyControler::Index
+        global $oTemplate;
+        // If it's empty, we redifined it
+        if(empty($oTemplate))
+        {
+            $oTemplate = Template::model()->getTemplateConfiguration($templatename);
+        }
     }
+    
     $aCssFiles = $oTemplate->config->files->css->filename;
     $aJsFiles = $oTemplate->config->files->js->filename;
     if(stripos ($line,"{TEMPLATECSS}"))

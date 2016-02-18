@@ -13,9 +13,9 @@
 */
 
 
-function doreplacement($file,$data) { //Produce sample page from template file
+function doreplacement($file,$data, $oTemplate='') { //Produce sample page from template file
     $aReplacements=isset($data['aReplacements']) ? $data['aReplacements'] : array();
-    return (array)templatereplace(file_get_contents($file),$aReplacements,$data);
+    return (array)templatereplace(file_get_contents($file),$aReplacements,$data, 'Unspecified', false, NULL, array(), false, $oTemplate);
 }
 
 
@@ -146,15 +146,15 @@ function is_template_editable($templatename)
 
 /**
 * This is a PCLZip callback function that ensures only files are extracted that have a valid extension
-* 
+*
 * @param mixed $p_event
 * @param mixed $p_header
 * @return int Return 1 for yes (file can be extracted), 0 for no
 */
 function templateExtractFilter($p_event, &$p_header)
 {
-    $aAllowExtensions=explode(',',Yii::app()->getConfig('allowedtemplateuploads'));    
-    $aAllowExtensions[]='pstpl'; 
+    $aAllowExtensions=explode(',',Yii::app()->getConfig('allowedtemplateuploads'));
+    $aAllowExtensions[]='pstpl';
     $info = pathinfo($p_header['filename']);
     // Deny files with multiple extensions in general
     if (substr_count($info['basename'],'.')!=1) return 0;

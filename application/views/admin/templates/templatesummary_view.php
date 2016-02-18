@@ -136,7 +136,9 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                     <?php }
                 else
                 { ?>
-                    <p><iframe id='previewiframe' src='<?php echo $this->createUrl('admin/templates/sa/tmp/',array('id'=>$time)); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe></p>
+                    <p>
+                        <iframe id='previewiframe' src='<?php echo $this->createUrl('admin/templates/sa/tmp/',array('id'=>$time)); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe>
+                    </p>
                     </div>
                     <?php } ?>
 
