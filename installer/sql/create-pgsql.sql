@@ -155,7 +155,7 @@ CREATE TABLE prefix_participant_attribute (
 CREATE TABLE prefix_participant_attribute_names_lang (
   "attribute_id" integer NOT NULL,
   "attribute_name" character varying( 30 ) NOT NULL,
-  "lang" character varying( 255 ) NOT NULL,
+  "lang" character varying( 20 ) NOT NULL,
   CONSTRAINT prefix_participant_attribute_names_lang_pkey PRIMARY KEY (attribute_id,lang)
 );
 

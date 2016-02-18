@@ -1351,7 +1351,7 @@ class InstallerController extends CController {
         if ($sDatabaseType=='mysql' && version_compare($testPdo->getAttribute(constant("PDO::ATTR_SERVER_VERSION")),$sMinimumMySQLVersion)==-1)
         {
             if (!empty($aData['model'])) {
-                $aData['model']->addError('dblocation', sprintf(gT('The database does not meet the minimum MySQL server version requirement for LimeSurvey (%s).'),$sMinimumMySQLVersion));
+                $aData['model']->addError('dblocation', sprintf(gT('The database does not meet the minimum MySQL/MariaDB server version requirement for LimeSurvey (%s).'),$sMinimumMySQLVersion));
                 $this->render('/installer/dbconfig_view', $aData);
                 Yii::app()->end();
             }

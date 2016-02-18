@@ -148,7 +148,7 @@ CREATE TABLE `prefix_participant_attribute` (
 CREATE TABLE `prefix_participant_attribute_names_lang` (
   `attribute_id` int(11) NOT NULL,
   `attribute_name` varchar(30) NOT NULL,
-  `lang` varchar(255) NOT NULL,
+  `lang` varchar(20) NOT NULL,
   PRIMARY KEY (`attribute_id`,`lang`)
  ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
