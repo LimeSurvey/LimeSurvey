@@ -351,7 +351,7 @@ class templates extends Survey_Common_Action
     * @param string $templatename
     * @return void
     */
-    public function index($editfile = 'startpage.pstpl', $screenname = 'welcome', $templatename = '')
+    public function index($editfile = 'startpage.pstpl', $screenname = 'welcome', $templatename = '', $useindex=false)
     {
 
         if(!$templatename)
@@ -364,11 +364,10 @@ class templates extends Survey_Common_Action
         {
             $templatename = 'default';
         }
-//var_dump($templatename); echo "<hr/>";var_dump($editfile); echo "<hr/>";var_dump($screenname); die();
-        $aViewUrls = $this->_initialise($templatename, $screenname, $editfile);
+        //var_dump($templatename); echo "<hr/>";var_dump($editfile); echo "<hr/>";var_dump($screenname); die();
+        //
+        $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, $useindex);
         App()->getClientScript()->reset();
-        // This was useless : it tried to load again bootstrap for admin interface, not for the iFramed survey...
-        //App()->getComponent('bootstrap')->init();
 
         // After reseting, we need register again the script : maybe move it to endScripts_view for allways needed scripts ?
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "admin_core.js" ));
@@ -412,13 +411,13 @@ class templates extends Survey_Common_Action
     * @param string $editfile
     * @return void
     */
-    public function fileredirect($templatename = '', $screenname = 'welcome', $editfile = 'startpage.pstpl')
+    public function fileredirect($templatename = '', $screenname = 'welcome', $editfile = 'startpage.pstpl', $useindex=false)
     {
         if(!$templatename)
         {
             $templatename = Yii::app()->getConfig("defaulttemplate");
         }
-        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename . '/useindex/' . $useindex));
     }
 
     /**
@@ -749,7 +748,7 @@ class templates extends Survey_Common_Action
 
 
             App()->getClientScript()->registerPackage('jqueryui');
-            //App()->getClientScript()->registerPackage('jquery-touch-punch');
+            App()->getClientScript()->registerPackage('jquery-touch-punch');
             App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH."survey_runtime.js" ));
 
             App()->getClientScript()->render($myoutput);
@@ -773,13 +772,16 @@ class templates extends Survey_Common_Action
            default: $sEditorFileType='html';
            break;
         }
+        global $oEditedTemplate;
+        $editableCssFiles = $this->_initcssfiles($oEditedTemplate, true);
+
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
         $aData['tempdir'] = $tempdir;
         $aData['templatename'] = $templatename;
         $aData['templates'] = $templates;
         $aData['files'] = $files;
-        $aData['cssfiles'] = $cssfiles;
+        $aData['cssfiles'] = $editableCssFiles;//(array) $oEditedTemplate->config->files_editable->css->filename; /// IKIE
         $aData['otherfiles'] = $otherfiles;
         $aData['tempurl'] = $tempurl;
         $aData['time'] = $time;
@@ -835,14 +837,19 @@ class templates extends Survey_Common_Action
     * @access protected
     * @return void
     */
-    protected function _initcssfiles($oEditedTemplate)
+    protected function _initcssfiles($oEditedTemplate, $editable=false)
     {
+        // If editable CSS files are required, and if they are defined in the template config file
+        if($editable && is_object($oEditedTemplate->config->files_editable->css))
+        {
+            $aCssFiles = (array) $oEditedTemplate->config->files_editable->css->filename;
+        }
+        // Else we get all the CSS files
+        else
+        {
+            $aCssFiles = (array) $oEditedTemplate->config->files->css->filename;
+        }
 
-        $aCssFiles = (array) $oEditedTemplate->config->files->css->filename;
-        // For retrocompatibility
-        // TODO : remove initcssfile,
-        //        replace it by a direct call to $oEditedTemplate->config->files->css->filename,
-        //        remove the need of index 'name'
         $aNamedCssFiles = array();
         foreach($aCssFiles as $file)
         {
@@ -861,7 +868,7 @@ class templates extends Survey_Common_Action
      * @param bool $showsummary
      * @return
      */
-    protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
+    protected function _initialise($templatename, $screenname, $editfile, $showsummary = true, $useindex=false)
     {
         // LimeSurvey style
         global $oEditedTemplate;
@@ -980,9 +987,27 @@ class templates extends Survey_Common_Action
             $files[] = array('name' => 'question_start.pstpl');
             $Question[] = 'question_start.pstpl';
         }
+
         $editfile=sanitize_filename($editfile); // Fixed with editable file after, but put in aData before fix
         $availableeditorlanguages = array('bg', 'cs', 'de', 'dk', 'en', 'eo', 'es', 'fi', 'fr', 'hr', 'it', 'ja', 'mk', 'nl', 'pl', 'pt', 'ru', 'sk', 'zh');
-        $extension = substr(strrchr($editfile, "."), 1);
+        // 2.06 way of doing.
+        if(!$useindex)
+        {
+            $extension = substr(strrchr($editfile, "."), 1);
+        }
+        // 2.5
+        else
+        {
+            // The extension is now set as a prefix separated by a _
+            $file_datas = explode("_", $editfile);
+            $extension = $file_datas[0];
+
+            // The file name is now based on the index of the oTemplate files
+            $file_index = $file_datas[1];
+            $aTemplateCssFiles = (array) $oEditedTemplate->config->files_editable->css->filename;
+            $editfile = $aTemplateCssFiles[$file_index];
+        }
+
         if ($extension == 'css' || $extension == 'js')
             $highlighter = $extension;
         else
@@ -1303,21 +1328,36 @@ class templates extends Survey_Common_Action
         }
         $myoutput[] = "</html>";
 
-        if (is_array($files)) {
+        if (is_array($files))
+        {
             $match = 0;
             foreach ($files as $f)
+            {
                 if ($editfile == $f["name"])
+                {
                     $match = 1;
+                }
+            }
 
-                foreach ($cssfiles as $f)
+            foreach ($cssfiles as $f)
+            {
                 if ($editfile == $f["name"])
+                {
                     $match = 1;
+                }
+            }
 
-                if ($match == 0)
+            if ($match == 0)
+            {
                 if (count($files) > 0)
+                {
                     $editfile = $files[0]["name"];
+                }
                 else
+                {
                     $editfile = "";
+                }
+            }
         }
 
         // Get list of 'otherfiles'
@@ -1349,6 +1389,7 @@ class templates extends Survey_Common_Action
 
         if ($showsummary)
         {
+            //$aCssfileseditable = (array) $oEditedTemplate->config->files_editable->css->filename;
             $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $otherfiles, $myoutput));
         }
 
