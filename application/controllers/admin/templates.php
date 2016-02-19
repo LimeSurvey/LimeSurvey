@@ -260,7 +260,8 @@ class templates extends Survey_Common_Action
         }
 
         $action = returnGlobal('action');
-        $editfile = returnGlobal('editfile');
+        $editfileindex = App()->request->getPost('editfileindex');
+        $useindex = App()->request->getPost('useindex');
         $templatename = returnGlobal('templatename');
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
         $screenname = returnGlobal('screenname');
@@ -273,24 +274,24 @@ class templates extends Survey_Common_Action
 
         //$dirfilepath = $basedestdir."/".$templatename . "/";
         // If the file directory is defined in the template configuration, we use this one. Else, by default, we use the templateroot/files/ directory
-        $filesdir = ($oEditedTemplate->filesPath!='')?$oEditedTemplate->filesPath:$templatedir . '../files';
-        if (!file_exists($dirfilepath . "/files/"))
+        $dirfilepath = ($oEditedTemplate->filesPath!='')?$oEditedTemplate->filesPath:$templatedir . '../files';
+        if (!file_exists($dirfilepath))
         {
-            if(is_writable($dirfilepath))
+            if(is_writable($dirfilepath.'/..'))
             {
-                mkdir($dirfilepath . "/files/", 0777, true);
+                mkdir($dirfilepath, 0777, true);
             }
             else
             {
-                $uploadresult = sprintf(gT("The folder %s doesn't exist and can't be created."),$dirfilepath. "/files/");
+                $uploadresult = sprintf(gT("The folder %s doesn't exist and can't be created."),$dirfilepath);
                 Yii::app()->setFlashMessage($uploadresult,'error');
-                $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+                $this->getController()->redirect(array('admin/templates/sa/view/editfile/'.$editfileindex.'/screenname/'.$screenname.'/templatename/'.$templatename.'/useindex/'.$useindex));
             }
         }
 
 
 
-        $fullfilepath = $dirfilepath . "/files/". $filename;
+        $fullfilepath = $dirfilepath . $filename;
         $status='error';
         if($action=="templateuploadfile")
         {
@@ -320,7 +321,7 @@ class templates extends Survey_Common_Action
             }
             Yii::app()->setFlashMessage($uploadresult,$status);
         }
-        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect(array('admin/templates/sa/view/editfile/'.$editfileindex.'/screenname/'.$screenname.'/templatename/'.$templatename.'/useindex/'.$useindex));
     }
 
     /**
