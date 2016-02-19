@@ -318,7 +318,7 @@ class InstallerController extends CController {
 
                         header("refresh:5;url=".$this->createUrl("/admin"));
                         $aData['noticeMessage'] = gT('The database exists and contains LimeSurvey tables.');
-                        $aData['text'] = sprintf( gT('You\'ll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click <a href="%s">here</a>.', 'unescaped'), $this->createUrl("/admin"));
+                        $aData['text'] = sprintf( gT("You'll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click %shere%s."), "<a href='".$this->createUrl("/admin")."'>","</a>");
                         $this->render('/installer/redirectmessage_view',$aData);
                         exit();
                     }
