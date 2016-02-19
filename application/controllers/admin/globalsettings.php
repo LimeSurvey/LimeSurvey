@@ -246,18 +246,6 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('timeadjust', $savetime);
         setGlobalSetting('usercontrolSameGroupPolicy', strip_tags($_POST['usercontrolSameGroupPolicy']));
 
-
-        // Boxes
-        for ($i=1; $i < 7; $i++)
-        {
-            $box = Boxes::model()->find(array('condition'=>'position=:positionId', 'params'=>array(':positionId'=>$i)));
-            $box->url = sanitize_html_string($_POST['box-url-'.$i]);
-            $box->title = sanitize_html_string($_POST['box-title-'.$i]);
-            $box->ico = sanitize_html_string($_POST['box-ico-'.$i]);
-            $box->desc = sanitize_html_string($_POST['box-desc-'.$i]);
-            $box->save();
-        }
-
         Yii::app()->session['flashmessage'] = $warning.gT("Global settings were saved.");
 
         // Redirect if user clicked save-and-close-button
