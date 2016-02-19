@@ -153,6 +153,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     $aCssFiles = $oTemplate->config->files->css->filename;
     $aJsFiles = $oTemplate->config->files->js->filename;
+
     if(stripos ($line,"{TEMPLATECSS}"))
     {
         if(!YII_DEBUG) //Asset manager off in debug mode
@@ -172,7 +173,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                 if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
                 {
                     Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile",$sCssFile['media']);
-                }
+                }                
             }
 
         }

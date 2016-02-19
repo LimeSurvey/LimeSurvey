@@ -146,9 +146,20 @@ class Template extends LSActiveRecord
         }
     }
 
+    /**
+     * This method construct a template object, having all the needed configuration datas.
+     * It checks if the required template is a core one or a user one.
+     * If it's a user template, it will check if it's an old 2.0x template to provide default configuration values corresponding to the old template system
+     * If it's not a old template, it will check if it has a configuration file to load its datas.
+     * If it's not the case (template probably doesn't exist), it will load the default template configuration
+     * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if it has the needed pstpl files, if the files refered in css exist, etc.
+     *
+     * @param string $sTemplateName     the name of the template to load. The string come from the template selector in survey settings
+     * @param integer $iSurveyId        the id of the survey. If
+     */
     public static function getTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
-        if($sTemplateName=='')
+        if ($sTemplateName=='')
         {
             $oSurvey = Survey::model()->findByPk($iSurveyId);
             $sTemplateName = $oSurvey->template;
@@ -156,43 +167,44 @@ class Template extends LSActiveRecord
 
         $oTemplate = new stdClass();
         $oTemplate->isStandard = self::isStandardTemplate($sTemplateName);
-        // If the template doesn't exist, set to Default
+
+        // If the template is standard, its root is based on standardtemplaterootdir
         if($oTemplate->isStandard)
         {
             $oTemplate->name = $sTemplateName;
             $oTemplate->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
         }
+        // Else, it's a user template, its root is based on usertemplaterootdir
         else
         {
-            if(is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName.DIRECTORY_SEPARATOR.'config.xml'))
+            $oTemplate->name = $sTemplateName;
+            $oTemplate->path = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
+
+            // If it's an imported template from 2.06, we return default values
+            if ( $this->isOldTemplate($oTemplate->path) )
             {
-                $oTemplate->name = $sTemplateName;
-                $oTemplate->path = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
-            }
-            elseif(is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName.DIRECTORY_SEPARATOR.'startpage.pstpl'))
-            {
-                $oTemplate->name = $sTemplateName;
-                $oTemplate->path = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
                 $oTemplate->config = simplexml_load_file(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'/minimal-config.xml');
-                /* /./ working for linux, untested with windows
-                $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->pstpldirectory.DIRECTORY_SEPARATOR;
-                * */
                 $oTemplate->cssFramework = null;
                 $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR;
+                $oTemplate->filePath = $oTemplate->path.DIRECTORY_SEPARATOR;
                 $oTemplate->packages = (array) $oTemplate->config->engine->packages->package;
                 return $oTemplate;
             }
-            else
-            {
-                $oTemplate->name = 'default';
-                $oTemplate->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
-            }
+
+        }
+
+        // If the template don't have a config file (maybe it has been deleted, or whatever),
+        // then, we load the default template
+        if(!hasConfigFile($sTemplatePath))
+        {
+            $oTemplate->name = 'default';
+            $oTemplate->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
         }
 
         // The template configuration.
         $oTemplate->config = simplexml_load_file($oTemplate->path.'/config.xml');
         $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->pstpldirectory.DIRECTORY_SEPARATOR;
-
+        $oTemplate->filePath = $oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR;;
         $oTemplate->cssFramework = $oTemplate->config->engine->cssframework;
         $oTemplate->packages = (array) $oTemplate->config->engine->packages->package;
 
@@ -315,5 +327,25 @@ class Template extends LSActiveRecord
                 'ubuntu_orange',
             )
         );
+    }
+
+    /**
+     * Does the given path has a config file ?
+     * @param string $sTemplatePath
+     * @return bool
+     */
+    private function hasConfigFile($sTemplatePath)
+    {
+        return is_file($sTemplatePath.DIRECTORY_SEPARATOR.'config.xml');
+    }
+
+    /**
+     * Is the template in that path an old template from 2.0x branch ?
+     * @param string $sTemplatePath
+     * @return bool
+     */
+    private function _isOldTemplate($sTemplatePath)
+    {
+        return (! $this->hasConfigFile($sTemplatePath) && is_file($oTemplate->path.DIRECTORY_SEPARATOR.'startpage.pstpl'));
     }
 }

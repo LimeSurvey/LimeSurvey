@@ -25,6 +25,7 @@
         <packages>
             <cssframework></cssframework>
             <pstpldirectory>.</pstpldirectory>
+            <filesdirectory>.</filesdirectory>
             <package>jqueryui</package>
             <package>jquery-touch-punch</package>
         </packages>

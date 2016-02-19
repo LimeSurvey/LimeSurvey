@@ -258,9 +258,11 @@ class templates extends Survey_Common_Action
         {
             die('No permission');
         }
+
         $action = returnGlobal('action');
         $editfile = returnGlobal('editfile');
         $templatename = returnGlobal('templatename');
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
         $screenname = returnGlobal('screenname');
         $files = $this->_initfiles($templatename);
         $cssfiles = $this->_initcssfiles($oEditedTemplate);
@@ -268,10 +270,28 @@ class templates extends Survey_Common_Action
         $tempdir = Yii::app()->getConfig('tempdir');
         $allowedtemplateuploads=Yii::app()->getConfig('allowedtemplateuploads');
         $filename=sanitize_filename($_FILES['upload_file']['name'],false,false);// Don't force lowercase or alphanumeric
-        $fullfilepath=$basedestdir."/".$templatename . "/" . $filename;
+
+        //$dirfilepath = $basedestdir."/".$templatename . "/";
+        // If the file directory is defined in the template configuration, we use this one. Else, by default, we use the templateroot/files/ directory
+        $filesdir = (isset($oEditedTemplate->filesPath))?$oEditedTemplate->filesPath:$templatedir . '../files';
+        if (!file_exists($dirfilepath . "/files/"))
+        {
+            if(is_writable($dirfilepath))
+            {
+                mkdir($dirfilepath . "/files/", 0777, true);
+            }
+            else
+            {
+                $uploadresult = sprintf(gT("The folder %s doesn't exist and can't be created."),$dirfilepath. "/files/");
+                Yii::app()->setFlashMessage($uploadresult,'error');
+                $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+            }
+        }
 
 
 
+        $fullfilepath = $dirfilepath . "/files/". $filename;
+        $status='error';
         if($action=="templateuploadfile")
         {
             if(Yii::app()->getConfig('demoMode'))
@@ -284,7 +304,6 @@ class templates extends Survey_Common_Action
             }
             elseif(!in_array(strtolower(substr(strrchr($filename, '.'),1)),explode ( "," , $allowedtemplateuploads )))
             {
-
                 $uploadresult = gT("This file type is not allowed to be uploaded.");
             }
             else
@@ -296,9 +315,10 @@ class templates extends Survey_Common_Action
                    else
                    {
                         $uploadresult = sprintf(gT("File %s uploaded"),$filename);
+                        $status='success';
                    }
             }
-            Yii::app()->session['flashmessage'] = $uploadresult;
+            Yii::app()->setFlashMessage($uploadresult,$status);
         }
         $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
@@ -789,8 +809,8 @@ class templates extends Survey_Common_Action
         }
         global $oEditedTemplate;
         $editableCssFiles = $this->_initcssfiles($oEditedTemplate, true);
-
-
+        $filesdir = (isset($oEditedTemplate->filesPath))?$oEditedTemplate->filesPath:'/files';
+//var_dump($filesdir); die();
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
         $aData['tempdir'] = $tempdir;
@@ -915,8 +935,16 @@ class templates extends Survey_Common_Action
 
         // In survey mode, bootstrap is loaded via the app init.
         // From template editor, we just add the bootstrap files to the js/css to load for template_helper::templatereplace()
-        $oEditedTemplate->config->files->css->filename[]="../../styles-public/bootstrap-for-template-editor.css";
-        $oEditedTemplate->config->files->js->filename[]="../../scripts/bootstrap-for-template-editor.js";
+        if($oEditedTemplate->cssFramework=='bootstrap')
+        {
+            // Core templates (are published only if exists)
+            $oEditedTemplate->config->files->css->filename[]="../../styles-public/bootstrap-for-template-editor.css";
+            $oEditedTemplate->config->files->js->filename[]="../../scripts/bootstrap-for-template-editor.js";
+
+            // User templates (are published only if exists)
+            $oEditedTemplate->config->files->css->filename[]="../../../styles-public/bootstrap-for-template-editor.css";
+            $oEditedTemplate->config->files->js->filename[]="../../../scripts/bootstrap-for-template-editor.js";
+        }
 
         //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
@@ -1417,8 +1445,10 @@ class templates extends Survey_Common_Action
         }
 
         // Get list of 'otherfiles'
+        $filesdir = (isset($oEditedTemplate->filesPath))?$oEditedTemplate->filesPath:$templatedir . '../files';
         $otherfiles = array();
-        if ($handle = opendir($templatedir)) {
+        if ( file_exists($filesdir) && $handle = opendir($filesdir))
+        {
             while (false !== ($file = readdir($handle)))
             {
                 if (!array_search($file, $normalfiles)) {
