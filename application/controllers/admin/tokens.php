@@ -1574,6 +1574,7 @@ class tokens extends Survey_Common_Action
                         $modmessage = $event->get('body');
                         $to = $event->get('to');
                         $from = $event->get('from');
+                        $bounce = $event->get('bounce');
                         if ($event->get('send', true) == false)
                         {
                             // This is some ancient global used for error reporting instead of a return value from the actual mail function..
@@ -1582,7 +1583,7 @@ class tokens extends Survey_Common_Action
                         }
                         else
                         {
-                            $success = SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyId), $aRelevantAttachments, $customheaders);
+                            $success = SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, $bounce, $aRelevantAttachments, $customheaders);
                         }
 
                         if ($success)

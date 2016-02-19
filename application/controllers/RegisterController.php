@@ -260,10 +260,13 @@ class RegisterController extends LSYii_Controller {
         $aMail['message'] = $event->get('body');
         $sTo = $event->get('to');
         $sFrom = $event->get('from');
+        $sBounce = $event->get('bounce');
+
         if ($event->get('send', true) == false)
         {
-            $this->sMessage=$event->get('message', '');
-            if($event->get('error')==null){// mimic token system, set send to today
+            $this->sMessage=$event->get('message', $this->sMailMessage); // event can send is own message
+            if($event->get('error')==null) // mimic core system, set send to today
+            {
                 $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
                 $oToken->sent=$today;
                 $oToken->save();
