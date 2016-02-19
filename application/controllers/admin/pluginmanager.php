@@ -60,7 +60,10 @@ class PluginManager extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate('pluginmanager', 'index', array('data' => $data));
+        $aData['fullpagebar']['returnbutton']['url'] = 'index';
+        $aData['fullpagebar']['returnbutton']['text'] = gT('Close');
+        $aData['data'] = $data;
+        $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
     }
 
     /**
