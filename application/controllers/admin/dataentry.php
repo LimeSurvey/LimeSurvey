@@ -249,147 +249,150 @@ class dataentry extends Survey_Common_Action
     {
         $iSurveyId = sanitize_int($surveyid);
 
-        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','create'))
+        if(!Permission::model()->hasSurveyPermission($iSurveyId,'responses','create'))
         {
-            if (!App()->getRequest()->isPostRequest || App()->getRequest()->getPost('table') == 'none')
+            Yii::app()->setFlashMessage(gT("No permission"), 'error');
+            return;
+        }
+
+        if (!App()->getRequest()->isPostRequest || App()->getRequest()->getPost('table') == 'none')
+        {
+
+            // Schema that serves as the base for compatibility checks.
+            $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
+            $tables = App()->getApi()->getOldResponseTables($iSurveyId);
+            $compatible = array();
+            $coercible = array();
+            foreach ($tables as $table)
             {
-
-                // Schema that serves as the base for compatibility checks.
-                $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
-                $tables = App()->getApi()->getOldResponseTables($iSurveyId);
-                $compatible = array();
-                $coercible = array();
-                foreach ($tables as $table)
+                $schema = PluginDynamic::model($table)->getTableSchema();
+                if (PluginDynamic::model($table)->count() > 0)
                 {
-                    $schema = PluginDynamic::model($table)->getTableSchema();
-                    if (PluginDynamic::model($table)->count() > 0)
+                    if ($this->isCompatible($baseSchema, $schema))
                     {
-                        if ($this->isCompatible($baseSchema, $schema))
-                        {
-                            $compatible[] = $table;
-                        }
-                        elseif ($this->isCompatible($baseSchema, $schema, false))
-                        {
-                            $coercible[] = $table;
-                        }
+                        $compatible[] = $table;
+                    }
+                    elseif ($this->isCompatible($baseSchema, $schema, false))
+                    {
+                        $coercible[] = $table;
                     }
                 }
-
-                $aData = array();
-                $aData['surveyid'] = $iSurveyId;
-                $aData['settings']['table'] = array(
-                    'label' => gT('Source table'),
-                    'type' => 'select',
-                    'options' => array(
-                        gT('Compatible') => $this->tableList($compatible),
-                        gT('Compatible with type coercion') => $this->tableList($coercible)
-                    )
-                );
-
-
-                $aData['settings']['timings'] = array(
-                    'type' => 'checkbox',
-                    'label' => gT('Import timings (if exist)')
-                );
-
-                //Get the menubar
-                $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
-
-                $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-                $aData["surveyinfo"] = $surveyinfo;
-                $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
-
-                $aData['sidemenu']['state'] = false;
-                $aData['menu']['edition'] = true;
-                $aData['menu']['import'] =  true;
-                $aData['menu']['close'] =  true;
-
-                $this->_renderWrappedTemplate('dataentry', 'import', $aData);
             }
-            else
+
+            $aData = array();
+            $aData['surveyid'] = $iSurveyId;
+            $aData['settings']['table'] = array(
+                'label' => gT('Source table'),
+                'type' => 'select',
+                'options' => array(
+                    gT('Compatible') => $this->tableList($compatible),
+                    gT('Compatible with type coercion') => $this->tableList($coercible)
+                )
+            );
+
+
+            $aData['settings']['timings'] = array(
+                'type' => 'checkbox',
+                'label' => gT('Import timings (if exist)')
+            );
+
+            //Get the menubar
+            $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
+
+            $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+            $aData["surveyinfo"] = $surveyinfo;
+            $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+
+            $aData['sidemenu']['state'] = false;
+            $aData['menu']['edition'] = true;
+            $aData['menu']['import'] =  true;
+            $aData['menu']['close'] =  true;
+
+            $this->_renderWrappedTemplate('dataentry', 'import', $aData);
+        }
+        else
+        {
+            $aSRIDConversions=array();
+            $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
+            $sourceTable = PluginDynamic::model($_POST['table']);
+            $sourceSchema = $sourceTable->getTableSchema();
+
+            $fieldMap = array();
+            $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
+            foreach ($sourceSchema->getColumnNames() as $name)
             {
-                $aSRIDConversions=array();
-                $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
-                $sourceTable = PluginDynamic::model($_POST['table']);
-                $sourceSchema = $sourceTable->getTableSchema();
-
-                $fieldMap = array();
-                $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
-                foreach ($sourceSchema->getColumnNames() as $name)
+                // Skip id field.
+                if ($name == 'id')
                 {
-                    // Skip id field.
-                    if ($name == 'id')
-                    {
-                        continue;
-                    }
-
-                    $sourceColumn = $sourceSchema->getColumn($name);
-                    $matches = array();
-                    // Exact match.
-                    if ($targetSchema->getColumn($name))
-                    {
-                        $fieldMap[$name] = $name;
-                    }
-                    elseif(preg_match($pattern, $name, $matches)) // Column name is SIDXGIDXQID
-                    {
-                        $qid = $matches[3];
-                        $targetColumn = $this->getQidColumn($targetSchema, $qid);
-                        if (isset($targetColumn))
-                        {
-                            $fieldMap[$name] = $targetColumn->name;
-                        }
-                    }
-                }
-                $imported = 0;
-                $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
-                foreach ($sourceResponses as $sourceResponse)
-                {
-                   $iOldID=$sourceResponse->id;
-                    // Using plugindynamic model because I dont trust surveydynamic.
-                   $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
-
-                   foreach($fieldMap as $sourceField => $targetField)
-                   {
-                       $targetResponse[$targetField] = $sourceResponse[$sourceField];
-                   }
-                   $imported++;
-                   $targetResponse->save();
-                   $aSRIDConversions[$iOldID]=$targetResponse->id;
-                   unset($targetResponse);
+                    continue;
                 }
 
-
-
-                Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
-                $sOldTimingsTable=substr(substr($sourceTable->tableName(),0,strrpos($sourceTable->tableName(),'_')).'_timings'.substr($sourceTable->tableName(),strrpos($sourceTable->tableName(),'_')),strlen(Yii::app()->db->tablePrefix));
-                $sNewTimingsTable = "survey_{$surveyid}_timings";
-
-                if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
+                $sourceColumn = $sourceSchema->getColumn($name);
+                $matches = array();
+                // Exact match.
+                if ($targetSchema->getColumn($name))
                 {
-                    // Import timings
-                    $arDestination=SurveyTimingDynamic::model($surveyid);
-                    $aFieldsOldTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sOldTimingsTable.'}}')->columnNames);
-                    $aFieldsNewTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sNewTimingsTable.'}}')->columnNames);
-
-                    $aValidTimingFields=array_intersect($aFieldsOldTimingTable,$aFieldsNewTimingTable);
-
-                    $sQueryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {{{$sOldTimingsTable}}} ";
-                    $aQueryOldValues = Yii::app()->db->createCommand($sQueryOldValues)->query()->readAll();   //Checked
-                    $iRecordCountT=0;
-                    foreach ($aQueryOldValues as $sRecord)
-                    {
-                        if (isset($aSRIDConversions[$sRecord['id']]))
-                        {
-                            $sRecord['id']=$aSRIDConversions[$sRecord['id']];
-                        }
-                        else continue;
-                        Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}",$sRecord);
-                        $iRecordCountT++;
-                    }
-                    Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according timings were successfully imported."),$imported,$iRecordCountT);
+                    $fieldMap[$name] = $name;
                 }
-                $this->getController()->redirect(array("/admin/responses/sa/index/", 'surveyid' => $surveyid));
+                elseif(preg_match($pattern, $name, $matches)) // Column name is SIDXGIDXQID
+                {
+                    $qid = $matches[3];
+                    $targetColumn = $this->getQidColumn($targetSchema, $qid);
+                    if (isset($targetColumn))
+                    {
+                        $fieldMap[$name] = $targetColumn->name;
+                    }
+                }
             }
+            $imported = 0;
+            $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
+            foreach ($sourceResponses as $sourceResponse)
+            {
+               $iOldID=$sourceResponse->id;
+                // Using plugindynamic model because I dont trust surveydynamic.
+               $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
+
+               foreach($fieldMap as $sourceField => $targetField)
+               {
+                   $targetResponse[$targetField] = $sourceResponse[$sourceField];
+               }
+               $imported++;
+               $targetResponse->save();
+               $aSRIDConversions[$iOldID]=$targetResponse->id;
+               unset($targetResponse);
+            }
+
+
+
+            Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
+            $sOldTimingsTable=substr(substr($sourceTable->tableName(),0,strrpos($sourceTable->tableName(),'_')).'_timings'.substr($sourceTable->tableName(),strrpos($sourceTable->tableName(),'_')),strlen(Yii::app()->db->tablePrefix));
+            $sNewTimingsTable = "survey_{$surveyid}_timings";
+
+            if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
+            {
+                // Import timings
+                $arDestination=SurveyTimingDynamic::model($surveyid);
+                $aFieldsOldTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sOldTimingsTable.'}}')->columnNames);
+                $aFieldsNewTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sNewTimingsTable.'}}')->columnNames);
+
+                $aValidTimingFields=array_intersect($aFieldsOldTimingTable,$aFieldsNewTimingTable);
+
+                $sQueryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {{{$sOldTimingsTable}}} ";
+                $aQueryOldValues = Yii::app()->db->createCommand($sQueryOldValues)->query()->readAll();   //Checked
+                $iRecordCountT=0;
+                foreach ($aQueryOldValues as $sRecord)
+                {
+                    if (isset($aSRIDConversions[$sRecord['id']]))
+                    {
+                        $sRecord['id']=$aSRIDConversions[$sRecord['id']];
+                    }
+                    else continue;
+                    Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}",$sRecord);
+                    $iRecordCountT++;
+                }
+                Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according timings were successfully imported."),$imported,$iRecordCountT);
+            }
+            $this->getController()->redirect(array("/admin/responses/sa/index/", 'surveyid' => $surveyid));
         }
     }
 
