@@ -273,7 +273,7 @@ class templates extends Survey_Common_Action
 
         //$dirfilepath = $basedestdir."/".$templatename . "/";
         // If the file directory is defined in the template configuration, we use this one. Else, by default, we use the templateroot/files/ directory
-        $filesdir = (isset($oEditedTemplate->filesPath))?$oEditedTemplate->filesPath:$templatedir . '../files';
+        $filesdir = ($oEditedTemplate->filesPath!='')?$oEditedTemplate->filesPath:$templatedir . '../files';
         if (!file_exists($dirfilepath . "/files/"))
         {
             if(is_writable($dirfilepath))
@@ -450,11 +450,17 @@ class templates extends Survey_Common_Action
         {
             die('No permission');
         }
-        if (returnGlobal('action') == "templatefiledelete") {
+        if (returnGlobal('action') == "templatefiledelete")
+        {
             // This is where the temp file is
             $sFileToDelete=sanitize_filename(returnGlobal('otherfile'),false,false);
+
             $sTemplateName=Template::templateNameFilter(App()->request->getPost('templatename'));
-            $the_full_file_path = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sTemplateName . "/" . $sFileToDelete;
+            global $oEditedTemplate;
+            $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName);
+            $templatedir = $oEditedTemplate->viewPath;
+            $filesdir = ($oEditedTemplate->filesPath!='')?$oEditedTemplate->filesPath:$templatedir . '../files';
+            $the_full_file_path = $filesdir . $sFileToDelete;
             if (@unlink($the_full_file_path))
             {
                 Yii::app()->user->setFlash('error', sprintf(gT("The file %s was deleted."), htmlspecialchars($sFileToDelete)));
@@ -463,7 +469,10 @@ class templates extends Survey_Common_Action
             {
                 Yii::app()->user->setFlash('error',sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/template folder"), htmlspecialchars($sFileToDelete)));
             }
-            $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . returnGlobal('editfile') . "/screenname/" . returnGlobal('screenname') . "/templatename/" . $sTemplateName));
+            $editfileindex = App()->request->getPost('editfileindex');
+            $useindex = App()->request->getPost('useindex');
+            $this->getController()->redirect(array('admin/templates/sa/view/editfile/'.$editfileindex.'/screenname/'.returnGlobal('screenname').'/templatename/'.$sTemplateName.'/useindex/'.$useindex));
+            //$this->getController()->redirect(array("admin/templates/sa/view/editfile/" . returnGlobal('editfile') . "/screenname/" . returnGlobal('screenname') . "/templatename/" . $sTemplateName));
         }
     }
 
@@ -809,8 +818,7 @@ class templates extends Survey_Common_Action
         }
         global $oEditedTemplate;
         $editableCssFiles = $this->_initcssfiles($oEditedTemplate, true);
-        $filesdir = (isset($oEditedTemplate->filesPath))?$oEditedTemplate->filesPath:'/files';
-//var_dump($filesdir); die();
+        $filesdir = ($oEditedTemplate->filesPath!='')?'./'.$oEditedTemplate->config->engine->filesdirectory.'/':'./files/';
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
         $aData['tempdir'] = $tempdir;
@@ -820,6 +828,7 @@ class templates extends Survey_Common_Action
         $aData['cssfiles'] = $editableCssFiles;
         $aData['jsfiles'] = $jsfiles;
         $aData['otherfiles'] = $otherfiles;
+        $aData['filespath'] = $filesdir;
         $aData['tempurl'] = $tempurl;
         $aData['time'] = $time;
         $aData['sEditorFileType'] = $sEditorFileType;
@@ -1445,7 +1454,7 @@ class templates extends Survey_Common_Action
         }
 
         // Get list of 'otherfiles'
-        $filesdir = (isset($oEditedTemplate->filesPath))?$oEditedTemplate->filesPath:$templatedir . '../files';
+        $filesdir = ($oEditedTemplate->filesPath!='')?$oEditedTemplate->filesPath:$templatedir . '../files';
         $otherfiles = array();
         if ( file_exists($filesdir) && $handle = opendir($filesdir))
         {

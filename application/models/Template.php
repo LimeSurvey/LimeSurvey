@@ -186,7 +186,7 @@ class Template extends LSActiveRecord
                 $oTemplate->config = simplexml_load_file(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'/minimal-config.xml');
                 $oTemplate->cssFramework = null;
                 $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR;
-                $oTemplate->filePath = $oTemplate->path.DIRECTORY_SEPARATOR;
+                $oTemplate->filesPath = $oTemplate->path.DIRECTORY_SEPARATOR;
                 $oTemplate->packages = (array) $oTemplate->config->engine->packages->package;
                 return $oTemplate;
             }
@@ -204,7 +204,10 @@ class Template extends LSActiveRecord
         // The template configuration.
         $oTemplate->config = simplexml_load_file($oTemplate->path.'/config.xml');
         $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->pstpldirectory.DIRECTORY_SEPARATOR;
-        $oTemplate->filePath = $oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR;;
+
+        // condition for user's template prior to 160219
+        $oTemplate->filesPath = (isset($oTemplate->config->engine->filesdirectory))?$oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR:'';
+
         $oTemplate->cssFramework = $oTemplate->config->engine->cssframework;
         $oTemplate->packages = (array) $oTemplate->config->engine->packages->package;
 
