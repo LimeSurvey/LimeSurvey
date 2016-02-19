@@ -87,7 +87,7 @@
                 <?php if($showLastQuestion):?>
                     <span id="last_question" class="rotateHidden">
                     <?php eT("Last visited question:");?>
-                    <a href="<?php echo $last_question_link;?>" class=""><?php echo strip_tags($last_question_name);?></a>
+                    <a href="<?php echo $last_question_link;?>" class=""><?php echo mb_substr(strip_tags($last_question_name), 0, 60);?></a>
                     </span>
                 <?php endif; ?>
                 </div>

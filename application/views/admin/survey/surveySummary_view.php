@@ -273,7 +273,7 @@ $surveyid = $surveyinfo['sid'];
                         <div class="row text-left">
                             <div class="col-sm-12">
                                 <?php eT("Last visited question:");?>
-                                <a href="<?php echo $last_question_link;?>" class=""><?php echo $last_question_name;?></a>
+                                <a href="<?php echo $last_question_link;?>" class=""><?php echo mb_substr(strip_tags($last_question_name), 0, 60);?></a>
                                 <br/><br/>
                             </div>
                         </div>
