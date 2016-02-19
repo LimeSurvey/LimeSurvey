@@ -77,7 +77,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
         <div>
             <?php eT("Other files:"); ?>
             <br/>
-            <?php printf(gT("(path for css: %s)"), $filespath) ?>
+            <?php // TODO printf(gT("(path for css: %s)"), $filespath) ?>
             <?php echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post'); ?>
             <select size='11' class="form-control" name='otherfile' id='otherfile'>
                 <?php echo makeoptions($otherfiles, "name", "name", ""); ?>
@@ -99,7 +99,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             <?php endif;?>
             <?php if(isset($_GET['useindex'])):?>
                 <input type='hidden' name='useindex' value='<?php echo $_GET['useindex']; ?>' />
-            <?php endif;?>            
+            <?php endif;?>
 
             </form>
         </div>
@@ -121,6 +121,13 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                 <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
                 <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
                 <input type='hidden' name='action' value='templateuploadfile' />
+                <?php if(isset($_GET['editfile'])):?>
+                    <input type='hidden' name='editfileindex' value='<?php echo $_GET['editfile']; ?>' />
+                <?php endif;?>
+                <?php if(isset($_GET['useindex'])):?>
+                    <input type='hidden' name='useindex' value='<?php echo $_GET['useindex']; ?>' />
+                <?php endif;?>
+
                 </form>
                 <?php
             }
