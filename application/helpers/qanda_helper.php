@@ -1713,6 +1713,8 @@ function do_list_radio($ia)
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
         }
 
+        $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
+
         ////
         // Insert row
         // Display the answer row
