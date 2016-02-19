@@ -14,7 +14,7 @@ $(document).ready(function () {
 
     var selector = '.thousandsseparator input.numeric, input.integeronly, .numberonly input[type=text]';
     $(selector).unbind('keydown');
-    $('input.numeric, .numberonly input[type=text]').priceFormat({
+    $('.thousandsSeparator input.numeric').priceFormat({
         'centsSeparator' : centsSep,
         'thousandsSeparator' : thousandsSep,
         'centsLimit' : 2,
@@ -26,9 +26,8 @@ $(document).ready(function () {
         'thousandsSeparator' : thousandsSep,
         'centsLimit' : 0,
         'prefix' : '',
-	'allowNegative' : true
+        'allowNegative' : true
     });
-
 
     $(selector).bind('keyup', custom_checkconditions);
     // Initialize LEM tabs first.
