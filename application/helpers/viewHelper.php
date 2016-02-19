@@ -218,7 +218,7 @@ class viewHelper
     public static function flatEllipsizeText($sString,$bFlat,$iAbbreviated,$sEllipsis='...',$fPosition = 1){
         if($bFlat || $iAbbreviated)
         {
-            $sString = flattenText($sString);
+            $sString = flattenText($sString, false, true);
         }
         if($iAbbreviated)
         {
