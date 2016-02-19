@@ -264,6 +264,7 @@ class templates extends Survey_Common_Action
         $useindex = App()->request->getPost('useindex');
         $templatename = returnGlobal('templatename');
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+        $templatedir = $oEditedTemplate->viewPath;
         $screenname = returnGlobal('screenname');
         $files = $this->_initfiles($templatename);
         $cssfiles = $this->_initcssfiles($oEditedTemplate);
@@ -274,10 +275,12 @@ class templates extends Survey_Common_Action
 
         //$dirfilepath = $basedestdir."/".$templatename . "/";
         // If the file directory is defined in the template configuration, we use this one. Else, by default, we use the templateroot/files/ directory
-        $dirfilepath = ($oEditedTemplate->filesPath!='')?$oEditedTemplate->filesPath:$templatedir . '../files';
+        $dirfilepath = ($oEditedTemplate->filesPath!='')?$oEditedTemplate->filesPath:$oEditedTemplate->path . '/files/' ;
+        //var_dump($templatedir); die();
+        //$dirfilepath =  realpath($dirfilepath);
         if (!file_exists($dirfilepath))
         {
-            if(is_writable($dirfilepath.'/..'))
+            if(is_writable($oEditedTemplate->path ))
             {
                 mkdir($dirfilepath, 0777, true);
             }
@@ -288,8 +291,6 @@ class templates extends Survey_Common_Action
                 $this->getController()->redirect(array('admin/templates/sa/view/editfile/'.$editfileindex.'/screenname/'.$screenname.'/templatename/'.$templatename.'/useindex/'.$useindex));
             }
         }
-
-
 
         $fullfilepath = $dirfilepath . $filename;
         $status='error';
@@ -460,7 +461,7 @@ class templates extends Survey_Common_Action
             global $oEditedTemplate;
             $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName);
             $templatedir = $oEditedTemplate->viewPath;
-            $filesdir = ($oEditedTemplate->filesPath!='')?$oEditedTemplate->filesPath:$templatedir . '../files';
+            $filesdir = ($oEditedTemplate->filesPath!='')?$oEditedTemplate->filesPath:$oEditedTemplate->path . '/files/';
             $the_full_file_path = $filesdir . $sFileToDelete;
             if (@unlink($the_full_file_path))
             {
