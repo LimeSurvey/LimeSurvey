@@ -69,8 +69,9 @@
             Where the files of the template will be uploaded
             Warning : if the template contain files, the whole directory template will published via the Asset Manager,
             and not the files one by one. It change the update strategy, and a single change to a css file will not change the asset tmp directory
+            Overwriting the Asset Manager will be necessary to resolve this problem.
         -->
-        <filesdirectory>files</filesdirectory>
+        <filesdirectory>fiales</filesdirectory>
 
         <!-- Here, you can publish packages set as third party extension in application/config/third_party -->
         <packages>

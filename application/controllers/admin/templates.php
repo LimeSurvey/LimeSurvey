@@ -809,8 +809,8 @@ class templates extends Survey_Common_Action
         }
         global $oEditedTemplate;
         $editableCssFiles = $this->_initcssfiles($oEditedTemplate, true);
-
-
+        $filesdir = (isset($oEditedTemplate->filesPath))?$oEditedTemplate->filesPath:'/files';
+//var_dump($filesdir); die();
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
         $aData['tempdir'] = $tempdir;
@@ -944,8 +944,8 @@ class templates extends Survey_Common_Action
             // User templates (are published only if exists)
             $oEditedTemplate->config->files->css->filename[]="../../../styles-public/bootstrap-for-template-editor.css";
             $oEditedTemplate->config->files->js->filename[]="../../../scripts/bootstrap-for-template-editor.js";
-
         }
+
         //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
