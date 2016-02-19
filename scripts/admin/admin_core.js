@@ -306,7 +306,7 @@ function updatequestionattributes()
 function validatefilename (form, strmessage )
 {
     if (form.the_file.value == "") {
-        alert( strmessage );
+        $('#pleaseselectfile-popup').modal();
         form.the_file.focus();
         return false ;
     }
