@@ -35,12 +35,38 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160218) to 2.50+ (build 160219) Feb 19, 2016
+-Fixed issue #10442: The theme editor shows in the example window the standard template set in the general settings not the template selected for editing. (LouisGac)
+-Fixed issue #10464: Missing translation (Carsten Schmitz)
+-Fixed issue #10466: Missing translation when no question group exists (Carsten Schmitz)
+-Fixed issue #10466: String not translatable (Carsten Schmitz)
+-Fixed issue #10490: Missing translation (Carsten Schmitz)
+-Fixed issue #10509: [Security] issue when saving/loading responses on public survey (Olle Haerstedt)
+-Fixed issue #10511: Missing translation (Carsten Schmitz)
+-Fixed issue #10512: Missing colons (Carsten Schmitz)
+-Fixed issue #10513: Missing colons (Carsten Schmitz)
+-Fixed issue #10515: Missing colons (Carsten Schmitz)
+-Fixed issue #10517: After Survey - member print option shows blank white page and if set to show public stats, graphs don't display (Olle Haerstedt)
+-Fixed issue #10520: Find (any state) in survey list shows no surveys (Carsten Schmitz)
+-Fixed issue: Error on updating existing survey response tables to new charset (Carsten Schmitz)
+-Fixed issue: Error when returning from action button configuration (Carsten Schmitz)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
 
 Changes from 2.50+ (build 160217) to 2.50+ (build 160218) Feb 18, 2016
 -Fixed issue #10457: White page after installation due to old database server version (Carsten Schmitz)
 -Fixed issue #10519: Error when populating database on fresh install (Carsten Schmitz)
 #Updated translation: French (France) by arnaud21
-#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Bokmal) by pmonstad
 #Updated translation: Norwegian (Nynorsk) by pmonstad
 #Updated translation: Russian by ddrmoscow, vipgroup
 
