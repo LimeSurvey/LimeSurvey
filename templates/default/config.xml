@@ -39,6 +39,10 @@
                 <filename>css/flat_and_modern.css</filename>
                 <filename>css/template.css</filename>
             </css>
+            <js>
+                <filename>scripts/template.js</filename>
+                <filename>scripts/bootstrap-slider.js</filename>
+            </js>            
     </files_editable>
 
     <engine>

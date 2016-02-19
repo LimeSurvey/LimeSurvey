@@ -140,7 +140,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
      */
 
     // We check if a oTemplate has been provided to the method (means it has been called from template editor)
-
     if($oTemplate=='')
     {
         // If it not the case, then we get the global oTemplate object defined from SurveyControler::Index
@@ -151,7 +150,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $oTemplate = Template::model()->getTemplateConfiguration($templatename);
         }
     }
-    
+
     $aCssFiles = $oTemplate->config->files->css->filename;
     $aJsFiles = $oTemplate->config->files->js->filename;
     if(stripos ($line,"{TEMPLATECSS}"))

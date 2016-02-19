@@ -54,7 +54,6 @@ function textarea_encode($html_code)
  */
 function filetext($templatename,$templatefile,$templates) {
     $sFileName = gettemplatefilename($templates[$templatename],$templatefile);
-    //var_dump($sFileName);
     if (file_exists($sFileName))
     {
         return file_get_contents($sFileName);
@@ -102,18 +101,20 @@ function makeoptions($array, $value, $text, $selectedvalue) {
 function makeoptionswithindex($array, $value, $text, $selectedvalue, $prefix)
 {
 
-    $editfile = (string) $_GET['editfile'];
-    $editfile_infos = explode('_',$editfile);
+    if(isset( $_GET['editfile']))
+    {
+        $editfile = (string) $_GET['editfile'];
+        $editfile_infos = explode('_',$editfile);
 
     // If user is editing a file requiring an index, $_GET['editfile'] will have a prefix (like css or js)
     // If it's the same prefix than the one asked here, then it means he's editing one of the files of the list
     // The edited file will have an index corresponding to the suffix of $_GET['editfile']
     // e.g : admin/templates/sa/view/editfile/css_1/ ....
     // Mean user is editing a css file with index 1 in the template's configuration file
-    if(isset($editfile_infos[0]) && $editfile_infos[0] == $prefix)
-        $selectedindex = $editfile_infos[1];
-    else
-        $selectedindex = -1;
+        if(isset($editfile_infos[0]) && $editfile_infos[0] == $prefix)
+            $selectedindex = $editfile_infos[1];
+    }
+    $selectedindex = (isset($selectedindex))?$selectedindex:-1;
 
     $return='';
     foreach ($array as $index => $ar)

@@ -364,8 +364,6 @@ class templates extends Survey_Common_Action
         {
             $templatename = 'default';
         }
-        //var_dump($templatename); echo "<hr/>";var_dump($editfile); echo "<hr/>";var_dump($screenname); die();
-        //
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, $useindex);
         App()->getClientScript()->reset();
 
@@ -598,6 +596,7 @@ class templates extends Survey_Common_Action
     */
     public function templatesavechanges()
     {
+
         if (!Permission::model()->hasGlobalPermission('templates','update'))
         {
             die('No permission');
@@ -617,20 +616,33 @@ class templates extends Survey_Common_Action
         }
 
         $action = returnGlobal('action');
-        $editfile = sanitize_filename(returnGlobal('editfile'));
+        //$editfile = sanitize_filename(returnGlobal('editfile'));
+        $editfile = returnGlobal('editfile');
         $sTemplateName = Template::templateNameFilter(App()->request->getPost('templatename'));
+        $editfileindex = App()->request->getPost('editfileindex');
+        $useindex = App()->request->getPost('useindex');
+
         $screenname = returnGlobal('screenname');
+
+        global $oEditedTemplate;
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName);
+
+
         $files = $this->_initfiles($sTemplateName);
         $cssfiles = $this->_initcssfiles($oEditedTemplate);
+        $jsfiles =  $this->_getEditableJsFiles($oEditedTemplate);
 
         if ($action == "templatesavechanges" && $changedtext) {
             Yii::app()->loadHelper('admin/template');
             $changedtext = str_replace("\r\n", "\n", $changedtext);
 
-            if ($editfile) {
+            if ($editfile)
+            {
                 // Check if someone tries to submit a file other than one of the allowed filenames
-                if (multiarray_search($files, 'name', $editfile) === false &&
-                multiarray_search($cssfiles, 'name', $editfile) === false
+                if (
+                    multiarray_search($files, 'name', $editfile) === false &&
+                    multiarray_search($cssfiles, 'name', $editfile) === false &&
+                    multiarray_search($jsfiles, 'name', $editfile) === false
                 )
                 {
                     Yii::app()->user->setFlash('error',gT('Invalid template name'));
@@ -639,6 +651,7 @@ class templates extends Survey_Common_Action
                 }
 
                 $savefilename = gettemplatefilename(Yii::app()->getConfig('usertemplaterootdir') . "/" . $sTemplateName, $editfile);
+
                 if (is_writable($savefilename)) {
                     if (!$handle = fopen($savefilename, 'w'))
                     {
@@ -665,8 +678,11 @@ class templates extends Survey_Common_Action
 
             }
         }
-
-        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $sTemplateName));
+        //      'admin/templates/sa/view/editfile/'.$_GET['editfile'].'/screenname/'.$screenname.'/templatename/'.$sTemplateName.'/useindex/'.$_GET['useindex'];
+        //echo "admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $sTemplateName;
+        //die("OK");
+        //$this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $sTemplateName));
+        $this->getController()->redirect(array('admin/templates/sa/view/editfile/'.$editfileindex.'/screenname/'.$screenname.'/templatename/'.$sTemplateName.'/useindex/'.$useindex));
     }
 
     /**
@@ -707,7 +723,7 @@ class templates extends Survey_Common_Action
     * @param array $myoutput
     * @return void
     */
-    protected function _templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $otherfiles, $myoutput)
+    protected function _templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput)
     {
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
@@ -730,7 +746,6 @@ class templates extends Survey_Common_Action
 
         if (!$fnew) {
             $aData['filenotwritten'] = true;
-            echo "AAAAAAAAAAAAAAA";die('okok');
         }
         else
         {
@@ -775,13 +790,15 @@ class templates extends Survey_Common_Action
         global $oEditedTemplate;
         $editableCssFiles = $this->_initcssfiles($oEditedTemplate, true);
 
+
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
         $aData['tempdir'] = $tempdir;
         $aData['templatename'] = $templatename;
         $aData['templates'] = $templates;
         $aData['files'] = $files;
-        $aData['cssfiles'] = $editableCssFiles;//(array) $oEditedTemplate->config->files_editable->css->filename; /// IKIE
+        $aData['cssfiles'] = $editableCssFiles;
+        $aData['jsfiles'] = $jsfiles;
         $aData['otherfiles'] = $otherfiles;
         $aData['tempurl'] = $tempurl;
         $aData['time'] = $time;
@@ -858,6 +875,28 @@ class templates extends Survey_Common_Action
         return $aNamedCssFiles;
     }
 
+    protected function _getEditableJsFiles($oEditedTemplate)
+    {
+
+        // If editable JS files are defined in the template config file
+        if(is_object($oEditedTemplate->config->files_editable->js))
+        {
+            $aJsFiles = (array) $oEditedTemplate->config->files_editable->js->filename;
+        }
+        // Else we get all the JS files
+        else
+        {
+            $aJsFiles = (array) $oEditedTemplate->config->files->js->filename;
+        }
+
+        $aNamedJsFiles = array();
+        foreach($aJsFiles as $file)
+        {
+            $aNamedJsFiles[] = array('name' => $file);
+        }
+        return $aNamedJsFiles;
+    }
+
     /**
      * Function that initialises all data and call other functions to load default view.
      *
@@ -882,10 +921,10 @@ class templates extends Survey_Common_Action
         //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
-//var_dump($oEditedTemplate); var_dump($templatename); echo "<hr/>";var_dump($editfile); echo "<hr/>";var_dump($screenname); die();
         $files = $this->_initfiles($templatename);
 
         $cssfiles = $this->_initcssfiles($oEditedTemplate);
+
 
         // Standard Support Files
         // These files may be edited or saved
@@ -1004,8 +1043,21 @@ class templates extends Survey_Common_Action
 
             // The file name is now based on the index of the oTemplate files
             $file_index = $file_datas[1];
-            $aTemplateCssFiles = (array) $oEditedTemplate->config->files_editable->css->filename;
-            $editfile = $aTemplateCssFiles[$file_index];
+            switch($extension)
+            {
+                case 'css':
+                    $aTemplateFiles = (array) $oEditedTemplate->config->files_editable->css->filename;
+                break;
+
+                case 'js':
+                    $aTemplateFiles = (array) $oEditedTemplate->config->files_editable->js->filename;
+                break;
+
+                default:
+                    $aTemplateFiles = (array) $oEditedTemplate->config->files_editable->css->filename;
+                break;
+            }
+            $editfile = $aTemplateFiles[$file_index];
         }
 
         if ($extension == 'css' || $extension == 'js')
@@ -1328,6 +1380,8 @@ class templates extends Survey_Common_Action
         }
         $myoutput[] = "</html>";
 
+        $jsfiles =  $this->_getEditableJsFiles($oEditedTemplate);
+
         if (is_array($files))
         {
             $match = 0;
@@ -1339,7 +1393,9 @@ class templates extends Survey_Common_Action
                 }
             }
 
-            foreach ($cssfiles as $f)
+            $aCssAndJsfiles = array_merge($cssfiles,$jsfiles ) ;
+
+            foreach ($aCssAndJsfiles as $f)
             {
                 if ($editfile == $f["name"])
                 {
@@ -1390,7 +1446,7 @@ class templates extends Survey_Common_Action
         if ($showsummary)
         {
             //$aCssfileseditable = (array) $oEditedTemplate->config->files_editable->css->filename;
-            $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $otherfiles, $myoutput));
+            $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
         }
 
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'admin_core.js' ));
