@@ -195,7 +195,7 @@ class Template extends LSActiveRecord
 
         // If the template don't have a config file (maybe it has been deleted, or whatever),
         // then, we load the default template
-        if(!hasConfigFile($sTemplatePath))
+        if(!$this->hasConfigFile($sTemplatePath))
         {
             $oTemplate->name = 'default';
             $oTemplate->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
