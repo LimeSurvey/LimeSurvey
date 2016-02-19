@@ -181,7 +181,7 @@ class Template extends LSActiveRecord
             $oTemplate->path = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
 
             // If it's an imported template from 2.06, we return default values
-            if ( $this->isOldTemplate($oTemplate->path) )
+            if ( self::isOldTemplate($oTemplate->path) )
             {
                 $oTemplate->config = simplexml_load_file(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'/minimal-config.xml');
                 $oTemplate->cssFramework = null;
@@ -195,7 +195,7 @@ class Template extends LSActiveRecord
 
         // If the template don't have a config file (maybe it has been deleted, or whatever),
         // then, we load the default template
-        if(!$this->hasConfigFile($sTemplatePath))
+        if(! self::hasConfigFile($oTemplate->path))
         {
             $oTemplate->name = 'default';
             $oTemplate->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
@@ -334,7 +334,7 @@ class Template extends LSActiveRecord
      * @param string $sTemplatePath
      * @return bool
      */
-    private function hasConfigFile($sTemplatePath)
+    public static function hasConfigFile($sTemplatePath)
     {
         return is_file($sTemplatePath.DIRECTORY_SEPARATOR.'config.xml');
     }
@@ -344,8 +344,8 @@ class Template extends LSActiveRecord
      * @param string $sTemplatePath
      * @return bool
      */
-    private function _isOldTemplate($sTemplatePath)
+    public static function isOldTemplate($sTemplatePath)
     {
-        return (! $this->hasConfigFile($sTemplatePath) && is_file($oTemplate->path.DIRECTORY_SEPARATOR.'startpage.pstpl'));
+        return (! self::hasConfigFile($sTemplatePath) && is_file($oTemplate->path.DIRECTORY_SEPARATOR.'startpage.pstpl'));
     }
 }
