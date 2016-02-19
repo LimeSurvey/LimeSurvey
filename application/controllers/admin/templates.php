@@ -935,9 +935,17 @@ class templates extends Survey_Common_Action
 
         // In survey mode, bootstrap is loaded via the app init.
         // From template editor, we just add the bootstrap files to the js/css to load for template_helper::templatereplace()
-        $oEditedTemplate->config->files->css->filename[]="../../styles-public/bootstrap-for-template-editor.css";
-        $oEditedTemplate->config->files->js->filename[]="../../scripts/bootstrap-for-template-editor.js";
+        if($oEditedTemplate->cssFramework=='bootstrap')
+        {
+            // Core templates (are published only if exists)
+            $oEditedTemplate->config->files->css->filename[]="../../styles-public/bootstrap-for-template-editor.css";
+            $oEditedTemplate->config->files->js->filename[]="../../scripts/bootstrap-for-template-editor.js";
 
+            // User templates (are published only if exists)
+            $oEditedTemplate->config->files->css->filename[]="../../../styles-public/bootstrap-for-template-editor.css";
+            $oEditedTemplate->config->files->js->filename[]="../../../scripts/bootstrap-for-template-editor.js";
+
+        }
         //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
