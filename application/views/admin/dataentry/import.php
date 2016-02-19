@@ -16,10 +16,12 @@
                             'method' => 'post',
                             'buttons' => array(
                                 gT('Import responses') => array(
-                                    'name' => 'ok'
+                                    'name' => 'ok',
+                                    'class' => array('hidden')
                                 ),
                                 gT('Cancel') => array(
                                     'type' => 'link',
+                                    'class' => array('hidden'),
                                     'href' => App()->createUrl('plugins/index')
                                 )
                             )
