@@ -330,27 +330,22 @@ function getTemplateListWithPreviews()
 
 function getAdminThemeList()
 {
-    $standardtemplaterootdir=Yii::app()->getConfig("styledir");
-    $list_of_files = array();
-
-    if ($standardtemplaterootdir && $handle = opendir($standardtemplaterootdir))
+    $sStandardTemplateRootDir=Yii::app()->getConfig("styledir");
+    $aListOfFiles = array();
+    if ($sStandardTemplateRootDir && $pHandle = opendir($sStandardTemplateRootDir))
     {
-        while (false !== ($file = readdir($handle)))
+        while (false !== ($file = readdir($pHandle)))
         {
-            if (is_file("$standardtemplaterootdir/$file/config.xml"))
+            if (is_dir($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$file) && is_file($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$file.DIRECTORY_SEPARATOR.'config.xml'))
             {
-                //$list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
-                $oTemplateConfig = simplexml_load_file($standardtemplaterootdir.DIRECTORY_SEPARATOR.$file.'/config.xml');
-                $list_of_files[$file] = $oTemplateConfig;
+                $oTemplateConfig = simplexml_load_file($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$file.'/config.xml');
+                $aListOfFiles[$file] = $oTemplateConfig;
             }
         }
-        closedir($handle);
+        closedir($pHandle);
     }
-
-
-    ksort($list_of_files);
-
-    return $list_of_files;
+    ksort($aListOfFiles);
+    return $aListOfFiles;
 }
 
 
@@ -4239,12 +4234,12 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 *
 * @return string  Cleaned text
 */
-function flattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=false, $sCharset='UTF-8', $bStripNewLines=true)
+function flattenText($sTextToFlatten, $bKeepSpan=false, $bDecodeHTMLEntities=false, $sCharset='UTF-8', $bStripNewLines=true)
 {
     $sNicetext = stripJavaScript($sTextToFlatten);
     // When stripping tags, add a space before closing tags so that strings with embedded HTML tables don't get concatenated
     $sNicetext = str_replace(array('</td','</th'),array(' </td',' </th'), $sNicetext);
-    if ($keepSpan) {
+    if ($bKeepSpan) {
         // Keep <span> so can show EM syntax-highlighting; add space before tags so that word-wrapping not destroyed when remove tags.
         $sNicetext = strip_tags($sNicetext,'<span><table><tr><td><th>');
     }
