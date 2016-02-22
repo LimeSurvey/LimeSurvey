@@ -8530,8 +8530,10 @@ EOD;
                         }
                         if ($radixchange && isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1')
                         {
-                            // convert from comma back to decimal
-                            $value = implode('.',explode(',',$value));
+                            // Convert from comma back to decimal
+                            // Also make sure to be able to convert numbers like 1.100,10
+                            $value = preg_replace('|\.|', '', $value);
+                            $value = preg_replace('|\,|', '\.', $value);
                         }
                         switch($type)
                         {
