@@ -35,6 +35,36 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160219) to 2.50+ (build 160222) Feb 22, 2016
+-Fixed issue #10189: Enabling "Thousands separator" in "numerical input" questions results in an error and data loss (Olle Haerstedt)
+-Fixed issue #10211: Thousands separator - numeric input and multiple numeric input in the same group (Olle Haerstedt)
+-Fixed issue #10275: Broken text layout when setting condition to a question. (LouisGac)
+-Fixed issue #10364: Last visited question can take a big part (Olle Haerstedt)
+-Fixed issue #10394: Thousand Separator appears to be broken - causes other issues (numerical input) (Olle Haerstedt)
+-Fixed issue #10454: Slider Label for multiple numeric input question not shown correctly (LouisGac)
+-Fixed issue #10475: User without User's right can not update name and password (LouisGac)
+-Fixed issue #10478: PHP notice when try to save global settings and debug mode activated (Olle Haerstedt)
+-Fixed issue #10516: Error with "view response details" and "edit this response" (Olle Haerstedt)
+-Fixed issue #10523: Double set of buttons (Olle Haerstedt)
+-Fixed issue #10525: Plugin managment screen has no Close button (Olle Haerstedt)
+-Fixed issue #10531: Blank login page after successful installation (Carsten Schmitz)
+-Fixed issue #10534: Text input not visible for List (dropdown) Other (LouisGac)
+-Fixed issue #10535: New question Mandatory doesn't stay On after save (Olle Haerstedt)
+-Fixed issue #10537: Rank question display error on page re-render (LouisGac)
+-Fixed issue: Add question icon disappearing when survey is active (Carsten Schmitz)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow
+#Updated translation: Spanish (Spain) by jmlorenzo, ecocitizen, aesteban
+
 Changes from 2.50+ (build 160218) to 2.50+ (build 160219) Feb 19, 2016
 -Fixed issue #10442: The theme editor shows in the example window the standard template set in the general settings not the template selected for editing. (LouisGac)
 -Fixed issue #10464: Missing translation (Carsten Schmitz)
