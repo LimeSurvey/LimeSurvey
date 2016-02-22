@@ -101,6 +101,7 @@ class Template extends LSActiveRecord
     {
         // We retrieve the admin theme in config ( {{settings_global}} or config-defaults.php )
         $sAdminThemeName = Yii::app()->getConfig('admintheme');
+        $sAdminTemplateRootDir=Yii::app()->getConfig("styledir");
         // If the template doesn't exist, set to Default
         $sAdminThemeName = (self::isStandardTemplate($sAdminThemeName ))?$sAdminThemeName:'default';
 
@@ -108,14 +109,15 @@ class Template extends LSActiveRecord
 
         // If the required admin theme doesn't exist, Sea_Green will be used
         // TODO : check also for upload directory
-        $oAdminTheme->name = (is_dir(Yii::app()->basePath.'/../styles/'.$sAdminThemeName))?$sAdminThemeName:'Sea_Green';
+
+        $oAdminTheme->name = (is_dir($sAdminTemplateRootDir.DIRECTORY_SEPARATOR.$sAdminThemeName))?$sAdminThemeName:'Sea_Green';
 
         // The package name eg: lime-bootstrap-Sea_Green
         $oAdminTheme->packagename = 'lime-bootstrap-'.$oAdminTheme->name;
 
         // The path of the template files eg : /var/www/limesurvey/styles/Sea_Green
         // TODO : add the upload directory for user template
-        $oAdminTheme->path = realpath(Yii::app()->basePath.'/../styles/'.$oAdminTheme->name);
+        $oAdminTheme->path = $sAdminTemplateRootDir.DIRECTORY_SEPARATOR.$oAdminTheme->name;
 
         // The template configuration.
         $oAdminTheme->config = simplexml_load_file($oAdminTheme->path.'/config.xml');
