@@ -190,6 +190,7 @@ class Template extends LSActiveRecord
                 $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR;
                 $oTemplate->filesPath = $oTemplate->path.DIRECTORY_SEPARATOR;
                 $oTemplate->packages = (array) $oTemplate->config->engine->packages->package;
+                $oTemplate->otherFiles = self::getOtherFiles($oTemplate->filesPath);
                 return $oTemplate;
             }
 
@@ -208,12 +209,31 @@ class Template extends LSActiveRecord
         $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->pstpldirectory.DIRECTORY_SEPARATOR;
 
         // condition for user's template prior to 160219
-        $oTemplate->filesPath = (isset($oTemplate->config->engine->filesdirectory))?$oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR:'';
-
+        $oTemplate->filesPath = (isset($oTemplate->config->engine->filesdirectory))?$oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR:$oTemplate->path . '/files/';
         $oTemplate->cssFramework = $oTemplate->config->engine->cssframework;
         $oTemplate->packages = (array) $oTemplate->config->engine->packages->package;
-
+        $oTemplate->otherFiles = self::getOtherFiles($oTemplate->filesPath);
         return $oTemplate;
+    }
+
+    /**
+     * Return the list of ALL files present in the file directory
+     */
+    static public function getOtherFiles($filesdir)
+    {
+        $otherfiles = array();
+        if ( file_exists($filesdir) && $handle = opendir($filesdir))
+        {
+            while (false !== ($file = readdir($handle)))
+            {
+                if (!is_dir($file))
+                {
+                    $otherfiles[] = array("name" => $file);
+                }
+            }
+            closedir($handle);
+        }
+        return $otherfiles;
     }
 
 

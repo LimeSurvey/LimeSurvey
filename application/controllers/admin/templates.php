@@ -260,9 +260,11 @@ class templates extends Survey_Common_Action
         }
 
         $action = returnGlobal('action');
-        $editfile = returnGlobal('editfile');
+        $editfileindex = App()->request->getPost('editfileindex');
+        $useindex = App()->request->getPost('useindex');
         $templatename = returnGlobal('templatename');
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+        $templatedir = $oEditedTemplate->viewPath;
         $screenname = returnGlobal('screenname');
         $files = $this->_initfiles($templatename);
         $cssfiles = $this->_initcssfiles($oEditedTemplate);
@@ -271,26 +273,22 @@ class templates extends Survey_Common_Action
         $allowedtemplateuploads=Yii::app()->getConfig('allowedtemplateuploads');
         $filename=sanitize_filename($_FILES['upload_file']['name'],false,false);// Don't force lowercase or alphanumeric
 
-        //$dirfilepath = $basedestdir."/".$templatename . "/";
-        // If the file directory is defined in the template configuration, we use this one. Else, by default, we use the templateroot/files/ directory
-        $filesdir = ($oEditedTemplate->filesPath!='')?$oEditedTemplate->filesPath:$templatedir . '../files';
-        if (!file_exists($dirfilepath . "/files/"))
+        $dirfilepath = $oEditedTemplate->filesPath;
+        if (!file_exists($dirfilepath))
         {
-            if(is_writable($dirfilepath))
+            if(is_writable($oEditedTemplate->path ))
             {
-                mkdir($dirfilepath . "/files/", 0777, true);
+                mkdir($dirfilepath, 0777, true);
             }
             else
             {
-                $uploadresult = sprintf(gT("The folder %s doesn't exist and can't be created."),$dirfilepath. "/files/");
+                $uploadresult = sprintf(gT("The folder %s doesn't exist and can't be created."),$dirfilepath);
                 Yii::app()->setFlashMessage($uploadresult,'error');
-                $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+                $this->getController()->redirect(array('admin/templates/sa/view/editfile/'.$editfileindex.'/screenname/'.$screenname.'/templatename/'.$templatename.'/useindex/'.$useindex));
             }
         }
 
-
-
-        $fullfilepath = $dirfilepath . "/files/". $filename;
+        $fullfilepath = $dirfilepath . $filename;
         $status='error';
         if($action=="templateuploadfile")
         {
@@ -320,7 +318,7 @@ class templates extends Survey_Common_Action
             }
             Yii::app()->setFlashMessage($uploadresult,$status);
         }
-        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect(array('admin/templates/sa/view/editfile/'.$editfileindex.'/screenname/'.$screenname.'/templatename/'.$templatename.'/useindex/'.$useindex));
     }
 
     /**
@@ -459,7 +457,7 @@ class templates extends Survey_Common_Action
             global $oEditedTemplate;
             $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName);
             $templatedir = $oEditedTemplate->viewPath;
-            $filesdir = ($oEditedTemplate->filesPath!='')?$oEditedTemplate->filesPath:$templatedir . '../files';
+            $filesdir = $oEditedTemplate->filesPath;
             $the_full_file_path = $filesdir . $sFileToDelete;
             if (@unlink($the_full_file_path))
             {
@@ -818,7 +816,7 @@ class templates extends Survey_Common_Action
         }
         global $oEditedTemplate;
         $editableCssFiles = $this->_initcssfiles($oEditedTemplate, true);
-        $filesdir = ($oEditedTemplate->filesPath!='')?'./'.$oEditedTemplate->config->engine->filesdirectory.'/':'./files/';
+        $filesdir = $oEditedTemplate->filesPath;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
         $aData['tempdir'] = $tempdir;
@@ -1452,8 +1450,9 @@ class templates extends Survey_Common_Action
                 }
             }
         }
-
+        
         // Get list of 'otherfiles'
+        // We can't use $oTemplate->otherFiles, because of retrocompatibility with 2.06 template and the big mess of it mixing files
         $filesdir = ($oEditedTemplate->filesPath!='')?$oEditedTemplate->filesPath:$templatedir . '../files';
         $otherfiles = array();
         if ( file_exists($filesdir) && $handle = opendir($filesdir))
@@ -1469,6 +1468,7 @@ class templates extends Survey_Common_Action
 
             closedir($handle);
         }
+
 
         $aData['codelanguage'] = $codelanguage;
         $aData['highlighter'] = $highlighter;

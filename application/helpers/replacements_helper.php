@@ -153,10 +153,14 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     $aCssFiles = $oTemplate->config->files->css->filename;
     $aJsFiles = $oTemplate->config->files->js->filename;
+    $aOtherFiles = $oTemplate->otherFiles;
 
+//var_dump($aOtherFiles); die();
     if(stripos ($line,"{TEMPLATECSS}"))
     {
-        if(!YII_DEBUG) //Asset manager off in debug mode
+        // If the template has files for css, we can't publish the files one by one, but we must publish them as a whole directory
+        // TODO : extend asset manager so it check for file modification even in directory mode
+        if(!YII_DEBUG  || count($aOtherFiles)<0 ) //Asset manager off in debug mode
         {
             foreach($aCssFiles as $sCssFile)
             {
@@ -173,9 +177,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                 if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
                 {
                     Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile",$sCssFile['media']);
-                }                
+                }
             }
-
         }
         /* RTL CSS */
         if (getLanguageRTL(App()->language))

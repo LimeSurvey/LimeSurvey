@@ -1769,7 +1769,7 @@ EOD;
     {
         if ($surveyInfo['active'] !== 'N')
         {
-            Yii::app()->user->setFlash('error', gT("Cannot add questions while the survey is active."));
+            Yii::app()->user->setFlash('error', gT("You can't add questions while the survey is active."));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
     }
