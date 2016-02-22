@@ -8528,13 +8528,22 @@ EOD;
                         {
                             $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
                         }
-                        if ($radixchange && isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1')
+
+                        // Check for and adjust ',' and '.' in numbers
+                        $isOnlyNum = isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1';
+                        if ($radixchange && $isOnlyNum)
                         {
                             // Convert from comma back to decimal
                             // Also make sure to be able to convert numbers like 1.100,10
                             $value = preg_replace('|\.|', '', $value);
                             $value = preg_replace('|\,|', '.', $value);
                         }
+                        elseif (!$radixchange && $isOnlyNum)
+                        {
+                            // Still have to remove all ',' introduced by the thousand separator
+                            $value = preg_replace('|\,|', '', $value);
+                        }
+
                         switch($type)
                         {
                             case 'D': //DATE
