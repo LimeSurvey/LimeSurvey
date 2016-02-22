@@ -28,7 +28,12 @@
             clearSufix: false,
 			allowNegative: false,
 			insertPlusSign: false,
-			clearOnEmpty:false
+			clearOnEmpty:false,
+			keepCursorPosition: true,
+			startWithInteger: true,
+			shiftCentsToInteger: false,
+			allowCtrlKey: true
+
 		};
 
 		var options = $.extend(defaults, options);
@@ -58,6 +63,10 @@
 			var allowNegative = options.allowNegative;
 			var insertPlusSign = options.insertPlusSign;
 			var clearOnEmpty = options.clearOnEmpty;
+			var keepCursorPosition = options.keepCursorPosition;
+			var startWithInteger = options.startWithInteger;
+			var shiftCentsToInteger = options.shiftCentsToInteger;
+			var allowCtrlKey = options.allowCtrlKey;
 			
 			// If insertPlusSign is on, it automatic turns on allowNegative, to work with Signs
 			if (insertPlusSign) allowNegative = true;
@@ -65,7 +74,30 @@
 			function set(nvalue)
 			{
 				if(obj.is('input'))
-					obj.val(nvalue);
+				{
+					var dObj = obj[0];
+					if(keepCursorPosition && obj.is('input') && dObj.selectionStart == dObj.selectionEnd)
+					{
+						var str = obj.val();
+						var pointPosition = dObj.selectionStart;
+
+						var diffThousandSeparator = 0;
+						if(str.indexOf(thousandsSeparator) !== -1 || nvalue.indexOf(thousandsSeparator) !== -1)
+						{
+							diffThousandSeparator = str.length - nvalue.length;
+							pointPosition -= diffThousandSeparator;
+						}
+
+						obj.val(nvalue);
+
+						dObj.selectionStart = pointPosition; 
+						dObj.selectionEnd = pointPosition;
+					}
+					else
+					{
+						obj.val(nvalue);
+					}
+				}
 				else
 					obj.html(nvalue);
 			}
@@ -82,13 +114,13 @@
 
 			// skip everything that isn't a number
 			// and also skip the left zeroes
-			function to_numbers (str)
+			function to_numbers (str, skipLeftZero)
 			{
 				var formatted = '';
 				for (var i=0;i<(str.length);i++)
 				{
 					char_ = str.charAt(i);
-					if (formatted.length==0 && char_==0) char_ = false;
+					if (skipLeftZero && formatted.length==0 && char_==0) char_ = false;
 
 					if (char_ && char_.match(is_number))
 					{
@@ -107,9 +139,16 @@
 			}
 
 			// format to fill with zeros to complete cents chars
-			function fill_with_zeroes (str)
+			function fill_with_zeroes_left (str)
 			{
 				while (str.length<(centsLimit+1)) str = '0'+str;
+				return str;
+			}
+
+			// format to fill with zeros to complete cents chars at right
+			function fill_with_zeroes_right (str)
+			{
+				while (str.length<(centsLimit+1)) str = str+'0';
 				return str;
 			}
 
@@ -119,21 +158,44 @@
 				if(!ignore && (str === '' || str == price_format('0', true)) && clearOnEmpty)
 					return '';
 
-				// formatting settings
-				var formatted = fill_with_zeroes(to_numbers(str));
-				var thousandsFormatted = '';
-				var thousandsCount = 0;
-
 				// Checking CentsLimit
 				if(centsLimit == 0)
 				{
 					centsSeparator = "";
-					centsVal = "";
 				}
 
-				// split integer from cents
-				var centsVal = formatted.substr(formatted.length-centsLimit,centsLimit);
-				var integerVal = formatted.substr(0,formatted.length-centsLimit);
+				// formatting settings
+				if(centsLimit > 0)
+				{
+					var ptPos = str.indexOf(centsSeparator);
+					if(ptPos !== -1)
+					{
+						if(!shiftCentsToInteger)
+						{
+							centsVal = str.substr(ptPos + 1);
+							centsVal = fill_with_zeroes_right(to_numbers(centsVal, false)).substr(0, centsLimit);
+							str = str.substr(0, ptPos)+centsSeparator+centsVal;
+						}
+					}
+					else if(startWithInteger)
+					{
+						var len = str.length + centsLimit + 1;
+						str += centsSeparator;
+						while (str.length<(len)) str = str+'0';
+					}
+				}
+
+				var formatted = str;
+
+				formatted = fill_with_zeroes_left(to_numbers(formatted, true));
+				var thousandsFormatted = '';
+				var thousandsCount = 0;
+
+				var centsVal = "";
+				var integerVal = formatted;
+
+				centsVal = formatted.substr(formatted.length-centsLimit,centsLimit);
+				integerVal = formatted.substr(0,formatted.length-centsLimit);
 
 				// apply cents pontuation
 				formatted = (centsLimit==0) ? integerVal : integerVal+centsSeparator+centsVal;
@@ -183,10 +245,8 @@
 			function key_check (e)
 			{
 				var code = (e.keyCode ? e.keyCode : e.which);
-				var typed = String.fromCharCode(code);
 				var functional = false;
 				var str = value;
-				var newValue = price_format(str+typed);
 
 				// allow key numbers, 0 to 9
 				if((code >= 48 && code <= 57) || (code >= 96 && code <= 105)) functional = true;
@@ -201,13 +261,21 @@
 				// Minus Sign, Plus Sign
 				if (allowNegative && (code == 189 || code == 109 || code == 173)) functional = true;
 				if (insertPlusSign && (code == 187 || code == 107 || code == 61)) functional = true;
+
+				// Home, End
+				if (code == 35) functional = true;
+				if (code == 36) functional = true;
+
+				// allow Ctrl shortcuts (copy, paste etc.)
+				if (allowCtrlKey && e.ctrlKey)
+				{
+					functional = true;
+				}
+
 				
 				if (!functional)
 				{
-					
-					e.preventDefault();
 					e.stopPropagation();
-					if (str!=newValue) set(newValue);
 				}
 
 			}
