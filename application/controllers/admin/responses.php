@@ -795,13 +795,13 @@ class responses extends Survey_Common_Action
         foreach ($dtresult as $row) {
 
             // View detail icon
-            $action_html = '<a href="' . Yii::app()->createUrl("admin/responses/view/surveyid/$surveyid/id/{$row['id']}")
+            $action_html = '<a href="' . Yii::app()->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/{$row['id']}")
                 . '"><span class="glyphicon glyphicon-list-alt text-success" title="'
                 . gT('View response details') . '"></span></a>';
 
             // Edit icon
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','update')) {
-                $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$row['id']}") . "'>
+                $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$row['id']}") . "'>
                 <span class='glyphicon glyphicon-pencil text-success' title='" . gT('Edit this response') . "'></span></a>";
             }
 
