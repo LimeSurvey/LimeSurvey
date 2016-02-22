@@ -1204,7 +1204,8 @@ class conditionsaction extends Survey_Common_Action {
             $scenarioresult = Condition::model()->findAll($criteria);
             $scenariocount=count($scenarioresult);
 
-            $showreplace="$questiontitle". $this->_showSpeaker($questiontext);
+            //$showreplace="$questiontitle". $this->_showSpeaker($questiontext);
+            $showreplace=$questiontitle . $this->_showSpeaker($questiontext);
             $onlyshow=sprintf(gT("Only show question %s IF"),$showreplace);
 
             $aData['conditionsoutput'] = '';
@@ -1213,6 +1214,7 @@ class conditionsaction extends Survey_Common_Action {
             $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
             $aData['javascriptpre'] = $javascriptpre;
             $aData['onlyshow'] = $onlyshow;
+            $aData['showreplace'] = $showreplace;
             $aData['subaction'] = $subaction;
             $aData['scenariocount'] = $scenariocount;
 

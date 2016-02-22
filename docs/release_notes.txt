@@ -14,7 +14,7 @@ HOW TO INSTALL
 ---------------
 This release does have the following requirements: 
 
-*MySQL 4.1.0 or later OR Microsoft SQL Server 2005 or later OR Postgres 8.1 or later
+*MySQL 5.3.3 or later OR Microsoft SQL Server 2005 or later OR Postgres 8.1 or later
 *PHP 5.3.3 or later with the following modules/libraries enabled:
     *mbstring (Multibyte String Functions) extension library (see also Installation FAQ(external link))
     *PDO database driver for MySQL (pdo_mysql or pdo_mysqli) or Postgres (pdo_pgsql) or MSSQL (pdo_sqlsrv)
