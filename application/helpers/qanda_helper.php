@@ -3153,6 +3153,7 @@ function do_multiplenumeric($ia)
     {
         foreach($aSubquestions as $ansrow)
         {
+            $labelText = $ansrow['question'];
             $myfname = $ia[1].$ansrow['title'];
             if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
             if ($slider_layout === false || $slider_separator == '')
@@ -3164,12 +3165,15 @@ function do_multiplenumeric($ia)
             {
                 $aAnswer=explode($slider_separator,$ansrow['question']);
                 $theanswer=(isset($aAnswer[0]))?$aAnswer[0]:"";
+                $labelText=$theanswer;
                 $sliderleft=(isset($aAnswer[1]))?$aAnswer[1]:"";
                 $sliderright=(isset($aAnswer[2]))?$aAnswer[2]:"";
                 $sliders = true;
-                $sliderright="<div class=\"slider_righttext\">$sliderright</div>";
+                //$sliderright="<span class=\"slider_righttext\">$sliderright</span>";
             }
 
+            /*$prefix = (isset($sliderleft))?$sliderleft:$prefix;
+            $suffix = (isset($sliderright))?$sliderright:$suffix;*/
             $aAnswer=(isset($aAnswer))?$aAnswer:'';
             $sliderleft=(isset($sliderleft))?$sliderleft:"";
             $sliderright=(isset($sliderright))?$sliderright:"";
@@ -3220,7 +3224,7 @@ function do_multiplenumeric($ia)
                 'myfname'=>$myfname,
                 'dispVal'=>$dispVal,
                 'maxlength'=>$maxlength,
-                'labelText'=>$ansrow['question'],
+                'labelText'=>$labelText,
                 'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
                 'slider_orientation' => $slider_orientation,
                 'slider_step'    => $slider_step    ,
