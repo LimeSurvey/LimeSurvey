@@ -21,7 +21,7 @@ $(document).ready(function () {
         'prefix' : '',
         'allowNegative' : true
     });
-    $('input.integeronly').priceFormat({
+    $('.thousandsseparator input.integeronly').priceFormat({
         'centsSeparator' : centsSep,
         'thousandsSeparator' : thousandsSep,
         'centsLimit' : 0,
