@@ -7,8 +7,24 @@
         $subaction == "renumberscenarios")  : ?>
 
     <div class="col-sm-4">
-        <?php echo $onlyshow;?>
+        <strong>
+            <?php
+                // echo $onlyshow;
+                eT("Only show question:");
+            ?>
+        </strong>
+        <br/><br/>
+            <blockquote>
+            <em>
+            <?php echo $showreplace;?>
+            </em>
+        </blockquote>
+        <br/>
+        <strong><?php eT('IF:');?></strong>
+        <br/>
+        <br/>
     </div>
+
 
     <div class="col-sm-4">
         <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deleteallconditions/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;','id'=>'deleteallconditions','name'=>'deleteallconditions'));?>
