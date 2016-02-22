@@ -451,9 +451,8 @@ class database extends Survey_Common_Action
                 $oQuestion->other = Yii::app()->request->getPost('other');
 
                 // For Bootstrap Version usin YiiWheels switch :
-                $oQuestion->mandatory = ( Yii::app()->request->getPost('mandatory') == '1' ) ? 'Y' : 'N' ;
-                $oQuestion->other = ( Yii::app()->request->getPost('other') == '1' ) ? 'Y' : 'N' ;
-
+                $oQuestion->mandatory = Yii::app()->request->getPost('mandatory');
+                $oQuestion->other = Yii::app()->request->getPost('other');
 
                 $oQuestion->relevance = Yii::app()->request->getPost('relevance');
                 $oQuestion->question_order = $iQuestionOrder;
