@@ -1304,7 +1304,31 @@ function do_list_dropdown($ia)
         'dropdownSize'=>$dropdownSize,
         'checkconditionFunction'=>$checkconditionFunction
     );
+
+    if (isset($other) && $other=='Y')
+    {
+        $sselect_show_hide = ' showhideother(this.name, this.value);';
+        $selectData = array(
+            'name'=>$ia[1],
+            'dropdownSize'=>$dropdownSize,
+            'checkconditionFunction'=> $checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide,
+            'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+        );
+
+    }
+
+
     $answer = Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select', $selectData, true);
+
+    if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
+    {
+        $optionData = array(
+            'value'=>'',
+            'opt_select'=>'SELECTED',
+            'answer'=>gT('Please choose...')
+        );
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
+    }
 
     if (!isset($optCategorySeparator))
     {
@@ -1394,16 +1418,6 @@ function do_list_dropdown($ia)
         }
     }
 
-    if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
-    {
-        $optionData = array(
-            'value'=>'',
-            'opt_select'=>'SELECTED',
-            'answer'=>gT('Please choose...')
-        );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
-    }
-
     if (isset($other) && $other=='Y')
     {
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '-oth-')
@@ -1442,14 +1456,8 @@ function do_list_dropdown($ia)
     }
 
 
-    if (isset($other) && $other=='Y')
-    {
-        $sselect_show_hide = ' showhideother(this.name, this.value);';
-    }
-    else
-    {
-        $sselect_show_hide = '';
-    }
+
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select_footer', $selectData, true);
 
     if (isset($other) && $other=='Y')
     {
@@ -1496,14 +1504,7 @@ function do_list_dropdown($ia)
         $inputnames[]=$ia[1]."other";
     }
 
-    $sselectData = array(
-        'name'=>$ia[1],
-        'dropdownSize'=>$dropdownSize,
-        'checkconditionFunction'=> $checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide,
-        'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
-    );
 
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select_footer', $sselectData, true);
 
 
     $inputnames[]=$ia[1];
