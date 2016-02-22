@@ -104,10 +104,16 @@
 
                        </ul>
                      </li>
+
             <!-- user menu -->
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" ><?php echo Yii::app()->session['user'];?> <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
+
+                    <!-- Edit your personal preferences -->
+                    <li>
+                        <a href="<?php echo $this->createUrl("/admin/user/sa/modifyuser/uid/".Yii::app()->user->getId()); ?>"><?php eT("Edit your profile");?></a>
+                    </li>
 
                     <!-- Edit your personal preferences -->
                     <li>
