@@ -2036,20 +2036,24 @@ function do_ranking($ia)
     }
 
     $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/header', array(), true);
+
     for ($i=1; $i<=$iMaxLine; $i++)
     {
         $myfname=$ia[1].$i;
         if($i==1)
         {
             $labeltext =gT('First choice');
-        }else
+        }
+        else
         {
             $labeltext = sprintf(gT('Choice of rank %s'),$i);
         }
+
         $itemListHeaderDatas = array(
             'myfname'=>$myfname,
             'labeltext'=>$labeltext,
         );
+
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item_list_header', $itemListHeaderDatas, true);
 
         if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
@@ -2063,6 +2067,7 @@ function do_ranking($ia)
             );
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item', $itemDatas, true);
         }
+
         foreach ($answers as $ansrow)
         {
             $thisvalue="";
@@ -2089,6 +2094,7 @@ function do_ranking($ia)
         $itemlistfooterDatas = array(
             'javaname'=>'java'.$myfname,
             'thisvalue'=>$thisvalue,
+            'answers'=>$answers
         );
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item_list_footer', $itemlistfooterDatas, true);
         $inputnames[]=$myfname;
