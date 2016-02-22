@@ -314,8 +314,10 @@ class UserAction extends Survey_Common_Action
     */
     function modifyuser()
     {
-        if (isset($_POST['uid'])) {
-            $postuserid = (int) Yii::app()->request->getPost("uid");
+
+        if ( Yii::app()->request->getParam('uid') !=''  )
+        {
+            $postuserid = (int) Yii::app()->request->getParam("uid");
             $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
             $sresultcount = count($sresult);
 
@@ -338,7 +340,6 @@ class UserAction extends Survey_Common_Action
                 $this->getController()->redirect(array("admin/user/sa/index"));
             }
         }
-        Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
         $this->getController()->redirect(array("admin/user/sa/index"));
     }
 

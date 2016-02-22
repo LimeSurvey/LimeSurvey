@@ -23,7 +23,6 @@
         <div class="alert alert-danger errormandatory"  role="alert">
             <?php echo $labelText;?>
         </div> <!-- alert -->
-
     <?php endif;?>
     <div  class="form-group-row row">
         <label class='control-label col-xs-12' for="answer<?php echo $myfname; ?>">
@@ -32,6 +31,7 @@
                         <br/><br/><br/>
         <div class="col-xs-12 input">
             <?php echo $prefix;?>
+            <?php echo $sliderleft;?>
             <?php if(!$sliders): ?>
                 <input
                     class="text form-control <?php echo $kpclass;?>"
@@ -62,6 +62,7 @@
                     data-slider-tooltip='always'
                 />
             <?php endif;?>
+            <?php echo $sliderright;?>
             <?php echo $suffix;?>
         </div>  <!-- xs-12 -->
     </div> <!-- form group -->
