@@ -34,7 +34,7 @@
             <?php echo $sliderleft;?>
             <?php if(!$sliders): ?>
                 <input
-                    class="text form-control <?php echo $kpclass;?>"
+                    class="text form-control numeric <?php echo $kpclass;?>"
                     type="text"
                     size="<?php echo $tiwidth;?>"
                     name="<?php echo $myfname;?>"
