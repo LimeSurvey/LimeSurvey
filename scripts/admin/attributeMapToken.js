@@ -1,7 +1,4 @@
 $(document).ready(function(){
-    if(!$('#tokenatt').children().length ) {
-        alert(attributesMappedText);
-    }
     var height = $(document).height();
     var width = $(document).width();
     var tokencurrentarray = {};

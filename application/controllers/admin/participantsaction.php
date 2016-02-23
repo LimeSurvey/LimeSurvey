@@ -1685,6 +1685,11 @@ class participantsaction extends Survey_Common_Action
             }
         }
 
+        if (count($selectedattribute) === 0)
+        {
+            Yii::app()->setFlashMessage(gT("There are no unmapped attributes"), 'warning');
+        }
+
         $aData = array(
             'attribute' => $selectedcentralattribute,
             'tokenattribute' => $selectedattribute,
