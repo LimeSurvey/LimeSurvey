@@ -63,6 +63,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     'showqnumcode',
     'showxquestions',
     'sitename',
+    'sitelogo',
     'surveylist',
     'templatedir',
     'thissurvey',
@@ -643,6 +644,9 @@ EOD;
         $_endtext = $thissurvey['surveyls_endtext'];
     }
 
+// App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo);
+    $sitelogo = ($oTemplate->siteLogo != '')?'<img src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'"/>':'';
+
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
@@ -693,6 +697,7 @@ EOD;
     $coreReplacements['SAVEMESSAGE'] = gT("Enter a name and password for this survey and click save below.")."<br />\n".gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n<span class='emailoptional'>".gT("If you give an email address, an email containing the details will be sent to you.")."</span><br /><br />\n".gT("After having clicked the save button you can either close this browser window or continue filling out the survey.");
     $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config
     $coreReplacements['SITENAME'] = isset($sitename) ? $sitename : '';  // global
+    $coreReplacements['SITELOGO'] = $sitelogo;
     $coreReplacements['SUBMITBUTTON'] = $_submitbutton;
     $coreReplacements['SUBMITCOMPLETE'] = "<strong>".gT("Thank you!")."<br /><br />".gT("You have completed answering the questions in this survey.")."</strong><br /><br />".gT("Click on 'Submit' now to complete the process and save your answers.");
     $coreReplacements['SUBMITREVIEW'] = $_strreview;
