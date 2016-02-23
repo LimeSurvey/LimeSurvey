@@ -73,12 +73,12 @@
                 <?php }
                 if(!empty($alreadymappedattributename)) {
                     ?>
-                    <div class='heading'><?php eT("Pre-mapped attributes") ?></div>
+                    <div class='heading text-center'><?php eT("Pre-mapped attributes") ?></div>
                     <div class="notsortable">
                     <?php
                     foreach ($alreadymappedattributename as $key => $value)
                     {
-                        echo "<div title='".gT("This attribute is automatically mapped")."' data-name='$value' class=\"already-mapped-attribute attribute-item\" >" . $alreadymappedattdescription[$value] . "</div>";
+                        echo "<div title='".gT("This attribute is automatically mapped")."' data-name='$value' class=\"already-mapped-attribute\" >" . $alreadymappedattdescription[$value] . "</div>";
                     }
                     ?>
                     </div>
