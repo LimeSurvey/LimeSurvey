@@ -59,6 +59,8 @@ class index extends CAction {
         }
 
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
+        // Call em javascript before qanda, then qanda can use it
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js");;
 
         if($oTemplate->cssFramework == 'bootstrap')
         {
