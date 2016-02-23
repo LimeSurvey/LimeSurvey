@@ -134,7 +134,6 @@
 
                                                 <?php $modulename = (isset($eqrow['modulename']))?$eqrow['modulename']:false;?>
 
-                                                <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                                 <input type="hidden" id="question_module_name" name="module_name" value="<?php echo $modulename; ?>" />
 
                                                 <?php
@@ -149,7 +148,7 @@
                                                 ?>
 
                                                 <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
-
+                                                    <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                                     <div class="col-sm-8 btn-group" id="question_type_button" style="z-index: 1000">
                                                         <button type="button" class="btn btn-default dropdown-toggle " <?php if ($activated == "Y"){echo " disabled ";} ?>  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="z-index: 1000">
                                                             <?php if(!$modulename):?>
@@ -195,7 +194,6 @@
                                                                                         array(
                                                                                                 'class' => 'form-control',
                                                                                                 'id'=>'question_type',
-
                                                                                                 'options' => array($eqrow['type']=>array('selected'=>true))
                                                                                             )
                                                                                         );
