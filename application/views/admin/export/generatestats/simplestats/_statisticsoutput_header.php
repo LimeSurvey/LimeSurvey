@@ -8,8 +8,9 @@
  */
 ?>
 
-    <div class="col-sm-4">
-        <h4><?php echo $outputs['qquestion'];?></h4>        
+
+    <div class="col-sm-4" style="margin-top: 2em;margin-bottom: 2em;">
+        <h4><?php echo $outputs['qtitle'];?></h4>
 <?php /*
 <table class='statisticstable table table-bordered'>
     <thead>

@@ -68,6 +68,10 @@
                     <div id='statisticsresponsefilters' class='statisticsfilters scrollheight_400' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
                         <input type='hidden' id='filterchoice_state' name='filterchoice_state' value='<?php echo $filterchoice_state; ?>' />
 
+                        <?php
+                            $dshresults = (isset($dshresults))?$dshresults:'';
+                            $dshresults2 = (isset($dshresults2))?$dshresults2:'';
+                        ?>
                         <!-- Filter choice -->
                         <?php $this->renderPartial(
                                                     '/admin/export/statistics_subviews/_response_filter_choice',
@@ -80,7 +84,9 @@
                                                         'fresults'=>$fresults,
                                                         'summary'=>$summary,
                                                         'oStatisticsHelper'=>$oStatisticsHelper,
-                                                        'language'=>$language
+                                                        'language'=>$language,
+                                                        'dshresults'=>$dshresults,
+                                                        'dshresults2'=>$dshresults2,
                                                     )) ;
                         ?>
 
