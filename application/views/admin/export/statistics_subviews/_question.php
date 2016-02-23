@@ -1,11 +1,13 @@
 <?php $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}"; $niceqtext=flattenText($flt[5]); ?>
 
 <?php
+/*
     $specialQuestionTypes = array("M","P","T","S","Q","|","","N","K","D");
     if ( in_array( $flt[2], $specialQuestionTypes))
     {
         $myfield = $flt[2].$myfield;
-    }
+    }*/
+    $counter2 = 0;
 ?>
 
 
@@ -98,25 +100,31 @@
                 //$counter2=0;
 
                 //loop through all answers
+                $count = 0;
                 foreach($result[$key1] as $row)
                 {
+                    echo '<div class="row"><div class="col-sm-12">';
+
                     $row = array_values($row);
                     //collecting data for output, for details see above (question type "N")
 
                     //we have one input field for each answer
                     $myfield2 = "Q".$myfield."$row[0]";
 
-                    echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
+                    echo "&nbsp;&nbsp; <input type='checkbox'  name='summary[]' value='$myfield2'";
+
                     if (isset($summary) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
                     {
                         echo " checked='checked'";
                     }
 
-                    echo " />&nb        sp;";
+                    echo " />&nbsp;";
                     echo $oStatisticsHelper::_showSpeaker($flt[3]." - ".flattenText($row[1],true))
-                    ."<br />\n"
+                    ."<br /><p style='padding: 1em;'>\n"
                     ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n";
                     echo CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array());
+                    echo "</p>";
+                    echo '</div></div>';
                 }
                 break;
 
@@ -136,7 +144,7 @@
                 ."&nbsp;".$oStatisticsHelper::_showSpeaker($niceqtext)
                 ."<br />\n"
                 ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n"
-                .CHtml::textArea($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('rows'=>'3','cols'=>'80'));
+                .CHtml::textArea($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('rows'=>'3','cols'=>'40'));
                 break;
 
 

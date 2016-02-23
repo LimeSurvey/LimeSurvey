@@ -265,7 +265,7 @@ function makeLanguageChanger($sSelectedLanguage)
 #        }
 #        $sHTMLCode .= "</select>\n";
 
-        $sClass= "languagechanger";
+        $sClass= "languagechanger form-control";
         foreach ($aLanguages as $sLangCode => $aLanguage)
             $aListLang[$sLangCode]=html_entity_decode($aLanguage['nativedescription'], ENT_COMPAT,'UTF-8').' - '.$aLanguage['description'];
         $sSelected=$sSelectedLanguage;

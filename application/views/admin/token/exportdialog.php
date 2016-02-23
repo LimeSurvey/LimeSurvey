@@ -9,7 +9,7 @@
                     <!--Survey status -->
                     <div class=" form-group control-group setting-select" data-name="tokenstatus">
                         <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="tokenstatus">
-                            <?php eT('Survey status'); ?>
+                            <?php eT('Survey status:'); ?>
                         </label>
                         <div class="default col-lg-4 col-sm-5 col-md-7 controls">
                             <select id="tokenstatus" name="tokenstatus" class="form-control">
@@ -25,7 +25,7 @@
                     <!--Invitation status -->
                     <div class=" form-group control-group setting-select" data-name="invitationstatus">
                         <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="invitationstatus">
-                            <?php eT('Invitation status'); ?>
+                            <?php eT('Invitation status:'); ?>
                         </label>
                         <div class="default col-lg-4 col-sm-5 col-md-7 controls">
                             <select id="invitationstatus" name="invitationstatus" class="form-control">
@@ -39,7 +39,7 @@
                     <!--Reminder status -->
                     <div class=" form-group control-group setting-select" data-name="reminderstatus">
                         <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="reminderstatus">
-                            <?php eT('Reminder status'); ?>
+                            <?php eT('Reminder status:'); ?>
                         </label>
                         <div class="default col-lg-4 col-sm-5 col-md-7 controls">
                             <select id="reminderstatus" name="reminderstatus" class="form-control">
@@ -53,7 +53,7 @@
                     <!--Filter by language -->
                     <div class=" form-group control-group setting-select" data-name="tokenlanguage">
                         <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="tokenlanguage">
-                            <?php eT('Filter by language'); ?>
+                            <?php eT('Filter by language:'); ?>
                         </label>
                         <div class="default col-lg-4 col-sm-5 col-md-7 controls">
                             <select id="tokenlanguage" name="tokenlanguage" class="form-control">
@@ -67,7 +67,7 @@
                     <div class=" form-group control-group setting-select" data-name="filteremail">
 
                         <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="filteremail">
-                            <?php eT('Filter by email address'); ?>
+                            <?php eT('Filter by email address:'); ?>
                         </label>
                         <div class="default col-lg-4 col-sm-5 col-md-7 controls">
                             <input size="50" type="text" value="" name="filteremail" id="filteremail" />
@@ -81,7 +81,7 @@
                     <!--Delete exported tokens -->
                     <div class=" form-group control-group setting-select" data-name="tokendeleteexported">
                         <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="tokendeleteexported">
-                            <?php eT('Delete exported tokens'); ?>
+                            <?php eT('Delete exported tokens:'); ?>
                         </label>
                         <div class="default col-lg-4 col-sm-5 col-md-7 controls">
                             <input type="checkbox" value="1" name="tokendeleteexported" id="tokendeleteexported" />

@@ -62,7 +62,7 @@ div.mappable-attribute-wrapper {
 	padding:6px;
 }
 
-div.attribute-item {
+div.attribute-item, .already-mapped-attribute {
 	width : 80%;
 	margin: 6px auto;
 	padding:4px;

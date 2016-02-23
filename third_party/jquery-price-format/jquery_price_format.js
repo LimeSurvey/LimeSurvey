@@ -84,6 +84,19 @@
 			// and also skip the left zeroes
 			function to_numbers (str)
 			{
+                /**
+                 * Problem when going back and forth in survey.
+                 * If you enter 12.00, EM will feed 12 to the input at reload,
+                 * and price format will think it's 0.12. So we add
+                 * trailing zeroes if we have an integer.
+                 * See bug #10189.
+                 */
+                if (str.indexOf(',') === -1 &&
+                    str.indexOf('.') === -1)
+                {
+                    str += '00';
+                }
+
 				var formatted = '';
 				for (var i=0;i<(str.length);i++)
 				{

@@ -1,7 +1,4 @@
 $(document).ready(function(){
-    if(!$('#tokenatt').children().length ) {
-        alert(attributesMappedText);
-    }
     var height = $(document).height();
     var width = $(document).width();
     var tokencurrentarray = {};
@@ -157,9 +154,12 @@ $(document).ready(function(){
             overwriteman: attoverwriteman,
             createautomap: attcreateautomap
         }, function(msg){
-            alert(msg);
+            $('#attribute-map-token-modal .modal-body').html(msg);
+            $('#attribute-map-token-modal').on('hide.bs.modal' , function (e) {
+                $(location).attr('href',redUrl);
+            });
+            $('#attribute-map-token-modal').modal();
 
-            $(location).attr('href',redUrl);
         });
     });
 

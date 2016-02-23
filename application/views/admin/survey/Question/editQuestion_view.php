@@ -134,7 +134,6 @@
 
                                                 <?php $modulename = (isset($eqrow['modulename']))?$eqrow['modulename']:false;?>
 
-                                                <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                                 <input type="hidden" id="question_module_name" name="module_name" value="<?php echo $modulename; ?>" />
 
                                                 <?php
@@ -149,7 +148,7 @@
                                                 ?>
 
                                                 <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
-
+                                                    <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                                     <div class="col-sm-8 btn-group" id="question_type_button" style="z-index: 1000">
                                                         <button type="button" class="btn btn-default dropdown-toggle " <?php if ($activated == "Y"){echo " disabled ";} ?>  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="z-index: 1000">
                                                             <?php if(!$modulename):?>
@@ -178,14 +177,6 @@
 
                                                                 <li role="separator" class="divider"></li>
                                                             <?php endforeach;?>
-
-                                                            <small><?php eT('Question modules')?></small>
-                                                            <?php foreach (getQuestionModuleList($eqrow['type'], 'array') as $key => $oQuestionType):?>
-                                                                <li>
-                                                                    <!-- MODULE -->
-                                                                    <a href="#" class="questionType" data-module='1' data-modulename="<?php echo $oQuestionType->modulename; ?>" data-value="<?php echo $oQuestionType->basetype; ?>" <?php if($oQuestionType->typeid == $eqrow['modulename']){echo 'active';}?>><?php echo $oQuestionType->title; ?></a>
-                                                                </li>
-                                                            <?php endforeach;?>
                                                         </ul>
                                                     </div>
                                                 <?php elseif(isset($selectormodeclass) && $selectormodeclass == "none" && $activated != "Y"): ?>
@@ -203,7 +194,6 @@
                                                                                         array(
                                                                                                 'class' => 'form-control',
                                                                                                 'id'=>'question_type',
-
                                                                                                 'options' => array($eqrow['type']=>array('selected'=>true))
                                                                                             )
                                                                                         );

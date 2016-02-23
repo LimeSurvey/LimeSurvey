@@ -115,7 +115,7 @@ function addinput()
 
 
     for (x in classes)
-        {
+    {
         if (classes[x].substr(0,3)=='row'){
             position=classes[x].substr(4);
         }
@@ -134,11 +134,13 @@ function addinput()
     console.log('sNextCode: '+sNextCode);
     console.log('languages: '+languages);
     for (x in classes)
+    {
+        if (classes[x].substr(0,3)=='row')
         {
-        if (classes[x].substr(0,3)=='row'){
             position=classes[x].substr(4);
         }
     }
+
     info=$(this).closest('table').attr('id').split("_");
     language=info[1];
     scale_id=info[2];
@@ -147,17 +149,21 @@ function addinput()
 
     sNextCode=getNextCode($(this).parent().parent().find('.code').val());
 
+    console.log('sNextCode: '+sNextCode);
+
     for (x in languages)
-        {
+    {
         console.log('x: '+x);
         var randomid='new'+Math.floor(Math.random()*111111);
         relbutton='';
 
         tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
 
-        if (x==0) {
+        if (x==0)
+        {
             $(".relevance").toggle(false);
-            if (scale_id==0) {
+            if (scale_id==0)
+            {
                 relbutton  = '<td>';
                 relbutton += '  <span class="icon-conditions text-success btntogglerelevance"></span>';
                 relbutton += '  <input style="display: none" type="text" size="20" id="relevance_'+randomid+'_'+scale_id+'" name="relevance_'+randomid+'_'+scale_id+'" class="relevance"  value="1"></input>';
@@ -165,7 +171,7 @@ function addinput()
             }
 
             // Line insertion
-            inserthtml= '<tr id="row_'+newposition+'" style="display:none;">';
+            inserthtml= '<tr id="row_'+newposition+'" style="">';
             inserthtml+='   <td style="vertical-align: middle;">';
             inserthtml+='       <span class="glyphicon glyphicon-move"></span>';
             inserthtml+='   </td>';
@@ -189,8 +195,9 @@ function addinput()
             inserthtml+='  </td>' + relbutton + '</tr>';
         }
         else
+        {
+            if (scale_id==0)
             {
-            if (scale_id==0) {
                 relbutton ='<td>'
                 relbutton+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
                 relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>';
@@ -220,13 +227,15 @@ function addinput()
             inserthtml+='   </td>' + relbutton + '</tr>';
         }
         tablerow.after(inserthtml);
+        console.log("insertion");
 
         tablerow.next().find('.btnaddanswer').click(addinput);
 
         tablerow.next().find('.btndelanswer').click(deleteinput);
-        tablerow.next().find('.answer').focus(function(){
+        tablerow.next().find('.answer').focus(function()
+        {
             if ($(this).val()==newansweroption_text)
-                {
+            {
                 $(this).val('');
             }
         });
@@ -653,7 +662,7 @@ function transferlabels()
                             {
                                 $(".relevance").toggle(false);
                                 tablerows=tablerows+
-                                '<tr id="row_'+k+'_'+scale_id+'" >'+
+                                '<tr id="row_'+k+'_'+scale_id+'" class="row_'+k+'_'+scale_id+'" >'+
                                 '   <td>'+
                                 '       <span class="glyphicon glyphicon-move text-success"></span>'+
                                 '   </td>'+
@@ -685,7 +694,7 @@ function transferlabels()
                             else
                             {
                                 tablerows=tablerows+
-                                '<tr id="row_'+k+'_'+scale_id+'" >'+
+                                '<tr id="row_'+k+'_'+scale_id+'" class="row_'+k+'_'+scale_id+'">'+
                                 '   <td>&nbsp;</td>'+
                                 '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
 
@@ -715,7 +724,7 @@ function transferlabels()
                     for (k in lsrows)
                     {
                         tablerows=tablerows+
-                        '<tr id="row_'+k+'_'+scale_id+'" >'+
+                        '<tr id="row_'+k+'_'+scale_id+'" class="row_'+k+'_'+scale_id+'" >'+
                         '   <td>&nbsp;</td>'+
                         '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
 

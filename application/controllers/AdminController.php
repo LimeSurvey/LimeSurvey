@@ -301,9 +301,16 @@ class AdminController extends LSYii_Controller
         $oAdmintheme = Template::model()->getAdminTheme(); // We get the package datas from the model
         $aData['sAdmintheme'] = $oAdmintheme->name;
         $aData['sAdminthemePackageName'] = $oAdmintheme->packagename;
-        $aData['aPackageScripts'] = (array) $oAdmintheme->config->files->js->filename;
-        $aData['aPackageStyles'] = (array) $oAdmintheme->config->files->css->filename;
-
+        $aData['aPackageScripts']=$aData['aPackageStyles']=array();
+        // Typecasting as array directly does not work in PHP 5.3.17 so we loop over the XML entries
+        foreach($oAdmintheme->config->files->js->filename as $aFile)
+        {
+            $aData['aPackageScripts'][]=(string)$aFile;
+        }
+        foreach($oAdmintheme->config->files->css->filename as $aFile)
+        {
+            $aData['aPackageStyles'][]=(string)$aFile;
+        }
         if ($aData['bIsRTL'])
         {
             foreach ($aData['aPackageStyles'] as &$filename)

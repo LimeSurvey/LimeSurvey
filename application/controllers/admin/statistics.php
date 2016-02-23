@@ -659,6 +659,7 @@ class statistics extends Survey_Common_Action {
      */
      public function simpleStatistics($surveyid)
      {
+         $usegraph=1;
          $iSurveyId =  sanitize_int($surveyid);
          $aData['surveyid'] = $iSurveyId;
          $showcombinedresults = 0;
@@ -685,26 +686,54 @@ class statistics extends Survey_Common_Action {
         foreach($rows as $row)
         {
             $type=$row['type'];
-            if($type=="M" || $type=="P" || $type=="T" || $type=="S" || $type=="Q" || $type=="R" ||  $type=="|" ||  $type=="" ||  $type=="N" ||  $type=="K" || $type=="D")
+            if($type=="M" || $type=="P" || $type=="T" || $type=="S" || $type=="R" ||  $type=="|" ||  $type=="" ||  $type=="N" ||  $type=="K" || $type=="D")
             {
                 $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
             }
-            if($type=="A")
+            switch ( $type )
             {
-                $qid = $row['qid'];
-                $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
-                //$counter2=0;
+                case "A":
+                    $qid = $row['qid'];
+                    $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
+                    //$counter2=0;
 
-                //check all the results
-                foreach($results as $result)
-                {
-                    $result = array_values($result);
-                    $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$result[0];
-                }
-            }
-            else // single question
-            {
-                $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
+                    //check all the results
+                    foreach($results as $result)
+                    {
+                        $result = array_values($result);
+                        $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$result[0];
+                    }
+                break;
+
+                /*
+                * all "free text" types (T, U, S)  get the same prefix ("T")
+                */
+                case "T": // Long free text
+                case "U": // Huge free text
+                    //$usegraph=0;
+                    break;
+
+                case "Q": // Multiple Short Text
+                    $qid = $row['qid'];
+                    //get subqestions
+                    $results = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
+                    //loop through all answers
+                    foreach($results as $result)
+                    {
+                        $result = array_values($result);
+                        $summary[] = 'Q'.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$result[0];
+                    }
+
+                    break;
+
+                case "S":
+                    $summary[] = 'T'.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
+                break;
+
+                default:
+                    $usegraph=1;
+                    $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
+                break;
             }
         }
 
@@ -717,13 +746,11 @@ class statistics extends Survey_Common_Action {
         $aData['showtextinline'] = $showtextinline;
 
         //Show Summary results
-        $usegraph=1;
         $aData['usegraph'] = $usegraph;
         $outputType = 'html';
         $statlang=returnGlobal('statlang');
         $statisticsoutput .=  $helper->generate_simple_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
 
-        $aData['usegraph'] = 1;
         $aData['sStatisticsLanguage']=$statlang;
         $aData['output'] = $statisticsoutput;
         $aData['summary'] = $summary;

@@ -620,7 +620,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
             $iAction = '3';
         }
 
-        $output .=  Yii::app()->getController()->renderPartial('/survey/question_timer/timer_javascript', array('iAction'=>$iAction, 'disable_next'=>$disable_next, 'disable_prev'=>$disable_prev ), true);
+        $output .=  Yii::app()->getController()->renderPartial('/survey/question_timer/timer_javascript', array('iAction'=>$iAction, 'disable_next'=>$disable_next, 'disable_prev'=>$disable_prev, 'time_limit_countdown_message' =>$time_limit_countdown_message ), true);
 
     }
 
@@ -1302,7 +1302,8 @@ function do_list_dropdown($ia)
     $selectData = array(
         'name'=>$ia[1],
         'dropdownSize'=>$dropdownSize,
-        'checkconditionFunction'=>$checkconditionFunction
+        'checkconditionFunction'=>$checkconditionFunction,
+        'value'=>'',
     );
 
     if (isset($other) && $other=='Y')
@@ -3202,7 +3203,7 @@ function do_multiplenumeric($ia)
                 $dispVal = str_replace('.',$sSeparator,$dispVal);
             }
 
-            if($slider_middlestart!='')
+            if( isset($slider_middlestart) && $slider_middlestart!='')
             {
                 $slider_default = $slider_middlestart;
             }

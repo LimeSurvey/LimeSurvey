@@ -207,6 +207,7 @@ class Template extends LSActiveRecord
         // The template configuration.
         $oTemplate->config = simplexml_load_file($oTemplate->path.'/config.xml');
         $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->pstpldirectory.DIRECTORY_SEPARATOR;
+        $oTemplate->siteLogo = (isset($oTemplate->config->files->logo))?$oTemplate->config->files->logo->filename:'';
 
         // condition for user's template prior to 160219
         $oTemplate->filesPath = (isset($oTemplate->config->engine->filesdirectory))?$oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR:$oTemplate->path . '/files/';

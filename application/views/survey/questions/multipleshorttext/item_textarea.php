@@ -35,5 +35,6 @@
 <?php echo $dispVal;?>
 </textarea>
             <?php echo $suffix;?>
+        </div>
     </div>
 </div>

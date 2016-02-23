@@ -73,12 +73,12 @@
                 <?php }
                 if(!empty($alreadymappedattributename)) {
                     ?>
-                    <div class='heading'><?php eT("Pre-mapped attributes") ?></div>
+                    <div class='heading text-center'><?php eT("Pre-mapped attributes") ?></div>
                     <div class="notsortable">
                     <?php
                     foreach ($alreadymappedattributename as $key => $value)
                     {
-                        echo "<div title='".gT("This attribute is automatically mapped")."' data-name='$value' class=\"already-mapped-attribute attribute-item\" >" . $alreadymappedattdescription[$value] . "</div>";
+                        echo "<div title='".gT("This attribute is automatically mapped")."' data-name='$value' class=\"already-mapped-attribute\" >" . $alreadymappedattdescription[$value] . "</div>";
                     }
                     ?>
                     </div>
@@ -111,3 +111,18 @@
 <?php echo CHtml::image($ajaxloader['src'], $ajaxloader['alt']); ?>
     </div>
 </div>
+<div id='attribute-map-token-modal' class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><?php eT("Map token attributes"); ?></h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
