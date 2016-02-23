@@ -1,31 +1,73 @@
+<?php
+/**
+ * Header of the application
+ * Called from render_wrapped_template
+ */
+?>
 <!DOCTYPE html>
-<html lang="<?php echo $adminlang; ?>"<?php echo $languageRTL;?>>
+<html lang="<?php echo $adminlang; ?>"<?php echo $languageRTL;?> >
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Assets load -->
     <?php
+        // jQuery plugins
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-cookie');
-        App()->getClientScript()->registerPackage('jquery-superfish');
-        App()->getClientScript()->registerPackage('qTip2');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-ui.css" );
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "superfish.css" );
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle.css" );
 
-        //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
+        // Font awesome
+        if(!YII_DEBUG)
+        {
+            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles-public/font-awesome-43.min.css') );
+        }
+        else
+        {
+            App()->getClientScript()->registerCssFile( Yii::app()->getBaseUrl(true).'/styles-public/font-awesome-43-debugmode.min.css' );
+        }
 
+        // Bootstrap
+        App()->bootstrap->register();
 
+        // We want the asset manager to reload the files if they are changed.
+        // Using registerPackage only publish the whole directory, and never update it (unless tmp/assets/ directories are deleted).  Command was :   App()->getClientScript()->registerPackage($sAdminthemePackageName);
+        // The way to grant the possibility for asset manager to re-publish those files when they are changed is to publish them one by one.
+        // In debug mode, we don't use assets.
 
-        App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.Yii::app()->getConfig('admintheme').'/' . "adminstyle.css") );
+        if(!YII_DEBUG)
+        {
+            foreach ($aPackageStyles as $cssfile)
+            {
+                App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$sAdmintheme.'/css/' . $cssfile) );
+            }
+
+            foreach ($aPackageScripts as $jsfile)
+            {
+                App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$sAdmintheme.'/scripts/' . $jsfile) );
+            }
+        }
+        else
+        {
+            foreach ($aPackageStyles as $cssfile)
+            {
+                App()->getClientScript()->registerCssFile( Yii::app()->getBaseUrl(true).'/styles/'.$sAdmintheme.'/css/' . $cssfile );
+            }
+
+            foreach ($aPackageScripts as $jsfile)
+            {
+                App()->getClientScript()->registerScriptFile( Yii::app()->getBaseUrl(true).'/styles/'.$sAdmintheme.'/scripts/' . $jsfile );
+            }
+        }
+
+        // Right to Left
         if (getLanguageRTL($_SESSION['adminlang']))
         {
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle-rtl.css" );
+            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$sAdmintheme.'/css/adminstyle-rtl.css') );
         }
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');
+
+
     ?>
+
     <?php echo $datepickerlang;?>
     <title><?php echo $sitename;?></title>
     <link rel="shortcut icon" href="<?php echo $baseurl;?>styles/favicon.ico" type="image/x-icon" />
@@ -35,12 +77,12 @@
     <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
 </head>
 <body>
-<?php if(isset($formatdata)) { ?>
-    <script type='text/javascript'>
-        var userdateformat='<?php echo $formatdata['jsdate']; ?>';
-        var userlanguage='<?php echo $adminlang; ?>';
-    </script>
-    <?php } ?>
-<div class='wrapper'>
-    <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
-    <div class='maintitle'><?php echo $sitename; ?></div>
+<?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
+
+<script type='text/javascript'>
+var frameSrc = "/login";
+    <?php if(isset($formatdata)):?>
+    var userdateformat='<?php echo $formatdata['jsdate']; ?>';
+    var userlanguage='<?php echo $adminlang; ?>';
+    <?php endif; ?>
+</script>

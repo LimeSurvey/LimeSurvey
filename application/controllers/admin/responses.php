@@ -46,6 +46,13 @@ class responses extends Survey_Common_Action
         Yii::app()->loadHelper('surveytranslator');
     }
 
+    /**
+     * Used to get responses data for browse etc
+     *
+     * @param mixed $params ?
+     * @return array
+     * @todo Don't use extract
+     */
     private function _getData($params)
     {
         if (is_numeric($params))
@@ -105,6 +112,9 @@ class responses extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * @todo View what?
+     */
     public function view($iSurveyID, $iId, $sBrowseLang = '')
     {
         if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
@@ -289,13 +299,16 @@ class responses extends Survey_Common_Action
             }
 
             $aViewUrls[] = 'browseidfooter_view';
+            $aData['sidemenu']['state'] = false;
+            $aData['menu']['edition'] = true;
+            $aData['menu']['view'] = true;
+            $aData['menu']['close'] =  true;
 
             $this->_renderWrappedTemplate('',$aViewUrls, $aData);
         }
         else
         {
             $aData['surveyid'] = $iSurveyID;
-            App()->getClientScript()->registerPackage('jquery-superfish');
             $message['title']= gT('Access denied!');
             $message['message']= gT('You do not have sufficient rights to access this page.');
             $message['class']= "error";
@@ -315,7 +328,10 @@ class responses extends Survey_Common_Action
         * it containts
         *             $fnames[] = array(<dbfieldname>, <some strange title>, <questiontext>, <group_id>, <questiontype>);
         */
-
+        if (Yii::app()->request->getPost('sql'))
+        {
+            $aViewUrls[] = 'browseallfiltered_view';
+        }
 
         $aData['num_total_answers'] = SurveyDynamic::model($iSurveyID)->count();
         $aData['num_completed_answers'] = SurveyDynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
@@ -325,13 +341,19 @@ class responses extends Survey_Common_Action
             $aData['tokeninfo'] = Token::model($iSurveyID)->summary();
         }
 
+        $aData['menu']['edition'] = false;
+
         $aViewUrls[] = 'browseindex_view';
         $this->_renderWrappedTemplate('',$aViewUrls, $aData);
     }
 
-
-
-    function browse($iSurveyId)
+    /**
+     * Show responses for survey using jQgrid
+     *
+     * @param int $iSurveyId
+     * @return void
+     */
+    public function browse($iSurveyId)
     {
 
         if(!Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
@@ -344,10 +366,13 @@ class responses extends Survey_Common_Action
             Yii::app()->end();
         }
         App()->getClientScript()->registerPackage('jqgrid');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listresponse.js");
+
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "listresponse.js" ));
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "css/jqgrid.css" );
 
         $aData = $this->_getData($iSurveyId);
         $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
+        $aData['menu']['edition'] = false;
         extract($aData);
         $aViewUrls = array();
         $sBrowseLanguage = $aData['language'];
@@ -357,6 +382,7 @@ class responses extends Survey_Common_Action
             'token', // Replaced by tokens.token
             'id', // Allways adding it at start
             'lastpage', // After id, before completed
+            'startlanguage'
         );
         // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
         $column_model = array();
@@ -382,8 +408,8 @@ class responses extends Survey_Common_Action
             'sortable'=>true,
             'width'=>'100',
             'resizable' => true,
-            'align'=>'center',
-            'title'=>viewHelper::getFieldText($fields['id']),
+            'align'=>'right',
+            'label'=>viewHelper::getFieldText($fields['id']),
             'hidedlg'=>true,
         );
         $column_model[] = array(
@@ -393,9 +419,10 @@ class responses extends Survey_Common_Action
             'sortable'=>true,
             'width'=>'100',
             'resizable' => true,// Strangely : don't work
-            'align'=>'center',
-            'title'=>viewHelper::getFieldText($fields['lastpage']),
+            'align'=>'right',
+            'label'=>viewHelper::getFieldText($fields['lastpage']),
         );
+
         $bHidden=false;
         if (isset($_SESSION['survey_'.$iSurveyId]['HiddenFields']))
         {
@@ -413,12 +440,14 @@ class responses extends Survey_Common_Action
                     "N"=>gT("No"),
                 ),
             ),
+
             'sortable'=>true,
             'hidden'=>$bHidden,
             'width'=>'100',
-            'align'=>'center',
+            'align'=>'left',
             'label' => gT("Completed"),
         );
+
         // defaultSearch is the default search done before send request in json. Actually : completed and token only. Can be extended ( js is ready) ?
         $defaultSearch=array();
         if (incompleteAnsFilterState() == "incomplete")
@@ -434,42 +463,42 @@ class responses extends Survey_Common_Action
             $defaultSearch['completed']="";
         }
         //add token to top of list if survey is not private
-        if ($bHaveToken) 
+        if ($bHaveToken)
         {
             $column_model[] = array(
                 'name'=>'token',
                 'index'=>'token',
                 'sorttype'=>'string',
-                'sortable'=>true, 'width'=>'100',
+                'sortable'=>true, 'width'=>'150',
                 'align'=>'left',
-                'title'=>gT('Token')
+                'label'=>gT('Token')
             );
             $column_model[] = array(
                 'name'=>'firstname',
                 'index'=>'firstname',
                 'sorttype'=>'string',
                 'sortable'=>true,
-                'width'=>'100',
+                'width'=>'150',
                 'align'=>'left',
-                'title'=>gT('First name'),
+                'label'=>gT('First name'),
             );
             $column_model[] = array(
                 'name'=>'lastname',
                 'index'=>'lastname',
                 'sorttype'=>'string',
                 'sortable'=>true,
-                'width'=>'100',
+                'width'=>'150',
                 'align'=>'left',
-                'title'=>gT('Last Name'),
+                'label'=>gT('Last Name'),
             );
             $column_model[] = array(
                 'name'=>'email',
                 'index'=>'email',
                 'sorttype'=>'string',
                 'sortable'=>true,
-                'width'=>'100',
+                'width'=>'150',
                 'align'=>'left',
-                'title'=>gT('Email'),
+                'label'=>gT('Email'),
             );
             // If token exist, test if token is set in params, add it to defaultSearch
             if($sTokenSearch= Yii::app()->request->getQuery('token'))
@@ -477,7 +506,16 @@ class responses extends Survey_Common_Action
                 $defaultSearch['token']=$sTokenSearch;
             }
         }
-
+        $column_model[] = array(
+            'name'=>'startlanguage',
+            'index'=>'startlanguage',
+            'sorttype'=>'string',
+            'sortable'=>true,
+            'width'=>'50',
+            'resizable' => true,// Strangely : don't work
+            'align'=>'left',
+            'label'=>viewHelper::getFieldText($fields['startlanguage']),
+        );
 
         // All other columns are based on the questions.
         // An array to control unicity of $code (EM code)
@@ -494,9 +532,6 @@ class responses extends Survey_Common_Action
                 continue;
             if ($fielddetails['type'] == 'answer_time')
                 continue;
-
-
-
             $question = $fielddetails['question'];
             if ($fielddetails['type'] == "|")
             {
@@ -532,7 +567,7 @@ class responses extends Survey_Common_Action
                         'name' => $aFileInfoField[0],
                         'index' => $aFileInfoField[0],
                         'sortable' => false,
-                        'width' => '100',
+                        'width' => '150',
                         'align' => 'left',
                         'editable' => false,
                         'search' => false,
@@ -569,13 +604,13 @@ class responses extends Survey_Common_Action
                 'index' => $fielddetails['fieldname'],
                 'sorttype' => 'string',// Depend of question type can be excellent
                 'sortable' => true,
-                'width' => '100',
+                'width' => '200',
                 'align' => 'left',
                 'editable' => false,
                 'hidden' => (bool)$bHidden,
                 'title' => $text,
             );
-            
+
         }
 
         $column_model_txt = ls_json_encode($column_model);
@@ -619,7 +654,7 @@ class responses extends Survey_Common_Action
 
     }
 
-    
+
    /**
     * Returns survey responses in json format for a given survey
     *
@@ -664,6 +699,18 @@ class responses extends Survey_Common_Action
             $aSpecificColumns=array_merge($aSpecificColumns,TokenDynamic::model($iSurveyID)->getTableSchema()->getColumnNames());
         }
 
+        if (incompleteAnsFilterState() == "incomplete")
+        {
+            $oCriteria->addCondition("submitdate IS NULL");
+        }
+        elseif (incompleteAnsFilterState() == "complete")
+        {
+            $oCriteria->addCondition("submitdate IS NOT NULL");
+        }
+        //Get the filter data
+        //if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
+        //    $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
+
         $aKnowColumns=array_keys(SurveyDynamic::model($iSurveyID)->attributes);
         if($bHaveToken){
             $aKnowColumns[]='firstname';
@@ -686,7 +733,7 @@ class responses extends Survey_Common_Action
         $oCriteria->order = "{$sOrderBy} {$sOrder}";
         if(Yii::app()->request->getParam('_search'))
         {
-            if(($value=Yii::app()->request->getParam('completed'))) 
+            if(($value=Yii::app()->request->getParam('completed')))
             {
                 if($value=='Y')
                 {
@@ -746,19 +793,31 @@ class responses extends Survey_Common_Action
         $dtresult = SurveyDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
         $all_rows = array();
         foreach ($dtresult as $row) {
-            $action_html  = "<a href='" . Yii::app()->createUrl("admin/responses",array('sa'=>"view",'surveyid'=>$surveyid,'id'=>$row['id'])) . "'><img src='" . $sImageURL . "token_viewanswer.png' alt='" . gT('View response details') . "'/></a>";
+
+            // View detail icon
+            $action_html = '<a href="' . Yii::app()->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/{$row['id']}")
+                . '"><span class="glyphicon glyphicon-list-alt text-success" title="'
+                . gT('View response details') . '"></span></a>';
+
+            // Edit icon
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','update')) {
-                $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry",array('sa'=>"editdata",'subaction'=>"edit",'surveyid'=>$surveyid,'id'=>$row['id'])) . "'><img src='" . $sImageURL . "edit_16.png' alt='" . gT('Edit this response') . "'/></a>";
+                $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$row['id']}") . "'>
+                <span class='glyphicon glyphicon-pencil text-success' title='" . gT('Edit this response') . "'></span></a>";
             }
+
+            // Download icon
             if (hasFileUploadQuestion($surveyid)) {
                 if(Response::model($surveyid)->findByPk($row['id'])->getFiles())
-                    $action_html .= CHtml::link(
-                        CHtml::image("{$sImageURL}down.png",gT('Download all files in this response as a zip file'),array("class"=>"downloadfile")),
-                        Yii::app()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>$surveyid,"sResponseId"=>$row['id']))
-                    );
+                {
+                    $action_url = Yii::app()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>$surveyid,"sResponseId"=>$row['id']));
+                    $action_html .='<a title="'.gT('Download all files in this response as a zip file').'" href="'.$action_url.'"><span class="glyphicon glyphicon-download-alt downloadfile"></span></a>';
+                }
             }
+
+            // Delete icon
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete')) {
-                $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>$surveyid,"sResponseId"=>$row['id']))."' data-delete='".$row['id']."'><img src='" . $sImageURL . "token_delete.png' alt='" . sprintf(gT('Delete response %s'),$row['id']) . "' class='deleteresponse'/></a>";
+                $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>$surveyid,"sResponseId"=>$row['id']))."' data-delete='".$row['id']."'>
+                <span title='" . sprintf(gT('Delete response %s'),$row['id']) . "' class='deleteresponse glyphicon glyphicon-trash text-warning'></span></a>";
             }
 
             $aSurveyEntry = array();
@@ -827,8 +886,8 @@ class responses extends Survey_Common_Action
         echo json_encode($aSurveyEntries);
         Yii::app()->end();
     }
-   
-    
+
+
     /**
     * Saves the hidden columns for response browsing in the session
     *
@@ -840,12 +899,12 @@ class responses extends Survey_Common_Action
     {
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
-           $aHiddenFields=explode('|',Yii::app()->request->getPost('aHiddenFields')); 
+           $aHiddenFields=explode('|',Yii::app()->request->getPost('aHiddenFields'));
            $_SESSION['survey_'.$iSurveyId]['HiddenFields']=$aHiddenFields;
         }
     }
-    
-    
+
+
     /**
     * Do an actions on response
     *
@@ -880,7 +939,7 @@ class responses extends Survey_Common_Action
     */
     public function actionDelete($iSurveyId,$sResponseId)
     {
-        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete') && App()->request->isPostRequest)
+        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete'))
         {
             $aResponseId=explode(",",$sResponseId); // deleteByPk lust work with array, but seems don't work ? Maybe before delete broke this ?column_model_txt
             foreach($aResponseId as $iResponseId)
@@ -933,7 +992,7 @@ class responses extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("Sorry, this file was not found."),'error');
             $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$surveyid));
         }
-        
+
     }
 
     /**
@@ -1169,7 +1228,6 @@ class responses extends Survey_Common_Action
         else
         {
             $aData['surveyid'] = $iSurveyID;
-            App()->getClientScript()->registerPackage('jquery-superfish');
             $message['title']= gT('Access denied!');
             $message['message']= gT('You do not have sufficient rights to access this page.');
             $message['class']= "error";
@@ -1420,10 +1478,16 @@ class responses extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction='', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'browse.js');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'browse.js' ));
+
+        $iSurveyId = $aData['iSurveyId'];
 
         $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
+
+        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+        $aData["surveyinfo"] = $surveyinfo;
+        $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
 
         parent::_renderWrappedTemplate('responses', $aViewUrls, $aData);
     }

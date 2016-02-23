@@ -108,7 +108,7 @@ else
     var attributeValueColTxt="<?php eT("Attribute value", 'js') ?>";
     var attributePosValColTxt="<?php eT("Possible attribute values", 'js') ?>";
     var addToSurveyTxt="<?php eT("Add participants to a survey", 'js') ?>";
-    var createParticipantTxt="<?php eT("Create new participant", 'js') ?>";
+    var createParticipantTxt="<?php eT("Create participant", 'js') ?>";
     var deleteParticipantTxt="<?php eT("Delete selected participants", 'js') ?>";
     var refreshListTxt="<?php eT("Refresh list", 'js') ?>";
     var pageViewTxt= "<?php eT("Page {0} of {1}", 'js') ?>";
@@ -231,7 +231,7 @@ echo $colModels;
 
 </div>
 <br/>
-<table id="displayparticipants"></table>
+<table id="displayparticipants" class="table"></table>
 <div id="pager"></div>
 <div id="fieldnotselected" title="<?php eT("Error") ?>" style="display:none">
     <p>
@@ -254,7 +254,10 @@ echo $colModels;
 <?php eT("User with whom the participants are to be shared"); ?></p>
     <p>
         <?php
+
         $options[''] = gT("Select...");
+        $options[0]  = gT("All users");
+
         foreach ($names as $row)
         {
             if (!(Yii::app()->session['loginID'] == $row['uid']))
@@ -285,7 +288,7 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
 
 <!-- Add To Survey Popup Window -->
 <div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none">
-    <?php echo CHtml::form(array("admin/participants/sa/attributeMap"), 'post', array('id'=>'addsurvey','name'=>'addsurvey')); ?>
+    <?php echo CHtml::form(array("admin/participants/sa/attributeMap"), 'post', array('id'=>'addsurvey','name'=>'addsurvey', 'class' => 'form-horizonta')); ?>
         <input type="hidden" name="participant_id" id="participant_id" value=""></input>
         <input type="hidden" name="count" id="count" value=""></input>
         <fieldset class='popupgroup'>
@@ -316,16 +319,22 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
           <legend>
             <?php eT("Options") ?>
           </legend>
-            <?php
-            $data = array(
-                'id' => 'redirect',
-                'value' => 'TRUE',
-                'style' => 'margin:10px',
-            );
+          <div class='row'>
+            <div class='form-group'>
+                <label class='control-label col-sm-8' for='redirect'><?php eT("Display survey tokens after adding?"); ?></label>
+                <div class='col-sm-4'>
+                    <?php
+                    $data = array(
+                        'id' => 'redirect',
+                        'value' => 'TRUE',
+                        'style' => 'margin:10px',
+                    );
 
-            echo CHtml::checkBox('redirect', TRUE, $data);
-            ?>
-            <label for='redirect'><?php eT("Display survey tokens after adding?"); ?></label>
+                    echo CHtml::checkBox('redirect', TRUE, $data);
+                    ?>
+                </div>
+            </div>
+          </div>
         </fieldset>
     </form>
 </div>
@@ -334,6 +343,3 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
 <?php eT("You do not have the permission to edit this participant."); ?></p>
 
 </div>
-
-
-

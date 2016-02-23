@@ -1,6 +1,6 @@
-<div class='messagebox ui-corner-all'>
-    <div class='header ui-widget-header'><?php echo $sHeading; ?></div>
-    <div class='warningheader'><?php eT('Error'); ?></div>
-    <?php echo $sMessage; ?><br />
-    <input type="submit" value="<?php eT('Main Admin Screen'); ?>" /><br />
+<div class="jumbotron message-box message-box-error">
+        <h2><?php echo $sHeading; ?></h2>
+        <p class="lead"><?php eT('Error'); ?></p>
+        <p><?php echo eT($sMessage); ?></p>
+        <p><a class="btn btn-lg btn-success" href="<?php echo $this->createUrl("admin/"); ?>" role="button"><?php eT("Ok"); ?></a></p>
 </div>

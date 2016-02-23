@@ -56,7 +56,8 @@ class GlobalSettings extends Survey_Common_Action
     {
         Yii::app()->loadHelper('surveytranslator');
 
-        //save refurl from where global settings screen is called!
+        // Save refurl from where global settings screen is called!
+        // Unless it's called from global settings...
         $refurl = Yii::app()->getRequest()->getUrlReferrer();
 
         // Some URLs are not to be allowed to refered back to.
@@ -66,7 +67,11 @@ class GlobalSettings extends Survey_Common_Action
                              'admin/user/sa/setusertemplates'=>'admin/user/sa/index'
                             );
         $refurl= str_replace(array_keys($aReplacements),array_values($aReplacements),$refurl);
-        Yii::app()->session['refurl'] = htmlspecialchars($refurl); //just to be safe!
+        // Don't update session variable if refurl is empty (happens when user clicks Save)
+        if ($refurl !== "")
+        {
+            Yii::app()->session['refurl'] = htmlspecialchars($refurl); //just to be safe!
+        }
 
         $data['title'] = "hi";
         $data['message'] = "message";
@@ -95,6 +100,10 @@ class GlobalSettings extends Survey_Common_Action
             $data['restrictToLanguages'] = explode(' ', trim(Yii::app()->getConfig('restrictToLanguages')));
             $data['excludedLanguages'] = array_diff(array_keys($data['allLanguages']), $data['restrictToLanguages']);
         }
+
+        $data['fullpagebar']['savebutton']['form'] = 'frmglobalsettings';
+        $data['fullpagebar']['saveandclosebutton']['form'] = 'frmglobalsettings';
+        $data['fullpagebar']['closebutton']['url'] = 'admin/';
 
         $this->_renderWrappedTemplate('', 'globalSettings_view', $data);
     }
@@ -153,8 +162,27 @@ class GlobalSettings extends Survey_Common_Action
             }
 
         }
-        setGlobalSetting('admintheme', sanitize_paranoid_string($_POST['admintheme']));
-        setGlobalSetting('adminthemeiconsize', trim(file_get_contents(Yii::app()->getConfig("styledir").DIRECTORY_SEPARATOR.sanitize_paranoid_string($_POST['admintheme']).DIRECTORY_SEPARATOR.'iconsize')));
+
+        // we set the admin theme
+        $sAdmintheme = sanitize_paranoid_string($_POST['admintheme']);
+        setGlobalSetting('admintheme', $sAdmintheme);
+
+        // we check if it's a user theme
+        $usertemplatethemerootdir = Yii::app()->getConfig("uploaddir").'/admintheme/'.$sAdmintheme;
+        if ($usertemplatethemerootdir && file_exists($usertemplatethemerootdir) && is_dir($usertemplatethemerootdir) )
+        {
+            $adminimagebaseurl = Yii::app()->getBaseUrl(true)."/upload/admintheme/$sAdmintheme/images/";
+            setGlobalSetting('adminimagebaseurl', $adminimagebaseurl);
+            setGlobalSetting('adminimageurl', $adminimagebaseurl.'images/14/');
+        }
+        else
+        {
+            $adminimagebaseurl = Yii::app()->getBaseUrl(true)."/styles/$sAdmintheme/images/";
+            setGlobalSetting('adminimagebaseurl', $adminimagebaseurl);
+            setGlobalSetting('adminimageurl', $adminimagebaseurl.'/14/');
+        }
+
+        //setGlobalSetting('adminthemeiconsize', trim(file_get_contents(Yii::app()->getConfig("styledir").DIRECTORY_SEPARATOR.sanitize_paranoid_string($_POST['admintheme']).DIRECTORY_SEPARATOR.'iconsize')));
         setGlobalSetting('emailmethod', strip_tags($_POST['emailmethod']));
         setGlobalSetting('emailsmtphost', strip_tags(returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {
@@ -220,8 +248,20 @@ class GlobalSettings extends Survey_Common_Action
 
         Yii::app()->session['flashmessage'] = $warning.gT("Global settings were saved.");
 
-        $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
-        if($url){Yii::app()->getController()->redirect($url);}
+        // Redirect if user clicked save-and-close-button
+        if (isset($_POST['saveandclose']))
+        {
+            $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
+            if ($url)
+            {
+                Yii::app()->getController()->redirect($url);
+            }
+            else
+            {
+                $url = Yii::app()->createUrl('admin');
+                Yii::app()->getController()->redirect($url);
+            }
+        }
     }
 
     private function _checkSettings()
@@ -289,8 +329,7 @@ class GlobalSettings extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "globalsettings.js");
-
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "globalsettings.js" ));
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }

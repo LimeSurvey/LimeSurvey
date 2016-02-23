@@ -67,19 +67,24 @@
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
             //SET THE TEMPLATE DIRECTORY
              $sTemplate = $aSurveyInfo['template'];
+
+            global $oTemplate;
+
             //Survey is not finished or don't exist
             if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid']))
             //display "sorry but your session has expired"
             {
                 sendCacheHeaders();
                 doHeader();
-                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/startpage.pstpl'),array());
+
+                /// $oTemplate is a global variable defined in controller/survey/index
+                echo templatereplace(file_get_contents($oTemplate->viewPath.'/startpage.pstpl'),array());
                 echo "<center><br />\n"
                 ."\t<font color='RED'><strong>".gT("Error")."</strong></font><br />\n"
                 ."\t".gT("We are sorry but your session has expired.")."<br />".gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
                 ."\t".sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail"))."\n"
                 ."</center><br />\n";
-                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/endpage.pstpl'),array());
+                echo templatereplace(file_get_contents($oTemplate->viewPath.'/endpage.pstpl'),array());
                 doFooter();
                 exit;
             }
@@ -102,7 +107,7 @@
             if ($sExportType != 'pdf')
             {
                 $sOutput = CHtml::form(array("printanswers/view/surveyid/{$iSurveyID}/printableexport/pdf"), 'post')
-                ."<center><input type='submit' value='".gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
+                ."<center><input class='btn btn-default' type='submit' value='".gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
                 $sOutput .= "\t<div class='printouttitle'><strong>".gT("Survey name (ID):")."</strong> $sSurveyName ($iSurveyID)</div><p>&nbsp;\n";
                 LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
                 // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
@@ -152,9 +157,9 @@
 
                 sendCacheHeaders();
                 doHeader();
-                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/startpage.pstpl'),array(),$sData);
-                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/printanswers.pstpl'),array('ANSWERTABLE'=>$sOutput),$sData);
-                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/endpage.pstpl'),array(),$sData);
+                echo templatereplace(file_get_contents($oTemplate->viewPath.'/startpage.pstpl'),array(),$sData);
+                echo templatereplace(file_get_contents($oTemplate->viewPath.'/printanswers.pstpl'),array('ANSWERTABLE'=>$sOutput),$sData);
+                echo templatereplace(file_get_contents($oTemplate->viewPath.'/endpage.pstpl'),array(),$sData);
                 echo "</body></html>";
 
                 ob_flush();

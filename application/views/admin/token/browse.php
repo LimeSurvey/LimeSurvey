@@ -28,7 +28,7 @@
             $aTokenColumns[$aTokenColumn]['quickfilter']=true;
         }
     }
-    // Build the columnNames for the extra attributes 
+    // Build the columnNames for the extra attributes
     // and, build the columnModel
     $attributes = getTokenFieldsAndNames($surveyid,true);
     $uidNames=$columnNames=$aColumnHeader=array();
@@ -85,19 +85,21 @@
     var sRefreshTitle ='<?php eT("Reload participant list",'js');?>';
     var noSearchResultsTxt = '<?php eT("No survey participants matching the search criteria",'js');?>';
     var sFind= '<?php eT("Filter",'js');?>';
-    var inviteurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens",array("sa"=>"email","surveyid"=>$surveyid)); ?>";
-    var remindurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens",array("sa"=>"email","action"=>'remind',"surveyid"=>$surveyid)); ?>";
+    var remindurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/email/action/remind/surveyid/{$surveyid}"); ?>";
     var attMapUrl = "<?php echo $this->createUrl("admin/participants/sa/attributeMapToken/sid/");?>";
-    var invitemsg = "<?php echo eT("Send an invitation email to the selected entries (if they have not yet been sent an invitation email)",'unescaped'); ?>"
-    var remindmsg = "<?php echo eT("Send a reminder email to the selected entries (if they have already received the invitation email)",'unescaped'); ?>"
+    var invitemsg = "<?php echo eT("Send an invitation email to the selected entries (if they have not yet been sent an invitation email)"); ?>"
+    var remindmsg = "<?php echo eT("Send a reminder email to the selected entries (if they have already received the invitation email)"); ?>"
+    var inviteurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/email/action/invite/surveyid/{$surveyid}"); ?>";
     var sSummary =  '<?php eT("Summary",'js');?>';
     var showDelButton = <?php echo $showDelButton; ?>;
     var showBounceButton = <?php echo $showBounceButton; ?>;
     var showInviteButton = <?php echo $showInviteButton; ?>;
     var showRemindButton = <?php echo $showRemindButton; ?>;
+    var sDelete = "<?php eT('Delete this search criteria'); ?>";
+    var sAdd = "<?php eT("Add another search criteria"); ?>";
     <?php if (!Permission::model()->hasGlobalPermission('participantpanel','read')){?>
     var bParticipantPanelPermission=false;
-    <?php 
+    <?php
     } else {?>
     var bParticipantPanelPermission=true;
     var viewParticipantsLink = "<?php eT("View participants of this survey in the central participant database panel") ?>";
@@ -115,115 +117,113 @@
     { "name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":100, "align":"left", "editable":true},
     { "name":"lastname", "index":"lastname", "sorttype":"string", "sortable": true,"width":100, "align":"left", "editable":true},
     { "name":"email", "index":"email","align":"left","width":170, "sorttype":"string", "sortable": true, "editable":true},
-    { "name":"emailstatus", "index":"emailstatus","align":"left","width":80,"sorttype":"string", "sortable": true, "editable":true},
+    { "name":"emailstatus", "index":"emailstatus","align":"left","width": 80,"sorttype":"string", "sortable": true, "editable":true},
     { "name":"token", "index":"token","align":"left", "sorttype":"int", "sortable": true,"width":150,"editable":true},
     { "name":"language", "index":"language","align":"left", "sorttype":"int", "sortable": true,"width":100,"editable":true, "formatter":'select', "edittype":"select", "editoptions":{"value":"<?php echo $aLanguageNames; ?>"}},
     { "name":"sent", "index":"sent","align":"left", "sorttype":"int", "sortable": true,"width":130,"editable":true},
     { "name":"remindersent", "index":"remindersent","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
-    { "name":"remindercount", "index":"remindercount","align":"right", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"remindercount", "index":"remindercount","align":"right", "sorttype":"int", "sortable": true,"width":80,"editable":true, "classes": "jqgrid-tokens-number-padding"},
     { "name":"completed", "index":"completed","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
-    { "name":"usesleft", "index":"usesleft","align":"right", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"usesleft", "index":"usesleft","align":"right", "sorttype":"int", "sortable": true,"width":80,"editable":true, "classes": "jqgrid-tokens-number-padding"},
     { "name":"validfrom", "index":"validfrom","align":"left", "sorttype":"int", "sortable": true,"width":160,"editable":true},
     { "name":"validuntil", "index":"validuntil","align":"left", "sorttype":"int", "sortable": true,"width":160,"editable":true}
     <?php if (count($uidNames)) echo ','.implode(",\n", $uidNames); ?>];
     var colInformation=<?php echo $sJsonColumnInformation ?>
 
     function checkMandatoryAttr(value, colname)  {
-        if (value  == '') 
+        if (value  == '')
             return [false, '<?php eT("Please enter a value for: ") ?>'+colname]; // See http://phpjs.org/functions/sprintf/
-        else 
+        else
             return [true,''];
     }
 </script>
-<div class='menubar'>
-    <div class='menubar-title ui-widget-header'>
-        <strong><?php eT("Survey participants",'js'); ?></strong></div>
-    <div class='menubar-main'>
-        <div class='menubar-left'>
-            <img src='<?php echo $sImageURL; ?>databegin.png' alt='<?php eT("Show start..."); ?>' class="gridcontrol disabled databegin" />
-            <img src='<?php echo $sImageURL; ?>databack.png' alt='<?php eT("Show previous.."); ?>' class="gridcontrol disabled databack" />
-            <img src='<?php echo $sImageURL; ?>blank.gif' width='13' height='20' alt='' />
-            <img src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php eT("Show next.."); ?>' class="gridcontrol disabled dataforward" />
-            <img src='<?php echo $sImageURL; ?>dataend.png' alt='<?php eT("Show last.."); ?>' class="gridcontrol disabled dataend" />
-            <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
-            <div id='tokensearch' class='form-menubar'><label for='searchstring'><?php eT("Filter by") ?></label><input type='text' name='searchstring' id='searchstring' class='gridsearch' value="" /></div>
+
+
+<div class="side-body">
+	<h3><?php eT("Survey participants",'js'); ?></h3>
+
+    <div class='scrolling-wrapper'
+        <div  class="row">
+            <div class="col-lg-12" style="margin-top: 1em;">
+                <?php
+                    // Add some script for gridsearch
+                    App()->getClientScript()->registerPackage('jquery-bindWithDelay');
+                    App()->getClientScript()->registerPackage('jqgrid.addons');
+                ?>
+                <table id="displaytokens"></table>
+                <div id="pager"></div>
+
+                <div id="search">
+                    <?php
+                        $aOptionSearch = array('' => gT('Select...','unescaped'));
+                        foreach($aTokenColumns as $sTokenColumn => $aTokenInformation)
+                        {
+                            if($aTokenInformation['search'])
+                            {
+                                $aOptionSearch[$sTokenColumn]=$aTokenInformation['description'];
+                            }
+                        }
+                        $aOptionCondition = array('' => gT('Select...','unescaped'),
+                        'equal' => gT("Equals",'unescaped'),
+                        'contains' => gT("Contains",'unescaped'),
+                        'notequal' => gT("Not equal",'unescaped'),
+                        'notcontains' => gT("Not contains",'unescaped'),
+                        'greaterthan' => gT("Greater than",'unescaped'),
+                        'lessthan' => gT("Less than",'unescaped'));
+                    ?>
+                    <table id='searchtable'>
+                        <tr>
+                            <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $aOptionSearch, array('class' => 'form-control')); ?></td>
+                            <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $aOptionCondition, array('class' => 'form-control')); ?></td>
+                            <td><input class='form-control' type="text" id="conditiontext_1" /></td>
+                            <td>
+                                <span data-toggle='tooltip' title='<?php eT("Add another search criteria");?>' class="ui-pg-button addcondition-button icon-add text-success" style="">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <?php if (Permission::model()->hasGlobalPermission('participantpanel','read')) { ?>
+                    <div id="addcpdb" title="addsurvey" style="display:none">
+                        <p><?php eT("Please select the attributes that are to be added to the central database"); ?></p>
+                        <p>
+                            <select id="attributeid" name="attributeid" multiple="multiple">
+                                <?php
+                                    if(!empty($attrfieldnames))
+                                    {
+                                        foreach($attrfieldnames as $key=>$value)
+                                        {
+                                            echo "<option value='".$key."'>".$value."</option>";
+                                        }
+                                    }
+
+                                ?>
+                            </select>
+                        </p>
+
+                    </div>
+                <?php } ?>
+
+                <div id="fieldnotselected" title="<?php eT("Error") ?>" style="display:none">
+                    <p>
+                        <?php eT("Please select a field."); ?>
+                    </p>
+                </div>
+                <div id="conditionnotselected" title="<?php eT("Error") ?>" style="display:none">
+                    <p>
+                        <?php eT("Please select a condition."); ?>
+                    </p>
+                </div>
+                <div id="norowselected" title="<?php eT("Error") ?>" style="display:none">
+                    <p>
+                        <?php eT("Please select at least one participant."); ?>
+                    </p>
+                </div>
+                <div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none"></div>
+                <div>
+                <div id ='dialog-modal'></div>
+            </div>
+            </div>
         </div>
     </div>
 </div>
-<?php
-    // Add some script for gridsearch
-    App()->getClientScript()->registerPackage('jquery-bindWithDelay');
-    App()->getClientScript()->registerPackage('jqgrid.addons');
-?>
-<table id="displaytokens"></table>
-<div id="pager"></div>
-
-<div id ="search" style="display:none">
-    <?php
-        $aOptionSearch = array('' => gT('Select...'));
-        foreach($aTokenColumns as $sTokenColumn => $aTokenInformation)
-        {
-            if($aTokenInformation['search'])
-            {
-                $aOptionSearch[$sTokenColumn]=$aTokenInformation['description'];
-            }
-        }
-        $aOptionCondition = array('' => gT('Select...'),
-        'equal' => gT("Equals"),
-        'contains' => gT("Contains"),
-        'notequal' => gT("Not equal"),
-        'notcontains' => gT("Not contains"),
-        'greaterthan' => gT("Greater than"),
-        'lessthan' => gT("Less than"));
-    ?>
-    <table id='searchtable'>
-        <tr>
-            <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $aOptionSearch); ?></td>
-            <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $aOptionCondition); ?></td>
-            <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
-            <td><img src=<?php echo Yii::app()->getConfig('adminimageurl')."plus.png" ?> alt='<?php eT("Add another search criteria");?>' class="addcondition-button" style="margin-bottom:4px"></td>
-        </tr>
-    </table>
-</div>
-
-<?php if (Permission::model()->hasGlobalPermission('participantpanel','read')) { ?>
-    <div id="addcpdb" title="addsurvey" style="display:none">
-        <p><?php eT("Please select the attributes that are to be added to the central database"); ?></p>
-        <p>
-            <select id="attributeid" name="attributeid" multiple="multiple">
-                <?php
-                    if(!empty($attrfieldnames))
-                    {
-                        foreach($attrfieldnames as $key=>$value)
-                        {
-                            echo "<option value='".$key."'>".$value."</option>";
-                        }
-                    }
-
-                ?>
-            </select>
-        </p>
-
-    </div>
-<?php } ?>
-</div>
-
-
-<div id="fieldnotselected" title="<?php eT("Error") ?>" style="display:none">
-    <p>
-        <?php eT("Please select a field."); ?>
-    </p>
-</div>
-<div id="conditionnotselected" title="<?php eT("Error") ?>" style="display:none">
-    <p>
-        <?php eT("Please select a condition."); ?>
-    </p>
-</div>
-<div id="norowselected" title="<?php eT("Error") ?>" style="display:none">
-    <p>
-        <?php eT("Please select at least one participant."); ?>
-    </p>
-</div>
-<div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none"></div>
-<div>
-<div id ='dialog-modal'></div>

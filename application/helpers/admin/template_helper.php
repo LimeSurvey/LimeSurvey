@@ -13,9 +13,9 @@
 */
 
 
-function doreplacement($file,$data) { //Produce sample page from template file
+function doreplacement($file,$data, $oTemplate='') { //Produce sample page from template file
     $aReplacements=isset($data['aReplacements']) ? $data['aReplacements'] : array();
-    return (array)templatereplace(file_get_contents($file),$aReplacements,$data);
+    return (array)templatereplace(file_get_contents($file),$aReplacements,$data, 'Unspecified', false, NULL, array(), false, $oTemplate);
 }
 
 
@@ -44,16 +44,22 @@ function textarea_encode($html_code)
     return $html_code;
 }
 
-//Load this editfile
+/**
+ * Load this editfile
+ *
+ * @param string $templatename
+ * @param string $templatefile
+ * @param array $templates
+ * @return string
+ */
 function filetext($templatename,$templatefile,$templates) {
-    $sFileName=$templates[$templatename].'/'.$templatefile;
+    $sFileName = gettemplatefilename($templates[$templatename],$templatefile);
     if (file_exists($sFileName))
     {
         return file_get_contents($sFileName);
     }
     else
     {
-        return '';
     }
 }
 
@@ -89,11 +95,48 @@ function makeoptions($array, $value, $text, $selectedvalue) {
     return $return;
 }
 
+/**
+ * Index is the file index in the Template configuration file
+ */
+function makeoptionswithindex($array, $value, $text, $selectedvalue, $prefix)
+{
+
+    if(isset( $_GET['editfile']))
+    {
+        $editfile = (string) $_GET['editfile'];
+        $editfile_infos = explode('_',$editfile);
+
+    // If user is editing a file requiring an index, $_GET['editfile'] will have a prefix (like css or js)
+    // If it's the same prefix than the one asked here, then it means he's editing one of the files of the list
+    // The edited file will have an index corresponding to the suffix of $_GET['editfile']
+    // e.g : admin/templates/sa/view/editfile/css_1/ ....
+    // Mean user is editing a css file with index 1 in the template's configuration file
+        if(isset($editfile_infos[0]) && $editfile_infos[0] == $prefix)
+            $selectedindex = $editfile_infos[1];
+    }
+    $selectedindex = (isset($selectedindex))?$selectedindex:-1;
+
+    $return='';
+    foreach ($array as $index => $ar)
+    {
+        $return .= "<option value='".HTMLEscape($prefix.'_'.$index)."'";
+
+        if ($index == $selectedindex)
+        {
+            $return .= " selected='selected'";
+        }
+
+        $return .= '>'.$ar[$text]."</option>\n";
+    }
+    return $return;
+}
+
 function templateoptions($optionarray, $selectedvalue) {
     $return='';
     foreach ($optionarray as $arkey=>$arvalue) {
         $return .= "<option value='".HTMLEscape($arkey)."'";
-        if ($arkey == $selectedvalue) {
+        if ($arkey == $selectedvalue)
+        {
             $return .= " selected='selected'";
         }
         $return .= '>'.HTMLEscape($arkey)."</option>\n";
@@ -139,15 +182,15 @@ function is_template_editable($templatename)
 
 /**
 * This is a PCLZip callback function that ensures only files are extracted that have a valid extension
-* 
+*
 * @param mixed $p_event
 * @param mixed $p_header
 * @return int Return 1 for yes (file can be extracted), 0 for no
 */
 function templateExtractFilter($p_event, &$p_header)
 {
-    $aAllowExtensions=explode(',',Yii::app()->getConfig('allowedtemplateuploads'));    
-    $aAllowExtensions[]='pstpl'; 
+    $aAllowExtensions=explode(',',Yii::app()->getConfig('allowedtemplateuploads'));
+    $aAllowExtensions[]='pstpl';
     $info = pathinfo($p_header['filename']);
     // Deny files with multiple extensions in general
     if (substr_count($info['basename'],'.')!=1) return 0;
@@ -156,5 +199,28 @@ function templateExtractFilter($p_event, &$p_header)
     }
     else {
         return 0;
+    }
+}
+
+/**
+ * Determine the storage path for a file
+ *
+ * @param string $template
+ * @param string $templatefile
+ */
+function gettemplatefilename($template, $templatefile) {
+    switch (pathinfo($templatefile, PATHINFO_EXTENSION)) {
+        case 'pstpl':
+            return $template.'/views/'.$templatefile;
+            break;
+        case 'css':
+            return $template.'/'.$templatefile;
+            break;
+        case 'js':
+            return $template.'/'.$templatefile;
+            break;
+        default:
+            return $template.'/'.$templatefile;
+            break;
     }
 }

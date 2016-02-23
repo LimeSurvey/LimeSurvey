@@ -34,9 +34,53 @@
 class LSHttpRequest extends CHttpRequest {
     public $noCsrfValidationRoutes = array();
 
+    /**
+     * Return the referal url,
+     * it's used for the close buttons.
+     * So it checks if the referrer url is the same than the current url to avoid looping.
+     * If it the case, a paramater can be set to tell what referrer to return.
+     * If the referrer is an external url, Yii return by default the current url.
+     *
+     * To avoid looping between two urls (like simpleStatistics <=> Expert Statistics),
+     * it can be necessary to check if the referrer contains a specific word (an action in general)
+     *
+     * @param $sAlternativeUrl string, the url to return if referrer url is the same than current url.
+     * @param $aForbiddenWordsInUrl array, an array containing forbidden words in url
+     * @return string if success, else null
+     */
+    public function getUrlReferrer($sAlternativeUrl=null, $aForbiddenWordsInUrl=array())
+    {
+
+       $referrer = parent::getUrlReferrer();
+       $baseReferrer    = str_replace(Yii::app()->getBaseUrl(true), "", $referrer);
+       $baseRequestUri  = str_replace(Yii::app()->getBaseUrl(), "", Yii::app()->request->requestUri);
+       $referrer = ($baseReferrer != $baseRequestUri)?$referrer:null;
+
+       // Checks if the alternative url should be used
+       if(isset($sAlternativeUrl))
+       {
+           // Use alternative url if the referrer is equal to current url.
+           if(is_null($referrer))
+           {
+               $referrer = $sAlternativeUrl;
+           }
+
+           // Use alternative url if a forbidden word appears in the referrer
+           foreach($aForbiddenWordsInUrl as $sForbiddenWord)
+           {
+               if (strpos($referrer, $sForbiddenWord) !== false)
+               {
+                   $referrer = $sAlternativeUrl;
+               }
+           }
+       }
+
+       return $referrer;
+    }
+
     protected function normalizeRequest(){
         parent::normalizeRequest();
-        
+
         if(!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] != 'POST') return;
 
         $route = Yii::app()->getUrlManager()->parseUrl($this);
@@ -51,5 +95,7 @@ class LSHttpRequest extends CHttpRequest {
             }
         }
     }
+
+
 
 }

@@ -118,11 +118,6 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 			$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_invite_subj'];
 			$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_invite'];
 		}
-		else if($sType == 'register')
-		{
-			$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_register_subj'];
-			$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_register'];
-		}
 		else
 		{
 			$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_remind_subj'];

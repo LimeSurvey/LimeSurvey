@@ -1,8 +1,9 @@
-<div class='header ui-widget-header'>
-    <?php eT("Central participants database summary"); ?>
-</div>
-<br />
-<table class='statisticssummary'>
+<div class="col-lg-12 list-surveys">
+    <h3><?php eT("Central participants database summary"); ?></h3>
+
+    <div class="row">
+        <div class="col-lg-12 content-right">
+<table class='statisticssummary table table-striped'>
     <tr>
         <th>
             <?php eT("Total participants in central table"); ?>
@@ -51,5 +52,8 @@
             <?php echo $attributecount; ?>
         </td>
     </tr>
-</table>
-<br />
+</table>            
+        </div>
+    </div>
+</div>   
+

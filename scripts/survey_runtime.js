@@ -26,8 +26,8 @@ $(document).ready(function()
     doToolTipTable();
 
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
-	if (typeof checkconditions!='undefined') checkconditions();
-	if (typeof template_onload!='undefined') template_onload();
+    if (typeof checkconditions!='undefined') checkconditions();
+    if (typeof template_onload!='undefined') template_onload();
     if (typeof(focus_element) != 'undefined')
     {
         $(focus_element).focus();
@@ -36,34 +36,34 @@ $(document).ready(function()
     // Keypad functions
     var kp = $("input.num-keypad");
     if(kp.length)
-	{ 
-		kp.keypad({
-			showAnim: 'fadeIn', keypadOnly: false,
-			onKeypress: function(key, value, inst) { 
-				$(this).trigger('keyup');
-			}
-		});
-	}
+    {
+        kp.keypad({
+            showAnim: 'fadeIn', keypadOnly: false,
+            onKeypress: function(key, value, inst) {
+                $(this).trigger('keyup');
+            }
+        });
+    }
     kp = $(".text-keypad");
     if(kp.length)
     {
         var spacer = $.keypad.HALF_SPACE;
         for(var i = 0; i != 8; ++i) spacer += $.keypad.SPACE;
-	    kp.keypad({
-		    showAnim: 'fadeIn',
-		    keypadOnly: false,
-		    layout: [
+        kp.keypad({
+            showAnim: 'fadeIn',
+            keypadOnly: false,
+            layout: [
                 spacer + $.keypad.CLEAR + $.keypad.CLOSE, $.keypad.SPACE,
-			    '!@#$%^&*()_=' + $.keypad.HALF_SPACE + $.keypad.BACK,
-			    $.keypad.HALF_SPACE + '`~[]{}<>\\|/' + $.keypad.SPACE + $.keypad.SPACE + '789',
-			    'qwertyuiop\'"' + $.keypad.HALF_SPACE + $.keypad.SPACE + '456',
-			    $.keypad.HALF_SPACE + 'asdfghjkl;:' + $.keypad.SPACE + $.keypad.SPACE + '123',
-			    $.keypad.SPACE + 'zxcvbnm,.?' + $.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + '-0+',
-			    $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER],
-				onKeypress: function(key, value, inst) { 
-					$(this).trigger('keyup');
-				}
-			});
+                '!@#$%^&*()_=' + $.keypad.HALF_SPACE + $.keypad.BACK,
+                $.keypad.HALF_SPACE + '`~[]{}<>\\|/' + $.keypad.SPACE + $.keypad.SPACE + '789',
+                'qwertyuiop\'"' + $.keypad.HALF_SPACE + $.keypad.SPACE + '456',
+                $.keypad.HALF_SPACE + 'asdfghjkl;:' + $.keypad.SPACE + $.keypad.SPACE + '123',
+                $.keypad.SPACE + 'zxcvbnm,.?' + $.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + '-0+',
+                $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER],
+                onKeypress: function(key, value, inst) {
+                    $(this).trigger('keyup');
+                }
+            });
     }
 
     // Maxlength for textareas TODO limit to not CSS3 compatible browser
@@ -116,7 +116,7 @@ function needConfirmHandler(){
     });
 }
 /**
- * checkconditions : javascript function attach to some element 
+ * checkconditions : javascript function attach to some element
  * Launch ExprMgr_process_relevance_and_tailoring with good value
  */
 function checkconditions(value, name, type, evt_type)
@@ -148,7 +148,7 @@ function checkconditions(value, name, type, evt_type)
 }
 
 /**
- * fixnum_checkconditions : javascript function attach to some element 
+ * fixnum_checkconditions : javascript function attach to some element
  * Update the answer of the user to be numeric and launch checkconditions
  */
 function fixnum_checkconditions(value, name, type, evt_type, intonly)
@@ -180,40 +180,40 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
 
     /**
      * If have to fix numbers automatically.
-     */    
+     */
     if(bFixNumAuto)
     {
 
         /**
          * Work on length of the number
-         * Avoid numbers longer than 20 characters before the decimal separator and 10 after the decimal separator. 
+         * Avoid numbers longer than 20 characters before the decimal separator and 10 after the decimal separator.
          */
         var midval = newval;
         var aNewval = midval.split('.');
         var newval = '';
-        
-        // Treat integer part            
-        if (aNewval.length > 0) {                           
+
+        // Treat integer part
+        if (aNewval.length > 0) {
             var intpart = aNewval[0];
             newval = (intpart.length > 20) ? '99999999999999999999' : intpart;
         }
 
-        // Treat decimal part, if there is one.             
+        // Treat decimal part, if there is one.
         // Trim after 10th decimal if larger than 10 decimals.
-        if (aNewval.length > 1) {                
+        if (aNewval.length > 1) {
             var decpart = aNewval[1];
-            if (decpart.length > 10){       
+            if (decpart.length > 10){
                 decpart = decpart.substr(0,10);
             }
             else {
-                decpart = aNewval[1];                
+                decpart = aNewval[1];
             }
             newval = newval + "." + decpart;
         }
 
         /**
          * Set display value
-         */ 
+         */
         displayVal = newval;
         if (LEMradix === ',') {
             displayVal = displayVal.split('.').join(',');
@@ -317,7 +317,7 @@ function activateLanguageChanger(){
  */
 function manageIndex(){
     $("#index .jshide").hide();
-    $("#index").on('click','li,.row',function(e){ 
+    $("#index").on('click','li,.row',function(e){
         if(!$(e.target).is('button')){
             $(this).children("[name='move']").click();
         }
@@ -331,30 +331,30 @@ function manageIndex(){
     });
 }
 /**
- * Put a empty class on empty answer text item (limit to answers part) 
+ * Put a empty class on empty answer text item (limit to answers part)
  * @author Denis Chenu / Shnoulle
  */
 function addClassEmpty()
 {
-	$('.answer-item input.text[value=""]').addClass('empty');
-	$('.answer-item input[type=text][value=""]').addClass('empty');
-	$('.answer-item textarea').each(function(index) {
-	if ($(this).val() == ""){
-		$(this).addClass('empty');
-	}
-	});
-	$("body").delegate(".answer-item input.text,.text-item input[type=text],.answer-item textarea","blur focusout",function(){
-	if ($(this).val() == ""){
-		$(this).addClass('empty');
-	}else{
-		$(this).removeClass('empty');
-	}
-	});
+    $('.answer-item input.text[value=""]').addClass('empty');
+    $('.answer-item input[type=text][value=""]').addClass('empty');
+    $('.answer-item textarea').each(function(index) {
+    if ($(this).val() == ""){
+        $(this).addClass('empty');
+    }
+    });
+    $("body").delegate(".answer-item input.text,.text-item input[type=text],.answer-item textarea","blur focusout",function(){
+    if ($(this).val() == ""){
+        $(this).addClass('empty');
+    }else{
+        $(this).removeClass('empty');
+    }
+    });
 }
 
 /**
  * Disable scroll on select, put it in function to allow update in template
- * 
+ *
  */
 function noScrollOnSelect()
 {
@@ -372,79 +372,79 @@ function tableCellAdapters()
 //	$('table.question').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label',"click", function(e) {
 //		e.stopPropagation();
 //	});
-	$(document).on('click','table.question tbody td',function(event) {// 'table.question tbody td' or 'td.radio-item,td.checkbox-item': maybe less js here
-		var eventTarget=$(event.target).prop("tagName");// Alternative us data
-		var eventActivate=$(this).find("input:radio,input:checkbox");
-		if(eventActivate.length==1 && (eventTarget!='INPUT' && eventTarget!='LABEL' ) )
-		{
-			$(eventActivate).click();
-			$(eventActivate).triggerHandler("click");
-			// Why not use trigger('click'); only ?
-		}
-	});
+    $(document).on('click','table.question tbody td',function(event) {// 'table.question tbody td' or 'td.radio-item,td.checkbox-item': maybe less js here
+        var eventTarget=$(event.target).prop("tagName");// Alternative us data
+        var eventActivate=$(this).find("input:radio,input:checkbox");
+        if(eventActivate.length==1 && (eventTarget!='INPUT' && eventTarget!='LABEL' ) )
+        {
+            $(eventActivate).click();
+            $(eventActivate).triggerHandler("click");
+            // Why not use trigger('click'); only ?
+        }
+    });
 }
 
 Array.prototype.push = function()
 {
-	var n = this.length >>> 0;
-	for (var i = 0; i < arguments.length; i++)
-	{
-		this[n] = arguments[i];
-		n = n + 1 >>> 0;
-	}
-	this.length = n;
-	return n;
+    var n = this.length >>> 0;
+    for (var i = 0; i < arguments.length; i++)
+    {
+        this[n] = arguments[i];
+        n = n + 1 >>> 0;
+    }
+    this.length = n;
+    return n;
 };
 
 Array.prototype.pop = function() {
-	var n = this.length >>> 0, value;
-	if (n) {
-		value = this[--n];
-		delete this[n];
-	}
-	this.length = n;
-	return value;
+    var n = this.length >>> 0, value;
+    if (n) {
+        value = this[--n];
+        delete this[n];
+    }
+    this.length = n;
+    return value;
 };
 
 
 //defined in group.php & question.php & survey.php, but a static function
 function inArray(needle, haystack)
 {
-	for (h in haystack)
-	{
-		if (haystack[h] == needle)
-		{
-			return true;
-		}
-	}
-	return false;
+    for (h in haystack)
+    {
+        if (haystack[h] == needle)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 //defined in group.php & survey.php, but a static function
 function match_regex(testedstring,str_regexp)
 {
-	// Regular expression test
-	if (str_regexp == '' || testedstring == '') return false;
-	pattern = new RegExp(str_regexp);
-	return pattern.test(testedstring)
+    // Regular expression test
+    if (str_regexp == '' || testedstring == '') return false;
+    pattern = new RegExp(str_regexp);
+    return pattern.test(testedstring)
 }
 
 function addHiddenField(theform,thename,thevalue)
 {
-	var myel = document.createElement('input');
-	myel.type = 'hidden';
-	myel.name = thename;
-	theform.appendChild(myel);
-	myel.value = thevalue;
+    var myel = document.createElement('input');
+    myel.type = 'hidden';
+    myel.name = thename;
+    theform.appendChild(myel);
+    myel.value = thevalue;
 }
 
 function cancelBubbleThis(eventObject)
 {
-	if (!eventObject) var eventObject = window.event;
-	eventObject.cancelBubble = true;
-	if (eventObject && eventObject.stopPropagation) {
-		eventObject.stopPropagation();
-	}
+    if (!eventObject) var eventObject = window.event;
+    eventObject.cancelBubble = true;
+    if (eventObject && eventObject.stopPropagation) {
+        eventObject.stopPropagation();
+    }
 }
 
 function cancelEvent(e)
@@ -514,18 +514,18 @@ function goodchars(e, goods)
 
 function show_hide_group(group_id)
 {
-	var questionCount;
+    var questionCount;
 
-	// First let's show the group description, otherwise, all its childs would have the hidden status
-	$("#group-" + group_id).show();
-	// If all questions in this group are conditionnal
-	// Count visible questions in this group
-		questionCount=$("div#group-" + group_id).find("div[id^='question']:visible").size();
+    // First let's show the group description, otherwise, all its childs would have the hidden status
+    $("#group-" + group_id).show();
+    // If all questions in this group are conditionnal
+    // Count visible questions in this group
+        questionCount=$("div#group-" + group_id).find("div[id^='question']:visible").size();
 
-		if( questionCount == 0 )
-		{
-			$("#group-" + group_id).hide();
-		}
+        if( questionCount == 0 )
+        {
+            $("#group-" + group_id).hide();
+        }
 }
 
 // round function from phpjs.org

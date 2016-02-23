@@ -1,50 +1,51 @@
-<div class='header ui-widget-header'><?php eT("Import Label Set") ?></div>
-<div class='messagebox ui-corner-all'>
-    <?php
-        if (isset($aImportResults['fatalerror']))
-        {
-        ?>       <div class='successheader'><?php eT("Error") ?></div><br />
+<?php if (isset($aImportResults['fatalerror'])):?>
+    <div class="jumbotron message-box message-box-error">
+            <h2 class="text-danger"><?php eT("Import Label Set") ?></h2>
+            <p class="lead text-danger"><?php eT("Error") ?></p>
+            <p><?php echo $aImportResults['fatalerror']; ?></p>
 
-        <p><?php echo $aImportResults['fatalerror']; ?> </p><br/>
-        <?php
-        }
-        else
-        {
-        ?>
+            <p>
+                <a class="btn btn-lg btn-success" href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" role="button">
+                    <?php eT("Return to label set administration"); ?>
+                </a>
+            </p>
+    </div>
+<?php else:?>
+    <div class="jumbotron message-box">
+            <h2 class="text-success"><?php eT("Import Label Set") ?></h2>
+            <p class="lead"><?php eT("File upload succeeded.") ?></p>
+            <?php if (count($aImportResults['warnings']) > 0): ?>
+                <p  class="lead text-warning">
+                    <?php eT("Warnings") ?>
+                </p>
+                <p>
+                    <ul class="list-unstyled">
+                        <?php foreach ($aImportResults['warnings'] as $warning):?>
+                            <li><?php echo $warning ?></li>
+                        <?php endforeach;?>
+                    </ul>
+                </p>
+            <?php endif;?>
 
+            <p  class="lead text-success">
+                <?php eT("Label set import summary") ?>
+            </p>
 
-        <div class='successheader'><?php eT("Success") ?></div><br />
-        <?php eT("File upload succeeded.") ?><br /><br />
-        <?php eT("Reading file..") ?><br /><br />
-        <?php
-            if (count($aImportResults['warnings']) > 0)
-            {
-            ?>
-            <br />
-            <div class='warningheader'><?php eT("Warnings") ?></div>
-            <ul>
-                <?php
-                    foreach ($aImportResults['warnings'] as $warning)
-                    {
-                    ?>
-                    <li><?php echo $warning ?></li>
-                    <?php
-                    }
-                ?>
-            </ul>
-            <?php
-            }
-        ?>
-        <br />
-        <div class='successheader'><?php eT("Success") ?></div><br />
-        <strong><u><?php eT("Label set import summary") ?></u></strong><br />
-        <ul style="text-align:left;">
-            <li><?php echo gT("Label sets") . ": {$aImportResults['labelsets']}" ?></li>
-            <li><?php echo gT("Labels") . ": {$aImportResults['labels']}" ?></li>
-        </ul>
-        <strong><?php eT("Import of label set(s) is completed.") ?></strong><br /><br />
-        <?php
-        }
-    ?>
-    <input type='submit' value='<?php eT("Return to label set administration"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/labels/sa/view') ?>', '_top')" />
-</div><br />
+            <p>
+                <ul class="list-unstyled">
+                    <li><?php echo gT("Label sets") . ": {$aImportResults['labelsets']}" ?></li>
+                    <li><?php echo gT("Labels") . ": {$aImportResults['labels']}" ?></li>
+                </ul>
+            </p>
+
+            <p>
+                <strong><?php eT("Import of label set(s) is completed.") ?></strong>
+            </p>
+
+            <p>
+                <a class="btn btn-lg btn-success" href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" role="button">
+                    <?php eT("Return to label set administration"); ?>
+                </a>
+            </p>
+    </div>
+<?php endif; ?>

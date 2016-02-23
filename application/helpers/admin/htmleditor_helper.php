@@ -183,12 +183,16 @@
         $fieldtype == 'addlabel')
         {
             $imgopts = "width='16' height='16'";
+            $class="editorLink";
         }
-
+        else
+        {
+            $class="editorLink input-group-addon";
+        }
         $htmlcode .= ""
-        . "<a href=\"javascript:start_popup_editor('".$fieldname."','".addslashes(htmlspecialchars_decode($fieldtext,ENT_QUOTES))."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' class='editorLink'>\n"
-        . "\t<img alt=\"".gT("Start HTML editor in a popup window")."\" id='".$fieldname."_popupctrlena' src='".Yii::app()->getConfig('adminimageurl')."edithtmlpopup.png' $imgopts class='btneditanswerena' />\n"
-        . "\t<img alt=\"".gT("Give focus to the HTML editor popup window")."\" id='".$fieldname."_popupctrldis' src='".Yii::app()->getConfig('adminimageurl')."edithtmlpopup_disabled.png' style='display:none' $imgopts class='btneditanswerdis' />\n"
+        . "<a href=\"javascript:start_popup_editor('".$fieldname."','".addslashes(htmlspecialchars_decode($fieldtext,ENT_QUOTES))."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' class='{$class}'>\n"
+        . "\t<span class='glyphicon glyphicon-pencil btneditanswerena' id='".$fieldname."_popupctrlena' data-toggle='tooltip' data-placement='bottom' title='".gT("Start HTML editor in a popup window")."'></span>"
+        . "\t<span class='glyphicon glyphicon-pencil btneditanswerdis' id='".$fieldname."_popupctrldis'  style='display:none'  ></span>"
         . "</a>\n";
 
         return $htmlcode;
@@ -263,6 +267,12 @@
         . $htmlformatoption
         . $toolbaroption
         ."});
+
+CKEDITOR.editorConfig = function( config )
+{
+    config.uiColor = '#FFF';
+};
+
         \$('#$fieldname').parents('ul:eq(0)').addClass('editor-parent');
         });";
 

@@ -30,7 +30,7 @@ class PdfWriter extends Writer
         Yii::import('application.helpers.pdfHelper');
         $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings($sLanguageCode);
 
-        // create new PDF document
+        // create PDF document
         $this->pdf = new pdf();
         $this->surveyName = $survey->info['surveyls_title'];
         $this->pdf->initAnswerPDF($survey->info, $aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $this->surveyName);

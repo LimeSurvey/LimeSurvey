@@ -15,40 +15,40 @@
 
 class QuestionAttribute extends LSActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{question_attributes}}';
-	}
+    /**
+     * Returns the setting's table name to be used by the model
+     *
+     * @access public
+     * @return string
+     */
+    public function tableName()
+    {
+        return '{{question_attributes}}';
+    }
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function primaryKey()
-	{
-		return 'qaid';
-	}
+    /**
+     * Returns the primary key of this table
+     *
+     * @access public
+     * @return string
+     */
+    public function primaryKey()
+    {
+        return 'qaid';
+    }
 
     /**
     * Defines the relations for this model
@@ -58,7 +58,7 @@ class QuestionAttribute extends LSActiveRecord
     */
     public function relations()
     {
-		$alias = $this->getTableAlias();
+        $alias = $this->getTableAlias();
         return array(
         'qid' => array(self::HAS_ONE, 'Questions', '',
             'on' => "$alias.qid = questions.qid",
@@ -77,7 +77,7 @@ class QuestionAttribute extends LSActiveRecord
             array('value','LSYii_Validators'),
         );
     }
-    
+
     public function setQuestionAttribute($iQuestionID,$sAttributeName, $sValue)
     {
         $oModel = new self;
@@ -100,7 +100,7 @@ class QuestionAttribute extends LSActiveRecord
             ->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid)
             ->order('qaid asc')
             ->query();
-    }    
+    }
 
     /**
     * Returns Question attribute array name=>value
@@ -179,12 +179,12 @@ class QuestionAttribute extends LSActiveRecord
         return $aQuestionAttributes;
     }
 
-	public static function insertRecords($data)
+    public static function insertRecords($data)
     {
         $attrib = new self;
-		foreach ($data as $k => $v)
-			$attrib->$k = $v;
-		return $attrib->save();
+        foreach ($data as $k => $v)
+            $attrib->$k = $v;
+        return $attrib->save();
     }
 
     public function getQuestionsForStatistics($fields, $condition, $orderby=FALSE)
@@ -199,5 +199,6 @@ class QuestionAttribute extends LSActiveRecord
         }
         return $command->queryAll();
     }
+
 }
 ?>

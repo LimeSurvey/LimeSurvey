@@ -1,46 +1,70 @@
-<?php echo PrepareEditorScript(false, $this);?>
+<?php
+    echo PrepareEditorScript(false, $this);
+    $count = 0;
+?>
 
-<div class='header ui-widget-header'><?php eT("Edit Group"); ?></div>
-<?php echo CHtml::form(array("admin/questiongroups/sa/update/gid/{$gid}"), 'post', array('id'=>'frmeditgroup', 'name'=>'frmeditgroup', 'class'=>'form30')); ?>
-    <div id='tabs'>
-        <ul>
-            <?php foreach ($tabtitles as $i=>$eachtitle){?>
-                <li style='clear:none'><a href='#editgrp_<?php echo $i;?>'><?php echo $eachtitle;?></a></li><?php
-            }?>
-        </ul>
-        <?php
-            foreach ($tabtitles as $i=>$eachtitle)
-            {?>
-
-            <div id='editgrp_<?php echo $i;?>'>
-                <ul><li><label for='group_name_<?php echo $aGroupData[$i]['language']; ?>'><?php eT("Title"); ?>:</label>
-                        <input type='text' maxlength='100' size='80' name='group_name_<?php echo $aGroupData[$i]['language']; ?>' id='group_name_<?php echo $aGroupData[$i]['language']; ?>' value="<?php echo htmlspecialchars($aGroupData[$i]['group_name']); ?>" />
+<div class="side-body" id="edit-group">
+    <div class="row">
+        <div class="col-lg-12 content-right">
+            <h3><?php eT("Edit Group"); ?></h3>
+            <ul class="nav nav-tabs" id="edit-group-language-selection">
+                <?php foreach ($tabtitles as $i=>$eachtitle):?>
+                    <li role="presentation" class="<?php if($count==0) {echo "active"; $count++;}?>">
+                        <a data-toggle="tab" href="#editgrp_<?php echo $i;?>">
+                            <?php echo $eachtitle;?>
+                        </a>
                     </li>
-                    <li><label for='description_<?php echo $aGroupData[$i]['language']; ?>'><?php eT("Description:"); ?></label>
-                        <div class="htmleditor">
-                            <textarea cols='70' rows='8' id='description_<?php echo $aGroupData[$i]['language']; ?>' name='description_<?php echo $aGroupData[$i]['language']; ?>'><?php echo htmlspecialchars($aGroupData[$i]['description']); ?></textarea>
-                            <?php echo getEditor("group-desc","description_".$aGroupData[$i]['language'], "[".gT("Description:", "js")."](".$aGroupData[$i]['language'].")",$surveyid,$gid,'',$action); ?>
+                <?php endforeach;?>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <?php echo CHtml::form(array("admin/questiongroups/sa/update/gid/{$gid}"), 'post', array('id'=>'frmeditgroup', 'name'=>'frmeditgroup', 'class'=>'form30 form-horizontal')); ?>
+
+                    <div class="tab-content">
+
+                        <?php foreach ($tabtitles as $i=>$eachtitle):?>
+                            <div id="editgrp_<?php echo $i;?>" class="tab-pane fade in <?php if($count==1) {echo "active"; $count++;}?> center-box">
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" id="question-group-title"><?php eT("Title:"); ?></label>
+                                    <div class="col-sm-3">
+                                        <?php echo CHtml::textField("group_name_{$aGroupData[$i]['language']}",$aGroupData[$i]['group_name'],array('class'=>'form-control','size'=>"80",'maxlength'=>'100','id'=>"group_name_{$aGroupData[$i]['language']}")); ?>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="description_<?php echo $aGroupData[$i]['language']; ?>"><?php eT("Description:"); ?></label>
+                                    <div class="col-sm-3 htmleditorboot input-group">
+                                        <?php echo CHtml::textArea("description_{$aGroupData[$i]['language']}",$aGroupData[$i]['description'],array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"description_{$aGroupData[$i]['language']}")); ?>
+                                        <?php echo getEditor("group-desc","description_".$aGroupData[$i]['language'], "[".gT("Description:", "js")."](".$aGroupData[$i]['language'].")",$surveyid,$gid,'',$action); ?>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        <?php endforeach; ?>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" id="randomization-group"><?php eT("Randomization group:"); ?></label>
+                        <div class="col-sm-3">
+                            <?php echo CHtml::textField("randomization_group",$aGroupData[$aBaseLanguage]['randomization_group'],array('class'=>'form-control','size'=>"20",'maxlength'=>'20','id'=>"randomization_group")); ?>
                         </div>
-                    </li>
-                </ul>
-                <div style='clear:both'></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" id="randomization-group"><?php eT("Relevance equation:"); ?></label>
+                        <div class="col-sm-3">
+                            <?php echo CHtml::textArea("grelevance",$aGroupData[$aBaseLanguage]['grelevance'],array('class'=>'form-control','cols'=>'20','rows'=>'1','id'=>"grelevance")); ?>
+                        </div>
+                    </div>
+
+                    <input type="submit" class="btn btn-primary hidden" value="Save" role="button" aria-disabled="false">
+                </form>
             </div>
-            <?php
-        }?>
-
-
+        </div>
     </div>
-    <ul>
-        <li>
-            <label for='randomization_group'><?php eT("Randomization group:"); ?></label><input type='text' maxlength='20' size='20' name='randomization_group' id='randomization_group' value="<?php echo $aGroupData[$aBaseLanguage]['randomization_group']; ?>" />
-        </li>
-        <li>
-            <label for='grelevance'><?php eT("Relevance equation:"); ?></label>
-            <textarea cols='50' rows='1' id='grelevance' name='grelevance'><?php echo $aGroupData[$aBaseLanguage]['grelevance']; ?></textarea>
-        </li>
-    </ul>
-    <p>
-        <input type='submit' class='standardbtn' value='<?php eT("Save");?>' />
-    </p>
-</form>
-
+</div>

@@ -1,38 +1,27 @@
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "userControl.js" ?>" type="text/javascript"></script>
-<div class='header ui-widget-header'>
-    <strong>
-        <?php
-        eT("Global participant settings");
-        ?>
-    </strong>
-</div>
-<div id='tabs'>
-    <ul>
-        <li>
-            <a href='#usercontrol'><?php
-        eT("User control");
-        ?></a>
-        </li>
-    </ul>
+
+<div class="col-lg-12 list-surveys">
+    <h3><?php eT("Global participant settings"); ?></h3>
+
+    <div class="row">
+        <div class="col-lg-12 content-right">
     <div id='usercontrol-1'>
         <?php
         if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
-            $attribute = array('class' => 'form44');
+            $attribute = array('class' => 'col-md-6 col-md-offset-3');
             echo CHtml::beginForm($this->createUrl('/admin/participants/sa/storeUserControlValues'), 'post', $attribute);
-            $options = array('Y' => gT('Yes'), 'N' => gT('No'));
+            $options = array('Y' => gT('Yes','unescaped'), 'N' => gT('No','unescaped'));
             ?>
-            <ul>
-                <li>
+                <div class="form-group">
                     <label for='userideditable' id='userideditable'>
                         <?php eT('User ID editable:'); ?>
                     </label>
-                    <?php echo CHtml::dropDownList('userideditable', $userideditable, $options); ?>
-                </li>
-            </ul>
+                    <?php echo CHtml::dropDownList('userideditable', $userideditable, $options, array('class' => 'form-control' ) ); ?>
+                </div>
             <p>
                 <?php
-                echo CHtml::submitButton('submit', array('value' => gT('Save')));
+                echo CHtml::submitButton('submit', array('value' => gT('Save'), 'class'=>'btn btn-default'));
                 ?>
             </p>
             <?php
@@ -44,4 +33,8 @@
         }
         ?>
     </div>
+
+        </div>
+    </div>
 </div>
+

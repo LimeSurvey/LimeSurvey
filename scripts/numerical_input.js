@@ -26,9 +26,8 @@ $(document).ready(function () {
         'thousandsSeparator' : thousandsSep,
         'centsLimit' : 0,
         'prefix' : '',
-	'allowNegative' : true
+        'allowNegative' : true
     });
-
 
     $(selector).bind('keyup', custom_checkconditions);
     // Initialize LEM tabs first.

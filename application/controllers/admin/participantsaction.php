@@ -62,7 +62,7 @@ class participantsaction extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jqgrid');
         if (!empty($sScript))
         {
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . $sScript . '.js');
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . $sScript . '.js' ));
             $this->_renderWrappedTemplate('participants', array('participantsPanel', $sScript), $aData);
         }
     }
@@ -159,7 +159,7 @@ class participantsaction extends Survey_Common_Action
         $count = Participant::model()->getParticipantsCount($attid, $search, $iUserID);
 
         if ($count > 0) {
-            return sprintf(ngT("Export %s participant to CSV|Export %s participants to CSV", $count),$count);
+            return ngT("Export {n} participant to CSV|Export {n} participants to CSV", $count);
         } else {
             return $count;
         }
@@ -250,10 +250,10 @@ class participantsaction extends Survey_Common_Action
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
         );
         App()->getClientScript()->registerPackage('jqgrid');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl')  . 'displayParticipants.css');
-
 
         // loads the participant panel view and display participant view
+
+
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
     }
 
@@ -315,10 +315,17 @@ class participantsaction extends Survey_Common_Action
 
             foreach ($records as $row)
             {
-                $oShared = User::model()->getName($row['share_uid']); //for conversion of uid to human readable names
+                //for conversion of uid to human readable names
+                $iShareUserId = $row['share_uid'];
+                if ($iShareUserId != 0) { 
+                    $oShared = User::model()->getName($iShareUserId); 
+                    $sSharename = $oShared[0]['full_name'];
+                } else {
+                    $sSharename = 'All users';
+                }
                 $owner = User::model()->getName($row['owner_uid']);
                 $aData->rows[$i]['id'] = $row['participant_id']."--".$row['share_uid']; //This is the unique combination per record
-                $aData->rows[$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $oShared[0]['full_name'], $row['share_uid'], $owner[0]['full_name'], $row['date_added'], $row['can_edit']);
+                $aData->rows[$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $sSharename, $row['share_uid'], $owner[0]['full_name'], $row['date_added'], $row['can_edit']);
                 $i++;
             }
 
@@ -334,9 +341,15 @@ class participantsaction extends Survey_Common_Action
 
             foreach ($records as $row)
             {
-                $sharename = User::model()->getName($row['share_uid']); //for conversion of uid to human readable names
+                $iShareUserId = $row['share_uid'];//for conversion of uid to human readable names
+                if ($iShareUserId != 0) { 
+                    $oShared = User::model()->getName($iShareUserId); 
+                    $sSharename = $oShared[0]['full_name'];
+                } else {
+                    $sSharename = 'All users';
+                }
                 $aData->rows[$i]['id'] = $row['participant_id'];
-                $aData['rows'][$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $sharename['full_name'], $row['share_uid'], $row['date_added'], $row['can_edit']);
+                $aData['rows'][$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $sSharename, $row['share_uid'], $row['date_added'], $row['can_edit']);
                 $i++;
             }
 
@@ -733,7 +746,7 @@ class participantsaction extends Survey_Common_Action
     */
     function exporttocsv()
     {
-        if (Yii::app()->request->getPost('searchcondition','') != '') // if there is a search condition then only the participants that match the search criteria are counted
+        if (Yii::app()->request->getPost('searchcondition','') !== '') // if there is a search condition then only the participants that match the search criteria are counted
         {
             $condition = explode("%7C%7C", Yii::app()->request->getPost('searchcondition',''));
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
@@ -946,9 +959,9 @@ class participantsaction extends Survey_Common_Action
             'attributevalues' => ParticipantAttributeName::model()->getAttributesValues($iAttributeId),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
         );
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'participants.css');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'viewAttribute.css');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "viewAttribute.js");
+        //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'participants.css');
+        //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'viewAttribute.css');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "viewAttribute.js"));
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'viewAttribute'), $aData);
     }
 
@@ -994,7 +1007,7 @@ class participantsaction extends Survey_Common_Action
             ParticipantAttributeName::model()->saveAttributeLanguages($langdata);
         }
 
-        /* Create new attribute value */
+        /* New attribute value */
         if (Yii::app()->request->getPost('attribute_value_name_1') || Yii::app()->request->getPost('attribute_value_name_1') == "0")
         {
             $i = 1;
@@ -1134,7 +1147,7 @@ class participantsaction extends Survey_Common_Action
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "attributeMapCSV.css");
             App()->getClientScript()->registerPackage('qTip2');
             App()->getClientScript()->registerPackage('jquery-nestedSortable');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "attributeMapCSV.js");
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "attributeMapCSV.js" ));
 
             $sAttributeMapJS="var copyUrl = '".App()->createUrl("admin/participants/sa/uploadCSV")."';\n"
             ."var displayParticipants = '".App()->createUrl("admin/participants/sa/displayParticipants")."';\n"
@@ -1193,7 +1206,7 @@ class participantsaction extends Survey_Common_Action
         $separator = Yii::app()->request->getPost('separatorused');
         $uploadcharset = Yii::app()->request->getPost('characterset');
         /* The $newarray contains a list of fields that will be used
-        to create new attributes */
+        to create attributes */
         if (!empty($newarray))
         {
             /* Create a new entry in the lime_participant_attribute_names table,
@@ -1458,9 +1471,16 @@ class participantsaction extends Survey_Common_Action
         $iParticipantId = Yii::app()->request->getPost('participantid');
         $iShareUserId = Yii::app()->request->getPost('shareuser');
         $bCanEdit = Yii::app()->request->getPost('can_edit');
+	
+	    // Some input validation needed
+        if ($iShareUserId == '') {
+            printf($clang->gT("Please select a user"));
+            return;
+        }
 
         $i = 0;
-        if (Permission::model()->hasGlobalPermission('participantpanel','update') &&  $iShareUserId>0)
+	//  $iShareUserId == 0 means any user 
+        if (Permission::model()->hasGlobalPermission('participantpanel','update') && $iShareUserId !== '') 
             foreach ($iParticipantId as $iId)
             {
                 $time = time();
@@ -1540,8 +1560,7 @@ class participantsaction extends Survey_Common_Action
     function attributeMap()
     {
         Yii::app()->loadHelper('common');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "attributeMap.js");
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') ."attributeMap.css");
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "attributeMap.js" ));
 
         $iSurveyId = Yii::app()->request->getPost('survey_id');
         $redirect = Yii::app()->request->getPost('redirect');
@@ -1615,7 +1634,7 @@ class participantsaction extends Survey_Common_Action
     function attributeMapToken()
     {
         Yii::app()->loadHelper('common');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "attributeMapToken.js");
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "attributeMapToken.js"));
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') ."attributeMapToken.css");
 
         $iSurveyID = (int)Yii::app()->request->getQuery('sid');

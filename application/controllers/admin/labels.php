@@ -166,6 +166,7 @@ class labels extends Survey_Common_Action
         {
             if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('labelsets','update'))
             {
+                App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish(ADMIN_SCRIPT_PATH . 'labels.js' ));
                 $result = LabelSet::model()->findAllByAttributes(array('lid' => $lid));
                 foreach ($result as $row)
                 {
@@ -184,7 +185,7 @@ class labels extends Survey_Common_Action
             if ($sa == "newlabelset" && Permission::model()->hasGlobalPermission('labelsets','create'))
             {
                 $langids = Yii::app()->session['adminlang'];
-                $tabitem = gT("Create new label set");
+                $tabitem = gT("New label set");
             }
             else
                 $tabitem = gT("Edit label set");
@@ -204,6 +205,12 @@ class labels extends Survey_Common_Action
             $aViewUrls['editlabel_view'][] = $aData;
         }
 
+
+        $aData['labelbar']['buttons']['delete'] = ($sa != "newlabelset")?true:false;
+        $aData['labelbar']['buttons']['edition']= TRUE;
+        $aData['labelbar']['savebutton']['form'] = 'labelsetform';
+        $aData['labelbar']['savebutton']['text'] = gT("Save");
+        $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl('admin/labels/sa/view') );
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
 
     }
@@ -229,7 +236,7 @@ class labels extends Survey_Common_Action
         $aData = array();
 
         // Includes some javascript files
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'labels.js' ));
         App()->getClientScript()->registerPackage('jquery-json');
         // Checks if user have the sufficient rights to manage the labels
         if (Permission::model()->hasGlobalPermission('labelsets','read'))
@@ -245,9 +252,6 @@ class labels extends Survey_Common_Action
                 // Now recieve all labelset information and display it
                 $aData['lid'] = $lid;
                 $aData['row'] = $result->attributes;
-
-                // Display a specific labelbar menu
-                $aViewUrls['labelbar_view'][] = $aData;
 
                 $rwlabelset = $result;
 
@@ -298,6 +302,31 @@ class labels extends Survey_Common_Action
                     'action' => $action,
                 );
             }
+            else {
+                //show listing
+                $aViewUrls['labelsets_view'][] = array();
+                $aData['model']  =  LabelSet::model();
+            }
+        }
+
+        if($lid==0)
+        {
+            $aData['labelbar']['buttons']['view'] = true;
+        }
+        else
+        {
+            $aData['labelbar']['buttons']['delete'] = true;
+            $aData['labelbar']['savebutton']['form'] = 'mainform';
+            $aData['labelbar']['savebutton']['text'] = gT("Save changes");
+            $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl('admin/labels/sa/view') );
+            $aData['labelbar']['buttons']['edition'] = true;
+
+            $aData['labelbar']['buttons']['edit'] = true;
+        }
+
+        if (isset($_GET['pageSize']))
+        {
+            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
         }
 
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
@@ -339,6 +368,33 @@ class labels extends Survey_Common_Action
     }
 
     /**
+     * Delete a label set
+     *
+     * @access public
+     * @return void
+     */
+    public function delete()
+    {
+            $lid = returnGlobal('lid');
+
+            if (Permission::model()->hasGlobalPermission('labelsets','delete'))
+            {
+                Yii::app()->loadHelper('admin/label');
+
+                if (deletelabelset($lid))
+                {
+                    Yii::app()->setFlashMessage(gT("Label set sucessfully deleted."));
+                }
+            }
+            else
+            {
+                Yii::app()->setFlashMessage(gT("You are not authorized to delete label sets."));
+            }
+
+            $this->getController()->redirect(array("admin/labels/sa/view"));
+    }
+
+    /**
      * Multi label export
      *
      * @access public
@@ -348,8 +404,13 @@ class labels extends Survey_Common_Action
     {
         if (Permission::model()->hasGlobalPermission('labelsets','export'))
         {
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
-            $this->_renderWrappedTemplate('labels', 'exportmulti_view');
+                    App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'labels.js' ));
+
+            $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
+            $aData['labelbar']['savebutton']['text'] = gT("Export multiple label sets");
+            $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl('admin/labels/sa/view') );
+            $aData['labelbar']['buttons']['edition'] = TRUE;
+            $this->_renderWrappedTemplate('labels', 'exportmulti_view', $aData);
         }
     }
 
@@ -373,7 +434,7 @@ class labels extends Survey_Common_Action
         $answers = Yii::app()->getRequest()->getPost('answers');
         $code = Yii::app()->getRequest()->getPost('code');
         $aAssessmentValues = Yii::app()->getRequest()->getPost('assessmentvalues',array());
-        //Create new label set
+        //Create label set
         $language = "";
         foreach ($answers as $lang => $answer) {
             $language .= $lang." ";
@@ -425,12 +486,10 @@ class labels extends Survey_Common_Action
             {
                 $aData['labelsets'] = getLabelSets();
             }
-
             if (empty($aData['lid']))
             {
                 $aData['lid'] = 0;
             }
-
             $aViewUrls = (array) $aViewUrls;
 
             array_unshift($aViewUrls, 'labelsetsbar_view');

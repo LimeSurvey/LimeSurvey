@@ -6,6 +6,14 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     static protected $description = 'Core: LDAP authentication';
     static protected $name = 'LDAP';
 
+    /**
+     * Can we autocreate users? For the moment this is disabled, will be moved
+     * to a setting when we have more robust user creation system.
+     *
+     * @var boolean
+     */
+    protected $autoCreate = false;
+
     protected $settings = array(
         'server' => array(
             'type' => 'string',
@@ -95,15 +103,30 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     );
 
     public function init() {
-
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */
+        $this->subscribe('beforeActivate');
         $this->subscribe('createNewUser');
         $this->subscribe('beforeLogin');
         $this->subscribe('newLoginForm');
         $this->subscribe('afterLoginFormSubmit');
         $this->subscribe('newUserSession');
+    }
+
+    /**
+     * Check availability of LDAP Apache Module
+     *
+     * @return unknown_type
+     */
+    public function beforeActivate()
+    {
+        if (!function_exists("ldap_connect")){
+            $event = $this->getEvent();
+            $event->set('success', false);
+
+            $event->set('message', gT("LDAP authentication failed: LDAP PHP module is not available."));
+        }
     }
 
     /**
@@ -125,7 +148,8 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     /**
      * Create a LDAP user
      *
-     * @return int New user ID
+     * @param string $new_user
+     * @return null|string New user ID
      */
     private function _createNewUser($new_user)
     {
@@ -479,6 +503,27 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             $this->setAuthFailure(100, ldap_error($ldapconn));
             ldap_close($ldapconn); // all done? close connection
             return;
+        }
+
+        // Authentication was successful, now see if we have a user or that we should create one
+        if (is_null($user)) {
+            if ($this->autoCreate === true)  {
+                /*
+                 * Dispatch the newUserLogin event, and hope that after this we can find the user
+                 * this allows users to create their own plugin for handling the user creation
+                 * we will need more methods to pass username, rdn and ldap connection.
+                 */
+                $this->pluginManager->dispatchEvent(new PluginEvent('newUserLogin', $this));
+
+                // Check ourselves, we do not want fake responses from a plugin
+                $user = $this->api->getUserByName($username);
+            }
+
+            if (is_null($user)) {
+                $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
+                ldap_close($ldapconn); // all done? close connection
+                return;
+            }
         }
 
         ldap_close($ldapconn); // all done? close connection

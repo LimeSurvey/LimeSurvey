@@ -1,5 +1,5 @@
     <div class='header ui-widget-header'>
-        <strong><?php printf(ngT("Select which fields to import as attributes with your participant.|Select which fields to import as attributes with your %s participants.",$linecount), $linecount); ?></strong>
+        <strong><?php neT("Select which fields to import as attributes with your {n} participant.|Select which fields to import as attributes with your {n} participants.", $linecount); ?></strong>
     </div>
     <div class="draggable-container">
         <div id="csvattribute" class="attribute-column">
