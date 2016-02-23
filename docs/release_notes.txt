@@ -34,6 +34,24 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 2.50+ (build 160222) to 2.50+ (build 160223) Feb 23, 2016
+-Fixed issue #10189: Enabling "Thousands separator" in "numerical input" questions results in an error and data loss (Olle Haerstedt)
+-Fixed issue #10042: When Default Mappings Set, Copying Custom Attributes Doesn't WOrk (Olle Haerstedt)
+-Fixed issue #10551: Wrong encoding in a language name (Carsten Schmitz)
+-Fixed issue #10552: Missing colons after text labels (Carsten Schmitz)
+-Fixed issue #10555: Simple selector : Advanced settings of question is not updated when update question type (Denis Chenu)
+-Fixed issue #10556: Nothing seems to happen when add a subquestion (LouisGac)
+-Fixed issue #10558: Message dialogue overlaps menu (tpartner)
+#Updated translation: Estonian by t6nnp6nn, toomasuba
+#Updated translation: German (Informal) by plusQ, c_schmitz
+#Updated translation: Greek by nasprok, kiolalis
+#Updated translation: Hungarian by anikoken, Zoltan, copas2, erik_gerhardt, drcrazy, intavg, lukacs
+#Updated translation: Indonesian by ysulistya
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Brazil) by paulohpmoraes, holch, mauriciofurtado
+#Updated translation: Spanish (Spain) by ecocitizen, aesteban
+#Updated translation: Thai by adzpire, tomzt
 
 Changes from 2.50+ (build 160219) to 2.50+ (build 160222) Feb 22, 2016
 -Fixed issue #10189: Enabling "Thousands separator" in "numerical input" questions results in an error and data loss (Olle Haerstedt)
