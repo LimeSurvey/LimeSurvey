@@ -1698,7 +1698,7 @@ html {
   .mega-dropdown-menu > li ul > li > a:focus {
     text-decoration: none; }
 
-#mainmenu-dropdown {
+#mainmenu-dropdown, .navbar-right .dropdown-menu {
   z-index: 20002; }
 
 .footer {
