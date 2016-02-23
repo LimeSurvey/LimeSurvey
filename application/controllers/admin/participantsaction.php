@@ -1510,14 +1510,18 @@ class participantsaction extends Survey_Common_Action
 
         $response = Participant::model()->copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
 
-        printf(gT("%s participants have been copied to the central participants table"), $response['success']);
+        echo "<p>";
+        printf(gT("%s participants have been copied to the central participants table"), "<span class='badge alert-success'>" . $response['success'] . "</span>&nbsp;");
+        echo "</p>";
         if($response['duplicate'] > 0) {
-            echo "\r\n";
-            printf(gT("%s entries were not copied because they already existed"), $response['duplicate']);
+            echo "<p>";
+            printf(gT("%s entries were not copied because they already existed"), "<span class='badge alert-warning'>" . $response['duplicate'] . "</span>&nbsp;");
+            echo "</p>";
         }
         if($response['overwriteman']=="true" || $response['overwriteauto']) {
-            echo "\r\n";
+            echo "<p>";
             eT("Attribute values for existing participants have been updated from the token records");
+            echo "</p>";
         }
     }
 
