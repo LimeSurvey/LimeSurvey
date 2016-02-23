@@ -80,7 +80,7 @@ $config['hideblacklisted']     =  'N';              // Don't show blacklisted pa
 $config['deleteblacklisted']     =  'N';            // Delete globally blacklisted participant from the database
 $config['allowunblacklist']     =  'N';             // Allow participant to unblacklist himself/herself
 $config['userideditable']     =  'N';               // Allow editing of user IDs
-$config['defaulttemplate']    =  'default';         // This setting specifys the default theme used for the 'public list' of surveys
+$config['defaulttemplate']    =  'ubuntu_orange';         // This setting specifys the default theme used for the 'public list' of surveys
 
 $config['allowedtemplateuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md';  // File types allowed to be uploaded in the templates section.
 

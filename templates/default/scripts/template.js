@@ -221,4 +221,11 @@ $(document).ready(function(){
     {
         $('.navbar-right').hide();
     }
+
+    // Survey list footer
+    if($('#surveyListFooter').length>0)
+    {
+        $surveyListFooter = $('#surveyListFooter');
+        $('#outerframeContainer').after($surveyListFooter);
+    }
 });

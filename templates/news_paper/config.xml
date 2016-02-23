@@ -41,6 +41,11 @@
             <js>
             </js>
         </rtl>
+
+        <!-- The logo is used for now only for Surveys List  -->
+        <logo>
+            <filename>files/logo.png</filename>
+        </logo>        
     </files>
 
     <!--

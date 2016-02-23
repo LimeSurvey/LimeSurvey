@@ -937,5 +937,4 @@ function doHtmlSaveAll($move="")
     $aSaveAllButtons[$move]=$sSaveAllButtons;
     return $aSaveAllButtons[$move];
 }
-
 // Closing PHP tag intentionally omitted - yes, it is okay

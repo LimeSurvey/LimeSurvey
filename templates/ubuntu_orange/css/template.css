@@ -773,3 +773,29 @@ table.question.subquestion-list.questions-list tr.answers-list th
  {
      display: none;
  }
+
+/**
+ * Surveys list
+ */
+.surveys-list {
+    margin-top: 1em;
+    list-style: none;
+}
+.surveys-list li {
+    padding: 0.5em;
+}
+.surveys-list li a {
+    margin-left: 0.5em;
+}
+
+#surveys-list-jumbotron {
+    text-align: center;
+}
+
+#surveyListFooter {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    text-align: center;
+}

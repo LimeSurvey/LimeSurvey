@@ -23,9 +23,18 @@
     <div class="col-xs-12 language-changer">
         <p>{LANGUAGECHANGER}</p>
     </div>
+</div>
 
+<div id="surveyListFooter" class="well">
     <div class="col-xs-12">
-        <a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}poweredby.png" border="0" title="LimeSurvey Survey Software" /></a><br />
-        <a href="http://www.limesurvey.org" target="_blank">The Online Survey Tool</a> - Free & Open Source<br />
+        <a href="http://www.limesurvey.org" target="_blank">
+            <img src="{TEMPLATEURL}poweredby.png" border="0" title="LimeSurvey Survey Software" />
+        </a>
+        <br />
+        <a href="http://www.limesurvey.org" target="_blank">
+            The Online Survey Tool
+        </a>
+         - Free & Open Source
+        <br />
     </div>
 </div>
