@@ -142,11 +142,6 @@ $(document).ready(function(){
        $.each(newcurrentarray, function(index,value) {
             newcurrentarray[index] = value.substring(2);
         });
-        $("#processing").dialog({
-            height: 90,
-            width: 50,
-            modal: true
-        });
 
     $("#processing").load(copyUrl, {
         mapped: mappedarray,
@@ -158,7 +153,6 @@ $(document).ready(function(){
         participant_id : participant_id,
         createautomap: attcreateautomap
         }, function(msg){
-            $(this).dialog("close");
             $('#attribute-map-participant-modal .modal-body').html(msg);
             $('#attribute-map-participant-modal').on('hide.bs.modal' , function (e) {
                 $(location).attr('href',redUrl);
