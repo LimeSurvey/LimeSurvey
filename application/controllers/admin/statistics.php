@@ -743,7 +743,18 @@ class statistics extends Survey_Common_Action {
                             }
                         }
                     }
+                break;
+
+                case "F": // FlEXIBLE ARRAY
+                case "H": // ARRAY (By Column)
+                    $qid = $row['qid'];
+                    $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
+                    foreach($results as $row1)
+                    {
+                        $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'];
+                    }
                     break;
+
 
                 case "P":  //P - Multiple choice with comments
                 case "M":  //M - Multiple choice
@@ -761,8 +772,6 @@ class statistics extends Survey_Common_Action {
                         $summary[] = 'R'.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'].'-'.$i;
                     }
                 break;
-
-
 
                 case "|": // File Upload, we don't show it
 

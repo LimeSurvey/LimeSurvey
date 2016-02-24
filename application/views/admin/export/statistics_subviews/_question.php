@@ -578,7 +578,7 @@
             case "H": // ARRAY (By Column)
 
                 //Get answers. We always use the answer code because the label might be too long elsewise
-
+                echo '<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext).'</strong><br/><br/>';
                 //check all the answers
                 foreach($result[$key1] as $key=>$row)
                 {
