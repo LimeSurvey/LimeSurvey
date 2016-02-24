@@ -1642,6 +1642,11 @@ class participantsaction extends Survey_Common_Action
             'count' => $count
         );
 
+        if (count($selectedcentralattribute) === 0)
+        {
+            Yii::app()->setFlashMessage(gT("There are no unmapped attributes"), 'warning');
+        }
+
         $this->_renderWrappedTemplate('participants', 'attributeMap', $aData);
     }
 

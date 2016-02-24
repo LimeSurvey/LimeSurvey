@@ -1,8 +1,5 @@
 $(document).ready(function(){
 
-    if(!$('#centralattribute').length ) { //Warning that there are no unmapped attributes to map
-        alert(attributesMappedText);
-    }
     var height = $(document).height();
     var width = $(document).width();
     var tokencurrentarray = {};
