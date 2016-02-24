@@ -284,8 +284,15 @@ class tokens extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jqgrid');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "tokens.js");
         // CSS
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-timepicker.css");
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "css/jqgrid.css" );
+        // Right to Left
+        if (getLanguageRTL($_SESSION['adminlang']))
+        {
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "css/jqgrid-rtl.css" );
+        }
+        else
+        {
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "css/jqgrid.css" );
+        }
 
         Yii::app()->loadHelper('surveytranslator');
         Yii::import('application.libraries.Date_Time_Converter', true);

@@ -62,7 +62,7 @@
 
 .ui-jqgrid .ui-jqgrid-htable th {
     height: 22px;
-    padding: 0 2px 0 2px
+    padding: 0 4px 0 4px
 }
 
 .ui-jqgrid .ui-jqgrid-htable th div {
@@ -91,11 +91,9 @@
 }
 
 .ui-first-th-ltr {
-    border-right: 1px solid
 }
 
 .ui-first-th-rtl {
-    border-left: 1px solid
 }
 
 .ui-jqgrid .ui-th-div-ie {
@@ -184,16 +182,11 @@ tr.ui-search-toolbar select {
     font-weight: normal;
     overflow: hidden;
     height: 22px;
-    padding: 0 2px 0 2px;
-    border-bottom-width: 1px;
-    border-bottom-color: inherit;
-    border-bottom-style: solid
+    padding: 0 4px 0 4px;
 }
 
 .ui-jqgrid tr.jqgfirstrow td {
     padding: 0 2px 0 2px;
-    border-right-width: 1px;
-    border-right-style: solid
 }
 
 .ui-jqgrid tr.jqgroup td {
@@ -202,9 +195,6 @@ tr.ui-search-toolbar select {
     white-space: pre;
     height: 22px;
     padding: 0 2px 0 2px;
-    border-bottom-width: 1px;
-    border-bottom-color: inherit;
-    border-bottom-style: solid
 }
 
 .ui-jqgrid tr.jqfoot td {
@@ -213,23 +203,14 @@ tr.ui-search-toolbar select {
     white-space: pre;
     height: 22px;
     padding: 0 2px 0 2px;
-    border-bottom-width: 1px;
-    border-bottom-color: inherit;
-    border-bottom-style: solid
 }
 
 .ui-jqgrid tr.ui-row-ltr td {
     text-align: left;
-    border-right-width: 1px;
-    border-right-color: inherit;
-    border-right-style: solid
 }
 
 .ui-jqgrid tr.ui-row-rtl td {
     text-align: right;
-    border-left-width: 1px;
-    border-left-color: inherit;
-    border-left-style: solid
 }
 
 .ui-jqgrid td.jqgrid-rownum {
@@ -274,23 +255,14 @@ tr.ui-search-toolbar select {
     white-space: nowrap;
     height: 21px;
     padding: 0 2px 0 2px;
-    border-top-width: 1px;
-    border-top-color: inherit;
-    border-top-style: solid
 }
 
 .ui-jqgrid tr.footrow-ltr td {
     text-align: left;
-    border-right-width: 1px;
-    border-right-color: inherit;
-    border-right-style: solid
 }
 
 .ui-jqgrid tr.footrow-rtl td {
     text-align: right;
-    border-left-width: 1px;
-    border-left-color: inherit;
-    border-left-style: solid
 }
 
 .ui-jqgrid .ui-pg-table {
@@ -364,12 +336,6 @@ tr.ui-search-toolbar select {
 
 .ui-jqgrid .ui-subgrid tr.ui-subtblcell td {
     height: 18px;
-    border-right-width: 1px;
-    border-right-color: inherit;
-    border-right-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-color: inherit;
-    border-bottom-style: solid
 }
 
 .ui-jqgrid .ui-subgrid td.subgrid-data {
@@ -377,7 +343,6 @@ tr.ui-search-toolbar select {
 }
 
 .ui-jqgrid .ui-subgrid td.subgrid-cell {
-    border-width: 0 0 1px 0
 }
 
 .ui-jqgrid .ui-th-subgrid {
@@ -639,9 +604,6 @@ div.ui-jqgrid .selected-row td {
 }
 
 .ui-jqgrid-dnd tr td {
-    border-right-width: 1px;
-    border-right-color: inherit;
-    border-right-style: solid;
     height: 20px
 }
 
@@ -679,4 +641,20 @@ div.ui-jqgrid .selected-row td {
 
 .ui-jqgrid .ui-ellipsis {
     text-overflow: ellipsis
+}
+
+/* Zebra style for columns. Not used.
+tbody td:nth-of-type(even),
+.ui-jqgrid-htable thead th:nth-of-type(even){
+  background-color: #f8f8f8;
+}
+*/
+
+/* Style specific to token table */
+#gbox_displaytokens .ui-jqgrid-htable th {
+    text-align: left;
+}
+
+#displaytokens_tid {
+    text-align: right;
 }
