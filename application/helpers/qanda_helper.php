@@ -3002,7 +3002,7 @@ function do_multiplenumeric($ia)
     if ($aQuestionAttributes['thousands_separator'] == 1) {
         App()->clientScript->registerPackage('jquery-price-format');
         App()->clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts').'numerical_input.js');
-        $extraclass .= " thousandsseparator";
+        App()->clientScript->registerScript("setThousand{$ia[0]}","setThousand({$ia[0]});\n");
     }
 
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
@@ -3346,11 +3346,7 @@ function do_numerical($ia)
     {
         $prefix = '';
     }
-    if ($aQuestionAttributes['thousands_separator'] == 1) {
-        App()->clientScript->registerPackage('jquery-price-format');
-        App()->clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts').'numerical_input.js');
-        $extraclass .= " thousandsseparator";
-    }
+
     if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
         $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .=" withsuffix";
@@ -3395,7 +3391,12 @@ function do_numerical($ia)
         $acomma = $acomma['separator'];
         $integeronly=0;
     }
-
+    if ($aQuestionAttributes['thousands_separator'] == 1) {
+        App()->clientScript->registerPackage('jquery-price-format');
+        App()->clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts').'numerical_input.js');
+        $seThousandScript="setThousand({$ia[0]},{ centsLimit:".($integeronly ? 0 : 2)."});";
+        App()->clientScript->registerScript("setThousand{$ia[0]}","{$seThousandScript}\n");
+    }
     $fValue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
