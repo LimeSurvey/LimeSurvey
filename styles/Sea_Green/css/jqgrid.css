@@ -650,11 +650,17 @@ tbody td:nth-of-type(even),
 }
 */
 
+#gbox_displaytokens .ui-jqgrid-htable #displaytokens_tid,
+#gbox_displaytokens .ui-jqgrid-htable #displaytokens_action {
+    text-align: center;
+}
+
+#gbox_displaytokens .ui-jqgrid-htable #displaytokens_usesleft,
+#gbox_displaytokens .ui-jqgrid-htable #displaytokens_remindercount {
+    text-align: right;
+}
+
 /* Style specific to token table */
 #gbox_displaytokens .ui-jqgrid-htable th {
     text-align: left;
-}
-
-#displaytokens_tid {
-    text-align: right;
 }
