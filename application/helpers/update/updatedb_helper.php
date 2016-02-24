@@ -2250,6 +2250,7 @@ function dropPrimaryKey($sTablename)
             break;
         case 'pgsql':
         case 'sqlsrv':
+        case 'dblib':
         case 'mssql':
             $pkquery = "SELECT CONSTRAINT_NAME "
             ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
