@@ -1549,7 +1549,7 @@ class ExpressionManager {
                             }
 
                             if ($this->groupSeq == -1 || $groupSeq == -1 || $questionSeq == -1 || $this->questionSeq == -1) {
-                                $class = 'em-var-static'; 
+                                $class = 'em-var-static';
                             }
                             elseif ($groupSeq > $this->groupSeq) {
                                 $class = 'em-var-before em-var-diffgroup';
@@ -2556,14 +2556,14 @@ function exprmgr_stripos($haystack , $needle ,$offset=0)
  * @param string $haystack : checked string
  * @param string $needle : string to find
  * @param boolean $before_needle : portion to return
- * @return string|false 
+ * @return string|false
  */
 function exprmgr_stristr($haystack,$needle,$before_needle=false)
 {
     return mb_stristr($haystack,$needle,$before_needle,'UTF-8');
 }
 /**
- * Get unicode string length 
+ * Get unicode string length
  * @param string $string
  * @return int
  */
@@ -2589,14 +2589,14 @@ function exprmgr_strpos($haystack , $needle ,$offset=0)
  * @param string $haystack : checked string
  * @param string $needle : string to find
  * @param boolean $before_needle : portion to return
- * @return string|false 
+ * @return string|false
  */
 function exprmgr_strstr($haystack,$needle,$before_needle=false)
 {
     return mb_strstr($haystack,$needle,$before_needle,'UTF-8');
 }
 /**
- * Make an unicode string lowercase 
+ * Make an unicode string lowercase
  * @param string $string
  * @return string
  */
@@ -2605,7 +2605,7 @@ function exprmgr_strtolower($string)
     return mb_strtolower ($string,'UTF-8');
 }
 /**
- * Make an unicode string uppercase 
+ * Make an unicode string uppercase
  * @param string $string
  * @return string
  */
@@ -2660,48 +2660,48 @@ function exprmgr_sumifop($args)
 
 /**
  * Find the closest matching numerical input values in a list an replace it by the
- * corresponding value within another list 
- * 
+ * corresponding value within another list
+ *
  * @author Johannes Weberhofer, 2013
  *
  * @param numeric $fValueToReplace
- * @param numeric $iStrict - 1 for exact matches only otherwise interpolation the 
+ * @param numeric $iStrict - 1 for exact matches only otherwise interpolation the
  * 		  closest value should be returned
  * @param string $sTranslateFromList - comma seperated list of numeric values to translate from
  * @param string $sTranslateToList - comma seperated list of numeric values to translate to
  * @return numeric
  */
-function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, $sTranslateToList) 
+function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, $sTranslateToList)
 {
-	if ( (is_numeric($fValueToReplace)) && ($iStrict!=null) && ($sTranslateFromList!=null) && ($sTranslateToList!=null) ) 
-	{
-		$aFromValues = explode( ',', $sTranslateFromList);
-		$aToValues = explode( ',', $sTranslateToList);
-		if ( (count($aFromValues) > 0)  && (count($aFromValues) == count($aToValues)) )
-		{
-			$fMinimumDiff = null;
-			$iNearestIndex = 0;
-			for ( $i = 0; $i < count($aFromValues); $i++) {
-				if ( !is_numeric($aFromValues[$i])) {
-					// break processing when non-numeric variables are about to be processed
-					return null;
-				}
-				$fCurrentDiff = abs($aFromValues[$i] - $fValueToReplace);
-				if ($fCurrentDiff === 0) {
-					return $aToValues[$i];
-				} else if ($i === 0) {
-					$fMinimumDiff = $fCurrentDiff;
-				} else if ( $fMinimumDiff > $fCurrentDiff ) {
-					$fMinimumDiff = $fCurrentDiff;
-					$iNearestIndex = $i;
-				}
-			}					
-			if ( $iStrict !== 1 ) {
-				return $aToValues[$iNearestIndex];
-			}
-		}
-	}
-	return null;
+    if ( (is_numeric($fValueToReplace)) && ($iStrict!=null) && ($sTranslateFromList!=null) && ($sTranslateToList!=null) )
+    {
+        $aFromValues = explode( ',', $sTranslateFromList);
+        $aToValues = explode( ',', $sTranslateToList);
+        if ( (count($aFromValues) > 0)  && (count($aFromValues) == count($aToValues)) )
+        {
+            $fMinimumDiff = null;
+            $iNearestIndex = 0;
+            for ( $i = 0; $i < count($aFromValues); $i++) {
+                if ( !is_numeric($aFromValues[$i])) {
+                    // break processing when non-numeric variables are about to be processed
+                    return null;
+                }
+                $fCurrentDiff = abs($aFromValues[$i] - $fValueToReplace);
+                if ($fCurrentDiff === 0) {
+                    return $aToValues[$i];
+                } else if ($i === 0) {
+                    $fMinimumDiff = $fCurrentDiff;
+                } else if ( $fMinimumDiff > $fCurrentDiff ) {
+                    $fMinimumDiff = $fCurrentDiff;
+                    $iNearestIndex = $i;
+                }
+            }
+            if ( $iStrict !== 1 ) {
+                return $aToValues[$iNearestIndex];
+            }
+        }
+    }
+    return null;
 }
 
 /**

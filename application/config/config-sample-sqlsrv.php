@@ -35,16 +35,14 @@ return array(
         
         // Uncomment the following line if you need table-based sessions
         // 'session' => array (
-            // 'class' => 'system.web.CDbHttpSession',
+            // 'class' => 'application.core.web.DbHttpSession',
             // 'connectionID' => 'db',
             // 'sessionTableName' => '{{sessions}}',
         // ),
         
         'urlManager' => array(
             'urlFormat' => 'get',
-            'rules' => array(
-            // You can put your own rules here
-            ),
+            'rules' => require('routes.php'),
             'showScriptName' => true,
         ),
     
@@ -56,7 +54,7 @@ return array(
     // on your webspace.
     // LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates
         'debug'=>0,
-        'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2
+        'debugsql'=>0 // Set this to 1 to enanble sql logging, only active when debug = 2
     )
 );
 /* End of file config.php */

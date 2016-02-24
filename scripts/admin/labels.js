@@ -19,6 +19,7 @@ $(document).on('click','[data-action="deletelabelset"]',function(event){
         sendPost($(this).data('url'),'',['action','lid'],[$(this).data('action'),$('[name="lid"]').val()]);
     }
 });
+
 $(document).ready(function(){
     $('#btnDumpLabelSets').click(function(){
         if ($('#labelsets > option:selected').size()==0)
@@ -45,21 +46,6 @@ $(document).ready(function(){
         distance:2
     });
 
-    $('#quickadd').dialog({
-        autoOpen: false,
-        modal: true,
-        width:600,
-        title: quickaddtitle
-    });
-
-    $('.btnquickadd').click(function(){
-        $('#quickadd').dialog('open');
-    });
-
-    $('#btnqacancel').click(function(){
-        $('#quickadd').dialog('close');
-    });
-
 
     $('#btnqareplace').click(quickaddfunction);
     $('#btnqainsert').click(quickaddfunction);
@@ -74,14 +60,14 @@ $(document).ready(function(){
         dataToSend['langs'] = [];
         dataToSend['codelist'] = [];
 
-        $("#tabs>form>div").each(function(divindex,divelement){
+        $(".tab-pane").each(function(divindex,divelement){
             var div_language = $(".lslanguage",divelement).val();
 
             if (typeof(div_language)!="undefined")
                 dataToSend['langs'].push(div_language);
         });
 
-        $("tbody>tr",$("#tabs>form>div:first")).each(function(trindex,trelement){
+        $(".tab-content div:first .labelDatas").each(function(trindex,trelement){
 
             var tr_code = $(trelement).attr('id');
             tr_code=tr_code.split('_');// first is row, second langage and last the row number
@@ -122,7 +108,6 @@ function quickaddfunction(){
     }
 
 
-
     $(lsrows).each(function(index,element){
         code = undefined;
 
@@ -133,26 +118,45 @@ function quickaddfunction(){
             k++;
         }
 
-		event = {};
-		event.target = $(".btnaddanswer:last");
-		var retcode = add_label(event);
+        event = {};
+        event.target = $(".btnaddanswer:last");
+        var retcode = add_label(event);
 
+        if(lsreplace)
+        {
+            if (index!=0 || (!lsreplace && $("div[id^='newedit']:not(:last) tbody>tr").length > 0)){
+                event = {};
+                event.target = $(".btnaddanswer:last");
+
+            }
+            else{
+                var retcode = add_label();
+            }
+
+        }
+
+
+
+
+        // seems always undefined
         if (typeof(code)!="undefined") {
             $("#code_"+retcode).val(code);
         }
 
         $(".lslanguage").each(function(i){
+            //console.log("input[name=title_"+$(this).val()+"_"+retcode+"]");
             $("input[name=title_"+$(this).val()+"_"+retcode+"]").val(params[k]);
-			if (typeof(code)!="undefined" && i > 0) {
-				$("#row_"+$(this).val()+"_"+retcode+" td:first").text(code);
-			}
+            if (typeof(code)!="undefined" && i > 0)
+            {
+                $("#row_"+$(this).val()+"_"+retcode+" td:first").text(code);
+            }
             k++;
         });
 
 
     });
     $("#quickaddarea").val('');
-    $('#quickadd').dialog('close');
+    $('#quickadd').modal('hide');
 }
 
 
@@ -173,7 +177,7 @@ function sort_complete(event, ui){
     if (originalposition.top > position.top) newposition = newposition - 1;
 
 
-    $("#tabs div:not(:first) [name="+$(item).attr('name')+"]").each(function(index,element){
+    $(".not_first [name="+$(item).attr('name')+"]").each(function(index,element){
         var backup = "<tr id='row"+$(item).attr('name')+"'>"+$(element).html()+"</tr>";
 
         if (newposition >= 0)
@@ -216,6 +220,7 @@ function add_label(event)
         {
             next_code='L001';
         }
+
         while ($('.answertable').find('input[value="'+next_code+'"]').length>0 && next_code!=$(event.target).closest('tr').find('.codeval').val())
         {
             next_code=getNextCode(next_code);
@@ -225,6 +230,8 @@ function add_label(event)
     {
         next_code='L001';
     }
+
+    //console.log('nextcode: '+next_code);
 
     var html = createNewLabelTR(true,true);
 
@@ -238,11 +245,11 @@ function add_label(event)
     html = str_replace("###assessmentval###",'0',html);
     html = str_replace("###codeval###",next_code,html);
     html = str_replace("###next###",randomid,html);
-    html = str_replace("###lang###",$("#tabs div:first .lslanguage").val(),html);
+    html = str_replace("###lang###",$("#lslanguagemain").val(),html);
 
 
     if (typeof(event) == "undefined")
-        $("#tabs div:first tbody").append(html);
+        $(".first tbody").append(html);
     else
         $(event.target).parent().parent().after(html);
 
@@ -252,14 +259,16 @@ function add_label(event)
     html = str_replace("###codeval###",next_code,html);
     html = str_replace("###next###",randomid,html);
 
-    $("#tabs div:not(:first)").each(function(index,element){
-
+    // Seems not to work
+    $(".not_first").each(function(index,element){
         var temp_html = str_replace("###lang###",$(".lslanguage",element).val(),html);
         if (row_id >= 0){
             $($("tbody",element).children()[row_id]).after(temp_html);
         }
         else
+        {
             $(".answertable tbody",$(element)).append(temp_html);
+        }
 
     });
 
@@ -276,7 +285,7 @@ function del_label(event){
     var $sRowID = $(event.target).parent().parent().attr('id');
 
     $aRowInfo=$sRowID.split('_');// first is row, second langage and last the row number
-    $(".ui-tabs-panel").each(function(divindex,divelement){
+    $(".tab-pane").each(function(divindex,divelement){
         var div_language = $(".lslanguage",divelement).val();
 
         if (typeof(div_language)!="undefined")
@@ -297,27 +306,30 @@ function fix_highlighting(){
 }
 
 function createNewLabelTR(alternate,first){
-    x = "<tr ";
+    x = "<tr class='labelDatas ";
     if (alternate)
-        x = x + "class= 'highlight' ";
-    x = x + "style = 'white-space: nowrap;' id='row_###lang###_###next###'>";
+        x = x + "highlight";
+    x = x + "' style = 'white-space: nowrap;' id='row_###lang###_###next###'>";
 
     if (!first)
         x = x + "<td>###codeval###</td><td>###assessmentval###</td>";
     else
-        x = x + "<td><img src=" + sImageURL + "handle.png></td><td>"
-        + "<input type='hidden' class='hiddencode' value='###codeval###' />"
-        + "<input type='text' class='codeval' value='###codeval###' name='code_###next###' id='code_###next###' size='6' maxlength='5' >"
+        x = x + "<td>"
+        + "<span class='glyphicon glyphicon-move text-success'></span>"
         + "</td><td>"
-        + "<input type=\"text\" class='assessmentval' value=\"###assessmentval###\" name=\"assessmentvalue_###next###\" id=\"assessmentvalue_###next###\" style=\"text-align: right;\" size=\"6\" maxlength=\"5\" >";
+        + "<input type='hidden' class='hiddencode' value='###codeval###' />"
+        + "<input type='text' class='codeval form-control  ' value='###codeval###' name='code_###next###' id='code_###next###' size='6' maxlength='5' >"
+        + "</td><td>"
+        + "<input type=\"number\" class='assessmentval form-control  ' value=\"###assessmentval###\" name=\"assessmentvalue_###next###\" id=\"assessmentvalue_###next###\" style=\"text-align: right;\" size=\"6\" maxlength=\"5\" >";
 
-    x = x + "<td><input name=\"title_###lang###_###next###\"  type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
+    x = x + "<td><input class=' form-control  ' name=\"title_###lang###_###next###\"  type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
     "<a title=\"\" id=\"title_###lang###_###next###_ctrl\" href=\"javascript:start_popup_editor('title_###lang###_###next###','[Label:](###lang###)','','','','editlabel','labels')\">"+
-    "<img height=\"16\" border=\"0\" width=\"16\" src=" + sImageURL + "edithtmlpopup.png name=\"title_###lang###_###next###_popupctrlena\" id=\"title_###lang###_###next###_popupctrlena\" alt=\"\">"+
-    "<img height=\"16\" border=\"0\" align=\"top\" width=\"16\" style=\"display: none;\" src=" + sImageURL + "edithtmlpopup_disabled.png name=\"title_###lang###_###next###_popupctrldis\" id=\"title_###lang###_###next###_popupctrldis\" alt=\"Give focus to the HTML editor popup window\"></a></td>";
+    "<span class=\"glyphicon glyphicon-pencil  text-success\" name=\"title_###lang###_###next###_popupctrlena\" id=\"title_###lang###_###next###_popupctrlena\" alt=\"\"></span>"+
+    "<span style=\"display: none;\" class=\"glyphicon glyphicon-pencil  text-success\" name=\"title_###lang###_###next###_popupctrldis\"  id=\"title_###lang###_###next###_popupctrldis\" alt=\"\"></span>"+
+    "</a></td>";
 
     if (first)
-        x = x + "<td style=\"text-align: center;\"><img class=\"btnaddanswer\" src=" + sImageURL + "addanswer.png><img class=\"btndelanswer\" src=" + sImageURL + "deleteanswer.png></td>";
+        x = x + "<td style=\"text-align: center;\">&nbsp<span class=\"btnaddanswer icon-add text-success\"></span> <span class=\"btndelanswer\ glyphicon glyphicon-trash  text-warning\"></span></td>";
 
     x = x + "</tr>";
 
@@ -384,7 +396,7 @@ function getNextCode(sourcecode)
 function code_duplicates_check()
 {
     var codearray=[];
-    $('#tabs>form>div:first input.codeval').each(function(){
+    $('.first input.codeval').each(function(){
         sValue=$.trim($(this).val());
         $(this).val(sValue);
         codearray.push(sValue);

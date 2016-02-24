@@ -12,19 +12,21 @@
  *
  */
 class Expressions extends Survey_Common_Action {
-	function index()
-	{
-	    $aData=array();
+    function index()
+    {
+        $aData=array();
         $needpermission=false;
-        $aData['surveyid']=$surveyid=sanitize_int(Yii::app()->request->getQuery('sid'));
+        $aData['surveyid']=$surveyid=$iSurveyID=sanitize_int(Yii::app()->request->getQuery('sid'));
         $aData['sa']=$sa=sanitize_paranoid_string(Yii::app()->request->getQuery('sa','index'));
-	    if (($aData['sa']=='survey_logic_file' || $aData['sa']=='navigation_test') && $surveyid)
-	    {
-	        $needpermission=true;
-	    }
+
+        $aData['fullpagebar']['closebutton']['url'] = 'admin/';
+
+        if (($aData['sa']=='survey_logic_file' || $aData['sa']=='navigation_test') && $surveyid)
+        {
+            $needpermission=true;
+        }
         if($needpermission && !Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
         {
-            App()->getClientScript()->registerPackage('jquery-superfish');
             $message['title']= gT('Access denied!');
             $message['message']= gT('You do not have sufficient rights to access this page.');
             $message['class']= "error";
@@ -33,16 +35,39 @@ class Expressions extends Survey_Common_Action {
         else
         {
             App()->getClientScript()->registerPackage('jqueryui');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js");
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH . 'survey_runtime.js' ));
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH . '/expressions/em_javascript.js' ));
+
             $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
             $aData['pagetitle']="ExpressionManager:  {$aData['sa']}";
+
+            if(isset($iSurveyID))
+            {
+                $aData['sidemenu']['state'] = false;
+                $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+                $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+                if(Yii::app()->request->getQuery('gid')!='')
+                {
+                    $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$aData['surveyid'].'/gid/'.sanitize_int(Yii::app()->request->getQuery('gid'));
+                }
+                else
+                {
+                    $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$aData['surveyid'];
+                }
+
+                if(Yii::app()->request->getQuery('qid')!='')
+                   {
+                    $aData['questiongroupbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$aData['surveyid'].'/gid/'.sanitize_int(Yii::app()->request->getQuery('gid')).'/qid/'.sanitize_int(Yii::app()->request->getQuery('qid'));
+                    $aData['gid'] = sanitize_int(Yii::app()->request->getQuery('gid'));
+                }
+            }
+
+
             //header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
-	        if(isset($_GET['sa']))
-		        $this->test($aData['sa'],$aData);
-	        else
-	            $this->_renderWrappedTemplate('expressions', 'test_view', $aData);
+            if(isset($_GET['sa']))
+                $this->test($aData['sa'],$aData);
+            else
+                $this->_renderWrappedTemplate('expressions', 'test_view', $aData);
         }
     }
 

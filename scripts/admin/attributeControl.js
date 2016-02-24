@@ -1,9 +1,25 @@
 $(document).ready(function() {
+
+
+    /**
+     * Callback to format action cell, with edit and trash buttons
+     *
+     * @param cellvalue
+     * @param options
+     * @param rowObject
+     * @return string
+     */
+    var actionsFormatter = function (cellvalue, options, rowObject) {
+        var rowType = rowObject[2];
+
+        return '<span data-toggle="tooltip" data-placement="bottom" title="' + sEditAttributeMsg + '" class="ui-pg-button icon-edit" onclick="jQuery.fn.fmatter.rowactions.call(this,\'edit\');"></span>&nbsp;<span class="ui-pg-button glyphicon text-danger glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="' + deleteCaption + '" onclick="jQuery.fn.fmatter.rowactions.call(this,\'del\');"></span>';
+    }
+
     var CM = [
-        {name: 'actions', width: 75, align: 'center', fixed: true, sortable: false, resize: false, formatter: 'actions', search: false},
-        {name: 'attribute_name', index: 'attribute_name', width: 250, align:"center", editable: true, editrules: {"required":true}},
-        {name: 'attribute_type', index: 'attribute_type', width: 250, align:"center", editable: true, edittype:"select", editoptions:{value:attributeTypeSelections}, stype: 'select', searchoptions: {sopt: ['eq', 'ne'], value:attributeTypeSearch}},
-        {name: 'visible', index: 'visible', width: 250, align: 'center', editable: true, formatter: checkboxFormatter, edittype: 'checkbox', edittype: "checkbox", editoptions: {value: "TRUE"}, stype: 'select', searchoptions: {sopt: ['eq', 'ne'], value: "TRUE:Yes;FALSE:No"}}
+        {name: 'actions', width: 75, align: 'left', fixed: true, sortable: false, resize: false, formatter: actionsFormatter, search: false},
+        {name: 'attribute_name', index: 'attribute_name', width: 250, align:"left", editable: true, editrules: {"required":true}},
+        {name: 'attribute_type', index: 'attribute_type', width: 250, align:"left", editable: true, edittype:"select", editoptions:{value:attributeTypeSelections}, stype: 'select', searchoptions: {sopt: ['eq', 'ne'], value:attributeTypeSearch}},
+        {name: 'visible', index: 'visible', width: 250, align: 'left', editable: true, formatter: checkboxFormatter, edittype: 'checkbox', edittype: "checkbox", editoptions: {value: "TRUE"}, stype: 'select', searchoptions: {sopt: ['eq', 'ne'], value: "TRUE:Yes;FALSE:No"}}
     ];
 
     $("#flashinfo").css("opacity", 0); //Make sure the flash message doesn't display in IE
@@ -46,6 +62,9 @@ $(document).ready(function() {
 				$('#add_attributeControl').show();
 				$('#add_attributeControl_new').remove();
 			}
+
+            // Turn on tooltip for add- and trash-buttons
+            $('[data-toggle="tooltip"]').tooltip();
 		},
         recordtext: viewRecordTxt
     });
@@ -131,13 +150,15 @@ $(document).ready(function() {
         {closeAfterAdd:true}
     );
 
+    jQuery('#attributeControl').jqGrid({});
+
 
 });
 
 function checkboxFormatter(cellvalue, options) {
     cellvalue = cellvalue + "";
     var bchk = cellvalue.toLowerCase() == 'true' ? " checked=\"checked\"" : "";
-    return "<input type='checkbox' name='visible_"+options.rowId+"' id='visible_"+options.rowId+"' onclick=\"ajaxSave('" + options.rowId + "');\" " + bchk + " value='" + cellvalue + "' />";
+    return "<input type='checkbox' name='visible_"+options.rowId+"' id='visible_"+options.rowId+"' onclick=\"ajaxSave('" + options.rowId + "');\" " + bchk + " value='" + cellvalue + "' />"
 }
 
 function ajaxSave(rowid) {

@@ -345,11 +345,11 @@ function activateSurvey($iSurveyID, $simulate = false)
                 break;
             case "ipaddress":
                 if ($prow->ipaddr == "Y")
-                    $createsurvey[$arow['fieldname']] = "string";
+                    $createsurvey[$arow['fieldname']] = "text";
                 break;
             case "url":
                 if ($prow->refurl == "Y")
-                    $createsurvey[$arow['fieldname']] = "string";
+                    $createsurvey[$arow['fieldname']] = "text";
                 break;
             case "token":
                 $createsurvey[$arow['fieldname']] = 'string(35)'.$sCollation;

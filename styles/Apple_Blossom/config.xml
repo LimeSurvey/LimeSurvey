@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadatas>
+        <name>Apple Blossom</name>
+        <creationDate>08/12/2015</creationDate>
+        <author>Louis-Sébastien Gac Artigas</author>
+        <authorEmail>louis.gac@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.0</version>
+        <description>LimeSurvey admin interface template, red variation.</description>
+        <basecolor>#AA4340</basecolor>
+    </metadatas>
+    <files>
+        <css>
+            <filename>lime-admin.css</filename>
+            <filename>fonts.css</filename>
+            <filename>statistics.css</filename>
+            <filename>bootstrap-switch.min.css</filename>
+            <filename>jcarousel.responsive.css</filename>
+        </css>
+        <js>
+            <filename>notify.js</filename>
+            <filename>save.js</filename>
+            <filename>panelclickable.js</filename>
+            <filename>panelsanimation.js</filename>
+            <filename>sidemenu.js</filename>
+            <filename>bootstrap-switch.min.js</filename>
+            <filename>jquery.jcarousel.min.js</filename>
+            <filename>jcarousel.responsive.js</filename>
+        </js>
+    </files>
+</config>

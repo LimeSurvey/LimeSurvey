@@ -1,56 +1,71 @@
 <?php
 
 ?>
+
 <?php if(Permission::model()->hasSurveyPermission($surveyid,'responses','read')){ ?>
     <div class='statisticscolumnid'>
         <?php
-        $image="sort_none.png";
+        $iconClass=' fa fa-sort-desc ';
+        $disabled=true;
         if($sortby=="id") {
+            $disabled = false;
             switch($sortmethod) {
                 case "asc":
-                    $image="sort_desc.png";
+                    $iconClass="fa fa-sort-desc";
                     break;
                 case "desc":
-                    $image="sort_asc.png";
+                    $image="fa fa-sort-asc";
                     break;
             }
         }
         ?>
         <?php $sort=(isset($sortby) && $sortby=="id" && $sortmethod=='asc') ? 'desc' : 'asc'; ?>
-        <img src='<?php echo Yii::app()->getConfig('adminimageurl') . "/" . $image ?>' class='sortorder' id='sortorder_<?php echo $column ?>_id_<?php echo $sort ?>_T' style='cursor: pointer' />
+        <?php if(!$disabled): ?>
+            <a href="#" class='sortorder'  id='sortorder_<?php echo $column ?>_id_<?php echo $sort ?>_T'>
+                    <span class="<?php echo $iconClass?>"></span>
+            </a>
+        <?php endif;?>
     </div>
 <?php } ?>
 <div class='statisticscolumndata'>
     <?php
-    $image="sort_none.png";
+    $iconClass=' fa fa-sort-desc ';
+    $disabled=true;
     if($sortby==$column) {
+        $disabled = false;
         switch($sortmethod) {
             case "asc":
-                $image="sort_desc.png";
+                $iconClass="fa fa-sort-desc";
                 break;
             case "desc":
-                $image="sort_asc.png";
+                $image="fa fa-sort-asc";
                 break;
         }
     }
     ?>
+
     <?php $sort=(isset($sortby) && $sortby==$column && $sortmethod=='asc') ? 'desc' : 'asc'; ?>
-    <img src='<?php echo Yii::app()->getConfig('adminimageurl') . "/".$image ?>' class='sortorder' id='sortorder_<?php echo $column ?>_<?php echo $column ?>_<?php echo $sort ?>_<?php echo $sorttype ?>' style='cursor: pointer' /></div>
+    <?php if(!$disabled): ?>
+        <a href="#" class='sortorder' id='sortorder_<?php echo $column ?>_<?php echo $column ?>_<?php echo $sort ?>_<?php echo $sorttype ?>'>
+                <span class="<?php echo $iconClass?>"></span>
+        </a>
+    <?php endif;?>
+    </div>
 <div style='clear: both'></div>
 <?php
 foreach ($data as $row) {
 ?>
 <?php if(Permission::model()->hasSurveyPermission($surveyid,'responses','read')){ ?>
-    <div class='statisticscolumnid'>
-        <a href='<?php echo Yii::app()->getController()->createUrl("admin/responses/sa/view/surveyid/".$surveyid."/id/".$row['id']); ?>' target='_blank'>
-            <img src='<?php echo Yii::app()->getConfig('adminimageurl') . "/search.gif" ?>' title='<?php eT("View response"); ?>'/>
+    <div class='statisticscolumnid col-sm-1'>
+        <a href='<?php echo Yii::app()->getController()->createUrl("admin/responses/sa/view/surveyid/".$surveyid."/id/".$row['id']); ?>' target='_blank' title='<?php eT("View response"); ?>' data-toggle="tooltip" data-placement="top">
+            <span class="fa fa-search"></span>
         </a>
     </div>
 <?php } ?>
-<div class='statisticscolumndata'>
+<div class='statisticscolumndata col-sm-11 text-left' >
     <?php echo sanitize_html_string($row['value']) ?>
 </div>
-<div style='clear: both'></div>
+
 <?php
 }
 ?>

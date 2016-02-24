@@ -1,7 +1,0 @@
-<div class="tools" id="languageselect-wrapper">{LANGUAGECHANGER}</div>
-<div id="surveylist-container">
-	<h3 id="surveylistheading">{SURVEYLISTHEADING}</h3>
-	<ul id="surveylist">{SURVEYLIST}</ul>
-	<p id="surveycontact">{SURVEYCONTACT}</p>
-</div>
-

@@ -32,7 +32,6 @@ class printablesurvey extends Survey_Common_Action
         if(!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
         {
             $aData['surveyid'] = $surveyid;
-            App()->getClientScript()->registerPackage('jquery-superfish');
             $message['title']= gT('Access denied!');
             $message['message']= gT('You do not have sufficient rights to access this page.');
             $message['class']= "error";
@@ -1592,10 +1591,11 @@ class printablesurvey extends Survey_Common_Action
      * keywords replaced by variables.
      *
      * How:
+     * @param string $template
      */
     private function _populate_template( $template , $input  , $line = '')
     {
-        $full_path = PRINT_TEMPLATE_DIR.'print_'.$template.'.pstpl';
+        $full_path = PRINT_TEMPLATE_DIR.'/views/print_'.$template.'.pstpl';
         $full_constant = 'TEMPLATE'.$template.'.pstpl';
         if(!defined($full_constant))
         {
@@ -1612,8 +1612,8 @@ class printablesurvey extends Survey_Common_Action
             }
             else
             {
-                define($full_constant , '');
-                return "<!--\n\t$full_path is not a propper file or is missing.\n-->";
+                // No template found, abort
+                throw new \Exception("No template file found at path " . $full_path);
             }
         }
         else
@@ -1646,6 +1646,7 @@ class printablesurvey extends Survey_Common_Action
                 return '<!-- '.$line.'There was nothing to put into the template -->'."\n";
             }
         }
+
     }
 
     private function _min_max_answers_help($qidattributes, $sLanguageCode, $surveyid) {
@@ -1660,6 +1661,9 @@ class printablesurvey extends Survey_Common_Action
     }
 
 
+    /**
+     * @param string $type
+     */
     private function _input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
     {
         if($type == 'other' or $type == 'othercomment')

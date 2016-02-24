@@ -1,338 +1,595 @@
-<div class='menubar surveybar'>
-    <div class='menubar-title ui-widget-header'>
-        <strong><?php eT("Survey"); ?></strong>
-        <span class='basic'><?php echo $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")"; ?></span>
-    </div>
-    <div class='menubar-main'>
-        <div class='menubar-left'>
-            <?php if(!$activated) { ?>
-                <img src='<?php echo $sImageURL;?>inactive.png' alt='<?php eT("This survey is currently not active"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/>
-                <?php if($canactivate) { ?>
-                    <a href="<?php echo $this->createUrl("admin/survey/sa/activate/surveyid/$surveyid"); ?>">
-                        <img src='<?php echo $sImageURL; ?>activate.png' alt='<?php eT("Activate this Survey"); ?>'/></a>
-                    <?php } else { ?>
-                    <img src='<?php echo $sImageURL; ?>activate_disabled.png'
-                        alt='<?php eT("Survey cannot be activated. Either you have no permission or there are no questions."); ?>' />
-                    <?php } ?>
-                <?php } else { ?>
-                <?php if($expired) { ?>
-                    <img src='<?php echo $sImageURL; ?>expired.png' alt='<?php eT("This survey is active but expired."); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/>
-                    <?php } elseif($notstarted) { ?>
-                    <img src='<?php echo $sImageURL; ?>notyetstarted.png' alt='<?php eT("This survey is active but has a start date."); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/>
-                    <?php } else { ?>
-                    <img src='<?php echo $sImageURL; ?>active.png' title='' alt='<?php eT("This survey is currently active."); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/>
-                    <?php }
-                    if($canactivate) { ?>
-                    <a href="<?php echo $this->createUrl("admin/survey/sa/deactivate/surveyid/$surveyid"); ?>">
-                        <img src='<?php echo $sImageURL;?>deactivate.png' alt='<?php eT("Stop this survey"); ?>' /></a>
-                    <?php } else { ?>
-                    <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='14' />
-                    <?php } ?>
-                <?php } ?>
-            <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt=''  />
-        </div>
-        <ul class='sf-menu'>
-            <?php if($activated || $surveycontent) { ?>
-            <li><a accesskey='d' target='_blank' href="<?php echo $this->createUrl("survey/index",array("sid"=>$surveyid,"newtest"=>"Y")); ?>" >
-                    <img src='<?php echo $sImageURL;?>do.png' alt='<?php echo $icontext;?>' />
-                </a>
-                <?php if(count($languagelist)>1) { ?>
-                <ul>
-                    <?php foreach ($languagelist as $tmp_lang) { ?>
-                        <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$tmp_lang));?>'>
-                            <img src='<?php echo $sImageURL;?>do_30.png' alt=''/> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a>
-                        </li>
-                    <?php } ?>
-                </ul>
-                <?php } ?>
-            </li>
-            <?php } else { ?>
-            <li><a accesskey='d' target='_blank' href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" >
-                    <img src='<?php echo $sImageURL;?>do.png' alt='<?php echo $icontext;?>' />
-                </a>
-            </li>
-            <?php } ?>
-                
-            <?php if($surveylocale || $surveysettings || $surveysecurity || $quotas || $assessments || $surveycontent) { ?>
-            <li><a href='#'>
-                    <img src='<?php echo $sImageURL;?>edit.png' alt='<?php eT("Survey properties");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a><ul>
-                    <?php if($surveylocale) { ?>
-                        <li><a href='<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/$surveyid");?>'>
-                            <img src='<?php echo $sImageURL;?>edit_30.png' alt=''/> <?php eT("Edit text elements");?></a></li>
-                        <?php } ?>
-                    <?php if($surveysettings) { ?>
-                        <li><a href='<?php echo $this->createUrl("admin/survey/sa/editsurveysettings/surveyid/$surveyid");?>' >
-                            <img src='<?php echo $sImageURL;?>survey_settings_30.png' alt=''/> <?php eT("General settings");?></a></li>
-                        <?php } ?>
-                    <?php if($surveysecurity) { ?>
-                        <li><a href='<?php echo $this->createUrl("admin/surveypermission/sa/view/surveyid/$surveyid");?>' >
-                            <img src='<?php echo $sImageURL;?>survey_security_30.png' alt=''/> <?php eT("Survey permissions");?></a></li>
-                        <?php } ?>
+<?php
+/**
+ * Display the survey bar.
+ * Used for all survey editing action, and group / questions lists.
+ */
+?>
+<div class='menubar surveybar' id="surveybarid">
+    <div class='row container-fluid'>
+        <div class="col-md-8 col-xs-6">
 
-                    <?php if($quotas) { ?>
-                        <li><a href='<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$surveyid/");?>' >
-                            <img src='<?php echo $sImageURL;?>quota_30.png' alt=''/> <?php eT("Quotas");?></a></li>
-                        <?php } ?>
-                    <?php if($assessments) { ?>
-                        <li><a href='<?php echo $this->createUrl("admin/assessments/sa/index/surveyid/$surveyid");?>' >
-                            <img src='<?php echo $sImageURL;?>assessments_30.png' alt=''/> <?php eT("Assessments");?></a></li>
-                        <?php } ?>
-                    <?php if($surveylocale) { ?>
-                        <li><a href='<?php echo $this->createUrl("admin/emailtemplates/sa/index/surveyid/$surveyid");?>' >
-                            <img src='<?php echo $sImageURL;?>emailtemplates_30.png' alt=''/> <?php eT("Email templates");?></a></li>
-                        <?php } ?>
-                    <?php if($surveycontent) { ?>
-                        <?php if($onelanguage) { ?>
-                            <li><a target='_blank' href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/");?>' >
-                                <img src='<?php echo $sImageURL;?>quality_assurance_30.png' alt='' /> <?php eT("Survey logic file");?></a></li>
-                            <?php } else { ?>
-                            <li><a target='_blank' href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/");?>' >
-                                <img src='<?php echo $sImageURL;?>quality_assurance_30.png' alt='' /> <?php eT("Survey logic file");?></a><ul>
-                                    <?php foreach ($languagelist as $tmp_lang) { ?>
-                                        <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/lang/$tmp_lang");?>'>
-                                            <img src='<?php echo $sImageURL;?>quality_assurance.png' alt='' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
-                                        <?php } ?>
-                                </ul>
-                            </li>
-                            <?php } ?>
-                        <?php } ?>
-                	</ul>
-                </li>
-            <?php } ?>
-            
-            <?php if($surveydelete || $surveytranslate || Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) { ?>            
-            <li><a href="#">
-                    <img src='<?php echo $sImageURL;?>tools.png' alt='<?php eT("Tools");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a><ul>
-                    <?php if ($surveydelete) { ?>
-                        <li><a href="<?php echo $this->createUrl("admin/survey/sa/delete/surveyid/{$surveyid}"); ?>">
-                            <img src='<?php echo $sImageURL;?>delete_30.png' alt=''/> <?php eT("Delete survey");?></a></li>
-                        <?php } ?>
-                    <?php if ($surveytranslate) {
-                            if($hasadditionallanguages) { ?>
-                            <li><a href="<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$surveyid}");?>">
-                                <img src='<?php echo $sImageURL;?>translate_30.png' alt=''/> <?php eT("Quick-translation");?></a></li>
-                            <?php } else { ?>
-                            <li><a href="#" onclick="alert('<?php eT("Currently there are no additional languages configured for this survey.", "js");?>');" >
-                                <img src='<?php echo $sImageURL;?>translate_disabled_30.png' alt=''/> <?php eT("Quick-translation");?></a></li>
-                            <?php } ?>
-                        <?php } ?>
-                    <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
-                        <li><a href="<?php echo $this->createUrl("admin/expressions"); ?>">
-                            <img src='<?php echo $sImageURL;?>expressionmanager_30.png' alt=''/> <?php eT("Expression Manager");?></a></li>
-                        <?php } ?>
-                    <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
-                        <li>
-                            <?php if ($conditionscount>0){?>
-                                <a href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$surveyid}"); ?>">
-                                <img src='<?php echo $sImageURL;?>resetsurveylogic_30.png' alt=''/><?php eT("Reset conditions");?></a>
-                            <?php } else {?>
-                                <a href="#" onclick="alert('<?php eT("Currently there are no conditions configured for this survey.", "js"); ?>');" >
-                                <img src='<?php echo $sImageURL;?>resetsurveylogic_disabled_30.png' alt=''/> <?php eT("Reset conditions");?></a>
-                            <?php } ?>
-                        </li>
-                        <?php if(!$activated) { ?>
-                        <li>
-                                <a href="#">
-                                <img src='<?php echo $sImageURL;?>resetsurveylogic_30.png' alt=''/><?php eT("Regenerate question codes");?></a>
-                                <ul>
-                                <li>
-                                <a href="<?php echo $this->createUrl("/admin/survey/regenquestioncodes/surveyid/{$surveyid}/subaction/straight"); ?>">
-                                <img src='<?php echo $sImageURL;?>resetsurveylogic_30.png' alt=''/><?php eT("Straight");?></a></li>
-                                <li>
-                                <a href="<?php echo $this->createUrl("/admin/survey/regenquestioncodes/surveyid/{$surveyid}/subaction/bygroup"); ?>">
-                                <img src='<?php echo $sImageURL;?>resetsurveylogic_30.png' alt=''/><?php eT("By question group");?></a></li>
-                                </ul>
-                        </li>
-                        <?php } ?>
-                    <?php } ?>
-                	</ul>
-                </li>
-            <?php } ?> 
-            
-            <?php if($surveyexport || Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')) { ?>
-            <li><a href='#'>
-                    <img src='<?php echo $sImageURL;?>display_export.png' alt='<?php eT("Display / Export");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
-                    <ul>
-                    <?php if($surveyexport) { ?>
-                        <li><a href='#'>
-                            <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("Export...");?></a>
-                            <?php } ?>
-                       		<ul>
-                            <?php if($surveyexport) { ?>
-                                <li><a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurexml/surveyid/$surveyid");?>' >
-                                    <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("Survey structure (.lss)");?></a>
-                                </li>
-                                <?php } ?>
-                            <?php if($respstatsread && $surveyexport) {
-                                    if ($activated){?>
-                                    <li><a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportarchive/surveyid/$surveyid");?>' >
-                                        <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("Survey archive (.lsa)");?></a></li>
-                                    <?php }
-                                    else
-                                    {?>
-                                    <li><a href="#" onclick="alert('<?php eT("You can only archive active surveys.", "js");?>');" >
-                                        <img src='<?php echo $sImageURL;?>export_disabled_30.png' alt='' /> <?php eT("Survey archive (.lsa)");?></a></li><?php
-                                    }
-                            }?>
-                            <?php if($surveyexport) { ?>
-                                <li><a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurequexml/surveyid/$surveyid");?>' >
-                                    <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("queXML format (*.xml)");?></a>
-                                </li>
-                                <li><a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructuretsv/surveyid/$surveyid");?>' >
-                                    <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("Tab-separated-values format (*.txt)");?></a>
-                                </li>
-                                <?php } ?>
+            <!-- Add a new group -->
+            <?php if(isset($surveybar['buttons']['newgroup'])):?>
+                <?php if ($activated == "Y"): ?>
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+                        <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                            <span class="icon-add"></span>
+                            <?php eT("Add new group"); ?>
+                        </button>
+                    </span>
+                <?php elseif(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create')): ?>
+                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/$surveyid"); ?>" role="button">
+                        <span class="icon-add"></span>
+                        <?php eT("Add new group");?>
+                    </a>
+                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/questiongroups/sa/importview/surveyid/$surveyid"); ?>" role="button">
 
+                        <span class="icon-import"></span>
+                        <?php eT("Import a group");?>
+                    </a>
+                <?php endif;?>
+            <?php endif;?>
+
+            <!-- Add a new question -->
+            <?php if(isset($surveybar['buttons']['newquestion'])):?>
+                <?php if ($activated == "Y"): ?>
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+                        <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                            <span class="icon-add"></span>
+                            <?php eT("Add new question"); ?>
+                        </button>
+                    </span>
+                <?php elseif(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create')): ?>
+                    <?php if(!$surveyHasGroup): ?>
+                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+                            <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                                <span class="icon-add"></span>
+                                <?php eT("Add new question"); ?>
+                            </button>
+                        </span>
+                    <?php else:?>
+                    <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyid); ?>' role="button">
+                        <span class="icon-add"></span>
+                        <?php eT("Add new question"); ?>
+                    </a>
+                    <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questions/sa/importview/surveyid/".$surveyid); ?>' role="button">
+                        <span class="icon-import"></span>
+                        <?php eT("Import a question"); ?>
+                    </a>
+                    <?php endif; ?>
+                <?php endif; ?>
+            <?php endif;?>
+
+            <!-- Left buttons for survey summary -->
+            <?php if(isset($surveybar['buttons']['view'])):?>
+
+                <!-- survey activation -->
+                <?php if(!$activated): ?>
+
+                    <!-- activate -->
+                    <?php if($canactivate): ?>
+                        <a class="btn btn-success" href="<?php echo $this->createUrl("admin/survey/sa/activate/surveyid/$surveyid"); ?>" role="button">
+                            <?php eT("Activate this survey"); ?>
+                        </a>
+
+                    <!-- can't activate -->
+                    <?php else : ?>
+                        <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+                            <button type="button" class="btn btn-success btntooltip" disabled="disabled">
+                                <?php eT("Activate this survey"); ?>
+                            </button>
+                        </span>
+                    <?php endif; ?>
+                <?php else : ?>
+
+                    <!-- activate expired survey -->
+                    <?php if($expired) : ?>
+                        <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('This survey is active but expired.'); ?>">
+                            <button type="button" class="btn btn-success btntooltip" disabled="disabled">
+                                <span class="fa fa-ban">&nbsp;</span>
+                                <?php eT("Activate this survey"); ?>
+                            </button>
+                        </span>
+                    <?php elseif($notstarted) : ?>
+                        <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title='<?php eT("This survey is active but has a start date."); ?>'>
+                            <button type="button" class="btn btn-success btntooltip" disabled="disabled" >
+                                <span class="fa fa-clock-o">&nbsp;</span>
+                                <?php eT("Activate this survey"); ?>
+                            </button>
+                        </span>
+                    <?php endif; ?>
+
+                    <!-- Stop survey -->
+                    <?php if($canactivate): ?>
+                        <a class="btn btn-danger btntooltip" href="<?php echo $this->createUrl("admin/survey/sa/deactivate/surveyid/$surveyid"); ?>" role="button">
+                            <?php eT("Stop this survey"); ?>
+                        </a>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+
+                <!-- Preview/Execute survey -->
+                <?php if($activated || $surveycontent) : ?>
+
+                    <!-- Multinlinguage -->
+                    <?php if(count($languagelist)>1): ?>
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                            <span class="icon-do" ></span>
+                            <?php echo $icontext;?> <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" style="min-width : 252px;">
+                            <?php foreach ($languagelist as $tmp_lang): ?>
+                                <li>
+                                    <a target='_blank' href='<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$tmp_lang));?>'>
+                                        <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                          </ul>
+                        </div>
+
+                    <!-- uniq language -->
+                    <?php else: ?>
+                        <a accesskey='d' class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" role="button"  accesskey='d' target='_blank'>
+                            <span class="icon-do" ></span>
+                            <?php echo $icontext;?>
+                        </a>
+                    <?php endif;?>
+                <?php endif; ?>
+
+                <!-- Survey Properties -->
+                <?php if( !isset($surveybar['active_survey_properties']) ):?>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="icon-edit" ></span>
+                          <?php eT("Survey properties");?> <span class="caret"></span>
+                        </button>
+
+                        <ul class="dropdown-menu">
+                            <?php if($surveylocale && $surveysettings): ?>
+
+                                <!-- Edit text elements and general settings -->
+                                <li>
+                                    <a href='<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/$surveyid");?>'>
+                                        <span class="icon-edit" ></span>
+                                         <?php eT("General settings & texts");?>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+
+                            <?php if($surveysecurity): ?>
+
+                                <!-- Survey permissions -->
+                                <li>
+                                    <a href='<?php echo $this->createUrl("admin/surveypermission/sa/view/surveyid/$surveyid");?>' >
+                                        <span class="icon-security" ></span>
+                                        <?php eT("Survey permissions");?>
+                                    </a>
+                                 </li>
+                            <?php endif; ?>
+
+                            <?php if($quotas): ?>
+
+                                <!-- Quotas -->
+                                <li>
+                                    <a href='<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$surveyid/");?>' >
+                                        <span class="icon-quota" ></span>
+                                        <?php eT("Quotas");?>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+
+                            <?php if($assessments): ?>
+
+                                <!-- Assessments -->
+                                <li>
+                                    <a href='<?php echo $this->createUrl("admin/assessments/sa/index/surveyid/$surveyid");?>' >
+                                        <span class="icon-assessments" ></span>
+                                        <?php eT("Assessments");?>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+
+                            <?php if($surveylocale): ?>
+
+                                <!-- Email templates -->
+                                <li>
+                                    <a href='<?php echo $this->createUrl("admin/emailtemplates/sa/index/surveyid/$surveyid");?>' >
+                                        <span class="icon-emailtemplates" ></span>
+                                        <?php eT("Email templates");?>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+
+                            <?php if($surveycontent): ?>
+                                <!-- survey content -->
+
+                                <?php if($onelanguage): ?>
+                                    <!-- one language -->
+
+                                    <!-- Survey logic file -->
+                                    <li>
+                                        <a href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/");?>' >
+                                            <span class="icon-expressionmanagercheck" ></span>
+                                            <?php eT("Survey logic file");?>
+                                        </a>
+                                    </li>
+                                <?php else : ?>
+                                    <!-- multilangue  -->
+
+                                    <li role="separator" class="divider"></li>
+
+                                    <!-- Survey logic file -->
+                                    <li class="dropdown-header"><?php eT("Survey logic file");?></li>
+                                        <?php foreach ($languagelist as $tmp_lang): ?>
+                                            <!-- Languages -->
+
+                                            <li>
+                                                <a  href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/lang/$tmp_lang");?>'>
+                                                       <span class="icon-expressionmanagercheck" ></span>
+                                                       <?php echo getLanguageNameFromCode($tmp_lang,false);?>
+                                                   </a>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                            <?php endif; ?>
+                      </ul>
+                    </div>
+                <?php else:?>
+                        <button type="button" class="btn btn-default btntooltip active">
+                            <span class="icon-expressionmanagercheck" ></span>
+                            <?php echo $surveybar['active_survey_properties']['txt'];?>
+                        </button>
+                <?php endif;?>
+
+
+                <!-- TOOLS  -->
+                <div class="btn-group hidden-xs">
+
+                    <!-- Main button dropdown -->
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="icon-tools" ></span>
+                         <?php eT('Tools');?><span class="caret"></span>
+                    </button>
+
+                    <!-- dropdown -->
+                    <ul class="dropdown-menu">
+                          <?php if ($surveydelete): ?>
+
+                              <!-- Delete survey -->
+                              <li>
+                                  <a href="<?php echo $this->createUrl("admin/survey/sa/delete/surveyid/{$surveyid}"); ?>">
+                                    <span class="glyphicon glyphicon-trash" ></span>
+                                    <?php eT("Delete survey");?>
+                                  </a>
+                              </li>
+                          <?php endif; ?>
+
+                          <?php if ($surveytranslate): ?>
+                              <!-- surveytranslate -->
+
+                              <?php if($hasadditionallanguages): ?>
+
+                                    <!-- Quick-translation -->
+                                    <li>
+                                        <a href="<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$surveyid}");?>">
+                                        <span class="fa fa-language" ></span>
+                                        <?php eT("Quick-translation");?>
+                                        </a>
+                                    </li>
+
+                              <?php else: ?>
+
+                                    <!-- Quick-translation disabled -->
+                                    <li>
+                                        <a href="#" onclick="alert('<?php eT("Currently there are no additional languages configured for this survey.", "js");?>');" >
+                                          <span class="fa fa-language" ></span>
+                                          <?php eT("Quick-translation");?>
+                                        </a>
+                                    </li>
+                              <?php endif; ?>
+                          <?php endif; ?>
+
+                          <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
+                              <li>
+                                  <?php if ($conditionscount>0):?>
+
+                                      <!-- condition -->
+                                      <a href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$surveyid}"); ?>">
+                                        <span class="icon-resetsurveylogic" ></span>
+                                        <?php eT("Reset conditions");?>
+                                      </a>
+                                  <?php else: ?>
+
+                                      <!-- condition disabled -->
+                                      <a href="#" onclick="alert('<?php eT("Currently there are no conditions configured for this survey.", "js"); ?>');" >
+                                        <span class="icon-resetsurveylogic" ></span>
+                                        <?php eT("Reset conditions");?>
+                                      </a>
+                                  <?php endif; ?>
+                              </li>
+
+                              <?php if(!$activated): ?>
+                                  <li>
+                                          <li role="separator" class="divider"></li>
+
+                                          <!-- Regenerate question codes -->
+                                          <li class="dropdown-header">
+                                              <?php eT("Regenerate question codes");?>
+                                          </li>
+
+                                          <!-- Straight -->
+                                          <li>
+                                              <a href="<?php echo $this->createUrl("/admin/survey/regenquestioncodes/surveyid/{$surveyid}/subaction/straight"); ?>">
+                                                <span class="icon-resetsurveylogic" ></span>
+                                                <?php eT("Straight");?>
+                                              </a>
+                                          </li>
+
+                                          <!-- By question group -->
+                                          <li>
+                                            <a href="<?php echo $this->createUrl("/admin/survey/regenquestioncodes/surveyid/{$surveyid}/subaction/bygroup"); ?>">
+                                                <span class="icon-resetsurveylogic" ></span>
+                                                <?php eT("By question group");?>
+                                            </a>
+                                         </li>
+                                  </li>
+                              <?php endif; ?>
+                          <?php endif; ?>
+                    </ul>
+                </div>
+
+
+                <!-- Display / Export -->
+                <div class="btn-group hidden-xs">
+
+                    <!-- Main dropdown -->
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="icon-display_export" ></span>
+                      <?php eT("Display / Export");?> <span class="caret"></span>
+                    </button>
+
+                    <!-- dropdown -->
+                    <ul class="dropdown-menu">
+
+                          <?php if($surveyexport): ?>
+                              <!-- survey export -->
+
+                              <!-- Export -->
+                              <li class="dropdown-header"> <?php eT("Export...");?></li>
+
+                                  <?php if($surveyexport): ?>
+
+                                      <!-- Survey structure -->
+                                      <li>
+                                          <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurexml/surveyid/$surveyid");?>' >
+                                            <span class="icon-export" ></span>
+                                            <?php eT("Survey structure (.lss)");?>
+                                          </a>
+                                      </li>
+                                  <?php endif; ?>
+
+                                  <?php if($respstatsread && $surveyexport): ?>
+                                      <?php if ($activated):?>
+
+                                          <!-- Survey archive -->
+                                          <li>
+                                              <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportarchive/surveyid/$surveyid");?>' >
+                                                  <span class="icon-export" ></span>
+                                                  <?php eT("Survey archive (.lsa)");?>
+                                              </a>
+                                          </li>
+                                      <?php else: ?>
+
+                                          <!-- Survey archive unactivated -->
+                                          <li>
+                                              <a href="#" onclick="alert('<?php eT("You can only archive active surveys.", "js");?>');" >
+                                                <span class="icon-export" ></span>
+                                                <?php eT("Survey archive (.lsa)");?>
+                                              </a>
+                                          </li>
+                                      <?php endif;?>
+                                  <?php endif; ?>
+
+                                  <?php if($surveyexport): ?>
+
+                                      <!-- queXML -->
+                                      <li>
+                                          <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurequexml/surveyid/$surveyid");?>' >
+                                              <span class="icon-export" ></span>
+                                              <?php eT("queXML format (*.xml)");?>
+                                          </a>
+                                      </li>
+
+                                      <!-- Tab-separated-values -->
+                                      <li>
+                                          <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructuretsv/surveyid/$surveyid");?>' >
+                                              <span class="icon-export" ></span>
+                                              <?php eT("Tab-separated-values format (*.txt)");?>
+                                          </a>
+                                      </li>
+                                  <?php endif; ?>
+
+                              <?php endif;?>
+
+                          <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')): ?>
+                              <?php if($onelanguage):?>
+
+                                  <!-- Printable version -->
+                                  <li>
+                                      <a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
+                                          <span class="glyphicon glyphicon-print"></span>
+                                          <?php eT("Printable version");?>
+                                      </a>
+                                  </li>
+                              <?php else: ?>
+                                  <li role="separator" class="divider"></li>
+
+                                  <!-- Printable version multilangue -->
+                                  <li class="dropdown-header"><?php eT("Printable version");?></li>
+                                      <?php foreach ($languagelist as $tmp_lang): ?>
+                                          <li>
+                                              <a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid/lang/$tmp_lang");?>'>
+                                                  <span class="glyphicon glyphicon-print"></span>
+                                                  <?php echo getLanguageNameFromCode($tmp_lang,false);?>
+                                              </a>
+                                          </li>
+                                      <?php endforeach; ?>
+                              <?php endif; ?>
+                          <?php endif; ?>
+                    </ul>
+                </div>
+
+                <!-- Token -->
+                <?php if($tokenmanagement):?>
+                    <a class="btn btn-default  btntooltip hidden-xs" href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>" role="button">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <?php eT("Token management");?>
+                    </a>
+                <?php endif; ?>
+
+                <!-- Statistics -->
+                <?php if($respstatsread || $responsescreate || $responsesread):?>
+
+                    <div class="btn-group">
+                        <!-- main  dropdown header -->
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="icon-responses"></span>
+                            <?php eT("Responses");?><span class="caret"></span>
+                        </button>
+
+                        <!-- dropdown -->
+                        <ul class="dropdown-menu">
+                            <?php if($respstatsread):?>
+                                <?php if($activated):?>
+
+                                    <!-- Responses & statistics -->
+                                    <li>
+                                        <a href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid/");?>' >
+                                            <span class="icon-browse"></span>
+                                            <?php eT("Responses & statistics");?>
+                                        </a>
+                                    </li>
+                                <?php else:?>
+
+                                    <!-- Responses & statistics -->
+                                    <li>
+                                        <a href="#" onclick="alert('<?php eT("This survey is not active - no responses are available.","js");?>');" >
+                                            <span class="icon-browse"></span>
+                                            <?php eT("Responses & statistics");?>
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+                            <?php endif; ?>
+
+                            <?php if($responsescreate): ?>
+                                <?php if($activated): ?>
+
+                                    <!-- Data entry screen -->
+                                    <li>
+                                        <a href='<?php echo $this->createUrl("admin/dataentry/sa/view/surveyid/$surveyid");?>' >
+                                            <span class="fa fa-keyboard-o"></span>
+                                            <?php eT("Data entry screen");?>
+                                        </a>
+                                    </li>
+                                <?php else: ?>
+
+                                    <!-- Data entry screen disabled -->
+                                    <li>
+                                        <a href="#" onclick="alert('<?php eT("This survey is not active, data entry is not allowed","js");?>');" >
+                                            <span class="fa fa-keyboard-o"></span>
+                                            <?php eT("Data entry screen");?>
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                            <?php if($responsesread): ?>
+                                <?php if($activated): ?>
+
+                                    <!-- Partial (saved) responses -->
+                                    <li>
+                                        <a href='<?php echo $this->createUrl("admin/saved/sa/view/surveyid/$surveyid");?>' >
+                                            <span class="icon-saved"></span>
+                                            <?php eT("Partial (saved) responses");?>
+                                        </a>
+                                    </li>
+                                <?php else :?>
+
+                                    <!-- Partial (saved) responses disabled -->
+                                    <li>
+                                        <a href="#" onclick="alert('<?php eT("This survey is not active - no responses are available","js");?>');" >
+                                            <span class="icon-saved"></span>
+                                            <?php eT("Partial (saved) responses");?>
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+                            <?php endif; ?>
                         </ul>
+                    </div>
+                <?php endif;?>
+
+                <?php if($permission):?>
+                    <!-- List Groups -->
+                        <!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
+                        <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
+                            <span class="glyphicon glyphicon-list"></span>
+                            <?php eT("List question groups");?>
+                        </a>
+
+                    <!-- List Questions -->
+                        <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
+                            <span class="glyphicon glyphicon-list"></span>
+                            <?php eT("List questions");?>
+                        </a>
                     </li>
-                    <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')) { ?>
-                        <?php if($onelanguage) { ?>
-                            <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
-                                <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php eT("Printable version");?></a></li>
-                            <?php } else { ?>
-                            <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
-                                <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php eT("Printable version");?></a><ul>
-                                    <?php foreach ($languagelist as $tmp_lang) { ?>
-                                        <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid/lang/$tmp_lang");?>'>
-                                            <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
-                                        <?php } ?>
-                                </ul></li>
-                            <?php } ?>
-                        <?php } ?>
-                    <?php if($surveyexport) {
-                            ?>
-                            <li><a href='<?php echo $this->createUrl("admin/export/quexml/surveyid/$surveyid");?>' >
-                                <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("queXML PDF export");?></a></li>
-                            <?php 
-                    } ?>
-                	</ul>
-                </li>
-            <?php } ?> 
-            
-            <?php if($respstatsread || $responsescreate || $responsesread) { ?>
-            	<li><a href='#'><img src='<?php echo $sImageURL;?>responses.png' alt='<?php eT("Responses");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
-            		<ul>
-                    <?php if($respstatsread) {
-                            if($activated) { ?>
-                            <li><a href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid/");?>' >
-                                <img src='<?php echo $sImageURL;?>browse_30.png' alt='' /> <?php eT("Responses & statistics");?></a></li>
-                            <?php } else { ?>
-                            <li><a href="#" onclick="alert('<?php eT("This survey is not active - no responses are available.","js");?>');" >
-                                <img src='<?php echo $sImageURL;?>browse_disabled_30.png' alt='' /> <?php eT("Responses & statistics");?></a></li>
-                            <?php }
-                    } ?>
-                    <?php if($responsescreate) {
-                            if($activated) { ?>
-                            <li><a href='<?php echo $this->createUrl("admin/dataentry/sa/view/surveyid/$surveyid");?>' >
-                                <img src='<?php echo $sImageURL;?>dataentry_30.png' alt='' /> <?php eT("Data entry screen");?></a></li>
-                            <?php } else { ?>
-                            <li><a href="#" onclick="alert('<?php eT("This survey is not active, data entry is not allowed","js");?>');" >
-                                <img src='<?php echo $sImageURL;?>dataentry_disabled_30.png' alt='' /> <?php eT("Data entry screen");?></a></li>
-                            <?php }
-                    } ?>
-                    <?php if($responsesread) {
-                            if($activated) { ?>
-                            <li><a href='<?php echo $this->createUrl("admin/saved/sa/view/surveyid/$surveyid");?>' >
-                                <img src='<?php echo $sImageURL;?>saved_30.png' alt='' /> <?php eT("Partial (saved) responses");?></a></li>
-                            <?php } else { ?>
-                            <li><a href="#" onclick="alert('<?php eT("This survey is not active - no responses are available","js");?>');" >
-                                <img src='<?php echo $sImageURL;?>saved_disabled_30.png' alt='' /> <?php eT("Partial (saved) responses");?></a></li>
-                            <?php }
-                    } ?>
-                	</ul>
-                </li>
-            <?php } ?>    
-
-            <?php if($surveycontent)
-                {
-                    if ($activated)
-                    { ?><li><a href='#'>
-                            <img src='<?php echo $sImageURL; ?>organize_disabled.png' title='' alt='<?php eT("Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>'
-                                width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a></li>
-                    <?php }
-                    else
-                    { ?><li>
-
-                        <a href="<?php echo $this->createUrl("admin/survey/sa/organize/surveyid/$surveyid"); ?>">
-                            <img src='<?php echo $sImageURL; ?>organize.png' alt='<?php eT("Reorder question groups / questions"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a></li>
-                    <?php }
-            } ?>
-
-            <?php if($tokenmanagement) { ?>
-                <li><a href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>">
-                        <img src='<?php echo $sImageURL;?>tokens.png' alt='<?php eT("Token management");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
-                </li>
-                <?php } ?>
-        </ul>
-
-        <div class='menubar-right'>
-            <?php if ($permission)
-                { ?>
-                <label for='groupselect'><?php eT("Question groups:"); ?></label>
-                <select name='groupselect' id='groupselect' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
-
-                    <?php echo $groups; ?>
-                </select>
-
-                <span class='arrow-wrapper' style='font-size:0;'>
-                    <?php if ($GidPrev != "")
-                        { ?>
-                        <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid/gid/$GidPrev"); ?>'>
-                        <img src='<?php echo $sImageURL; ?>previous_20.png' title='' alt='<?php eT("Previous question group"); ?>'/> </a>
-                        <?php }
-                        else
-                        { ?>
-                        <img src='<?php echo $sImageURL; ?>previous_disabled_20.png' title='' alt='<?php eT("No previous question group"); ?>' />
-                        <?php }
+                <?php endif; ?>
 
 
-                        if ($GidNext != "")
-                        { ?>
+            <?php endif;?>
+            <?php if(isset($surveybar['importquestion'])):?>
+                <a class="btn btn-default" href="<?php echo Yii::App()->createUrl('admin/questions/sa/importview/surveyid/'.$surveyid);?>" role="button">
+                    <span class="icon-import"></span>
+                    <?php eT('Import a question'); ?>
+                </a>
+            <?php endif;?>
 
+            <?php if(isset($surveybar['importquestiongroup'])):?>
+                <a class="btn btn-default" href="<?php echo Yii::App()->createUrl('admin/questiongroups/sa/importview/surveyid/'.$surveyid);?>" role="button">
+                    <span class="icon-import"></span>
+                    <?php eT('Import a group'); ?>
+                </a>
+            <?php endif;?>
+        </div>
 
-                        <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid/gid/$GidNext"); ?>'>
-                        <img src='<?php echo $sImageURL; ?>next_20.png' title='' alt='<?php eT("Next question group"); ?>'/> </a>
-                        <?php }
-                        else
-                        { ?>
+        <!-- right action buttons -->
+        <div class=" col-md-4 text-right">
+            <?php if(isset($surveybar['savebutton']['form'])):?>
 
-                        <img src='<?php echo $sImageURL; ?>next_disabled_20.png' title='' alt='<?php eT("No next question group"); ?>'/>
-                        <?php } ?>
-                </span>
-                <?php } ?>
+                <!-- Save -->
+                <a class="btn btn-success" href="#" role="button" id="save-button" >
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <?php eT("Save");?>
+                </a>
 
+                <?php if(isset($surveybar['saveandclosebutton'])):?>
+                    <!-- Save and close -->
+                    <a class="btn btn-default" href="#" role="button" id='save-and-close-button'>
+                        <span class="glyphicon glyphicon-saved"></span>
+                        <?php eT("Save and close");?>
+                    </a>
+                <?php endif; ?>
+            <?php endif;?>
 
+            <?php if(isset($surveybar['closebutton']['url'])):?>
 
-
-            <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
-                {
-                    if ($activated)
-                    { ?>
-                    <img src='<?php echo $sImageURL; ?>add_disabled.png' title='' alt='<?php eT("Disabled"); ?> - <?php eT("This survey is currently active."); ?>'
-                        width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/>
-                    <?php }
-                    else
-                    { ?>
-
-                    <a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/$surveyid"); ?>">
-                        <img src='<?php echo $sImageURL; ?>add.png' alt='<?php eT("Add new group to survey"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
-                    <?php }
-            } ?>
-            <img id='separator3' src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
-            <input type='image' src='<?php echo $sImageURL; ?>minimize.png' title='<?php eT("Hide details of this Survey"); ?>'
-                alt='<?php eT("Hide details of this Survey"); ?>' onclick='$("#surveydetails").hide();' />
-
-            <input type='image' src='<?php echo $sImageURL; ?>maximize.png' title='<?php eT("Show details of this survey"); ?>'
-                alt='<?php eT("Show details of this survey"); ?>' onclick='$("#surveydetails").show();' />
-
-
-            <input type='image' src='<?php echo $sImageURL; ?>close.png' title='<?php eT("Close this survey"); ?>'
-                alt='<?php eT("Close this survey"); ?>' onclick="window.open('<?php echo $this->createUrl("/admin/index"); ?>','_top');"
-
-                <?php if (!$gid){?>
-                    style='visibility:hidden;'
-                    <?php } ?>
-                >
+                <!-- Close -->
+                <a class="btn btn-danger" href="<?php echo $surveybar['closebutton']['url']; ?>" role="button">
+                    <span class="glyphicon glyphicon-close"></span>
+                    <?php eT("Close");?>
+                </a>
+            <?php endif;?>
         </div>
     </div>
 </div>

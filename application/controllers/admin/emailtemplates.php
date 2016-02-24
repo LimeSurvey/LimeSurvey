@@ -30,8 +30,6 @@ class emailtemplates extends Survey_Common_Action {
     function index($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        App()->getClientScript()->registerPackage('jquery-superfish');
-
         Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->loadHelper('surveytranslator');
 
@@ -70,6 +68,13 @@ class emailtemplates extends Survey_Common_Action {
             $aData['attrib'][$key]['attachments'] = unserialize($aData['attrib'][$key]['attachments']);
             $aData['defaulttexts'][$key] = templateDefaultTexts($aData['bplangs'][$key],$sEscapeMode);
         }
+
+            $aData['sidemenu']['state'] = false;
+            $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+
+            $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyId;
 
         $aData['surveyid'] = $iSurveyId;
         $aData['ishtml'] = $ishtml;
@@ -163,7 +168,7 @@ class emailtemplates extends Survey_Common_Action {
      */
     protected function _renderWrappedTemplate($sAction = 'emailtemplates', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'emailtemplates.js');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'emailtemplates.js' ));
 
         $aData['display']['menu_bars']['surveysummary'] = 'editemailtemplates';
 

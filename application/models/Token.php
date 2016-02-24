@@ -69,22 +69,22 @@
             return $result;
         }
 
-        public static function createTable($surveyId, array $extraFields = array())
+        public static function createTable($surveyId, array $extraFields  = array())
         {
             $surveyId=intval($surveyId);
             // Specify case sensitive collations for the token
             $sCollation='';
-            if  (Yii::app()->db->driverName=='mysqli' | Yii::app()->db->driverName=='mysqli'){
-                $sCollation="COLLATE 'utf8_bin'";
+            if  (Yii::app()->db->driverName=='mysql' || Yii::app()->db->driverName=='mysqli'){
+                $sCollation="COLLATE 'utf8mb4_bin'";
             }
-            if  (Yii::app()->db->driverName=='sqlsrv' | Yii::app()->db->driverName=='dblib' | Yii::app()->db->driverName=='mssql'){
+            if  (Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib' || Yii::app()->db->driverName=='mssql'){
                 $sCollation="COLLATE SQL_Latin1_General_CP1_CS_AS";
             }
             $fields = array(
                 'tid' => 'pk',
                 'participant_id' => 'string(50)',
-                'firstname' => 'string(40)',
-                'lastname' => 'string(40)',
+                'firstname' => 'string(150)',
+                'lastname' => 'string(150)',
                 'email' => 'text',
                 'emailstatus' => 'text',
                 'token' => "string(35) {$sCollation}",

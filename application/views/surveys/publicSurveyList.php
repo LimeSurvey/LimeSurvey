@@ -1,21 +1,27 @@
 <?php
 
-    $list = '';
+    $list = '<ul class="surveys-list">';
     foreach($publicSurveys as $survey)
     {
+        //echo "IKI :";var_dump( $survey->localizedTitle);
         $list .= CHtml::openTag('li');
-
-        $list .= CHtml::link($survey->localizedTitle, array('survey/index', 'sid' => $survey->sid, 'lang' => App()->language), array('class' => 'surveytitle'));
+        $list .= CHtml::link($survey->localizedTitle, array('survey/index', 'sid' => $survey->sid, 'lang' => App()->language), array('class' => 'surveytitle btn btn-primary'));
         if ($survey->publicstatistics == "Y")
         {
-            $list .= CHtml::link('(' . gT('View statistics') . ')', array('statistics_user/action', 'surveyid' => $survey->sid,'language' => App()->language));
+            //$list .= CHtml::link('(' . gT('View statistics') . ')', array('statistics_user/action', 'surveyid' => $survey->sid,'language' => App()->language));
+            $list .= '<a class="view-stats btn btn-success" data-toggle="tooltip" title="'.gT('View statistics').'" href="'.App()->createUrl('statistics_user/action/surveyid/'.$survey->sid.'/language/'.App()->language).'">';
+            $list .= '  <span class="glyphicon glyphicon-stats"></span>';
+            //$list .= '  (' . gT('View statistics') . ')';
+            $list .= '</a>';
         }
         $list .= CHtml::closeTag('li');
 
     }
     if (!empty($futureSurveys))
     {
-        $list .= "</ul><div class=\"survey-list-heading\">".  gT("Following survey(s) are not yet active but you can register for them.")."</div><ul>";
+        $list .= "</ul>";
+        $list .= "<div class=\"survey-list-heading\">".  gT("Following survey(s) are not yet active but you can register for them.")."</div>";
+        $list .= '<ul class="surveys-list future-surveys-list">';
         foreach($futureSurveys as $survey)
         {
             $list .= CHtml::openTag('li');
@@ -40,9 +46,12 @@
         "listheading"=> gT("The following surveys are available:"),
         "list"=> $list,
     );
-    $data['templatedir'] = getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
-    $data['templateurl'] = getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
-    $data['templatename'] = Yii::app()->getConfig("defaulttemplate");
+
+    $oTemplate = Template::model()->getTemplateConfiguration(Yii::app()->getConfig("defaulttemplate"));
+
+    $data['templatedir'] = Template::getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
+    $data['templateurl'] = Template::getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
+    $data['templatename'] = $oTemplate->name;
     $data['sitename'] = Yii::app()->getConfig("sitename");
     $data['languagechanger'] = makeLanguageChanger(App()->language);
 
@@ -71,8 +80,8 @@
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
     useFirebug();
 
-    echo templatereplace(file_get_contents(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/startpage.pstpl"),array(),$data,'survey['.__LINE__.']');
-    echo templatereplace(file_get_contents(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/surveylist.pstpl"),array(),$data,'survey['.__LINE__.']');
-    echo templatereplace(file_get_contents(getTemplatePath(Yii::app()->getConfig("defaulttemplate"))."/endpage.pstpl"),array(),$data,'survey['.__LINE__.']');
+    echo templatereplace(file_get_contents($oTemplate->viewPath."/startpage.pstpl"),array(),$data,'survey['.__LINE__.']');
+    echo templatereplace(file_get_contents($oTemplate->viewPath."/surveylist.pstpl"),array(),$data,'survey['.__LINE__.']');
+    echo templatereplace(file_get_contents($oTemplate->viewPath."/endpage.pstpl"),array(),$data,'survey['.__LINE__.']');
     doFooter();
 ?>

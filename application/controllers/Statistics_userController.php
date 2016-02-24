@@ -345,13 +345,16 @@ class Statistics_userController extends LSYii_Controller {
         $thissurvey = getSurveyInfo($surveyid,$sLanguage);
 
         //SET THE TEMPLATE DIRECTORY
-        $data['sTemplatePath'] = $surveyinfo['template'];// surveyinfo=getSurveyInfo and if survey don't exist : stop before. 
+        $data['sTemplatePath'] = $surveyinfo['template'];// surveyinfo=getSurveyInfo and if survey don't exist : stop before.
 
 
         //---------- CREATE STATISTICS ----------
         $redata = compact(array_keys(get_defined_vars()));
         doHeader();
-        echo templatereplace(file_get_contents(getTemplatePath($data['sTemplatePath']).DIRECTORY_SEPARATOR."startpage.pstpl"),array(), $redata);
+
+        /// $oTemplate is a global variable defined in controller/survey/index
+        global $oTemplate;
+        echo templatereplace(file_get_contents($oTemplate->viewPath."startpage.pstpl"),array(), $redata);
 
 
         //some progress bar stuff

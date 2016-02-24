@@ -1,0 +1,10 @@
+.wh-relational-column {
+    text-decoration: none;
+    border-bottom: dashed 1px #08C;
+    cursor: pointer;
+    color: #08C;
+}
+
+.wh-relational-column:hover {
+    color: #005580;
+}

@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $(':checkbox:not(:checked)[data-indeterminate=1]').prop('indeterminate', true);
+    $(':checkbox:not(:checked)[data-indeterminate=1]').prop('indeterminate', true)
 
     $(".surveysecurity").tablesorter({
         widgets: ['zebra'],
@@ -26,7 +26,7 @@ $(document).ready(function(){
             $(this).removeClass('mixed');
             $(this).closest('tr').find('input').prop('checked',$(this).prop('checked')).prop('indeterminate',false);
         }
-    );
+    )
 
     $('.extended input').click(
      function(){
@@ -43,7 +43,7 @@ $(document).ready(function(){
                 $(this).closest('tr').find('.markrow').prop('checked',true).addClass('mixed');;
             }
      }
-    );
+    )
 
     if ($.cookie('surveysecurityas')!='true')
     {
@@ -63,7 +63,7 @@ $(document).ready(function(){
             {
                 $(this).find('.markrow').prop('checked',true).addClass('mixed');
             }
-    });
+    })
 
     $('#btnToggleAdvanced').click(function(){
         extendoptionsvisible=$('.usersurveypermissions .extended').is(':visible');
@@ -77,7 +77,7 @@ $(document).ready(function(){
         }
         updateExtendedButton(!extendoptionsvisible);
         $.cookie('surveysecurityas',!extendoptionsvisible);
-    });
+    })
     updateExtendedButton(true);
 });
 

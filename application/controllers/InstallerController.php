@@ -134,7 +134,6 @@ class InstallerController extends CController {
         $this->loadHelper('surveytranslator');
         Yii::app()->session->remove('configFileWritten');
 
-
         $aData['title'] = gT('Welcome');
         $aData['descp'] = gT('Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey.');
         $aData['classesForStep'] = array('on','off','off','off','off','off');
@@ -228,7 +227,6 @@ class InstallerController extends CController {
     {
         $this->loadHelper('surveytranslator');
 
-
         // usual data required by view
         $aData['title'] = gT('Database configuration');
         $aData['descp'] = gT('Please enter the database settings you want to use for LimeSurvey:');
@@ -264,30 +262,26 @@ class InstallerController extends CController {
                 {
                     $sDatabasePort = self::_getDbPort($sDatabaseType, $sDatabasePort);
                 }
-
-                $bDBExists = false;
                 $bDBConnectionWorks = false;
                 $aDbConfig = compact('sDatabaseType', 'sDatabaseName', 'sDatabaseUser', 'sDatabasePwd', 'sDatabasePrefix', 'sDatabaseLocation', 'sDatabasePort');
-
-                if (self::_dbConnect($aDbConfig, array())) {
-                    $bDBExists = true;
+                $bDBExists = self::dbTest($aDbConfig, $aData);
+                if (self::_dbConnect($aDbConfig, $aData))
+                {
                     $bDBConnectionWorks = true;
-                } else {
-                    $aDbConfig['sDatabaseName'] = '';
-                    if (self::_dbConnect($aDbConfig, array())) {
-                        $bDBConnectionWorks = true;
-                    } else {
-                        $oModel->addError('dblocation', gT('Connection with database failed. Please check database location, user name and password and try again.'));
-                        $oModel->addError('dbpwd','');
-                        $oModel->addError('dbuser','');
-                    }
+                }
+                else
+                {
+                    $oModel->addError('dblocation', gT('Connection with database failed. Please check database location, user name and password and try again.'));
+                    $oModel->addError('dbpwd','');
+                    $oModel->addError('dbuser','');
                 }
 
                 //if connection with database fail
                 if ($bDBConnectionWorks)
                 {
                     //saving the form data
-                    foreach(array('dbname', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
+                    foreach(array('dbname', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey)
+                    {
                         Yii::app()->session[$sStatusKey] = $oModel->$sStatusKey;
                     }
                     Yii::app()->session['dbport'] = $sDatabasePort;
@@ -297,7 +291,8 @@ class InstallerController extends CController {
                     $bTablesDoNotExist = false;
 
                     // Check if the surveys table exists or not
-                    if ($bDBExists == true) {
+                    if ($bDBExists == true)
+                    {
                         try {
                             if ($dataReader=$this->connection->createCommand()->select()->from('{{users}}')->query()->rowCount==0)  // DBLIB does not throw an exception on a missing table
                             $bTablesDoNotExist = true;
@@ -321,9 +316,10 @@ class InstallerController extends CController {
                         //wrte config file! as we no longer redirect to optional view
                         $this->_writeConfigFile();
 
-                        //$this->redirect(array("installer/loadOptView"));
                         header("refresh:5;url=".$this->createUrl("/admin"));
-                        echo sprintf( gT('The database does exists and contains LimeSurvey tables. You\'ll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click <a href="%s">here</a>.', 'unescaped'), $this->createUrl("/admin"));
+                        $aData['noticeMessage'] = gT('The database exists and contains LimeSurvey tables.');
+                        $aData['text'] = sprintf( gT("You'll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click %shere%s."), "<a href='".$this->createUrl("/admin")."'>","</a>");
+                        $this->render('/installer/redirectmessage_view',$aData);
                         exit();
                     }
 
@@ -363,10 +359,10 @@ class InstallerController extends CController {
                     {
                         Yii::app()->session['databaseDontExist'] = true;
 
-                        $aValues['adminoutputText'].= "\t<tr bgcolor='#efefef'><td align='center'>\n"
-                        ."<strong>".gT("Database doesn't exist!")."</strong><br /><br />\n"
-                        .gT("The database you specified does not exist:")."<br /><br />\n<strong>".$oModel->dbname."</strong><br /><br />\n"
-                        .gT("LimeSurvey can attempt to create this database for you.")."<br /><br />\n";
+                        $aValues['dbname'] = $oModel->dbname;
+
+                        // The database doesn't exist, etc. TODO: renderPartial should be done in the view, really.
+                        $aValues['adminoutputText'] = $this->renderPartial('/installer/nodatabase_view', $aValues, true);
 
                         $aValues['next'] =  array(
                             'action' => 'installer/createdb',
@@ -385,7 +381,7 @@ class InstallerController extends CController {
 
                         $aValues['next'] =  array(
                             'action' => 'installer/populatedb',
-                            'label' => gT("Populate database"),
+                            'label' => gT("Populate database",'unescaped'),
                             'name' => 'createdbstep2',
                         );
                     }
@@ -420,10 +416,10 @@ class InstallerController extends CController {
     function stepCreateDb()
     {
         // check status. to be called only when database don't exist else redirect to proper link.
-        if(!Yii::app()->session['databaseDontExist']) {
+        if(!Yii::app()->session['databaseDontExist'])
+        {
             $this->redirect(array('installer/welcome'));
         }
-
 
         $aData['model'] = $model = new InstallerConfigForm;
         $aData['title'] = gT("Database configuration");
@@ -446,7 +442,7 @@ class InstallerController extends CController {
             case 'mysql':
             try
             {
-                $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
+                $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")->execute();
             }
             catch(Exception $e)
             {
@@ -497,9 +493,9 @@ class InstallerController extends CController {
             Yii::app()->session['databaseexist'] = true;
             unset(Yii::app()->session['databaseDontExist']);
 
-            $aData['adminoutputText'] = "<tr bgcolor='#efefef'><td colspan='2' align='center'> <br />"
-            ."<strong><font class='successtitle'>\n"
-            .gT("Database has been created.")."</font></strong><br /><br />\n"
+            $aData['adminoutputText'] = "<tr bgcolor='#efefef'><td colspan='2' align='center'>"
+            ."<div class='alert alert-success''><strong>\n"
+            .gT("Database has been created.")."</strong></div>\n"
             .gT("Please continue with populating the database.")."<br /><br />\n";
             $aData['next'] =  array(
                 'action' => 'installer/populatedb',
@@ -761,11 +757,18 @@ class InstallerController extends CController {
         * check image HTML template
         *
         * @param bool $result
+        * @return string Span with check if $result is true; otherwise a span with warning
         */
         function check_HTML_image($result)
         {
-            $aLabelYesNo = array('wrong', 'right');
-            return sprintf('<img src="%s/installer/images/tick-%s.png" alt="Found" />', Yii::app()->baseUrl, $aLabelYesNo[$result]);
+            if ($result)
+            {
+                return "<span class='fa fa-check text-success' alt='right'></span>";
+            }
+            else
+            {
+                return "<span class='fa fa-exclamation-triangle text-danger' alt='wrong'></span>";
+            }
         }
 
 
@@ -870,7 +873,7 @@ class InstallerController extends CController {
         }
 
         //  version check
-        if (version_compare(PHP_VERSION, '5.3.3', '<'))
+        if (version_compare(PHP_VERSION, '5.3.0', '<'))
             $bProceed = !$aData['verror'] = true;
 
         if (convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024<64 && ini_get('memory_limit')!=-1)
@@ -941,12 +944,13 @@ class InstallerController extends CController {
     */
     function _setup_tables($sFileName, $aDbConfig = array(), $sDatabasePrefix = '')
     {
-        extract(empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig);
+        $aDbConfig= empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig;
+        extract($aDbConfig);
         try{
             switch ($sDatabaseType) {
                 case 'mysql':
                 case 'mysqli':
-                    $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;")->execute();
+                    $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
                     break;
             }
         } catch(Exception $e) {
@@ -978,6 +982,7 @@ class InstallerController extends CController {
 
             if ($iLineLength && $sLine[0] != '#' && substr($sLine,0,2) != '--') {
                 if (substr($sLine, $iLineLength-1, 1) == ';') {
+                    $line = substr($sLine, 0, $iLineLength-1);
                     $sCommand .= $sLine;
                     $sCommand = str_replace('prefix_', $sDatabasePrefix, $sCommand); // Table prefixes
 
@@ -1091,7 +1096,7 @@ class InstallerController extends CController {
 
             ."\t\t"   . "// Uncomment the following line if you need table-based sessions". "\n"
             ."\t\t"   . "// 'session' => array ("                      . "\n"
-            ."\t\t\t" . "// 'class' => 'system.web.CDbHttpSession',"   . "\n"
+            ."\t\t\t" . "// 'class' => 'application.core.web.DbHttpSession',"   . "\n"
             ."\t\t\t" . "// 'connectionID' => 'db',"                   . "\n"
             ."\t\t\t" . "// 'sessionTableName' => '{{sessions}}',"     . "\n"
             ."\t\t"   . "// ),"                                        . "\n"
@@ -1107,8 +1112,10 @@ class InstallerController extends CController {
 
             ."\t\t"   . "'urlManager' => array("                    . "\n"
             ."\t\t\t" . "'urlFormat' => '{$sURLFormat}',"           . "\n"
-            ."\t\t\t" . "'rules' => require('routes.php'),"         . "\n"
-            ."\t\t\t" . "'showScriptName' => $sShowScriptName,"      . "\n"
+            ."\t\t\t" . "'rules' => array("                         . "\n"
+            ."\t\t\t\t" . "// You can add your own rules here"      . "\n"
+            ."\t\t\t" . "),"                                        . "\n"
+            ."\t\t\t" . "'showScriptName' => $sShowScriptName,"     . "\n"
             ."\t\t"   . "),"                                        . "\n"
             ."\t"     . ""                                          . "\n"
 
@@ -1119,8 +1126,9 @@ class InstallerController extends CController {
             ."\t"     . "// then please check your error-logs - either in your hosting provider admin panel or in some /logs directory". "\n"
             ."\t"     . "// on your webspace.". "\n"
             ."\t"     . "// LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates". "\n"
-            ."\t\t"   . "'debug'=>0,"                                . "\n"
-            ."\t\t"   . "'debugsql'=>0 // Set this to 1 to enanble sql logging, only active when debug = 2" . "\n"
+            ."\t\t"   . "'debug'=>0,"                               . "\n"
+            ."\t\t"   . "'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2" . "\n"
+            ."\t\t"   . "// Update default LimeSurvey config here"  . "\n"
             ."\t"     . ")"                                         . "\n"
             . ");"                                        . "\n"
             . "/* End of file config.php */"              . "\n"
@@ -1253,33 +1261,103 @@ class InstallerController extends CController {
 
     /**
     * Connect to the database
-    *
-    * Throw an error if there's an error
+    * @param array $aDbConfig : The config to be tested
+    * @param array $aData
+    * @return bool
     */
     function _dbConnect($aDbConfig = array(), $aData = array())
     {
-        extract(empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig);
-        $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
+        $aDbConfig= empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig;
+        extract($aDbConfig);
         $sDatabaseName = empty($sDatabaseName) ? '' : $sDatabaseName;
         $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
 
-        try {
+        $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
+        if(!self::dbTest($aDbConfig, $aData))// Remove sDatabaseName from the connexion is not exist
+        {
+            $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, "", $sDatabaseUser, $sDatabasePwd);
+            $bDbExist=false;
+        }
+        try
+        {
             $this->connection = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
-            if($sDatabaseType!='sqlsrv' && $sDatabaseType!='dblib'){
+            if($sDatabaseType!='sqlsrv' && $sDatabaseType!='dblib')
+            {
                 $this->connection->emulatePrepare = true;
             }
-
             $this->connection->active = true;
             $this->connection->tablePrefix = $sDatabasePrefix;
             return true;
-        } catch(Exception $e) {
-            if (!empty($aData['model']) && !empty($aData['clang'])) {
-                $aData['model']->addError('dblocation', $aData['clang']->gT('Try again! Connection with database failed. Reason: ') . $e->getMessage());
-                $this->render('/installer/dbconfig_view', $aData);
-            } else {
-                return false;
-            }
+        }
+        catch(Exception $e)
+        {
+            return false;
         }
     }
+    /**
+    * Trye a connexion to the DB and add error in model if exist
+    * @param array $aDbConfig : The config to be tested
+    * @param array $aData
+    * @return void, bool if connection is done
+    */
+    private function dbTest($aDbConfig = array(), $aData = array())
+    {
+        $aDbConfig= empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig;
+        extract($aDbConfig);
+        $sDatabaseName = empty($sDatabaseName) ? '' : $sDatabaseName;
+        $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
+        $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
+        try
+        {
+            $testPdo = new PDO($sDsn,$sDatabaseUser,$sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        }
+        catch(Exception $e)
+        {
+            if($sDatabaseType=='mysql' && $e->getCode()==1049)
+            {
+                return false;
+            }
+            if($sDatabaseType=='pgsql' && $e->getCode()==7)
+            {
+                return false;
+            }
+            /* @todo : find the good error code for dblib and sqlsrv in exactly same situation : user can read the DB but DB don't exist*/
+            /* using same behaviuor than before : test without dbname : db creation can break */
+            $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, "", $sDatabaseUser, $sDatabasePwd);
+            try
+            {
+                $testPdo = new PDO($sDsn,$sDatabaseUser,$sDatabasePwd, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            }
+            catch(Exception $e)
+            {
+                /* With pgsql : sending "" to tablename => tablename==username , we are unsure if this must be OK */
+                /* But Yii sedn exception in same condition : the show this error */
+                if (!empty($aData['model'])) {
+                    $aData['model']->addError('dblocation', gT('Try again! Connection with database failed.'));
+                    $aData['model']->addError('dblocation', gT('Reason:').' ' . $e->getMessage());
+                    $this->render('/installer/dbconfig_view', $aData);
+                    Yii::app()->end();
+                }
+                else
+                {
+                    // Use same exception than Yii ? unclear
+                    throw new CDbException('CDbConnection failed to open the DB connection.',(int)$e->getCode(),$e->errorInfo);
+                }
+            }
+            $testPdo = null;
+            return false;
+        }
+        $sMinimumMySQLVersion='5.5.3';
+        if ($sDatabaseType=='mysql' && version_compare($testPdo->getAttribute(constant("PDO::ATTR_SERVER_VERSION")),$sMinimumMySQLVersion)==-1)
+        {
+            if (!empty($aData['model'])) {
+                $aData['model']->addError('dblocation', sprintf(gT('The database does not meet the minimum MySQL/MariaDB server version requirement for LimeSurvey (%s).'),$sMinimumMySQLVersion));
+                $this->render('/installer/dbconfig_view', $aData);
+                Yii::app()->end();
+            }
+        }
+        $testPdo = null;
 
+        return true;
+    }
 }

@@ -1,190 +1,125 @@
 <?php
 /**
  * TbTabs class file.
- * @author Christoffer Niska <ChristofferNiska@gmail.com>
- * @copyright Copyright &copy; Christoffer Niska 2011-
+ * @author Antonio Ramirez <ramirez.cobos@gmail.com>
+ * @copyright Copyright &copy; Christoffer Niska 2013-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package bootstrap.widgets
  */
 
-Yii::import('bootstrap.widgets.TbMenu');
-
 /**
- * Bootstrap Javascript tabs widget.
- * @see http://twitter.github.com/bootstrap/javascript.html#tabs
+ * Bootstrap tabs widget.
  */
 class TbTabs extends CWidget
 {
-	// Tab placements.
-	const PLACEMENT_ABOVE = 'above';
-	const PLACEMENT_BELOW = 'below';
-	const PLACEMENT_LEFT = 'left';
-	const PLACEMENT_RIGHT = 'right';
+    /**
+     * @var string the type of tabs to display. Valid values are 'tabs' and 'pills' (defaults to 'tabs').
+     * @see TbHtml::$navStyles
+     */
+    public $type = TbHtml::NAV_TYPE_TABS;
+    /**
+     * @var string the placement of the tabs. Valid values are 'right, 'left' and 'below'.
+     * @see TbHtml::tabPlacements
+     */
+    public $placement;
+    /**
+     * @var array the tab configuration.
+     */
+    public $tabs = array();
+    /**
+     * @var array additional data submitted to the views.
+     */
+    public $viewData;
+    /**
+     * @var string a javascript function that This event fires on tab show, but before the new tab has been shown.
+     * Use `event.target` and `event.relatedTarget` to target the active tab and the previous active tab (if available)
+     * respectively.
+     */
+    public $onShow;
+    /**
+     * @var string a javascript function that fires on tab show after a tab has been shown. Use `event.target` and
+     * `event.relatedTarget` to target the active tab and the previous active tab (if available) respectively.
+     */
+    public $onShown;
+    /**
+     * @var array the HTML attributes for the widget container.
+     */
+    public $htmlOptions = array();
+    /**
+     * @var string[] the Javascript event handlers.
+     */
+    protected $events = array();
 
-	/**
-	 * @var string the type of tabs to display. Defaults to 'tabs'. Valid values are 'tabs' and 'pills'.
-	 * Please not that Javascript pills are not fully supported in Bootstrap yet!
-	 * @see TbMenu::$type
-	 */
-	public $type = TbMenu::TYPE_TABS;
-	/**
-	 * @var string the placement of the tabs.
-	 * Valid values are 'above', 'below', 'left' and 'right'.
-	 */
-	public $placement;
-	/**
-	 * @var array the tab configuration.
-	 */
-	public $tabs = array();
+    /**
+     * Widget's initialization method
+     */
+    public function init()
+    {
+        $this->attachBehavior('TbWidget', new TbWidget);
+        $this->copyId();
+        TbArray::defaultValue('placement', $this->placement, $this->htmlOptions);
+        $this->initEvents();
+    }
 
-	/**
-	 * @var boolean indicates whether to stack navigation items.
-	 */
-	public $stacked = false;
-	/**
-	/**
-	 * @var boolean whether to encode item labels.
-	 */
-	public $encodeLabel = true;
-	/**
-	 * @var string[] the Javascript event handlers.
-	 */
-	public $events = array();
-	/**
-	 * @var array the HTML attributes for the widget container.
-	 */
-	public $htmlOptions = array();
+    /**
+     * Initialize events if any
+     */
+    public function initEvents()
+    {
+        foreach (array('onShow', 'onShown') as $event) {
+            if ($this->$event !== null) {
+                $modalEvent = strtolower(substr($event, 2));
+                if ($this->$event instanceof CJavaScriptExpression) {
+                    $this->events[$modalEvent] = $this->$event;
+                } else {
+                    $this->events[$modalEvent] = new CJavaScriptExpression($this->$event);
+                }
+            }
+        }
+    }
 
-	/**
-	 * Initializes the widget.
-	 */
-	public function init()
-	{
-		if (!isset($this->htmlOptions['id']))
-			$this->htmlOptions['id'] = $this->getId();
+    /**
+     * Widget's run method
+     */
+    public function run()
+    {
+        $this->tabs = $this->normalizeTabs($this->tabs);
+        echo TbHtml::tabbable($this->type, $this->tabs, $this->htmlOptions);
+        $this->registerClientScript();
+    }
 
-		$classes = array();
+    /**
+     * Normalizes the tab configuration.
+     * @param array $tabs a reference to the tabs tab configuration.
+     */
+    protected function normalizeTabs($tabs)
+    {
+        $controller = $this->getController();
+        if (isset($controller)) {
+            foreach ($tabs as &$tabOptions) {
+                $items = TbArray::getValue('items', $tabOptions, array());
+                if (!empty($items)) {
+                    $tabOptions['items'] = $this->normalizeTabs($items);
+                } else {
+                    if (isset($tabOptions['view'])) {
+                        $view = TbArray::popValue('view', $tabOptions);
+                        if ($controller->getViewFile($view) !== false) {
+                            $tabOptions['content'] = $controller->renderPartial($view, $this->viewData, true);
+                        }
+                    }
+                }
+            }
+        }
+        return $tabs;
+    }
 
-		$validPlacements = array(self::PLACEMENT_ABOVE, self::PLACEMENT_BELOW, self::PLACEMENT_LEFT, self::PLACEMENT_RIGHT);
-
-		if (isset($this->placement) && in_array($this->placement, $validPlacements))
-			$classes[] = 'tabs-'.$this->placement;
-
-		if (!empty($classes))
-		{
-			$classes = implode(' ', $classes);
-			if (isset($this->htmlOptions['class']))
-				$this->htmlOptions['class'] .= ' '.$classes;
-			else
-				$this->htmlOptions['class'] = $classes;
-		}
-	}
-
-	/**
-	 * Run this widget.
-	 */
-	public function run()
-	{
-		$id = $this->id;
-		$content = array();
-		$items = $this->normalizeTabs($this->tabs, $content);
-
-		ob_start();
-		$this->controller->widget('bootstrap.widgets.TbMenu', array(
-			'stacked'=>$this->stacked,
-			'type'=>$this->type,
-			'encodeLabel'=>$this->encodeLabel,
-			'items'=>$items,
-		));
-		$tabs = ob_get_clean();
-
-		ob_start();
-		echo '<div class="tab-content">';
-		echo implode('', $content);
-		echo '</div>';
-		$content = ob_get_clean();
-
-		echo CHtml::openTag('div', $this->htmlOptions);
-		echo $this->placement === self::PLACEMENT_BELOW ? $content.$tabs : $tabs.$content;
-		echo '</div>';
-
-		/** @var CClientScript $cs */
-		$cs = Yii::app()->getClientScript();
-		$cs->registerScript(__CLASS__.'#'.$id, "jQuery('#{$id}').tab('show');");
-
-		foreach ($this->events as $name => $handler)
-		{
-			$handler = CJavaScript::encode($handler);
-			$cs->registerScript(__CLASS__.'#'.$id.'_'.$name, "jQuery('#{$id}').on('{$name}', {$handler});");
-		}
-	}
-
-	/**
-	 * Normalizes the tab configuration.
-	 * @param array $tabs the tab configuration
-	 * @param array $panes a reference to the panes array
-	 * @param integer $i the current index
-	 * @return array the items
-	 */
-	protected function normalizeTabs($tabs, &$panes, &$i = 0)
-	{
-		$id = $this->getId();
-		$items = array();
-
-		foreach ($tabs as $tab)
-		{
-			$item = $tab;
-
-			if (isset($item['visible']) && $item['visible'] === false)
-				continue;
-
-			if (!isset($item['itemOptions']))
-				$item['itemOptions'] = array();
-
-			$item['linkOptions']['data-toggle'] = 'tab';
-
-			if (isset($tab['items']))
-				$item['items'] = $this->normalizeTabs($item['items'], $panes, $i);
-			else
-			{
-				if (!isset($item['id']))
-					$item['id'] = $id.'_tab_'.($i + 1);
-
-				$item['url'] = '#'.$item['id'];
-
-				if (!isset($item['content']))
-					$item['content'] = '';
-
-				$content = $item['content'];
-				unset($item['content']);
-
-				if (!isset($item['paneOptions']))
-					$item['paneOptions'] = array();
-
-				$paneOptions = $item['paneOptions'];
-				unset($item['paneOptions']);
-
-				$paneOptions['id'] = $item['id'];
-
-				$classes = array('tab-pane fade');
-
-				if (isset($item['active']) && $item['active'])
-					$classes[] = 'active in';
-
-				$classes = implode(' ', $classes);
-				if (isset($paneOptions['class']))
-					$paneOptions['class'] .= ' '.$classes;
-				else
-					$paneOptions['class'] = $classes;
-
-				$panes[] = CHtml::tag('div', $paneOptions, $content);
-
-				$i++; // increment the tab-index
-			}
-
-			$items[] = $item;
-		}
-
-		return $items;
-	}
+    /**
+     * Registers necessary client scripts.
+     */
+    public function registerClientScript()
+    {
+        $selector = '#' . $this->htmlOptions['id'];
+        Yii::app()->clientScript->registerScript(__CLASS__ . $selector, "jQuery('{$selector}').tab('show');");
+        $this->registerEvents($selector, $this->events);
+    }
 }

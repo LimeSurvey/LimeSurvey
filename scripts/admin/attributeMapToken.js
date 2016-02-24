@@ -1,7 +1,4 @@
 $(document).ready(function(){
-    if(!$('#tokenatt').children().length ) {
-        alert(attributesMappedText);
-    }
     var height = $(document).height();
     var width = $(document).width();
     var tokencurrentarray = {};
@@ -10,22 +7,22 @@ $(document).ready(function(){
     if($("#createautomap").is(':checked')) {var attcreateautomap=true;} else {var attcreateautomap=false;}
     
     var headingHeight = 0;
-    $('.attribute-column .heading').each(function(i) {
+    $('.attribute-column .panel-heading').each(function(i) {
         if($(this).height() > headingHeight) {
             headingHeight = $(this).height();
         }
     });
-    $('.attribute-column .heading').height(headingHeight);
+    $('.attribute-column .panel-heading').height(headingHeight);
     
     function adjustHeights() {
         $('.attribute-column, .droppable').css({ 'height': 'auto' });
         $('.attribute-column').height($('.draggable-container').height());
         
-        var ncHeadingHeight = $('#newcreated .heading').outerHeight();
+        var ncHeadingHeight = $('#newcreated .panel-heading').outerHeight();
         $('.newcreate').css({
             'height':$('#newcreated').height()-ncHeadingHeight-5
         });
-        var taHeadingHeight = $('#tokenattribute .heading').outerHeight();
+        var taHeadingHeight = $('#tokenattribute .panel-heading').outerHeight();
         $('#tokenatt').css({
             'height':$('#tokenattribute').height()-taHeadingHeight-5
         });
@@ -74,13 +71,15 @@ $(document).ready(function(){
             // Remove the text input if dropped out of the new attributes column
             if(!$(this).hasClass('newcreate') && $('input[type="text"]', newDraggable).length > 0) { 
                 $('input[type="text"]', newDraggable).remove();
-                $(newDraggable).text($(newDraggable).attr('data-name'));
+                $(newDraggable).html('<div class="panel-body">' + $(newDraggable).attr('data-name') + "</div>");
             }        
+
             // Dropped in new attributes
             if($(this).hasClass('newcreate')) { 
                 $(newDraggable).html($(newDraggable).attr('id').replace('t_',''));
                 $(newDraggable).prepend('<input type="text" id="td_'+$(newDraggable).attr('id')+'" value=\"'+$(newDraggable).attr('data-name')+'\">');
             }            
+
             // Reset the mappable attribute classes        
             $('.mappable-attribute-wrapper').removeClass('paired');
             $('.mappable-attribute-wrapper .token-attribute').closest('.mappable-attribute-wrapper').addClass('paired');
@@ -104,27 +103,42 @@ $(document).ready(function(){
     $("#createautomap").click(function(){
         if($("#createautomap").is(':checked')) {attcreateautomap=true;} else {attcreateautomap=false;}
     });
+
+    // Continue button
     $('#attmap').click(function(){
+
         var anewcurrentarray = {};
         newcurrentarray = new Array();
-        $('#newcreated .attribute-item[id]').each(function(i) {
+
+        $('#newcreated .attribute-item').each(function(i) {
+            console.log(this);
             newcurrentarray.push($(this).attr('id'));
         });
+
         $.each(newcurrentarray, function(index,value) {
+            console.log(value);
             if(value[0]=='t') {
                 anewcurrentarray[value.substring(2)] = $("#td_"+value).val();
             }
         });
+
         var mappedarray = {};
         tokencurrentarray = new Array();
-        $('#centralattribute .attribute-item[id]').each(function(i) {
+        $('#centralattribute .attribute-item').each(function(i) {
             tokencurrentarray.push($(this).attr('id'));
         });
+
         $.each(tokencurrentarray, function(index,value) {
             if(value[0]=='t') {
                 mappedarray[encodeURI(tokencurrentarray[index-1].substring(2))] = value.substring(2);
             }
         });
+
+        console.log('mappedarray', mappedarray);
+        console.log('anewcurrentarray', anewcurrentarray);
+        console.log(attoverwrite);
+        console.log(attoverwriteman);
+        console.log(attcreateautomap);
 
         /* $("#processing").dialog({
             height: 90,
@@ -140,9 +154,13 @@ $(document).ready(function(){
             overwriteman: attoverwriteman,
             createautomap: attcreateautomap
         }, function(msg){
-            alert(msg);
-            //$(this).dialog("close");
-            $(location).attr('href',redUrl);
+            $('#attribute-map-token-modal .modal-body').html(msg);
+            $('#attribute-map-token-modal').on('hide.bs.modal' , function (e) {
+                $(location).attr('href',redUrl);
+            });
+            $('#attribute-map-token-modal').modal();
+
         });
     });
+
 });

@@ -1,17 +1,26 @@
 <tr class='<?php echo $bgcc; ?>' valign='top'>
     <td align='center'><input type='checkbox' class='cbResponseMarker' value='<?php echo $dtrow['id']; ?>' name='markedresponses[]' /></td>
     <td align='center'>
-<a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/{$dtrow['id']}"); ?>'><img src='<?php echo $sImageURL; ?>token_viewanswer.png' alt='<?php eT('View response details'); ?>'/></a>
+<a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/{$dtrow['id']}"); ?>'>
+    <span class="glyphicon glyphicon-list-alt text-success" title="<?php eT('View response details'); ?>"></span>
+</a>
 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update'))
 { ?>
-<a href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$dtrow['id']}"); ?>'><img src='<?php echo $sImageURL; ?>edit_16.png' alt='<?php eT('Edit this response'); ?>'/></a>
+<a href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$dtrow['id']}"); ?>'>
+    <span class="glyphicon glyphicon-pencil text-success" title="<?php eT('Edit this response'); ?>"></span>
+</a>
 <?php }
 if ($bHasFileUploadQuestion) { ?>
-<a><img id='downloadfile_<?php echo $dtrow['id']; ?>' src='<?php echo $sImageURL; ?>down.png' alt='<?php eT('Download all files in this response as a zip file'); ?>' class='downloadfile'/></a>
+<a>
+    <span id='downloadfile_<?php echo $dtrow['id']; ?>' class="downloadfile glyphicon glyphicon-download-alt text-success" title="<?php eT('Download all files in this response as a zip file'); ?>">
+    </span>
+</a>
 <?php }
 if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
 { ?>
-<a><img id='deleteresponse_<?php echo $dtrow['id']; ?>' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php eT('Delete this response'); ?>' class='deleteresponse'/></a>
+<a>
+    <span id='deleteresponse_<?php echo $dtrow['id']; ?>' class="deleteresponse glyphicon glyphicon-trash text-warning" title="<?php eT('Delete this response'); ?>"></span>
+</a>
 <?php } ?>
 </td>
     <?php

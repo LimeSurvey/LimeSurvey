@@ -1,47 +1,103 @@
-<?php echo CHtml::form(array("admin/tokens/sa/import/surveyid/{$iSurveyId}"), 'post', array('id'=>'tokenimport', 'name'=>'tokenimport', 'enctype'=>'multipart/form-data')); ?>
+<?php
+/**
+ * Import tokens from CSV file
+ *
+ */
+?>
 
-    <ul>
-        <li>
-            <label for='the_file'><?php eT("Choose the CSV file to upload:"); ?></label>
-            <?php echo CHtml::fileField('the_file','',array('required'=>'required','accept'=>'.csv')); ?>
-        </li>
-        <li>
-            <label for='csvcharset'><?php eT("Character set of the file:"); ?></label>
-            <?php echo CHtml::dropDownList('csvcharset', 'auto', $aEncodings, array('size' => '1')); ?>
-        </li>
-        <li>
-            <label for='separator'><?php eT("Separator used:"); ?> </label>
-            <?php
-                $aSeparator = array('auto' => gT("(Autodetect)"), 'comma' => gT("Comma"), 'semicolon' => gT("Semicolon"));
-                echo CHtml::dropDownList('separator', returnGlobal('separator'), $aSeparator, array('size' => '1'));
-            ?>
-        </li>
-        <li>
-            <label for='filterblankemail'><?php eT("Filter blank email addresses:"); ?></label>
-            <?php echo CHtml::checkBox('filterblankemail', true); ?>
-        </li>
-        <li>
-            <label for='allowinvalidemail'><?php eT("Allow invalid email addresses:"); ?></label>
-            <?php echo CHtml::checkBox('allowinvalidemail', false); ?>
-        </li>
-        <li>
-            <label for='filterduplicatetoken'><?php eT("Filter duplicate records:"); ?></label>
-            <?php echo CHtml::checkBox('filterduplicatetoken', true); ?>
-        </li>
-        <li id='lifilterduplicatefields'>
-            <label for='filterduplicatefields'><?php eT("Duplicates are determined by:"); ?></label>
-            <?php
-                echo CHtml::listBox('filterduplicatefields', array('firstname', 'lastname', 'email'), $aTokenTableFields, array('multiple' => 'multiple', 'size' => '7'));
-            ?>
-        </li>
-    </ul>
-    <p>
-        <?php echo CHtml::htmlButton(gT("Upload"),array('type'=>'submit','name'=>'upload','value'=>'import')); ?>
-    </p>
-</form>
-<div class='messagebox ui-corner-all'>
-    <div class='header ui-widget-header'><?php eT("CSV input format"); ?></div>
-    <p><?php eT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."); ?></p>
-    <span style="font-weight:bold;"><?php eT("Mandatory fields:"); ?></span> firstname, lastname, email<br />
-    <span style="font-weight:bold;"><?php eT('Optional fields:'); ?></span> emailstatus, token, language, validfrom, validuntil, attribute_1, attribute_2, attribute_3, usesleft, ... .
+<div class="side-body">
+    <h3><?php eT("Import tokens from CSV file"); ?></h3>
+
+    <div class="row">
+        <div class="col-lg-12 content-right">
+            <?php echo CHtml::form(array("admin/tokens/sa/import/surveyid/{$iSurveyId}"), 'post', array('id'=>'tokenimport', 'name'=>'tokenimport', 'class'=>'form-horizontal', 'enctype'=>'multipart/form-data')); ?>
+
+                <!-- Choose the CSV file to upload -->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for='the_file'><?php eT("Choose the CSV file to upload:"); ?></label>
+                    <div class="col-sm-10">
+                        <?php echo CHtml::fileField('the_file','',array('required'=>'required','accept'=>'.csv')); ?>
+                    </div>
+                </div>
+
+                <!-- "Character set of the file -->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for='csvcharset'><?php eT("Character set of the file:"); ?></label>
+                    <div class="col-sm-5">
+                        <?php echo CHtml::dropDownList('csvcharset', 'auto', $aEncodings, array('size' => '1', 'class'=>'form-control')); ?>
+                    </div>
+                </div>
+
+                <!-- Separator used -->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for='separator'><?php eT("Separator used:"); ?> </label>
+                    <div class="col-sm-3">
+                        <?php
+                            $aSeparator = array('auto' => gT("(Autodetect)",'unescaped'), 'comma' => gT("Comma",'unescaped'), 'semicolon' => gT("Semicolon",'unescaped'));
+                            echo CHtml::dropDownList('separator', returnGlobal('separator'), $aSeparator, array('size' => '1','class'=>'form-control'));
+                        ?>
+                    </div>
+                </div>
+
+                <!-- Filter blank email addresses -->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for='filterblankemail'><?php eT("Filter blank email addresses:"); ?></label>
+                    <div class="col-sm-10">
+                        <?php echo CHtml::checkBox('filterblankemail', true); ?>
+                    </div>
+                </div>
+
+                <!-- Allow invalid email addresses -->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for='allowinvalidemail'><?php eT("Allow invalid email addresses:"); ?></label>
+                    <div class="col-sm-10">
+                        <?php echo CHtml::checkBox('allowinvalidemail', false); ?>
+                    </div>
+                </div>
+
+                <!-- show invalid attributes -->
+                <div class="form-group">
+                            <label class="col-sm-2 control-label" for='showwarningtoken'><?php eT("Display attribute warnings:"); ?></label>
+                    <div class="col-sm-10">
+                           <?php echo CHtml::checkBox('showwarningtoken'); ?>
+                    </div>
+                </div>
+
+                <!-- Filter duplicate records -->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for='filterduplicatetoken'><?php eT("Filter duplicate records:"); ?></label>
+                    <div class="col-sm-10">
+                        <?php echo CHtml::checkBox('filterduplicatetoken', true); ?>
+                    </div>
+                </div>
+
+                <!-- Duplicates are determined by -->
+                <div class="form-group" id='lifilterduplicatefields'>
+                    <label class="col-sm-2 control-label" for='filterduplicatefields'><?php eT("Duplicates are determined by:"); ?></label>
+                    <div class="col-sm-10">
+                        <?php
+                            echo CHtml::listBox('filterduplicatefields', array('firstname', 'lastname', 'email'), $aTokenTableFields, array('multiple' => 'multiple', 'size' => '7'));
+                        ?>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <?php echo CHtml::htmlButton(gT("Upload"),array('type'=>'submit','name'=>'upload','value'=>'import', 'class'=>'btn btn-default')); ?>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Infos -->
+            <div class="alert alert-info" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong><?php eT("CSV input format"); ?></strong><br/>
+                <p><?php eT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."); ?></p>
+                <span style="font-weight:bold;"><?php eT("Mandatory fields:"); ?></span> firstname, lastname, email<br />
+                <span style="font-weight:bold;"><?php eT('Optional fields:'); ?></span> emailstatus, token, language, validfrom, validuntil, attribute_1, attribute_2, attribute_3, usesleft, ... .
+            </div>
+        </div>
+    </div>
 </div>
+

@@ -45,114 +45,194 @@
     });
     //-->
 </script>
-<div class='menubar'>
-    <div class='menubar-title ui-widget-header'>
-        <strong><?php eT('Template editor'); ?> - <?php eT("Template:"); ?> <i><?php echo $templatename; ?></i></strong>
-    </div>
-    <div class='menubar-main'>
-        <div class='menubar-left'>
-            <a href='<?php echo $this->createUrl("/admin"); ?>'>
-                <img src='<?php echo $sImageURL; ?>home.png' alt='<?php eT("Return to survey administration"); ?>' /></a>
-            <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt=''  />
 
-            <?php
-            if (!is_template_editable($templatename))
-            { ?>
-                <div class="menubar-right" style='padding-left:15px;padding-top:5px;'><span style='font-size:10px; font-weight: bold;'><?php eT('Note: This is a standard template.');?><br />
-                    <?php printf(gT('If you want to edit it %s please copy it first%s.'),"<a href='#' title=\"".gT("Copy Template")."\""
-                    ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the copied template:")."', '".gT("copy_of_")."$templatename', '$templatename', 'copy')\">",'</a>'); ?></span></div>
-                <?php
-            } ?>
-            <?php if(is_writable($tempdir) && is_writable($usertemplaterootdir))
-            {?>
-                <?php 
 
-                if (Permission::model()->hasGlobalPermission('templates','import'))
-                {
+<div class='menubar' id="templateeditorbar">
+    <div class='row container-fluid'>
 
-                    if (function_exists("zip_open")) {?>
-                        <a href='<?php echo $this->createUrl('admin/templates/sa/upload'); ?>'>
-                            <img src='<?php echo $sImageURL; ?>import.png' alt='<?php eT("Import template"); ?>' title='' /></a>
-                        <?php }else{ ?>
-                        <img src='<?php echo $sImageURL; ?>import_disabled.png' alt='<?php eT("zip library not supported by PHP, Import ZIP Disabled"); ?>' /></a>
-                        <?php } 
-                }
-                if (Permission::model()->hasGlobalPermission('templates','export'))
-                {
-                    ?>
-                    <a href='<?php echo $this->createUrl('admin/templates/sa/templatezip/templatename/' . $templatename) ?>'>
-                        <img src='<?php echo $sImageURL; ?>export.png' alt='<?php eT("Export Template"); ?>' /></a>
-                    <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
-                    <?php 
-                    if (Permission::model()->hasGlobalPermission('templates','create'))
-                    { ?>
-                        <a href='#' onclick="javascript: copyprompt('<?php eT("Please enter the name for the copied template:"); ?>', '<?php echo gT("copy_of_")."$templatename"; ?>',            '<?php echo $templatename; ?>', 'copy')">
-                            <img src='<?php echo $sImageURL; ?>copy.png' alt='<?php eT("Copy Template"); ?>' /></a>
-                        <?php
-                    }
-                }
-            }
-            else
-            { 
+        <!-- Left Menu -->
+        <div class="col-md-5">
 
-                if (Permission::model()->hasGlobalPermission('templates','import'))
-                { ?>
-                    <img src='<?php echo $sImageURL; ?>import_disabled.png' alt='<?php echo gT("Import template").' - '.gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>' />
-                    <?php }
-                if (Permission::model()->hasGlobalPermission('templates','export'))
-                { ?>
-                    <img src='<?php echo $sImageURL; ?>export_disabled.png' alt='<?php echo gT("Export template").' - '.gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>' />
-                    <?php 
-                } ?>
-                <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
-                <?php 
-                if (Permission::model()->hasGlobalPermission('templates','create'))
-                { ?>
-                    <img src='<?php echo $sImageURL; ?>copy_disabled.png' alt='<?php echo gT("Copy template").' - '.gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>' />
-                    <?php
-                }
-            }
+            <!-- Create -->
+            <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
+                <?php if(is_writable($usertemplaterootdir)):?>
+                    <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Create template called:"); ?>', '<?php eT("NewTemplate"); ?>', 'default', 'copy')">
+                        <span class="icon-add text-success"></span>
+                        <?php eT("Create"); ?>
+                    </a>
+                <?php else: ?>
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The template upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
+                        <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                            <span class="icon-addt text-success"></span>
+                            <?php eT("Create"); ?>
+                        </button>
+                    </span>
+                <?php endif;?>
+            <?php endif;?>
 
-            if (is_template_editable($templatename))
-            { 
-                if (Permission::model()->hasGlobalPermission('templates','update'))
-                { ?>
-                    <a href='#' onclick="javascript: copyprompt('<?php eT("Rename this template to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
-                        <img src='<?php echo $sImageURL; ?>edit.png' alt='<?php eT("Rename this template"); ?>' /></a>
-                    <?php  
-                }
-                if (Permission::model()->hasGlobalPermission('templates','delete'))
-                { ?>
-                    <a href='#' onclick='if (confirm("<?php eT("Are you sure you want to delete this template?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/templates/sa/delete/templatename/'.$templatename); ?>", "_top")' >
-                        <img src='<?php echo $sImageURL; ?>delete.png' alt='<?php eT("Delete this template"); ?>'/></a>
-                    <?php
-                }
-            } ?>
-            <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='20' height='10' />
+            <!-- Import -->
+            <?php if(is_writable($tempdir) && function_exists("zip_open")):?>
+                <?php if(Permission::model()->hasGlobalPermission('templates','import')):?>
+                    <?php if (is_writable($usertemplaterootdir)):?>
+                        <a class="btn btn-default" href="<?php echo $this->createUrl('admin/templates/sa/upload'); ?>" role="button">
+                            <span class="icon-import text-success"></span>
+                            <?php eT("Import"); ?>
+                        </a>
+                    <?php else: ?>
+                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The template upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
+                            <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                                <span class="icon-import text-success"></span>
+                                <?php eT("Import"); ?>
+                            </button>
+                        </span>
+                    <?php endif;?>
+                <?php else: ?>
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("We are sorry but you don't have permissions to do this."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
+                        <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                            <span class="icon-import text-success"></span>
+                            <?php eT("Import"); ?>
+                        </button>
+                    </span>
+                <?php endif;?>
 
+                <!-- Export -->
+                <?php if(Permission::model()->hasGlobalPermission('templates','export')):?>
+                    <a class="btn btn-default" href="<?php echo $this->createUrl('admin/templates/sa/templatezip/templatename/' . $templatename) ?>" role="button">
+                        <span class="icon-export text-success"></span>
+                        <?php eT("Export"); ?>
+                    </a>
+               <?php endif;?>
+
+               <!-- Copy -->
+               <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
+                    <?php if (is_writable($usertemplaterootdir)):?>
+                        <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the copied template:"); ?>', '<?php echo gT("copy_of_")."$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
+                            <span class="icon-copy text-success"></span>
+                            <?php eT("Copy"); ?>
+                        </a>
+                    <?php else: ?>
+                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The template upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
+                            <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                                <span class="icon-copy text-success"></span>
+                                <?php eT("Copy"); ?>
+                            </button>
+                        </span>
+                    <?php endif;?>
+               <?php endif;?>
+
+            <?php else: ?>
+
+                <!-- All buttons disabled -->
+
+                <!-- import disabled -->
+                <?php if(Permission::model()->hasGlobalPermission('templates','import')):?>
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
+                        <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                            <span class="icon-import text-muted"></span>
+                            <?php eT("Import"); ?>
+                        </button>
+                    </span>
+                <?php endif;?>
+
+                <!-- export disabled -->
+                <?php if(Permission::model()->hasGlobalPermission('templates','export')):?>
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
+                        <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                            <span class="icon-export text-muted"></span>
+                            <?php eT("Export"); ?>
+                        </button>
+                    </span>
+                <?php endif;?>
+
+                <!-- create disabled -->
+                <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
+                        <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                            <span class="icon-copy text-muted"></span>
+                            <?php eT("Copy"); ?>
+                        </button>
+                    </span>
+                <?php endif;?>
+
+            <?php endif;?>
+
+
+            <?php if(is_template_editable($templatename)):?>
+                <?php if(Permission::model()->hasGlobalPermission('templates','update')):?>
+                    <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Rename this template to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
+                        <span class="glyphicon glyphicon-pencil  text-success"></span>
+                        <?php eT("Rename"); ?>
+                    </a>
+                <?php endif;?>
+
+                <?php if(Permission::model()->hasGlobalPermission('templates','delete')):?>
+                    <a class="btn btn-default" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this template?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/templates/sa/delete/templatename/'.$templatename); ?>", "_top")'>
+                        <span class="glyphicon glyphicon-trash  text-warning"></span>
+                        <?php eT("Delete"); ?>
+                    </a>
+                <?php endif;?>
+            <?php endif;?>
         </div>
-        <div class='menubar-right'>
 
-            <label for='templatedir'><?php eT("Template:"); ?></label>
-            <select class="listboxtemplates" id='templatedir' name='templatedir' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/view/editfile/".$editfile."/screenname/".$screenname); ?>/templatename/'+escape(this.value), '_top')">
-                <?php echo templateoptions($templates, $templatename); ?>
-            </select>
-            <label for='listboxtemplates'><?php eT("Screen:"); ?></label>
-            <select class="listboxtemplates" id='listboxtemplates' name='screenname' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/screenredirect/editfile/".$editfile."/templatename/".$templatename); ?>/screenname/'+escape(this.value), '_top')">
-                <?php echo makeoptions($screens, "id", "name", HTMLEscape($screenname) ); ?>
-            </select>
-            <?php
-            if (Permission::model()->hasGlobalPermission('templates','create'))
-            { ?>
-                <a href='#' onclick="javascript: copyprompt('<?php eT("Create new template called:"); ?>', '<?php eT("NewTemplate"); ?>', 'default', 'copy')">
-                    <img src='<?php echo $sImageURL; ?>add.png' alt='<?php eT("Create new template"); ?>' /></a>
-                <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
-                <?php 
-            }
-            ?>
-            <a href="<?php echo $this->createUrl("admin/authentication/sa/logout"); ?>">
-                <img src='<?php echo $sImageURL; ?>logout.png' alt='<?php eT("Logout"); ?>' /></a>
-            <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='20'  />
+
+        <!-- Right Menu -->
+        <div class="col-md-7 text-right form-inline">
+            <div class="form-group">
+                <label for='templatedir'><?php eT("Template:"); ?></label>
+                <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/view/editfile/".$editfile."/screenname/".$screenname); ?>/templatename/'+escape(this.value), '_top')">
+                    <?php echo templateoptions($templates, $templatename); ?>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for='listboxtemplates'><?php eT("Screen:"); ?></label>
+                <select class="listboxtemplates form-control" id='listboxtemplates' name='screenname' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/screenredirect/editfile/".$editfile."/templatename/".$templatename); ?>/screenname/'+escape(this.value), '_top')">
+                    <?php echo makeoptions($screens, "id", "name", HTMLEscape($screenname) ); ?>
+                </select>
+            </div>
+
+            <?php if(isset($fullpagebar['savebutton']['form'])):?>
+                <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
+                    <span class="glyphicon glyphicon-ok" ></span>
+                    <?php eT("Save");?>
+                </a>
+            <?php endif;?>
+
+            <?php if(isset($fullpagebar['closebutton']['url'])):?>
+                <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
+                    <span class="glyphicon glyphicon-close" ></span>
+                    <?php eT("Close");?>
+                </a>
+            <?php endif;?>
+            <?php if(isset($fullpagebar['returnbutton'])):?>
+                <a class="btn btn-default" href="<?php echo $this->createUrl("/admin"); ?>" role="button">
+                    <span class="glyphicon glyphicon-backward" ></span>
+                    &nbsp;&nbsp;
+                    <?php eT("Return to admin panel"); ?>
+                </a>
+            <?php endif;?>
         </div>
     </div>
+</div>
+
+
+<div class="col-lg-12 templateeditor">
+    <h3><?php eT("Template editor:"); ?> <i><?php echo $templatename; ?></i></h3>
+
+
+<?php if(!is_template_editable($templatename)):?>
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
+        <span class="glyphicon glyphicon-info-sign" ></span>&nbsp;&nbsp;&nbsp;
+        <strong>
+            <?php eT('Note: This is a standard template.');?>
+        </strong>
+        <?php
+            printf(gT('If you want to edit it %s please copy it first%s.'),"<a href='#' title=\"".gT("Copy Template")."\""
+            ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the copied template:")."', '".gT("copy_of_")."$templatename', '$templatename', 'copy')\">",'</a>');
+        ?>
+    </div>
+<?php endif;?>
+
+
 </div>

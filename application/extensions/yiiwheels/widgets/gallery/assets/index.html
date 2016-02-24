@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<!--
+/*
+ * blueimp Gallery Demo 2.5.0
+ * https://github.com/blueimp/Gallery
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+-->
+<html lang="en">
+<head>
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<![endif]-->
+<meta charset="utf-8">
+<title>blueimp Gallery</title>
+<meta name="description" content="blueimp Gallery is a touch-enabled, responsive and customizable image and video gallery, carousel and lightbox, optimized for both mobile and desktop web browsers. It features swipe, mouse and keyboard navigation, transition effects, slideshow functionality, fullscreen support and on-demand content loading and can be extended to display additional content types.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/blueimp-gallery.css">
+<link rel="stylesheet" href="css/blueimp-gallery-indicator.css">
+<link rel="stylesheet" href="css/blueimp-gallery-video.css">
+<link rel="stylesheet" href="css/demo.css">
+</head>
+<body>
+<h1>blueimp Gallery</h1>
+<p><a href="https://github.com/blueimp/Gallery">blueimp Gallery</a> is a touch-enabled, responsive and customizable image &amp; video gallery, carousel and lightbox, optimized for both mobile and desktop web browsers.<br>
+It features swipe, mouse and keyboard navigation, transition effects, slideshow functionality, fullscreen support and on-demand content loading and can be extended to display additional content types.</p>
+<ul class="navigation">
+    <li><a href="https://github.com/blueimp/Gallery/tags">Download</a></li>
+    <li><a href="https://github.com/blueimp/Gallery">Source Code</a></li>
+    <li><a href="https://github.com/blueimp/Gallery/blob/master/README.md">Documentation</a></li>
+    <li><a href="https://blueimp.net">&copy; Sebastian Tschan</a></li>
+</ul>
+<p><a href="https://github.com/blueimp/Gallery">blueimp Gallery</a> is based on <a href="http://swipejs.com/">Swipe</a>.</p>
+<br>
+<h2>Carousel image gallery</h2>
+<!-- The Gallery as inline carousel, can be positioned anywhere on the page -->
+<div id="blueimp-image-carousel" class="blueimp-gallery blueimp-gallery-carousel">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="play-pause"></a>
+</div>
+<br>
+<h2>Carousel video gallery</h2>
+<!-- The Gallery as inline carousel, can be positioned anywhere on the page -->
+<div id="blueimp-video-carousel" class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="play-pause"></a>
+</div>
+<br>
+<h2>Lightbox image gallery</h2>
+<!-- The container for the list of example images -->
+<div id="links" class="links"></div>
+<!-- The Gallery as lightbox dialog, should be a child element of the document body -->
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>
+<script src="js/blueimp-helper.js"></script>
+<script src="js/blueimp-gallery.js"></script>
+<script src="js/blueimp-gallery-fullscreen.js"></script>
+<script src="js/blueimp-gallery-indicator.js"></script>
+<script src="js/blueimp-gallery-video.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>
+/*jslint evil: true */
+/*global window, document*/
+// Including jQuery via the protocol relative url above works for both http and https.
+// Explicitly including jQuery via http allows running the Gallery demo as local file:
+if (!window.jQuery) {
+    document.write(
+        '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"><\/script>'
+    );
+}
+</script>
+<script src="js/jquery.blueimp-gallery.js"></script>
+<script src="js/demo.js"></script>
+</body> 
+</html>

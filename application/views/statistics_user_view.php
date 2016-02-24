@@ -8,7 +8,7 @@
             </div>
             <?php if (isset($statisticsoutput) && $statisticsoutput) { echo $statisticsoutput; } ?><br />
         </div>
-<?php 
-    echo templatereplace(file_get_contents(getTemplatePath($sTemplatePath)."/endpage.pstpl"),array(), $redata);
+<?php
+    global $oTemplate;
+    echo templatereplace(file_get_contents($oTemplate->viewPath."/endpage.pstpl"),array(), $redata);
 ?>
-

@@ -30,9 +30,7 @@ $(document).on("mouseenter",".browsetable tbody td:not([title])",function(){
   }
 });
 $(document).ready(function(){
-    $('ul.sf-menu').superfish({
-        speed:'fast'
-    }); 
+
     $("#selectall").click(function(){
         $('.cbResponseMarker').attr('checked',$(this).is(':checked'));
     });
@@ -66,7 +64,7 @@ $(document).ready(function(){
             }
         }
         else
-            alert(noFilesSelectedForDeletion);
+            alert(noFilesSelectedForDeletion)
     });
 
     // Download individual file bundle
@@ -85,7 +83,7 @@ $(document).ready(function(){
             $('#resulttableform').submit();
         }
         else
-            alert(noFilesSelectedForDnld);
+            alert(noFilesSelectedForDnld)
     });
 
 

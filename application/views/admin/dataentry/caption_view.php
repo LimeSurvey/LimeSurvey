@@ -1,32 +1,40 @@
-<div class='header ui-widget-header'><?php eT("Data entry"); ?></div>
-
+<!--
+    dataentry/caption_view.php
+-->
+<div class="side-body">
+    <h3><?php eT("Data entry"); ?></h3>
+    <div class="row">
+        <div class="col-lg-12 content-right">
+            <!-- Survey name and description -->
+            <div class="jumbotron ">
+            <h2><?php echo stripJavaScript($thissurvey['name']); ?></h2>
+            <p><?php echo flattenText($thissurvey['description'],true); ?></p>
+            </div>
         <?php echo CHtml::form(array("admin/dataentry/sa/insert"), 'post', array('name'=>'addsurvey', 'id'=>'addsurvey', 'enctype'=>'multipart/form-data'));?>
-            <table class='data-entry-tbl'>
-            <tr>
-            <td colspan='3'>
-            <strong><?php echo stripJavaScript($thissurvey['name']); ?></strong>
-            <br /><?php echo flattenText($thissurvey['description'],true); ?>
-            </td>
-            </tr>
+            <table class='data-entry-tbl table'>
 
-            <tr class='data-entry-separator'><td colspan='3'></td></tr>
-
-            <?php if (count(Survey::model()->findByPk($surveyid)->additionalLanguages)>0)
-            { ?>
-                <tr>
-                <td colspan='3'>
-                <?php echo $langlistbox; ?>
-                </td>
+                <tr class='data-entry-separator'>
+                    <td colspan='3'></td>
                 </tr>
 
-                <tr class='data-entry-separator'><td colspan='3'></td></tr>
-            <?php }
+                <?php if (count(Survey::model()->findByPk($surveyid)->additionalLanguages)>0):?>
+                    <tr>
+                        <td colspan='3' class="langlistbox">
+                            <?php echo $langlistbox; ?>
+                        </td>
+                    </tr>
+                    <tr class='data-entry-separator'>
+                        <td colspan='3'></td>
+                    </tr>
+                <?php endif; ?>
 
-            if (tableExists('{{tokens_'.$thissurvey['sid'].'}}')) //Give entry field for token id
+            <?php if (tableExists('{{tokens_'.$thissurvey['sid'].'}}')) //Give entry field for token id
             { ?>
                 <tr>
                 <td valign='top' width='1%'></td>
-                <td valign='top' align='right' width='30%'><font color='red'>*</font><strong><?php echo gT("Token",'html',$sDataEntryLanguage); ?>:</strong></td>
+                <td valign='top' align='right' width='30%'><font color='red'>*</font>
+                    <strong><?php echo gT("Token",'html',$sDataEntryLanguage); ?>:</strong>
+                </td>
                 <td valign='top'  align='left' style='padding-left: 20px'>
                 <input type='text' id='token' name='token' oninput='activateSubmit(this);' />
                 </td>
@@ -39,14 +47,16 @@
                     if (me.value != '')
                     {
                         $('#submitdata').button("option", "disabled", false);
+                        $('#save-button').prop('disabled', false);
                     }
                     else
                     {
                         $('#submitdata').button("option", "disabled", true);
+                        $('#save-button').prop('disabled', true);
                     }
                 }
                 //--></script>
-                </td></tr>                
+                </td></tr>
             <?php }
 
 
