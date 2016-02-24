@@ -3625,7 +3625,7 @@ class statistics_helper {
              $aData['surveyid'] = $surveyid;
              $aData['sql'] = $sql;
 
-             $sOutputHTML = '<div class="row">';
+             $sOutputHTML = '';
 
             //let's run through the survey
             $runthrough=$summary;
@@ -3637,11 +3637,10 @@ class statistics_helper {
             foreach ($runthrough as $rt)
             {
                 $count=$count+1;
-                if($count==3)
+                if($count==1)
                 {
-                    $sOutputHTML .= '</div>';
                     $sOutputHTML .= '<div class="row">';
-                    $count=0;
+                    $rowOpened = 1;
                 }
                 ////Step 1: Get information about this response field (SGQA) for the summary
                 $outputs=$this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
@@ -3659,6 +3658,19 @@ class statistics_helper {
                 //Delete Build Outputs data
                 unset($outputs);
                 unset($display);
+
+
+                if($count==3)
+                {
+                    $sOutputHTML .= '</div>';
+                    $rowOpened = 0;
+                    $count=0;
+                }
+            }
+
+            if($rowOpened)
+            {
+                    $sOutputHTML .= '</div>';
             }
 
             $sOutputHTML .= '</div>';
