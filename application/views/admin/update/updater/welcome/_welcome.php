@@ -7,9 +7,8 @@
  */
 ?>
 
-<?php $urlNew = Yii::app()->createUrl("admin/globalsettings", array("update"=>'newKey', 'destinationBuild' => $serverAnswer->destinationBuild)); ?>
-
-<h2 class="maintitle"><?php eT('Welcome to the LimeSurvey ComfortUpdate!');?></h2>
+<?php $urlNew = Yii::app()->createUrl("admin/update", array("update"=>'newKey', 'destinationBuild' => $serverAnswer->destinationBuild)); ?>
+<h3 class="maintitle"><?php eT('Welcome to the LimeSurvey ComfortUpdate!');?></h3>
 
 <?php
     if( isset($serverAnswer->html) )
@@ -23,35 +22,21 @@
 ?>
 
 <!-- Welcome Message -->
-<div id="welcomeMessageContainer">
-    <p><?php
-        echo gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'</p><p>';
-        eT('The following steps will be done by this update:').'</p>';
-        echo '<ul><li>'.gT('Your LimeSurvey installation is checked if the update can be run successfully.').'</li>';
-        echo '<li>'.gT('A backup of your old files will be created.').'</li>';
-        echo '<li>'.gT('New files will be downloaded and installed.').'</li>';
-        echo '<li>'.gT('The database will be updated (if necessary).').'</li></ul>';
-    ?>
-
-    <div id="welcomeMessageContainerButtons">
-        <!-- The form launching the first step : control local errors. -->
-        <?php $url = Yii::app()->createUrl("admin/update/sa/checkLocalErrors"); ?>
-        <?php echo CHtml::beginForm($url, 'post', array('id'=>'launchCheckLocalErrorsForm')); ?>
-            <?php  echo CHtml::hiddenField('destinationBuild' , $serverAnswer->destinationBuild); ?>
-            <?php  echo CHtml::hiddenField('access_token' , $serverAnswer->access_token); ?>
-            <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
-                <span class="ui-button-text"><?php eT("Cancel"); ?></span>
-            </a>
-            <?php echo CHtml::submitButton(gT("Continue"), array('class'=>"ajax_button ui-button ui-widget ui-state-default ui-corner-all",)); ?>
-        <?php echo CHtml::endForm(); ?>
+<div class="row">
+    <div id="welcomeMessage" class="col-lg-6">
+        <?php
+            echo gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'<br /><br />';
+            echo '<ul><li>'.gT('The following steps will be done by this update:').'</li>';
+            echo '<li>'.gT('Your LimeSurvey installation is checked if the update can be run successfully.').'</li>';
+            echo '<li>'.gT('New files will be downloaded and installed.').'</li>';
+            echo '<li>'.gT('If necessary the database will be updated.').'</li></ul>';
+        ?>
     </div>
-</div>
 
-<!-- The key informations-->
-<div id="keyInfos">
-    <p></p>
-    <div>
+    <!-- The key informations-->
+    <div  class="col-lg-6">
         <h4><?php eT('ComfortUpdate key information'); ?></h4>
+
         <?php if( isset($serverAnswer->html) ): ?>
             <?php if ( $serverAnswer->html == 'update_unstable' && $serverAnswer->key_infos->keyid != 'FREE'):?>
                 <p>
@@ -62,27 +47,50 @@
             <?php endif;?>
         <?php endif;?>
 
+
         <strong><?php eT('Your update key:');?> <?php echo $serverAnswer->key_infos->keyid; ?></strong><br/>
         <strong><?php eT('Valid until:');?> <?php echo $serverAnswer->key_infos->validuntil; ?></strong><br/>
         <?php  if ($serverAnswer->key_infos->remaining_updates!=-999) { ?>
             <strong><?php eT('Remaining updates:');?> <?php echo $serverAnswer->key_infos->remaining_updates;?></strong><br/>
         <?php } ?>
-    </div>
-    <div id="keyInfosbuttons">
-        <?php  if ($serverAnswer->key_infos->remaining_updates!=-999) { ?>
-        <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="https://www.limesurvey.org/en/" role="button" aria-disabled="false" target="_blank">
-            <span class="ui-button-text"><?php eT("Renew this key"); ?></span>
-        </a>
-        <?php } ?>
 
-        <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
-            <span class="ui-button-text"><?php eT("Enter a new key"); ?></span>
+    <div id="keyInfosbuttons">
+        <br/>
+        <?php  if ($serverAnswer->key_infos->remaining_updates!=-999):?>
+            <a class="btn btn-default" href="https://www.limesurvey.org/en/" role="button" aria-disabled="false" target="_blank">
+                <?php eT("Renew this key"); ?>
+            </a>
+        <?php endif; ?>
+
+        <a class="btn btn-default" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
+            <?php eT("Enter a new key"); ?>
         </a>
+    </div>
+
     </div>
 </div>
 
-<!-- this javascript code manage the step changing. It will catch the form submission, then load the ComfortUpdate for the required build -->
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
+<div class="row">
+    <div id="btn-container" class="col-lg-6">
+        <!-- The form launching the first step : control local errors. -->
+        <?php echo CHtml::beginForm('update/sa/checkLocalErrors', 'post', array('id'=>'launchCheckLocalErrorsForm')); ?>
+            <?php  echo CHtml::hiddenField('destinationBuild' , $serverAnswer->destinationBuild); ?>
+            <?php  echo CHtml::hiddenField('access_token' , $serverAnswer->access_token); ?>
+
+            <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button">
+                <?php eT("Cancel"); ?>
+            </a>
+
+            <button type="submit" class="btn btn-default ajax_button launch_update">
+                <?php eT("Continue");?>
+            </button>
+        <?php echo CHtml::endForm(); ?>
+    </div>
+
+</div>
+
+<!-- this javascript code manage the step changing. It will catch the form submission, then load the ComfortUpdater for the required build -->
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdater/comfortUpdateNextStep.js"></script>
 <script>
     $('#launchCheckLocalErrorsForm').comfortUpdateNextStep({'step': 0});
 </script>

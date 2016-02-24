@@ -34,6 +34,7 @@
                 var sReplacementFieldTitle = '<?php eT('LimeSurvey replacement field properties','js');?>';
                 var sReplacementFieldButton = '<?php eT('Insert/edit LimeSurvey replacement field','js');?>';
                 $(document).ready(function(){
+                    console.log('iGroupId: '+iGroupId);
                     CKEDITOR.on('instanceReady',CKeditor_OnComplete);
                     var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  { height	: '350',
                         width	: '98%',
@@ -93,7 +94,7 @@
                     html_transfert();
 
                     window.opener.document.getElementsByName('<?php echo $sFieldName; ?>')[0].readOnly= false;
-                    window.opener.document.getElementsByName('<?php echo $sFieldName; ?>')[0].className='htmlinput';
+                    window.opener.document.getElementsByName('<?php echo $sFieldName; ?>')[0].className='htmlinput  form-control  ';
                     window.opener.document.getElementById('<?php echo $sControlIdEna; ?>').style.display='';
                     window.opener.document.getElementById('<?php echo $sControlIdDis; ?>').style.display='none';
                     window.opener.focus();

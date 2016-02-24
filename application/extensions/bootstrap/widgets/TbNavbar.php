@@ -1,166 +1,134 @@
 <?php
 /**
  * TbNavbar class file.
- * @author Christoffer Niska <ChristofferNiska@gmail.com>
- * @copyright Copyright &copy; Christoffer Niska 2011-
+ * @author Christoffer Niska <christoffer.niska@gmail.com>
+ * @copyright Copyright &copy; Christoffer Niska 2013-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package bootstrap.widgets
- * @since 0.9.7
  */
 
-Yii::import('bootstrap.widgets.TbCollapse');
-
 /**
- * Bootstrap navigation bar widget.
+ * Bootstrap navbar widget.
+ * @see http://twitter.github.com/bootstrap/components.html#navbar
  */
 class TbNavbar extends CWidget
 {
-	// Navbar types.
-	const TYPE_INVERSE = 'inverse';
+    /**
+     * @var string the navbar color.
+     */
+    public $color;
+    /**
+     * @var string the brand label text.
+     */
+    public $brandLabel;
+    /**
+     * @var mixed the brand url.
+     */
+    public $brandUrl;
+    /**
+     * @var array the HTML attributes for the brand link.
+     */
+    public $brandOptions = array();
+    /**
+     * @var string nanvbar display type.
+     */
+    public $display = TbHtml::NAVBAR_DISPLAY_FIXEDTOP;
+    /**
+     * @var boolean whether the navbar spans over the whole page.
+     */
+    public $fluid = false;
+    /**
+     * @var boolean whether to enable collapsing of the navbar on narrow screens.
+     * @deprecated Bootstrap 3 is built to always be responsive
+     */
+    public $collapse = false;
+    /**
+     * @var array additional HTML attributes for the collapse widget.
+     */
+    public $collapseOptions = array();
+    /**
+     * @var array list of navbar item.
+     */
+    public $items = array();
+    /**
+     * @var array the HTML attributes for the navbar.
+     */
+    public $htmlOptions = array();
 
-	// Navbar fix locations.
-	const FIXED_TOP = 'top';
-	const FIXED_BOTTOM = 'bottom';
+    /**
+     * Initializes the widget.
+     */
+    public function init()
+    {
+        if ($this->brandLabel !== false) {
+            if (!isset($this->brandLabel)) {
+                $this->brandLabel = CHtml::encode(Yii::app()->name);
+            }
 
-	/**
-	 * @var string the navbar type. Valid values are 'inverse'.
-	 * @since 1.0.0
-	 */
-	public $type;
-	/**
-	 * @var string the text for the brand.
-	 */
-	public $brand;
-	/**
-	 * @var string the URL for the brand link.
-	 */
-	public $brandUrl;
-	/**
-	 * @var array the HTML attributes for the brand link.
-	 */
-	public $brandOptions = array();
-	/**
-	 * @var array navigation items.
-	 * @since 0.9.8
-	 */
-	public $items = array();
-	/**
-	 * @var mixed fix location of the navbar if applicable.
-	 * Valid values are 'top' and 'bottom'. Defaults to 'top'.
-	 * Setting the value to false will make the navbar static.
-	 * @since 0.9.8
-	 */
-	public $fixed = self::FIXED_TOP;
-	/**
-	* @var boolean whether the nav span over the full width. Defaults to false.
-	* @since 0.9.8
-	*/
-	public $fluid = false;
-	/**
-	 * @var boolean whether to enable collapsing on narrow screens. Default to false.
-	 */
-	public $collapse = false;
-	/**
-	 * @var array the HTML attributes for the widget container.
-	 */
-	public $htmlOptions = array();
+            if (!isset($this->brandUrl)) {
+                $this->brandUrl = Yii::app()->homeUrl;
+            }
+        }
+        if (isset($this->color)) {
+            TbArray::defaultValue('color', $this->color, $this->htmlOptions);
+        }
+        if (isset($this->display) && $this->display !== TbHtml::NAVBAR_DISPLAY_NONE) {
+            TbArray::defaultValue('display', $this->display, $this->htmlOptions);
+        }
+    }
 
-	/**
-	 * Initializes the widget.
-	 */
-	public function init()
-	{
-		if ($this->brand !== false)
-		{
-			if (!isset($this->brand))
-				$this->brand = CHtml::encode(Yii::app()->name);
+    /**
+     * Runs the widget.
+     */
+    public function run()
+    {
+        $brand = $this->brandLabel !== false
+            ? TbHtml::navbarBrandLink($this->brandLabel, $this->brandUrl, $this->brandOptions)
+            : '';
+        ob_start();
+        foreach ($this->items as $item) {
+            if (is_string($item)) {
+                echo $item;
+            } else {
+                $widgetClassName = TbArray::popValue('class', $item);
+                if ($widgetClassName !== null) {
+                    $this->controller->widget($widgetClassName, $item);
+                }
+            }
+        }
+        $items = ob_get_clean();
+        ob_start();
+        if ($this->collapse !== false) {
+            TbHtml::addCssClass('navbar-collapse', $this->collapseOptions);
+            ob_start();
+            /* @var TbCollapse $collapseWidget */
+            $collapseWidget = $this->controller->widget(
+                '\TbCollapse',
+                array(
+                    'toggle' => false, // navbars are collapsed by default
+                    'content' => $items,
+                    'htmlOptions' => $this->collapseOptions,
+                )
+            );
+            $collapseContent = ob_get_clean();
+            echo TbHtml::tag(
+                'div', array('class' => 'navbar-header'),
+                TbHtml::navbarCollapseLink('#' . $collapseWidget->getId()) . $brand
+            );
+            echo $collapseContent;
 
-			if (!isset($this->brandUrl))
-				$this->brandUrl = Yii::app()->homeUrl;
-
-			$this->brandOptions['href'] = CHtml::normalizeUrl($this->brandUrl);
-
-			if (isset($this->brandOptions['class']))
-				$this->brandOptions['class'] .= ' brand';
-			else
-				$this->brandOptions['class'] = 'brand';
-		}
-
-		$classes = array('navbar');
-
-		if (isset($this->type) && in_array($this->type, array(self::TYPE_INVERSE)))
-			$classes[] = 'navbar-'.$this->type;
-
-		if ($this->fixed !== false && in_array($this->fixed, array(self::FIXED_TOP, self::FIXED_BOTTOM)))
-			$classes[] = 'navbar-fixed-'.$this->fixed;
-
-		if (!empty($classes))
-		{
-			$classes = implode(' ', $classes);
-			if (isset($this->htmlOptions['class']))
-				$this->htmlOptions['class'] .= ' '.$classes;
-			else
-				$this->htmlOptions['class'] = $classes;
-		}
-	}
-
-	/**
-	 * Runs the widget.
-	 */
-	public function run()
-	{
-		echo CHtml::openTag('div', $this->htmlOptions);
-		echo '<div class="navbar-inner"><div class="'.$this->getContainerCssClass().'">';
-
-		$collapseId = TbCollapse::getNextContainerId();
-
-		if ($this->collapse !== false)
-		{
-			echo '<a class="btn btn-navbar" data-toggle="collapse" data-target="#'.$collapseId.'">';
-			echo '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
-			echo '</a>';
-		}
-
-		if ($this->brand !== false)
-			echo CHtml::openTag('a', $this->brandOptions).$this->brand.'</a>';
-
-		if ($this->collapse !== false)
-		{
-			$this->controller->beginWidget('bootstrap.widgets.TbCollapse', array(
-				'id'=>$collapseId,
-				'toggle'=>false, // navbars should be collapsed by default
-				'htmlOptions'=>array('class'=>'nav-collapse'),
-			));
-		}
-
-		foreach ($this->items as $item)
-		{
-			if (is_string($item))
-				echo $item;
-			else
-			{
-				if (isset($item['class']))
-				{
-					$className = $item['class'];
-					unset($item['class']);
-
-					$this->controller->widget($className, $item);
-				}
-			}
-		}
-
-		if ($this->collapse !== false)
-			$this->controller->endWidget();
-
-		echo '</div></div></div>';
-	}
-
-	/**
-	 * Returns the navbar container CSS class.
-	 * @return string the class
-	 */
-	protected function getContainerCssClass()
-	{
-		return $this->fluid ? 'container-fluid' : 'container';
-	}
+        } else {
+            echo TbHtml::tag('div', array('class' => 'navbar-header'), $brand);
+            echo $items;
+        }
+        $containerContent = ob_get_clean();
+        $containerOptions = TbArray::popValue('containerOptions', $this->htmlOptions, array());
+        TbHtml::addCssClass($this->fluid ? 'container-fluid' : 'container', $containerOptions);
+        ob_start();
+        echo TbHtml::openTag('div', $containerOptions);
+        echo $containerContent;
+        echo '</div>';
+        $content = ob_get_clean();
+        echo TbHtml::navbar($content, $this->htmlOptions);
+    }
 }

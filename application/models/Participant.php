@@ -322,7 +322,7 @@ class Participant extends LSActiveRecord
             // We are not superadmin so we need to limit to our own or shared with us
             $selectValue[] = '{{participant_shares}}.can_edit';
             $joinValue[]   = 'LEFT JOIN {{participant_shares}} ON p.participant_id={{participant_shares}}.participant_id';
-            $aConditions[] = 'p.owner_uid = :userid1 OR {{participant_shares}}.share_uid = :userid2';
+            $aConditions[] = 'p.owner_uid = :userid1 OR {{participant_shares}}.share_uid = :userid2 OR {{participant_shares}}.share_uid = 0';
         }
 
         if ($count) {
@@ -885,16 +885,41 @@ class Participant extends LSActiveRecord
     }
 
     /**
-    * Returns true if participant_id has ownership or shared rights over this participant false if not
-    *
-    * @param mixed $participant_id
-    * @returns bool true/false
-    */
+     * Returns true if participant_id has ownership or shared rights over this participant false if not
+     *
+     * @param mixed $participant_id
+     * @returns bool true/false
+     */
     function is_owner($participant_id)
     {
+        // Superadmins can edit all participants
+        if (Permission::model()->hasGlobalPermission('superadmin'))
+        {
+            return true;
+        }
+
         $userid = Yii::app()->session['loginID'];
-        $is_owner = Yii::app()->db->createCommand()->select('count(*)')->where('participant_id = :participant_id AND owner_uid = :userid')->from('{{participants}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
-        $is_shared = Yii::app()->db->createCommand()->select('count(*)')->where('participant_id = :participant_id AND share_uid = :userid')->from('{{participant_shares}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
+
+        $is_owner = Yii::app()
+            ->db
+            ->createCommand()
+            ->select('count(*)')
+            ->where('participant_id = :participant_id AND owner_uid = :userid')
+            ->from('{{participants}}')
+            ->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)
+            ->bindParam(":userid", $userid, PDO::PARAM_INT)
+            ->queryScalar();
+
+        $is_shared = Yii::app()
+            ->db
+            ->createCommand()
+            ->select('count(*)')
+            ->where('participant_id = :participant_id AND ( share_uid = :userid oOR share_uid = 0)')
+            ->from('{{participant_shares}}')
+            ->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)
+            ->bindParam(":userid", $userid, PDO::PARAM_INT)
+            ->queryScalar();
+
         if ($is_shared > 0 || $is_owner > 0)
         {
             return true;
@@ -905,19 +930,17 @@ class Participant extends LSActiveRecord
         }
     }
 
-    /*
+    /**
      * This funciton is responsible for showing all the participant's shared by a particular user based on the user id
      */
-
     function getParticipantShared($userid)
     {
         return Yii::app()->db->createCommand()->select('{{participants}}.*, {{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = :userid')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
     }
 
-    /*
+    /**
      * This funciton is responsible for showing all the participant's shared to the superadmin
      */
-
     function getParticipantSharedAll()
     {
         return Yii::app()->db->createCommand()->select('{{participants}}.*,{{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->queryAll();
@@ -1170,6 +1193,7 @@ class Participant extends LSActiveRecord
      * @return bool true/false
      */
     function updateTokenAttributeValue($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
+
         //Get the value from the participant_attribute field
         $val = Yii::app()->db
                          ->createCommand()
@@ -1276,7 +1300,7 @@ class Participant extends LSActiveRecord
         {
             $tokenattributefieldnames = array();
         }
-        /* Create new CPDB attributes */
+        /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated))
         {
             foreach ($aAttributesToBeCreated as $key => $value) //creating new central attribute
@@ -1284,7 +1308,7 @@ class Participant extends LSActiveRecord
                 /* $key is the fieldname from the token table (ie "attribute_1")
                  * $value is the 'friendly name' for the attribute (ie "Gender")
                  */
-                $insertnames = array('attribute_type' => 'TB', 'visible' => 'Y');
+                $insertnames = array('attribute_type' => 'TB', 'visible' => 'Y', 'defaultname' => $value);
                 Yii::app()->db
                           ->createCommand()
                           ->insert('{{participant_attribute_names}}', $insertnames);

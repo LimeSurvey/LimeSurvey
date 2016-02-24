@@ -12,7 +12,7 @@
     <?php echo CHtml::form(array("/survey/index/sid/{$surveyid}"), 'post', array('id'=>'tokenform'));?>
         <ul>
             <li>
-                <label for='token'><?php eT("Token");?></label><input class='text <?php echo $kpclass?>' id='token' type='text' name='token' />";
+                <label for='token'><? eT("Token");?></label><input class='text <?php echo $kpclass?>' id='token' type='text' name='token' />";
 
                 <input type='hidden' name='sid' value='<?php echo $surveyid;?>' id='sid' />
                 <input type='hidden' name='lang' value='<?php echo $templang;?>' id='lang' />

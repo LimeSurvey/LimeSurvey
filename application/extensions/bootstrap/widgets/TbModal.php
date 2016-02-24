@@ -1,87 +1,235 @@
 <?php
 /**
  * TbModal class file.
- * @author Christoffer Niska <ChristofferNiska@gmail.com>
- * @copyright Copyright &copy; Christoffer Niska 2011-
+ * @author Antonio Ramirez <ramirez.cobos@gmail.com>
+ * @author Christoffer Niska <christoffer.niska@gmail.com>
+ * @author Eric Nishio <eric.nishio@nordsoftware.com>
+ * @copyright Copyright &copy; Christoffer Niska 2013-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package bootstrap.widgets
- * @since 0.9.3
  */
 
 /**
  * Bootstrap modal widget.
- * @see http://twitter.github.com/bootstrap/javascript.html#modals
  */
 class TbModal extends CWidget
 {
-	/**
-	 * @var boolean indicates whether to automatically open the modal when initialized. Defaults to 'false'.
-	 */
-	public $autoOpen = false;
-	/**
-	 * @var boolean indicates whether the modal should use transitions. Defaults to 'true'.
-	 */
-	public $fade = true;
-	/**
-	 * @var array the options for the Bootstrap Javascript plugin.
-	 */
-	public $options = array();
-	/**
-	 * @var string[] the Javascript event handlers.
-	 */
-	public $events = array();
-	/**
-	 * @var array the HTML attributes for the widget container.
-	 */
-	public $htmlOptions = array();
+    /**
+     * @var array the HTML options for the view container tag.
+     */
+    public $htmlOptions = array();
 
-	/**
-	 * Initializes the widget.
-	 */
-	public function init()
-	{
-		if (!isset($this->htmlOptions['id']))
-			$this->htmlOptions['id'] = $this->getId();
+    /**
+     * @var array  The additional HTML attributes of the button that will show the modal. If empty array, only
+     * the markup of the modal will be rendered on the page, so users can easily call the modal manually with their own
+     * scripts. The following special attributes are available:
+     * <ul>
+     *    <li>label: string, the label of the button</li>
+     * </ul>
+     *
+     * For available options of the button trigger, see http://twitter.github.com/bootstrap/javascript.html#modals.
+     */
+    public $buttonOptions = array();
 
-		if ($this->autoOpen === false && !isset($this->options['show']))
-			$this->options['show'] = false;
+    /**
+     * @var boolean indicates whether the modal should use transitions. Defaults to 'true'.
+     */
+    public $fade = true;
 
-		$classes = array('modal');
+    /**
+     * @var string sets what size the modal should have based on the modal-sm or modal-lg classes mentioned in bootstrap docs since 3.1.1. Defaults to '', meaning that no new class will be added.
+     */
+    public $size = TbHtml::MODAL_SIZE_DEFAULT;
 
-		if ($this->fade === true)
-			$classes[] = 'fade';
+    /**
+     * @var bool $keyboard, closes the modal when escape key is pressed.
+     */
+    public $keyboard = true;
 
-		if (!empty($classes))
-		{
-			$classes = implode(' ', $classes);
-			if (isset($this->htmlOptions['class']))
-				$this->htmlOptions['class'] .= ' '.$classes;
-			else
-				$this->htmlOptions['class'] = $classes;
-		}
+    /**
+     * @var bool $show, shows the modal when initialized.
+     */
+    public $show = false;
 
-		echo CHtml::openTag('div', $this->htmlOptions);
-	}
+    /**
+     * @var mixed includes a modal-backdrop element. Alternatively, specify `static` for a backdrop which doesn't close
+     * the modal on click.
+     */
+    public $backdrop = true;
 
-	/**
-	 * Runs the widget.
-	 */
-	public function run()
-	{
-		$id = $this->htmlOptions['id'];
+    /**
+     * @var mixed the remote url. If a remote url is provided, content will be loaded via jQuery's load method and
+     * injected into the .modal-body of the modal.
+     */
+    public $remote;
 
-		echo '</div>';
+    /**
+     * @var string a javascript function that will be invoked immediately when the `show` instance method is called.
+     */
+    public $onShow;
 
-		/** @var CClientScript $cs */
-		$cs = Yii::app()->getClientScript();
+    /**
+     * @var string a javascript function that will be invoked when the modal has been made visible to the user
+     *     (will wait for css transitions to complete).
+     */
+    public $onShown;
 
-		$options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
-		$cs->registerScript(__CLASS__.'#'.$id, "jQuery('#{$id}').modal({$options});");
+    /**
+     * @var string a javascript function that will be invoked immediately when the hide instance method has been called.
+     */
+    public $onHide;
 
-		foreach ($this->events as $name => $handler)
-		{
-			$handler = CJavaScript::encode($handler);
-			$cs->registerScript(__CLASS__.'#'.$id.'_'.$name, "jQuery('#{$id}').on('{$name}', {$handler});");
-		}
-	}
+    /**
+     * @var string a javascript function that will be invoked when the modal has finished being hidden from the user
+     *     (will wait for css transitions to complete).
+     */
+    public $onHidden;
+
+    /**
+     * @var string[] the Javascript event handlers.
+     */
+    protected $events = array();
+
+    /**
+     * @var array $options the plugin options.
+     */
+    protected $options = array();
+
+    /**
+     * @var string
+     */
+    public $closeText = TbHtml::CLOSE_TEXT;
+
+    /**
+     * @var string header content
+     */
+    public $header;
+
+    /**
+     * @var string body of modal
+     */
+    public $content;
+
+    /**
+     * @var string footer content
+     */
+    public $footer;
+
+    /**
+     * Widget's initialization method
+     */
+    public function init()
+    {
+        $this->attachBehavior('TbWidget', new TbWidget);
+
+        TbArray::defaultValue('id', $this->getId(), $this->htmlOptions);
+        TbArray::defaultValue('role', 'dialog', $this->htmlOptions);
+        TbArray::defaultValue('tabindex', '-1', $this->htmlOptions);
+
+        TbHtml::addCssClass('modal', $this->htmlOptions);
+        if ($this->fade) {
+            TbHtml::addCssClass('fade', $this->htmlOptions);
+        }
+
+        if (is_array($this->footer)) {
+            $this->footer = implode('&nbsp;', $this->footer);
+        }
+
+        $this->initOptions();
+        $this->initEvents();
+
+        echo TbHtml::openTag('div', $this->htmlOptions) . PHP_EOL;
+        echo TbHtml::openTag('div', array('class' => 'modal-dialog' . $this->size)) . PHP_EOL;
+        echo TbHtml::openTag('div', array('class' => 'modal-content')) . PHP_EOL;
+        echo TbHtml::modalHeader($this->header);
+
+        if (!isset($this->content)) {
+            ob_start();
+        }
+    }
+
+    /**
+     * Initialize events if any
+     */
+    public function initEvents()
+    {
+        foreach (array('onShow', 'onShown', 'onHide', 'onHidden') as $event) {
+            if ($this->$event !== null) {
+                $modalEvent = strtolower(substr($event, 2));
+                if ($this->$event instanceof CJavaScriptExpression) {
+                    $this->events[$modalEvent] = $this->$event;
+                } else {
+                    $this->events[$modalEvent] = new CJavaScriptExpression($this->$event);
+                }
+            }
+        }
+    }
+
+    /**
+     * Initialize plugin options.
+     * ***Important***: The display of the button overrides the initialization of the modal bootstrap widget.
+     */
+    public function initOptions()
+    {
+        if ($remote = TbArray::popValue('remote', $this->options)) {
+            $this->options['remote'] = CHtml::normalizeUrl($remote);
+        }
+
+        TbArray::defaultValue('backdrop', $this->backdrop, $this->options);
+        TbArray::defaultValue('keyboard', $this->keyboard, $this->options);
+        TbArray::defaultValue('show', $this->show, $this->options);
+    }
+
+    /**
+     * Widget's run method
+     */
+    public function run()
+    {
+        if (!isset($this->content)) {
+            $this->content = ob_get_clean();
+        }
+        echo TbHtml::modalBody($this->content);
+        echo TbHtml::modalFooter($this->footer);
+        echo '</div>' . PHP_EOL;
+        echo '</div>' . PHP_EOL;
+        echo '</div>' . PHP_EOL;
+        $this->renderButton();
+        $this->registerClientScript();
+    }
+
+    /**
+     * Renders the button
+     */
+    public function renderButton()
+    {
+        if (!empty($this->buttonOptions) && is_array($this->buttonOptions)) {
+            TbArray::defaultValue('data-toggle', 'modal', $this->buttonOptions);
+
+            if ($this->remote !== null) {
+                $this->buttonOptions['data-remote'] = CHtml::normalizeUrl($this->remote);
+            }
+
+            $selector = '#' . $this->htmlOptions['id'];
+            $label = TbArray::popValue('label', $this->buttonOptions, 'button');
+            $attr = isset($this->buttonOptions['data-remote']) ? 'data-target' : 'href';
+            TbArray::defaultValue($attr, $selector, $this->buttonOptions);
+            echo TbHtml::button($label, $this->buttonOptions);
+        }
+    }
+
+    /**
+     * Registers necessary client scripts.
+     */
+    public function registerClientScript()
+    {
+        $selector = '#' . $this->htmlOptions['id'];
+
+        // do we render a button? If so, bootstrap will handle its behavior through its
+        // mark-up, otherwise, register the plugin.
+        if (empty($this->buttonOptions)) {
+            $this->registerPlugin(TbApi::PLUGIN_MODAL, $selector, $this->options);
+        }
+
+        $this->registerEvents($selector, $this->events);
+    }
 }

@@ -6,21 +6,17 @@
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 
 
-/*
-* Scroll the pager and the footer when scrolling horizontally
-* Maybe for token table too
-*/
-$(window).scroll(function(){
-    $('.ui-jqgrid-toppager').css({
-        'left': $(this).scrollLeft()
-    });
-    $('.ui-jqgrid-pager').css({
-        'left': $(this).scrollLeft()
+/**
+ * Scroll the pager and the footer when scrolling horizontally
+ */
+$(document).ready(function(){
+    $('#displayResponsesContainer').scroll(function(){
+        $('#pager').css({
+            'left': $(this).scrollLeft() ,
+        });
     });
 });
 
-// Trace firstload of grid
-firstload=true;
 $(document).on("click","[data-delete]",function(event){
     event.preventDefault();
     var responseid=$(this).data("delete");
@@ -34,7 +30,7 @@ $(document).on("click","[data-delete]",function(event){
         .done(function() {
             jQuery("#displayresponses").delRowData(responseid);
         });
-        $( this ).dialog( "close" ); 
+        $( this ).dialog( "close" );
     };
     buttons[sCancel] = function(){ $( this ).dialog( "close" ); };
     var dialog=$("<p>"+strdeleteconfirm+"</p>").dialog({
@@ -57,25 +53,23 @@ $(function() {
         mtype : "POST",
         colNames : colNames,
         colModel : colModels,
-        toppager : true,
+        toppager : false,
         height : "100%",
         //shrinkToFit : false,
         ignoreCase : true,
-        rowNum : rows,
-        page : page,
+        rowNum : 10,
         editable : false,
         scrollOffset : 0,
         sortable : true,
         hidegrid : false,
         sortname : 'id',
-        sortorder : sortorder,
+        sortorder : 'asc',
         viewrecords : true,
-        rowList : [ 25, 50, 100, 250, 500, 1000 ],
+        rowList : [ 10, 25, 50, 100, 250, 500, 1000 ],
         multiselect : true,
         loadonce : false, // use ajax request
         pager : "#pager",
         caption : sCaption,
-        postData: defaultSearch ,
         beforeRequest: function(){
             /* activate tooltip on header */
             for (i = 0; i < colModels.length; i++) {
@@ -143,13 +137,6 @@ $(function() {
         searchOnEnter : false,
         defaultSearch : 'cn'
     });
-    if(firstload)
-    {
-        jQuery.each(defaultSearch, function(index, value) {
-          $("#gs_"+index).val(value);
-        });
-        firstload=false;
-    }
     /* Column button */
     jQuery("#displayresponses").jqGrid(
         'navButtonAdd',
@@ -177,7 +164,7 @@ $(function() {
                                 });
                                 $.post( jsonBaseUrl+"&sa=setHiddenColumns", { aHiddenFields: hidden.join("|") } );
                             }
-                        } 
+                        }
                 });
             }
         }
@@ -185,9 +172,10 @@ $(function() {
     if(typeof sDownLoad!=="undefined")
     {
         jQuery("#displayresponses").navButtonAdd('#pager',{
-            caption:sDownLoad, // Remove it ? no it's more clear ;)
+            //caption:sDownLoad, // Remove it ? no it's more clear ;)
+            caption:'',
             title:sDownLoad, // Todo dynamically update download selected , download all
-            buttonicon:"ui-icon-arrowstop-1-s", 
+            buttonicon:"glyphicon glyphicon-download-alt",
             onClickButton: function(){
                 selectedlist=jQuery("#displayresponses").getGridParam('selarrrow').join(",");//  Or send like an array ?
                 if(selectedlist!="")
@@ -200,7 +188,7 @@ $(function() {
                         sendPost(jsonActionUrl,null,["oper"],["downloadzip"]);;
                     //sendPost(sDownloadUrl,null,"responseid",0);
                 }
-            }, 
+            },
             position:"last",
         });
     }

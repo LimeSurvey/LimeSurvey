@@ -60,17 +60,26 @@ class UpdateForm extends CFormModel
      */
     public function getUpdateInfo($crosscheck="1")
     {
-        if( $this->build != '' )
+        if(Yii::app()->getConfig('updatable'))
         {
-            $crosscheck = (int) $crosscheck;
-            $getters = '/index.php?r=updates/updateinfo&currentbuild='.$this->build.'&id='.md5(getGlobalSetting('SessionName')).'&crosscheck='.$crosscheck;
-            $content = $this->_performRequest($getters);
+            if( $this->build != '' )
+            {
+                $crosscheck = (int) $crosscheck;
+                $getters = '/index.php?r=updates/updateinfo&currentbuild='.$this->build.'&id='.md5(getGlobalSetting('SessionName')).'&crosscheck='.$crosscheck;
+                $content = $this->_performRequest($getters);
+            }
+            else
+            {
+                $content = new stdClass();
+                $content->result = FALSE;
+                $content->error = "no_build";
+            }
         }
         else
         {
             $content = new stdClass();
             $content->result = FALSE;
-            $content->error = "no_build";
+            $content->error = "not_updatable";
         }
         return $content;
     }
@@ -498,6 +507,7 @@ class UpdateForm extends CFormModel
                 if( $currentDbVersion < $dbChecks->dbVersion )
                 {
                     $dbSize = $this->_getDbTotalSize();
+                    $backupDb->message = 'db_change';
 
                     if( $dbSize <= $dbChecks->dbSize )
                     {
@@ -535,62 +545,66 @@ class UpdateForm extends CFormModel
     */
     public function getUpdateNotification()
     {
-
-        $today = new DateTime("now");
-        $next_update_check = Yii::app()->session['next_update_check'];
-
-        if (is_null($next_update_check) || ($next_update_check <  $today) || is_null(Yii::app()->session['update_result'])  )
+        if(Yii::app()->getConfig('updatable'))
         {
-            // Turn on the alert notification
-            Yii::app()->session['notificationstate']=1;
+            $today = new DateTime("now");
+            $next_update_check = Yii::app()->session['next_update_check'];
 
-            $updates = $this->getUpdateInfo('1');
-            $update_available = FALSE;
-            if($updates->result)
+            if (is_null($next_update_check) || ($next_update_check <  $today) || is_null(Yii::app()->session['update_result'])  )
             {
-                unset($updates->result);
+                // Turn on the alert notification
+                Yii::app()->session['notificationstate']=1;
 
-                if( count($updates) > 0)
+                $updates = $this->getUpdateInfo('1');
+                $update_available = FALSE;
+                if($updates->result)
                 {
-                    $update_available = TRUE;
-                    $security_update_available = FALSE;
-                    $unstable_update_available = FALSE;
-                    foreach( $updates as $update )
-                    {
-                        if($update->security_update)
-                            $security_update_available = TRUE;
+                    unset($updates->result);
 
-                        if($update->branch != 'master')
-                            $unstable_update_available = TRUE;
+                    if( count($updates) > 0)
+                    {
+                        $update_available = TRUE;
+                        $security_update_available = FALSE;
+                        $unstable_update_available = FALSE;
+                        foreach( $updates as $update )
+                        {
+                            if($update->security_update)
+                                $security_update_available = TRUE;
+
+                                if($update->branch != 'master')
+                                $unstable_update_available = TRUE;
+                            }
+                        }
+                        Yii::app()->session['update_result'] = $update_available;
+                        Yii::app()->session['security_update'] = $security_update_available;
+
+                        // If only one update is available and it's an unstable one, then it will be displayed in a different color, and will be removed, not minified when clicked
+                        if( count((array)$updates) == 1 &&  $unstable_update_available )
+                        Yii::app()->session['unstable_update'] = $unstable_update_available;
+                        else
+                        Yii::app()->session['unstable_update'] = false;
+
+                        $next_update_check = $today->add(new DateInterval('P1D'));
+                        Yii::app()->session['next_update_check'] = $next_update_check;
+                        $updates = array('result'=>$update_available , 'security_update'=>$security_update_available, 'unstable_update'=>$unstable_update_available);
+                    }
+                    else
+                    {
+                        $next_update_check = $today->add(new DateInterval('P1D'));
+                        Yii::app()->session['next_update_check'] = $next_update_check;
+                        Yii::app()->session['update_result'] = false;
+                        Yii::app()->session['unstable_update'] = false;
                     }
                 }
-                Yii::app()->session['update_result'] = $update_available;
-                Yii::app()->session['security_update'] = $security_update_available;
-
-                // If only one update is available and it's an unstable one, then it will be displayed in a different color, and will be removed, not minified when clicked
-                if( count((array)$updates) == 1 &&  $unstable_update_available )
-                    Yii::app()->session['unstable_update'] = $unstable_update_available;
                 else
-                    Yii::app()->session['unstable_update'] = false;
-
-                $next_update_check = $today->add(new DateInterval('P1D'));
-                Yii::app()->session['next_update_check'] = $next_update_check;
-                $updates = array('result'=>$update_available , 'security_update'=>$security_update_available, 'unstable_update'=>$unstable_update_available);
-            }
-            else
-            {
-                $next_update_check = $today->add(new DateInterval('P1D'));
-                Yii::app()->session['next_update_check'] = $next_update_check;
-                Yii::app()->session['update_result'] = false;
-            }
+                {
+                    $update_available = Yii::app()->session['update_result'];
+                    $unstable_update_available = Yii::app()->session['unstable_update'];
+                    $security_update_available = Yii::app()->session['security_update'];
+                    $updates = array('result'=>$update_available , 'security_update'=>$security_update_available, 'unstable_update'=>$unstable_update_available);
+                }
+                return (object) $updates;
         }
-        else
-        {
-               $update_available = Yii::app()->session['update_result'];
-               $security_update_available = Yii::app()->session['security_update'];
-               $updates = array('result'=>$update_available , 'security_update'=>$security_update_available);
-        }
-        return (object) $updates;
     }
 
 

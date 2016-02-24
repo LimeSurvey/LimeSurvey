@@ -39,7 +39,8 @@ class UserAction extends Survey_Common_Action
     public function index()
     {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts').'users.js');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'users.js' ));
+
 
         $userlist = getUserList();
         $usrhimself = $userlist[0];
@@ -65,8 +66,12 @@ class UserAction extends Survey_Common_Action
         for ($i = 1; $i <= count($userlist); $i++)
             $noofsurveyslist[$i] = $this->_getSurveyCountForUser($userlist[$i]);
 
-        $aData['imageurl'] = Yii::app()->getConfig("adminimageurl");
+    //    $aData['imageurl'] = IMAGE_BASE_URL;
         $aData['noofsurveyslist'] = $noofsurveyslist;
+
+        $aData['title_bar']['title'] = gT('User administration');
+        $aData['fullpagebar']['returnbutton']['url'] = 'admin/survey/sa/index';
+        $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin panel');
 
         $this->_renderWrappedTemplate('user', 'editusers', $aData);
     }
@@ -86,10 +91,10 @@ class UserAction extends Survey_Common_Action
         $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
         $aViewUrls = array();
         if (empty($new_user)) {
-            $aViewUrls['message'] = array('title' => gT("Failed to add user"), 'message' => gT("A username was not supplied or the username is invalid."), 'class'=> 'warningheader');
+            $aViewUrls['message'] = array('title' => gT("Failed to add user"), 'message' => gT("A username was not supplied or the username is invalid."), 'class'=> 'text-warning');
         }
         elseif (User::model()->find("users_name=:users_name",array(':users_name'=>$new_user))) {
-            $aViewUrls['message'] = array('title' => gT("Failed to add user"), 'message' => gT("The username already exists."), 'class'=> 'warningheader');
+            $aViewUrls['message'] = array('title' => gT("Failed to add user"), 'message' => gT("The username already exists."), 'class'=> 'text-warning');
         }
         else
         {
@@ -101,7 +106,7 @@ class UserAction extends Survey_Common_Action
 
             if ($event->get('errorCode') != AuthPluginBase::ERROR_NONE)
             {
-                $aViewUrls['message'] = array('title' => $event->get('errorMessageTitle'), 'message' => $event->get('errorMessageBody'), 'class'=> 'warningheader');
+                $aViewUrls['message'] = array('title' => $event->get('errorMessageTitle'), 'message' => $event->get('errorMessageBody'), 'class'=> 'text-warning');
             }
             else
             {
@@ -149,7 +154,7 @@ class UserAction extends Survey_Common_Action
                 if (SendEmailMessage($body, $subject, $to, $from, Yii::app()->getConfig("sitename"), true, Yii::app()->getConfig("siteadminbounce"))) {
                     $extra .= "<br />" . gT("Username") . ": $new_user<br />" . gT("Email") . ": $new_email<br />";
                     $extra .= "<br />" . gT("An email with a generated password was sent to the user.");
-                    $classMsg = 'successheader';
+                    $classMsg = 'text-success';
                     $sHeader= gT("Success");
                 }
                 else
@@ -157,7 +162,7 @@ class UserAction extends Survey_Common_Action
                     // has to be sent again or no other way
                     $tmp = str_replace("{NAME}", "<strong>" . $new_user . "</strong>", gT("Email to {NAME} ({EMAIL}) failed."));
                     $extra .= "<br />" . str_replace("{EMAIL}", $new_email, $tmp) . "<br />";
-                    $classMsg = 'warningheader';
+                    $classMsg = 'text-warning';
                     $sHeader= gT("Warning");
                 }
 
@@ -300,7 +305,7 @@ class UserAction extends Survey_Common_Action
             $extra = sprintf(gT("All of the user's surveys were transferred to %s."), $sTransferred_to);
         }
 
-        $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect("", gT("Success!"), "successheader", $extra);
+        $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect("", gT("Success!"), "text-success", $extra);
         $this->_renderWrappedTemplate('user', $aViewUrls);
     }
 
@@ -309,8 +314,10 @@ class UserAction extends Survey_Common_Action
     */
     function modifyuser()
     {
-        if (isset($_POST['uid'])) {
-            $postuserid = (int) Yii::app()->request->getPost("uid");
+
+        if ( Yii::app()->request->getParam('uid') !=''  )
+        {
+            $postuserid = (int) Yii::app()->request->getParam("uid");
             $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
             $sresultcount = count($sresult);
 
@@ -321,6 +328,9 @@ class UserAction extends Survey_Common_Action
                 $sresult = User::model()->parentAndUser($postuserid);
                 $aData['mur'] = $sresult;
 
+                $aData['fullpagebar']['savebutton']['form'] = 'moduserform';
+                $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';
+
                 $this->_renderWrappedTemplate('user', 'modifyuser', $aData);
                 return;
             }
@@ -330,10 +340,7 @@ class UserAction extends Survey_Common_Action
                 $this->getController()->redirect(array("admin/user/sa/index"));
             }
         }
-        Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
         $this->getController()->redirect(array("admin/user/sa/index"));
-        //echo accessDenied('modifyuser');
-        //die();
     }
 
     /**
@@ -365,7 +372,7 @@ class UserAction extends Survey_Common_Action
             $full_name = html_entity_decode($postfull_name, ENT_QUOTES, 'UTF-8');
 
             if (!validateEmailAddress($email)) {
-                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Could not modify user data."), "warningheader", gT("Email address is not valid."),
+                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Could not modify user data."), "text-warning", gT("Email address is not valid."),
                 $this->getController()->createUrl('admin/user/modifyuser'), gT("Back"), array('uid' => $postuserid));
             }
             else
@@ -381,7 +388,7 @@ class UserAction extends Survey_Common_Action
 
                 if (empty($sPassword)) {
                     $extra = gT("Username") . ": {$oRecord->users_name}<br />" . gT("Password") . ": (" . gT("Unchanged") . ")<br />\n";
-                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Success!"), "successheader", $extra);
+                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Success!"), "text-success", $extra);
                 }
                 elseif ($uresult && !empty($sPassword)) // When saved successfully
                 {
@@ -399,12 +406,12 @@ class UserAction extends Survey_Common_Action
                     }
 
                     $extra = gT("Username") . ": {$oRecord->users_name}<br />" . gT("Password") . ": {$displayedPwd}<br />\n";
-                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Success!"), "successheader", $extra);
+                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Success!"), "text-success", $extra);
                 }
                 else
                 {   //Saving the user failed for some reason, message about email is not helpful here
                     // Username and/or email adress already exists.
-                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Could not modify user data."), 'warningheader');
+                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Could not modify user data."), 'text-warning');
                 }
             }
         }
@@ -412,7 +419,8 @@ class UserAction extends Survey_Common_Action
         {
             Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
         }
-        $this->_renderWrappedTemplate('user', $aViewUrls);
+        $aData['fullpagebar']['continuebutton']['url'] = 'admin/user/sa/index';
+        $this->_renderWrappedTemplate('user', $aViewUrls, $aData);
     }
 
 
@@ -470,20 +478,26 @@ class UserAction extends Survey_Common_Action
     function setuserpermissions()
     {
         $iUserID = (int) Yii::app()->request->getPost('uid');
+
         // Can not update initial superadmin permissions (with findByAttributes : found the first user without parent)
         $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
-        if ($oInitialAdmin && $oInitialAdmin->uid == $iUserID) // it's the original superadmin !!!
+
+        if ($oInitialAdmin && $oInitialAdmin->uid == $iUserID) // Trying to update the original superadmin !!!
         {
             Yii::app()->setFlashMessage(gT("Initial Superadmin permissions cannot be updated!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
+
         $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
-        if ($iUserID) {//Never update 1st admin
+        if ($iUserID)
+        {
+            //Never update 1st admin
             if(Permission::model()->hasGlobalPermission('superadmin','read'))
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID));
             else
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
         }
+
         // Check permissions
         $aBasePermissions=Permission::model()->getGlobalBasePermissions();
         if (!Permission::model()->hasGlobalPermission('superadmin','read')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
@@ -507,17 +521,21 @@ class UserAction extends Survey_Common_Action
 
         if ($oUser && (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','update') &&  Yii::app()->session['loginID'] != $iUserID) )
         {
-            // Only the original superadmin (UID 1) may create new superadmins
+            // Only the original superadmin (UID 1) may create superadmins
             if (Yii::app()->session['loginID']!=1)
             {
                 unset($aBasePermissions['superadmin']);
             }
             $aData['aBasePermissions']=$aBasePermissions;
-            $data['sImageURL'] = Yii::app()->getConfig("imageurl");
+
 
             $aData['oUser'] =$oUser;
             App()->getClientScript()->registerPackage('jquery-tablesorter');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "userpermissions.js");
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "userpermissions.js" ));
+
+            $aData['fullpagebar']['savebutton']['form'] = 'savepermissions';
+            $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';
+
             $this->_renderWrappedTemplate('user', 'setuserpermissions', $aData);
         }
         else
@@ -530,7 +548,8 @@ class UserAction extends Survey_Common_Action
     function setusertemplates()
     {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'users.js');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'users.js' ));
+
         $postuserid = (int) Yii::app()->request->getPost("uid");
         $aData['postuser']  = flattenText(Yii::app()->request->getPost("user"));
         $aData['postemail'] = flattenText(Yii::app()->request->getPost("email"));
@@ -551,6 +570,10 @@ class UserAction extends Survey_Common_Action
                 $aData['list'][] = array('templaterights'=>$templaterights,'templates'=>$templates);
             }
         }
+
+        $aData['fullpagebar']['savebutton']['form'] = 'modtemplaterightsform';
+        $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';
+
         $this->_renderWrappedTemplate('user', 'setusertemplates', $aData);
     }
 
@@ -641,6 +664,9 @@ class UserAction extends Survey_Common_Action
         // Get user lang
         $user = User::model()->findByPk(Yii::app()->session['loginID']);
         $aData['sSavedLanguage'] = $user->lang;
+
+        $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
+        $aData['fullpagebar']['closebutton']['url'] = 'admin/survey/sa/index';
 
         // Render personal settings view
         $this->_renderWrappedTemplate('user', 'personalsettings', $aData);

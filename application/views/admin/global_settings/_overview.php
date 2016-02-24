@@ -12,25 +12,24 @@
  */
 ?>
 
-<div class='header ui-widget-header'><?php eT("System overview"); ?></div>
-<br /><table class='statisticssummary'>
+<br /><table class='statisticssummary table table-bordered'>
     <tr>
-        <th ><?php eT("Users"); ?>:</th><td><?php echo $usercount; ?></td>
+        <td ><?php eT("Users"); ?>:</th><td><?php echo $usercount; ?></td>
     </tr>
     <tr>
-        <th ><?php eT("Surveys"); ?>:</th><td><?php echo $surveycount; ?></td>
+        <td ><?php eT("Surveys"); ?>:</th><td><?php echo $surveycount; ?></td>
     </tr>
     <tr>
-        <th ><?php eT("Active surveys"); ?>:</th><td><?php echo $activesurveycount; ?></td>
+        <td ><?php eT("Active surveys"); ?>:</th><td><?php echo $activesurveycount; ?></td>
     </tr>
     <tr>
-        <th ><?php eT("Deactivated result tables"); ?>:</th><td><?php echo $deactivatedsurveys; ?></td>
+        <td ><?php eT("Deactivated result tables"); ?>:</th><td><?php echo $deactivatedsurveys; ?></td>
     </tr>
     <tr>
-        <th ><?php eT("Active token tables"); ?>:</th><td><?php echo $activetokens; ?></td>
+        <td ><?php eT("Active token tables"); ?>:</th><td><?php echo $activetokens; ?></td>
     </tr>
     <tr>
-        <th ><?php eT("Deactivated token tables"); ?>:</th><td><?php echo $deactivatedtokens; ?></td>
+        <td ><?php eT("Deactivated token tables"); ?>:</th><td><?php echo $deactivatedtokens; ?></td>
     </tr>
     <?php
         if (Yii::app()->getConfig('iFileUploadTotalSpaceMB')>0)
@@ -52,8 +51,5 @@
     <?php
     }
     ?>
-<p>
-		<?php $urlUpdate = Yii::app()->createUrl("admin/globalsettings", array("update"=>'updatebuttons')); ?>
-		<a href="<?php echo $urlUpdate; ?>"><?php eT('Click here to use ComfortUpdate.');?></a>
-</p>
+
 

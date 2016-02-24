@@ -3478,6 +3478,12 @@ class quexmlpdf extends pdf {
       //draw text
       $this->MultiCell($textwidth,$this->singleResponseAreaHeight,$r['text'],0,'R',false,0,$this->getColumnX(),$currentY,true,0,false,true,$this->singleResponseAreaHeight,'M',true);
 
+      $skipto = false;
+      $other = false;
+
+      if (isset($r['skipto'])) $skipto = $r['skipto'];
+      if (isset($r['other']) && $rnum == $total) $other = $r['other']; //only set for last in set
+
       //draw the response boxes
       for ($j = 0; $j < count($subquestions); $j++)
       {

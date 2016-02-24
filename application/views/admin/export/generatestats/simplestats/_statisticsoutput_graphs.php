@@ -30,7 +30,7 @@
             <?php if($charttype=='Pie' || $charttype=='Doughnut'): ?>
             <div class="legend col-sm-2 vcenter">
                 <?php foreach($labels as $i=>$label): ?>
-                    <?php $colorindex = $color+$i; $colorindex=($colorindex < 71)?$colorindex:0;?>
+                    <?php $colorindex = $color+$i; ?>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-sm-1">
                             <span style="background-color:rgba(<?php echo $COLORS_FOR_SURVEY[$colorindex];?>,0.6); display: block;    width: 20px;    height: 20px;    border-radius: 5px; margin: 0px; padding: 0px;">

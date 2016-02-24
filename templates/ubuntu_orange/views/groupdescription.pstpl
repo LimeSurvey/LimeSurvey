@@ -1,0 +1,6 @@
+<!-- Group description -->
+<div class="col-xs-12 group-description-container">
+    <p class="group-description jumbotron">
+        {GROUPDESCRIPTION}
+    </p>
+</div>

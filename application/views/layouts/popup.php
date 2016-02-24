@@ -8,10 +8,9 @@
             App()->getClientScript()->registerPackage('qTip2');
             App()->getClientScript()->registerPackage('jquery-superfish'); // Needed by admin_core : to be fixed ?
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-ui.css" );
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "css/jquery-ui.css" );  // TODO: How should this look, really?
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle.css" );
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "lime-admin.css" );
 
         ?>
         <link rel="shortcut icon" href="<?php echo App()->baseUrl; ?>styles/favicon.ico" type="image/x-icon" />

@@ -11,6 +11,8 @@
         if($serverAnswer->html != "")
             echo $serverAnswer->html.'<br/>';
 
+    $bError = true;
+
     switch ($serverAnswer->error)
     {
         case 'php_curl_not_loaded':
@@ -26,6 +28,7 @@
             break;
 
         case 'no_update_available_for_your_version':
+			$bError = false;
             $sTile = gT('Up to date!');
             $sHeader = gT('No update available for your version.');
             $sMessage = gT('Your version is up to date!');
@@ -43,6 +46,12 @@
             $sMessage = gT("It seems you're using a version coming from the LimeSurvey GitHub repository. You can't use ComfortUpdate.");
             break;
 
+        case 'not_updatable':
+            $sTile = gT('Error!');
+            $sHeader = gT('No build version found!');
+            $sMessage = gT("You disabled ComfortUpdate in your configuration file.");
+            break;
+
         default :
             $sTile = gT('Error!');
             $sHeader = gT('Unknown error!');
@@ -52,15 +61,16 @@
     }
 ?>
 
-
-<div class='messagebox ui-corner-all'>
-    <div class='header ui-widget-header'><?php echo $sTile; ?></div>
-    <div class='warningheader'><?php echo $sHeader; ?></div>
-    <?php echo $sMessage; ?><br />
-    <?php if(isset($sErrorCode)):?>
-        <?php echo $sErrorCode; ?><br />
-    <?php endif;?>
-    <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
-        <span class="ui-button-text"><?php eT("Ok"); ?></span>
-    </a>
+<div class="jumbotron message-box <?php if($bError) echo 'message-box-error'; ?>">
+        <h2 class="<?php if($bError){echo 'text-danger';}else{echo 'text-success';} ?>"><?php echo $sTile; ?></h2>
+        <p class="lead"><?php echo $sHeader; ?></p>
+        <p><?php echo $sMessage; ?></p>
+	    <?php if(isset($sErrorCode)):?>
+    		<p>
+        		<?php echo $sErrorCode; ?>
+	        </p>
+    	<?php endif;?>
+        <p>
+            <a class="btn btn-lg btn-success" href="<?php echo $this->createUrl("admin/"); ?>" role="button"><?php eT("Ok"); ?></a>
+        </p>
 </div>

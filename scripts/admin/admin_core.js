@@ -18,10 +18,25 @@
  * Need to be replaced by some polyfills see #8009
  */
 hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'function';
-linksInDialog();
+
 $(document).ready(function(){
+
     initializeAjaxProgress();
     tableCellAdapters();
+    linksInDialog();
+
+    if($('.htmleditor').length>0)
+    {
+        setTimeout(function(){
+            $('.cke_contents').width('100%');
+            $iframes = $('.htmleditor').find('iframe');
+            //console.log('OK '+JSON.stringify($iframes));
+            $iframes.each(function(){
+                $(this).width('500px').zIndex('10000');
+            });
+        },500);
+    }
+
     if(typeof(userdateformat) !== 'undefined')
         {
         $(".popupdate").each(function(i,e) {
@@ -41,8 +56,13 @@ $(document).ready(function(){
             duration: 'fast'
         }, $.datepicker.regional[LS.data.language]);
     }
-    $(".sf-menu").superfish({speed: 'fast'});
     doToolTip();
+    $('.btntooltip').tooltip();
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
     $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
     $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
 
@@ -61,7 +81,52 @@ $(document).ready(function(){
     });
 
 
-    if ($('#showadvancedattributes').length>0) updatequestionattributes();
+    /* Switch format group */
+    if ($('#switchchangeformat').length>0){
+        $('#switchchangeformat button').on('click', function(event, state) {
+            $('#switchchangeformat button.active').removeClass('active');
+            $(this).addClass('active');
+            $value = $(this).data('value');
+            $url = $('#switch-url').attr('data-url')+'/format/'+$value;
+
+            console.log('required format: '+$value);
+            console.log('format url: '+$url);
+
+            $.ajax({
+                url : $url,
+                type : 'GET',
+                dataType : 'html',
+
+                // html contains the buttons
+                success : function(html, statut){
+                },
+                error :  function(html, statut){
+                    alert('error');
+                }
+            });
+
+        });
+    };
+
+
+    $('#survey-action-chevron').click(function(){
+        $url = $(this).data('url');
+        $.ajax({
+            url : $url,
+            type : 'GET',
+            dataType : 'html',
+
+            // html contains the buttons
+            success : function(html, statut){
+                $('#survey-action-container').toggle();
+                $('#survey-action-chevron').toggleClass('glyphicon-chevron-up').toggleClass('glyphicon-chevron-down');
+            },
+            error :  function(html, statut){
+                alert('error');
+            }
+        });
+    });
+
 
     $('#showadvancedattributes').click(function(){
         $('#showadvancedattributes').hide();
@@ -71,6 +136,7 @@ $(document).ready(function(){
         });
 
     });
+
     $('#hideadvancedattributes').click(function(){
         $('#showadvancedattributes').show();
         $('#hideadvancedattributes').hide();
@@ -80,6 +146,19 @@ $(document).ready(function(){
 
     });
     $('#question_type').change(updatequestionattributes);
+
+    $('#question_type_button  li a').click(function(){
+        $(".btn:first-child .buttontext").text($(this).text());
+        $('#question_type').val($(this).data('value'));
+
+        if($(this).data('module')==1){
+            $('#question_module_name').val($(this).data('modulename'));
+        }
+        else {
+            $('#question_module_name').val('');
+        }
+        updatequestionattributes();
+       });
 
     $('#MinimizeGroupWindow').click(function(){
         $('#groupdetails').hide();
@@ -104,20 +183,13 @@ $(document).ready(function(){
         expires: 5000
         });
     });
-    if ($("#question_type").not('.none').length > 0 && $("#question_type").attr('type')!='hidden'){
+    if ($("#question_type_button").not('.none').length > 0 && $("#question_type_button").attr('type')!='hidden'){
 
-        /*
-        $("#question_type").msDropDown({
-            'on' : {
-                'create' :qTypeDropdownInit
-            }
-        });
-        */
        qTypeDropdownInit();
-        $("#question_type").change(function(event){
+        $("#question_type_button").change(function(event){
             OtherSelection(this.value);
         });
-        $("#question_type").change();
+        $("#question_type_button").change();
     }
     else
     {
@@ -131,19 +203,19 @@ $(document).ready(function(){
 function qTypeDropdownInit()
 {
     $(document).ready(function () {
-        $("#question_type option").each(function(index,element){
+        $("#question_type_button .questionType").each(function(index,element){
             $(element).qtip({
                 style: {
-                    classes: 'qtip-questiontype'
+                    classes: 'qtip-bootstrap'
                 },
                 content: getToolTip($(element).text()),
                 position: {
-                    my : 'top left',
-                    at: 'top right',
+                    my : 'center right',
+                    at: 'center left',
                     target: $('label[for=question_type]'),
                     viewport: $(window),
                     adjust: {
-                        x: 20
+                        x: 0
                     }
 
                 }
@@ -152,22 +224,15 @@ function qTypeDropdownInit()
         });
     });
     $(document).ready(function() {
-        $('body').on('mouseenter mouseleave', 'li.questionType', function(e) {
-            if (e.type == 'mouseenter')
-            {
-				// Hide all others if we show a new one.
-                $('#question_type option').qtip('hide');
-                $($(e.currentTarget).data().select2Data.element).qtip('option', 'position.target', $(e.currentTarget)).qtip('show');
-            }
-            else
-            {
-                $($(e.currentTarget).data().select2Data.element).qtip('hide');
-            }
 
-
+        $('.questionType').on('mouseenter', function(e){
+            //alert($(this).attr('class'));
+            $('.questionType').qtip('hide');
+            $(this).qtip('option', 'position.target', $(this).qtip('show'));
         });
-        $('#question_type').on('close', function(e) {
-            $('#question_type option').qtip('hide');
+
+        $('.questionType').on('mouseleave', function(e){
+            $(this).qtip('hide');
         });
     });
 }
@@ -196,6 +261,7 @@ function getToolTip(type){
         }
         return returnval;
     }
+
     return "<img src='" + imgurl + "/screenshots/"+code+".png' />";
 }
 
@@ -203,6 +269,9 @@ function getToolTip(type){
 
 function updatequestionattributes()
 {
+    var type = $('#question_type').val();
+    OtherSelection(type);
+
     $('.loader').show();
     $('#advancedquestionsettings').html('');
     var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
@@ -237,7 +306,7 @@ function updatequestionattributes()
 function validatefilename (form, strmessage )
 {
     if (form.the_file.value == "") {
-        alert( strmessage );
+        $('#pleaseselectfile-popup').modal();
         form.the_file.focus();
         return false ;
     }
@@ -265,132 +334,11 @@ function doToolTip()
             $(this).children("a").children("img").removeAttr('title');
         }
     });
-    $(".sf-menu a > img[alt]").data("hasqtip", true ).parent("a").data("hasqtip", true );
-    $("a").each(function() {
-        if(!$(this).data("hasqtip"))// data-hasqtip not in DOM, then need to be tested directly (:not([data-hasqtip]) don't work)
-        {
-            tipcontent=$(this).children("img").attr('alt');
-            if(!tipcontent){tipcontent=htmlEncode($(this).attr('title'));}
-            if(tipcontent && tipcontent!=""){
-                $(this).qtip({
-                    content: {
-                        text: tipcontent
-                    },
-                    style: {
-                        classes: "qtip-light qtip-rounded"
-                    },
-                    position: {
-                        viewport: $(window),
-                        at: 'bottom right'
-                    }
-                });
-            }
-            $(this).removeAttr('title');
-        }
-    });
-    $("a > img[alt]").data("hasqtip", true ).removeAttr('title');
 
-    // Call the popuptip hover rel attribute
-    $('.popuptip').each(function(){
-        if($(this).attr('rel')){
-            htmlcontent=$(this).html();
-            tiptarget=$("#"+$(this).attr('rel'));
-            //if($("#"+$(this).attr('rel')).find('img').length==1){ tiptarget=$("#"+$(this).attr('rel')).find('img');}
-            tiptarget.qtip({
-                content: {
-                    text: htmlcontent
-                },
-                style: {
-                    classes: "qtip-light qtip-rounded"
-                },
-                position: {
-                    at: "bottom center",
-                    my: "top center"
-                },
-                hide: {
-                    fixed: true,
-                    delay: 500,
-                    event: "mouseout"
-                }
-            });
-            $("#"+$(this).attr('rel')).find("img").data("hasqtip", true ).removeAttr('title');
-        }
-    });
-    // On label
-    $('label[title]').each(function() {
-        if($(this).attr('title') != '')
-        {
-            $(this).qtip({
-                style: {
-                    classes: "qtip-cream qtip-rounded"
-                },
-                position: {
-                    viewport: $(window),
-                    at: "bottom right"
-                }
-            });
-        }
-    });
-    // Loads the tooltips on image
-    $('img[title]').each(function() {
-        if($(this).attr('title') != '')
-        {
-            $(this).qtip({
-                style: {
-                    classes: "qtip-light qtip-rounded"
-                },
-                position: {
-                    viewport: $(window),
-                    at: "bottom right"
-                }
-            });
-        }
-    });
-    $('img[alt]:not([title]),input[src]').each(function() {
-        if($(this).attr('alt') != '' && !$(this).data("hasqtip")){
-            $(this).qtip({
-                content: {
-                    attr: "alt"
-                },
-                style: {
-                    classes: "qtip-light qtip-rounded"
-                },
-                position: {
-                    viewport: $(window),
-                    at: "bottom right"
-                },
-                hide: {
-                    event: "mouseout"
-                }
-            });
-        }
-    });
 
-    //Still used ?
-    $('.tipme').each(function() {
-        if($(this).attr('alt') != '')
-            {
-            $(this).qtip(
-            {
-                content: {
-                    attr: 'alt'
-                },
-                style: {
-                    classes: "qtip-cream qtip-rounded"
-                },
-                position: {
-                        viewport: $(window),
-                        at: 'top right',
-                        tooltip: 'bottom left'
-                    }
-            });
-        }
-    });
+
 }
-// A function to encode any HTML for qtip
-function htmlEncode(html){
-  return $('<div/>').text(html).html();
-}
+
 // If the length of the element's string is 0 then display helper message
 function isEmpty(elem, helperMsg)
 {
@@ -426,12 +374,6 @@ function ev_gecko_select_keyup_ev(Ev) {
     return true;
 }
 
-function init_gecko_select_hack() {
-    var selects = document.getElementsByTagName("SELECT");
-    for(i=0; i<selects.length; i++)
-        selects.item(i).addEventListener("keyup", ev_gecko_select_keyup_ev, false);
-    return true;
-}
 
 
 function getkey(e)
@@ -464,6 +406,57 @@ function goodchars(e, goods)
     // else return false
     return false;
 }
+
+
+function DoAdd()
+{
+    if (document.getElementById("available_languages").selectedIndex>-1)
+        {
+        var strText = document.getElementById("available_languages").options[document.getElementById("available_languages").selectedIndex].text;
+        var strId = document.getElementById("available_languages").options[document.getElementById("available_languages").selectedIndex].value;
+        AddItem(document.getElementById("additional_languages"), strText, strId);
+        RemoveItem(document.getElementById("available_languages"), document.getElementById("available_languages").selectedIndex);
+        sortSelect(document.getElementById("additional_languages"));
+        UpdateLanguageIDs();
+    }
+}
+
+function DoRemove(minItems,strmsg)
+{
+    var strText = document.getElementById("additional_languages").options[document.getElementById("additional_languages").selectedIndex].text;
+    var strId = document.getElementById("additional_languages").options[document.getElementById("additional_languages").selectedIndex].value;
+    if (document.getElementById("additional_languages").options.length>minItems)
+        {
+        AddItem(document.getElementById("available_languages"), strText, strId);
+        RemoveItem(document.getElementById("additional_languages"), document.getElementById("additional_languages").selectedIndex);
+        sortSelect(document.getElementById("available_languages"));
+        UpdateLanguageIDs();
+    }
+    else
+        if (strmsg!=''){alert(strmsg);}
+}
+
+function UpdateLanguageIDs(mylangs,confirmtxt)
+{
+    document.getElementById("languageids").value = '';
+
+    var lbBox = document.getElementById("additional_languages");
+    for (var i = 0; i < lbBox.options.length; i++)
+        {
+        document.getElementById("languageids").value = document.getElementById("languageids").value + lbBox.options[i].value+ ' ';
+    }
+    if (mylangs)
+        {
+        if (checklangs(mylangs))
+            {
+            return true;
+        } else
+            {
+            return confirm(confirmtxt);
+        }
+    }
+}
+
 
 
 function trim(stringToTrim) {
@@ -656,12 +649,12 @@ jQuery.fn.center = function () {
 // Fix broken substr function with negative start value (in older IE)
 // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr
 if ('ab'.substr(-1) != 'b') {
-	String.prototype.substr = function(substr) {
-		return function(start, length) {
-			if (start < 0) start = this.length + start;
-			return substr.call(this, start, length);
-		};
-	}(String.prototype.substr);
+    String.prototype.substr = function(substr) {
+        return function(start, length) {
+            if (start < 0) start = this.length + start;
+            return substr.call(this, start, length);
+        };
+    }(String.prototype.substr);
 }
 
 function linksInDialog()
@@ -762,5 +755,10 @@ function addHiddenElement(theform,thename,thevalue)
 function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
+
+/** For homepagesettings button edit */
+$(document).ready(function() {
+
+});
 
 // @license-end

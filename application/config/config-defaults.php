@@ -50,7 +50,7 @@ $config['defaultuser']        =   'admin';          // This is the default usern
 $config['defaultpass']        =   'password';       // This is the default password for the default user when LimeSurvey is installed
 
 // Styling options
-$config['admintheme']         =  'gringegreen';     // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
+$config['admintheme']         =  'Sea_Green';     // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
 $config['adminthemeiconsize'] =  32;                // This settings describes the icon size for a normal toolbar icon - default for gringegreen is 32
 
 
@@ -190,7 +190,7 @@ $config['auth_webserver_autocreate_profile'] = Array(
 );
 
 $config['auth_webserver_autocreate_permissions'] = Array(
-	'surveys' => array('create'=>true,'read'=>true,'update'=>true,'delete'=>true)
+    'surveys' => array('create'=>true,'read'=>true,'update'=>true,'delete'=>true)
 );
 
 // hook_get_auth_webserver_profile
@@ -611,12 +611,21 @@ $config['standardtemplaterooturl'] = $config['publicurl'].'templates';      // L
 $config['adminscripts']            = $config['publicurl'].'scripts/admin/';
 $config['generalscripts']          = $config['publicurl'].'scripts/';
 $config['third_party']                 = $config['publicurl'].'third_party/';
+
 $config['styleurl']                = $config['publicurl'].'styles/';
+
+
 $config['publicstyleurl']          = $config['publicurl'].'styles-public/';
 $config['sCKEditorURL']            = $config['third_party'].'ckeditor';
 //$config['sCKEditorURL']            = '/scripts/admin/ckeditor.36';
 $config['usertemplaterooturl']     = $config['uploadurl'].'/templates';     // Location of the user templates
-$config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'/images/';         // Location of button bar files for admin script
+
+$config['adminimagebaseurl']       = $config['styleurl'].$config['admintheme'].'/images/';     // for the definition of IMAGE_BASE_URL in render_wrapped_template.
+$config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'/images/14/';         // Location of button bar files for admin script
+
+
+
+
 $config['adminstyleurl']           = $config['styleurl'].$config['admintheme'].'/';         // Location of button bar files for admin script
 
 
@@ -628,6 +637,8 @@ $config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upl
 $config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
 $config['usertemplaterootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
 $config['styledir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'styles';
+$config['questiontypedir']         = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
+
 
 // Use alias notation, we should move to this format everywhere.
 $config['plugindir']               = 'webroot.plugins';
@@ -636,6 +647,12 @@ $config['plugindir']               = 'webroot.plugins';
 $config['bFixNumAuto']             = 1;
 // (javascript) Send real value entered when using Numeric question type in Expression Manager : 0 : {NUMERIC} with bad caracters send '', 1 : {NUMERIC} send all caracters entered
 $config['bNumRealValue']             = 0;
+
+// Home page default Settings
+$config['show_logo'] = 'show';
+$config['show_last_survey_and_question'] = 'show';
+$config['boxes_by_row'] = '3';
+$config['boxes_offset'] = '3';
 
 
 return $config;

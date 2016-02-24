@@ -28,14 +28,6 @@ class Authentication extends Survey_Common_Action
 {
 
     /**
-    * Reused email message
-    *
-    * @var string
-    * @access private
-    */
-    private $sent_email_message = 'If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you';
-
-    /**
     * Show login screen and parse login data
     */
     public function index()
@@ -134,7 +126,7 @@ class Authentication extends Survey_Common_Action
         App()->getPluginManager()->dispatchEvent($beforeLogout);
         // Expire the CSRF cookie
         $cookie = new CHttpCookie('YII_CSRF_TOKEN', '');
-        $cookie->expire = time()-3600; 
+        $cookie->expire = time()-3600;
         Yii::app()->request->cookies['YII_CSRF_TOKEN'] = $cookie;
         App()->user->logout();
         App()->user->setFlash('loginmessage', gT('Logout successful.'));
@@ -170,7 +162,7 @@ class Authentication extends Survey_Common_Action
             if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$aFields[0]['uid'])))
             {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
-                $aData['message'] = '<br>'.gT($this->sent_email_message).'<br>';
+                $aData['message'] = '<br>'.gT('If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you').'<br>';
             }
             else
             {
@@ -209,7 +201,7 @@ class Authentication extends Survey_Common_Action
         {
             User::model()->updatePassword($aFields[0]['uid'], $sNewPass);
             // For security reasons, we don't show a successful message
-            $sMessage = gT($this->sent_email_message);
+            $sMessage = gT('If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you');
         }
         else
         {

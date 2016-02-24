@@ -1,96 +1,74 @@
 <?php
-    // Get the array language
-    $aAvailableLang=getLanguageDataRestricted (false, Yii::app()->session['adminlang']);
-    unset($aAvailableLang[$esrow['language']]);
-    $aLang=array();
-    foreach ($aAvailableLang as $lang => $aLanguage) {
-        $aLang[$lang]=html_entity_decode($aLanguage['description'], ENT_QUOTES, 'UTF-8')." (".html_entity_decode($aLanguage['nativedescription'], ENT_QUOTES, 'UTF-8').")";
-    }
-    foreach(Survey::model()->findByPk($surveyid)->additionalLanguages as $sSurveyLang)
-    {
-        if(!array_key_exists($sSurveyLang,$aLang))
-        {
-            $aLangInfo=getLanguageNameFromCode($sSurveyLang);
-            $aLang[$sSurveyLang]=html_entity_decode($aLangInfo[0], ENT_QUOTES, 'UTF-8')." (".html_entity_decode($aLangInfo[1], ENT_QUOTES, 'UTF-8').")";
-        }
-    }
-    $settings=array(
-        //~ 'baselanguage'=>array(
-            //~ 'type'=>'info',
-            //~ 'label'=>gT('Base language'),
-            //~ 'content'=>getLanguageNameFromCode($esrow['language'],false), // Or show a select readonly/deactivated mode ?
-        //~ ),
-        /* Alternate solution for base lang */
-        'baselanguage'=>array(
-            'type'=>'select',
-            'label'=>gT('Base language'),
-            'options'=>array(
-                $esrow['language']=html_entity_decode(getLanguageNameFromCode($esrow['language'],false), ENT_QUOTES, 'UTF-8'),
-            ),
-            'htmlOptions'=>array(
-                'disabled'=>true,
-            ),
-            'current'=>$esrow['language'],
-        ),
-        'additional_languages'=>array(
-            'type'=>'select',
-            'label'=>gT('Additional Languages'),
-            'htmlOptions'=>array(
-                'multiple'=>true,
-            ),
-            'options'=>$aLang,
-            'current'=>Survey::model()->findByPk($surveyid)->additionalLanguages,
-            'help'=>gT("If you remove a language, all questions, answers, etc for removed languages will be lost."),
-            'events'=>array(
-                'change'=>'js: function(e) { }',// TODO : a function to validate removing of language
-            ),
-        ),
-        'admin'=>array(
-            'type'=>'string',
-            'label'=>gT("Administrator"),
-            'value'=>$esrow['admin'],
-            'htmlOptions'=>array(
-                'size'=>50,
-            ),
-            'current'=>$esrow['admin'],
-        ),
-        'adminemail'=>array(
-            'type'=>'email',
-            'label'=>gT("Admin email"),
-            'value'=>$esrow['adminemail'],
-            'htmlOptions'=>array(
-                'size'=>50,
-            ),
-            'current'=>$esrow['adminemail'],
-        ),
-        'bounce_email'=>array(
-            'type'=>'email',
-            'label'=>gT("Bounce email"),
-            'value'=>$esrow['bounce_email'],
-            'htmlOptions'=>array(
-                'size'=>50,
-            ),
-            'current'=>$esrow['bounce_email'],
-        ),
-        'faxto'=>array(
-            'type'=>'string',
-            'label'=>gT("Fax to"),
-            'value'=>$esrow['faxto'],
-            'htmlOptions'=>array(
-                'size'=>50,
-            ),
-            'current'=>$esrow['faxto'],
-        ),
-    );
-    if(!count($aLang))
-        unset($settings['additional_languages']);
-    $this->widget('ext.SettingsWidget.SettingsWidget', array(
-        'id'=>'general',
-        'title'=>gT("General"),
-        'form' => false,
-        'formHtmlOptions'=>array(
-            'class'=>'form-core',
-        ),
-        'settings' => $settings,
-    ));
+    $yii = Yii::app();
+    $controller = $yii->getController();
+    $sConfirmLanguage="$(document).on('submit','#addnewsurvey',function(){\n"
+                    . "  if(!UpdateLanguageIDs(mylangs,'".gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js")."')){\n"
+                    . "    return false;\n"
+                    . "  }\n"
+                    . "});\n";
+    Yii::app()->getClientScript()->registerScript('confirmLanguage',$sConfirmLanguage,CClientScript::POS_BEGIN);
 ?>
+<div id='general' class="tab-pane fade in active">
+    <ul>
+        <li>
+            <label><?php  eT("Base language:") ; ?></label>
+            <?php echo getLanguageNameFromCode($esrow['language'],false) ?>
+        </li>
+        <li><label for='additional_languages'><?php  eT("Additional Languages"); ?>:</label>
+            <table><tr><td style='text-align:left'><select style='min-width:220px;' size='5' id='additional_languages' name='additional_languages'>
+                            <?php $jsX=0;
+                                $jsRemLang ="<script type=\"text/javascript\">
+                                var mylangs = new Array();
+                                standardtemplaterooturl='".$yii->getConfig('standardtemplaterooturl')."';
+                                templaterooturl='".$yii->getConfig('usertemplaterooturl')."';\n";
+
+                                foreach (Survey::model()->findByPk($surveyid)->additionalLanguages as $langname) {
+                                    if ($langname && $langname != $esrow['language']) {
+                                        $jsRemLang .=" mylangs[$jsX] = \"$langname\"\n"; ?>
+                                    <option id='<?php echo $langname; ?>' value='<?php echo $langname; ?>'><?php echo getLanguageNameFromCode($langname,false); ?>
+                                    </option>
+                                    <?php $jsX++; ?>
+                                    <?php }
+                                }
+                                $jsRemLang .= "</script>";
+                            ?>
+
+                        </select>
+                        <?php echo $jsRemLang; ?>
+                    </td>
+
+                    <!-- Arrows -->
+                    <td style='text-align:left'>
+                        <button class="btn btn-default btn-xs" onclick="DoAdd()" id="AddBtn" type="button"  data-toggle="tooltip" data-placement="top" title="<?php eT("Add"); ?>">
+                            <span class="fa fa-backward"></span>  <?php eT("Add"); ?>
+                        </button>
+                        <br /><br />
+                        <button class="btn btn-default btn-xs" type="button" onclick="DoRemove(0,'')" id="RemoveBtn"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Remove"); ?>" >
+                            <?php eT("Remove"); ?>  <span class="fa fa-forward"></span>
+                        </button>
+                    </td>
+
+
+                    <td style='text-align:left'><select size='5' style='min-width:220px;' id='available_languages' name='available_languages'>
+                            <?php $tempLang=Survey::model()->findByPk($surveyid)->additionalLanguages;
+                                foreach (getLanguageDataRestricted (false, Yii::app()->session['adminlang']) as $langkey2 => $langname) {
+                                    if ($langkey2 != $esrow['language'] && in_array($langkey2, $tempLang) == false) {  // base languag must not be shown here ?>
+                                    <option id='<?php echo $langkey2 ; ?>' value='<?php echo $langkey2; ?>'>
+                                    <?php echo $langname['description']; ?></option>
+                                    <?php }
+                            } ?>
+                        </select></td>
+                </tr></table></li>
+
+
+        <li><label for='admin'><?php  eT("Administrator:"); ?></label>
+            <input type='text' size='50' id='admin' name='admin' value="<?php echo htmlspecialchars($esrow['admin']); ?>" /></li>
+        <li><label for='adminemail'><?php  eT("Admin email:"); ?></label>
+            <input type='email' size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($esrow['adminemail']); ?>" /></li>
+        <li><label for='bounce_email'><?php  eT("Bounce email:"); ?></label>
+            <input type='email' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($esrow['bounce_email']); ?>" /></li>
+        <li><label for='faxto'><?php  eT("Fax to:"); ?></label>
+            <input type='text' size='50' id='faxto' name='faxto' value="<?php echo htmlspecialchars($esrow['faxto']); ?>" />
+        </li>
+ </ul>
+</div>

@@ -1,0 +1,103 @@
+/**
+ *     Statistics
+ *
+ */
+
+#statsContainerLoading
+{
+    position: relative;
+    display: none;
+}
+
+.group-question-chevron {
+    float: right;
+    font-size: 0.8em;
+}
+
+.group-question-chevron:hover {
+    cursor: pointer;
+}
+
+#statisticsoutput{
+    min-height: 200px;
+}
+
+#statsContainerLoading p{
+    text-align: center;
+    padding-top: 120px;
+}
+
+#statisticsview .group-container
+{
+    border-bottom: solid 1px #EEE;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+#statisticsview .header
+{
+
+    font-size: 1.5em;
+}
+
+#statisticsview .groupTitle{
+}
+
+.questionContainer {
+    background-color: #f5f5f5;
+    padding: 1em;
+}
+
+#statisticsview .box{
+    text-align: left;
+    margin-bottom: 1em;
+}
+
+#statisticsgeneralfilters {
+    text-align: center;
+}
+
+tr.success
+{
+    color : white;
+    font-size: 1.3em;
+    text-shadow: 1px 1px #77A3A5;
+}
+
+tr.info, tr.danger {
+    color : white;
+}
+#response-filter-header
+{
+    margin-bottom: 10px;
+}
+
+.table-boxed td
+{
+    height: 1px;
+    padding: 10px;
+}
+
+.inerTableBox {
+
+    border-radius: 3px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    padding: 1em;
+    margin : 0.5em;
+    height : 110%;
+    width : 100%;
+    position : relative;
+    left : -22px;
+}
+
+
+
+.canvas-chart {
+    width: 100;
+}
+
+.vcenter {
+        display: inline-block;
+    vertical-align: middle;
+    float: none;
+}

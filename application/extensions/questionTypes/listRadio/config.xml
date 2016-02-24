@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadatas>
+        <name>List Radio External</name>
+	    <creationDate>12/12/2015</creationDate>
+	    <author>Louis-Sébastien Gac Artigas</author>
+	    <authorEmail>louis.gac@limesurvey.org</authorEmail>
+	    <authorUrl>http://www.limesurvey.org</authorUrl>
+	    <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+	    <license>GNU General Public License version 2 or later</license>
+	    <version>1.0</version>
+	    <description>Just the normal list radio question, but as an external component.</description>
+        <screenshot>TODO</screenshot>
+    </metadatas>
+    <type>
+        <modulename>listRadio</modulename>
+        <typeid>L_M</typeid>
+        <basetype>L</basetype>
+        <title>New list radio</title>
+        <group>Single choice questions</group>
+        <subquestions>0</subquestions>
+        <hasdefaultvalues>1</hasdefaultvalues>
+        <assessable>1</assessable>
+        <answerscales>1</answerscales>
+    </type>
+</config>

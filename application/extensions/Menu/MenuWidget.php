@@ -484,14 +484,34 @@
                 {
                     $htmlOptions['data-route'] = $item['route'];
                 }
-                $result .= $this->widget('ext.bootstrap.widgets.TbSelect2', array(
+
+
+                                        /*$this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                                    
+                                        'name' => 'authMethod',
+                                        'pluginOptions' => array(
+                                        'value' => $selectedAuth,
+                                        'data' => $possibleAuthMethods,
+                                        'options' => array(
+                                            'onChange'=>'this.form.submit();'
+                                        )
+                                        )));    
+*/
+                
+                
+                
+                $result .= $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                     'name' => $item['name'],
-                    'value' => $item['value'],
-                    'data' => $listData,
-                    'options' => array(
-                        'minimumResultsForSearch' => 10,
-                        'placeholder' => gT('Please choose...')
+                        'data' => $listData,                    
+                    'pluginOptions' => array(
+                        'value' => $item['value'],
+
+                        'options' => array(
+                            'minimumResultsForSearch' => 10,
+                               'placeholder' => gT('Please choose...')
+                         ),                    
                     ),
+
                     'htmlOptions' => $htmlOptions
                 ), true);
             }

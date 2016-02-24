@@ -42,6 +42,8 @@ class remotecontrol_handle
             $session = new Session;
             $session->id = $sSessionKey;
             $session->expire = time() + Yii::app()->getConfig('iSessionExpirationTime');
+            if($sDatabasetype=='pgsql')
+                $username=new CDbExpression(Yii::app()->db->quoteValueExtended($username, PDO::PARAM_LOB)."::bytea");
             if($sDatabasetype=='sqlsrv' || $sDatabasetype=='mssql' || $sDatabasetype=='dblib')
                 $username=new CDbExpression('CONVERT(VARBINARY(MAX), '.Yii::app()->db->quoteValue($username).')');
             $session->data = $username;
@@ -136,13 +138,6 @@ class remotecontrol_handle
                         return array('status' => 'Creation Failed');
 
                     $sTitle = html_entity_decode($sSurveyTitle, ENT_QUOTES, "UTF-8");
-
-                    // Load default email templates for the chosen language
-                    $oLanguage = new Limesurvey_lang($sSurveyLanguage);
-                    $aDefaultTexts = templateDefaultTexts($oLanguage, 'unescaped');
-                    unset($oLanguage);
-
-                    $bIsHTMLEmail = false;
 
                     $aInsertData = array(
                         'surveyls_survey_id' => $iNewSurveyid,

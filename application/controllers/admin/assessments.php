@@ -72,16 +72,23 @@ class Assessments extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'assessments.js');
-        App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerPackage('jquery-superfish');
-
+        $aData['sidemenu']['state'] = false;
+        $iSurveyID=$aData['surveyid'];
+        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        // TODO: Hide this, because submitting first form on the page means
+        // submitting the 'delete' form in the table.
+        //$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+        //$aData['surveybar']['savebutton']['form'] = true;
+        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;
+        $aData['gid']=null;
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'assessments.js' ));
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
     private function _showAssessments($iSurveyID, $action)
     {
-        $oAssessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyID));
+        $oCriteria = new CDbCriteria(array('order' => 'id ASC'));
+        $oAssessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyID), $oCriteria);
         $aData = $this->_collectGroupData($iSurveyID);
         $aHeadings = array(gT("Scope"), gT("Question group"), gT("Minimum"), gT("Maximum"));
         $aData['actiontitle'] = gT("Add");
@@ -104,8 +111,15 @@ class Assessments extends Survey_Common_Action
         $aData['gid'] = empty($_POST['gid']) ? '' : sanitize_int($_POST['gid']);
 
         Yii::app()->loadHelper('admin/htmleditor');
+
+        $urls['output'] = '        <div class="side-body">
+            <h3>'.gT("Assessments").'</h3>';
+
         if ($surveyinfo['assessments']!='Y')
-            $urls['message'] = array('title' => gT("Assessments mode not activated"), 'message' => sprintf(gT("Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="'.$this->getController()->createUrl('admin/survey/sa/editsurveysettings/surveyid/'.$iSurveyID).'">','</a>'), 'class'=> 'warningheader');
+        {
+
+            $urls['message'] = array('title' => gT("Assessments mode not activated"), 'message' => sprintf(gT("Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="'.$this->getController()->createUrl('admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID).'">','</a>'), 'class'=> 'warningheader');
+        }
         $urls['assessments_view'][]= $aData;
         $this->_renderWrappedTemplate('', $urls, $aData);
     }

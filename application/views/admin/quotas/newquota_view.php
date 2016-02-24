@@ -1,55 +1,98 @@
-<div class='header ui-widget-header'><?php eT("New quota");?></div>
-<?php echo CHtml::form(array("admin/quotas/sa/insertquota/surveyid/{$iSurveyId}"), 'post', array('class'=>'form30', 'id'=>'addnewquotaform', 'name'=>'addnewquotaform')); ?>
-    <ul>
-        <li>
-            <label for="quota_name"><?php eT("Quota name");?>:</label>
-            <input id="quota_name" name="quota_name" type="text" size="30" maxlength="255" />
-        </li>
-        <li>
-            <label for="quota_limit"><?php eT("Quota limit");?>:</label>
-            <input id="quota_limit" name="quota_limit" type="text" size="12" maxlength="8" />
-        </li>
-        <li>
-            <label for="quota_action"><?php eT("Quota action");?>:</label>
-            <select id="quota_action" name="quota_action">
-                <option value ="1"><?php eT("Terminate survey");?></option>
-                <option value ="2"><?php eT("Terminate survey with warning");?></option>
-            </select>
-        </li>
-        <li>
-            <label for="autoload_url"><?php eT("Autoload URL");?>:</label>
-            <input id="autoload_url" name="autoload_url" type="checkbox" value="1" />
-        </li>
-    </ul>
-    <div id="tabs"><ul>
-            <?php foreach ($langs as $lang) { ?>
-                <li><a href="#tabpage_<?php echo $lang ?>"><?php echo getLanguageNameFromCode($lang,false);
-                        if ($lang==$baselang) {echo '('.gT("Base language").')';} ;?></a></li>
-                <?php } ?>
-        </ul>
+<div class="side-body col-lg-8">
+    <div class="row">
+        <div class="col-lg-12 content-right">
+            <h3>
+                <?php eT("New quota");?>
+            </h3>
+            <?php echo CHtml::form(array("admin/quotas/sa/insertquota/surveyid/{$iSurveyId}"), 'post', array('class'=>'form-horizontal', 'id'=>'addnewquotaform', 'name'=>'addnewquotaform')); ?>
+                <!-- quota name -->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="quota_name"><?php eT("Quota name");?>:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="quota_name" name="quota_name" type="text" size="30" maxlength="255" />
+                    </div>
+                </div>
 
+                <!-- quota limit -->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="quota_limit"><?php eT("Quota limit");?>:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="quota_limit" name="quota_limit" type="text" size="12" maxlength="8" />
+                    </div>
+                </div>
 
-        <?php foreach ($langs as $lang) { ?>
-            <div id="tabpage_<?php echo $lang ?>">
-                <ul>
-                    <li>
-                        <label for="quotals_message_<?php echo $lang;?>"><?php eT("Quota message");?>:</label>
-                        <textarea id="quotals_message_<?php echo $lang;?>" name="quotals_message_<?php echo $lang;?>" cols="60" rows="6"><?php eT("Sorry your responses have exceeded a quota on this survey.");?></textarea>
-                    </li>
-                    <li>
-                        <label for="quotals_url_<?php echo $lang;?>"><?php eT("URL");?>:</label>
-                        <input id="quotals_url_<?php echo $lang;?>" name="quotals_url_<?php echo $lang;?>" type="text" size="50" maxlength="255" value="<?php echo $thissurvey['url'];?>" />
-                    </li>
-                    <li>
-                        <label for="quotals_urldescrip_<?php echo $lang;?>"><?php eT("URL description");?>:</label>
-                        <input id="quotals_urldescrip_<?php echo $lang;?>" name="quotals_urldescrip_<?php echo $lang;?>" type="text" size="50" maxlength="255" value="<?php echo $thissurvey['urldescrip'];?>" />
-                    </li>
+                <!-- quota actions -->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="quota_action"><?php eT("Quota action");?>:</label>
+                    <div class="col-sm-10">
+                        <select id="quota_action" name="quota_action" class="form-control">
+                            <option value ="1"><?php eT("Terminate survey");?></option>
+                            <option value ="2"><?php eT("Terminate survey with warning");?></option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- -->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="autoload_url"><?php eT("Autoload URL");?>:</label>
+                    <div class="col-sm-10">
+                        <input id="autoload_url" name="autoload_url" type="checkbox" value="1" />
+                    </div>
+                </div>
+
+                <!--
+                <div class="form-group">
+                    <div class="col-sm-10">
+                    </div>
+                </div>
+                -->
+
+                <!-- Language tabs -->
+                <ul class="nav nav-tabs">
+                    <?php foreach ($langs as $lang): ?>
+                        <li role="presentation" <?php if ($lang==$baselang){echo 'class="active"';}?>>
+                            <a data-toggle="tab" href="#tabpage_<?php echo $lang ?>">
+                                <?php echo getLanguageNameFromCode($lang,false); ?>
+                                <?php if ($lang==$baselang) {echo '('.gT("Base language").')';} ;?>
+                            </a>
+                        </li>
+                    <?php endforeach?>
                 </ul>
-            </div>
-            <?php } ?>
-        <input type="hidden" name="sid" value="<?php echo $surveyid;?>" />
-        <input type="hidden" name="action" value="quotas" />
-        <input type="hidden" name="subaction" value="insertquota" />
+                <div class="tab-content">
+                    <?php foreach ($langs as $lang): ?>
+                        <div id="tabpage_<?php echo $lang ?>" class="tab-pane fade in <?php if ($lang==$baselang){echo ' active ';}?>>">
+
+                            <!-- Quota message -->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="quotals_message_<?php echo $lang;?>"><?php eT("Quota message");?>:</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" id="quotals_message_<?php echo $lang;?>" name="quotals_message_<?php echo $lang;?>" cols="60" rows="6"><?php eT("Sorry your responses have exceeded a quota on this survey.");?></textarea>
+                                </div>
+                            </div>
+
+                            <!-- URL -->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="quotals_url_<?php echo $lang;?>"><?php eT("URL");?>:</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="quotals_url_<?php echo $lang;?>" name="quotals_url_<?php echo $lang;?>" type="text" size="50" maxlength="255" value="<?php echo $thissurvey['url'];?>" />
+                                </div>
+                            </div>
+
+                            <!-- URL Description -->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="quotals_urldescrip_<?php echo $lang;?>"><?php eT("URL description");?>:</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="quotals_urldescrip_<?php echo $lang;?>" name="quotals_urldescrip_<?php echo $lang;?>" type="text" size="50" maxlength="255" value="<?php echo $thissurvey['urldescrip'];?>" />
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <input type="submit" name="submit" class="hidden" />
+                <input type="hidden" name="sid" value="<?php echo $surveyid;?>" />
+                <input type="hidden" name="action" value="quotas" />
+                <input type="hidden" name="subaction" value="insertquota" />
+            </form>
+        </div>
     </div>
-    <p><input name="submit" type="submit" value="<?php eT("Add New Quota");?>" />
-	</form>
+</div></div>

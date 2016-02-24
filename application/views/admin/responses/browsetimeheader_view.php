@@ -11,23 +11,23 @@
         <?php if (!Yii::app()->request->getPost('sql'))
         { ?>
             <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/0/limit/$limit"); ?>' title='<?php eT("Show start..."); ?>' >
-                <img name='DataBegin' align='left' src='<?php echo $sImageURL; ?>databegin.png' alt='<?php eT("Show start..."); ?>' />
+                <span title='<?php eT("Show start..."); ?>'  name='DataBegin'  class="icon-databegin text-success"></span>
             </a>
             <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/$last/limit/$limit"); ?>' title='<?php eT("Show previous.."); ?>'>
-                <img name='DataBack' align='left'  src='<?php echo $sImageURL; ?>databack.png' alt='<?php eT("Show previous.."); ?>' />
+                <span title='<?php eT("Show previous..."); ?>'  name='DataBack'  class="icon-databack text-success"></span>
             </a>
-            <img src='<?php echo $sImageURL; ?>/blank.gif' width='13' height='20' alt='' />
+
             <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/$next/limit/$limit"); ?>' title='<?php eT("Show next..."); ?>'>
-                <img name='DataForward' align='left' src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php eT("Show next.."); ?>' />
+                <span title='<?php eT("Show next..."); ?>'  name='DataForward'  class="icon-dataforward text-success"></span>
             </a>
             <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/$end/imit/$limit"); ?>' title='<?php eT("Show last..."); ?>'>
-                <img name='DataEnd' align='left' src='<?php echo $sImageURL; ?>dataend.png' alt='<?php eT("Show last.."); ?>' />
+                <span title='<?php eT("Show last..."); ?>'  name='DataEnd'  class="icon-dataend text-success"></span>
             </a>
-            <img src='<?php echo $sImageURL; ?>separator.gif' alt='' />
+
         <?php } ?>
         <?php echo CHtml::form(array("admin/responses/sa/time/surveyid/{$surveyid}/"), 'post', array('id'=>'browseresults')); ?>
             <font size='1' face='verdana'>
-            <img src='<?php echo $sImageURL; ?>blank.gif' width='31' height='20' alt='' />
+            
             <?php eT("Records displayed:"); ?> <input type='text' size='4' value='<?php echo $limit ?>' name='limit' id='limit' />
             <?php eT("Starting from:"); ?> <input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
             <input type='submit' value='<?php eT("Show"); ?>' />
@@ -80,7 +80,7 @@
     <tr>
         <td colspan=<?php echo $fncount + 2; ?>>
             <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'delete')) { ?>
-                <img id='imgDeleteMarkedResponses' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php eT('Delete marked responses'); ?>' />
+                <span id='imgDeleteMarkedResponses' title='<?php eT('Delete marked responses'); ?>' class="glyphicon glyphicon-trash"/>
             <?php } ?>
         </td>
     </tr>

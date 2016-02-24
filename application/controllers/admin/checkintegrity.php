@@ -38,6 +38,11 @@ class CheckIntegrity extends Survey_Common_Action
     public function index()
     {
         $aData = $this->_checkintegrity();
+
+
+        $aData['fullpagebar']['returnbutton']['url']='admin/index';
+        $aData['fullpagebar']['returnbutton']['text']=gT('Return to admin panel');
+
         $this->_renderWrappedTemplate('checkintegrity', 'check_view', $aData);
     }
 
@@ -326,6 +331,8 @@ class CheckIntegrity extends Survey_Common_Action
      */
     protected function _checkintegrity()
     {
+        /* Find is some fix is done */
+        $bDirectlyFixed=false;
         // Delete survey permissions if the user does not exist
         $oCriteria = new CDbCriteria;
         $oCriteria->join = 'LEFT JOIN {{users}} u ON {{permissions}}.uid=u.uid';
@@ -335,7 +342,10 @@ class CheckIntegrity extends Survey_Common_Action
             $oCriteria->join = 'USING {{users}} u';
             $oCriteria->condition = '{{permissions}}.uid=u.uid AND (u.uid IS NULL)';
         }
-        Permission::model()->deleteAll($oCriteria);
+        if(Permission::model()->deleteAll($oCriteria))
+        {
+            $bDirectlyFixed=true;
+        }
 
         // Delete survey permissions if the survey does not exist
         $oCriteria = new CDbCriteria;
@@ -346,19 +356,23 @@ class CheckIntegrity extends Survey_Common_Action
             $oCriteria->join = 'USING {{surveys}} s';
             $oCriteria->condition = "{{permissions}}.entity_id=s.sid AND (s.sid IS NULL AND entity='survey')";
         }
-        Permission::model()->deleteAll($oCriteria);
-
+        if(Permission::model()->deleteAll($oCriteria))
+        {
+            $bDirectlyFixed=true;
+        }
 
         // Deactivate surveys that have a missing response table
-        $surveys = Survey::model()->findAll();
-        foreach ($surveys as $survey)
+        $oSurveys = Survey::model()->findAll();
+        foreach ($oSurveys as $oSurvey)
         {
-            if ($survey['active']=='Y' && !tableExists("{{survey_{$survey['sid']}}}"))
+
+            if ($oSurvey->active=='Y' && !tableExists("{{survey_{$oSurvey->sid}}}"))
             {
-                Survey::model()->updateByPk($survey['sid'],array('active'=>'N'));
+                Survey::model()->updateByPk($oSurvey->sid,array('active'=>'N'));
+                $bDirectlyFixed=true;
             }
         }
-        unset($surveys);
+        unset($oSurveys);
 
 
 
@@ -385,6 +399,7 @@ class CheckIntegrity extends Survey_Common_Action
                     $sNewTable = "old_survey_{$iSurveyID}_{$sDate}";
                     try {
                         $deactivateresult = Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
+                        $bDirectlyFixed=true;
                     } catch (CDbException $e) {
                         die ('Couldn\'t make backup of the survey table. Please try again. The database reported the following error:<br />' . htmlspecialchars($e) . '<br />');
                     }
@@ -404,6 +419,7 @@ class CheckIntegrity extends Survey_Common_Action
                 $sNewTable = "old_tokens_{$iSurveyID}_{$sDate}";
                 try {
                     $deactivateresult = Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
+                    $bDirectlyFixed=true;
                 } catch (CDbException $e) {
                     die ('Couldn\'t make backup of the survey table. Please try again. The database reported the following error:<br />' . htmlspecialchars($e) . '<br />');
                 }
@@ -563,6 +579,7 @@ class CheckIntegrity extends Survey_Common_Action
                         foreach ($insertdata as $k => $v)
                             $oLanguageSettings->$k = $v;
                         $usresult=$oLanguageSettings->save();
+                        $bDirectlyFixed=true;
                     }
                 }
             }
@@ -773,7 +790,11 @@ class CheckIntegrity extends Survey_Common_Action
         //   the token table and remove if it doesn't.
 
 
-        /* TODO */
+        /* Show a alert message is some fix is done */
+        if($bDirectlyFixed)
+        {
+            Yii::app()->setFlashMessage(gT("Some automatic fixes were already applied."),'info');
+        }
 
         return $aDelete;
     }

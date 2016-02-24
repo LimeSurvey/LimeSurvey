@@ -113,6 +113,8 @@ class Usergroups extends Survey_Common_Action
             $aViewUrls = 'mailUserGroup_view';
         }
 
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer();
+
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
 
@@ -167,19 +169,26 @@ class Usergroups extends Survey_Common_Action
                 $db_group_name = flattenText($_POST['group_name'],false,true,'UTF-8',true);
                 $db_group_description = $_POST['group_description'];
 
-                if (isset($db_group_name) && strlen($db_group_name) > 0) {
+                if (isset($db_group_name) && strlen($db_group_name) > 0)
+                {
                     if (strlen($db_group_name) > 21) {
                         list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Failed to add group! Group name length more than 20 characters.")));
+                        Yii::app()->user->setFlash('error',  gT("Failed to add group! Group name length more than 20 characters."));
                     }
                     elseif (UserGroup::model()->find("name=:groupName", array(':groupName'=>$db_group_name))) {
                         list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Failed to add group! Group already exists.")));
+                        Yii::app()->user->setFlash('error',  gT("Failed to add group! Group already exists."));
                     }
                     else
                     {
                         $ugid = UserGroup::model()->addGroup($db_group_name, $db_group_description);
                         Yii::app()->session['flashmessage'] = gT("User group successfully added!");
                         list($aViewUrls, $aData) = $this->index($ugid, true);
+                        $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/' . $ugid));
                     }
+
+                    $this->getController()->redirect(array('admin/usergroups'));
+
                 }
                 else
                 {
@@ -191,7 +200,10 @@ class Usergroups extends Survey_Common_Action
                 $aViewUrls = 'addUserGroup_view';
             }
         }
-
+        $aData['usergroupbar']['savebutton']['form']= 'usergroupform';
+        $aData['usergroupbar']['savebutton']['text']= gT('Save');
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer();
+        $aData['usergroupbar']['add'] = 'admin/usergroups';
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
 
@@ -233,6 +245,10 @@ class Usergroups extends Survey_Common_Action
                 $aViewUrls = 'editUserGroup_view';
             }
         }
+
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer();
+        $aData['usergroupbar']['savebutton']['form']= 'usergroupform';
+        $aData['usergroupbar']['savebutton']['text']= gT("Update user group");
 
         $this->_renderWrappedTemplate('usergroup', 'editUserGroup_view', $aData);
     }
@@ -315,9 +331,31 @@ class Usergroups extends Survey_Common_Action
                     $aData["useraddusers"] = getGroupUserList($ugid, 'optionlist');
                     $aData["useraddurl"] = "";
                 }
+                $aViewUrls[] = 'viewUserGroup_view';
+            }
+            else {
+                //show listing
+                $aViewUrls['usergroups_view'][] = array();
+                $aData['model']  =  UserGroup::model();
             }
 
-            $aViewUrls[] = 'viewUserGroup_view';
+
+        }
+
+        if ($ugid == false)
+        {
+            $aData['usergroupbar']['returnbutton']['url']='admin/index';
+            $aData['usergroupbar']['returnbutton']['text']=gT('Return to admin panel');
+        }
+        else
+        {
+            $aData['usergroupbar']['edit'] = TRUE;
+            $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createUrl('admin/usergroups/sa/view');
+        }
+
+        if (isset($_GET['pageSize']))
+        {
+            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
         }
 
         if (!empty($header))
@@ -330,6 +368,9 @@ class Usergroups extends Survey_Common_Action
         }
     }
 
+    /**
+     * @todo Doc
+     */
     function user($ugid, $action = 'add')
     {
         if (!Permission::model()->hasGlobalPermission('usergroups','read') || !in_array($action, array('add', 'remove')))
@@ -341,7 +382,7 @@ class Usergroups extends Survey_Common_Action
         {
             $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid));
         }
-        else    
+        else
         {
             $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid, 'owner_id' => Yii::app()->session['loginID']));
         }
@@ -402,9 +443,8 @@ class Usergroups extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = 'usergroup', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl')."superfish.css");
         App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts').'users.js');
+        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'users.js' ));
 
         $aData['display']['menu_bars']['user_group'] = true;
 

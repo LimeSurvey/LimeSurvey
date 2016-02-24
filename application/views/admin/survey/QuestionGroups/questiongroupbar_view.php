@@ -1,191 +1,216 @@
-<strong><?php eT("Question group"); ?></strong>&nbsp;
-<span class='basic'><?php echo $grow['group_name']; ?> (<?php eT("ID"); ?>:<?php echo $gid; ?>)</span>
-</div>
-<div class='menubar-main'>
-    <div class='menubar-left'>
-
-
-        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
-            { ?>
-            <img id='separator4' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
-            <a id="grouppreviewlink" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" target="_blank">
-                <img src='<?php echo $imageurl; ?>preview.png' alt='<?php eT("Preview current question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
-                <?php if (count($languagelist) > 1)
-                { ?>
-                <div class="popuptip" rel="grouppreviewlink"><?php eT("Preview this question group in:"); ?>
-                    <ul>
-                    <?php foreach ($languagelist as $tmp_lang){ ?>
-                        <li><a target="_blank" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $tmp_lang); ?>" ><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
-                    <?php } ?>
-                    </ul>
-                </div>
-                <?php } ?>
-            <?php }
-            else{ ?>
-            <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
-            <?php } ?>
-
-        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
-            { ?>
-            <img id='separator5' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
-            <a href="<?php echo $this->createUrl('admin/questiongroups/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
-                <img src='<?php echo $imageurl; ?>edit.png' alt='<?php eT("Edit current question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
-            <?php } ?>
-
-        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
-            { ?>
-            <img id='separator6' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
-            <a  target='_blank' href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>">
-            <img src='<?php echo $imageurl; ?>quality_assurance.png' alt='<?php eT("Check survey logic for current question group"); ?>' /></a>
-            <?php } ?>
-
-        <?php
-            if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete'))
-            {
-                if ((($sumcount4 == 0 && $activated != "Y") || $activated != "Y"))
-                {
-                    if (is_null($condarray))
-                    { ?>
-
-                    <a href='#' onclick="if (confirm('<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { window.open('<?php echo $this->createUrl("admin/questiongroups/sa/delete/surveyid/$surveyid/gid/$gid"); ?>','_top'); }">
-                        <img src='<?php echo $imageurl; ?>delete.png' alt='<?php eT("Delete current question group"); ?>' title='' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
-
-                    <?php }
-                    else
-                    // TMSW Condition->Relevance:  Should be allowed to delete group even if there are conditions/relevance, since separate view will show exceptions
-
-                    { ?>
-                    <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid/gid/$gid"); ?>' onclick="alert('<?php eT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>'); return false;">
-                        <img src='<?php echo $imageurl; ?>delete_disabled.png' alt='<?php eT("Delete current question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
-                    <?php }
-                }
-                else
-                { ?><img src='<?php echo $imageurl; ?>blank.gif' alt='' height="<?php echo $iIconSize;?>"  width="<?php echo $iIconSize;?>" /><?php }
-            }
-            if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','export'))
-            { ?>
-
-            <a href='<?php echo $this->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>'>
-                <img src='<?php echo $imageurl; ?>dumpgroup.png' title='' alt='<?php eT("Export this question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
-            <?php } ?>
-    </div>
-    <div class='menubar-right'>
-        <label for="questionid"><?php eT("Questions:"); ?></label> <select class="listboxquestions" name='questionid' id='questionid'
-            onchange="window.open(this.options[this.selectedIndex].value, '_top')">
-
-            <?php echo getQuestions($surveyid,$gid,$qid); ?>
-        </select>
-
-
-
-
-        <span class='arrow-wrapper'>
-            <?php if ($QidPrev != "")
-                { ?>
-
-                <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$QidPrev); ?>'>
-                    <img src='<?php echo $imageurl; ?>previous_20.png' title='' alt='<?php eT("Previous question"); ?>'/></a>
-                <?php }
-                else
-                { ?>
-
-                <img src='<?php echo $imageurl; ?>previous_disabled_20.png' title='' alt='<?php eT("No previous question"); ?>'/>
-                <?php } ?>
-
-
-
-            <?php if ($QidNext != "")
-                { ?>
-
-                <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$QidNext); ?>'>
-                <img src='<?php echo $imageurl; ?>next_20.png' title='' alt='<?php eT("Next question"); ?>'/> </a>
-                <?php }
-                else
-                { ?>
-
-                <img src='<?php echo $imageurl; ?>next_disabled_20.png' title='' alt='<?php eT("No next question"); ?>'/>
-                <?php } ?>
-        </span>
-
-        <?php if ($activated == "Y")
-            { ?>
-            <a href='#'>
-                <img src='<?php echo $imageurl; ?>add_disabled.png' title='' alt='<?php echo gT("Disabled").' - '.gT("This survey is currently active."); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>" /></a>
-            <?php }
-            elseif(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
-            { ?>
-            <a href='<?php echo $this->createUrl("admin/questions/sa/addquestion/surveyid/".$surveyid."/gid/".$gid); ?>'>
-                <img src='<?php echo $imageurl; ?>add.png' title='' alt='<?php eT("Add new question to group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>" /></a>
-            <?php } ?>
-
-        <img id='separator12' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
-
-        <input id='MinimizeGroupWindow' type='image' src='<?php echo $imageurl; ?>minimize.png' title='<?php eT("Hide details of this group"); ?>' alt='<?php eT("Hide details of this group"); ?>' />
-        <input type='image' id='MaximizeGroupWindow' src='<?php echo $imageurl; ?>maximize.png' title='<?php eT("Show details of this group"); ?>' alt='<?php eT("Show details of this group"); ?>' />
-        <input type='image' src='<?php echo $imageurl; ?>close.png' title='<?php eT("Close this group"); ?>' alt='<?php eT("Close this group"); ?>'
-            onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/".$surveyid); ?>','_top');"
-            <?php if (!$qid){?>
-                style='visibility:hidden;'
-                <?php } ?>
-            >
-    </div></div>
-</div>
-
-
-
-
-<table id='groupdetails' <?php echo $gshowstyle; ?> >
-<tr ><td ><strong>
-            <?php eT("Title"); ?>:</strong></td>
-    <td>
-        <?php echo $grow['group_name']; ?> (<?php echo $grow['gid']; ?>)</td>
-</tr>
-<tr>
-    <td><strong>
-        <?php eT("Description:"); ?></strong>
-    </td>
-    <td>
-        <?php if (trim($grow['description'])!='') {
-                templatereplace($grow['description']);
-                echo LimeExpressionManager::GetLastPrettyPrintExpression();
-        } ?>
-    </td>
-</tr>
-<?php if (trim($grow['grelevance'])!='') { ?>
-    <tr>
-        <td><strong>
-            <?php eT("Relevance:"); ?></strong>
-        </td>
-        <td>
-            <?php
-                templatereplace('{' . $grow['grelevance'] . '}');
-                echo LimeExpressionManager::GetLastPrettyPrintExpression();
-            ?>
-        </td>
-    </tr>
-    <?php } ?>
 <?php
-    if (trim($grow['randomization_group'])!='')
-    {?>
-    <tr>
-        <td><?php eT("Randomization group:"); ?></td><td><?php echo $grow['randomization_group'];?></td>
-    </tr>
-    <?php
-    }
-    // TMSW Condition->Relevance:  Use relevance equation or different EM query to show dependencies
-    if (!is_null($condarray))
-    { ?>
-    <tr><td><strong>
-                <?php eT("Questions with conditions to this group"); ?>:</strong></td>
-        <td>
-            <?php foreach ($condarray[$gid] as $depgid => $deprow)
-                {
-                    foreach ($deprow['conditions'] as $depqid => $depcid)
-                    {
+/**
+ * Question group bar
+ * Also used to Edit question
+ */
 
-                        $listcid=implode("-",$depcid);?>
-                    <a href='<?php echo $this->createUrl("admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$depgid/qid/$depqid",array('markcid'=>implode("-",$depcid))); ?>'>[QID: <?php echo $depqid; ?>]</a>
-                    <?php }
-            } ?>
-        </td></tr>
-    <?php } ?>
+?>
+
+<!-- nquestiongroupbar -->
+<div class='menubar surveybar' id="questiongroupbarid">
+    <div class='row container-fluid'>
+
+        <!-- Left Buttons -->
+        <div class="col-md-12">
+            <?php if(isset($questiongroupbar['buttons']['view'])):?>
+                <!-- Buttons -->
+
+                <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php if ($surveyIsActive) { echo eT("You can't add questions while the survey is active."); } ?>" >
+                   <a class="btn btn-default <?php if ($surveyIsActive) { echo "disabled"; } ?>" href="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>" role="button">
+                       <span class="icon-add"></span>
+                       <?php eT("Add new question to group");?>
+                   </a>
+               </span>
+
+                <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
+                    <?php if (count($languagelist) > 1): ?>
+
+                        <!-- Preview multilangue -->
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span class="icon-do"></span>
+                            <?php eT("Preview this question group"); ?> <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" style="min-width : 252px;">
+                              <?php foreach ($languagelist as $tmp_lang): ?>
+                                  <li>
+                                      <a target="_blank" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $tmp_lang); ?>" >
+                                          <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
+                                      </a>
+                                  </li>
+                              <?php endforeach; ?>
+                          </ul>
+                        </div>
+                    <?php else:?>
+
+                        <!-- Preview simple langue -->
+                        <a class="btn btn-default" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" role="button" target="_blank">
+                            <span class="icon-do"></span>
+                            <?php eT("Preview this question group");?>
+                        </a>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+                <!-- Edit button -->
+                <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
+                    <a class="btn btn-default" href="<?php echo $this->createUrl('admin/questiongroups/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>" role="button">
+                        <span class="icon-edit"></span>
+                        <?php eT("Edit current question group");?>
+                    </a>
+                <?php endif; ?>
+
+                <!-- Check survey logic -->
+                <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')): ?>
+                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
+                        <span class="icon-expressionmanagercheck"></span>
+                        <?php eT("Check survey logic for current question group"); ?>
+                    </a>
+                <?php endif; ?>
+
+                <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete')):?>
+
+                    <!-- Delete -->
+                    <?php if( ($sumcount4 == 0 && $activated != "Y") || $activated != "Y" ):?>
+
+                        <!-- has question -->
+                        <?php if(is_null($condarray)):?>
+
+                            <!-- can delete group and question -->
+                            <a class="btn btn-default" onclick="if (confirm('<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { window.open('<?php echo $this->createUrl("admin/questiongroups/sa/delete/surveyid/$surveyid/gid/$gid"); ?>','_top'); }" role="button">
+                                <span class="glyphicon glyphicon-trash"></span>
+                                <?php eT("Delete current question group"); ?>
+                            </a>
+                        <?php else: ?>
+
+                            <!-- there is at least one question having a condition on its content -->
+                            <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid/gid/$gid"); ?>'  class="btn btn-default" onclick="alert('<?php eT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>'); return false;">
+                                <span class="glyphicon glyphicon-trash"></span>
+                                <?php eT("Delete current question group"); ?>
+                            </a>
+                        <?php endif; ?>
+                    <?php else:?>
+
+                        <!-- Activated -->
+                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>" >
+                            <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                                <span class="glyphicon glyphicon-trash"></span>
+                                <?php eT("Delete current question group"); ?>
+                            </button>
+                        </span>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+                <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','export')):?>
+
+                    <!-- Export -->
+                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>" role="button">
+
+                        <span class="icon-export"></span>
+                        <?php eT("Export this question group"); ?>
+                    </a>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div>
+
+        <div class="col-sm-8">
+            <!-- Previews while editing a question -->
+            <?php if(isset($questiongroupbar['savebutton']['form'])&&isset($qid)):?>
+                <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
+                    <?php if (count($languagelist) > 1): ?>
+
+                        <!-- preview question -->
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span class="icon-do"></span>
+                            <?php eT("Preview"); ?> <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" style="min-width : 252px;">
+                              <?php foreach ($languagelist as $tmp_lang): ?>
+                                  <li>
+                                      <a target="_blank" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $tmp_lang); ?>' >
+                                          <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
+                                      </a>
+                                  </li>
+                              <?php endforeach; ?>
+                          </ul>
+                        </div>
+
+
+                        <!-- Preview multilangue -->
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span class="icon-do"></span>
+                            <?php eT("Preview its question group"); ?> <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" style="min-width : 252px;">
+                              <?php foreach ($languagelist as $tmp_lang): ?>
+                                  <li>
+                                      <a target="_blank" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $tmp_lang); ?>" >
+                                          <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
+                                      </a>
+                                  </li>
+                              <?php endforeach; ?>
+                          </ul>
+                        </div>
+                    <?php else:?>
+
+                        <!-- preview question -->
+                        <a class="btn btn-default" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>' role="button" target="_blank">
+                            <span class="icon-do"></span>
+                            <?php eT("Preview");?>
+                        </a>
+
+                        <!-- Preview simple langue -->
+                        <a class="btn btn-default" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" role="button" target="_blank">
+                            <span class="icon-do"></span>
+                            <?php eT("Preview its question group");?>
+                        </a>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+            <?php endif;?>
+
+        </div>
+
+        <!-- Right Buttons -->
+        <div class="col-sm-4 text-right">
+
+            <?php if(isset($questiongroupbar['savebutton']['form'])):?>
+                <!-- Save buttons -->
+                <?php if(!isset($copying) || !$copying): ?>
+                <a class="btn btn-success" href="#" role="button" id="save-button">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <?php eT("Save");?>
+                </a>
+            <?php endif; ?>
+
+                <?php if(isset($questiongroupbar['saveandclosebutton'])):?>
+
+                    <!-- Save and close -->
+                    <a id="save-and-close-button" class="btn btn-default" role="button">
+                        <span class="glyphicon glyphicon-saved"></span>
+                        <?php eT("Save and close");?>
+                    </a>
+                <?php endif; ?>
+            <?php endif;?>
+
+            <?php if(isset($questiongroupbar['closebutton']['url'])):?>
+
+                <!-- Close -->
+                <a class="btn btn-danger" href="<?php echo $questiongroupbar['closebutton']['url']; ?>" role="button">
+                    <span class="glyphicon glyphicon-close"></span>
+                    <?php eT("Close");?>
+                </a>
+            <?php endif;?>
+
+            <?php if(isset($questiongroupbar['returnbutton']['url'])):?>
+
+                <!-- return -->
+                <a class="btn btn-default" href="<?php echo $questiongroupbar['returnbutton']['url']; ?>" role="button">
+                    <span class="glyphicon glyphicon-step-backward"></span>
+                    <?php echo $questiongroupbar['returnbutton']['text'];?>
+                </a>
+            <?php endif;?>
+        </div>
+    </div>
+</div>

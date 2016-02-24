@@ -56,9 +56,9 @@ function eT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
  * @param integer $iCount
  * @param string $sEscapeMode
  */
-function ngT($sToTranslate, $iCount, $sEscapeMode = 'html')
+function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
 {
-    return quoteText(Yii::t('',$sToTranslate,$iCount),$sEscapeMode);
+    return quoteText(Yii::t('',$sTextToTranslate,$iCount),$sEscapeMode);
 }
 
 /**
@@ -67,7 +67,7 @@ function ngT($sToTranslate, $iCount, $sEscapeMode = 'html')
  * @param integer $iCount
  * @param string $sEscapeMode
  */
-function egT($sToTranslate, $iCount, $sEscapeMode = 'html')
+function neT($sToTranslate, $iCount, $sEscapeMode = 'html')
 {
     echo ngT($sToTranslate,$iCount,$sEscapeMode);
 }
@@ -123,8 +123,10 @@ function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
     $publicurl = Yii::app()->getConfig('publicurl');
 
     $qtypes = Question::typeList();
+
     if ($ReturnType == "array")
         return $qtypes;
+
 
     if ($ReturnType == "group")
     {
@@ -162,7 +164,21 @@ function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
         }
         $qtypeselecter .= ">{$TypeProperties['description']}</option>\n";
     }
+
+
     return $qtypeselecter;
+}
+
+function getQuestionModuleList($SelectedCode = "T", $ReturnType = "selector")
+{
+    $publicurl = Yii::app()->getConfig('publicurl');
+    $qtypes = Question::questionModuleList();
+
+    if ($ReturnType == "array")
+        return $qtypes;
+
+    else return null;
+
 }
 
 /**
@@ -200,7 +216,18 @@ function getSurveyList($returnarray=false, $surveyid=false)
         $surveynames = array();
         foreach ($surveyidresult as $result)
         {
-            $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
+            if(!empty($result->defaultlanguage))
+            {
+                $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
+            }
+            elseif(empty($bCheckIntegrity))
+            {
+                $bCheckIntegrity=true;
+                Yii::app()->setFlashMessage(
+                    CHtml::link(gT("One or more surveys seem to be broken, please check data integrity of the LimeSurvey database."),array("admin/checkintegrity"))
+                    ,
+                    'error');
+            }
         }
 
         $cached = $surveynames;
@@ -294,26 +321,31 @@ function getTemplateList()
     return Template::getTemplateList();
 }
 
+function getTemplateListWithPreviews()
+{
+    return Template::getTemplateListWithPreviews();
+}
+
+
+
 function getAdminThemeList()
 {
-    $standardtemplaterootdir=Yii::app()->getConfig("styledir");
-
-    if ($standardtemplaterootdir && $handle = opendir($standardtemplaterootdir))
+    $sStandardTemplateRootDir=Yii::app()->getConfig("styledir");
+    $aListOfFiles = array();
+    if ($sStandardTemplateRootDir && $pHandle = opendir($sStandardTemplateRootDir))
     {
-        while (false !== ($file = readdir($handle)))
+        while (false !== ($file = readdir($pHandle)))
         {
-            if (!is_file("$standardtemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
+            if (is_dir($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$file) && is_file($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$file.DIRECTORY_SEPARATOR.'config.xml'))
             {
-                $list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                $oTemplateConfig = simplexml_load_file($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$file.'/config.xml');
+                $aListOfFiles[$file] = $oTemplateConfig;
             }
         }
-        closedir($handle);
+        closedir($pHandle);
     }
-
-
-    ksort($list_of_files);
-
-    return $list_of_files;
+    ksort($aListOfFiles);
+    return $aListOfFiles;
 }
 
 
@@ -568,23 +600,31 @@ function getGroupSum($surveyid, $lang)
 
 
 /**
-* getMaxGroupOrder($surveyid) queries the database for the maximum sortorder of a group and returns the next higher one.
-*
-* @param mixed $surveyid
-*/
+ * Queries the database for the maximum sortorder of a group and returns the next higher one.
+ *
+ * @param string|int $surveyid
+ * @return int
+ */
 function getMaxGroupOrder($surveyid)
 {
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
+    $queryResult = QuestionGroup::model()->find(array(
+        'condition' => 'sid = :sid',
+        'params' => array(':sid' => $surveyid),
+        'order' => 'group_order desc',
+        'limit' => '1'
+    ));
 
-    //$max_sql = "SELECT max( group_order ) AS max FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}'" ;
-    $query = QuestionGroup::model()->find(array('order' => 'group_order desc'));
-    $current_max = !is_null($query) ? $query->group_order : '';
+    $current_max = !is_null($queryResult) ? $queryResult->group_order : "";
 
-    if($current_max!="")
+    if($current_max !== "")
     {
-        return ++$current_max ;
+        $current_max += 1;
+        return $current_max;
     }
-    else return "0" ;
+    else
+    {
+        return 0;
+    }
 }
 
 
@@ -602,6 +642,7 @@ function getGroupOrder($surveyid,$gid)
 
     //$grporder_sql = "SELECT group_order FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}' AND gid=$gid" ;
     $grporder_result = QuestionGroup::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang)); //Checked
+    //var_dump($grporder_result); var_dump($surveyid); var_dump($gid); die();
     $grporder_row = $grporder_result->attributes ;
     $group_order = $grporder_row['group_order'];
     if($group_order=="")
@@ -834,7 +875,7 @@ function alternation($alternate = '' , $type = 'col')
     */
     if($type == 'row')
     {
-        $odd  = 'array2'; // should be row_odd
+        $odd  = 'array2 well'; // should be row_odd
         $even = 'array1'; // should be row_even
     }
     else
@@ -1911,6 +1952,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
     $qtypes=getQuestionTypeList('','array');
 
+    // Main query
     $aquery = "SELECT * "
     ." FROM {{questions}} as questions, {{groups}} as groups"
     ." WHERE questions.gid=groups.gid AND "
@@ -2294,11 +2336,16 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $fieldmap[$fieldname]['preg']=$arow['preg'];
             $fieldmap[$fieldname]['other']=$arow['other'];
             $fieldmap[$fieldname]['help']=$arow['help'];
+
+            // Set typeName
         }
         else
         {
             --$questionSeq; // didn't generate a valid $fieldmap entry, so decrement the question counter to ensure they are sequential
         }
+
+        if(isset($fieldmap[$fieldname]['typename']))
+            $fieldmap[$fieldname]['typename']=$typename[$fieldname]=$arow['typename'];
     }
     App()->setLanguage($sOldLanguage);
 
@@ -2326,6 +2373,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 }
                 $fieldmap = $mfieldmap;
             }
+
             Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]=$fieldmap;
         }
         return $fieldmap;
@@ -2950,11 +2998,18 @@ function questionAttributes($returnByName=false)
         );
 
         $qattributes["statistics_graphtype"]=array(
-        "types"=>'15ABCDEFGHIKLNOQRSTUWXYZ!:;|*',
+        "types"=>'15ABCDEFGHIKLMNOQRSTUWXYZ!:;|*',
         'category'=>gT('Statistics'),
         'inputtype'=>'singleselect',
         'sortorder'=>102,
-        'options'=>array(0=>gT('Bar chart'), 1=>gT('Pie chart')),
+        'options'=>array(
+            0=>gT('Bar chart'),
+            1=>gT('Pie chart'),
+            2=>gT('Radar'),
+            3=>gT('Line'),
+            4=>gT('PolarArea'),
+            5=>gT('Doughnut'),
+        ),
         'help'=>gT("Select the type of chart to be displayed"),
         'caption'=>gT("Chart type"),
         'default'=>0
@@ -3042,6 +3097,14 @@ function questionAttributes($returnByName=false)
         'default'=>0,
         'help'=>gT('Hide this question at any time. This is useful for including data using answer prefilling.'),
         'caption'=>gT('Always hide this question'));
+
+        $qattributes['cssclass']=array(
+            'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+            'category'=>gT('Display'),
+            'sortorder'=>102,
+            'inputtype'=>'text',
+            'help'=>gT('Add additional CSS class(es) for this question. Use a space between different CSS class names.'),
+            'caption'=>gT('CSS class(es)'));
 
         $qattributes["max_answers"]=array(
         "types"=>"MPR1:;ABCEFKQ",
@@ -3427,6 +3490,37 @@ function questionAttributes($returnByName=false)
         "help"=>gT('The handle is displayed at the middle of the slider except if Slider initial value is set (this will not set the initial value).'),
         "caption"=>gT('Slider starts at the middle position'));
 
+        $qattributes["slider_orientation"]=array(
+        "types"=>"K",
+        'category'=>gT('Slider'),
+        'sortorder'=>2,
+        'inputtype'=>'singleselect',
+        'options'=>array(0=>gT('Horizontal'),
+        1=>gT('Vertical')),
+        'default'=>0,
+        "help"=>gT('Set the orientation.'),
+        "caption"=>gT('Orientation'));
+
+        $qattributes["slider_handle"]=array(
+        "types"=>"K",
+        'category'=>gT('Slider'),
+        'sortorder'=>3,
+        'inputtype'=>'singleselect',
+        'options'=>array(0=>gT('Circle'),
+        1=>gT('Square'), 2=>gT('Triangle'), 3=>gT('Custom')),
+        'default'=>0,
+        "help"=>gT("Set the handle shape. 'Custom' is defined in CSS using the Font Awesome font."),
+        "caption"=>gT('Handle shape'));
+
+        $qattributes["slider_custom_handle"]=array(
+        "types"=>"K",
+        'category'=>gT('Slider'),
+        'sortorder'=>4,
+        'inputtype'=>'text',
+        'default'=>'f1ae',
+        "help"=>gT('Accepts Font Awesome Unicode characters.'),
+        "caption"=>gT('Custom handle Unicode code'));
+
         $qattributes["slider_rating"]=array(
         "types"=>"5",
         'category'=>gT('Display'),
@@ -3471,6 +3565,7 @@ function questionAttributes($returnByName=false)
         'sortorder'=>110,
         'inputtype'=>'text',
         "help"=>gT('Answer|Left-slider-text|Right-slider-text separator character'),
+        'default'=>'|',
         "caption"=>gT('Slider left/right text separator'));
 
         $qattributes["suffix"]=array(
@@ -3791,7 +3886,7 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Other'),
         'sortorder'=>134,
         "inputtype"=>"text",
-        'default'=>"png, gif, doc, odt",
+        'default'=>"png, gif, doc, odt, jpg, pdf",
         "help"=>gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
         "caption"=>gT("Allowed file types"));
 
@@ -3830,6 +3925,17 @@ function questionAttributes($returnByName=false)
             ),
             'default'=>0,
         );
+
+        $qattributes["display_type"]=array(
+        "types"=>"YG",
+        'category'=>gT('Display'),
+        'sortorder'=>90,
+        'inputtype'=>'singleselect',
+        'options'=>array(0=>gT('Button group'),
+        1=>gT('Radio list')),
+        'default'=>0,
+        "help"=>gT('Use button group or radio list'),
+        "caption"=>gT('Display type'));
 
     }
     //This builds a more useful array (don't modify)
@@ -4128,12 +4234,12 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 *
 * @return string  Cleaned text
 */
-function flattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=false, $sCharset='UTF-8', $bStripNewLines=true)
+function flattenText($sTextToFlatten, $bKeepSpan=false, $bDecodeHTMLEntities=false, $sCharset='UTF-8', $bStripNewLines=true)
 {
     $sNicetext = stripJavaScript($sTextToFlatten);
     // When stripping tags, add a space before closing tags so that strings with embedded HTML tables don't get concatenated
     $sNicetext = str_replace(array('</td','</th'),array(' </td',' </th'), $sNicetext);
-    if ($keepSpan) {
+    if ($bKeepSpan) {
         // Keep <span> so can show EM syntax-highlighting; add space before tags so that word-wrapping not destroyed when remove tags.
         $sNicetext = strip_tags($sNicetext,'<span><table><tr><td><th>');
     }
@@ -4452,12 +4558,19 @@ function languageDropdown($surveyid,$selected)
     return $html;
 }
 
-function languageDropdownClean($surveyid,$selected)
+/**
+ * Creates a <select> HTML element for language selection for this survey
+ *
+ * @param int $surveyid
+ * @param string $selected The selected language
+ * @return string
+ */
+function languageDropdownClean($surveyid, $selected)
 {
     $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
     $baselang = Survey::model()->findByPk($surveyid)->language;
     array_unshift($slangs,$baselang);
-    $html = "<select class='listboxquestions' id='language' name='language'>\n";
+    $html = "<select class='form-control listboxquestions' id='language' name='language'>\n";
     foreach ($slangs as $lang)
     {
         if ($lang == $selected) $html .= "\t<option value='$lang' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
@@ -5623,8 +5736,6 @@ function short_implode($sDelimeter, $sHyphen, $aArray)
 */
 function includeKeypad()
 {
-
-
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js');
     $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/jquery.keypad-'.App()->language.'.js';
     if (App()->language != 'en' && file_exists($localefile))
@@ -5999,7 +6110,7 @@ function accessDenied($action,$sid='')
         }
         elseif($action == "newsurvey")
         {
-            $accesssummary .= "<p>".gT("You are not allowed to create new surveys!")."<br />";
+            $accesssummary .= "<p>".gT("You are not allowed to create surveys!")."<br />";
             $accesssummary .= "<a href='$scriptname'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "deletesurvey")
@@ -6918,8 +7029,9 @@ function getHeader($meta = false)
         $languagecode = Yii::app()->getConfig('defaultlang');
     }
 
-    $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-    . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"{$languagecode}\" lang=\"{$languagecode}\"";
+    $header=  "<!DOCTYPE html>\n"
+    . "<html lang=\"{$languagecode}\"";
+
     if (getLanguageRTL($languagecode))
     {
         $header.=" dir=\"rtl\" ";
@@ -7527,4 +7639,3 @@ function array_diff_assoc_recursive($array1, $array2) {
     }
 
 // Closing PHP tag intentionally omitted - yes, it is okay
-

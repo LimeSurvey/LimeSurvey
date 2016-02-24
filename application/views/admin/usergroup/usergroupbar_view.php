@@ -1,62 +1,64 @@
-<div class='menubar'>
-    <div class='menubar-title ui-widget-header'>
-        <strong><?php eT("User group"); ?></strong>
-        <?php if($ugid && $grpresultcount > 0)
-            {
-                echo "{$grow['name']}";
-        } ?>
-    </div>
-    <div class='menubar-main'>
-        <div class='menubar-left'>
-            <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='55' height='20' />
-            <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
+<div class='menubar' id="usergroupbar">
+    <div class='row container-fluid'>
+        <div class="col-lg-6 col-sm-8">
 
-            <?php if($ugid && $grpresultcount > 0)
-                { ?>
-                <a href="<?php echo $this->createUrl("admin/usergroups/sa/mail/ugid/".$ugid); ?>">
-                    <img src='<?php echo $imageurl; ?>invite.png' alt='<?php eT("Mail to all Members"); ?>' name='MailUserGroup' /></a>
-                <?php }
-                else
-                { ?>
-                <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='40' height='20' />
-                <?php } ?>
-            <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='78' height='20' />
-            <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
+            <!-- Add -->
+            <?php if (Permission::model()->hasGlobalPermission('usergroups','create') && isset($usergroupbar['returnbutton']['url'])):?>
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/usergroups/sa/add"); ?>" role="button">
+                    <span class="icon-add text-success"></span>
+                    <?php eT("Add new user group"); ?>
+                </a>
+            <?php endif; ?>
 
-            <?php if($ugid && $grpresultcount > 0 && (Yii::app()->session['loginID'] == $grow['owner_id'] || Permission::model()->hasGlobalPermission('usergroups','update')))
-                { ?>
-                <a href="<?php echo $this->createUrl("admin/usergroups/sa/edit/ugid/".$ugid); ?>">
-                    <img src='<?php echo $imageurl; ?>edit.png' alt='<?php eT("Edit current user group"); ?>' name='EditUserGroup' /></a>
-                <?php }
-                else
-                { ?>
-                <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='40' height='20' />
-                <?php }
+            <!-- Mail to all Members -->
+            <?php if(isset($usergroupbar['edit'])): ?>
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/usergroups/sa/mail/ugid/".$ugid); ?>" role="button">
+                    <span class="icon-invite text-success"></span>
+                    <?php eT("Mail to all Members"); ?>
+                </a>
+             <?php endif;?>
 
-                if($ugid && $grpresultcount > 0 &&  (Yii::app()->session['loginID'] == $grow['owner_id'] || Permission::model()->hasGlobalPermission('usergroups','delete')))
-                { ?>
+            <!-- Edit current user group -->
+            <?php if(isset($usergroupbar['edit'])):?>
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/usergroups/sa/edit/ugid/".$ugid); ?>" role="button">
+                    <span class="glyphicon glyphicon-pencil text-success"></span>
+                    <?php eT("Edit current user group"); ?>
+                </a>
+            <?php endif;?>
 
-                <a href='#' onclick="if (confirm('<?php eT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl('admin/usergroups/sa/delete/ugid/'.$ugid)); ?>}">
-                    <img src='<?php echo $imageurl; ?>delete.png' alt='<?php eT("Delete current user group"); ?>' name='DeleteUserGroup'  /></a>
-                <?php }
-                else
-                { ?>
-                <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='40' height='20' />
-                <?php } ?>
-            <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='92' height='20' />
-            <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
+            <!-- Delete current user group -->
+            <?php if(isset($usergroupbar['edit']) &&  (Yii::app()->session['loginID'] == $grow['owner_id'] || Permission::model()->hasGlobalPermission('usergroups','delete'))):?>
+                <a class="btn btn-default" href='#' onclick="if (confirm('<?php eT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl('admin/usergroups/sa/delete/ugid/'.$ugid)); ?>}">
+                    <span class="glyphicon glyphicon-trash text-success"></span>
+                    <?php eT("Delete current user group"); ?>
+                </a>
+            <?php endif;?>
         </div>
-        <div class='menubar-right'>
-            <label for="ugid"><?php eT("User groups"); ?>:</label>  <select name='ugid' id='ugid' onchange="window.location=this.options[this.selectedIndex].value">
-                <?php echo getUserGroupList($ugid,'optionlist'); ?>
-            </select>
-            <?php if (Permission::model()->hasGlobalPermission('usergroups','create'))
-                { ?>
-                <a href='<?php echo $this->createUrl("admin/usergroups/sa/add"); ?>'>
-                    <img src='<?php echo $imageurl; ?>add.png' alt='<?php eT("Add new user group"); ?>' /></a>
-                <?php } ?>
-            <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
-            <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='82' height='20' />
-        </div></div>
+
+        <div class="col-lg-6 col-sm-4 text-right">
+
+            <?php if(isset($usergroupbar['savebutton']['form'])):?>
+                <a class="btn btn-default" href="#" role="button" id="save-form-button" data-form-id="<?php echo $usergroupbar['savebutton']['form']; ?>">
+                    <span class="glyphicon glyphicon-ok" ></span>
+                    <?php echo $usergroupbar['savebutton']['text'];?>
+                </a>
+            <?php endif;?>
+
+            <!-- Close -->
+            <?php if(isset($usergroupbar['closebutton']['url'])):?>
+                <a class="btn btn-danger" href="<?php echo $usergroupbar['closebutton']['url']; ?>" role="button">
+                    <span class="glyphicon glyphicon-close" ></span>
+                    <?php eT("Close");?>
+                </a>
+            <?php endif;?>
+
+            <?php if(isset($usergroupbar['returnbutton']['url'])):?>
+                <a class="btn btn-default pull-right" href="<?php echo $this->createUrl($usergroupbar['returnbutton']['url']); ?>" role="button">
+                    <span class="glyphicon glyphicon-backward" ></span>
+                    &nbsp;&nbsp;
+                    <?php echo $usergroupbar['returnbutton']['text']; ?>
+                </a>
+            <?php endif;?>
+        </div>
     </div>
-    <p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>
+</div>
