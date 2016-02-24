@@ -1,3 +1,7 @@
+/**
+ * RTL-version.
+ */
+
 .draggable-container {
 	min-height: 300px;
 }
@@ -12,11 +16,11 @@
 }
 
 #tokenattribute {
-    margin-left: 1.5%;
+    margin-right: 1.5%;
 }
 
 #centralattribute {
-    margin-right: 1.5%;
+    margin-left: 1.5%;
 }
 
 #centralattribute .centralatt {
@@ -32,6 +36,9 @@
 #centralattribute div.centralatt div.token-attribute {
 	margin-top: -5px;
 	min-height: 20px;
+}
+
+#centralattribute div.centralatt div.paired {
 }
 
 #newcreated, 
@@ -61,7 +68,7 @@ div.attribute-item, .already-mapped-attribute {
 #centralattribute .explanation {
 	width:90%;
 	margin: 0 auto;
-	text-align: left;
+	text-align: right;
 }
 
 #centralattribute .explanation-row {
