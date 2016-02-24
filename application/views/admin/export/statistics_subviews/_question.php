@@ -319,6 +319,7 @@
 
             case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
                 //get answers
+                echo '<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext).'</strong><br/><br/>';
                 $result[$key1] = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$flt[0]' AND language = '{$language}'", 'question_order');
                 //$counter2=0;
 
@@ -363,6 +364,7 @@
 
             //just like above only a different loop
             case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
+                echo '<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext).'</strong><br/><br/>';
                 foreach($result[$key1] as $row)
                 {
                     $row=array_values($row);
@@ -378,7 +380,7 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
+                    .'<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3]).'</strong>'
                     ."<br />\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-control'>\n";
 
@@ -578,7 +580,7 @@
             case "H": // ARRAY (By Column)
 
                 //Get answers. We always use the answer code because the label might be too long elsewise
-
+                echo '<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext).'</strong><br/><br/>';
                 //check all the answers
                 foreach($result[$key1] as $key=>$row)
                 {
