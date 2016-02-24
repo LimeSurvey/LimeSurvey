@@ -72,10 +72,10 @@ class QuestionGroup extends LSActiveRecord
 
     public function attributeLabels()
     {
-        return [
+        return array(
             'language' => gt('Language'),
             'group_name' => gt('Group name')
-        ];
+        );
     }
 
     /**
