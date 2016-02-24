@@ -3548,7 +3548,7 @@ class statistics_helper {
                 $aData['qqid'] = $qqid;
                 $aData['labels'] = $labels;
                 //$aData['COLORS_FOR_SURVEY'] = COLORS_FOR_SURVEY;
-                $aData['charttype'] = $charttype;
+                $aData['charttype'] = (isset($charttype))?$charttype:'Bar';
                 $aData['sChartname'] = '';
                 $aData['grawdata'] = $grawdata;
                 $aData['color'] = rand ( 0, 70 );
@@ -3636,12 +3636,6 @@ class statistics_helper {
             $count=0;
             foreach ($runthrough as $rt)
             {
-                $count=$count+1;
-                if($count==1)
-                {
-                    $sOutputHTML .= '<div class="row">';
-                    $rowOpened = 1;
-                }
                 ////Step 1: Get information about this response field (SGQA) for the summary
                 $outputs=$this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
                 //$sOutputHTML .= $outputs['statisticsoutput']; // Nothing interesting for us in this output
@@ -3649,9 +3643,24 @@ class statistics_helper {
 
                 if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
                 {
+                    $count=$count+1;
+                    if($count==1)
+                    {
+                        $sOutputHTML .= '<div class="row">';
+                        $rowOpened = 1;
+                    }
+
                     $display=$this->displaySimpleResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguageCode);
                     $sOutputHTML .= $display['statisticsoutput'];
                     $aStatisticsData = array_merge($aStatisticsData, $display['astatdata']);
+
+                    if($count==3)
+                    {
+                        $sOutputHTML .= '</div>';
+                        $rowOpened = 0;
+                        $count=0;
+                    }
+
                 }    //end if -> collect and display results
 
 
@@ -3660,12 +3669,7 @@ class statistics_helper {
                 unset($display);
 
 
-                if($count==3)
-                {
-                    $sOutputHTML .= '</div>';
-                    $rowOpened = 0;
-                    $count=0;
-                }
+
             }
 
             if($rowOpened)

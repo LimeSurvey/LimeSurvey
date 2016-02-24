@@ -166,6 +166,7 @@ function init_chart_js_graph_with_datas($type,$qid)
         }
     }
 
+    console.log($type);
     window.chartjs[$qid] = new Chart($canvas)[$type](
         $chartDef
     );

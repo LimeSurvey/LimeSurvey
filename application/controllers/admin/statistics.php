@@ -727,7 +727,7 @@ class statistics extends Survey_Common_Action {
                     break;
 
                 case "K": // Multiple Numerical
-                //go through all the (multiple) answers
+                    //go through all the (multiple) answers
                     $qid = $row['qid'];
                     $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
 
@@ -743,6 +743,11 @@ class statistics extends Survey_Common_Action {
                             }
                         }
                     }
+                    break;
+
+                case "P":  //P - Multiple choice with comments
+                case "M":  //M - Multiple choice
+                    //$summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
                     break;
 
 
