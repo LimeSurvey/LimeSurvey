@@ -63,3 +63,10 @@ iframe#dialog {
 {
     width: 80%;
 }
+
+.question-filter-container {
+    border : 1px solid #efefef;
+    padding: 2em;
+    margin: 0.2em;
+    width: 33%;
+}
