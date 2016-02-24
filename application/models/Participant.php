@@ -1001,7 +1001,7 @@ class Participant extends LSActiveRecord
         }
         foreach ($tokenattributefieldnames as $key => $value)
         {
-            $mapped[$key]=$value;
+            $mapped[$key]=$value;  // $value can be 'attribute_1', which will clash with postgres
         }
         if (!empty($newcreate)) //Create new fields in the tokens table
         {
@@ -1078,12 +1078,12 @@ class Participant extends LSActiveRecord
 
             /* Search for matching participant name/email in the survey token table */
             $sQuery = Yii::app()->db->createCommand()->select('*')->from('{{tokens_' . $surveyid . '}}')
-            ->where('firstname = :firstname AND lastname = :lastname AND email = :email AND participant_id = :participant_id')
-            ->bindParam(":firstname", $tobeinserted['firstname'], PDO::PARAM_STR)
-            ->bindParam(":lastname", $tobeinserted['lastname'], PDO::PARAM_STR)
-            ->bindParam(":email", $tobeinserted['email'], PDO::PARAM_STR)
-            ->bindParam(":participant_id", $sParticipantUID, PDO::PARAM_STR)
-            ->queryAll();
+                ->where('firstname = :firstname AND lastname = :lastname AND email = :email AND participant_id = :participant_id')
+                ->bindParam(":firstname", $tobeinserted['firstname'], PDO::PARAM_STR)
+                ->bindParam(":lastname", $tobeinserted['lastname'], PDO::PARAM_STR)
+                ->bindParam(":email", $tobeinserted['email'], PDO::PARAM_STR)
+                ->bindParam(":participant_id", $sParticipantUID, PDO::PARAM_STR)
+                ->queryAll();
             if (count($sQuery) > 0)
             {
                 //Participant already exists in token table - don't copy
@@ -1147,6 +1147,7 @@ class Participant extends LSActiveRecord
                           ->createCommand()
                           ->insert('{{tokens_' . $surveyid . '}}', $writearray);
                 $insertedtokenid = getLastInsertID('{{tokens_' . $surveyid . '}}');
+
 
                 $time = time();
 

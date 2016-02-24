@@ -1551,18 +1551,23 @@ class participantsaction extends Survey_Common_Action
             return;
         }
 
-        printf(gT("%s participants have been copied to the survey token table"), $response['success']);
+        echo "<p>";
+        printf(gT("%s participants have been copied to the survey token table"), "<span class='badge alert-success'>" . $response['success'] . "</span>");
+        echo "</p>";
         if($response['duplicate']>0) {
-            echo "\r\n";
-            printf(gT("%s entries were not copied because they already existed"), $response['duplicate']);
+            echo "<p>";
+            printf(gT("%s entries were not copied because they already existed"), "<span class='badge alert-warning'>" . $response['duplicate'] . "</span>");
+            echo "</p>";
         }
         if($response['blacklistskipped']>0) {
-            echo "\r\n";
-            printf(gT("%s entries were skipped because they are blacklisted"), $response['blacklistskipped']);
+            echo "<p>";
+            printf(gT("%s entries were skipped because they are blacklisted"), "<span class='badge alert-danger'>" . $response['blacklistskipped'] . "</span>");
+            echo "</p>";
         }
         if($response['overwriteauto']=="true" || $response['overwriteman']=="true") {
-            echo "\r\n";
+            echo "<p>";
             eT("Attribute values for existing participants have been updated from the participants records");
+            echo "</p>";
         }
     }
 

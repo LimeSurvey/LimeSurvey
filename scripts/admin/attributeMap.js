@@ -159,8 +159,11 @@ $(document).ready(function(){
         createautomap: attcreateautomap
         }, function(msg){
             $(this).dialog("close");
-            alert(msg);
-            $(location).attr('href',redUrl);
+            $('#attribute-map-participant-modal .modal-body').html(msg);
+            $('#attribute-map-participant-modal').on('hide.bs.modal' , function (e) {
+                $(location).attr('href',redUrl);
+            });
+            $('#attribute-map-participant-modal').modal();
         });
     });
 });
