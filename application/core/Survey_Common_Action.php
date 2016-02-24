@@ -907,7 +907,7 @@ class Survey_Common_Action extends CAction
             }
 
             // Question explorer
-            $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID, "language" => $sumresult1->defaultlanguage->surveyls_language));
+            $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID, "language" => $sumresult1->defaultlanguage->surveyls_language),array('order'=>'group_order ASC'));
             if(count($aGroups))
             {
                 foreach($aGroups as $group)
