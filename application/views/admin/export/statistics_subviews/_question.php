@@ -319,6 +319,7 @@
 
             case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
                 //get answers
+                echo '<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext).'</strong><br/><br/>';
                 $result[$key1] = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$flt[0]' AND language = '{$language}'", 'question_order');
                 //$counter2=0;
 
