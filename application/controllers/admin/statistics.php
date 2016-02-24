@@ -686,81 +686,30 @@ class statistics extends Survey_Common_Action {
         foreach($rows as $row)
         {
             $type=$row['type'];
-            if($type=="M" || $type=="P" || $type=="T" || $type=="S" ||  $type=="" ||  $type=="N" ||  $type=="D")
+            if( $type=="T" ||  $type=="N")
             {
                 $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
             }
             switch ( $type )
             {
-                case "A":
-                    $qid = $row['qid'];
-                    $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
-                    //$counter2=0;
 
-                    //check all the results
-                    foreach($results as $result)
+                // Double scale cases
+                case ":":
+                    $qidattributes=getQuestionAttributeValues($row['qid']);
+                    if(!$qidattributes['input_boxes'])
                     {
-                        $result = array_values($result);
-                        $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$result[0];
-                    }
-                break;
-
-                /*
-                * all "free text" types (T, U, S)  get the same prefix ("T")
-                */
-                case "T": // Long free text
-                case "U": // Huge free text
-                    //$usegraph=0;
-                    break;
-
-                case "Q": // Multiple Short Text
-                    $qid = $row['qid'];
-                    //get subqestions
-                    $results = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
-                    //loop through all answers
-                    foreach($results as $result)
-                    {
-                        $result = array_values($result);
-                        $summary[] = 'Q'.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$result[0];
-                    }
-
-                    break;
-
-                case "K": // Multiple Numerical
-                    //go through all the (multiple) answers
-                    $qid = $row['qid'];
-                    $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
-
-                    foreach($results as $row1)
-                    {
-                        if(is_string($row1))
+                        $qid = $row['qid'];
+                        $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' AND language = '{$language}' AND scale_id = 0", 'question_order, title');
+                        $fresults = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' AND language = '{$language}' AND scale_id = 1", 'question_order, title');
+                        foreach($results as $row1)
                         {
-                            $row1 = array_values($row1);
-                            foreach($row1 as $row)
+                            foreach($fresults as $row2)
                             {
-                                $row = array_values($row);
-                                $summary[] = 'K'.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$result[0];
+                                $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'_'.$row2['title'];
                             }
                         }
                     }
                 break;
-
-                case "F": // FlEXIBLE ARRAY
-                case "H": // ARRAY (By Column)
-                    $qid = $row['qid'];
-                    $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
-                    foreach($results as $row1)
-                    {
-                        $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'];
-                    }
-                    break;
-
-
-                case "P":  //P - Multiple choice with comments
-                case "M":  //M - Multiple choice
-                    //$summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
-                    break;
-
 
                 case "R": //RANKING
                     $qid = $row['qid'];
@@ -769,10 +718,15 @@ class statistics extends Survey_Common_Action {
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     for ($i=1; $i<=$count; $i++)
                     {
-                        $summary[] = 'R'.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'].'-'.$i;
+                        $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'].'-'.$i;
                     }
                 break;
 
+                // Cases with subquestions
+                case "A":
+                case "F": // FlEXIBLE ARRAY
+                case "H": // ARRAY (By Column)
+                case "E":
                 case "B":
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     $qid = $row['qid'];
@@ -783,16 +737,27 @@ class statistics extends Survey_Common_Action {
                     }
                 break;
 
+                // Cases with subanwsers, need a question type as first letter
+                case "P":  //P - Multiple choice with comments
+                case "M":  //M - Multiple choice
+                case "S":
+                    $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
+                break;
+
+                // Not shown (else would only show 'no answer' )
+                case "K":
+                case "*":
+                case "D":
+                case "T": // Long free text
+                case "U": // Huge free text
                 case "|": // File Upload, we don't show it
+                case "N":
+                case "Q":
 
                     break;
 
-                case "S":
-                    $summary[] = 'T'.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
-                break;
 
                 default:
-                    $usegraph=1;
                     $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
                 break;
             }

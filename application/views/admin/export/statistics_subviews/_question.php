@@ -46,7 +46,7 @@
         switch ($flt[2])
         {
             case "K": // Multiple Numerical
-                echo '<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext).'</strong><br/><br/>';
+                echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //go through all the (multiple) answers
                 foreach($result[$key1] as $row1)
                 {
@@ -96,7 +96,7 @@
 
 
             case "Q": // Multiple Short Text
-
+                echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //get subqestions
                 $result[$key1] = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid='$flt[0]' AND language = '{$language}'", 'question_order');
                 //$counter2=0;
@@ -318,8 +318,8 @@
                 //----------------------- ARRAYS --------------------------
 
             case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
+                echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //get answers
-                echo '<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext).'</strong><br/><br/>';
                 $result[$key1] = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$flt[0]' AND language = '{$language}'", 'question_order');
                 //$counter2=0;
 
@@ -364,7 +364,7 @@
 
             //just like above only a different loop
             case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
-                echo '<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext).'</strong><br/><br/>';
+                echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 foreach($result[$key1] as $row)
                 {
                     $row=array_values($row);
@@ -400,7 +400,7 @@
 
 
             case "C": // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
-
+                echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //loop answers
                 foreach($result[$key1] as $row)
                 {
@@ -448,6 +448,7 @@
 
             //similiar to the above one
             case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
+                echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 foreach($result[$key1] as $row)
                 {
                     $row=array_values($row);
@@ -487,6 +488,7 @@
                 break;
 
             case ";":  //ARRAY (Multi Flex) (Text)
+                echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 foreach($result[$key1] as $key => $row)
                 {
                     $row = array_values($row);
@@ -512,6 +514,7 @@
 
             case ":":  //ARRAY (Multi Flex) (Numbers)
                 //Get qidattributes for this question
+                echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 $qidattributes=getQuestionAttributeValues($flt[0]);
                 if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
                     $maxvalue=$qidattributes['multiflexible_max'];
@@ -550,7 +553,7 @@
                     foreach($fresult as $frow)
                     {
                         $myfield2 = $myfield . $row[0] . "_" . $frow['title'];
-                        echo "<!-- $myfield2 - ";
+                        echo "<!-- MyField2:  $myfield2 - ";
                         if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
                         echo " -->\n";
                         if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
@@ -580,7 +583,7 @@
             case "H": // ARRAY (By Column)
 
                 //Get answers. We always use the answer code because the label might be too long elsewise
-                echo '<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext).'</strong><br/><br/>';
+                echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //check all the answers
                 foreach($result[$key1] as $key=>$row)
                 {
@@ -706,7 +709,7 @@
             case "1": // MULTI SCALE
 
                 //special dual scale counter
-
+                echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //loop through answers
                 foreach($result[$key1] as $row)
                 {
@@ -846,7 +849,7 @@
 
             case "P":  //P - Multiple choice with comments
             case "M":  //M - Multiple choice
-
+                echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //loop through answers
                 foreach($result[$key1] as $row)
                 {
@@ -865,7 +868,7 @@
             //Boilerplate questions are only used to put some text between other questions -> no analysis needed
             case "X": //This is a boilerplate question and it has no business in this script
             case '*': // EQUATION
-                echo '<strong>'.$flt[3].' - '.$oStatisticsHelper::_showSpeaker(flattenText($flt[5],true)).'</strong><br/>';
+                echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 eT('This question type can\'t be selected');
                 break;
 

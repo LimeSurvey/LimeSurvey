@@ -17,7 +17,7 @@
                     'class'=>"form-horizontal",
                 )
             )); ?>
-                <p class="note">Fields with <span class="required">*</span> are required.</p>
+                <p class="note"><?php echo printf(gT('Fields with %s*%s are required'),'<span class="required">','</span>'); ?> are required.</p>
 
 
                 <?php echo $form->errorSummary($model); ?>
