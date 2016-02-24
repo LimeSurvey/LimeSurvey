@@ -1541,7 +1541,15 @@ class participantsaction extends Survey_Common_Action
 
         if (empty($newcreate[0])) { $newcreate = array(); }
 
-        $response = Participant::model()->copyCPBDAttributesToTokens($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $overwritest, $createautomap);
+        try
+        {
+            $response = Participant::model()->copyCPBDAttributesToTokens($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $overwritest, $createautomap);
+        }
+        catch (Exception $e)
+        {
+            printf("Error: Could not copy attributes to tokens: file %s, line %s; %s", $e->getFile(), $e->getLine(), $e->getMessage());
+            return;
+        }
 
         printf(gT("%s participants have been copied to the survey token table"), $response['success']);
         if($response['duplicate']>0) {

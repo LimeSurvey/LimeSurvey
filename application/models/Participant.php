@@ -1164,7 +1164,14 @@ class Participant extends LSActiveRecord
                     $numberofattributes = count($attributesadded);
                     for ($a = 0; $a < $numberofattributes; $a++)
                     {
-                        Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID,$attributesadded[$a],$attributeidadded[$a]);
+                        try
+                        {
+                            Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID,$attributesadded[$a],$attributeidadded[$a]);
+                        }
+                        catch(Exception $e)
+                        {
+                            throw new Exception(gT("Could not update token attribute value"));
+                        }
                     }
                 }
                 //If there are any automatically mapped attributes, add those values to the token entry for this participant
@@ -1172,7 +1179,14 @@ class Participant extends LSActiveRecord
                 {
                     foreach ($mapped as $key => $value)
                     {
-                        Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID, $value, $key);
+                        try
+                        {
+                            Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID, $value, $key);
+                        }
+                        catch (Exception $e)
+                        {
+                            throw new Exception(gT("Could not update token attribute value"));
+                        }
                     }
                 }
                 $sucessfull++;
