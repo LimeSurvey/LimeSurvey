@@ -692,6 +692,25 @@ class statistics extends Survey_Common_Action {
             }
             switch ( $type )
             {
+
+                // Double scale cases
+                case ":":
+                    $qidattributes=getQuestionAttributeValues($row['qid']);
+                    if(!$qidattributes['input_boxes'])
+                    {
+                        $qid = $row['qid'];
+                        $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' AND language = '{$language}' AND scale_id = 0", 'question_order, title');
+                        $fresults = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' AND language = '{$language}' AND scale_id = 1", 'question_order, title');
+                        foreach($results as $row1)
+                        {
+                            foreach($fresults as $row2)
+                            {
+                                $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'_'.$row2['title'];
+                            }
+                        }
+                    }
+                break;
+
                 case "R": //RANKING
                     $qid = $row['qid'];
                     $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
@@ -699,7 +718,7 @@ class statistics extends Survey_Common_Action {
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     for ($i=1; $i<=$count; $i++)
                     {
-                        $summary[] = 'R'.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'].'-'.$i;
+                        $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'].'-'.$i;
                     }
                 break;
 

@@ -553,7 +553,7 @@
                     foreach($fresult as $frow)
                     {
                         $myfield2 = $myfield . $row[0] . "_" . $frow['title'];
-                        echo "<!-- $myfield2 - ";
+                        echo "<!-- MyField2:  $myfield2 - ";
                         if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
                         echo " -->\n";
                         if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
