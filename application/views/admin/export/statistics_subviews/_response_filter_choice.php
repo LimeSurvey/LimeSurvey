@@ -23,9 +23,17 @@
                 <!-- Questions container -->
                 <div class="col-sm-12 questionContainer" id="grp_question_container_<?php echo $aGroup['gid']; ?>">
                     <div id='grp_<?php echo $aGroup['gid']; ?>' class="row filtertable ">
-
+                        <div class="col-sm-12">
+                            <?php $count=0;?>
                     <?php foreach($aGroup['questions'] as  $key1 => $flt ): ?>
-
+                        <?php
+                            $count = $count+1;
+                            if ( $count ==1 )
+                            {
+                                echo '<div class="row">';
+                                $rowIsOpen = 1;
+                            }
+                        ?>
                         <!-- Questions -->
                         <?php $this->renderPartial('/admin/export/statistics_subviews/_question', array(
                                 'key1'=>$key1,
@@ -42,7 +50,20 @@
                                 'dshresults'=>$dshresults,
                                 'dshresults2'=>$dshresults2,
                              )) ; ?>
+
+                        <?php
+                            if($count==3)
+                            {
+                                echo '</div>';
+                                $count = 0;
+                                $rowIsOpen = 0;
+                            }
+                        ?>
                     <?php endforeach; ?>
+                            <?php if($rowIsOpen):?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </div>

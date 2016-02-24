@@ -686,7 +686,7 @@ class statistics extends Survey_Common_Action {
         foreach($rows as $row)
         {
             $type=$row['type'];
-            if($type=="M" || $type=="P" || $type=="T" || $type=="S" || $type=="R" ||  $type=="|" ||  $type=="" ||  $type=="N" ||  $type=="K" || $type=="D")
+            if($type=="M" || $type=="P" || $type=="T" || $type=="S" ||  $type=="" ||  $type=="N" ||  $type=="D")
             {
                 $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
             }
@@ -723,6 +723,43 @@ class statistics extends Survey_Common_Action {
                         $result = array_values($result);
                         $summary[] = 'Q'.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$result[0];
                     }
+
+                    break;
+
+                case "K": // Multiple Numerical
+                //go through all the (multiple) answers
+                    $qid = $row['qid'];
+                    $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
+
+                    foreach($results as $row1)
+                    {
+                        if(is_string($row1))
+                        {
+                            $row1 = array_values($row1);
+                            foreach($row1 as $row)
+                            {
+                                $row = array_values($row);
+                                $summary[] = 'K'.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$result[0];
+                            }
+                        }
+                    }
+                    break;
+
+
+                case "R": //RANKING
+                    $qid = $row['qid'];
+                    $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
+                    $count = count($results);
+                    //loop through all answers. if there are 3 items to rate there will be 3 statistics
+                    for ($i=1; $i<=$count; $i++)
+                    {
+                        $summary[] = 'R'.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'].'-'.$i;
+                    }
+                break;
+
+
+
+                case "|": // File Upload, we don't show it
 
                     break;
 

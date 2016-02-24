@@ -13,9 +13,10 @@
 
 
 
-    <!-- CHANGE HERE THE NUMBER OF COL-SM TO CHANGE THE NUMBER OF QUESTION BY LINE -->
-    <div class="col-sm-4">
-        <?php if ($flt[2]=='M' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L' || $flt[2]=='5' || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!'): ?>
+    <?php echo "<!-- Question type :  $flt[2] -->"; ?>
+    <div class="col-sm-4 question-filter-container">
+        <?php if ($flt[2]=='M' || $flt[2]=='|' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L' || $flt[2]=='5' || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!'): ?>
+            <!--  TYPE =='M' || 'P' || 'N' || 'L' || '5' || 'G' || 'I' || 'O' || 'Y' || '!' -->
             <input type='checkbox'
                 id='filter<?php echo $myfield; ?>'
                 name='summary[]'
@@ -44,7 +45,7 @@
         switch ($flt[2])
         {
             case "K": // Multiple Numerical
-
+                echo '<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext).'</strong><br/><br/>';
                 //go through all the (multiple) answers
                 foreach($result[$key1] as $row1)
                 {
@@ -224,8 +225,8 @@
                 if (isset($summary) && (array_search("D{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
                 {echo " checked='checked'";}
 
-                echo " /><strong>";
-                echo $oStatisticsHelper::_showSpeaker($niceqtext)
+                echo " />";
+                echo '<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext).'</strong>'
                 ."<br />\n"
 
                 ."\t<span class='smalltext'>".gT("Date (YYYY-MM-DD) equals").":<br />\n"
@@ -308,6 +309,7 @@
 
                     echo ">".getLanguageNameFromCode($availlang,false)."</option>\n";
                 }
+                echo "</select>";
                 break;
 
 
@@ -697,9 +699,6 @@
                 unset($answers);
                 break;
 
-            //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-            case "X": //This is a boilerplate question and it has no business in this script
-            break;
 
             case "1": // MULTI SCALE
 
@@ -860,6 +859,12 @@
                 echo "\t</select>";
                 break;
 
+            //Boilerplate questions are only used to put some text between other questions -> no analysis needed
+            case "X": //This is a boilerplate question and it has no business in this script
+            case '*': // EQUATION
+                echo '<strong>'.$flt[3].' - '.$oStatisticsHelper::_showSpeaker(flattenText($flt[5],true)).'</strong><br/>';
+                eT('This question type can\'t be selected');
+                break;
 
                 /*
                 * This question types use the default settings:
@@ -888,4 +893,4 @@
 
         }   //end switch -> check question types and create filter forms
     ?>
-    </div>
+</div>
