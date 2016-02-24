@@ -8494,8 +8494,6 @@ EOD;
             if (!isset($LEM->currentQset)) {
                 return array();
             }
-            $thissurvey = getSurveyInfo($_SESSION['LEMsid']);
-            $invertRadix=getRadixPointData(1 - $thissurvey['surveyls_numberformat']);
             $updatedValues=array();
             $radixchange = (($LEM->surveyOptions['radix']==',') ? true : false);
             foreach ($LEM->currentQset as $qinfo)
@@ -8531,6 +8529,21 @@ EOD;
                             $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
                         }
 
+                        // Check for and adjust ',' and '.' in numbers
+                        $isOnlyNum = isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1';
+                        if ($radixchange && $isOnlyNum)
+                        {
+                            // Convert from comma back to decimal
+                            // Also make sure to be able to convert numbers like 1.100,10
+                            $value = preg_replace('|\.|', '', $value);
+                            $value = preg_replace('|\,|', '.', $value);
+                        }
+                        elseif (!$radixchange && $isOnlyNum)
+                        {
+                            // Still have to remove all ',' introduced by the thousand separator
+                            $value = preg_replace('|\,|', '', $value);
+                        }
+
                         switch($type)
                         {
                             case 'D': //DATE
@@ -8556,17 +8569,8 @@ EOD;
                                     }
                                 }
                                 break;
-                            case 'N': //NUMERICAL QUESTION TYPE
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                                if (trim($value)!="") {
-                                    $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $qid, $_SESSION['LEMlang']);
-                                    if (!isset($aAttributes[$qid])) {
-                                        $aAttributes[$qid]=array();
-                                    }
-                                    if($aAttributes[$qid]['thousands_separator']=='1') {
-                                        $value=str_replace($invertRadix['separator'], '', $value);
-                                    }
-                                }
+#                            case 'N': //NUMERICAL QUESTION TYPE
+#                            case 'K': //MULTIPLE NUMERICAL QUESTION
 #                                if (trim($value)=="") {
 #                                    $value = "";
 #                                }
@@ -8608,14 +8612,6 @@ EOD;
                                     }
                                 }
                                 break;
-                        }
-                        // Check for and adjust ',' and '.' in numbers
-                        $isOnlyNum = isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1';
-                        if ($radixchange && $isOnlyNum)
-                        {
-                            // Convert from comma back to decimal
-                            // Also make sure to be able to convert numbers like 1.100,10
-                            $value = preg_replace('|\,|', '.', $value);
                         }
                         $_SESSION[$LEM->sessid][$sq] = $value;
                         $_update = array (
