@@ -711,6 +711,17 @@ class statistics extends Survey_Common_Action {
                     }
                 break;
 
+                case "1":
+                    $qid = $row['qid'];
+                    $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' AND language = '{$language}'", 'question_order, title');
+                    foreach($results as $row1)
+                    {
+                        $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'#0';
+                        $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'#1';
+                    }
+
+                break;
+
                 case "R": //RANKING
                     $qid = $row['qid'];
                     $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');

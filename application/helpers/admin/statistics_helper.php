@@ -3637,6 +3637,7 @@ class statistics_helper {
 
             //loop through all selected questions
             $count=0;
+            $rowOpened=0;
             foreach ($runthrough as $rt)
             {
                 ////Step 1: Get information about this response field (SGQA) for the summary
