@@ -250,4 +250,15 @@ return array(
         'depends' => array(
         ),
     ),
+
+    // leaflet, needed for short text question with map (OSM)
+    'leaflet' => array(
+        'baseUrl' => 'third_party/leaflet/',
+        'js' => array(
+            'leaflet.js'
+        ),
+        'css' => array(
+            'leaflet.css'
+        ),
+    ),
 );
