@@ -334,12 +334,12 @@
                                                 <?php if ($scale_id==0):   /* relevance column */ ?>
                                                     <td  style="vertical-align: middle;">
                                                         <?php if ($row->relevance!="1" && trim($row->relevance)!=""): ?>
-                                                            <span class="icon-conditions text-success btntogglerelevance" data-toggle="tooltip" data-placement="bottom" title='<?php eT("Edit subquestion relevance") ?>'></span>
+                                                            <span class="icon-conditions text-success btntogglerelevance" data-toggle="tooltip" data-placement="bottom" title='<?php eT("Toggle subquestion relevance") ?>'></span>
                                                         <?php else:   /* no relevance equation: icon deactivated */  ?>
-                                                            <span class="icon-conditions text-success btntogglerelevance" data-toggle="tooltip" data-placement="bottom" title='<?php eT("Edit subquestion relevance") ?>'></span>
+                                                            <span class="icon-conditions text-success btntogglerelevance" data-toggle="tooltip" data-placement="bottom" title='<?php eT("Toggle subquestion relevance") ?>'></span>
                                                         <?php endif;?>
                                                         <?php if ($first):  /* default lang - input field */?>
-                                                            <input style="display: none" type='text' size='20' class='relevance' id='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
+                                                            <input style="display: none" type='text' class='relevance form-control input-lg' id='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
                                                         <?php else:       /* additional language: just print rel. equation */  ?>
                                                             <span style="display: none" class="relevance"> <?php echo $row->relevance; ?> </span>
                                                         <?php endif; ?>
