@@ -1678,8 +1678,10 @@ class statistics_helper {
             }    //end if -> alist set
             else
             {
+
                 if ($al[0] != "")
                 {
+
                     //get more data
                     $sDatabaseType = Yii::app()->db->getDriverName();
                     if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib')
@@ -1741,6 +1743,7 @@ class statistics_helper {
             //"Answer" means that we show an option to list answer to "other" text field
             elseif ($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P")
             {
+
                 if ($outputs['qtype'] == "P") $sColumnName = $al[2]."comment";
                 else  $sColumnName = $al[2];
                 $ColumnName_RM[]=$sColumnName;
@@ -1763,6 +1766,7 @@ class statistics_helper {
                 */
                 elseif ($outputs['qtype'] == "S" || $outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "Q")
                 {
+
                     $headPDF = array();
                     $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"));
 
@@ -1834,11 +1838,26 @@ class statistics_helper {
                 //first check if $tempcount is > 0. If yes, $row has been modified and $tempcount has the original count.
                 if ($tempcount > -1)
                 {
-                    $lbl[wordwrap(FlattenText("$al[1]"), 25, "\n")] = $tempcount;
+                    $flatLabel = wordwrap(FlattenText("$al[1]"), 25, "\n");
+                    // If the flatten label is empty (like for picture, or HTML, etc.)
+                    // We replace it by the subquestion code
+                    if($flatLabel == '')
+                    {
+                        $flatLabel = $al[0];
+                    }
+                    $lbl[$flatLabel] = $tempcount;
+
                 }
                 else
                 {
-                    $lbl[wordwrap(FlattenText("$al[1]"), 25, "\n")] = $row;
+                    $flatLabel = wordwrap(FlattenText("$al[1]"), 25, "\n");
+                    // If the flatten label is empty (like for picture, or HTML, etc.)
+                    // We replace it by the subquestion code
+                    if($flatLabel == '')
+                    {
+                        $flatLabel = $al[0];
+                    }
+                    $lbl[$flatLabel] = $row;
                 }
 
 
@@ -2330,19 +2349,16 @@ class statistics_helper {
 
                     $iCanvaHeight = $iMaxLabelLength * 3;
                     $aData['iCanvaHeight'] = ($iCanvaHeight > 150)?$iCanvaHeight:150;
-
                     $qqid = str_replace ('#', '_', $qqid);
-
                     $aData['rt'] = $rt;
                     $aData['qqid'] = $qqid;
                     $aData['labels'] = $labels;
-                    //$aData['COLORS_FOR_SURVEY'] = COLORS_FOR_SURVEY;
                     $aData['charttype'] = $charttype;
                     $aData['sChartname'] = '';
                     $aData['grawdata'] = $grawdata;
                     $aData['color'] = rand ( 0, 72 ); // random truc much
                     $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
-
+                    // Output graph
                     $statisticsoutput .=  Yii::app()->getController()->renderPartial('/admin/export/generatestats/simplestats/_statisticsoutput_graphs', $aData, true);
 
                 }
@@ -2786,11 +2802,27 @@ class statistics_helper {
             //first check if $tempcount is > 0. If yes, $row has been modified and $tempcount has the original count.
             if ($tempcount > -1)
             {
-                $lbl[wordwrap(FlattenText("$al[1]"), 25, "\n")] = $tempcount;
+                $flatLabel = wordwrap(FlattenText("$al[1]"), 25, "\n");
+                // If the flatten label is empty (like for picture, or HTML, etc.)
+                // We replace it by the subquestion code
+                if($flatLabel == '')
+                {
+                    $flatLabel = $al[0];
+                }
+                $lbl[$flatLabel] = $tempcount;
+
             }
             else
             {
-                $lbl[wordwrap(FlattenText("$al[1]"), 25, "\n")] = $row;
+                $flatLabel = wordwrap(FlattenText("$al[1]"), 25, "\n");
+                // If the flatten label is empty (like for picture, or HTML, etc.)
+                // We replace it by the subquestion code
+                if($flatLabel == '')
+                {
+                    $flatLabel = $al[0];
+                }
+
+                $lbl[$flatLabel] = $row;
             }
 
 
@@ -2874,11 +2906,28 @@ class statistics_helper {
                 //edit labels and put them into another array
                 if ((incompleteAnsFilterState() != "complete"))
                 {
-                    $lbl[wordwrap(flattenText(gT("Not completed or Not displayed")), 20, "\n")] = $TotalIncomplete;
+                    $flatLabel = wordwrap(flattenText(gT("Not completed or Not displayed")), 20, "\n");
+                    // If the flatten label is empty (like for picture, or HTML, etc.)
+                    // We replace it by the subquestion code
+                    if($flatLabel == '')
+                    {
+                        $flatLabel = $al[0];
+                    }
+
+                    $lbl[$flatLabel] = $TotalIncomplete;
                 }
                 else
                 {
-                    $lbl[wordwrap(flattenText(gT("Not displayed")), 20, "\n")] = $TotalIncomplete;
+
+                    $flatLabel = wordwrap(flattenText(gT("Not displayed")), 20, "\n");
+                    // If the flatten label is empty (like for picture, or HTML, etc.)
+                    // We replace it by the subquestion code
+                    if($flatLabel == '')
+                    {
+                        $flatLabel = $al[0];
+                    }
+
+                    $lbl[$flatLabel] = $TotalIncomplete;
                 }
             }    //end else -> noncompleted NOT checked
         }

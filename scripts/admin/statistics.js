@@ -41,7 +41,7 @@ var COLORS_FOR_SURVEY = new Array('20,130,200','232,95,51','34,205,33','210,211,
                {
                    // chartjs
                    if ( typeof chartjs[$qid] == "undefined" || typeof chartjs == "undefined" ) // typeof chartjs[$qid] == "undefined" || typeof chartjs == "undefined"
-                   {                       
+                   {
                        if($type == 'Bar' || $type == 'Radar' || $type == 'Line' )
                        {
 
@@ -108,13 +108,12 @@ function init_chart_js_graph_with_datasets($type,$qid)
             window.chartjs[$qid].destroy();
         }
     }
-
+    
     window.chartjs[$qid] = new Chart($canvas)[$type]({
         labels: $labels,
         datasets: [{
             label: $qid,
             data: $grawdata,
-
             fillColor: "rgba("+COLORS_FOR_SURVEY[$color]+",0.2)",
             strokeColor: "rgba("+COLORS_FOR_SURVEY[$color]+",1)",
             pointColor: "rgba("+COLORS_FOR_SURVEY[$color]+",1)",

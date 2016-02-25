@@ -34,6 +34,33 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 2.50+ (build 160223) to 2.50+ (build 160225) Feb 25, 2016
+-Fixed #10550: multi-line group description flows out of box (Matthew Favetti)
+-Fixed issue #10272: Strange view of bars in statistics (LouisGac)
+-Fixed issue #10424: Missing translation (Carsten Schmitz)
+-Fixed issue #10443: My timer doesn't work (Olle Haerstedt)
+-Fixed issue #10553: Bad layout on token columns (Olle Haerstedt)
+-Fixed issue #10564: Question explorer sorts groups by group ID instead of group order (Carsten Schmitz)
+-Fixed issue #10567: Missing translation (Carsten Schmitz)
+#Updated translation: Chinese (Simplified) by limecat, sothmch, yanglaw
+#Updated translation: Czech by VBraun
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Galician by Calidonia
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow
+#Updated translation: Slovenian by dusan
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Thai by tomzt
+
 Changes from 2.50+ (build 160222) to 2.50+ (build 160223) Feb 23, 2016
 -Fixed issue #10189: Enabling "Thousands separator" in "numerical input" questions results in an error and data loss (Olle Haerstedt)
 -Fixed issue #10042: When Default Mappings Set, Copying Custom Attributes Doesn't WOrk (Olle Haerstedt)
