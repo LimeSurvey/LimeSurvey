@@ -83,7 +83,8 @@
                             ),
                             array(
                                 'header' => gt('Question type'),
-                                'name' => 'group',
+                                'name' => 'type',
+                                'type'=>'raw',
                                 'value'=>'$data->typedesc',
                                 'htmlOptions' => array('class' => 'col-md-1 '),
                             ),

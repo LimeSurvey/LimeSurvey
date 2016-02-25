@@ -429,7 +429,15 @@
         {
             $types = self::typeList();
             //var_dump($types[$this->type]["description"]); die();
-            return $types[$this->type]["description"];
+
+            $typeDesc = $types[$this->type]["description"];
+
+            if(YII_DEBUG)
+            {
+                $typeDesc .= ' <em>'.$this->type.'</em>';
+            }
+
+            return $typeDesc;
         }
 
         /**
