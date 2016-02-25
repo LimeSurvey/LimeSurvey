@@ -2331,6 +2331,8 @@ class statistics_helper {
                     $iCanvaHeight = $iMaxLabelLength * 3;
                     $aData['iCanvaHeight'] = ($iCanvaHeight > 150)?$iCanvaHeight:150;
 
+                    $qqid = str_replace ('#', '_', $qqid);
+
                     $aData['rt'] = $rt;
                     $aData['qqid'] = $qqid;
                     $aData['labels'] = $labels;
@@ -3544,6 +3546,7 @@ class statistics_helper {
                 $iCanvaHeight = $iMaxLabelLength * 3;
                 $aData['iCanvaHeight'] = ($iCanvaHeight > 150)?$iCanvaHeight:150;
 
+                $qqid = str_replace ('#', '_', $qqid);
                 $aData['rt'] = $rt;
                 $aData['qqid'] = $qqid;
                 $aData['labels'] = $labels;
@@ -3866,7 +3869,7 @@ class statistics_helper {
 
         $aData['results'] = $results;
         $aData['total'] = $total;
-        $aData['percent'] = $percent;
+        $aData['percent'] = (isset($percent))?$percent:''; // If nobody passed the survey
         $aData['browse'] = $bBrowse;
         $aData['surveyid'] = $surveyid;
         $aData['sql'] = $sql;
