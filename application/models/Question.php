@@ -425,6 +425,13 @@
             throw new CException("Unknown question type: '{$this->type}'");
         }
 
+        public function getTypedesc()
+        {
+            $types = self::typeList();
+            //var_dump($types[$this->type]["description"]); die();
+            return $types[$this->type]["description"];
+        }
+
         /**
          * This function contains the question type definitions.
          * @return array The question type definitions

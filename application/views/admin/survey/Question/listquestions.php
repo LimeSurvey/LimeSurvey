@@ -56,6 +56,56 @@
                 <div class="col-lg-12">
 
                     <?php
+                        $columns = array(
+                            array(
+                                'header' => gt('Question ID'),
+                                'name' => 'question_id',
+                                'value'=>'$data->qid',
+                                'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
+                            ),
+                            array(
+                                'header' => gt('Question order'),
+                                'name' => 'question_order',
+                                'value'=>'$data->question_order',
+                                'htmlOptions' => array('class' => 'col-sm-1 hidden-xs'),
+                            ),
+                            array(
+                                'header' => gt('Code'),
+                                'name' => 'title',
+                                'value'=>'$data->title',
+                                'htmlOptions' => array('class' => 'col-xs-1'),
+                            ),
+                            array(
+                                'header' => gt('Question'),
+                                'name' => 'question',
+                                'value'=>'strip_tags($data->question)',
+                                'htmlOptions' => array('class' => 'col-xs-1 col-sm-3 '),
+                            ),
+                            array(
+                                'header' => gt('Question type'),
+                                'name' => 'group',
+                                'value'=>'$data->typedesc',
+                                'htmlOptions' => array('class' => 'col-md-1 '),
+                            ),
+                            array(
+                                'header' => gt('Group'),
+                                'name' => 'group',
+                                'value'=>'$data->groups->group_name',
+                                'htmlOptions' => array('class' => 'col-md-2 '),
+                            ),
+
+                            array(
+                                'header'=>'',
+                                'name'=>'actions',
+                                'type'=>'raw',
+                                'value'=>'$data->buttons',
+                                'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right'),
+                            ),
+
+                        );
+                    ?>
+
+                    <?php
                     $this->widget('bootstrap.widgets.TbGridView', array(
                         'dataProvider' => $model->search(),
 
@@ -70,47 +120,7 @@
                                 Yii::app()->params['pageSizeOptions'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
 
-                                'columns' => array(
-                                    array(
-                                        'header' => gt('Question ID'),
-                                        'name' => 'question_id',
-                                        'value'=>'$data->qid',
-                                        'htmlOptions' => array('class' => 'col-md-1 hidden-xs'),
-                                    ),
-                                    array(
-                                        'header' => gt('Question order'),
-                                        'name' => 'question_order',
-                                        'value'=>'$data->question_order',
-                                        'htmlOptions' => array('class' => 'col-md-2 hidden-xs'),
-                                    ),
-                                    array(
-                                        'header' => gt('Code'),
-                                        'name' => 'title',
-                                        'value'=>'$data->title',
-                                        'htmlOptions' => array('class' => 'col-xs-1'),
-                                    ),
-                                    array(
-                                        'header' => gt('Question'),
-                                        'name' => 'question',
-                                        'value'=>'strip_tags($data->question)',
-                                        'htmlOptions' => array('class' => 'col-xs-1 '),
-                                    ),
-                                    array(
-                                        'header' => gt('Group'),
-                                        'name' => 'group',
-                                        'value'=>'$data->groups->group_name',
-                                        'htmlOptions' => array('class' => 'col-md-2 '),
-                                    ),
-
-                                    array(
-                                        'header'=>'',
-                                        'name'=>'actions',
-                                        'type'=>'raw',
-                                        'value'=>'$data->buttons',
-                                        'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right'),
-                                    ),
-
-                                ),
+                                'columns' => $columns,
                                 'ajaxUpdate' => true,
                             ));
                             ?>
