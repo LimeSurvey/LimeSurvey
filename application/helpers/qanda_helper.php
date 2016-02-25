@@ -583,7 +583,6 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
     $time_limit_timer_style=trim($aQuestionAttributes['time_limit_timer_style']) != '' ? $aQuestionAttributes['time_limit_timer_style'] : "position: relative;";
 
     $timersessionname="timer_question_".$ia[0];
-    $time_limit=0; // ?
     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname]))
     {
         $time_limit=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname];
