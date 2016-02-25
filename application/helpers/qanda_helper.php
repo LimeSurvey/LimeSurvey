@@ -3690,7 +3690,7 @@ function do_shortfreetext($ia)
             'currentLat'=>$currentLatLong[0],
             'currentLong'=>$currentLatLong[1],
         );
-        $answer = Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/location_mapservice/item', $itemDatas, true);
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/location_mapservice/item_100', $itemDatas, true);
     }
     else
     {
