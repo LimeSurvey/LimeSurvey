@@ -753,6 +753,7 @@ class statistics extends Survey_Common_Action {
                 case "|": // File Upload, we don't show it
                 case "N":
                 case "Q":
+                case ';':
 
                     break;
 
