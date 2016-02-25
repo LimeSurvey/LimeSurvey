@@ -150,7 +150,7 @@
                                                 value="<?php echo $type; ?>"
                                                 id="headstyle-<?php echo $type; ?>"
                                                 type="radio"
-                                                name="headstyle-<?php echo $type; ?>"
+                                                name="headstyle"
                                                 <?php if($headexport['checked']=='checked'){ echo 'checked';} ?>
                                             />
                                             <?php echo $headexport['label'];?>
