@@ -143,20 +143,21 @@
                             <div class="panel-body">
 
                                 <!-- Headers -->
-                                <div class="btn-group" data-toggle="buttons">
-                                    <?php foreach($headexports as $type=>$headexport):?>
-                                        <label class="btn btn-default <?php if($headexport['checked']=='checked'){ echo 'active';}?>">
-                                            <input
-                                                value="<?php echo $type; ?>"
-                                                id="headstyle-<?php echo $type; ?>"
-                                                type="radio"
-                                                name="headstyle"
-                                                <?php if($headexport['checked']=='checked'){ echo 'checked';} ?>
-                                            />
-                                            <?php echo $headexport['label'];?>
-                                        </label>
-                                    <?php endforeach; ?>
-                                    <br/><br/>
+                                <div class="form-group">
+                                    <div class="btn-group col-sm-12" data-toggle="buttons">
+                                        <?php foreach($headexports as $type=>$headexport):?>
+                                            <label class="btn btn-default <?php if($headexport['checked']=='checked'){ echo 'active';}?>">
+                                                <input
+                                                    value="<?php echo $type; ?>"
+                                                    id="headstyle-<?php echo $type; ?>"
+                                                    type="radio"
+                                                    name="headstyle"
+                                                    <?php if($headexport['checked']=='checked'){ echo 'checked';} ?>
+                                                />
+                                                <?php echo $headexport['label'];?>
+                                            </label>
+                                        <?php endforeach; ?>
+                                    </div>
                                 </div>
 
                                 <!-- Convert spaces -->
@@ -165,12 +166,13 @@
                                         <?php eT("Convert spaces in question text to underscores"); ?>
                                     </label>
                                     <div class='col-sm-1'>
-                                        <input
-                                            type='checkbox'
-                                            id='headspacetounderscores'
-                                            name='headspacetounderscores'
-                                            value='1'
-                                        />
+                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                            'name' => 'headspacetounderscores',
+                                            'id'=>'headspacetounderscores',
+                                            'value' => 0,
+                                            'onLabel'=>gT('On'),
+                                            'offLabel' => gT('Off')));
+                                        ?>
                                     </div>
                                 </div>
 
@@ -180,12 +182,13 @@
                                         <?php eT("Text abbreviated"); ?>
                                     </label>
                                     <div class='col-sm-1'>
-                                        <input
-                                            type='checkbox'
-                                            id='abbreviatedtext'
-                                            name='abbreviatedtext'
-                                            value='1'
-                                         />
+                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                            'name' => 'abbreviatedtext',
+                                            'id'=>'abbreviatedtext',
+                                            'value' => 0,
+                                            'onLabel'=>gT('On'),
+                                            'offLabel' => gT('Off')));
+                                        ?>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -211,12 +214,13 @@
                                         <?php eT("Use Expression Manager code"); ?>
                                     </label>
                                     <div class='col-sm-1'>
-                                        <input
-                                            type='checkbox'
-                                            id='emcode'
-                                            name='emcode'
-                                            value='1'
-                                         />
+                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                            'name' => 'emcode',
+                                            'id'=>'emcode',
+                                            'value' => 0,
+                                            'onLabel'=>gT('On'),
+                                            'offLabel' => gT('Off')));
+                                        ?>
                                     </div>
                                 </div>
 
@@ -361,12 +365,3 @@
           <input type='submit' class="btn btn-default hidden" value='<?php eT("Export data");?>' id='exportresultsubmitbutton' />
     </form>
 </div>
-
-<script type='text/javascript'>
-    $(document).ready(function() {
-        $("[name='headspacetounderscores']").bootstrapSwitch();
-        $("[name='abbreviatedtext']").bootstrapSwitch();
-        $("[name='emcode']").bootstrapSwitch();
-
-    });
-</script>
