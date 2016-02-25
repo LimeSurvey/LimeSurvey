@@ -71,18 +71,20 @@
                                 'header' => gt('Code'),
                                 'name' => 'title',
                                 'value'=>'$data->title',
+                                'htmlOptions' => array('class' => 'col-md-1'),
                             ),
                             array(
                                 'header' => gt('Question'),
                                 'name' => 'question',
                                 'value'=>'strip_tags($data->question)',
+                                'htmlOptions' => array('class' => 'col-md-5'),
                             ),
                             array(
                                 'header' => gt('Question type'),
                                 'name' => 'type',
                                 'type'=>'raw',
                                 'value'=>'$data->typedesc',
-                                'htmlOptions' => array('class' => 'col-md-1 '),
+                                'htmlOptions' => array('class' => 'col-md-1'),
                             ),
                             array(
                                 'header' => gt('Group'),

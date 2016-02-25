@@ -26,7 +26,7 @@
                         )); ?>
                         <div class="form-group">
                             <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class'=>'col-sm-2 control-label text-right col-sm-offset-6')); ?>
-                            <div class="col-sm-1 text-right">
+                            <div class="col-sm-2 text-right">
                                 <?php echo $form->textField($model, 'group_name', array('class'=>'form-control')); ?>
                             </div>
                             <div class="col-sm-2">
@@ -62,16 +62,14 @@
                             array(
                                 'header'=>gT('Group ID'),
                                 'name'=>'group_id',
-                                'value'=>'$data->gid',
-                                'htmlOptions' => array('class' => 'col-md-1'),
+                                'value'=>'$data->gid'
                             ),
 
                             // Group Order
                             array(
                                 'header'=>gT('Group order'),
                                 'name'=>'group_order',
-                                'value'=>'$data->group_order',
-                                'htmlOptions' => array('class' => 'col-md-1'),
+                                'value'=>'$data->group_order'
                             ),
 
                             // Group Name
@@ -87,7 +85,7 @@
                                 'name'=>'description',
                                 'type'=>'raw',
                                 'value'=>'$data->description',
-                                'htmlOptions' => array('class' => 'col-md-2'),
+                                'htmlOptions' => array('class' => 'col-md-6'),
                             ),
 
                             // Action buttons (defined in model)
