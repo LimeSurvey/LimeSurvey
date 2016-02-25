@@ -916,13 +916,9 @@ class Survey_Common_Action extends CAction
 
                     foreach($group->aQuestions as $question)
                     {
-                        if(strlen($question->question)>60 && is_object($question) )
+                        if(is_object($question))
                         {
-                            $sOldQuestion = strip_tags($question->question);
-                            $sNewQuestion = mb_substr($sOldQuestion, 0, 30);
-                            $sNewQuestion .= ' <br>...<br> ';
-                            $sNewQuestion .= mb_substr($sOldQuestion, -30);
-                            $question->question = $sNewQuestion;
+                            $question->question = viewHelper::flatEllipsizeText($question->question,true,60,'[...]',0.5);
                         }
                     }
                 }
