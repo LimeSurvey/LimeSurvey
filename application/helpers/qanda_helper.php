@@ -2435,19 +2435,13 @@ function do_multiplechoice_withcomments($ia)
     $inputnames= array();
     $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $inputnames = array();
-    $attribute_ref=false;
     $qaquery = "SELECT qid,attribute FROM {{question_attributes}} WHERE value LIKE '".strtolower($ia[2])."'";
     $qaresult = Yii::app()->db->createCommand($qaquery)->query();     //Checked
-    $attribute_ref=false;
 
     foreach($qaresult->readAll() as $qarow)
     {
         $qquery = "SELECT qid FROM {{questions}} WHERE sid=".$thissurvey['sid']." AND qid=".$qarow['qid'];
         $qresult = Yii::app()->db->createCommand($qquery)->query(); //Checked
-        if (count($qresult)> 0)
-        {
-            $attribute_ref = true;
-        }
     }
     $checkconditionFunction = "checkconditions";
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);

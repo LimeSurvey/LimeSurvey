@@ -111,7 +111,7 @@
                             </div>
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label for='completionstate' class="col-sm-4 control-label"><?php eT("Completion state");?></label>
+                                    <label for='completionstate' class="col-sm-4 control-label"><?php eT("Completion state:");?></label>
 
                                     <div class="col-sm-4">
                                         <select name='completionstate' id='completionstate' class='form-control'>
@@ -124,7 +124,7 @@
 
                                 <div class="form-group">
                                     <label for='exportlang' class="col-sm-4 control-label" >
-                                        <?php eT("Export language"); ?>
+                                        <?php eT("Export language:"); ?>
                                     </label>
                                     <div class='col-sm-4'>
                                         <?php echo CHtml::dropDownList('exportlang', null, $aLanguages, array('class'=>'form-control')); ?>
@@ -163,7 +163,7 @@
                                 <!-- Convert spaces -->
                                 <div class="form-group">
                                     <label class="col-sm-6 control-label" for='headspacetounderscores'>
-                                        <?php eT("Convert spaces in question text to underscores"); ?>
+                                        <?php eT("Convert spaces in question text to underscores:"); ?>
                                     </label>
                                     <div class='col-sm-1'>
                                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -179,7 +179,7 @@
                                 <!-- Text abbreviated-->
                                 <div class="form-group">
                                     <label class="col-sm-6 control-label" for='abbreviatedtext'>
-                                        <?php eT("Text abbreviated"); ?>
+                                        <?php eT("Text abbreviated:"); ?>
                                     </label>
                                     <div class='col-sm-1'>
                                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -211,7 +211,7 @@
                                 <!-- Use Expression Manager code-->
                                 <div class="form-group">
                                     <label class="col-sm-6 control-label" for='emcode'>
-                                        <?php eT("Use Expression Manager code"); ?>
+                                        <?php eT("Use Expression Manager code:"); ?>
                                     </label>
                                     <div class='col-sm-1'>
                                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
