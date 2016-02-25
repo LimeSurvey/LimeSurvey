@@ -104,7 +104,7 @@
                                                     &nbsp;
                                                 <?php endif; ?>
                                             </th>
-                                            <th><?php eT("Code"); ?></th>
+                                            <th class='col-md-1'><?php eT("Code"); ?></th>
 
                                             <!-- subQuestions headers -->
                                             <?php if($viewType=='subQuestions'): ?>
@@ -129,7 +129,7 @@
                                             <!-- answer Options header-->
                                             <?php elseif($viewType=='answerOptions'): ?>
                                                 <?php if ($assessmentvisible): ?>
-                                                    <th>
+                                                    <th class='col-md-1'>
                                                         <?php eT("Assessment value"); ?>
                                                     </th>
                                                 <?php else: ?>
@@ -138,11 +138,11 @@
                                                     </th>
                                                 <?php endif; ?>
 
-                                                <th>
+                                                <th class='col-md-8'>
                                                     <?php eT("Answer option"); ?>
                                                 </th>
 
-                                                <th>
+                                                <th class='col-md-1'>
                                                     <?php if( $first): ?>
                                                         <?php eT("Actions"); ?>
                                                     <?php endif;?>
@@ -191,7 +191,6 @@
                                                         // TODO : check if possible to remove the viewType condition here
                                                         // implies : check if $row->qid == $position  && if onkeypress can be applied to subQuestions
                                                     ?>
-
                                                     <?php if($viewType=='subQuestions'): ?>
                                                         <input
                                                             type='hidden'
@@ -211,15 +210,14 @@
                                                             pattern='<?php echo $sPattern; ?>'
                                                             required='required'
                                                         />
-                                                    <?php elseif($viewType=='answerOptions'):?>
+                                                        <?php elseif($viewType=='answerOptions'):?>
                                                         <input
                                                             type='hidden'
                                                             class='oldcode'
                                                             id='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                                                             name='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                                                             value="<?php echo $title; ?>"
-                                                        />
-                                                        <input
+                                                        /><input
                                                             type='text'
                                                             class='code form-control input-lg'
                                                             id='code_<?php echo $position; ?>_<?php echo $scale_id; ?>'
@@ -247,7 +245,7 @@
                                                     <td>
                                                         <input
                                                             type='text'
-                                                            class='assessment'
+                                                            class='assessment form-control input-lg'
                                                             id='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                                                             name='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                                                             value="<?php echo $row->assessment_value; ?>"
@@ -286,32 +284,28 @@
                                             ?>
                                             <?php if($viewType=='subQuestions'): ?>
                                                 <td style="vertical-align: middle;">
-                                                    <div class="col-sm-12">
-                                                        <input
-                                                            type='text'
-                                                            size='20'
-                                                            class='answer form-control input-lg'
-                                                            id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
-                                                            name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
-                                                            placeholder='<?php eT("Some example subquestion","js") ?>'
-                                                            value="<?php echo $row->question; ?>"
-                                                            onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}"
-                                                            />
-                                                    </div>
+                                                    <input
+                                                        type='text'
+                                                        size='20'
+                                                        class='answer form-control input-lg'
+                                                        id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
+                                                        name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
+                                                        placeholder='<?php eT("Some example subquestion","js") ?>'
+                                                        value="<?php echo $row->question; ?>"
+                                                        onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}"
+                                                        />
                                                 </td>
                                             <?php elseif($viewType=='answerOptions'): ?>
                                                 <td style="vertical-align: middle;">
-                                                    <div class="col-sm-12">
-                                                        <input
-                                                            type='text'
-                                                            size='20'
-                                                            class='answer form-control input-lg'
-                                                            id='answer_<?php echo $row->language; ?>_<?php echo $row->sortorder; ?>_<?php echo $scale_id; ?>'
-                                                            name='answer_<?php echo $row->language; ?>_<?php echo $row->sortorder; ?>_<?php echo $scale_id; ?>'
-                                                            placeholder='<?php eT("Some example answer option","js") ?>'
-                                                            value="<?php echo $row->answer; ?>"
-                                                        />
-                                                    </div>
+                                                    <input
+                                                        type='text'
+                                                        size='20'
+                                                        class='answer form-control input-lg'
+                                                        id='answer_<?php echo $row->language; ?>_<?php echo $row->sortorder; ?>_<?php echo $scale_id; ?>'
+                                                        name='answer_<?php echo $row->language; ?>_<?php echo $row->sortorder; ?>_<?php echo $scale_id; ?>'
+                                                        placeholder='<?php eT("Some example answer option","js") ?>'
+                                                        value="<?php echo $row->answer; ?>"
+                                                    />
                                                 </td>
                                             <?php endif;?>
 
