@@ -90,16 +90,15 @@ $(function() {
         }
     });
     /* Add navgrid */
-    jQuery("#displayresponses").jqGrid(
-        'navGrid',
-        '#pager',
+    jQuery("#displayresponses").jqGrid( 'navGrid', '#pager',
         {
+            add: false,
+            edit: false,
+            del: true,
             searchtitle : sSearchTitle,
             refreshtitle : sRefreshTitle,
-            edit: false,
-            add: false,
-            del: true,
-            search: false, //true when https://github.com/LimeSurvey/LimeSurvey/commit/c710ac795b471c4370cc45027542c54f791e5950#diff-15547196721577f485345c4a68f0c5d0R629 is done
+            deltitle : sDelTitle,
+            search: true,
             refresh: true,
             view: false,
             position: "left"
