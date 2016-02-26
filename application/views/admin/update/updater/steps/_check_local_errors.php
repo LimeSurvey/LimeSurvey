@@ -50,6 +50,30 @@
     </div>
 <?php endif;?>
 
+<?php if($localChecks->mysql->docheck !== 'pass'): ?>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="span8"><?php eT('MYSQL version required');?></th>
+                <th class="span2"  style="text-align: right"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><?php echo $localChecks->mysql->mysql_ver;?></td>
+                <td class="<?php if($localChecks->mysql->result){echo "success" ;}else{echo "error";}?>" style="text-align: right">
+                    <?php if($localChecks->mysql->result): ?>
+                        <?php eT('OK');?>
+                    <?php else: ?>
+                        <?php printf(gT('MYSQL version is only %s'),$localChecks->mysql->local_mysql_ver);?>
+                        <?php $errors = TRUE; $cant_ignore = true; $ignore = false; ?>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+<?php endif;?>
+
 <table class="table">
     <thead>
         <tr>
@@ -64,7 +88,6 @@
                 <?php if($localChecks->php->result): ?>
                     <?php eT('OK');?>
                 <?php else: ?>
-                    <?php eT('Not enough space'); ?>
                     <?php printf(gT('PHP version is only %s'),$localChecks->php->local_php_ver);?>
                     <?php $errors = TRUE; $cant_ignore = true;?>
                 <?php endif; ?>

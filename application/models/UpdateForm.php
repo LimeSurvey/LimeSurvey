@@ -161,9 +161,12 @@ class UpdateForm extends CFormModel
         $checks->files  = $this->_getFileSystemCheckList();
         $checks->php = $this->_phpVerCheck($destinationBuild);
         $checks->php_modules = $this->_getModuleChecks($destinationBuild);
+        $checks->mysql = $this->_getMysqlChecks($destinationBuild);
 
         return $checks;
     }
+
+
 
     /**
      * This function check for local arrors such as readonly files/directory to update the updater itself
@@ -732,7 +735,7 @@ class UpdateForm extends CFormModel
             if ( $file['type'] == 'A' && file_exists($this->rootdir . $file['file']) )
             {
                 //A new file, check if this already exists
-                   $checkedfile->type = 'existingfile';
+                $checkedfile->type = 'existingfile';
                 $checkedfile->file = $file;
             }
 
@@ -877,6 +880,27 @@ class UpdateForm extends CFormModel
 
         //var_dump($return); die();
         return($return);
+    }
+
+    //a
+    private function _getMysqlChecks($build)
+    {
+        $checks = new stdClass();
+        $dbType = Yii::app()->db->getDriverName();
+        if( in_array($dbType, array('mysql', 'mysqli'))  )
+        {
+            $checks->docheck = 'do';
+            $getters = '/index.php?r=updates/get-mysql-ver&build='.$build;
+            $mysql_requirements = $this->_performRequest($getters);
+            $checks->mysql_ver = $mysql_requirements->version;
+            $checks->local_mysql_ver = Yii::app()->db->getServerVersion();
+            $checks->result = (version_compare($checks->local_mysql_ver,$checks->mysql_ver,'<'))?false:true;
+        }
+        else
+        {
+            $checks->docheck = 'pass';
+        }
+        return($checks);
     }
 
     /**
