@@ -1006,9 +1006,9 @@ class Participant extends LSActiveRecord
      *
      * @param int $surveyId
      * @param array $newAttributes
-     * @return void
+     * @return array [addedAttributes, addedAttributeIds]
      */
-    private function createNewColumnsInTokenTable($surveyId, array $newAttributes)
+    private function createColumnsInTokenTable($surveyId, array $newAttributes)
     {
         // Get default language
         $surveyInfo = getSurveyInfo($surveyId);
@@ -1094,6 +1094,8 @@ class Participant extends LSActiveRecord
             addColumn("{{tokens_$surveyId}}", $key, $value['type']);
         }
         Yii::app()->db->schema->getTable("{{tokens_$surveyId}}", true); // Refresh schema cache just
+
+        return [$addedAttributes, $addedAttributeIds];
     }
 
     /**
@@ -1103,10 +1105,19 @@ class Participant extends LSActiveRecord
      * @param array $participantIds
      * @param array $alreadyMappedAttributes
      * @param array $newAttributes
+     * @param array $addedAttributes ?? Result from createColumnsInTokenTable
+     * @param array $addedAttributeIds ?? Result from createColumnsInTokenTable
      * @param array $options As in calling function
      * @return array (success, duplicate, blacklistSkipped)
      */
-    private function writeParticipantsToTokenTable($surveyId, array $participantIds, array $alreadyMappedAttributes, array $newAttributes, array $options)
+    private function writeParticipantsToTokenTable(
+        $surveyId,
+        array $participantIds,
+        array $alreadyMappedAttributes,
+        array $newAttributes,
+        array $addedAttributes,
+        array $addedAttributeIds,
+        array $options)
     {
         $duplicate = 0;
         $successful = 0;
@@ -1273,7 +1284,8 @@ class Participant extends LSActiveRecord
             $alreadyMappedAttributes[$id] = $columnName;  // $name is 'attribute_1', which will clash with postgres
         }
 
-        $this->createNewColumnsInTokenTable($surveyId, $newAttributes);
+        // TODO: Why use two variables for this?
+        list($addedAttributes, $addedAttributeIds) = $this->createColumnsInTokenTable($surveyId, $newAttributes);
 
         //Write each participant to the survey token table
         list($successful, $duplicate, $blacklistSkipped) = $this->writeParticipantsToTokenTable(
@@ -1281,6 +1293,8 @@ class Participant extends LSActiveRecord
             $participantIds, 
             $alreadyMappedAttributes, 
             $newAttributes, 
+            $addedAttributes,
+            $addedAttributeIds,
             $options
         );
 

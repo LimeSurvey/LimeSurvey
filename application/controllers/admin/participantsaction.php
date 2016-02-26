@@ -1530,7 +1530,7 @@ class participantsaction extends Survey_Common_Action
      * Used when mapping CPDB participants to survey tokens with attributes.
      * Called when user clicks "Continue" in that form.
      *
-     * Echoes a result message with will be displayed as a bootstrap modal
+     * Echoes a result message witch will be displayed as a bootstrap modal
      *
      * @return void
      */
