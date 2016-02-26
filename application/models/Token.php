@@ -140,7 +140,7 @@
             $length = $this->survey->tokenlength;
             $this->token = \Yii::app()->securityManager->generateRandomString($length);
             $counter = 0;
-            while (!$this->validate('token'))
+            while (!$this->validate(array('token')))
             {
                 $this->token = \Yii::app()->securityManager->generateRandomString($length);
                 $counter++;
