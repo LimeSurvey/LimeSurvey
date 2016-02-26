@@ -947,13 +947,12 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Get field names for a token attribute for a survey?
+     * Get column names from token attributes for a survey.
      *
      * A token attribute has id (auto increment), attribute field (always "attribte_" + number),
-     * and field description.
+     * and field description (e.g. "my attribute" or "gender")
      *
      * @param int $surveyId
-     * @throws Exception if no token row is found for this survey
      * @return array E.g. [11 => 'attribute_36', ...]
      */
     private function getTokenAttributes($surveyId)
@@ -962,19 +961,11 @@ class Participant extends LSActiveRecord
             ->schema
             ->getTable("{{tokens_$surveyId}}");
 
-        // Get a token to get column names from
-        //$firstTokenRow = Yii::app()->db
-            //->createCommand()
-            //->select('*')
-            //->from("{{tokens_$surveyId}}")
-            //->queryRow();
-
         $result = [];
 
         $i = 1;
         foreach ($tokenTableSchema->columns as $columnName => $columnObject)
         {
-            //if (strpos($fieldname,'attribute_')===false) return false; else return true;
             if (strpos($columnName, 'attribute_') !== false)
             {
                 $result[$i] = $columnName;
@@ -983,20 +974,6 @@ class Participant extends LSActiveRecord
         }
 
         return $result;
-
-        /*
-        if (is_array($firstTokenRow))
-        {
-            //Will contain the actual field names of existing token attribute fields
-            $tokenFieldNames = array_keys($firstTokenRow);
-            return array_filter($tokenFieldNames, 'filterForAttributes');
-        }
-        else
-        {
-            // No tokens?
-            throw new Exception("Found no token row for survey " . $surveyId);
-        }
-        */
     }
 
     /**
