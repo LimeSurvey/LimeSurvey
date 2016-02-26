@@ -5038,10 +5038,10 @@ function fixCKeditorText($str)
 
 
 /**
-* This is a helper function for getAttributeFieldNames
-*
-* @param mixed $fieldname
-*/
+ * This is a helper function for getAttributeFieldNames
+ *
+ * @param mixed $fieldname
+ */
 function filterForAttributes ($fieldname)
 {
     if (strpos($fieldname,'attribute_')===false) return false; else return true;

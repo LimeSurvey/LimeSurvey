@@ -518,7 +518,7 @@ class Participant extends LSActiveRecord
                                           ->bindParam(":token", $gettoken['token'], PDO::PARAM_STR); // Deletes matching responses from surveys
                         }
                     }
-                    if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
+                    if (Permission::model()->hasSurveyPermission($value['survey_id'], 'tokens', 'delete'))
                     {
 
                         Yii::app()->db->createCommand()
@@ -946,190 +946,259 @@ class Participant extends LSActiveRecord
         return Yii::app()->db->createCommand()->select('{{participants}}.*,{{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->queryAll();
     }
 
-    /*
-     * Copies central attributes/participants to an individual survey token table
+    /**
+     * Get field names for a token attribute for a survey?
      *
-     * @param int $surveyid The survey id
-     * @param array $mapped An array containing a list of already existing/mapped attributes in the form of "token_field_name"=>"participant_attribute_id"
-     * @param array $newcreate An array containing new attributes to create in the tokens table
-     * @param string $participantid A comma separated string containing the participant ids of the participants we are adding
-     * @param bool $overwriteauto If true, overwrite automatically mapped data
-     * @param bool $overwriteman If true, overwrite manually mapped data
-     * @param bool $overwritest If true, overwrite standard fields (ie: names, email, participant_id, token)
-     * @param bool $createautomap If true, rename the fieldnames of automapped attributes so that in future they are automatically mapped
-     * */
-    function copyCPBDAttributesToTokens($surveyid, $mapped, $newcreate, $participantid, $overwriteauto=false, $overwriteman=false, $overwritest=false, $createautomap=true)
+     * A token attribute has id (auto increment), attribute field (always "attribte_" + number),
+     * and field description.
+     *
+     * @param int $surveyId
+     * @throws Exception if no token row is found for this survey
+     * @return array E.g. [11 => 'attribute_36', ...]
+     */
+    private function getTokenAttributes($surveyId)
     {
-        Yii::app()->loadHelper('common');
-        $duplicate = 0;
-        $sucessfull = 0;
-        $iBlacklistSkipped = 0;
-        $participantid = explode(",", $participantid); //List of participant ids to add to tokens table
-        if ($participantid[0] == "") { $participantid = array_slice($participantid, 1); }
-        $number2add = sanitize_int(count($newcreate)); //Number of tokens being created
-        $tokenattributefieldnames=array(); //Will contain descriptions of existing token attribute fields
-        $tokenfieldnames=array(); //Will contain the actual field names of existing token attribute fields
-        $attributesadded = array(); //Will contain the actual field name of any new token attribute fields
-        $attributeidadded = array(); //Will contain the description of any new token attribute fields
-        $fieldcontents = array(); //Will contain serialised info for the surveys.attributedescriptions field
-        $surveyinfo=getSurveyInfo($surveyid);
-        $defaultsurveylang=$surveyinfo['surveyls_language'];
+        $tokenTableSchema = Yii::app()->db
+            ->schema
+            ->getTable("{{tokens_$surveyId}}");
 
-        $arr = Yii::app()->db
-                         ->createCommand()
-                         ->select('*')
-                         ->from("{{tokens_$surveyid}}")
-                         ->queryRow();
-        if (is_array($arr))
+        // Get a token to get column names from
+        //$firstTokenRow = Yii::app()->db
+            //->createCommand()
+            //->select('*')
+            //->from("{{tokens_$surveyId}}")
+            //->queryRow();
+
+        $result = [];
+
+        $i = 1;
+        foreach ($tokenTableSchema->columns as $columnName => $columnObject)
         {
-            $tokenfieldnames = array_keys($arr);
-            $tokenattributefieldnames = array_filter($tokenfieldnames, 'filterForAttributes');
+            //if (strpos($fieldname,'attribute_')===false) return false; else return true;
+            if (strpos($columnName, 'attribute_') !== false)
+            {
+                $result[$i] = $columnName;
+            }
+            $i += 1;
         }
 
-        // If automapping is enabled then update the token field properties with the mapped CPDB field ID
+        return $result;
 
-        if($createautomap=="true") {
-            foreach($mapped as $key=>$iIDAttributeCPDB) {
-                if(is_numeric($iIDAttributeCPDB)) {
-                    /* Update the attributedescriptions info */
-                    $aTokenAttributes=Survey::model()->findByPk($surveyid)->tokenattributes;
-                    $aTokenAttributes[$key]['cpdbmap']=$iIDAttributeCPDB;
-                    Yii::app()->db
+        /*
+        if (is_array($firstTokenRow))
+        {
+            //Will contain the actual field names of existing token attribute fields
+            $tokenFieldNames = array_keys($firstTokenRow);
+            return array_filter($tokenFieldNames, 'filterForAttributes');
+        }
+        else
+        {
+            // No tokens?
+            throw new Exception("Found no token row for survey " . $surveyId);
+        }
+        */
+    }
+
+    /**
+     * Update stuff?
+     * If automapping is enabled then update the token field properties with the mapped CPDB field ID
+     * TODO: What is this?
+     *
+     * @param int surveyId
+     * @param array $alreadyMappedAttributes
+     * @return void
+     */
+    private function updateTokenFieldProperties($surveyId, array $alreadyMappedAttributes)
+    {
+        foreach($alreadyMappedAttributes as $key => $iIDAttributeCPDB)
+        {
+            if(is_numeric($iIDAttributeCPDB))
+            {
+                /* Update the attributedescriptions info */
+                $tokenAttributes = Survey::model()->findByPk($surveyId)->tokenattributes;
+                $tokenAttributes[$key]['cpdbmap'] = $iIDAttributeCPDB;
+                Yii::app()->db
                     ->createCommand()
-                    ->update('{{surveys}}', array("attributedescriptions" => json_encode($aAttributes)), 'sid = '.$surveyid);                }
+                    ->update('{{surveys}}', array("attributedescriptions" => json_encode($tokenAttributes)), 'sid = ' . $surveyId);
             }
         }
-        foreach ($tokenattributefieldnames as $key => $value)
+    }
+
+    /**
+     * Create new "fields"? in which table?
+     *
+     * @param int $surveyId
+     * @param array $newAttributes
+     * @return void
+     */
+    private function createNewColumnsInTokenTable($surveyId, array $newAttributes)
+    {
+        // Get default language
+        $surveyInfo = getSurveyInfo($surveyId);
+        $defaultsurveylang = $surveyInfo['surveyls_language'];
+
+        //Will contain serialised info for the surveys.attributedescriptions field
+        $fieldcontents = [];
+
+        // ??
+        $fields = [];
+
+        //Will contain the actual field name of any new token attribute fields
+        $addedAttributes = [];
+
+        //Will contain the description of any new token attribute fields
+        $addedAttributeIds = [];
+
+        foreach ($newAttributes as $value)
         {
-            $mapped[$key]=$value;  // $value can be 'attribute_1', which will clash with postgres
+            $newfieldname = 'attribute_'.$value;
+            $fields[$newfieldname] = array('type' => 'string');  // TODO: Always string??
+            $attname = Yii::app()->db
+                ->createCommand()
+                ->select('{{participant_attribute_names_lang}}.attribute_name, {{participant_attribute_names_lang}}.lang')
+                ->from('{{participant_attribute_names}}')
+                ->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')
+                ->where('{{participant_attribute_names}}.attribute_id = :attrid ')
+                ->bindParam(":attrid", $value, PDO::PARAM_INT);
+
+            $attributename = $attname->queryAll();
+            foreach($attributename as $att) {
+                $languages[$att['lang']]=$att['attribute_name'];
+            }
+
+            //Check first for the default survey language
+            if(isset($languages[$defaultsurveylang]))
+            {
+                $newname=$languages[$defaultsurveylang];
+            }
+            elseif (isset($language[Yii::app()->session['adminlang']]))
+            {
+                $newname=$languages[Yii::app()->session['adminlang']];
+            }
+            else
+            {
+                $newname=$attributename[0]['attribute_name']; //Choose the first item in the list
+            }
+
+            $tokenAttributeFieldNames[] = $newfieldname;
+            $fieldcontents[$newfieldname] = array(
+                "description"=>$newname,
+                "mandatory"=>"N",
+                "show_register"=>"N"
+            );
+            array_push($addedAttributeIds, 'attribute_' . $value);
+            array_push($addedAttributes, $value);
         }
-        if (!empty($newcreate)) //Create new fields in the tokens table
-        {
-            foreach ($newcreate as $key => $value)
-            {
-                $newfieldname='attribute_'.$value;
-                $fields[$newfieldname] = array('type' => 'string');
-                $attname = Yii::app()->db
-                                     ->createCommand()
-                                     ->select('{{participant_attribute_names_lang}}.attribute_name, {{participant_attribute_names_lang}}.lang')
-                                     ->from('{{participant_attribute_names}}')
-                                     ->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')
-                                     ->where('{{participant_attribute_names}}.attribute_id = :attrid ')
-                                     ->bindParam(":attrid", $value, PDO::PARAM_INT);
-                $attributename = $attname->queryAll();
-                foreach($attributename as $att) {
-                    $languages[$att['lang']]=$att['attribute_name'];
-                }
-                //Check first for the default survey language
-                if(isset($languages[$defaultsurveylang])) {
-                    $newname=$languages[$defaultsurveylang];
-                } elseif (isset($language[Yii::app()->session['adminlang']])) {
-                    $newname=$languages[Yii::app()->session['adminlang']];
-                } else {
-                    $newname=$attributename[0]['attribute_name']; //Choose the first item in the list
-                }
-                $tokenattributefieldnames[] = $newfieldname;
-                $fieldcontents[$newfieldname]=array("description"=>$newname,
-                                                    "mandatory"=>"N",
-                                                    "show_register"=>"N");
-                array_push($attributeidadded, 'attribute_' . $value);
-                array_push($attributesadded, $value);
-            }
-            //Update the attributedescriptions in the survey table to include the newly created attributes
-            $previousatt = Yii::app()->db
-                                     ->createCommand()
-                                     ->select('attributedescriptions')
-                                     ->where("sid = :sid")
-                                     ->from('{{surveys}}')
-                                     ->bindParam(":sid", $surveyid, PDO::PARAM_INT);
-            $aTokenAttributes = $previousatt->queryRow();
-            $aTokenAttributes = decodeTokenAttributes($aTokenAttributes['attributedescriptions']);
-            foreach($fieldcontents as $key=>$iIDAttributeCPDB) {
-                $aTokenAttributes[$key]=$iIDAttributeCPDB;
-            }
-            $aTokenAttributes = serialize($aTokenAttributes);
-            Yii::app()->db
-                      ->createCommand()
-                      ->update('{{surveys}}',
-                                array("attributedescriptions" => $aTokenAttributes), 'sid = '.intval($surveyid)); // load description in the surveys table
 
-            //Actually create the fields in the tokens table
-            Yii::app()->loadHelper('update/updatedb');
-            foreach ($fields as $key => $value)
-            {
-                addColumn("{{tokens_$surveyid}}", $key, $value['type']);
-            }
-            Yii::app()->db->schema->getTable("{{tokens_$surveyid}}", true); // Refresh schema cache just
+        //Update the attributedescriptions in the survey table to include the newly created attributes
+        $previousatt = Yii::app()->db
+                                 ->createCommand()
+                                 ->select('attributedescriptions')
+                                 ->where("sid = :sid")
+                                 ->from('{{surveys}}')
+                                 ->bindParam(":sid", $surveyId, PDO::PARAM_INT);
+        $aTokenAttributes = $previousatt->queryRow();
+        $aTokenAttributes = decodeTokenAttributes($aTokenAttributes['attributedescriptions']);
 
+        foreach($fieldcontents as $key=>$iIDAttributeCPDB) {
+            $aTokenAttributes[$key]=$iIDAttributeCPDB;
         }
 
-        //Write each participant to the survey token table
-        foreach ($participantid as $key => $sParticipantUID)
-        {
-            $writearray = array();
-            $participantdata = Yii::app()->db->createCommand()->select('firstname,lastname,email,language,blacklisted')->where('participant_id = :pid')->from('{{participants}}')->bindParam(":pid", $sParticipantUID, PDO::PARAM_INT);
-            $tobeinserted = $participantdata->queryRow();
+        $aTokenAttributes = serialize($aTokenAttributes);
 
-            if (Yii::app()->getConfig('blockaddingtosurveys')=='Y' && $tobeinserted=='Y')
+        Yii::app()->db
+            ->createCommand()
+            ->update('{{surveys}}', array( "attributedescriptions" => $aTokenAttributes), 'sid = '.intval($surveyId)); // load description in the surveys table
+
+        //Actually create the fields in the tokens table
+        Yii::app()->loadHelper('update/updatedb');
+        foreach ($fields as $key => $value)
+        {
+            addColumn("{{tokens_$surveyId}}", $key, $value['type']);
+        }
+        Yii::app()->db->schema->getTable("{{tokens_$surveyId}}", true); // Refresh schema cache just
+    }
+
+    /**
+     * Write participtants as tokens or something
+     *
+     * @param int $surveyId
+     * @param array $participantIds
+     * @param array $alreadyMappedAttributes
+     * @param array $newAttributes
+     * @param array $options As in calling function
+     * @return array (success, duplicate, blacklistSkipped)
+     */
+    private function writeParticipantsToTokenTable($surveyId, array $participantIds, array $alreadyMappedAttributes, array $newAttributes, array $options)
+    {
+        $duplicate = 0;
+        $successful = 0;
+        $blacklistSkipped = 0;
+
+        foreach ($participantIds as $participantId)
+        {
+            $participant = Yii::app()->db
+                ->createCommand()
+                ->select('firstname,lastname,email,language,blacklisted')
+                ->where('participant_id = :pid')
+                ->from('{{participants}}')
+                ->bindParam(":pid", $participantId, PDO::PARAM_INT)
+                ->queryRow();
+
+            if (Yii::app()->getConfig('blockaddingtosurveys') == 'Y' 
+                && $participant['blacklisted'] == 'Y')
             {
-                $iBlacklistSkipped++;
+                $blacklistSkipped++;
                 continue;
             }
 
-            /* Search for matching participant name/email in the survey token table */
-            $sQuery = Yii::app()->db->createCommand()->select('*')->from('{{tokens_' . $surveyid . '}}')
-                ->where('firstname = :firstname AND lastname = :lastname AND email = :email AND participant_id = :participant_id')
-                ->bindParam(":firstname", $tobeinserted['firstname'], PDO::PARAM_STR)
-                ->bindParam(":lastname", $tobeinserted['lastname'], PDO::PARAM_STR)
-                ->bindParam(":email", $tobeinserted['email'], PDO::PARAM_STR)
-                ->bindParam(":participant_id", $sParticipantUID, PDO::PARAM_STR)
+            // Search for matching participant name/email in the survey token table
+            $matchingParticipant = Yii::app()->db->createCommand()->select('tid')->from('{{tokens_' . $surveyId . '}}')
+                ->where('(firstname = :firstname AND lastname = :lastname AND email = :email) OR participant_id = :participant_id')
+                ->bindParam(":firstname", $participant['firstname'], PDO::PARAM_STR)
+                ->bindParam(":lastname", $participant['lastname'], PDO::PARAM_STR)
+                ->bindParam(":email", $participant['email'], PDO::PARAM_STR)
+                ->bindParam(":participant_id", $participantId, PDO::PARAM_STR)
                 ->queryAll();
-            if (count($sQuery) > 0)
+
+            if (count($matchingParticipant) > 0)
             {
                 //Participant already exists in token table - don't copy
                 $duplicate++;
+
                 // Here is where we can put code for overwriting the attribute data if so required
-                if($overwriteauto=="true") {
+                if ($options['overwriteauto'] == "true") {
                     //If there are new attributes created, add those values to the token entry for this participant
-                    if (!empty($newcreate))
+                    if (!empty($newAttributes))
                     {
-                        $numberofattributes = count($attributesadded);
+                        $numberofattributes = count($addedAttributes);
                         for ($a = 0; $a < $numberofattributes; $a++)
                         {
-                            Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID,$attributesadded[$a],$attributeidadded[$a]);
+                            Participant::model()->updateTokenAttributeValue($surveyId, $participantId,$addedAttributes[$a],$addedAttributeIds[$a]);
                         }
                     }
                     //If there are automapped attributes, add those values to the token entry for this participant
-                    if (!empty($mapped))
+                    foreach ($alreadyMappedAttributes as $key => $value)
                     {
-                        foreach ($mapped as $key => $value)
-                        {
-                            if ($key[10] == 'c') { //We know it's automapped because the 11th letter is 'c'
-                                Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID, $value, $key);
-                            }
+                        if ($key[10] == 'c') { //We know it's automapped because the 11th letter is 'c'
+                            Participant::model()->updateTokenAttributeValue($surveyId, $participantId, $value, $key);
                         }
                     }
                 }
-                if($overwriteman=="true") {
+                if ($options['overwriteman'] == "true") {
                     //If there are any manually mapped attributes, add those values to the token entry for this participant
-                    if (!empty($mapped))
+                    foreach ($alreadyMappedAttributes as $key => $value)
                     {
-                        foreach ($mapped as $key => $value)
-                        {
-                            if ($key[10] != 'c' && $key[9]=='_') { //It's not an auto field because it's 11th character isn't 'c'
-                                Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID, $value, $key);
-                            }
+                        if ($key[10] != 'c' && $key[9]=='_') { //It's not an auto field because it's 11th character isn't 'c'
+                            Participant::model()->updateTokenAttributeValue($surveyId, $participantId, $value, $key);
                         }
                     }
                 }
-                if($overwritest=="true") {
-                    if(!empty($mapped))
+                if ($options['overwritest'] == "true") {
+                    foreach($alreadyMappedAttributes as $key=>$value)
                     {
-                        foreach($mapped as $key=>$value)
-                        {
-                            if((strlen($key) > 8 && $key[10] != 'c' && $key[9] !='_') || strlen($key) < 9) {
-                                Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID, $value, $key);
-                            }
+                        if((strlen($key) > 8 && $key[10] != 'c' && $key[9] !='_') || strlen($key) < 9) {
+                            Participant::model()->updateTokenAttributeValue($surveyId, $participantId, $value, $key);
                         }
                     }
                 }
@@ -1137,37 +1206,37 @@ class Participant extends LSActiveRecord
             else
             {
                 //Create a new token entry for this participant
-                $writearray = array('participant_id' => $sParticipantUID,
-                                    'firstname' => $tobeinserted['firstname'],
-                                    'lastname' => $tobeinserted['lastname'],
-                                    'email' => $tobeinserted['email'],
+                $writearray = array('participant_id' => $participantId,
+                                    'firstname' => $participant['firstname'],
+                                    'lastname' => $participant['lastname'],
+                                    'email' => $participant['email'],
                                     'emailstatus' => 'OK',
-                                    'language' => $tobeinserted['language']);
+                                    'language' => $participant['language']);
                 Yii::app()->db
                           ->createCommand()
-                          ->insert('{{tokens_' . $surveyid . '}}', $writearray);
-                $insertedtokenid = getLastInsertID('{{tokens_' . $surveyid . '}}');
+                          ->insert('{{tokens_' . $surveyId . '}}', $writearray);
+                $insertedtokenid = getLastInsertID('{{tokens_' . $surveyId . '}}');
 
 
                 $time = time();
 
                 //Create a survey link for the new token entry
                 $data = array(
-                    'participant_id' => $sParticipantUID,
+                    'participant_id' => $participantId,
                     'token_id' => $insertedtokenid,
-                    'survey_id' => $surveyid,
+                    'survey_id' => $surveyId,
                     'date_created' => date('Y-m-d H:i:s', $time));
                 Yii::app()->db->createCommand()->insert('{{survey_links}}', $data);
 
                 //If there are new attributes created, add those values to the token entry for this participant
-                if (!empty($newcreate))
+                if (!empty($newAttributes))
                 {
-                    $numberofattributes = count($attributesadded);
+                    $numberofattributes = count($addedAttributes);
                     for ($a = 0; $a < $numberofattributes; $a++)
                     {
                         try
                         {
-                            Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID,$attributesadded[$a],$attributeidadded[$a]);
+                            Participant::model()->updateTokenAttributeValue($surveyId, $participantId,$addedAttributes[$a],$addedAttributeIds[$a]);
                         }
                         catch(Exception $e)
                         {
@@ -1176,24 +1245,75 @@ class Participant extends LSActiveRecord
                     }
                 }
                 //If there are any automatically mapped attributes, add those values to the token entry for this participant
-                if (!empty($mapped))
+                foreach ($alreadyMappedAttributes as $key => $value)
                 {
-                    foreach ($mapped as $key => $value)
+                    try
                     {
-                        try
-                        {
-                            Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID, $value, $key);
-                        }
-                        catch (Exception $e)
-                        {
-                            throw new Exception(gT("Could not update token attribute value"));
-                        }
+                        Participant::model()->updateTokenAttributeValue($surveyId, $participantId, $value, $key);
+                    }
+                    catch (Exception $e)
+                    {
+                        throw new Exception(gT("Could not update token attribute value"));
                     }
                 }
-                $sucessfull++;
+                $successful++;
             }
         }
-        $returndata = array('success' => $sucessfull, 'duplicate' => $duplicate, 'blacklistskipped'=>$iBlacklistSkipped, 'overwriteauto'=>$overwriteauto, 'overwriteman'=>$overwriteman);
+
+        return array($successful, $duplicate, $blacklistSkipped);
+    }
+
+    /**
+     * Copies central attributes/participants to an individual survey token table
+     *
+     * @param int $surveyId The survey id
+     * @param string $participantIds Array containing the participant ids of the participants we are adding
+     * @param array $alreadyMappedAttributes An array containing a list of already existing/mapped attributes in the form of "token_field_name" => "participant_attribute_id"
+     * @param array $newAttributes An array containing new attributes to create in the tokens table
+     * @param array $options Array with following options:
+     *                overwriteauto - If true, overwrite automatically mapped data
+     *                overwriteman - If true, overwrite manually mapped data
+     *                overwritest - If true, overwrite standard fields (ie: names, email, participant_id, token)
+     *                createautomap - If true, rename the fieldnames of automapped attributes so that in future they are automatically mapped
+     */
+    //function copyCPBDAttributesToTokens($surveyId, $mapped, $newcreate, $participantid, $overwriteauto=false, $overwriteman=false, $overwritest=false, $createautomap=true)
+    public function copyCPDBAttributesToTokens($surveyId, array $participantIds, array $alreadyMappedAttributes, array $newAttributes, array $options)
+    {
+        Yii::app()->loadHelper('common');
+
+        // Existing token attribute columns, from table tokens_{surveyId}
+        $tokenAttributeColumns = $this->getTokenAttributes($surveyId);
+
+        // If automapping is enabled then update the token field properties with the mapped CPDB field ID
+        if($options['createautomap']) {
+            $this->updateTokenFieldProperties($surveyId, $alreadyMappedAttributes);
+        }
+
+        // Add existing attribute columns to alreadyMappedAttributes. TODO: Why?
+        // TODO: What is id here? Could it overwrite something?
+        foreach ($tokenAttributeColumns as $id => $columnName)
+        {
+            $alreadyMappedAttributes[$id] = $columnName;  // $name is 'attribute_1', which will clash with postgres
+        }
+
+        $this->createNewColumnsInTokenTable($surveyId, $newAttributes);
+
+        //Write each participant to the survey token table
+        list($successful, $duplicate, $blacklistSkipped) = $this->writeParticipantsToTokenTable(
+            $surveyId, 
+            $participantIds, 
+            $alreadyMappedAttributes, 
+            $newAttributes, 
+            $options
+        );
+
+        $returndata = array(
+            'success' => $successful,
+            'duplicate' => $duplicate,
+            'blacklistskipped' => $blacklistSkipped,
+            'overwriteauto' => $options['overwriteauto'],
+            'overwriteman' => $options['overwriteman']
+        );
         return $returndata;
     }
 
@@ -1460,10 +1580,9 @@ class Participant extends LSActiveRecord
         return $returndata;
     }
 
-    /*
+    /**
      * The purpose of this function is to check for duplicate in participants
      */
-
     function checkforDuplicate($fields, $output="bool")
     {
         $query = Yii::app()->db->createCommand()->select('participant_id')->where($fields)->from('{{participants}}')->queryAll();

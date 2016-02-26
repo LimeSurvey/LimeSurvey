@@ -1525,25 +1525,45 @@ class participantsaction extends Survey_Common_Action
         }
     }
 
-    /*
-    * Responsible for adding the participant to the specified survey with attribute mapping
-    */
+    /**
+     * Responsible for adding the participant to the specified survey with attribute mapping
+     * Used when mapping CPDB participants to survey tokens with attributes.
+     * Called when user clicks "Continue" in that form.
+     *
+     * Echoes a result message with will be displayed as a bootstrap modal
+     *
+     * @return void
+     */
     function addToTokenattmap()
     {
-        $iParticipantId = Yii::app()->request->getPost('participant_id');
-        $iSurveyId = Yii::app()->request->getPost('surveyid');
-        $mapped = Yii::app()->request->getPost('mapped');
-        $newcreate = Yii::app()->request->getPost('newarr');
-        $overwriteauto = Yii::app()->request->getPost('overwrite');
-        $overwriteman = Yii::app()->request->getPost('overwriteman');
-        $overwritest = Yii::app()->request->getPost('overwritest');
-        $createautomap = Yii::app()->request->getPost('createautomap');
+        $participantIdsString = Yii::app()->request->getPost('participant_id'); // TODO: This is a comma separated string of ids
+        $participantIds = explode(",", $participantIdsString);
 
-        if (empty($newcreate[0])) { $newcreate = array(); }
+        $surveyId = Yii::app()->request->getPost('surveyid');
+        $alreadyMappedAttributes = Yii::app()->request->getPost('mapped');
+
+        $newAttributes = Yii::app()->request->getPost('newarr');
+
+        $options = [];
+        $options['overwriteauto'] = Yii::app()->request->getPost('overwrite') === 'true';
+        $options['overwriteman'] = Yii::app()->request->getPost('overwriteman') === 'true';
+        $options['overwritest'] = Yii::app()->request->getPost('overwritest') === 'true';
+        $options['createautomap'] = Yii::app()->request->getPost('createautomap') === 'true';
+
+        // TODO: Why?
+        if (empty($newAttributes[0]))
+        {
+            $newAttributes = [];
+        }
+
+        if (empty($alreadyMappedAttributes))
+        {
+            $alreadyMappedAttributes = [];
+        }
 
         try
         {
-            $response = Participant::model()->copyCPBDAttributesToTokens($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $overwritest, $createautomap);
+            $response = Participant::model()->copyCPDBAttributesToTokens($surveyId, $participantIds, $alreadyMappedAttributes, $newAttributes, $options);
         }
         catch (Exception $e)
         {
@@ -1571,9 +1591,9 @@ class participantsaction extends Survey_Common_Action
         }
     }
 
-    /*
-    * Responsible for attribute mapping while copying participants from cpdb to token's table
-    */
+    /**
+     * Show form for attribute mapping while copying participants from CPDB to token's table
+     */
     function attributeMap()
     {
         Yii::app()->loadHelper('common');

@@ -8,6 +8,7 @@
     }
     var copyUrl = "<?php echo $this->createUrl("/admin/participants/sa/addToTokenattmap"); ?>";
 
+    // Comma separated string of participant ids
     var participant_id = "<?php echo $participant_id; ?>";
 
     /* SCRIPT TEXT */
