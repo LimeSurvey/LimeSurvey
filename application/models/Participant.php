@@ -1194,26 +1194,27 @@ class Participant extends LSActiveRecord
             else
             {
                 //Create a new token entry for this participant
-                $writearray = array('participant_id' => $participantId,
-                                    'firstname' => $participant['firstname'],
-                                    'lastname' => $participant['lastname'],
-                                    'email' => $participant['email'],
-                                    'emailstatus' => 'OK',
-                                    'language' => $participant['language']);
+                $writearray = array(
+                    'participant_id' => $participantId,
+                    'firstname' => $participant['firstname'],
+                    'lastname' => $participant['lastname'],
+                    'email' => $participant['email'],
+                    'emailstatus' => 'OK',
+                    'language' => $participant['language']
+                );
+
                 Yii::app()->db
-                          ->createCommand()
-                          ->insert('{{tokens_' . $surveyId . '}}', $writearray);
+                    ->createCommand()
+                    ->insert('{{tokens_' . $surveyId . '}}', $writearray);
+
                 $insertedtokenid = getLastInsertID('{{tokens_' . $surveyId . '}}');
-
-
-                $time = time();
 
                 //Create a survey link for the new token entry
                 $data = array(
                     'participant_id' => $participantId,
                     'token_id' => $insertedtokenid,
                     'survey_id' => $surveyId,
-                    'date_created' => date('Y-m-d H:i:s', $time));
+                    'date_created' => date('Y-m-d H:i:s', time()));
                 Yii::app()->db->createCommand()->insert('{{survey_links}}', $data);
 
                 //If there are new attributes created, add those values to the token entry for this participant
@@ -1228,7 +1229,7 @@ class Participant extends LSActiveRecord
                         }
                         catch(Exception $e)
                         {
-                            throw new Exception(gT("Could not update token attribute value"));
+                            throw new Exception(gT("Could not update token attribute value: " . $e->getMessage()));
                         }
                     }
                 }
@@ -1241,7 +1242,7 @@ class Participant extends LSActiveRecord
                     }
                     catch (Exception $e)
                     {
-                        throw new Exception(gT("Could not update token attribute value"));
+                        throw new Exception(gT("Could not update token attribute value" . $e->getMessage()));
                     }
                 }
                 $successful++;
