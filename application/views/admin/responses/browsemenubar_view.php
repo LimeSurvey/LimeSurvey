@@ -171,7 +171,7 @@
             <?php endif;?>
         </div>
         <?php else: ?>
-        <div class="col-md-5 text-right col-md-offset-7">
+        <div class="col-md-7 text-right col-md-offset-5">
             <?php if(isset($menu['save'])): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="glyphicon glyphicon-ok"></span>
@@ -247,16 +247,14 @@
                     </a>
                 <?php endif;?>
 
-            <?php if($previous) { ?>
-            <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/$previous"); ?>' title='<?php eT("Show previous..."); ?>' >
-                <span class="icon-databack text-success" title='<?php eT("Show previous..."); ?>'></span>
+            <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/$previous"); ?>' title='<?php eT("Show previous..."); ?>'
+                class="btn btn-default <?php if (!$previous) {echo 'disabled';}?>">
+                <span class="icon-databack text-success" title='<?php eT("Show previous..."); ?>'></span> <?php eT("Show previous..."); ?>
             </a>
-            <?php } ?>
-            <?php if($next) { ?>
-                <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/$next"); ?>' title='<?php eT("Show next..."); ?>'>
-                    <span class="icon-dataforward text-success" title='<?php eT("Show next..."); ?>'></span>
-                </a>
-            <?php } ?>
+            <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/$next"); ?>' title='<?php eT("Show next..."); ?>'
+            class="btn btn-default" <?php if (!$next) {echo 'disabled';}?>">
+                <span class="icon-dataforward text-success" title='<?php eT("Show next..."); ?>'></span> <?php eT("Show next..."); ?>
+            </a>
 
             <?php endif;?>
 
