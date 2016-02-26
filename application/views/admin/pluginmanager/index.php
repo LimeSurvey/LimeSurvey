@@ -43,13 +43,13 @@
             'value' => function($data) {
                 if ($data['active'] == 0)
                 {
-                    $output = "<a href='" . $this->createUrl('/admin/pluginmanager/sa/activate', array('id' => $data['id'])) . "' class='btn btn-default btn-xs btntooltip'><span class='fa fa-power-off'>&nbsp;</span>".gT('Activate')."</a>";
+                    $output = "<a href='" . Yii::app()->createUrl('/admin/pluginmanager/sa/activate', array('id' => $data['id'])) . "' class='btn btn-default btn-xs btntooltip'><span class='fa fa-power-off'>&nbsp;</span>".gT('Activate')."</a>";
                 } else {
-                    $output = "<a href='" . $this->createUrl('/admin/pluginmanager/sa/deactivate', array('id' => $data['id'])) . "'class='btn btn-warning btn-xs'><span class='fa fa-power-off'>&nbsp;</span>".gT('Deactivate')."</a>";
+                    $output = "<a href='" . Yii::app()->createUrl('/admin/pluginmanager/sa/deactivate', array('id' => $data['id'])) . "'class='btn btn-warning btn-xs'><span class='fa fa-power-off'>&nbsp;</span>".gT('Deactivate')."</a>";
                 }
                 if(count($data['settings'])>0)
                 {
-                    $output .= "&nbsp;<a href='" . $this->createUrl('/admin/pluginmanager/sa/configure', array('id' => $data['id'])) . "' class='btn btn-default btn-xs'><span class='icon-edit'>&nbsp;</span>" . gT('Configure') . "</a>";
+                    $output .= "&nbsp;<a href='" . Yii::app()->createUrl('/admin/pluginmanager/sa/configure', array('id' => $data['id'])) . "' class='btn btn-default btn-xs'><span class='icon-edit'>&nbsp;</span>" . gT('Configure') . "</a>";
                 }
                 return $output;
             }
