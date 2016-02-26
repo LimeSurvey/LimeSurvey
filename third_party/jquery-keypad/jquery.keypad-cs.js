@@ -2,7 +2,7 @@
    Czech initialisation for the jQuery keypad extension
    Written by Amadeo Mareš. */
 (function($) { // hide the namespace
-    $.keypad.regional['cs'] = {
+    $.keypad.regionalOptions['cs'] = {
         buttonText: '...', buttonStatus: 'Otevřít',
         closeText: 'Zavřít', closeStatus: 'Zavře klávesnici',
         clearText: 'Vymazat', clearStatus: 'Smaže text',
@@ -17,5 +17,5 @@
         isNumeric: $.keypad.isNumeric,
 		toUpper: $.keypad.toUpper,
         isRTL: false};
-    $.keypad.setDefaults($.keypad.regional['cs']);
+    $.keypad.setDefaults($.keypad.regionalOptions['cs']);
 })(jQuery);

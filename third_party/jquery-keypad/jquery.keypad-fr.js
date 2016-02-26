@@ -12,7 +12,7 @@
 		'§' + $.keypad.azertyAlphabetic[3] + ',.;:' + $.keypad.HALF_SPACE + '-0+',
 		$.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.HALF_SPACE +
 		$.keypad.BACK + $.keypad.CLEAR + $.keypad.CLOSE];
-	$.keypad.regional['fr'] = {
+	$.keypad.regionalOptions['fr'] = {
 		buttonText: '...', buttonStatus: 'Ouvrir',
 		closeText: 'Fermer', closeStatus: 'Fermer le pavé numérique',
 		clearText: 'Effacer', clearStatus: 'Effacer la valeur',
@@ -27,7 +27,7 @@
 		isNumeric: $.keypad.isNumeric,
 		toUpper: $.keypad.toUpper,
 		isRTL: false};
-	$.keypad.setDefaults($.keypad.regional['fr']);
+	$.keypad.setDefaults($.keypad.regionalOptions['fr']);
 
 	function isAlphabetic(ch) {
 		return ($.keypad.isAlphabetic(ch) ||

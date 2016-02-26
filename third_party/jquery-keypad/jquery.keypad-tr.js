@@ -2,7 +2,7 @@
    Turkish localisation for the jQuery keypad extension
    Written by Yücel Kandemir(yucel{at}21bilisim.com) September 2010. */
 (function($) { // hide the namespace
-	$.keypad.regional['tr'] = {
+	$.keypad.regionalOptions['tr'] = {
 		buttonText: '...', buttonStatus: 'Aç',
 		closeText: 'Kapat', closeStatus: 'Klavyeyi Kapatýr',
 		clearText: 'Sil', clearStatus: 'Ýçerisini Temizler',
@@ -17,5 +17,5 @@
 	    isNumeric: $.keypad.isNumeric,
 		toUpper: $.keypad.toUpper,
     	isRTL: false};
-	$.keypad.setDefaults($.keypad.regional['tr']);
+	$.keypad.setDefaults($.keypad.regionalOptions['tr']);
 })(jQuery);
