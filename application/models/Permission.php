@@ -515,6 +515,7 @@ class Permission extends LSActiveRecord
             return true;
         static $aPermissionStatic;
 
+        /* Allow plugin to set own permission */
         $oEvent=new PluginEvent('beforeHasPermission');
         $oEvent->set('iEntityID',$iEntityID);
         $oEvent->set('sEntityName',$sEntityName);
@@ -523,18 +524,42 @@ class Permission extends LSActiveRecord
         $oEvent->set('iUserID',$iUserID);
         App()->getPluginManager()->dispatchEvent($oEvent);
         $pluginbPermission=$oEvent->get('bPermission');
-        // isset — Determine if a variable is set and is not NULL. And isset seems little speedest.
         if (isset($pluginbPermission))
+        {
              return $pluginbPermission;
+        }
 
-        if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
+
+        /* Always return true for CConsoleApplication (before or after plugin ? All other seems better after plugin) */
+        if(is_null($iUserID) && Yii::app() instanceof CConsoleApplication)
+        {
+            return true;
+        }
+
+        /* Always return false for unknow sCRUD */
+        if (!in_array($sCRUD,array('create','read','update','delete','import','export')))
+        {
+            return false;
+        }
         $sCRUD=$sCRUD.'_p';
 
-        $iUserID=$this->getUserId($iUserID);
-        if(!$iUserID)
-            return false;
+        /* Always return false for guests */
+        if(is_null($iUserID))
+        {
+            $iUserID=$this->getUserId($iUserID);
+            if(!$iUserID)
+            {
+                return false;
+            }
+        }
 
-        // Check if superadmin and cache it
+        /* Always return true if you are the owner : this can be done in core plugin ? */
+        if ($iUserID==$this->getOwnerId($iEntityID, $sEntityName))
+        {
+            return true;
+        }
+
+        /* Check if superadmin and static it */
         if (!isset($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']))
         {
             $aPermission = $this->findByAttributes(array("entity_id"=>0,'entity'=>'global', "uid"=> $iUserID, "permission"=>'superadmin'));
@@ -549,8 +574,12 @@ class Permission extends LSActiveRecord
             }
             $aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']= $bPermission;
         }
+        if ($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p'])
+        {
+            return true;
+        }
 
-        if ($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']) return true;
+        /* Check in permission DB and static it */
         if (!isset($aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]))
         {
             $query = $this->findByAttributes(array("entity_id"=> $iEntityID, "uid"=> $iUserID, "entity"=>$sEntityName, "permission"=>$sPermission));
@@ -594,12 +623,7 @@ class Permission extends LSActiveRecord
         $oSurvey=Survey::Model()->findByPk($iSurveyID);
         if (!$oSurvey)
             return false;
-        if(is_null($iUserID) && Yii::app() instanceof CConsoleApplication)
-            return true;
-        $iUserID=$this->getUserId($iUserID);
-        // If you own a survey you have access to the whole survey
-        if ($iUserID==$oSurvey->owner_id)
-            return true;
+
         // Get global correspondance for surveys rigth
         $sGlobalCRUD=($sCRUD=='create' || ($sCRUD=='delete' && $sPermission!='survey') ) ? 'update' : $sCRUD;
         return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
@@ -644,4 +668,18 @@ class Permission extends LSActiveRecord
         return $iUserID;
     }
 
+    /**
+    * get the owner if of an entity if exist
+    * @param iEntityID the entity id
+    * @param sEntityName entity name (model)
+    * @return integer|null user id if exist
+    */
+    protected function getOwnerId($iEntityID, $sEntityName)
+    {
+        if($sEntityName=='survey')
+        {
+            return $sEntityName::Model()->findByPk($iEntityID)->owner_id; // ALternative : if owner_id exist in $sEntityName::model()->findByPk($iEntityID), but unsure actually $sEntityName have always a model
+        }
+        return;
+    }
 }
