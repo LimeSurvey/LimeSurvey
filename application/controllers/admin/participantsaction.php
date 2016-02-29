@@ -1613,26 +1613,26 @@ class participantsaction extends Survey_Common_Action
         $redirect = Yii::app()->request->getPost('redirect');
         $count = Yii::app()->request->getPost('count');
         $iParticipantId = Yii::app()->request->getPost('participant_id');
-        $attributes = ParticipantAttributeName::model()->getCPDBAttributes();
-        $tokenattributefieldnames = getTokenFieldsAndNames($iSurveyId, TRUE);
+        $CPDBAttributes = ParticipantAttributeName::model()->getCPDBAttributes();
+        $tokenAttributes = getTokenFieldsAndNames($iSurveyId, TRUE);
 
-        $selectedattribute = array(); //List of existing attribute fields that are not mapped
-        $selectedcentralattribute = array(); //List of attributes that haven't already been mapped
-        $alreadymappedattid = array(); //List of fields already mapped to this tokens table
-        $alreadymappedattname = array();
+        $selectedattribute = []; //List of existing attribute fields that are not mapped
+        $selectedcentralattribute = []; //List of attributes that haven't already been mapped
+        $alreadymappedattid = []; //List of fields already mapped to this tokens table
+        $alreadymappedattname = [];
 
-        foreach ($tokenattributefieldnames as $key => $value)
+        foreach ($tokenAttributes as $attributeId => $attribute)  // attributeId like 'attribute_1'
         {
-            if (is_numeric($key[10])) //Assumes that if the 11th character is a number, it must be a token-table created attribute
+            if (is_numeric($attributeId[10])) //Assumes that if the 11th character is a number, it must be a token-table created attribute
             {
-                $selectedattribute[$key] = $value['description'];
+                $selectedattribute[$attributeId] = $attribute['description'];
             }
             else
             {
-                array_push($alreadymappedattid, substr($key, 15));
+                array_push($alreadymappedattid, substr($attributeId, 15));
             }
         }
-        foreach ($attributes as $row)
+        foreach ($CPDBAttributes as $row)
         {
             if (!in_array($row['attribute_id'], $alreadymappedattid))
             {
@@ -1644,10 +1644,37 @@ class participantsaction extends Survey_Common_Action
             }
         }
 
+        // Check for automatic mappings
+        // TODO: Maybe do this with SQL instead?
+        $automaticallyMappedAttributes = [];
+        foreach ($tokenAttributes as $attributeId => $tokenAttribute)  // attributeId like 'attribute_1'
+        {
+            if ($tokenAttribute['cpdbmap'] !== '')
+            {
+                foreach ($CPDBAttributes as $CPDBAttribute)
+                {
+                    if ($CPDBAttribute['attribute_id'] === intval($tokenAttribute['cpdbmap']))
+                    {
+                        $automaticallyMappedAttributes[$attributeId] = [
+                            'tokenAttributeId' => $attributeId,
+                            'tokenAttribute' => $tokenAttribute,
+                            'cpdbAttribute' => $CPDBAttribute
+                        ];
+                    }
+                }
+            }
+        }
+        // Remove automatic mappings from CPDB list (they should only be in right-most list)
+        foreach ($automaticallyMappedAttributes as $autoAttr)
+        {
+            unset($selectedcentralattribute[$autoAttr['cpdbAttribute']['attribute_id']]);
+        }
+
         $aData = array(
             'selectedcentralattribute' => $selectedcentralattribute,
             'selectedtokenattribute' => $selectedattribute,
             'alreadymappedattributename' => $alreadymappedattname,
+            'automaticallyMappedAttributes' => $automaticallyMappedAttributes,
             'survey_id' => $iSurveyId,
             'redirect' => $redirect,
             'participant_id' => $iParticipantId,
@@ -1656,7 +1683,7 @@ class participantsaction extends Survey_Common_Action
 
         if (count($selectedcentralattribute) === 0)
         {
-            Yii::app()->setFlashMessage(gT("There are no unmapped attributes"), 'warning');
+            Yii::app()->setFlashMessage(gT("There are no unmapped attributes"), 'info');
         }
 
         $this->_renderWrappedTemplate('participants', 'attributeMap', $aData);

@@ -74,9 +74,18 @@
                     <div class='panel-body'>
                         <div class="tokenatt ui-sortable">
                             <?php
-                                foreach ($selectedtokenattribute as $key => $value)
+                                foreach ($selectedtokenattribute as $id => $name)
                                 {
-                                    echo "<div class='panel panel-default' id='t_" . $key . "'><div class='panel-body'>" . $value . "</div></div>";
+                                        if (isset($automaticallyMappedAttributes[$id]))
+                                        {
+                                            $autoAttr = $automaticallyMappedAttributes[$id];
+                                            echo "<div class='panel panel-default' style='opacity: 1; top: 0px; color: rgb(255, 255, 255); border-top-width: 0px; background-color: rgb(105, 101, 101);' id='t_" . $id . "'><div class='panel-body'>" . $name . "</div></div>";
+                                            echo "<div class='panel panel-default' style='opacity: 1; top: 0px; color: rgb(255, 255, 255); border-top-width: 0px; background-color: rgb(105, 101, 101);' id='c_" . $autoAttr['cpdbAttribute']['attribute_id'] . "'><div class='panel-body'>" . $autoAttr['cpdbAttribute']['attribute_name'] . "</div></div>";
+                                        }
+                                        else
+                                        {
+                                            echo "<div class='panel panel-default' id='t_" . $id . "'><div class='panel-body'>" . $name . "</div></div>";
+                                        }
                                 }
                             ?>
                         </div>

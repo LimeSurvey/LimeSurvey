@@ -162,4 +162,6 @@ $(document).ready(function(){
                 $('#attribute-map-participant-modal').modal();
         });
     });
+
+    tokencurrentarray = $('.tokenatt').sortable('toArray');
 });
