@@ -127,6 +127,9 @@ $(document).ready(function(){
                 cpdbattpos = cpdbattpos+1;
                 $('.newcreate > :nth-child('+cpdbattpos+')').css("color", "white");
                 $('.newcreate > :nth-child('+cpdbattpos+')').css("background-color","#696565");
+        },
+        remove: function(event, ui) {
+            newcurrentarray = $(this).sortable('toArray');
         }
     });
 
