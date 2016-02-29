@@ -47,7 +47,7 @@
                     foreach ($selectedcentralattribute as $key => $value)
                     {
                         ?>
-                        <div class='panel panel-default' id='c_<?php echo $key; ?>'><div class='panel-body'><?php echo $value; ?></div></div>
+                        <div class='panel panel-default col-sm-12' id='c_<?php echo $key; ?>'><div class='panel-body'><?php echo $value; ?></div></div>
                         <?php
                     }
                     ?>
@@ -71,19 +71,23 @@
                     <?php eT("Existing token attributes"); ?> 
                 </div>
                 <div class='panel-body'>
-                    <div class="tokenatt ui-sortable">
+                    <div class="tokenatt ui-sortable" style="min-height: 200px;">
                         <?php
                             foreach ($selectedtokenattribute as $id => $name)
                             {
                                     if (isset($automaticallyMappedAttributes[$id]))
                                     {
                                         $autoAttr = $automaticallyMappedAttributes[$id];
-                                        echo "<div class='panel panel-default ui-state-disabled' style='opacity: 1; top: 0px; color: rgb(255, 255, 255); border-top-width: 0px; background-color: rgb(105, 101, 101);' id='t_" . $id . "'><div class='panel-body'>" . $name . "</div></div>";
-                                        echo "<div class='panel panel-default ui-state-disabled' style='opacity: 1; top: 0px; color: rgb(255, 255, 255); border-top-width: 0px; background-color: rgb(105, 101, 101);' id='c_" . $autoAttr['cpdbAttribute']['attribute_id'] . "'><div class='panel-body'>" . $autoAttr['cpdbAttribute']['attribute_name'] . "</div></div>";
+                                        echo "<div class='tokenatt-container col-sm-12'>";
+                                        echo "<div class='col-sm-6'><div class='panel panel-default ui-state-disabled token-attribute' id='t_" . $id . "'><div class='panel-body'>" . $name . "</div></div></div>";
+                                        echo "<div class='col-sm-6'><div class='panel panel-default ui-state-disabled cpdb-attribute' id='c_" . $autoAttr['cpdbAttribute']['attribute_id'] . "'><div class='panel-body'>" . $autoAttr['cpdbAttribute']['attribute_name'] . "</div></div></div>";
+                                        echo "</div>";
                                     }
                                     else
                                     {
-                                        echo "<div class='panel panel-default ui-state-disabled' id='t_" . $id . "'><div class='panel-body'>" . $name . "</div></div>";
+                                        echo "<div class='tokenatt-container col-sm-12'>";
+                                        echo "<div class='col-sm-6'><div class='panel panel-default ui-state-disabled token-attribute' id='t_" . $id . "'><div class='panel-body'>" . $name . "</div></div></div>";
+                                        echo "</div>";
                                     }
                             }
                         ?>

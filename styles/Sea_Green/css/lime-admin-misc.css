@@ -55,6 +55,17 @@ iframe#dialog {
     position: relative;
 }
 
+/** Stuff for CPDB participant export */
+.ui-sortable-placeholder {
+    color: #f00;
+    background-color: #0f0;
+    border: solid black 5px;
+}
+
+.tokenatt-container .panel {
+    margin-right: 1em;
+}
+
 #labelsetpreview {
     overflow-x: hidden;
 }
