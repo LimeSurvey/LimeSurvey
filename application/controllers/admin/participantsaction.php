@@ -92,8 +92,11 @@ class participantsaction extends Survey_Common_Action
     * @paran mixed $mAttributeIDs Empty array for no attributes, or array of attribute IDs or null for all attributes
     */
     private function csvExport($search = null, $aAttributeIDs=null) {
+        if (!Permission::model()->hasGlobalPermission('participantpanel','export'))
+        {
+            die('No permission');
+        }
         Yii::app()->loadHelper('export');
-
         //If super admin all the participants will be visible
         if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
@@ -145,8 +148,11 @@ class participantsaction extends Survey_Common_Action
     */
     protected function csvExportCount($search = null)
     {
+        if (!Permission::model()->hasGlobalPermission('participantpanel','export'))
+        {
+            return 0;
+        }
         $attid = ParticipantAttributeName::model()->getVisibleAttributes();
-
         //If super admin all the participants will be visible
         if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
@@ -200,6 +206,10 @@ class participantsaction extends Survey_Common_Action
     */
     function importCSV()
     {
+        if (!Permission::model()->hasGlobalPermission('participantpanel','import'))
+        {
+            die('No permission');
+        }
         $aData = array(
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
         );
@@ -317,8 +327,8 @@ class participantsaction extends Survey_Common_Action
             {
                 //for conversion of uid to human readable names
                 $iShareUserId = $row['share_uid'];
-                if ($iShareUserId != 0) { 
-                    $oShared = User::model()->getName($iShareUserId); 
+                if ($iShareUserId != 0) {
+                    $oShared = User::model()->getName($iShareUserId);
                     $sSharename = $oShared[0]['full_name'];
                 } else {
                     $sSharename = 'All users';
@@ -342,8 +352,8 @@ class participantsaction extends Survey_Common_Action
             foreach ($records as $row)
             {
                 $iShareUserId = $row['share_uid'];//for conversion of uid to human readable names
-                if ($iShareUserId != 0) { 
-                    $oShared = User::model()->getName($iShareUserId); 
+                if ($iShareUserId != 0) {
+                    $oShared = User::model()->getName($iShareUserId);
                     $sSharename = $oShared[0]['full_name'];
                 } else {
                     $sSharename = 'All users';
@@ -622,6 +632,10 @@ class participantsaction extends Survey_Common_Action
     */
     function exporttocsvcount()
     {
+        if (!Permission::model()->hasGlobalPermission('participantpanel','export'))
+        {
+            die('No permission');
+        }
         $searchconditionurl = Yii::app()->request->getPost('searchURL');
         $searchcondition  = Yii::app()->request->getPost('searchcondition');
         $searchconditionurl = basename($searchconditionurl);
@@ -746,6 +760,11 @@ class participantsaction extends Survey_Common_Action
     */
     function exporttocsv()
     {
+        if (!Permission::model()->hasGlobalPermission('participantpanel','export'))
+        {
+            die('No permission');
+        }
+
         if (Yii::app()->request->getPost('searchcondition','') !== '') // if there is a search condition then only the participants that match the search criteria are counted
         {
             $condition = explode("%7C%7C", Yii::app()->request->getPost('searchcondition',''));
@@ -1068,7 +1087,10 @@ class participantsaction extends Survey_Common_Action
 
     function attributeMapCSV()
     {
-
+        if (!Permission::model()->hasGlobalPermission('participantpanel','import'))
+        {
+            die('No permission');
+        }
         if ($_FILES['the_file']['name']=='')
         {
             Yii::app()->setFlashMessage(gT('Please select a file to import!'),'error');
@@ -1172,6 +1194,10 @@ class participantsaction extends Survey_Common_Action
     */
     function uploadCSV()
     {
+        if (!Permission::model()->hasGlobalPermission('participantpanel','import'))
+        {
+            die('No permission');
+        }
         unset(Yii::app()->session['summary']);
         $characterset = Yii::app()->request->getPost('characterset');
         $separator = Yii::app()->request->getPost('separatorused');
@@ -1471,7 +1497,7 @@ class participantsaction extends Survey_Common_Action
         $iParticipantId = Yii::app()->request->getPost('participantid');
         $iShareUserId = Yii::app()->request->getPost('shareuser');
         $bCanEdit = Yii::app()->request->getPost('can_edit');
-	
+
 	    // Some input validation needed
         if ($iShareUserId == '') {
             printf($clang->gT("Please select a user"));
@@ -1479,8 +1505,8 @@ class participantsaction extends Survey_Common_Action
         }
 
         $i = 0;
-	//  $iShareUserId == 0 means any user 
-        if (Permission::model()->hasGlobalPermission('participantpanel','update') && $iShareUserId !== '') 
+	//  $iShareUserId == 0 means any user
+        if (Permission::model()->hasGlobalPermission('participantpanel','update') && $iShareUserId !== '')
             foreach ($iParticipantId as $iId)
             {
                 $time = time();
@@ -1762,6 +1788,10 @@ class participantsaction extends Survey_Common_Action
     */
     function mapCSVcancelled()
     {
+        if (!Permission::model()->hasGlobalPermission('participantpanel','import'))
+        {
+            die('No permission');
+        }
         unlink(Yii::app()->getConfig('tempdir') . '/' . basename(Yii::app()->request->getPost('fullfilepath')));
     }
 
