@@ -1,10 +1,11 @@
 <?php
 /**
-* PHPMailer language file: refer to English translation for definitive list
-* Brazilian Portuguese Version
-* By Paulo Henrique Garcia - paulo@controllerweb.com.br
-* Edited by Lucas Guimarães - lucas@lucasguimaraes.com
-*/
+ * Brazilian Portuguese PHPMailer language file: refer to English translation for definitive list
+ * @package PHPMailer
+ * @author Paulo Henrique Garcia <paulo@controllerweb.com.br>
+ * @author Lucas Guimarães <lucas@lucasguimaraes.com>
+ * @author Phelipe Alves <phelipealvesdesouza@gmail.com>
+ */
 
 $PHPMAILER_LANG['authenticate']         = 'Erro de SMTP: Não foi possível autenticar.';
 $PHPMAILER_LANG['connect_host']         = 'Erro de SMTP: Não foi possível conectar com o servidor SMTP.';
@@ -24,3 +25,4 @@ $PHPMAILER_LANG['signing']              = 'Erro ao assinar: ';
 $PHPMAILER_LANG['smtp_connect_failed']  = 'SMTP Connect() falhou.';
 $PHPMAILER_LANG['smtp_error']           = 'Erro de servidor SMTP: ';
 $PHPMAILER_LANG['variable_set']         = 'Não foi possível definir ou resetar a variável: ';
+$PHPMAILER_LANG['extension_missing']    = 'Extensão ausente: ';

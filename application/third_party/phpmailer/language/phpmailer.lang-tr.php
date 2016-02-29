@@ -1,11 +1,12 @@
 <?php
 /**
-* PHPMailer language file: refer to English translation for definitive list
-* Turkish version
-* Türkçe Versiyonu
-* Elçin Özel - Can Yılmaz - Mehmet Benlioğlu
-* Updated by: github.com/yasinaydin
-*/
+ * Turkish PHPMailer language file: refer to English translation for definitive list
+ * @package PHPMailer
+ * @author Elçin Özel
+ * @author Can Yılmaz
+ * @author Mehmet Benlioğlu
+ * @author @yasinaydin
+ */
 
 $PHPMAILER_LANG['authenticate']         = 'SMTP Hatası: Oturum açılamadı.';
 $PHPMAILER_LANG['connect_host']         = 'SMTP Hatası: SMTP sunucusuna bağlanılamadı.';
@@ -25,3 +26,4 @@ $PHPMAILER_LANG['signing']              = 'İmzalama hatası: ';
 $PHPMAILER_LANG['smtp_connect_failed']  = 'SMTP connect() fonksiyonu başarısız.';
 $PHPMAILER_LANG['smtp_error']           = 'SMTP sunucu hatası: ';
 $PHPMAILER_LANG['variable_set']         = 'Değişken ayarlanamadı ya da sıfırlanamadı: ';
+//$PHPMAILER_LANG['extension_missing']    = 'Extension missing: ';

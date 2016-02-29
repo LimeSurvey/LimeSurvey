@@ -1,10 +1,9 @@
 <?php
 /**
-* PHPMailer language file: refer to English translation for definitive list
-* pt-PT
-* Portuguese (European) Version 1.0
-* By Jonadabe - jonadabe@hotmail.com
-*/
+ * Portuguese (European) PHPMailer language file: refer to English translation for definitive list
+ * @package PHPMailer
+ * @author Jonadabe <jonadabe@hotmail.com>
+ */
 
 $PHPMAILER_LANG['authenticate']         = 'Erro do SMTP: Não foi possível realizar a autenticação.';
 $PHPMAILER_LANG['connect_host']         = 'Erro do SMTP: Não foi possível realizar ligação com o servidor SMTP.';
@@ -24,3 +23,4 @@ $PHPMAILER_LANG['signing']              = 'Erro ao assinar: ';
 $PHPMAILER_LANG['smtp_connect_failed']  = 'SMTP Connect() falhou.';
 $PHPMAILER_LANG['smtp_error']           = 'Erro de servidor SMTP: ';
 $PHPMAILER_LANG['variable_set']         = 'Não foi possível definir ou redefinir a variável: ';
+$PHPMAILER_LANG['extension_missing']    = 'Extensão em falta: ';
