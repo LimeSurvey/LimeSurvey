@@ -767,26 +767,23 @@ class pdf extends TCPDF {
    */
   function addAnswer($sQuestion, $sResponse, $bReplaceExpressions=true, $bAllowBreakPage=false)
   {
-    $questionfill=1;
-	  $yiiquestionfill = Yii::app()->getConfig('pdfquestionfill');
-	  if ($yiiquestionfill==0) 
-	  {
-		    $questionfill=0;
-	  }
-  
-  	$questionborder=$responseborder=1;
-  	$yiiquestionborder = Yii::app()->getConfig('pdfquestionborder');
-  	if ($yiiquestionborder==0) 
-  	{
-  	    $questionborder=0;
-  	}
+    $questionFill=$questionBorder=$responseBorder=1;
 	
-  	$yiiresponseborder = Yii::app()->getConfig('pdfresponseborder');
-  	if ($yiiquestionborder=='0') 
-  	{
-  	    $responseborder=0;
-  	}
+    $yiiQuestionFill = Yii::app()->getConfig('pdfQuestionFill');
+    if ($yiiQuestionFill==0) {
+    	$questionFill=0;
+    }
     
+    $yiiQuestionBorder = Yii::app()->getConfig('pdfQuestionBorder');
+    if ($yiiQuestionBorder==0) {
+        $questionBorder=0;
+	}
+	
+    $yiiResponseBorder = Yii::app()->getConfig('pdfResponseBorder');
+	if ($yiiResponseBorder=='0') {
+        $responseBorder=0;
+	}
+	
     $oPurifier = new CHtmlPurifier();
     $sQuestionHTML = str_replace('-oth-','',$sQuestion); // Copied from Writer::stripTagsFull. Really necessary?
     $sQuestionHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sQuestionHTML)),ENT_COMPAT);
@@ -799,24 +796,20 @@ class pdf extends TCPDF {
 
     $startPage = $this->getPage();
     $this->startTransaction();
-    
-    $yiiquestionbold = Yii::app()->getConfig('pdfquestionbold');
-	  if ($yiiquestionbold=='1') 
-	  {
-		    $fontfamily = $this->getFontFamily;
-		    $this->SetFont($fontfamily,'B',$this->_ibaseAnswerFontSize);
-	  }
-	  else 
-	  {
-		    $this->SetFontSize($this->_ibaseAnswerFontSize);
-	  }
-   
-    $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sQuestionHTML, $questionborder, 1, $questionfill, true, 'L');
-    if ($yiiquestionbold=='1') 
-    {
-		    $this->SetFont($fontfamily,'',$this->_ibaseAnswerFontSize);
-	  }
-    $this->MultiCell(0, $this->_iCellHeight, $sResponse, $responseborder, 'L', 0, 1, '', '', true);
+	
+    $yiiQuestionBold = Yii::app()->getConfig('pdfQuestionBold');
+    if ($yiiQuestionBold=='1') {
+        $fontFamily = $this->getFontFamily;
+        $this->SetFont($fontFamily,'B',$this->_ibaseAnswerFontSize);
+    }
+    else {
+        $this->SetFontSize($this->_ibaseAnswerFontSize);
+    }
+    $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sQuestionHTML, $questionBorder, 1, $questionFill, true, 'L');
+    if ($yiiQuestionBold=='1') {
+        $this->SetFont($fontFamily,'',$this->_ibaseAnswerFontSize);
+    }
+    $this->MultiCell(0, $this->_iCellHeight, $sResponse, $responseBorder, 'L', 0, 1, '', '', true);
     $this->ln(2);
     if ($this->getPage() != $startPage && !$bAllowBreakPage)
     {
