@@ -3,7 +3,7 @@
     class MenuWidget extends CWidget
     {
         public $menu = array();
-        
+
         public function __construct($owner = null) {
             parent::__construct($owner);
             Yii::import('application.helpers.surveytranslator_helper', true);
@@ -13,11 +13,11 @@
             'alt' => '',
             'type' => 'link'
         );
-        
+
         public $surveyId = null;
         public $groupId = null;
         public $questionId = null;
-        
+
         public function run()
         {
             $this->render('adminmenu', array('menu' => $this->menuMain()));
@@ -35,8 +35,8 @@
             }
         }
 
-        
-        
+
+
         protected function menuMain()
         {
             $title = CHtml::tag('strong', array(), gT('Administration'));
@@ -94,11 +94,11 @@
                 {
                     $group = gT("Active");
                     $list = 'active';
-                }        
+                }
                 $tmpList[$list][] = array(
                     'id' => $survey['sid'],
                     'title' => $survey['surveyls_title'],
-                    'group' => $group                
+                    'group' => $group
                 );
             }
             $surveyList = array();
@@ -126,17 +126,17 @@
                 'alt' => gT('Detailed list of surveys'),
                 'image' => 'surveylist.png'
             );
-            
+
             $menu['items']['right'][] = $this->createSurvey();
             $menu['items']['right'][] = 'separator';
 
-            
+
             $menu['items']['right'][] = array(
                 'href' => array('admin/authentication', 'sa' => 'logout'),
                 'alt' => gT('Logout'),
                 'image' => 'logout.png'
             );
-            
+
             $menu['items']['right'][] = array(
                 'href' => "http://docs.limesurvey.org",
                 'alt' => gT('LimeSurvey online manual'),
@@ -145,9 +145,9 @@
 
             $event = new PluginEvent('afterAdminMenuLoad', $this);
             $event->set('menu', $menu);
-            
+
             $result = App()->getPluginManager()->dispatchEvent($event);
-            
+
             $menu = $result->get('menu');
             return $menu;
         }
@@ -155,11 +155,11 @@
         protected function menuQuestion($questionId)
         {
             $question = Question::model()->findByPk($questionId);
-            
+
             $menu['title'] = "Question {$question->code} (id: {$questionId})";
             $menu['role'] = 'question';
             $menu['imageUrl'] = App()->getConfig('adminimageurl');
-            
+
             $menu['items']['left'][] = array(
                 'alt' => gT('Preview this question'),
                 'type' => 'link',
@@ -168,10 +168,10 @@
                 'href' => array('questions/preview/', 'id' => $questionId)
             );
             $menu['items']['left'][] = 'separator';
-            
+
             return $menu;
         }
-        
+
         protected function menuSurvey($surveyId)
         {
             /**
@@ -182,7 +182,7 @@
             $menu['title'] = "Survey {$surveyInfo['surveyls_title']} (id: {$surveyId})";
             $menu['role'] = 'survey';
             $menu['imageUrl'] = App()->getConfig('adminimageurl');
-            
+
             if ($surveyInfo['active'] == 'Y')
             {
                 $menu['items']['left'][] = array(
@@ -207,7 +207,7 @@
                     'href' => array('admin/survey', 'sa' => 'activate', 'surveyid' => $surveyId),
                     'image' => 'activate.png',
                 );
-                
+
             }
             $menu['items']['left'][] = 'separator';
             $languages = array($surveyInfo['language']);
@@ -238,7 +238,7 @@
                     )
                 )
             );
-            
+
             $menu['items']['left'][] = array(
                 'type' => 'sub',
                 'href' => array('surveys/view', 'id' => $surveyId),
@@ -286,7 +286,7 @@
                         'image' => 'quality_assurance_30.png',
                         'href' => array('admin/expressions', 'sa' => 'survey_logic_file', 'sid' => $surveyId)
                     ),
-                    
+
                 )
             );
             $menu['items']['left'][] = array(
@@ -349,19 +349,19 @@
                 'type' => 'link',
                 'image' => 'add.png',
                 'href' => array('admin/questiongroups', 'sa' =>  'add', 'surveyid' => $surveyId)
-                
+
             );
-            
+
             return $menu;
         }
-        
+
         protected function menuGroup($groupId)
         {
             $group = QuestionGroup::model()->findByAttributes(array('gid' => $groupId));
             $menu['title'] = "Group {$group->group_name} (id: {$groupId})";
             $menu['role'] = 'group';
             $menu['imageUrl'] = App()->getConfig('adminimageurl');
-            
+
             $menu['items']['left'][] = array(
                 'alt' => gT('Preview this group'),
                 'type' => 'link',
@@ -377,7 +377,7 @@
                 'href' => array('admin/questiongroups', 'sa' => 'edit', 'surveyid' => $group->sid, 'gid' => $groupId)
             );
             $menu['items']['left'][] = 'separator';
-            
+
             $menu['items']['left'][] = 'separator';
 
             $menu['items']['right'][] = array(
@@ -393,11 +393,11 @@
                 'type' => 'link',
                 'image' => 'add.png',
                 'href' => array('questions/create', 'gid' => $groupId)
-                
+
             );
             return $menu;
         }
-        
+
         protected function renderItem($item, &$allowSeparator, $imageUrl, $level = 0)
         {
             $result = '';
@@ -412,13 +412,13 @@
                 {
                     $result .= $item['title'];
                 }
-                
+
                 if(isset($item['values']))
                 {
-                    
+
                     $result = $this->renderSelect($item);
                 }
-                
+
                 if (isset($item['href']))
                 {
                     $options = array();
@@ -428,14 +428,14 @@
                     }
                     $result = CHtml::link($result, $item['href'], $options);
                 }
-                
+
                 if(isset($item['items']))
                 {
                     $result = $this->renderSub($item, $imageUrl, $level + 1);
                 }
-                
-                
-                
+
+
+
             }
             elseif (is_string($item) && $item == 'separator' && $allowSeparator)
             {
@@ -443,10 +443,10 @@
                 $allowSeparator = false;
             }
 
-            
+
             return CHtml::tag('li', array(), $result);
         }
-        
+
         protected function renderMenu($menu)
         {
             foreach ($menu['items'] as $class => $menuItems)
@@ -461,7 +461,7 @@
 
             }
         }
-        
+
         protected function renderSelect($item)
         {
             $result = CHtml::label($item['title'],  $item['name']);
@@ -487,7 +487,7 @@
 
 
                                         /*$this->widget('yiiwheels.widgets.select2.WhSelect2', array(
-                                    
+
                                         'name' => 'authMethod',
                                         'pluginOptions' => array(
                                         'value' => $selectedAuth,
@@ -495,21 +495,21 @@
                                         'options' => array(
                                             'onChange'=>'this.form.submit();'
                                         )
-                                        )));    
+                                        )));
 */
-                
-                
-                
+
+
+
                 $result .= $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                     'name' => $item['name'],
-                        'data' => $listData,                    
+                        'data' => $listData,
                     'pluginOptions' => array(
                         'value' => $item['value'],
 
                         'options' => array(
                             'minimumResultsForSearch' => 10,
                                'placeholder' => gT('Please choose...')
-                         ),                    
+                         ),
                     ),
 
                     'htmlOptions' => $htmlOptions
@@ -521,7 +521,7 @@
             }
             return $result;
         }
-        
+
         protected function renderSub($item, $imageUrl, $level)
         {
             $result = '';
@@ -533,13 +533,13 @@
             {
                 $result .= $item['title'];
             }
-            if (isset($item['href']))    
+            if (isset($item['href']))
             {
                 $result = CHtml::link($result, $item['href']);
             }
-            
+
             $result .= CHtml::openTag('ol', array('class' => "level$level"));
-            
+
             foreach ($item['items'] as $subItem)
             {
                 $allowSeparator = false;
@@ -548,7 +548,7 @@
             $result .= CHtml::closeTag('ol');
             return $result;
         }
-        
+
         protected function globalSettings()
         {
             if (Permission::model()->hasGlobalPermission('settings','read'))
@@ -573,7 +573,7 @@
             }
         }
 
-        
+
         protected function createSurvey()
         {
             if (Permission::model()->hasGlobalPermission('surveys','create'))
@@ -631,7 +631,7 @@
                 );
             }
         }
-        
+
         protected function userGroups()
         {
             if(Permission::model()->hasGlobalPermission('usergroups','read'))
@@ -655,7 +655,7 @@
                  );
             }
         }
-        
+
         protected function pluginManager()
         {
             if (Permission::model()->hasGlobalPermission('superadmin','read'))
