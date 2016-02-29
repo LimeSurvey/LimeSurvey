@@ -1540,8 +1540,18 @@ class participantsaction extends Survey_Common_Action
         $participantIds = explode(",", $participantIdsString);
 
         $surveyId = Yii::app()->request->getPost('surveyid');
-        $alreadyMappedAttributes = Yii::app()->request->getPost('mapped');
 
+        /**
+         * mapped can take values like
+         *   mapped[attribute_38] = 39
+         * meaning that an attribute is mapped onto another.
+         */
+        $mappedAttributes = Yii::app()->request->getPost('mapped');
+
+        /**
+         * newarr takes values like
+         *   newarr[] = 39
+         */
         $newAttributes = Yii::app()->request->getPost('newarr');
 
         $options = [];
@@ -1556,14 +1566,14 @@ class participantsaction extends Survey_Common_Action
             $newAttributes = [];
         }
 
-        if (empty($alreadyMappedAttributes))
+        if (empty($mappedAttributes))
         {
-            $alreadyMappedAttributes = [];
+            $mappedAttributes = [];
         }
 
         try
         {
-            $response = Participant::model()->copyCPDBAttributesToTokens($surveyId, $participantIds, $alreadyMappedAttributes, $newAttributes, $options);
+            $response = Participant::model()->copyCPDBAttributesToTokens($surveyId, $participantIds, $mappedAttributes, $newAttributes, $options);
         }
         catch (Exception $e)
         {

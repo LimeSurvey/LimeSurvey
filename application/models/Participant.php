@@ -982,12 +982,12 @@ class Participant extends LSActiveRecord
      * TODO: What is this?
      *
      * @param int surveyId
-     * @param array $alreadyMappedAttributes
+     * @param array $mappedAttributes
      * @return void
      */
-    private function updateTokenFieldProperties($surveyId, array $alreadyMappedAttributes)
+    private function updateTokenFieldProperties($surveyId, array $mappedAttributes)
     {
-        foreach($alreadyMappedAttributes as $key => $iIDAttributeCPDB)
+        foreach($mappedAttributes as $key => $iIDAttributeCPDB)
         {
             if(is_numeric($iIDAttributeCPDB))
             {
@@ -1103,7 +1103,7 @@ class Participant extends LSActiveRecord
      *
      * @param int $surveyId
      * @param array $participantIds
-     * @param array $alreadyMappedAttributes
+     * @param array $mappedAttributes
      * @param array $newAttributes
      * @param array $addedAttributes ?? Result from createColumnsInTokenTable
      * @param array $addedAttributeIds ?? Result from createColumnsInTokenTable
@@ -1113,7 +1113,7 @@ class Participant extends LSActiveRecord
     private function writeParticipantsToTokenTable(
         $surveyId,
         array $participantIds,
-        array $alreadyMappedAttributes,
+        array $mappedAttributes,
         array $newAttributes,
         array $addedAttributes,
         array $addedAttributeIds,
@@ -1166,7 +1166,7 @@ class Participant extends LSActiveRecord
                         }
                     }
                     //If there are automapped attributes, add those values to the token entry for this participant
-                    foreach ($alreadyMappedAttributes as $key => $value)
+                    foreach ($mappedAttributes as $key => $value)
                     {
                         if ($key[10] == 'c') { //We know it's automapped because the 11th letter is 'c'
                             Participant::model()->updateTokenAttributeValue($surveyId, $participantId, $value, $key);
@@ -1175,7 +1175,7 @@ class Participant extends LSActiveRecord
                 }
                 if ($options['overwriteman'] == "true") {
                     //If there are any manually mapped attributes, add those values to the token entry for this participant
-                    foreach ($alreadyMappedAttributes as $key => $value)
+                    foreach ($mappedAttributes as $key => $value)
                     {
                         if ($key[10] != 'c' && $key[9]=='_') { //It's not an auto field because it's 11th character isn't 'c'
                             Participant::model()->updateTokenAttributeValue($surveyId, $participantId, $value, $key);
@@ -1183,7 +1183,7 @@ class Participant extends LSActiveRecord
                     }
                 }
                 if ($options['overwritest'] == "true") {
-                    foreach($alreadyMappedAttributes as $key=>$value)
+                    foreach($mappedAttributes as $key=>$value)
                     {
                         if((strlen($key) > 8 && $key[10] != 'c' && $key[9] !='_') || strlen($key) < 9) {
                             Participant::model()->updateTokenAttributeValue($surveyId, $participantId, $value, $key);
@@ -1234,10 +1234,17 @@ class Participant extends LSActiveRecord
                     }
                 }
                 //If there are any automatically mapped attributes, add those values to the token entry for this participant
-                foreach ($alreadyMappedAttributes as $key => $value)
+                foreach ($mappedAttributes as $key => $value)
                 {
                     try
                     {
+                        // $value can be 'attribute_<number>' here
+                        // TODO: Weird...
+                        if (strpos($value, 'attribute_') !== false)
+                        {
+                            $value = substr($value, 10);
+                        }
+
                         Participant::model()->updateTokenAttributeValue($surveyId, $participantId, $value, $key);
                     }
                     catch (Exception $e)
@@ -1257,7 +1264,7 @@ class Participant extends LSActiveRecord
      *
      * @param int $surveyId The survey id
      * @param string $participantIds Array containing the participant ids of the participants we are adding
-     * @param array $alreadyMappedAttributes An array containing a list of already existing/mapped attributes in the form of "token_field_name" => "participant_attribute_id"
+     * @param array $mappedAttributes An array containing a list of /mapped attributes in the form of "token_field_name" => "participant_attribute_id"
      * @param array $newAttributes An array containing new attributes to create in the tokens table
      * @param array $options Array with following options:
      *                overwriteauto - If true, overwrite automatically mapped data
@@ -1266,7 +1273,7 @@ class Participant extends LSActiveRecord
      *                createautomap - If true, rename the fieldnames of automapped attributes so that in future they are automatically mapped
      */
     //function copyCPBDAttributesToTokens($surveyId, $mapped, $newcreate, $participantid, $overwriteauto=false, $overwriteman=false, $overwritest=false, $createautomap=true)
-    public function copyCPDBAttributesToTokens($surveyId, array $participantIds, array $alreadyMappedAttributes, array $newAttributes, array $options)
+    public function copyCPDBAttributesToTokens($surveyId, array $participantIds, array $mappedAttributes, array $newAttributes, array $options)
     {
         Yii::app()->loadHelper('common');
 
@@ -1275,15 +1282,15 @@ class Participant extends LSActiveRecord
 
         // If automapping is enabled then update the token field properties with the mapped CPDB field ID
         if($options['createautomap']) {
-            $this->updateTokenFieldProperties($surveyId, $alreadyMappedAttributes);
+            $this->updateTokenFieldProperties($surveyId, $mappedAttributes);
         }
 
-        // Add existing attribute columns to alreadyMappedAttributes. TODO: Why?
+        // Add existing attribute columns to mappedAttributes. TODO: Why?
         // TODO: What is id here? Could it overwrite something?
-        foreach ($tokenAttributeColumns as $id => $columnName)
-        {
-            $alreadyMappedAttributes[$id] = $columnName;  // $name is 'attribute_1', which will clash with postgres
-        }
+        //foreach ($tokenAttributeColumns as $id => $columnName)
+        //{
+            //$mappedAttributes[$id] = $columnName;  // $name is 'attribute_1', which will clash with postgres
+        //}
 
         // TODO: Why use two variables for this?
         list($addedAttributes, $addedAttributeIds) = $this->createColumnsInTokenTable($surveyId, $newAttributes);
@@ -1292,7 +1299,7 @@ class Participant extends LSActiveRecord
         list($successful, $duplicate, $blacklistSkipped) = $this->writeParticipantsToTokenTable(
             $surveyId, 
             $participantIds, 
-            $alreadyMappedAttributes, 
+            $mappedAttributes, 
             $newAttributes, 
             $addedAttributes,
             $addedAttributeIds,

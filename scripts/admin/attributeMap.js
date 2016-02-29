@@ -129,6 +129,7 @@ $(document).ready(function(){
                 $('.newcreate > :nth-child('+cpdbattpos+')').css("background-color","#696565");
         }
     });
+
     $('#attmap').click(function() {
         var mappedarray = {};
         $.each(tokencurrentarray, function(index,value) {
@@ -136,25 +137,26 @@ $(document).ready(function(){
                     mappedarray[tokencurrentarray[index-1].substring(2)] = value.substring(2);
             }
         });
-       $.each(newcurrentarray, function(index,value) {
+
+        $.each(newcurrentarray, function(index,value) {
             newcurrentarray[index] = value.substring(2);
         });
 
-    $("#processing").load(copyUrl, {
-        mapped: mappedarray,
-        newarr: newcurrentarray,
-        surveyid: surveyId,
-        overwrite: attoverwrite,
-        overwriteman: attoverwriteman,
-        overwritest: attoverwritest,
-        participant_id : participant_id,
-        createautomap: attcreateautomap
-        }, function(msg){
-            $('#attribute-map-participant-modal .modal-body').html(msg);
-            $('#attribute-map-participant-modal').on('hide.bs.modal' , function (e) {
-                $(location).attr('href',redUrl);
-            });
-            $('#attribute-map-participant-modal').modal();
+        $("#processing").load(copyUrl, {
+            mapped: mappedarray,
+            newarr: newcurrentarray,
+            surveyid: surveyId,
+            overwrite: attoverwrite,
+            overwriteman: attoverwriteman,
+            overwritest: attoverwritest,
+            participant_id : participant_id,
+            createautomap: attcreateautomap
+            }, function(msg){
+                $('#attribute-map-participant-modal .modal-body').html(msg);
+                $('#attribute-map-participant-modal').on('hide.bs.modal' , function (e) {
+                    $(location).attr('href',redUrl);
+                });
+                $('#attribute-map-participant-modal').modal();
         });
     });
 });
