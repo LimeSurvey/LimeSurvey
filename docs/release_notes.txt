@@ -59,6 +59,9 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
                                
+Changes from 2.06+ (build 160123) to 2.06LTS (build 160229) Feb 29, 2016
+Fixed issue: Error on update when using dblib database MSSQL driver	(c_schmitz)
+Fixed issue #10509: [Security] issue when saving/loading responses on public survey	(c_schmitz)                               
                                
 Changes from 2.06+ (build 160123) to 2.06+ (build 160129) Jan 29, 2016
 -Fixed issue #10233: Unable to add user to a group in a fresh install (Carsten Schmitz)
