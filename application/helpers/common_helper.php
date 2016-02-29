@@ -4077,13 +4077,17 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     if ($ishtml)
     {
         $mail->IsHTML(true);
-        //$mail->AltBody = strip_tags(breakToNewline(html_entity_decode($body,ENT_QUOTES,$emailcharset))); // Use included PHPmailer system see bug #8234
+        if(strpos($body,"<html>")===false)
+        {
+            $body="<html>".$body."</html>";
+        }
+        $mail->msgHTML($body,App()->getConfig("publicdir")); // This allow embedded image if we remove the servername from image
     }
     else
     {
         $mail->IsHTML(false);
+        $mail->Body = $body;
     }
-    $mail->Body = $body;
     // Add attachments if they are there.
     if (is_array($attachments))
     {
@@ -4100,9 +4104,10 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             }
         }
     }
+    $mail->Subject=$subject;
 
-    if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
-    if ($emailsmtpdebug>0) {
+    if ($emailsmtpdebug>0)
+    {
         ob_start();
     }
     $sent=$mail->Send();
