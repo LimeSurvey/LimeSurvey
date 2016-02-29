@@ -35,7 +35,7 @@ $(document).ready(function(){
             connectWith:'.tokenatt,#cpdbatt'}
     );
     $("#cpdbatt").sortable({
-        connectWith:'.tokenatt,.newcreate,.standardfields',
+        connectWith:'.tokenatt, .newcreate, .standardfields',
         helper: 'clone',
         appendTo: 'body',
         receive: function(event,ui) {
@@ -49,7 +49,7 @@ $(document).ready(function(){
     $(".standardfields").sortable({
         helper: 'clone',
         appendTo: 'body',
-        connectWith: "div",
+        connectWith: 'div',
         beforeStop: function(event,ui) {
             $(this).sortable('cancel');
         },
@@ -80,9 +80,10 @@ $(document).ready(function(){
         }
     });
     $(".tokenatt").sortable({
+        cancel: '.ui-state-disabled',
         helper: 'clone',
         appendTo: 'body',
-        connectWith: "div",
+        connectWith: 'div',
         beforeStop: function(event,ui) {
                 $(this).sortable('cancel');
         },
@@ -164,4 +165,5 @@ $(document).ready(function(){
     });
 
     tokencurrentarray = $('.tokenatt').sortable('toArray');
+    $('.tokenatt .panel-default').disableSelection();
 });
