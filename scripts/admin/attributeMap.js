@@ -150,12 +150,12 @@ $(document).ready(function(){
             }, function(msg){
                 $('#attribute-map-participant-modal .modal-body').html(msg);
                 $('#attribute-map-participant-modal').on('hide.bs.modal' , function (e) {
-                    //$(location).attr('href',redUrl);
+                    $(location).attr('href',redUrl);
                 });
                 $('#attribute-map-participant-modal').modal();
         });
     });
 
-    tokencurrentarray = $('.tokenatt').sortable('toArray');
     $('.tokenatt .panel-default').disableSelection();
+    tokencurrentarray = $('.tokenatt').sortable('toArray');
 });
