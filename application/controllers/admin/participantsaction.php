@@ -1580,7 +1580,7 @@ class participantsaction extends Survey_Common_Action
          */
         $newAttributes = Yii::app()->request->getPost('newarr');
 
-        $options = [];
+        $options = array();
         $options['overwriteauto'] = Yii::app()->request->getPost('overwrite') === 'true';
         $options['overwriteman'] = Yii::app()->request->getPost('overwriteman') === 'true';
         $options['overwritest'] = Yii::app()->request->getPost('overwritest') === 'true';
@@ -1589,12 +1589,12 @@ class participantsaction extends Survey_Common_Action
         // TODO: Why?
         if (empty($newAttributes[0]))
         {
-            $newAttributes = [];
+            $newAttributes = array();
         }
 
         if (empty($mappedAttributes))
         {
-            $mappedAttributes = [];
+            $mappedAttributes = array();
         }
 
         try
@@ -1642,10 +1642,10 @@ class participantsaction extends Survey_Common_Action
         $CPDBAttributes = ParticipantAttributeName::model()->getCPDBAttributes();
         $tokenAttributes = getTokenFieldsAndNames($iSurveyId, TRUE);
 
-        $selectedattribute = []; //List of existing attribute fields that are not mapped
-        $selectedcentralattribute = []; //List of attributes that haven't already been mapped
-        $alreadymappedattid = []; //List of fields already mapped to this tokens table
-        $alreadymappedattname = [];
+        $selectedattribute = array(); //List of existing attribute fields that are not mapped
+        $selectedcentralattribute = array(); //List of attributes that haven't already been mapped
+        $alreadymappedattid = array(); //List of fields already mapped to this tokens table
+        $alreadymappedattname = array();
 
         foreach ($tokenAttributes as $attributeId => $attribute)  // attributeId like 'attribute_1'
         {
@@ -1672,7 +1672,7 @@ class participantsaction extends Survey_Common_Action
 
         // Check for automatic mappings
         // TODO: Maybe do this with SQL instead?
-        $automaticallyMappedAttributes = [];
+        $automaticallyMappedAttributes = array();
         foreach ($tokenAttributes as $attributeId => $tokenAttribute)  // attributeId like 'attribute_1'
         {
             if ($tokenAttribute['cpdbmap'] !== '')
@@ -1681,11 +1681,11 @@ class participantsaction extends Survey_Common_Action
                 {
                     if ($CPDBAttribute['attribute_id'] === intval($tokenAttribute['cpdbmap']))
                     {
-                        $automaticallyMappedAttributes[$attributeId] = [
+                        $automaticallyMappedAttributes[$attributeId] = array(
                             'tokenAttributeId' => $attributeId,
                             'tokenAttribute' => $tokenAttribute,
                             'cpdbAttribute' => $CPDBAttribute
-                        ];
+                        );
                     }
                 }
             }

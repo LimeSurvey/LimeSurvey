@@ -961,7 +961,7 @@ class Participant extends LSActiveRecord
             ->schema
             ->getTable("{{tokens_$surveyId}}");
 
-        $result = [];
+        $result = array();
 
         $i = 1;
         foreach ($tokenTableSchema->columns as $columnName => $columnObject)
@@ -1015,16 +1015,16 @@ class Participant extends LSActiveRecord
         $defaultsurveylang = $surveyInfo['surveyls_language'];
 
         //Will contain serialised info for the surveys.attributedescriptions field
-        $fieldcontents = [];
+        $fieldcontents = array();
 
         // ??
-        $fields = [];
+        $fields = array();
 
         //Will contain the actual field name of any new token attribute fields
-        $addedAttributes = [];
+        $addedAttributes = array();
 
         //Will contain the description of any new token attribute fields
-        $addedAttributeIds = [];
+        $addedAttributeIds = array();
 
         foreach ($newAttributes as $value)
         {
