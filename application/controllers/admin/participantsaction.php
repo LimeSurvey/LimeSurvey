@@ -1615,35 +1615,17 @@ class participantsaction extends Survey_Common_Action
         $iParticipantId = Yii::app()->request->getPost('participant_id');
         $attributes = ParticipantAttributeName::model()->getCPDBAttributes();
         $tokenattributefieldnames = getTokenFieldsAndNames($iSurveyId, TRUE);
-        /* $arr = Yii::app()->db
-        ->createCommand()
-        ->select('*')
-        ->from("{{tokens_$iSurveyId}}")
-        ->queryRow();
-
-        if (is_array($arr))
-        {
-        $tokenfieldnames = array_keys($arr);
-        $tokenattributefieldnames = array_filter($tokenfieldnames, 'filterForAttributes');
-        }
-        else
-        {
-        $tokenattributefieldnames = array();
-        } */
 
         $selectedattribute = array(); //List of existing attribute fields that are not mapped
         $selectedcentralattribute = array(); //List of attributes that haven't already been mapped
         $alreadymappedattid = array(); //List of fields already mapped to this tokens table
         $alreadymappedattname = array();
-        $i = 0;
-        $j = 0;
 
         foreach ($tokenattributefieldnames as $key => $value)
         {
             if (is_numeric($key[10])) //Assumes that if the 11th character is a number, it must be a token-table created attribute
             {
                 $selectedattribute[$key] = $value['description'];
-                $i++;
             }
             else
             {
@@ -1699,7 +1681,6 @@ class participantsaction extends Survey_Common_Action
         $alreadymappedattdisplay = array();
         $alreadymappedattnames = array();
         $i = 0;
-        $j = 0;
 
         foreach ($aTokenAttributes as $key => $value)
         {
