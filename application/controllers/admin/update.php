@@ -384,12 +384,12 @@ class update extends Survey_Common_Action
     {
         if (Permission::model()->hasGlobalPermission('superadmin'))
         {
-            // We try to get the update key in the database. If it's empty, getWelcomeMessage will return subscription
-            $updateKey = NULL;
+            // We want to call the server to display the subscribe message
+            // So if needed, we can display a specific html message (like we do for update to LTS with a free key)
+            // To force server to render the subscribe message, we call for the last 2.06+ release (which need at least a free key)
             $updateModel = new UpdateForm();
-            $destinationBuild = $_REQUEST['destinationBuild'];
-               $welcome = $updateModel->getWelcomeMessage($updateKey, $destinationBuild); //$updateKey
-               echo $this->_renderWelcome($welcome);
+            $welcome = $updateModel->getWelcomeMessage(null, '160129'); //$updateKey
+            echo $this->_renderWelcome($welcome);
         }
     }
 

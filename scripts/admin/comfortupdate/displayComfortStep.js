@@ -52,34 +52,9 @@ $.fn.displayComfortStep = function(options)
     }
 
 
-    /*
-    $url += '?destinationBuild=' + $destinationBuild + '&access_token=' + $access_token;
-    $.ajax({
-
-        url: $url,
-        success: function(html) {
-            // We hide the loader, and we append the submit new key content
-            $ajaxLoader.hide();
-            $("#updaterContainer").empty().append(html);
-
-            // Menus
-            $("#welcome").hide();
-            $("#newKey").show();
-
-        },
-        error :  function(html, statut){
-            $("#preUpdaterContainer").empty();
-            $("#updaterLayout").show();
-            $("#updaterContainer").show();
-
-            $("#updaterContainer").empty().append("<span class='error'>you have an error, or a notice, inside your local installation of limesurvey. See : <br/></span>");
-            $("#updaterContainer").append(html.responseText);
-        }
-    });
-    */
-
     // Those datas are defined in _ajaxVariables view
     datas = 'destinationBuild=' + $destinationBuild + '&access_token=' + $access_token + '&'+csrf_token_name+'='+csrf_token;
+
 
     $.ajax({
         type: "POST",
