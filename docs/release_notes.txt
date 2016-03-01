@@ -35,6 +35,33 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160225) to 2.50+ (build 160228) Feb 28, 2016
+-Fixed issue #10431: Columns for question list are not distributed well (Olle Haerstedt)
+-Fixed issue #10561: Export results does not respect Full question text option (Olle Haerstedt)
+-Fixed issue #10580: Using OSM fails (Olle Haerstedt)
+-Fixed issue #10581: Weird subquestions/answer options input width (Carsten Schmitz)
+-Fixed issue #10590: Missing translation (Carsten Schmitz)
+-Fixed issue #10591: Next/Previous icons in details response view too small (Carsten Schmitz)
+-Fixed issue #10593: Missing colons (Carsten Schmitz)
+-Fixed issue #10594: Missing translation of on/of switches (Olle Haerstedt)
+-Fixed issue #10601: Could not show plugin manager (Carsten Schmitz)
+-Fixed issue: Ellipsize in question explorer duplicating characters (Carsten Schmitz)
+-Fixed issue: Token validation for the token model. (Sitawit Suteepohnwiroj)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by t6nnp6nn
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by cbloecher, c_schmitz
+#Updated translation: German (Informal) by cbloecher, c_schmitz
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Papiamento (Curacao and Bonaire) by Ace Suares
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Slovenian by dusan
+#Updated translation: Spanish (Spain) by aesteban
+
 Changes from 2.50+ (build 160223) to 2.50+ (build 160225) Feb 25, 2016
 -Fixed #10550: multi-line group description flows out of box (Matthew Favetti)
 -Fixed issue #10272: Strange view of bars in statistics (LouisGac)

@@ -35,7 +35,7 @@ $(document).ready(function(){
             connectWith:'.tokenatt,#cpdbatt'}
     );
     $("#cpdbatt").sortable({
-        connectWith:'.tokenatt,.newcreate,.standardfields',
+        connectWith:'.tokenatt-container, .newcreate, .standardfields',
         helper: 'clone',
         appendTo: 'body',
         receive: function(event,ui) {
@@ -49,11 +49,11 @@ $(document).ready(function(){
     $(".standardfields").sortable({
         helper: 'clone',
         appendTo: 'body',
-        connectWith: "div",
+        connectWith: 'div',
         beforeStop: function(event,ui) {
             $(this).sortable('cancel');
         },
-        receive: function(event,ui) {
+        receive: function(event, ui) {
             tokencurrentarray = $(this).sortable('toArray');
             var tattpos = jQuery.inArray($(ui.item).attr('id'),tokencurrentarray);
             var cattpos = tattpos+1;
@@ -68,21 +68,15 @@ $(document).ready(function(){
                 $(ui.sender).sortable('cancel');
             }
             else {
-                $('.standardfields > :nth-child('+tattpos+')').css("color","white");
-                $('.standardfields > :nth-child('+tattpos+')').css("border-top","0");
-                $('.standardfields > :nth-child('+cattpos+')').css("color","white");
-                $('.standardfields > :nth-child('+cattpos+')').css("margin-top","-5px");
-                $('.standardfields > :nth-child('+cattpos+')').css("border-top","0");
-                $('.standardfields > :nth-child('+cattpos+')').css("min-height","20px");
-                $("#"+cattid).css("background-color","#696565");
-                $("#"+tattid).css("background-color","#696565");
+                // Change colors?
             }
         }
     });
-    $(".tokenatt").sortable({
+    $(".tokenatt-container").sortable({
+        cancel: '.ui-state-disabled',
         helper: 'clone',
         appendTo: 'body',
-        connectWith: "div",
+        connectWith: 'div',
         beforeStop: function(event,ui) {
                 $(this).sortable('cancel');
         },
@@ -101,14 +95,9 @@ $(document).ready(function(){
                 $(ui.sender).sortable('cancel');
             }
             else {
-                $('.tokenatt > :nth-child('+tattpos+')').css("color","white");
-                $('.tokenatt > :nth-child('+tattpos+')').css("border-top","0");
-                $('.tokenatt > :nth-child('+cattpos+')').css("color","white");
-                $('.tokenatt > :nth-child('+cattpos+')').css("margin-top","-5px");
-                $('.tokenatt > :nth-child('+cattpos+')').css("border-top","0");
-                $('.tokenatt > :nth-child('+cattpos+')').css("min-height","20px");
-                $("#"+cattid).css("background-color","#696565");
-                $("#"+tattid).css("background-color","#696565");
+                $(ui.item).removeClass('col-sm-12');
+                $(ui.item).addClass('cpdb-attribute');
+                $(ui.item).wrap('<div class="col-sm-6"></div>');
             }
         }
     });
@@ -125,36 +114,48 @@ $(document).ready(function(){
                 newcurrentarray = $(this).sortable('toArray');
                 var cpdbattpos = jQuery.inArray($(ui.item).attr('id'),newcurrentarray)
                 cpdbattpos = cpdbattpos+1;
-                $('.newcreate > :nth-child('+cpdbattpos+')').css("color", "white");
-                $('.newcreate > :nth-child('+cpdbattpos+')').css("background-color","#696565");
+        },
+        remove: function(event, ui) {
+            newcurrentarray = $(this).sortable('toArray');
         }
     });
+
     $('#attmap').click(function() {
+
+        // Iterate all containers in mapped attributes
         var mappedarray = {};
-        $.each(tokencurrentarray, function(index,value) {
-            if(value[0]=='c') {
-                    mappedarray[tokencurrentarray[index-1].substring(2)] = value.substring(2);
+        $('.tokenatt-container').each(function (index, value) {
+            var tokenAttributeId = $(value).find('.token-attribute').attr('id');
+            var cpdbAttributeId = $(value).find('.cpdb-attribute').attr('id');
+
+            var bothAreDefined = tokenAttributeId !== undefined && cpdbAttributeId !== undefined;
+            if (bothAreDefined) {
+                mappedarray[tokenAttributeId.substring(2)] = cpdbAttributeId.substring(2);
             }
         });
-       $.each(newcurrentarray, function(index,value) {
+
+        $.each(newcurrentarray, function(index,value) {
             newcurrentarray[index] = value.substring(2);
         });
 
-    $("#processing").load(copyUrl, {
-        mapped: mappedarray,
-        newarr: newcurrentarray,
-        surveyid: surveyId,
-        overwrite: attoverwrite,
-        overwriteman: attoverwriteman,
-        overwritest: attoverwritest,
-        participant_id : participant_id,
-        createautomap: attcreateautomap
-        }, function(msg){
-            $('#attribute-map-participant-modal .modal-body').html(msg);
-            $('#attribute-map-participant-modal').on('hide.bs.modal' , function (e) {
-                $(location).attr('href',redUrl);
-            });
-            $('#attribute-map-participant-modal').modal();
+        $("#processing").load(copyUrl, {
+            mapped: mappedarray,
+            newarr: newcurrentarray,
+            surveyid: surveyId,
+            overwrite: attoverwrite,
+            overwriteman: attoverwriteman,
+            overwritest: attoverwritest,
+            participant_id : participant_id,
+            createautomap: attcreateautomap
+            }, function(msg){
+                $('#attribute-map-participant-modal .modal-body').html(msg);
+                $('#attribute-map-participant-modal').on('hide.bs.modal' , function (e) {
+                    $(location).attr('href',redUrl);
+                });
+                $('#attribute-map-participant-modal').modal();
         });
     });
+
+    $('.tokenatt .panel-default').disableSelection();
+    tokencurrentarray = $('.tokenatt').sortable('toArray');
 });
