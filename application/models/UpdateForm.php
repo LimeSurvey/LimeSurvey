@@ -79,7 +79,7 @@ class UpdateForm extends CFormModel
         {
             $content = new stdClass();
             $content->result = FALSE;
-            $content->error = "update_disable";            
+            $content->error = "update_disable";
         }
         return $content;
     }
@@ -378,6 +378,7 @@ class UpdateForm extends CFormModel
             fwrite($handle,$line);
         }
         fclose($handle);
+        Yii::app()->setConfig("buildnumber", $destinationBuild);
     }
 
     /**
@@ -389,6 +390,9 @@ class UpdateForm extends CFormModel
         setGlobalSetting('updateavailable','0');
         setGlobalSetting('updatebuild','');
         setGlobalSetting('updateversions','');
+        Yii::app()->session['update_result']=null;
+        Yii::app()->session['next_update_check']=null;
+
     }
 
     /**

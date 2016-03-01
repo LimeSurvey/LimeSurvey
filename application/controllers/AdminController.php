@@ -319,7 +319,8 @@ class AdminController extends LSYii_Controller
         $aData['versionnumber'] = Yii::app()->getConfig("versionnumber");
 
         $aData['buildtext'] = "";
-        if(Yii::app()->getConfig("buildnumber")!="") {
+        if(Yii::app()->getConfig("buildnumber")!="")
+        {
             $aData['buildtext']= "Build ".Yii::app()->getConfig("buildnumber");
         }
 
