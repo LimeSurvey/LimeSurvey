@@ -191,7 +191,7 @@ class Template extends LSActiveRecord
             if ( self::isOldTemplate($oTemplate->path) )
             {
                 $oTemplate->config = simplexml_load_file(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'/minimal-config.xml');
-                $oTemplate->->config->engine->cssframework = null;
+                $oTemplate->config->engine->cssframework = null;
             }
             else
             {
