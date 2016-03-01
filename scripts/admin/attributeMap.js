@@ -141,8 +141,10 @@ $(document).ready(function(){
             }
         });
 
-        $.each(newcurrentarray, function(index,value) {
-            newcurrentarray[index] = value.substring(2);
+        newcurrentarray = {};
+        $('.newcreate .panel-default').each(function(index, value) {
+            var id = $(value).attr('id').substring(2);
+            newcurrentarray[index] = id;
         });
 
         $("#processing").load(copyUrl, {

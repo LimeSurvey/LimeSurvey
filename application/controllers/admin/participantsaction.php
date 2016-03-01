@@ -1672,24 +1672,8 @@ class participantsaction extends Survey_Common_Action
 
         // Check for automatic mappings
         // TODO: Maybe do this with SQL instead?
-        $automaticallyMappedAttributes = array();
-        foreach ($tokenAttributes as $attributeId => $tokenAttribute)  // attributeId like 'attribute_1'
-        {
-            if ($tokenAttribute['cpdbmap'] !== '')
-            {
-                foreach ($CPDBAttributes as $CPDBAttribute)
-                {
-                    if ($CPDBAttribute['attribute_id'] === intval($tokenAttribute['cpdbmap']))
-                    {
-                        $automaticallyMappedAttributes[$attributeId] = array(
-                            'tokenAttributeId' => $attributeId,
-                            'tokenAttribute' => $tokenAttribute,
-                            'cpdbAttribute' => $CPDBAttribute
-                        );
-                    }
-                }
-            }
-        }
+        $automaticallyMappedAttributes = $this->getAutomaticallyMappedAttributes($tokenAttributes, $CPDBAttributes);
+
         // Remove automatic mappings from CPDB list (they should only be in right-most list)
         foreach ($automaticallyMappedAttributes as $autoAttr)
         {
@@ -1838,6 +1822,37 @@ class participantsaction extends Survey_Common_Action
                 $this->load->view('admin/participants/blacklist_view', $aData);
             }
         }
+    }
+
+    /**
+     * Return array of automatic mappings, pairing token attributes with CPDB attributes
+     *
+     * @param array $tokenAttributes
+     * @param array $CPDBAttributes
+     * @return array
+     */
+    private function getAutomaticallyMappedAttributes(array $tokenAttributes, array $CPDBAttributes)
+    {
+        $result = array();
+        foreach ($tokenAttributes as $attributeId => $tokenAttribute)  // attributeId like 'attribute_1'
+        {
+            if ($tokenAttribute['cpdbmap'] !== '')
+            {
+                foreach ($CPDBAttributes as $CPDBAttribute)
+                {
+                    if ($CPDBAttribute['attribute_id'] === intval($tokenAttribute['cpdbmap']))
+                    {
+                        $result[$attributeId] = array(
+                            'tokenAttributeId' => $attributeId,
+                            'tokenAttribute' => $tokenAttribute,
+                            'cpdbAttribute' => $CPDBAttribute
+                        );
+                    }
+                }
+            }
+        }
+
+        return $result;
     }
 
 }
