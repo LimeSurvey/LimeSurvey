@@ -181,7 +181,6 @@ class Template extends LSActiveRecord
         {
             $oTemplate->name = $sTemplateName;
             $oTemplate->path = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
-
             // If it's an imported template from 2.06, we return default values
             if ( self::isOldTemplate($oTemplate->path) )
             {
@@ -372,6 +371,6 @@ class Template extends LSActiveRecord
      */
     public static function isOldTemplate($sTemplatePath)
     {
-        return (! self::hasConfigFile($sTemplatePath) && is_file($oTemplate->path.DIRECTORY_SEPARATOR.'startpage.pstpl'));
+        return (!self::hasConfigFile($sTemplatePath) && is_file($sTemplatePath.DIRECTORY_SEPARATOR.'startpage.pstpl'));
     }
 }
