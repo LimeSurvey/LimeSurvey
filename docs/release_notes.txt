@@ -1,24 +1,24 @@
-Welcome to LimeSurvey v2.06+! 
+Welcome to LimeSurvey v2.06+!
 
-Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
-including, but not limited to, the implied warranties of merchantability and fitness for a particular 
-purpose. The entire risk as to the quality and performance of the program is with you. 
-Should the program prove defective, you assume the cost of all necessary servicing, repair or correction. 
-In no event will any copyright holder be liable to you for damages, including any general, special, 
-incidental or consequential damages arising out of the use or inability to use the program 
-(including but not limited to loss of data or data being rendered inaccurate or losses sustained 
+Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
+including, but not limited to, the implied warranties of merchantability and fitness for a particular
+purpose. The entire risk as to the quality and performance of the program is with you.
+Should the program prove defective, you assume the cost of all necessary servicing, repair or correction.
+In no event will any copyright holder be liable to you for damages, including any general, special,
+incidental or consequential damages arising out of the use or inability to use the program
+(including but not limited to loss of data or data being rendered inaccurate or losses sustained
 by you or third parties or a failure of the program to operate with any other programs).
 
 
 HOW TO INSTALL
 ---------------
-This release does have the following requirements: 
+This release does have the following requirements:
 
 *MySQL 4.1.0 or later OR Microsoft SQL Server 2005 or later OR Postgres 8.1 or later
 *PHP 5.3.3 or later with the following modules/libraries enabled:
     *mbstring (Multibyte String Functions) extension library (see also Installation FAQ(external link))
     *PDO database driver for MySQL (pdo_mysql or pdo_mysqli) or Postgres (pdo_pgsql) or MSSQL (pdo_sqlsrv)
-    
+
 If you are doing a complete new installation please refer to the manual at
 https://manual.limesurvey.org/Installation
 
@@ -29,22 +29,22 @@ Please also have a look at the "Installation security hints" section of the onli
 
 We suggest to check out and hold close to the instructions, which can be found in our online manual:
 https://manual.limesurvey.org/Upgrading_from_a_previous_version
- 
+
 
 HOW TO UPGRADE from earlier versions of LimeSurvey (<=1.08)
 -------------------------------------------------------------
-Since the data structure and a lot of other things were changed, upgrading from any version previous to v1.50 is NOT possible. 
-If you have old survey structure files with a *.sql extension the only way to get these into a newer version is to install version 1.50, import the .sql file(s) there, then upgrade that version to the most recent LimeSurvey version. 
+Since the data structure and a lot of other things were changed, upgrading from any version previous to v1.50 is NOT possible.
+If you have old survey structure files with a *.sql extension the only way to get these into a newer version is to install version 1.50, import the .sql file(s) there, then upgrade that version to the most recent LimeSurvey version.
 
 
 HOW TO UPGRADE from LimeSurvey 1.50 or later (<=1.70)
 ------------------------------------------------------
 1. Make backups of your files and database. REALLY, create backups FIRST!
-3. Delete all old files 
+3. Delete all old files
 4. Upload the new version to the same place.
 6. Run the installer by visiting http://<yourdomain>/<yourlimesurveypath>/admin and follow the instructions
-7. Restore any customized templates from your backup to /upload/templates (old version older than 1.70 either from /templates or from /upload/templates (>1.70)). You might have to adjust your templates since the CSS/structure might been changed since. 
-   It is usually easier to customize a default templates, again, instead of fixing your old template! 
+7. Restore any customized templates from your backup to /upload/templates (old version older than 1.70 either from /templates or from /upload/templates (>1.70)). You might have to adjust your templates since the CSS/structure might been changed since.
+   It is usually easier to customize a default templates, again, instead of fixing your old template!
 8. Done.
 
 TEMPLATE modification between LimeSurvey 1.8
@@ -58,11 +58,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
-                               
+
+Changes from 2.06LTS (build 160229) to 2.06LTS (build 160301) March 01, 2016
+Fixed issue: comfortUpdate, clean session and config as a last step
++New feature: added a link to limesurvey services on subscribe view.
+
 Changes from 2.06+ (build 160123) to 2.06LTS (build 160229) Feb 29, 2016
 Fixed issue: Error on update when using dblib database MSSQL driver	(c_schmitz)
-Fixed issue #10509: [Security] issue when saving/loading responses on public survey	(c_schmitz)                               
-                               
+Fixed issue #10509: [Security] issue when saving/loading responses on public survey	(c_schmitz)
+
 Changes from 2.06+ (build 160123) to 2.06+ (build 160129) Jan 29, 2016
 -Fixed issue #10233: Unable to add user to a group in a fresh install (Carsten Schmitz)
 -Fixed issue #10251: [security] Reflected XSS in admin (Thanks to Kacper Szurek - http://security.szurek.pl/ ) (Denis Chenu)
@@ -79,7 +83,7 @@ Changes from 2.06+ (build 160123) to 2.06+ (build 160129) Jan 29, 2016
 #Updated translation: Polish (Informal) by elisa
 #Updated translation: Swedish by maxzomborszki
 #Updated translation: Thai by tomzt
-                        
+
 Changes from 2.06+ (build 160121) to 2.06+ (build 160123) Jan 22, 2016
 -Fixed issue: Question at the beginning of survey were skipped
 
@@ -204,7 +208,7 @@ Changes from 2.06+ (build 151018) to 2.06+ (build 151109) Nov 9, 2015
 #Updated translation: Polish (Informal) by elisa
 #Updated translation: Portuguese (Brazil) by valins, holch, mauriciofurtado
 #Updated translation: Portuguese (Portugal) by nostradumusfdx, sazevedo, valins, devUSIT, samarta
-#Updated translation: Romanian 
+#Updated translation: Romanian
 #Updated translation: Slovenian
 #Updated translation: Spanish (Spain)
 #Updated translation: Swedish by bardts, maxzomborszki
@@ -230,7 +234,7 @@ Changes from 2.06+ (build 150930) to 2.06+ (build 151014) Oct 14, 2015
 -Fixed issue #9899: HTML editor launched even for email set to text (Denis Chenu)
 -Fixed issue #9926: Can't save dropdown values in CPD (kairavesloot)
 #Updated translation: Albanian by iebner
-#Updated translation: Bulgarian 
+#Updated translation: Bulgarian
 #Updated translation: Catalan by qualitatuvic
 #Updated translation: Chinese (Taiwan) (Traditional) by linuslin, Alwaystar
 #Updated translation: Croatian
@@ -468,7 +472,7 @@ Changes from 2.06+ (build 150629) to 2.06+ (build 150723) Jul 23, 2015
 #Updated translation: Korean by spn
 #Updated translation: Polish by elisa
 #Updated translation: Polish (Informal) by elisa
- 
+
 Changes from 2.06+ (build 150625) to 2.06+ (build 150629) Jun 29, 2015
 -Fixed issue 09706: Wrong minimum PHP version in installer (Gabriele Mambrini)
 -Fixed issue #9589: Testing a survey for admin user can be broken (Denis Chenu)
@@ -592,7 +596,7 @@ Changes from 2.05+ (build 131209) to 2.05+ (build 150520) May 20, 2015
 -New feature #8596: Allow empty dates for RemoteControl add_response call (Nate Baker)
 -New feature: Add title on question list when exporting result (Denis Chenu)
 -New feature: Default value for yes/no question type (kairavesloot)
--New translation: Kazakh 
+-New translation: Kazakh
 -New feature #9066: afterSurveyComplete aren't call from Quota : afterSurveyQuota (Denis Chenu)
 -New feature : use shortest url with urlFormat path (Denis Chenu)
 -New feature #8659: Configurable proxy for ComfortUpdate (mfaber)
@@ -956,8 +960,8 @@ Changes from 1.92+ (build 120530) to 1.92+ (build 120607) June 7, 2012
 -Fixed issue #6149: EM shows wrong result for number generated by rand() function (Thomas White)
 -Fixed issue #6154: File upload questions not mandatory anymore (Thomas White)
 -Fixed issue #6158: In question-by-question mode, EM replacements in same group but on different page use <span> (Thomas White)
--Fixed issue #6163: error in mandatory array_filter-ed multi-numeric and multiple-short questions 
--Fixed issue #6165: unable to implement affirmative exclusive non-answer in array_filter_exclude 
+-Fixed issue #6163: error in mandatory array_filter-ed multi-numeric and multiple-short questions
+-Fixed issue #6165: unable to implement affirmative exclusive non-answer in array_filter_exclude
 -Fixed issue #06079: sub-question filtering broken if "other" or "no answer" option is given (Thomas White)
 -Fixed issue #6171: variable < X is true even if variable isn't answered (Thomas White)
 -Fixed issue #6172: Update to Version 1.92+ from 1.91+ Cannot Complete - Reason: Duplicate column name 'grelevance' (Thomas White)
@@ -971,16 +975,16 @@ Changes from 1.92+ (build 120530) to 1.92+ (build 120607) June 7, 2012
 -Fixed issue: mktime() function needs to be passed integer values (Thomas White)
 -Fixed issue: 'other' status flag missing from Show Logic File (Thomas White)
 -Fixed issue: Errors in Postgres upgrade and DB creation (Carsten Schmitz)
-#Updated translation: Amharic by mezwor 
-#Updated translation: Czech by slansky 
-#Updated translation: Dutch 
+#Updated translation: Amharic by mezwor
+#Updated translation: Czech by slansky
+#Updated translation: Dutch
 #Updated translation: Dutch (Informal)
-#Updated translation: Estonian by LimAlf 
-#Updated translation: Italian by lfanfoni 
+#Updated translation: Estonian by LimAlf
+#Updated translation: Italian by lfanfoni
 #Updated translation: Polish by elisa
-#Updated translation: Portuguese (Portugal) by algarvio 
-#Updated translation: Slovenian 
-#Updated translation: Spanish (Chile) by SirCrovax 
+#Updated translation: Portuguese (Portugal) by algarvio
+#Updated translation: Slovenian
+#Updated translation: Spanish (Chile) by SirCrovax
 #Updated translation: Turkish by kayazeren
 
 Changes from 1.92+ (build 120529) to 1.92+ (build 120530) May 28, 2012
@@ -993,11 +997,11 @@ Changes from 1.92+ (build 120526) to 1.92+ (build 120529) May 28, 2012
 -Fixed issue: Admin language switching to survey language (Carsten Schmitz)
 
 Changes from 1.92+ (build 120517) to 1.92+ (build 120526) May 26, 2012
-#Updated translation: Dutch by Nickko 
+#Updated translation: Dutch by Nickko
 #Updated translation: Dutch (Informal) by Nickko (root)
-#Updated translation: French by Denis Chenu, Nickko 
+#Updated translation: French by Denis Chenu, Nickko
 #Updated translation: German (Informal) by c_schmitz (root)
-#Updated translation: German by c_schmitz 
+#Updated translation: German by c_schmitz
 #Updated translation: Polish (elisa-ls)
 #Updated translation: Dutch
 #Updated translation: Portuguese
@@ -1006,7 +1010,7 @@ Changes from 1.92+ (build 120517) to 1.92+ (build 120526) May 26, 2012
 -Fixed issue #5766: exclude_all_others_auto does not work (Thomas White)
 -Fixed issue #6114: Mail encryption really off for bounce managment (Denis Chenu)
 -Fixed issue #6119: Apostrophe bug in statistics PDF and Excel output (Carsten Schmitz)
--Fixed issue #6124: User with limited rights is allowed to export complete MySQL DB 
+-Fixed issue #6124: User with limited rights is allowed to export complete MySQL DB
 -Fixed issue: User with configurator access doesn't have acces to global settings (Denis Chenu)
 -Fixed issue: Survey list does not show surveys having deleted owners (Carsten Schmitz)
 
@@ -1017,10 +1021,10 @@ Changes from 1.92+ (build 120516) to 1.92+ (build 120517) May 17, 2012
 Changes from 1.92+ (build 120509) to 1.92+ (build 120516) May 16, 2012
 +New translation: Spanish (Chile) kindly provided by Victor Pinto (Carsten Schmitz)
 #Updated translation: Polish (elisa-ls)
-#Updated translation: Amharic kindly provided by Mezene Worku 
+#Updated translation: Amharic kindly provided by Mezene Worku
 #Updated translation: Czech (lukas-slansky)
-#Updated translation: German by c_schmitz 
-#Updated translation: Persian - kindly provided by Morteza Farahbod 
+#Updated translation: German by c_schmitz
+#Updated translation: Persian - kindly provided by Morteza Farahbod
 #Updated translation: Turkish - 100% - kindly provided by Kaya Zeren
 -Fixed issue #5766: exclude_all_others_auto does not work (Thomas White)
 -Fixed issue #5943: Exclusive option in multiple choice hides all other answer options (Thomas White)
@@ -1032,7 +1036,7 @@ Changes from 1.92+ (build 120509) to 1.92+ (build 120516) May 16, 2012
 -Fixed issue #6093: Wrong result when comparing decimal values from equation question types in surveys using comma as decimal point (Thomas White)
 -Fixed issue #6102: "Print your answers" shows EM syntax errors (Thomas White)
 -Fixed issue #6048: Conditions editor produces fatal error: maximum allocated memory (Carsten Schmitz)
--Fixed issue #6080: Wrong validation for multiple numeric questions 
+-Fixed issue #6080: Wrong validation for multiple numeric questions
 -Fixed issue #6085: By pasting a subquestion code can contain a space (Carsten Schmitz)
 -Fixed issue: Misaligned input with multi column on citronade (Denis Chenu)
 -Fixed issue: Array-filter equations not visible for List-type questions in Show Survey Logic file (Thomas White)
@@ -1043,7 +1047,7 @@ Changes from 1.92+ (build 120509) to 1.92+ (build 120516) May 16, 2012
 -Fixed issue: Unable to add label in label set administration (Carsten Schmitz)
 
 Changes from 1.92+ (build 120501) to 1.92+ (build 120509) May 9, 2012
-+New translation: Afrikaans 
++New translation: Afrikaans
 +New translation: Amharic - kindly provided by Mezene Worku
 #Updated translation: Polish (elisa-ls)
 #Updated translation: German (Carsten Schmitz)
@@ -1075,7 +1079,7 @@ Changes from 1.92+ (build 120425) to 1.92+ (build 120501) May 1, 2012
 -Fixed issue #6045: Firefox 12 vertical scrolling problem in admin view (and other pages) (Carsten Schmitz)
 -Fixed issue #6056 - Quota languages don't update (jcleeland)
 -Fixed issue: Images inserted into HTML emails were not properly linked to the server (Carsten Schmitz)
--Fixed issue: Fixed several HTML issues for data entry mode 
+-Fixed issue: Fixed several HTML issues for data entry mode
 -Fixed issue: Partial fix (just data entry - editing data missing) for bug #6044: Use advanced question settings such as numbers_only, display_rows, max_characters, prefix, suffix, ... at data entry screen. (Marcel Minke)
 
 Changes from 1.92+ (build 120418) to 1.92+ (build 120425) April 25, 2012
@@ -1107,9 +1111,9 @@ Changes from 1.92+ (build 120412) to 1.92+ (build 120418) April 18, 2012
 -Fixed issue: Only set EM variables for {TOKEN:xxxx} when token table exists; and only for declared attributes (Thomas White)
 -Fixed issue: Participant IP address not correctly captured if server is behind proxy (Carsten Schmitz)
 -Fixed issue: Warning if upload file and there is no minimum number of files specified (Thomas White)
-#Updated translation: Czech kindly provided by Slansky Lukas 
-#Updated translation: French kindly provided by Guillaume Jaouen 
-#Updated translation: German 
+#Updated translation: Czech kindly provided by Slansky Lukas
+#Updated translation: French kindly provided by Guillaume Jaouen
+#Updated translation: German
 #Updated translation: German (informal) (Carsten Schmitz)
 
 
@@ -1199,7 +1203,7 @@ Changes from 1.91+ (build 120302) to 1.92+ (build 120311) Mar 11, 2012
 -Fixed issue #5880: Make em_q_fn_validation and em_sq_fn_validation more easily visible (Thomas White)
 -Fixed issue #5887: Minimum answers in Ranking question type are deactivated (Thomas White)
 -Fixed issue #5892: With question type "Short free text" and "display row" set, the text field is shown with some code (Thomas White)
--Fixed issue #5894: INSERTANS (and qcode.shown) returning wrong values for some question types 
+-Fixed issue #5894: INSERTANS (and qcode.shown) returning wrong values for some question types
 -Fixed issue #5895: On-page substitution of comment for List with Comment type not being displayed (Thomas White)
 -Fixed issue #5897: Survey ID not set correctly after row insert in servey_NNN table (Thomas White)
 -Fixed issue #5778: Multiple choice answer for rtl in basic,bluenegrey,citronade,clear_logo,eireicon Dev: Add some empty class in citronade (Shnoulle)
@@ -1273,26 +1277,26 @@ Changes from 1.90 (build 9642) to 1.91+ (build 120302) Mar 3, 2012
 +New feature: Welcome screen can be skipped by using a setting at survey level (mennodekker)
 +New feature #4588: Allow to reverse iteration order in Array (Numbers). This allows to reverse the iteration order of the generated numbers when setting "Minimum value" "Maximum value" and "Step" in "Array (Numbers)" question type. Reverse ordering can be achieved by putting a _max value lower than _min. The loop will iterate in reverse (you don't need to put a negative step value). Requested for questions where ordering could introduce bias. Patch by wavexx - Thank you!
 +New feature #4652: Keyboard-less operation through JS keypad for tablet PCs or other devices without keyboard - patch provided by Yuri D'Elia (wavexx) - thank you!
-+New feature #4660: New switch in survey setting where you can enable that users may enter they survey even after completion and update their answers using the invitation link and token persistence - patch by room2web 
++New feature #4660: New switch in survey setting where you can enable that users may enter they survey even after completion and update their answers using the invitation link and token persistence - patch by room2web
 +New feature #4650: Page color alternation and navigation delay (c_schmitz)
 +New feature: Quick navigation buttons to move forward and backward between question groups and questions (adevries)
 +New feature: Survey quick translation screen(adevries)
 +New feature: Ability to use comma or dot as decimal separator for numeric and multiple numeric question types - - work done by Google Code-In participant Kshitij Parajuli. Thank you! (c_schmitz)
 +New feature: Administration brute force detection and prevention - work done by Google Code-In participant Kshitij Parajuli. Thank you!
-+New feature: Allow to restrict input to integers for Numeric question type - patch by wavexx 
-+New feature: Allow to reverse year order in dropdown dates - patch by wavexx 
++New feature: Allow to restrict input to integers for Numeric question type - patch by wavexx
++New feature: Allow to reverse year order in dropdown dates - patch by wavexx
 +New feature: Changing owner of survey. (parajulik)
 +New feature: Detailed survey permissions based on a CRUD model (c_schmitz)
 +New feature: Direct export to queXML PDF file (azammitdcarf)
 +New feature: Emoticon slider (c_schmitz)
-+New feature: Google Translate support for quick translation feature - work done by Google Code-In participant Kshitij Parajuli. Thank you! 
-+New feature: In "question by question" mode, you can now go "back" from the starting element of a group - patch by wavexx 
++New feature: Google Translate support for quick translation feature - work done by Google Code-In participant Kshitij Parajuli. Thank you!
++New feature: In "question by question" mode, you can now go "back" from the starting element of a group - patch by wavexx
 +New feature: Login page automatically sets login language to browser language (c_schmitz)
-+New feature: New option for "Number" question types named "Maximum value of the numeric input" and "Minimum value of the numeric input"  - patch by wavexx 
++New feature: New option for "Number" question types named "Maximum value of the numeric input" and "Minimum value of the numeric input"  - patch by wavexx
 +New feature: Option in survey settings to hide the progress bar. (c_schmitz)
 +New feature: Optional question index to easily jump between questions while taking the survey. Index also shows if a part of a survey was completely answered or not - great work & patch done by Yuri D'Elia (wavexx) (c_schmitz)
 +New feature: Question attribute to reverse iteration order in Array (Numbers) question types - patch by wavexx (c_schmitz)
-+New feature: Show details about LimeSurvey installation before starting the db upgrade - work done by Google Code-In participant Little Bird 
++New feature: Show details about LimeSurvey installation before starting the db upgrade - work done by Google Code-In participant Little Bird
 +New feature: Support for the "maximum_chars" attribute to the array/numbers question type, when using the text input layout. (c_schmitz)
 +New feature: Spread sheet type row and colum totals for Array Multi text (numbers only) (eric_t_cruiser)
 +New feature: Switching SSL on and off  (eric_t_cruiser)
@@ -1309,7 +1313,7 @@ Changes from 1.90 (build 9642) to 1.91+ (build 120302) Mar 3, 2012
 -Deleted feature: business_grey template (c_schmitz)
 
 
-Changes from 1.87+ (build 8518) to 1.90+ (build 9561) Legend: # updated feature, - bug fix 
+Changes from 1.87+ (build 8518) to 1.90+ (build 9561) Legend: # updated feature, - bug fix
 +New feature: CSS class names for question/answer cells so you can better style the look and feel of the overview. (maziminke)
 +New feature: Very basic HTTPS support (c_schmitz) - allows dynamic switching between https and http
 +New feature: Irish Translation - kindly contributed by Karin Whooley, National Centre for Technology in Education, Dublin (c_schmitz)
@@ -1359,7 +1363,7 @@ Changes from 1.87+ (build 8518) to 1.90+ (build 9561) Legend: # updated feature,
 #Updated translation: Bulgarian (c_schmitz)
 #Updated translation: German (c_schmitz)
 #Updated translation: Polish (elisa-ls)
--Fixed issue #4028: PostgreSQL syntax errors while upgrading from 1.80 to 1.87 (gandalfar) 
+-Fixed issue #4028: PostgreSQL syntax errors while upgrading from 1.80 to 1.87 (gandalfar)
 -Fixed issue #4245: CSS class "questionhelp" used for two different elements (tpartner)
 -Fixed issue #4287: Long question text overlaps itself when editing question (tpartner)
 -Fixed issue #4302: Navigating between pages may change already saved answers (tpartner)
@@ -1390,7 +1394,7 @@ Changes from 1.87+ (build 8518) to 1.90+ (build 9561) Legend: # updated feature,
 -Fixed issue: Wrong numbers were taken from DB to calculate the percentage of completed tokens at the list survey overview. (maziminke)
 
 
-Changes from  1.87+ (build 8498) to 1.87+ (build 8518)- Legend: # updated feature, - bug fix 
+Changes from  1.87+ (build 8498) to 1.87+ (build 8518)- Legend: # updated feature, - bug fix
 #Updated feature: performance gain in both the participant and administrator interface by caching question attributes (saving loads of db queries) (mennodekker)
 #Updated translation: Croatian (idobraca)
 #Updated translation: French (b00z00)
@@ -1404,7 +1408,7 @@ Changes from  1.87+ (build 8498) to 1.87+ (build 8518)- Legend: # updated featur
 -Fixed issue #4206:Array (Multi Flexible) (Numbers) - Not working correctly (harsha_mora)
 -Fixed unreported issue: When downloading R/SPSS export files in Opera they would be saved as *.html files (c_schmitz)
 
-Changes from  1.87+ (build 8472) to 1.87+ (build 8498)- Legend: # updated feature, - bug fix 
+Changes from  1.87+ (build 8472) to 1.87+ (build 8498)- Legend: # updated feature, - bug fix
 #Updated translation: Catalan - sponsored by LimeService (c_schmitz)
 #Updated translation: Polish (elisa-ls)
 -Fixed issue #3303: "Error updating - Query was empty" when editing survey settings - again (c_schmitz)
@@ -1417,7 +1421,7 @@ Changes from  1.87+ (build 8472) to 1.87+ (build 8498)- Legend: # updated featur
 -Fixed issue 04188: Edit Response - Data Entry - Not working Dev corrected filling values automatically for Array (MultiFlexible)(Numbers) type questions (harsha_mora)
 -Fixed the issue for Date type questions 04188 (harsha_mora)
 
-Changes from  1.87+ (build 8453) to 1.87+ (build 8472)- Legend: # updated feature, - bug fix 
+Changes from  1.87+ (build 8453) to 1.87+ (build 8472)- Legend: # updated feature, - bug fix
 #Updated translation: French (b00z00)
 -Fixed unreported bug: Added help text relating to array_filter attributes, also added help text relating to multi-numerical sum value attributes (jcleeland)
 -Fixed issue #4165: Javascript is shown in group description (c_schmitz)
@@ -1426,7 +1430,7 @@ Changes from  1.87+ (build 8453) to 1.87+ (build 8472)- Legend: # updated featur
 -Fixed issue #4183: Notices at Printable Survey if there are no answers/label set set for a question (c_schmitz)
 -Fixed issue #4174: applied survey defined date format to expiry date print out for Survey print view (eric_t_cruiser)
 
-Changes from  1.87+ (build 8429) to 1.87+ (build 8453) - Legend: # updated feature, - bug fix 
+Changes from  1.87+ (build 8429) to 1.87+ (build 8453) - Legend: # updated feature, - bug fix
 #Updated feature: the html editor was updated from FCKeditor 2.6.5 to FCKeditor 2.6.6 (lemeur)
 #Updated translation: Chinese (Simpified), thanks to yooyooh from shanghai (gandalfar)
 #Updated translation: Croatian (idobraca)
@@ -1443,7 +1447,7 @@ Changes from  1.87+ (build 8429) to 1.87+ (build 8453) - Legend: # updated featu
 -Fixed issue #4164: When using keyboard navigation the checkboxes are checked in Multiple options Question and Multiple options with comments question types (c_schmitz)
 -Fixed issue: Entering invalid float in multiple numeric question is causing the survey to exit (c_schmitz)
 
-Changes from  1.87+ (build 6406) to 1.87+ (build 8429) - Legend: # updated feature, - bug fix 
+Changes from  1.87+ (build 6406) to 1.87+ (build 8429) - Legend: # updated feature, - bug fix
 +New language: Malay (thanks to Kardina Kamaruddin) (gandalfar)
 #Updated feature: Usability: In login and user language selection the select box is ordered now by the native language. In other language list boxes the native language won't be shown anymore. (c_schmitz)
 #Updated language: Croatian (idobraca)
@@ -1461,7 +1465,7 @@ Changes from  1.87+ (build 6406) to 1.87+ (build 8429) - Legend: # updated featu
 -Fixed issue #4144: vvimport.php producing infinite loop (c_schmitz)
 -Fixed issue #4125: Text when quota reached in wrong language (idobraca)
 
-Changes from  1.87+ (build 8374) to 1.87+ (build 8406) - Legend: # updated feature, - bug fix 
+Changes from  1.87+ (build 8374) to 1.87+ (build 8406) - Legend: # updated feature, - bug fix
 #Updated translation: Croatian (idobraca)
 #Updated translation: Slovenian (gandalfar)
 #Updated translation: Danish by Robin Sharp
@@ -1489,14 +1493,14 @@ Changes from  1.87+ (build 8374) to 1.87+ (build 8406) - Legend: # updated featu
 -Fixed issue #4116: emailSender does not include full survey URL (wahrendorff)
 
 
-Changes from 1.87+ (build 8366) to 1.87+ (build 8374) - Legend: # updated feature, - bug fix 
+Changes from 1.87+ (build 8366) to 1.87+ (build 8374) - Legend: # updated feature, - bug fix
 +New Feature: New option to compute stats for each question based only on the total number of responses for which the question was displayed. (lemeur)
 +New Feature: New option to generate statistics in any language supported by the survey. (lemeur)
 -Fixed a serious issue in save answer introduced in patch 8361 (lemeur)
 -Fixed unreported issue: Obsolete question_start.pstpl still editable in template editor even if it does not exist (c_schmitz)
 -Fixed unreported issue: Javascript error on some pages while typing in a other field for single choice question (lemeur)
 
-Changes from 1.87+ (build 8338) to 1.87+ (build 8366) - Legend: # updated feature, - bug fix 
+Changes from 1.87+ (build 8338) to 1.87+ (build 8366) - Legend: # updated feature, - bug fix
 #Update of Croatian language file (idobraca)
 #Updated Feature #04097: small UI update, when clicking the conditions icon on the question toolbar, the condition editor is now open in edit mode, and not in view mode (lemeur)
 #Updated translation: German (c_schmitz)
@@ -1512,7 +1516,7 @@ Changes from 1.87+ (build 8338) to 1.87+ (build 8366) - Legend: # updated featur
 -Fixed bug #4092: Quota name is shown as link but not clickable  (maziminke)
 -Fixed bug #4090: notice when setting quotas (maziminke)
 
-Changes from 1.87+ (build 8310) to 1.87+ (build 8338) - Legend: # updated feature, - bug fix 
+Changes from 1.87+ (build 8310) to 1.87+ (build 8338) - Legend: # updated feature, - bug fix
 #Updated translation: French (b00z00)
 #Updated translation: Greek by Penny Labropoulou (c_schmitz)
 -Fix issue 04051: Full screen HTML editor is not full screen      (tpartner)
@@ -1532,7 +1536,7 @@ Changes from 1.87+ (build 8310) to 1.87+ (build 8338) - Legend: # updated featur
 -Fixed unreported issue: subject of password remainder email wasn't translated (idobraca)
 
 
-Changes from 1.87+ (build 8279) to 1.87+ (build 8310) - Legend: # updated feature, - bug fix 
+Changes from 1.87+ (build 8279) to 1.87+ (build 8310) - Legend: # updated feature, - bug fix
 #Updated translation: Croatian language (idobraca)
 #Updated translation: Slovenian translation (gandalfar)
 #Updated translation: German (c_schmitz)
@@ -1547,11 +1551,11 @@ Changes from 1.87+ (build 8279) to 1.87+ (build 8310) - Legend: # updated featur
 -Fixed several HTML errors (mennodekker)
 
 
-Changes from 1.87+ (build 8243) to 1.87+ (build 8279) - Legend: # updated feature, - bug fix 
+Changes from 1.87+ (build 8243) to 1.87+ (build 8279) - Legend: # updated feature, - bug fix
 +New feature: Added radio(list) to array_filter and array_filter_exclude (jcleeland)
 #Updated feature #4020: Show fullname and assigned rights in survey security settings overview (mennodekker)
 #Update translation: Croatian (idobraca)
-#Updated translation: Finnish by Tapio Nurminen 
+#Updated translation: Finnish by Tapio Nurminen
 #Updated translation: German (c_schmitz)
 #Updated translation: German Informal (c_schmitz)
 #Updated translation: Norwegian bokmal by Pal Monstad (
@@ -1592,13 +1596,13 @@ Changes from 1.87 (build 8214) to 1.87+ (build 8227) - Legend: # updated feature
 
 Changes from 1.87RC5 (build 8151) [29-11-2009] to 1.87 (build 8214) - Legend: # updated feature, - bug fix
 #Updated translation: Croatian (idobraca)
-#Updated translation: Chinese Traditional (Hong Kong) by Mark Yeung http://www.pstudy.net 
+#Updated translation: Chinese Traditional (Hong Kong) by Mark Yeung http://www.pstudy.net
 #Updated translation: French (b00z00)
 #Updated translation: German (c_schmitz)
 #Updated translation: German Informal (c_schmitz)
-#Updated translation: Romanian by Stefaniu Criste 
+#Updated translation: Romanian by Stefaniu Criste
 #Updated translation: Spanish (es) (kadejo)
-#Updated translation: Thai sponsored by LimeService 
+#Updated translation: Thai sponsored by LimeService
 #Updated translation: Polish (elisa-ls)
 -Fixed issue #4002: LimeReplacementfield window: no scrollbar or tooltips available    (tpartner)
 -Fixed issue #4011: Notice after changing admin user rights for a survey is not centered     (tpartner)
@@ -1702,7 +1706,7 @@ Changes from 1.87RC4 (build 8002) [29-11-2009] to 1.87RC5 (build 8151) - Legend:
 
 Changes from 1.87RC3 (build 7996) to 1.87RC4 (build 8002) [29-11-2009] - Legend: # updated feature, - bug fix
 #Updated translation: French (b00z00)
-#Updated translation: Portuguese Brazilian by Yoshitake 
+#Updated translation: Portuguese Brazilian by Yoshitake
 -Fixed issue #3913: Clean installation failing with error message "Error getting tokens" (c_schmitz)
 -Fixed issue: Json_decode error for PHP versions < 5.2 (c_schmitz)
 
@@ -1713,13 +1717,13 @@ Changes from 1.87RC2 (build 7886) to 1.87RC3 (build 7996) [27-11-2009] - Legend:
 #Updated Feature: Token export now adds the attribute description in the header, next to the attribute_x fieldname (lemeur)
 #Updated translation: Croatian (idobraca)
 #Updated translation: French (b00z00)
-#Updated translation: Dutch Informal by Han Velthuis 
-#Updated translation: Dutch by Han Velthuis 
-#Updated translation: Finnish by Tapio Nurminen <tapio dot nurminen at tietokannat dot fi> 
+#Updated translation: Dutch Informal by Han Velthuis
+#Updated translation: Dutch by Han Velthuis
+#Updated translation: Finnish by Tapio Nurminen <tapio dot nurminen at tietokannat dot fi>
 #Updated translation: German (c_schmitz)
 #Updated translation: German Informal (c_schmitz)
-#Updated translation: Norwegian BokmÃƒÂ¥l. By Reidar ÃƒËœksnevad <reidar dot oksnevad at freecode dot no> 
-#Updated translation: Portuguese Brazilian by Yoshitake <yoshitake at pucsp dot br> 
+#Updated translation: Norwegian BokmÃƒÂ¥l. By Reidar ÃƒËœksnevad <reidar dot oksnevad at freecode dot no>
+#Updated translation: Portuguese Brazilian by Yoshitake <yoshitake at pucsp dot br>
 #Updated translation: Slovakian by Pavel Cerny  <pcerny at gmail dot com>
 #Updated translation: Spanish (kadejo)
 #Updated translation: Galician(calidonia)
@@ -1758,7 +1762,7 @@ Changes from 1.87RC1 (build 7886) to 1.87RC2 (build 7922) [18-11-2009] - Legend:
 +New feature - array_filter now works for multiple option questions (jcleeland)
 +New feature - array_filter_exclude - hides options based on answers to previous question. Works in opposite way to array_include (jcleeland)
 -Fixed issue #3483: the forgot password screen is limitted in username and email length making it impossible to retrieve passwords for users with very long email addresses (thanks to Taliesen)
--Fixed issue #3852: Bug during update - wrong slash in update.php 
+-Fixed issue #3852: Bug during update - wrong slash in update.php
 -Fixed issue #3831: When adding HTML tag at text questions the survey crashes (c_schmitz)
 -Fixed issue #03840: Error when using time control (jcleeland)
 -Fixed issue #03841: Settings does not appear (timer text messages not appearing) - was more a bug with the entire textarea modification to the question attributes handling. Now solved. (jcleeland)
@@ -1776,7 +1780,7 @@ Changes from 1.87RC1 (build 7886) to 1.87RC2 (build 7922) [18-11-2009] - Legend:
 
 Changes from 1.86 (build 7689) to 1.87RC1 (build 7886) [13-11-2009] - Legend: + new feature, # update feature, - bug fix
 +New feature #3292 and #2857: slider min and max can now be displayed below the slider (using the slider_showminmax question attribute). Slider Left and Right text can be displayed before and after the slider (using the slider_separator question attribute and using specific answers format). (lemeur)
-+New feature: Reworked question attributes -  they are shown as a form now and in fieldsets 
++New feature: Reworked question attributes -  they are shown as a form now and in fieldsets
 +New feature #3758: Possibility to define a favicon for a template (el-matador-69)
 +New feature: Reworked Saved responses and added table sorting capabilities (c_schmitz)
 +New feature: Token length can now be set for each survey (maziminke)
@@ -1818,7 +1822,7 @@ Changes from 1.86 (build 7689) to 1.87RC1 (build 7886) [13-11-2009] - Legend: + 
 -Fixed issue #3763: Double Tooltip at Condition Designer (lemeur)
 -Fixed issue #3785: No possibility to set other field as condition for 'List Flexible Labels Dropdown' and 'List Flexible Labels (Radio)' questions (lemeur)
 -Fixed issue #3818: Copy conditions function doesn't differentiate between upper and lower case. (lemeur)
--Fixed issue #2713: SPSS export of data is in a strange order (mdekker) 
+-Fixed issue #2713: SPSS export of data is in a strange order (mdekker)
 -Fixed issue #3718: Question preview differs in design from survey at runtime (c_schmitz)
 -Fixed issue #3719: Little usability problem with automatic generated answer codes (c_schmitz)
 -Fixed issue #3720: Repeated answer header design being different to normal header in bluengrey and default template (c_schmitz)
@@ -2567,8 +2571,8 @@ Fixed issues:
     -Fixed: same color for answertextright as for answertext (blue) (wahrendorff)
     -Fixed class.phpmailer.php like recommended in the forums, see http://www.limesurvey.org/index.php/fr/Development/20460-done-Bug-in-class.phpmailer.php.html (wahrendorff)
 
-  
-    
+
+
 
 Changes from 1.71 to 1.72 (build 5737)  (2008/10/07)
 
@@ -2776,12 +2780,12 @@ Changes from 1.70 to 1.71 (2008/06/02)
 
 New Features:
 -Standard sitename and sitemail when creating survey (lemeur)
--Complete Korean translation submitted by Sehee Kim (cactusgrlkr -a-t- naver -dot-com) on behalf of the Korean Police School translation team. 
--Added basic support for Right-to-Left languages 
--Added Farsi translation stub by Laurent Giacobino 
+-Complete Korean translation submitted by Sehee Kim (cactusgrlkr -a-t- naver -dot-com) on behalf of the Korean Police School translation team.
+-Added basic support for Right-to-Left languages
+-Added Farsi translation stub by Laurent Giacobino
 -Added Welsh translation
 -Added Indonesian translation by Lukas (c_schmitz)
--Numerous translation updates kindly provided by the project translators and users out there. 
+-Numerous translation updates kindly provided by the project translators and users out there.
 -Include new pdf-features (stfreud)
 -Reworked the SPSS export to
     a) remove redundant pass throughs of dataset (in DATA LIST build)
@@ -2796,7 +2800,7 @@ Note, this was only tested with SPSS 15, it's likely there are UTF-8 problems. (
 
 
 
-Bug fixes: 
+Bug fixes:
 Lots of security fixes & Sanitizing the script (c_schmitz)
 Fixed #1807: Export to Excel on PHP4 creates empty .xls file. According warning message is shown in export window and export to excel to deactivated when iconv library in PHP4 is not installed. (c_schmitz)
 Fixed #1985: Exporting to SPSS shows 'SHOW COLUMNS ' error with non MySQL DB (awarren)
@@ -2964,7 +2968,7 @@ New Features / Feature Changes - Release Date: 2008/02/25
 [Survey at Runtime] Make Email Subjects of Admin Notifications Translateable (c_schmitz)
 [Survey Design] Move submit button to last question page (c_schmitz)
 [Survey at Runtime] Correct error message and further instructions, if user has disabled Cookies (c_schmitz)
-[Security] Protection against token code brute force attacks (lemeur)  
+[Security] Protection against token code brute force attacks (lemeur)
 [Survey at Runtime] Checkbox for Multiple Choice Other Option (c_schmitz)
 [Survey Design] Mass Logic Eliminator (lemeur)
 [Survey Design] New conditions operators on comparizons,regexp (dgeaperez)
@@ -3005,11 +3009,11 @@ Fixes:
 -The style of the "Ranking Question" is now adjusted to the new color scheme at DataEntry (c_schmitz)
 -Fixed notices in template editor at "Question Page", "Submit Page" and "Clear all page" (c_schmitz)
 -Fixed completed Date Field in token table being Too Short (c_schmitz)
--Fixed Empty data on repeated submission in all-in-one mode (leochaton)	
--Fixed problem with mandatory questions in all-in-one mode (leochaton)	
--Fixed "Load unfinished survey" and "Save survey and return" buttons active even when the survey is not active (leochaton)	
+-Fixed Empty data on repeated submission in all-in-one mode (leochaton)
+-Fixed problem with mandatory questions in all-in-one mode (leochaton)
+-Fixed "Load unfinished survey" and "Save survey and return" buttons active even when the survey is not active (leochaton)
 -Fixed question marks being shown instead if Cyrillic/chinese/greek/... characters when installing LImeSurvey into a non-UTF8 database (c_schmitz)
--Fixed $accesscontrol isnÂ´t working correctly - removed this obsolete setting (leochaton, c_schmitz)	
+-Fixed $accesscontrol isnÂ´t working correctly - removed this obsolete setting (leochaton, c_schmitz)
 -Fixed error clicking Browse button to view text box responses (leochaton)
 -Fixed Locale nl point to wrong images-directory (el-matador-69)
 -Fixed The saved control records were not deleted when the survey was deactivated. (leochaton)
@@ -3057,7 +3061,7 @@ New General Features
     * Fixed image links and included PNGFix in admin interface for crappy old IE6 browsers (nkorfiatis)
     * Bubble hints on icons for FF (nkorfiatis)
     * DB Versioning for easier updates to the DB in the future (c_schmitz))
-    * Removed experimental interface 
+    * Removed experimental interface
 
 
 New Languages
@@ -3070,13 +3074,13 @@ New Languages
     * Polish by Maciej Zawado
     * Serbian by Ivan Recevic
     * Spanish by Carlos Juan MartÃ­n PÃ©rez
-    * Vietnamese by Vinh Ngo 
+    * Vietnamese by Vinh Ngo
 
 
 New Templates
 
     * New default template
-    * New clear_logo template 
+    * New clear_logo template
 
 
 
@@ -3157,12 +3161,12 @@ New features:
 
 Added croatian language file (submitted by Ivana Pavic)!
 Change survey sent/taken from "Y" to the date:
-	When reviewing the tokens display, the fields telling if the survey request was sent, 
-	and the survey taken, display a N or Y. This was changed to be the actual date this event took place. 
-	This is giving some siginificant additional information to the survey author. (Patch by Thomas Ringate / tringate!)
-New global option that allows the administrator to specify what is the minimum number of remaining answers 
-	in an 'array - flexible' question that must be remaining before repeating the question headings. This 
-	avoids that the headings of the question are repeated if only a few answers are remaining. (Patch by Kris Ven !)
+    When reviewing the tokens display, the fields telling if the survey request was sent,
+    and the survey taken, display a N or Y. This was changed to be the actual date this event took place.
+    This is giving some siginificant additional information to the survey author. (Patch by Thomas Ringate / tringate!)
+New global option that allows the administrator to specify what is the minimum number of remaining answers
+    in an 'array - flexible' question that must be remaining before repeating the question headings. This
+    avoids that the headings of the question are repeated if only a few answers are remaining. (Patch by Kris Ven !)
 
 Changes:
 Moved admin CSS styles to separate CSS file
@@ -3199,23 +3203,23 @@ Changes from 0.98 to 0.99
 
 1.) New question types
 
-* List type question divided into two question types - radio 
-button or drop down, so you can choose on a question by 
-question basis whether or not to have radio buttons or a 
+* List type question divided into two question types - radio
+button or drop down, so you can choose on a question by
+question basis whether or not to have radio buttons or a
 dropdown list.
 
-* New "flexible" list type question uses labelsets to make reusing 
+* New "flexible" list type question uses labelsets to make reusing
 sets of answers easier - one radio and one dropdown type
 
 * New "Huge" text question allows for a _really big_ textarea
 
 2.) New features
 
-* UTF-8 conversion. Use any char of any language mixed together. 
-  The problems with mixed up charsets are gone now hopefully. 
+* UTF-8 conversion. Use any char of any language mixed together.
+  The problems with mixed up charsets are gone now hopefully.
   READ THE STATEMENT AT THE BEGINNING OF THIS FILE!!!!
 
-* Question attributes, allows for better control over the display 
+* Question attributes, allows for better control over the display
 and working of individual questions - for example:
 
     - Have multiple choice or list questions display in multiple columns
@@ -3229,8 +3233,8 @@ and working of individual questions - for example:
 
 * New system option to set the table type in MySQL
 
-* New "assessments" feature which allows you to sum the 
-answers to groups of questions, or the total survey, and then 
+* New "assessments" feature which allows you to sum the
+answers to groups of questions, or the total survey, and then
 present an "assessment" when the users submits the survey.
 
 * New survey options, including:
@@ -3240,11 +3244,11 @@ present an "assessment" when the users submits the survey.
  - Automatically load the "URL" when the user has completed the survey
 
 * VV Import and VV Export
- - A way of exporting and importing results directly to the responses table - which not only allows merging of survey 
-   responses run on different servers, but also the ability to add or remove questions to a survey while preserving the existing 
+ - A way of exporting and importing results directly to the responses table - which not only allows merging of survey
+   responses run on different servers, but also the ability to add or remove questions to a survey while preserving the existing
    responses.
 
-* New sample survey 
+* New sample survey
 
 * Added W3C HTML 4.01 transitional and WAI 508 compliance (not yet finished)
 
@@ -3253,9 +3257,9 @@ present an "assessment" when the users submits the survey.
 
 3.) New language translations
 
-* COMPLETE French translation of the instructions and updated french language file 
+* COMPLETE French translation of the instructions and updated french language file
   kindly provided by S bastien GAUGRY !! (great work!)
-* COMPLETE Italian translation of the instructions and 
+* COMPLETE Italian translation of the instructions and
   updated italian language file kindly provided by Mario Marani !! (great work!)
 * Bulgarian Language File kindly provided by Nikolay Tsanov <tsanov@tu...>
 * Added Portuguese language kindly provided by Rosaura Gazzola & Job Vieira L cio, Brazil
@@ -3264,12 +3268,12 @@ present an "assessment" when the users submits the survey.
 
 
 4.) New themes
-* Included "Blue Heaven" theme 
-* Included "BluenGrey" theme 
-* Included "Vallendar" theme 
-* Included "Business_Grey" theme 
-* Included "Eirenicon" theme 
-* Included "SoftGreenCurves" theme 
+* Included "Blue Heaven" theme
+* Included "BluenGrey" theme
+* Included "Vallendar" theme
+* Included "Business_Grey" theme
+* Included "Eirenicon" theme
+* Included "SoftGreenCurves" theme
 
 
 ... and tons of bugfixes - too many to write down here...
