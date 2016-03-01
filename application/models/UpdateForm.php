@@ -394,6 +394,7 @@ class UpdateForm extends CFormModel
         setGlobalSetting('updateavailable','0');
         setGlobalSetting('updatebuild','');
         setGlobalSetting('updateversions','');
+        Yii::app()->session['security_update']=null;
         Yii::app()->session['update_result']=null;
         Yii::app()->session['next_update_check']=null;
     }
@@ -555,7 +556,6 @@ class UpdateForm extends CFormModel
     */
     public function getUpdateNotification()
     {
-
         if (Yii::app()->getConfig("updatable"))
         {
             $today = new DateTime("now");

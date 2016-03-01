@@ -353,7 +353,12 @@ class update extends Survey_Common_Action
                         if ($unzip->result )
                         {
                             $updateModel->removeTmpFile('update_updater.zip');
-                            $updateModel->removeTmpFile('comfort_updater_cookie.txt');
+                            $updateModel->removeTmpFile('comfort_updater_cookie.txt');                            
+                            setGlobalSetting('updateavailable','0');
+                            setGlobalSetting('updatebuild','');
+                            setGlobalSetting('updateversions','');
+                            Yii::app()->session['update_result']=null;
+                            Yii::app()->session['next_update_check']=null;
                             return $this->controller->renderPartial('update/updater/steps/_updater_updated', array('destinationBuild'=>$destinationBuild), false, false);
                         }
                         else
