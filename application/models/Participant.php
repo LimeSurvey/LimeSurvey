@@ -1249,7 +1249,7 @@ class Participant extends LSActiveRecord
                     }
                     catch (Exception $e)
                     {
-                        throw new Exception(gT("Could not update token attribute value" . $e->getMessage()));
+                        throw new Exception(gT("Could not update token attribute value: " . $e->getMessage()));
                     }
                 }
                 $successful++;
@@ -1320,7 +1320,7 @@ class Participant extends LSActiveRecord
      * Updates a field in the token table with a value from the participant attributes table
      *
      * @param int $surveyId Survey ID number
-     * @param int $participantId unique key for the participant
+     * @param string $participantId unique key for the participant
      * @param int $participantAttributeId the unique key for the participant_attribute table
      * @param int $tokenFieldName fieldname in the token table
      *
@@ -1328,22 +1328,28 @@ class Participant extends LSActiveRecord
      */
     function updateTokenAttributeValue($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
 
+        if (intval($participantAttributeId) === 0)  // OBS: intval returns 0 at fail, but also at intval("0"). lolphp.
+        {
+            throw new InvalidArgumentException(sprintf('$participantAttributeId has to be an integer. Given: %s (%s)', gettype($participantAttributeId), $participantAttributeId));
+        }
+
         //Get the value from the participant_attribute field
         $val = Yii::app()->db
-                         ->createCommand()
-                         ->select('value')
-                         ->where('participant_id = :participant_id AND attribute_id = :attrid')
-                         ->from('{{participant_attribute}}')
-                         ->bindParam("participant_id", $participantId, PDO::PARAM_STR)
-                         ->bindParam("attrid", $participantAttributeId, PDO::PARAM_INT);
+            ->createCommand()
+            ->select('value')
+            ->where('participant_id = :participant_id AND attribute_id = :attrid')
+            ->from('{{participant_attribute}}')
+            ->bindParam("participant_id", $participantId, PDO::PARAM_STR)
+            ->bindParam("attrid", $participantAttributeId, PDO::PARAM_INT);
         $value = $val->queryRow();
+
         //Update the token entry with those values
         if (isset($value['value']))
         {
             $data = array($tokenFieldname => $value['value']);
             Yii::app()->db
-                      ->createCommand()
-                      ->update("{{tokens_$surveyId}}", $data, "participant_id = '$participantId'");
+                ->createCommand()
+                ->update("{{tokens_$surveyId}}", $data, "participant_id = '$participantId'");
         }
         return true;
     }

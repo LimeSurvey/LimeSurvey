@@ -66,6 +66,11 @@ iframe#dialog {
     margin-right: 1em;
 }
 
+.tokenatt-arrow {
+    position: absolute;
+    right: 0;
+}
+
 #labelsetpreview {
     overflow-x: hidden;
 }

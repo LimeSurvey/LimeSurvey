@@ -95,9 +95,16 @@ $(document).ready(function(){
                 $(ui.sender).sortable('cancel');
             }
             else {
+                // Change CSS
                 $(ui.item).removeClass('col-sm-12');
                 $(ui.item).addClass('cpdb-attribute');
                 $(ui.item).wrap('<div class="col-sm-6"></div>');
+
+                // Insert nice arrows
+                //var t = $(ui.item).parent('.tokenatt-container');  // Does not work.
+                var t = $(ui.item).parent('div').parent('div');  // TODO: Bad, should not rely on DOM structure
+                t = t.find('.token-attribute .panel-body');
+                t.append('<span class="fa fa-arrows-h tokenatt-arrow"></span>');
             }
         }
     });
@@ -150,12 +157,12 @@ $(document).ready(function(){
             }, function(msg){
                 $('#attribute-map-participant-modal .modal-body').html(msg);
                 $('#attribute-map-participant-modal').on('hide.bs.modal' , function (e) {
-                    $(location).attr('href',redUrl);
+                    //$(location).attr('href',redUrl);
                 });
                 $('#attribute-map-participant-modal').modal();
         });
     });
 
-    $('.tokenatt .panel-default').disableSelection();
+    $('.tokenatt .panel-default .tokenAttributeId').disableSelection();
     tokencurrentarray = $('.tokenatt').sortable('toArray');
 });
