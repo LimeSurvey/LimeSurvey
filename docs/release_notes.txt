@@ -59,6 +59,10 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.06LTS (build 160301) to 2.06LTS (build 160302) March 01, 2016
+Fixed issue: destroy security alert after update.
+Fixed issue: force updater version reset after updater update.
+
 Changes from 2.06LTS (build 160229) to 2.06LTS (build 160301) March 01, 2016
 Fixed issue: comfortUpdate, clean session and config as a last step
 +New feature: added a link to limesurvey services on subscribe view.
