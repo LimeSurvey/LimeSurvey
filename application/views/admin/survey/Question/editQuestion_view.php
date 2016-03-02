@@ -154,7 +154,16 @@
                                                             <?php if(!$modulename):?>
                                                                 <?php foreach($groups as $name => $group):?>
                                                                     <?php foreach($group as $type => $option):?>
-                                                                        <?php if($type == $eqrow['type']){echo '<span class="buttontext">' . $option . '</span>';}?>
+                                                                        <?php if($type == $eqrow['type']):?>
+                                                                            <span class="buttontext">
+                                                                                <?php echo $option; ?>
+                                                                                <?php if(YII_DEBUG):?>
+                                                                                    <em class="small">
+                                                                                        type code: <?php echo $type; ?>
+                                                                                    </em>
+                                                                                <?php endif;?>
+                                                                            </span>
+                                                                        <?php endif; ?>
                                                                     <?php endforeach;?>
                                                                 <?php endforeach;?>
                                                             <?php else:?>
@@ -172,6 +181,11 @@
                                                                 <?php foreach($group as $type => $option):?>
                                                                     <li>
                                                                         <a href="#" class="questionType" data-value="<?php echo $type; ?>" <?php if($type == $eqrow['type']){echo 'active';}?>><?php echo $option;?></a>
+                                                                        <?php if(Yii::app()->getConfig("debug")===2):?>
+                                                                            <em class="small text-info col-sm-offset-1">
+                                                                                question type code: <?php echo $type; ?>
+                                                                            </em>
+                                                                        <?php endif;?>
                                                                     </li>
                                                                 <?php endforeach;?>
 
