@@ -211,9 +211,9 @@
     <div class='row'>
         <div class='col-sm-7 col-sm-offset-5'>
             <input type='hidden' name='ok' value='Y' />
-            <input type='submit' class="btn  btn-default btn-lg " value="<?php eT("Save / Activate survey"); ?>" />
-            <a class="btn btn-lg" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>" role="button">
-                << <?php eT("Return to survey"); ?>
+            <input type='submit' class="btn btn-default btn-lg " value="<?php eT("Save / Activate survey"); ?>" />
+            <a class="btn btn-default btn-lg" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>" role="button">
+            <?php eT("Cancel"); ?>
             </a>
             </p>
         </div>
