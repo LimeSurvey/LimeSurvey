@@ -166,12 +166,14 @@
                 </li>
 
                 <!-- Manage survey administrators -->
-                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')): ?>
+                <?php if(Permission::model()->hasGlobalPermission('users','read')): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/user/sa/index"); ?>">
                             <?php eT("Manage survey administrators");?>
                         </a>
                     </li>
+                    <?php endif;?>
+                <?php if(Permission::model()->hasGlobalPermission('usergroups','read')): ?>
 
                     <!-- Create/edit user groups -->
                     <li class="dropdown-item">
@@ -197,17 +199,17 @@
 
 
         <!-- Settings -->
-        <?php if(Permission::model()->hasGlobalPermission('superadmin','read')): ?>
 
-            <li class="col-sm-2">
-                <ul>
+        <li class="col-sm-2">
+            <ul>
 
-                    <!-- Settings -->
-                    <li class="dropdown-header">
-                        <span class="icon-global" ></span>
-                        <?php eT('Settings');?>
-                    </li>
+                <!-- Settings -->
+                <li class="dropdown-header">
+                    <span class="icon-global" ></span>
+                    <?php eT('Settings');?>
+                </li>
 
+                <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
                     <!-- Home page settings -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/homepagesettings"); ?>">
@@ -221,22 +223,24 @@
                             <?php eT("Global settings");?>
                         </a>
                     </li>
-
+                    <?php endif;?>
+                <?php if(Permission::model()->hasGlobalPermission('labelsets','read')): ?>
                     <!-- Edit label sets -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>">
                             <?php eT("Edit label sets");?>
                         </a>
                     </li>
-
+                    <?php endif;?>
+                <?php if(Permission::model()->hasGlobalPermission('templates','read')): ?>
                     <!-- Template Editor -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/templates/sa/view"); ?>">
                             <?php eT("Template editor");?>
                         </a>
                     </li>
-                </ul>
-            </li>
-            <?php endif;?>
+                    <?php endif;?>
+            </ul>
+        </li>
     </ul>
 </li>

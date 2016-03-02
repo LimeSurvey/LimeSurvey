@@ -60,7 +60,6 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         $aData['model'] = $model =  new Survey('search');
-
         // Search
         if (isset($_GET['Survey']['searched_value']))
         {
