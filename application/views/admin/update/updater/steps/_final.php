@@ -19,9 +19,9 @@
 <?php  eT('As a last step you should clear your browser cache now.'); ?>
   <br />
 
-    <a id="backToMainMenu" class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin"); ?>" role="button" aria-disabled="false">
-        <span class="ui-button-text"><?php eT('Back to main menu'); ?></span>
-    </a>
+  <a id="backToMainMenu" class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/authentication/sa/logout"); ?>" role="button" aria-disabled="false">
+      <?php eT('Click this button to log out.'); ?>
+  </a>
 </div>
 
 <script>
