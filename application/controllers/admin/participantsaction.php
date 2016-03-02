@@ -966,9 +966,12 @@ class participantsaction extends Survey_Common_Action
         echo ls_json_encode($aData);
     }
 
-    /*
-    * Responsible for showing the additional attribute for central database
-    */
+    /**
+     * Responsible for showing the additional attribute for CPDB
+     * Edit attribute form
+     *
+     * @return void
+     */
     function viewAttribute()
     {
         $iAttributeId = Yii::app()->request->getQuery('aid');
@@ -984,10 +987,12 @@ class participantsaction extends Survey_Common_Action
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'viewAttribute'), $aData);
     }
 
-    /*
-    * Responsible for saving the additional attribute. It iterates through all the new attributes added dynamically
-    * and iterates through them
-    */
+    /**
+     * Responsible for saving the additional attribute. It iterates through all the new attributes added dynamically
+     * and iterates through them
+     *
+     * @return void
+     */
     function saveAttribute()
     {
         $iAttributeId = Yii::app()->request->getQuery('aid');
@@ -998,6 +1003,7 @@ class participantsaction extends Survey_Common_Action
             'visible' => Yii::app()->request->getPost('visible')
         );
         ParticipantAttributeName::model()->saveAttribute($aData);
+        Yii::app()->setFlashMessage(gT('Attribute was saved'), 'info');
 
         // Save translations
         if (isset($_POST['lang']))
