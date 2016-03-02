@@ -181,36 +181,36 @@ class Template extends LSActiveRecord
         {
             $oTemplate->name = $sTemplateName;
             $oTemplate->path = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
-
-            // If it's an imported template from 2.06, we return default values
-            if ( self::isOldTemplate($oTemplate->path) )
-            {
-                $oTemplate->config = simplexml_load_file(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'/minimal-config.xml');
-                $oTemplate->cssFramework = null;
-                $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR;
-                $oTemplate->filesPath = $oTemplate->path.DIRECTORY_SEPARATOR;
-                $oTemplate->packages = (array) $oTemplate->config->engine->packages->package;
-                $oTemplate->otherFiles = self::getOtherFiles($oTemplate->filesPath);
-                return $oTemplate;
-            }
-
         }
 
         // If the template don't have a config file (maybe it has been deleted, or whatever),
         // then, we load the default template
-        if(! self::hasConfigFile($oTemplate->path))
+        if(!self::hasConfigFile($oTemplate->path))
         {
-            $oTemplate->name = 'default';
-            $oTemplate->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
+            // If it's an imported template from 2.06, we return default values
+            if ( self::isOldTemplate($oTemplate->path) )
+            {
+                $oTemplate->config = simplexml_load_file(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'/minimal-config.xml');
+                $oTemplate->config->engine->cssframework = null;
+            }
+            else
+            {
+                $oTemplate->name = 'default';
+                $oTemplate->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
+                $oTemplate->config = simplexml_load_file($oTemplate->path.'/config.xml');
+            }
+        }
+        else
+        {
+            $oTemplate->config = simplexml_load_file($oTemplate->path.'/config.xml');
         }
 
         // The template configuration.
-        $oTemplate->config = simplexml_load_file($oTemplate->path.'/config.xml');
         $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->pstpldirectory.DIRECTORY_SEPARATOR;
         $oTemplate->siteLogo = (isset($oTemplate->config->files->logo))?$oTemplate->config->files->logo->filename:'';
 
         // condition for user's template prior to 160219
-        $oTemplate->filesPath = (isset($oTemplate->config->engine->filesdirectory))?$oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR:$oTemplate->path . '/files/';
+        $oTemplate->filesPath = (isset($oTemplate->config->engine->filesdirectory))? $oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR : $oTemplate->path . '/files/';
         $oTemplate->cssFramework = $oTemplate->config->engine->cssframework;
         $oTemplate->packages = (array) $oTemplate->config->engine->packages->package;
         $oTemplate->otherFiles = self::getOtherFiles($oTemplate->filesPath);
@@ -372,6 +372,6 @@ class Template extends LSActiveRecord
      */
     public static function isOldTemplate($sTemplatePath)
     {
-        return (! self::hasConfigFile($sTemplatePath) && is_file($oTemplate->path.DIRECTORY_SEPARATOR.'startpage.pstpl'));
+        return (!self::hasConfigFile($sTemplatePath) && is_file($sTemplatePath.DIRECTORY_SEPARATOR.'startpage.pstpl'));
     }
 }

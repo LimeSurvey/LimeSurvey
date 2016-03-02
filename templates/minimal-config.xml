@@ -21,11 +21,25 @@
             </js>
         </rtl>
     </files>
+
+    <!-- For template editor : need fix : allow edit even if not exist-->
+    <files_editable>
+            <css>
+                <filename>template.css</filename>
+                <filename>template-rtl.css</filename>
+                <filename>jquery-ui.css</filename>
+                <filename>jquery-ui-custom.css</filename>
+            </css>
+            <js>
+                <filename>template.js</filename>
+            </js>
+    </files_editable>
+
     <engine>
+        <filesdirectory>.</filesdirectory>
+        <cssframework></cssframework>
+        <pstpldirectory>.</pstpldirectory> <!-- Broken edit pstpl file in template editor actually -->
         <packages>
-            <cssframework></cssframework>
-            <pstpldirectory>.</pstpldirectory>
-            <filesdirectory>.</filesdirectory>
             <package>jqueryui</package>
             <package>jquery-touch-punch</package>
         </packages>

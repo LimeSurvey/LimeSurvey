@@ -72,25 +72,38 @@
                 </div>
                 <div class='panel-body'>
                     <div class="tokenatt ui-sortable" style="min-height: 200px;">
-                        <?php
-                            foreach ($selectedtokenattribute as $id => $name)
-                            {
-                                    if (isset($automaticallyMappedAttributes[$id]))
-                                    {
-                                        $autoAttr = $automaticallyMappedAttributes[$id];
-                                        echo "<div class='tokenatt-container col-sm-12'>";
-                                        echo "<div class='col-sm-6'><div class='panel panel-default ui-state-disabled token-attribute' id='t_" . $id . "'><div class='panel-body'>" . $name . "</div></div></div>";
-                                        echo "<div class='col-sm-6'><div class='panel panel-default ui-state-disabled cpdb-attribute' id='c_" . $autoAttr['cpdbAttribute']['attribute_id'] . "'><div class='panel-body'>" . $autoAttr['cpdbAttribute']['attribute_name'] . "</div></div></div>";
-                                        echo "</div>";
-                                    }
-                                    else
-                                    {
-                                        echo "<div class='tokenatt-container col-sm-12'>";
-                                        echo "<div class='col-sm-6'><div class='panel panel-default ui-state-disabled token-attribute' id='t_" . $id . "'><div class='panel-body'>" . $name . "</div></div></div>";
-                                        echo "</div>";
-                                    }
-                            }
-                        ?>
+                        <?php foreach ($selectedtokenattribute as $id => $name): ?>
+                                    <?php if (isset($automaticallyMappedAttributes[$id])): ?>
+                                        <?php $autoAttr = $automaticallyMappedAttributes[$id]; // Short-hand... ?>
+                                        <div class='tokenatt-container col-sm-12'>
+                                            <div class='col-sm-6'>
+                                                <div class='panel panel-default ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
+                                                    <div class='panel-body'>
+                                                        <?php echo $name; ?>
+                                                        <span class='fa fa-arrows-h tokenatt-arrow'></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='col-sm-6'>
+                                                <div class='panel panel-default ui-state-disabled cpdb-attribute' id='c_<?php echo $autoAttr['cpdbAttribute']['attribute_id']; ?>'>
+                                                    <div class='panel-body'>
+                                                        <?php echo $autoAttr['cpdbAttribute']['attribute_name']; ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class='tokenatt-container col-sm-12'>
+                                            <div class='col-sm-6'>
+                                                <div class='panel panel-default ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
+                                                    <div class='panel-body'>
+                                                        <?php echo $name; ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                            <?php endforeach; ?>
                     </div>
 
                     <?php if(!empty($selectedtokenattribute)): ?>

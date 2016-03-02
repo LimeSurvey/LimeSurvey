@@ -62,8 +62,10 @@ iframe#dialog {
     border: solid black 5px;
 }
 
-.tokenatt-container .panel {
-    margin-right: 1em;
+/** Arrow between mapped attributes in CPDB */
+.tokenatt-arrow {
+    position: absolute;
+    right: -8px;
 }
 
 #labelsetpreview {

@@ -443,7 +443,7 @@ class SurveyRuntimeHelper {
                 elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
                 {
                     $moveResult = LimeExpressionManager::NavigateForwards();
-                    //$_SESSION[$LEMsessid]['step']=1;
+                    $_SESSION[$LEMsessid]['step'] = 1;
                 }
             }
             elseif($surveyid != LimeExpressionManager::getLEMsurveyId())
