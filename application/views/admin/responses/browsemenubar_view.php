@@ -252,7 +252,7 @@
                 <span class="icon-databack text-success" title='<?php eT("Show previous..."); ?>'></span> <?php eT("Show previous..."); ?>
             </a>
             <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/$next"); ?>' title='<?php eT("Show next..."); ?>'
-            class="btn btn-default" <?php if (!$next) {echo 'disabled';}?>">
+            class="btn btn-default <?php if (!$next) {echo 'disabled';}?>">
                 <span class="icon-dataforward text-success" title='<?php eT("Show next..."); ?>'></span> <?php eT("Show next..."); ?>
             </a>
 
