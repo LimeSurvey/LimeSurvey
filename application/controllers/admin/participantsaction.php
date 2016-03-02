@@ -1601,9 +1601,15 @@ class participantsaction extends Survey_Common_Action
         {
             $response = Participant::model()->copyCPDBAttributesToTokens($surveyId, $participantIds, $mappedAttributes, $newAttributes, $options);
         }
+        // This exception carries error messages
+        catch (CPDBException $e)
+        {
+            echo $e->getMessage();
+            return;
+        }
         catch (Exception $e)
         {
-            printf("Error: Could not copy attributes to tokens: file %s, line %s; %s", $e->getFile(), $e->getLine(), $e->getMessage());
+            printf(gT("Error: Could not copy attributes to tokens: file %s, line %s; %s"), $e->getFile(), $e->getLine(), $e->getMessage());
             return;
         }
 

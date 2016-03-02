@@ -14,6 +14,12 @@
  */
 
 /**
+ * Specific exception for our purpose
+ * Used to spit out error messages if mapping attributes doesn't work.
+ */
+class CPDBException extends Exception {}
+
+/**
  * This is the model class for table "{{participants}}".
  *
  * The followings are the available columns in table '{{participants}}':
@@ -1002,6 +1008,42 @@ class Participant extends LSActiveRecord
     }
 
     /**
+     * Check for column duplicates from CPDB to token attributes
+     * Throws error message if an attribute already exists; otherwise false.
+     *
+     * @param int $surveyId
+     * @param string[] $newAttributes Array of CPDB attributes ids like ['42', '32', ...]
+     * @return boolean
+     * @throws CPDBException with error message
+     */
+    private function checkColumnDuplicates($surveyId, array $newAttributes)
+    {
+        $tokenTableSchema = Yii::app()->db
+            ->schema
+            ->getTable("{{tokens_$surveyId}}");
+
+
+        foreach ($tokenTableSchema->columns as $columnName => $columnObject)
+        {
+            if (strpos($columnName, 'attribute_') !== false)
+            {
+                $id = substr($columnName, 10);
+                if (in_array($id, $newAttributes))
+                {
+                    $name = ParticipantAttributeName::model()->getAttributeName($id, $_SESSION['adminlang']);
+                    if (empty($name)) {
+                        $name = array('attribute_name' => '[Found no name]');
+                    }
+                    throw new CPDBException(sprintf(gT("Token attribute already exists: %s"), $name['attribute_name']));
+                }
+            }
+        }
+
+        return false;
+
+    }
+
+    /**
      * Create new "fields"? in which table?
      *
      * @param int $surveyId
@@ -1095,7 +1137,7 @@ class Participant extends LSActiveRecord
         }
         Yii::app()->db->schema->getTable("{{tokens_$surveyId}}", true); // Refresh schema cache just
 
-        return [$addedAttributes, $addedAttributeIds];
+        return array($addedAttributes, $addedAttributeIds);
     }
 
     /**
@@ -1292,6 +1334,9 @@ class Participant extends LSActiveRecord
             //$mappedAttributes[$id] = $columnName;  // $name is 'attribute_1', which will clash with postgres
         //}
 
+        // Check for duplicates. Will throw CPDBException if duplicate is found.
+        $this->checkColumnDuplicates($surveyId, $newAttributes);
+
         // TODO: Why use two variables for this?
         list($addedAttributes, $addedAttributeIds) = $this->createColumnsInTokenTable($surveyId, $newAttributes);
 
@@ -1330,7 +1375,7 @@ class Participant extends LSActiveRecord
 
         if (intval($participantAttributeId) === 0)  // OBS: intval returns 0 at fail, but also at intval("0"). lolphp.
         {
-            throw new InvalidArgumentException(sprintf('$participantAttributeId has to be an integer. Given: %s (%s)', gettype($participantAttributeId), $participantAttributeId));
+            throw new InvalidArgumentException(sprintf(gT('$participantAttributeId has to be an integer. Given: %s (%s)'), gettype($participantAttributeId), $participantAttributeId));
         }
 
         //Get the value from the participant_attribute field
