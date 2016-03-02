@@ -79,11 +79,8 @@ class participantsaction extends Survey_Common_Action
         App()->getClientScript()->registerPackage('bootstrap-multiselect');
         $aData['display']['menu_bars'] = false;
         
-        $aViewUrls = array();
-        foreach((array) $aViewUrls as $sViewUrl)
-        {
-            $aViewUrls[] = $sViewUrl . '_view';
-        }
+        // Add "_view" to urls
+        array_walk($aViewUrls, function(&$url, $key) { $url .= "_view"; });
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
@@ -1708,7 +1705,7 @@ class participantsaction extends Survey_Common_Action
         $this->_renderWrappedTemplate('participants', 'attributeMap', $aData);
     }
 
-    /*
+    /**
      * This function is responsible for attribute mapping while copying participants from tokens to CPDB
      */
     public function attributeMapToken()
