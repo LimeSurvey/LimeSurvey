@@ -544,13 +544,9 @@ class Permission extends LSActiveRecord
         $sCRUD=$sCRUD.'_p';
 
         /* Always return false for guests */
-        if(is_null($iUserID))
+        if(!$this->getUserId($iUserID))
         {
-            $iUserID=$this->getUserId($iUserID);
-            if(!$iUserID)
-            {
-                return false;
-            }
+            return false;
         }
 
         /* Always return true if you are the owner : this can be done in core plugin ? */
@@ -659,12 +655,14 @@ class Permission extends LSActiveRecord
     */
     protected function getUserId($iUserID=null)
     {
-        if(Yii::app() instanceof CConsoleApplication)
-            throw new Exception('Permission must not be tested with console application.');
-        $sOldLanguage=App()->language;// Call of Yii::app()->user reset App()->language to default. Quick fix for #09695
-        if (is_null($iUserID) && !Yii::app()->user->getIsGuest())
+        if (is_null($iUserID))
+        {
+            if(Yii::app() instanceof CConsoleApplication)
+            {
+                throw new Exception('Permission must not be tested with console application.');
+            }
             $iUserID = Yii::app()->session['loginID'];
-        App()->setLanguage($sOldLanguage);
+        }
         return $iUserID;
     }
 
