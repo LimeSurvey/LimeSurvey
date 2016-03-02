@@ -412,7 +412,7 @@ class participantsaction extends Survey_Common_Action
         $aData = new stdClass();
         $aData->page = $page;
         $aData->records = count($records);
-        $aData->total = ceil(ParticipantAttributeName::model()->getCPDBAttributes(true) / $limit);
+        $aData->total = ceil(count(ParticipantAttributeName::model()->getCPDBAttributes()) / $limit);
         $i = 0;
         foreach($records as $row) { //Iterate through each attribute
             $sAttributeCaption=htmlspecialchars($row->defaultname); //Choose the first item by default
@@ -1790,6 +1790,7 @@ class participantsaction extends Survey_Common_Action
         $this->load->model('participants_model');
         $iParticipantId = $this->uri->segment(4);
         $iSurveyId = $this->uri->segment(5);
+        $aData = array();
         if (!is_numeric($iSurveyId))
         {
             $blacklist = $this->uri->segment(5);
