@@ -297,12 +297,14 @@ class responses extends Survey_Common_Action
             {
                 Yii::app()->session['flashmessage'] = gT("This response ID is invalid.");
             }
-
+			
             $aViewUrls[] = 'browseidfooter_view';
             $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
             $aData['menu']['view'] = true;
             $aData['menu']['close'] =  true;
+            // This resets the url on the close button to go to the upper view
+            $aData['menu']['closeurl'] = $this->getController()->createUrl("admin/responses/sa/browse/surveyid/".$iSurveyId);
 
             $this->_renderWrappedTemplate('',$aViewUrls, $aData);
         }
