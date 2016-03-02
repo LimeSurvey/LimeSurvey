@@ -80,7 +80,7 @@ class participantsaction extends Survey_Common_Action
         $aData['display']['menu_bars'] = false;
         
         // Add "_view" to urls
-        array_walk($aViewUrls, function(&$url, $key) { $url .= "_view"; });
+        array_walk($aViewUrls, function(&$url) { $url .= "_view"; });
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
@@ -1790,7 +1790,9 @@ class participantsaction extends Survey_Common_Action
         $this->load->model('participants_model');
         $iParticipantId = $this->uri->segment(4);
         $iSurveyId = $this->uri->segment(5);
+
         $aData = array();
+
         if (!is_numeric($iSurveyId))
         {
             $blacklist = $this->uri->segment(5);
