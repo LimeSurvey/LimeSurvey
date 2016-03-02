@@ -682,7 +682,7 @@ $(document).ready(function() {
                 $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:''});
             }
             if(method=='edit') {
-             //   jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('restoreRow',id);
+                jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('restoreRow',id);
             }
             if(method=='click') {
                 jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('restoreRow',id);
