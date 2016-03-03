@@ -6,6 +6,4 @@
  * - Cannot configure their server
  * - Are stuck on preconfigured hosting platforms.
  */
-// We do this to not have to depend on $_SERVER, ever.
-$webroot = __DIR__;
 require __DIR__ . '/protected/entry.php';

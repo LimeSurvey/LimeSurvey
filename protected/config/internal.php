@@ -10,9 +10,6 @@ use ls\components\SurveySessionManager;
 use ls\components\WebUser;
 
 // Make sure we set default values for passed in parameters so we pass SideEffects testing.
-$loader = !isset($loader)?: $loader;
-$public = !isset($public)?: $public;
-$webroot = !isset($webroot)?: $webroot;
 $bowerAssetPath = !isset($bowerAssetPath)?: $bowerAssetPath;
 if (file_exists(__DIR__ . '/config.php')) {
     $userConfig = require(__DIR__ . '/config.php');
@@ -35,13 +32,11 @@ $internalConfig = array(
         'bootstrap' => __DIR__ . '/../vendor/crisu83/yiistrap/widgets',
         'yiiwheels' => __DIR__ . '/../vendor/2amigos/yiiwheels',
 
-        'coreTemplates' => $public . '/templates',
-        'userTemplates' => $public . '/upload/templates',
+        'coreTemplates' => __DIR__ . '../../public/templates',
+        'userTemplates' => __DIR__ . '../../public/upload/templates',
         'bower' => $bowerAssetPath,
 
-        // A relative URL for the public folder.
-        'public' => str_replace($webroot, '', $public),
-        'publicPath' => $public
+        'publicPath' => dirname(get_included_files()[0])
 
     ),
     'import' => array(
@@ -60,16 +55,16 @@ $internalConfig = array(
             'class' => SurveySessionManager::class
         ],
         'migrationManager' => [
-            'class' => 'ls\components\MigrationManager'
+            'class' => \ls\components\MigrationManager::class
         ],
         'bootstrap' => [
-            'class' => 'TbApi',
+            'class' => \TbApi::class,
         ],
         'format' => [
-            'class' => 'ls\components\LocalizedFormatter'
+            'class' => \ls\components\LocalizedFormatter::class
         ],
         'clientScript'=> [
-            'class' => CClientScript::class,
+            'class' => \CClientScript::class,
             'packages' => require('packages.php'),
         ],
 
@@ -80,9 +75,9 @@ $internalConfig = array(
             'showScriptName' => true,
         ],
         'assetManager' => [
+            'class' => \ls\components\AssetManager::class,
             'basePath' => __DIR__ . '/../../public/tmp/assets',
-            'baseUrl' => str_replace($webroot . '/', '', realpath(__DIR__ . '/../../public/tmp/assets'))
-
+            'relativeUrl' => 'tmp/assets'
         ],
         'request' => [
             'class'=> HttpRequest::class,
@@ -137,9 +132,9 @@ $internalConfig = array(
             'basePath' => __DIR__ . '/../../locale'
         ],
         'pluginManager' => [
-            'class' => "\\ls\\pluginmanager\\PluginManager",
+            'class' => \ls\pluginmanager\PluginManager::class,
             'apiMap' => [
-                "1.0" => "\\ls\\pluginmanager\\LimesurveyApi"
+                "1.0" => ls\pluginmanager\LimesurveyApi::class
             ],
             'pluginFile' => __DIR__ . '/plugins.php',
             'enabledPluginDir' => __DIR__ . '/plugins',
