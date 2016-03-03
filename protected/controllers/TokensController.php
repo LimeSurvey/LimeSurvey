@@ -40,25 +40,29 @@ class TokensController extends Controller
         $criteria = new \CDbCriteria();
         $criteria->order = 'submitdate DESC';
         $criteria->addColumnCondition(['token' => $token->token]);
-        $dataProvider = new \CActiveDataProvider(\ls\models\Response::model($survey->sid), [
-            'criteria' => $criteria,
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => false
-        ]);
-        $this->menus['survey'] = $survey;
-
-        if ($dataProvider->totalItemCount > 0) {
-            $this->render('responses', [
-                'dataProvider' => $dataProvider,
-                'survey' => $survey,
-//                'wrapper' => 'col-md-10 col-md-offset-2'
+        if (\ls\models\Response::valid($survey->sid)) {
+            $dataProvider = new \CActiveDataProvider(\ls\models\Response::model($survey->sid), [
+                'criteria' => $criteria,
+                'pagination' => [
+                    'pageSize' => 50
+                ],
+                'sort' => false
             ]);
-        } else {
-            echo "No responses for this token";
+            $this->menus['survey'] = $survey;
+
+            if ($dataProvider->totalItemCount > 0) {
+                $this->render('responses', [
+                    'dataProvider' => $dataProvider,
+                    'survey' => $survey,
+                    //                'wrapper' => 'col-md-10 col-md-offset-2'
+                ]);
+            }
+            return;
         }
+
+        echo "No responses for this token";
     }
+
     public function actionCreate($surveyId)
     {
         $survey = \ls\models\Survey::model()->findByPk($surveyId);
