@@ -65,10 +65,7 @@
             }
             SetSurveyLanguage($iSurveyID, $sLanguage);
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
-            //SET THE TEMPLATE DIRECTORY
-             $sTemplate = $aSurveyInfo['template'];
-
-            global $oTemplate;
+            $oTemplate = Template::model()->getInstance(null, $iSurveyID);
 
             //Survey is not finished or don't exist
             if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid']))

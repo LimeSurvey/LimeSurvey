@@ -9,6 +9,6 @@
             <?php if (isset($statisticsoutput) && $statisticsoutput) { echo $statisticsoutput; } ?><br />
         </div>
 <?php
-    global $oTemplate;
+    $oTemplate = Template::model()->getInstance();
     echo templatereplace(file_get_contents($oTemplate->viewPath."/endpage.pstpl"),array(), $redata);
 ?>

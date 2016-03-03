@@ -198,9 +198,8 @@ class RegisterController extends LSYii_Controller {
         Yii::app()->setConfig('surveyID',$iSurveyId);//Needed for languagechanger
         $aData['languagechanger'] = makeLanguageChangerSurvey(App()->language);
 
-        /// $oTemplate is a global variable defined in controller/survey/index
-        global $oTemplate;
-        return templatereplace(file_get_contents("$oTemplate->viewPath/register.pstpl"),$aReplacement,$aData);
+        $oTemplate = Template::model()->getInstance($sTemplate);
+        return templatereplace(file_get_contents($oTemplate->viewPath . "/register.pstpl"),$aReplacement,$aData);
     }
 
     /**

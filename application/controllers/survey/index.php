@@ -46,8 +46,7 @@ class index extends CAction {
             App()->getClientScript()->registerCssFile( Yii::app()->getBaseUrl(true).'/styles-public/font-awesome-43-debugmode.min.css' );
         }
 
-        global $oTemplate;
-        $oTemplate = Template::model()->getTemplateConfiguration('',$surveyid);
+        $oTemplate = Template::model()->getInstance('', $surveyid);
         $this->oTemplate = $oTemplate;
 
         App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
@@ -267,7 +266,7 @@ class index extends CAction {
         }
 
         //SET THE TEMPLATE DIRECTORY
-        global $oTemplate;
+        $oTemplate = Template::model()->getInstance('', $surveyid);
         $thistpl = $oTemplate->viewPath;
 
         $timeadjust = Yii::app()->getConfig("timeadjust");
@@ -692,7 +691,7 @@ class index extends CAction {
 
     function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array())
     {
-        global $oTemplate;
+        $oTemplate = Template::model()->getInstance('', $redata['surveyid']);
         $asMessage[]="<input type='hidden' class='hidemenubutton'/>";
 
         if(isset($redata['surveyid']) && $redata['surveyid'] && !isset($thisurvey))

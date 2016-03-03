@@ -140,17 +140,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
      * If templatereplace is called from the template editor, a $oTemplate is provided.
      */
 
-    // We check if a oTemplate has been provided to the method (means it has been called from template editor)
-    if($oTemplate=='')
-    {
-        // If it not the case, then we get the global oTemplate object defined from SurveyControler::Index
-        global $oTemplate;
-        // If it's empty, we redifined it
-        if(empty($oTemplate))
-        {
-            $oTemplate = Template::model()->getTemplateConfiguration($templatename);
-        }
-    }
+    $oTemplate = Template::model()->getInstance($templatename);
 
     $aCssFiles = $oTemplate->config->files->css->filename;
     $aJsFiles = $oTemplate->config->files->js->filename;

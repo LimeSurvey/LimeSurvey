@@ -353,7 +353,7 @@ class Statistics_userController extends LSYii_Controller {
         doHeader();
 
         /// $oTemplate is a global variable defined in controller/survey/index
-        global $oTemplate;
+        $oTemplate = Template::model()->getInstance(null, $surveyid);
         echo templatereplace(file_get_contents($oTemplate->viewPath."startpage.pstpl"),array(), $redata);
 
 

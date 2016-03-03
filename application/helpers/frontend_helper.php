@@ -821,8 +821,7 @@ function buildsurveysession($surveyid,$preview=false)
     $_SESSION['survey_'.$surveyid]['templatepath']=getTemplatePath($thissurvey['template']).DIRECTORY_SEPARATOR;
     $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 
-    /// $oTemplate is a global variable defined in controller/survey/index
-    global $oTemplate;
+    $oTemplate = Template::model()->getInstance('', $surveyid);
     $sTemplatePath = $oTemplate->path;
     $sTemplateViewPath = $oTemplate->viewPath;
 
@@ -1980,9 +1979,8 @@ function checkCompletedQuota($surveyid,$return=false)
     // Now we have all the information we need about the quotas and their status.
     // We need to construct the page and do all needed action
     $aSurveyInfo=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-    $sTemplatePath=getTemplatePath($aSurveyInfo['template']);
 
-    global $oTemplate;
+    $oTemplate = Template::model()->getInstance('', $surveyid);
     $sTemplatePath = $oTemplate->path;
     $sTemplateViewPath = $oTemplate->viewPath;
 
@@ -2148,7 +2146,7 @@ function display_first_page() {
 
     $redata = compact(array_keys(get_defined_vars()));
 
-    global $oTemplate;
+    $oTemplate = Template::model()->getInstance('', $surveyid);
     $sTemplatePath = $oTemplate->path;
     $sTemplateViewPath = $oTemplate->viewPath;
     echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[2757]');

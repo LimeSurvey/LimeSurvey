@@ -15,8 +15,13 @@ if (!defined('BASEPATH'))
  *
   */
 
+class TemplateException extends Exception {}
+
 class Template extends LSActiveRecord
 {
+
+    /** @var Template - The instance of template object */
+    private static $instance;
 
     /**
      * Returns the static model of Settings table
@@ -152,15 +157,21 @@ class Template extends LSActiveRecord
      * This method construct a template object, having all the needed configuration datas.
      * It checks if the required template is a core one or a user one.
      * If it's a user template, it will check if it's an old 2.0x template to provide default configuration values corresponding to the old template system
-     * If it's not a old template, it will check if it has a configuration file to load its datas.
+     * If it's not an old template, it will check if it has a configuration file to load its datas.
      * If it's not the case (template probably doesn't exist), it will load the default template configuration
      * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if it has the needed pstpl files, if the files refered in css exist, etc.
      *
      * @param string $sTemplateName     the name of the template to load. The string come from the template selector in survey settings
      * @param integer $iSurveyId        the id of the survey. If
+     * @return StdClass
      */
     public static function getTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
+        if ($sTemplateName == '' && $iSurveyId == '')
+        {
+            throw new TemplateException(gT("Template needs either template name or survey id"));
+        }
+
         if ($sTemplateName=='')
         {
             $oSurvey = Survey::model()->findByPk($iSurveyId);
@@ -374,4 +385,29 @@ class Template extends LSActiveRecord
     {
         return (!self::hasConfigFile($sTemplatePath) && is_file($sTemplatePath.DIRECTORY_SEPARATOR.'startpage.pstpl'));
     }
+
+    /**
+     * Get instance of template object.
+     * Will instantiate the template object first time it is called.
+     * Please use this instead of global variable.
+     *
+     * @param string $sTemplateName
+     * @param int $iSurveyId
+     * @return Template
+     */
+    public static function getInstance($sTemplateName='', $iSurveyId='')
+    {
+        if (empty(self::$instance))
+        {
+            self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId);
+        }
+        // This can happen in template editor when we show two templates in one page
+        elseif (self::$instance->name !== $sTemplateName)
+        {
+            self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId);
+        }
+
+        return self::$instance;
+    }
+
 }

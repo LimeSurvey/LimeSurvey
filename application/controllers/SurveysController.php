@@ -18,7 +18,7 @@
             {
                 App()->setLanguage(App()->getConfig('defaultlang'));
             }
-            $oTemplate = Template::model()->getTemplateConfiguration(Yii::app()->getConfig("defaulttemplate"));
+            $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
             if($oTemplate->cssFramework == 'bootstrap')
             {
                 App()->bootstrap->register();

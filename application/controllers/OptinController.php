@@ -106,8 +106,7 @@ class OptinController extends LSYii_Controller {
         doHeader();
         $aSupportData=array('thissurvey'=>$aSurveyInfo);
 
-        // $oTemplate is a global variable defined in controller/survey/index
-        global $oTemplate;
+        $oTemplate = Template::model()->getInstance();
         $sTemplatePath = $oTemplate->path;
         $thistpl = $oTemplate->viewPath;
 

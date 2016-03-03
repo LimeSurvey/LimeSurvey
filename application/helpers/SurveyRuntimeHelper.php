@@ -348,7 +348,7 @@ class SurveyRuntimeHelper {
         $LEMsessid = 'survey_' . $surveyid;
         $this->setJavascriptVar($surveyid);
 
-        global $oTemplate;
+        $oTemplate = Template::model()->getInstance('', $surveyid);
         $sTemplatePath = $oTemplate->path;
         $sTemplateViewPath = $oTemplate->viewPath;
 

@@ -62,7 +62,7 @@ class Save {
         $sTemplatePath = $_SESSION['survey_'.$surveyid]['templatepath'];
         sendCacheHeaders();
         doHeader();
-        global $oTemplate;
+        $oTemplate = Template::model()->getInstance(null, $surveyid);
         echo templatereplace(file_get_contents($oTemplate->viewPath."startpage.pstpl"),array(),$redata);
         echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
         ."\t<script type='text/javascript'>\n"

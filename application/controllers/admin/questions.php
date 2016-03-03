@@ -1540,12 +1540,9 @@ class questions extends Survey_Common_Action
 
         $answers = retrieveAnswers($ia,$surveyid);
 
-        //$thistpl = getTemplatePath($thissurvey['template']);
-        // $oTemplate is a global variable defined in controller/survey/index
-        global $oTemplate;
+        $oTemplate = Template::model()->getInstance(null, $iSurveyID);
         $sTemplatePath = $oTemplate->path;
         $thistpl = $oTemplate->viewPath;
-
 
         doHeader();
 
