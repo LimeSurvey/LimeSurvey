@@ -84,7 +84,6 @@ $(document).ready(function(){
                 //$content = '<td>'+$that.data('title')+'</td>';
                 $label = $that.data('title');
                 $input = $that.find('input');
-
                 //$that.empty().prepend($content);
                 $that.find('label').prepend($label);
             });

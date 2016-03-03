@@ -5734,7 +5734,7 @@ function do_array_multiflexi($ia)
             // table-in-qanda-7
             // $labelans
             //$answer .= "\t<th data-title=\" \" class=\"answertext\" width=\"$answerwidth%\">\n"
-            $answer .= "\t<th data-title=\" \" class=\"answertext\" style='width: $answerwidth%;'>\n"
+            $answer .= "\t<th class=\"answertext\" style='width: $answerwidth%;'>\n"
             . "$answertext\n"
             . $hiddenfield
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
@@ -5759,7 +5759,7 @@ function do_array_multiflexi($ia)
                     {
                         $myfname2_java_value = "";
                     }
-                    $answer .= "\t<td class=\"answer-cell-5 answer_cell_00$ld question-item answer-item {$answertypeclass}-item $extraclass\">\n"
+                    $answer .= "\t<td data-title=\"$answertext\"  class=\"answer-cell-5 answer_cell_00$ld question-item answer-item {$answertypeclass}-item $extraclass\">\n"
                     . "\t<label for=\"answer{$myfname2}\"><input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n";
                     //. "<label class=\"hidden-sm hidden-md hidden-lg read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n";
                     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
