@@ -213,6 +213,11 @@ class UserGroup extends LSActiveRecord {
             return true;
     }
 
+    public function getCountUsers()
+    {
+        return count($this->users);
+    }
+
     public function getbuttons()
     {
 
