@@ -196,9 +196,9 @@ class InstallerController extends \CController {
         $sDefaultSiteName = $model->siteName;
         $sDefaultSiteLanguage = $model->surveylang;
         $sDefaultAdminEmail = $model->adminEmail;
-        if(!is_null(App()->request->getPost('InstallerConfigForm')))
+        if(!is_null(App()->request->getPost(\CHtml::modelName($model))))
         {
-            $model->attributes = App()->request->getPost('InstallerConfigForm');
+            $model->attributes = App()->request->getPost(\CHtml::modelName($model));
             
             //run validation, if it fails, load the view again else proceed to next step.
             if($model->validate()) {
