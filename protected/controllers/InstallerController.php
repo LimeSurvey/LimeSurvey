@@ -121,9 +121,9 @@ class InstallerController extends \CController {
         $aData['descp'] = gT('Please enter the database settings you want to use for LimeSurvey:');
         $this->progress = 40;
         $aData['model'] = $configForm = new InstallerConfigForm;
-        
-        if(Yii::app()->request->getPost('InstallerConfigForm') != null) {
-            $configForm->attributes = Yii::app()->request->getPost('InstallerConfigForm');
+
+        if(Yii::app()->request->getPost(\CHtml::modelName($configForm)) != null) {
+            $configForm->attributes = Yii::app()->request->getPost(\CHtml::modelName($configForm));
             if ($configForm->validate() // All is good
                     || ($configForm->validate(['dsn'])
                     && $configForm->createDatabase()

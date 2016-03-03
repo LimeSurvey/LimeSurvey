@@ -3,6 +3,8 @@ namespace ls\models\installer;
 
 use DbConnection;
 use Yii;
+use PDO;
+use PDOException;
 
 class InstallerConfigForm extends \CFormModel
 {
@@ -213,7 +215,9 @@ class InstallerConfigForm extends \CFormModel
 
     public function getDbConnection() {
         if (!isset($this->_dbConnection)) {
-            $this->_dbConnection = new DbConnection($this->getDsn(true), $this->dbuser, $this->dbpwd);
+            $this->_dbConnection = new DbConnection($this->getDsn(), $this->dbuser, $this->dbpwd);
+            $this->_dbConnection->tablePrefix = $this->dbprefix;
+
         }
 
         return $this->_dbConnection;
