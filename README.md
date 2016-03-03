@@ -4,6 +4,8 @@ Some user think ergonomy of LimeSurvey 2.50 is not better than 2.06 version. But
 
 ## Improvement and history ##
 
+* 1.0.2
+    * Fixed issue #10627 : download files with multilingual surveys
 * 1.0.1
     * Higher risk that the emails are rated as Spam
     * Filter script in Plugin management and Survey Logic file.
