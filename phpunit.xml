@@ -1,0 +1,7 @@
+<phpunit bootstrap="protected/tests/bootstrap.php">
+    <testsuites>
+        <testsuite name="all">
+            <directory>protected/tests/unit</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

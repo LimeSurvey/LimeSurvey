@@ -24,12 +24,18 @@ class MysqlSchema extends CMysqlSchema
     
     public function getDatabases()
     {
-        $this->dbConnection->createCommand('SHOW DATABASES')->queryColumn(['Database']);
+        return $this->dbConnection->createCommand('SHOW DATABASES')->queryColumn(['Database']);
     }
     
     public function createDatabase($name)
     {
         $this->dbConnection->createCommand("CREATE DATABASE `$name` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
+        return true;
+    }
+
+    public function dropDatabase($name)
+    {
+        $this->dbConnection->createCommand("DROP DATABASE `$name`")->execute();
         return true;
     }
 

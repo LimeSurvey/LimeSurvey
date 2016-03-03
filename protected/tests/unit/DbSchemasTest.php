@@ -4,7 +4,7 @@
 namespace ls\tests\unit;
 
 
-class DbSchemasTestCase extends \PHPUnit_Framework_TestCase
+class DbSchemasTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \CDbConnection
@@ -17,7 +17,7 @@ class DbSchemasTestCase extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->db = new \CDbConnection('mysql:host=127.0.0.1;dbname=yii', 'test', 'test');
+        $this->db = new \CDbConnection('mysql:host=127.0.0.1;dbname=yii', 'root', 'secret');
     }
 
     /**
