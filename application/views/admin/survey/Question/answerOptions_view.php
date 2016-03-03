@@ -116,14 +116,6 @@
                                                         <?php eT("Action"); ?>
                                                     </th>
                                                 <?php endif; ?>
-                                                <?php if ($scale_id==0): ?>
-                                                    <th class="relevancehead"  class="col-md-1">
-                                                        <span class="icon-conditions"></span>
-                                                        <span style="display: none" class="relevance">
-                                                            <?php eT("Relevance"); ?>
-                                                        </span>
-                                                    </th>
-                                                <?php endif; ?>
 
                                             <!-- answer Options header-->
                                             <?php elseif($viewType=='answerOptions'): ?>
@@ -309,7 +301,7 @@
                                             <?php endif;?>
 
                                             <!-- Icons edit/delete -->
-                                            <td style="vertical-align: middle;">
+                                            <td style="vertical-align: middle;" class="subquestion-actions">
 
                                                 <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
 
@@ -325,26 +317,24 @@
                                                         <span class="icon-add text-success btnaddanswer"  data-code="<?php echo $title; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new answer option after this one") ?>"></span>
                                                         <span class="glyphicon glyphicon-trash text-warning btndelanswer" data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></span>
                                                     <?php endif; ?>
+                                                    <!-- Relevance : only for subQuestion. -->
+                                                    <?php if($viewType=='subQuestions'): ?>
+                                                        <?php if ($scale_id==0):   /* relevance column */ ?>
+                                                            <?php if ($row->relevance!="1" && trim($row->relevance)!=""): ?>
+                                                                <span class="icon-conditions text-success btntogglerelevance" data-toggle="tooltip" data-placement="bottom" title='<?php eT("Toggle subquestion relevance") ?>'></span>
+                                                            <?php else:   /* no relevance equation: icon deactivated */  ?>
+                                                                <span class="icon-conditions text-success btntogglerelevance" data-toggle="tooltip" data-placement="bottom" title='<?php eT("Toggle subquestion relevance") ?>'></span>
+                                                            <?php endif;?>
+                                                            <?php if ($first):  /* default lang - input field */?>
+                                                                <input style="display: none" type='text' class='relevance form-control input-lg' id='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
+                                                            <?php else:       /* additional language: just print rel. equation */  ?>
+                                                                <span style="display: none" class="relevance"> <?php echo $row->relevance; ?> </span>
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+
                                                 <?php endif; ?>
                                             </td>
-
-                                            <!-- Relevance : only for subQuestion. -->
-                                            <?php if($viewType=='subQuestions'): ?>
-                                                <?php if ($scale_id==0):   /* relevance column */ ?>
-                                                    <td  style="vertical-align: middle;">
-                                                        <?php if ($row->relevance!="1" && trim($row->relevance)!=""): ?>
-                                                            <span class="icon-conditions text-success btntogglerelevance" data-toggle="tooltip" data-placement="bottom" title='<?php eT("Toggle subquestion relevance") ?>'></span>
-                                                        <?php else:   /* no relevance equation: icon deactivated */  ?>
-                                                            <span class="icon-conditions text-success btntogglerelevance" data-toggle="tooltip" data-placement="bottom" title='<?php eT("Toggle subquestion relevance") ?>'></span>
-                                                        <?php endif;?>
-                                                        <?php if ($first):  /* default lang - input field */?>
-                                                            <input style="display: none" type='text' class='relevance form-control input-lg' id='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
-                                                        <?php else:       /* additional language: just print rel. equation */  ?>
-                                                            <span style="display: none" class="relevance"> <?php echo $row->relevance; ?> </span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                <?php endif; ?>
-                                            <?php endif; ?>
                                             <?php $position++; ?>
 
                                         <?php endforeach; ?>

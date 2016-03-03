@@ -83,3 +83,9 @@ iframe#dialog {
     margin: 0.2em;
     width: 33%;
 }
+
+/* Subquestion */
+td.subquestion-actions span:hover
+{
+    cursor: pointer;
+}
