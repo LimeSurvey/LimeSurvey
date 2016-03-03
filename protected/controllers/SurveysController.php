@@ -153,7 +153,7 @@ class SurveysController extends Controller
 
             $session = App()->surveySessionManager->newSession($survey->primaryKey, $response);
 
-            $this->redirect(['survey/index', 'SSM' => $session->getId()]);
+            $this->redirect(['surveys/run', 'SSM' => $session->getId()]);
         } else {
             $this->render('execute/welcome', ['survey' => $survey]);
         }

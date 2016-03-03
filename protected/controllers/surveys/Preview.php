@@ -11,7 +11,7 @@ use \CClientScript;
  * Class Run, runs a survey.
  * @package ls\controllers\surveys
  */
-class Run extends \Action
+class Preview extends \Action
 {
     /**
      * Runs the action,
