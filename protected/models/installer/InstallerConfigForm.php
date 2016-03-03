@@ -77,7 +77,8 @@ class InstallerConfigForm extends \CFormModel
         ];
     }
     
-    public function validateDatabase($attribute) {
+    public function validateDatabase($attribute)
+    {
         try {
             new PDO($this->dsn, $this->dbuser, $this->dbpwd);
         } catch (PDOException $e) {
@@ -96,7 +97,7 @@ class InstallerConfigForm extends \CFormModel
             // Remove passwords.
             $error .= strtr($e->getMessage(), [$this->dbpwd => '***']);
             $this->addError($attribute, $error);
-            $this->addError($attribute, "Dsn used: {$this->getDsn()}");
+            $this->addError($attribute, "Dsn used: {$this->getDsn(true)}");
             return;
         }
         
@@ -108,8 +109,9 @@ class InstallerConfigForm extends \CFormModel
     /**
      * Get the dsn for the database connection
      *
-     * @param string $sDatabaseType
-     * @param string $sDatabasePort
+     * @param $noDatabase bool Whether to include the database name in the DSN
+     * @return string
+     * @throws Exception
      */
     public function getDsn($noDatabase = false) 
     {
@@ -184,8 +186,8 @@ class InstallerConfigForm extends \CFormModel
 
     public function createDatabase() 
     {
-
-        $result = $this->getDbConnection()->schema->createDatabase($this->dbname);
+        $db = new DbConnection($this->getDsn(true), $this->dbuser, $this->dbpwd);
+        $result = $db->getSchema()->createDatabase($this->dbname);
         if (!$result) {
             $this->addError('dbname', gT('Database does not exist and could not be created.'));
         }
@@ -213,6 +215,10 @@ class InstallerConfigForm extends \CFormModel
 
     }
 
+    /**
+     * @return DbConnection
+     * @throws Exception
+     */
     public function getDbConnection() {
         if (!isset($this->_dbConnection)) {
             $this->_dbConnection = new DbConnection($this->getDsn(), $this->dbuser, $this->dbpwd);

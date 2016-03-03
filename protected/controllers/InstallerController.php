@@ -14,6 +14,7 @@
 */
 
 namespace ls\controllers;
+use Symfony\Component\Console\Application;
 use \Yii;
 use ls\models\installer\PreCheck;
 use ls\models\installer\InstallerConfigForm;
@@ -85,14 +86,12 @@ class InstallerController extends \CController {
         if (App()->request->isPostRequest) {
             $this->redirect(['installer/session']);
         }
-        /** 
-         * Load PreCheck model here to allow it to check session stuff.
-         */
-        new PreCheck();
+
         $this->render('license');
     }
 
-    public function actionSession() {
+    public function actionSession()
+    {
         App()->session->add('precheck', true);
         $this->redirect(['installer/precheck']);
     }

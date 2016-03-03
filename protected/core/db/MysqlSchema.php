@@ -22,14 +22,15 @@ class MysqlSchema extends CMysqlSchema
         return $result;
     }
     
-    public function getDatabases() {
+    public function getDatabases()
+    {
         $this->dbConnection->createCommand('SHOW DATABASES')->queryColumn(['Database']);
-        return true;
-
     }
     
-    public function createDatabase($name) {
+    public function createDatabase($name)
+    {
         $this->dbConnection->createCommand("CREATE DATABASE `$name` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
+        return true;
     }
 
     public function alterEngine($table, $engine) {
