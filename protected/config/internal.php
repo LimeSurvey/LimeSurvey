@@ -32,8 +32,8 @@ $internalConfig = array(
         'bootstrap' => __DIR__ . '/../vendor/crisu83/yiistrap/widgets',
         'yiiwheels' => __DIR__ . '/../vendor/2amigos/yiiwheels',
 
-        'coreTemplates' => __DIR__ . '../../public/templates',
-        'userTemplates' => __DIR__ . '../../public/upload/templates',
+        'coreTemplates' => __DIR__ . '/../../public/templates',
+        'userTemplates' => __DIR__ . '/../../public/upload/templates',
         'bower' => $bowerAssetPath,
 
         'publicPath' => dirname(get_included_files()[0])
