@@ -156,7 +156,7 @@
                                             <?php endif; ?>
 
                                             <!-- Move icon -->
-                                            <?php if ($activated == 'Y' ): ?>
+                                            <?php if ($activated == 'Y' && $viewType=='subQuestions' ): ?>
                                                 <td>
                                                     &nbsp;
                                                 </td>
@@ -171,7 +171,7 @@
                                                     />
                                                     <?php echo $title; ?>
                                                 </td>
-                                            <?php elseif ($activated != 'Y' && $first): // If survey is not activated and first language ?>
+                                            <?php elseif (($activated != 'Y' && $first) || ($viewType=='answerOptions' && $first) ): // If survey is not activated and first language ?>
                                                 <?php if($title) {$sPattern="^([a-zA-Z0-9]*|{$title})$";}else{$sPattern="^[a-zA-Z0-9]*$";} ?>
                                                 <td>
                                                     <span class="glyphicon glyphicon-move"></span>
@@ -305,7 +305,7 @@
 
                                                 <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
 
-                                                <?php if ($activated != 'Y' && $first ):?>
+                                                <?php if ( ($activated != 'Y' && $first) ||  ($viewType=='answerOptions' && $first)  ):?>
                                                     <?php
                                                         // TODO : remove this if statement, and merge the two td
                                                         // implies : define in controller titles
@@ -333,7 +333,7 @@
                                                             <span style="display: none" class="relevance"> <?php echo $row->relevance; ?> </span>
                                                         <?php endif; ?>
                                                     <?php endif; ?>
-                                                <?php endif; ?>                                                
+                                                <?php endif; ?>
                                             </td>
                                             <?php $position++; ?>
 

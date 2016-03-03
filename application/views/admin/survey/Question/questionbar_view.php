@@ -160,10 +160,10 @@ $aReplacementData=array();
 
             <!-- Answer Options -->
             <?php if( Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] > 0 ):?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
-                        <span class="icon-defaultanswers"></span>
-                        <?php eT("Edit answer options "); ?>
-                    </a>
+                <a class="btn btn-default" href="<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
+                    <span class="icon-defaultanswers"></span>
+                    <?php eT("Edit answer options "); ?>
+                </a>
             <?php endif;?>
 
 

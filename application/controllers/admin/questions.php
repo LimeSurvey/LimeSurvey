@@ -419,10 +419,6 @@ class questions extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'answers.js' ));
         App()->getClientScript()->registerPackage('jquery-selectboxes');
 
-        //$aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
-        //$aData['display']['menu_bars']['gid_action'] = 'addquestion';
-        //$aData['display']['menu_bars']['qid_action'] = 'editansweroptions';
-
         $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
         $aData['questiongroupbar']['savebutton']['form'] = true;
