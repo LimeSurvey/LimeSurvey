@@ -26,6 +26,8 @@ class FilesController extends Controller
     /**
      * Shows the file manager.
      * @param bool|false $dialog
+     * @param string $context The context in which the file manager should run, either 'survey' or 'template'
+     * @param string|int $key The key for the survey or the name of the template
      * @param null $surveyId
      */
     public function actionManage($dialog = false, $context, $key)
