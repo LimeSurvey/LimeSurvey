@@ -97,7 +97,7 @@
                                     <!-- Headers -->
                                     <thead>
                                         <tr>
-                                            <th>
+                                            <th class="col-md-1">
                                                 <?php if( $first && $activated != 'Y'): ?>
                                                     <?php eT("Position");?>
                                                 <?php else: ?>
@@ -111,14 +111,13 @@
                                                 <th>
                                                     <?php eT("Subquestion"); ?>
                                                 </th>
-                                                <?php if ($activated != 'Y' && $first): ?>
-                                                    <th>
+                                                <?php if ($first): ?>
+                                                    <th  class="col-md-1">
                                                         <?php eT("Action"); ?>
                                                     </th>
                                                 <?php endif; ?>
                                                 <?php if ($scale_id==0): ?>
-                                                    <th class="relevancehead">
-                                                        <?php // eT("Edit subquestion relevance") ?>
+                                                    <th class="relevancehead"  class="col-md-1">
                                                         <span class="icon-conditions"></span>
                                                         <span style="display: none" class="relevance">
                                                             <?php eT("Relevance"); ?>
