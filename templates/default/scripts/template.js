@@ -81,11 +81,17 @@ $(document).ready(function(){
         {
             $('.no-more-tables').find('td').each(function(){
                 $that = $(this);
-                //$content = '<td>'+$that.data('title')+'</td>';
                 $label = $that.data('title');
                 $input = $that.find('input');
-                //$that.empty().prepend($content);
-                $that.find('label').prepend($label);
+                if($input.is(':checkbox'))
+                {
+                    $that.find('label').removeClass('hide');
+                }
+                else
+                {
+                    $that.find('label').prepend($label);
+                }
+
             });
         }
     }
