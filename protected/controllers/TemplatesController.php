@@ -49,7 +49,7 @@ class TemplatesController extends Controller
             ]
         ];
         $screens[] = [
-            'name' => gT('ls\models\Question Page'),
+            'name' => gT('Question Page'),
             'id' => 'question',
             'templates' => [
                 'startpage.pstpl',
@@ -134,7 +134,7 @@ class TemplatesController extends Controller
     public function actionPreview($name, $page) {
         App()->disableWebLogRoutes();
         if (!\ls\models\Template::templateNameFilter($name)) {
-            throw new \CHttpException(404, "ls\models\Template not found.");
+            throw new \CHttpException(404, "Template not found.");
         }
 
 

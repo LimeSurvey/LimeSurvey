@@ -12,14 +12,20 @@ echo $form->textFieldControlGroup($survey, "translatedFields[$language][surveyls
 ]);
 echo $form->textAreaControlGroup($survey, "translatedFields[$language][surveyls_description]", [
     'class' => 'html',
+    'data-context' => 'survey',
+    'data-key' => $survey->primaryKey,
     'label' => $languageSetting->getAttributeLabel('surveyls_description')
 ]);
 echo $form->textAreaControlGroup($survey, "translatedFields[$language][surveyls_welcometext]", [
     'class' => 'html',
+    'data-context' => 'survey',
+    'data-key' => $survey->primaryKey,
     'label' => $languageSetting->getAttributeLabel('surveyls_welcometext')
 ]);
 echo $form->textAreaControlGroup($survey, "translatedFields[$language][surveyls_endtext]", [
     'class' => 'html',
+    'data-context' => 'survey',
+    'data-key' => $survey->primaryKey,
     'label' => $languageSetting->getAttributeLabel('surveyls_endtext')
 ]);
 echo $form->textFieldControlGroup($survey, "translatedFields[$language][surveyls_url]", [

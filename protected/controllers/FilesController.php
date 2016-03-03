@@ -30,9 +30,23 @@ class FilesController extends Controller
      */
     public function actionManage($dialog = false, $context, $key)
     {
+        if ($dialog) {
+            $this->layout = false;
+        }
         $this->renderText($this->widget(\FileManagerWidget::class, [
             'context' => $context,
-            'key' => $key
+            'key' => $key,
+            'dialog' => $dialog,
+            'clientOptions' => [
+                'uiOptions' => [
+                    'cwd' => [
+                        'listView' => [
+                            'columns' => ['date', 'size'],
+                        ],
+                    ]
+                ]
+            ]
+
         ], true));
     }
 
@@ -77,7 +91,7 @@ class FilesController extends Controller
             mkdir($dir);
         }
         return [
-            'alias' => "ls\models\Survey ({$surveyId})",
+            'alias' => "Survey ({$surveyId})",
             'driver' => 'LocalFileSystem',
             'autoload' => true,
             'path'   => $dir,

@@ -100,7 +100,6 @@ class FileManagerWidget extends CWidget{
     public function run()
     {
         parent::run();
-//        vdd(array_diff($this->commands, $this->disabledCommands));
         $clientOptions = \TbArray::merge($this->clientOptions, [
             'url' => App()->createUrl('files/browse', ['context' => $this->context, 'key' => $this->key]),
             'lang' => App()->language,
@@ -150,7 +149,6 @@ class FileManagerWidget extends CWidget{
         ]);
         if ($this->dialog) {
             $clientOptions['getFileCallback'] = new \CJavaScriptExpression('function(file) {
-            debugger;
             top.tinymce.activeEditor.windowManager.getParams().callback(file.url, {
                 alt: file.name,
                 width: file.width,

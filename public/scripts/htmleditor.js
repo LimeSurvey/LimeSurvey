@@ -5,7 +5,10 @@
             'selector': 'textarea.html',
             'file_picker_callback': function (callback, value, meta) {
                 tinymce.activeEditor.windowManager.open({
-                    file: LS.createUrl('files/manage', {'dialog': true}),
+                    file: LS.createUrl('files/manage', {
+                        'dialog': true,
+                        'context': $('#' + this.id).attr('data-context'),
+                        'key' : $('#' + this.id).attr('data-key')}),
                     title: 'elFinder',
                     width: 900,
                     height: 480,
