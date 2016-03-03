@@ -5,6 +5,7 @@ class MysqlSchema extends CMysqlSchema
     const ENGINE_INNODB = 'InnoDB';
     const ENGINE_MYISAM = 'MyISAM';
     use SmartColumnTypeTrait;
+
     public function __construct($conn) {
         parent::__construct($conn);
         /**
@@ -22,16 +23,13 @@ class MysqlSchema extends CMysqlSchema
     }
     
     public function getDatabases() {
-        return $this->dbConnection->createCommand('SHOW DATABASES')->queryColumn(['Database']);
+        $this->dbConnection->createCommand('SHOW DATABASES')->queryColumn(['Database']);
+        return true;
+
     }
     
     public function createDatabase($name) {
-        try {
-            $this->dbConnection->createCommand("CREATE DATABASE `$name` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
-        } catch (Exception $e) {
-            return false;
-        }
-        return true;        
+        $this->dbConnection->createCommand("CREATE DATABASE `$name` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
     }
 
     public function alterEngine($table, $engine) {

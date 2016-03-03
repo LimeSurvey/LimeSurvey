@@ -14,13 +14,10 @@ class PgsqlSchema extends CPgsqlSchema
         $this->columnTypes['decimal'] = 'numeric (10,0)'; // Same default than MySql (not used)
     }
     
-    public function createDatabase($name) {
-        try {
-            $this->dbConnection->createCommand("CREATE DATABASE \"$name\" ENCODING 'UTF8'")->execute();
-        } catch (Exception $e) {
-            return false;
-        }
-        return true;        
+    public function createDatabase($name)
+    {
+        $this->dbConnection->createCommand("CREATE DATABASE \"$name\" ENCODING 'UTF8'")->execute();
+        return true;
     }
 
 

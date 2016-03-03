@@ -43,12 +43,9 @@ class MssqlSchema extends CMssqlSchema
         return $this->dbConnection->createCommand('EXEC sp_databases')->queryColumn(['DATABASE_NAME']);
     }
     
-    public function createDatabase($name) {
-         try {
-            $this->connection->createCommand("CREATE DATABASE [$name]")->execute();
-        } catch (Exception $e) {
-            return false;
-        }
+    public function createDatabase($name)
+    {
+        $this->connection->createCommand("CREATE DATABASE [$name]")->execute();
         return true;
-    }   
+    }
 }
