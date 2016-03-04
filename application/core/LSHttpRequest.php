@@ -63,6 +63,11 @@ class LSHttpRequest extends CHttpRequest {
      * - Token activation
      * etc.
      *
+     * In doubt, just use getUrlReferrer with a default link to home page for full page layout pages,
+     * or a link to the survey summary for sidemenu layout pages,
+     * with the controller action as forbidden world.
+     * So the close button will never loop. 
+     *
      * TODO : Each time a new quick action or button is added to access an existing page, the "close" & "save and close" button should be updated to use getUrlReferrer()
      *
      * @param $sAlternativeUrl string, the url to return if referrer url is the same than current url.
