@@ -799,3 +799,31 @@ table.question.subquestion-list.questions-list tr.answers-list th
     height: 60px;
     text-align: center;
 }
+
+/**
+ * Gender buttons
+ */
+
+/* Not selected */
+.gender-button button{
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.16), 2px 2px 2px 0 rgba(0, 0, 0, 0.12);
+    margin-left: 1em;
+}
+
+/* selected */
+.gender-button .btn:focus {
+    box-shadow: none;
+}
+
+.gender-button .btn:focus .gender-text{
+    text-decoration: underline;
+}
+
+/* General */
+.gender-button .btn span {
+    display: block;
+}
+
+.gender-button .gender-icon {
+    font-size: 2em;
+}

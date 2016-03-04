@@ -10,24 +10,27 @@
  * $value
  */
 ?>
-<div class="answers-list radio-list">
+<div class="answers-list radio-list gender-button">
 
     <button class="btn btn-danger btn-lg ls-icons" type="button" data-id="answer<?php echo $name;?>F"  >
-        <span class="fa fa-female lead"  style="font-size: 2em;"></span>
-        <br/>
-       <?php eT('Female');?>
+        <span class="fa fa-venus lead gender-icon"  ></span>
+        <span class="gender-text">
+            <?php eT('Female');?>
+        <span>
     </button>
 
     <button class="btn btn-info btn-lg ls-icons" type="button"  data-id="answer<?php echo $name;?>M" >
-        <span class="fa fa-male lead" style="font-size: 2em;"></span>
-        <br/>
-        <?php eT('Male');?>
+        <span class="fa fa-mars lead gender-icon" ></span>
+        <span class="gender-text">
+            <?php eT('Male');?>
+        </span>
     </button>
 
     <button class="btn btn-default btn-lg ls-icons" type="button"  data-id="answer<?php echo $name;?>" >
-        <span class="fa fa-genderless lead"  style="font-size: 2em;"></span>
-        <br/>
-        <?php eT('No answer'); ?>
+        <span class="fa fa-genderless lead gender-icon"  ></span>
+        <span class="gender-text">
+            <?php eT('No answer'); ?>
+        </span>
     </button>
 
     <div class="btn-group hidden" data-toggle="buttons">
