@@ -210,7 +210,7 @@ class labels extends Survey_Common_Action
         $aData['labelbar']['buttons']['edition']= TRUE;
         $aData['labelbar']['savebutton']['form'] = 'labelsetform';
         $aData['labelbar']['savebutton']['text'] = gT("Save");
-        $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl('admin/labels/sa/view') );  // Close button
+        $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl('admin/labels/sa/view') );  // Close button, UrlReferrer
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
 
     }
