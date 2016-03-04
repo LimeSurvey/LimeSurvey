@@ -14,7 +14,7 @@
 ?>
 <div class="col-sm-12">
     <div id='javatbd<?php echo $myfname; ?>' class='form-group answer-item radio-item' <?php echo $sDisplayStyle; ?> >
-        <label for="answer<?php echo $ia[1].$ansrow['code']; ?>" class="control-label label-radio">
+        <label for="answer<?php echo $ia[1].$ansrow['code']; ?>" class="control-label radio-label">
             <input
                 class="radio"
                 type="radio"
@@ -24,9 +24,7 @@
                 <?php echo $checkedState;?>
                 onclick="if (document.getElementById('answer<?php echo $ia[1]; ?>othertext') != null) document.getElementById('answer<?php echo $ia[1]; ?>othertext').value='';checkconditions(this.value, this.name, this.type)"
              />
-             <span>
-                 <?php echo $ansrow['answer']; ?>
-            </span>
+             <?php echo $ansrow['answer']; ?>
         </label>
     </div>
 </div>
