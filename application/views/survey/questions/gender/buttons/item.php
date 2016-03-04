@@ -26,12 +26,14 @@
         </span>
     </button>
 
+    <?php if(!is_null($noAnswer)):?>
     <button class="btn btn-default btn-lg ls-icons" type="button"  data-id="answer<?php echo $name;?>" >
         <span class="fa fa-genderless lead gender-icon"  ></span>
         <span class="gender-text">
             <?php eT('No answer'); ?>
         </span>
     </button>
+    <?php endif; ?>
 
     <div class="btn-group hidden" data-toggle="buttons">
 
@@ -66,6 +68,7 @@
       </label>
 
       <!-- No answer -->
+      <?php if(!is_null($noAnswer)):?>
       <label class="btn btn-primary  btn-lg  <?php if($naChecked!=''){echo 'active';}?>">
                   <input
                       class="radio"
@@ -79,7 +82,8 @@
                   <span class="glyphicon glyphicon-user"></span>
                   <?php eT('No answer'); ?>
       </label>
-
+    <?php endif;?>
+    
     <!-- Value -->
     <input
         type="hidden"

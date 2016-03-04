@@ -3966,6 +3966,8 @@ function do_gender($ia)
         }
     }
 
+    $noAnswer = (isset($noAnswer))?$noAnswer:null;
+
     $itemDatas = array(
         'name'=>$ia[1],
         'fChecked' => $fChecked,
