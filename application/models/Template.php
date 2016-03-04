@@ -169,7 +169,7 @@ class Template extends LSActiveRecord
     {
         if ($sTemplateName == '' && $iSurveyId == '')
         {
-            throw new TemplateException(gT("Template needs either template name or survey id"));
+            throw new TemplateException("Template needs either template name or survey id");
         }
 
         if ($sTemplateName=='')

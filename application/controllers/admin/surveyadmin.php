@@ -405,9 +405,7 @@ class SurveyAdmin extends Survey_Common_Action
     * Load list question groups view for a specified by $iSurveyID
     *
     * @access public
-    * @param mixed $iSurveyID
-    * @param mixed $gid
-    * @param mixed $qid
+    * @param mixed $surveyid The survey ID
     * @return void
     */
     public function listquestiongroups($surveyid)
@@ -1513,6 +1511,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _tabTokens($esrow)
     {
+        $aData = array();
         $aData['esrow'] = $esrow;
         return $aData;
     }

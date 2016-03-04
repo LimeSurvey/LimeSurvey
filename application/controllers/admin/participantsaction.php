@@ -78,7 +78,7 @@ class participantsaction extends Survey_Common_Action
     {
         App()->getClientScript()->registerPackage('bootstrap-multiselect');
         $aData['display']['menu_bars'] = false;
-        
+
         // Add "_view" to urls
         array_walk($aViewUrls, function(&$url) { $url .= "_view"; });
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
@@ -1609,7 +1609,7 @@ class participantsaction extends Survey_Common_Action
         }
         catch (Exception $e)
         {
-            printf(gT("Error: Could not copy attributes to tokens: file %s, line %s; %s"), $e->getFile(), $e->getLine(), $e->getMessage());
+            printf("Error: Could not copy attributes to tokens: file %s, line %s; %s", $e->getFile(), $e->getLine(), $e->getMessage());
             return;
         }
 
