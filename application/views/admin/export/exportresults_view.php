@@ -92,7 +92,7 @@
                                             max="<?php echo $max_datasets; ?>"
                                             step="1"
                                             type="number"
-                                            value="6164"
+                                            value="<?php echo $max_datasets; ?>"
                                             name="export_to"
                                             id="export_to"
                                             class="form-control"
