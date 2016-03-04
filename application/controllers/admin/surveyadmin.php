@@ -594,6 +594,8 @@ class SurveyAdmin extends Survey_Common_Action
             Yii::app()->db->schema->refresh();
         }
 
+        $aData['sidemenu']['state'] = false;
+        $aData['surveybar']['closebutton'] = false;
         $this->_renderWrappedTemplate('survey', 'deactivateSurvey_view', $aData);
     }
 
