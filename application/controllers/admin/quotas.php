@@ -101,7 +101,7 @@ class quotas extends Survey_Common_Action
         $aData['surveybar']['buttons']['view']= TRUE;
         $aData['surveybar']['active_survey_properties']['img'] = 'quota';
         $aData['surveybar']['active_survey_properties']['txt'] = gT("Quotas");
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;
+        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
 
         $totalquotas = 0;
         $totalcompleted = 0;
@@ -388,7 +388,7 @@ class quotas extends Survey_Common_Action
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 
             //$aData['surveybar']['active_survey_properties'] = 'quotas';
-            $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId;
+            $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId;  // Close button
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
 
         $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
@@ -444,11 +444,11 @@ class quotas extends Survey_Common_Action
             $aViewUrls[] = 'newanswertwo_view';
         }
 
-                $aData['sidemenu']['state'] = false;
-                $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-                $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
-                $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-                $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId;
+        $aData['sidemenu']['state'] = false;
+        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+        $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId;  // Close button
 
         $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }
@@ -463,11 +463,11 @@ class quotas extends Survey_Common_Action
         $aData['langs'] = $aData['aLangs'];
         $aData['baselang'] = $aData['sBaseLang'];
 
-                $aData['sidemenu']['state'] = false;
-                $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-                $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
-                $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-                $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId;
+        $aData['sidemenu']['state'] = false;
+        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+        $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId;  // Close button
 
         $this->_renderWrappedTemplate('quotas', 'newquota_view', $aData);
     }

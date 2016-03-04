@@ -103,7 +103,7 @@ class GlobalSettings extends Survey_Common_Action
 
         $data['fullpagebar']['savebutton']['form'] = 'frmglobalsettings';
         $data['fullpagebar']['saveandclosebutton']['form'] = 'frmglobalsettings';
-        $data['fullpagebar']['closebutton']['url'] = 'admin/';
+        $data['fullpagebar']['closebutton']['url'] = 'admin/';  // Close button
 
         $this->_renderWrappedTemplate('', 'globalSettings_view', $data);
     }

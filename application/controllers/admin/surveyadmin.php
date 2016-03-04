@@ -155,7 +155,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $arrayed_data['title_bar']['title'] = gT('New survey');
         $arrayed_data['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
-        $arrayed_data['fullpagebar']['closebutton']['url'] = 'admin/index';
+        $arrayed_data['fullpagebar']['closebutton']['url'] = 'admin/index';  // Close button
 
         $this->_renderWrappedTemplate('survey', $aViewUrls, $arrayed_data);
     }
@@ -213,7 +213,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;
+        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
 
         $this->_renderWrappedTemplate('survey', 'editSurvey_view', $aData);
     }
@@ -503,7 +503,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID;
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;
+        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
 
         if (empty($_POST['ok']))
         {
@@ -1029,7 +1029,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aData['surveybar']['savebutton']['useformid'] = 'true';
             $aData['surveybar']['saveandclosebutton']['form'] = true;
 
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;
+            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
 
             $aViewUrls[] = 'editLocalSettings_main_view';
         }
