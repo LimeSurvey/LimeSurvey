@@ -1,7 +1,7 @@
 <?php
 /**
  * Yes / No Question, buttons item Html
- * 
+ *
  * @var $name                           $ia[1]
  * @var $yChecked
  * @var $nChecked
@@ -44,20 +44,22 @@
         </label>
 
         <!-- No answer -->
-        <label class="btn btn-primary btn-lg  <?php if($naChecked){ echo "active";}?>">
+        <?php if($noAnswer):?>
+            <label class="btn btn-primary btn-lg  <?php if($naChecked){ echo "active";}?>">
 
-            <input
-                class="radio"
-                type="radio"
-                name="<?php echo $name;?>"
-                id="answer<?php echo $name;?>"
-                value=""
-                <?php echo $naChecked; ?>
-                onclick="<?php echo $checkconditionFunction;?>"
-            />
-                <?php eT('No answer');?>
+                <input
+                    class="radio"
+                    type="radio"
+                    name="<?php echo $name;?>"
+                    id="answer<?php echo $name;?>"
+                    value=""
+                    <?php echo $naChecked; ?>
+                    onclick="<?php echo $checkconditionFunction;?>"
+                    />
+                    <?php eT('No answer');?>
 
-        </label>
+            </label>
+        <?php endif;?>
       </div>
 
       <input

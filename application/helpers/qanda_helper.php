@@ -3922,7 +3922,7 @@ function do_yesno($ia)
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $displayType = $aQuestionAttributes['display_type'];
-
+    $noAnswer = (isset($noAnswer))?$noAnswer:false;
     $itemDatas = array(
         'name'=>$ia[1],
         'yChecked' => $yChecked,
@@ -3966,7 +3966,7 @@ function do_gender($ia)
         }
     }
 
-    $noAnswer = (isset($noAnswer))?$noAnswer:null;
+    $noAnswer = (isset($noAnswer))?$noAnswer:false;
 
     $itemDatas = array(
         'name'=>$ia[1],
