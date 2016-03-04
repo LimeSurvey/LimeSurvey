@@ -997,7 +997,7 @@ class participantsaction extends Survey_Common_Action
                 'visible' => Yii::app()->request->getPost('visible')
                 );
         ParticipantAttributeName::model()->saveAttribute($aData);
-        Yii::app()->setFlashMessage(gT('Attribute was saved'), 'info');
+        Yii::app()->setFlashMessage(gT('Attribute was saved.'), 'info');
 
         // Save translations
         if (isset($_POST['lang']))
