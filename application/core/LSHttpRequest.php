@@ -45,9 +45,25 @@ class LSHttpRequest extends CHttpRequest {
      * it can be necessary to check if the referrer contains a specific word (an action in general)
      * So if you want to forbid a return to a certain page, just provide an alternative url, and the forbidden key world
      *
-     * Not all "close" and "save and close" buttons should not use it.
+     * Not all "close" and "save and close" buttons should use it.
      * Only close button for pages that can be accessed since different places.
      * eg: edit question, that can be accessed from question list or question
+     *
+     *
+     * TODO: implement it for all those pages
+     * List of pages where it should be implemented :
+     * - All pages accessible via the top nav-bar (eg: create a new survey, edit template, etc.)
+     * - All pages accessible via quick actions (home page, survey quick actions, question group quick actions, etc.)
+     * - All pages accessible via question explorer (only "add question to group" for now)
+     * - Edition of question and question group, which are accessible via summary or list
+     * - Import question, question group
+     *
+     * TODO: remove misused of it
+     * It should not be used for pages accessible from only one place
+     * - Token activation
+     * etc.
+     *
+     * TODO : Each time a new quick action or button is added to access an existing page, the "close" & "save and close" button should be updated to use getUrlReferrer()
      *
      * @param $sAlternativeUrl string, the url to return if referrer url is the same than current url.
      * @param $aForbiddenWordsInUrl array, an array containing forbidden words in url
