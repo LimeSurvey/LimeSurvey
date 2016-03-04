@@ -4,6 +4,8 @@
  * Used for all survey editing action, and group / questions lists.
  */
 ?>
+
+
 <div class='menubar surveybar' id="surveybarid">
     <div class='row container-fluid'>
         <div class="col-md-8 col-xs-6">

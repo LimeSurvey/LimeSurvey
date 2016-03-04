@@ -524,7 +524,6 @@ class Survey_Common_Action extends CAction
 
     function _tokenbar($aData)
     {
-        //var_dump($aData['token_bar']);
         if( isset($aData['token_bar']) ) {
 
             if(isset($aData['token_bar']['closebutton']['url']))
@@ -852,7 +851,8 @@ class Survey_Common_Action extends CAction
             if(isset($aData['surveybar']['closebutton']['url']))
             {
                 $sAlternativeUrl = $aData['surveybar']['closebutton']['url'];
-                $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+                $aForbiddenWordsInUrl = isset($aData['surveybar']['closebutton']['forbidden'])?$aData['surveybar']['closebutton']['forbidden']:array();
+                $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl), $aForbiddenWordsInUrl );
             }
 
             if($aData['gid']==null)
