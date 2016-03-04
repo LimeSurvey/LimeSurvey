@@ -198,12 +198,14 @@
                 </a>
             <?php endif;?>
 
+            <!-- Close -->
             <?php if(isset($fullpagebar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
                     <span class="glyphicon glyphicon-close" ></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
+
             <?php if(isset($fullpagebar['returnbutton'])):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("/admin"); ?>" role="button">
                     <span class="glyphicon glyphicon-backward" ></span>

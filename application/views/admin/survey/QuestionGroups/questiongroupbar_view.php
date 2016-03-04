@@ -175,8 +175,8 @@
         <!-- Right Buttons -->
         <div class="col-sm-4 text-right">
 
+            <!-- Save buttons -->
             <?php if(isset($questiongroupbar['savebutton']['form'])):?>
-                <!-- Save buttons -->
                 <?php if(!isset($copying) || !$copying): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="glyphicon glyphicon-ok"></span>
@@ -184,28 +184,25 @@
                 </a>
             <?php endif; ?>
 
-                <?php if(isset($questiongroupbar['saveandclosebutton'])):?>
-
-                    <!-- Save and close -->
-                    <a id="save-and-close-button" class="btn btn-default" role="button">
-                        <span class="glyphicon glyphicon-saved"></span>
-                        <?php eT("Save and close");?>
-                    </a>
-                <?php endif; ?>
+            <!-- Save and close -->
+            <?php if(isset($questiongroupbar['saveandclosebutton'])):?>
+                <a id="save-and-close-button" class="btn btn-default" role="button">
+                    <span class="glyphicon glyphicon-saved"></span>
+                    <?php eT("Save and close");?>
+                </a>
+            <?php endif; ?>
             <?php endif;?>
 
+            <!-- Close -->
             <?php if(isset($questiongroupbar['closebutton']['url'])):?>
-
-                <!-- Close -->
                 <a class="btn btn-danger" href="<?php echo $questiongroupbar['closebutton']['url']; ?>" role="button">
                     <span class="glyphicon glyphicon-close"></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
 
+            <!-- return -->
             <?php if(isset($questiongroupbar['returnbutton']['url'])):?>
-
-                <!-- return -->
                 <a class="btn btn-default" href="<?php echo $questiongroupbar['returnbutton']['url']; ?>" role="button">
                     <span class="glyphicon glyphicon-step-backward"></span>
                     <?php echo $questiongroupbar['returnbutton']['text'];?>

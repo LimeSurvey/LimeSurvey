@@ -573,8 +573,8 @@
                     <?php eT("Save");?>
                 </a>
 
+                <!-- Save and close -->
                 <?php if(isset($surveybar['saveandclosebutton'])):?>
-                    <!-- Save and close -->
                     <a class="btn btn-default" href="#" role="button" id='save-and-close-button'>
                         <span class="glyphicon glyphicon-saved"></span>
                         <?php eT("Save and close");?>
@@ -582,9 +582,8 @@
                 <?php endif; ?>
             <?php endif;?>
 
+            <!-- Close -->
             <?php if(isset($surveybar['closebutton']['url'])):?>
-
-                <!-- Close -->
                 <a class="btn btn-danger" href="<?php echo $surveybar['closebutton']['url']; ?>" role="button">
                     <span class="glyphicon glyphicon-close"></span>
                     <?php eT("Close");?>
