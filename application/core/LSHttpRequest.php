@@ -36,13 +36,18 @@ class LSHttpRequest extends CHttpRequest {
 
     /**
      * Return the referal url,
-     * it's used for the close buttons.
+     * it's used for the "close" buttons, and the "save and close" buttons
      * So it checks if the referrer url is the same than the current url to avoid looping.
      * If it the case, a paramater can be set to tell what referrer to return.
      * If the referrer is an external url, Yii return by default the current url.
      *
      * To avoid looping between two urls (like simpleStatistics <=> Expert Statistics),
      * it can be necessary to check if the referrer contains a specific word (an action in general)
+     * So if you want to forbid a return to a certain page, just provide an alternative url, and the forbidden key world
+     *
+     * Not all "close" and "save and close" buttons should not use it.
+     * Only close button for pages that can be accessed since different places.
+     * eg: edit question, that can be accessed from question list or question
      *
      * @param $sAlternativeUrl string, the url to return if referrer url is the same than current url.
      * @param $aForbiddenWordsInUrl array, an array containing forbidden words in url
