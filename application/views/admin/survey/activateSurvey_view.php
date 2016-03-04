@@ -1,7 +1,7 @@
 <?php if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck)): ?>
 <div class="side-body">
     <div class="row welcome survey-action">
-        <div class="col-lg-12 content-right">
+        <div class="col-sm-12 content-right">
             <div class="jumbotron message-box message-box-error">
                 <h2><?php eT("Activate Survey"); echo "($surveyid)"; ?></h2>
                 <p class="lead text-warning"><strong><?php eT("Error"); ?> !</strong></p>
@@ -40,7 +40,7 @@
 </div>
 <?php else:?>
 
-<div class='side-body container message-box col-lg-10' >
+<div class='side-body container message-box col-sm-10' >
     <div class='row'>
         <h2 class='col-sm-12 text-center'><?php eT("Warning"); ?>! <?php eT("READ THIS CAREFULLY BEFORE PROCEEDING"); ?></h2>
     </div>
