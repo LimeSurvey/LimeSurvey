@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-03-04 21:30:21+00:00\n"
+"POT-Creation-Date: 2016-03-04 22:21:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2673,7 +2673,7 @@ msgid "%s participant(s) are to be copied "
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:1000
-msgid "Attribute was saved"
+msgid "Attribute was saved."
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:1096
