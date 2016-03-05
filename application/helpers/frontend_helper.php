@@ -1906,11 +1906,18 @@ function UpdateFieldArray()
 * checkCompletedQuota() returns matched quotas information for the current response
 * @param integer $surveyid - Survey identification number
 * @param bool $return - set to true to return information, false do the quota
-* @return array - nested array, Quotas->Members->Fields, includes quota information matched in session.
+* @return array|void - nested array, Quotas->Members->Fields, includes quota information matched in session.
 */
 function checkCompletedQuota($surveyid,$return=false)
 {
-    if (!isset($_SESSION['survey_'.$surveyid]['srid']))
+    /* Check is session is set */
+    if (!isset(App()->session['survey_'.$surveyid]['srid']))
+    {
+        return;
+    }
+    /* Check is Response is already submitted : only when "do" the quota: allow to send information about quota */
+    $oResponse=Response::model($surveyid)->findByPk(App()->session['survey_'.$surveyid]['srid']);
+    if(!$return && $oResponse && !is_null($oResponse->submitdate))
     {
         return;
     }
