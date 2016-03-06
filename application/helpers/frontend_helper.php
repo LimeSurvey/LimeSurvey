@@ -1910,7 +1910,7 @@ function UpdateFieldArray()
 */
 function checkCompletedQuota($surveyid,$return=false)
 {
-    /* Check is session is set */
+    /* Check if session is set */
     if (!isset(App()->session['survey_'.$surveyid]['srid']))
     {
         return;
