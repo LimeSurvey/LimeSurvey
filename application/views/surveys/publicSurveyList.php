@@ -47,7 +47,7 @@
         "list"=> $list,
     );
 
-    $oTemplate = Template::model()->getInstance("defaulttemplate");
+    $oTemplate = Template::model()->getInstance("default");
 
     $data['templatedir'] = Template::getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
     $data['templateurl'] = Template::getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
