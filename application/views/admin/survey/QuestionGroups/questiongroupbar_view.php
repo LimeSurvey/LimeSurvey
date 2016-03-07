@@ -91,7 +91,7 @@
                     <?php else:?>
 
                         <!-- Activated -->
-                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Survey is active","js"); ?>" >
+                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete this question group because the survey is currently active.","js"); ?>" >
                             <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                                 <span class="glyphicon glyphicon-trash"></span>
                                 <?php eT("Delete current question group"); ?>
