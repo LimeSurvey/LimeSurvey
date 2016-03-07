@@ -2,6 +2,7 @@
 /**
  * Ranking question, Html between the two lists of items
  * @var $rankId         $ia[0]
+ * @var $rankingName               $ia[1]
  * @var $max_answers
  * @var $min_answers
  */
@@ -17,7 +18,7 @@
     </div>
 
     <div style='display:none' id='ranking-<?php echo $rankId;?>-name'>
-        <?php echo $rankId;?>
+        <?php echo $rankingName;?>
     </div>
 </div>
 

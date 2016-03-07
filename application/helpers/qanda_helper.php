@@ -2106,6 +2106,7 @@ function do_ranking($ia)
     );
     $secondlistDatas = array(
         'rankId'=>$ia[0],
+        'rankingName'=>$ia[1],
         'max_answers'=>$max_answers,
         'min_answers'=>$min_answers,
         'answers'=>$answers
