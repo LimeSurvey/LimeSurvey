@@ -99,7 +99,7 @@ class TemplateConfiguration extends CFormModel
             else
             {
                 $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
-                $this->xmlFile = $this->path.'config.xml';
+                $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
             }
 
         }
@@ -107,7 +107,7 @@ class TemplateConfiguration extends CFormModel
         {
             $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
         }
-
+        //var_dump(realpath ($this->xmlFile)); die();
         $this->config = simplexml_load_file(realpath ($this->xmlFile));
 
         // The template configuration.

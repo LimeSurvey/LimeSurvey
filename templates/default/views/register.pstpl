@@ -1,4 +1,4 @@
-<span class="warning-text">{REGISTERERROR}</span>
+<div class="alert alert-danger" role="alert">{REGISTERERROR}</div>
 <p class="register-message-1">{REGISTERMESSAGE1}</p>
 <p class="register-message-2">{REGISTERMESSAGE2}</p>
 <div class="register-form">{REGISTERFORM}</div>
