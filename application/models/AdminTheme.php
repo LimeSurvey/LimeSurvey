@@ -34,8 +34,9 @@ class AdminTheme extends CFormModel
         // We retrieve the admin theme in config ( {{settings_global}} or config-defaults.php )
         $sAdminThemeName = Yii::app()->getConfig('admintheme');
         $sAdminTemplateRootDir=Yii::app()->getConfig("styledir");
+
         // If the template doesn't exist, set to Default
-        $sAdminThemeName = ($this->isStandardAdminTheme($sAdminThemeName ))?$sAdminThemeName:'default';
+        $sAdminThemeName = ($this->isStandardAdminTheme($sAdminThemeName))?$sAdminThemeName:'default';
 
         // If the required admin theme doesn't exist, Sea_Green will be used
         // TODO : check also for upload directory
@@ -50,9 +51,9 @@ class AdminTheme extends CFormModel
         return $this;
     }
 
-    private function isStandardAdminTheme()
+    private function isStandardAdminTheme($sAdminThemeName)
     {
-        return in_array($this->name,
+        return in_array($sAdminThemeName,
             array(
                 'Apple_Blossom',
                 'Bay_of_Many',
