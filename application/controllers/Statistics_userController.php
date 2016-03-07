@@ -45,7 +45,7 @@ class Statistics_userController extends LSYii_Controller {
         $iSurveyID=(int)$surveyid;
         //$postlang = returnglobal('lang');
         Yii::import('application.libraries.admin.progressbar',true);
-        Yii::app()->loadHelper("admin/statistics");
+        Yii::app()->loadHelper("userstatistics");
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('surveytranslator');
         App()->getClientScript()->registerPackage('jqueryui');
@@ -416,7 +416,7 @@ class Statistics_userController extends LSYii_Controller {
 
             }    // end foreach -> loop through all questions
 
-            $helper = new statistics_helper();
+            $helper = new userstatistics_helper();
             $statisticsoutput .= $helper->generate_statistics($iSurveyID, $summary, $summary, $publicgraphs, 'html', null,$sLanguage,false);
 
         }    //end if -> show summary results
