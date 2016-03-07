@@ -91,7 +91,7 @@
                     <?php else:?>
 
                         <!-- Activated -->
-                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>" >
+                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Survey is active","js"); ?>" >
                             <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                                 <span class="glyphicon glyphicon-trash"></span>
                                 <?php eT("Delete current question group"); ?>
