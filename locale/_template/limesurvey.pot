@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-03-07 10:24:53+00:00\n"
+"POT-Creation-Date: 2016-03-07 11:29:49+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14030,6 +14030,7 @@ msgid "Deleting this question will also delete any answer options and subquestio
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:101
+#: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:94
 msgid "You can't delete this question group because the survey is currently active."
 msgstr ""
 
@@ -14195,10 +14196,6 @@ msgstr ""
 
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:66
 msgid "Check survey logic for current question group"
-msgstr ""
-
-#: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:94
-msgid "Survey is active"
 msgstr ""
 
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:109
