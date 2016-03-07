@@ -35,6 +35,47 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160228) to 2.50+ (build 160307) Mar 7, 2016
+-Fixed issue #10532: Popup HTML Editor not working fixed. Removed failing console.log statement from JavaScript code (Markus FlÃ¼r)
+-Fixed issue #10087: User stats page have invalid link (LouisGac)
+-Fixed issue #10230: Limesurvey should not check completed surveys quotas (Denis Chenu)
+-Fixed issue #10420: List (dropdown) conditions erros (LouisGac)
+-Fixed issue #10528: beforeHasPermission event don't happen for owner of survey (Denis Chenu)
+-Fixed issue #10530: HTML for radio button form items inconsistent (LouisGac)
+-Fixed issue #10536: Higher risk that the emails are rated as Spam (Denis Chenu)
+-Fixed issue #10543: "Gender buttons" display (LouisGac)
+-Fixed issue #10554: No answer buttons are always shown (Yes/No case) (LouisGac)
+-Fixed issue #10568: Quotas close button in endless loop (LouisGac)
+-Fixed issue #10602: Close button in response detail-view leads to previous response (Markus FlÃ¼r)
+-Fixed issue #10606: When exporting CPDB to token, drag-n-drop has an error (Olle Haerstedt)
+-Fixed issue #10608: Users can see each others contacts in the participant database (Carsten Schmitz)
+-Fixed issue #10612: New remove button in question group list window (LouisGac)
+-Fixed issue #10621: Empty label in "array NUMBER", checkbox case (LouisGac)
+-Fixed issue #10623: When exporting CPDB to token, automatic mappings should be pre-mapped (Olle Haerstedt)
+-Fixed issue #10627: Download all files from one response duplicates files in zip package if survey is using more than one language (Carsten Schmitz)
+-Fixed issue #10629: Export a template: white page (LouisGac)
+-Fixed issue #10633: unable to use 2.06 template (Thanks to autopoiesis) (Denis Chenu)
+-Fixed issue #10644: Groups report members incorrectly (LouisGac)
+-Fixed issue #10648: Entries not showing in global menu when global permissions are set (Carsten Schmitz)
+-Fixed issue #10656: Answers list are not editable when survey is activated (LouisGac)
+-Fixed issue #10658: Survey title should link to survey overview (LouisGac)
+-Fixed issue #10659: Multilingal survey : relevance icon on sub language (LouisGac)
+-Fixed issue #10679: Can't export a single response (LouisGac)
+-Fixed issue: Next button not properly disabled in question detail view (Carsten Schmitz)
+-Fixed issue: Present Create a new survey only when user had create rights (Bert Hankes)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Thai by tomzt
+
 Changes from 2.50+ (build 160225) to 2.50+ (build 160228) Feb 28, 2016
 -Fixed issue #10431: Columns for question list are not distributed well (Olle Haerstedt)
 -Fixed issue #10561: Export results does not respect Full question text option (Olle Haerstedt)
