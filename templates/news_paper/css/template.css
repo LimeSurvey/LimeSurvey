@@ -836,6 +836,10 @@ html, body {
     display: block;
 }
 
+html body .navbar.navbar-default.navbar-fixed-top {
+    z-index: 2000;
+}
+
 .gender-button .gender-icon {
     font-size: 2em;
 }
