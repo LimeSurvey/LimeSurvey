@@ -5398,6 +5398,7 @@
                     }
                     else
                     {
+                        $val=preg_replace('/[\x{10000}-\x{10FFFF}]/u', "\xEF\xBF\xBD", $val);
                         $setter[] = dbQuoteID($key) . "=" . dbQuoteAll($val);
                     }
                 }
