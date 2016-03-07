@@ -4873,7 +4873,7 @@
                             }
                             else
                             {
-                                // We don't really validate date here, anyone can send anything : forced too 
+                                // We don't really validate date here, anyone can send anything : forced too
                                 $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
                                 $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
                                 $value=$datetimeobj->convert("Y-m-d H:i");
@@ -5398,6 +5398,7 @@
                     }
                     else
                     {
+                        $val=preg_replace('/[\x{10000}-\x{10FFFF}]/u', "\xEF\xBF\xBD", $val);
                         $setter[] = dbQuoteID($key) . "=" . dbQuoteAll($val);
                     }
                 }
