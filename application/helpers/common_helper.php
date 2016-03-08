@@ -1484,17 +1484,11 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                     $sValue=convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
                 }
                 break;
+            case 'K':
             case 'N':
-                if (trim($sValue)!='')
-                {
-                    if(strpos($sValue,".")!==false)
-                    {
+                if (trim($sValue)!='') {
+                    if (strpos($sValue,".")!==false) {
                         $sValue=rtrim(rtrim($sValue,"0"),".");
-                    }
-                    $qidattributes = getQuestionAttributeValues($fields['qid']);
-                    if($qidattributes['num_value_int_only'])
-                    {
-                        $sValue=number_format($sValue, 0, '', '');
                     }
                 }
                 break;

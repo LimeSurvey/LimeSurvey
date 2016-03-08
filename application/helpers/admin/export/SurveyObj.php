@@ -34,10 +34,10 @@ class SurveyObj
     * @var array[int][string]mixed
     */
     public $groups;
-    
+
     /**
      * info about the survey
-     * 
+     *
      * @var array
      */
     public $info;
@@ -55,10 +55,10 @@ class SurveyObj
     * @var array[int][string]mixed
     */
     public $tokens;
-    
+
     /**
      * When relevant holds the available fields from the token table
-     * 
+     *
      * @var array[fieldname][localised description]
      */
     public $tokenFields = array();
@@ -76,7 +76,7 @@ class SurveyObj
     * @var array[int][string]mixed
     */
     public $languageSettings;
-    
+
     /**
     * Returns question arrays ONLY for questions that are part of the
     * indicated group and are top level (i.e. no subquestions will be
@@ -206,8 +206,21 @@ class SurveyObj
         }
 
         //echo "\n$fieldName: $fieldType = $answerCode";
-        switch ($fieldType)
-        {
+        switch ($fieldType) {
+            case 'K':
+            case 'N':
+                $fullAnswer = $answerCode;
+                if (trim($fullAnswer)!='') {
+                    if (strpos($fullAnswer,".")!==false) {
+                        $fullAnswer=rtrim(rtrim($fullAnswer,"0"),".");
+                    }
+                    $qidattributes = getQuestionAttributeValues($questionId);
+                    if (isset($qidattributes['num_value_int_only']) && $qidattributes['num_value_int_only']) {
+                        $fullAnswer=number_format($fullAnswer, 0, '', '');
+                    }
+                }
+                break;
+
             case 'R':   //RANKING TYPE
                 $fullAnswer = $answer;
                 break;
@@ -304,10 +317,10 @@ class SurveyObj
                 }
                 else
                 {
-                    if ($answerCode == 'Y') 
+                    if ($answerCode == 'Y')
                     {
                         $fullAnswer = $translator->translate('Yes', $sLanguageCode);
-                    } 
+                    }
                     elseif ($answerCode == 'N' || $answerCode === '')   // Strict check for empty string to find null values
                     {
                         $fullAnswer = $translator->translate('No', $sLanguageCode);
@@ -366,9 +379,34 @@ class SurveyObj
     }
 
     /**
+    * Returns the short answer for the question.
+    *
+    * @param string $sFieldName
+    * @param string $sValue
+    * @return string
+    */
+    public function getShortAnswer($sFieldName, $sValue) {
+        $aQuestion = $this->fieldMap[$sFieldName];
+        $sFieldType = $aQuestion['type'];
+
+        switch ($sFieldType) {
+            case 'K':
+            case 'N':
+                if (trim($sValue)!='') {
+                    if (strpos($sValue,".")!==false) {
+                        $sValue=rtrim(rtrim($sValue,"0"),".");
+                    }
+                }
+                break;
+        }
+
+        return $sValue;
+    }
+
+    /**
     * Returns an array of possible answers to the question.  If $scaleId is
     * specified then only answers that match the $scaleId value will be
-    * returned. An empty array may be returned by this function if answers 
+    * returned. An empty array may be returned by this function if answers
     * are found that match the questionId.
     *
     * @param int $questionId
