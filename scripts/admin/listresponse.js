@@ -41,6 +41,7 @@ $(document).on("click","[data-delete]",function(event){
 $(function() {
 
     /* Launch jqgrid */
+
     jQuery("#displayresponses").jqGrid({
         recordtext : sRecordText,
         emptyrecords : sEmptyRecords,
@@ -89,12 +90,15 @@ $(function() {
             return true;
         }
     });
+
     /* Add navgrid */
     jQuery("#displayresponses").jqGrid( 'navGrid', '#pager',
         {
             add: false,
             edit: false,
             del: true,
+            alertcap: sWarningMsg,
+            alerttext: sSelectRowMsg,
             searchtitle : sSearchTitle,
             refreshtitle : sRefreshTitle,
             deltitle : sDelTitle,
@@ -119,7 +123,7 @@ $(function() {
                 $(document).scrollTop(selRowCoordinates.top);
             },
         },
-        { // Deactivate actually, leave the option.
+        { // Search options
             caption : sSearchCaption,
             Find : sFind,
             multipleSearch: true,
@@ -128,9 +132,12 @@ $(function() {
                 sOperator7, sOperator8, sOperator9,
                 sOperator10, sOperator11, sOperator12,
                 sOperator13, sOperator14 ],
-            Reset : sReset
-        } // search options - define multiple search : TODO
+            Reset : sReset,
+            width: 700
+        }
+
     );
+
     /* quick search toolbar */
     jQuery("#displayresponses").jqGrid('filterToolbar', {
         searchOnEnter : false,
