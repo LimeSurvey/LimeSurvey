@@ -236,7 +236,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             while (isset ($gdata[$i]))
             {
                 $aHelperArray=array_keys($lbl);
-                if ($gdata[$i] == 0 || ($sQuestionType == "O" && substr($aHelperArray[$i],0,strlen($sLanguageCode->gT("Comments")))==$sLanguageCode->gT("Comments")))
+                if ($gdata[$i] == 0 || ($sQuestionType == "O" && substr($aHelperArray[$i],0,strlen(gT("Comments")))==gT("Comments")))
                 {
                     array_splice ($gdata, $i, 1);
                 }
