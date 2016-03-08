@@ -139,8 +139,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
      *
      * If templatereplace is called from the template editor, a $oTemplate is provided.
      */
-
-    $oTemplate = Template::model()->getInstance($templatename);
+    if ($oTemplate === '')
+    {
+        $oTemplate = Template::model()->getInstance($templatename);
+    }
 
     $aCssFiles = $oTemplate->config->files->css->filename;
     $aJsFiles = $oTemplate->config->files->js->filename;

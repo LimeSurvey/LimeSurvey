@@ -401,11 +401,6 @@ class Template extends LSActiveRecord
         {
             self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId);
         }
-        // This can happen in template editor when we show two templates in one page
-        elseif (self::$instance->name !== $sTemplateName)
-        {
-            self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId);
-        }
 
         return self::$instance;
     }

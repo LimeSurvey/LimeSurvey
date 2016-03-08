@@ -44,7 +44,7 @@ class templates extends Survey_Common_Action
     */
     public function templatezip($templatename)
     {
-        global $oEditedTemplate;
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
         if (!Permission::model()->hasGlobalPermission('templates','export'))
         {
             die('No permission');
@@ -263,7 +263,7 @@ class templates extends Survey_Common_Action
         $editfileindex = App()->request->getPost('editfileindex');
         $useindex = App()->request->getPost('useindex');
         $templatename = returnGlobal('templatename');
-        $oEditedTemplate = Template::model()->getInstance($templatename);
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
         $templatedir = $oEditedTemplate->viewPath;
         $screenname = returnGlobal('screenname');
         $files = $this->_initfiles($templatename);
@@ -454,7 +454,7 @@ class templates extends Survey_Common_Action
             $sFileToDelete=sanitize_filename(returnGlobal('otherfile'),false,false);
 
             $sTemplateName=Template::templateNameFilter(App()->request->getPost('templatename'));
-            $oEditedTemplate = Template::model()->getInstance($sTemplateName);
+            $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName);
             $templatedir = $oEditedTemplate->viewPath;
             $filesdir = $oEditedTemplate->filesPath;
             $the_full_file_path = $filesdir . $sFileToDelete;
@@ -650,7 +650,7 @@ class templates extends Survey_Common_Action
 
         $screenname = returnGlobal('screenname');
 
-        $oEditedTemplate = Template::model()->getInstance($sTemplateName);
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName);
 
         $files = $this->_initfiles($sTemplateName);
         $cssfiles = $this->_initcssfiles($oEditedTemplate);
@@ -811,7 +811,7 @@ class templates extends Survey_Common_Action
            default: $sEditorFileType='html';
            break;
         }
-        $oEditedTemplate = Template::model()->getInstance($templatename);
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
         $editableCssFiles = $this->_initcssfiles($oEditedTemplate, true);
         $filesdir = $oEditedTemplate->filesPath;
         $aData['screenname'] = $screenname;
@@ -936,7 +936,7 @@ class templates extends Survey_Common_Action
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true, $useindex=false)
     {
         // LimeSurvey style
-        $oEditedTemplate = Template::model()->getInstance($templatename);
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
 
         // In survey mode, bootstrap is loaded via the app init.
         // From template editor, we just add the bootstrap files to the js/css to load for template_helper::templatereplace()
