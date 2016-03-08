@@ -96,7 +96,10 @@ $(document).ready(function(){
         }
     }
 
-    var outerframeDistanceFromTop = 50;
+    //var outerframeDistanceFromTop = 50;
+    //topsurveymenubar
+    var topsurveymenubarHeight = $('#topsurveymenubar').innerHeight();
+    var outerframeDistanceFromTop = topsurveymenubarHeight;
     // Manage top container
     if(!$.trim($('#topContainer .container').html()))
     {
@@ -104,6 +107,10 @@ $(document).ready(function(){
     }
     else
     {
+        $('#topContainer').css({
+            top: topsurveymenubarHeight+'px',
+        });
+
         $topContainerHeight = $('#topContainer').height();
         outerframeDistanceFromTop += $topContainerHeight;
     }
