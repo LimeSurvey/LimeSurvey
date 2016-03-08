@@ -2667,6 +2667,9 @@ function questionAttributes($returnByName=false)
         // If you insert a new attribute please do it in correct alphabetical order!
         // Please also list the new attribute in the function &TSVSurveyExport($sid) in em_manager_helper.php,
         // so your new attribute will not be "forgotten" when the survey is exported to Excel/CSV-format!
+
+        // If you need to create a new attribute selector rendering for question advanced attribute
+        // Just add it to application/views/admin/survey/Question/advanced_settings_view
         $qattributes["alphasort"]=array(
         "types"=>"!LOWZ",
         'category'=>gT('Display'),
@@ -3584,6 +3587,29 @@ function questionAttributes($returnByName=false)
         'inputtype'=>'text',
         "help"=>gT('Width of text input box'),
         "caption"=>gT('Input box width'));
+
+        $qattributes["text_input_columns"]=array(
+        "types"=>"Q",
+        'category'=>gT('Display'),
+        'sortorder'=>90,
+        'inputtype'=>'columns',
+        'default'=>'6',
+        'min'=>'1',
+        'max'=>'12',
+        "help"=>gT('Number of bootstrap column for the input box'),
+        "caption"=>gT('Input box\'s columns'));
+
+        $qattributes["label_input_columns"]=array(
+        "types"=>"Q",
+        'category'=>gT('Display'),
+        'sortorder'=>90,
+        'inputtype'=>'columns',
+        'default'=>'6',
+        'min'=>'1',
+        'max'=>'12',
+        "help"=>gT('Number of bootstrap column for the label'),
+        "caption"=>gT('Label\'s columns'));
+
 
         $qattributes["use_dropdown"]=array(
         "types"=>"1FO",
