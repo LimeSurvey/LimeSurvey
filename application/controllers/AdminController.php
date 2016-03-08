@@ -43,8 +43,13 @@ class AdminController extends LSYii_Controller
         if (!Yii::app()->getConfig("subaction")) {Yii::app()->setConfig("subaction", returnGlobal('subaction'));} //Desired subaction
         if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));} // for html editor integration
 
-        // Variable not used, but keep it here so the object is initialized at the right place.
-        $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
+        if(isset($_GET['surveyid']))
+        {
+            global $oTemplate;
+            $oTemplate = new TemplateConfiguration;
+            $oTemplate->setTemplateConfiguration('',$_GET['surveyid']);
+        }
+
     }
 
     /**
