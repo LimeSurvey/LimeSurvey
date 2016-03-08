@@ -65,7 +65,16 @@
             }
             SetSurveyLanguage($iSurveyID, $sLanguage);
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
-            $oTemplate = Template::model()->getInstance(null, $iSurveyID);
+            //$oTemplate = Template::model()->getInstance(null, $iSurveyID);
+
+            // To avoid to reinstanciate again the object in the helpers, libraries, views
+            // we must make $oTemplate global.
+            // using a "getInstance" method without parsing the template model from the controllers
+            // to the helpers/libraries/view will not resolve magically the problem. It will just create
+            // second instance.
+            global $oTemplate;            
+            $oTemplate = new TemplateConfiguration;
+            $oTemplate->setTemplateConfiguration('',$iSurveyID);
 
             //Survey is not finished or don't exist
             if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid']))

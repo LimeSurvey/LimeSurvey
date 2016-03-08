@@ -821,7 +821,15 @@ function buildsurveysession($surveyid,$preview=false)
     $_SESSION['survey_'.$surveyid]['templatepath']=getTemplatePath($thissurvey['template']).DIRECTORY_SEPARATOR;
     $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 
+    /*
+    This was creating a second instance of the template configuration
+    (so a second load of the xml file, etc.)
+
     $oTemplate = Template::model()->getInstance('', $surveyid);
+    */
+
+    // The gobal $oTemplate is set in the controllers
+    global $oTemplate;
     $sTemplatePath = $oTemplate->path;
     $sTemplateViewPath = $oTemplate->viewPath;
 
@@ -1987,7 +1995,12 @@ function checkCompletedQuota($surveyid,$return=false)
     // We need to construct the page and do all needed action
     $aSurveyInfo=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
+    /*
+    This was creating a second instance of the template configuration
+    (so a second load of the xml file, etc.)
     $oTemplate = Template::model()->getInstance('', $surveyid);
+    */
+    global $oTemplate;
     $sTemplatePath = $oTemplate->path;
     $sTemplateViewPath = $oTemplate->viewPath;
 
@@ -2153,7 +2166,12 @@ function display_first_page() {
 
     $redata = compact(array_keys(get_defined_vars()));
 
+    /*
+    This was creating a second instance of the template configuration
+    (so a second load of the xml file, etc.)
     $oTemplate = Template::model()->getInstance('', $surveyid);
+    */
+    global $oTemplate;
     $sTemplatePath = $oTemplate->path;
     $sTemplateViewPath = $oTemplate->viewPath;
     echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[2757]');

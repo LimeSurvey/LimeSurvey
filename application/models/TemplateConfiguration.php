@@ -57,7 +57,7 @@ class TemplateConfiguration extends CFormModel
     {
         if ($sTemplateName == '' && $iSurveyId == '')
         {
-            throw new TemplateException("Template needs either template name or survey id");
+            throw new Exception("Template needs either template name or survey id");
         }
 
         $this->sTemplateName = $sTemplateName;
