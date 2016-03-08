@@ -80,7 +80,20 @@ class participantsaction extends Survey_Common_Action
         $aData['display']['menu_bars'] = false;
 
         // Add "_view" to urls
-        array_walk($aViewUrls, function(&$url) { $url .= "_view"; });
+        if (is_array($aViewUrls))
+        {
+            array_walk($aViewUrls, function(&$url) { $url .= "_view"; });
+        }
+        elseif (is_string($aViewUrls))
+        {
+            $aViewUrls .= "_view";
+        }
+        else
+        {
+            // Complete madness
+            throw new \InvalidArgumentException(gT("aViewUrls must be either string or array"));
+        }
+
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
