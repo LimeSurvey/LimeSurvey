@@ -132,10 +132,6 @@
                                                     ?>
                                                 </label>
 
-                                                <?php $modulename = (isset($eqrow['modulename']))?$eqrow['modulename']:false;?>
-
-                                                <input type="hidden" id="question_module_name" name="module_name" value="<?php echo $modulename; ?>" />
-
                                                 <?php
                                                     foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
                                                     {
@@ -151,24 +147,20 @@
                                                     <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                                     <div class="col-sm-8 btn-group" id="question_type_button" style="z-index: 1000">
                                                         <button type="button" class="btn btn-default dropdown-toggle " <?php if ($activated == "Y"){echo " disabled ";} ?>  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="z-index: 1000">
-                                                            <?php if(!$modulename):?>
-                                                                <?php foreach($groups as $name => $group):?>
-                                                                    <?php foreach($group as $type => $option):?>
-                                                                        <?php if($type == $eqrow['type']):?>
-                                                                            <span class="buttontext">
-                                                                                <?php echo $option; ?>
-                                                                                <?php if(YII_DEBUG):?>
-                                                                                    <em class="small">
-                                                                                        type code: <?php echo $type; ?>
-                                                                                    </em>
-                                                                                <?php endif;?>
-                                                                            </span>
-                                                                        <?php endif; ?>
-                                                                    <?php endforeach;?>
+                                                            <?php foreach($groups as $name => $group):?>
+                                                                <?php foreach($group as $type => $option):?>
+                                                                    <?php if($type == $eqrow['type']):?>
+                                                                        <span class="buttontext">
+                                                                            <?php echo $option; ?>
+                                                                            <?php if(YII_DEBUG):?>
+                                                                                <em class="small">
+                                                                                    Type code: <?php echo $type; ?>
+                                                                                </em>
+                                                                            <?php endif;?>
+                                                                        </span>
+                                                                    <?php endif; ?>
                                                                 <?php endforeach;?>
-                                                            <?php else:?>
-                                                                <span class="buttontext"><?php echo $eqrow['moduletitle'];?></span>
-                                                            <?php endif; ?>
+                                                            <?php endforeach;?>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <span class="caret"></span>
                                                         </button>
@@ -216,15 +208,11 @@
                                                 <?php else: ?>
                                                     <div class="col-sm-8 ">
                                                         <p style="padding-top: 7px;">
-                                                            <?php if(!$modulename):?>
                                                                 <?php foreach($groups as $name => $group):?>
                                                                     <?php foreach($group as $type => $option):?>
                                                                         <?php if($type == $eqrow['type']){echo '' . $option . '';}?>
                                                                     <?php endforeach;?>
                                                                 <?php endforeach;?>
-                                                            <?php else:?>
-                                                                <span class="buttontext"><?php echo $eqrow['moduletitle'];?></span>
-                                                            <?php endif; ?>
                                                         </p>
                                                     </div>
 
