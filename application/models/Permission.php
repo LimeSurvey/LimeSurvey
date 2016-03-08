@@ -524,11 +524,11 @@ class Permission extends LSActiveRecord
         $oEvent->set('iUserID',$iUserID);
         App()->getPluginManager()->dispatchEvent($oEvent);
         $pluginbPermission=$oEvent->get('bPermission');
+
         if (isset($pluginbPermission))
         {
              return $pluginbPermission;
         }
-
 
         /* Always return true for CConsoleApplication (before or after plugin ? All other seems better after plugin) */
         if(is_null($iUserID) && Yii::app() instanceof CConsoleApplication)
@@ -547,6 +547,10 @@ class Permission extends LSActiveRecord
         if(!$this->getUserId($iUserID))
         {
             return false;
+        }
+        else
+        {
+            $iUserID=$this->getUserId($iUserID);
         }
 
         /* Always return true if you are the owner : this can be done in core plugin ? */
