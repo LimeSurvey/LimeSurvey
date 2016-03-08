@@ -3152,11 +3152,8 @@ function do_multiplenumeric($ia)
                 $sliderleft=(isset($aAnswer[1]))?$aAnswer[1]:"";
                 $sliderright=(isset($aAnswer[2]))?$aAnswer[2]:"";
                 $sliders = true;
-                //$sliderright="<span class=\"slider_righttext\">$sliderright</span>";
             }
 
-            /*$prefix = (isset($sliderleft))?$sliderleft:$prefix;
-            $suffix = (isset($sliderright))?$sliderright:$suffix;*/
             $aAnswer=(isset($aAnswer))?$aAnswer:'';
             $sliderleft=(isset($sliderleft))?$sliderleft:"";
             $sliderright=(isset($sliderright))?$sliderright:"";
@@ -3191,6 +3188,7 @@ function do_multiplenumeric($ia)
             }
 
             $itemDatas = array(
+                'qid'=>$ia[0],
                 'extraclass'=>$extraclass,
                 'sDisplayStyle'=>$sDisplayStyle,
                 'kpclass'=>$kpclass,
@@ -3254,54 +3252,10 @@ function do_multiplenumeric($ia)
     if($aQuestionAttributes['slider_layout']==1)
     {
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."bootstrap-slider.js");
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."numeric-slider.js");
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "numeric-slider.css");
-        if ($slider_default != "")
-        {
-            $slider_startvalue = $slider_default;
-            $slider_displaycallout=1;
-        }
-        elseif ($slider_middlestart != '')
-        {
-            $slider_startvalue = $slider_middlestart;
-            $slider_displaycallout=0;
-        }
-        else
-        {
-            $slider_startvalue = 'NULL';
-            $slider_displaycallout=0;
-        }
-        $slider_showminmax=($aQuestionAttributes['slider_showminmax']==1)?1:0;
-        //some var for slider
-        $aJsLang=array(
-            'reset' => gT('Reset'),
-            'tip' => gT('Please click and drag the slider handles to enter your answer.'),
-            );
-        $aJsVar=array(
-            'slider_showminmax'=>$slider_showminmax,
-            'slider_min' => $slider_min,
-            'slider_mintext'=>$slider_mintext,
-            'slider_max' => $slider_max,
-            'slider_maxtext'=>$slider_maxtext,
-            'slider_step'=>$slider_step,
-            'slider_startvalue'=>$slider_startvalue,
-            'slider_displaycallout'=>$slider_displaycallout,
-            'slider_prefix' => $prefix,
-            'slider_suffix' => $suffix,
-            'slider_reset' => $slider_reset,
-            'lang'=> $aJsLang,
-            );
-
-        /*
-        $answer .= "<script type='text/javascript'><!--\n"
-                    . " doNumericSlider({$ia[0]},".ls_json_encode($aJsVar).");\n"
-                    . " //--></script>";
-        */
     }
+
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
-
-
     return array($answer, $inputnames);
 }
 

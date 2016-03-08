@@ -1,8 +1,9 @@
 <?php
 /**
  * Multiple short texts question, item input text Html
- * @var $alert;
- * @var $maxlength;
+ * @var $tip
+ * @var $alert
+ * @var $maxlength
  * @var $tiwidth
  * @var $extraclass
  * @var $sDisplayStyle
@@ -90,6 +91,7 @@
         <!--
             $(document).ready(function(){
             var mySlider = $("#answer<?php echo $myfname; ?>").bootstrapSlider();
+            $("#vmsg_<?php echo $qid;?>_default").text('<?php eT('Please click and drag the slider handles to enter your answer.');?>');
         });
         -->
     </script>
