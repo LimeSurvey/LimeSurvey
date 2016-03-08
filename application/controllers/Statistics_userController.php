@@ -45,7 +45,7 @@ class Statistics_userController extends LSYii_Controller {
         $iSurveyID=(int)$surveyid;
         //$postlang = returnglobal('lang');
         Yii::import('application.libraries.admin.progressbar',true);
-        Yii::app()->loadHelper("admin/statistics");
+        Yii::app()->loadHelper("userstatistics");
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('surveytranslator');
         App()->getClientScript()->registerPackage('jqueryui');
@@ -352,8 +352,18 @@ class Statistics_userController extends LSYii_Controller {
         $redata = compact(array_keys(get_defined_vars()));
         doHeader();
 
-        /// $oTemplate is a global variable defined in controller/survey/index
-        $oTemplate = Template::model()->getInstance(null, $surveyid);
+        // $oTemplate is a global variable defined in controller/survey/index
+        // $oTemplate = Template::model()->getInstance(null, $surveyid);
+
+        // To avoid to reinstanciate again the object in the helpers, libraries, views
+        // we must make $oTemplate global.
+        // using a "getInstance" method without parsing the template model from the controllers
+        // to the helpers/libraries/view will not resolve magically the problem. It will just create
+        // second instance.
+        global $oTemplate;
+        $oTemplate = new TemplateConfiguration;
+        $oTemplate->setTemplateConfiguration('',$surveyid);
+
         echo templatereplace(file_get_contents($oTemplate->viewPath."startpage.pstpl"),array(), $redata);
 
 
@@ -416,7 +426,7 @@ class Statistics_userController extends LSYii_Controller {
 
             }    // end foreach -> loop through all questions
 
-            $helper = new statistics_helper();
+            $helper = new userstatistics_helper();
             $statisticsoutput .= $helper->generate_statistics($iSurveyID, $summary, $summary, $publicgraphs, 'html', null,$sLanguage,false);
 
         }    //end if -> show summary results

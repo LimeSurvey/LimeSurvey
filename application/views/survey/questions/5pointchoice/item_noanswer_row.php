@@ -18,7 +18,7 @@
         <?php echo $checkedState; ?>
         onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type);"
     />
-    <label for="answer<?php echo $ia[1];?>NANS" class="answertext">
+    <label for="answer<?php echo $ia[1];?>NANS" class="answertext radio-label">
         <?php echo gT('No answer'); ?>
     </label>
 </div>

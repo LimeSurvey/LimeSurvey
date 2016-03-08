@@ -10,7 +10,7 @@ return array(
     'jquery' => array(
         'baseUrl' => 'third_party/jquery/',
         'js' => array(
-            'jquery-1.11.1.min.js'
+            'jquery-1.12.1.min.js'
         ),
     ),
 

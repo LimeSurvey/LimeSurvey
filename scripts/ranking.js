@@ -10,13 +10,13 @@
  * @param {number} qId The qid of the question where apply.
  */
 function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
-    console.log('doDragDropRank');
 // TODO : advanced setting in attributes
   if (typeof showpopups === 'undefined'){showpopups=true;}
   if (typeof samechoiceheight === 'undefined'){samechoiceheight=true;}
   if (typeof samelistheight === 'undefined'){ samelistheight=true;}
   var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text().trim(),10);
   var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text().trim();
+  console.log('rankingname: '+rankingname);
   var rankingnamewidth=rankingname.length;
   //Add a class to the question
   $('#question'+qID+'').addClass('dragDropRanking');
@@ -126,9 +126,9 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
  * @param {number} qId The qid of the question where apply.
  */
 function updateDragDropRank(qID){
-  var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text().trim(),10);
-  var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text().trim();
-  var relevancename= "relevance"+$("#ranking-"+qID+"-name").text().trim();
+    var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text().trim(),10);
+    var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text().trim();
+    var relevancename= "relevance"+$("#ranking-"+qID+"-name").text().trim();
   var rankingnamewidth=rankingname.length;
   $('#question'+qID+' .select-item select').val('');
   $('#sortable-rank-'+qID+' li').each(function(index) {

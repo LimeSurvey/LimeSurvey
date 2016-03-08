@@ -84,7 +84,7 @@
         {
 
             $aRules= array(
-                        array('title','required','on' => 'update, insert'),// 140207 : Before was commented, put only on update/insert ?
+                        array('title','required','on' => 'update, insert','message'=>gT('Question code may not be empty.','unescaped')),
                         array('title','length', 'min' => 1, 'max'=>20,'on' => 'update, insert'),
                         array('qid', 'numerical','integerOnly'=>true),
                         array('qid', 'unique', 'criteria'=>array(
@@ -770,7 +770,7 @@
         $previewUrl = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
         $previewUrl .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
 
-            $editurl = Yii::app()->createUrl("admin/questions/sa/editquestion/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
+        $editurl = Yii::app()->createUrl("admin/questions/sa/editquestion/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
 
         $button = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="glyphicon glyphicon-eye-open"  ></span></a> ';
         $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Edit question").'" href="'.$editurl.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';

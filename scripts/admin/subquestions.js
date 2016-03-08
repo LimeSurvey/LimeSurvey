@@ -108,31 +108,20 @@ function addinput()
     var sID=$('input[name=sid]').val();
     var gID=$('input[name=gid]').val();
     var qID=$('input[name=qid]').val();
-
     var x;
-    console.log('classes: '+$(this).parent().parent().attr('class'));
-    classes=$(this).parent().parent().attr('class').split(' ');
-
-
-    for (x in classes)
-    {
-        if (classes[x].substr(0,3)=='row'){
-            position=classes[x].substr(4);
-        }
-    }
-    console.log('position:'+position);
 
     scale_id=removechars($(this).closest('table').attr('id'));
-    newposition = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;
+
     languages=langs.split(';');
     sNextCode=getNextCode($(this).data('code'));
-
+    console.log('sNextCode: '+sNextCode);
     console.log('before while');
 
     sNextCode=getNextCode($(this).parent().parent().find('.code').val());
 
     console.log('sNextCode: '+sNextCode);
     console.log('languages: '+languages);
+    classes=$(this).parent().parent().attr('class').split(' ');
     for (x in classes)
     {
         if (classes[x].substr(0,3)=='row')
@@ -140,11 +129,15 @@ function addinput()
             position=classes[x].substr(4);
         }
     }
-
+    console.log('position:'+position);
+    //newposition = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;
+    newposition = Number($('#rowcontainer').find('tr').index($(this).closest('tr')))+1;
+    console.log('newposition: '+newposition);
     info=$(this).closest('table').attr('id').split("_");
     language=info[1];
     scale_id=info[2];
-    newposition=Number(position)+1;
+
+
     languages=langs.split(';');
 
     sNextCode=getNextCode($(this).parent().parent().find('.code').val());
@@ -171,7 +164,7 @@ function addinput()
             }
 
             // Line insertion
-            inserthtml= '<tr id="row_'+newposition+'" style="">';
+            inserthtml= '<tr id="row_'+newposition+'" class="row_'+newposition+'" style="">';
             inserthtml+='   <td style="vertical-align: middle;">';
             inserthtml+='       <span class="glyphicon glyphicon-move"></span>';
             inserthtml+='   </td>';
@@ -180,7 +173,7 @@ function addinput()
             inserthtml+='   </td>';
 
             inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <div class="col-sm-12">';
+            inserthtml+='       <div class="">';
             inserthtml+='           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg"  placeholder="'+htmlspecialchars(newansweroption_text)+'" value=""></input>';
             inserthtml+='       </div>';
             inserthtml+='  </td>';
@@ -216,12 +209,12 @@ function addinput()
                 relbutton+='           </a>';
                 relbutton+='</td>';
             }
-            inserthtml ='<tr id="row_'+newposition+'" style="display:none;">';
+            inserthtml ='<tr id="row_'+newposition+'" class="row_'+newposition+'" style="display:none;">';
             inserthtml+='   <td>&nbsp;</td>';
             inserthtml+='   <td>'+htmlspecialchars(sNextCode)+'</td>';
 
             inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <div class="col-sm-12">';
+            inserthtml+='       <div class="">';
             inserthtml+='           <input type="text" size="0" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />';
             inserthtml+='       </div>';
             inserthtml+='   </td>' + relbutton + '</tr>';
@@ -673,7 +666,7 @@ function transferlabels()
                                 '   </td>'+
 
                                 '   <td>'+
-                                '       <div class="col-sm-12">'+
+                                '       <div class="">'+
                                 '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
                                 '       </div>'+
                                 '   </td>'+
@@ -699,7 +692,7 @@ function transferlabels()
                                 '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
 
                                 '   <td style="vertical-align: middle;">'+
-                                '       <div class="col-sm-12">'+
+                                '       <div class="">'+
                                 '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
                                 '       </div>'+
                                 '   </td>'+
@@ -729,7 +722,7 @@ function transferlabels()
                         '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
 
                         '   <td style="vertical-align: middle;">'+
-                        '       <div class="col-sm-12">'+
+                        '       <div class="">'+
                         '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
                         '       </div>'+
                         '   </td>'+
@@ -830,7 +823,7 @@ function quickaddlabels()
             if (x==0)
             {
                 tablerows=tablerows+
-                '<tr id="row_'+k+'" >'+
+                '<tr id="row_'+k+'" class="row_'+k+'">'+
                 '   <td>'+
                 '       <span class="glyphicon glyphicon-move text-success"></span>'+
                 '   </td>'+
@@ -847,7 +840,7 @@ function quickaddlabels()
                 '   </td>'+
 
                 '   <td style="vertical-align: middle;">'+
-                '       <div class="col-sm-12">'+
+                '       <div class="">'+
                 '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(thisrow[parseInt(x)+1],'ENT_QUOTES')+'"></input>'+
                 '       </div>'+
                 '   </td>'+
@@ -870,12 +863,12 @@ function quickaddlabels()
                 {
 
                     tablerows=tablerows+
-                    '<tr id="row_'+k+'" >'+
+                    '<tr id="row_'+k+'" class="row_'+k+'" >'+
                     '   <td>&nbsp;</td>'+
                     '   <td>&nbsp;</td>'+
 
                     '   <td style="vertical-align: middle;">'+
-                    '       <div class="col-sm-12">'+
+                    '       <div class="">'+
                     '          <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(thisrow[parseInt(x)+1],'ENT_QUOTES')+'"></input>'+
                     '       </div>'+
                     '   </td>'+

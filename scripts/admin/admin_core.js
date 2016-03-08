@@ -151,12 +151,6 @@ $(document).ready(function(){
         $(".btn:first-child .buttontext").text($(this).text());
         $('#question_type').val($(this).data('value'));
 
-        if($(this).data('module')==1){
-            $('#question_module_name').val($(this).data('modulename'));
-        }
-        else {
-            $('#question_module_name').val('');
-        }
         updatequestionattributes();
        });
 

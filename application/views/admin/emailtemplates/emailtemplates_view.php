@@ -6,7 +6,7 @@
 <script type='text/javascript'>
     var sReplaceTextConfirmation='<?php eT("This will replace the existing text. Continue?","js"); ?>';
     var sKCFinderLanguage='<?php echo sTranslateLangCode2CK(App()->language); ?>';
-    
+
     var LS = LS || {};  // namespace
     LS.lang = LS.lang || {};  // object holding translations
     LS.lang['Remove attachment'] = '<?php echo eT("Remove attachment"); ?>';
@@ -59,12 +59,12 @@
                     }
 
                     $this->renderPartial('/admin/emailtemplates/email_language_tab', compact('surveyinfo', 'ishtml', 'surveyid', 'grouplang', 'bplang', 'esrow', 'aDefaultTexts', 'active'));
-                    
+
                     if($count == 0)
                     {
                         $count++;
                         $active = '';
-                    }                    
+                    }
                 }
             ?>
             <p>
@@ -85,7 +85,7 @@
         <div class='modal-content'>
             <div class='modal-header'>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
-                <h4 class="modal-title">Relevance equation</h4>
+                <h4 class="modal-title"><?php eT("Relevance equation");?></h4>
             </div>
             <div class='modal-body'>
                 <div class='form-group'>
@@ -93,8 +93,8 @@
                 </div>
             </div>
             <div class='modal-footer'>
-                <button type="button" class='btn btn-default' data-dismiss='modal'>Close</button>
-                <button type="button" class='btn btn-success'>Apply</button>
+                <button type="button" class='btn btn-default' data-dismiss='modal'><?php eT("Close");?></button>
+                <button type="button" class='btn btn-success'><?php eT("Apply");?></button>
             </div>
         </div>
     </div>

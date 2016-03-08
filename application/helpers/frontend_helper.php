@@ -821,7 +821,15 @@ function buildsurveysession($surveyid,$preview=false)
     $_SESSION['survey_'.$surveyid]['templatepath']=getTemplatePath($thissurvey['template']).DIRECTORY_SEPARATOR;
     $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 
+    /*
+    This was creating a second instance of the template configuration
+    (so a second load of the xml file, etc.)
+
     $oTemplate = Template::model()->getInstance('', $surveyid);
+    */
+
+    // The gobal $oTemplate is set in the controllers
+    global $oTemplate;
     $sTemplatePath = $oTemplate->path;
     $sTemplateViewPath = $oTemplate->viewPath;
 
@@ -1906,11 +1914,18 @@ function UpdateFieldArray()
 * checkCompletedQuota() returns matched quotas information for the current response
 * @param integer $surveyid - Survey identification number
 * @param bool $return - set to true to return information, false do the quota
-* @return array - nested array, Quotas->Members->Fields, includes quota information matched in session.
+* @return array|void - nested array, Quotas->Members->Fields, includes quota information matched in session.
 */
 function checkCompletedQuota($surveyid,$return=false)
 {
-    if (!isset($_SESSION['survey_'.$surveyid]['srid']))
+    /* Check if session is set */
+    if (!isset(App()->session['survey_'.$surveyid]['srid']))
+    {
+        return;
+    }
+    /* Check is Response is already submitted : only when "do" the quota: allow to send information about quota */
+    $oResponse=Response::model($surveyid)->findByPk(App()->session['survey_'.$surveyid]['srid']);
+    if(!$return && $oResponse && !is_null($oResponse->submitdate))
     {
         return;
     }
@@ -1980,7 +1995,12 @@ function checkCompletedQuota($surveyid,$return=false)
     // We need to construct the page and do all needed action
     $aSurveyInfo=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
+    /*
+    This was creating a second instance of the template configuration
+    (so a second load of the xml file, etc.)
     $oTemplate = Template::model()->getInstance('', $surveyid);
+    */
+    global $oTemplate;
     $sTemplatePath = $oTemplate->path;
     $sTemplateViewPath = $oTemplate->viewPath;
 
@@ -2146,7 +2166,12 @@ function display_first_page() {
 
     $redata = compact(array_keys(get_defined_vars()));
 
+    /*
+    This was creating a second instance of the template configuration
+    (so a second load of the xml file, etc.)
     $oTemplate = Template::model()->getInstance('', $surveyid);
+    */
+    global $oTemplate;
     $sTemplatePath = $oTemplate->path;
     $sTemplateViewPath = $oTemplate->viewPath;
     echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[2757]');

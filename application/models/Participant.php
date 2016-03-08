@@ -1034,7 +1034,7 @@ class Participant extends LSActiveRecord
                     if (empty($name)) {
                         $name = array('attribute_name' => '[Found no name]');
                     }
-                    throw new CPDBException(sprintf(gT("Token attribute already exists: %s"), $name['attribute_name']));
+                    throw new CPDBException(sprintf("Token attribute already exists: %s", $name['attribute_name']));
                 }
             }
         }
@@ -1175,7 +1175,7 @@ class Participant extends LSActiveRecord
                 ->bindParam(":pid", $participantId, PDO::PARAM_INT)
                 ->queryRow();
 
-            if (Yii::app()->getConfig('blockaddingtosurveys') == 'Y' 
+            if (Yii::app()->getConfig('blockaddingtosurveys') == 'Y'
                 && $participant['blacklisted'] == 'Y')
             {
                 $blacklistSkipped++;
@@ -1342,10 +1342,10 @@ class Participant extends LSActiveRecord
 
         //Write each participant to the survey token table
         list($successful, $duplicate, $blacklistSkipped) = $this->writeParticipantsToTokenTable(
-            $surveyId, 
-            $participantIds, 
-            $mappedAttributes, 
-            $newAttributes, 
+            $surveyId,
+            $participantIds,
+            $mappedAttributes,
+            $newAttributes,
             $addedAttributes,
             $addedAttributeIds,
             $options
@@ -1375,7 +1375,7 @@ class Participant extends LSActiveRecord
 
         if (intval($participantAttributeId) === 0)  // OBS: intval returns 0 at fail, but also at intval("0"). lolphp.
         {
-            throw new InvalidArgumentException(sprintf(gT('$participantAttributeId has to be an integer. Given: %s (%s)'), gettype($participantAttributeId), $participantAttributeId));
+            throw new InvalidArgumentException(sprintf('$participantAttributeId has to be an integer. Given: %s (%s)', gettype($participantAttributeId), $participantAttributeId));
         }
 
         //Get the value from the participant_attribute field

@@ -100,37 +100,6 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * Return the necessary datas to load the admin theme
-     */
-    public static function getAdminTheme()
-    {
-        // We retrieve the admin theme in config ( {{settings_global}} or config-defaults.php )
-        $sAdminThemeName = Yii::app()->getConfig('admintheme');
-        $sAdminTemplateRootDir=Yii::app()->getConfig("styledir");
-        // If the template doesn't exist, set to Default
-        $sAdminThemeName = (self::isStandardTemplate($sAdminThemeName ))?$sAdminThemeName:'default';
-
-        $oAdminTheme = new stdClass();
-
-        // If the required admin theme doesn't exist, Sea_Green will be used
-        // TODO : check also for upload directory
-
-        $oAdminTheme->name = (is_dir($sAdminTemplateRootDir.DIRECTORY_SEPARATOR.$sAdminThemeName))?$sAdminThemeName:'Sea_Green';
-
-        // The package name eg: lime-bootstrap-Sea_Green
-        $oAdminTheme->packagename = 'lime-bootstrap-'.$oAdminTheme->name;
-
-        // The path of the template files eg : /var/www/limesurvey/styles/Sea_Green
-        // TODO : add the upload directory for user template
-        $oAdminTheme->path = $sAdminTemplateRootDir.DIRECTORY_SEPARATOR.$oAdminTheme->name;
-
-        // The template configuration.
-        $oAdminTheme->config = simplexml_load_file($oAdminTheme->path.'/config.xml');
-
-        return $oAdminTheme;
-    }
-
-    /**
     * Get the template path for any template : test if template if exist
     *
     * @param string $sTemplateName
@@ -167,64 +136,8 @@ class Template extends LSActiveRecord
      */
     public static function getTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
-        if ($sTemplateName == '' && $iSurveyId == '')
-        {
-            throw new TemplateException(gT("Template needs either template name or survey id"));
-        }
-
-        if ($sTemplateName=='')
-        {
-            $oSurvey = Survey::model()->findByPk($iSurveyId);
-            $sTemplateName = $oSurvey->template;
-        }
-
-        $oTemplate = new stdClass();
-        $oTemplate->isStandard = self::isStandardTemplate($sTemplateName);
-
-        // If the template is standard, its root is based on standardtemplaterootdir
-        if($oTemplate->isStandard)
-        {
-            $oTemplate->name = $sTemplateName;
-            $oTemplate->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
-        }
-        // Else, it's a user template, its root is based on usertemplaterootdir
-        else
-        {
-            $oTemplate->name = $sTemplateName;
-            $oTemplate->path = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
-        }
-
-        // If the template don't have a config file (maybe it has been deleted, or whatever),
-        // then, we load the default template
-        if(!self::hasConfigFile($oTemplate->path))
-        {
-            // If it's an imported template from 2.06, we return default values
-            if ( self::isOldTemplate($oTemplate->path) )
-            {
-                $oTemplate->config = simplexml_load_file(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'/minimal-config.xml');
-                $oTemplate->config->engine->cssframework = null;
-            }
-            else
-            {
-                $oTemplate->name = 'default';
-                $oTemplate->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->name;
-                $oTemplate->config = simplexml_load_file($oTemplate->path.'/config.xml');
-            }
-        }
-        else
-        {
-            $oTemplate->config = simplexml_load_file($oTemplate->path.'/config.xml');
-        }
-
-        // The template configuration.
-        $oTemplate->viewPath = $oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->pstpldirectory.DIRECTORY_SEPARATOR;
-        $oTemplate->siteLogo = (isset($oTemplate->config->files->logo))?$oTemplate->config->files->logo->filename:'';
-
-        // condition for user's template prior to 160219
-        $oTemplate->filesPath = (isset($oTemplate->config->engine->filesdirectory))? $oTemplate->path.DIRECTORY_SEPARATOR.$oTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR : $oTemplate->path . '/files/';
-        $oTemplate->cssFramework = $oTemplate->config->engine->cssframework;
-        $oTemplate->packages = (array) $oTemplate->config->engine->packages->package;
-        $oTemplate->otherFiles = self::getOtherFiles($oTemplate->filesPath);
+        $oTemplate = new TemplateConfiguration;
+        $oTemplate->setTemplateConfiguration($sTemplateName, $iSurveyId);
         return $oTemplate;
     }
 
@@ -367,26 +280,6 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * Does the given path has a config file ?
-     * @param string $sTemplatePath
-     * @return bool
-     */
-    public static function hasConfigFile($sTemplatePath)
-    {
-        return is_file($sTemplatePath.DIRECTORY_SEPARATOR.'config.xml');
-    }
-
-    /**
-     * Is the template in that path an old template from 2.0x branch ?
-     * @param string $sTemplatePath
-     * @return bool
-     */
-    public static function isOldTemplate($sTemplatePath)
-    {
-        return (!self::hasConfigFile($sTemplatePath) && is_file($sTemplatePath.DIRECTORY_SEPARATOR.'startpage.pstpl'));
-    }
-
-    /**
      * Get instance of template object.
      * Will instantiate the template object first time it is called.
      * Please use this instead of global variable.
@@ -404,5 +297,4 @@ class Template extends LSActiveRecord
 
         return self::$instance;
     }
-
 }

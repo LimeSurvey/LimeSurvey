@@ -20,7 +20,12 @@ class Load_answers {
         sendCacheHeaders();
         doHeader();
 
+        /*
+        This was creating a 5th instance of the template configuration
+        (so a second load of the xml file, etc.)
         $oTemplate = Template::model()->getInstance(null, $surveyid);
+        */
+        global $oTemplate;
 
         echo templatereplace(file_get_contents($oTemplate->viewPath."startpage.pstpl"),array(),$redata);
 

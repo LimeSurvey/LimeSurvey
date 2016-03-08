@@ -49,13 +49,14 @@ class templates extends Survey_Common_Action
         {
             die('No permission');
         }
-        $templatedir = $oEditedTemplate->viewPath . DIRECTORY_SEPARATOR;
+
+        $templatedir = $oEditedTemplate->path . DIRECTORY_SEPARATOR;
         $tempdir = Yii::app()->getConfig('tempdir');
 
         $zipfile = "$tempdir/$templatename.zip";
         Yii::app()->loadLibrary('admin.pclzip');
         $zip = new PclZip($zipfile);
-        $zip->create($templatedir, PCLZIP_OPT_REMOVE_PATH, $oEditedTemplate->viewPath);
+        $zip->create($templatedir, PCLZIP_OPT_REMOVE_PATH, $oEditedTemplate->path);
 
         if (is_file($zipfile)) {
             // Send the file for download!
@@ -1448,7 +1449,7 @@ class templates extends Survey_Common_Action
                 }
             }
         }
-        
+
         // Get list of 'otherfiles'
         // We can't use $oTemplate->otherFiles, because of retrocompatibility with 2.06 template and the big mess of it mixing files
         $filesdir = ($oEditedTemplate->filesPath!='')?$oEditedTemplate->filesPath:$templatedir . '../files';

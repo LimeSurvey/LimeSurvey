@@ -1,5 +1,6 @@
- body {
-     padding-top: 50px;
+ body
+ {
+     /*padding-top: 50px; now define in JS to fit any title length */
      padding-bottom: 10px;
  }
 
@@ -20,7 +21,7 @@ div[id^="group-"]>div {
 
 #topContainer {
     position: absolute;
-    top: 55px;
+    /*top: 55px; now define in JS to fit any title length */
     width: 100%;
     padding: 1em;
     border-bottom: none;
@@ -792,10 +793,58 @@ table.question.subquestion-list.questions-list tr.answers-list th
     text-align: center;
 }
 
+#outerframeContainer {
+    min-height: 80%;
+}
+
 #surveyListFooter {
-    position: absolute;
-    bottom: 0;
     width: 100%;
-    height: 60px;
     text-align: center;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    margin-top: 10px;
+}
+
+#surveyListFooter div{
+
+}
+
+html, body {
+    height: 100%;
+}
+
+/**
+ * Gender buttons
+ */
+
+/* Not selected */
+.gender-button button{
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.16), 2px 2px 2px 0 rgba(0, 0, 0, 0.12);
+    margin-left: 1em;
+}
+
+/* selected */
+.gender-button .btn:focus {
+    box-shadow: none;
+}
+
+.gender-button .btn:focus .gender-text{
+    text-decoration: underline;
+}
+
+/* General */
+.gender-button .btn span {
+    display: block;
+}
+
+html body .navbar.navbar-default.navbar-fixed-top {
+    z-index: 2000;
+}
+
+.gender-button .gender-icon {
+    font-size: 2em;
+}
+
+.navbar-brand {
+    height: auto;
 }

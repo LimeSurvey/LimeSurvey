@@ -102,8 +102,12 @@
 
                     <?php echo $labelbar['savebutton']['text'];?>
                 </a>
+            <?php endif;?>
+
+            <!-- Close -->
+            <?php if(isset($labelbar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $labelbar['closebutton']['url']; ?>" role="button">
-                    <span class="glyphicon glyphicon-close" ></span>
+                    <span class="glyphicon glyphicon-close"></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>

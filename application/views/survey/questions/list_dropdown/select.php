@@ -16,5 +16,5 @@
             name="<?php echo $name; ?>"
             id="answer<?php echo $name; ?>"
             <?php echo $dropdownSize; ?>
-            onchange="<?php echo $checkconditionFunction; ?>"
+            onchange="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type);"
     >

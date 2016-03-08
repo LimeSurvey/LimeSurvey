@@ -19,7 +19,7 @@ class Expressions extends Survey_Common_Action {
         $aData['surveyid']=$surveyid=$iSurveyID=sanitize_int(Yii::app()->request->getQuery('sid'));
         $aData['sa']=$sa=sanitize_paranoid_string(Yii::app()->request->getQuery('sa','index'));
 
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/';
+        $aData['fullpagebar']['closebutton']['url'] = 'admin/';  // Close button
 
         if (($aData['sa']=='survey_logic_file' || $aData['sa']=='navigation_test') && $surveyid)
         {

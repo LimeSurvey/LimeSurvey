@@ -52,7 +52,7 @@ CKEDITOR.editorConfig = function( config )
         '/',
         ['Styles','Format','Font','FontSize'],
         ['TextColor','BGColor'],
-        [ 'ShowBlocks','Templates'],
+        [ 'ShowBlocks','Templates']
     ];
    config.toolbar_inline2 =
     [

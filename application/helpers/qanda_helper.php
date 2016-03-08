@@ -2106,6 +2106,7 @@ function do_ranking($ia)
     );
     $secondlistDatas = array(
         'rankId'=>$ia[0],
+        'rankingName'=>$ia[1],
         'max_answers'=>$max_answers,
         'min_answers'=>$min_answers,
         'answers'=>$answers
@@ -2783,6 +2784,7 @@ function do_multipleshorttext($ia)
     {
         $checkconditionFunction = "checkconditions";
     }
+
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
@@ -2794,19 +2796,13 @@ function do_multipleshorttext($ia)
     {
         $maxlength= "";
     }
-    if (trim($aQuestionAttributes['text_input_width'])!='')
-    {
-        $tiwidth=$aQuestionAttributes['text_input_width'];
-        $tiwidth=($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-        $extraclass .=" inputwidth".trim($aQuestionAttributes['text_input_width']);
 
-    }
-    else
-    {
-        $tiwidth=12;
-    }
+    $tiwidth=(trim($aQuestionAttributes['text_input_width'])!='')?$aQuestionAttributes['text_input_width']:'';
+    $sInputContainerWidth=(trim($aQuestionAttributes['text_input_columns'])!='')?$aQuestionAttributes['text_input_columns']:'6';
+    $sLabelWidth=(trim($aQuestionAttributes['label_input_columns'])!='')?$aQuestionAttributes['label_input_columns']:'6';
 
-    if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
+    {
         $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .=" withprefix";
     }
@@ -2815,7 +2811,8 @@ function do_multipleshorttext($ia)
         $prefix = '';
     }
 
-    if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
+    {
         $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
         $extraclass .=" withsuffix";
     }
@@ -2835,7 +2832,8 @@ function do_multipleshorttext($ia)
         $kpclass = "";
     }
 
-    if ($aQuestionAttributes['random_order']==1) {
+    if ($aQuestionAttributes['random_order']==1)
+    {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
     }
     else
@@ -2860,12 +2858,9 @@ function do_multipleshorttext($ia)
     }
     else
     {
-        // Define label/input length
-        $oNbCols = return_object_nb_cols($aSubquestions);
-
-        // label
-        $nbColLabelLg = $oNbCols->nbColLabelLg;
         $answer = Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/header', array(), true);
+
+        // Display TextArea
         if (trim($aQuestionAttributes['display_rows'])!='')
         {
             //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
@@ -2874,18 +2869,12 @@ function do_multipleshorttext($ia)
             foreach ($aSubquestions as $ansrow)
             {
                 $myfname = $ia[1].$ansrow['title'];
-                if ($ansrow['question'] == "")
-                {
-                    $ansrow['question'] = "&nbsp;";
-                }
+                $ansrow['question'] = ($ansrow['question'] == "")?"&nbsp;":$ansrow['question'];
 
-
-                //list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item".$extraclass);
                 /* Check for array_filter */
                 $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
-
-                //. "\t<span>\n".$prefix."\n".'
                 $dispVal ='';
+
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
                     $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
@@ -2898,6 +2887,9 @@ function do_multipleshorttext($ia)
 
                 $itemTextareaDatas = array(
                     'alert'=>false,
+                    'tiwidth'=>$tiwidth,
+                    'sInputContainerWidth'=>$sInputContainerWidth,
+                    'sLabelWidth'=>$sLabelWidth,
                     'maxlength'=>'',
                     'extraclass'=>$extraclass,
                     'sDisplayStyle'=>$sDisplayStyle,
@@ -2919,13 +2911,14 @@ function do_multipleshorttext($ia)
             }
 
         }
+        // Diplay input text
         else
         {
             $alert = false;
             foreach ($aSubquestions as $ansrow)
             {
                 $myfname = $ia[1].$ansrow['title'];
-                if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
+                $ansrow['question'] = ($ansrow['question'] == "")?"&nbsp;":$ansrow['question'];
 
                 // color code missing mandatory questions red
                 if ($ia[6]=='Y' &&  $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '')
@@ -2934,14 +2927,8 @@ function do_multipleshorttext($ia)
                 }
 
                 $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
-                //list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item".$extraclass);
-
-                if($label_width < strlen(trim(strip_tags($ansrow['question']))))
-                {
-                    $label_width = strlen(trim(strip_tags($ansrow['question'])));
-                }
-
                 $dispVal = '';
+
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
                     $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
@@ -2957,6 +2944,8 @@ function do_multipleshorttext($ia)
                     'labelname'=>'answer'.$myfname,
                     'maxlength'=>$maxlength,
                     'tiwidth'=>$tiwidth,
+                    'sInputContainerWidth'=>$sInputContainerWidth,
+                    'sLabelWidth'=>$sLabelWidth,
                     'extraclass'=>$extraclass,
                     'sDisplayStyle'=>$sDisplayStyle,
                     'prefix'=>$prefix,
@@ -3922,7 +3911,7 @@ function do_yesno($ia)
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $displayType = $aQuestionAttributes['display_type'];
-
+    $noAnswer = (isset($noAnswer))?$noAnswer:false;
     $itemDatas = array(
         'name'=>$ia[1],
         'yChecked' => $yChecked,
@@ -3965,6 +3954,8 @@ function do_gender($ia)
             $naChecked = CHECKED;
         }
     }
+
+    $noAnswer = (isset($noAnswer))?$noAnswer:false;
 
     $itemDatas = array(
         'name'=>$ia[1],
@@ -5734,7 +5725,7 @@ function do_array_multiflexi($ia)
             // table-in-qanda-7
             // $labelans
             //$answer .= "\t<th data-title=\" \" class=\"answertext\" width=\"$answerwidth%\">\n"
-            $answer .= "\t<th data-title=\" \" class=\"answertext\" style='width: $answerwidth%;'>\n"
+            $answer .= "\t<th class=\"answertext\" style='width: $answerwidth%;'>\n"
             . "$answertext\n"
             . $hiddenfield
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
@@ -5759,7 +5750,7 @@ function do_array_multiflexi($ia)
                     {
                         $myfname2_java_value = "";
                     }
-                    $answer .= "\t<td class=\"answer-cell-5 answer_cell_00$ld question-item answer-item {$answertypeclass}-item $extraclass\">\n"
+                    $answer .= "\t<td data-title=\"$answertext\"  class=\"answer-cell-5 answer_cell_00$ld question-item answer-item {$answertypeclass}-item $extraclass\">\n"
                     . "\t<label for=\"answer{$myfname2}\"><input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n";
                     //. "<label class=\"hidden-sm hidden-md hidden-lg read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n";
                     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);

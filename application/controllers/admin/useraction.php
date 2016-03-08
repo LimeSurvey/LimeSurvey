@@ -329,7 +329,7 @@ class UserAction extends Survey_Common_Action
                 $aData['mur'] = $sresult;
 
                 $aData['fullpagebar']['savebutton']['form'] = 'moduserform';
-                $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';
+                $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';  // Close button
 
                 $this->_renderWrappedTemplate('user', 'modifyuser', $aData);
                 return;
@@ -534,7 +534,7 @@ class UserAction extends Survey_Common_Action
             App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "userpermissions.js" ));
 
             $aData['fullpagebar']['savebutton']['form'] = 'savepermissions';
-            $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';
+            $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';  // Close button
 
             $this->_renderWrappedTemplate('user', 'setuserpermissions', $aData);
         }
@@ -572,7 +572,7 @@ class UserAction extends Survey_Common_Action
         }
 
         $aData['fullpagebar']['savebutton']['form'] = 'modtemplaterightsform';
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';
+        $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';  // Close button
 
         $this->_renderWrappedTemplate('user', 'setusertemplates', $aData);
     }
@@ -666,7 +666,7 @@ class UserAction extends Survey_Common_Action
         $aData['sSavedLanguage'] = $user->lang;
 
         $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/survey/sa/index';
+        $aData['fullpagebar']['closebutton']['url'] = 'admin/survey/sa/index';  // Close button
 
         // Render personal settings view
         $this->_renderWrappedTemplate('user', 'personalsettings', $aData);

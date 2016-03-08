@@ -19,7 +19,7 @@
         <?php echo $checkedState; ?>
         onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
     />
-    <label for="answer<?php echo $ia[1].$fp; ?>" class="answertext">
+    <label for="answer<?php echo $ia[1].$fp; ?>" class="answertext radio-label">
         <?php echo $fp; ?>
     </label>
 </div>

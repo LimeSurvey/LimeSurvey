@@ -43,7 +43,13 @@ class AdminController extends LSYii_Controller
         if (!Yii::app()->getConfig("subaction")) {Yii::app()->setConfig("subaction", returnGlobal('subaction'));} //Desired subaction
         if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));} // for html editor integration
 
-        $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
+        if(isset($_GET['surveyid']))
+        {
+            global $oTemplate;
+            $oTemplate = new TemplateConfiguration;
+            $oTemplate->setTemplateConfiguration('',$_GET['surveyid']);
+        }
+
     }
 
     /**
@@ -297,9 +303,9 @@ class AdminController extends LSYii_Controller
             $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         // Register admin theme package with asset manager
-        $oAdmintheme = Template::model()->getAdminTheme(); // We get the package datas from the model
+        $oAdmintheme = new AdminTheme; // We get the package datas from the model
+        $oAdmintheme->setAdminTheme();
         $aData['sAdmintheme'] = $oAdmintheme->name;
-        $aData['sAdminthemePackageName'] = $oAdmintheme->packagename;
         $aData['aPackageScripts']=$aData['aPackageStyles']=array();
         // Typecasting as array directly does not work in PHP 5.3.17 so we loop over the XML entries
         foreach($oAdmintheme->config->files->js->filename as $aFile)

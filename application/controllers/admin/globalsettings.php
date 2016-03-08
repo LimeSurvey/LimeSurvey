@@ -57,8 +57,7 @@ class GlobalSettings extends Survey_Common_Action
         Yii::app()->loadHelper('surveytranslator');
 
         // Save refurl from where global settings screen is called!
-        // Unless it's called from global settings...
-        $refurl = Yii::app()->getRequest()->getUrlReferrer();
+        $refurl = Yii::app()->getRequest()->getUrlReferrer(Yii::app()->createUrl('admin'), array('globalsettings'));
 
         // Some URLs are not to be allowed to refered back to.
         // These exceptions can be added to the $aReplacements array
@@ -66,12 +65,6 @@ class GlobalSettings extends Survey_Common_Action
                              'admin/user/sa/adduser'=>'admin/user/sa/index',
                              'admin/user/sa/setusertemplates'=>'admin/user/sa/index'
                             );
-        $refurl= str_replace(array_keys($aReplacements),array_values($aReplacements),$refurl);
-        // Don't update session variable if refurl is empty (happens when user clicks Save)
-        if ($refurl !== "")
-        {
-            Yii::app()->session['refurl'] = htmlspecialchars($refurl); //just to be safe!
-        }
 
         $data['title'] = "hi";
         $data['message'] = "message";
@@ -103,7 +96,7 @@ class GlobalSettings extends Survey_Common_Action
 
         $data['fullpagebar']['savebutton']['form'] = 'frmglobalsettings';
         $data['fullpagebar']['saveandclosebutton']['form'] = 'frmglobalsettings';
-        $data['fullpagebar']['closebutton']['url'] = 'admin/';
+        $data['fullpagebar']['closebutton']['url'] = 'admin/';  // Close button
 
         $this->_renderWrappedTemplate('', 'globalSettings_view', $data);
     }
@@ -251,16 +244,8 @@ class GlobalSettings extends Survey_Common_Action
         // Redirect if user clicked save-and-close-button
         if (isset($_POST['saveandclose']))
         {
-            $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
-            if ($url)
-            {
-                Yii::app()->getController()->redirect($url);
-            }
-            else
-            {
-                $url = Yii::app()->createUrl('admin');
-                Yii::app()->getController()->redirect($url);
-            }
+            $url = Yii::app()->getRequest()->getUrlReferrer(Yii::app()->createUrl('admin'));
+            Yii::app()->getController()->redirect($url);
         }
     }
 

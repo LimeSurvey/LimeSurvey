@@ -48,7 +48,7 @@
         if (activepopup == null)
         {
             document.getElementsByName(fieldname)[0].readOnly=true;
-            document.getElementsByName(fieldname)[0].className='readonly form-control';
+            document.getElementsByName(fieldname)[0].className='readonly form-control input-lg';
             document.getElementById(controlidena).style.display='none';
             document.getElementById(controliddis).style.display='';
 

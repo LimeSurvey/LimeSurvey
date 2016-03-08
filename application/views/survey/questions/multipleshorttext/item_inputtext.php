@@ -26,10 +26,10 @@
         <?php endif;?>
 
     <div  class="form-group-row row">
-        <label class='control-label col-xs-12' for="answer<?php echo$myfname;?>">
+        <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>' for="answer<?php echo$myfname;?>">
             <?php echo $question; ?>
         </label>
-        <div class="col-xs-12">
+        <div class="col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
             <?php echo $prefix; ?>
             <input
                 class="text <?php echo $kpclass; ?> form-control"

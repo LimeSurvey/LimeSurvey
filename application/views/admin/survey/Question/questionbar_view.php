@@ -160,10 +160,10 @@ $aReplacementData=array();
 
             <!-- Answer Options -->
             <?php if( Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] > 0 ):?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
-                        <span class="icon-defaultanswers"></span>
-                        <?php eT("Edit answer options "); ?>
-                    </a>
+                <a class="btn btn-default" href="<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
+                    <span class="icon-defaultanswers"></span>
+                    <?php eT("Edit answer options "); ?>
+                </a>
             <?php endif;?>
 
 
@@ -224,8 +224,8 @@ $aReplacementData=array();
 
                 <?php endif;?>
 
+                <!-- Close -->
                 <?php if(isset($questionbar['closebutton']['url'])):?>
-                    <!-- $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/{$surveyid}"); ?>-->
                     <a class="btn btn-danger" href="<?php echo $questionbar['closebutton']['url']; ?>" role="button">
                         <span class="glyphicon glyphicon-close"></span>
                         <?php eT("Close");?>

@@ -1,7 +1,7 @@
 <script type="text/javascript">
     var redUrl = "<?php echo $this->createUrl("/admin/participants/sa/displayParticipants"); ?>";
     var copyUrl = "<?php echo $this->createUrl("/admin/participants/sa/addToCentral"); ?>";
-    
+
     var surveyId = "<?php echo Yii::app()->request->getQuery('sid'); ?>";
 
     /* LANGUAGE */
@@ -25,7 +25,7 @@
                         {
                             foreach ($tokenattribute as $key => $value)
                             {
-                                echo "<div id='t_" . $value . "' data-name='" . $key . "' class='panel panel-default token-attribute attribute-item draggable'><div title='".gT("Drag this attribute to another column to map it to the central participants database")."' data-name=\"$key\" class=\"panel-body\">" . $key . "</div></div>"; 
+                                echo "<div id='t_" . $value . "' data-name='" . $key . "' class='panel panel-default token-attribute attribute-item draggable'><div title='".gT("Drag this attribute to another column to map it to the central participants database")."' data-name=\"$key\" class=\"panel-body\">" . $key . "</div></div>";
                             }
                         }
                     ?>
@@ -56,7 +56,7 @@
                     }
                     ?>
                 </div>
-                
+
                 <?php if (!empty($attribute)) { ?>
                 <div class='explanation'>
                     <div class="explanation-row">
@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <?php } else { ?>
-                
+
                 <?php }
                 if(!empty($alreadymappedattributename)) {
                     ?>
@@ -121,7 +121,7 @@
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

@@ -59,7 +59,7 @@
                         <div class="panel panel-primary" id="pannel-2" <?php  if ($SingleResponse) { echo 'style="display:none"';} ?> >
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <?php eT("Range:");?>
+                                    <?php eT("Range");?>
                                 </h4>
                             </div>
                             <div class="panel-body">
@@ -92,7 +92,7 @@
                                             max="<?php echo $max_datasets; ?>"
                                             step="1"
                                             type="number"
-                                            value="6164"
+                                            value="<?php echo $max_datasets; ?>"
                                             name="export_to"
                                             id="export_to"
                                             class="form-control"
@@ -279,11 +279,11 @@
                                 <!-- Responses  -->
                                 <div class="form-group">
                                     <br/>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo CHTML::checkBox('converty',false,array('value'=>'Y','id'=>'converty'));
-                                    echo CHTML::label(gT("Convert Y to"),'converty');?>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo CHTML::checkBox('converty',false,array('value'=>'Y','id'=>'converty'));
+                                    echo '&nbsp;'.CHTML::label(gT("Convert Y to:"),'converty');?>
                                     <?php echo CHTML::textField('convertyto','1',array('id'=>'convertyto','size'=>'3','maxlength'=>'1')); ?>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo CHTML::checkBox('convertn',false,array('value'=>'Y','id'=>'convertn'));
-                                    echo CHTML::label(gT("Convert N to"),'convertn');?>
+                                    echo '&nbsp;'.CHTML::label(gT("Convert N to:"),'convertn');?>
                                     <?php echo CHTML::textField('convertnto','2',array('id'=>'convertnto','size'=>'3','maxlength'=>'1')); ?>
                                 </div>
                             </div>

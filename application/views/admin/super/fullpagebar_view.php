@@ -11,7 +11,7 @@
         <!-- Left Actions -->
         <div class="col-md-8">
             <!-- Create a new survey  -->
-            <?php if (isset($fullpagebar['button']['newsurvey'])):?>
+            <?php if (isset($fullpagebar['button']['newsurvey']) && Permission::model()->hasGlobalPermission('surveys','create')):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>" role="button">
                     <span class="icon-add text-success"></span>
                     <?php eT("Create a new survey");?>

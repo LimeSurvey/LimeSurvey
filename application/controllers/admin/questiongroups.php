@@ -109,7 +109,7 @@ class questiongroups extends Survey_Common_Action
             $aData['sidemenu']['state'] = false;
             $aData['sidemenu']['questiongroups'] = true;
 
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;
+            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;  // Close button
             $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveyid'] = $surveyid;
 
@@ -159,7 +159,7 @@ class questiongroups extends Survey_Common_Action
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
             $aData['surveybar']['importquestiongroup'] = true;
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;
+            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;  // Close button
             $aData['surveybar']['savebutton']['form'] = true;
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'addGroup_view', $aData);
         }
@@ -426,7 +426,7 @@ class questiongroups extends Survey_Common_Action
             $aData['sidemenu']['questiongroups'] = true;
             $aData['questiongroupbar']['savebutton']['form'] = true;
             $aData['questiongroupbar']['saveandclosebutton']['form'] = true;
-            $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$gid;
+            $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$gid;  // Close button
 
             $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'editgroup';
             $aData['surveyid'] = $surveyid;

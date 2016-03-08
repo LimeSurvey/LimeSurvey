@@ -19,6 +19,7 @@ if ($('#save-and-close-form-button').length>0){
         $form = $(formid);
 
         // Add input to tell us to not redirect
+        // TODO : change that
         $('<input type="hidden">').attr({
             name: 'saveandclose',
             value: '1'

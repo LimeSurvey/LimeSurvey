@@ -18,10 +18,10 @@
 <!-- question attribute "display_rows" is set -> we need a textarea to be able to show several rows -->
 <div class="question-item answer-item text-item <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?>>
     <div  class="form-group-row row">
-        <label class='control-label col-xs-12' for="answer<?php echo $myfname; ?>">
+        <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>' for="answer<?php echo $myfname; ?>">
             <?php echo $labelText;?>
         </label>
-        <div class="col-xs-12">
+        <div class="col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
             <?php echo $prefix;?>
 
 <textarea

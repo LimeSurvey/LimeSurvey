@@ -209,7 +209,9 @@ class QuestionGroup extends LSActiveRecord
     public function getbuttons()
     {
         // Find out if the survey is active to disable add-button
-        $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
+        $oSurvey=Survey::model()->findByPk($this->sid);
+        $surveyIsActive = $oSurvey->active !== 'N';
+        $baselang = $oSurvey->language;
 
         // Add question to this group
         $url = Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$this->sid/gid/$this->gid");
@@ -224,6 +226,33 @@ class QuestionGroup extends LSActiveRecord
         $url = Yii::app()->createUrl("/admin/questiongroups/sa/view/surveyid/");
         $url .= '/'.$this->sid.'/gid/'.$this->gid;
         $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><span class="glyphicon glyphicon-list-alt " ></span></a>';
+
+
+        $sumresult4 = Question::model()->findAllByAttributes(array('sid' => $this->sid, 'gid' => $this->gid, 'language' => $baselang));
+        $sumcount4 = count($sumresult4);
+
+
+        // Delete
+        if($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid,'surveycontent','delete' ) && $sumresult4 > 0)
+        {
+            $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
+            if(is_null($condarray))
+            {
+                $confirm = 'if (confirm(\''.gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js").'\')) { window.open(\''.Yii::app()->createUrl("admin/questiongroups/sa/delete/surveyid/$this->sid/gid/$this->gid").'\',\'_top\'); };';
+                $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
+                            onclick="'.$confirm.'">
+                                <span class="text-danger glyphicon glyphicon-trash"></span>
+                            </a>';
+            }
+            else
+            {
+                $alert = 'alert(\''.gT("Impossible to delete this group because there is at least one question having a condition on its content","js").'\'); return false;';
+                $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
+                            onclick="'.$alert.'">
+                                <span class="text-danger glyphicon glyphicon-trash"></span>
+                            </a>';
+            }
+        }
 
         return $button;
     }

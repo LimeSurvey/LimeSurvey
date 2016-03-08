@@ -68,7 +68,7 @@
         <div id='tokenattribute'>
             <div class='panel panel-primary'>
                 <div class="panel-heading">
-                    <?php eT("Existing token attributes"); ?> 
+                    <?php eT("Existing token attributes"); ?>
                 </div>
                 <div class='panel-body'>
                     <div class="tokenatt ui-sortable" style="min-height: 200px;">
@@ -111,7 +111,7 @@
                             <div class='form-group'>
                                 <label class='control-label col-sm-10 text-right' for='overwriteman'><?php eT("Overwrite existing token attribute values if a participant already exists?") ?></label>
                                 <div class='col-sm-2'>
-                                    <input type='checkbox' id='overwriteman' name='overwriteman' /> 
+                                    <input type='checkbox' id='overwriteman' name='overwriteman' />
                                 </div>
                             </div>
                             <div class='form-group'>
@@ -198,7 +198,7 @@ $ajaxloader = array(
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
