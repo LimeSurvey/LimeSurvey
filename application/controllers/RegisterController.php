@@ -196,7 +196,13 @@ class RegisterController extends LSYii_Controller {
         $aData['thissurvey'] = $aSurveyInfo;
         Yii::app()->setConfig('surveyID',$iSurveyId);//Needed for languagechanger
         $aData['languagechanger'] = makeLanguageChangerSurvey(App()->language);
-        global $oTemplate;
+
+        // To avoid to reinstanciate again the object in the helpers, libraries, views
+        // we must make $oTemplate global.
+        // using a "getInstance" method without parsing the template model from the controllers
+        // to the helpers/libraries/view will not resolve magically the problem. It will just create
+        // second instance.
+        global $oTemplate;        
         $oTemplate = new TemplateConfiguration;
         $oTemplate->setTemplateConfiguration('',$iSurveyId);
         return templatereplace(file_get_contents($oTemplate->viewPath . "/register.pstpl"),$aReplacement,$aData);

@@ -140,7 +140,12 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
      * If templatereplace is called from the template editor, a $oTemplate is provided.
      */
 
+     /*
+     This was creating a THIRD instance of the template configuration
+     (so a second load of the xml file, etc.)
     $oTemplate = Template::model()->getInstance($templatename);
+    */
+    global $oTemplate;
 
     $aCssFiles = $oTemplate->config->files->css->filename;
     $aJsFiles = $oTemplate->config->files->js->filename;

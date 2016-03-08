@@ -47,7 +47,12 @@
         "list"=> $list,
     );
 
+    /*
+    This was creating a 6th instance of the template configuration
+    (so a second load of the xml file, etc.)
     $oTemplate = Template::model()->getInstance("default");
+    */
+    global $oTemplate;
 
     $data['templatedir'] = Template::getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
     $data['templateurl'] = Template::getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
