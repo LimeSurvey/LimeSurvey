@@ -35,6 +35,30 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160307) to 2.50+ (build 160308) Mar 8, 2016
+-Fixed issue #10372: The two options after a survey has finished does not work (LouisGac)
+-Fixed issue #10460: Missing translation (Carsten Schmitz)
+-Fixed issue #10471: Missing translation (Carsten Schmitz)
+-Fixed issue #10603: Missing translation (Carsten Schmitz)
+-Fixed issue #10618: Unable to see whole content if survey title is big (LouisGac)
+-Fixed issue #10619: Label for multiple text seem misplaced (LouisGac)
+-Fixed issue #10620: Slider number is show on the header (LouisGac)
+-Fixed issue #10636: Survey listing (home page) : bad emplacement of footer (LouisGac)
+-Fixed issue #10646: No error msg when validating registration form (LouisGac)
+-Fixed issue #10684: The type of question is lost when editing a question on an active survey (Carsten Schmitz)
+-Fixed issue #10688: No charts in public statistic (LouisGac)
+-Fixed issue #10690: All admin themes show as Sea Green (LouisGac)
+-Fixed issue #10691: Missing portion of editors in IE10 (tpartner)
+-Fixed issue #10696: Array filter not working on ranking (LouisGac)
+-Fixed issue #10705: Missing translation (Carsten Schmitz)
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Greek by lenasterg, kiolalis
+#Updated translation: Estonian by t6nnp6nn
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Russian by ddrmoscow, ilgizy, vipgroup
+
 Changes from 2.50+ (build 160228) to 2.50+ (build 160307) Mar 7, 2016
 -Fixed issue #10532: Popup HTML Editor not working fixed. Removed failing console.log statement from JavaScript code (Markus FlÃ¼r)
 -Fixed issue #10087: User stats page have invalid link (LouisGac)
