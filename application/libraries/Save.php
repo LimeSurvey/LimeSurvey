@@ -62,13 +62,7 @@ class Save {
         $sTemplatePath = $_SESSION['survey_'.$surveyid]['templatepath'];
         sendCacheHeaders();
         doHeader();
-        /*
-        This was creating a 6th instance of the template configuration
-        (so a second load of the xml file, etc.)
         $oTemplate = Template::model()->getInstance(null, $surveyid);
-        */
-        global $oTemplate;
-        
         echo templatereplace(file_get_contents($oTemplate->viewPath."startpage.pstpl"),array(),$redata);
         echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
         ."\t<script type='text/javascript'>\n"

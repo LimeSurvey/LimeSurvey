@@ -46,17 +46,7 @@ class index extends CAction {
             App()->getClientScript()->registerCssFile( Yii::app()->getBaseUrl(true).'/styles-public/font-awesome-43-debugmode.min.css' );
         }
 
-        //$oTemplate = Template::model()->getInstance('', $surveyid);
-
-        // To avoid to reinstanciate again the object in the helpers, libraries, views
-        // we must make $oTemplate global.
-        // using a "getInstance" method without parsing the template model from the controllers
-        // to the helpers/libraries/view will not resolve magically the problem. It will just create
-        // second instance.
-        global $oTemplate;        
-        $oTemplate = new TemplateConfiguration;
-        $oTemplate->setTemplateConfiguration('', $surveyid);
-
+        $oTemplate = Template::model()->getInstance('', $surveyid);
         $this->oTemplate = $oTemplate;
 
         App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);

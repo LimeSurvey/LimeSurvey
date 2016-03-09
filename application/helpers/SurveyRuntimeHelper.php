@@ -348,12 +348,7 @@ class SurveyRuntimeHelper {
         $LEMsessid = 'survey_' . $surveyid;
         $this->setJavascriptVar($surveyid);
 
-        /*
-        This was creating a 4th instance of the template configuration
-        (so a second load of the xml file, etc.)
         $oTemplate = Template::model()->getInstance('', $surveyid);
-        */
-        global $oTemplate;
         $sTemplatePath = $oTemplate->path;
         $sTemplateViewPath = $oTemplate->viewPath;
 

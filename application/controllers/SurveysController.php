@@ -18,17 +18,7 @@
             {
                 App()->setLanguage(App()->getConfig('defaultlang'));
             }
-            //$oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
-
-            // To avoid to reinstanciate again the object in the helpers, libraries, views
-            // we must make $oTemplate global.
-            // using a "getInstance" method without parsing the template model from the controllers
-            // to the helpers/libraries/view will not resolve magically the problem. It will just create
-            // second instance.
-            global $oTemplate;            
-            $oTemplate = new TemplateConfiguration;
-            $oTemplate->setTemplateConfiguration('',$surveyid);
-
+            $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
             if($oTemplate->cssFramework == 'bootstrap')
             {
                 App()->bootstrap->register();

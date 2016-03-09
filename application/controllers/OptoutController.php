@@ -191,18 +191,10 @@ class OptoutController extends LSYii_Controller {
         doHeader();
         $aSupportData=array('thissurvey'=>$aSurveyInfo);
 
-        //No name nor sid ? ==> Bug ;  $oTemplate = Template::model()->getInstance();
-
-        // To avoid to reinstanciate again the object in the helpers, libraries, views
-        // we must make $oTemplate global.
-        // using a "getInstance" method without parsing the template model from the controllers
-        // to the helpers/libraries/view will not resolve magically the problem. It will just create
-        // second instance.
-        global $oTemplate;
-        $oTemplate = new TemplateConfiguration;
-        $oTemplate->setTemplateConfiguration('',$aSurveyInfo['sid']);
+        $oTemplate = Template::model()->getInstance();
         $sTemplatePath = $oTemplate->path;
         $thistpl = $oTemplate->viewPath;
+
 
         echo templatereplace(file_get_contents($thistpl.'startpage.pstpl'),array(), $aSupportData);
         $aData['html'] = $html;
