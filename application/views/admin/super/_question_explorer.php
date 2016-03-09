@@ -69,7 +69,7 @@
                                 <?php else: ?>
                                     <div class="col-sm-3" id="questions-container-<?php echo $aGroup->gid; ?>">
                                         <!-- add question to this group -->
-                                            <a title="<?php eT("You can't add questions while the survey is active.");?>" class='disabled' href="#" data-toggle="tooltip" data-placement="bottom" title="" style="display: inline-block">
+                                            <a title="<?php eT("You can't add questions while the survey is active.");?>" class='disabled' href="#" data-toggle="tooltip" data-placement="bottom">
                                                 <span class="glyphicon glyphicon-plus-sign"></span>
                                             </a>
                                     </div>
