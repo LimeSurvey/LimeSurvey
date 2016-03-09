@@ -1465,9 +1465,13 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
     {
         $fieldmap = createFieldMap($iSurveyID,'short',false,false,$sLanguage);
         if (isset($fieldmap[$sFieldCode]))
+        {
             $fields = $fieldmap[$sFieldCode];
+        }
         else
-            return false;
+        {
+            return '';
+        }
 
         // If it is a comment field there is nothing to convert here
         if ($fields['aid']=='comment') return $sValue;

@@ -212,15 +212,21 @@ class PclZip
     //   Note that no real action is taken, if the archive does not exist it is not
     //   created. Use create() for that.
     // --------------------------------------------------------------------------------
-    function __construct($params = array())
+    function __construct($params)
     {
 
-        if(isset($params['p_zipname']) && is_array($params))
+        if (is_array($params) && isset($params['p_zipname']))
+        {
             $p_zipname = $params['p_zipname'];
+        }
         elseif (isset($params))
+        {
             $p_zipname = $params;
+        }
         else
+        {
             trigger_error("Missing argument p_zipname", E_USER_ERROR);
+        }
 
         // ----- Tests the zlib
         if (!function_exists('gzopen'))
