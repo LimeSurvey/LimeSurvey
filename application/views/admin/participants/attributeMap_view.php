@@ -151,7 +151,16 @@
                 <div class='panel-heading'><?php eT("Standard token fields") ?></div>
                 <div class='panel-body'>
                     <div class="standardfields">
-                        <div class='panel panel-default' id='t_token'><div class='panel-body'><?php eT("Token") ?></div></div>
+                        <div class='tokenatt-container col-sm-12'>
+                            <div class='col-sm-6'>
+                                <div class='panel panel-default ui-state-disabled token-attribute' id='t_token'>
+                                    <div class='panel-body'>
+                                        <?php eT("Token") ?>
+                                        <span class='fa fa-arrows-h tokenatt-arrow'></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class='explanation'>
                         <div class='form-group'>
