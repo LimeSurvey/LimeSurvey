@@ -2548,12 +2548,18 @@ class statistics_helper {
                         . "cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = '' "
                         . "OR cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = ' ' )";
                     }
-                    else
-                        //                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "
+                    elseif ($sDatabaseType == 'pgsql') {
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
                         //                                    . "OR ".sanitize_int($rt)." = '' "
                         . " ".Yii::app()->db->quoteColumnName($rt)."::text = '' "
                         . "OR ".Yii::app()->db->quoteColumnName($rt)."::text = ' ') ";
+                    }
+                    else {
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
+                        //                                    . "OR ".sanitize_int($rt)." = '' "
+                        . " ".Yii::app()->db->quoteColumnName($rt)." = '' "
+                        . "OR ".Yii::app()->db->quoteColumnName($rt)." = ' ') ";
+                    }
                 }
 
             }
