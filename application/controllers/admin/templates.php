@@ -877,11 +877,11 @@ class templates extends Survey_Common_Action
     * Function that initialises cssfile data.
     *
     * @access protected
-    * @param StdClass $oEditedTemplate
+    * @param TemplateConfiguration $oEditedTemplate
     * @param boolean $editable
     * @return array
     */
-    protected function _initcssfiles(StdClass $oEditedTemplate, $editable=false)
+    protected function _initcssfiles(TemplateConfiguration $oEditedTemplate, $editable=false)
     {
         // If editable CSS files are required, and if they are defined in the template config file
         if($editable && is_object($oEditedTemplate->config->files_editable->css))
