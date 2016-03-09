@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-03-09 11:28:31+00:00\n"
+"POT-Creation-Date: 2016-03-09 11:43:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2680,10 +2680,6 @@ msgstr ""
 
 #: application/controllers/admin/limereplacementfields.php:324
 msgid "Assessment group score"
-msgstr ""
-
-#: application/controllers/admin/participantsaction.php:94
-msgid "aViewUrls must be either string or array"
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:175
