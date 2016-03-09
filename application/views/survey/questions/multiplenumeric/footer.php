@@ -29,6 +29,7 @@
             <span class="label"><?php eT('Total: '); ?></span>
             <span id="totalvalue_<?php echo $id; ?>" class="dynamic_sum">
                 <?php echo $prefix; ?>
+                <?php // NO SPACE AFTER BRACKET !!!! ?>
                 {<?php echo $sumEqn; ?>}
                 <?php echo $suffix; ?>
             </span>
