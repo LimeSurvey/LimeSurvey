@@ -71,10 +71,12 @@
             <?php endif;?>
 
             <!-- Import -->
+            <?php $importModal=false;?>
             <?php if(is_writable($tempdir) && function_exists("zip_open")):?>
                 <?php if(Permission::model()->hasGlobalPermission('templates','import')):?>
                     <?php if (is_writable($usertemplaterootdir)):?>
-                        <a class="btn btn-default" href="<?php echo $this->createUrl('admin/templates/sa/upload'); ?>" role="button">
+                        <?php $importModal=true;?>
+                        <a class="btn btn-default" href="" role="button" data-toggle="modal" data-target="#importModal">
                             <span class="icon-import text-success"></span>
                             <?php eT("Import"); ?>
                         </a>
@@ -217,6 +219,36 @@
     </div>
 </div>
 
+<?php if($importModal):?>
+    <div class="modal fade" tabindex="-1" role="dialog" id="importModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><?php eT("Uploaded template file") ?></h4>
+          </div>
+          <?php echo CHtml::form(array('admin/templates/sa/upload'), 'post', array('id'=>'importtemplate', 'name'=>'importtemplate', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.gT('Please select a file to import!', 'js').'");')); ?>
+          <div class="modal-body">
+              <input type='hidden' name='lid' value='$lid' />
+              <input type='hidden' name='action' value='templateupload' />
+                  <div  class="form-group">
+                      <label for='the_file'><?php eT("Select template ZIP file:") ?></label>
+                      <input id='the_file' name='the_file' type="file" />
+                  </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <?php if (!function_exists("zip_open")) {?>
+                <?php eT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") ?>
+            <?php } else {?>
+                <input class="btn btn-default" type='button' value='<?php eT("Import template ZIP archive") ?>' onclick='if (validatefilename(this.form,"<?php eT('Please select a file to import!', 'js') ?>")) { this.form.submit();}' />
+            <?php }?>
+          </div>
+          </form>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+<?php endif;?>
 
 <div class="col-lg-12 templateeditor">
     <h3><?php eT("Template editor:"); ?> <i><?php echo $templatename; ?></i></h3>

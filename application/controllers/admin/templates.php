@@ -183,7 +183,7 @@ class templates extends Survey_Common_Action
             else
             {
                 $templateFixes= array();
-            }
+            }            
             $aViewUrls = 'importuploaded_view';
             $aData = array(
             'aImportedFilesInfo' => $aImportedFilesInfo,
