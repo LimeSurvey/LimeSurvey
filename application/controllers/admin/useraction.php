@@ -666,10 +666,18 @@ class UserAction extends Survey_Common_Action
         $aData['sSavedLanguage'] = $user->lang;
 
         $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
+        $aData['fullpagebar']['saveandclosebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['closebutton']['url'] = 'admin/survey/sa/index';  // Close button
 
         // Render personal settings view
-        $this->_renderWrappedTemplate('user', 'personalsettings', $aData);
+        if (isset($_POST['saveandclose']))
+        {
+            $this->getController()->redirect(array("admin/user/sa/index"));
+        }
+        else
+        {
+            $this->_renderWrappedTemplate('user', 'personalsettings', $aData);
+        }
     }
 
     private function _getUserNameFromUid($uid)

@@ -11,11 +11,11 @@
 
 <!-- views/survey/system/LanguageChanger -->
     <div class="form-group">
-        <label for="lang" class="control-label">
+        <label for="langchanger" class="control-label">
             <?php eT("Select language:");?>
         </label>
 
-        <?php echo CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass,'data-targeturl'=>$sTargetURL));?>
+        <?php echo CHtml::dropDownList('langchanger', $sSelected,$aListLang,array('class'=>$sClass,'data-targeturl'=>$sTargetURL));?>
         <!--  We don't have to add this button if in previewmode -->
         <?php echo CHtml::htmlButton(gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'changelang jshide btn btn-default')); ?>
     </div>
