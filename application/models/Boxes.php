@@ -31,7 +31,7 @@ class Boxes extends CActiveRecord
         return array(
             array('url, title, ico, desc, page', 'required'),
             array('position', 'numerical', 'integerOnly'=>true),
-            array('usergroup', 'numerical', 'integerOnly'=>true, 'min'=>-2),
+            array('usergroup', 'numerical', 'integerOnly'=>true, 'min'=>-3),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, position, url, title, ico, desc, page, usergroup', 'safe', 'on'=>'search'),

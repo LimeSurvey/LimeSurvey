@@ -19,17 +19,23 @@
             )); ?>
                 <p class="note"><?php printf(gT('Fields with %s*%s are required.'),'<span class="required">','</span>'); ?></p>
 
+                <?php if($form->errorSummary($model)):?>
+                    <div class="alert alert-danger" role="alert">
+                        <?php echo $form->errorSummary($model); ?>
+                    </div>
+                <?php endif;?>
 
-                <?php echo $form->errorSummary($model); ?>
 
                 <div class="form-group">
                     <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'position'); ?></label>
                     <div class='col-sm-2'>
                         <?php echo $form->numberField($model,'position', array('class' => 'form-control')); ?>
                     </div>
-                    <div class='col-sm-2'>
-                        <?php echo $form->error($model,'position'); ?>
-                    </div>
+                    <?php if($form->error($model,'position')):?>
+                        <div class="col-sm-2 text-danger">
+                            <?php echo $form->error($model,'position'); ?>
+                        </div>
+                    <?php endif;?>
                 </div>
 
                 <div class="form-group">
@@ -37,9 +43,11 @@
                     <div class='col-sm-2'>
                         <?php echo $form->textField($model,'url',array('class' => 'form-control')); ?>
                     </div>
-                    <div class='col-sm-2'>
-                        <?php echo $form->error($model,'url'); ?>
-                    </div>
+                    <?php if($form->error($model,'url')):?>
+                        <div class='col-sm-2 text-danger'>
+                            <?php echo $form->error($model,'url'); ?>
+                        </div>
+                    <?php endif;?>
                 </div>
 
                 <div class="form-group">
@@ -47,9 +55,11 @@
                     <div class='col-sm-2'>
                         <?php echo $form->textField($model,'title',array('class' => 'form-control')); ?>
                     </div>
-                    <div class='col-sm-2'>
-                        <?php echo $form->error($model,'title'); ?>
-                    </div>
+                    <?php if($form->error($model,'title')):?>
+                        <div class="col-sm-2 text-danger">
+                            <?php echo $form->error($model,'title'); ?>
+                        </div>
+                    <?php endif;?>
                 </div>
 
                 <div class="form-group">
@@ -91,9 +101,12 @@
                         <span>&nbsp;<?php echo eT('Chosen icon:'); ?></span>&nbsp;<span id='chosen-icon'></span>
                         <?php echo $form->textField($model,'ico',array('size'=>60,'maxlength'=>255, 'class' => 'form-control hidden')); ?>
                     </div>
-                    <div class='col-sm-2'>
-                        <?php echo $form->error($model,'ico'); ?>
-                    </div>
+
+                    <?php if ($form->error($model,'ico')):?>
+                        <div class="col-sm-2 text-danger">
+                            <?php echo $form->error($model,'ico'); ?>
+                        </div>
+                    <?php endif;?>
                 </div>
 
                 <div class="form-group">
@@ -101,9 +114,11 @@
                     <div class='col-sm-4'>
                         <?php echo $form->textArea($model,'desc',array('rows'=>6, 'cols'=>50, 'class' => 'form-control')); ?>
                     </div>
-                    <div class='col-sm-4'>
-                        <?php echo $form->error($model,'desc'); ?>
-                    </div>
+                    <?php if($form->error($model,'desc')):?>
+                        <div class="col-sm-2 text-danger" role="alert">
+                            <?php echo $form->error($model,'desc'); ?>
+                        </div>
+                    <?php endif;?>
                 </div>
 
                 <!-- Page -->
@@ -136,9 +151,12 @@
                             )
                         ); ?>
                     </div>
-                    <div class='col-sm-2'>
-                        <?php echo $form->error($model,'usergroup'); ?>
-                    </div>
+
+                    <?php if($form->error($model,'usergroup')):?>
+                        <div class="col-sm-2 text-danger">
+                            <?php echo $form->error($model,'usergroup'); ?>
+                        </div>
+                    <?php endif;?>
                 </div>
 
                 <div class="form-group buttons">

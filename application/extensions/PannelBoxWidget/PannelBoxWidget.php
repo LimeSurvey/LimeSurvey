@@ -108,7 +108,7 @@
                                 'offset' =>$this->offset,
                         ));
                 }
-                else
+                elseif($canSeeBox)
                 {
                     $this->controller->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
                                     'display'=>'singlebox',
@@ -154,7 +154,7 @@
                 }
             }
             // If usergroup is set to -3, nobody can see the box
-            elseif ( $usergroupid=='-3' )
+            elseif ( $box->usergroup=='-3' )
             {
                 return false;
             }
