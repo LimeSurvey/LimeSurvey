@@ -35,6 +35,26 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160308) to 2.50+ (build 160309) Mar 9, 2016
+-Fixed issue: Deleting a question may corrupt a global setting (LouisGac)
+-Fixed issue #10208: Rendering any PDF, CSV, HTML introducing numerical (Guillaume Smaha)
+-Fixed issue #10607: Multiple numerical input - sum of sliders broken (LouisGac)
+-Fixed issue #10641: pie chart error will make statistics reports unavailable (Olle Haerstedt)
+-Fixed issue #10709: Cannot add participant to survey (Olle Haerstedt)
+-Fixed issue #10715: Multiple numerical input, The system display visual errors as shown in the following link when assigning values in the input section (maximum sum value). (LouisGac)
+-Fixed issue #10579: Slider questions will show normal instructions for multiple numerical questions (LouisGac)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by morbid, jhnrk, olde
+#Updated translation: French (France) by arnaud21
+#Updated translation: Lithuanian by liudas, simasj
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by c_schmitz, pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Brazil) by holch, mauriciofurtado
+#Updated translation: Thai by tomzt
+
 Changes from 2.50+ (build 160307) to 2.50+ (build 160308) Mar 8, 2016
 -Fixed issue #10372: The two options after a survey has finished does not work (LouisGac)
 -Fixed issue #10460: Missing translation (Carsten Schmitz)
