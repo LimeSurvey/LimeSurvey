@@ -225,7 +225,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('pdflogowidth', $iPDFLogoWidth);
         setGlobalSetting('pdfheadertitle', $_POST['pdfheadertitle']);
         setGlobalSetting('pdfheaderstring', $_POST['pdfheaderstring']);
-		setGlobalSetting('bPdfQuestionFill', sanitize_int($_POST['bPdfQuestionFill']));
+        setGlobalSetting('bPdfQuestionFill', sanitize_int($_POST['bPdfQuestionFill']));
         setGlobalSetting('bPdfQuestionBold', sanitize_int($_POST['bPdfQuestionBold']));
         setGlobalSetting('bPdfQuestionBorder', sanitize_int($_POST['bPdfQuestionBorder']));
         setGlobalSetting('bPdfResponseBorder', sanitize_int($_POST['bPdfResponseBorder']));

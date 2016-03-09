@@ -767,48 +767,54 @@ class pdf extends TCPDF {
    */
   function addAnswer($sQuestion, $sResponse, $bReplaceExpressions=true, $bAllowBreakPage=false)
   {
-	$bYiiQuestionBorder=$bYiiResponseBorder=$bYiiQuestionBold=1;
-	$bQuestionFill=$bQuestionBorder=$bResponseBorder=1;
-	
-	
+    $bYiiQuestionBorder=1;
+    $bYiiResponseBorder=1;
+    $bYiiQuestionBold=1;
+    $bQuestionFill=1;
+    $bQuestionBorder=1;
+    $bResponseBorder=1;
     $bYiiQuestionFill = Yii::app()->getConfig('bPdfQuestionFill');
-    if ($bYiiQuestionFill==0) {
-    	$bQuestionFill=0;
+    if ($bYiiQuestionFill==0)
+    {
+      $bQuestionFill=0;
     }
-    
     $bYiiQuestionBorder = Yii::app()->getConfig('bPdfQuestionBorder');
-    if ($bYiiQuestionBorder==0) {
-        $bQuestionBorder=0;
-	}
+    if ($bYiiQuestionBorder==0)
+    {
+      $bQuestionBorder=0;
+    }
 	
     $bYiiResponseBorder = Yii::app()->getConfig('bPdfResponseBorder');
-	if ($bYiiResponseBorder=='0') {
-        $bResponseBorder=0;
-	}
+    if ($bYiiResponseBorder=='0')
+    {
+      $bResponseBorder=0;
+    }
 	
     $oPurifier = new CHtmlPurifier();
     $sQuestionHTML = str_replace('-oth-','',$sQuestion); // Copied from Writer::stripTagsFull. Really necessary?
     $sQuestionHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sQuestionHTML)),ENT_COMPAT);
     if ($bReplaceExpressions)
     {
-        $sData['thissurvey']=$this->_aSurveyInfo;
-        $sQuestionHTML = templatereplace($sQuestionHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
+      $sData['thissurvey']=$this->_aSurveyInfo;
+      $sQuestionHTML = templatereplace($sQuestionHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
     }
     $sResponse = flattenText($sResponse, false, true, 'UTF-8', false);
-
     $startPage = $this->getPage();
     $this->startTransaction();
-$bYiiQuestionBold = Yii::app()->getConfig('bPdfQuestionBold');
-    if ($bYiiQuestionBold=='1') {
-        $sFontFamily = $this->getFontFamily;
-        $this->SetFont($sFontFamily,'B',$this->_ibaseAnswerFontSize);
+    $bYiiQuestionBold = Yii::app()->getConfig('bPdfQuestionBold');
+    if ($bYiiQuestionBold=='1')
+    {
+      $sFontFamily = $this->getFontFamily;
+      $this->SetFont($sFontFamily,'B',$this->_ibaseAnswerFontSize);
     }
-    else {
-        $this->SetFontSize($this->_ibaseAnswerFontSize);
+    else
+    {
+      $this->SetFontSize($this->_ibaseAnswerFontSize);
     }
     $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sQuestionHTML, $bQuestionBorder, 1, $bQuestionFill, true, 'L');
-    if ($bYiiQuestionBold=='1') {
-        $this->SetFont($sFontFamily,'',$this->_ibaseAnswerFontSize);
+    if ($bYiiQuestionBold=='1')
+    {
+      $this->SetFont($sFontFamily,'',$this->_ibaseAnswerFontSize);
     }
     $this->MultiCell(0, $this->_iCellHeight, $sResponse, $bResponseBorder, 'L', 0, 1, '', '', true);
     $this->ln(2);
