@@ -2552,8 +2552,8 @@ class statistics_helper {
                         //                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
                         //                                    . "OR ".sanitize_int($rt)." = '' "
-                        . " ".Yii::app()->db->quoteColumnName($rt)." = '' "
-                        . "OR ".Yii::app()->db->quoteColumnName($rt)." = ' ') ";
+                        . " ".Yii::app()->db->quoteColumnName($rt)."::text = '' "
+                        . "OR ".Yii::app()->db->quoteColumnName($rt)."::text = ' ') ";
                 }
 
             }
