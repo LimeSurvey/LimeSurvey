@@ -529,7 +529,7 @@ class Survey_Common_Action extends CAction
             if(isset($aData['token_bar']['closebutton']['url']))
             {
                 $sAlternativeUrl = $aData['token_bar']['closebutton']['url'];
-                $aData['token_bar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+                $aData['token_bar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) , array('tokenify') );
             }
 
             $this->getController()->renderPartial("/admin/token/token_bar", $aData);
