@@ -10,6 +10,7 @@
  * @var $sumEqn             $qinfo['sumEqn']
  */
 ?>
+
     <?php if($equals_num_value):?>
         <p class='multiplenumerichelp help-item text-info'>
             <span class="label">
@@ -23,14 +24,16 @@
     <?php endif; ?>
 
     <?php if($displaytotal):?>
-        <p class='multiplenumerichelp  help-item text-info'>
-            <span class=""><?php eT('Total: '); ?></span>
+
+        <li class='multiplenumerichelp  help-item'>
+            <span class="label"><?php eT('Total: '); ?></span>
             <span id="totalvalue_<?php echo $id; ?>" class="dynamic_sum">
                 <?php echo $prefix; ?>
-                { <?php echo $sumEqn; ?> }
+                <?php // NO SPACE AFTER BRACKET !!!! ?>
+                {<?php echo $sumEqn; ?>}
                 <?php echo $suffix; ?>
             </span>
-        </p>
-    <?php endif; ?>
+        </li>
 </ul>
+    <?php endif; ?>
 </div> <!-- Footer -->

@@ -1286,6 +1286,7 @@ class questions extends Survey_Common_Action
 
                 DefaultValue::model()->deleteAllByAttributes(array('qid' => $qid));
                 QuotaMember::model()->deleteAllByAttributes(array('qid' => $qid));
+
                 Question::model()->updateQuestionOrder($gid, $surveyid);
 
                 $qid = "";
@@ -1296,10 +1297,11 @@ class questions extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT("Question was successfully deleted.");
 
             // remove question from lastVisited
-            $oCriteria = new CDbCriteria();
-            $oCriteria->compare('stg_name','last_question_%',true,'AND',false);
-            $oCriteria->compare('stg_value',$rqid,false,'AND');
-            SettingGlobal::model()->deleteAll($oCriteria);
+            SettingGlobal::model()->deleteAll(
+                        "stg_value = :stg_value",
+                        array(':stg_value' => $rqid )
+                    );
+
 
             $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid ));
         }
