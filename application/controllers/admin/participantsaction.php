@@ -91,7 +91,7 @@ class participantsaction extends Survey_Common_Action
         else
         {
             // Complete madness
-            throw new \InvalidArgumentException(gT("aViewUrls must be either string or array"));
+            throw new \InvalidArgumentException("aViewUrls must be either string or array");
         }
 
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
