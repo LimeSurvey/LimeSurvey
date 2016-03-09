@@ -76,6 +76,8 @@ class Assessments extends Survey_Common_Action
         $iSurveyID=$aData['surveyid'];
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+        $aData['surveybar']['savebutton']['form'] = TRUE;
         $aData['gid']=null;
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'assessments.js' ));
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);

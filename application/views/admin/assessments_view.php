@@ -235,10 +235,7 @@
                         <div class='form-group'>
                             <div class='col-sm-2'></div>
                             <div class='col-sm-4'>
-                                <?php if ($action == "assessmentedit"): ?>
-                                    <input class='btn btn-danger' type='submit' value='<?php echo gT('Cancel'); ?>' onclick=\"document.assessmentsform.action.value='assessments'\" />
-                                <?php endif; ?>
-                                <input type='submit' class="btn btn-default" value='<?php eT("Save");?>'/>
+                                <input type='submit' class="btn btn-default hidden" value='<?php eT("Save");?>'/>
                             </div>
                         </div>
                     </div>
