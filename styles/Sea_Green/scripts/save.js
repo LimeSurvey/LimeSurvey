@@ -25,6 +25,7 @@ if ($('#save-and-close-form-button').length>0){
             value: '1'
         }).appendTo($form);
 
+
         $form.find('[type="submit"]').trigger('click');
         return false;
     });
