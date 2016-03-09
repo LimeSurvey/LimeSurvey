@@ -178,12 +178,14 @@ class templates extends Survey_Common_Action
 
             if (count($aImportedFilesInfo) > 0)
             {
-                $templateFixes= $this->_templateFixes($sNewDirectoryName);
+                // Not working with 2.5 templates...
+                //$templateFixes= $this->_templateFixes($sNewDirectoryName);
+                $templateFixes= array();
             }
             else
             {
                 $templateFixes= array();
-            }            
+            }
             $aViewUrls = 'importuploaded_view';
             $aData = array(
             'aImportedFilesInfo' => $aImportedFilesInfo,
