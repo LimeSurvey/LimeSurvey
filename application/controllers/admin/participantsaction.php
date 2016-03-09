@@ -254,6 +254,18 @@ class participantsaction extends Survey_Common_Action
                 $tSurveyNames[]=$row;
             }
         }
+
+        // if superadmin all the records in the cpdb will be displayed
+        if (Permission::model()->hasGlobalPermission('superadmin','read'))
+        {
+            $iTotalRecords = Participant::model()->count();
+        }
+        // if not only the participants on which he has right on (shared and owned)
+        else
+        {
+            $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserID);
+        }
+
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),
@@ -264,7 +276,8 @@ class participantsaction extends Survey_Common_Action
             'tokensurveynames' => $tSurveyNames,
             'urlsearch' => $urlSearch,
             'sSearchCondition' => $sSearchCondition,
-            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
+            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
+            'totalrecords' => $iTotalRecords,
         );
         App()->getClientScript()->registerPackage('jqgrid');
 
