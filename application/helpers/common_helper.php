@@ -3590,8 +3590,8 @@ function questionAttributes($returnByName=false)
         'default'=>'6',
         'min'=>'1',
         'max'=>'12',
-        "help"=>gT('Number of bootstrap column for the input box'),
-        "caption"=>gT('Input box\'s columns'));
+        "help"=>gT('Number of Bootstrap columns for the input box'),
+        "caption"=>gT('Input box columns'));
 
         $qattributes["label_input_columns"]=array(
         "types"=>"Q",
@@ -3601,8 +3601,8 @@ function questionAttributes($returnByName=false)
         'default'=>'6',
         'min'=>'1',
         'max'=>'12',
-        "help"=>gT('Number of bootstrap column for the label'),
-        "caption"=>gT('Label\'s columns'));
+        "help"=>gT('Number of Bootstrap columns for the label'),
+        "caption"=>gT('Label columns'));
 
 
         $qattributes["use_dropdown"]=array(
