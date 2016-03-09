@@ -150,6 +150,65 @@
         </div>
     </div>
 
+   <?php 
+    $pdfQuestionFill=getGlobalSetting('pdfQuestionFill');
+    $selPdfQuestionFill = array( 0 => '' , 1 => '');
+    $selPdfQuestionFill[$pdfQuestionFill] = ' selected="selected"'; 
+	?>
+    <div class="form-group">
+	    <label class="col-sm-6 control-label"  for='pdfQuestionFill'><?php eT("Add gray backgroung to PDF questions:"); ?></label>
+		   <div class="col-sm-6">
+               <select class="form-control"  id='pdfQuestionFill' name='pdfQuestionFill'>
+			       <option value="1" <?php echo $selPdfQuestionFill[1]; ?> ><?php eT('Yes'); ?></option>
+				   <option value="0" <?php echo $selPdfQuestionFill[0]; ?> ><?php eT('No'); ?></option>
+			  </select>
+		</div>
+    </div>
+	
+<?php 
+    $pdfQuestionBold=getGlobalSetting('pdfQuestionBold');
+    $selPdfQuestionBold = array( 0 => '' , 1 => '');
+    $selPdfQuestionBold[$pdfQuestionBold] = ' selected="selected"'; 
+	?>
+    <div class="form-group">
+		  <label class="col-sm-6 control-label"  for='pdfQuestionBold'><?php eT("PDF questions in bold:"); ?></label>
+		   <div class="col-sm-6">
+                <select class="form-control"  id='pdfQuestionBold' name='pdfQuestionBold'>
+				    <option value="1" <?php echo $selPdfQuestionBold[1]; ?> ><?php eT('Yes'); ?></option>
+					<option value="0" <?php echo $selPdfQuestionBold[0]; ?> ><?php eT('No'); ?></option>
+				</select>
+			</div>
+    </div>
+	
+<?php 
+    $pdfQuestionBorder=getGlobalSetting('pdfQuestionBorder');
+    $selPdfQuestionBorder = array( 0 => '' , 1 => '');
+    $selPdfQuestionBorder[$pdfQuestionBorder] = ' selected="selected"'; 
+	?>
+    <div class="form-group">
+		  <label class="col-sm-6 control-label"  for='pdfQuestionBorder'><?php eT("Borders around questions in PDF:"); ?></label>
+		   <div class="col-sm-6">
+                <select class="form-control"  id='pdfQuestionBorder' name='pdfQuestionBorder'>
+				    <option value="1" <?php echo $selPdfQuestionBorder[1]; ?> ><?php eT('Yes'); ?></option>
+					<option value="0" <?php echo $selPdfQuestionBorder[0]; ?> ><?php eT('No'); ?></option>
+				</select>
+			</div>
+    </div>
+	
+<?php 
+    $pdfResponseBorder=getGlobalSetting('pdfResponseBorder');
+    $selPdfResponseBorder = array( 0 => '' , 1 => '');
+    $selPdfResponseBorder[$pdfResponseBorder] = ' selected="selected"'; 
+	?>
+    <div class="form-group">
+	    <label class="col-sm-6 control-label"  for='pdfResponseBorder'><?php eT("Borders around responses in PDF:"); ?></label>
+		    <div class="col-sm-6">
+			    <select class="form-control"  id='pdfResponseBorder' name='pdfResponseBorder'>
+				    <option value="1" <?php echo $selPdfResponseBorder[1]; ?> ><?php eT('Yes'); ?></option>
+					<option value="0" <?php echo $selPdfResponseBorder[0]; ?> ><?php eT('No'); ?></option>
+				</select>
+			</div>
+    </div>
 
 <?php if (Yii::app()->getConfig("demoMode")==true):?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>

@@ -384,6 +384,10 @@ $config['pdflogofile'] = 'logo_pdf.png';  // File name of logo for single answer
 $config['pdflogowidth'] = '50';           // Logo width
 $config['pdfheadertitle'] = '';           // Header title (bold font). If this config param is empty and header is enabled, site name is used
 $config['pdfheaderstring'] = '';          // Header string (under title). If this config param is empty and header is enabled, survey name is used
+$config['pdfQuestionFill'] = '1';  	   // Background in questions should be painted (1) or transparent (0)	
+$config['pdfQuestionBold'] = '0';		  // Questions in bold (1) or normal (0)
+$config['pdfQuestionBorder'] = '1'; 	  // Border in questions. Accepts 0:no border, 1:border
+$config['pdfResponseBorder'] = '1';	  // Border in responses. Accepts 0:no border, 1:border
 
 // QueXML-PDF: If set to true, the printable_help attribute will be visible on the exported PDF questionnaires
 // If used, the appearance (font size, justification, etc.) may be adjusted by editing td.questionHelpBefore and $helpBeforeBorderBottom of quexml.
