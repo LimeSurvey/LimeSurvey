@@ -1,5 +1,4 @@
 <?php
-
     $list = '<ul class="surveys-list">';
     foreach($publicSurveys as $survey)
     {
@@ -17,9 +16,9 @@
         $list .= CHtml::closeTag('li');
 
     }
+    $list .= "</ul>";
     if (!empty($futureSurveys))
     {
-        $list .= "</ul>";
         $list .= "<div class=\"survey-list-heading\">".  gT("Following survey(s) are not yet active but you can register for them.")."</div>";
         $list .= '<ul class="surveys-list future-surveys-list">';
         foreach($futureSurveys as $survey)
