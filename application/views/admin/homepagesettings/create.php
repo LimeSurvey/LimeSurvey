@@ -6,6 +6,7 @@
 
     <?php $this->renderPartial('super/fullpagebar_view', array(
         'fullpagebar' => array(
+            'savebutton' => array('form' => 'boxes-form'),
             'saveandclosebutton' => array('form' => 'boxes-form'),
             'closebutton' => array('url' => Yii::app()->createUrl('admin/homepagesettings'))
         )

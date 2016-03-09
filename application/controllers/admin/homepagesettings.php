@@ -31,11 +31,9 @@ class homepagesettings extends Survey_Common_Action
      */
     public function view($id)
     {
-
         $this->_renderWrappedTemplate('homepagesettings', 'view', array(
             'model'=>$this->loadModel($id),
         ));
-
     }
 
     /**
@@ -45,16 +43,20 @@ class homepagesettings extends Survey_Common_Action
     public function create()
     {
         $model=new Boxes;
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
         if(isset($_POST['Boxes']))
         {
             $model->attributes=$_POST['Boxes'];
             if($model->save())
             {
                 Yii::app()->user->setFlash('success', gT('New box created'));
-                $this->getController()->redirect(array('admin/homepagesettings'));
+                if (isset($_POST['saveandclose']))
+                {
+                    $this->getController()->redirect(array('admin/homepagesettings'));
+                }
+                else
+                {
+                    $this->getController()->redirect(array('admin/homepagesettings/sa/update/id/'.$model->id));
+                }
             }
             else
             {
