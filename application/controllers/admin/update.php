@@ -99,7 +99,6 @@ class update extends Survey_Common_Action
         {
             // We get the update key in the database. If it's empty, getWelcomeMessage will return subscription
             $updateKey = getGlobalSetting("update_key");
-            //$updateKey = SettingGlobal::model()->findByPk('update_key')->stg_value;
             $updateModel = new UpdateForm();
             $destinationBuild = $_REQUEST['destinationBuild'];
                $welcome = (array) $updateModel->getWelcomeMessage($updateKey, $destinationBuild);
