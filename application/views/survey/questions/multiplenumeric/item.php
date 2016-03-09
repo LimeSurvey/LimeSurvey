@@ -91,9 +91,10 @@
     <script type='text/javascript'>
         <!--
             $(document).ready(function(){
-            var mySlider = $("#answer<?php echo $myfname; ?>").bootstrapSlider();
-            $("#vmsg_<?php echo $qid;?>_default").text('<?php eT('Please click and drag the slider handles to enter your answer.');?>');
-        });
+                var mySlider_<?php echo $myfname; ?> = $("#answer<?php echo $myfname; ?>").bootstrapSlider();
+                mySlider_<?php echo $myfname; ?>.on('slideStop', function(){ LEMrel<?php echo $qid; ?>() });
+                $("#vmsg_<?php echo $qid;?>_default").text('<?php eT('Please click and drag the slider handles to enter your answer.');?>');
+            });
         -->
     </script>
 <?php endif; ?>
