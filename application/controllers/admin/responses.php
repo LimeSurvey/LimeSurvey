@@ -696,14 +696,6 @@ class responses extends Survey_Common_Action
             $aSpecificColumns=array_merge($aSpecificColumns,TokenDynamic::model($iSurveyID)->getTableSchema()->getColumnNames());
         }
 
-        if (incompleteAnsFilterState() == "incomplete")
-        {
-            $oCriteria->addCondition("submitdate IS NULL");
-        }
-        elseif (incompleteAnsFilterState() == "complete")
-        {
-            $oCriteria->addCondition("submitdate IS NOT NULL");
-        }
         //Get the filter data
         //if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
         //    $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
