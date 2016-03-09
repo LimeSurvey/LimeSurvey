@@ -50,7 +50,7 @@
                                     <tr>
                                         <!-- additional languages -->
                                         <td>
-                                            <select multiple='multiple' style='min-width:220px;' size='5' id='additional_languages' name='additional_languages' class="form-control">
+                                            <select multiple='multiple' style='min-width:420px;' size='5' id='additional_languages' name='additional_languages' class="form-control">
                                                 <?php foreach ($langidsarray as $langid): ?>
                                                     <option id='<?php echo $langid; ?>' value='<?php echo $langid; ?>'>
                                                         <?php echo getLanguageNameFromCode($langid,false); ?>
@@ -71,7 +71,7 @@
                                         </td>
 
                                         <td>
-                                            <select size='5' style='min-width:220px;' id='available_languages' name='available_languages'  class="form-control">
+                                            <select size='5' style='min-width:420px;' id='available_languages' name='available_languages'  class="form-control">
                                                 <?php foreach (getLanguageDataRestricted(false, Yii::app()->session['adminlang']) as  $langkey=>$langname)
                                                 {
                                                     if (in_array($langkey,$langidsarray)==false)  // base languag must not be shown here
