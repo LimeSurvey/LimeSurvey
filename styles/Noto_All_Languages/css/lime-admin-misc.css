@@ -1,0 +1,91 @@
+/**
+ * OBS! NO COLOURS IN THIS FILE.
+ */
+
+.inputbuttons {
+    width: 120px;
+}
+
+.inputbuttons-square {
+    width: 20px;
+    height: 16px;
+    float: left;
+}
+
+/* Avoid numerical right aligned to be too close to word left aligned */
+.jqgrid-tokens-number-padding {
+    padding-right: 4px;
+}
+
+/* z-index fix */
+.tooltip {
+    position: fixed;
+}
+
+/** For token table */
+.scrolling-wrapper {
+    overflow-x: scroll;
+}
+
+/** Search criteria pop-up for token table */
+#search {
+    display: none;
+    overflow-y: auto;
+}
+
+/** Popup when validating email template */
+iframe#dialog {
+    width: 100%;
+    height: 100%;
+}
+
+/** Fixed pager width */
+/* jqgrid table must take all place if avalaible, but header and footer must not be outside the screen */
+/* Myabe use a pseudo fixd-y solution is a good idea */
+.ui-jqgrid,.ui-jqgrid-view,.ui-jqgrid-titlebar,.ui-jqgrid-toppager,.ui-jqgrid-pager{
+    min-width:100%;
+    max-width:100%;
+    margin-right:0;
+    margin-left:0;
+    box-sizing: border-box
+}
+
+/** Needed for jQgrid pager to stay still while scrolling */
+#pager {
+    position: relative;
+}
+
+/** Stuff for CPDB participant export */
+.ui-sortable-placeholder {
+    color: #f00;
+    background-color: #0f0;
+    border: solid black 5px;
+}
+
+/** Arrow between mapped attributes in CPDB */
+.tokenatt-arrow {
+    position: absolute;
+    right: -8px;
+}
+
+#labelsetpreview {
+    overflow-x: hidden;
+}
+
+#labelsetbrowserModal .modal-dialog
+{
+    width: 80%;
+}
+
+.question-filter-container {
+    border : 1px solid #efefef;
+    padding: 2em;
+    margin: 0.2em;
+    width: 33%;
+}
+
+/* Subquestion */
+td.subquestion-actions span:hover
+{
+    cursor: pointer;
+}
