@@ -170,6 +170,7 @@ $(document).ready(function() {
         $('#centralattribute .csv-attribute-item').each(function(i) {
             cpdbattarray.push($(this).attr('id'));
         });
+
         $.each(cpdbattarray, function(index,value) {
             if(value[0]=='c' && value[1]=='s') {
                 mappedarray[cpdbattarray[index-1].substring(2)] = value.substring(3);

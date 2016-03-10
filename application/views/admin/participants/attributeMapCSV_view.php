@@ -38,7 +38,7 @@
                     <?php foreach ($attributes as $key => $value): ?>
                         <div class='col-sm-12 droppable-map'>
                             <div class='col-sm-6'>
-                                <div id='c_<?php echo $value['attribute_id']; ?>' data-name='c_<?php echo $key; ?>' class='well well-sm'>
+                                <div id='c_<?php echo $value['attribute_id']; ?>' data-name='c_<?php echo $key; ?>' class='well well-sm csv-attribute-item'>
                                     <?php echo $value['attribute_name']; ?>
                                 </div>
                             </div>
