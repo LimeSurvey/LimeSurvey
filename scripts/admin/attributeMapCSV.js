@@ -81,8 +81,10 @@ $(document).ready(function() {
             }        
             // Dropped in new attributes
             if($(this).hasClass('newcreate')) { 
-                $(newDraggable).html($(newDraggable).attr('id').replace('cs_',''));
-                $(newDraggable).prepend('<input type="text" id="td_'+$(newDraggable).attr('id')+'" value=\"'+$(newDraggable).attr('data-name')+'\">');
+                newDraggable.html(newDraggable.attr('id').replace('cs_',''));
+                var id = newDraggable.attr('id').replace(/ /g, '');
+                var name = newDraggable.attr('data-name');
+                newDraggable.prepend('<input type="text" id="td_' + id + '" value="' + name + '">');
             }  
                         
             // Reset the mappable attribute classes 
@@ -114,19 +116,20 @@ $(document).ready(function() {
 
     $('#attmap').click(function(){
         var anewcurrentarray = {};
-        newcurrentarray = new Array();
-        $('#newcreated .attribute-item').each(function(i) {
+        var newcurrentarray = [];
+        $('#newcreated .csv-attribute-item').each(function(i) {
             newcurrentarray.push($(this).attr('id'));
         });
         $.each(newcurrentarray, function(index,value) {
 			if(value[0]=='c') {
-                anewcurrentarray[value.substring(3)] = $("#td_"+value).val();
+                var id = value.replace(/ /g, '');
+                anewcurrentarray[value.substring(3)] = $("#td_" + id).val();
             }
         });
         
         var mappedarray = {};
         cpdbattarray = new Array();
-        $('#centralattribute .attribute-item').each(function(i) {
+        $('#centralattribute .csv-attribute-item').each(function(i) {
             cpdbattarray.push($(this).attr('id'));
         });
         $.each(cpdbattarray, function(index,value) {

@@ -12,7 +12,7 @@
                     <?php
                     foreach ($firstline as $value)
                     {
-                        echo "<div id='cs_" . $value . "' data-name='" . $value . "' class='draggable well well-sm'>" . $value . "</div>";
+                        echo "<div id='cs_" . $value . "' data-name='" . $value . "' class='draggable well well-sm csv-attribute-item'>" . $value . "</div>";
                     }
                     ?>
                 </div>

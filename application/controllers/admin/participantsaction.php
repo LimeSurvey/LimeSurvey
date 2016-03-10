@@ -1221,6 +1221,7 @@ class participantsaction extends Survey_Common_Action
 
     /**
      * Uploads the file to the server and process it for valid enteries and import them into database
+     * Also creates attributes from the mapping drag-n-drop form.
      */
     public function uploadCSV()
     {
@@ -1229,7 +1230,6 @@ class participantsaction extends Survey_Common_Action
             die('No permission');
         }
         unset(Yii::app()->session['summary']);
-        $newarray = Yii::app()->request->getPost('newarray');
         $mappedarray = Yii::app()->request->getPost('mappedarray',false);
         $filterblankemails = Yii::app()->request->getPost('filterbea');
         $overwrite = Yii::app()->request->getPost('overwrite');
@@ -1261,6 +1261,7 @@ class participantsaction extends Survey_Common_Action
         $uploadcharset = Yii::app()->request->getPost('characterset');
         /* The $newarray contains a list of fields that will be used
         to create attributes */
+        $newarray = Yii::app()->request->getPost('newarray');
         if (!empty($newarray))
         {
             /* Create a new entry in the lime_participant_attribute_names table,
