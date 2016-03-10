@@ -142,9 +142,8 @@
                                                         $groups[$questionType['group']][$key] = $questionType['description'];
                                                     }
                                                 ?>
-
+                                                <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                                 <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
-                                                    <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                                     <div class="col-sm-8 btn-group" id="question_type_button" style="z-index: 1000">
                                                         <button type="button" class="btn btn-default dropdown-toggle " <?php if ($activated == "Y"){echo " disabled ";} ?>  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="z-index: 1000">
                                                             <?php foreach($groups as $name => $group):?>
