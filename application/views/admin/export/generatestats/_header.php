@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * This view display the header of the generated statistics
  * It is called from statistics_helper::generate_html_chartjs_statistics()
