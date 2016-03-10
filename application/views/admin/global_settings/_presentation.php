@@ -149,13 +149,13 @@
 
         </div>
     </div>
-<?php 
+<?php
     $bPdfQuestionFill=getGlobalSetting('bPdfQuestionFill');
     $selPdfQuestionFill = array( 0 => '' , 1 => '');
-    $selPdfQuestionFill[$bPdfQuestionFill] = ' selected="selected"'; 
+    $selPdfQuestionFill[$bPdfQuestionFill] = ' selected="selected"';
 	?>
     <div class="form-group">
-	    <label class="col-sm-6 control-label"  for='bPdfQuestionFill'><?php eT("Add gray backgroung to PDF questions:"); ?></label>
+	    <label class="col-sm-6 control-label"  for='bPdfQuestionFill'><?php eT("Add gray background to questions in PDF:"); ?></label>
 		   <div class="col-sm-6">
                <select class="form-control"  id='pdfQuestionFill' name='bPdfQuestionFill'>
 			       <option value="1" <?php echo $selPdfQuestionFill[1]; ?> ><?php eT('Yes'); ?></option>
@@ -163,11 +163,11 @@
 			  </select>
 		</div>
     </div>
-	
-<?php 
+
+<?php
     $bPdfQuestionBold=getGlobalSetting('bPdfQuestionBold');
     $selPdfQuestionBold = array( 0 => '' , 1 => '');
-    $selPdfQuestionBold[$bPdfQuestionBold] = ' selected="selected"'; 
+    $selPdfQuestionBold[$bPdfQuestionBold] = ' selected="selected"';
 	?>
     <div class="form-group">
 		  <label class="col-sm-6 control-label"  for='bPdfQuestionBold'><?php eT("PDF questions in bold:"); ?></label>
@@ -178,11 +178,11 @@
 				</select>
 			</div>
     </div>
-	
-<?php 
+
+<?php
     $bPdfQuestionBorder=getGlobalSetting('bPdfQuestionBorder');
     $selPdfQuestionBorder = array( 0 => '' , 1 => '');
-    $selPdfQuestionBorder[$bPdfQuestionBorder] = ' selected="selected"'; 
+    $selPdfQuestionBorder[$bPdfQuestionBorder] = ' selected="selected"';
 	?>
     <div class="form-group">
 		  <label class="col-sm-6 control-label"  for='bPdfQuestionBorder'><?php eT("Borders around questions in PDF:"); ?></label>
@@ -193,11 +193,11 @@
 				</select>
 			</div>
     </div>
-	
-<?php 
+
+<?php
     $bPdfResponseBorder=getGlobalSetting('bPdfResponseBorder');
     $selPdfResponseBorder = array( 0 => '' , 1 => '');
-    $selPdfResponseBorder[$bPdfResponseBorder] = ' selected="selected"'; 
+    $selPdfResponseBorder[$bPdfResponseBorder] = ' selected="selected"';
 	?>
     <div class="form-group">
 	    <label class="col-sm-6 control-label"  for='bPdfResponseBorder'><?php eT("Borders around responses in PDF:"); ?></label>
