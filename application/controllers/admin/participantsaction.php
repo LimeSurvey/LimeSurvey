@@ -1112,6 +1112,9 @@ class participantsaction extends Survey_Common_Action
         }
     }
 
+    /**
+     * Show the drag-n-drop form for CSV attributes
+     */
     public function attributeMapCSV()
     {
         if (!Permission::model()->hasGlobalPermission('participantpanel','import'))
@@ -1130,11 +1133,11 @@ class participantsaction extends Survey_Common_Action
         if (strtolower($sExtension)=='csv')
         {
             $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
-            $errorinupload = '';
             $filterblankemails = Yii::app()->request->getPost('filterbea');
         }
         else
         {
+            $templateData = array();
             $templateData['errorinupload']['error'] = gT("This is not a .csv file.");
             $templateData['aAttributes'] = ParticipantAttributeName::model()->getAllAttributes();
             $templateData['aGlobalErrors'] = array();
@@ -1147,6 +1150,7 @@ class participantsaction extends Survey_Common_Action
 
         if (!$bMoveFileResult)
         {
+            $templateData = array();
             $templateData['error_msg'] = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
             $errorinupload = array('error' => $this->upload->display_errors());
             Yii::app()->session['summary'] = array('errorinupload' => $errorinupload);
@@ -1154,9 +1158,6 @@ class participantsaction extends Survey_Common_Action
         }
         else
         {
-            $aData = array('upload_data' => $_FILES['the_file']);
-            $sFileName = $_FILES['the_file']['name'];
-
             $regularfields = array('firstname', 'participant_id', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
             $oCSVFile = fopen($sFilePath, 'r');
             $aFirstLine = fgets($oCSVFile);
@@ -1165,6 +1166,7 @@ class participantsaction extends Survey_Common_Action
             $sSeparator = Yii::app()->request->getPost('separatorused');
             if ($sSeparator=='auto')
             {
+                $aCount = array();
                 $aCount[',']=substr_count($aFirstLine,',');
                 $aCount[';']=substr_count($aFirstLine,';');
                 $aCount['|']=substr_count($aFirstLine,'|');
@@ -1173,6 +1175,7 @@ class participantsaction extends Survey_Common_Action
             }
             $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0]);
             $selectedcsvfields = array();
+            $fieldlist = array();
             foreach ($firstline as $key => $value)
             {
                 $testvalue = preg_replace('/[^(\x20-\x7F)]*/','', $value); //Remove invalid characters from string
@@ -1226,8 +1229,6 @@ class participantsaction extends Survey_Common_Action
             die('No permission');
         }
         unset(Yii::app()->session['summary']);
-        $characterset = Yii::app()->request->getPost('characterset');
-        $separator = Yii::app()->request->getPost('separatorused');
         $newarray = Yii::app()->request->getPost('newarray');
         $mappedarray = Yii::app()->request->getPost('mappedarray',false);
         $filterblankemails = Yii::app()->request->getPost('filterbea');
@@ -1283,16 +1284,11 @@ class participantsaction extends Survey_Common_Action
         foreach ($tokenlistarray as $buffer) //Iterate through the CSV file line by line
         {
             $buffer = @mb_convert_encoding($buffer, "UTF-8", $uploadcharset);
-            $firstname = "";
-            $lastname = "";
-            $email = "";
-            $language = "";
             if ($recordcount == 0) {
                 //The first time we iterate through the file we look at the very
                 //first line, which contains field names, not values to import
                 // Pick apart the first line
                 $buffer = removeBOM($buffer);
-                $attrid = ParticipantAttributeName::model()->getAttributeID();
                 $allowedfieldnames = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
                 $aFilterDuplicateFields = array('firstname', 'lastname', 'email');
                 if (!empty($mappedarray))
@@ -1359,17 +1355,10 @@ class participantsaction extends Survey_Common_Action
                     if(!in_array($sFilterDuplicateField, $firstline))
                         $writearray[$sFilterDuplicateField]="";
                 }
-                $invalidemail = false;
                 $dupfound = false;
                 $thisduplicate = 0;
 
                 //Check for duplicate participants
-                $aData = array(
-                    'firstname' => $writearray['firstname'],
-                    'lastname' => $writearray['lastname'],
-                    'email' => $writearray['email'],
-                    'owner_uid' => Yii::app()->session['loginID']
-                );
                 //HACK - converting into SQL instead of doing an array search
                 if(in_array('participant_id', $firstline)) {
                     $dupreason="participant_id";
@@ -1527,7 +1516,7 @@ class participantsaction extends Survey_Common_Action
 
 	    // Some input validation needed
         if ($iShareUserId == '') {
-            printf($clang->gT("Please select a user"));
+            printf(gT("Please select a user"));
             return;
         }
 
@@ -1750,7 +1739,6 @@ class participantsaction extends Survey_Common_Action
         $alreadymappedattid = array();
         $alreadymappedattdisplay = array();
         $alreadymappedattnames = array();
-        $i = 0;
 
         foreach ($aTokenAttributes as $key => $value)
         {
@@ -1891,5 +1879,3 @@ class participantsaction extends Survey_Common_Action
     }
 
 }
-
-?>
