@@ -35,6 +35,8 @@ class database extends Survey_Common_Action
 
         $iQuestionGroupID=returnGlobal('gid');
         $iQuestionID=returnGlobal('qid');
+
+        // TODO: This variable seems to be never set or used in any function call?
         $sDBOutput = '';
 
         $oFixCKeditor= new LSYii_Validators;
@@ -385,12 +387,14 @@ class database extends Survey_Common_Action
             LimeExpressionManager::SetDirtyFlag();
             if ($sDBOutput != '')
             {
-                echo 'problem in database controller'; var_dump($sDBOutput);
+                echo 'Problem in database controller: ' . $sDBOutput;
             }
             else
             {
                 if(Yii::app()->request->getPost('close-after-save') === 'true')
+                {
                     $this->getController()->redirect(array('/admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+                }
 
                 $this->getController()->redirect(array('/admin/questions/sa/subquestions/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
             }
