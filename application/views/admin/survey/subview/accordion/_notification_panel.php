@@ -33,7 +33,7 @@
                          eT("Responses will be date stamped.");
                 } ?>
                 <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                <?php echo CHtml::hiddenField('datestamp',$esrow['datestamp']); // Maybe use a readonly dropdown ??>
+                <?php echo CHtml::hiddenField('datestamp',$esrow['datestamp']); // Maybe use a readonly dropdown? ?>
                 <?php } else { ?>
                     <?php echo CHtml::dropDownList('datestamp', $esrow['datestamp'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped')),array('onchange'=>'alertDateStampAnonymization();', 'class'=>"form-control" )); ?>
             <?php } ?>

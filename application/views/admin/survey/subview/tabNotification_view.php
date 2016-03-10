@@ -30,7 +30,7 @@
                          eT("Responses will have the IP address logged");
                 } ?>
                 <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                <?php echo CHtml::hiddenField('ipaddr',$esrow['ipaddr']); // Maybe use a readonly dropdown ??>
+                <?php echo CHtml::hiddenField('ipaddr',$esrow['ipaddr']); // Maybe use a readonly dropdown? ?>
                 <?php } else { ?>
                     <?php echo CHtml::dropDownList('ipaddr', $esrow['ipaddr'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped'))); ?>
                 <?php } ?>
