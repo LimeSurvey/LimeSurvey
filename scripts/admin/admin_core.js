@@ -28,7 +28,7 @@ $(document).ready(function(){
     if($('.htmleditor').length>0)
     {
         setTimeout(function(){
-            $('.cke_contents').width('100%');
+            $('.cke_contents').width('580px');
             $iframes = $('.htmleditor').find('iframe');
             //console.log('OK '+JSON.stringify($iframes));
             $iframes.each(function(){
