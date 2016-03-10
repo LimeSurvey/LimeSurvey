@@ -152,6 +152,20 @@ $(document).ready(function() {
         }
     });
 
+    // Click Move all fields to created column (mid column)
+    $('#move-all').click(function () {
+        $('.droppable-csv .csv-attribute-item').each(function(i, elem) {
+            var $elem = $(elem);
+            $elem.html($elem.attr('id').replace('cs_',''));
+            var id = $elem.attr('id').replace(/ /g, '');
+            var name = $elem.attr('data-name');
+            $elem.prepend('<input type="text" id="td_' + id + '" value="' + name + '">');
+            $elem.detach().appendTo('.newcreate');
+            adjustHeights();
+        });
+    });
+
+    // Click Continue
     $('#attmap').click(function(){
         var anewcurrentarray = {};
         var newcurrentarray = [];

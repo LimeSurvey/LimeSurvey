@@ -5,7 +5,12 @@
 <div class='row draggable-container' style='z-index: 1;'>
     <div class='col-sm-4'>
         <div id="csvattribute" class="panel panel-primary">
-            <div class="panel-heading"><?php eT("CSV field names "); ?></div>
+            <div class="panel-heading">
+                <?php eT("CSV field names "); ?>
+                <div class='pull-right'>
+                    <span id='move-all' class='btn fa fa-arrow-right no-padding' data-toggle='tooltip' data-title='<?php eT('Move all fields to create column'); ?>'></span>
+                </div>
+            </div>
             <div class='panel-body'>
                 <p class='help-block'><?php eT("The following additional fields were found in your CSV file."); ?></p>
                 <div class="csvatt droppable-csv">
@@ -21,7 +26,9 @@
     </div>
     <div class='col-sm-4'>
         <div id="newcreated" class="panel panel-primary">
-            <div class="panel-heading"><?php eT("Attributes to be created") ?></div>
+            <div class="panel-heading">
+                <?php eT("Attributes to be created") ?>
+            </div>
             <div class='panel-body'>
                 <p class='help-block'><?php eT("Drop a CSV field into this area to create a new participant attribute and import your data into it."); ?></p>
                 <div class="newcreate droppable-new" style ="height: 40px">

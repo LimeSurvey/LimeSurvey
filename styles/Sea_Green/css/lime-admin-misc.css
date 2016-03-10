@@ -75,6 +75,11 @@ iframe#dialog {
     top: 1em;
 }
 
+/** Help class to remove padding */
+.no-padding {
+    padding: 0;
+}
+
 #labelsetpreview {
     overflow-x: hidden;
 }
