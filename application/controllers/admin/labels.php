@@ -361,7 +361,9 @@ class labels extends Survey_Common_Action
                     $lid = 0;
                 }
             }
-            if ($lid)
+            if (isset($_POST['saveandclose']))
+                $this->getController()->redirect(array("admin/labels/sa/view"));
+            else if ($lid)
                 $this->getController()->redirect(array("admin/labels/sa/view/lid/" . $lid));
             else
                 $this->getController()->redirect(array("admin/labels/sa/view"));

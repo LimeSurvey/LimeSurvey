@@ -99,8 +99,12 @@
             <?php if (isset($labelbar['buttons']['edition'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $labelbar['savebutton']['form']; ?>">
                     <span class="glyphicon glyphicon-ok"></span>
-
                     <?php echo $labelbar['savebutton']['text'];?>
+                </a>
+
+                <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" data-form-id="<?php echo $labelbar['savebutton']['form']; ?>">
+                    <span class="glyphicon glyphicon-saved"></span>
+                    <?php eT("Save and close");?>
                 </a>
             <?php endif;?>
 
