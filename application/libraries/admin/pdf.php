@@ -768,8 +768,6 @@ class pdf extends TCPDF {
   function addAnswer($sQuestion, $sResponse, $bReplaceExpressions=true, $bAllowBreakPage=false)
   {
     $bYiiQuestionBorder=1;
-    $bYiiResponseBorder=1;
-    $bYiiQuestionBold=1;
     $bQuestionFill=1;
     $bQuestionBorder=1;
     $bResponseBorder=1;
@@ -795,8 +793,9 @@ class pdf extends TCPDF {
     $sQuestionHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sQuestionHTML)),ENT_COMPAT);
     if ($bReplaceExpressions)
     {
-      $sData['thissurvey']=$this->_aSurveyInfo;
-      $sQuestionHTML = templatereplace($sQuestionHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
+        $sData = array();
+        $sData['thissurvey']=$this->_aSurveyInfo;
+        $sQuestionHTML = templatereplace($sQuestionHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
     }
     $sResponse = flattenText($sResponse, false, true, 'UTF-8', false);
     $startPage = $this->getPage();
