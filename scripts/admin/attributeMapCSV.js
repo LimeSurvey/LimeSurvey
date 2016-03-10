@@ -84,7 +84,7 @@ $(document).ready(function() {
             // Dropped in new attributes
             if($(this).hasClass('newcreate')) { 
                 $(newDraggable).html($(newDraggable).attr('id').replace('cs_',''));
-                $(newDraggable).prepend('<input type="text" id="td_'+$(newDraggable).attr('id')+'" value=\"'+$(newDraggable).attr('data-name')+'\">');
+                $(newDraggable).prepend('<input type="text" id="td_'+$(newDraggable).attr('id').replace(/ /g, '') +'" value=\"'+$(newDraggable).attr('data-name')+'\">');
             }  
                         
             // Reset the mappable attribute classes 
@@ -122,7 +122,7 @@ $(document).ready(function() {
         });
         $.each(newcurrentarray, function(index,value) {
 			if(value[0]=='c') {
-                anewcurrentarray[value.substring(3)] = $("#td_"+value).val();
+                anewcurrentarray[value.substring(3)] = $("#td_"+value.replace(/ /g, '')).val();
             }
         });
         
