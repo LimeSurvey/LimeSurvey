@@ -1659,7 +1659,7 @@ class tokens extends Survey_Common_Action
                     }
                     else
                     {
-                        $aData['tokenoutput'].="<strong class='result warning text-warning'>".gT("Not all emails were sent:")."<strong><ul>";
+                        $aData['tokenoutput'].="<strong class='result warning text-warning'>".gT("Not all emails were sent:")."<strong><ul class='list-unstyled'>";
                         if ($bInvalidDate)
                         {
                             $aData['tokenoutput'].="<li>".gT("Some entries had a validity date set which was not yet valid or not valid anymore.")."</li>";
@@ -1668,7 +1668,8 @@ class tokens extends Survey_Common_Action
                         {
                             $aData['tokenoutput'].="<li>".gT("Some emails were not sent because the server did not accept the email(s) or some other error occured.")."</li>";
                         }
-                        $aData['tokenoutput'].='/ul';
+                        $aData['tokenoutput'].='</ul>';
+                        $aData['tokenoutput'].= '<p><a href="'.App()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId).'" title="" class="btn btn-default btn-lg">'.gT("Ok").'</a></p>';
                     }
                 }
 
@@ -1680,10 +1681,11 @@ class tokens extends Survey_Common_Action
                 $this->_renderWrappedTemplate('token', array( 'message' => array(
                 'title' => gT("Warning"),
                 'message' => gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
-                . "<br/>&nbsp;<ul><li>" . gT("having a valid email address") . "</li>"
+                . "<br/>&nbsp;<ul class='list-unstyled'><li>" . gT("having a valid email address") . "</li>"
                 . "<li>" . gT("not having been sent an invitation already") . "</li>"
                 . "<li>" . gT("not having already completed the survey") . "</li>"
                 . "<li>" . gT("having a token") . "</li></ul>"
+                . '<p><a href="'.App()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId).'" title="" class="btn btn-default btn-lg">'.gT("Cancel").'</a></p>'
                 )), $aData);
             }
         }
@@ -2452,6 +2454,7 @@ class tokens extends Survey_Common_Action
             . "<input class='btn btn-default' type='submit' value='"
             . gT("No") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
             . "<br />\n"
+            . '<p><a href="'.App()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId).'" title="" class="btn btn-default btn-lg">'.gT("Ok").'</a></p>'
             )), $aData);
         }
         else
