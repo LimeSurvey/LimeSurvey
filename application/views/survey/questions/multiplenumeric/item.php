@@ -19,7 +19,7 @@
  */
 ?>
 <!-- question attribute "display_rows" is set -> we need a textarea to be able to show several rows -->
-<li  id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item  text-item <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?>>
+<div  id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item  text-item <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?>>
     <?php if($alert):?>
         <div class="alert alert-danger errormandatory"  role="alert">
             <?php echo $labelText;?>
@@ -68,10 +68,11 @@
             <?php echo $suffix;?>
         </div>  <!-- xs-12 -->
     </div> <!-- form group -->
-</li>
+</div>
 
 <?php if($sliders): ?>
-    <style media="screen" type="text/css">
+    <div>
+    <style scoped>
     /**
     * Slider custom handle
     */
@@ -87,7 +88,7 @@
         content: '\<?php echo $slider_custom_handle;?>';  /*unicode character ;*/
     }
     </style>
-
+    </div>
     <script type='text/javascript'>
         <!--
             $(document).ready(function(){

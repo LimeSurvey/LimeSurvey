@@ -60,6 +60,7 @@ class AdminTheme extends CFormModel
                 'Black_Pearl',
                 'Dark_Sky',
                 'Free_Magenta',
+                'Noto_All_Languages',
                 'Purple_Tentacle',
                 'Sea_Green',
                 'Sunset_Orange',

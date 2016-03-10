@@ -5,4 +5,3 @@
  */
 ?>
 <div class='subquestions-list questions-list text-list <?php echo $prefixclass?>-list'>
-    <ul class="list-unstyled">
