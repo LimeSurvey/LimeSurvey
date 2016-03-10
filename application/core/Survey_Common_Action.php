@@ -257,9 +257,7 @@ class Survey_Common_Action extends CAction
             //// TODO : check what is doing exactly this function. (application/helpers/expressions/em_manager_helper.php)
             //// If it's about initialiazing global variables, should be removed and parsed in right controllers.
             //// But it seems that it's just useless.
-            LimeExpressionManager::StartProcessingPage(false, Yii::app()->baseUrl,true);  // so can click on syntax highlighting to edit questions
-
-            $oSurvey = $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
+            LimeExpressionManager::StartProcessingPage(false, Yii::app()->baseUrl);  // so can click on syntax highlighting to edit questions
 
             $this->_titlebar($aData);
 
@@ -443,7 +441,6 @@ class Survey_Common_Action extends CAction
     * @global string $surveyid
     * @global string $setfont
     * @global string $imageurl
-    * @param int $surveyid
     * @return string $adminmenu
     */
     public function _showadminmenu()
@@ -458,6 +455,7 @@ class Survey_Common_Action extends CAction
             }
 
             // Count active survey
+            $aData = array();
             $aData['dataForConfigMenu']['activesurveyscount'] = $aData['activesurveyscount'] = Survey::model()->count("active = 'Y'");
 
             // Count survey
@@ -1100,7 +1098,7 @@ class Survey_Common_Action extends CAction
 
         if (!$aSurveyInfo['language'])
         {
-            $aData['language'] = getLanguageNameFromCode($currentadminlang, false);
+            $aData['language'] = getLanguageNameFromCode($baselang, false);  // TODO: is $baselang correct here?
         }
         else
         {
@@ -1208,7 +1206,7 @@ class Survey_Common_Action extends CAction
     }
     /**
     * Load menu bar of user group controller.
-    * @param int $ugid
+    * @param array $aData
     * @return void
     */
     function _userGroupBar($aData)
