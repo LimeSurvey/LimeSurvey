@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-03-10 20:31:40+00:00\n"
+"POT-Creation-Date: 2016-03-10 20:47:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8446,11 +8446,11 @@ msgid "Starting in 2.05, variable names should only contain letters and numbers;
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9566
-msgid "This question has at least %s error.|This question has at least %s errors."
+msgid "This question has at least {n} error.|This question has at least {n} errors."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9604
-msgid "%s question contains errors that need to be corrected.|%s questions contain errors that need to be corrected."
+msgid "{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9610
@@ -11717,7 +11717,7 @@ msgid "PDF header string (if empty, survey name will be used):"
 msgstr ""
 
 #: application/views/admin/global_settings/_presentation.php:158
-msgid "Add gray backgroung to PDF questions:"
+msgid "Add gray background to questions in PDF:"
 msgstr ""
 
 #: application/views/admin/global_settings/_presentation.php:173
