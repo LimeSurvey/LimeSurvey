@@ -9563,7 +9563,7 @@ EOD;
                 // FINALLY, SHOW THE QUESTION ROW(S), COLOR-CODING QUESTIONS THAT CONTAIN ERRORS
                 //////
                 $errclass = ($errorCount > 0) ? 'danger': '';
-                $errText=($errorCount > 0) ? "<br><em class='label label-danger'>".sprintf($LEM->ngT("This question has at least %s error.|This question has at least %s errors.",$errorCount), $errorCount)."<em>" : "";
+                $errText=($errorCount > 0) ? "<br><em class='label label-danger'>".$LEM->ngT("This question has at least {n} error.|This question has at least {n} errors.",$errorCount)."<em>" : "";
                 $questionRow = "<tr class='LEMquestion'>"
                 . "<td class='$errclass'>Q-" . $q['info']['qseq'] . "</td>"
                 . "<td><b>" . $mandatory;
@@ -9601,7 +9601,7 @@ EOD;
             }
 
             if (count($allErrors) > 0) {
-                $out = "<p class='alert alert-danger'>". sprintf($LEM->ngT("%s question contains errors that need to be corrected.|%s questions contain errors that need to be corrected.",count($allErrors)), count($allErrors)) . "</p>\n" . $out;
+                $out = "<p class='alert alert-danger'>". $LEM->ngT("{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected.", count($allErrors)) . "</p>\n" . $out;
             }
             else {
                 switch ($surveyMode)
