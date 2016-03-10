@@ -40,10 +40,8 @@ $(document).ready(function() {
                 
     // Make the items draggable
     $('.draggable').draggable({ 
-        revert: "invalid",
-        appendTo: "body",
+        zIndex: 150,
         containment: $('.draggable-container'),
-        zindex: 150,
         opacity: 0.75
     });
             
