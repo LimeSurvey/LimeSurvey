@@ -263,7 +263,8 @@ class participantsaction extends Survey_Common_Action
         // if not only the participants on which he has right on (shared and owned)
         else
         {
-            $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserID);
+            $iUserId = Yii::app()->user->getId();
+            $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserId);
         }
 
         // data to be passed to view
