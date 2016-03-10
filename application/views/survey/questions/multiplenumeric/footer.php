@@ -34,6 +34,6 @@
                 <?php echo $suffix; ?>
             </span>
         </li>
-</ul>
+</div>
     <?php endif; ?>
 </div> <!-- Footer -->
