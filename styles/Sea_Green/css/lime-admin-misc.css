@@ -65,7 +65,14 @@ iframe#dialog {
 /** Arrow between mapped attributes in CPDB */
 .tokenatt-arrow {
     position: absolute;
-    right: -8px;
+    right: -0.5em;
+}
+
+/** Arrow between mapped attributes in CPDB when doing CSV import */
+.csvatt-arrow {
+    position: absolute;
+    right: -0.5em;
+    top: 1em;
 }
 
 #labelsetpreview {

@@ -40,18 +40,18 @@ $(document).ready(function() {
                 
     // Make the items draggable
     $('.draggable').draggable({ 
+        revert: 'invalid',
+        appendTo: 'body',
         zIndex: 150,
         containment: $('.draggable-container'),
         opacity: 0.75
     });
             
     // Set the targets for the draggables
-    $('.droppable').droppable({ 
+    // Droppable into first and second column
+    $('.droppable-csv, .droppable-new').droppable({ 
         hoverClass: 'target-hover', 
         accept: '.draggable',
-        over: function(event, ui) {
-            adjustHeights();
-        },
         drop: function(event, ui) {
                 
             // Physically  move the draggable to the target (the plugin just visually moves it)
@@ -79,6 +79,7 @@ $(document).ready(function() {
                 $('input[type="text"]', newDraggable).remove();
                 $(newDraggable).text($(newDraggable).attr('data-name'));
             }        
+
             // Dropped in new attributes
             if($(this).hasClass('newcreate')) { 
                 newDraggable.html(newDraggable.attr('id').replace('cs_',''));
@@ -95,6 +96,43 @@ $(document).ready(function() {
             
             adjustHeights();
         } 
+    });
+
+    // The area to map CSV attributes to existent participant attributes
+    $('.droppable-map').droppable({
+        hoverClass: 'target-hover', 
+        accept: '.draggable',
+        drop: function(event, ui) {
+
+            // Insert nice arrow
+            $(this).find('.col-sm-6:first-child').append('<span class="fa fa-arrows-h csvatt-arrow"></span>');
+
+            // Physically  move the draggable to the target (the plugin just visually moves it)
+            // Need to use a clone for this to fake out iPad
+            var newDraggable = $(ui.draggable).clone();
+            newDraggable.appendTo(this);
+            $(ui.draggable).remove();
+
+            // Don't allow user to drop more attributes here
+            $(this).droppable('disable');
+
+            // Fix CSS
+            newDraggable.removeClass('ui-draggable-dragging').css({
+                'left': '0',
+                'top': '0',
+                'z-index': '',
+                'opacity': 1
+            });
+
+            // Remove the text input if dropped out of the new attributes column
+            if(!$(this).hasClass('newcreate') && $('input[type="text"]', newDraggable).length > 0) { 
+                $('input[type="text"]', newDraggable).remove();
+                $(newDraggable).text($(newDraggable).attr('data-name'));
+            }        
+
+            newDraggable.wrap("<div class='col-sm-6'></div>");
+
+        }
     });
     
 
