@@ -105,7 +105,7 @@ $(document).ready(function(){
         sideMenu.animate($.extend({
             opacity: 0.5
             }, left_or_right_250),
-            500, 
+            500,
             function() {}
         );
 

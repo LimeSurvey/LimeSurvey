@@ -22,14 +22,19 @@
             </li>
         </ul>
     </form>
+
     <?php echo CHtml::form(array('admin/survey/sa/importsurveyresources'), 'post', array('id'=>'importsurveyresources', 'name'=>'importsurveyresources', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'. gT('Please select a file to import!', 'js').'");')); ?>
         <input type='hidden' name='surveyid' value='<?php echo $surveyid; ?>' />
         <input type='hidden' name='action' value='importsurveyresources' />
         <ul class="list-unstyled">
-            <li><label for='the_file'><?php  eT("Select ZIP File:"); ?></label>
-                <input id='the_file' name='the_file' type='file' /></li>
-            <li><label>&nbsp;</label>
-                <input type='button' class="btn btn-default" value='<?php  eT("Import Resources ZIP Archive"); ?>' <?php echo $ZIPimportAction; ?> /></li>
+            <li>
+                <label for='the_file'><?php  eT("Select ZIP File:"); ?></label>
+                <input id='the_file' name='the_file' type='file' />
+            </li>
+            <li>
+                <label>&nbsp;</label>
+                <input type='button' class="btn btn-default" value='<?php  eT("Import Resources ZIP Archive"); ?>' <?php echo $ZIPimportAction; ?> />
+            </li>
         </ul>
     </form>
 </div>

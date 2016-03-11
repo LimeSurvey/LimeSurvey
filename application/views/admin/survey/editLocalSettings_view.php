@@ -9,7 +9,9 @@
 
     <!-- Survey title -->
     <div class="form-group">
-        <label class="col-sm-4" for="short_title<?php echo $esrow['surveyls_language']; ?>" id="question-group-title"><?php eT("Survey title"); ?>:</label>
+        <label class="col-sm-4 question-group-title" for="short_title<?php echo $esrow['surveyls_language']; ?>">
+            <?php eT("Survey title"); ?>:
+        </label>
         <div class="col-sm-8">
             <?php echo CHtml::textField("short_title_{$esrow['surveyls_language']}",$esrow['surveyls_title'],array('class'=>'form-control','size'=>"80",'id'=>"short_title_{$esrow['surveyls_language']}")); ?>
         </div>
@@ -46,7 +48,7 @@
     <div class="form-group">
         <label class="control-label col-sm-4"><?php eT("End URL:"); ?></label>
         <div class="col-sm-8">
-            <?php echo CHtml::textField("url_{$esrow['surveyls_language']}",$esrow['surveyls_url'],array('class'=>'form-control','size'=>"80",'maxlenght'=>'2000','placeholder'=>'http://','id'=>"url_{$esrow['surveyls_language']}")); ?>
+            <?php echo CHtml::textField("url_{$esrow['surveyls_language']}",$esrow['surveyls_url'],array('class'=>'form-control','size'=>"80",'placeholder'=>'http://','id'=>"url_{$esrow['surveyls_language']}")); ?>
         </div>
     </div>
 
