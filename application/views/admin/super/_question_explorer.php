@@ -17,7 +17,7 @@
    <?php endif;?>
 <?php endif;?>
 
-<li class="panel panel-default" id="explorer" class="dropdownlvl2 dropdownstyle">
+<li id="explorer" class="dropdownlvl2 dropdownstyle panel panel-default">
     <a data-toggle="collapse" id="explorer-collapse" href="#explorer-lvl1">
         <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Questions explorer');?>
        <span class="caret" ></span>
@@ -83,8 +83,8 @@
                                         <?php foreach($aGroup['aQuestions'] as $question):?>
                                             <?php if($question->parent_qid == 0):?>
 
-                                                <!-- Active question -->
                                                 <?php if(isset($sidemenu['explorer']['qid']) && $question->qid == $sidemenu['explorer']['qid']): ?>
+                                                <!-- Active question -->
                                                     <div  class="question-link active" >
                                                         <span class="question-collapse-title">
                                                             <span class="glyphicon glyphicon-list"></span>
@@ -99,9 +99,8 @@
                                                             </em>
                                                         </span>
                                                     </div>
-
-                                                <!-- Other questions -->
                                                 <?php else: ?>
+                                                <!-- Other questions -->
                                                     <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$iSurveyId/gid/".$aGroup->gid."/qid/".$question->qid); ?>" class="question-link" >
                                                         <span class="question-collapse-title">
                                                             <span class="glyphicon glyphicon-list"></span>
@@ -139,4 +138,5 @@
                 <?php endif;?>
             </ul>
         </div>
+    </div>
 </li>

@@ -35,9 +35,10 @@ class surveypermission extends Survey_Common_Action {
         if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','read'))
         {
 
+            debugbreak();
             $aData['sidemenu']['state'] = false;
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("IbD").":".$iSurveyID.")";
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
 
             $aBaseSurveyPermissions=Permission::model()->getSurveyBasePermissions();
@@ -333,7 +334,6 @@ class surveypermission extends Survey_Common_Action {
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
-
     /**
     * surveypermission::adduser()
     * Function responsible to add user.
@@ -428,12 +428,12 @@ class surveypermission extends Survey_Common_Action {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $aViewUrls = array();
 
-        $action = App()->getRequest()->getPost('action');
+        $action = App()->getRequest()->getParam('action');
 
 
         $imageurl = Yii::app()->getConfig('adminimageurl');
-        $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : null;
-        $postusergroupid = !empty($_POST['ugid']) ? $_POST['ugid'] : null;
+        $postuserid = App()->getRequest()->getParam('uid');
+        $postusergroupid = App()->getRequest()->getParam('ugid');
         if($action == "setsurveysecurity")
         {
             if ( (!Permission::model()->hasGlobalPermission('superadmin','read') && Yii::app()->user->getId()==$postuserid) // User can not change own security (except superadmin)
@@ -549,6 +549,7 @@ class surveypermission extends Survey_Common_Action {
         $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+        $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;  // Close button
 
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
@@ -709,13 +710,17 @@ class surveypermission extends Survey_Common_Action {
             {
                 if (Permission::model()->setPermissions($postuserid, $surveyid, 'survey', $aPermissions))
                 {
-                    $addsummary .= "<div class=\"successheader\">".gT("Survey permissions were successfully updated.")."</div>\n";
+                    Yii::app()->setFlashMessage(gT("Survey permissions were successfully updated."));
                 }
                 else
                 {
-                    $addsummary .= "<div class=\"warningheader\">".gT("Failed to update survey permissions!")."</div>\n";
+                    Yii::app()->setFlashMessage(gT("Failed to update survey permissions!"));
                 }
-
+                if (App()->getRequest()->getPost('close-after-save')=='false')
+                {
+                    Yii::app()->request->redirect(Yii::app()->getController()->createUrl('admin/surveypermission/sa/set', array('action'=>'setsurveysecurity','surveyid'=>$surveyid,'uid'=>$postuserid)));
+                }
+                Yii::app()->request->redirect(Yii::app()->getController()->createUrl('admin/surveypermission/sa/view', array('surveyid'=>$surveyid)));
             }
             $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/>\n";
             $addsummary .= "</div></div></div>\n";

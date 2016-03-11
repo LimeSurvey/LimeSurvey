@@ -22,20 +22,24 @@
         <h3 class="pagetitle"><?php echo gT("Edit survey text elements and settings"); ?></h3>
 
         <!-- Edition container -->
-        <div class="row" style="margin-bottom: 100px">
+
             <!-- Form -->
-            <?php echo CHtml::form(array("admin/database/index/updatesurveylocalesettings"), 'post', array('id'=>'globalsetting','name'=>'globalsetting','class'=>'form-horizontal form30')); ?>
+            <div class="col-xs-12">
+                <?php echo CHtml::form(array("admin/database/index/updatesurveylocalesettings"), 'post', array('id'=>'globalsetting','name'=>'globalsetting','class'=>'form-horizontal form30')); ?>
+                    <div class="row">
 
-                <!-- text edition -->
-                <div class="col-sm-12 col-md-6 content-right">
-                    <?php $this->renderPartial('/admin/survey/subview/tab_edit_view',$data); ?>
-                </div>
+                        <!-- text edition -->
+                        <div class="col-sm-12 col-md-6 content-right">
+                            <?php $this->renderPartial('/admin/survey/subview/tab_edit_view',$data); ?>
+                        </div>
 
-                <!-- settings -->
-                <div class="col-sm-12 col-md-6" id="accordion-container" style="background-color: #fff;">
-                    <?php $this->renderPartial('/admin/survey/subview/accordion/_accordion_container', array('data'=>$settings_data)); ?>
-                </div>
-            </form>
+                        <!-- settings -->
+                        <div class="col-sm-12 col-md-6" id="accordion-container" style="background-color: #fff;">
+                            <?php $this->renderPartial('/admin/survey/subview/accordion/_accordion_container', array('data'=>$settings_data)); ?>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
+
 </div>

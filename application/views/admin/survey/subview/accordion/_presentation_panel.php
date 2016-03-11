@@ -38,7 +38,7 @@
     <div class="form-group">
         <label class="col-sm-5 control-label" for='template'><?php  eT("Template:"); ?></label>
         <div class="col-sm-4">
-            <select id='template'class="form-control"  name='template'>
+            <select id='template' class="form-control"  name='template'>
                 <?php foreach (array_keys(getTemplateList()) as $tname) {
 
                         if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $esrow['template']==htmlspecialchars($tname) ) { ?>
@@ -54,7 +54,7 @@
             </select>
         </div>
         <div class="col-sm-3 template-img">
-            <img class="img-responsive" alt='<?php  eT("Template preview image"); ?>' name='preview' id='preview' src='<?php echo getTemplateURL($esrow['template']); ?>/preview.png' />
+            <img class="img-responsive" alt='<?php  eT("Template preview image"); ?>' id='preview' src='<?php echo getTemplateURL($esrow['template']); ?>/preview.png' />
         </div>
     </div>
 

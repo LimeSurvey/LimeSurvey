@@ -24,7 +24,7 @@
     <!-- sideMenu -->
     <div class="side-menu  hidden-xs" id="sideMenu" style="z-index: 101;">
 
-        <nav class="navbar navbar-default  hidden-xs" role="navigation">
+        <nav class="navbar navbar-default  hidden-xs">
 
             <!-- Header : General -->
             <div class="navbar-header  hidden-xs">

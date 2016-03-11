@@ -149,7 +149,7 @@
     <!-- Date format -->
     <div class="form-group">
         <label class="col-sm-3 control-label" for='dateformat'><?php  eT("Date format:") ; ?></label>
-        <div class="col-sm-3">
+        <div class="col-sm-9">
             <?php echo CHtml::listBox('dateformat',$sDateFormatDefault, $aDateFormatData, array('id'=>'dateformat','size'=>'1', 'class'=>'form-control')); ?>
         </div>
     </div>
@@ -157,7 +157,7 @@
     <!-- Decimal mark -->
     <div class="form-group">
         <label class="col-sm-3 control-label" for='numberformat'><?php  eT("Decimal mark:"); ?></label>
-        <div class="col-sm-3">
+        <div class="col-sm-9">
             <?php echo CHtml::listBox('numberformat',$sRadixDefault, $aRadixPointData, array('id'=>'numberformat','size'=>'1', 'class'=>'form-control')); ?>
         </div>
     </div>

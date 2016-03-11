@@ -74,6 +74,7 @@ class emailtemplates extends Survey_Common_Action {
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
 
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+            $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup';
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyId;  // Close button
 
         $aData['surveyid'] = $iSurveyId;
@@ -150,12 +151,14 @@ class emailtemplates extends Survey_Common_Action {
                 $usquery = SurveyLanguageSetting::model()->updateAll($attributes,'surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
             }
             Yii::app()->session['flashmessage'] = gT("Email templates successfully saved.");
+            if (Yii::app()->request->getPost('close-after-save')=='true')
+            {
+                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyId));
+            }
+
             $this->getController()->redirect(array('admin/emailtemplates/sa/index/surveyid/'.$iSurveyId));
         }
-        if($sSaveMethod=='saveclose')
-            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyId));
-        else
-            self::index($iSurveyId);
+        self::index($iSurveyId);
     }
 
 
