@@ -18,9 +18,9 @@
         id="<?php echo $id; ?>"
         value="<?php echo $value; ?>"
         class="radio"
-        <?php $check_ans; ?>
+        <?php echo $check_ans; ?>
         onclick="<?php echo $checkconditionFunction; ?>"
-    />    
+    />
     <label for="<?php echo $id; ?>" class="answertext radio-label">
         <?php echo $labeltext;?>
     </label>
