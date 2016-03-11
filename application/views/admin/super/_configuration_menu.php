@@ -118,16 +118,33 @@
         <!-- Advanced -->
 
         <li class="col-sm-2">
-            <?php if(Permission::model()->hasGlobalPermission('superadmin','read')): ?>
-                <ul>
+            <ul>
 
-                    <!-- Advanced -->
-                    <li class="dropdown-header">
-                        <span class="icon-tools" ></span>
-                        <?php eT('Advanced');?>
+                <!-- Advanced -->
+                <li class="dropdown-header">
+                    <span class="icon-tools" ></span>
+                    <?php eT('Advanced');?>
+                </li>
+                <?php if(Permission::model()->hasGlobalPermission('templates','read')): ?>
+                    <!-- Template Editor -->
+                    <li class="dropdown-item">
+                        <a href="<?php echo $this->createUrl("admin/templates/sa/view"); ?>">
+                            <?php eT("Template editor");?>
+                        </a>
                     </li>
+                    <?php endif;?>
+                <?php if(Permission::model()->hasGlobalPermission('labelsets','read')): ?>
+                    <!-- Edit label sets -->
+                    <li class="dropdown-item">
+                        <a href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>">
+                            <?php eT("Manage label sets");?>
+                        </a>
+                    </li>
+                    <?php endif;?>
 
-                    <!-- Check Data Integrity -->
+                <!-- Check Data Integrity -->
+                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')): ?>
+
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/checkintegrity"); ?>">
                             <?php eT("Check data integrity");?>
@@ -141,14 +158,9 @@
                         </a>
                     </li>
 
-                    <!-- Plugin manager -->
-                    <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl("/admin/pluginmanager/sa/index"); ?>">
-                            <?php eT("Plugin manager");?>
-                        </a>
-                    </li>
-                </ul>
-                <?php endif;?>
+                    <?php endif;?>
+                <!-- Plugin manager -->
+            </ul>
 
         </li>
 
@@ -223,23 +235,13 @@
                             <?php eT("Global settings");?>
                         </a>
                     </li>
-                    <?php endif;?>
-                <?php if(Permission::model()->hasGlobalPermission('labelsets','read')): ?>
-                    <!-- Edit label sets -->
                     <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>">
-                            <?php eT("Edit label sets");?>
+                        <a href="<?php echo $this->createUrl("/admin/pluginmanager/sa/index"); ?>">
+                            <?php eT("Plugin manager");?>
                         </a>
                     </li>
                     <?php endif;?>
-                <?php if(Permission::model()->hasGlobalPermission('templates','read')): ?>
-                    <!-- Template Editor -->
-                    <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl("admin/templates/sa/view"); ?>">
-                            <?php eT("Template editor");?>
-                        </a>
-                    </li>
-                    <?php endif;?>
+
             </ul>
         </li>
     </ul>
