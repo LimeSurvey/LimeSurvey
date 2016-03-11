@@ -80,6 +80,12 @@ iframe#dialog {
     padding: 0;
 }
 
+/** */
+.droppable-new, .droppable-csv {
+    min-height: 40px;
+    height: 100%;
+}
+
 #labelsetpreview {
     overflow-x: hidden;
 }

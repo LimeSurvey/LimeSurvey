@@ -31,7 +31,7 @@
             </div>
             <div class='panel-body'>
                 <p class='help-block'><?php eT("Drop a CSV field into this area to create a new participant attribute and import your data into it."); ?></p>
-                <div class="newcreate droppable-new" style ="height: 40px">
+                <div class="newcreate droppable-new">
                 </div>
             </div>
         </div>

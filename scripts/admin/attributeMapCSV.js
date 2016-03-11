@@ -2,31 +2,15 @@ $(document).ready(function() {
     if(!$('#csvattribute').length ) {
         //alert("All the attributes are automatically mapped");
     }
-    var height = $(document).height();
-    var width = $(document).width();
     
-    var headingHeight = 0;
-    $('.attribute-column .heading').each(function(i) {
-        if($(this).height() > headingHeight) {
-            headingHeight = $(this).height();
-        }
-    });
-    $('.attribute-column .heading').height(headingHeight);
-    
+    // Find the biggest column and set both to that height
     function adjustHeights() {
-        $('.attribute-column, .droppable').css({ 'height': 'auto' });
-        $('.attribute-column').height($('.draggable-container').height());
-        
-        var ncHeadingHeight = $('#newcreated .heading').outerHeight();
-        var ncInstructionsHeight = $('#newcreated .instructions').outerHeight();
-        $('.newcreate').css({
-            'height':$('#newcreated').height()-ncHeadingHeight-5-ncInstructionsHeight
-        });
-        var csvHeadingHeight = $('#csvattribute .heading').outerHeight();
-        var csvInstructionsHeight = $('#csvattribute .instructions').outerHeight();
-        $('.csvatt').css({
-            'height':$('#csvattribute').height()-csvHeadingHeight-5-csvInstructionsHeight
-        });
+
+        var max = Math.max($('.droppable-new').height(), $('.droppable-csv').height());
+        console.log('max', max);
+
+        $('.droppable-new').height(max);
+        $('.droppable-csv').height(max);
     }
     
     adjustHeights();    
@@ -69,6 +53,7 @@ $(document).ready(function() {
                 top: ''
             }, 300).draggable({ 
                 revert: "invalid",
+                zIndex: 150,
                 appendTo: "body",
                 containment: $('.draggable-container'),
                 opacity: 0.75
@@ -94,7 +79,7 @@ $(document).ready(function() {
             $('.mappable-attribute-wrapper').droppable('enable');
             $('.mappable-attribute-wrapper.paired').droppable('disable');
             
-            adjustHeights();
+            //adjustHeights();
         } 
     });
 
@@ -132,6 +117,7 @@ $(document).ready(function() {
 
             newDraggable.wrap("<div class='col-sm-6'></div>");
 
+            //adjustHeights();
         }
     });
     
@@ -161,7 +147,7 @@ $(document).ready(function() {
             var name = $elem.attr('data-name');
             $elem.prepend('<input type="text" id="td_' + id + '" value="' + name + '">');
             $elem.detach().appendTo('.newcreate');
-            adjustHeights();
+            //adjustHeights();
         });
     });
 
