@@ -48,7 +48,6 @@
 
     $gridColumns = array(
         array(// display the status
-            'class' => 'CDataColumn',
             'header' => gT('Status'),
             'type' => 'html',
             'name' => 'status',
@@ -65,9 +64,16 @@
                 }
             }
         ),
+        array(// display the 'name' attribute
+            'header' => gT('Plugin'),
+            'name' => 'name'
+        ),
+        array(// display the 'description' attribute
+            'header' => gT('Description'),
+            'name' => 'description'
+        ),
         array(// display the activation link
-            'class' => 'CDataColumn',
-            'type' => 'raw',
+            'type' => 'html',
             'header' => gT('Action'),
             'name' => 'action',
             'value' => function($data) {
@@ -83,16 +89,6 @@
                 }
                 return $output;
             }
-        ),
-        array(// display the 'name' attribute
-            'class' => 'CDataColumn',
-            'header' => gT('Plugin'),
-            'name' => 'name'
-        ),
-        array(// display the 'description' attribute
-            'class' => 'CDataColumn',
-            'header' => gT('Description'),
-            'name' => 'description'
         ),
     );
 
@@ -115,8 +111,7 @@
                 Yii::app()->params['pageSizeOptions'],
                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
         'columns'=>$gridColumns,
-        'rowCssClassExpression'=> function ($data, $row) { return ($row % 2 ? 'even' : 'odd') . ' ' . ($data['new']==1 ? "new" : "old"); },
-        'itemsCssClass' => 'items table-condensed table-bordered'
+        'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
     ));
     ?>
 </div>
