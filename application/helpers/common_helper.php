@@ -593,7 +593,7 @@ function getGroupSum($surveyid, $lang)
 {
     //$condn = "WHERE sid=".$surveyid." AND language='".$lang."'"; //Getting a count of questions for this survey
     $condn = array('sid'=>$surveyid,'language'=>$lang);
-    $sumresult3 = count(QuestionGroup::model()->findAllByAttributes($condn)); //Checked)
+    $sumresult3 = QuestionGroup::model()->countByAttributes($condn); //Checked)
 
     return $sumresult3 ;
 }
