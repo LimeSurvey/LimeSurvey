@@ -359,7 +359,8 @@ $(document).ready(function(){
               windowswidth = window.innerWidth;
               sideBodyWidth = sideBody.width();
               //console.log('sideBodyWidth after: '+sideBodyWidth);
-              if( sideBodyWidth < 1520 )
+
+              if( sideBodyWidth < 1420 )
               {
                   if(accordionContainer.hasClass('col-md-6'))
                   {
@@ -370,7 +371,7 @@ $(document).ready(function(){
               {
                  if(accordionContainer.hasClass('col-md-12'))
                  {
-                    $('#accordion-container').removeClass('col-md-12').addClass('col-md-6'); 
+                    $('#accordion-container').removeClass('col-md-12').addClass('col-md-6');
                  }
               }
           });

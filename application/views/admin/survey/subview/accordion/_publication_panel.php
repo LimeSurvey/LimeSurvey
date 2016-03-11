@@ -31,7 +31,7 @@
     <div class="form-group">
         <label class="col-sm-6 control-label" for='startdate'><?php  eT("Start date/time:"); ?></label>
         <div class="col-sm-6">
-            <input type='text' class='form-control popupdatetime' id='startdate' size='20' name='startdate' value="<?php echo $startdate; ?>"  />
+            <input type='text' class='popupdatetime' id='startdate' size='20' name='startdate' value="<?php echo $startdate; ?>"  />
         </div>
     </div>
 
