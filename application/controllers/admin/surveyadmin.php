@@ -155,6 +155,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $arrayed_data['title_bar']['title'] = gT('New survey');
         $arrayed_data['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
+        $arrayed_data['fullpagebar']['saveandclosebutton']['form'] = 'addnewsurvey';
         $arrayed_data['fullpagebar']['closebutton']['url'] = 'admin/index';  // Close button
 
         $this->_renderWrappedTemplate('survey', $aViewUrls, $arrayed_data);
@@ -2005,12 +2006,14 @@ class SurveyAdmin extends Survey_Common_Action
 
             $langsettings = new SurveyLanguageSetting;
             $langsettings->insertNewSurvey($aInsertData);
-
-            Yii::app()->session['flashmessage'] = $warning.gT("Survey was successfully added.");
-
             // Update survey permissions
             Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
 
+            Yii::app()->session['flashmessage'] = $warning.gT("Survey was successfully added.");
+            if (App()->request->getPost('save'))
+            {
+                $this->getController()->redirect(array('admin/survey/sa/editlocalsettings/surveyid/' . $iNewSurveyid));
+            }
             $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iNewSurveyid));
         }
     }
