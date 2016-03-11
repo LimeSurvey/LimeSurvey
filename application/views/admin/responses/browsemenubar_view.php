@@ -177,7 +177,7 @@
                     <span class="glyphicon glyphicon-ok"></span>
                     <?php eT("Save");?>
                 </a>
-                <a class="btn btn-default" href="#" role="button">
+                <a class="btn btn-default" href="#" role="button" id="save-and-close-button">
                     <span class="glyphicon glyphicon-saved"></span>
                     <?php eT("Save and close");?>
                 </a>

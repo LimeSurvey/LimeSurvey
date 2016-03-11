@@ -1410,8 +1410,6 @@ class dataentry extends Survey_Common_Action
             Yii::app()->loadHelper("database");
             $surveytable = "{{survey_".$surveyid.'}}';
 
-            $aDataentryoutput = "<div class='header ui-widget-header'>".gT("Data entry")."</div>\n";
-
             $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
             // restet token if user is not allowed to update
             if(!Permission::model()->hasSurveyPermission($surveyid,'tokens','update')) // If not allowed to read: remove it
@@ -1498,25 +1496,15 @@ class dataentry extends Survey_Common_Action
 
             $updateres = dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
 
-            $onerecord_link = $this->getController()->createUrl('/admin/responses/sa/view/surveyid/'.$surveyid.'/id/'.$id);
-            $allrecords_link = $this->getController()->createUrl('/admin/responses/sa/index/surveyid/'.$surveyid);
-
-
-            $aDataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".gT("Success")."</div>\n"
-            .gT("Record has been updated.")."<br /><br />\n"
-            ."<input type='submit' value='".gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"
-            ."<input type='submit' value='".gT("Browse responses")."' onclick=\"window.open('$allrecords_link', '_top')\" />\n"
-            ."</div>\n";
-
-            $aDataentryoutput = '<div class="jumbotron message-box">';
-            $aDataentryoutput .= '<h2>'.gT("Success").'</h2>';
-            $aDataentryoutput .= '<p class="lead">'.gT("Record has been updated.").'</p>';
-            $aDataentryoutput .= "<input type='submit' class='btn btn-lg btn-default' value='".gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"
-            ."<input type='submit' class='btn btn-lg btn-default' value='".gT("Browse responses")."' onclick=\"window.open('$allrecords_link', '_top')\" />\n";
-            $aDataentryoutput .= '</div>';
-
-            $aViewUrls['output'] = $aDataentryoutput;
-            $this->_renderWrappedTemplate('dataentry', $aViewUrls, $aData);
+            Yii::app()->setFlashMessage(sprintf(gT("The response record %s was updated."),$id));
+            if (Yii::app()->request->getPost('close-after-save')=='true')
+            {
+                $this->getController()->redirect($this->getController()->createUrl("admin/responses/sa/view/surveyid/{$surveyid}/id/{$id}"));
+            }
+            else
+            {
+                $this->getController()->redirect($this->getController()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}"));
+            }
         }
     }
 
