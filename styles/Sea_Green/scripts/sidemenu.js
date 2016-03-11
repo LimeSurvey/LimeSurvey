@@ -348,6 +348,34 @@ $(document).ready(function(){
          return false;
      });
 
+
+          var windowswidth = window.innerWidth;
+          var sideBodyWidth = sideBody.width();
+          console.log('sideBodyWidth start: '+sideBodyWidth);
+          $( window ).resize(function() {
+              //console.log('sideBodyWidth before: '+sideBodyWidth);
+              //console.log( windowswidth - window.innerWidth);
+              sideBody.width( sideBodyWidth - (windowswidth - window.innerWidth) );
+              windowswidth = window.innerWidth;
+              sideBodyWidth = sideBody.width();
+              //console.log('sideBodyWidth after: '+sideBodyWidth);
+              if( sideBodyWidth < 1520 )
+              {
+                  if(accordionContainer.hasClass('col-md-6'))
+                  {
+                      $('#accordion-container').removeClass('col-md-6').addClass('col-md-12');
+                  }
+              }
+              else
+              {
+                 if(accordionContainer.hasClass('col-md-12'))
+                 {
+                    $('#accordion-container').removeClass('col-md-12').addClass('col-md-6'); 
+                 }
+              }
+          });
+
+
 });
 
 
