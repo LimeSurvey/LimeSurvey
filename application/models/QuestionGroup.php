@@ -227,10 +227,10 @@ class QuestionGroup extends LSActiveRecord
         $url .= '/'.$this->sid.'/gid/'.$this->gid;
         $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><span class="glyphicon glyphicon-list-alt " ></span></a>';
 
-        $sumcount4 = Question::model()->countByAttributes(array('sid' => $this->sid, 'gid' => $this->gid, 'language' => $baselang));
+        $iQuestionsInGroup = Question::model()->countByAttributes(array('sid' => $this->sid, 'gid' => $this->gid, 'language' => $baselang));
 
         // Delete
-        if($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid,'surveycontent','delete' ) && $sumresult4 > 0)
+        if($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid,'surveycontent','delete' ) && $iQuestionsInGroup > 0)
         {
             $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
             if(is_null($condarray))
