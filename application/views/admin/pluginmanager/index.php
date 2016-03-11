@@ -16,13 +16,42 @@
     /* @var $this ConfigController */
     /* @var $dataProvider CActiveDataProvider */
 
-    $dataProvider = new CArrayDataProvider($data);
+    $sort = new CSort();
+    $sort->attributes = array(
+        'name'=>array(
+            'asc'=> 'name',
+            'desc'=> 'name desc',
+        ),
+        'description'=>array(
+            'asc'=> 'description',
+            'desc'=> 'description desc',
+        ),
+        'status'=>array(
+            'asc'=> 'active',
+            'desc'=> 'active desc',
+            'default'=> 'desc',
+        ),
+    );
+    $sort->defaultOrder = array(
+        'name'=>CSort::SORT_ASC,
+    );
+
+    $providerOptions = array(
+        'pagination'=>array(
+            'pageSize'=>$pageSize,
+        ),
+        'sort'=>$sort,
+        'caseSensitiveSort'=> false,
+    );
+
+    $dataProvider = new CArrayDataProvider($data, $providerOptions);
 
     $gridColumns = array(
         array(// display the status
             'class' => 'CDataColumn',
             'header' => gT('Status'),
             'type' => 'html',
+            'name' => 'status',
             //'value' => function($data) { return ($data['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Active'), array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Inactive'), array('width' => 32, 'height' => 32))); }
             'value' => function($data)
             {
@@ -40,6 +69,7 @@
             'class' => 'CDataColumn',
             'type' => 'raw',
             'header' => gT('Action'),
+            'name' => 'action',
             'value' => function($data) {
                 if ($data['active'] == 0)
                 {
@@ -77,6 +107,7 @@
 
     $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider'=>$dataProvider,
+        'id' => 'plugins-grid',
         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
             CHtml::dropDownList(
                 'pageSize',
@@ -89,3 +120,12 @@
     ));
     ?>
 </div>
+
+<script type="text/javascript">
+jQuery(function($) {
+    // To update rows per page via ajax
+    $(document).on("change", '#pageSize', function() {
+        $.fn.yiiGridView.update('plugins-grid',{ data:{ pageSize: $(this).val() }});
+    });
+});
+</script>
