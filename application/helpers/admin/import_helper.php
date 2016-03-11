@@ -1541,21 +1541,16 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 function GetNewSurveyID($iOldSID)
 {
     Yii::app()->loadHelper('database');
-    $query = "SELECT sid FROM {{surveys}} WHERE sid=$iOldSID";
-
-    $aRow = Yii::app()->db->createCommand($query)->queryRow();
-
-    //if (!is_null($isresult))
-    if($aRow!==false)
+    $aSurvey=Survey::model()->findByPk($iOldSID);
+    if(!empty($aSurvey))
     {
         // Get new random ids until one is found that is not used
         do
         {
             $iNewSID = randomChars(5,'123456789');
-            $query = "SELECT sid FROM {{surveys}} WHERE sid=$iNewSID";
-            $aRow = Yii::app()->db->createCommand($query)->queryRow();
+            $aSurvey=Survey::model()->findByPk($iNewSID);
         }
-        while ($aRow!==false);
+        while (!empty($aSurvey));
 
         return $iNewSID;
     }
