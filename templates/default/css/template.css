@@ -794,7 +794,7 @@ table.question.subquestion-list.questions-list tr.answers-list th
 }
 
 #outerframeContainer {
-    min-height: 80%;
+    height: 100%;
 }
 
 #surveyListFooter {
