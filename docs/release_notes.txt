@@ -35,6 +35,9 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160310) to 2.50+ (build 160311) Mar 11, 2016
+Fixed issue #10738: Survey administration broken when selecting a survey
+
 Changes from 2.50+ (build 160309) to 2.50+ (build 160310) Mar 10, 2016
 -Fixed issue #10191: Can't import attributes with Participants (Olle Haerstedt)
 -Fixed issue #10289: Sorting responses by completed "Yes/No/All" does not work properly (Olle Haerstedt)
