@@ -35,6 +35,43 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160309) to 2.50+ (build 160310) Mar 10, 2016
+-Fixed issue #10191: Can't import attributes with Participants (Olle Haerstedt)
+-Fixed issue #10289: Sorting responses by completed "Yes/No/All" does not work properly (Olle Haerstedt)
+-Fixed issue #10371: Bad layout after sending token invitations (LouisGac)
+-Fixed issue #10375: Import of Templates not working (LouisGac)
+-Fixed issue #10435: Broken HTML or script can broke Survey Logic File (Denis Chenu)
+-Fixed issue #10440: Missing Close button when importing a template (LouisGac)
+-Fixed issue #10458: Labelset,  two language boxes could be adjusted to bigger boxed (LouisGac)
+-Fixed issue #10461: Add button Save and close to Add new box (LouisGac)
+-Fixed issue #10472: Design: add "save and close" button (LouisGac)
+-Fixed issue #10480: Default template : home page : HTML issue (LouisGac)
+-Fixed issue #10514: Missing a Save button in assessments (LouisGac)
+-Fixed issue #10522: Redirect loop between "add" and "edit" assessment (LouisGac)
+-Fixed issue #10557: HTML error in multiple numeric (LouisGac)
+-Fixed issue #10573: Font used in Administration Panel and templates (LouisGac)
+-Fixed issue #10596: Browsing responses opens new tab in browser (LouisGac)
+-Fixed issue #10607: Multiple numerical input - sum of sliders broken (LouisGac)
+-Fixed issue #10626: View source not working properly (LouisGac)
+-Fixed issue #10632: Can't access advanced settings of a question when survey is activated (LouisGac)
+-Fixed issue #10677: Closing out of token generation first doesn't work and then sends to non-admin section of limesurvey (LouisGac)
+-Fixed issue #10721: Error with SMTP mail method (Denis Chenu)
+-Fixed issue : email expression validation popup style (Denis Chenu)
+-New feature: More settings for answers PDF export (lenasterg)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by tigger, morbid, olde
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by actxcellence
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by cbloecher, c_schmitz, actxcellence
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Portuguese (Portugal) by samarta
+
 Changes from 2.50+ (build 160308) to 2.50+ (build 160309) Mar 9, 2016
 -Fixed issue: Deleting a question may corrupt a global setting (LouisGac)
 -Fixed issue #10208: Rendering any PDF, CSV, HTML introducing numerical (Guillaume Smaha)
