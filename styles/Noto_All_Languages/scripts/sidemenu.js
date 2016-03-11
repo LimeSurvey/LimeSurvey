@@ -105,7 +105,7 @@ $(document).ready(function(){
         sideMenu.animate($.extend({
             opacity: 0.5
             }, left_or_right_250),
-            500, 
+            500,
             function() {}
         );
 
@@ -347,6 +347,35 @@ $(document).ready(function(){
          adjustSideBodyHeight($sidemenu, 0, 500); //500 ms for the open animation to complete
          return false;
      });
+
+
+          var windowswidth = window.innerWidth;
+          var sideBodyWidth = sideBody.width();
+          console.log('sideBodyWidth start: '+sideBodyWidth);
+          $( window ).resize(function() {
+              //console.log('sideBodyWidth before: '+sideBodyWidth);
+              //console.log( windowswidth - window.innerWidth);
+              sideBody.width( sideBodyWidth - (windowswidth - window.innerWidth) );
+              windowswidth = window.innerWidth;
+              sideBodyWidth = sideBody.width();
+              //console.log('sideBodyWidth after: '+sideBodyWidth);
+
+              if( sideBodyWidth < 1420 )
+              {
+                  if(accordionContainer.hasClass('col-md-6'))
+                  {
+                      $('#accordion-container').removeClass('col-md-6').addClass('col-md-12');
+                  }
+              }
+              else
+              {
+                 if(accordionContainer.hasClass('col-md-12'))
+                 {
+                    $('#accordion-container').removeClass('col-md-12').addClass('col-md-6');
+                 }
+              }
+          });
+
 
 });
 
