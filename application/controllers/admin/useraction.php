@@ -659,6 +659,9 @@ class UserAction extends Survey_Common_Action
             Yii::app()->session['templateeditormode'] = Yii::app()->request->getPost('templateeditormode');
             Yii::app()->session['dateformat'] = Yii::app()->request->getPost('dateformat');
             Yii::app()->session['flashmessage'] = gT("Your personal settings were successfully saved.");
+            if (Yii::app()->request->getPost("saveandclose")) {
+                $this->getController()->redirect(array("admin/survey/sa/index"));
+            }
         }
 
         // Get user lang
