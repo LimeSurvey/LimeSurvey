@@ -493,37 +493,87 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     // Save Form
-    $_saveform = "<table class='save-survey-form'><tr class='save-survey-row save-survey-name'><td class='save-survey-label label-cell' align='right'><label for='savename'>" . gT("Name") . "</label>:</td><td class='save-survey-input input-cell'><input type='text' name='savename' id='savename' value='";
+    $_saveform = "
+        <div class='save-survey-form form-horizontal'>
+            <div class='form-group save-survey-row save-survey-name'>
+                <label class='control-label col-sm-3 save-survey-label label-cell' for='savename'>" . gT("Name:") . "</label>
+                <div class='col-sm-7 save-survey-input input-cell'>
+                    <input class='form-control' type='text' name='savename' id='savename' value='";
+
     if (isset($_POST['savename']))
     {
         $_saveform .= HTMLEscape(autoUnescape($_POST['savename']));
     }
-    $_saveform .= "' /></td></tr>\n"
-    . "<tr class='save-survey-row save-survey-password-1'><td class='save-survey-label label-cell' align='right'><label for='savepass'>" . gT("Password") . "</label>:</td><td class='save-survey-input input-cell'><input type='password' id='savepass' name='savepass' value='";
+
+    $_saveform .= "' /></div></div>\n"
+
+    . " <div class='form-group save-survey-row save-survey-password-1'>
+            <label class='control-label col-sm-3 save-survey-label label-cell' for='savepass'>" . gT("Password:") . "</label>
+            <div class='col-sm-7 save-survey-input input-cell'>
+                <input class='form-control' type='password' id='savepass' name='savepass' value='";
+
     if (isset($_POST['savepass']))
     {
         $_saveform .= HTMLEscape(autoUnescape($_POST['savepass']));
     }
-    $_saveform .= "' /></td></tr>\n"
-    . "<tr class='save-survey-row save-survey-password-2'><td class='save-survey-label label-cell' align='right'><label for='savepass2'>" . gT("Repeat password") . "</label>:</td><td class='save-survey-input input-cell'><input type='password' id='savepass2' name='savepass2' value='";
+
+    $_saveform .= "' /></div></div>\n"
+
+    . " <div class='form-group save-survey-row save-survey-password-2'>
+            <label class='control-label col-sm-3 save-survey-label label-cell' for='savepass2'>" . gT("Repeat password:") . "</label>
+            <div class='col-sm-7 save-survey-input input-cell'>
+                <input class='form-control' type='password' id='savepass2' name='savepass2' value='";
+
     if (isset($_POST['savepass2']))
     {
         $_saveform .= HTMLEscape(autoUnescape($_POST['savepass2']));
     }
-    $_saveform .= "' /></td></tr>\n"
-    . "<tr class='save-survey-row save-survey-email'><td class='save-survey-label label-cell' align='right'><label for='saveemail'>" . gT("Your email address") . "</label>:</td><td class='save-survey-input input-cell'><input type='text' id='saveemail' name='saveemail' value='";
+
+    $_saveform .= "' /></div></div>\n"
+
+    . " <div class='form-group save-survey-row save-survey-email'>
+            <label class='col-sm-3 control-label save-survey-label label-cell' for='saveemail'>" . gT("Your email address:") . "</label>
+            <div class='col-sm-7 save-survey-input input-cell'>
+                <input class='form-control' type='text' id='saveemail' name='saveemail' value='";
+
     if (isset($_POST['saveemail']))
     {
         $_saveform .= HTMLEscape(autoUnescape($_POST['saveemail']));
     }
-    $_saveform .= "' /></td></tr>\n";
+    $_saveform .= "' /></div></div>\n";
+
     if ( isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_saveform .="<tr class='save-survey-row save-survey-captcha'><td class='save-survey-label label-cell' align='right'><label for='loadsecurity'>" . gT("Security question") . "</label>:</td><td class='save-survey-input input-cell'><table class='captcha-table'><tr><td class='captcha-image' valign='middle'><img alt='' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' /></td><td class='captcha-input' valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
+        $_saveform .="
+            <div class='form-group save-survey-row save-survey-captcha'>
+                <label class='control-label col-sm-3 save-survey-label label-cell' for='loadsecurity'>" . gT("Security question:") . "</label>
+                <div class='col-sm-2 captcha-image'>
+                    <img alt='' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' />
+                </div>
+                <div class='col-sm-3 save-survey-input input-cell'>
+                    <div class='captcha-table'>
+                        <input class='form-control' type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' />
+                    </div>
+                </div>
+            </div>\n";
     }
-    $_saveform .= "<tr><td align='right'></td><td></td></tr>\n"
-    . "<tr class='save-survey-row save-survey-submit'><td class='save-survey-label label-cell'><label class='hide jshide' for='savebutton'>" . gT("Save Now") . "</label></td><td class='save-survey-input input-cell'><input type='submit' id='savebutton' name='savesubmit' class='button' value='" . gT("Save Now") . "' /></td></tr>\n"
-    . "</table>";
+    $_saveform .= "
+        <div class='form-group save-survey-row save-survey-submit'>
+            <!-- Needed?
+            <td class='save-survey-label label-cell'>
+                <label class='hide jshide' for='savebutton'>" . gT("Save Now") . "</label>
+            </td>
+            -->
+            <div class='form-group save-survey-input input-cell'>
+                <div class='col-sm-12'>
+                    <input class='btn btn-default' type='submit' id='savebutton' name='savesubmit' value='" . gT("Save Now") . "' />
+                </div>
+            </div>
+        </div>\n"
+    . "</div>
+    ";
+    // End save form
+
 
     // Load Form
     $_loadform = "<table class='load-survey-form'><tr class='load-survey-row load-survey-name'><td class='load-survey-label label-cell' align='right'><label for='loadname'>" . gT("Saved name") . "</label>:</td><td class='load-survey-input input-cell'><input type='text' id='loadname' name='loadname' value='";
