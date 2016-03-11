@@ -352,7 +352,13 @@ class labels extends Survey_Common_Action
             if ($action == "insertlabelset" && Permission::model()->hasGlobalPermission('labelsets','create'))
                 $lid = insertlabelset();
             if (($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers")) && Permission::model()->hasGlobalPermission('labelsets','update'))
+            {
                 modlabelsetanswers($lid);
+                if (isset($_POST['saveandclose']))
+                    $this->getController()->redirect(array("admin/labels/sa/view"));
+                else
+                    $this->getController()->redirect(array("admin/labels/sa/view/lid/" . $lid));
+            }
             if ($action == "deletelabelset" && Permission::model()->hasGlobalPermission('labelsets','delete'))
             {
                 if (deletelabelset($lid))
@@ -361,8 +367,10 @@ class labels extends Survey_Common_Action
                     $lid = 0;
                 }
             }
-            if ($lid)
+            if (isset($_POST['saveandclose']))
                 $this->getController()->redirect(array("admin/labels/sa/view/lid/" . $lid));
+            else if ($lid)
+                $this->getController()->redirect(array("admin/labels/sa/editlabelset/lid/" . $lid));
             else
                 $this->getController()->redirect(array("admin/labels/sa/view"));
     }
