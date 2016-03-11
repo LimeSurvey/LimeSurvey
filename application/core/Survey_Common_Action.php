@@ -585,12 +585,10 @@ class Survey_Common_Action extends CAction
 
                 //Show Question Details
                 //Count answer-options for this question
-                $qrr = Answer::model()->findAllByAttributes(array('qid' => $qid, 'language' => $baselang));
-                $aData['qct'] = $qct = count($qrr);
+                $aData['qct'] = Answer::model()->countByAttributes(array('qid' => $qid, 'language' => $baselang));
 
                 //Count sub-questions for this question
-                $sqrq = Question::model()->findAllByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
-                $aData['sqct'] = $sqct = count($sqrq);
+                $aData['sqct'] = Question::model()->countByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
 
                 $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
                 if (is_null($qrrow)) return;
@@ -673,9 +671,7 @@ class Survey_Common_Action extends CAction
             $oSurvey = $aData['oSurvey'];
             $baselang =$oSurvey->language;
 
-            $sumresult4 = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang));
-            $sumcount4 = count($sumresult4);
-            $aData['sumcount4'] = $sumcount4;
+            $aData['sumcount4'] = Question::model()->countByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang));
 
             $sumresult1 = Survey::model()->with(array(
                 'languagesettings' => array('condition' => 'surveyls_language=language'))
@@ -993,12 +989,10 @@ class Survey_Common_Action extends CAction
 
         $condition = array('sid' => $iSurveyID, 'parent_qid' => 0, 'language' => $baselang);
 
-        $sumresult3 = Question::model()->findAllByAttributes($condition); //Checked
-        $sumcount3 = count($sumresult3);
+        $sumcount3 = Question::model()->countByAttributes($condition); //Checked
         $condition = array('sid' => $iSurveyID, 'language' => $baselang);
 
-        $sumresult2 = QuestionGroup::model()->findAllByAttributes($condition); //Checked
-        $sumcount2 = count($sumresult2);
+        $sumcount2 = QuestionGroup::model()->countByAttributes($condition); //Checked
 
         //SURVEY SUMMARY
         $aAdditionalLanguages = $oSurvey->additionalLanguages;
