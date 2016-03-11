@@ -257,9 +257,9 @@ class Survey_Common_Action extends CAction
             //// TODO : check what is doing exactly this function. (application/helpers/expressions/em_manager_helper.php)
             //// If it's about initialiazing global variables, should be removed and parsed in right controllers.
             //// But it seems that it's just useless.
-            LimeExpressionManager::StartProcessingPage(false, Yii::app()->baseUrl,true);  // so can click on syntax highlighting to edit questions
+            LimeExpressionManager::StartProcessingPage(false, Yii::app()->baseUrl);  // so can click on syntax highlighting to edit questions
 
-            $oSurvey = $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
+            $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
 
             $this->_titlebar($aData);
 
