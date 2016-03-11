@@ -227,10 +227,7 @@ class QuestionGroup extends LSActiveRecord
         $url .= '/'.$this->sid.'/gid/'.$this->gid;
         $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><span class="glyphicon glyphicon-list-alt " ></span></a>';
 
-
-        $sumresult4 = Question::model()->findAllByAttributes(array('sid' => $this->sid, 'gid' => $this->gid, 'language' => $baselang));
-        $sumcount4 = count($sumresult4);
-
+        $sumcount4 = Question::model()->countByAttributes(array('sid' => $this->sid, 'gid' => $this->gid, 'language' => $baselang));
 
         // Delete
         if($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid,'surveycontent','delete' ) && $sumresult4 > 0)
