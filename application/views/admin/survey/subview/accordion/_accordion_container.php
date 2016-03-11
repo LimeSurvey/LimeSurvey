@@ -27,6 +27,7 @@
         </div>
     </div>
 
+
     <!-- Presentation & navigation  -->
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingTwo">

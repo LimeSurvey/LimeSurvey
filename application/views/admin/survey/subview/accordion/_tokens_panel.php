@@ -8,7 +8,7 @@
 
     <!-- Anonymized responses -->
     <div class="form-group">
-        <label  class="col-sm-4 control-label"  for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between token table and survey responses table. You won't be able to identify responses by their token."); ?>'>
+        <label  class="col-sm-6 control-label"  for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between token table and survey responses table. You won't be able to identify responses by their token."); ?>'>
             <?php  eT("Anonymized responses:"); ?>
             <script type="text/javascript"><!--
                 function alertPrivacy()
@@ -32,7 +32,7 @@
                 }
                 //--></script>
         </label>
-        <div class="col-sm-8">
+        <div class="col-sm-6">
             <?php if ($esrow['active'] == "Y") {
                 if ($esrow['anonymized'] == "N") { ?>
                 <?php  eT("Responses to this survey are NOT anonymized."); ?>
@@ -60,10 +60,10 @@
 
     <!-- Enable token-based response persistence -->
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='tokenanswerspersistence' title='<?php  eT("With non-anonymized responses (and the token table field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) his previous answers will be reloaded."); ?>'>
+        <label class="col-sm-6 control-label" for='tokenanswerspersistence' title='<?php  eT("With non-anonymized responses (and the token table field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) his previous answers will be reloaded."); ?>'>
             <?php  eT("Enable token-based response persistence:"); ?>
         </label>
-        <div class="col-sm-8">
+        <div class="col-sm-6">
             <select class="form-control" id='tokenanswerspersistence' name='tokenanswerspersistence' onchange="javascript: if (document.getElementById('anonymized').value == 'Y') { alert('<?php  eT("This option can't be set if the `Anonymized responses` option is active.","js"); ?>'); this.value='N';}">
                 <option value='Y'
                     <?php if ($esrow['tokenanswerspersistence'] == "Y") { ?>
@@ -81,10 +81,10 @@
 
     <!-- Allow multiple responses or update responses with one token -->
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='alloweditaftercompletion' title='<?php  eT("If token-based response persistence is enabled a participant can update his response after completion, else a participant can add new responses without restriction."); ?>'>
+        <label class="col-sm-6 control-label" for='alloweditaftercompletion' title='<?php  eT("If token-based response persistence is enabled a participant can update his response after completion, else a participant can add new responses without restriction."); ?>'>
             <?php  eT("Allow multiple responses or update responses with one token:"); ?>
         </label>
-        <div class="col-sm-8">
+        <div class="col-sm-6">
             <select id='alloweditaftercompletion' name='alloweditaftercompletion' class="form-control">
                 <option value='Y'
                     <?php if ($esrow['alloweditaftercompletion'] == "Y") { ?>
@@ -100,8 +100,8 @@
 
     <!-- Allow public registration -->
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='allowregister'><?php  eT("Allow public registration:"); ?></label>
-        <div class="col-sm-8">
+        <label class="col-sm-6 control-label" for='allowregister'><?php  eT("Allow public registration:"); ?></label>
+        <div class="col-sm-6">
             <select id='allowregister' name='allowregister' class="form-control">
                 <option value='Y'
                     <?php if ($esrow['allowregister'] == "Y") { ?>
@@ -119,8 +119,8 @@
 
     <!-- Use HTML format for token emails -->
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='htmlemail'><?php  eT("Use HTML format for token emails:"); ?></label>
-        <div class="col-sm-8">
+        <label class="col-sm-6 control-label" for='htmlemail'><?php  eT("Use HTML format for token emails:"); ?></label>
+        <div class="col-sm-6">
             <select name='htmlemail' id='htmlemail' onchange="alert('<?php  eT("If you switch email mode, you'll have to review your email templates to fit the new format","js"); ?>');" class="form-control">
                 <option value='Y'
                     <?php if ($esrow['htmlemail'] == "Y") { ?>
@@ -139,8 +139,8 @@
 
     <!-- Send confirmation emails -->
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='sendconfirmation'><?php  eT("Send confirmation emails:"); ?></label>
-        <div class="col-sm-8">
+        <label class="col-sm-6 control-label" for='sendconfirmation'><?php  eT("Send confirmation emails:"); ?></label>
+        <div class="col-sm-6">
             <select name='sendconfirmation' id='sendconfirmation'  class="form-control">
                 <option value='Y'
                     <?php if ($esrow['sendconfirmation'] == "Y") { ?>
@@ -158,10 +158,9 @@
 
     <!--  Set token length to -->
     <div class="form-group">
-        <label class="col-sm-4 control-label" for='tokenlength'><?php  eT("Set token length to:"); ?></label>
-        <div class="col-sm-8">
+        <label class="col-sm-6 control-label" for='tokenlength'><?php  eT("Set token length to:"); ?></label>
+        <div class="col-sm-6">
             <input type='text' value="<?php echo $esrow['tokenlength']; ?>" name='tokenlength' id='tokenlength' size='4' maxlength='2' onkeypress="return goodchars(event,'0123456789')"  class="form-control" />
         </div>
     </div>
 </div>
-

@@ -107,3 +107,9 @@ td.subquestion-actions span:hover
 {
     cursor: pointer;
 }
+
+/* edit survey */
+.template-img
+{
+    padding-top: 0;
+}

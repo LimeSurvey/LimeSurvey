@@ -19,17 +19,16 @@
 
     <!-- Base language -->
     <div class="form-group">
-        <label class="col-sm-5 control-label" ><?php  eT("Base language:") ; ?></label>
-        <div class="col-sm-7" style="padding-top: 7px;">
+        <label class="col-sm-3 control-label" ><?php  eT("Base language:") ; ?></label>
+        <div class="col-sm-9" style="padding-top: 7px;">
             <?php echo getLanguageNameFromCode($esrow['language'],false) ?>
         </div>
     </div>
 
     <!-- Additional Languages -->
     <div class="form-group">
-        <label class="col-sm-5 text-right"  for='additional_languages'><?php  eT("Additional Languages"); ?>:</label>
-        <div class="col-sm-12">
-            <br/>
+        <label class="col-sm-3 text-right"  for='additional_languages'><?php  eT("Additional Languages"); ?>:</label>
+        <div class="col-sm-9">
             <table>
                 <tr>
                     <td style='text-align:left'>
