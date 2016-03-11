@@ -111,7 +111,6 @@
                 Yii::app()->params['pageSizeOptions'],
                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
         'columns'=>$gridColumns,
-        'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
     ));
     ?>
 </div>
