@@ -715,9 +715,9 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-    * Shows admin menu for surveys
-    * @param int Survey id
-    */
+     * Shows admin menu for surveys
+     * @param int Survey id
+     */
     function _surveybar($aData)
     {
         if((isset($aData['surveybar'])))
@@ -739,9 +739,7 @@ class Survey_Common_Action extends CAction
 
             $condition = array('sid' => $iSurveyID, 'parent_qid' => 0, 'language' => $baselang);
 
-            //$sumquery3 =  "SELECT * FROM ".db_table_name('questions')." WHERE sid={$iSurveyID} AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey
-            $sumresult3 = Question::model()->findAllByAttributes($condition); //Checked
-            $sumcount3 = count($sumresult3);
+            $sumcount3 = Question::model()->countByAttributes($condition); //Checked
 
             $aData['canactivate'] = $sumcount3 > 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
             $aData['candeactivate'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
@@ -763,7 +761,6 @@ class Survey_Common_Action extends CAction
             $aData['additionallanguages'] = $oSurvey->getAdditionalLanguages();
             $aData['languagelist'] =  $oSurvey->getAllLanguages();
             $aData['onelanguage']=(count($aData['languagelist'])==1);
-
 
             $aData['hasadditionallanguages'] = (count($aData['additionallanguages']) > 0);
 
