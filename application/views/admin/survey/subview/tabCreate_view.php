@@ -11,7 +11,7 @@
 ?>
     <!-- Form submited by save buton menu bar -->
     <?php echo CHtml::form(array('admin/survey/sa/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'form-horizontal')); ?>
-        <div class='col-lg-8'>
+        <div class='col-sm-12 col-md-6'>
 
             <!-- Text elements -->
             <div class="row">
@@ -78,7 +78,7 @@
         </div>
 
         <!-- Settings in accordion -->
-        <div class='col-lg-4'>
+        <div class='col-sm-12 col-md-6'>
             <?php $this->renderPartial('/admin/survey/subview/accordion/_accordion_container', array('data'=>$data)); ?>
         </div>
 

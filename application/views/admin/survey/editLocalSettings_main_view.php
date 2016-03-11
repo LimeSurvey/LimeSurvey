@@ -27,12 +27,12 @@
             <?php echo CHtml::form(array("admin/database/index/updatesurveylocalesettings"), 'post', array('id'=>'globalsetting','name'=>'globalsetting','class'=>'form-horizontal form30')); ?>
 
                 <!-- text edition -->
-                <div class="col-sm-12 col-md-8 content-right">
+                <div class="col-sm-12 col-md-6 content-right">
                     <?php $this->renderPartial('/admin/survey/subview/tab_edit_view',$data); ?>
                 </div>
 
                 <!-- settings -->
-                <div class="col-sm-12 col-md-4" id="accordion-container" style="background-color: #fff;">
+                <div class="col-sm-12 col-md-6" id="accordion-container" style="background-color: #fff;">
                     <?php $this->renderPartial('/admin/survey/subview/accordion/_accordion_container', array('data'=>$settings_data)); ?>
                 </div>
             </form>
