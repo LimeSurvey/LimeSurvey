@@ -2,8 +2,16 @@
 
 Some user think ergonomy of LimeSurvey 2.50 is not better than 2.06 version. But LimeSUrvey need improvement, this fork offer some improvement.
 
+## Installation ##
+- See [LimeSurvey manual](https://manual.limesurvey.org/Installation)
+- Download and extract <http://extensions.sondages.pro/IMG/auto/limesurvey_sondages-pro.zip>
+- [Run_the_installation_script](https://manual.limesurvey.org/Installation#Run_the_installation_script)
+
+### Final step
+-
 ## Improvement and history ##
 * 1.0.4
+    * Fix SMTP for email
     * Filter only script and not HTML in Survey Logic file.
 * 1.0.3
     * Fixed issue #10528: beforeHasPermission event don't happen for owner of survey
