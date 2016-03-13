@@ -3,7 +3,11 @@
 Some user think ergonomy of LimeSurvey 2.50 is not better than 2.06 version. But LimeSUrvey need improvement, this fork offer some improvement.
 
 ## Improvement and history ##
-
+* 1.0.3
+    * Fixed issue #10528: beforeHasPermission event don't happen for owner of survey
+    * Fix from lts : Fixed issue: [Security] Survey ID not properly sanitized on survey creation
+    * Fix from lts : Fixed issue #10641: pie chart error will make statistics reports unavailable
+    * Fix from lts : Fixed issue #10697: 4-byte UTF characters (e.g. Emojis) entered into free text causes database error/truncated text on MySQL
 * 1.0.2
     * Fixed issue #10627 : download files with multilingual surveys
 * 1.0.1
