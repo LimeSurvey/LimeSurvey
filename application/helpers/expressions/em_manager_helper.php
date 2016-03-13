@@ -9101,28 +9101,28 @@ EOD;
                 if ($aSurveyInfo['surveyls_description'] != '')
                 {
                     $LEM->ProcessString($aSurveyInfo['surveyls_description'],0);
-                    $sPrint= viewHelper::stripTagsEM(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                    $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Description:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_welcometext'] != '')
                 {
                     $LEM->ProcessString($aSurveyInfo['surveyls_welcometext'],0);
-                    $sPrint= viewHelper::stripTagsEM(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                    $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Welcome:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_endtext'] != '')
                 {
                     $LEM->ProcessString($aSurveyInfo['surveyls_endtext']);
-                    $sPrint= viewHelper::stripTagsEM(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                    $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End message:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_url'] != '')
                 {
                     $LEM->ProcessString($aSurveyInfo['surveyls_urldescription']." - ".$aSurveyInfo['surveyls_url']);
-                    $sPrint= viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
+                    $sPrint= viewHelper::purified($LEM->GetLastPrettyPrintExpression());
                     $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End URL:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
                 }
@@ -9155,7 +9155,7 @@ EOD;
                     $sGroupText = ((trim($ginfo['description']) == '') ? '&nbsp;' : $ginfo['description']);
                     $LEM->ProcessString($sGroupText, $qid,NULL,false,1,1,false,false);
                     $bGroupHaveError=$bGroupHaveError || $LEM->em->HasErrors();
-                    $sGroupText= viewHelper::stripTagsEM(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                    $sGroupText= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
                     if($bGroupHaveError)
                     {
@@ -9195,7 +9195,7 @@ EOD;
 
                 $sQuestionText = (($q['info']['qtext'] != '') ? $q['info']['qtext'] : '&nbsp');
                 $LEM->ProcessString($sQuestionText, $qid,NULL,false,1,1,false,false);
-                $sQuestionText = viewHelper::stripTagsEM(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                $sQuestionText = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                 if ($LEM->em->HasErrors())
                 {
                     ++$errorCount;
@@ -9205,7 +9205,7 @@ EOD;
                 {
                     $sQuestionHelp=$q['info']['help'];
                     $LEM->ProcessString($sQuestionHelp, $qid,NULL,false,1,1,false,false);
-                    $sQuestionHelp = viewHelper::stripTagsEM(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                    $sQuestionHelp = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     if ($LEM->em->HasErrors())
                     {
                         ++$errorCount;
@@ -9458,7 +9458,7 @@ EOD;
                     $sgqaInfo = $LEM->knownVars[$sgqa];
                     $subqText = $sgqaInfo['subqtext'];
                     $LEM->ProcessString($subqText, $qid,NULL,false,1,1,false,false);
-                    $subqText = viewHelper::stripTagsEM(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                    $subqText = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;
                     }
@@ -9522,7 +9522,7 @@ EOD;
                         }
                         $sAnswerText=$valInfo[1];
                         $LEM->ProcessString($sAnswerText, $qid,NULL,false,1,1,false,false);
-                        $sAnswerText = viewHelper::stripTagsEM(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                        $sAnswerText = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                         if ($LEM->em->HasErrors()) {
                             ++$errorCount;
                         }

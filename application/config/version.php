@@ -14,7 +14,7 @@
 
 $config['versionnumber'] = "2.06+ SondagesPro";
 $config['dbversionnumber'] = 184;
-$config['buildnumber'] = '160129 - SondagesPro 1.0.3';
+$config['buildnumber'] = '160129 - SondagesPro 1.0.4';
 $config['updatable'] = false;
 
 return $config;

@@ -3,6 +3,8 @@
 Some user think ergonomy of LimeSurvey 2.50 is not better than 2.06 version. But LimeSUrvey need improvement, this fork offer some improvement.
 
 ## Improvement and history ##
+* 1.0.4
+    * Filter only script and not HTML in Survey Logic file.
 * 1.0.3
     * Fixed issue #10528: beforeHasPermission event don't happen for owner of survey
     * Fix from lts : Fixed issue: [Security] Survey ID not properly sanitized on survey creation
