@@ -9115,7 +9115,7 @@ EOD;
                 );
             }
 
-            $surveyname = templatereplace('{SURVEYNAME}',array('SURVEYNAME'=>$aSurveyInfo['surveyls_title']));
+            $surveyname = viewHelper::stripTagsEM(templatereplace('{SURVEYNAME}',array('SURVEYNAME'=>$aSurveyInfo['surveyls_title'])));
 
             $out = '<div id="showlogicfilediv" class="table-responsive"><h3>' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</h3>\n";
             $out .= "<table id='logicfiletable' class='table table-bordered'>";
@@ -9175,7 +9175,7 @@ EOD;
                     $sGroupRelevance= '{'.($ginfo['grelevance']=='' ? 1 : $ginfo['grelevance']).'}';
                     $LEM->ProcessString($sGroupRelevance, $qid,NULL,false,1,1,false,false);
                     $bGroupHaveError=$bGroupHaveError || $LEM->em->HasErrors();
-                    $sGroupRelevance= viewHelper::purified($LEM->GetLastPrettyPrintExpression());
+                    $sGroupRelevance= viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
                     $sGroupText = ((trim($ginfo['description']) == '') ? '&nbsp;' : $ginfo['description']);
                     $LEM->ProcessString($sGroupText, $qid,NULL,false,1,1,false,false);
                     $bGroupHaveError=$bGroupHaveError || $LEM->em->HasErrors();
@@ -9205,7 +9205,7 @@ EOD;
                 if (count($sgqas) == 1 && !is_null($q['info']['default']))
                 {
                     $LEM->ProcessString($q['info']['default'], $qid,NULL,false,1,1,false,false);// Default value is Y or answer code or go to input/textarea, then we can filter it
-                    $_default = viewHelper::purified($LEM->GetLastPrettyPrintExpression());
+                    $_default = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
                     if ($LEM->em->HasErrors())
                     {
                         ++$errorCount;
