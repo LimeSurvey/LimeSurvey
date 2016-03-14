@@ -273,7 +273,7 @@ $(document).ready(function() {
          }
          if(destinationdiv.parents("td:first").css("display") != "none") {
              $.post(listColumnUrl+'/'+id+'/'+extra, function(data) {
-                 destinationdiv.html(data);
+                $('#' + id).parent().append(data);
              });
          }
      }
