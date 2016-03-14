@@ -504,22 +504,22 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             <div class='form-group save-survey-row save-survey-password-1'>
                 <label class='control-label col-sm-3 save-survey-label label-cell' for='savepass'>" . gT("Password:") . "</label>
                 <div class='col-sm-7 save-survey-input input-cell'>
-                    <input class='form-control' type='password' id='savepass' name='savepass' value='" . (isset($_POST['savepass']) ? HTMLEscape(autoUnescape($_POST['savepass'])) : ''); 
-    "' /></div></div>\n"
+                    <input class='form-control' type='password' id='savepass' name='savepass' value='" . (isset($_POST['savepass']) ? HTMLEscape(autoUnescape($_POST['savepass'])) : '')
+    . "' /></div></div>\n"
 
     . " <div class='form-group save-survey-row save-survey-password-2'>
             <label class='control-label col-sm-3 save-survey-label label-cell' for='savepass2'>" . gT("Repeat password:") . "</label>
             <div class='col-sm-7 save-survey-input input-cell'>
-                <input class='form-control' type='password' id='savepass2' name='savepass2' value='" . (isset($_POST['savepass2']) ? HTMLEscape(autoUnescape($_POST['savepass2'])) : '');
+                <input class='form-control' type='password' id='savepass2' name='savepass2' value='" . (isset($_POST['savepass2']) ? HTMLEscape(autoUnescape($_POST['savepass2'])) : '')
 
-    $_saveform .= "' /></div></div>\n"
+    . "' /></div></div>\n"
 
     . " <div class='form-group save-survey-row save-survey-email'>
             <label class='col-sm-3 control-label save-survey-label label-cell' for='saveemail'>" . gT("Your email address:") . "</label>
             <div class='col-sm-7 save-survey-input input-cell'>
-                <input class='form-control' type='text' id='saveemail' name='saveemail' value='" . (isset($_POST['saveemail']) ? HTMLEscape(autoUnescape($_POST['saveemail'])) : '');
+                <input class='form-control' type='text' id='saveemail' name='saveemail' value='" . (isset($_POST['saveemail']) ? HTMLEscape(autoUnescape($_POST['saveemail'])) : '')
 
-    $_saveform .= "' /></div></div>\n";
+    . "' /></div></div>\n";
 
     if ( isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
