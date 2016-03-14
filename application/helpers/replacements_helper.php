@@ -498,48 +498,27 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             <div class='form-group save-survey-row save-survey-name'>
                 <label class='control-label col-sm-3 save-survey-label label-cell' for='savename'>" . gT("Name:") . "</label>
                 <div class='col-sm-7 save-survey-input input-cell'>
-                    <input class='form-control' type='text' name='savename' id='savename' value='";
-
-    if (isset($_POST['savename']))
-    {
-        $_saveform .= HTMLEscape(autoUnescape($_POST['savename']));
-    }
-
-    $_saveform .= "' /></div></div>\n"
-
-    . " <div class='form-group save-survey-row save-survey-password-1'>
-            <label class='control-label col-sm-3 save-survey-label label-cell' for='savepass'>" . gT("Password:") . "</label>
-            <div class='col-sm-7 save-survey-input input-cell'>
-                <input class='form-control' type='password' id='savepass' name='savepass' value='";
-
-    if (isset($_POST['savepass']))
-    {
-        $_saveform .= HTMLEscape(autoUnescape($_POST['savepass']));
-    }
-
-    $_saveform .= "' /></div></div>\n"
+                    <input class='form-control' type='text' name='savename' id='savename' value='" . (isset($_POST['savename']) ? HTMLEscape(autoUnescape($_POST['savename'])) : '') . "' />
+                    </div>
+                </div>
+            <div class='form-group save-survey-row save-survey-password-1'>
+                <label class='control-label col-sm-3 save-survey-label label-cell' for='savepass'>" . gT("Password:") . "</label>
+                <div class='col-sm-7 save-survey-input input-cell'>
+                    <input class='form-control' type='password' id='savepass' name='savepass' value='" . (isset($_POST['savepass']) ? HTMLEscape(autoUnescape($_POST['savepass'])) : ''); 
+    "' /></div></div>\n"
 
     . " <div class='form-group save-survey-row save-survey-password-2'>
             <label class='control-label col-sm-3 save-survey-label label-cell' for='savepass2'>" . gT("Repeat password:") . "</label>
             <div class='col-sm-7 save-survey-input input-cell'>
-                <input class='form-control' type='password' id='savepass2' name='savepass2' value='";
-
-    if (isset($_POST['savepass2']))
-    {
-        $_saveform .= HTMLEscape(autoUnescape($_POST['savepass2']));
-    }
+                <input class='form-control' type='password' id='savepass2' name='savepass2' value='" . (isset($_POST['savepass2']) ? HTMLEscape(autoUnescape($_POST['savepass2'])) : '');
 
     $_saveform .= "' /></div></div>\n"
 
     . " <div class='form-group save-survey-row save-survey-email'>
             <label class='col-sm-3 control-label save-survey-label label-cell' for='saveemail'>" . gT("Your email address:") . "</label>
             <div class='col-sm-7 save-survey-input input-cell'>
-                <input class='form-control' type='text' id='saveemail' name='saveemail' value='";
+                <input class='form-control' type='text' id='saveemail' name='saveemail' value='" . (isset($_POST['saveemail']) ? HTMLEscape(autoUnescape($_POST['saveemail'])) : '');
 
-    if (isset($_POST['saveemail']))
-    {
-        $_saveform .= HTMLEscape(autoUnescape($_POST['saveemail']));
-    }
     $_saveform .= "' /></div></div>\n";
 
     if ( isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
