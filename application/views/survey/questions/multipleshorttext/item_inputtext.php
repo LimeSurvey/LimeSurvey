@@ -25,7 +25,7 @@
         </div>
         <?php endif;?>
 
-    <div  class="form-group-row row">
+    <div  class="form-group row">
         <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>' for="answer<?php echo$myfname;?>">
             <?php echo $question; ?>
         </label>
