@@ -99,6 +99,7 @@ class UserAction extends Survey_Common_Action
             $aViewUrls['message'] = array('title' => gT("Failed to add user"), 'message' => gT("A username was not supplied or the username is invalid."), 'class'=> 'text-warning');
         }
         elseif (User::model()->find("users_name=:users_name",array(':users_name'=>$new_user))) {
+            // TODO: If error, we want to keep the form values. Can't do it nicely without CActiveForm?
             Yii::app()->setFlashMessage(gT("The username already exists."), 'error');
             $this->getController()->redirect(array('/admin/user/sa/index'));
         }
