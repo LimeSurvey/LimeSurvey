@@ -560,13 +560,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             <div class='form-group load-survey-row load-survey-name'>
                 <label class='control-label col-sm-3 load-survey-label label-cell' for='loadname'>" . gT("Saved name:") . "</label>
                 <div class='col-sm-7 load-survey-input input-cell'>
-                    <input class='form-control' type='text' id='loadname' name='loadname' value='" . (isset($loadname) ? HTMLEscape(autoUnescape($loadname)) : '') . "' />
+                    <input class='form-control' type='text' id='loadname' name='loadname' value='' />
                 </div>
             </div>
             <div class='form-group load-survey-row load-survey-password'>
                 <label class='control-label col-sm-3 load-survey-label label-cell' for='loadpass'>" . gT("Password:") . "</label>
                 <div class='col-sm-7 load-survey-input input-cell'>
-                    <input class='form-control' type='password' id='loadpass' name='loadpass' value='" . (isset($loadpass) ? HTMLEscape(autoUnescape($loadpass)) : '') ."' />
+                    <input class='form-control' type='password' id='loadpass' name='loadpass' value='' />
                 </div>
             </div>
     ";
