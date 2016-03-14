@@ -26,7 +26,7 @@ if (!defined('BASEPATH'))
 class UserAction extends Survey_Common_Action
 {
 
-    function __construct($controller, $id)
+    public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
 
@@ -46,6 +46,8 @@ class UserAction extends Survey_Common_Action
         $usrhimself = $userlist[0];
         unset($userlist[0]);
 
+        $aData = array();
+
         if (Permission::model()->hasGlobalPermission('superadmin','read')) {
             $noofsurveys = Survey::model()->countByAttributes(array("owner_id" => $usrhimself['uid']));
             $aData['noofsurveys'] = $noofsurveys;
@@ -63,10 +65,13 @@ class UserAction extends Survey_Common_Action
         $noofsurveyslist = array();
 
         //This loops through for each user and checks the amount of surveys against them.
-        for ($i = 1; $i <= count($userlist); $i++)
+        $limit = count($userlist);
+        for ($i = 1; $i <= $limit; $i++)
+        {
             $noofsurveyslist[$i] = $this->_getSurveyCountForUser($userlist[$i]);
+        }
 
-    //    $aData['imageurl'] = IMAGE_BASE_URL;
+        //$aData['imageurl'] = IMAGE_BASE_URL;
         $aData['noofsurveyslist'] = $noofsurveyslist;
 
         $aData['title_bar']['title'] = gT('User administration');
@@ -86,7 +91,7 @@ class UserAction extends Survey_Common_Action
      *
      * @return void
      */
-    function adduser()
+    public function adduser()
     {
         if (!Permission::model()->hasGlobalPermission('users','create')) {
             Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
@@ -185,7 +190,7 @@ class UserAction extends Survey_Common_Action
     /**
     * Delete user
     */
-    function deluser()
+    public function deluser()
     {
 
         if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('users','delete')) {
@@ -220,6 +225,7 @@ class UserAction extends Survey_Common_Action
                 {
                     $transfer_surveys_to = 0;
                     $ownerUser = User::model()->findAll();
+                    $aData = array();
                     $aData['users'] = $ownerUser;
 
                     $current_user = Yii::app()->session['loginID'];
@@ -239,7 +245,7 @@ class UserAction extends Survey_Common_Action
 
                     if ($action == "finaldeluser")
                     {
-                        $aViewUrls=$this->deleteFinalUser($ownerUser, $transfer_surveys_to);
+                        $this->deleteFinalUser($ownerUser, $transfer_surveys_to);
                     }
                     else
                     {
@@ -267,7 +273,13 @@ class UserAction extends Survey_Common_Action
         return $aViewUrls;
     }
 
-    function deleteFinalUser($result, $transfer_surveys_to)
+    /**
+     * @param $result TODO: Used at all?
+     * @param $transfer_surveys_to  TODO: ?
+     * @return void
+     * @todo Delete what final user?
+     */
+    public function deleteFinalUser($result, $transfer_surveys_to)
     {
 
         $postuserid = (int) Yii::app()->request->getPost("uid");
@@ -312,6 +324,7 @@ class UserAction extends Survey_Common_Action
             $extra = sprintf(gT("All of the user's surveys were transferred to %s."), $sTransferred_to);
         }
 
+        $aViewUrls = array();
         $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect("", gT("Success!"), "text-success", $extra);
         $this->_renderWrappedTemplate('user', $aViewUrls);
     }
@@ -319,7 +332,7 @@ class UserAction extends Survey_Common_Action
     /**
     * Modify User
     */
-    function modifyuser()
+    public function modifyuser()
     {
 
         if ( Yii::app()->request->getParam('uid') !=''  )
@@ -333,6 +346,7 @@ class UserAction extends Survey_Common_Action
             (Permission::model()->hasGlobalPermission('users','update') && $sresultcount > 0) )
             {
                 $sresult = User::model()->parentAndUser($postuserid);
+                $aData = array();
                 $aData['mur'] = $sresult;
 
                 $aData['fullpagebar']['savebutton']['form'] = 'moduserform';
@@ -353,7 +367,7 @@ class UserAction extends Survey_Common_Action
     /**
     * Modify User POST
     */
-    function moduser()
+    public function moduser()
     {
 
         $postuserid = (int) Yii::app()->request->getPost("uid");
@@ -426,12 +440,13 @@ class UserAction extends Survey_Common_Action
         {
             Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
         }
+        $aData = array();
         $aData['fullpagebar']['continuebutton']['url'] = 'admin/user/sa/index';
         $this->_renderWrappedTemplate('user', $aViewUrls, $aData);
     }
 
 
-    function savepermissions()
+    public function savepermissions()
     {
 
         $iUserID=(int)App()->request->getPost('uid');
@@ -482,7 +497,7 @@ class UserAction extends Survey_Common_Action
 
     }
 
-    function setuserpermissions()
+    public function setuserpermissions()
     {
         $iUserID = (int) Yii::app()->request->getPost('uid');
 
@@ -533,10 +548,11 @@ class UserAction extends Survey_Common_Action
             {
                 unset($aBasePermissions['superadmin']);
             }
-            $aData['aBasePermissions']=$aBasePermissions;
 
+            $aData = array();
+            $aData['aBasePermissions'] = $aBasePermissions;
+            $aData['oUser'] = $oUser;
 
-            $aData['oUser'] =$oUser;
             App()->getClientScript()->registerPackage('jquery-tablesorter');
             App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "userpermissions.js" ));
 
@@ -552,7 +568,7 @@ class UserAction extends Survey_Common_Action
         }
     }
 
-    function setusertemplates()
+    public function setusertemplates()
     {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'users.js' ));
@@ -584,7 +600,7 @@ class UserAction extends Survey_Common_Action
         $this->_renderWrappedTemplate('user', 'setusertemplates', $aData);
     }
 
-    function usertemplates()
+    public function usertemplates()
     {
 
         $postuserid = (int) Yii::app()->request->getPost('uid');
@@ -633,9 +649,9 @@ class UserAction extends Survey_Common_Action
     }
 
     /**
-    * Manage user personal settings
-    */
-    function personalsettings()
+     * Manage user personal settings
+     */
+    public function personalsettings()
     {
         // Save Data
         if (Yii::app()->request->getPost("action")) {
@@ -669,6 +685,9 @@ class UserAction extends Survey_Common_Action
             if (Yii::app()->request->getPost("saveandclose")) {
                 $this->getController()->redirect(array("admin/survey/sa/index"));
             }
+        }
+        else {
+            $aData = array();
         }
 
         // Get user lang
@@ -785,6 +804,7 @@ class UserAction extends Survey_Common_Action
         $url = (!empty($url)) ? $url : $this->getController()->createUrl('admin/user/index');
         $urlText = (!empty($urlText)) ? $urlText : gT("Continue");
 
+        $aData = array();
         $aData['title'] = $title;
         $aData['message'] = $message;
         $aData['url'] = $url;

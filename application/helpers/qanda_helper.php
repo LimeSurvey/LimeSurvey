@@ -2597,6 +2597,12 @@ function do_multiplechoice_withcomments($ia)
             $inputCOmmentValue = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);
         }
 
+        // TODO: $value is not defined for some execution paths.
+        if (!isset($value))
+        {
+            $value = '';
+        }
+
         $itemDatas = array(
             'liclasses' => 'other question-item answer-item checkbox-text-item other-item',
             'liid'=>'javatbd'.$myfname,
