@@ -4733,7 +4733,7 @@ function do_array($ia)
         $answer_start = '<!-- Array Question, no dropdown -->';
         $answer_start .= '<div class="no-more-tables">';
         //$answer_start .= "\n<table class=\"table-in-qanda-5 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n";
-        $answer_start .= "\n<table class=\"table-in-qanda-5 question subquestions-list questions-list {$extraclass}\">\n";
+        $answer_start .= "\n<table class=\"table-in-qanda-5 question subquestions-list questions-list table-striped {$extraclass}\">\n";
         $answer_head_line= "\t<td>&nbsp;</td>\n";
             foreach ($labelans as $ld)
             {

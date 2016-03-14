@@ -876,7 +876,7 @@ function alternation($alternate = '' , $type = 'col')
     if($type == 'row')
     {
         $odd  = 'array2 well'; // should be row_odd
-        $even = 'array1'; // should be row_even
+        $even = 'array1 well'; // should be row_even
     }
     else
     {
