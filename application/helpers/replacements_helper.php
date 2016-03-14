@@ -555,23 +555,50 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
 
     // Load Form
-    $_loadform = "<table class='load-survey-form'><tr class='load-survey-row load-survey-name'><td class='load-survey-label label-cell' align='right'><label for='loadname'>" . gT("Saved name") . "</label>:</td><td class='load-survey-input input-cell'><input type='text' id='loadname' name='loadname' value='";
-    if (isset($loadname))
-    {
-        $_loadform .= HTMLEscape(autoUnescape($loadname));
-    }
-    $_loadform .= "' /></td></tr>\n"
-    . "<tr class='load-survey-row load-survey-password'><td class='load-survey-label label-cell' align='right'><label for='loadpass'>" . gT("Password") . "</label>:</td><td class='load-survey-input input-cell'><input type='password' id='loadpass' name='loadpass' value='";
-    if (isset($loadpass))
-    {
-        $_loadform .= HTMLEscape(autoUnescape($loadpass));
-    }
-    $_loadform .= "' /></td></tr>\n";
+    $_loadform = "
+        <div class='load-survey-form form-horizontal'>
+            <div class='form-group load-survey-row load-survey-name'>
+                <label class='control-label col-sm-3 load-survey-label label-cell' for='loadname'>" . gT("Saved name:") . "</label>
+                <div class='col-sm-7 load-survey-input input-cell'>
+                    <input class='form-control' type='text' id='loadname' name='loadname' value='" . (isset($loadname) ? HTMLEscape(autoUnescape($loadname)) : '') . "' />
+                </div>
+            </div>
+            <div class='form-group load-survey-row load-survey-password'>
+                <label class='control-label col-sm-3 load-survey-label label-cell' for='loadpass'>" . gT("Password:") . "</label>
+                <div class='col-sm-7 load-survey-input input-cell'>
+                    <input class='form-control' type='password' id='loadpass' name='loadpass' value='" . (isset($loadpass) ? HTMLEscape(autoUnescape($loadpass)) : '') ."' />
+                </div>
+            </div>
+    ";
+
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_loadform .="<tr class='load-survey-row load-survey-captcha'><td class='load-survey-label label-cell' align='right'><label for='loadsecurity'>" . gT("Security question") . "</label>:</td><td class='load-survey-input input-cell'><table class='captcha-table'><tr><td class='captcha-image' valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' alt='' /></td><td class='captcha-input' valign='middle'><input type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
+        $_loadform .="
+            <div class='form-group load-survey-row load-survey-captcha'>
+                <label class='control-label col-sm-3 load-survey-label label-cell' for='loadsecurity'>" . gT("Security question:") . "</label>
+                <div class='col-sm-2 captcha-image' valign='middle'>
+                    <img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' alt='' />
+                </div>
+                <div class='col-sm-3 captcha-input' valign='middle'>
+                    <input class='form-control' type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' alt=''/>
+                </div>
+            </div>
+        ";
     }
-    $_loadform .="<tr class='load-survey-row load-survey-submit'><td class='load-survey-label label-cell'><label class='hide jshide' for='loadbutton'>" . gT("Load now") . "</label></td><td class='load-survey-input input-cell'><input type='submit' id='loadbutton' class='button' value='" . gT("Load now") . "' /></td></tr></table>\n";
+
+    $_loadform .="
+            <div class='load-survey-row load-survey-submit'>
+                <!-- Needed?
+                    <td class='load-survey-label label-cell'>
+                        <label class='hide jshide' for='loadbutton'>" . gT("Load now") . "</label>
+                    </td>
+                -->
+                <div class='form-group col-sm-12 load-survey-input input-cell'>
+                    <input type='submit' id='loadbutton' class='btn btn-default' value='" . gT("Load now") . "' />
+                </div>
+            </div>
+        </div>
+    ";
 
     // Assessments
     $assessmenthtml="";
