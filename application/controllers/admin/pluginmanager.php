@@ -60,9 +60,12 @@ class PluginManager extends Survey_Common_Action
             }
         }
 
-        if (isset($_GET['pageSize']))
+        if(!is_null(Yii::app()->request->getParam('pageSize')))
         {
-            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+            $pageSize = intval(Yii::app()->request->getParam('pageSize'));
+            if(in_array($pageSize, Yii::app()->params['pageSizeOptions'])) {
+                Yii::app()->user->setState('pageSize', $pageSize);
+            }
         }
 
         $aData['fullpagebar']['returnbutton']['url'] = 'index';

@@ -8,7 +8,7 @@
 */
 
 ?>
-<?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
+<?php $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize'])); ?>
 
 <h3 class="pagetitle"><?php eT('Plugin manager'); ?></h3>
 <div style="width: 75%; margin: auto;">
