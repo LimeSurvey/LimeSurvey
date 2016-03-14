@@ -9,6 +9,6 @@
  */
 ?>
 <!-- Array 5 point choice -->
-<table class="table question subquestion-list questions-list <?php echo $extraclass; ?>">
+<table class="table question subquestion-list questions-list table-striped <?php echo $extraclass; ?>">
     <colgroup class="col-responses">
         <col class="col-answers" />

@@ -4188,7 +4188,7 @@ function do_array_10point($ia)
     /*$answer .= "\n<table class=\"table-in-qanda-2 question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";*/
-    $answer .= "\n<table class=\"table-in-qanda-2 question subquestion-list questions-list {$extraclass}\">\n"
+    $answer .= "\n<table class=\"table-in-qanda-2 question subquestion-list questions-list table-striped {$extraclass}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" style='width: $answerwidth%;'/>\n";
 
@@ -4513,7 +4513,7 @@ function do_array_increasesamedecrease($ia)
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 */
-$answer = "\n<table class=\"table table-condensed  table-in-qanda-4 question subquestions-list questions-list {$extraclass}\" >\n"
+$answer = "\n<table class=\"table table-condensed  table-in-qanda-4 question subquestions-list questions-list table-striped {$extraclass}\" >\n"
 . "\t<colgroup class=\"col-responses\">\n"
 . "\t<col class=\"col-answers\" style='width: $answerwidth%;' />\n";
 
