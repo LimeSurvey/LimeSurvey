@@ -607,6 +607,7 @@ class index extends CAction {
 
         if (isset($_POST['saveall']) || isset($flashmessage))
         {
+            // TODO: This is echoed after </body> and </html>
             echo "<script type='text/javascript'> $(document).ready( function() { alert('".gT("Your responses were successfully saved.","js")."');}) </script>";
         }
     }
