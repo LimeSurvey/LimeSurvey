@@ -81,20 +81,26 @@ class UserAction extends Survey_Common_Action
         return Survey::model()->countByAttributes(array('owner_id' => $user['uid']));
     }
 
+    /**
+     * Add a new survey administrator user
+     *
+     * @return void
+     */
     function adduser()
     {
-
         if (!Permission::model()->hasGlobalPermission('users','create')) {
             Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
+
         $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
         $aViewUrls = array();
         if (empty($new_user)) {
             $aViewUrls['message'] = array('title' => gT("Failed to add user"), 'message' => gT("A username was not supplied or the username is invalid."), 'class'=> 'text-warning');
         }
         elseif (User::model()->find("users_name=:users_name",array(':users_name'=>$new_user))) {
-            $aViewUrls['message'] = array('title' => gT("Failed to add user"), 'message' => gT("The username already exists."), 'class'=> 'text-warning');
+            Yii::app()->setFlashMessage(gT("The username already exists."), 'error');
+            $this->getController()->redirect(array('/admin/user/sa/index'));
         }
         else
         {
