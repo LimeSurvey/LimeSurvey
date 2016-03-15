@@ -1,6 +1,7 @@
 <?php
 
 namespace ls\components;
+use ls\interfaces\ResponseInterface;
 use ls\models\Survey;
 use ls\models\QuestionGroup;
 /**
@@ -60,10 +61,10 @@ class SurveySession extends \CComponent
 
     /**
      * @param int $surveyId
-     * @param int $responseId
+     * @param ResponseInterface $response
      * @param integer $id
      */
-    public function __construct($surveyId, \ls\interfaces\ResponseInterface $response, $id)
+    public function __construct($surveyId, ResponseInterface $response, $id)
     {
         $this->surveyId = $surveyId;
         $this->_responseId = $response->getId();
@@ -151,9 +152,7 @@ class SurveySession extends \CComponent
                             'with' => [
                                 'answers',
                                 'subQuestions',
-                                'questionAttributes',
-//                                'conditions',
-//                                'conditionsAsTarget'
+                                'questionAttributes'
                             ]
                         ]
                     ]
@@ -479,7 +478,6 @@ class SurveySession extends \CComponent
                 $randomIndex = $seed % count($randomizationGroups[$group]);
 
                 $order[$i] = $randomizationGroups[$group][$randomIndex];
-                $ids[] = $order[$i]->id;
                 unset($randomizationGroups[$group][$randomIndex]);
                 $randomizationGroups[$group] = array_values($randomizationGroups[$group]);
             }
@@ -491,7 +489,7 @@ class SurveySession extends \CComponent
 
     /**
      * Getter for the format. In the future we could allow override per session.
-     * @return FORMAT_QUESTION|FORMAT_GROUP|FORMAT_SURVEY;
+     * @return FORMAT_QUESTION|FORMAT_GROUP|FORMAT_SURVEY
      */
     public function getFormat()
     {
@@ -563,7 +561,6 @@ class SurveySession extends \CComponent
         switch ($this->format) {
             case Survey::FORMAT_ALL_IN_ONE:
                 throw new \UnexpectedValueException("An all in one survey does not have a current group.");
-                break; // for consistency.
             case Survey::FORMAT_GROUP:
                 $result = $this->getGroupByIndex($this->step);
                 break;
