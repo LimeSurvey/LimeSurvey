@@ -605,10 +605,9 @@ class index extends CAction {
         $tmp = new SurveyRuntimeHelper();
         $tmp->run($surveyid,$redata);
 
-        if (isset($_POST['saveall']) || isset($flashmessage))
+        if (App()->request->getPost('saveall') || isset($flashmessage))
         {
-            // TODO: This is echoed after </body> and </html>
-            echo "<script type='text/javascript'> $(document).ready( function() { alert('".gT("Your responses were successfully saved.","js")."');}) </script>";
+            App()->clientScript->registerScript("saveflashmessage","alert('".gT("Your responses were successfully saved.","js")."');",CClientScript::POS_READY);
         }
     }
 
