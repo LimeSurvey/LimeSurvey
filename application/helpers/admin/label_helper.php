@@ -17,10 +17,10 @@
 
 function updateset($lid)
 {
-    
+
 
     // Get added and deleted languagesid arrays
-    $postlanguageids=Yii::app()->getRequest()->getPost('languageids');
+    $postlanguageids=implode(Yii::app()->getRequest()->getPost('languages',array())," ");
     $postlabel_name=Yii::app()->getRequest()->getPost('label_name');
     $newlanidarray = explode(" ",trim($postlanguageids));
 
@@ -90,7 +90,7 @@ function insertlabelset()
 {
     //global $labelsoutput;
     //	$labelsoutput.= $_POST['languageids'];  For debug purposes
-    
+
 
     $postlanguageids=sanitize_languagecodeS(Yii::app()->getRequest()->getPost('languageids'));
     $postlabel_name=flattenText(Yii::app()->getRequest()->getPost('label_name'),false,true,'UTF-8',true);
@@ -118,7 +118,7 @@ function modlabelsetanswers($lid)
 
     //global  $labelsoutput;
 
-    
+
 
     $ajax = false;
 
@@ -130,10 +130,10 @@ function modlabelsetanswers($lid)
     }
 
     $sPostData = Yii::app()->getRequest()->getPost('dataToSend');
-    $sPostData=str_replace("\t", '', $sPostData); 
+    $sPostData=str_replace("\t", '', $sPostData);
     if (get_magic_quotes_gpc())
     {
-        $data = json_decode(stripslashes($sPostData));    
+        $data = json_decode(stripslashes($sPostData));
     }
     else
     {
@@ -206,7 +206,7 @@ function modlabelsetanswers($lid)
 */
 function fixorder($lid) {
 
-    
+
 
     $qulabelset = "SELECT * FROM {{labelsets}} WHERE lid=$lid";
     $rslabelset = Yii::app()->db->createCommand($qulabelset)->query();
