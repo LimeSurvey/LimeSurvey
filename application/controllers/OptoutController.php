@@ -24,11 +24,10 @@ class OptoutController extends LSYii_Controller {
      public $layout = 'bare';
      public $defaultAction = 'tokens';
 
-    /* This function is run when opting out of an individual token table. The other function /optout/participants
+    /**
+     * This function is run when opting out of an individual token table. The other function /optout/participants
      * opts the user out of ALL survey invitations from the system
-     *
-     *
-     * */
+     */
     function actiontokens()
     {
         $iSurveyID=Yii::app()->request->getQuery('surveyid');
@@ -95,7 +94,7 @@ class OptoutController extends LSYii_Controller {
             $sTemplate=getTemplatePath($aSurveyInfo['templatedir']);
         }
 
-        $this->_renderHtml($sMessage,$sTemplate,$aSurveyInfo);
+        $this->_renderHtml($sMessage,$sTemplate,$aSurveyInfo, $iSurveyID);
     }
 
     /* This function is run when opting out of the participants system. The other function /optout/token
@@ -182,19 +181,26 @@ class OptoutController extends LSYii_Controller {
             $sTemplate=getTemplatePath($aSurveyInfo['templatedir']);
         }
 
-        $this->_renderHtml($sMessage,$sTemplate, $aSurveyInfo);
+        $this->_renderHtml($sMessage,$sTemplate, $aSurveyInfo, $iSurveyID);
     }
 
-    private function _renderHtml($html, $thistpl, $aSurveyInfo)
+    /**
+     * Render something
+     *
+     * @param string $html
+     * @param ? $thistpl
+     * @param array $aSurveyInfo
+     * @param int $iSurveyID
+     * @return void
+     */
+    private function _renderHtml($html, $thistpl, $aSurveyInfo, $iSurveyID)
     {
         sendCacheHeaders();
         doHeader();
         $aSupportData=array('thissurvey'=>$aSurveyInfo);
 
-        $oTemplate = Template::model()->getInstance();
-        $sTemplatePath = $oTemplate->path;
+        $oTemplate = Template::model()->getInstance(null, $iSurveyID);
         $thistpl = $oTemplate->viewPath;
-
 
         echo templatereplace(file_get_contents($thistpl.'startpage.pstpl'),array(), $aSupportData);
         $aData['html'] = $html;
