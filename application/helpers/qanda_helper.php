@@ -4513,9 +4513,10 @@ function do_array_increasesamedecrease($ia)
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 */
-$answer = "\n<table class=\"table table-condensed  table-in-qanda-4 question subquestions-list questions-list {$extraclass}\" >\n"
-. "\t<colgroup class=\"col-responses\">\n"
-. "\t<col class=\"col-answers\" style='width: $answerwidth%;' />\n";
+    $answer = '<div class="no-more-tables no-more-tables-inc-same-dec">';
+    $answer .= "\n<table class=\"table table-condensed  table-in-qanda-4 question subquestions-list questions-list {$extraclass}\" >\n"
+    . "\t<colgroup class=\"col-responses\">\n"
+    . "\t<col class=\"col-answers\" style='width: $answerwidth%;' />\n";
 
     $odd_even = '';
     for ($xc=1; $xc<=3; $xc++)
@@ -4635,7 +4636,7 @@ $answer = "\n<table class=\"table table-condensed  table-in-qanda-4 question sub
         $inputnames[]=$myfname;
         $fn++;
     }
-    $answer .=  $answer_body . "\t</tbody>\n</table>\n";
+    $answer .=  $answer_body . "\t</tbody>\n</table>\n</div>\n";
     return array($answer, $inputnames);
 }
 
