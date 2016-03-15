@@ -34,11 +34,11 @@
                     {
                         if(!isset($aLang[$lang]))
                         {
-                            $sLanguage=getLanguageNameFromCode($lang);
+                            $aLangInfo=getLanguageNameFromCode($lang);
                             $aLang[$lang]=html_entity_decode($aLangInfo[0], ENT_QUOTES, 'UTF-8')." (".html_entity_decode($aLangInfo[1], ENT_QUOTES, 'UTF-8').")";
                         }
                     }
-                    echo App()->getController()->widget('ext.bootstrap.widgets.TbSelect2', array(
+                    $this->widget('ext.bootstrap.widgets.TbSelect2', array(
                         'name' => 'languages',
                         'data'=>$aLang,
                         'value' => $langidsarray,
@@ -48,8 +48,9 @@
                         'htmlOptions' => array(
                             'multiple' => 'multiple',
                             'required' => 'required',
+                            'placeholder' => gt("You need at least one language in a labelset."),
                         ),
-                    ), true);
+                    ));
                 ?>
             </li></ul>
             <p><input type='submit' value='<?php if ($action == "newlabelset") {eT("Save");}
