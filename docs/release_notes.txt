@@ -59,6 +59,12 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.06LTS (build 160303) to 2.06LTS (build 160315) March 15, 2016
+-Fixed issue #10191: Can't import attributes with Participants (Olle Haerstedt)
+-Fixed issue #10641: Pie chart error will make statistics reports unavailable (Olle Haerstedt)
+-Fixed issue #10697: 4-byte UTF characters (e.g. Emojis) entered into free text causes database error/truncated text on MySQL (Carsten Schmitz)
+-Fixed issue: [Security] Survey ID not properly sanitized on survey creation (Carsten Schmitz)
+
 Changes from 2.06LTS (build 160302) to 2.06LTS (build 160303) March 01, 2016
 Fixed issue: force page reload after comfortUpdate.
 Fixed issue: force page reload after update of updater.
