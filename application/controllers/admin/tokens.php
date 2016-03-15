@@ -722,27 +722,6 @@ class tokens extends Survey_Common_Action
 
             $sanitizedtoken = sanitize_token(Yii::app()->request->getPost('token'));
 
-            /* Mdekker: commented out this block as it doesn't respect tokenlength
-             * or existing tokens and was always handled by the tokenify action as
-             * the ui still suggests
-            if (empty($sanitizedtoken))
-            {
-                $isvalidtoken = false;
-                while ($isvalidtoken == false)
-                {
-                    $newtoken = randomChars(15);
-                    if (!isset($existingtokens[$newtoken]))
-                    {
-                        $isvalidtoken = true;
-                        $existingtokens[$newtoken] = null;
-                    }
-                }
-                $sanitizedtoken = $newtoken;
-            }
-            */
-
-
-
             $aData = array(
             'firstname' => Yii::app()->request->getPost('firstname'),
             'lastname' => Yii::app()->request->getPost('lastname'),
@@ -2441,7 +2420,7 @@ class tokens extends Survey_Common_Action
         $aData["surveyinfo"] = $surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
-        $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
+
 
         if (!Yii::app()->request->getParam('ok'))
         {
@@ -2449,12 +2428,11 @@ class tokens extends Survey_Common_Action
             $this->_renderWrappedTemplate('token', array( 'message' => array(
             'title' => gT("Create tokens"),
             'message' => gT("Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?") . "<br /><br />\n"
-            . "<input class='btn btn-default' type='submit' value='"
+            . "<input class='btn btn-default btn-lg' type='submit' value='"
             . gT("Yes") . "' onclick=\"" . convertGETtoPOST($this->getController()->createUrl("admin/tokens/sa/tokenify/surveyid/$iSurveyId", array('ok'=>'Y'))) . "\" />\n"
-            . "<input class='btn btn-default' type='submit' value='"
+            . "<input class='btn btn-default  btn-lg' type='submit' value='"
             . gT("No") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
             . "<br />\n"
-            . '<p><a href="'.App()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId).'" title="" class="btn btn-default btn-lg">'.gT("Ok").'</a></p>'
             )), $aData);
         }
         else
@@ -2468,11 +2446,13 @@ class tokens extends Survey_Common_Action
                 $aData['success'] = false;
                 $message = ngT('Only {n} token has been created.|Only {n} tokens have been created.',$newtokencount)
                          .ngT('Need {n} token.|Need {n} tokens.',$neededtokencount);
+                $message .= '<p><a href="'.App()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId).'" title="" class="btn btn-default btn-lg">'.gT("Ok").'</a></p>';
             }
             else
             {
                 $aData['success'] = true;
                 $message = ngT('{n} token has been created.|{n} tokens have been created.',$newtokencount);
+                $message .= '<p><a href="'.App()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId).'" title="" class="btn btn-default btn-lg">'.gT("Ok").'</a></p>';
             }
             $this->_renderWrappedTemplate('token', array( 'message' => array(
             'title' => gT("Create tokens"),
