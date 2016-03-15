@@ -102,7 +102,10 @@ li.responsive-content
     width: 100%;
 }
 
-
+/* Don't wrap "No answer" for 10-point array */
+.table-in-qanda-2 thead th {
+    white-space: nowrap;
+}
 
 /**
 * no more tables
@@ -121,9 +124,13 @@ li.responsive-content
     .no-more-tables thead,
     .no-more-tables tbody,
     .no-more-tables th,
-    .no-more-tables td,
-    .no-more-tables tr {
+    .no-more-tables td {
         display: block;
+    }
+
+    .no-more-tables tr {
+        display: inline-block;
+        width: 100%;
     }
 
     .no-more-tables table.subquestions-list td {
@@ -181,10 +188,6 @@ li.responsive-content
     */
     /*.no-more-tables td:before { content: attr(data-title); }*/
 
-    .no-more-tables-10-point tr{
-        padding-bottom: 100px;
-    }
-
     .no-more-tables-10-point td {
         width: 2em;
         margin: 0px;
@@ -193,6 +196,10 @@ li.responsive-content
         text-align:left;
     }
 
+    /* Don't wrap "No answer" on two lines */
+    .no-more-tables-10-point label {
+        white-space: nowrap;
+    }
 
     .no-more-tables-10-point td:before, .no-more-tables-5-point td:before {
         /* Now like a table header */
