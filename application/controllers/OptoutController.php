@@ -200,6 +200,10 @@ class OptoutController extends LSYii_Controller {
         $aSupportData=array('thissurvey'=>$aSurveyInfo);
 
         $oTemplate = Template::model()->getInstance(null, $iSurveyID);
+        if($oTemplate->cssFramework == 'bootstrap')
+        {
+            App()->bootstrap->register();
+        }
         $thistpl = $oTemplate->viewPath;
 
         echo templatereplace(file_get_contents($thistpl.'startpage.pstpl'),array(), $aSupportData);
