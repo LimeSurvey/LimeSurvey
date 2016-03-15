@@ -43,8 +43,15 @@ class Survey extends LSActiveRecord
         $this->template = Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate'));
         $validator= new LSYii_Validators;
         $this->language = $validator->languageFilter(Yii::app()->getConfig('defaultlang'));
-
         $this->attachEventHandler("onAfterFind", array($this,'fixSurveyAttribute'));
+    }
+
+    /* Your model attribute labels */
+    public function attributeLabels() {
+        return [
+            /* Your other attribute labels */
+            'running' => gT('survey', 'running')
+        ];
     }
 
     /**
@@ -222,6 +229,7 @@ class Survey extends LSActiveRecord
             array('language', 'filter', 'filter'=>'trim'),
             array('additional_languages', 'filter', 'filter'=>'trim'),
             array('additional_languages','LSYii_Validators','isLanguageMulti'=>true),
+            array('running', 'safe', 'on'=>'search'),
             // Date rules currently don't work properly with MSSQL, deactivating for now
             //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
             //  array('startdate','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
@@ -284,6 +292,7 @@ class Survey extends LSActiveRecord
 
         return $this;
     }
+
 
     /**
     * Returns additional languages formatted into a string
@@ -618,6 +627,38 @@ class Survey extends LSActiveRecord
         return $activeword;
     }
 
+    public function getRunning()
+    {
+
+        // If the survey is not active, no date test is needed
+        if($this->active == 'N')
+        {
+            $running = gT('No');
+        }
+        // If it's active, then we check if not expired
+        elseif ($this->expires != '')
+        {
+            // Time adjust
+            $now = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))) );//  dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
+            $expire = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires)) );
+
+            $date1 = new DateTime($now);
+            $date2 = new DateTime($expire);
+
+            $running = ($date2 < $date1)?'<span class="text-warning">'.gT('Expired').'</span>':gT('Yes');
+
+            //return $expires;
+        }
+        // If it's active, and don't have expire date, it's running
+        else
+        {
+            $running = gT('Yes');
+        }
+
+        return $running;
+
+    }
+
     public function getPartialAnswers()
     {
         $table = '{{survey_' . $this->sid . '}}';
@@ -735,7 +776,6 @@ class Survey extends LSActiveRecord
     public function search()
     {
         $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
-
         $sort = new CSort();
         $sort->attributes = array(
           'survey_id'=>array(
@@ -762,9 +802,9 @@ class Survey extends LSActiveRecord
             'desc'=>'anonymized desc',
           ),
 
-          'active'=>array(
-            'asc'=>'active',
-            'desc'=>'active desc',
+          'running'=>array(
+            'asc'=>'active asc, expires asc',
+            'desc'=>'active desc, expires desc',
           ),
 
         );
@@ -794,6 +834,8 @@ class Survey extends LSActiveRecord
         $criteria2->compare($sid_reference, $this->searched_value, true, 'OR');
         $criteria2->compare('surveys_languagesettings.surveyls_title', $this->searched_value, true, 'OR');
         $criteria2->compare('t.admin', $this->searched_value, true, 'OR');
+
+
 
         // Active filter
         if(isset($this->active))

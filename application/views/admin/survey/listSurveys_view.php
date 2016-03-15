@@ -100,9 +100,10 @@
                     ),
 
                     array(
-                        'header' => gT('Active'),
-                        'name' => 'active',
-                        'value'=>'$data->activeWord',
+                        'header' => gT('Running'),
+                        'name' => 'running',
+                        'value'=>'$data->running',
+                        'type'=>'raw',
                         'htmlOptions' => array('class' => 'hidden-xs'),
                     ),
 
