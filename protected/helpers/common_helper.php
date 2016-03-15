@@ -3859,13 +3859,11 @@ function stripJavaScript($sContent){
 * @return string  Cleaned string
 */
 function showJavaScript($sContent){
-    $text = preg_replace_callback ('@<script[^>]*?>.*?</script>@si',         create_function(
-            // single quotes are essential here,
-            // or alternative escape all $ as \$
-            '$matches',
-            'return htmlspecialchars($matches[0]);'
-        ), $sContent);
-    return $text;
+    return preg_replace_callback ('@<script[^>]*?>.*?</script>@si', function($matches) {
+        // single quotes are essential here,
+        // or alternative escape all $ as \$
+        return htmlspecialchars($matches[0]);
+    }, $sContent);
 }
 
 

@@ -1,6 +1,9 @@
 <?php
 namespace ls\cli;
-use CConsoleCommand;
+use \CConsoleCommand;
+use \CDbException;
+use \Exception;
+use \CException;
     /*
     * LimeSurvey (tm)
     * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -79,7 +82,7 @@ use CConsoleCommand;
         /**
          * @param string $sFileName
          */
-        function _executeSQLFile($sFileName)
+        private function _executeSQLFile($sFileName)
         {
             echo   $sFileName;
             $aMessages = array();
@@ -96,7 +99,6 @@ use CConsoleCommand;
 
                 if ($iLineLength && $sLine[0] != '#' && substr($sLine,0,2) != '--') {
                     if (substr($sLine, $iLineLength-1, 1) == ';') {
-                        $line = substr($sLine, 0, $iLineLength-1);
                         $sCommand .= $sLine;
                         $sCommand = str_replace('prefix_', $this->connection->tablePrefix, $sCommand); // Table prefixes
 

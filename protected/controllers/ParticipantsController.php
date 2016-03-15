@@ -128,12 +128,7 @@ class ParticipantsController extends Controller
         $batchInserter = new \ls\components\Batch(function (array $batch, $category = null) {
             if (!empty($batch)) {
                 \Yii::beginProfile('query');
-                try {
-                    $command = App()->db->commandBuilder->createMultipleInsertCommand($category, $batch);
-                } catch (\Exception $e) {
-                    echo "Error in query generation.";
-                    var_dump($batch);
-                }
+                $command = App()->db->commandBuilder->createMultipleInsertCommand($category, $batch);
                 $command->execute();
                 \Yii::endProfile('query');
             }

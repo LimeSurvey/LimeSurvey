@@ -724,8 +724,6 @@ class CheckIntegrity extends Survey_Common_Action
             } else {
                 foreach ($aFullOldTokenSIDs[$iOldTokenSID] as $sTableName)
                 {
-                    var_dump($sTableName);
-                    die();
                     list($sOldText, $sTokensText, $iSurveyID, $sDateTime) = explode('_', substr($sTableName, strlen($sDBPrefix)));
                     $iYear = substr($sDateTime, 0, 4);
                     $iMonth = substr($sDateTime, 4, 2);

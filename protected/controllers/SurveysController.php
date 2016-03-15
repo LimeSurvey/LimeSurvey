@@ -249,9 +249,6 @@ class SurveysController extends Controller
             ) {
                 App()->user->setFlash('success', gT('Survey created'));
                 return $this->redirect(['surveys/update', 'id' => $survey->sid]);
-            } else {
-                var_dump($survey->errors);
-                var_dump($languageSetting->errors);
             }
         }
         $this->render('create', ['survey' => $survey, 'languageSetting' => $languageSetting]);

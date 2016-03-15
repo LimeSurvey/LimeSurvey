@@ -299,8 +299,6 @@ abstract class Response extends Dynamic implements \ls\interfaces\ResponseInterf
             return $this->$fieldName;
         }
         $fullAnswer = null;
-        var_dump($fieldName);
-        die();
         $fieldType = $this->survey;
         $question = $this->fieldMap[$fieldName];
         $questionId = $question['qid'];

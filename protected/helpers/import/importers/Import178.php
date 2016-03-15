@@ -230,9 +230,6 @@ class Import178 extends BaseElementXmlImport{
                 $result = $result && $this->importAnswer($answer, $question);
             }
         } else {
-            var_dump($data);
-            var_dump($question->attributes);
-            var_dump($question->errors);
             die('failed importing question');
         }
         eP();
