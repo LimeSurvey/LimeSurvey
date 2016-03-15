@@ -33,7 +33,7 @@ class OptinController extends LSYii_Controller {
         $sLanguageCode = $langcode;
         $iSurveyID = $surveyid;
         $sToken = $token;
-        $sToken = sanitize_token($sToken);
+        $sToken = Token::sanitizeToken($sToken);
 
         if (!$iSurveyID)
         {
