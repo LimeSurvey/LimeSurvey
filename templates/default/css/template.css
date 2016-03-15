@@ -848,3 +848,8 @@ html body .navbar.navbar-default.navbar-fixed-top {
 .navbar-brand {
     height: auto;
 }
+
+/** For striped tables */
+.array2 {
+    background-color: #f9f9f9;
+}
