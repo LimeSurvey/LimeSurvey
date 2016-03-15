@@ -32,7 +32,7 @@ class OptoutController extends LSYii_Controller {
     {
         $iSurveyID=Yii::app()->request->getQuery('surveyid');
         $sLanguageCode=Yii::app()->request->getQuery('langcode');
-        $sToken=sanitize_token(Yii::app()->request->getQuery('token'));
+        $sToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
@@ -95,7 +95,7 @@ class OptoutController extends LSYii_Controller {
     {
         $iSurveyID=Yii::app()->request->getQuery('surveyid');
         $sLanguageCode=Yii::app()->request->getQuery('langcode');
-        $sToken=sanitize_token(Yii::app()->request->getQuery('token'));
+        $sToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
         if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
