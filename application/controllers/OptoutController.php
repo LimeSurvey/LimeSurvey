@@ -84,24 +84,13 @@ class OptoutController extends LSYii_Controller {
             }
         }
 
-        //PRINT COMPLETED PAGE
-        if (!$aSurveyInfo['templatedir'])
-        {
-            $sTemplate=getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
-        }
-        else
-        {
-            $sTemplate=getTemplatePath($aSurveyInfo['templatedir']);
-        }
-
-        $this->_renderHtml($sMessage,$sTemplate,$aSurveyInfo, $iSurveyID);
+        $this->_renderHtml($sMessage, $aSurveyInfo, $iSurveyID);
     }
 
-    /* This function is run when opting out of the participants system. The other function /optout/token
+    /**
+     * This function is run when opting out of the participants system. The other function /optout/token
      * opts the user out of just a single token/survey invite list
-     *
-     *
-     * */
+     */
     function actionparticipants()
     {
         $iSurveyID=Yii::app()->request->getQuery('surveyid');
@@ -171,29 +160,18 @@ class OptoutController extends LSYii_Controller {
             }
         }
 
-        //PRINT COMPLETED PAGE
-        if (!$aSurveyInfo['templatedir'])
-        {
-            $sTemplate=getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
-        }
-        else
-        {
-            $sTemplate=getTemplatePath($aSurveyInfo['templatedir']);
-        }
-
-        $this->_renderHtml($sMessage,$sTemplate, $aSurveyInfo, $iSurveyID);
+        $this->_renderHtml($sMessage, $aSurveyInfo, $iSurveyID);
     }
 
     /**
      * Render something
      *
      * @param string $html
-     * @param ? $thistpl
      * @param array $aSurveyInfo
      * @param int $iSurveyID
      * @return void
      */
-    private function _renderHtml($html, $thistpl, $aSurveyInfo, $iSurveyID)
+    private function _renderHtml($html, $aSurveyInfo, $iSurveyID)
     {
         sendCacheHeaders();
         doHeader();
