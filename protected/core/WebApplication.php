@@ -51,11 +51,19 @@ class WebApplication extends CWebApplication
     
     protected $_supportedLanguages;
     
-    public function getMaintenanceMode() {
+    public function getMaintenanceMode()
+    {
         return file_exists(__DIR__ . '/../config/MAINTENANCE');
     }
-    public function setMaintenanceMode($value) {
-        @unlink(__DIR__ . '/../config/MAINTENANCE');
+
+    public function setMaintenanceMode($value)
+    {
+        if ($value === true) {
+            touch(__DIR__ . '/../config/MAINTENANCE');
+        } elseif (file_exists(__DIR__ . '/../config/MAINTENANCE')) {
+            unlink(__DIR__ . '/../config/MAINTENANCE');
+        }
+
     }
     
 
@@ -96,14 +104,10 @@ class WebApplication extends CWebApplication
         return is_object($components['db'])
             || isset($components['db']['connectionString']);
     }
+
     /**
-     *
-    * Initiates the application
-    *
-    * @access public
-    * @param array $config
-    * @return void
-    */
+     * @param array $config
+     */
     public function __construct($config = null)
     {
         parent::__construct($config);
@@ -142,25 +146,22 @@ class WebApplication extends CWebApplication
             $this->setLanguage($this->session['language']);
         }
     }
+
     /**
-    * Loads a helper
-    *
-    * @access public
-    * @param string $helper
-    * @return void
-    */
+     * Loads a helper
+     * @param string $helper
+     * @return void
+     */
     public function loadHelper($helper)
     {
-        return Yii::import('application.helpers.' . $helper . '_helper', true);
+        Yii::import('application.helpers.' . $helper . '_helper', true);
     }
 
     /**
-    * Loads a library
-    *
-    * @access public
-    * @param string $helper
-    * @return void
-    */
+     * Loads a library
+     * @param string $library
+     * @return void
+     */
     public function loadLibrary($library)
     {
         Yii::import('application.libraries.'.$library, true);
@@ -249,7 +250,7 @@ class WebApplication extends CWebApplication
     public function disableWebLogRoutes() {
        foreach ($this->log->routes as $route)
        {
-           $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
+           $route->enabled = $route->enabled && !($route instanceOf \CWebLogRoute);
        }
     }
 
