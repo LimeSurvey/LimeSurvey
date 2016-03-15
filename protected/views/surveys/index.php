@@ -1,7 +1,7 @@
 <?php
 use ls\models\Survey;
-
-if (empty($surveys)) {
+/** @var CActiveDataProvider $surveys */
+if ($surveys->totalItemCount == 0) {
         return $this->renderPartial('firstSteps');
     }
 

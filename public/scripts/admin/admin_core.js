@@ -124,51 +124,6 @@ $(document).ready(function(){
     }
 });
 
-function qTypeDropdownInit()
-{
-    $(document).ready(function () {
-        $("#question_type option").each(function(index,element){
-            $(element).qtip({
-                style: {
-                    classes: 'qtip-questiontype'
-                },
-                content: getToolTip($(element).text()),
-                position: {
-                    my : 'top left',
-                    at: 'top right',
-                    target: $('label[for=question_type]'),
-                    viewport: $(window),
-                    adjust: {
-                        x: 20
-                    }
-
-                }
-            });
-
-        });
-    });
-    $(document).ready(function() {
-        $('body').on('mouseenter mouseleave', 'li.questionType', function(e) {
-            if (e.type == 'mouseenter')
-            {
-				// Hide all others if we show a new one.
-                $('#question_type option').qtip('hide');
-                $($(e.currentTarget).data().select2Data.element).qtip('option', 'position.target', $(e.currentTarget)).qtip('show');
-            }
-            else
-            {
-                $($(e.currentTarget).data().select2Data.element).qtip('hide');
-            }
-            
-            
-        });
-        $('#question_type').on('close', function(e) {
-            $('#question_type option').qtip('hide');
-        });
-    });
-}
-
-
 var aToolTipData = {
 
 };

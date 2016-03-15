@@ -15,8 +15,6 @@ $loader = require_once(__DIR__ . '/vendor/autoload.php');
 class_exists(Yii::class);
 if (!isset($argv[0])) die("This must be run from the console.\n");
 
-define('BASEPATH','.');
-
 require_once(__DIR__ . '/helpers/globals.php');
 
 $config = require __DIR__ . '/config/internal.php';

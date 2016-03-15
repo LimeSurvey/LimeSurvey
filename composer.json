@@ -12,8 +12,8 @@
         "tecnickcom/tcpdf": "^6.2",
         "phpmailer/phpmailer": "^5.0",
         "jsonrpc/jsonrpc" : "^1.0",
-        "guzzlehttp/guzzle": "^5.3",
-        "cakephp/utility": "^3.0",
+        "guzzlehttp/guzzle": "^6",
+        "cakephp/utility": "^3.1.5",
         "sam-it/php-auto-update": "^1.0",
         "icecave/semver": "^3.0",
         "sam-it/yii1-translate": "^1.0",
@@ -59,6 +59,7 @@
             "protected/vendor/yiisoft/yii/framework/web",
             "protected/vendor/yiisoft/yii/framework/utils",
             "protected/vendor/yiisoft/yii/framework/caching",
+            "protected/vendor/yiisoft/yii/framework/logging",
             "protected/vendor/yiisoft/yii/framework/collections",
             "protected/vendor/yiisoft/yii/framework/console",
             "protected/vendor/yiisoft/yii/framework/db",
@@ -66,6 +67,9 @@
             "protected/vendor/yiisoft/yii/framework/i18n",
             "protected/vendor/yiisoft/yii/framework/zii",
             "protected/helpers"
+        ],
+        "exclude-from-classmap": [
+            "protected/vendor/yiisoft/yii/framework/base/interfaces.php"
         ],
         "psr-4" : {
             "ls\\" : [
@@ -89,6 +93,6 @@
     "extra" : {
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "codeception/codeception": "^2.1"
     }
 }

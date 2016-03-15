@@ -11,7 +11,7 @@
             App()->getComponent('yiiwheels')->registerAssetJs('bootstrap-bootbox.min.js');
             $cs->registerPackage('jqueryui');
             $cs->registerPackage('bootstrap-notify');
-            $cs->registerScriptFile(App()->getBaseUrl() . Yii::getPathOfAlias('public') . '/scripts/unobtrusive.js');
+            $cs->registerScriptFile(App()->publicUrl . '/scripts/unobtrusive.js');
             $cs->registerCssFile(App()->theme->baseUrl . '/css/style.css');
 
             // Disable disabled links.

@@ -1,5 +1,6 @@
 <?php
 namespace ls\models\installer;
+use Symfony\Component\Console\Application;
 use \Yii;
 /**
  * Model that checks all requirements.
@@ -33,11 +34,11 @@ class PreCheck extends \CFormModel
     }
     
     public function getUploadPath() {
-        return Yii::getPathOfAlias('webroot') . '/upload';
+        return realpath(App()->basePath . '/../public/upload');
     }
     
     public function getTempPath() {
-        return Yii::getPathOfAlias('webroot') . '/tmp';
+        return App()->basePath . '/../public/tmp';
     }
     
     public function getZipSupport() {

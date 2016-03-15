@@ -64,7 +64,7 @@ echo \CHtml::openTag('div', ['class' => 'col-md-offset-3 col-md-9', 'style' => '
         ];
     }
     $right[] = [
-        'label' => gT('ls\models\Template') . ': ' . $template['name'],
+        'label' => gT('Template') . ': ' . $template['name'],
         'items' => array_map(function($directory) use ($screen) {
             return [
                 'url' => App()->createUrl('templates/index', ['name' => basename($directory), 'screen' => $screen['id']]),

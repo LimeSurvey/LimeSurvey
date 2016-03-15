@@ -246,15 +246,30 @@ class WebApplication extends CWebApplication
         return $this->getComponent('pluginManager');
     }
 
-   public function disableWebLogRoutes() {
+    public function disableWebLogRoutes() {
        foreach ($this->log->routes as $route)
        {
            $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
        }
-   }
+    }
 
-    public function getPublicUrl($absolute = false) {
-        return $this->getBaseUrl($absolute) . Yii::getPathOfAlias('public');
+    /**
+     * Returns the URL of the public folder. It is equal to the base url if public is configured as webroot.
+     * @param bool|false $absolute
+     * @return string
+     */
+    public function getPublicUrl($absolute = false)
+    {
+        static $relative;
+        if (!isset($relative)) {
+            if (preg_match('-.*/public/index.php-', get_included_files()[0])) {
+                $relative = '';
+            } else {
+                $relative = '/public';
+            }
+        }
+
+        return $this->getBaseUrl($absolute) . $relative;
     }
 }
 
