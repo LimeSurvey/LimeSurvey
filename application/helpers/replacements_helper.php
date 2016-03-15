@@ -623,7 +623,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_googleAnalyticsAPIKey = trim(getGlobalSetting('googleanalyticsapikey'));
     }
-    $_googleAnalyticsStyle = (isset($thissurvey['googleanalyticsstyle']) ? $thissurvey['googleanalyticsstyle'] : '0');
+    $_googleAnalyticsStyle = (isset($thissurvey['googleanalyticsstyle']) ? $thissurvey['googleanalyticsstyle'] : '1');
     $_googleAnalyticsJavaScript = '';
 
     if ($_googleAnalyticsStyle != '' && $_googleAnalyticsStyle != 0 && $_googleAnalyticsAPIKey != '')
@@ -676,7 +676,7 @@ EOD;
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-ga('create', '$_googleAnalyticsAPIKey', 'auto');  // Replace with your property ID.
+ga('create', '$_googleAnalyticsAPIKey', 'auto');
 ga('send', 'pageview');
 ga('send', 'pageview', '$_trackURL');
 
