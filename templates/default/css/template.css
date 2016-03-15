@@ -484,7 +484,7 @@ fieldset[disabled] .checkbox label {
 
 
     .questions-list tbody tr {
-        height: 3em;
+        min-height: 3em;
     }
 
 }
