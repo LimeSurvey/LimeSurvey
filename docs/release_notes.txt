@@ -35,6 +35,21 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160311) to 2.50+ (build 160314) Mar 15, 2016
+-Fixed issue #10191: Can't import attributes with Participants (Olle Haerstedt)
+-Fixed issue #10723: CSS Formatting Issues (Olle Haerstedt)
+-Fixed issue #10728: List with Comment question forgets user choice when going back to group using "previous" button (Carsten Schmitz)
+-Fixed issue #10731: Configuration menu reviewed (Carsten Schmitz)
+-Fixed issue #10735: Wider drop down menues in survey options (LouisGac)
+-Fixed issue #10737: Save button in Create new survey does Save & Close (Carsten Schmitz)
+-Fixed issue #10742: Not possible to browse answers in statistics (Olle Haerstedt)
+-Fixed issue #10745: Selecting Printable Survey Version : PHP error (Olle Haerstedt)
+-Fixed issue #10756: Messages when adding new users are bad (Olle Haerstedt)
+-Fixed issue: Missing Save & close buttons in survey permissions and email template editing (Carsten Schmitz)
+-Fixed issue: 'Save' button behaves like 'Save & Close' in personal settings (Carsten Schmitz)
+-Fixed issue: [Security] Survey ID not properly sanitized on survey creation (Carsten Schmitz)
+-New feature: Added a CLI command to wipe out user data (Carsten Schmitz)
+
 Changes from 2.50+ (build 160310) to 2.50+ (build 160311) Mar 11, 2016
 Fixed issue #10738: Survey administration broken when selecting a survey
 
