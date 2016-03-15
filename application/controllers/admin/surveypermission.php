@@ -34,8 +34,6 @@ class surveypermission extends Survey_Common_Action {
 
         if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','read'))
         {
-
-            debugbreak();
             $aData['sidemenu']['state'] = false;
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("IbD").":".$iSurveyID.")";
