@@ -110,6 +110,12 @@ li.responsive-content
 
 @media only screen and (max-width: 800px) {
 
+    /* Remove margin */
+    .row {
+        margin: 0;
+        padding: 0;
+    }
+
     /* Force table to not be like tables anymore */
     .no-more-tables table,
     .no-more-tables thead,
@@ -849,7 +855,12 @@ html body .navbar.navbar-default.navbar-fixed-top {
     height: auto;
 }
 
-/** For striped tables */
+/* For striped tables */
 .array2 {
     background-color: #f9f9f9;
+}
+
+/* Make sure table covers hole page */
+table {
+    width: 100%;
 }
