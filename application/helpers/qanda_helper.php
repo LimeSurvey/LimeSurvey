@@ -4009,7 +4009,8 @@ function do_array_5point($ia)
         'caption'=>$caption,
         'answerwidth'=>$answerwidth,
     );
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/header', $headerDatas, true);
+    $answer = '<div class="no-more-tables no-more-tables-5-point">';
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/header', $headerDatas, true);
 
     $odd_even = '';
 
@@ -4084,7 +4085,7 @@ function do_array_5point($ia)
         $answer_t_content .= "\" />\n\t</th>\n";
         for ($i=1; $i<=5; $i++)
         {
-            $answer_t_content .= "\t<td class=\"answer-cell-1 answer_cell_00$i answer-item radio-item\">\n"
+            $answer_t_content .= "\t<td data-title='$i' class=\"answer-cell-1 answer_cell_00$i answer-item radio-item\">\n"
             ."\n\t<label for=\"answer$myfname-$i\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\"";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)
             {
@@ -4108,10 +4109,9 @@ function do_array_5point($ia)
             $answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left; width: $answerwidth%;' >&nbsp;</td>\n";
         }
 
-
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
-            $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
+            $answer_t_content .= "\t<td data-title='" . gT("No answer") . "' class=\"answer-item radio-item noanswer-item\">\n"
             ."\n\t<label for=\"answer$myfname-\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {
@@ -4127,7 +4127,7 @@ function do_array_5point($ia)
         $inputnames[]=$myfname;
     }
 
-    $answer .= $answer_t_content . "\n</tbody>\t</table>\n";
+    $answer .= $answer_t_content . "\n</tbody>\t</table>\n</div>\n";
     return array($answer, $inputnames);
 }
 
@@ -4188,7 +4188,7 @@ function do_array_10point($ia)
     /*$answer .= "\n<table class=\"table-in-qanda-2 question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";*/
-    $answer .= "\n<table class=\"table-in-qanda-2 question subquestion-list questions-list {$extraclass}\">\n"
+    $answer .= "\n<table class=\"table-in-qanda-2 table question subquestion-list questions-list {$extraclass}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" style='width: $answerwidth%;'/>\n";
 
@@ -4267,7 +4267,7 @@ function do_array_10point($ia)
         }
         if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1)
         {
-            $answer_t_content .= "\t<td  data-title='N/A' class=\"answer-item radio-item noanswer-item\">\n"
+            $answer_t_content .= "\t<td  data-title='" . gT("No answer") . "' class=\"answer-item radio-item noanswer-item\">\n"
             ."\t<label for=\"answer$myfname-\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {

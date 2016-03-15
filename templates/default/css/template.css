@@ -185,7 +185,7 @@ li.responsive-content
         padding-bottom: 100px;
     }
 
-    .no-more-tables-10-point td{
+    .no-more-tables-10-point td {
         width: 2em;
         margin: 0px;
         padding: 0px;
@@ -194,7 +194,7 @@ li.responsive-content
     }
 
 
-    .no-more-tables-10-point td:before {
+    .no-more-tables-10-point td:before, .no-more-tables-5-point td:before {
         /* Now like a table header */
         position: relative;
         left: 2px;
