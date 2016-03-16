@@ -3,7 +3,7 @@ Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
-.cke_skin_BootstrapCK-Skin *,.cke_skin_BootstrapCK-Skin a:hover,.cke_skin_BootstrapCK-Skin a:link,.cke_skin_BootstrapCK-Skin a:visited,.cke_skin_BootstrapCK-Skin a:active{
+.cke_skin_BootstrapCK-Skin a,.cke_skin_BootstrapCK-Skin .cke_dialog_ui_labeled_label,.cke_skin_BootstrapCK-Skin span,.cke_skin_BootstrapCK-Skin input,.cke_skin_BootstrapCK-Skin a:hover,.cke_skin_BootstrapCK-Skin a:link,.cke_skin_BootstrapCK-Skin a:visited,.cke_skin_BootstrapCK-Skin a:active{
 margin:0;
 padding:0;
 border:0;
