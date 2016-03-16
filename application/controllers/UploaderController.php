@@ -316,6 +316,7 @@ class UploaderController extends SurveyController {
         App()->getClientScript()->registerScriptFile("{$sTemplateUrl}scripts/template.js");
         App()->clientScript->registerCssFile(Yii::app()->getConfig("publicstyleurl")."uploader.css");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "uploader-files.css");
+        App()->bootstrap->register();
 
         if (file_exists($sTemplateDir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
         {
@@ -329,7 +330,17 @@ class UploaderController extends SurveyController {
         {
             Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."jquery-ui.css");
         }
-        App()->clientScript->registerCssFile("{$sTemplateUrl}css/template.css");
+
+        $oTemplate = Template::model()->getInstance('', $aSurveyInfo['sid']);
+        foreach ($oTemplate->packages as $package)
+        {
+            App()->getClientScript()->registerPackage($package);
+        }
+        foreach ($oTemplate->config->files->css->filename as $cssFile)
+        {
+            App()->clientScript->registerCssFile("{$sTemplateUrl}" . (string) $cssFile);
+        }
+
         $header = getHeader($meta);
 
         echo $header;
