@@ -23,9 +23,9 @@
         <div class="alert alert-danger errormandatory" role="alert">
             <?php echo $question; ?>
         </div>
-        <?php endif;?>
+    <?php endif;?>
 
-    <div  class="form-group row">
+    <div class="form-group row">
         <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>' for="answer<?php echo$myfname;?>">
             <?php echo $question; ?>
         </label>
