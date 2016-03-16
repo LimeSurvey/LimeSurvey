@@ -614,3 +614,8 @@ padding: 10px;
 .cke_skin_BootstrapCK-Skin .cke_dialog_ui_checkbox {
 line-height: 20px;
 }
+
+.cke_skin_BootstrapCK-Skin .cke_dialog_contents
+{
+    width:100%;
+}

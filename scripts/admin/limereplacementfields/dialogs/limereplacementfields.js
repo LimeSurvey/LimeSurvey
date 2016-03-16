@@ -11,7 +11,7 @@
             generalLabel = editor.lang.common.generalTab;
         return {
             title : lang.title,
-            minWidth : 300,
+            minWidth : 400,
             minHeight : 80,
             height : 260,
             resizable : CKEDITOR.DIALOG_RESIZE_NONE,
