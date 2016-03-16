@@ -95,7 +95,7 @@ function doFileUpload(){
              * do not upload the file and display an error message ! */
             if (filecount >= maxfiles)
             {
-                $('#notice').html('<p class="error">'+uploadLang.errorNoMoreFiles+'</p>');
+                $('#notice').html('<p class="alert alert-error">'+uploadLang.errorNoMoreFiles+'</p>');
                 fixParentHeigth();
                 return false;
             }
@@ -115,7 +115,7 @@ function doFileUpload(){
             }
             if (allowSubmit == false)
             {
-                $('#notice').html('<p class="error">'+uploadLang.errorOnlyAllowed.replace('%s',$('#'+fieldname+'_allowed_filetypes').val())+'</p>');
+                $('#notice').html('<p class="alert alert-error">'+uploadLang.errorOnlyAllowed.replace('%s',$('#'+fieldname+'_allowed_filetypes').val())+'</p>');
                 fixParentHeigth();
                 return false;
             }
@@ -155,7 +155,7 @@ function doFileUpload(){
 
             if (metadata.success)
             {
-                $('#notice').html('<p class="success">'+metadata.msg+'</p>');
+                $('#notice').html('<p class="alert alert-success">'+metadata.msg+'</p>');
                 if( $('#field'+fieldname+'_listfiles').length==0){
                     $("<ul id='field"+fieldname+"_listfiles' class='files-list' />").insertAfter("#uploadstatus");
                 }
@@ -207,12 +207,12 @@ function doFileUpload(){
                     $('#uploadstatus').html(uploadLang.errorMaxReached);
 
                 if (filecount >= maxfiles)
-                    $('#notice').html('<p class="success">'+uploadLang.errorTooMuch+'</p>');
+                    $('#notice').html('<p class="alert alert-success">'+uploadLang.errorTooMuch+'</p>');
                 fixParentHeigth();
             }
             else
             {
-                $('#notice').html('<p class="error">'+metadata.msg+'</p>');
+                $('#notice').html('<p class="alert alert-error">'+metadata.msg+'</p>');
                 fixParentHeigth();
             }
             
@@ -308,7 +308,7 @@ function deletefile(fieldname, count) {
     })
     .done(function( msg )
     {
-        $('#notice').html('<p class="success">'+msg+'</p>');
+        $('#notice').html('<p class="alert alert-success">'+msg+'</p>');
         setTimeout(function() {
             $(".success").remove();
         }, 5000);
