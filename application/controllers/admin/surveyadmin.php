@@ -81,9 +81,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         $aData['fullpagebar']['button']['newsurvey'] = true;
-
         $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
-
     }
 
 

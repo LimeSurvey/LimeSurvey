@@ -991,7 +991,6 @@ class Survey_Common_Action extends CAction
 
         $sumcount3 = Question::model()->countByAttributes($condition); //Checked
         $condition = array('sid' => $iSurveyID, 'language' => $baselang);
-
         $sumcount2 = QuestionGroup::model()->countByAttributes($condition); //Checked
 
         //SURVEY SUMMARY

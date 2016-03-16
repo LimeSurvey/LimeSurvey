@@ -33,9 +33,11 @@
                 <div class="form-group">
                     <?php echo $form->label($model, 'active', array('label'=>gT('Active:'),'class'=>'control-label')); ?>
                     <select name="active" class="form-control">
-                        <option value="" <?php if( $model->active!="Y" && $model->active!="N" ){echo "selected";}?>><?php eT('(Any state)');?></option>
+                        <option value="" <?php if( $model->active==""){echo "selected";}?>><?php eT('(Any state)');?></option>
                         <option value="Y" <?php if( $model->active=="Y"){echo "selected";}?>><?php eT('Yes');?></option>
                         <option value="N" <?php if( $model->active=="N"){echo "selected";}?>><?php eT('No');?></option>
+                        <option value="E" <?php if( $model->active=="E"){echo "selected";}?>><?php eT('Expired');?></option>
+                        <option value="S" <?php if( $model->active=="S"){echo "selected";}?>><?php eT('Futur');?></option>
                     </select>
                 </div>
                 <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
@@ -72,6 +74,14 @@
                     ),
 
                     array(
+                        'header' => gT('Active'),
+                        'name' => 'running',
+                        'value'=>'$data->running',
+                        'type'=>'raw',
+                        'htmlOptions' => array('class' => 'hidden-xs'),
+                    ),
+
+                    array(
                         'header' => gT('Title'),
                         'name' => 'title',
                         'value'=>'$data->defaultlanguage->surveyls_title',
@@ -99,13 +109,6 @@
                         'htmlOptions' => array('class' => 'hidden-xs'),
                     ),
 
-                    array(
-                        'header' => gT('Running'),
-                        'name' => 'running',
-                        'value'=>'$data->running',
-                        'type'=>'raw',
-                        'htmlOptions' => array('class' => 'hidden-xs'),
-                    ),
 
                     array(
                         'header' => gT('Partial'),

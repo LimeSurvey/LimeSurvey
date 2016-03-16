@@ -46,12 +46,12 @@ class Survey extends LSActiveRecord
         $this->attachEventHandler("onAfterFind", array($this,'fixSurveyAttribute'));
     }
 
-    /* Your model attribute labels */
+    /* Add virtual survey attribute labels for gridView*/
     public function attributeLabels() {
-        return [
+        return array(
             /* Your other attribute labels */
-            'running' => gT('survey', 'running')
-        ];
+            'running' => gT('running')
+        );
     }
 
     /**
@@ -418,12 +418,17 @@ class Survey extends LSActiveRecord
         return $tokens[$iSurveyID];
     }
 
-    public function getHasTokens() {
+    public function getHasTokens()
+    {
         $hasTokens = $this->hasTokens($this->sid) ;
         if($hasTokens)
+        {
             return gT('Yes');
+        }
         else
+        {
             return gT('No');
+        }
     }
 
 
@@ -633,26 +638,45 @@ class Survey extends LSActiveRecord
         // If the survey is not active, no date test is needed
         if($this->active == 'N')
         {
-            $running = gT('No');
+            $running = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Inactive').'"><span class="fa fa-stop text-warning"></span></a>';
         }
         // If it's active, then we check if not expired
-        elseif ($this->expires != '')
+        elseif ($this->expires != '' || $this->startdate != '')
         {
             // Time adjust
-            $now = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))) );//  dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
-            $expire = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires)) );
+            $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))) );
+            $sStop   = ($this->expires != '')?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires)) ):$sNow;
+            $sStart  =  ($this->startdate != '')?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate)) ):$sNow;
 
-            $date1 = new DateTime($now);
-            $date2 = new DateTime($expire);
+            // Time comparaison
+            $oNow   = new DateTime($sNow);
+            $oStop  = new DateTime($sStop);
+            $oStart = new DateTime($sStart);
 
-            $running = ($date2 < $date1)?'<span class="text-warning">'.gT('Expired').'</span>':gT('Yes');
+            $bExpired = ($oStop < $oNow);
+            $bWillRun = ($oStart > $oNow);
 
-            //return $expires;
+            // Icon generaton (for CGridView)
+            $sIconRunning = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Expire').': '.$sStop.'"><span class="fa  fa-clock-o text-success"></span></a>';
+            $sIconExpired = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Expired').': '.$sStop.'"><span class="fa fa fa-step-forward text-warning"></span></a>';
+            $sIconFuture  = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Start').': '.$sStart.'"><span class="fa  fa-clock-o text-warning"></span></a>';
+
+            // Icon parsing
+            if ( $bExpired || $bWillRun )
+            {
+                // Expire prior to will start
+                $running = ($bExpired)?$sIconExpired:$sIconFuture;
+            }
+            else
+            {
+                $running = $sIconRunning;
+            }
         }
-        // If it's active, and don't have expire date, it's running
+        // If it's active, and doesn't have expire date, it's running
         else
         {
-            $running = gT('Yes');
+            $running = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Active').'"><span class="fa fa-play text-success"></span></a>';
+            //$running = '<div class="survey-state"><span class="fa fa-play text-success"></span></div>';
         }
 
         return $running;
@@ -761,15 +785,40 @@ class Survey extends LSActiveRecord
 
     public function getbuttons()
     {
-        $url = Yii::app()->createUrl("/admin/survey/sa/view/surveyid/");
-        $url .= '/'.$this->sid;
-        $button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
+        $sSummaryUrl  = App()->createUrl("/admin/survey/sa/view/surveyid/".$this->sid);
+        $sEditUrl     = App()->createUrl("/admin/survey/sa/editlocalsettings/surveyid/".$this->sid);
+        $sDeleteUrl   = App()->createUrl("/admin/survey/sa/delete/surveyid/".$this->sid);
+        $sStatUrl     = App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/".$this->sid);
+        $sAddGroup    = App()->createUrl("/admin/questiongroups/sa/add/surveyid/".$this->sid);;
+        $sAddquestion = App()->createUrl("/admin/questions/sa/newquestion/surveyid/".$this->sid);;
+
+        $button = '<a class="btn btn-default " href="'.$sSummaryUrl.'" role="button" data-toggle="tooltip" title="'.gT('Survey summary').'"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+        $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('General settings & texts').'"><span class="glyphicon glyphicon-pencil" ></span></a>';
+        $button .= '<a class="btn btn-default" href="'.$sDeleteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Delete').'"><span class="text-danger glyphicon glyphicon-trash" ></span></a>';
+
+        if(Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read') && $this->active=='Y' )
+        {
+            $button .= '<a class="btn btn-default" href="'.$sStatUrl.'" role="button" data-toggle="tooltip" title="'.gT('Statistics').'"><span class="glyphicon glyphicon-stats text-success" ></span></a>';
+        }
+
+        if($this->active!='Y')
+        {
+            $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid, 'language' => $this->language)); //Checked
+            if($groupCount > 0)
+            {
+                $button .= '<a class="btn btn-default" href="'.$sAddquestion.'" role="button" data-toggle="tooltip" title="'.gT('Add new question').'"><span class="icon-add text-success" ></span></a>';
+            }
+            else
+            {
+                $button .= '<a class="btn btn-default" href="'.$sAddGroup.'" role="button" data-toggle="tooltip" title="'.gT('Add new group').'"><span class="icon-add text-success" ></span></a>';
+            }
+        }
 
         $previewUrl = Yii::app()->createUrl("survey/index/sid/");
         $previewUrl .= '/'.$this->sid;
 
         //$button = '<a class="btn btn-default open-preview" aria-data-url="'.$previewUrl.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="glyphicon glyphicon-eye-open"  ></span></a> ';
-        $button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
+
         return $button;
     }
 
@@ -810,14 +859,6 @@ class Survey extends LSActiveRecord
         );
 
         $criteria = new CDbCriteria;
-
-        // Answers
-        $criteria->select = array(
-            '*',
-            $this->getCountFullAnswers() . " as full_answers_account",
-            $this->getCountPartialAnswers() . " as partial_answers_account",
-        );
-
         $criteria->join  = 'LEFT JOIN {{surveys_languagesettings}} AS surveys_languagesettings ON ( surveys_languagesettings.surveyls_language = t.language AND t.sid = surveys_languagesettings.surveyls_survey_id )';
         $criteria->join .= 'LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
 
@@ -828,6 +869,7 @@ class Survey extends LSActiveRecord
             $criteria->condition = 'permissions.read_p=1';
             $criteria->params=(array(':userid'=>Yii::app()->user->id ));
         }
+
         // Search filter
         $criteria2 = new CDbCriteria;
         $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.sid::varchar' : 't.sid');
@@ -835,12 +877,27 @@ class Survey extends LSActiveRecord
         $criteria2->compare('surveys_languagesettings.surveyls_title', $this->searched_value, true, 'OR');
         $criteria2->compare('t.admin', $this->searched_value, true, 'OR');
 
-
-
         // Active filter
         if(isset($this->active))
         {
-            $criteria->addCondition("t.active='$this->active'");
+            if($this->active == 'N' || $this->active == "Y")
+            {
+                $criteria->addCondition("t.active='$this->active'");
+            }
+            else
+            {
+                // Time adjust
+                $sNow = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))) );
+
+                if($this->active == "E")
+                {
+                    $criteria->addCondition("t.expires <'$sNow'");
+                }
+                if($this->active == "S")
+                {
+                    $criteria->addCondition("t.startdate >'$sNow'");
+                }
+            }
         }
 
         $criteria->mergeWith($criteria2, 'AND');
