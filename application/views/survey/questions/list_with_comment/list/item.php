@@ -12,16 +12,18 @@
  */
 ?>
 <li class="answer-item radio-item <?php if(isset($li_classes)){echo $li_classes;}?>">
-    <input
-        type="radio"
-        name="<?php echo $name; ?>"
-        id="<?php echo $id; ?>"
-        value="<?php echo $value; ?>"
-        class="radio"
-        <?php echo $check_ans; ?>
-        onclick="<?php echo $checkconditionFunction; ?>"
-    />
-    <label for="<?php echo $id; ?>" class="answertext radio-label">
-        <?php echo $labeltext;?>
-    </label>
+    <div class='form-group'>
+        <input
+            type="radio"
+            name="<?php echo $name; ?>"
+            id="<?php echo $id; ?>"
+            value="<?php echo $value; ?>"
+            class="radio"
+            <?php echo $check_ans; ?>
+            onclick="<?php echo $checkconditionFunction; ?>"
+        />
+        <label for="<?php echo $id; ?>" class="answertext radio-label control-label">
+            <?php echo $labeltext;?>
+        </label>
+    </div>
 </li>
