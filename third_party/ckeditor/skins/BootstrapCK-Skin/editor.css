@@ -367,7 +367,7 @@ margin-left:6px;
 border-radius:3px;
 outline:none;
 padding:2px 4px;
-height:18px;
+height:22px;
 display:inline-block;
 cursor:default;
 }
@@ -663,7 +663,7 @@ border: 1px solid rgba(0, 0, 0, 0.05);
 box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
 float:left;
 padding:2px;
-height:21px;
+height:27px;
 margin-right:6px;
 margin-bottom:5px;
 }
@@ -1085,4 +1085,8 @@ visibility:inherit;
 }
 html.cke_skin_BootstrapCK-Skin_container{
 visibility:visible;
+}
+.cke_skin_BootstrapCK-Skin  td.cke_top {
+padding-top:5px;
+padding-left:5px;
 }
