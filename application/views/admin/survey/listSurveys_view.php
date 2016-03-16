@@ -37,7 +37,7 @@
                         <option value="Y" <?php if( $model->active=="Y"){echo "selected";}?>><?php eT('Yes');?></option>
                         <option value="N" <?php if( $model->active=="N"){echo "selected";}?>><?php eT('No');?></option>
                         <option value="E" <?php if( $model->active=="E"){echo "selected";}?>><?php eT('Expired');?></option>
-                        <option value="S" <?php if( $model->active=="S"){echo "selected";}?>><?php eT('Futur');?></option>
+                        <option value="S" <?php if( $model->active=="S"){echo "selected";}?>><?php eT('Not yet started');?></option>
                     </select>
                 </div>
                 <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
