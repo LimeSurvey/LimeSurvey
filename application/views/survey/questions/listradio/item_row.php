@@ -12,7 +12,7 @@
  * @var $myfname
  */
 ?>
-<li id='javatbd<?php echo $myfname; ?>' class='form-group answer-item radio-item' <?php echo $sDisplayStyle; ?> >
+<div id='javatbd<?php echo $myfname; ?>' class='form-group answer-item radio-item' <?php echo $sDisplayStyle; ?> >
     <input
         class="radio"
         type="radio"
@@ -25,4 +25,4 @@
     <label for="answer<?php echo $ia[1].$ansrow['code']; ?>" class="control-label radio-label">
          <?php echo $ansrow['answer']; ?>
     </label>
-</li>
+</div>
