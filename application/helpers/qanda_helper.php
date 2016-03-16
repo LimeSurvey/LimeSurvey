@@ -4335,7 +4335,7 @@ function do_array_yesnouncertain($ia)
     /*$answer = "\n<table class=\"table  table-condensed table-in-qanda-3 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\n\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";*/
-    $answer = "\n<table class=\"table  table-condensed table-in-qanda-3 question subquestions-list questions-list {$extraclass}\">\n"
+    $answer = "\n<table class=\"table  table-condensed table-in-qanda-3 question subquestion-list questions-list {$extraclass}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\n\t<col class=\"col-answers\" style='width: $answerwidth%;'/>\n";
     $odd_even = '';
@@ -4514,7 +4514,7 @@ function do_array_increasesamedecrease($ia)
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
 */
     $answer = '<div class="no-more-tables no-more-tables-inc-same-dec">';
-    $answer .= "\n<table class=\"table table-condensed  table-in-qanda-4 question subquestions-list questions-list {$extraclass}\" >\n"
+    $answer .= "\n<table class=\"table table-condensed  table-in-qanda-4 question subquestion-list questions-list {$extraclass}\" >\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" style='width: $answerwidth%;' />\n";
 
@@ -4584,8 +4584,7 @@ function do_array_increasesamedecrease($ia)
         }
         $answer_body .= "\" />\n\t</th>\n";
 
-
-        $answer_body .= "\t<td class=\"answer_cell_I answer-item radio-item\">\n"
+        $answer_body .= "\t<td data-title='". gT("Increase") . "' class=\"answer_cell_I answer-item radio-item\">\n"
         ."\t<label for=\"answer$myfname-I\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" ";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'I')
         {
@@ -4594,7 +4593,7 @@ function do_array_increasesamedecrease($ia)
         $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
         //. "<label class=\"hide read\" for=\"answer$myfname-I\">".gT('Increase')."</label>\n"
         . "\t</label></td>\n"
-        . "\t<td class=\"answer_cell_S answer-item radio-item\">\n"
+        . "\t<td data-title='" . gT("Same") . "' class=\"answer_cell_S answer-item radio-item\">\n"
         . "\t<label for=\"answer$myfname-S\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-S\" value=\"S\" ";
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'S')
@@ -4605,7 +4604,7 @@ function do_array_increasesamedecrease($ia)
         $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
         //. "<label class=\"hide read\" for=\"answer$myfname-S\">".gT('Same')."</label>\n"
         . "\t</label></td>\n"
-        . "\t<td class=\"answer_cell_D answer-item radio-item\">\n"
+        . "\t<td data-title='" . gT("Decrease") ."' class=\"answer_cell_D answer-item radio-item\">\n"
         . "\t<label for=\"answer$myfname-D\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" ";
         // --> END NEW FEATURE - SAVE
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'D')
@@ -4622,7 +4621,7 @@ function do_array_increasesamedecrease($ia)
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
-            $answer_body .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
+            $answer_body .= "\t<td data-title='" . gT("No answer") . "' class=\"answer-item radio-item noanswer-item\">\n"
             . "\t<label for=\"answer$myfname-\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {
@@ -4910,7 +4909,7 @@ function do_array($ia)
 
         //$answer_start = "\n<table class=\"table-in-qanda-6 question subquestions-list questions-list {$extraclass}\" summary=\"$caption\" >\n";
         $answer_start .= "<!-- Array Question, dropdown layout -->\n";
-        $answer_start .= "\n<table class=\"table-in-qanda-6 question subquestions-list questions-list {$extraclass}\" >\n";
+        $answer_start .= "\n<table class=\"table-in-qanda-6 table question subquestion-list questions-list {$extraclass}\" >\n";
 
         $answer = "\t<tbody>\n";
         $trbc = '';
@@ -5086,9 +5085,7 @@ function do_array_multitext($ia)
             case 'R':
                 $totals_class = $show_totals = 'row';
                 $row_total = '<td class="total information-item">
-                <label>
-                <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled" />
-                </label>
+                    <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled form-control" />
                 </td>';
                 $col_head = '            <th class="total">'.gT('Total').'</th>';
                 if($show_grand == true)
@@ -5099,7 +5096,7 @@ function do_array_multitext($ia)
                     <td>&nbsp;</td>';
                     $grand_total = '
                     <td class="total grand information-item">
-                    <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
+                        <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled form-control" />
                     </td>';
                 };
                 $caption.=gT("The last row shows the total for the column. ");
@@ -5108,7 +5105,7 @@ function do_array_multitext($ia)
                 $totals_class = $show_totals = 'col';
                 $col_total = '
                 <td class="total information-item">
-                <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
+                    <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled form-control" />
                 </td>';
                 $row_head = '
                 <th class="answertext total">Total</th>';
@@ -5119,7 +5116,7 @@ function do_array_multitext($ia)
                     $col_head = '            <th class="total">Grand Total</th>';
                     $grand_total = '
                     <td class="total grand">
-                    <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
+                        <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled form-control" />
                     </td>';
                 };
                 $caption.=gT("The last column shows the total for the row. ");
@@ -5127,13 +5124,11 @@ function do_array_multitext($ia)
             case 'B':
                 $totals_class = $show_totals = 'both';
                 $row_total = '            <td class="total information-item">
-                <label>
-                <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled" />
-                </label>
+                    <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled form-control" />
                 </td>';
                 $col_total = '
                 <td  class="total information-item">
-                <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
+                    <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled form-control" />
                 </td>';
                 $col_head = '            <th class="total">'.gT('Total').'</th>';
                 $row_head = '
@@ -5142,7 +5137,7 @@ function do_array_multitext($ia)
                 {
                     $grand_total = '
                     <td class="total grand information-item">
-                    <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled"/>
+                        <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled form-control"/>
                     </td>';
                 }
                 else
@@ -5271,7 +5266,7 @@ function do_array_multitext($ia)
 
         $answer = '<div class="no-more-tables no-more-tables-array-multi-text">';
         //$answer .= "\n<table$q_table_id_HTML class=\"table-in-qanda-6  question subquestions-list questions-list {$extraclass} {$num_class} {$totals_class}\"  summary=\"{$caption}\">\n"
-        $answer .= "\n<table$q_table_id_HTML class=\"table-in-qanda-6  question subquestions-list questions-list {$extraclass} {$num_class} {$totals_class}\">\n"
+        $answer .= "\n<table$q_table_id_HTML class=\"table-in-qanda-6 table question subquestion-list questions-list {$extraclass} {$num_class} {$totals_class}\">\n"
         . $answer_cols
         . $answer_head;
         $answer .= "<tbody>";
@@ -5344,7 +5339,7 @@ function do_array_multitext($ia)
                 $answer .= "\t<td class=\"answer-cell-4 answer_cell_00$ld answer-item text-item\">\n"
                 . "\t\t\t\t<label class=\"hidden-sm hidden-md hidden-lg read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n"
                 . "\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
-                . "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" class=\"".$kpclass."\" {$maxlength} size=\"$inputwidth\" "
+                . "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" class=\"form-control ".$kpclass."\" {$maxlength} size=\"$inputwidth\" "
                 . ' value="'.str_replace ('"', "'", str_replace('\\', '', $myfname2value))."\" />\n";
                 $inputnames[]=$myfname2;
                 $answer .= "\t\t\t</td>\n";
@@ -5619,7 +5614,7 @@ function do_array_multiflexi($ia)
         $trbc = '';
         //$answer = "<div class='no-more-tables'>\n<table class=\"table-in-qanda-7 question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"{$caption}\">\n"
         $answer = "<div class='no-more-tables'>
-                    \n<table class=\"table-in-qanda-7 question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\">\n"
+                    \n<table class=\"table-in-qanda-7 question subquestion-list questions-list {$answertypeclass}-list {$extraclass}\">\n"
         . $mycols
         . $answer_head . "\n";
         $answer .= "      <tbody>";
@@ -5676,7 +5671,7 @@ function do_array_multiflexi($ia)
 
             // Get array_filter stuff
             $trbc = alternation($trbc , 'row');
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc subquestions-list questions-list {$answertypeclass}-list");
+            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc subquestion-list questions-list {$answertypeclass}-list");
 
             $answer .= $htmltbody2;
 
@@ -5859,7 +5854,7 @@ function do_arraycolumns($ia)
             $cellwidth=$anscount;
             $cellwidth=round(( 50 / $cellwidth ) , 1);
             //$answer = "\n<table class=\"table-in-qanda-8  question subquestions-list questions-list\" summary=\"{$caption}\">\n"
-            $answer = "\n<table class=\"table-in-qanda-8  question subquestions-list questions-list\">\n"
+            $answer = "\n<table class=\"table-in-qanda-8  question subquestion-list questions-list\">\n"
             . "\t<colgroup class=\"col-responses\">\n"
             //. "\t<col class=\"col-answers\" width=\"50%\" />\n";
             . "\t<col class=\"col-answers\" style='width: 50%' />\n";
@@ -6175,7 +6170,7 @@ function do_array_dual($ia)
             }
             $answer .= '<div class="no-more-tables no-more-tables-array-dual">';
             //$answer .= "\n<table class=\"table-in-qanda-9 question subquestions-list questions-list\" summary=\"{$caption}\">\n"
-            $answer .= "\n<table class=\"table-in-qanda-9 question subquestions-list questions-list\">\n"
+            $answer .= "\n<table class=\"table-in-qanda-9 question subquestion-list questions-list\">\n"
             . $mycolumns
             . "\n\t<thead>\n"
             . $answer_head1
