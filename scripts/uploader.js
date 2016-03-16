@@ -207,7 +207,7 @@ function doFileUpload(){
                     $('#uploadstatus').html(uploadLang.errorMaxReached);
 
                 if (filecount >= maxfiles)
-                    $('#notice').html('<p class="alert alert-success">'+uploadLang.errorTooMuch+'</p>');
+                    $('#notice').html('<p class="alert alert-success fa fa-check">'+uploadLang.errorTooMuch+'</p>');
                 fixParentHeigth();
             }
             else

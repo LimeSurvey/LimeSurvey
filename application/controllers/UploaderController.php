@@ -340,6 +340,7 @@ class UploaderController extends SurveyController {
         {
             App()->clientScript->registerCssFile("{$sTemplateUrl}" . (string) $cssFile);
         }
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/font-awesome.css');
 
         $header = getHeader($meta);
 
@@ -352,7 +353,7 @@ class UploaderController extends SurveyController {
         $qidattributes=getQuestionAttributeValues($qid);
         $qidattributes['max_filesize']=floor(min($qidattributes['max_filesize']*1024,getMaximumFileUploadSize())/1024);
         $body = '</head><body class="uploader">
-                <div id="notice"></div>
+                <div id="notice" class="text-center"></div>
                 <input type="hidden" id="ia"                value="'.$fn.'" />
                 <input type="hidden" id="'.$fn.'_minfiles"          value="'.$minfiles.'" />
                 <input type="hidden" id="'.$fn.'_maxfiles"          value="'.$maxfiles.'" />
