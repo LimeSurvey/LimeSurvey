@@ -5085,6 +5085,7 @@ function do_array_multitext($ia)
             case 'R':
                 $totals_class = $show_totals = 'row';
                 $row_total = '<td class="total information-item">
+                    <label class="hidden-sm hidden-md hidden-lg">' . gT("Total") . '</label>
                     <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled form-control" />
                 </td>';
                 $col_head = '            <th class="total">'.gT('Total').'</th>';
@@ -5105,6 +5106,7 @@ function do_array_multitext($ia)
                 $totals_class = $show_totals = 'col';
                 $col_total = '
                 <td class="total information-item">
+                    <label class="hidden-sm hidden-md hidden-lg">' . gT("Total") . '</label>
                     <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled form-control" />
                 </td>';
                 $row_head = '
@@ -5124,6 +5126,7 @@ function do_array_multitext($ia)
             case 'B':
                 $totals_class = $show_totals = 'both';
                 $row_total = '            <td class="total information-item">
+                    <label class="hidden-sm hidden-md hidden-lg">' . gT("Total") . '</label>
                     <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled form-control" />
                 </td>';
                 $col_total = '
