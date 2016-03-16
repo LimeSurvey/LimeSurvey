@@ -658,7 +658,7 @@ class index extends CAction {
 
     function _isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
     {
-        return $clientToken != '' && isset($_SESSION['survey_'.$surveyid]['token']) && $clientToken != $_SESSION['survey_'.$surveyid]['token'];
+        return $clientToken != '' && isset($_SESSION['survey_'.$surveyid]['token']) && strtolower($clientToken) != strtolower($_SESSION['survey_'.$surveyid]['token']);
     }
 
     function _isSurveyFinished($surveyid)
