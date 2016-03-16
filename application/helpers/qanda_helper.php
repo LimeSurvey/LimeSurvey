@@ -6184,7 +6184,7 @@ function do_array_dual($ia)
             }
             $answer .= '<div class="no-more-tables no-more-tables-array-dual">';
             //$answer .= "\n<table class=\"table-in-qanda-9 question subquestions-list questions-list\" summary=\"{$caption}\">\n"
-            $answer .= "\n<table class=\"table-in-qanda-9 question subquestion-list questions-list\">\n"
+            $answer .= "\n<table class=\"no-more-tables table-in-qanda-9 table question subquestion-list questions-list\">\n"
             . $mycolumns
             . "\n\t<thead>\n"
             . $answer_head1
@@ -6270,7 +6270,7 @@ function do_array_dual($ia)
                 $thiskey=0;
                 foreach ($labelcode0 as $ld)
                 {
-                    $answer .= "\t<td <td data-title='$labelans0[$thiskey]' class=\"answer_cell_1_00$ld answer-item {$answertypeclass}-item\">\n"
+                    $answer .= "\t<td <td data-title='" . $labelans0[$thiskey] . "' class=\"answer_cell_1_00$ld answer-item {$answertypeclass}-item\">\n"
                     . "\t<label for=\"answer{$myfid0}-{$ld}\"><input class=\"radio\" type=\"radio\" name=\"$myfname0\" value=\"$ld\" id=\"answer$myfid0-$ld\" ";
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == $ld)
                     {
