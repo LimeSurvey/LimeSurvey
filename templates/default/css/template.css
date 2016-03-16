@@ -876,3 +876,8 @@ html body .navbar.navbar-default.navbar-fixed-top {
 table {
     width: 100%;
 }
+
+/* Give help text some space */
+.question-help {
+    margin-top: 1em;
+}

@@ -40,7 +40,7 @@
 
             <input
             type="text"
-            class="text <?php echo $kpclass; ?>"
+            class="form-control text <?php echo $kpclass; ?>"
             id="answer<?php echo $ia[1]; ?>othertext"
             name="<?php echo $ia[1]; ?>other"
             title="<?php eT('Other'); ?>" <?php echo $answer_other;?>
