@@ -20,7 +20,7 @@
     <!-- Description -->
     <div class="form-group">
         <label class="col-sm-4 control-label"  for="description_<?php echo $esrow['surveyls_language']; ?>"><?php eT("Description:"); ?></label>
-        <div class="htmleditor col-sm-8 input-group">
+        <div class="htmleditor col-sm-8">
             <?php echo CHtml::textArea("description_{$esrow['surveyls_language']}",$esrow['surveyls_description'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"description_{$esrow['surveyls_language']}")); ?>
             <?php echo getEditor("survey-desc","description_".$esrow['surveyls_language'], "[".gT("Description:", "js")."](".$esrow['surveyls_language'].")",$surveyid,'','',$action); ?>
         </div>
@@ -29,7 +29,7 @@
     <!-- Welcome message -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='welcome_<?php echo $esrow['surveyls_language']; ?>'><?php eT("Welcome message:"); ?></label>
-        <div class="htmleditor col-sm-8 input-group">
+        <div class="htmleditor col-sm-8">
             <?php echo CHtml::textArea("welcome_{$esrow['surveyls_language']}",$esrow['surveyls_welcometext'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"welcome_{$esrow['surveyls_language']}")); ?>
             <?php echo getEditor("survey-welc","welcome_".$esrow['surveyls_language'], "[".gT("Welcome:", "js")."](".$esrow['surveyls_language'].")",$surveyid,'','',$action); ?>
         </div>
@@ -38,7 +38,7 @@
     <!-- End message -->
     <div class="form-group">
         <label class="col-sm-4 control-label" for='endtext_<?php echo $esrow['surveyls_language']; ?>'><?php eT("End message:"); ?></label>
-        <div class="htmleditor col-sm-8 input-group">
+        <div class="htmleditor col-sm-8">
             <?php echo CHtml::textArea("endtext_{$esrow['surveyls_language']}",$esrow['surveyls_endtext'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"endtext_{$esrow['surveyls_language']}")); ?>
             <?php echo getEditor("survey-endtext","endtext_".$esrow['surveyls_language'], "[".gT("End message:", "js")."](".$esrow['surveyls_language'].")",$surveyid,'','',$action); ?>
         </div>
