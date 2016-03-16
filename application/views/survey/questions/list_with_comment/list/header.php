@@ -5,4 +5,4 @@
 ?>
 
 <div class="list">
-    <ul class="list-unstyled answers-list radio-list">
+    <div class="list-unstyled answers-list radio-list">

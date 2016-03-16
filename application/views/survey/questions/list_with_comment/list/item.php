@@ -11,7 +11,7 @@
  * @var $li_classes
  */
 ?>
-<li class="answer-item radio-item <?php if(isset($li_classes)){echo $li_classes;}?>">
+<div class="answer-item radio-item <?php if(isset($li_classes)){echo $li_classes;}?>">
     <div class='form-group'>
         <input
             type="radio"
@@ -26,4 +26,4 @@
             <?php echo $labeltext;?>
         </label>
     </div>
-</li>
+</div>
