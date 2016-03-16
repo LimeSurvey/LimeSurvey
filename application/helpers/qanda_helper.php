@@ -4335,7 +4335,7 @@ function do_array_yesnouncertain($ia)
     /*$answer = "\n<table class=\"table  table-condensed table-in-qanda-3 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\n\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";*/
-    $answer = "\n<table class=\"table  table-condensed table-in-qanda-3 question subquestion-list questions-list {$extraclass}\">\n"
+    $answer = "\n<table class=\"no-more-tables table table-condensed table-in-qanda-3 question subquestion-list questions-list {$extraclass}\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\n\t<col class=\"col-answers\" style='width: $answerwidth%;'/>\n";
     $odd_even = '';
@@ -4396,7 +4396,7 @@ function do_array_yesnouncertain($ia)
             $answer_t_content .= "\t<th class=\"answertext\">\n"
             . $hiddenfield
             . "\t\t\t\t$answertext</th>\n"
-            . "\t<td class=\"answer_cell_Y answer-item radio-item\">\n"
+            . "\t<td data-title='" . gT("Yes") . "' class=\"answer_cell_Y answer-item radio-item\">\n"
             . "\t<label for=\"answer$myfname-Y\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-Y\" value=\"Y\" ";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')
             {
@@ -4406,7 +4406,7 @@ function do_array_yesnouncertain($ia)
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />"
             //. "<label class=\"hide read\" for=\"answer$myfname-Y\">".gT('Yes')."</label>\n"
             . "\n\t</label></td>\n"
-            . "\t<td class=\"answer_cell_U answer-item radio-item\">\n"
+            . "\t<td data-title='" . gT("Uncertain") . "' class=\"answer_cell_U answer-item radio-item\">\n"
             . "<label for=\"answer$myfname-U\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-U\" value=\"U\" ";
             // --> END NEW FEATURE - SAVE
 
@@ -4418,7 +4418,7 @@ function do_array_yesnouncertain($ia)
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
             //. "<label class=\"hide read\" for=\"answer$myfname-U\">".gT('Uncertain')."</label>\n"
             . "\t</label></td>\n"
-            . "\t<td class=\"answer_cell_N answer-item radio-item\">\n"
+            . "\t<td data-title='" . gT("No") . "' class=\"answer_cell_N answer-item radio-item\">\n"
             . "<label for=\"answer$myfname-N\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-N\" value=\"N\" ";
             // --> END NEW FEATURE - SAVE
 
@@ -4440,7 +4440,7 @@ function do_array_yesnouncertain($ia)
 
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
-                $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
+                $answer_t_content .= "\t<td data-title='" . gT("No answer") . "' class=\"answer-item radio-item noanswer-item\">\n"
                 . "\t<label for=\"answer$myfname-\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
                 if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
                 {
