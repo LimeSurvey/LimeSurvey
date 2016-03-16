@@ -5085,7 +5085,7 @@ function do_array_multitext($ia)
             case 'R':
                 $totals_class = $show_totals = 'row';
                 $row_total = '<td class="total information-item">
-                    <label class="hidden-sm hidden-md hidden-lg">' . gT("Total") . '</label>
+                    <label class="hidden-md hidden-lg">' . gT("Total") . '</label>
                     <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled form-control" />
                 </td>';
                 $col_head = '            <th class="total">'.gT('Total').'</th>';
@@ -5106,7 +5106,7 @@ function do_array_multitext($ia)
                 $totals_class = $show_totals = 'col';
                 $col_total = '
                 <td class="total information-item">
-                    <label class="hidden-sm hidden-md hidden-lg">' . gT("Total") . '</label>
+                    <label class="hidden-md hidden-lg">' . gT("Total") . '</label>
                     <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled form-control" />
                 </td>';
                 $row_head = '
@@ -5126,7 +5126,7 @@ function do_array_multitext($ia)
             case 'B':
                 $totals_class = $show_totals = 'both';
                 $row_total = '            <td class="total information-item">
-                    <label class="hidden-sm hidden-md hidden-lg">' . gT("Total") . '</label>
+                    <label class="hidden-md hidden-lg">' . gT("Total") . '</label>
                     <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled form-control" />
                 </td>';
                 $col_total = '
@@ -5340,7 +5340,7 @@ function do_array_multitext($ia)
                     $myfname2value = str_replace('.',$sSeparator,$myfname2value);
                 }
                 $answer .= "\t<td class=\"answer-cell-4 answer_cell_00$ld answer-item text-item\">\n"
-                . "\t\t\t\t<label class=\"hidden-sm hidden-md hidden-lg read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n"
+                . "\t\t\t\t<label class=\"hidden-md hidden-lg read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n"
                 . "\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
                 . "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" class=\"form-control ".$kpclass."\" {$maxlength} size=\"$inputwidth\" "
                 . ' value="'.str_replace ('"', "'", str_replace('\\', '', $myfname2value))."\" />\n";
