@@ -25,7 +25,6 @@
     <files>
         <css>
             <filename>css/jquery-ui-custom.css</filename>
-            <filename>css/print_template.css</filename>
             <filename>css/news_paper.css</filename>
             <filename>css/template.css</filename>
             <filename>css/bootstrap-slider.css</filename>
@@ -34,6 +33,9 @@
             <filename>scripts/template.js</filename>
             <filename>scripts/bootstrap-slider.js</filename>
         </js>
+        <print_css>
+            <filename>css/print_template.css</filename>
+        </print_css>
         <rtl>
             <css>
                 <filename>css/template-rtl.css</filename>

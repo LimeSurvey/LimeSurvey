@@ -1576,7 +1576,6 @@ class printablesurvey extends Survey_Common_Action
             // END recursive empty tag stripping.
 
             echo self::_populate_template( 'survey' , $survey_output );
-
         }// End print
     }
 
@@ -1595,7 +1594,7 @@ class printablesurvey extends Survey_Common_Action
      */
     private function _populate_template( $template , $input  , $line = '')
     {
-        $full_path = PRINT_TEMPLATE_DIR.'/views/print_'.$template.'.pstpl';
+        $full_path = PRINT_TEMPLATE_DIR.'views/print_'.$template.'.pstpl';
         $full_constant = 'TEMPLATE'.$template.'.pstpl';
         if(!defined($full_constant))
         {
