@@ -5914,20 +5914,20 @@ function do_arraycolumns($ia)
             {
                 $answer .= "<tr>\n"
                 . "\t<th class=\"arraycaptionleft dontread\">{$ansrow['answer']}</th>\n";
+                $i = 0;
                 foreach ($anscode as $ld)
                 {
                     //if (!isset($trbc) || $trbc == 'array1') {$trbc = 'array2';} else {$trbc = 'array1';}
                     $myfname=$ia[1].$ld;
 
-                    if (isset($aQuestions[$ld - 1]))
+                    if (isset($aQuestions[$i]))
                     {
-                        $question = $aQuestions[$ld - 1]['question'];
+                        $question = $aQuestions[$i]['question'];
                     }
                     else
                     {
                         // Should never happen...?
-                        $question = 'dont know';
-                        //throw new \Exception("do_arraycolumns: Can't generate question text");
+                        throw new \Exception("do_arraycolumns: Can't generate question text");
                     }
 
                     $answer .= "\t<td data-title='" . $question . "' class=\"answer-cell-7 answer_cell_00$ld answer-item radio-item\">\n"
@@ -5947,6 +5947,7 @@ function do_arraycolumns($ia)
                     $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
                     //. "<label class=\"hide read\" for=\"answer".$myfname.'-'.$ansrow['code']."\">{$ansrow['answer']}</label>\n"
                     . "\t</label></td>\n";
+                    $i += 1;
                 }
                 unset($trbc);
                 $answer .= "</tr>\n";
