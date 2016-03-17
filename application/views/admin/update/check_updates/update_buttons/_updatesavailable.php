@@ -82,7 +82,7 @@
             <!-- button -->
             <td class="text-right">
                 <!-- The form launching an update process. First step is the welcome message. The form is not submitted, but catch by the javascript inserted in the end of this file -->
-                <?php echo CHtml::beginForm('update/sa/getwelcome', 'post', array('class'=>'launchUpdateForm')); ?>
+                <?php echo CHtml::beginForm(App()->createUrl('admin/update/sa/getwelcome'), 'post', array('class'=>'launchUpdateForm')); ?>
                     <?php echo CHtml::hiddenField('destinationBuild' , $aUpdateVersion['build']); ?>
 
                     <!-- the button launching the update -->
@@ -103,8 +103,8 @@
     <?php endforeach; ?>
 </table>
 
-<!-- this javascript code manage the step changing. It will catch the form submission, then load the ComfortUpdater for the required build -->
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdater/comfortUpdateNextStep.js"></script>
+<!-- this javascript code manage the step changing. It will catch the form submission, then load the comfortupdate for the required build -->
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
     $('.launchUpdateForm').comfortUpdateNextStep({'step': 0});
 </script>

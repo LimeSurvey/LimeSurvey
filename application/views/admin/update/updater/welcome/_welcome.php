@@ -73,7 +73,7 @@
 <div class="row">
     <div id="btn-container" class="col-lg-6">
         <!-- The form launching the first step : control local errors. -->
-        <?php echo CHtml::beginForm('update/sa/checkLocalErrors', 'post', array('id'=>'launchCheckLocalErrorsForm')); ?>
+        <?php echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/update/sa/checkLocalErrors'), 'post', array('id'=>'launchCheckLocalErrorsForm')); ?>
             <?php  echo CHtml::hiddenField('destinationBuild' , $serverAnswer->destinationBuild); ?>
             <?php  echo CHtml::hiddenField('access_token' , $serverAnswer->access_token); ?>
 
@@ -89,8 +89,8 @@
 
 </div>
 
-<!-- this javascript code manage the step changing. It will catch the form submission, then load the ComfortUpdater for the required build -->
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdater/comfortUpdateNextStep.js"></script>
+<!-- this javascript code manage the step changing. It will catch the form submission, then load the comfortupdate for the required build -->
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
     $('#launchCheckLocalErrorsForm').comfortUpdateNextStep({'step': 0});
 </script>
