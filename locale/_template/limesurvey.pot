@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-03-16 13:45:14+00:00\n"
+"POT-Creation-Date: 2016-03-17 18:30:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -606,7 +606,7 @@ msgstr ""
 #: application/views/admin/homepagesettings/index.php:76
 #: application/views/admin/labels/_labelviewtabcontent_view.php:20
 #: application/views/admin/survey/QuestionGroups/group_view.php:8
-#: application/views/admin/survey/listSurveys_view.php:85
+#: application/views/admin/survey/listSurveys_view.php:87
 #: application/views/admin/survey/subview/tabCreate_view.php:38
 #: application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:21
 #: application/views/admin/survey/surveySummary_view.php:297
@@ -637,7 +637,7 @@ msgid "Uploading"
 msgstr ""
 
 #: application/controllers/UploaderController.php:292
-#: application/controllers/UploaderController.php:358
+#: application/controllers/UploaderController.php:370
 msgid "Select file"
 msgstr ""
 
@@ -687,7 +687,7 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: application/controllers/UploaderController.php:361
+#: application/controllers/UploaderController.php:373
 msgid "You can upload %s under %s KB each."
 msgstr ""
 
@@ -1291,6 +1291,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3595
 #: application/helpers/expressions/em_manager_helper.php:3599
 #: application/helpers/qanda_helper.php:4357
+#: application/helpers/qanda_helper.php:4399
 #: application/helpers/userstatistics_helper.php:1332
 #: application/helpers/userstatistics_helper.php:1465
 #: application/models/Survey.php:426 application/models/Survey.php:625
@@ -1357,7 +1358,7 @@ msgstr ""
 #: application/views/admin/token/managetokenattributes.php:71
 #: application/views/admin/token/managetokenattributes.php:72
 #: application/views/admin/token/remind.php:109
-#: application/views/survey/questions/yesno/buttons/item.php:29
+#: application/views/survey/questions/yesno/buttons/item.php:31
 #: application/views/survey/questions/yesno/radio/item.php:30
 msgid "Yes"
 msgstr ""
@@ -1391,7 +1392,7 @@ msgstr ""
 #: application/views/admin/token/browse.php:62
 #: application/views/admin/update/updater/_error.php:162
 #: application/views/admin/update/updater/steps/_backup.php:76
-#: application/views/admin/update/updater/steps/_change_log.php:66
+#: application/views/admin/update/updater/steps/_change_log.php:65
 #: application/views/admin/update/updater/steps/_check_local_errors.php:121
 #: application/views/admin/update/updater/steps/_check_local_errors.php:149
 #: application/views/admin/update/updater/steps/_fileSystem.php:40
@@ -1488,6 +1489,7 @@ msgstr ""
 #: application/helpers/export_helper.php:1400
 #: application/helpers/expressions/em_manager_helper.php:3601
 #: application/helpers/qanda_helper.php:4358
+#: application/helpers/qanda_helper.php:4409
 #: application/helpers/userstatistics_helper.php:1334
 #: application/views/admin/dataentry/content_view.php:663
 #: application/views/admin/export/statistics_subviews/_question.php:435
@@ -1560,6 +1562,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3596
 #: application/helpers/expressions/em_manager_helper.php:3600
 #: application/helpers/qanda_helper.php:4359
+#: application/helpers/qanda_helper.php:4421
 #: application/helpers/userstatistics_helper.php:1333
 #: application/helpers/userstatistics_helper.php:1466
 #: application/models/Survey.php:430 application/models/Survey.php:625
@@ -1627,7 +1630,7 @@ msgstr ""
 #: application/views/admin/token/managetokenattributes.php:72
 #: application/views/admin/token/remind.php:109
 #: application/views/admin/update/updater/steps/_check_local_errors.php:96
-#: application/views/survey/questions/yesno/buttons/item.php:43
+#: application/views/survey/questions/yesno/buttons/item.php:45
 #: application/views/survey/questions/yesno/radio/item.php:47
 msgid "No"
 msgstr ""
@@ -1715,6 +1718,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4219
 #: application/helpers/qanda_helper.php:4270
 #: application/helpers/qanda_helper.php:4362
+#: application/helpers/qanda_helper.php:4443
 #: application/helpers/qanda_helper.php:4543
 #: application/helpers/qanda_helper.php:4624
 #: application/helpers/qanda_helper.php:4745
@@ -1722,22 +1726,22 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4958
 #: application/helpers/qanda_helper.php:5841
 #: application/helpers/qanda_helper.php:5842
-#: application/helpers/qanda_helper.php:6143
-#: application/helpers/qanda_helper.php:6309
-#: application/helpers/qanda_helper.php:6323
-#: application/helpers/qanda_helper.php:6496
-#: application/helpers/qanda_helper.php:6532
+#: application/helpers/qanda_helper.php:6156
+#: application/helpers/qanda_helper.php:6322
+#: application/helpers/qanda_helper.php:6336
+#: application/helpers/qanda_helper.php:6509
+#: application/helpers/qanda_helper.php:6545
 #: application/helpers/userstatistics_helper.php:718
 #: application/helpers/userstatistics_helper.php:757
 #: application/helpers/userstatistics_helper.php:1588
 #: application/helpers/userstatistics_helper.php:1808
 #: application/views/admin/dataentry/content_view.php:41
 #: application/views/survey/questions/5pointchoice/item_noanswer_row.php:22
-#: application/views/survey/questions/gender/buttons/item.php:33
-#: application/views/survey/questions/gender/buttons/item.php:83
+#: application/views/survey/questions/gender/buttons/item.php:34
+#: application/views/survey/questions/gender/buttons/item.php:86
 #: application/views/survey/questions/gender/radio/item.php:64
-#: application/views/survey/questions/listradio/item_noanswer_row.php:22
-#: application/views/survey/questions/yesno/buttons/item.php:59
+#: application/views/survey/questions/listradio/item_noanswer_row.php:21
+#: application/views/survey/questions/yesno/buttons/item.php:61
 #: application/views/survey/questions/yesno/radio/item.php:65
 msgid "No answer"
 msgstr ""
@@ -1782,8 +1786,8 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1458
 #: application/views/admin/dataentry/content_view.php:75
 #: application/views/admin/export/statistics_subviews/_question.php:272
-#: application/views/survey/questions/gender/buttons/item.php:18
-#: application/views/survey/questions/gender/buttons/item.php:52
+#: application/views/survey/questions/gender/buttons/item.php:19
+#: application/views/survey/questions/gender/buttons/item.php:55
 #: application/views/survey/questions/gender/radio/item.php:29
 msgid "Female"
 msgstr ""
@@ -1802,8 +1806,8 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1459
 #: application/views/admin/dataentry/content_view.php:76
 #: application/views/admin/export/statistics_subviews/_question.php:278
-#: application/views/survey/questions/gender/buttons/item.php:25
-#: application/views/survey/questions/gender/buttons/item.php:67
+#: application/views/survey/questions/gender/buttons/item.php:26
+#: application/views/survey/questions/gender/buttons/item.php:70
 #: application/views/survey/questions/gender/radio/item.php:46
 msgid "Male"
 msgstr ""
@@ -2469,12 +2473,12 @@ msgid "The answer(s) must meet these array_filter criteria:"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2397
-#: application/controllers/admin/printablesurvey.php:1754
+#: application/controllers/admin/printablesurvey.php:1753
 msgid "Only answer this question for the items you selected in question %s ('%s')"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2408
-#: application/controllers/admin/printablesurvey.php:1770
+#: application/controllers/admin/printablesurvey.php:1769
 msgid "Only answer this question for the items you did not select in question %s ('%s')"
 msgstr ""
 
@@ -3030,11 +3034,11 @@ msgstr ""
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:1655
+#: application/controllers/admin/printablesurvey.php:1654
 msgid "Please choose at least %s items."
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:1658
+#: application/controllers/admin/printablesurvey.php:1657
 msgid "Please choose no more than %s items."
 msgstr ""
 
@@ -3741,7 +3745,7 @@ msgstr ""
 #: application/views/admin/templates/templateeditor_register_view.php:15
 #: application/views/admin/token/emailwarning.php:8
 #: application/views/admin/update/updater/steps/_backup.php:79
-#: application/views/admin/update/updater/steps/_change_log.php:71
+#: application/views/admin/update/updater/steps/_change_log.php:70
 #: application/views/admin/update/updater/steps/_check_local_errors.php:153
 #: application/views/admin/update/updater/steps/_fileSystem.php:57
 #: application/views/admin/update/updater/steps/_updater_updated.php:20
@@ -4547,8 +4551,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:1328
 #: application/helpers/qanda_helper.php:2066
 #: application/helpers/qanda_helper.php:4962
-#: application/helpers/qanda_helper.php:6483
-#: application/helpers/qanda_helper.php:6519
+#: application/helpers/qanda_helper.php:6496
+#: application/helpers/qanda_helper.php:6532
 #: application/views/admin/dataentry/content_view.php:124
 #: application/views/admin/dataentry/content_view.php:136
 #: application/views/survey/questions/list_with_comment/dropdown/header.php:19
@@ -5883,7 +5887,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:296 application/models/Survey.php:678
 #: application/views/admin/quotas/viewquotasrow_view.php:10
-#: application/views/admin/survey/listSurveys_view.php:77
+#: application/views/admin/survey/listSurveys_view.php:78
 msgid "Active"
 msgstr ""
 
@@ -8784,7 +8788,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4320
 #: application/helpers/qanda_helper.php:4490
 #: application/helpers/qanda_helper.php:4729
-#: application/helpers/qanda_helper.php:6095
+#: application/helpers/qanda_helper.php:6108
 msgid "The last cell are for no answer. "
 msgstr ""
 
@@ -8811,8 +8815,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:5001
 #: application/helpers/qanda_helper.php:5407
 #: application/helpers/qanda_helper.php:5803
-#: application/helpers/qanda_helper.php:5965
-#: application/helpers/qanda_helper.php:6550
+#: application/helpers/qanda_helper.php:5978
+#: application/helpers/qanda_helper.php:6563
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
@@ -8832,7 +8836,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:5136
 #: application/views/admin/assessments_view.php:87
 #: application/views/admin/assessments_view.php:132
-#: application/views/admin/survey/listSurveys_view.php:128
+#: application/views/admin/survey/listSurveys_view.php:134
 msgid "Total"
 msgstr ""
 
@@ -8877,15 +8881,15 @@ msgstr ""
 msgid "An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5959
+#: application/helpers/qanda_helper.php:5972
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:6013
+#: application/helpers/qanda_helper.php:6026
 msgid "An array with sub-question on each line, with 2 answers to provide on each line. You have to select the answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:6021
+#: application/helpers/qanda_helper.php:6034
 msgid "An array with sub-question on each line, with 2 answers to provide on each line. The answers are contained in the table header. "
 msgstr ""
 
@@ -12108,7 +12112,7 @@ msgstr ""
 
 #: application/views/admin/labels/importlabelresources_view.php:18
 #: application/views/admin/survey/importSurveyResources_view.php:18
-#: application/views/admin/survey/listSurveys_view.php:114
+#: application/views/admin/survey/listSurveys_view.php:120
 #: application/views/admin/templates/importuploaded_view.php:14
 msgid "Partial"
 msgstr ""
@@ -13015,7 +13019,7 @@ msgid "Shared user id"
 msgstr ""
 
 #: application/views/admin/participants/sharePanel_view.php:12
-#: application/views/admin/survey/listSurveys_view.php:99
+#: application/views/admin/survey/listSurveys_view.php:103
 #: application/views/admin/usergroup/usergroups_view.php:52
 msgid "Owner"
 msgstr ""
@@ -14927,28 +14931,28 @@ msgid "(Any state)"
 msgstr ""
 
 #: application/views/admin/survey/listSurveys_view.php:40
-msgid "Futur"
+msgid "Not yet started"
 msgstr ""
 
 #: application/views/admin/survey/listSurveys_view.php:60
 msgid "No surveys found."
 msgstr ""
 
-#: application/views/admin/survey/listSurveys_view.php:92
+#: application/views/admin/survey/listSurveys_view.php:95
 msgid "Created"
 msgstr ""
 
-#: application/views/admin/survey/listSurveys_view.php:106
+#: application/views/admin/survey/listSurveys_view.php:111
 msgid "Anonymized responses"
 msgstr ""
 
-#: application/views/admin/survey/listSurveys_view.php:121
+#: application/views/admin/survey/listSurveys_view.php:127
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:122
 #: application/views/admin/templates/templatesummary_view.php:150
 msgid "Full"
 msgstr ""
 
-#: application/views/admin/survey/listSurveys_view.php:135
+#: application/views/admin/survey/listSurveys_view.php:141
 msgid "Uses tokens"
 msgstr ""
 
@@ -16219,7 +16223,7 @@ msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:88
 #: application/views/admin/token/tokenform.php:145
-#: application/views/survey/questions/date/selector/selector.php:58
+#: application/views/survey/questions/date/selector/selector.php:62
 msgid "Format: %s"
 msgstr ""
 
@@ -16873,7 +16877,7 @@ msgid "New key"
 msgstr ""
 
 #: application/views/admin/update/updater/_progress.php:19
-#: application/views/admin/update/updater/steps/_change_log.php:14
+#: application/views/admin/update/updater/steps/_change_log.php:13
 msgid "Change log"
 msgstr ""
 
@@ -16941,7 +16945,7 @@ msgstr ""
 msgid "Please check any problems above and then proceed to the final step."
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_change_log.php:29
+#: application/views/admin/update/updater/steps/_change_log.php:28
 msgid "Note: Because you are updating from a stable to an unstable version or vice versa a change log might not be available or incomplete."
 msgstr ""
 
