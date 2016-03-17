@@ -12,7 +12,7 @@
     <div class="panel panel-default" id="generaloptionsContainer">
         <div class="panel-heading" role="tab" id="headingOne">
             <h4 class="panel-title">
-                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
+                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </a>
                 <a role="button" data-toggle="collapse" href="#generaloptions" aria-expanded="true" aria-controls="generaloptions">
@@ -32,7 +32,7 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingTwo">
             <h4 class="panel-title">
-                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
+                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </a>
                 <a class="collapsed" role="button" data-toggle="collapse" href="#presentationoptions" aria-expanded="false" aria-controls="presentationoptions">
@@ -51,7 +51,7 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingThree">
             <h4 class="panel-title">
-                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
+                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </a>
                 <a class="collapsed" role="button" data-toggle="collapse" href="#publicationoptions" aria-expanded="false" aria-controls="publicationoptions">
@@ -70,7 +70,7 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingFour">
             <h4 class="panel-title">
-                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
+                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </a>
                 <a class="collapsed" role="button" data-toggle="collapse" href="#notificationoptions" aria-expanded="false" aria-controls="notificationoptions">
@@ -89,7 +89,7 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingFive">
             <h4 class="panel-title">
-                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
+                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </a>
                 <a class="collapsed" role="button" data-toggle="collapse" href="#tokensoptions" aria-expanded="false" aria-controls="tokensoptions">
@@ -111,7 +111,7 @@
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingSix">
                 <h4 class="panel-title">
-                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
+                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="glyphicon glyphicon-chevron-left"></span>
                     </a>
                     <a class="collapsed" role="button" data-toggle="collapse" href="#integrationoptions" aria-expanded="false" aria-controls="integrationoptions">
@@ -130,7 +130,7 @@
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingSeven">
                 <h4 class="panel-title">
-                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
+                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="glyphicon glyphicon-chevron-left"></span>
                     </a>
                     <a class="collapsed" role="button" data-toggle="collapse" href="#resourcesoptions" aria-expanded="false" aria-controls="resourcesoptions">
@@ -149,7 +149,7 @@
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingEight">
                 <h4 class="panel-title">
-                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
+                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="glyphicon glyphicon-chevron-left"></span>
                     </a>
                     <a class="collapsed" role="button" data-toggle="collapse" href="#pluginsoptions" aria-expanded="false" aria-controls="pluginsoptions">

@@ -300,7 +300,7 @@ class Survey_Common_Action extends CAction
             echo '
                     <!-- Full page, started in Survey_Common_Action::render_wrapped_template() -->
                         <div class="container-fluid full-page-wrapper" id="in_survey_common_action">
-                            <div class="row">';
+                            ';
         }
 
         //// Here the rendering of all the subviews process. Will not be use anymore, because each subview will be directly called from her parent view.

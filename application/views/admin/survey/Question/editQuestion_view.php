@@ -30,7 +30,7 @@
             <?php // if(!$adding):?>
 
                 <!-- The tabs & tab-fanes -->
-                <div class="col-lg-8 col-md-6 col-sm-5 content-right">
+                <div class="col-sm-12 col-md-7 content-right">
                     <?php if($adding):?>
                         <?php
                             $this->renderPartial(
@@ -64,7 +64,7 @@
                 </div>
 
                 <!-- The Accordion -->
-                <div class="col-lg-4 col-md-6 col-sm-7" id="accordion-container" style="background-color: #fff;">
+                <div class="col-sm-12 col-md-5" id="accordion-container" style="background-color: #fff;">
                     <?php // TODO : find why the $groups can't be generated from controller?>
                     <div id='questionbottom'>
                         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -113,7 +113,7 @@
                                 <!-- General Options : Header  -->
                                 <div class="panel-heading" role="tab" id="headingOne">
                                     <h4 class="panel-title">
-                                        <a class="btn btn-default btn-xs hide-button hidden-xs handleAccordion">
+                                        <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
                                             <span class="glyphicon glyphicon-chevron-left"></span>
                                         </a>
                                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">

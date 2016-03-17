@@ -1,5 +1,5 @@
 /**
- * OBS! NO COLOURS IN THIS FILE.
+ * OBS : COLOURS IN THIS FILE.
  */
 
 .ui-datepicker {
@@ -1749,3 +1749,9 @@ td.subquestion-actions span:hover
 {
     padding-top: 0;
 }
+
+/* Accordion*/
+ .full-page-wrapper .handleAccordion
+ {
+     display: none;
+ }
