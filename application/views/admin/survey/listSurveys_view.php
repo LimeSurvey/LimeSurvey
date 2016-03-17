@@ -70,7 +70,8 @@
                         'header' => gT('Survey ID'),
                         'name' => 'survey_id',
                         'value'=>'$data->sid',
-                        'htmlOptions' => array('class' => 'hidden-xs'),
+                        'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                        'htmlOptions' => array('class' => 'hidden-xs')
                     ),
 
                     array(
@@ -78,6 +79,7 @@
                         'name' => 'running',
                         'value'=>'$data->running',
                         'type'=>'raw',
+                        'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                         'htmlOptions' => array('class' => 'hidden-xs'),
                     ),
 
@@ -85,6 +87,7 @@
                         'header' => gT('Title'),
                         'name' => 'title',
                         'value'=>'$data->defaultlanguage->surveyls_title',
+                        'headerHtmlOptions'=>array('class' => 'col-md-4'),
                         'htmlOptions' => array('class' => 'col-md-4'),
                     ),
 
@@ -92,6 +95,7 @@
                         'header' => gT('Created'),
                         'name' => 'creation_date',
                         'value'=>'$data->creationdate',
+                        'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                         'htmlOptions' => array('class' => 'hidden-xs'),
                     ),
 
@@ -99,14 +103,16 @@
                         'header' => gT('Owner'),
                         'name' => 'owner',
                         'value'=>'$data->owner->users_name',
-                        'htmlOptions' => array('class' => 'hidden-xs'),
+                        'headerHtmlOptions'=>array('class' => 'hidden-md hidden-sm hidden-xs'),
+                        'htmlOptions' => array('class' => 'hidden-md hidden-sm hidden-xs'),
                     ),
 
                     array(
                         'header' => gT('Anonymized responses'),
                         'name' => 'anonymized_responses',
                         'value'=>'$data->anonymizedResponses',
-                        'htmlOptions' => array('class' => 'hidden-xs'),
+                        'headerHtmlOptions'=>array('class' => 'hidden-xs col-md-1'),
+                        'htmlOptions' => array('class' => 'hidden-xs col-md-1'),
                     ),
 
 

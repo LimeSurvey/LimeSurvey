@@ -1,5 +1,5 @@
 /**
- * OBS! NO COLOURS IN THIS FILE.
+ * OBS : COLOURS IN THIS FILE.
  */
 
 .ui-datepicker {
@@ -809,9 +809,7 @@ div.panel.disabled {
   #dropdown .panel-body .navbar-nav {
     margin: 0; }
 
-  #survey-grid #survey-grid_c0, #survey-grid #survey-grid_c2, #survey-grid #survey-grid_c3, #survey-grid #survey-grid_c4, #survey-grid #survey-grid_c5,
-  #question-grid #question-grid_c0, #question-grid #question-grid_c1 {
-    display: none; } }
+  }
 .content-right {
   padding-left: 0;
   padding-right: 0;
@@ -1749,3 +1747,9 @@ td.subquestion-actions span:hover
 {
     padding-top: 0;
 }
+
+/* Accordion*/
+ .full-page-wrapper .handleAccordion
+ {
+     display: none;
+ }
