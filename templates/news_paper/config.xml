@@ -25,9 +25,9 @@
     <files>
         <css>
             <filename>css/jquery-ui-custom.css</filename>
+            <filename>css/bootstrap-slider.css</filename>
             <filename>css/news_paper.css</filename>
             <filename>css/template.css</filename>
-            <filename>css/bootstrap-slider.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>

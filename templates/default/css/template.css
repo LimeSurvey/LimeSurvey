@@ -225,9 +225,14 @@ li.responsive-content
         padding-left: 5px;
     }
 
-    /* For yes-no question, shrink the buttons a bit on Phone screens */
+    /* For yes-no question, shrink the buttons a bit on phone screens */
     .btn-lg, .btn-group-lg label {
         padding: 10px 15px;
+    }
+
+    /* Slider can be full width on phones */
+    .slider.slider-horizontal {
+        width: 100%;
     }
 
 }

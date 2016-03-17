@@ -15,9 +15,9 @@
     <files>
         <css>
             <filename>css/jquery-ui-custom.css</filename>
+            <filename>css/bootstrap-slider.css</filename>
             <filename>css/ubuntu_orange.css</filename>
             <filename>css/template.css</filename>
-            <filename>css/bootstrap-slider.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
