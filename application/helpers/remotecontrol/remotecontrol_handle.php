@@ -3063,7 +3063,15 @@ class remotecontrol_handle
         /**
          * Compose permissions
          */
-        $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
+        if ($sEntityName == 'global')
+        {
+            $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
+        }
+        else
+        {
+            $aBaseUserPermissions = Permission::model()->getSurveyBasePermissions();
+        }
+
         $aPermissions=array();
         foreach ($aBaseUserPermissions as $sPermissionKey=>$aCRUDPermissions)
         {
