@@ -1755,3 +1755,8 @@ td.subquestion-actions span:hover
  {
      display: none;
  }
+
+/* Box in resopnses list need a little more space */
+#displayresponses_cb {
+    width: 35px !important;  /* Override jQgrid stuff */
+}
