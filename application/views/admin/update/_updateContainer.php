@@ -10,11 +10,11 @@
  */
 ?>
 
-<!-- this view contain the input provinding to the js the inforamtion about wich content to load : check buttons or comfortUpdater -->
+<!-- this view contain the input provinding to the js the inforamtion about wich content to load : check buttons or comfortupdate -->
 <?php
-    App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdater/comfortupdater.js');
-	App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdater/buildComfortButtons.js');
-	App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdater/displayComfortStep.js');
+    App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdate/comfortupdate.js');
+	App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdate/buildComfortButtons.js');
+	App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdate/displayComfortStep.js');
 	$this->renderPartial("./update/_ajaxVariables");
 ?>
 
