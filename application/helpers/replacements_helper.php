@@ -692,7 +692,7 @@ EOD;
         $_endtext = $thissurvey['surveyls_endtext'];
     }
 
-    $sitelogo = (!empty($oTemplate->siteLogo))?'<img src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'"/>':'';
+    $sitelogo = (!empty($oTemplate->siteLogo))?'<img class="img-responsive" src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'"/>':'';
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
