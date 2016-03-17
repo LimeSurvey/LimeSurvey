@@ -29,6 +29,7 @@
     font-size: 100%;
     list-style: none;
 }
+/* This styling messes up file upload if the page is long
 .ui-helper-clearfix:before,
 .ui-helper-clearfix:after {
     content: "";
@@ -38,6 +39,7 @@
 .ui-helper-clearfix:after {
     clear: both;
 }
+*/
 .ui-helper-clearfix {
     min-height: 0; /* support: IE7 */
 }
