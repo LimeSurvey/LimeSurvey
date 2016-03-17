@@ -2742,7 +2742,7 @@ class remotecontrol_handle
         // Set post manullay
         $_POST['user_type'] = 'DB';
         $_POST['new_user'] = $new_user;
-        $_POST['new_mail'] = $aAttributes['email'];
+        $_POST['new_email'] = $aAttributes['email'];
         $_POST['new_full_name'] = $aAttributes['full_name'];
 
         // Call Event to create the User
