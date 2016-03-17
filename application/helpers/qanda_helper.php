@@ -5926,7 +5926,8 @@ function do_arraycolumns($ia)
                     else
                     {
                         // Should never happen...?
-                        throw new \Exception("do_arraycolumns: Can't generate question text");
+                        $question = 'dont know';
+                        //throw new \Exception("do_arraycolumns: Can't generate question text");
                     }
 
                     $answer .= "\t<td data-title='" . $question . "' class=\"answer-cell-7 answer_cell_00$ld answer-item radio-item\">\n"
