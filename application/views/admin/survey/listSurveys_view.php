@@ -111,8 +111,8 @@
                         'header' => gT('Anonymized responses'),
                         'name' => 'anonymized_responses',
                         'value'=>'$data->anonymizedResponses',
-                        'headerHtmlOptions'=>array('class' => 'hidden-xs col-md-1'),
-                        'htmlOptions' => array('class' => 'hidden-xs col-md-1'),
+                        'headerHtmlOptions'=>array('class' => 'hidden-xs hidden-sm col-md-1'),
+                        'htmlOptions' => array('class' => 'hidden-xs hidden-sm col-md-1'),
                     ),
 
 
