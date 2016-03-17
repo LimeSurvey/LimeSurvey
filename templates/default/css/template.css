@@ -110,7 +110,6 @@ li.responsive-content
 /**
 * no more tables
 */
-
 @media only screen and (max-width: 800px) {
 
     /* Remove margin */
@@ -213,6 +212,26 @@ li.responsive-content
         /* Top/left values mimic padding */
     }
 }
+
+/** On phones, leave some more space */
+@media only screen and (max-width: 400px) {
+
+    .col-sm-12 {
+        padding: 0;
+    }
+
+    .col-xs-12 {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+    /* For yes-no question, shrink the buttons a bit on Phone screens */
+    .btn-lg, .btn-group-lg label {
+        padding: 10px 15px;
+    }
+
+}
+
 
 
 
@@ -880,4 +899,9 @@ table {
 /* Give help text some space */
 .question-help {
     margin-top: 1em;
+}
+
+/* Wrap text in e.g. gender button "No answer */
+.wrap-normal {
+    white-space: normal;
 }
