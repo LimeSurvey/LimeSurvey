@@ -25,8 +25,7 @@
 ?>
 <li class='<?php echo $liclasses;?>'>
     <!-- Checkbox and label -->
-    <span class="option col-xs-12" <?php echo $sDisplayStyle ;?> >
-        <span class="row">
+    <div class="option col-xs-12 form-group" <?php echo $sDisplayStyle ;?> >
             <input
                     class="checkbox <?php echo $classes; echo $kpclass; ?>"
                     title="<?php echo $title;?>"
@@ -38,7 +37,7 @@
                     onclick="<?php echo $checkconditionFunction;?>"
             />
 
-            <label for="<?php echo $id;?>" class="answertext col-xs-11">
+            <label for="<?php echo $id;?>" class="answertext control-label">
                 <?php echo $labeltext;?>
             </label>
 
@@ -51,12 +50,11 @@
                 <?php echo $checked;?>
                 />
             <?php endif;?>
-        </span>
-    </span>
+    </div>
 
     <!-- Comment -->
-    <span class="comment col-xs-12" <?php echo $sDisplayStyle; ?>>
-        <label for='<?php echo $inputCommentId;?>' class="answer-comment hide">
+    <div class="comment col-xs-12 form-group" <?php echo $sDisplayStyle; ?>>
+        <label for='<?php echo $inputCommentId;?>' class="answer-comment hide control-label">
             <?php echo $commentLabelText;?>
         </label>
 
@@ -69,5 +67,5 @@
             value='<?php echo $inputCOmmentValue; ?>'
             onkeyup='<?php echo $checkconditionFunctionComment;?>'
         />
-    </span>
+    </div>
 </li>
