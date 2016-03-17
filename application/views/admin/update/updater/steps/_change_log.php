@@ -6,7 +6,6 @@
  * @var obj $serverAnswer the object returned by the server
  * @var int $destinationBuild the destination build
  */
-
 ?>
 
 
@@ -37,7 +36,7 @@
             $tempfromversion=$changelogentry->versionnumber;
             $tempfrombuild=$changelogentry->build;
 
-            $changelog.="Changes from $tempfromversion Build $tempfrombuild to {$changelogentry->versionnumber} Build {$changelogentry->build} --- Legend: + New feature, # Updated feature, - Bug fix\n";
+            $changelog.="Changes from ".Yii::app()->getConfig("versionnumber")." Build ".Yii::app()->getConfig("buildnumber")." to {$changelogentry->versionnumber} Build {$changelogentry->build} --- Legend: + New feature, # Updated feature, - Bug fix\n";
             $changelog.=$changelogentry->changelog;
         }
    }
