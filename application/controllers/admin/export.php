@@ -1087,6 +1087,11 @@ class export extends Survey_Common_Action {
         $aData['surveyid'] = $iSurveyID;
         $aData['slangs'] = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
         $aData['baselang'] = Survey::model()->findByPk($iSurveyID)->language;
+        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
+        $aData['sidemenu']['state'] = false;
+        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+ 
         array_unshift($aData['slangs'],$aData['baselang']);
 
         Yii::import("application.libraries.admin.quexmlpdf",TRUE);
