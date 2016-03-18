@@ -1760,3 +1760,8 @@ td.subquestion-actions span:hover
 #displayresponses_cb {
     width: 35px !important;  /* Override jQgrid stuff */
 }
+
+/* View detail response, make sure left column is not too wide*/
+.detailbrowsetable tr th {
+    width: 50%;
+}
