@@ -75,7 +75,9 @@ function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
 
 $(document).ready(function(){
 
-    if($(window).width() < 800)
+    // iPad has width 768, Google Nexus 10 width 800
+    // It's OK to keep tables on pads.
+    if($(window).width() < 768)
     {
         if($('.no-more-tables').length > 0)
         {
