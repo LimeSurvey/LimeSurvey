@@ -895,6 +895,7 @@ table {
     .col-xs-12 {
         padding-bottom: 8px;  /* For 5-point-choice; TODO: Should look like 5-point-array? */
     }
+
 }
 
 /** On phones, leave some more space */
@@ -924,4 +925,11 @@ table {
         margin-left: 5px;
     }
 
+}
+
+/* On iPad etc only */
+@media only screen and (max-width: 800px) and (min-width: 768px) {
+    .five-point-choice .noanswer-item {
+        padding: 0;
+    }
 }
