@@ -5857,7 +5857,7 @@ function do_arraycolumns($ia)
             $cellwidth=$anscount;
             $cellwidth=round(( 50 / $cellwidth ) , 1);
             //$answer = "\n<table class=\"table-in-qanda-8  question subquestions-list questions-list\" summary=\"{$caption}\">\n"
-            $answer = "\n<table class=\"no-more-tables table-in-qanda-8 table question subquestion-list questions-list\">\n"
+            $answer = "\n<table class=\"array-by-columns-table table-in-qanda-8 table question subquestion-list questions-list\">\n"
             . "\t<colgroup class=\"col-responses\">\n"
             //. "\t<col class=\"col-answers\" width=\"50%\" />\n";
             . "\t<col class=\"col-answers\" style='width: 50%' />\n";
@@ -5930,7 +5930,7 @@ function do_arraycolumns($ia)
                         throw new \Exception("do_arraycolumns: Can't generate question text");
                     }
 
-                    $answer .= "\t<td data-title='" . $question . "' class=\"answer-cell-7 answer_cell_00$ld answer-item radio-item\">\n"
+                    $answer .= "\t<td data-title='" . $ansrow['answer'] . "' class=\"answer-cell-7 answer_cell_00$ld answer-item radio-item\">\n"
                     . "\t<label for=\"answer".$myfname.'-'.$ansrow['code']."\"><input class=\"radio\" type=\"radio\" name=\"".$myfname.'" value="'.$ansrow['code'].'" '
                     . 'id="answer'.$myfname.'-'.$ansrow['code'].'" ';
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])

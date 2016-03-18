@@ -825,10 +825,29 @@ table {
         left: -9999px;
     }
 
-    .no-more-tables tr { border: 1px solid #ccc; padding: 1em ; }
+    .no-more-tables tr,
+    .array-by-columns-div .radio-list { 
+        border: 1px solid #ccc; 
+        padding: 1em;
+    }
 
     /* Line header ; color is h4 color */
-    .no-more-tables tr th { font-size: 1.1em; text-align: center; color: #317eac;}
+    .no-more-tables tr th,
+    .array-by-columns-div .answertext { 
+        font-size: 1.1em; 
+        text-align: center; 
+        color: #317eac;
+    }
+
+    .array-by-columns-div .answertext { 
+        padding: 8px;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .array-by-columns-div .radio-item {
+        padding-bottom: 8px;
+    }
 
     .no-more-tables .checkbox  {
         position: relative;
@@ -896,13 +915,18 @@ table {
       margin-top: 4px;
     }
 
-    .col-xs-12 {
+    .five-point-choice .col-xs-12 {
         padding-bottom: 8px;  /* For 5-point-choice; TODO: Should look like 5-point-array? */
+    }
+
+    /* Hide the first column in array-by-column */
+    .array-by-columns-table tr > *:nth-child(1) {
+        display: none;
     }
 
 }
 
-/** On phones, leave some more space */
+/** On small phones, leave some more space */
 @media only screen and (max-width: 400px) {
 
     .col-sm-12 {
