@@ -891,6 +891,10 @@ table {
     .radio-inline input[type="radio"] {
       margin-top: 4px;
     }
+
+    .col-xs-12 {
+        padding-bottom: 8px;  /* For 5-point-choice; TODO: Should look like 5-point-array? */
+    }
 }
 
 /** On phones, leave some more space */
