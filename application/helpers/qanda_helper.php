@@ -5920,16 +5920,6 @@ function do_arraycolumns($ia)
                     //if (!isset($trbc) || $trbc == 'array1') {$trbc = 'array2';} else {$trbc = 'array1';}
                     $myfname=$ia[1].$ld;
 
-                    if (isset($aQuestions[$i]))
-                    {
-                        $question = $aQuestions[$i]['question'];
-                    }
-                    else
-                    {
-                        // Should never happen...?
-                        throw new \Exception("do_arraycolumns: Can't generate question text");
-                    }
-
                     $answer .= "\t<td data-title='" . $ansrow['answer'] . "' class=\"answer-cell-7 answer_cell_00$ld answer-item radio-item\">\n"
                     . "\t<label for=\"answer".$myfname.'-'.$ansrow['code']."\"><input class=\"radio\" type=\"radio\" name=\"".$myfname.'" value="'.$ansrow['code'].'" '
                     . 'id="answer'.$myfname.'-'.$ansrow['code'].'" ';
