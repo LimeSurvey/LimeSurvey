@@ -107,138 +107,6 @@ li.responsive-content
     white-space: nowrap;
 }
 
-/**
-* no more tables
-*/
-@media only screen and (max-width: 800px) {
-
-    /* Remove margin */
-    .row {
-        margin: 0;
-        padding: 0;
-    }
-
-    /* Add some margin for multiple short text */
-    .form-group.row {
-        margin-bottom: 15px;
-    }
-
-    /* Force table to not be like tables anymore */
-    .no-more-tables table,
-    .no-more-tables thead,
-    .no-more-tables tbody,
-    .no-more-tables th,
-    .no-more-tables td {
-        display: block;
-    }
-
-    .no-more-tables tr {
-        display: inline-block;
-        width: 100%;
-    }
-
-    .no-more-tables table.subquestions-list td {
-        text-align: left;
-    }
-
-    /* Hide table headers (but not display: none;, for accessibility) */
-    .no-more-tables thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-    .no-more-tables tr { border: 1px solid #ccc; padding: 1em ; }
-
-    /* Line header ; color is h4 color */
-    .no-more-tables tr th { font-size: 1.1em; text-align: center; color: #317eac;}
-
-    .no-more-tables .checkbox  {
-        position: relative;
-        top: 6px;
-    }
-
-    .no-more-tables td {
-        /* Behave  like a "row" */
-        min-height: 2em;
-        border: none;
-        position: relative;
-        /*padding-left: 95%;*/
-        padding-bottom: 1em;
-        white-space: normal;
-        text-align:left;
-    }
-
-    .array-multi-flexi  .no-more-tables td, .no-more-tables-array-dual-dropdown-layout  td, .no-more-tables-array-multi-text td{
-        padding-left: 0%;
-    }
-
-
-    .no-more-tables td:before {
-        /* Now like a table header */
-        position: absolute;
-        /* Top/left values mimic padding */
-        top: 6px;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        text-align:left;
-        font-weight: bold;
-    }
-
-    /*
-    Label the data
-    */
-    /*.no-more-tables td:before { content: attr(data-title); }*/
-
-    .no-more-tables-10-point td {
-        width: 2em;
-        margin: 0px;
-        padding: 0px;
-        float: left;
-        text-align:left;
-    }
-
-    /* Don't wrap "No answer" on two lines */
-    .no-more-tables-10-point label {
-        white-space: nowrap;
-    }
-
-    .no-more-tables-10-point td:before, .no-more-tables-5-point td:before {
-        /* Now like a table header */
-        position: relative;
-        left: 2px;
-        /* Top/left values mimic padding */
-    }
-}
-
-/** On phones, leave some more space */
-@media only screen and (max-width: 400px) {
-
-    .col-sm-12 {
-        padding: 0;
-    }
-
-    .col-xs-12 {
-        padding-right: 5px;
-        padding-left: 5px;
-    }
-
-    /* For yes-no question, shrink the buttons a bit on phone screens */
-    .btn-lg, .btn-group-lg label {
-        padding: 10px 15px;
-    }
-
-    /* Slider can be full width on phones */
-    .slider.slider-horizontal {
-        width: 100%;
-    }
-
-}
-
-
-
 
 /**
 * slider
@@ -909,4 +777,142 @@ table {
 /* Wrap text in e.g. gender button "No answer */
 .wrap-normal {
     white-space: normal;
+}
+
+/**
+ * No more tables
+ * OBS: Media specific CSS should be last in this file.
+ */
+@media only screen and (max-width: 800px) {
+
+    /* Remove margin */
+    .row {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Add some margin for multiple short text */
+    .form-group.row {
+        margin-bottom: 15px;
+    }
+
+    /* Force table to not be like tables anymore */
+    .no-more-tables table,
+    .no-more-tables thead,
+    .no-more-tables tbody,
+    .no-more-tables th,
+    .no-more-tables td {
+        display: block;
+    }
+
+    .no-more-tables tr {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .no-more-tables table.subquestions-list td {
+        text-align: left;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    .no-more-tables thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .no-more-tables tr { border: 1px solid #ccc; padding: 1em ; }
+
+    /* Line header ; color is h4 color */
+    .no-more-tables tr th { font-size: 1.1em; text-align: center; color: #317eac;}
+
+    .no-more-tables .checkbox  {
+        position: relative;
+        top: 6px;
+    }
+
+    .no-more-tables td {
+        /* Behave  like a "row" */
+        min-height: 2em;
+        border: none;
+        position: relative;
+        /*padding-left: 95%;*/
+        padding-bottom: 1em;
+        white-space: normal;
+        text-align:left;
+    }
+
+    .array-multi-flexi  .no-more-tables td, .no-more-tables-array-dual-dropdown-layout  td, .no-more-tables-array-multi-text td{
+        padding-left: 0%;
+    }
+
+
+    .no-more-tables td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align:left;
+        font-weight: bold;
+    }
+
+    /*
+    Label the data
+    */
+    /*.no-more-tables td:before { content: attr(data-title); }*/
+
+    .no-more-tables-10-point td {
+        width: 2em;
+        margin: 0px;
+        padding: 0px;
+        float: left;
+        text-align:left;
+    }
+
+    /* Don't wrap "No answer" on two lines */
+    .no-more-tables-10-point label {
+        white-space: nowrap;
+    }
+
+    .no-more-tables-10-point td:before, .no-more-tables-5-point td:before {
+        /* Now like a table header */
+        position: relative;
+        left: 2px;
+        /* Top/left values mimic padding */
+    }
+
+    /* When tables are collapsed, remove margin top so the labels look centered */
+    input[type="radio"],
+    .radio input[type="radio"],
+    .radio-inline input[type="radio"] {
+      margin-top: 4px;
+    }
+}
+
+/** On phones, leave some more space */
+@media only screen and (max-width: 400px) {
+
+    .col-sm-12 {
+        padding: 0;
+    }
+
+    .col-xs-12 {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+    /* For yes-no question, shrink the buttons a bit on phone screens */
+    .btn-lg, .btn-group-lg label {
+        padding: 10px 15px;
+    }
+
+    /* Slider can be full width on phones */
+    .slider.slider-horizontal {
+        width: 100%;
+    }
+
 }
