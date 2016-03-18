@@ -915,4 +915,9 @@ table {
         width: 100%;
     }
 
+    /* Center label under radio button on phones */
+    .five-point-choice label {
+        margin-left: 5px;
+    }
+
 }
