@@ -13,7 +13,10 @@ $(document).ready(function(){
         var newval = $(this).attr('data-value');
         var target = $('#' + $(this).attr('data-target'));
         $(target).val(newval);
-        updateCKeditor($(this).attr('data-target'),newval);
+        try{
+            updateCKeditor($(this).attr('data-target'),newval);
+        }
+        catch(err) {}
     });
 
 });

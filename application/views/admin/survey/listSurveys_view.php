@@ -33,9 +33,11 @@
                 <div class="form-group">
                     <?php echo $form->label($model, 'active', array('label'=>gT('Active:'),'class'=>'control-label')); ?>
                     <select name="active" class="form-control">
-                        <option value="" <?php if( $model->active!="Y" && $model->active!="N" ){echo "selected";}?>><?php eT('(Any state)');?></option>
+                        <option value="" <?php if( $model->active==""){echo "selected";}?>><?php eT('(Any state)');?></option>
                         <option value="Y" <?php if( $model->active=="Y"){echo "selected";}?>><?php eT('Yes');?></option>
                         <option value="N" <?php if( $model->active=="N"){echo "selected";}?>><?php eT('No');?></option>
+                        <option value="E" <?php if( $model->active=="E"){echo "selected";}?>><?php eT('Expired');?></option>
+                        <option value="S" <?php if( $model->active=="S"){echo "selected";}?>><?php eT('Not yet started');?></option>
                     </select>
                 </div>
                 <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
@@ -68,6 +70,16 @@
                         'header' => gT('Survey ID'),
                         'name' => 'survey_id',
                         'value'=>'$data->sid',
+                        'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                        'htmlOptions' => array('class' => 'hidden-xs')
+                    ),
+
+                    array(
+                        'header' => gT('Active'),
+                        'name' => 'running',
+                        'value'=>'$data->running',
+                        'type'=>'raw',
+                        'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                         'htmlOptions' => array('class' => 'hidden-xs'),
                     ),
 
@@ -75,6 +87,7 @@
                         'header' => gT('Title'),
                         'name' => 'title',
                         'value'=>'$data->defaultlanguage->surveyls_title',
+                        'headerHtmlOptions'=>array('class' => 'col-md-4'),
                         'htmlOptions' => array('class' => 'col-md-4'),
                     ),
 
@@ -82,6 +95,7 @@
                         'header' => gT('Created'),
                         'name' => 'creation_date',
                         'value'=>'$data->creationdate',
+                        'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                         'htmlOptions' => array('class' => 'hidden-xs'),
                     ),
 
@@ -89,22 +103,18 @@
                         'header' => gT('Owner'),
                         'name' => 'owner',
                         'value'=>'$data->owner->users_name',
-                        'htmlOptions' => array('class' => 'hidden-xs'),
+                        'headerHtmlOptions'=>array('class' => 'hidden-md hidden-sm hidden-xs'),
+                        'htmlOptions' => array('class' => 'hidden-md hidden-sm hidden-xs'),
                     ),
 
                     array(
                         'header' => gT('Anonymized responses'),
                         'name' => 'anonymized_responses',
                         'value'=>'$data->anonymizedResponses',
-                        'htmlOptions' => array('class' => 'hidden-xs'),
+                        'headerHtmlOptions'=>array('class' => 'hidden-xs hidden-sm col-md-1'),
+                        'htmlOptions' => array('class' => 'hidden-xs hidden-sm col-md-1'),
                     ),
 
-                    array(
-                        'header' => gT('Active'),
-                        'name' => 'active',
-                        'value'=>'$data->activeWord',
-                        'htmlOptions' => array('class' => 'hidden-xs'),
-                    ),
 
                     array(
                         'header' => gT('Partial'),

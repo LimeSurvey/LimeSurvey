@@ -52,6 +52,14 @@ function openUploadModalDialog(){
                 buttons: buttonsOpts,
                 close: function( ) {
                     checkconditions();
+                },
+                create: function() {
+                    // Add Bootstrap class to button
+                    $('.ui-dialog-buttonset button').addClass('btn btn-default');
+
+                    // Remove borders
+                    // TODO: Use this instead? http://plugins.krajee.com/file-input
+                    $('.ui-widget-content').css('border', 'none');
                 }
             });
     });
@@ -68,10 +76,11 @@ function resetUploaderPosition(){
 }
 /* Set the with of upload madal and uploader frame according to windows width */
 function setWidthUploader(){
-    var maxwidth=Math.min($("body").innerWidth()-4, 974);
-    if(maxwidth!=$( "#uploader" ).dialog( "option", "width" )){
-        $("#uploader").dialog( "option", "width", maxwidth).width(maxwidth-18) // Leave 20px for overflow
-    }
+    //var maxwidth=Math.min($("body").innerWidth()-4, 974);
+    //if(maxwidth!=$( "#uploader" ).dialog( "option", "width" )){
+        //$("#uploader").dialog( "option", "width", maxwidth).width(maxwidth-18) // Leave 20px for overflow
+    //}
+    $('#uploader').css('width', '100%');
     resetUploaderPosition();
 }
 
@@ -136,7 +145,7 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
                 display += '<td class="upload title">'+jsonobj[i].title+'</td>';
             if (show_comment != 0)                                                                                                  
                 display += '<td class="upload comment">'+jsonobj[i].comment+'</td>';
-            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<a class="upload-edit" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();">'+uploadLang.editFile+'</a></td></tr>';
+            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<a class="btn btn-default fa fa-pencil" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();">&nbsp;'+uploadLang.editFile+'</a></td></tr>';
         }
         display += '</tbody></table>';
 

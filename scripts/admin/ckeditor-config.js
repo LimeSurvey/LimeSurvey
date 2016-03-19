@@ -2,14 +2,15 @@ CKEDITOR.editorConfig = function( config )
 {
 
     config.filebrowserBrowseUrl = CKEDITOR.basePath+'../kcfinder/browse.php?type=files';
-    config.filebrowserImageBrowseUrl = CKEDITOR.basePath+'../kcfinder/browse.php?type=images'; 
+    config.filebrowserImageBrowseUrl = CKEDITOR.basePath+'../kcfinder/browse.php?type=images';
     config.filebrowserFlashBrowseUrl = CKEDITOR.basePath+'../kcfinder/browse.php?type=flash';
 
     config.filebrowserUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=files';
     config.filebrowserImageUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=images';
     config.filebrowserFlashUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=flash';
-    config.removeDialogTabs = 'link:upload;image:Upload';    
+    config.removeDialogTabs = 'link:upload;image:Upload';
 
+    config.skin = 'BootstrapCK-Skin';
     config.toolbarCanCollapse = false;
     config.resize_enabled = false;
     config.autoParagraph = false;

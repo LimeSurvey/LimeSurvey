@@ -29,12 +29,12 @@
                     <div class="row">
 
                         <!-- text edition -->
-                        <div class="col-sm-12 col-md-6 content-right">
+                        <div class="col-sm-12 col-md-7 content-right">
                             <?php $this->renderPartial('/admin/survey/subview/tab_edit_view',$data); ?>
                         </div>
 
                         <!-- settings -->
-                        <div class="col-sm-12 col-md-6" id="accordion-container" style="background-color: #fff;">
+                        <div class="col-sm-12 col-md-5" id="accordion-container" style="background-color: #fff;">
                             <?php $this->renderPartial('/admin/survey/subview/accordion/_accordion_container', array('data'=>$settings_data)); ?>
                         </div>
                     </div>

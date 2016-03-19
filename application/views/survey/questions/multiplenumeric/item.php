@@ -25,11 +25,10 @@
             <?php echo $labelText;?>
         </div> <!-- alert -->
     <?php endif;?>
-    <div  class="form-group-row row">
+    <div class="form-group row">
         <label class='control-label col-xs-12 numeric-label' for="answer<?php echo $myfname; ?>">
             <?php echo $labelText;?>
         </label>
-                        <br/><br/><br/>
         <div class="col-xs-12 input">
             <?php echo $prefix;?>
             <?php echo $sliderleft;?>

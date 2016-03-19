@@ -405,6 +405,15 @@
                                           </a>
                                       </li>
 
+                                      <!-- queXMLPDF -->
+                                      <li>
+                                          <a href='<?php echo $this->createUrl("admin/export/quexml/surveyid/$surveyid");?>' >
+                                              <span class="icon-export" ></span>
+                                              <?php eT("queXML PDF export");?>
+                                          </a>
+                                      </li>
+
+
                                       <!-- Tab-separated-values -->
                                       <li>
                                           <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructuretsv/surveyid/$surveyid");?>' >

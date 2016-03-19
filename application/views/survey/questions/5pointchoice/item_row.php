@@ -9,7 +9,7 @@
  */
 ?>
 <!-- 5 point choice item -->
-<div class="col-xs-2 answer-item radio-item">
+<div class="col-xs-12 col-sm-2 col-md-1 answer-item radio-item">
     <input
         class="radio"
         type="radio"

@@ -181,7 +181,7 @@
                     </div>
                 </td>
                 <td class="col-md-2">
-                    <input type='submit' id='add_user_btn' class="btn btn-default btn-xs" value='<?php eT("Add user");?>' />
+                    <input type='submit' id='add_user_btn' class="btn btn-default" value='<?php eT("Add user");?>' />
                     <input type='hidden' name='action' value='adduser' /></td>
                 <td style='width:5%'>&nbsp;</td>
              </tr>

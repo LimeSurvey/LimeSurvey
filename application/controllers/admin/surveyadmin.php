@@ -81,9 +81,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         $aData['fullpagebar']['button']['newsurvey'] = true;
-
         $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
-
     }
 
 
@@ -1084,7 +1082,7 @@ class SurveyAdmin extends Survey_Common_Action
             if ($action == 'importsurvey')
             {
 
-                $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20).'.'.$sExtension;
+                $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(30);
                 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
                 {
                     $aData['sErrorMessage'] = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));

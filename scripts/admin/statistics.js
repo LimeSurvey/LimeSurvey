@@ -236,6 +236,48 @@ $(document).ready(function() {
 
     }
 
+    /**
+     * Load responses for one question.
+     * Used at question summary.
+     */
+    var loadBrowse = (function() {
+
+        // Static variable for function loadBrowse, catched through closure
+        // Use this to track if we should hide/show responses
+        var toggle = {};
+
+        var fn = function loadBrowse(id,extra) {
+
+            var destinationdiv=$('#columnlist_'+id);
+
+            // First time initialization
+            if (toggle[id] === undefined) {
+                toggle[id] = 0;
+            }
+            toggle[id] = 1 - toggle[id];  // Switch between 1 and 0
+
+            if (toggle[id] === 0) {
+                $('#' + id).parent().find('.statisticscolumndata, .statisticscolumnid').remove();
+                return;
+            }
+
+            if(extra=='') {
+                destinationdiv.parents("td:first").toggle();
+            } else {
+                destinationdiv.parents("td:first").show();
+            }
+
+            if(destinationdiv.parents("td:first").css("display") != "none") {
+                $.post(listColumnUrl+'/'+id+'/'+extra, function(data) {
+                    $('#' + id).parent().append(data);
+                });
+            }
+        };
+
+        // Closure return function
+        return fn;
+    })();
+
     if(showTextInline==1) {
         /* Enable all the browse divs, and fill with data */
         $('.statisticsbrowsebutton').each( function (){
@@ -263,20 +305,6 @@ $(document).ready(function() {
          loadBrowse(details[1],order);
      });
 
-     function loadBrowse(id,extra) {
-         var destinationdiv=$('#columnlist_'+id);
-         console.log('#columnlist_'+id);
-         if(extra=='') {
-             destinationdiv.parents("td:first").toggle();
-         } else {
-             destinationdiv.parents("td:first").show();
-         }
-         if(destinationdiv.parents("td:first").css("display") != "none") {
-             $.post(listColumnUrl+'/'+id+'/'+extra, function(data) {
-                 destinationdiv.html(data);
-             });
-         }
-     }
      $('#usegraph').click( function(){
         if ($('#grapherror').length>0)
         {

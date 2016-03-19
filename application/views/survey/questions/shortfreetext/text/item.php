@@ -14,28 +14,34 @@
  */
 ?>
 
-<p class="question answer-item text-item <?php echo $extraclass; ?>">
+<div class="question answer-item text-item <?php echo $extraclass; ?>">
 
-    <!-- Label -->
-    <label for='answer<?php echo $name; ?>' class='hide label'>
-        <?php eT('Your answer'); ?>
-    </label>
+    <div class='form-group'>
 
-    <!-- Prefix -->
-    <?php echo $prefix; ?>
+        <!-- Label -->
+        <label class='control-label col-xs-12 col-sm-2' for='answer<?php echo $name; ?>' class='hide label'>
+            <?php eT('Your answer'); ?>
+        </label>
 
-    <!-- Input -->
-    <input
-        class="text <?php echo $kpclass;?>"
-        type="text"
-        size="<?php echo $tiwidth; ?>"
-        name="<?php echo $name; ?>"
-        id="answer<?php echo $name;?>"
-        value="<?php echo $dispVal; ?>"
-        <?php echo $maxlength; ?>
-        onkeyup="<?php echo $checkconditionFunction; ?>"
-    />
+        <!-- Prefix -->
+        <?php echo $prefix; ?>
 
-    <!-- Suffix -->
-    <?php echo $suffix; ?>
-</p>
+        <!-- Input -->
+        <div class='col-xs-12 col-sm-10'>
+            <input
+                class="form-control text <?php echo $kpclass;?>"
+                type="text"
+                size="<?php echo $tiwidth; ?>"
+                name="<?php echo $name; ?>"
+                id="answer<?php echo $name;?>"
+                value="<?php echo $dispVal; ?>"
+                <?php echo $maxlength; ?>
+                onkeyup="<?php echo $checkconditionFunction; ?>"
+            />
+        </div>
+
+        <!-- Suffix -->
+        <?php echo $suffix; ?>
+
+    </div>
+</div>

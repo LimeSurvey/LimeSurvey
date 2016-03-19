@@ -876,7 +876,7 @@ function alternation($alternate = '' , $type = 'col')
     if($type == 'row')
     {
         $odd  = 'array2 well'; // should be row_odd
-        $even = 'array1'; // should be row_even
+        $even = 'array1 well'; // should be row_even
     }
     else
     {
@@ -4256,8 +4256,8 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
 *
 * @param string $sTextToFlatten  Text you want to clean
-* @param boolan $keepSpan set to true for keep span, used for expression manager. Default: false
-* @param boolan $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
+* @param boolean $keepSpan set to true for keep span, used for expression manager. Default: false
+* @param boolean $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
 * @param string $sCharset Charset to decode to if $decodeHTMLEntities is set to true. Default: UTF-8
 * @param string $bStripNewLines strip new lines if true, if false replace all new line by \r\n. Default: true
 *

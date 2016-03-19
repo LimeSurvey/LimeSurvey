@@ -253,24 +253,24 @@
                             <div class="panel-body">
                                 <!-- Answer codes / Full answers -->
                                 <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-default active">
+                                    <label class="btn btn-default">
                                         <input
                                             name="answers"
                                             value="short"
                                             type="radio"
-                                            checked='checked'
                                             id="answers-short"
-                                            autofocus="true"
                                         />
                                         <?php eT("Answer codes");?>
                                     </label>
 
-                                    <label class="btn btn-default">
+                                    <label class="btn btn-default active">
                                         <input
                                             name="answers"
                                             value="long"
                                             type="radio"
+                                            checked='checked'
                                             id="answers-long"
+                                            autofocus="true"
                                         />
                                         <?php eT("Full answers");?>
                                     </label>

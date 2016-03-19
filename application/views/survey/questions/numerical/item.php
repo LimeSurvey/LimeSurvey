@@ -23,7 +23,7 @@
 
 <input
     class='form-control text <?php echo $answertypeclass; ?>'
-    type="text"
+    type="text"  <?php // Want to use HTML5 number type? Think again: Doesn't work as we want with locale: http://stackoverflow.com/questions/13412204/localization-of-input-type-number ?>
     size="<?php echo $tiwidth;?>"
     name="<?php echo $id;?>"
     title="<?php echo eT('Only numbers may be entered in this field.');?>"
