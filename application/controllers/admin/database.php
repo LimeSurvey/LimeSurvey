@@ -173,7 +173,7 @@ class database extends Survey_Common_Action
                         {
                             Yii::app()->setFlashMessage(gT("Failed to update answers"),'error');
                         }
-                    } 
+                    }
                     // Updating code (oldcode!==null) => update condition with the new code
                     $sOldCode=Yii::app()->request->getPost('oldcode_'.$iSortOrderID.'_'.$iScaleID);
                     if(isset($sOldCode) && $sCode !== $sOldCode) {
@@ -286,11 +286,11 @@ class database extends Survey_Common_Action
                                 $oSubQuestion->parent_qid=$iQuestionID;
                                 $oSubQuestion->language=$sLanguage;
                                 $oSubQuestion->scale_id=$iScaleID;
-                                if(isset($aRelevance[0][$iPosition]))
+                                if(isset($aRelevance[$iScaleID][$iPosition]))
                                 {
-                                    $oSubQuestion->relevance=$aRelevance[0][$iPosition];
+                                    $oSubQuestion->relevance=$aRelevance[$iScaleID][$iPosition];
                                 }
-                                else 
+                                else
                                 {
                                     $oSubQuestion->relevance='';
                                 }
@@ -309,7 +309,14 @@ class database extends Survey_Common_Action
                                 $oSubQuestion->parent_qid=$iQuestionID;
                                 $oSubQuestion->language=$sLanguage;
                                 $oSubQuestion->scale_id=$iScaleID;
-                                $oSubQuestion->relevance=$aRelevance[$iScaleID][$iPosition];
+                                if(isset($aRelevance[$iScaleID][$iPosition]))
+                                {
+                                    $oSubQuestion->relevance=$aRelevance[$iScaleID][$iPosition];
+                                }
+                                else
+                                {
+                                    $oSubQuestion->relevance='';
+                                }
                             }
                         }
                         if ($oSubQuestion->qid) {
