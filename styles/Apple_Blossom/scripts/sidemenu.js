@@ -38,13 +38,13 @@ $(document).ready(function(){
           opacity: 0.5
         }, left_or_right_250));
 
-        $thatWidth = $('.side-body').width();
-        $('.side-body').width($thatWidth);
+        $thatWidth = sideBody.width();
+        sideBody.width($thatWidth);
 
-        $('.side-body').css($.extend({
+        sideBody.css($.extend({
           width: $thatWidth + 250
         }, left_or_right_250));
-        $('.side-body').parent().css( "overflow-x", "hidden" );
+        sideBody.parent().css( "overflow-x", "hidden" );
 
         $that.removeClass("hideside");
         $that.addClass("showside");
@@ -227,7 +227,7 @@ $(document).ready(function(){
     * Stretch the accordion
     */
     jQuery(document).on('click', '.handleAccordion.opened', function(){
-
+                console.log('stretched accordion');
         // Disable this feature for RTL for now
         if (rtl) {
             return;
@@ -241,7 +241,7 @@ $(document).ready(function(){
         });
 
         accordionContainer.width(accordionContainer.width());
-        accordionContainer.height(sideBody.height());
+        accordionContainer.height((sideBody.height()-50));
 
         accordionContainer.animate(
             {
@@ -273,7 +273,8 @@ $(document).ready(function(){
         $('.handleAccordion').addClass('disabled');
         accordionContainer.animate(
             {
-                width: '33.33333333333333%', // Bootstrap value for col-lg-4
+                width: '41.66666666666667%',// Bootstrap value for col-sm-5
+                //width: '33.33333333333333%', // Bootstrap value for col-sm-4
             }, 500, function() {
                 $('.handleAccordion span').removeClass('glyphicon-chevron-right').addClass('glyphicon-chevron-left');
                 $('.handleAccordion').removeClass('stretched').addClass('opened');

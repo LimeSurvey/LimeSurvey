@@ -60,8 +60,8 @@
                                     $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                         'name' => 'authMethod',
                                         'data' => $possibleAuthMethods,
+                                        'value' => $selectedAuth,
                                         'pluginOptions' => array(
-                                            'value' => $selectedAuth,
                                             'options' => array(
                                                     'onChange'=>'this.form.submit();'
                                                     )

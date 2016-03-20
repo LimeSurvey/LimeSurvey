@@ -8,4 +8,4 @@
     <input id='subaction' name='subaction' value='all' type='hidden'>
 </form>
 
-<table class='detailbrowsetable table'>
+<table class='detailbrowsetable table table-striped'>

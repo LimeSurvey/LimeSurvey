@@ -34,6 +34,46 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 2.50+ (build 160316) to 2.50+ (build 160317) Mar 17, 2016
+-Fixed issue #10195: CKEditor should use Bootstrap style (Carsten Schmitz)
+-Fixed issue #10416: Wrong Changelog summary during Comfort Upgrade (LouisGac)
+-Fixed issue #10763: Upload file question type is not styled (Olle Haerstedt)
+-Fixed issue: JS error when resetting email template subject (Carsten Schmitz)
+-Fixed issue: Survey list properly resizing on smaller screens (Carsten Schmitz)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by cbloecher, c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+Changes from 2.50+ (build 160314) to 2.50+ (build 160316) Mar 16, 2016
+-Fixed issue #10643: Active Surveys included expired (LouisGac)
+-Fixed issue #9444: Google analytics is not working on the survey list (Carsten Schmitz)
+-Fixed issue: Permission not working due to debug statement (Carsten Schmitz)
+-Updated translation: Catalan by qualitatuvic
+-Updated translation: German by c_schmitz
+-Updated translation: Greek by nasprok, kiolalis
+-Updated translation: Spanish (Spain) by aesteban
+-Updated translation: Estonian by t6nnp6nn
+-Updated translation: French (France) by arnaud21
+-Updated translation: Indonesian by wisnu, ganiutomo, radhwaw, ysulistya
+-Updated translation: Italian by lfanfoni
+-Updated translation: Norwegian (Bokmål) by pmonstad
+-Updated translation: Dutch by Han
+-Updated translation: Norwegian (Nynorsk) by pmonstad
+-Updated translation: Polish by elisa
+-Updated translation: Russian by ddrmoscow, vipgroup
+-Updated translation: Thai by tomzt
+-Updated translation: Turkish by kayazeren
+-Updated translation: Italian (Informal) by lfanfoni
+-Updated translation: Dutch (Informal) by Han
+-Updated translation: Polish (Informal) by elisa
 
 Changes from 2.50+ (build 160311) to 2.50+ (build 160314) Mar 15, 2016
 -Fixed issue #10191: Can't import attributes with Participants (Olle Haerstedt)

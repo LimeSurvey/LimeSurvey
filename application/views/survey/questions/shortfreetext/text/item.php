@@ -19,7 +19,7 @@
     <div class='form-group'>
 
         <!-- Label -->
-        <label class='control-label col-xs-2' for='answer<?php echo $name; ?>' class='hide label'>
+        <label class='control-label col-xs-12 col-sm-2' for='answer<?php echo $name; ?>' class='hide label'>
             <?php eT('Your answer'); ?>
         </label>
 
@@ -27,7 +27,7 @@
         <?php echo $prefix; ?>
 
         <!-- Input -->
-        <div class='col-xs-10'>
+        <div class='col-xs-12 col-sm-10'>
             <input
                 class="form-control text <?php echo $kpclass;?>"
                 type="text"

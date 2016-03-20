@@ -61,7 +61,7 @@
     <?php endif;?>
 </div>
 
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdater/comfortUpdateNextStep.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
     $('#launchBackupForm').comfortUpdateNextStep({'step': 3});
 </script>

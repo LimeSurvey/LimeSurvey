@@ -31,8 +31,8 @@
 
 
                 var saveChanges = false;
-                var sReplacementFieldTitle = '<?php eT('LimeSurvey replacement field properties','js');?>';
-                var sReplacementFieldButton = '<?php eT('Insert/edit LimeSurvey replacement field','js');?>';
+                var sReplacementFieldTitle = '<?php eT('Placeholder fields','js');?>';
+                var sReplacementFieldButton = '<?php eT('Insert/edit placeholder field','js');?>';
                 $(document).ready(function(){
                     //console.log('iGroupId: '+iGroupId);
             // Better use try/catch to not crash JS completely

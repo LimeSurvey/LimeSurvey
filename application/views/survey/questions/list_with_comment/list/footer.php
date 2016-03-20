@@ -13,7 +13,7 @@
  * @var $java_value             $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]].'"
  */
 ?>
-    </ul>
+    </div>
 </div>
 
 <p class="comment answer-item text-item">

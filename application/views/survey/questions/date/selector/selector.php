@@ -15,22 +15,25 @@
  * @var $hidetip                        trim($aQuestionAttributes['hide_tip'])==0
  */
 ?>
-<p class='question answer-item text-item date-item'>
+<p class='question answer-item text-item date-item form-group'>
     <label for='answer<?php echo $name;?>' class='hide label'>
         <?php echo sprintf(gT('Date in the format: %s'),$dateformatdetails); ?>
     </label>
 
-    <input
-        class='popupdate'
-        type="text"
-        size="<?php echo $iLength;?>"
-        name="<?php echo $name;?>"
-        id="answer<?php echo $name;?>"
-        value="<?php echo $dateoutput;?>"
-        maxlength="<?php echo $iLength;?>"
-        onkeypress="<?php echo $goodchars;?>"
-        onchange="<?php echo $checkconditionFunction;?>"
-    />
+    <div class='col-xs-12 col-sm-6'>
+        <input
+            class='form-control popupdate'
+            type="text"
+            size="<?php echo $iLength;?>"
+            name="<?php echo $name;?>"
+            id="answer<?php echo $name;?>"
+            value="<?php echo $dateoutput;?>"
+            maxlength="<?php echo $iLength;?>"
+            onkeypress="<?php echo $goodchars;?>"
+            onchange="<?php echo $checkconditionFunction;?>"
+        />
+    </div>
+    <div class='col-sm-6'></div>  <!-- Clear row -->
 
     <input
         type='hidden'
@@ -54,9 +57,11 @@
 </div>
 
 <?php if($hidetip):?>
-    <p class="tip">
-        <?php echo sprintf(gT('Format: %s'),$dateformatdetails); ?>
-    </p>
+    <div class='col-xs-12'>
+        <p class="tip">
+            <?php echo sprintf(gT('Format: %s'),$dateformatdetails); ?>
+        </p>
+    </div>
 <?php endif;?>
 
 <input type='hidden' class="namecontainer" data-name="<?php echo $qid; ?>" />

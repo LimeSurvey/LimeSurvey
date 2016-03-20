@@ -6374,7 +6374,7 @@
                             else {
                                 $othertext = $LEM->gT('Other:');
                             }
-                            $mandatoryTip .= "<br />\n".sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
+                            $mandatoryTip .= "\n".sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
                         }
                         break;
                     case 'X':   // Boilerplate can never be mandatory

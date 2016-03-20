@@ -80,7 +80,7 @@
     <?php echo CHtml::endForm(); ?>
 </div>
 
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdater/comfortUpdateNextStep.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
     $('#launchStep4Form').comfortUpdateNextStep({'step': 4});
 </script>

@@ -13,10 +13,12 @@
 ?>
 
 <div class="list-unstyled answers-list radio-list">
-      <div class="btn-group" data-toggle="buttons" id="<?php echo $name;?>-container">
+
+    <div class='col-xs-12 col-sm-6'>  <!-- Full width on Phone; otherwise half width -->
+      <div class="btn-group btn-group-justified" data-toggle="buttons" id="<?php echo $name;?>-container">
 
         <!-- Yes -->
-        <label class="btn btn-primary btn-lg <?php if($yChecked){ echo "active";}?> ">
+        <label class="btn btn-primary <?php if($yChecked){ echo "active";}?> ">
           <input
               class="radio"
               type="radio"
@@ -30,7 +32,7 @@
         </label>
 
         <!-- No -->
-        <label class="btn btn-primary  btn-lg <?php if($nChecked){ echo "active";}?> ">
+        <label class="btn btn-primary <?php if($nChecked){ echo "active";}?> ">
             <input
                 class="radio"
                 type="radio"
@@ -45,7 +47,7 @@
 
         <!-- No answer -->
         <?php if($noAnswer):?>
-            <label class="btn btn-primary btn-lg  <?php if($naChecked){ echo "active";}?>">
+            <label class="btn btn-primary <?php if($naChecked){ echo "active";}?>">
 
                 <input
                     class="radio"
@@ -61,6 +63,7 @@
             </label>
         <?php endif;?>
       </div>
+    </div>
 
       <input
           type="hidden"
@@ -68,7 +71,6 @@
           id="java<?php echo $name;?>"
           value="<?php echo $value;?>"
       />
-
 </div>
 
 <script>
