@@ -10,6 +10,8 @@ Some user think ergonomy of LimeSurvey 2.50 is not better than 2.06 version. But
 ### Final step
 -
 ## Improvement and history ##
+* 1.0.6
+    * Fix relevance of sub questions at X Scale
 * 1.0.5
     * Fix language in label sets administration
 * 1.0.4
