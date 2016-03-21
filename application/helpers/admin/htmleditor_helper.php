@@ -200,6 +200,7 @@
 
     function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
     {
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl')."htmleditor.css");
         $htmlcode = '';
         $imgopts = '';
         $toolbarname = 'inline';
