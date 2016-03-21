@@ -348,11 +348,11 @@ class SettingsWidget extends CWidget
             'html' => true,
         ), isset($metaData['editorOptions']) ? $metaData['editorOptions'] : array());
         return Chtml::tag('div', $htmlOptions,
-            $this->widget('bootstrap.widgets.TbHtml5Editor', array(
+            $this->widget('yiiwheels.widgets.html5editor.WhHtml5Editor', array(
                 'name' => $name,
                 'value' => $value,
                 'width' => '100%',
-                'editorOptions' =>  $editorOptions,
+                //'editorOptions' =>  $editorOptions,
             ), true)
         );
     }
