@@ -560,7 +560,7 @@
 
             <?php endif;?>
             <?php if(isset($surveybar['importquestion'])):?>
-                <a class="btn btn-default" href="<?php echo Yii::App()->createUrl('admin/questions/sa/importview/surveyid/'.$surveyid);?>" role="button">
+                <a class="btn btn-default" href="<?php echo Yii::App()->createUrl('admin/questions/sa/importview/groupid/'.$groupid.'/surveyid/'.$surveyid);?>" role="button">
                     <span class="icon-import"></span>
                     <?php eT('Import a question'); ?>
                 </a>

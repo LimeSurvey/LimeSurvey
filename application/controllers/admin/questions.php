@@ -136,7 +136,7 @@ class questions extends Survey_Common_Action
     /**
      * Display import view
      */
-    public function importView($surveyid)
+    public function importView($groupid, $surveyid)
     {
         $iSurveyID = $surveyid = sanitize_int($surveyid);
         if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
@@ -146,6 +146,7 @@ class questions extends Survey_Common_Action
             $aData['surveybar']['closebutton']['url'] = '/admin/survey/sa/listquestiongroups/surveyid/'.$iSurveyID;  // Close button
             $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveyid'] = $surveyid;
+            $aData['groupid'] = $groupid;
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 
@@ -909,6 +910,7 @@ class questions extends Survey_Common_Action
             $eqrow['gid'] = $_GET['gid'];
         }
         $aData['eqrow'] = $eqrow;
+        $aData['groupid'] = $eqrow['gid'];
 
         $sumresult1 = Survey::model()->findByPk($surveyid);
         if (is_null($sumresult1))

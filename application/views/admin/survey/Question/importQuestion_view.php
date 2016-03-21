@@ -20,7 +20,7 @@
                     <label class="col-sm-2 control-label" for='the_file'><?php eT("Question group:"); ?></label>
                     <div class="col-sm-3">
                         <select name='gid' id='gid' class="form-control">
-                            <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
+                            <?php echo getGroupList3($groupid, $surveyid); ?>
                         </select>         
                     </div>           
                 </div>
