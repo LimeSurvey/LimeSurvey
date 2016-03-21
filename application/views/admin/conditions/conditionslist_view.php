@@ -6,7 +6,7 @@
         $subaction == "updatescenario" ||
         $subaction == "renumberscenarios")  : ?>
 
-    <div class="col-sm-4">
+    <div class="col-sm-8">
         <strong>
             <?php
                 // echo $onlyshow;
@@ -16,7 +16,7 @@
         <br/><br/>
             <blockquote>
             <em>
-            <?php echo $showreplace;?>
+            <?php echo $sCurrentQuestionText;?>
             </em>
         </blockquote>
         <br/>

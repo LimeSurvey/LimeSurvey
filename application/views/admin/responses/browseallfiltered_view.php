@@ -8,7 +8,7 @@
         <table width='100%' align='center' border='0' bgcolor='#EFEFEF'>
             <tr>
                 <td align='center'>
-                    <?php eT("Showing Filtered Results"); ?><br />
+                    <?php eT("Showing filtered results"); ?><br />
                     [<a href="javascript:window.close()"><?php eT("Close"); ?></a>]
                 </td>
             </tr>

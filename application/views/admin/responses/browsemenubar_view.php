@@ -243,7 +243,7 @@
 
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid/id/$id"); ?>' role="button" >
                         <span class="icon-export text-success downloadfile"></span>
-                        <?php eT("Export this Response"); ?>
+                        <?php eT("Export this response"); ?>
                     </a>
                 <?php endif;?>
 

@@ -659,15 +659,18 @@ class SurveyAdmin extends Survey_Common_Action
                 $aViewUrls['output']= "<br />\n<div class='messagebox ui-corner-all'>\n";
                 if ($aResult['error']=='surveytablecreation')
                 {
-                    $aViewUrls['output'].="<div class='alert alert-warning' role='alert'>".gT("Survey table could not be created.")."</div>\n";
+                    $aViewUrls['output'].="<div class='alert alert-warning' role='alert'>".gT("The survey response table could not be created.")." ".gT("Usually this is caused by having too many (sub-)questions in your survey. Please try removing questions from your survey.")."</div>\n";
                 }
                 else
                 {
                     $aViewUrls['output'].="<div class='alert alert-success' role='alert'>".gT("Timings table could not be created.")."</div>\n";
                 }
-                $aViewUrls['output'].="<strong class='text-warning'>" .
-                gT("Database error!!")."\n " ."\n" .
-                "<pre>".var_export ($aResult['error'],true)."</pre>\n
+                if(App()->getConfig('debug')) {
+                    $aViewUrls['output'].="<strong class='text-warning'>" .
+                    gT("Database error!!")."\n " ."\n" .
+                    "<pre>".var_export ($aResult['error'],true)."</pre>\n
+                }
+
                 <a href='".Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID)."'>".gT("Main Admin Screen")."</a>\n</strong><br/>" ;
             }
             else
@@ -1150,7 +1153,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aImportResults=importSurveyFile($sFullFilepath,(isset($_POST['translinksfields'])));
                 if (is_null($aImportResults) || !empty($aImportResults['error']))
                 {
-                    $aData['sErrorMessage']=isset($aImportResults['error']) ? $aImportResults['error'] : gT("Unknow error.");
+                    $aData['sErrorMessage']=isset($aImportResults['error']) ? $aImportResults['error'] : gT("Unknown error.");
                     $aData['bFailed'] = true;
                 }
             }

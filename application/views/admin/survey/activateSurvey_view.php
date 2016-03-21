@@ -42,18 +42,18 @@
 
 <div class='side-body container message-box col-sm-10' >
     <div class='row'>
-        <h2 class='col-sm-12 text-center'><?php eT("Warning"); ?>! <?php eT("READ THIS CAREFULLY BEFORE PROCEEDING"); ?></h2>
+        <h2 class='col-sm-7 col-sm-offset-2'><?php eT("Warning: Please read this carefully before proceeding!"); ?></h2>
     </div>
     <div class='row'>
-        <p class="lead col-sm-12 text-center">
+        <p class="lead col-sm-7 col-sm-offset-2">
             <?php eT("You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."); ?>
         </p>
     </div>
     <div class='row'>
-        <p class="col-sm-12 text-center">
+        <p class="col-sm-7 col-sm-offset-2">
             <?php eT("Once a survey is activated you can no longer:"); ?>
         </p>
-        <div class='col-sm-8 col-sm-offset-5'>
+        <div class='col-sm-6 col-sm-offset-4'>
             <ul class=''>
                 <li><?php eT("Add or delete groups"); ?></li>
                 <li><?php eT("Add or delete questions"); ?></li>
@@ -63,15 +63,11 @@
     </div>
 
     <div class='row'>
-        <strong class="text-warning col-sm-12 text-center">
-            <?php eT("The following settings cannot be changed when the survey is active.");?><br/>
-        </strong>
+        <div class="col-sm-7 col-sm-offset-2"><p><strong>
+            <?php eT("Additionally the following settings cannot be changed when the survey is active.");?>
+        </strong><br><?php eT("Please check these settings now:");?></p></div>
     </div>
-    <div class='row'>
-        <p class='col-sm-12 text-center'>
-            <?php eT("Please check these settings now, then click the button below.");?>
-        </p>
-    </div>
+
     <?php echo CHtml::form(array("admin/survey/sa/activate/surveyid/{$surveyid}/"), 'post', array('class'=>'form-horizontal')); ?>
         <div class='row'>
             <div class="col-sm-3 col-sm-offset-3">
@@ -204,14 +200,14 @@
 
         <div class='row'>
 
-        <p class='col-sm-4 text-center col-sm-offset-4'>
+        <p class='col-sm-7 col-sm-offset-2'>
             <?php eT("Please note that once responses have collected with this survey and you want to add or remove groups/questions or change one of the settings above, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."); ?><br /><br />
         </p>
     </div>
     <div class='row'>
-        <div class='col-sm-7 col-sm-offset-5'>
+        <div class='col-sm-6 col-sm-offset-4'>
             <input type='hidden' name='ok' value='Y' />
-            <input type='submit' class="btn btn-default btn-lg " value="<?php eT("Save / Activate survey"); ?>" />
+            <input type='submit' class="btn btn-success btn-lg " value="<?php eT("Save & activate survey"); ?>" />
             <a class="btn btn-default btn-lg" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>" role="button">
             <?php eT("Cancel"); ?>
             </a>

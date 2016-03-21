@@ -1,5 +1,5 @@
 <div class="side-body col-lg-8">
-    <div class="row">                             
+    <div class="row">
         <div class="col-lg-12 content-right">
             <h3>
                 <?php eT("Survey quota");?>: <?php eT("Add answer");?>
@@ -11,11 +11,11 @@
                         <p>
                             <input class="btn btn-lg btn-success" type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$iSurveyId");?>', '_top')" value="<?php eT("Continue");?>"/>
                         </p>
-                </div>                
+                </div>
             <?php else:?>
                 <div class="jumbotron message-box">
                         <h2><?php echo sprintf(gT("New answer for quota '%s'"), $quota_name);?></h2>
-                        <p class="lead"><?php eT("Select Answer");?>:</p>
+                        <p class="lead"><?php eT("Select answer:");?></p>
                         <?php echo CHtml::form(array("admin/quotas/sa/insertquotaanswer/surveyid/{$iSurveyId}"), 'post', array('#'=>'quota_'.sanitize_int($_POST['quota_id']))); ?>
                             <p>
                                 <select name="quota_anscode" size="15">
