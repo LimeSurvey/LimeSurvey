@@ -131,7 +131,7 @@ class QuestionAttribute extends LSActiveRecord
             // For some reason this happened in bug #10684
             if ($sType == null)
             {
-                throw new \CException("Question is curropt: no type defined for question " . $iQuestionID);
+                throw new \CException("Question is corrupt: no type defined for question " . $iQuestionID);
             }
 
             $aAttributeNames = questionAttributes();
