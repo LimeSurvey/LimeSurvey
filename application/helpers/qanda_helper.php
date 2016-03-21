@@ -3100,7 +3100,6 @@ function do_multiplenumeric($ia)
         $slider_layout = false;
 
         $slider_step    = '';
-        $slider_step    = '';
         $slider_min     = '';
         $slider_mintext = '';
         $slider_max     = '';
@@ -3111,6 +3110,7 @@ function do_multiplenumeric($ia)
         $slider_handle = '';
         $slider_custom_handle = '';
         $slider_separator = '';
+        $slider_reset = 0;
     }
     $hidetip=$aQuestionAttributes['hide_tip'];
 
@@ -3212,7 +3212,7 @@ function do_multiplenumeric($ia)
                 'dispVal'=>$dispVal,
                 'maxlength'=>$maxlength,
                 'labelText'=>$labelText,
-                'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+                'checkconditionFunction'=>$checkconditionFunction.'(this.getAttribute(\'stringvalue\'), this.name, this.type)',
                 'slider_orientation' => $slider_orientation,
                 'slider_step'    => $slider_step    ,
                 'slider_min'     => $slider_min     ,
@@ -3221,6 +3221,7 @@ function do_multiplenumeric($ia)
                 'slider_maxtext' => $slider_maxtext ,
                 'slider_default' => $slider_default ,
                 'slider_handle' => $slider_handle,
+                'slider_reset' => $slider_reset,
                 'slider_custom_handle' => $slider_custom_handle,
             );
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/item', $itemDatas, true);

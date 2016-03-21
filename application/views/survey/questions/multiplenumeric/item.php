@@ -61,7 +61,13 @@
                     data-slider-orientation='<?php echo $slider_orientation;?>'
                     data-slider-handle='<?php echo $slider_handle;?>'
                     data-slider-tooltip='always'
+                    data-slider-reset='<?php echo $slider_reset; ?>'
+                    data-slider-prefix='<?php echo $prefix; ?>'
+                    data-slider-suffix='<?php echo $suffix; ?>'
                 />
+                <?php if ($slider_reset): ?>
+                    <span data-toggle='tooltip' data-title='<?php eT("Reset slider"); ?>' class='btn btn-default fa fa-times slider-reset'>&nbsp;<?php eT("Reset"); ?></span>
+                <?php endif; ?>
             <?php endif;?>
             <?php echo $sliderright;?>
             <?php echo $suffix;?>
@@ -91,8 +97,31 @@
     <script type='text/javascript'>
         <!--
             $(document).ready(function(){
-                var mySlider_<?php echo $myfname; ?> = $("#answer<?php echo $myfname; ?>").bootstrapSlider();
-                mySlider_<?php echo $myfname; ?>.on('slideStop', function(){ LEMrel<?php echo $qid; ?>() });
+                var myfname = '<?php echo $myfname; ?>';
+                var id = '#answer' + myfname;
+                var mySlider_<?php echo $myfname; ?> = $(id).bootstrapSlider({
+                    formatter: function (value) {
+                        var slider_prefix = $(id).attr('data-slider-prefix')
+                        var slider_suffix = $(id).attr('data-slider-suffix')
+                        var displayValue = '' + value;
+                        var displayValue = displayValue.replace(/\./,LSvar.sLEMradix);
+                        $(id).triggerHandler("keyup");
+                        return slider_prefix + displayValue + slider_suffix;
+                    }
+                });
+                mySlider_<?php echo $myfname; ?>.on('slideStop', function(event) {
+                    var displayValue = '' + event.value;
+                    var displayValue = displayValue.replace(/\./,LSvar.sLEMradix);
+
+                    // fixnum_checkconditions can't handle dot if it expects comma, and
+                    // Bootstrap won't save comma in value. So we need another attribute.
+                    $(id).attr('stringvalue', displayValue);
+
+                    LEMrel<?php echo $qid; ?>();
+
+                    // EM needs this
+                    $(id).triggerHandler("keyup");
+                });
                 $("#vmsg_<?php echo $qid;?>_default").text('<?php eT('Please click and drag the slider handles to enter your answer.');?>');
             });
         -->
