@@ -668,10 +668,10 @@ class SurveyAdmin extends Survey_Common_Action
                 if(App()->getConfig('debug')) {
                     $aViewUrls['output'].="<strong class='text-warning'>" .
                     gT("Database error!!")."\n " ."\n" .
-                    "<pre>".var_export ($aResult['error'],true)."</pre>\n
+                    "<pre>".var_export ($aResult['error'],true)."</pre>\n";
                 }
 
-                <a href='".Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID)."'>".gT("Main Admin Screen")."</a>\n</strong><br/>" ;
+                $aViewUrls['output'].="<a href='".Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID)."'>".gT("Main Admin Screen")."</a>\n</strong><br/>" ;
             }
             else
             {
