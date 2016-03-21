@@ -270,8 +270,7 @@ class database extends Survey_Common_Action
                             $oSubQuestion->title=$aCodes[$iScaleID][$iPosition];
                             $oSubQuestion->question=$subquestionvalue;
                             $oSubQuestion->scale_id=$iScaleID;
-                            //dual matrix, text/number matrix: subQ relevance per line not per scale, so ScaleID is always 0
-                            $oSubQuestion->relevance=$aRelevance[0][$iPosition];
+                            $oSubQuestion->relevance=(isset($aRelevance[$iScaleID][$iPosition])) ? $aRelevance[$iScaleID][$iPosition] : 1;
                         }
                         else  // new record
                         {
@@ -286,14 +285,7 @@ class database extends Survey_Common_Action
                                 $oSubQuestion->parent_qid=$iQuestionID;
                                 $oSubQuestion->language=$sLanguage;
                                 $oSubQuestion->scale_id=$iScaleID;
-                                if(isset($aRelevance[$iScaleID][$iPosition]))
-                                {
-                                    $oSubQuestion->relevance=$aRelevance[$iScaleID][$iPosition];
-                                }
-                                else
-                                {
-                                    $oSubQuestion->relevance='';
-                                }
+                                $oSubQuestion->relevance=(isset($aRelevance[$iScaleID][$iPosition])) ? $aRelevance[$iScaleID][$iPosition] : 1;
                             }
                             else                                                //new record: additional language
                             {
@@ -309,14 +301,7 @@ class database extends Survey_Common_Action
                                 $oSubQuestion->parent_qid=$iQuestionID;
                                 $oSubQuestion->language=$sLanguage;
                                 $oSubQuestion->scale_id=$iScaleID;
-                                if(isset($aRelevance[$iScaleID][$iPosition]))
-                                {
-                                    $oSubQuestion->relevance=$aRelevance[$iScaleID][$iPosition];
-                                }
-                                else
-                                {
-                                    $oSubQuestion->relevance='';
-                                }
+                                $oSubQuestion->relevance=(isset($aRelevance[$iScaleID][$iPosition])) ? $aRelevance[$iScaleID][$iPosition] : 1;
                             }
                         }
                         if ($oSubQuestion->qid) {
