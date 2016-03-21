@@ -131,8 +131,8 @@
                                                         eT("Question type:");
                                                     ?>
                                                 </label>
-
-                                                <?php
+                                                <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
+                                                    <?php
                                                     foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
                                                     {
                                                         if (!isset($groups[$questionType['group']]))
@@ -141,9 +141,8 @@
                                                         }
                                                         $groups[$questionType['group']][$key] = $questionType['description'];
                                                     }
-                                                ?>
-                                                <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
-                                                <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
+                                                    ?>
+                                                    <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                                     <div class="col-sm-8 btn-group" id="question_type_button" style="z-index: 1000">
                                                         <button type="button" class="btn btn-default dropdown-toggle " <?php if ($activated == "Y"){echo " disabled ";} ?>  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="z-index: 1000">
                                                             <?php foreach($groups as $name => $group):?>
@@ -184,7 +183,7 @@
                                                             <?php endforeach;?>
                                                         </ul>
                                                     </div>
-                                                <?php elseif(isset($selectormodeclass) && $selectormodeclass == "none" && $activated != "Y"): ?>
+                                                <?php elseif($activated == "Y" || (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
                                                     <div class="col-sm-8 btn-group" id="question_type_button" style="z-index: 1000">
                                                         <?php
                                                             $aQtypeData=array();
@@ -194,27 +193,16 @@
                                                             }
                                                             echo CHtml::dropDownList(
                                                                                         'type',
-                                                                                        'category',
+                                                                                        $eqrow['type'],
                                                                                         CHtml::listData($aQtypeData,'code','description','group'),
                                                                                         array(
                                                                                                 'class' => 'form-control',
                                                                                                 'id'=>'question_type',
-                                                                                                'options' => array($eqrow['type']=>array('selected'=>true))
+                                                                                                'disabled'=>$activated == "Y", // readony is more beautifull : but allow open
                                                                                             )
                                                                                         );
                                                                                         ?>
                                                     </div>
-                                                <?php else: ?>
-                                                    <div class="col-sm-8 ">
-                                                        <p style="padding-top: 7px;">
-                                                                <?php foreach($groups as $name => $group):?>
-                                                                    <?php foreach($group as $type => $option):?>
-                                                                        <?php if($type == $eqrow['type']){echo '' . $option . '';}?>
-                                                                    <?php endforeach;?>
-                                                                <?php endforeach;?>
-                                                        </p>
-                                                    </div>
-
                                                 <?php endif; ?>
                                             </div>
 
