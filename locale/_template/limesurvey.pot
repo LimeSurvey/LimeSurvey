@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-03-21 16:28:52+00:00\n"
+"POT-Creation-Date: 2016-03-21 16:42:23+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3563,7 +3563,8 @@ msgid "No survey ID has been provided. Cannot copy survey"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:1156
-msgid "Unknow error."
+#: application/views/admin/update/updater/_error.php:133
+msgid "Unknown error."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:1339
@@ -10550,7 +10551,7 @@ msgstr ""
 
 #: application/views/admin/dataentry/active_html_view.php:47
 #: application/views/admin/dataentry/insert.php:25
-msgid "Confirm Password:"
+msgid "Confirm password:"
 msgstr ""
 
 #: application/views/admin/dataentry/active_html_view.php:49
@@ -13318,7 +13319,7 @@ msgid "Select question"
 msgstr ""
 
 #: application/views/admin/quotas/newanswererror_view.php:2
-msgid "Question Selection"
+msgid "Question selection"
 msgstr ""
 
 #: application/views/admin/quotas/newanswererror_view.php:3
@@ -13330,7 +13331,7 @@ msgid "All answers are already selected in this quota."
 msgstr ""
 
 #: application/views/admin/quotas/newanswertwo_view.php:18
-msgid "Select Answer"
+msgid "Select answer:"
 msgstr ""
 
 #: application/views/admin/quotas/newanswertwo_view.php:39
@@ -13379,11 +13380,11 @@ msgid "No quotas have been set for this survey"
 msgstr ""
 
 #: application/views/admin/quotas/viewquotasfooter_view.php:10
-msgid "Add New Quota"
+msgid "Add new quota"
 msgstr ""
 
 #: application/views/admin/quotas/viewquotasrow_view.php:12
-msgid "Not Active"
+msgid "Not active"
 msgstr ""
 
 #: application/views/admin/quotas/viewquotasrow_view.php:23
@@ -13403,7 +13404,7 @@ msgid "RemoteControl is available using %s for transport and exposes the followi
 msgstr ""
 
 #: application/views/admin/responses/browseallfiltered_view.php:11
-msgid "Showing Filtered Results"
+msgid "Showing filtered results"
 msgstr ""
 
 #: application/views/admin/responses/browseallheader_view.php:2
@@ -13573,7 +13574,7 @@ msgid "Delete this entry"
 msgstr ""
 
 #: application/views/admin/responses/browsemenubar_view.php:246
-msgid "Export this Response"
+msgid "Export this response"
 msgstr ""
 
 #: application/views/admin/responses/browsemenubar_view.php:250
@@ -13666,7 +13667,7 @@ msgid "Survey responses"
 msgstr ""
 
 #: application/views/admin/saved/savedlist_view.php:3
-msgid "Saved Responses"
+msgid "Saved responses"
 msgstr ""
 
 #: application/views/admin/saved/savedlist_view.php:4
@@ -13674,7 +13675,7 @@ msgid "ID: %s"
 msgstr ""
 
 #: application/views/admin/saved/savedlist_view.php:10
-msgid "Saved Responses:"
+msgid "Total:"
 msgstr ""
 
 #: application/views/admin/saved/savedlist_view.php:19
@@ -13682,7 +13683,7 @@ msgid "Identifier"
 msgstr ""
 
 #: application/views/admin/saved/savedlist_view.php:21
-msgid "Date Saved"
+msgid "Date saved"
 msgstr ""
 
 #: application/views/admin/saved/savedlist_view.php:35
@@ -16971,10 +16972,6 @@ msgstr ""
 
 #: application/views/admin/update/updater/_error.php:127
 msgid "ComfortUpdate couldn't remove one or more directories that were deleted with the update."
-msgstr ""
-
-#: application/views/admin/update/updater/_error.php:133
-msgid "Unknown error."
 msgstr ""
 
 #: application/views/admin/update/updater/_error.php:149
