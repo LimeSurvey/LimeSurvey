@@ -288,7 +288,7 @@ class database extends Survey_Common_Action
                             $oSubQuestion->title=$aCodes[$iScaleID][$iPosition];
                             $oSubQuestion->question=$subquestionvalue;
                             $oSubQuestion->scale_id=$iScaleID;
-                            $oSubQuestion->relevance=$aRelevance[0][$iPosition];
+                            $oSubQuestion->relevance=isset($aRelevance[$iScaleID][$iPosition]) ? $aRelevance[$iScaleID][$iPosition] : "";
                         }
                         else  // new record
                         {
@@ -303,14 +303,7 @@ class database extends Survey_Common_Action
                                 $oSubQuestion->parent_qid=$iQuestionID;
                                 $oSubQuestion->language=$sLanguage;
                                 $oSubQuestion->scale_id=$iScaleID;
-                                if(isset($aRelevance[0][$iPosition]))
-                                {
-                                    $oSubQuestion->relevance=$aRelevance[0][$iPosition];
-                                }
-                                else
-                                {
-                                    $oSubQuestion->relevance='';
-                                }
+                                $oSubQuestion->relevance=isset($aRelevance[$iScaleID][$iPosition]) ? $aRelevance[$iScaleID][$iPosition] : "";
                             }
                             else                                                //new record: additional language
                             {
@@ -326,7 +319,7 @@ class database extends Survey_Common_Action
                                 $oSubQuestion->parent_qid=$iQuestionID;
                                 $oSubQuestion->language=$sLanguage;
                                 $oSubQuestion->scale_id=$iScaleID;
-                                $oSubQuestion->relevance=$aRelevance[$iScaleID][$iPosition];
+                                $oSubQuestion->relevance=isset($aRelevance[$iScaleID][$iPosition]) ? $aRelevance[$iScaleID][$iPosition] : "";
                             }
                         }
                         if ($oSubQuestion->qid) {
