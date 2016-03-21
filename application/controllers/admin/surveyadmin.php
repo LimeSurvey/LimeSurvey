@@ -1153,7 +1153,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aImportResults=importSurveyFile($sFullFilepath,(isset($_POST['translinksfields'])));
                 if (is_null($aImportResults) || !empty($aImportResults['error']))
                 {
-                    $aData['sErrorMessage']=isset($aImportResults['error']) ? $aImportResults['error'] : gT("Unknow error.");
+                    $aData['sErrorMessage']=isset($aImportResults['error']) ? $aImportResults['error'] : gT("Unknown error.");
                     $aData['bFailed'] = true;
                 }
             }
