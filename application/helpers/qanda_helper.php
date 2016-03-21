@@ -178,7 +178,8 @@ function retrieveAnswers($ia)
             case 'R': //RANKING STYLE
                 $values=do_ranking($ia);
                 break;
-                case 'M': //Multiple choice checkbox
+
+            case 'M': //Multiple choice checkbox
                 $values=do_multiplechoice($ia);
                 if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
                 {
@@ -455,7 +456,6 @@ function file_validation_message($ia)
 // TMSW Validation -> EM
 function mandatory_popup($ia, $notanswered=null)
 {
-
     //This sets the mandatory popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notanswered === null) {unset($notanswered);}
@@ -484,7 +484,6 @@ function mandatory_popup($ia, $notanswered=null)
 // TMSW Validation -> EM
 function validation_popup($ia, $notvalidated=null)
 {
-
     //This sets the validation popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notvalidated === null) {unset($notvalidated);}
@@ -653,54 +652,6 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
                         ),
                 true);
     return $output;
-}
-
-/**
- * This function returns the default nb-col for bootstrap, based on the length of labels
- */
-function return_object_nb_cols($ansresult, $minLabelSize = 11, $minInputSize=1)
-{
-    // We first check that $minLabelSize and $minInputSize are coherent with a 12 column grid
-    // We give the priority to defined label size
-    if (($minLabelSize + $minInputSize) > 12)
-        $minInputSize = 12 - $minLabelSize;
-
-    $nbColLabelLgLog=0;
-
-    // We define the same col-lg and col-xs for all labels/inputs, on the base of the bigger one.
-    foreach ($ansresult as $ansrow)
-    {
-        // We calculate the needed row to fully display the label
-        $nbCol = round(strlen($ansrow['question'])/10)+1;
-        $nbColLabelLg = ($nbCol > $minLabelSize)?$minLabelSize:$nbCol;
-
-        // If it's the largest one until now, we log it.
-        if ($nbColLabelLg > $nbColLabelLgLog)
-            $nbColLabelLgLog = $nbColLabelLg;
-
-    }
-
-    // We define the XS label size on the base of the LG width
-    $nbColLabelXs = $nbColLabelLgLog + 5;
-    $nbColLabelXs = ($nbColLabelXs > 11)?11:$nbColLabelXs;
-
-    // The input width is defined on the base of the label width
-    $nbColInputLg = 12 - $nbColLabelLgLog;
-    $nbColInputLg = ($nbColInputLg < 1)?12:$nbColInputLg;
-
-    $nbColInputXs = 12 - $nbColLabelXs;
-    $nbColInputXs = ($nbColInputXs < 1)?12:$nbColInputXs;
-
-    // We store the datas in an object before returning them
-    $oNbCols = new stdClass();
-    $oNbCols->nbColLabelXs = $nbColLabelXs;
-    $oNbCols->nbColLabelLg = $nbColLabelLgLog;
-    $oNbCols->nbColInputXs = $nbColInputXs;
-
-    $oNbCols->nbColInputLg = $nbColInputLg;
-
-
-    return $oNbCols;
 }
 
 function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
@@ -1461,51 +1412,19 @@ function do_list_dropdown($ia)
 
     if (isset($other) && $other=='Y')
     {
-        $answer .= "\n<script type=\"text/javascript\">\n"
-        ."<!--\n"
-        ."function showhideother(name, value)\n"
-        ."\t{\n"
-        ."\tvar hiddenothername='othertext'+name;\n"
-        ."\tif (value == \"-oth-\")\n"
-        ."{\n"
-        ."document.getElementById(hiddenothername).style.display='';\n"
-        ."document.getElementById(hiddenothername).focus();\n"
-        ."}\n"
-        ."\telse\n"
-        ."{\n"
-        ."document.getElementById(hiddenothername).style.display='none';\n"
-        ."document.getElementById(hiddenothername).value='';\n" // reset othercomment field
-        ."}\n"
-        ."\t}\n"
-        ."//--></script>\n";
-        $answer .= '<br/>';
-        $answer .= '                <input class="form-control" type="text" id="othertext'.$ia[1].'" name="'.$ia[1].'other" style="display:';
+        $aData = array();
+        $aData['name']= $ia[1];
+        $aData['checkconditionFunction']=$checkconditionFunction;
+        $aData['display'] = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '-oth-')?'display: none;':'';
+        $thisfieldname="$ia[1]other";
+        $aData['value'] = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname]))?htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname],ENT_QUOTES):'';
+
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/othertext', $aData, true);
 
         $inputnames[]=$ia[1].'other';
 
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '-oth-')
-        {
-            $answer .= 'none';
-        }
-
-        //        // --> START BUG FIX - text field for other was not repopulating when returning to page via << PREV
-        $answer .= '"';
-        //        $thisfieldname=$ia[1].'other';
-        //        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname])) { $answer .= ' value="'.htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname],ENT_QUOTES).'" ';}
-        //        // --> END BUG FIX
-
-        // --> START NEW FEATURE - SAVE
-        $answer .= "  alt='".gT('Other answer')."' onchange='$checkconditionFunction(this.value, this.name, this.type);'";
-        $thisfieldname="$ia[1]other";
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname])) { $answer .= " value='".htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname],ENT_QUOTES)."' ";}
-        $answer .= ' />';
-        $answer .= "</p>";
-        // --> END NEW FEATURE - SAVE
-        $inputnames[]=$ia[1]."other";
+        // TODO: check if needed : $answer .= "</p>";
     }
-
-
-
 
     $inputnames[]=$ia[1];
 
