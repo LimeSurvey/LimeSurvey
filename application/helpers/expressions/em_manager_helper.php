@@ -9647,7 +9647,7 @@ EOD;
             'other',
             'default',
             'same_default',
-            // Advanced question attributes
+            // Advanced question attributes : @todo get used question attribute by question in survey ?
             'allowed_filetypes',
             'alphasort',
             'answer_width',
@@ -9925,7 +9925,7 @@ EOD;
                     // if relevance equation is using SGQA coding, convert to qcoding
                     $relevanceEqn = (($q['info']['relevance'] == '') ? 1 : $q['info']['relevance']);
                     $LEM->em->ProcessBooleanExpression($relevanceEqn, $gseq, $q['info']['qseq']);    // $qseq
-                    $relevanceEqn = trim(strip_tags($LEM->em->GetPrettyPrintString()));
+                    $relevanceEqn = trim(preg_replace("#</(span|a)>#i", "", preg_replace("#<(span|a)[^>]+\>#i", "", $LEM->em->GetPrettyPrintString()))); // Relevance can not have HTML : only span and a are returned from GetPrettyPrintString
                     $rootVarName = $q['info']['rootVarName'];
                     $preg = '';
                     if (isset($LEM->q2subqInfo[$q['info']['qid']]['preg']))
@@ -9967,7 +9967,7 @@ EOD;
                         // if SQrelevance equation is using SGQA coding, convert to qcoding
                         $SQrelevance = (($LEM->knownVars[$sgqa]['SQrelevance'] == '') ? 1 : $LEM->knownVars[$sgqa]['SQrelevance']);
                         $LEM->em->ProcessBooleanExpression($SQrelevance, $gseq, $q['info']['qseq']);
-                        $SQrelevance = trim(strip_tags($LEM->em->GetPrettyPrintString()));
+                        $SQrelevance = trim(preg_replace("#</(span|a)>#i", "", preg_replace("#<(span|a)[^>]+\>#i", "", $LEM->em->GetPrettyPrintString()))); // Relevance can not have HTML : only span and a are returned from GetPrettyPrintString
 
                         switch  ($q['info']['type'])
                         {
