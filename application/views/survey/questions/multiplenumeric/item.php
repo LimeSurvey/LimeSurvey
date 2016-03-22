@@ -111,7 +111,8 @@
                         var displayValue = '' + value;
                         var displayValue = displayValue.replace(/\./,LSvar.sLEMradix);
                         return slider_prefix + displayValue + slider_suffix;
-                    }
+                    },
+                    value: parseFloat('<?php echo $dispVal; ?>')
                 });
 
                 // Set "This value" at init
@@ -119,11 +120,15 @@
                 var displayValue = '' + slider_startvalue;
                 var displayValue = displayValue.replace(/\./,LSvar.sLEMradix);
                 $(id).attr('stringvalue', displayValue);
+                LEMrel<?php echo $qid; ?>();
                 $(id).triggerHandler("keyup");
 
                 // Reset on click on .slider-reset
                 $(resetSliderId).on("click", function() {
                     var slider_startvalue = $(id).attr('data-slider-startvalue');
+
+                    // Callout is the thing above the slider that displays the 
+                    // current number. Boolean variable.
                     var slider_displaycallout = $(id).attr('data-slider-displaycallout');
 
                     if(slider_startvalue == "NULL") {

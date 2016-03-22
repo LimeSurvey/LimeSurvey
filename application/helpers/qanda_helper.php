@@ -3059,6 +3059,7 @@ function do_multiplenumeric($ia)
         $slider_mintext = $slider_min =  (is_numeric($slider_min))?$slider_min:0;
         $slider_max = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_max']}}",$ia[0],array(),false,1,1,false,false,true));
         $slider_maxtext = $slider_max =  (is_numeric($slider_max))?$slider_max:100;
+        // OBS: default answer != initial value. This is initial value.
         $slider_default=trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_default']}}",$ia[0],array(),false,1,1,false,false,true));
         $slider_default =  (is_numeric($slider_default))?$slider_default:"";
         $slider_orientation= (trim($aQuestionAttributes['slider_orientation'])==0)?'horizontal':'vertical';
@@ -3193,6 +3194,7 @@ function do_multiplenumeric($ia)
             $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
             $sSeparator = $sSeparator['separator'];
 
+            // Default answer is stored in _SESSION
             $dispVal='';
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
             {
