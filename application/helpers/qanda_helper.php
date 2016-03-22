@@ -3094,6 +3094,23 @@ function do_multiplenumeric($ia)
 
         $slider_separator= (trim($aQuestionAttributes['slider_separator'])!='')?$aQuestionAttributes['slider_separator']:"";
         $slider_reset=($aQuestionAttributes['slider_reset'])?1:0;
+
+        if ($slider_default != "")
+        {
+            $slider_startvalue = $slider_default;
+            $slider_displaycallout=1;
+        }
+        elseif ($slider_middlestart != '')
+        {
+            $slider_startvalue = $slider_middlestart;
+            $slider_displaycallout=0;
+        }
+        else
+        {
+            $slider_startvalue = 'NULL';
+            $slider_displaycallout=0;
+        }
+
     }
     else
     {
@@ -3127,7 +3144,6 @@ function do_multiplenumeric($ia)
     $aSubquestions = $ansresult->readAll();
     $anscount = count($aSubquestions)*2;
     $fn = 1;
-
 
     $answer = Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/header', array('prefixclass'=>$prefixclass), true);
     $answer_main = '';
@@ -3223,6 +3239,8 @@ function do_multiplenumeric($ia)
                 'slider_handle' => $slider_handle,
                 'slider_reset' => $slider_reset,
                 'slider_custom_handle' => $slider_custom_handle,
+                'slider_startvalue' => $slider_startvalue,
+                'slider_displaycallout' => $slider_displaycallout
             );
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/item', $itemDatas, true);
 

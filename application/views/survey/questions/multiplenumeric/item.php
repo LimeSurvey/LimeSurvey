@@ -63,13 +63,15 @@
                     data-slider-reset='<?php echo $slider_reset; ?>'
                     data-slider-prefix='<?php echo $prefix; ?>'
                     data-slider-suffix='<?php echo $suffix; ?>'
+                    data-slider-startvalue='<?php echo $slider_startvalue; ?>'
+                    data-slider-displaycallout='<?php echo $slider_displaycallout; ?>'
                 />
             <?php endif;?>
             <?php echo $sliderright;?>
         </div>  <!-- xs-12 -->
         <div class='col-xs-12 col-sm-8'>
             <?php if ($slider_reset): ?>
-                <span data-toggle='tooltip' data-title='<?php eT("Reset slider"); ?>' class='btn btn-default fa fa-times slider-reset'>&nbsp;<?php eT("Reset"); ?></span>
+                <span id="answer<?php echo $myfname; ?>_resetslider" class='btn btn-default fa fa-times slider-reset'>&nbsp;<?php eT("Reset"); ?></span>
             <?php endif; ?>
         </div>
     </div> <!-- form group -->
@@ -100,17 +102,54 @@
             $(document).ready(function(){
                 var myfname = '<?php echo $myfname; ?>';
                 var id = '#answer' + myfname;
+                var resetSliderId = id + '_resetslider';
+                var slider_prefix = $(id).attr('data-slider-prefix')
+                var slider_suffix = $(id).attr('data-slider-suffix')
+
                 var mySlider_<?php echo $myfname; ?> = $(id).bootstrapSlider({
                     formatter: function (value) {
-                        var slider_prefix = $(id).attr('data-slider-prefix')
-                        var slider_suffix = $(id).attr('data-slider-suffix')
                         var displayValue = '' + value;
                         var displayValue = displayValue.replace(/\./,LSvar.sLEMradix);
                         return slider_prefix + displayValue + slider_suffix;
                     }
                 });
+
+                // Set "This value" at init
+                var slider_startvalue = $(id).attr('data-slider-startvalue');
+                var displayValue = '' + slider_startvalue;
+                var displayValue = displayValue.replace(/\./,LSvar.sLEMradix);
+                $(id).attr('stringvalue', displayValue);
+                $(id).triggerHandler("keyup");
+
+                // Reset on click on .slider-reset
+                $(resetSliderId).on("click", function() {
+                    var slider_startvalue = $(id).attr('data-slider-startvalue');
+                    var slider_displaycallout = $(id).attr('data-slider-displaycallout');
+
+                    if(slider_startvalue == "NULL") {
+                        $(id).bootstrapSlider('setValue', '');
+                        $(id).attr('stringvalue', '');
+                    }
+                    else {
+                        $(id).bootstrapSlider('setValue', parseFloat(slider_startvalue));
+                        $(id).attr('stringvalue', slider_startvalue);
+                    }
+
+                    if(slider_displaycallout && slider_startvalue != "NULL") {
+                        $(id).attr('stringvalue', slider_prefix + slider_startvalue.replace(/\./,LSvar.sLEMradix) + slider_suffix);
+                        $(id).bootstrapSlider('setValue', parseFloat(slider_startvalue));
+                    }
+                    else {
+                        $(id).bootstrapSlider('setValue', '');
+                        $(id).attr('stringvalue', '');
+                    }
+
+                    LEMrel<?php echo $qid; ?>();
+                    $(id).triggerHandler("keyup"); // Needed for EM
+                });
+
                 mySlider_<?php echo $myfname; ?>.on('slideStop', function(event) {
-                    var displayValue = '' + event.value;
+                    var displayValue = '' + event.value;  // Type-cast to string
                     var displayValue = displayValue.replace(/\./,LSvar.sLEMradix);
 
                     // fixnum_checkconditions can't handle dot if it expects comma, and
