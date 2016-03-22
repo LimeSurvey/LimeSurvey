@@ -5,10 +5,6 @@
  * @var $hiddenfield
  * @var $ia
  * @var $ansrow
- * @var $nbColLabelXs
- * @var $nbColLabelLg
- * @var $nbColInputLg
- * @var $nbColInputXs
  * @var $checkedState
  * @var $sCheckconditionFunction
  * @var $myfname
