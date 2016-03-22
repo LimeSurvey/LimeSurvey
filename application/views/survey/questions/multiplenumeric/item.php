@@ -101,6 +101,7 @@
             // TODO: This code should be moved to e.g. numerical-slider.js
             $(document).ready(function(){
                 var myfname = '<?php echo $myfname; ?>';
+                var dispVal = parseFloat('<?php echo $dispVal; ?>');
                 var id = '#answer' + myfname;
                 var resetSliderId = id + '_resetslider';
                 var slider_prefix = $(id).attr('data-slider-prefix')
@@ -115,13 +116,29 @@
                     value: parseFloat('<?php echo $dispVal; ?>')
                 });
 
-                // Set "This value" at init
+                // Hide tooltip
+                $('#javatbd' + myfname).find('.tooltip').hide();
+
+                // Set value at init
                 var slider_startvalue = $(id).attr('data-slider-startvalue');
-                var displayValue = '' + slider_startvalue;
-                var displayValue = displayValue.replace(/\./,LSvar.sLEMradix);
-                $(id).attr('stringvalue', displayValue);
-                LEMrel<?php echo $qid; ?>();
-                $(id).triggerHandler("keyup");
+                if (slider_startvalue === 'NULL' && !isNaN(dispVal)) {
+                    $(id).attr('stringvalue', dispVal);  // stringvalue is the value handed to EM, since Bootstrap slider can't handle ","
+                    LEMrel<?php echo $qid; ?>();
+                    $(id).triggerHandler("keyup");
+
+                    // Show tooltip
+                    $('#javatbd' + myfname).find('.tooltip').show();
+                }
+                else if (slider_startvalue !== 'NULL') {
+                    var displayValue = '' + slider_startvalue;
+                    var displayValue = displayValue.replace(/\./,LSvar.sLEMradix);
+                    $(id).attr('stringvalue', displayValue);  // stringvalue is the value handed to EM, since Bootstrap slider can't handle ","
+                    LEMrel<?php echo $qid; ?>();
+                    $(id).triggerHandler("keyup");
+
+                    // Show tooltip
+                    $('#javatbd' + myfname).find('.tooltip').show();
+                }
 
                 // Reset on click on .slider-reset
                 $(resetSliderId).on("click", function() {
@@ -132,7 +149,7 @@
                     var slider_displaycallout = $(id).attr('data-slider-displaycallout');
 
                     if(slider_startvalue == "NULL") {
-                        $(id).bootstrapSlider('setValue', '');
+                        $(id).attr('value', '');  // Never use bootstrapSlider('setValue', ...), because it won't accept empty string (will convert to 0)
                         $(id).attr('stringvalue', '');
                     }
                     else {
@@ -145,12 +162,16 @@
                         $(id).bootstrapSlider('setValue', parseFloat(slider_startvalue));
                     }
                     else {
-                        $(id).bootstrapSlider('setValue', '');
+                        $(id).attr('value', '');
                         $(id).attr('stringvalue', '');
                     }
 
                     LEMrel<?php echo $qid; ?>();
                     $(id).triggerHandler("keyup"); // Needed for EM
+
+                    // Hide tooltip
+                    $('#javatbd' + myfname).find('.tooltip').hide();
+
                 });
 
                 mySlider_<?php echo $myfname; ?>.on('slideStop', function(event) {
@@ -165,6 +186,10 @@
 
                     // EM needs this
                     $(id).triggerHandler("keyup");
+
+                    // Show tooltip
+                    $('#javatbd' + myfname).find('.tooltip').show();
+
                 });
                 $("#vmsg_<?php echo $qid;?>_default").text('<?php eT('Please click and drag the slider handles to enter your answer.');?>');
             });
