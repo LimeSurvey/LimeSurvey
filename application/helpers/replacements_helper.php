@@ -176,7 +176,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         /* RTL CSS */
         if (getLanguageRTL(App()->language))
         {
-            $aCssFiles = (array) $oTemplate->config->files->rtl->css->filename;
+            $aCssFiles = $oTemplate->config->files->rtl->css->filename;
             if(!YII_DEBUG)
             {
                 foreach($aCssFiles as $sCssFile)
