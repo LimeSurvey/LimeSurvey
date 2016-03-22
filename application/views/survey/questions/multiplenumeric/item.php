@@ -151,26 +151,35 @@
                     if(slider_startvalue == "NULL") {
                         $(id).attr('value', '');  // Never use bootstrapSlider('setValue', ...), because it won't accept empty string (will convert to 0)
                         $(id).attr('stringvalue', '');
+
+                        // Hide tooltip
+                        $('#javatbd' + myfname).find('.tooltip').hide();
                     }
                     else {
                         $(id).bootstrapSlider('setValue', parseFloat(slider_startvalue));
                         $(id).attr('stringvalue', slider_startvalue);
+
+                        // Show tooltip
+                        $('#javatbd' + myfname).find('.tooltip').show();
                     }
 
                     if(slider_displaycallout && slider_startvalue != "NULL") {
                         $(id).attr('stringvalue', slider_prefix + slider_startvalue.replace(/\./,LSvar.sLEMradix) + slider_suffix);
                         $(id).bootstrapSlider('setValue', parseFloat(slider_startvalue));
+
+                        // Show tooltip
+                        $('#javatbd' + myfname).find('.tooltip').show();
                     }
                     else {
                         $(id).attr('value', '');
                         $(id).attr('stringvalue', '');
+
+                        // Hide tooltip
+                        $('#javatbd' + myfname).find('.tooltip').hide();
                     }
 
                     LEMrel<?php echo $qid; ?>();
                     $(id).triggerHandler("keyup"); // Needed for EM
-
-                    // Hide tooltip
-                    $('#javatbd' + myfname).find('.tooltip').hide();
 
                 });
 
@@ -187,10 +196,12 @@
                     // EM needs this
                     $(id).triggerHandler("keyup");
 
+                });
+                mySlider_<?php echo $myfname; ?>.on('slideStart', function(event) {
                     // Show tooltip
                     $('#javatbd' + myfname).find('.tooltip').show();
-
                 });
+
                 $("#vmsg_<?php echo $qid;?>_default").text('<?php eT('Please click and drag the slider handles to enter your answer.');?>');
             });
         -->
