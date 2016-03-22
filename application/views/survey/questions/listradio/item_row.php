@@ -4,10 +4,6 @@
  *
  * @var $ia
  * @var $ansrow
- * @var $nbColLabelXs
- * @var $nbColLabelLg
- * @var $nbColInputLg
- * @var $nbColInputXs
  * @var $checkedState
  * @var $myfname
  */

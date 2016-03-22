@@ -2,6 +2,7 @@
  * OBS : COLOURS IN THIS FILE.
  */
 
+
 .ui-datepicker {
   width: 17em;
   padding: .2em .2em 0;
@@ -1762,4 +1763,9 @@ td.subquestion-actions span:hover
 /* View detail response, make sure left column is not too wide*/
 .detailbrowsetable tr th {
     width: 50%;
+}
+
+.lead
+{
+    font-weight: 300;
 }

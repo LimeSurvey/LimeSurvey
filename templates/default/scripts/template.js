@@ -284,4 +284,8 @@ $(document).ready(function(){
         $surveyListFooter = $('#surveyListFooter');
         $('#outerframeContainer').after($surveyListFooter);
     }
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 });

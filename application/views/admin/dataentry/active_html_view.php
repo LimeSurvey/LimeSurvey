@@ -44,7 +44,7 @@ if ($thissurvey['active'] == "Y")
                           <td><input type='text' name='save_identifier' /></td></tr>
                           <tr><td align='right'><?php eT("Password:"); ?></td>
                           <td><input type='password' name='save_password' /></td></tr>
-                          <tr><td align='right'><?php eT("Confirm Password:"); ?></td>
+                          <tr><td align='right'><?php eT("Confirm password:"); ?></td>
                           <td><input type='password' name='save_confirmpassword' /></td></tr>
                           <tr><td align='right'><?php eT("Email:"); ?></td>
                           <td><input type='email' name='save_email' /></td></tr>
@@ -112,6 +112,6 @@ if ($thissurvey['active'] == "Y")
             </tr>
             </table>
             </form>
-            
+
 
 </div></div></div>

@@ -9,7 +9,7 @@
             {
                 echo '<font color="#48B150">'.gT("Active").'</font>';
             } else {
-                echo '<font color="#B73838">'.gT("Not Active").'</font>';
+                echo '<font color="#B73838">'.gT("Not active").'</font>';
             }
         ?>
     </td>

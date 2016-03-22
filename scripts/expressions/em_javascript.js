@@ -449,7 +449,6 @@ function LEMeq(a,b)
  */
 function LEMval(alias)
 {
-    console.log('alias: '+alias);
     // first find out whether it is using a suffix
     var str = new String(alias);
     var varName = alias;
@@ -505,7 +504,6 @@ function LEMval(alias)
     }
 
     // values should always be stored encoded with htmlspecialchars()
-    console.log('suffix: '+suffix);
     switch (suffix) {
         case 'relevanceStatus': {
             grel = qrel = sgqarel = 1;
@@ -634,8 +632,6 @@ function LEMval(alias)
         case 'valueNAOK':
         {
             value = htmlspecialchars_decode(document.getElementById(whichJsName).value);
-            console.log('whichJsName: '+whichJsName)
-            console.log('value: '+value);
             if (value === '') {
                 return '';
             }
