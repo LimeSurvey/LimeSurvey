@@ -30,7 +30,6 @@
             <?php echo $labelText;?>
         </label>
         <div class="col-xs-12 input">
-            <?php echo $prefix;?>
             <?php echo $sliderleft;?>
             <?php if(!$sliders): ?>
                 <input
@@ -70,7 +69,6 @@
                 <?php endif; ?>
             <?php endif;?>
             <?php echo $sliderright;?>
-            <?php echo $suffix;?>
         </div>  <!-- xs-12 -->
     </div> <!-- form group -->
 </div>
