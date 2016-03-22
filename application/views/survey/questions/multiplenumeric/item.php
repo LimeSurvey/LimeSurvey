@@ -132,6 +132,7 @@
                 else if (slider_startvalue !== 'NULL') {
                     var displayValue = '' + slider_startvalue;
                     var displayValue = displayValue.replace(/\./,LSvar.sLEMradix);
+                    $(id).bootstrapSlider('setValue', parseFloat(slider_startvalue));
                     $(id).attr('stringvalue', displayValue);  // stringvalue is the value handed to EM, since Bootstrap slider can't handle ","
                     LEMrel<?php echo $qid; ?>();
                     $(id).triggerHandler("keyup");
