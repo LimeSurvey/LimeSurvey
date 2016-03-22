@@ -4073,106 +4073,101 @@ function do_array_10point($ia)
     $anscount = count($aSubquestions);
 
     $fn = 1;
-    $answer = '<!-- Array 10 points question -->';
-    $answer .= '<div class="no-more-tables no-more-tables-10-point">';
-    /*$answer .= "\n<table class=\"table-in-qanda-2 question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
-    . "\t<colgroup class=\"col-responses\">\n"
-    . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";*/
-    $answer .= "\n<table class=\"table-in-qanda-2 table question subquestion-list questions-list {$extraclass}\">\n"
-    . "\t<colgroup class=\"col-responses\">\n"
-    . "\t<col class=\"col-answers\" style='width: $answerwidth%;'/>\n";
-
+    $answer = $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/header', $headerDatas, true);
 
     $odd_even = '';
     for ($xc=1; $xc<=10; $xc++)
     {
         $odd_even = alternation($odd_even);
-        //$answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-        $answer .= "<col class=\"$odd_even\" style='width: $cellwidth%;' />\n";
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
     }
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
-        //$answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
-        $answer .= "<col class=\"col-no-answer $odd_even\"  style='width: $cellwidth%;' />\n";
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
     }
-    $answer .= "\t</colgroup>\n\n"
-    . "\t<thead>\n<tr class=\"array1 dontread\">\n"
-    . "\t<td>&nbsp;</td>\n";
+
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/open_table_head', array(), true);
+
     for ($xc=1; $xc<=10; $xc++)
     {
-        $answer .= "\t<th  class='th-3'>$xc</th>\n";
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays10point/table_headers', array(
+            'class'=>'th-3',
+            'style'=>'',
+            'th_content'=>$xc,
+        ), true);
+        //$answer .= "\t<th  class='th-3'>$xc</th>\n";
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        $answer .= "\t<th class='th-4'>".gT('No answer')."</th>\n";
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/table_headers', array(
+            'class'=>'th-4',
+            'style'=>'',
+            'th_content'=>gT('No answer'),
+        ), true);
     }
-    $answer .= "</tr>\n</thead>";
-    $answer_t_content = '<tbody>';
+
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/close_table_head', array(), true);
+
+    $answer_t_content = '';
     $trbc = '';
     foreach ($aSubquestions as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
         $answertext = $ansrow['question'];
         /* Check if this item has not been answered */
-        if ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ) )
-        {
-            //$answertext = "<span class='errormandatory'>{$answertext}</span>";
-            $answertext ='
-                        <div class="alert alert-danger" role="alert">'.
-                                $answertext
-                            .'
-                        </div>';
-
-        }
+        $error = ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ) )?true:false;
         $trbc = alternation($trbc , 'row');
 
         //Get array filter stuff
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
+        //list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
+        $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
-        $answer_t_content .= $htmltbody2
-        . "\t<th class=\"answertext\">\n$answertext\n"
-        . $hiddenfield
-        . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-        {
-            $answer_t_content .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-        }
-        $answer_t_content .= "\" />\n\t</th>\n";
+        // Value
+        $value = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
+
+        $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/tr_open', array(
+                    'myfname'=>$myfname,
+                    'answerwidth'=>$answerwidth,
+                    'answertext'=>$answertext,
+                    'value'=>$value,
+                    'error'=>$error,
+                    'sDisplayStyle'=>$sDisplayStyle
+                ), true);
+
 
         for ($i=1; $i<=10; $i++)
         {
-            $answer_t_content .= "\t<td data-title='$i' class=\"answer-cell-2 answer_cell_00$i answer-item radio-item\">\n"
-            ."\t<label for=\"answer$myfname-$i\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\"";
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)
-            {
-                $answer_t_content .= CHECKED;
-            }
-            // --> START NEW FEATURE - SAVE
-            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t"
-            //."<label class=\"hide read\" for=\"answer$myfname-$i\">{$i}</label>\n"
-            ."</label></td>\n";
-            // --> END NEW FEATURE - SAVE
+            $CHECKED = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)?'CHECKED':'';
+
+            $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/td_input', array(
+                'i'=>$i,
+                'myfname'=>$myfname,
+                'CHECKED'=>$CHECKED,
+                'checkconditionFunction'=>$checkconditionFunction,
+                'value'=>$i,
+            ), true);
         }
+
         if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1)
         {
-            $answer_t_content .= "\t<td  data-title='" . gT("No answer") . "' class=\"answer-item radio-item noanswer-item\">\n"
-            ."\t<label for=\"answer$myfname-\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
-            if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
-            {
-                $answer_t_content .= CHECKED;
-            }
-            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />"
-            //."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>"
-            ."\n\t</label></td>\n";
-
+            $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
+            $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/td_input', array(
+                'i'=>gT("No answer"),
+                'myfname'=>$myfname,
+                'CHECKED'=>$CHECKED,
+                'checkconditionFunction'=>$checkconditionFunction,
+                'value'=>'',
+            ), true);
         }
-        $answer_t_content .= "</tr>\n";
+        //$answer_t_content .= "</tr>\n";
+        $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/close_row', array(), true);
         $inputnames[]=$myfname;
         $fn++;
     }
-    $answer .=  $answer_t_content . "\t\n</tbody>\n</table></div>\n";
+    //$answer .=  $answer_t_content . "\t\n</tbody>\n</table></div>\n";
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/close_table', array(), true);
     return array($answer, $inputnames);
 }
 

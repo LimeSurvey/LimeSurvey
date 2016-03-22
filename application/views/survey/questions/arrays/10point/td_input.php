@@ -8,7 +8,7 @@
  */
 ?>
 <!-- td_input -->
-<td data-title='<?php echo $i;?>' class="answer-cell-2 answer_cell_00<?php echo $i;?> answer-item radio-item">
+<td data-title='<?php echo $i;?>' class="answer-cell-1 answer_cell_00<?php echo $i;?> answer-item radio-item">
     <label for="answer<?php echo $myfname;?>-<?php echo $i; ?>">
         <input
             class="radio"

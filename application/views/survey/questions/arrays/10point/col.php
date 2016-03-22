@@ -1,10 +1,10 @@
 <?php
 /**
- * Array 5pointchoice, column
+ * Array 10pointchoice, column
  *
  * @var $odd_even
  * @var $cellwidth
  */
 ?>
-<!-- col.php -->
+<!-- col -->
 <col class="<?php echo $odd_even; ?>" style='width: <?php echo $cellwidth; ?>%;' />
