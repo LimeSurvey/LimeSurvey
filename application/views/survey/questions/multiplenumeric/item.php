@@ -139,6 +139,7 @@
 
                     // Show tooltip
                     $('#javatbd' + myfname).find('.tooltip').show();
+                    $(id).bootstrapSlider('relayout');  // Refresh the tooltip
                 }
 
                 // Reset on click on .slider-reset
