@@ -943,9 +943,12 @@ table {
         padding: 10px 15px;
     }
 
-    /* Slider can be full width on phones */
     .slider.slider-horizontal {
+        /* Slider can be full width on phones */
         width: 100%;
+
+        /* The reset button will be under the slider on phones, so allow some margin */
+        margin-bottom: 1em;
     }
 
     /* Center label under radio button on phones */

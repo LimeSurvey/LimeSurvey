@@ -29,7 +29,7 @@
         <label class='control-label col-xs-12 numeric-label' for="answer<?php echo $myfname; ?>">
             <?php echo $labelText;?>
         </label>
-        <div class="col-xs-12 input">
+        <div class="col-xs-12 col-sm-4">
             <?php echo $sliderleft;?>
             <?php if(!$sliders): ?>
                 <input
@@ -64,12 +64,14 @@
                     data-slider-prefix='<?php echo $prefix; ?>'
                     data-slider-suffix='<?php echo $suffix; ?>'
                 />
-                <?php if ($slider_reset): ?>
-                    <span data-toggle='tooltip' data-title='<?php eT("Reset slider"); ?>' class='btn btn-default fa fa-times slider-reset'>&nbsp;<?php eT("Reset"); ?></span>
-                <?php endif; ?>
             <?php endif;?>
             <?php echo $sliderright;?>
         </div>  <!-- xs-12 -->
+        <div class='col-xs-12 col-sm-8'>
+            <?php if ($slider_reset): ?>
+                <span data-toggle='tooltip' data-title='<?php eT("Reset slider"); ?>' class='btn btn-default fa fa-times slider-reset'>&nbsp;<?php eT("Reset"); ?></span>
+            <?php endif; ?>
+        </div>
     </div> <!-- form group -->
 </div>
 
@@ -94,6 +96,7 @@
     </div>
     <script type='text/javascript'>
         <!--
+            // TODO: This code should be moved to e.g. numerical-slider.js
             $(document).ready(function(){
                 var myfname = '<?php echo $myfname; ?>';
                 var id = '#answer' + myfname;
@@ -103,7 +106,6 @@
                         var slider_suffix = $(id).attr('data-slider-suffix')
                         var displayValue = '' + value;
                         var displayValue = displayValue.replace(/\./,LSvar.sLEMradix);
-                        $(id).triggerHandler("keyup");
                         return slider_prefix + displayValue + slider_suffix;
                     }
                 });
