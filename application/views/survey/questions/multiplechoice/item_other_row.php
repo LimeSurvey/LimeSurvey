@@ -6,11 +6,7 @@
  * @var $sDisable
  * @var $sDisplayStyle
  * @var $myfname
- * @var $nbColLabelXs
- * @var $nbColLabelLg
  * @var $othertext
- * @var $nbColInputLg
- * @var $nbColInputXs
  * @var $checkedState
  * @var $kpclass
  * @var $sValue

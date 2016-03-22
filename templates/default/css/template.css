@@ -449,7 +449,6 @@ input[type="radio"],
 .radio input[type="radio"],
 .radio-inline input[type="radio"] {
   position: relative;
-  margin-top: 6px;
   margin-right: 4px;
   vertical-align: top;
   border: none;
@@ -826,20 +825,20 @@ table {
     }
 
     .no-more-tables tr,
-    .array-by-columns-div .radio-list { 
-        border: 1px solid #ccc; 
+    .array-by-columns-div .radio-list {
+        border: 1px solid #ccc;
         padding: 1em;
     }
 
     /* Line header ; color is h4 color */
     .no-more-tables tr th,
-    .array-by-columns-div .answertext { 
-        font-size: 1.1em; 
-        text-align: center; 
+    .array-by-columns-div .answertext {
+        font-size: 1.1em;
+        text-align: center;
         color: #317eac;
     }
 
-    .array-by-columns-div .answertext { 
+    .array-by-columns-div .answertext {
         padding: 8px;
         text-align: left;
         font-weight: bold;

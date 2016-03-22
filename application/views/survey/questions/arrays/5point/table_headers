@@ -1,0 +1,4 @@
+
+<th class='<?php echo $class'>
+    <?php echo $th_content;?>
+</th>
