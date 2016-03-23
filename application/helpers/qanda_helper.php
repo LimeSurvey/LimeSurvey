@@ -2531,6 +2531,12 @@ function do_file_upload($ia)
         $questgrppreview = 0;
     }
 
+    $uploadurl  = $scriptloc . "?sid=" . Yii::app()->getConfig('surveyID') . "&fieldname=" . $ia[1] . "&qid=" . $ia[0];
+    $uploadurl .= "&preview=" . $questgrppreview . "&show_title=" . $aQuestionAttributes['show_title'];
+    $uploadurl .= "&show_comment=" . $aQuestionAttributes['show_comment'];
+    $uploadurl .= "&minfiles=" . $aQuestionAttributes['min_num_of_files'];  // TODO: Regression here: Should use LEMval(minfiles)
+    $uploadurl .= "&maxfiles=" . $aQuestionAttributes['max_num_of_files'];  // Same here.
+
     $answer = "<script type='text/javascript'>
         function upload_$ia[1]() {
             var uploadurl = '{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&fieldname={$ia[1]}&qid={$ia[0]}';
@@ -2621,6 +2627,9 @@ function do_file_upload($ia)
     $("#'.$ia[1].'_filecount").val(filecount);
     });
     </script>';
+
+        //$('<iframe id=\"uploader\" name=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
+    $answer .= "<div id='uploader-div' class='hidden'><iframe id='uploader' name='uploader' class='externalSite' src='{$uploadurl}'></iframe></div>";
 
     $inputnames[] = $ia[1];
     $inputnames[] = $ia[1]."_filecount";

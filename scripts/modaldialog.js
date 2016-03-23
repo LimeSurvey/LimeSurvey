@@ -16,52 +16,54 @@ function openUploadModalDialog(){
         var windowwidth = $(window).width()-30;
         var dialogwidth= Math.min(windowwidth, 940);
 
-        $('#uploader').dialog('destroy').remove(); // destroy the old modal dialog
-        $('<iframe id=\"uploader\" name=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
-                title: uploadLang.title,
-                autoOpen: true,
-                width: dialogwidth,
-                height: 'auto',
-                open: function( event, ui ) {
-                    setWidthUploader();
-                },
-                modal: true,
-                resizable: false,
-                autoResize: false,
-                draggable: true,
-                closeOnEscape: false,
-                dialogClass: "dialog-upload",
-                beforeClose: function() {
-                    var pass;
-                    if(document.getElementById('uploader').contentDocument) {
-                        if(document.getElementById('uploader').contentDocument.defaultView)
-                            {       /*Firefox*/
-                            pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);
-                        }else{       /*IE8*/
-                            pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
-                        }
-                    }else{    /*IE6*/
+        //$('#uploader').dialog('destroy').remove(); // destroy the old modal dialog
+        //$('<iframe id=\"uploader\" name=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
+        $('#uploader-div').dialog({
+            title: uploadLang.title,
+            autoOpen: true,
+            width: dialogwidth,
+            height: 'auto',
+            open: function( event, ui ) {
+                $('#uploader-div').removeClass('hidden');
+                setWidthUploader();
+            },
+            modal: true,
+            resizable: false,
+            autoResize: false,
+            draggable: true,
+            closeOnEscape: false,
+            dialogClass: "dialog-upload",
+            beforeClose: function() {
+                var pass;
+                if(document.getElementById('uploader').contentDocument) {
+                    if(document.getElementById('uploader').contentDocument.defaultView)
+                        {       /*Firefox*/
+                        pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);
+                    }else{       /*IE8*/
                         pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
                     }
-                    return pass;
-                },
-                overlay: {
-                    opacity: 0.85,
-                    background: 'black'
-                },
-                buttons: buttonsOpts,
-                close: function( ) {
-                    checkconditions();
-                },
-                create: function() {
-                    // Add Bootstrap class to button
-                    $('.ui-dialog-buttonset button').addClass('btn btn-default');
-
-                    // Remove borders
-                    // TODO: Use this instead? http://plugins.krajee.com/file-input
-                    $('.ui-widget-content').css('border', 'none');
+                }else{    /*IE6*/
+                    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
                 }
-            });
+                return pass;
+            },
+            overlay: {
+                opacity: 0.85,
+                background: 'black'
+            },
+            buttons: buttonsOpts,
+            close: function( ) {
+                checkconditions();
+            },
+            create: function() {
+                // Add Bootstrap class to button
+                $('.ui-dialog-buttonset button').addClass('btn btn-default');
+
+                // Remove borders
+                // TODO: Use this instead? http://plugins.krajee.com/file-input
+                $('.ui-widget-content').css('border', 'none');
+            }
+        });
     });
 }
 $(window).resize(function() { 
@@ -71,7 +73,7 @@ $(window).resize(function() {
 });
 /* Reset the position of the dialog (recenter) */
 function resetUploaderPosition(){
-     $( "#uploader" ).dialog( "option", "position", $( "#uploader" ).dialog( "option", "position" ) );
+     //$( "#uploader" ).dialog( "option", "position", $( "#uploader" ).dialog( "option", "position" ) );
      
 }
 /* Set the with of upload madal and uploader frame according to windows width */
