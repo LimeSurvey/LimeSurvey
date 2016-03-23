@@ -3072,10 +3072,10 @@ function do_multiplenumeric($ia)
 
             // The value of the slider depends on many possible different parameters, by order of priority :
             // 1. The value stored in the session
-            // 2. Else the default Answer   --> Supposed to be set by EM and stored in session ?
-            // 3. Else the middle start
-            // 4. Else the init value
-            // 5. If no value at all, the "user no action" is recorded as null in the database
+            // 2. Else the default Answer   (set by EM and stored in session, so same case than 1)
+            // 3. Else the init value
+            // 4. Else the middle start
+            // 5. If no value at all, or if middle start, the "user no action" is recorded as null in the database
             //
             // Dev team is invited to tell if they agree/disagree with this order.
 
