@@ -54,7 +54,7 @@
                     value="<?php echo $dispVal;?>"
                     onkeyup="<?php echo $checkconditionFunction; ?>"
                     <?php echo $maxlength; ?>
-                    data-slider-value="<?php // echo $dispVal;?>5.2"
+                    data-slider-value="<?php echo $sUnformatedValue;?>"
                     data-slider-min='<?php echo $slider_min;?>'
                     data-slider-max='<?php echo $slider_max;?>'
                     data-slider-step='<?php echo $slider_step;?>'
@@ -75,6 +75,7 @@
                 <span id="answer<?php echo $myfname; ?>_resetslider" class='btn btn-default fa fa-times slider-reset'>&nbsp;<?php eT("Reset"); ?></span>
             <?php endif; ?>
         </div>
+        <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo $slider_user_no_action?>" />
     </div> <!-- form group -->
 </div>
 
@@ -99,14 +100,20 @@
     </div>
     <script type='text/javascript'>
         <!--
+            // Most of this javascript is here to handle the fact that bootstrapSlider need numerical value in the input
+            // It can't accept "NULL" nor anyother thousand separator than "." (else it become a string)
+            // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/scripts/bootstrap-slider.js#l1453-l1461
+            // If the bootstrapSlider was updated, most of this javascript would not be necessary.
             $(document).ready(function(){
+                // Set of the needed informations for the slider
                 var myfname = '<?php echo $myfname; ?>';
                 var $inputEl = $('#answer' + myfname);
-                console.log( $inputEl.attr('id'));
+                var $sliderNoActionEl = $('#slider_user_no_action_' + myfname);
                 var $prefix = $inputEl.data('slider-prefix');
                 var $suffix = $inputEl.data('slider-suffix');
                 var $separator = $inputEl.data('separator');
 
+                // We start the slider, and provide it the formated value with prefix and suffix for its tooltip
                 var mySlider_<?php echo $myfname; ?> = $inputEl.bootstrapSlider({
                     formatter: function (value) {
                         displayValue = value.toString().replace('.',$separator);
@@ -114,18 +121,25 @@
                     },
                 });
 
+                // If user no action is on, we hide the tooltip
+                // And we set the value to null
+                if($sliderNoActionEl.val()=="1")
+                {
+                    $('#javatbd' + myfname).find('div.tooltip').hide();
+                    $inputEl.attr('value', '');
+                }
+
+                // When user change the value of the slider :
+                // we need to show the tooltip (if it was hidden)
+                // and to update the value of the input element with correct format
                 mySlider_<?php echo $myfname; ?>.on('slideStop', function(){
-                    value = $inputEl.val();
-                    displayValue = value.toString().replace('.',$separator);
-                    $inputEl.val(displayValue);
-                    //console.log('LA '+$value);
-                    LEMrel<?php echo $qid; ?>()
+                    $('#javatbd' + myfname).find('div.tooltip').show(); // Show the tooltip
+                    $sliderNoActionEl.val(0); // The user did an action
+                    value = $inputEl.val(); // We get the current value of the bootstrapSlider
+                    displayValue = value.toString().replace('.',$separator); // We format it with the right separator
+                    $inputEl.val(displayValue); // We parse it to the element
+                    LEMrel<?php echo $qid; ?>() // We call the EM
                 });
-                $("#vmsg_<?php echo $qid;?>_default").text('<?php eT('Please click and drag the slider handles to enter your answer.');?>');
-
-                // Hide tooltip
-//                $('#javatbd' + myfname).find('.tooltip').hide();
-
                 $("#vmsg_<?php echo $qid;?>_default").text('<?php eT('Please click and drag the slider handles to enter your answer.');?>');
             });
         -->

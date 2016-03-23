@@ -3079,23 +3079,30 @@ function do_multiplenumeric($ia)
             //
             // Dev team is invited to tell if they agree/disagree with this order.
 
-            $sValue = 'NULL';
-            $slider_displaycallout=0;
+            // For bootstrap slider, the value can't be NULL so we set it by default to the slider minimum value.
+            // The old behaviour of "null" value (corresponding to user no action) is implemented via $slider_user_no_action
+            // It could be used to show a temporary "No Answer" checkbox (hidden when user touch the slider)
+
+            $sValue = $slider_min;
+            $slider_user_no_action=1;
 
             // value stored in _SESSION
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
             {
                 $sValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                $slider_user_no_action=0;
             }
             elseif( $slider_default != "" )
             {
                 $sValue = $slider_default;
+                $slider_user_no_action=0;
             }
             elseif( isset($slider_middlestart) && $slider_middlestart!='')
             {
                 $sValue = $slider_middlestart;
             }
 
+            $sUnformatedValue = $sValue;
 
             if(strpos($sValue,"."))
             {
@@ -3134,8 +3141,9 @@ function do_multiplenumeric($ia)
                 'slider_handle' => $slider_handle,
                 'slider_reset' => $slider_reset,
                 'slider_custom_handle' => $slider_custom_handle,
-                'slider_displaycallout' => $slider_displaycallout,
+                'slider_user_no_action' => $slider_user_no_action,
                 'sSeparator'=> $sSeparator,
+                'sUnformatedValue'=> $sUnformatedValue,
             );
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/item', $itemDatas, true);
 
