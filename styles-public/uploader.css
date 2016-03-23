@@ -116,3 +116,7 @@ text-align:left;
     background-color: #FFBABA;
     background-image: url('img/upload-error.png');
 }
+
+body.uploader {
+    padding-top: 2em;
+}

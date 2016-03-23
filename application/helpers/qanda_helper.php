@@ -2531,12 +2531,6 @@ function do_file_upload($ia)
         $questgrppreview = 0;
     }
 
-    $uploadurl  = $scriptloc . "?sid=" . Yii::app()->getConfig('surveyID') . "&fieldname=" . $ia[1] . "&qid=" . $ia[0];
-    $uploadurl .= "&preview=" . $questgrppreview . "&show_title=" . $aQuestionAttributes['show_title'];
-    $uploadurl .= "&show_comment=" . $aQuestionAttributes['show_comment'];
-    $uploadurl .= "&minfiles=" . $aQuestionAttributes['min_num_of_files'];  // TODO: Regression here: Should use LEMval(minfiles)
-    $uploadurl .= "&maxfiles=" . $aQuestionAttributes['max_num_of_files'];  // Same here.
-
     $answer = "<script type='text/javascript'>
         function upload_$ia[1]() {
             var uploadurl = '{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&fieldname={$ia[1]}&qid={$ia[0]}';
@@ -2628,8 +2622,37 @@ function do_file_upload($ia)
     });
     </script>';
 
-        //$('<iframe id=\"uploader\" name=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
-    $answer .= "<div id='uploader-div' class='hidden'><iframe id='uploader' name='uploader' class='externalSite' src='{$uploadurl}'></iframe></div>";
+    $uploadurl  = $scriptloc . "?sid=" . Yii::app()->getConfig('surveyID') . "&fieldname=" . $ia[1] . "&qid=" . $ia[0];
+    $uploadurl .= "&preview=" . $questgrppreview . "&show_title=" . $aQuestionAttributes['show_title'];
+    $uploadurl .= "&show_comment=" . $aQuestionAttributes['show_comment'];
+    $uploadurl .= "&minfiles=" . $aQuestionAttributes['min_num_of_files'];  // TODO: Regression here? Should use LEMval(minfiles) like above
+    $uploadurl .= "&maxfiles=" . $aQuestionAttributes['max_num_of_files'];  // Same here.
+
+    $answer .= '
+        <!-- Trigger the modal with a button -->
+        <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>-->
+
+        <!-- Modal -->
+        <div id="file-upload-modal-' . $ia[1] . '" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content" style="vertical-align: middle;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">' . ngT("Upload file|Upload files", 1) . '</h4>
+                    </div>
+                    <div class="modal-body file-upload-modal-body">
+                        <iframe id="uploader" name="uploader" class="externalSite" src="' . $uploadurl . '"></iframe>
+                    </div>
+                    <div class="modal-footer file-upload-modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">' . gT("Save changes") . '</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    ';
 
     $inputnames[] = $ia[1];
     $inputnames[] = $ia[1]."_filecount";
