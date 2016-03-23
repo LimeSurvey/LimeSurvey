@@ -3083,6 +3083,11 @@ function do_multiplenumeric($ia)
             // The old behaviour of "null" value (corresponding to user no action) is implemented via $slider_user_no_action
             // It could be used to show a temporary "No Answer" checkbox (hidden when user touch the slider)
 
+            // Most of this javascript is here to handle the fact that bootstrapSlider need numerical value in the input
+            // It can't accept "NULL" nor anyother thousand separator than "." (else it become a string)
+            // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/scripts/bootstrap-slider.js#l1453-l1461
+            // If the bootstrapSlider were updated, most of this javascript would not be necessary.
+
             $sValue = $slider_min;
             $slider_user_no_action=1;
 

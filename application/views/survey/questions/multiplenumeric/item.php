@@ -9,13 +9,22 @@
  * @var $sDisplayStyle
  * @var $prefix
  * @var $myfname
- * @var $labelText                  $ansrow['question']
+ * @var $labelText
  * @var $prefix
  * @var $kpclass
- * @var $rows                       $drows.' '.$maxlength
- * @var $checkconditionFunction     $checkconditionFunction.'(this.value, this.name, this.type)'
+ * @var $rows
+ * @var $checkconditionFunction
  * @var $dispVal
  * @var $suffix
+ * @var $sUnformatedValue
+ * @var $slider_min
+ * @var $slider_max
+ * @var $slider_step
+ * @var $slider_default
+ * @var $slider_orientation
+ * @var $slider_handle
+ * @var $slider_reset
+ * @var $sSeparator
  */
 ?>
 <!-- question attribute "display_rows" is set -> we need a textarea to be able to show several rows -->
@@ -44,7 +53,6 @@
                     <?php echo $maxlength; ?>
                 />
             <?php else:?>
-                <?php echo "IKI" . $dispVal;?>
                 <input
                     class="text form-control <?php echo $kpclass;?>"
                     type="text"
@@ -103,7 +111,7 @@
             // Most of this javascript is here to handle the fact that bootstrapSlider need numerical value in the input
             // It can't accept "NULL" nor anyother thousand separator than "." (else it become a string)
             // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/scripts/bootstrap-slider.js#l1453-l1461
-            // If the bootstrapSlider was updated, most of this javascript would not be necessary.
+            // If the bootstrapSlider were updated, most of this javascript would not be necessary.
             $(document).ready(function(){
                 // Set of the needed informations for the slider
                 var myfname = '<?php echo $myfname; ?>';
