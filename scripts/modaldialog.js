@@ -1,9 +1,12 @@
 $(function() {
     openUploadModalDialog();
 });
+
 function openUploadModalDialog(){
     $('.upload').click(function(e) {
+
         e.preventDefault();
+
         var $this = $(this);
         var show_title   = getQueryVariable('show_title', this.href);
         var show_comment = getQueryVariable('show_comment', this.href);
@@ -37,73 +40,7 @@ function openUploadModalDialog(){
             }
             return pass;
         });
-
-        $('#uploader-div').dialog({
-            title: uploadLang.title,
-            autoOpen: true,
-            width: dialogwidth,
-            height: 'auto',
-            open: function( event, ui ) {
-                $('#uploader-div').removeClass('hidden');
-                setWidthUploader();
-            },
-            modal: true,
-            resizable: false,
-            autoResize: false,
-            draggable: true,
-            closeOnEscape: false,
-            dialogClass: "dialog-upload",
-            beforeClose: function() {
-                var pass;
-                if(document.getElementById('uploader').contentDocument) {
-                    if(document.getElementById('uploader').contentDocument.defaultView)
-                        {       /*Firefox*/
-                        pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);
-                    }else{       /*IE8*/
-                        pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
-                    }
-                }else{    /*IE6*/
-                    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
-                }
-                return pass;
-            },
-            overlay: {
-                opacity: 0.85,
-                background: 'black'
-            },
-            buttons: buttonsOpts,
-            close: function( ) {
-                checkconditions();
-            },
-            create: function() {
-                // Add Bootstrap class to button
-                $('.ui-dialog-buttonset button').addClass('btn btn-default');
-
-                // Remove borders
-                // TODO: Use this instead? http://plugins.krajee.com/file-input
-                $('.ui-widget-content').css('border', 'none');
-            }
-        });
     });
-}
-$(window).resize(function() { 
-    setWidthUploader();
-    if(typeof $("iframe#uploader")[0]!=="undefined" && jQuery.isFunction($("iframe#uploader")[0].contentWindow.fixParentHeigth))
-        $("iframe#uploader")[0].contentWindow.fixParentHeigth();
-});
-/* Reset the position of the dialog (recenter) */
-function resetUploaderPosition(){
-     //$( "#uploader" ).dialog( "option", "position", $( "#uploader" ).dialog( "option", "position" ) );
-     
-}
-/* Set the with of upload madal and uploader frame according to windows width */
-function setWidthUploader(){
-    //var maxwidth=Math.min($("body").innerWidth()-4, 974);
-    //if(maxwidth!=$( "#uploader" ).dialog( "option", "width" )){
-        //$("#uploader").dialog( "option", "width", maxwidth).width(maxwidth-18) // Leave 20px for overflow
-    //}
-    $('#uploader').css('width', '100%');
-    resetUploaderPosition();
 }
 
 function getQueryVariable(variable, url) {

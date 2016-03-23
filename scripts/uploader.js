@@ -1,18 +1,7 @@
 $(document).ready(function(){
     doFileUpload();
-    fixParentHeigth();
 });
 
-function fixParentHeigth()
-{
-    if(window != top)
-    {
-        frameheight=Math.max($('html').outerHeight()+30,150);
-        $(parent.jQuery.find('#uploader')).css("height",frameheight+"px");
-        if(jQuery.isFunction(parent.resetUploaderPosition))
-            parent.resetUploaderPosition();
-    }
-}
 function doFileUpload(){
     var fieldname = $('#ia').val();
 
@@ -37,7 +26,7 @@ function doFileUpload(){
             var previewblock =  "<li id='"+fieldname+"_li_"+i+"' class='previewblock file-element'>";
             previewblock +="<div class='file-preview'>";
             if (isValueInArray(image_extensions, json[i-1].ext.toLowerCase()))
-                previewblock += "<img src='"+uploadurl+"/filegetcontents/"+json[i-1].filename+"' onload='fixParentHeigth()' class='uploaded' />";
+                previewblock += "<img src='"+uploadurl+"/filegetcontents/"+json[i-1].filename+"' class='uploaded' />";
             else
                 previewblock += "<div class='upload-placeholder' />";
             previewblock += "<span class='file-name'>"+decodeURIComponent(json[i-1].name)+"</span>";
@@ -69,7 +58,6 @@ function doFileUpload(){
 
             // add file to the list
             $('#field'+fieldname+'_listfiles').append(previewblock);
-            fixParentHeigth();
         }
     }
 
@@ -98,7 +86,6 @@ function doFileUpload(){
             if (filecount >= maxfiles)
             {
                 $('#notice').html('<p class="alert alert-danger fa fa-exclamation-circle">'+uploadLang.errorNoMoreFiles+'</p>');
-                fixParentHeigth();
                 return false;
             }
 
@@ -118,7 +105,6 @@ function doFileUpload(){
             if (allowSubmit == false)
             {
                 $('#notice').html('<p class="alert alert-danger fa fa-exclamation-circle">'+uploadLang.errorOnlyAllowed.replace('%s',$('#'+fieldname+'_allowed_filetypes').val())+'</p>');
-                fixParentHeigth();
                 return false;
             }
 
@@ -165,7 +151,7 @@ function doFileUpload(){
 
                 previewblock +="<div class='file-preview'>";
                 if (isValueInArray(image_extensions, metadata.ext.toLowerCase()))
-                    previewblock += "<img src='"+uploadurl+"/filegetcontents/"+decodeURIComponent(metadata.filename)+"' onload='fixParentHeigth()' class='uploaded' />";
+                    previewblock += "<img src='"+uploadurl+"/filegetcontents/"+decodeURIComponent(metadata.filename)+"' class='uploaded' />";
                 else
                     previewblock += "<div class='upload-placeholder' />";
                 previewblock += "<span class='file-name'>"+decodeURIComponent(metadata.name)+"<span>";
@@ -211,12 +197,10 @@ function doFileUpload(){
 
                 if (filecount >= maxfiles)
                     $('#notice').html('<p class="alert alert-success fa fa-check">'+uploadLang.errorTooMuch+'</p>');
-                fixParentHeigth();
             }
             else
             {
                 $('#notice').html('<p class="alert alert-danger fa fa-exclamation-circle">'+metadata.msg+'</p>');
-                fixParentHeigth();
             }
             
         }
@@ -334,7 +318,6 @@ function deletefile(fieldname, count) {
             $('#uploadstatus').html(uploadLang.errorNeedMore.replace('%s',(minfiles - filecount)));
         else
             $('#uploadstatus').html(uploadLang.errorMoreAllowed.replace('%s',(maxfiles - filecount)));
-        fixParentHeigth();
     });
 }
 
