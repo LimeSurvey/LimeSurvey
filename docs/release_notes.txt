@@ -34,6 +34,46 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 2.50+ (build 160317) to 2.50+ (build 160323) Mar 23, 2016
+-Fixed issue: Missing queXML PDF export (Adam Zammit)
+-Fixed issue #10269: Plugin setting type html is broken (Olle Haerstedt)
+-Fixed issue #10495: Missing padding when browsing responses (Olle Haerstedt)
+-Fixed issue #10555: Simple selector : Advanced settings of question is not updated when update question type (Denis Chenu)
+-Fixed issue #10632: Can't access advanced settings of a question when survey is activated (Denis Chenu)
+-Fixed issue #10649: LDAP pluging - Default setting 'LDAP authentication' does not apply (Alfredo Esteban)
+-Fixed issue #10730: Default templates errors with (dual) matrix on small (Olle Haerstedt)
+-Fixed issue #10744: Numeric slider : no difference between unanswered + no reset (LouisGac)
+-Fixed issue #10744: Numeric slider : no difference between unanswered + (Olle Haerstedt)
+-Fixed issue #10760: TSV export : Conditions truncated at "<=" (Denis Chenu)
+-Fixed issue #10768: Missing translation (Carsten Schmitz)
+-Fixed issue #10785: A warning in upper case (Carsten Schmitz)
+-Fixed issue #10793: Missing translation (Carsten Schmitz)
+-Fixed issue #10798: MySQL : Unable to use another CHARACTER SET and COLLATION than utf8mb4 (Denis Chenu)
+-Fixed issue #10800: Setting conditions to a question: html codes are shown in GUI (Carsten Schmitz)
+-Fixed issue #10801: PHP notice + bad relevance set in Array text sub question edit (Denis Chenu)
+-Fixed issue #10806: A lot of white space lost in survey language and question language (Denis Chenu)
+-Fixed issue #10807: Meaningless error message 'surveytablecreation' when survey cannot be activated due to too many questions (Carsten Schmitz)
+-fixed issue #10809: I cant open a survey in Arabic Language (Denis Chenu)
+#Updated translation: Dutch by kpadm, Han, Geert1969
+#Updated translation: Dutch (Informal) by Han, coeneisma
+#Updated translation: Finnish by morbid
+#Updated translation: French (France) by arnaud21, DenisChenu
+#Updated translation: German by c_schmitz, actxcellence
+#Updated translation: German (Informal) by actxcellence, cbloecher
+#Updated translation: Greek by kiolalis, nasprok
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow, ilgizy, vipgroup
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Thai by sismiracles, tomzt
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.50+ (build 160316) to 2.50+ (build 160317) Mar 17, 2016
 -Fixed issue #10195: CKEditor should use Bootstrap style (Carsten Schmitz)
 -Fixed issue #10416: Wrong Changelog summary during Comfort Upgrade (LouisGac)
