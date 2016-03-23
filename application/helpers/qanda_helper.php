@@ -6126,9 +6126,16 @@ function do_array_dual($ia)
                 $answer .= "\t</th>\n";
                 $hiddenanswers='';
                 $thiskey=0;
+                $first = true;
                 foreach ($labelcode0 as $ld)
                 {
-                    $answer .= "\t<td <td data-title='" . $labelans0[$thiskey] . "' class=\"answer_cell_1_00$ld answer-item {$answertypeclass}-item\">\n"
+                    if ($first && $leftheader != '')
+                    {
+                        $answer .= "<td class='visible-xs'><em>$leftheader</em></td>";
+                        $first = false;
+                    }
+
+                    $answer .= "\t<td data-title='" . $labelans0[$thiskey] . "' class=\"answer_cell_1_00$ld answer-item {$answertypeclass}-item\">\n"
                     . "\t<label for=\"answer{$myfid0}-{$ld}\"><input class=\"radio\" type=\"radio\" name=\"$myfname0\" value=\"$ld\" id=\"answer$myfid0-$ld\" ";
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == $ld)
                     {
@@ -6155,8 +6162,15 @@ function do_array_dual($ia)
                     $answer .= "\t{$answertextcenter}</label></td>\n"; // separator
                     array_push($inputnames,$myfname1);
                     $thiskey=0;
+                    $first = true;
                     foreach ($labelcode1 as $ld) // second label set
                     {
+                        if ($first && $rightheader != '')
+                        {
+                            $answer .= "<td class='visible-xs'><em>$rightheader</em></td>";
+                            $first = false;
+                        }
+
                         $answer .= "\t<td data-title='{$labelans1[$thiskey]}' class=\"answer_cell_2_00$ld  answer-item radio-item\">\n"
                         . "\t<label for=\"answer{$myfid1}-{$ld}\"><input class=\"radio\" type=\"radio\" name=\"$myfname1\" value=\"$ld\" id=\"answer$myfid1-$ld\" ";
                         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $ld)
