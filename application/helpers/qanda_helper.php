@@ -2986,6 +2986,8 @@ function do_multiplenumeric($ia)
         $slider_custom_handle = '';
         $slider_separator = '';
         $slider_reset = 0;
+        $slider_startvalue = '';
+        $slider_displaycallout = '';
     }
     $hidetip=$aQuestionAttributes['hide_tip'];
 
@@ -4073,6 +4075,10 @@ function do_array_10point($ia)
     $anscount = count($aSubquestions);
 
     $fn = 1;
+    $headerDatas = array(
+        'extraclass'=>$extraclass,
+        'answerwidth' => $answerwidth
+    );
     $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/header', $headerDatas, true);
 
     $odd_even = '';
@@ -4092,7 +4098,7 @@ function do_array_10point($ia)
 
     for ($xc=1; $xc<=10; $xc++)
     {
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays10point/table_headers', array(
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/table_headers', array(
             'class'=>'th-3',
             'style'=>'',
             'th_content'=>$xc,
