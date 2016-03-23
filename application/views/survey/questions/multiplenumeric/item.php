@@ -44,6 +44,7 @@
                     <?php echo $maxlength; ?>
                 />
             <?php else:?>
+                <?php echo "IKI" . $dispVal;?>
                 <input
                     class="text form-control <?php echo $kpclass;?>"
                     type="text"
@@ -53,6 +54,7 @@
                     value="<?php echo $dispVal;?>"
                     onkeyup="<?php echo $checkconditionFunction; ?>"
                     <?php echo $maxlength; ?>
+                    data-slider-value="<?php // echo $dispVal;?>5.2"
                     data-slider-min='<?php echo $slider_min;?>'
                     data-slider-max='<?php echo $slider_max;?>'
                     data-slider-step='<?php echo $slider_step;?>'
@@ -63,8 +65,7 @@
                     data-slider-reset='<?php echo $slider_reset; ?>'
                     data-slider-prefix='<?php echo $prefix; ?>'
                     data-slider-suffix='<?php echo $suffix; ?>'
-                    data-slider-startvalue='<?php echo $slider_startvalue; ?>'
-                    data-slider-displaycallout='<?php echo $slider_displaycallout; ?>'
+                    data-separator='<?php echo $sSeparator;?>'
                 />
             <?php endif;?>
             <?php echo $sliderright;?>
@@ -98,111 +99,32 @@
     </div>
     <script type='text/javascript'>
         <!--
-            // TODO: This code should be moved to e.g. numerical-slider.js
             $(document).ready(function(){
                 var myfname = '<?php echo $myfname; ?>';
-                var dispVal = parseFloat('<?php echo $dispVal; ?>');
-                var id = '#answer' + myfname;
-                var resetSliderId = id + '_resetslider';
-                var slider_prefix = $(id).attr('data-slider-prefix')
-                var slider_suffix = $(id).attr('data-slider-suffix')
+                var $inputEl = $('#answer' + myfname);
+                console.log( $inputEl.attr('id'));
+                var $prefix = $inputEl.data('slider-prefix');
+                var $suffix = $inputEl.data('slider-suffix');
+                var $separator = $inputEl.data('separator');
 
-                var mySlider_<?php echo $myfname; ?> = $(id).bootstrapSlider({
+                var mySlider_<?php echo $myfname; ?> = $inputEl.bootstrapSlider({
                     formatter: function (value) {
-                        var displayValue = '' + value;
-                        var displayValue = displayValue.replace(/\./,LSvar.sLEMradix);
-                        return slider_prefix + displayValue + slider_suffix;
+                        displayValue = value.toString().replace('.',$separator);
+                        return $prefix + displayValue + $suffix;
                     },
-                    value: parseFloat('<?php echo $dispVal; ?>')
                 });
+
+                mySlider_<?php echo $myfname; ?>.on('slideStop', function(){
+                    value = $inputEl.val();
+                    displayValue = value.toString().replace('.',$separator);
+                    $inputEl.val(displayValue);
+                    //console.log('LA '+$value);
+                    LEMrel<?php echo $qid; ?>()
+                });
+                $("#vmsg_<?php echo $qid;?>_default").text('<?php eT('Please click and drag the slider handles to enter your answer.');?>');
 
                 // Hide tooltip
-                $('#javatbd' + myfname).find('.tooltip').hide();
-
-                // Set value at init
-                var slider_startvalue = $(id).attr('data-slider-startvalue');
-                if (slider_startvalue === 'NULL' && !isNaN(dispVal)) {
-                    $(id).attr('stringvalue', dispVal);  // stringvalue is the value handed to EM, since Bootstrap slider can't handle ","
-                    LEMrel<?php echo $qid; ?>();
-                    $(id).triggerHandler("keyup");
-
-                    // Show tooltip
-                    $('#javatbd' + myfname).find('.tooltip').show();
-                }
-                else if (slider_startvalue !== 'NULL') {
-                    var displayValue = '' + slider_startvalue;
-                    var displayValue = displayValue.replace(/\./,LSvar.sLEMradix);
-                    $(id).bootstrapSlider('setValue', parseFloat(slider_startvalue));
-                    $(id).attr('stringvalue', displayValue);  // stringvalue is the value handed to EM, since Bootstrap slider can't handle ","
-                    LEMrel<?php echo $qid; ?>();
-                    $(id).triggerHandler("keyup");
-
-                    // Show tooltip
-                    $('#javatbd' + myfname).find('.tooltip').show();
-                    $(id).bootstrapSlider('relayout');  // Refresh the tooltip
-                }
-
-                // Reset on click on .slider-reset
-                $(resetSliderId).on("click", function() {
-                    var slider_startvalue = $(id).attr('data-slider-startvalue');
-
-                    // Callout is the thing above the slider that displays the 
-                    // current number. Boolean variable.
-                    var slider_displaycallout = $(id).attr('data-slider-displaycallout');
-
-                    if(slider_startvalue == "NULL") {
-                        $(id).attr('value', '');  // Never use bootstrapSlider('setValue', ...), because it won't accept empty string (will convert to 0)
-                        $(id).attr('stringvalue', '');
-
-                        // Hide tooltip
-                        $('#javatbd' + myfname).find('.tooltip').hide();
-                    }
-                    else {
-                        $(id).bootstrapSlider('setValue', parseFloat(slider_startvalue));
-                        $(id).attr('stringvalue', slider_startvalue);
-
-                        // Show tooltip
-                        $('#javatbd' + myfname).find('.tooltip').show();
-                    }
-
-                    if(slider_displaycallout && slider_startvalue != "NULL") {
-                        $(id).attr('stringvalue', slider_prefix + slider_startvalue.replace(/\./,LSvar.sLEMradix) + slider_suffix);
-                        $(id).bootstrapSlider('setValue', parseFloat(slider_startvalue));
-
-                        // Show tooltip
-                        $('#javatbd' + myfname).find('.tooltip').show();
-                    }
-                    else {
-                        $(id).attr('value', '');
-                        $(id).attr('stringvalue', '');
-
-                        // Hide tooltip
-                        $('#javatbd' + myfname).find('.tooltip').hide();
-                    }
-
-                    LEMrel<?php echo $qid; ?>();
-                    $(id).triggerHandler("keyup"); // Needed for EM
-
-                });
-
-                mySlider_<?php echo $myfname; ?>.on('slideStop', function(event) {
-                    var displayValue = '' + event.value;  // Type-cast to string
-                    var displayValue = displayValue.replace(/\./,LSvar.sLEMradix);
-
-                    // fixnum_checkconditions can't handle dot if it expects comma, and
-                    // Bootstrap won't save comma in value. So we need another attribute.
-                    $(id).attr('stringvalue', displayValue);
-
-                    LEMrel<?php echo $qid; ?>();
-
-                    // EM needs this
-                    $(id).triggerHandler("keyup");
-
-                });
-                mySlider_<?php echo $myfname; ?>.on('slideStart', function(event) {
-                    // Show tooltip
-                    $('#javatbd' + myfname).find('.tooltip').show();
-                });
+//                $('#javatbd' + myfname).find('.tooltip').hide();
 
                 $("#vmsg_<?php echo $qid;?>_default").text('<?php eT('Please click and drag the slider handles to enter your answer.');?>');
             });

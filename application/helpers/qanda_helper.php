@@ -2985,22 +2985,6 @@ function do_multiplenumeric($ia)
         $slider_separator= (trim($aQuestionAttributes['slider_separator'])!='')?$aQuestionAttributes['slider_separator']:"";
         $slider_reset=($aQuestionAttributes['slider_reset'])?1:0;
 
-        if ($slider_default != "")
-        {
-            $slider_startvalue = $slider_default;
-            $slider_displaycallout=1;
-        }
-        elseif ($slider_middlestart != '')
-        {
-            $slider_startvalue = $slider_middlestart;
-            $slider_displaycallout=0;
-        }
-        else
-        {
-            $slider_startvalue = 'NULL';
-            $slider_displaycallout=0;
-        }
-
     }
     else
     {
@@ -3011,7 +2995,6 @@ function do_multiplenumeric($ia)
         $slider_mintext = '';
         $slider_max     = '';
         $slider_maxtext = '';
-        $slider_default = '';
         $slider_default = '';
         $slider_orientation= '';
         $slider_handle = '';
@@ -3082,25 +3065,44 @@ function do_multiplenumeric($ia)
             //list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "div","form-group question-item answer-item text-item numeric-item".$extraclass);
             $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
+            // TODO : check why it's done here a second time
             $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
             $sSeparator = $sSeparator['separator'];
 
-            // Default answer is stored in _SESSION
-            $dispVal='';
+
+            // The value of the slider depends on many possible different parameters, by order of priority :
+            // 1. The value stored in the session
+            // 2. Else the default Answer   --> Supposed to be set by EM and stored in session ?
+            // 3. Else the middle start
+            // 4. Else the init value
+            // 5. If no value at all, the "user no action" is recorded as null in the database
+            //
+            // Dev team is invited to tell if they agree/disagree with this order.
+
+            $sValue = 'NULL';
+            $slider_displaycallout=0;
+
+            // value stored in _SESSION
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
             {
-                $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                if(strpos($dispVal,"."))
-                {
-                    $dispVal=rtrim(rtrim($dispVal,"0"),".");
-                }
-                $dispVal = str_replace('.',$sSeparator,$dispVal);
+                $sValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+            }
+            elseif( $slider_default != "" )
+            {
+                $sValue = $slider_default;
+            }
+            elseif( isset($slider_middlestart) && $slider_middlestart!='')
+            {
+                $sValue = $slider_middlestart;
             }
 
-            if( isset($slider_middlestart) && $slider_middlestart!='')
+
+            if(strpos($sValue,"."))
             {
-                $slider_default = $slider_middlestart;
+                $sValue = rtrim(rtrim($sValue,"0"),".");
+                $sValue = str_replace('.',$sSeparator,$sValue);
             }
+
 
             $itemDatas = array(
                 'qid'=>$ia[0],
@@ -3118,7 +3120,7 @@ function do_multiplenumeric($ia)
                 'suffix'=>$suffix,
                 'tiwidth'=>$tiwidth,
                 'myfname'=>$myfname,
-                'dispVal'=>$dispVal,
+                'dispVal'=>$sValue,
                 'maxlength'=>$maxlength,
                 'labelText'=>$labelText,
                 'checkconditionFunction'=>$checkconditionFunction.'(this.getAttribute(\'stringvalue\'), this.name, this.type)',
@@ -3132,8 +3134,8 @@ function do_multiplenumeric($ia)
                 'slider_handle' => $slider_handle,
                 'slider_reset' => $slider_reset,
                 'slider_custom_handle' => $slider_custom_handle,
-                'slider_startvalue' => $slider_startvalue,
-                'slider_displaycallout' => $slider_displaycallout
+                'slider_displaycallout' => $slider_displaycallout,
+                'sSeparator'=> $sSeparator,
             );
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/item', $itemDatas, true);
 
