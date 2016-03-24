@@ -167,11 +167,6 @@
                     }
                     return true;
                 });
-
-
-
-
-
                 $("#vmsg_<?php echo $qid;?>_default").text('<?php eT('Please click and drag the slider handles to enter your answer.');?>');
             });
         -->

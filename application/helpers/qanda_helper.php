@@ -4385,130 +4385,61 @@ function do_array_increasesamedecrease($ia)
 
     $fn = 1;
 
-
-    $answer = '<div class="no-more-tables no-more-tables-inc-same-dec">';
-    $answer .= "\n<table class=\"table table-condensed  table-in-qanda-4 question subquestion-list questions-list {$extraclass}\" >\n"
-    . "\t<colgroup class=\"col-responses\">\n"
-    . "\t<col class=\"col-answers\" style='width: $answerwidth%;' />\n";
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/header', array(
+        'extraclass'=>$extraclass,
+        'answerwidth'=>$answerwidth,
+    ), true);
 
     $odd_even = '';
     for ($xc=1; $xc<=3; $xc++)
     {
         $odd_even = alternation($odd_even);
-        //$answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-        $answer .= "<col class=\"$odd_even\" style='width: $cellwidth%;'/>\n";
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
+        //$answer .= "<col class=\"$odd_even\" style='width: $cellwidth%;'/>\n";
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
-        //$answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
-        $answer .= "<col class=\"col-no-answer $odd_even\" style='width: $cellwidth%;' />\n";
+        //$answer .= "<col class=\"col-no-answer $odd_even\" style='width: $cellwidth%;' />\n";
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
     }
-    $answer .= "\t</colgroup>\n"
-    . "\t<thead>\n"
-    . "<tr class=\"dontread\">\n"
-    . "\t<td>&nbsp;</td>\n"
-    . "\t<th  class='th-5'>".gT('Increase')."</th>\n"
-    . "\t<th class='th-6'>".gT('Same')."</th>\n"
-    . "\t<th class='th-7'>".gT('Decrease')."</th>\n";
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
-    {
-        $answer .= "\t<th class='th-8'>".gT('No answer')."</th>\n";
-    }
-    $answer .= "</tr>\n"
-    ."\t</thead>\n";
-    $answer_body = '<tbody>';
+
+    $show_no_answer = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)?true:false; //Question is not mandatory
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/open_table_head', array('show_no_answer'=>$show_no_answer), true);
+
     $trbc = '';
-    foreach($aSubquestions as $ansrow)
+    foreach($aSubquestions as $i => $ansrow)
     {
-        $myfname = $ia[1].$ansrow['title'];
-        $answertext = $ansrow['question'];
-        /* Check the sub Q mandatory violation */
-        if ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ))
-        {
-            //$answertext = "<span class=\"errormandatory\">{$answertext}</span>";
-            $answertext ='
-                        <div class="alert alert-danger" role="alert">'.
-                                $answertext
-                            .'
-                        </div>';
-        }
+        $myfname        = $ia[1].$ansrow['title'];
+        $answertext     = $ansrow['question'];
+        $error          = ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ))?true:false; /* Check the sub Q mandatory violation */
+        $sDisplayStyle  = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
+        $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))?$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]:'';
+        $Ichecked       = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'I')?'CHECKED':'';
+        $Schecked       = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'S')?'CHECKED':'';
+        $Dchecked       = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'D')?'CHECKED':'';
+        $NAchecked      = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
+        $no_answer      = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)?true:false;
 
-        $trbc = alternation($trbc , 'row');
+        $answer_body .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/tr', array(
+                    'myfname'=> $myfname,
+                    'sDisplayStyle'=> $sDisplayStyle,
+                    'answertext'=> $answertext,
+                    'Ichecked'=>$Ichecked,
+                    'Schecked'=> $Schecked,
+                    'Dchecked'=>$Dchecked,
+                    'NAchecked'=>$NAchecked,
+                    'value'=>$value,
+                    'checkconditionFunction'=>$checkconditionFunction,
+                    'error'=>$error,
+                    'no_answer'=>$no_answer,
+                    'zebra' => 2 - ($i % 2)
+                ), true);
 
-        // Get array_filter stuff
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,'tr',"$trbc answers-list radio-list");
-
-        $answer_body .= $htmltbody2;
-
-        $answer_body .= "\t<th class=\"answertext\">\n"
-        . "$answertext\n"
-        . $hiddenfield
-        /*. "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-        {
-            $answer_body .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-        }
-        $answer_body .= "\" />\n\t</th>\n";*/
-        . "<input type=\"hidden\" name=\"thjava$myfname\" id=\"thjava$myfname\" value=\"";
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-        {
-            $answer_body .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-        }
-        $answer_body .= "\" />\n\t</th>\n";
-
-        $answer_body .= "\t<td data-title='". gT("Increase") . "' class=\"answer_cell_I answer-item radio-item\">\n"
-        ."\t<label for=\"answer$myfname-I\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" ";
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'I')
-        {
-            $answer_body .= CHECKED;
-        }
-        $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-        //. "<label class=\"hide read\" for=\"answer$myfname-I\">".gT('Increase')."</label>\n"
-        . "\t</label></td>\n"
-        . "\t<td data-title='" . gT("Same") . "' class=\"answer_cell_S answer-item radio-item\">\n"
-        . "\t<label for=\"answer$myfname-S\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-S\" value=\"S\" ";
-
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'S')
-        {
-            $answer_body .= CHECKED;
-        }
-
-        $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-        //. "<label class=\"hide read\" for=\"answer$myfname-S\">".gT('Same')."</label>\n"
-        . "\t</label></td>\n"
-        . "\t<td data-title='" . gT("Decrease") ."' class=\"answer_cell_D answer-item radio-item\">\n"
-        . "\t<label for=\"answer$myfname-D\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" ";
-        // --> END NEW FEATURE - SAVE
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'D')
-        {
-            $answer_body .= CHECKED;
-        }
-
-        $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-        //. "<label class=\"hide read\" for=\"answer$myfname-D\">".gT('Decrease')."</label>\n"
-        . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {$answer_body .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];}
-        $answer_body .= "\" />\n\t</label></td>\n";
-
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-        {
-            $answer_body .= "\t<td data-title='" . gT("No answer") . "' class=\"answer-item radio-item noanswer-item\">\n"
-            . "\t<label for=\"answer$myfname-\"><input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
-            if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
-            {
-                $answer_body .= CHECKED;
-            }
-            $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-            //. "<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
-            . "\t</label></td>\n";
-        }
-        $answer_body .= "</tr>\n";
         $inputnames[]=$myfname;
         $fn++;
     }
-    $answer .=  $answer_body . "\t</tbody>\n</table>\n</div>\n";
+    $answer .=  $answer_body . Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/close_table', array(),  true);
     return array($answer, $inputnames);
 }
 
@@ -4522,7 +4453,6 @@ function do_array($ia)
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
-
     $caption="";// Just leave empty, are replaced after
     $checkconditionFunction = "checkconditions";
     $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
