@@ -28,7 +28,6 @@
             <filename>css/jquery-ui-custom.css</filename>
             <filename>css/bootstrap-slider.css</filename>
             <filename>css/flat_and_modern.css</filename>
-            <filename>css/template.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
@@ -59,7 +58,6 @@
     <files_editable>
             <css>
                 <filename>css/flat_and_modern.css</filename>
-                <filename>css/template.css</filename>
             </css>
             <js>
                 <filename>scripts/template.js</filename>

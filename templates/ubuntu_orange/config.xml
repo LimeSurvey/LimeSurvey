@@ -17,7 +17,6 @@
             <filename>css/jquery-ui-custom.css</filename>
             <filename>css/bootstrap-slider.css</filename>
             <filename>css/ubuntu_orange.css</filename>
-            <filename>css/template.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
@@ -36,14 +35,13 @@
         <!-- The logo is used for now only for Surveys List  -->
         <logo>
             <filename>files/logo.png</filename>
-        </logo>        
+        </logo>
     </files>
 
     <!-- For template editor -->
     <files_editable>
             <css>
                 <filename>css/ubuntu_orange.css</filename>
-                <filename>css/template.css</filename>
             </css>
             <js>
                 <filename>scripts/template.js</filename>
