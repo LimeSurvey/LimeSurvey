@@ -2,6 +2,7 @@
  * OBS : COLOURS IN THIS FILE.
  */
 
+
 .ui-datepicker {
   width: 17em;
   padding: .2em .2em 0;
@@ -1542,7 +1543,7 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
   color: #A0352F;
   margin-top: 1em; }
 
-.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+html body .nav-tabs > li.active > a,html body  .nav-tabs > li.active > a:hover,html body  .nav-tabs > li.active > a:focus {
   border-bottom-color: transparent;
   cursor: default; }
 
@@ -1753,3 +1754,18 @@ td.subquestion-actions span:hover
  {
      display: none;
  }
+
+/* Box in resopnses list need a little more space */
+#displayresponses_cb {
+    width: 35px !important;  /* Override jQgrid stuff */
+}
+
+/* View detail response, make sure left column is not too wide*/
+.detailbrowsetable tr th {
+    width: 50%;
+}
+
+.lead
+{
+    font-weight: 300;
+}
