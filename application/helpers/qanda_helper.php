@@ -3984,7 +3984,7 @@ function do_array_5point($ia)
     $trbc = '';
     $n=0;
 
-    foreach ($aSubquestions as $ansrow)
+    foreach ($aSubquestions as $j => $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
         $answertext = $ansrow['question'];
@@ -4009,7 +4009,8 @@ function do_array_5point($ia)
                     'answertext'=>$answertext,
                     'value'=>$value,
                     'error'=>$error,
-                    'sDisplayStyle'=>$sDisplayStyle
+                    'sDisplayStyle'=>$sDisplayStyle,
+                    'zebra' => 2 - ($j % 2)
                 ), true);
 
         for ($i=1; $i<=5; $i++)
