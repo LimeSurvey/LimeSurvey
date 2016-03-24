@@ -220,17 +220,17 @@ class uploader {
             list($unused, $protocol, $domain, $unused, $port, $path) = $patt;
             $path = path::normalize($path);
             $this->config['uploadURL'] = "$protocol://$domain" . (strlen($port) ? ":$port" : "") . "/$path";
-            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+            $this->config['uploadDir'] = $this->realpath(strlen($this->config['uploadDir'])
                 ? path::normalize($this->config['uploadDir'])
-                : path::url2fullPath("/$path");
+                : path::url2fullPath("/$path"));
             $this->typeDir = $this->realpath("{$this->config['uploadDir']}/{$this->type}");
             $this->typeURL = "{$this->config['uploadURL']}/{$this->type}";
 
         // SITE ROOT
         } elseif ($this->config['uploadURL'] == "/") {
-            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+            $this->config['uploadDir'] = $this->realpath(strlen($this->config['uploadDir'])
                 ? path::normalize($this->config['uploadDir'])
-                : path::normalize($_SERVER['DOCUMENT_ROOT']);
+                : path::normalize($_SERVER['DOCUMENT_ROOT']));
             $this->typeDir = $this->realpath("{$this->config['uploadDir']}/{$this->type}");
             $this->typeURL = "/{$this->type}";
 
@@ -239,9 +239,9 @@ class uploader {
             $this->config['uploadURL'] = (substr($this->config['uploadURL'], 0, 1) === "/")
                 ? path::normalize($this->config['uploadURL'])
                 : path::rel2abs_url($this->config['uploadURL']);
-            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+            $this->config['uploadDir'] = $this->realpath(strlen($this->config['uploadDir'])
                 ? path::normalize($this->config['uploadDir'])
-                : path::url2fullPath($this->config['uploadURL']);
+                : path::url2fullPath($this->config['uploadURL']));
             $this->typeDir = $this->realpath("{$this->config['uploadDir']}/{$this->type}");
             $this->typeURL = "{$this->config['uploadURL']}/{$this->type}";
         }
@@ -311,7 +311,7 @@ class uploader {
     }
 
     protected function realpath($path) {
-        $rPath = realpath($file);
+        $rPath = realpath($path);
         if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN")
             $rPath = str_replace("\\", "/", $rPath);
         return $rPath;
