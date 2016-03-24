@@ -3135,7 +3135,7 @@ function do_multiplenumeric($ia)
                 'dispVal'=>$sValue,
                 'maxlength'=>$maxlength,
                 'labelText'=>$labelText,
-                'checkconditionFunction'=>$checkconditionFunction.'(this.getAttribute(\'stringvalue\'), this.name, this.type)',
+                'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
                 'slider_orientation' => $slider_orientation,
                 'slider_step'    => $slider_step    ,
                 'slider_min'     => $slider_min     ,
