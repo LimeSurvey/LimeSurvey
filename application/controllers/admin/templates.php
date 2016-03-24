@@ -952,8 +952,6 @@ class templates extends Survey_Common_Action
             // User templates (are published only if exists)
             $oEditedTemplate->config->files->css->filename[]="../../../styles-public/bootstrap-for-template-editor.css";
             $oEditedTemplate->config->files->js->filename[]="../../../scripts/bootstrap-for-template-editor.js";
-
-            $oEditedTemplate->config->files->css->filename[]="../../styles-public/template.css";
         }
 
         //App()->getClientScript()->reset();

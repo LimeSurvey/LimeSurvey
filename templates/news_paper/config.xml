@@ -27,6 +27,7 @@
             <filename>css/jquery-ui-custom.css</filename>
             <filename>css/bootstrap-slider.css</filename>
             <filename>css/news_paper.css</filename>
+            <filename>css/template.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
@@ -46,7 +47,7 @@
         <!-- The logo is used for now only for Surveys List  -->
         <logo>
             <filename>files/logo.png</filename>
-        </logo>
+        </logo>        
     </files>
 
     <!--
@@ -57,6 +58,7 @@
     <files_editable>
             <css>
                 <filename>css/news_paper.css</filename>
+                <filename>css/template.css</filename>
             </css>
             <js>
                 <filename>scripts/template.js</filename>

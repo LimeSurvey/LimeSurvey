@@ -62,7 +62,6 @@ class index extends CAction {
         if($oTemplate->cssFramework == 'bootstrap')
         {
             App()->bootstrap->register();
-            App()->getClientScript()->registerCssFile( Yii::app()->getBaseUrl(true).'/styles-public/template.css' );
         }
 
         useFirebug();
