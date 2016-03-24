@@ -3981,7 +3981,6 @@ function do_array_5point($ia)
 
 
     $answer_t_content = '';
-    $trbc = '';
     $n=0;
 
     foreach ($aSubquestions as $j => $ansrow)
@@ -3995,7 +3994,6 @@ function do_array_5point($ia)
 
         /* Check if this item has not been answered */
         $error = ($ia[6]=='Y' && in_array($myfname,$aMandatoryViolationSubQ))?true:false;
-        $trbc = alternation($trbc , 'row');
 
         /* Check for array_filter  */
         $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
@@ -4299,14 +4297,12 @@ function do_array_yesnouncertain($ia)
     }
     else
     {
-        $trbc = '';
         foreach($aSubquestions as $i => $ansrow)
         {
             $myfname = $ia[1].$ansrow['title'];
             $answertext = $ansrow['question'];
             /* Check the sub question mandatory violation */
             $error = ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ))?true:false;
-            $trbc = alternation($trbc , 'row');
 
             // Get array_filter stuff
             //list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
