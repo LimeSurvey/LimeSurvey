@@ -223,7 +223,7 @@ class uploader {
             $this->config['uploadDir'] = strlen($this->config['uploadDir'])
                 ? path::normalize($this->config['uploadDir'])
                 : path::url2fullPath("/$path");
-            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+            $this->typeDir = $this->realpath("{$this->config['uploadDir']}/{$this->type}");
             $this->typeURL = "{$this->config['uploadURL']}/{$this->type}";
 
         // SITE ROOT
@@ -231,7 +231,7 @@ class uploader {
             $this->config['uploadDir'] = strlen($this->config['uploadDir'])
                 ? path::normalize($this->config['uploadDir'])
                 : path::normalize($_SERVER['DOCUMENT_ROOT']);
-            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+            $this->typeDir = $this->realpath("{$this->config['uploadDir']}/{$this->type}");
             $this->typeURL = "/{$this->type}";
 
         // ABSOLUTE & RELATIVE
@@ -242,7 +242,7 @@ class uploader {
             $this->config['uploadDir'] = strlen($this->config['uploadDir'])
                 ? path::normalize($this->config['uploadDir'])
                 : path::url2fullPath($this->config['uploadURL']);
-            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+            $this->typeDir = $this->realpath("{$this->config['uploadDir']}/{$this->type}");
             $this->typeURL = "{$this->config['uploadURL']}/{$this->type}";
         }
 
@@ -308,6 +308,13 @@ class uploader {
             } elseif (!is_readable($this->typeDir))
                 $this->backMsg("Cannot read upload folder.");
         }
+    }
+
+    protected function realpath($path) {
+        $rPath = realpath($file);
+        if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN")
+            $rPath = str_replace("\\", "/", $rPath);
+        return $rPath;
     }
 
     public function upload() {
@@ -405,9 +412,7 @@ class uploader {
     }
 
     protected function checkFilePath($file) {
-        $rPath = realpath($file);
-        if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN")
-            $rPath = str_replace("\\", "/", $rPath);
+        $rPath = $this->realpath($file);
         return (substr($rPath, 0, strlen($this->typeDir)) === $this->typeDir);
     }
 
