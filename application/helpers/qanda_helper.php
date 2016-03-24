@@ -4421,7 +4421,7 @@ function do_array_increasesamedecrease($ia)
         $NAchecked      = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
         $no_answer      = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)?true:false;
 
-        $answer_body .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/tr', array(
+        $answer_body = Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/tr', array(
                     'myfname'=> $myfname,
                     'sDisplayStyle'=> $sDisplayStyle,
                     'answertext'=> $answertext,
@@ -4534,6 +4534,8 @@ function do_array($ia)
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
         $answer_start = '<!-- Array Question, no dropdown -->';
+
+
         $answer_start .= '<div class="no-more-tables">';
         //$answer_start .= "\n<table class=\"table-in-qanda-5 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n";
         $answer_start .= "\n<table class=\"table-in-qanda-5 table question subquestion-list questions-list {$extraclass}\">\n";
