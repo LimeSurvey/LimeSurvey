@@ -117,7 +117,6 @@ function retrieveAnswers($ia)
     ,'input_error_class' => ''// provides a class.
     ,'essentials' => ''
     );
-    //var_dump($ia);
 
     // We get the question type name if defined
     $lang = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
@@ -5286,6 +5285,7 @@ EOD;
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
+// Used by array numbers, array_numbers (for searching)
 function do_array_multiflexi($ia)
 {
     global $thissurvey;
@@ -5298,7 +5298,6 @@ function do_array_multiflexi($ia)
 
     $caption=gT("An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. ");
     $checkconditionFunction = "fixnum_checkconditions";
-    //echo '<pre>'; print_r($_POST); echo '</pre>';
     $defaultvaluescript = '';
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
     $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
@@ -5569,7 +5568,7 @@ function do_array_multiflexi($ia)
             $answer .= "\" />\n\t</th>\n <!-- close th -->";
             $first_hidden_field = '';
             $thiskey=0;
-            foreach ($labelcode as $ld)
+            foreach ($labelcode as $i => $ld)
             {
                 if ($checkboxlayout == false)
                 {
@@ -5583,7 +5582,7 @@ function do_array_multiflexi($ia)
                     {
                         $myfname2_java_value = "";
                     }
-                    $answer .= "\t<td data-title=\"$answertext\"  class=\"answer-cell-5 answer_cell_00$ld question-item answer-item {$answertypeclass}-item $extraclass\">\n"
+                    $answer .= "\t<td data-title=\"{$labelans[$i]}\"  class=\"answer-cell-5 answer_cell_00$ld question-item answer-item {$answertypeclass}-item $extraclass\">\n"
                     . "\t<label for=\"answer{$myfname2}\"><input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n";
                     //. "<label class=\"hidden-sm hidden-md hidden-lg read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n";
                     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
