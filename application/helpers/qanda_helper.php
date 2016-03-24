@@ -4299,7 +4299,7 @@ function do_array_yesnouncertain($ia)
     else
     {
         $trbc = '';
-        foreach($aSubquestions as $ansrow)
+        foreach($aSubquestions as $i => $ansrow)
         {
             $myfname = $ia[1].$ansrow['title'];
             $answertext = $ansrow['question'];
@@ -4318,7 +4318,6 @@ function do_array_yesnouncertain($ia)
             $Nchecked = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'N')?'CHECKED':'';
             $NAchecked = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
 
-
             $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/yesnouncertain/tr', array(
                         'myfname'=> $myfname,
                         'sDisplayStyle'=> $sDisplayStyle,
@@ -4331,6 +4330,7 @@ function do_array_yesnouncertain($ia)
                         'checkconditionFunction'=>$checkconditionFunction,
                         'error'=>$error,
                         'no_answer'=>$no_answer,
+                        'zebra' => 2 - ($i % 2)
                     ), true);
 
             $inputnames[]=$myfname;

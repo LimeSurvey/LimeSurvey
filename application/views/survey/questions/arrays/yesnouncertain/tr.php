@@ -14,7 +14,7 @@
  */
 ?>
 <!-- tr -->
-<tr id="javatbd<?php echo $myfname;?>" class="well answers-list radio-list"  <?php echo $sDisplayStyle; ?>>
+<tr id="javatbd<?php echo $myfname;?>" class="well answers-list radio-list array<?php echo $zebra; ?>"  <?php echo $sDisplayStyle; ?>>
     <!-- Answer text /  Errors -->
     <th class="answertext">
         <?php if($error): ?>
