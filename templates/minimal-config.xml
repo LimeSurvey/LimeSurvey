@@ -25,7 +25,6 @@
     <!-- For template editor : need fix : allow edit even if not exist-->
     <files_editable>
             <css>
-                <filename>template.css</filename>
                 <filename>template-rtl.css</filename>
                 <filename>jquery-ui.css</filename>
                 <filename>jquery-ui-custom.css</filename>
