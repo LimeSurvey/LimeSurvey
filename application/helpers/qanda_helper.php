@@ -4389,11 +4389,7 @@ function do_array_increasesamedecrease($ia)
 
     $fn = 1;
 
-    /*
-    $answer = "\n<table class=\"table table-condensed  table-in-qanda-4 question subquestions-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
-    . "\t<colgroup class=\"col-responses\">\n"
-    . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
-*/
+
     $answer = '<div class="no-more-tables no-more-tables-inc-same-dec">';
     $answer .= "\n<table class=\"table table-condensed  table-in-qanda-4 question subquestion-list questions-list {$extraclass}\" >\n"
     . "\t<colgroup class=\"col-responses\">\n"
