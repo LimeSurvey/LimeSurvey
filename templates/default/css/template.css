@@ -923,6 +923,15 @@ table {
         display: none;
     }
 
+    /* Need some more space on phone */
+    .array-multi-flexi .answertext {
+        padding-bottom: 0.5em;
+    }
+
+    .array-multi-flexi .answer-item label {
+        padding-bottom: 0.5em;
+    }
+
 }
 
 /** On small phones, leave some more space */

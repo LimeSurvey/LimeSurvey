@@ -5399,10 +5399,15 @@ function do_array_multiflexi($ia)
     if (trim($aQuestionAttributes['answer_width'])!='')
     {
         $answerwidth=$aQuestionAttributes['answer_width'];
+        $useAnswerWidth = true;
     }
     else
     {
         $answerwidth=20;
+
+        // If answerwidth is not given, we want to default to Bootstrap column.
+        // Otherwise bug on phone screen.
+        $useAnswerWidth = false;
     }
     $columnswidth=100-($answerwidth*2);
 
@@ -5557,8 +5562,15 @@ function do_array_multiflexi($ia)
             // table-in-qanda-7
             // $labelans
             //$answer .= "\t<th data-title=\" \" class=\"answertext\" width=\"$answerwidth%\">\n"
-            $answer .= "\t<th class=\"answertext\" style='width: $answerwidth%;'>\n"
-            . "$answertext\n"
+            if ($useAnswerWidth)
+            {
+                $answer .= "\t<th class=\"answertext\" style='width: $answerwidth%;'>\n";
+            }
+            else
+            {
+                $answer .= "\t<th class='answertext col-xs-12 col-sm-6'>\n";
+            }
+            $answer .= "$answertext\n"
             . $hiddenfield
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
@@ -5583,7 +5595,7 @@ function do_array_multiflexi($ia)
                         $myfname2_java_value = "";
                     }
                     $answer .= "\t<td data-title=\"{$labelans[$i]}\"  class=\"answer-cell-5 answer_cell_00$ld question-item answer-item {$answertypeclass}-item $extraclass\">\n"
-                    . "\t<label for=\"answer{$myfname2}\"><input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n";
+                    . "\t<label for=\"answer{$myfname2}\" class='col-xs-12 col-sm-6'><input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n";
                     //. "<label class=\"hidden-sm hidden-md hidden-lg read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n";
                     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
                     $sSeparator = $sSeparator['separator'];
