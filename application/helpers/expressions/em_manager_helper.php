@@ -4889,10 +4889,12 @@
                             break;
                         case 'N': //NUMERICAL QUESTION TYPE
                         case 'K': //MULTIPLE NUMERICAL QUESTION
-                            if (trim($value)=="") {
+                            if (trim($value)=="")
+                            {
                                 $value = NULL;
                             }
-                            else {
+                            else
+                            {
                                 $value = sanitize_float($value);
                             }
                             break;
@@ -5278,6 +5280,7 @@
             {
                 return $message;
             }
+
             if (!isset($_SESSION[$this->sessid]['srid']))// Create the response line, and fill Session with primaryKey
             {
                 $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
@@ -5373,15 +5376,16 @@
                     $val = (is_null($value) ? NULL : $value['value']);
                     $type = (is_null($value) ? NULL : $value['type']);
 
-                    // Clean up the values to cope with database storage requirements
+                    // Clean up the values to cope with database storage requirements : some value are fitered in ProcessCurrentResponses
+                    // @todo fix whole type according to DB : use Yii for this ?
                     switch($type)
                     {
                         case 'D': //DATE
-                            if (trim($val)=='' || $val=="INVALID")
+                            if (trim($val)=='' || $val=="INVALID")// otherwise will already be in yyyy-mm-dd format after ProcessCurrentResponses() (not for default value, GET value, Expression set value etc ... cf todo
                             {
                                 $val=NULL;  // since some databases can't store blanks in date fields
                             }
-                            // otherwise will already be in yyyy-mm-dd format after ProcessCurrentResponses()
+
                             break;
                         case '|': //File upload
                             // This block can be removed once we require 5.3 or later
@@ -5391,7 +5395,8 @@
                             break;
                         case 'N': //NUMERICAL QUESTION TYPE
                         case 'K': //MULTIPLE NUMERICAL QUESTION
-                            if (trim($val)=='')
+                            // @todo Validate a DECIMAL(30.10)
+                            if (trim($val)=='' || !is_numeric($val))
                             {
                                 $val=NULL;  // since some databases can't store blanks in numerical inputs
                             }
@@ -6645,7 +6650,6 @@
                     }
                 }
             }
-
 
             /////////////////////////////////////////////////////////////
             // CREATE ARRAY OF VALUES THAT NEED TO BE SILENTLY UPDATED //
@@ -8544,7 +8548,7 @@ EOD;
                             $value = preg_replace('|\,|', '', $value);
                         }
 
-                        switch($type)
+                        switch($type) // fix value before trying to save in DB : date and numeric only
                         {
                             case 'D': //DATE
                                 $value=trim($value);
@@ -8569,14 +8573,14 @@ EOD;
                                     }
                                 }
                                 break;
-#                            case 'N': //NUMERICAL QUESTION TYPE
-#                            case 'K': //MULTIPLE NUMERICAL QUESTION
-#                                if (trim($value)=="") {
-#                                    $value = "";
-#                                }
-#                                else {
-#                                    $value = sanitize_float($value);
-#                                }
+                            case 'N': //NUMERICAL QUESTION TYPE
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                if (trim($value)=="") {
+                                    $value = "";
+                                }
+                                else {
+                                    $value = sanitize_float($value);
+                                }
                                 break;
                             case '|': //File Upload
                                 if (!preg_match('/_filecount$/', $sq))
