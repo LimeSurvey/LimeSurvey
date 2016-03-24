@@ -149,9 +149,18 @@
                     $inputEl.attr('value', '');
                 }
 
-                // On form submission, if user action is still on, we must force the value of the input to ''
+                // On form submission, if user action is still on,
+                // we must force the value of the input to ''
+                // and force the thousand separator (this bug still affect 2.06)
                 $("form").submit(function (e) {;
                     $inputEl.bootstrapSlider('destroy');
+
+                    // This problem still afect 2.06
+                    value = $inputEl.val(); // We get the current value of the bootstrapSlider
+                    displayValue = value.toString().replace('.',$separator); // We format it with the right separator
+                    $inputEl.val(displayValue); // We parse it to the element
+
+
                     if($sliderNoActionEl.val()=="1")
                     {
                         $inputEl.val('');
