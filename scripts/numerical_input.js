@@ -1,6 +1,15 @@
+$(document).on('submit','#limesurvey', function(){
+    $('.thousandsseparator input.numeric').each(function(){
+            var re = new RegExp(escapeRegExp(thousandsSep()), 'g');
+           $(this).val($(this).val().replace(re, ''));
+    });
+});
+$(document).on('keyup','.thousandsseparator input.numeric', function(){
+    ExprMgr_process_relevance_and_tailoring('onchange', $(this).attr('name'), $(this).attr('type'));
+});
+
 $(document).ready(function () {
     if (typeof LEMradix === 'undefined') { return; }
-
     if (LEMradix == ',')
     {
         var centsSep = ',';
@@ -11,44 +20,47 @@ $(document).ready(function () {
         var centsSep = '.';
         var thousandsSep = ',';
     }
-
-    var selector = '.thousandsseparator input.numeric, input.integeronly, .numberonly input[type=text]';
-    $(selector).unbind('keydown');
-    $('input.numeric, .numberonly input[type=text]').priceFormat({
-        'centsSeparator' : centsSep,
-        'thousandsSeparator' : thousandsSep,
-        'centsLimit' : 2,
-        'prefix' : '',
-        'allowNegative' : true
-    });
-    $('input.integeronly').priceFormat({
-        'centsSeparator' : centsSep,
-        'thousandsSeparator' : thousandsSep,
-        'centsLimit' : 0,
-        'prefix' : '',
-	'allowNegative' : true
-    });
-
-
-    $(selector).bind('keyup', custom_checkconditions);
-    // Initialize LEM tabs first.
-    LEMsetTabIndexes();
-
-    $(selector).removeAttr('onkeyup');
-    $('form#limesurvey').bind('submit', {'selector': selector}, ls_represent_all    );
-
+    // Replace the LEMval
     window.orgLEMval = window.LEMval;
     window.LEMval = function (alias) {
-
         var varName = LEMalias2varName[alias.split(".", 1)];
         var attr = LEMvarNameAttr[varName];
-        if (attr.onlynum == 1)
+        if (attr.onlynum == 1 && $('#' + attr.jsName_on).closest(".numeric-item").length && $('#' + attr.jsName_on).closest(".numeric-item").hasClass("thousandsseparator")) // Do it only if value is in page
         {
             return ls_represent($('#' + attr.jsName_on).val());
         }
         return orgLEMval(alias);
     };
+    $('.thousandsseparator  input.numeric').not('.integeronly').each(function(){
+        if($(this).val()!="")
+        {
+
+            var newVal=$(this).val();
+            if(centsSep == ',')
+                newVal=newVal.split(',').join('.');
+            newVal=newVal*1;
+            newVal=Math.round(newVal * 100); // What for 0 .....
+            $(this).val(newVal);
+        }
+        $(this).unbind('keydown').removeAttr('onkeyup').priceFormat({
+            'centsSeparator' : centsSep,
+            'thousandsSeparator' : thousandsSep,
+            'centsLimit' : 2,
+            'prefix' : '',
+            'allowNegative' : true
+        }).trigger("keyup");
+    });
+    $('.thousandsseparator input.integeronly').unbind('keydown').removeAttr('onkeyup').priceFormat({
+        'centsSeparator' : centsSep,
+        'thousandsSeparator' : thousandsSep,
+        'centsLimit' : 0,
+        'prefix' : '',
+        'allowNegative' : true
+    }).trigger("keyup");
+    LEMsetTabIndexes();
+
 });
+
 
 /*
  This function is called on key down and checks the value when tab has been pressed.
@@ -62,25 +74,6 @@ function custom_tab(e)
     }
 }
 
-
-/*
- This function is called after priceformat has applied its layouting.
-*/
-function custom_checkconditions(evt_type)
-{
-    evt_type = typeof evt_type !== 'undefined' ? evt_type : 'onchange';
-
-    // We get the value.
-
-//    var val = $(this).attr('value');
-//    var pos = $(this).caret();
-//    $(this).attr('value', ls_represent(val));
-    ExprMgr_process_relevance_and_tailoring(evt_type, $(this).attr('name'), $(this).attr('type'));
-//    $(this).attr('value', val);
-//    $(this).caret(pos);
-
-}
-
 function centsSep()
 {
     return LEMradix;
@@ -88,7 +81,7 @@ function centsSep()
 
 function thousandsSep()
 {
-     if (LEMradix == ',')
+    if (LEMradix == ',')
     {
         return '.';
     }
@@ -99,7 +92,7 @@ function thousandsSep()
 }
 
 /*
-  Takes a value from a box and returns the representation limesurvey uses to save it.
+  Takes a value from a box and returns the representation for EM.
 */
 function ls_represent(value)
 {
@@ -118,17 +111,9 @@ function ls_represent(value)
     {
         return value;
     }
-
 }
 
 function escapeRegExp(str) {
   return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 }
 
-function ls_represent_all(e)
-{
-    $(e.data.selector).each(function () {
-        $(this).attr('value', ls_represent($(this).attr('value')));
-
-    });
-}
