@@ -48,7 +48,8 @@ $internalConfig = array(
         'request' => array(
             'class'=>'LSHttpRequest',
             'noCsrfValidationRoutes'=>array(
-                'remotecontrol'
+                'remotecontrol',
+                'plugins/unsecure',
             ),
 
             'enableCsrfValidation'=>true,    // CSRF protection
