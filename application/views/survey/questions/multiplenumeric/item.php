@@ -58,7 +58,7 @@
 
                     <!-- If reset button, put it after slider -->
                     <?php if ($slider_reset): ?>
-                        <div class='col-xs-10'>
+                        <div class='col-xs-12 col-sm-10'>
                     <?php else: ?>
                         <div class='col-xs-12'>
                     <?php endif; ?>
