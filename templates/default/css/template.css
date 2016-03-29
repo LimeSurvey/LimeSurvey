@@ -1026,6 +1026,17 @@ table {
         z-index: 3000;
     }
 
+    /* On phone, left and right slider text is above and below slider */
+    .slider-left-span {
+        text-align: left;
+    }
+
+    /* Less margin on phones */
+    .slider.slider-horizontal {
+        margin-bottom: 0.4em;
+    }
+
+
 }
 
 /* On iPad etc only */

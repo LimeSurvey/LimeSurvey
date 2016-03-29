@@ -64,17 +64,17 @@
                     <?php endif; ?>
 
                         <?php if (!empty($sliderleft)): ?>
-                            <span class='pull-left col-xs-1 slider-left-span'><?php echo $sliderleft;?></span>
+                            <span class='pull-left col-xs-12 col-sm-1 slider-left-span'><?php echo $sliderleft;?></span>
                         <?php endif; ?>
 
                         <!-- Different col size depending on right|left -->
                         <!-- TODO: Move PHP to qanda -->
                         <?php if (empty($sliderleft) && empty($sliderright)): ?>
-                            <div class='col-xs-12'>
+                            <div class='col-xs-12 col-sm-12'>
                         <?php elseif (empty($sliderleft) || empty($sliderright)): ?>
-                            <div class='col-xs-11'>
+                            <div class='col-xs-12 col-sm-11'>
                         <?php else: ?>
-                            <div class='col-xs-10'>
+                            <div class='col-xs-12 col-sm-10'>
                         <?php endif; ?>
 
                             <input
@@ -114,7 +114,7 @@
 
                         </div>
                         <?php if (!empty($sliderright)): ?>
-                            <span class='pull-right col-xs-1 slider-right-span'><?php echo $sliderright;?></span>
+                            <span class='pull-right col-xs-12 col-sm-1 slider-right-span'><?php echo $sliderright;?></span>
                         <?php endif; ?>
 
                     </div>
