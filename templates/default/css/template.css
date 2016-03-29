@@ -840,6 +840,7 @@ table {
 
     .array-by-columns-div .answertext {
         padding: 8px;
+        padding-left: 0;
         text-align: left;
         font-weight: bold;
     }
