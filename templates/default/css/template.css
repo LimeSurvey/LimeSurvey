@@ -809,6 +809,12 @@ table {
 .file-upload-modal-footer {
     margin-top: 0;
 }
+.slider.slider-horizontal {
+    width: 100%;
+
+    /* The reset button will be under the slider, so allow some margin */
+    margin-bottom: 1em;
+}
 
 /**
  * No more tables
@@ -987,9 +993,6 @@ table {
     .slider.slider-horizontal {
         /* Slider can be full width on phones */
         width: 100%;
-
-        /* The reset button will be under the slider on phones, so allow some margin */
-        margin-bottom: 1em;
     }
 
     /* Center label under radio button on phones */

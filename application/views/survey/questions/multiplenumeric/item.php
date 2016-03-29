@@ -38,7 +38,7 @@
         <label class='control-label col-xs-12 numeric-label' for="answer<?php echo $myfname; ?>">
             <?php echo $labelText;?>
         </label>
-        <div class="col-xs-12 col-sm-4">
+        <div>
             <?php echo $sliderleft;?>
             <?php if(!$sliders): ?>
                 <input
