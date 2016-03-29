@@ -4695,6 +4695,9 @@ function do_array($ia)
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/table_close', array(), true);;
         $answer = $answer_start . $answer_cols . $answer_head .$answer;
     }
+
+    // Dro
+
     elseif ($useDropdownLayout === true && count($lresult)> 0)
     {
         foreach($lresult as $lrow)
@@ -4732,104 +4735,69 @@ function do_array($ia)
         }
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-        //$answer_start = "\n<table class=\"table-in-qanda-6 question subquestions-list questions-list {$extraclass}\" summary=\"$caption\" >\n";
-        $answer_start .= "<!-- Array Question, dropdown layout -->\n";
-        $answer_start .= "\n<table class=\"table-in-qanda-6 table question subquestion-list questions-list {$extraclass}\" >\n";
+        $answer_start = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/header', array(
+            'extraclass'=>$extraclass
+        ),  true);
 
-        $answer = "\t<tbody>\n";
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/open_body', array(
+            'extraclass'=>$extraclass
+        ),  true);
+
         $trbc = '';
         $inputnames=array();
 
         foreach ($aQuestions as $ansrow)
         {
-            $myfname = $ia[1].$ansrow['title'];
-            $trbc = alternation($trbc , 'row');
-            $answertext=$ansrow['question'];
-            $answertextsave=$answertext;
-            if (strpos($answertext,'|'))
-            {
-                $answertext=substr($answertext,0, strpos($answertext,'|'));
-            }
-            if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
+            $myfname        = $ia[1].$ansrow['title'];
+            $answertext     = $ansrow['question'];
+            $answertext     = (strpos($answertext,'|'))?substr($answertext,0, strpos($answertext,'|')):$answertext;
+            $answerwidth    = (strpos($answertext,'|'))?$answerwidth/2:$answerwidth;
+            $error          = (in_array($myfname, $aMandatoryViolationSubQ))?true:false;             /* Check the mandatory sub Q violation */
+            $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
+            $sDisplayStyle  = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
+            $thRight        = (strpos($answertext,'|'))?true:false;
+            $tdRight        = (!(strpos($answertext,'|')) && $right_exists)?true:false;
 
-            if ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ))
-            {
-                //$answertext = '<span class="errormandatory">'.$answertext.'</span>';
-                $answertext ='
-                            <div class="alert alert-danger" role="alert">'.
-                                    $answertext
-                                .'
-                            </div>';
-            }
-            // Get array_filter stuff
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc question-item answer-item dropdown-item");
-            $answer .= $htmltbody2;
-
-            $answer .= "\t<th class=\"answertext\" style='padding: 1em;;'>\n<label for=\"answer{$myfname}\">{$answertext}</label>"
-            . $hiddenfield
-            . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-            {
-                $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-            }
-            $answer .= "\" />\n\t</th>\n";
-
-            $answer .= "\t<td >\n"
-            . "<select class='form-control' name=\"$myfname\" id=\"answer$myfname\" onchange=\"$checkconditionFunction(this.value, this.name, this.type);\">\n";
+            $options = array();
 
             // Dropdown representation is en exception - even if mandatory or  SHOW_NO_ANSWER is disable a neutral option needs to be shown where the mandatory case asks actively
-            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
-            {
-                $sOptionText=gT('No answer');
-            }
-            else
-            {
-                $sOptionText=gT('Please choose...');
-            }
-            $answer .= "\t<option value=\"\" ";
-            if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
-            {
-                $answer .= SELECTED;
-            }
-            $answer .= '>'.$sOptionText."</option>\n";
-            foreach ($labels as $lrow)
-            {
-                $answer .= "\t<option value=\"".$lrow['code'].'" ';
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $lrow['code'])
-                {
-                    $answer .= SELECTED;
-                }
-                $answer .= '>'.flattenText($lrow['answer'])."</option>\n";
-            }
-            $answer .= "</select>\n";
+            $options[0]['text']     = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)?gT('No answer'):gT('Please choose...');
+            $options[0]['value']    = ' ';
+            $options[0]['selected'] = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'SELECTED':'';
 
-            if (strpos($answertextsave,'|'))
+            // Other options
+            foreach ($labels as $i=>$lrow)
             {
-                $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-                $answer .= "\t<th class=\"answertextright\">$answertext</th>\n";
-            }
-            elseif ($right_exists)
-            {
-                $answer .= "\t<td class=\"answertextright\">&nbsp;</td>\n";
+                $y=$i+1; // $options[0] ]defined just above
+                $options[$y]['value']     = $lrow['code'];
+                $options[$y]['selected']  = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $lrow['code'])?'SELECTED':'';
+                $options[$y]['text']      = flattenText($lrow['answer']);
             }
 
-            $answer .= "</tr>\n";
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/row', array(
+                'myfname'=>$myfname,
+                'answertext'=>$answertext,
+                'value'=>$value,
+                'error'=>$error,
+                'checkconditionFunction'=>$checkconditionFunction,
+                'options'=>$options,
+                'thRight'=>$thRight,
+                'tdRight'=>$tdRight,
+            ),  true);
+
             $inputnames[]=$myfname;
-            //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
         }
-        $answer .= "\t</tbody>";
-        $answer = $answer_start . $answer . "\n</table></div>\n";
+        $close = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/close_body', array(), true);
+        $answer = $answer_start . $answer . $close;
     }
     else
     {
-        $answer = "\n<p class=\"error\">".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/empty', array(), true);
         $inputnames='';
     }
     return array($answer, $inputnames);
 }
-
-
 
 
 // ---------------------------------------------------------------
