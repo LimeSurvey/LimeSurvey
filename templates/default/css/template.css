@@ -778,6 +778,38 @@ table {
     white-space: normal;
 }
 
+/* Center modal vertically, used by file-upload modal */
+.modal {
+    text-align: center;
+    padding: 0!important;
+}
+.modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+}
+.modal-dialog {
+    display: inline-block;
+     text-align: left;
+     vertical-align: middle;
+}
+
+/* Make file upload modal fit to iframe */
+.file-upload-modal-body iframe {
+    height: inherit;
+    width: 100%;
+    border: none;
+}
+.file-upload-modal-body {
+    padding: 0;
+    height: 500px;
+}
+.file-upload-modal-footer {
+    margin-top: 0;
+}
+
 /**
  * No more tables
  * OBS: Media specific CSS should be last in this file.
@@ -965,6 +997,17 @@ table {
         margin-left: 5px;
     }
 
+    /* Make file-upload pop-up shorter on phones */
+    .file-upload-modal-body {
+        padding: 0;
+        height: 300px;
+    }
+
+    /* Modal should be in front of navbar, so the close icon is visible */
+    .modal {
+        z-index: 3000;
+    }
+
 }
 
 /* On iPad etc only */
@@ -974,34 +1017,3 @@ table {
     }
 }
 
-/* Center modal vertically, used by file-upload modal */
-.modal {
-    text-align: center;
-    padding: 0!important;
-}
-.modal:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-    margin-right: -4px;
-}
-.modal-dialog {
-    display: inline-block;
-     text-align: left;
-     vertical-align: middle;
-}
-
-/* Make file upload modal fit to iframe */
-.file-upload-modal-body iframe {
-    height: inherit;
-    width: 100%;
-    border: none;
-}
-.file-upload-modal-body {
-    padding: 0;
-    height: 500px;
-}
-.file-upload-modal-footer {
-    margin-top: 0;
-}
