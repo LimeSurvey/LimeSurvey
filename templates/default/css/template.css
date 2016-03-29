@@ -660,7 +660,7 @@ input[type="checkbox"]:disabled:checked:after,
  */
 table.question.subquestion-list.questions-list th,table.question.subquestion-list.questions-list tr, table.subquestions-list th, table.subquestions-list td
 {
-    text-align: center;
+    text-align: left;
 }
 
 table.question.subquestion-list.questions-list tr.answers-list th
