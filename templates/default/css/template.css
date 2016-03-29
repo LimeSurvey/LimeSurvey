@@ -809,11 +809,26 @@ table {
 .file-upload-modal-footer {
     margin-top: 0;
 }
+
 .slider.slider-horizontal {
     width: 100%;
 
     /* The reset button will be under the slider, so allow some margin */
     margin-bottom: 1em;
+}
+
+/* When slider has both show-min-max and reset button, add space between
+ * left badge and reset button */
+.slider-min-badge {
+    margin-right: 1em;
+}
+
+.slider-left-span {
+    text-align: right;
+}
+
+.slider-right-span {
+    text-align: left;
 }
 
 /**

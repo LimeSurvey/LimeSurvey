@@ -39,8 +39,8 @@
             <?php echo $labelText;?>
         </label>
         <div>
-            <?php echo $sliderleft;?>
             <?php if(!$sliders): ?>
+                <span class='pull-left'><?php echo $sliderleft;?></span>
                 <input
                     class="text form-control numeric <?php echo $kpclass;?>"
                     type="text"
@@ -52,41 +52,84 @@
                     title="<?php eT('Only numbers may be entered in this field.'); ?>"
                     <?php echo $maxlength; ?>
                 />
+                <span class='pull-right'><?php echo $sliderright;?></span>
             <?php else:?>
-                <input
-                    class="text form-control <?php echo $kpclass;?>"
-                    type="text"
-                    size="<?php echo $tiwidth;?>"
-                    name="<?php echo $myfname;?>"
-                    id="answer<?php echo $myfname; ?>"
-                    value="<?php echo $dispVal;?>"
-                    onkeyup="<?php echo $checkconditionFunction; ?>"
-                    <?php echo $maxlength; ?>
-                    data-slider-value="<?php echo $sUnformatedValue;?>"
-                    data-slider-min='<?php echo $slider_min;?>'
-                    data-slider-max='<?php echo $slider_max;?>'
-                    data-slider-step='<?php echo $slider_step;?>'
-                    data-slider-value='<?php echo $slider_default;?>'
-                    data-slider-orientation='<?php echo $slider_orientation;?>'
-                    data-slider-handle='<?php echo $slider_handle;?>'
-                    data-slider-tooltip='always'
-                    data-slider-reset='<?php echo $slider_reset; ?>'
-                    data-slider-prefix='<?php echo $prefix; ?>'
-                    data-slider-suffix='<?php echo $suffix; ?>'
-                    data-separator='<?php echo $sSeparator;?>'
-                />
-                <?php if($slider_showminmax): ?>
-                    <span class='badge pull-left'><?php echo $slider_min; ?></span>
-                    <span class='badge pull-right'><?php echo $slider_max; ?></span>
-                <?php endif; ?>
+                <div class='slider-container row'>
+
+                    <!-- If reset button, put it after slider -->
+                    <?php if ($slider_reset): ?>
+                        <div class='col-xs-10'>
+                    <?php else: ?>
+                        <div class='col-xs-12'>
+                    <?php endif; ?>
+
+                        <?php if (!empty($sliderleft)): ?>
+                            <span class='pull-left col-xs-1 slider-left-span'><?php echo $sliderleft;?></span>
+                        <?php endif; ?>
+
+                        <!-- Different col size depending on right|left -->
+                        <!-- TODO: Move PHP to qanda -->
+                        <?php if (empty($sliderleft) && empty($sliderright)): ?>
+                            <div class='col-xs-12'>
+                        <?php elseif (empty($sliderleft) || empty($sliderright)): ?>
+                            <div class='col-xs-11'>
+                        <?php else: ?>
+                            <div class='col-xs-10'>
+                        <?php endif; ?>
+
+                            <input
+                                class="text form-control pull-left <?php echo $kpclass;?>"
+                                type="text"
+                                size="<?php echo $tiwidth;?>"
+                                name="<?php echo $myfname;?>"
+                                id="answer<?php echo $myfname; ?>"
+                                value="<?php echo $dispVal;?>"
+                                onkeyup="<?php echo $checkconditionFunction; ?>"
+                                <?php echo $maxlength; ?>
+                                data-slider-value="<?php echo $sUnformatedValue;?>"
+                                data-slider-min='<?php echo $slider_min;?>'
+                                data-slider-max='<?php echo $slider_max;?>'
+                                data-slider-step='<?php echo $slider_step;?>'
+                                data-slider-value='<?php echo $slider_default;?>'
+                                data-slider-orientation='<?php echo $slider_orientation;?>'
+                                data-slider-handle='<?php echo $slider_handle;?>'
+                                data-slider-tooltip='always'
+                                data-slider-reset='<?php echo $slider_reset; ?>'
+                                data-slider-prefix='<?php echo $prefix; ?>'
+                                data-slider-suffix='<?php echo $suffix; ?>'
+                                data-separator='<?php echo $sSeparator;?>'
+                            />
+
+                            <?php if($slider_showminmax): ?>
+                                <div class='pull-left slider-min-badge'>
+                                    <span class='badge'><?php echo $slider_min; ?></span>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if($slider_showminmax): ?>
+                                <div class='pull-right'>
+                                    <span class='badge'><?php echo $slider_max; ?></span>
+                                </div>
+                            <?php endif; ?>
+
+                        </div>
+                        <?php if (!empty($sliderright)): ?>
+                            <span class='pull-right col-xs-1 slider-right-span'><?php echo $sliderright;?></span>
+                        <?php endif; ?>
+
+                    </div>
+                    <?php if ($slider_reset): ?>
+                        <div class='col-xs-2'>
+                            <div class='pull-left'>
+                                <span id="answer<?php echo $myfname; ?>_resetslider" class='btn btn-default fa fa-times slider-reset'>&nbsp;<?php eT("Reset"); ?></span>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                </div>
+
             <?php endif;?>
-            <?php echo $sliderright;?>
         </div>  <!-- xs-12 -->
-        <div class='col-xs-12 col-sm-8'>
-            <?php if ($slider_reset): ?>
-                <span id="answer<?php echo $myfname; ?>_resetslider" class='btn btn-default fa fa-times slider-reset'>&nbsp;<?php eT("Reset"); ?></span>
-            <?php endif; ?>
-        </div>
         <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo $slider_user_no_action?>" />
     </div> <!-- form group -->
 </div>
