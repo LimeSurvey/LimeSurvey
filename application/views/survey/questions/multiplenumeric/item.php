@@ -49,7 +49,7 @@
                     id="answer<?php echo $myfname; ?>"
                     value="<?php echo $dispVal;?>"
                     onkeyup="<?php echo $checkconditionFunction; ?>"
-                    title="<?php eT('Only numbers may be entered in this field.'); ?>";
+                    title="<?php eT('Only numbers may be entered in this field.'); ?>"
                     <?php echo $maxlength; ?>
                 />
             <?php else:?>
