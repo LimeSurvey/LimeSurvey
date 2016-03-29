@@ -3146,6 +3146,7 @@ function do_multiplenumeric($ia)
                 'slider_reset' => $slider_reset,
                 'slider_custom_handle' => $slider_custom_handle,
                 'slider_user_no_action' => $slider_user_no_action,
+                'slider_showminmax' => $aQuestionAttributes['slider_showminmax'],
                 'sSeparator'=> $sSeparator,
                 'sUnformatedValue'=> $sUnformatedValue,
             );

@@ -75,6 +75,10 @@
                     data-slider-suffix='<?php echo $suffix; ?>'
                     data-separator='<?php echo $sSeparator;?>'
                 />
+                <?php if($slider_showminmax): ?>
+                    <span class='badge pull-left'><?php echo $slider_min; ?></span>
+                    <span class='badge pull-right'><?php echo $slider_max; ?></span>
+                <?php endif; ?>
             <?php endif;?>
             <?php echo $sliderright;?>
         </div>  <!-- xs-12 -->
