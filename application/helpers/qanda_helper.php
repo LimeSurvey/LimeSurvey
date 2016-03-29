@@ -4606,6 +4606,7 @@ function do_array($ia)
                         'answertext'=>$answertext,
                         'value'=>$value,
                         'error'=>$error,
+                        'zebra' => 2 - ($i % 2)
                     ),  true);
 
             $thiskey=0;
