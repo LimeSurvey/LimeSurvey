@@ -831,6 +831,11 @@ table {
     text-align: left;
 }
 
+.slider-container {
+    margin-top: 3.5em;
+    margin-bottom: 2.5em;
+}
+
 /**
  * No more tables
  * OBS: Media specific CSS should be last in this file.
@@ -986,6 +991,12 @@ table {
         padding-bottom: 0.5em;
     }
 
+    /* On phone, left and right slider text is above and below slider */
+    .slider-left-span {
+        text-align: left;
+    }
+
+
 }
 
 /** On small phones, leave some more space */
@@ -1024,11 +1035,6 @@ table {
     /* Modal should be in front of navbar, so the close icon is visible */
     .modal {
         z-index: 3000;
-    }
-
-    /* On phone, left and right slider text is above and below slider */
-    .slider-left-span {
-        text-align: left;
     }
 
     /* Less margin on phones */

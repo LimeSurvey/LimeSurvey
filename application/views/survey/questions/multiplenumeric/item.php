@@ -56,25 +56,23 @@
             <?php else:?>
                 <div class='slider-container row'>
 
-                    <!-- If reset button, put it after slider -->
+                    <!-- If reset button, put it after slider. Unless on phone screen, then it's below slider. -->
                     <?php if ($slider_reset): ?>
                         <div class='col-xs-12 col-sm-10'>
                     <?php else: ?>
                         <div class='col-xs-12'>
                     <?php endif; ?>
 
-                        <?php if (!empty($sliderleft)): ?>
-                            <span class='pull-left col-xs-12 col-sm-1 slider-left-span'><?php echo $sliderleft;?></span>
+                        <?php if (!empty($sliderright) || !empty($sliderleft)): ?>
+                            <span class='pull-left col-xs-12 col-sm-3 slider-left-span'><?php echo $sliderleft;?></span>
                         <?php endif; ?>
 
                         <!-- Different col size depending on right|left -->
                         <!-- TODO: Move PHP to qanda -->
                         <?php if (empty($sliderleft) && empty($sliderright)): ?>
                             <div class='col-xs-12 col-sm-12'>
-                        <?php elseif (empty($sliderleft) || empty($sliderright)): ?>
-                            <div class='col-xs-12 col-sm-11'>
                         <?php else: ?>
-                            <div class='col-xs-12 col-sm-10'>
+                            <div class='col-xs-12 col-sm-6'>
                         <?php endif; ?>
 
                             <input
@@ -113,8 +111,8 @@
                             <?php endif; ?>
 
                         </div>
-                        <?php if (!empty($sliderright)): ?>
-                            <span class='pull-right col-xs-12 col-sm-1 slider-right-span'><?php echo $sliderright;?></span>
+                        <?php if (!empty($sliderright) || !empty($sliderleft)): ?>
+                            <span class='pull-right col-xs-12 col-sm-3 slider-right-span'><?php echo $sliderright;?></span>
                         <?php endif; ?>
 
                     </div>
