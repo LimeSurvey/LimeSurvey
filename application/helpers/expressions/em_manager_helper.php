@@ -5395,13 +5395,18 @@
                             break;
                         case 'N': //NUMERICAL QUESTION TYPE
                         case 'K': //MULTIPLE NUMERICAL QUESTION
-                            // @todo Validate a DECIMAL(30.10)
-                            if (trim($val)=='' || !is_numeric($val))
+                            if (trim($val)=='' !is_numeric($val)) // is_numeric error is done by EM : then show an error and same page again
                             {
                                 $val=NULL;  // since some databases can't store blanks in numerical inputs
                             }
+                            elseif(!preg_match("/^(\d{1,20}\.\d{0,10}|\d{1,20})$/",$val)) // DECIMAL(30,10)
+                            {
+                                // Here : we must ADD a message for the user and set the question "not valid" : show the same page + show with input-error class
+                                $val=NULL;
+                            }
                             break;
                         default:
+                            // @todo : control length of DB string, if answers in single choice is valid too (for example) ?
                             break;
                     }
 
@@ -8548,7 +8553,7 @@ EOD;
                             $value = preg_replace('|\,|', '', $value);
                         }
 
-                        switch($type) // fix value before trying to save in DB : date and numeric only
+                        switch($type) // fix value before set it in $_SESSION : the data is reset when show it again to user.trying to save in DB : date only, but think it must be leave like it and filter oinly when save in DB
                         {
                             case 'D': //DATE
                                 $value=trim($value);
@@ -8571,15 +8576,6 @@ EOD;
                                     {
                                         $value="";// Or $value="INVALID" ? : dropdown is OK with this not default.
                                     }
-                                }
-                                break;
-                            case 'N': //NUMERICAL QUESTION TYPE
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                                if (trim($value)=="") {
-                                    $value = "";
-                                }
-                                else {
-                                    $value = sanitize_float($value);
                                 }
                                 break;
                             case '|': //File Upload
