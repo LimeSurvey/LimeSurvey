@@ -25,7 +25,7 @@ https://manual.limesurvey.org/Installation
 Please also have a look at the "Installation security hints" section of the online manual in order to secure your installation.
 
 
-=== UPGRADING=====
+=== UPGRADING=====                                                                                     
 
 We suggest to check out and hold close to the instructions, which can be found in our online manual:
 https://manual.limesurvey.org/Upgrading_from_a_previous_version
@@ -58,6 +58,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 2.06LTS (build 160315) to 2.06LTS (build 160329) March 30, 2016
+-Fixed issue #10435: Broken HTML or script can broke Survey Logic File (Denis Chenu)
+-Fixed issue #10801: PHP notice + bad relevance set in Array text subquestion edit (Denis Chenu)
+-Fixed issue #10830: Thousand separator break slider in some condition (Denis Chenu)
+-Fixed issue #9444: Google analytics is not working on the survey list (Carsten Schmitz)
+-Fixed issue #9876: Different bogus with thousand seperator (Denis Chenu)
+-Fixed issue #9998: Languages can not be updated in label set administration (Denis Chenu)
 
 Changes from 2.06LTS (build 160303) to 2.06LTS (build 160315) March 15, 2016
 -Fixed issue #10191: Can't import attributes with Participants (Olle Haerstedt)
