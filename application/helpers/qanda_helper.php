@@ -2714,17 +2714,7 @@ function do_multipleshorttext($ia)
     {
         $suffix = '';
     }
-
-    if ($thissurvey['nokeyboard']=='Y')
-    {
-        includeKeypad();
-        $kpclass = "text-keypad";
-        $extraclass .=" inputkeypad";
-    }
-    else
-    {
-        $kpclass = "";
-    }
+    $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
 
     if ($aQuestionAttributes['random_order']==1)
     {
@@ -2910,18 +2900,8 @@ function do_multiplenumeric($ia)
     {
         $suffix = '';
     }
-
-    if ($thissurvey['nokeyboard']=='Y')
-    {
-        includeKeypad();
-        $kpclass = "num-keypad";
-        $extraclass .=" keypad";
-    }
-    else
-    {
-        $kpclass = "";
-    }
-
+    //
+    $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $numbersonly_slider = ''; // DEPRECATED
 
     if (trim($aQuestionAttributes['text_input_width'])!='')
@@ -4879,69 +4859,43 @@ function do_array_multitext($ia)
         {
             case 'R':
                 $totals_class = $show_totals = 'row';
-                $row_total = '<td class="total information-item">
-                    <label class="hidden-md hidden-lg">' . gT("Total") . '</label>
-                    <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled form-control" />
-                </td>';
-                $col_head = '            <th class="total">'.gT('Total').'</th>';
+                $row_total = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/row_total', array('empty'=>false),  true);
+                $col_head = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/thead', array('totalText'=>gT('Total'), 'classes'=>''),  true);
                 if($show_grand == true)
                 {
-                    $row_head = '
-                    <th class="answertext total">'.gT('Grand total').'</th>';
-                    $col_total = '
-                    <td>&nbsp;</td>';
-                    $grand_total = '
-                    <td class="total grand information-item">
-                        <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled form-control" />
-                    </td>';
+                    $row_head = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/thead', array('totalText'=>gT('Grand total'), 'classes'=>'answertext'),  true);
+                    $col_total = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/col_total', array('empty'=>true),  true);
+                    $grand_total = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/td_grand_total', array('empty'=>false),  true);
                 };
                 $caption.=gT("The last row shows the total for the column. ");
                 break;
+
             case 'C':
                 $totals_class = $show_totals = 'col';
-                $col_total = '
-                <td class="total information-item">
-                    <label class="hidden-md hidden-lg">' . gT("Total") . '</label>
-                    <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled form-control" />
-                </td>';
-                $row_head = '
-                <th class="answertext total">Total</th>';
+                $col_total = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/col_total', array('empty'=>false, 'label'=>true),  true);
+                $row_head = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/thead', array('totalText'=>gT('Total'), 'classes'=>'answertext'),  true);
                 if($show_grand == true)
                 {
-                    $row_total = '
-                    <td class="total information-item">&nbsp;</td>';
-                    $col_head = '            <th class="total">Grand Total</th>';
-                    $grand_total = '
-                    <td class="total grand">
-                        <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled form-control" />
-                    </td>';
+                    $row_total = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/row_total', array('empty'=>true),  true);
+                    $col_head = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/thead', array('totalText'=>gT('Grand Total'), 'classes'=>''),  true);
+                    $grand_total = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/td_grand_total', array('empty'=>false),  true);
                 };
                 $caption.=gT("The last column shows the total for the row. ");
                 break;
+
             case 'B':
                 $totals_class = $show_totals = 'both';
-                $row_total = '            <td class="total information-item">
-                    <label class="hidden-md hidden-lg">' . gT("Total") . '</label>
-                    <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled form-control" />
-                </td>';
-                $col_total = '
-                <td  class="total information-item">
-                    <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled form-control" />
-                </td>';
-                $col_head = '            <th class="total">'.gT('Total').'</th>';
-                $row_head = '
-                <th class="answertext">Total</th>';
+                $row_total = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/row_total', array('empty'=>false),  true);
+                $col_total = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/col_total', array('empty'=>false, 'label'=>false),  true);
+                $col_head = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/thead', array('totalText'=>gT('Total'), 'classes'=>''),  true);
+                $row_head = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/thead', array('totalText'=>gT('Total'), 'classes'=>'answertext'),  true);
                 if($show_grand == true)
                 {
-                    $grand_total = '
-                    <td class="total grand information-item">
-                        <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled form-control"/>
-                    </td>';
+                    $grand_total = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/td_grand_total', array('empty'=>false),  true);
                 }
                 else
                 {
-                    $grand_total = '
-                    <td>&nbsp;</td>';
+                    $grand_total = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/td_grand_total', array('empty'=>true),  true);
                 };
                 $caption.=gT("The last row shows the total for the column and the last column shows the total for the row. ");
                 break;
@@ -4970,7 +4924,6 @@ function do_array_multitext($ia)
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $inputwidth=$aQuestionAttributes['text_input_width'];
-        //$extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
         $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
         $extraclass .=" col-sm-".trim($col);
     }
@@ -5025,49 +4978,34 @@ function do_array_multitext($ia)
         $anscount = count($aQuestions);
         $fn=1;
 
-        /*$answer_cols = "\t<colgroup class=\"col-responses\">\n"
-        ."\n\t\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
-        $answer_head_line= "\t\t\t<td width='$answerwidth%'>&nbsp;</td>\n";*/
-
-        $answer_cols = "\t<colgroup class=\"col-responses\">\n"
-        ."\n\t\t<col class=\"answertext\" style='width: $answerwidth%;'/>\n";
-        $answer_head_line= "\t\t\t<td style='width: $answerwidth%;'>&nbsp;</td>\n";
-
         $odd_even = '';
-        foreach ($labelans as $ld)
-        {
-            $answer_head_line .= "\t<th class=\"answertext\">".$ld."</th>\n";
-            $odd_even = alternation($odd_even);
-            //$answer_cols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-            $answer_cols .= "<col class=\"$odd_even\" style='width: $cellwidth%;'/>\n";
-        }
-        if ($right_exists)
-        {
-            $answer_head_line .= "\t<td>&nbsp;</td>\n";// class=\"answertextright\"
-            $odd_even = alternation($odd_even);
-            //$answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$cellwidth%\" />\n";
-            $answer_cols .= "<col class=\"answertextright $odd_even\" style='width: $cellwidth%;' />\n";
-        }
 
+        $answer_head_line = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/answer_head_line', array(
+                'answerwidth'=>$answerwidth,
+                'labelans'=>$labelans,
+                'right_exists'=>$right_exists,
+        ),  true);
+
+        $showGrandTotal = false;
         if( ($show_grand == true &&  $show_totals == 'col' ) || $show_totals == 'row' ||  $show_totals == 'both' )
         {
             $answer_head_line .= $col_head;
-            $odd_even = alternation($odd_even);
-            //$answer_cols .= "\t\t<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-            $answer_cols .= "\t\t<col class=\"$odd_even\" style='width: $cellwidth%;' />\n";
+            $showGrandTotal = true;
         }
-        $answer_cols .= "\t</colgroup>\n";
 
-        $answer_head = "\n\t<thead>\n\t\t<tr class=\"dontread\">\n"
-        . $answer_head_line
-        . "</tr>\n\t</thead>\n";
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/answer_head', array(
+                            'answerwidth'=>$answerwidth,
+                            'cellwidth'=>$cellwidth,
+                            'labelans'=>$labelans,
+                            'right_exists'=>$right_exists,
+                            'showGrandTotal'=>$showGrandTotal,
+                            'answer_head_line'=>$answer_head_line,
+                            'q_table_id_HTML'=>$q_table_id_HTML,
+                            'extraclass'=>$extraclass,
+                            'num_class'=>$num_class,
+                            'totals_class'=>$totals_class,
+                        ),  true);
 
-        $answer = '<div class="no-more-tables no-more-tables-array-multi-text">';
-        //$answer .= "\n<table$q_table_id_HTML class=\"table-in-qanda-6  question subquestions-list questions-list {$extraclass} {$num_class} {$totals_class}\"  summary=\"{$caption}\">\n"
-        $answer .= "\n<table$q_table_id_HTML class=\"table-in-qanda-6 table question subquestion-list questions-list {$extraclass} {$num_class} {$totals_class}\">\n"
-        . $answer_cols
-        . $answer_head;
-        $answer .= "<tbody>";
         $trbc = '';
         foreach ($aQuestions as $ansrow)
         {
@@ -5075,16 +5013,17 @@ function do_array_multitext($ia)
             {
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
-                    $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
-                    $answer .= "<tr class=\"repeat headings dontread\">\n"
-                    . $answer_head_line
-                    . "</tr>\n";
+                    // Close actual body and open another one
+                    $answer .=  Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/close_open_body', array(
+                                'answer_head_line'=>$answer_head_line
+                            ),  true);
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
             $answertext = $ansrow['question'];
             $answertextsave=$answertext;
             /* Check the sub Q mandatory volation */
+            $error = false;
             if ($ia[6]=='Y' && !empty($aMandatoryViolationSubQ))
             {
                 //Go through each labelcode and check for a missing answer! If any are found, highlight this line
@@ -5097,79 +5036,97 @@ function do_array_multitext($ia)
                         $emptyresult=1;
                     }
                 }
+                $error = false;
                 if ($emptyresult == 1)
                 {
-                    //$answertext = "<span class=\"errormandatory\">{$answertext}</span>";
+                    /*
                     $answertext ='
                                 <div class="alert alert-danger" role="alert">'.
                                         $answertext
                                     .'
                                 </div>';
-
+                    */
+                    $error = true;
                 }
             }
+            $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))?$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]:'';
+            $sDisplayStyle  = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
-            // Get array_filter stuff
-            $trbc = alternation($trbc , 'row');
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc subquestion-list questions-list");
-
-            $answer .= $htmltbody2;
-
-            if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
-            $answer .= "\t\t\t<th class=\"answertext\">\n"
-            . "\t\t\t\t".$hiddenfield
-            . "$answertext\n"
-            . "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {
-                $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+            if (strpos($answertext,'|'))
+            {
+                $answertext=substr($answertext,0, strpos($answertext,'|'));
             }
-            $answer .= "\" />\n\t\t\t</th>\n";
+
             $thiskey=0;
+
+            $answer_tds = '';
             foreach ($labelcode as $ld)
             {
-
                 $myfname2=$myfname."_$ld";
                 $myfname2value = isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] : "";
                 if ($aQuestionAttributes['numbers_only']==1)
                 {
                     $myfname2value = str_replace('.',$sSeparator,$myfname2value);
                 }
-                $answer .= "\t<td class=\"answer-cell-4 answer_cell_00$ld answer-item text-item\">\n"
-                . "\t\t\t\t<label class=\"hidden-md hidden-lg read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n"
-                . "\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
-                . "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" class=\"form-control ".$kpclass."\" {$maxlength} size=\"$inputwidth\" "
-                . ' value="'.str_replace ('"', "'", str_replace('\\', '', $myfname2value))."\" />\n";
+
                 $inputnames[]=$myfname2;
-                $answer .= "\t\t\t</td>\n";
+                $value= str_replace ('"', "'", str_replace('\\', '', $myfname2value));
+                $answer_tds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/answer_td', array(
+                            'ld'=>$ld,
+                            'myfname2'=>$myfname2,
+                            'labelText'=>$labelans[$thiskey],
+                            'kpclass'=>$kpclass,
+                            'maxlength'=>$maxlength,
+                            'inputwidth'=>$inputwidth,
+                            'value'=>$myfname2value,
+                        ),  true);
                 $thiskey += 1;
             }
+
+            $rightTd = $rightTdEmpty = false;
             if (strpos($answertextsave,'|'))
             {
                 $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-                //$answer .= "\t\t\t<td  class=\"answertextright\" style=\"text-align:left;\" width=\"$answerwidth%\">$answertext</td>\n";
-                $answer .= "\t\t\t<td  class=\"answertextright\" style=\"text-align:left; width: $answerwidth%;\" >$answertext</td>\n";
+                $rightTd = true; $rightTdEmpty = false;
             }
             elseif ($right_exists)
             {
-                //$answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' width='$answerwidth%'>&nbsp;</td>\n";
-                $answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left; width: $answerwidth%;' >&nbsp;</td>\n";
+                $rightTd = true; $rightTdEmpty = true;
             }
 
-            $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $row_total);
-            $answer .= "\n\t\t</tr>\n";
+            $formatedRowTotal = str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $row_total);
+
+            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/answer_row', array(
+                                'myfname'=>$myfname,
+                                'answertext'=>$answertext,
+                                'error'=>$error,
+                                'value'=>$value,
+                                'answer_tds'=>$answer_tds,
+                                'rightTd'=>$rightTd,
+                                'rightTdEmpty'=>$rightTdEmpty,
+                                'answerwidth'=>$answerwidth,
+                                'formatedRowTotal'=>$formatedRowTotal,
+                            ),  true);
+
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
-        }
+        } // end foreach
+
+
+        $showtotals=false; $total = '';
         if($show_totals == 'col' || $show_totals == 'both' || $grand_total == true)
         {
-            $answer .= "\t\t<tr class=\"total\">$row_head";
+
+            $showtotals=true;
             for( $a = 0; $a < count($labelcode) ; ++$a )
             {
-                $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $col_total);
+                $total .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $col_total);
+
             };
-            $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $grand_total)."\n\t\t</tr>\n";
+            $total .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $grand_total);
         }
-        $answer .= "\t</tbody>\n</table>\n</div>\n";
+
+        $radix = '';
         if(!empty($q_table_id))
         {
             if ($aQuestionAttributes['numbers_only']==1)
@@ -5180,26 +5137,21 @@ function do_array_multitext($ia)
                 $radix = 'X';   // to indicate that should not try to change entered values
             }
             Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."array-totalsum.js");
-            $answer .= "\n<script type=\"text/javascript\">new multi_set('$q_table_id','$radix');</script>\n";
         }
-        else
-        {
-            $addcheckcond = <<< EOD
-<script type="text/javascript">
-<!--
-    $('#question{$ia[0]} .question').delegate('input[type=text]:visible:enabled','blur keyup',function(event){
-        {$checkconditionFunction}($(this).val(), $(this).attr('name'), 'text');
-        return true;
-    })
-// -->
-</script>
-EOD;
-            $answer .= $addcheckcond;
-        }
+
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/answer_end', array(
+                            'showtotals'=>$showtotals,
+                            'row_head'=>$row_head,
+                            'total'=>$total,
+                            'q_table_id'=>$q_table_id,
+                            'radix'=>$radix,
+                            'name'=>$ia[0],
+                        ),  true);
+
     }
     else
-    {
-        $answer = "\n<p class=\"error\">".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
+    {        
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/empty_error', array(), true);
         $inputnames='';
     }
     return array($answer, $inputnames);
