@@ -5423,11 +5423,14 @@
 
                     if (!dbExecuteAssoc($query))
                     {
-                        echo submitfailed('');  // TODO - report SQL error?
+                        // TODO: If echo here, navbar will hide it
+                        // TODO: This kills the session if adminemail is defined, so the queries below won't work.
+                        echo submitfailed('', $query);  // TODO - report SQL error?
 
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                             $message .= $this->gT('Error in SQL update');  // TODO - add  SQL error?
                         }
+
                     }
                     // Save Timings if needed
                     elseif ($this->surveyOptions['savetimings']) {

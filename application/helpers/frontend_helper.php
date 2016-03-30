@@ -753,15 +753,21 @@ function sendSubmitNotifications($surveyid)
 }
 
 /**
-* submitfailed : used in em_manager_helper.php
-*/
-function submitfailed($errormsg='')
+ * submitfailed : used in em_manager_helper.php
+ *
+ * "Unexpected error"
+ *
+ * Will send e-mail to adminemail if defined.
+ *
+ * @param string $errormsg
+ * @param string $query  Will be included in sent email
+ * @return string Error message
+ */
+function submitfailed($errormsg = '', $query = null)
 {
     global $debug;
     global $thissurvey;
     global $subquery, $surveyid;
-
-
 
     $completed = "<br /><strong><font size='2' color='red'>"
     . gT("Did Not Save")."</strong></font><br /><br />\n\n"
@@ -781,6 +787,7 @@ function submitfailed($errormsg='')
         }
         $email .= "\n".gT("SQL CODE THAT FAILED","unescaped").":\n"
         . "$subquery\n\n"
+        . ($query ? $query : '') . "\n\n"  // In case we have no global subquery, but an argument to the function
         . gT("ERROR MESSAGE","unescaped").":\n"
         . $errormsg."\n\n";
         SendEmailMessage($email, gT("Error saving results","unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
