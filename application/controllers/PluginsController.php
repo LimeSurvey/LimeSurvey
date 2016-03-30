@@ -6,7 +6,7 @@
 class PluginsController extends LSYii_Controller
 {
 
-    public $layout = 'main';
+    //public $layout = 'main';
 
     /**
      * Stored dynamic properties set and unset via __get and __set.
@@ -162,7 +162,7 @@ class PluginsController extends LSYii_Controller
     /**
      * Launch the event newDirectRequest
      * @param $plugin : the target
-     * @param $function : the fuinction to call from the plugin
+     * @param $function : the function to call from the plugin
      */
     public function actionDirect($plugin, $function=null)
     {
@@ -174,13 +174,36 @@ class PluginsController extends LSYii_Controller
         $oEvent->set('request', App()->request);
 
         App()->getPluginManager()->dispatchEvent($oEvent);
-
         $sOutput = '';
         foreach ($oEvent->getAllContent() as $content)
         {
             $sOutput .= $content->getContent();
         }
+        if (!empty($sOutput))
+        {
+            $this->renderText($sOutput);
+        }
+    }
+    /**
+     * Launch the event newUnsecureRequest
+     * @param $plugin : the target
+     * @param $function : the function to call from the plugin
+     */
+    public function actionUnsecure($plugin, $function=null)
+    {
+        $oEvent = new PluginEvent('newUnsecureRequest');
+        // The intended target of the call.
+        $oEvent->set('target', $plugin);
+        // The name of the function.
+        $oEvent->set('function', $function);
+        $oEvent->set('request', App()->request);
 
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        $sOutput = '';
+        foreach ($oEvent->getAllContent() as $content)
+        {
+            $sOutput .= $content->getContent();
+        }
         if (!empty($sOutput))
         {
             $this->renderText($sOutput);
