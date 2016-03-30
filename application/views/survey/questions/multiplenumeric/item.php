@@ -167,52 +167,72 @@
                 var $separator = $inputEl.data('separator');
 
                 // We start the slider, and provide it the formated value with prefix and suffix for its tooltip
-                var mySlider_<?php echo $myfname; ?> = $inputEl.bootstrapSlider({
-                    formatter: function (value) {
-                        displayValue = value.toString().replace('.',$separator);
-                        return $prefix + displayValue + $suffix;
-                    },
-                });
+                // Use closure for namespace, so we can use theSlider variable for all sliders.
+                (function () {
+                    var theSlider = $inputEl.bootstrapSlider({
+                        formatter: function (value) {
+                            displayValue = value.toString().replace('.',$separator);
+                            return $prefix + displayValue + $suffix;
+                        },
+                    });
 
-                // When user change the value of the slider :
-                // we need to show the tooltip (if it was hidden)
-                // and to update the value of the input element with correct format
-                mySlider_<?php echo $myfname; ?>.on('slideStop', function(){
-                    $('#javatbd' + myfname).find('div.tooltip').show(); // Show the tooltip
-                    $sliderNoActionEl.val(0); // The user did an action
-                    value = $inputEl.val(); // We get the current value of the bootstrapSlider
-                    displayValue = value.toString().replace('.',$separator); // We format it with the right separator
-                    $inputEl.val(displayValue); // We parse it to the element
-                    LEMrel<?php echo $qid; ?>() // We call the EM
-                });
+                    // When user change the value of the slider :
+                    // we need to show the tooltip (if it was hidden)
+                    // and to update the value of the input element with correct format
+                    theSlider.on('slideStop', function(){
+                        $('#javatbd' + myfname).find('div.tooltip').show(); // Show the tooltip
+                        $sliderNoActionEl.val(0); // The user did an action
+                        value = $inputEl.val(); // We get the current value of the bootstrapSlider
+                        displayValue = value.toString().replace('.',$separator); // We format it with the right separator
+                        $inputEl.val(displayValue); // We parse it to the element
+                        LEMrel<?php echo $qid; ?>() // We call the EM
+                    });
 
-                // If user no action is on, we hide the tooltip
-                // And we set the value to null
-                if($sliderNoActionEl.val()=="1")
-                {
-                    $('#javatbd' + myfname).find('div.tooltip').hide();
-                    $inputEl.attr('value', '');
-                }
-
-                // On form submission, if user action is still on,
-                // we must force the value of the input to ''
-                // and force the thousand separator (this bug still affect 2.06)
-                $("form").submit(function (e) {
-                    $inputEl.bootstrapSlider('destroy');
-
-                    // This problem still afect 2.06
-                    value = $inputEl.val(); // We get the current value of the bootstrapSlider
-                    displayValue = value.toString().replace('.',$separator); // We format it with the right separator
-                    $inputEl.val(displayValue); // We parse it to the element
-
-
+                    // If user no action is on, we hide the tooltip
+                    // And we set the value to null
                     if($sliderNoActionEl.val()=="1")
                     {
-                        $inputEl.val('');
+                        $('#javatbd' + myfname).find('div.tooltip').hide();
+                        $inputEl.attr('value', '');
                     }
-                    return true;
-                });
-                $("#vmsg_<?php echo $qid;?>_default").text('<?php eT('Please click and drag the slider handles to enter your answer.');?>');
+
+                    // Click the reset button
+                    $('#answer' + '<?php echo $myfname; ?>' + '_resetslider').on('click', function() {
+                        $('#javatbd' + myfname).find('div.tooltip').hide();
+
+                        // Pretend user didn't do anything
+                        $sliderNoActionEl.val("1");
+
+                        // Position slider button at beginning
+                        theSlider.bootstrapSlider('setValue', parseFloat($inputEl.attr('data-slider-min')));
+
+                        // Set value to null
+                        $inputEl.attr('value', '');
+
+                        // Why the fuck not?
+                        LEMrel<?php echo $qid; ?>() // We call the EM
+                    });
+
+                    // On form submission, if user action is still on,
+                    // we must force the value of the input to ''
+                    // and force the thousand separator (this bug still affect 2.06)
+                    $("form").submit(function (e) {
+                        $inputEl.bootstrapSlider('destroy');
+
+                        // This problem still afect 2.06
+                        value = $inputEl.val(); // We get the current value of the bootstrapSlider
+                        displayValue = value.toString().replace('.',$separator); // We format it with the right separator
+                        $inputEl.val(displayValue); // We parse it to the element
+
+
+                        if($sliderNoActionEl.val()=="1")
+                        {
+                            $inputEl.val('');
+                        }
+                        return true;
+                    });
+                    $("#vmsg_<?php echo $qid;?>_default").text('<?php eT('Please click and drag the slider handles to enter your answer.');?>');
+                })();
             });
         -->
     </script>
