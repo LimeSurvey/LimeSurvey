@@ -16,7 +16,7 @@
 ?>
 <!-- Multiple short texts question, item text area Html -->
 <!-- question attribute "display_rows" is set -> we need a textarea to be able to show several rows -->
-<div class="question-item answer-item text-item <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?>>
+<div id="javatbd<?php echo $myfname; ?>" class="question-item answer-item text-item <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?>>
     <div  class="form-group row">
         <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?>' for="answer<?php echo $myfname; ?>">
             <?php echo $labelText;?>
