@@ -3361,6 +3361,9 @@ function do_shortfreetext($ia)
     {
         $kpclass = "";
     }
+
+    $answer = "";
+
     if (trim($aQuestionAttributes['display_rows'])!='')
     {
         //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
@@ -3391,6 +3394,7 @@ function do_shortfreetext($ia)
             'tiwidth'=>$tiwidth,
             'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
             'dispVal'=>$dispVal,
+            'maxlength' => $maxlength
         );
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/textarea/item', $itemDatas, true);
     }
