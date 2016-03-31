@@ -5436,6 +5436,8 @@
                         }
 
                         // TODO: Put this in a separate function, like EM::addFrontendFlashMessage()
+                        // TODO: Still won't work, because makeFlashMessage is called twice on one reload,
+                        // clearing the flash messages.
                         $originalPrefix = Yii::app()->user->getStateKeyPrefix();
                         Yii::app()->user->setStateKeyPrefix('frontend');
                         Yii::app()->user->setFlash('error', $message);
