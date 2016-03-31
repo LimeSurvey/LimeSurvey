@@ -720,6 +720,8 @@ class SurveyRuntimeHelper {
                     sendCacheHeaders();
                     doHeader();
 
+                    $flashmessage = makeFlashMessage();
+
                     echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpageI', false, NULL, array(), true );
 
                     //Check for assessments
@@ -890,6 +892,7 @@ class SurveyRuntimeHelper {
             }
         }
 
+        $flashmessage = makeFlashMessage();
         $redata = compact(array_keys(get_defined_vars()));
 
         // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
@@ -1120,6 +1123,7 @@ class SurveyRuntimeHelper {
         // First call to templatereplace
 
         echo "<!-- SurveyRunTimeHelper -->";
+        $flashmessage = makeFlashMessage();
         $redata = compact(array_keys(get_defined_vars()));
         echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata);
         $aPopup=array(); // We can move this part where we want now

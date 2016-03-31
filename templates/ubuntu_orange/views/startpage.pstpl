@@ -47,6 +47,12 @@
     </div>
 
     <div class="outerframe container" id="outerframeContainer">
+
         <div class="row" id="main-row">
+
+            <div class='col-xs-12' id="yii-flash-message">
+                {FLASHMESSAGE}
+            </div>
+
             <div class="col-sm-12 col-centered" id="main-col">
 <!-- end of startpage.pstl -->

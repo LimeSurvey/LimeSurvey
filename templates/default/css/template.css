@@ -836,6 +836,10 @@ table {
     margin-bottom: 2.5em;
 }
 
+#yii-flash-message {
+    margin-top: 3em;
+}
+
 /**
  * No more tables
  * OBS: Media specific CSS should be last in this file.

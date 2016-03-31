@@ -72,6 +72,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     'totalquestions',
     'questionindex',
     'questionindexmenu',
+    'flashmessage'
     );
 
     $varsPassed = array();
@@ -718,6 +719,7 @@ EOD;
     $coreReplacements['GROUPNAME'] = $_groupname;
     $coreReplacements['LANG'] = App()->language;
     $coreReplacements['LANGUAGECHANGER'] = isset($languagechanger) ? $languagechanger : '';    // global
+    $coreReplacements['FLASHMESSAGE'] = isset($flashmessage) ? $flashmessage : '';
     $coreReplacements['LOADERROR'] = isset($errormsg) ? $errormsg : ''; // global
     $coreReplacements['LOADFORM'] = $_loadform;
     $coreReplacements['LOADHEADING'] = gT("Load a previously saved survey");
@@ -984,4 +986,3 @@ function doHtmlSaveAll($move="")
     $aSaveAllButtons[$move]=$sSaveAllButtons;
     return $aSaveAllButtons[$move];
 }
-// Closing PHP tag intentionally omitted - yes, it is okay

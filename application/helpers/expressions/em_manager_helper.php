@@ -5428,15 +5428,18 @@
 
                     if (!dbExecuteAssoc($query))
                     {
-                        // TODO: If echo here, navbar will hide it
                         // TODO: This kills the session if adminemail is defined, so the queries below won't work.
-                        // TODO: Instead of echo, we should use flash message. BUT: Won't work with both back-end and
-                        // front-end in Yii 1. Solution: Store front-end flash messages manually in survey id session.
-                        echo submitfailed('', $query);  // TODO - report SQL error?
+                        $message = submitfailed('', $query);  // TODO - report SQL error?
 
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                             $message .= $this->gT('Error in SQL update');  // TODO - add  SQL error?
                         }
+
+                        // TODO: Put this in a separate function, like EM::addFrontendFlashMessage()
+                        $originalPrefix = Yii::app()->user->getStateKeyPrefix();
+                        Yii::app()->user->setStateKeyPrefix('frontend');
+                        Yii::app()->user->setFlash('error', $message);
+                        Yii::app()->user->setStateKeyPrefix($originalPrefix);
 
                     }
                     // Save Timings if needed
