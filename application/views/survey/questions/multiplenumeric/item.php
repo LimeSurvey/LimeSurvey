@@ -100,13 +100,13 @@
 
                             <?php if($slider_showminmax): ?>
                                 <div class='pull-left slider-min-badge'>
-                                    <span class='badge'><?php echo $slider_min; ?></span>
+                                    <span class='help-block'><?php echo $slider_min; ?></span>
                                 </div>
                             <?php endif; ?>
 
                             <?php if($slider_showminmax): ?>
                                 <div class='pull-right'>
-                                    <span class='badge'><?php echo $slider_max; ?></span>
+                                    <span class='help-block'><?php echo $slider_max; ?></span>
                                 </div>
                             <?php endif; ?>
 
