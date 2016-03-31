@@ -3382,7 +3382,7 @@ function do_shortfreetext($ia)
             {
                 $dispVal = str_replace('.',$sSeparator,$dispVal);
             }
-            $dispVal .= htmlspecialchars($dispVal);
+            $dispVal = htmlspecialchars($dispVal);
         }
 
         $itemDatas = array(
