@@ -17,6 +17,7 @@
 <tr id="javatbd<?php echo $myfname;?>" class="well answers-list radio-list array<?php echo $zebra; ?>"  <?php echo $sDisplayStyle; ?>>
     <!-- Answer text /  Errors -->
     <th class="answertext">
+        <input type="hidden" name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value; ?>" />
         <?php if($error): ?>
             <div class="alert alert-danger" role="alert">
                 <?php echo $answertext;?>
@@ -43,7 +44,7 @@
 
     <!-- Uncertain -->
     <td data-title='<?php eT("Uncertain");?>' class="answer_cell_U answer-item radio-item">
-        <label for="answer<?php $myfname; ?>-U">
+        <label for="answer<?php echo $myfname; ?>-U">
             <input
                 class="radio"
                 type="radio"
@@ -84,7 +85,7 @@
                     <?php echo $NAchecked?>
                     onclick="<?php echo $checkconditionFunction;?>(this.value, this.name, this.type)"
                 />
+            </label>
         </td>
     <?php endif;?>
-    <input type="hidden" name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value; ?>"
 </tr>

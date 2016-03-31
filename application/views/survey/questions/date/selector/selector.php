@@ -20,7 +20,7 @@
         <?php echo sprintf(gT('Date in the format: %s'),$dateformatdetails); ?>
     </label>
 
-    <div class='col-xs-12 col-sm-6'>
+    <span class='col-xs-12 col-sm-6'>
         <input
             class='form-control popupdate'
             type="text"
@@ -32,8 +32,9 @@
             onkeypress="<?php echo $goodchars;?>"
             onchange="<?php echo $checkconditionFunction;?>"
         />
-    </div>
-    <div class='col-sm-6'></div>  <!-- Clear row -->
+    </span>
+
+    <span class='col-sm-6'></span>  <!-- Clear row -->
 
     <input
         type='hidden'

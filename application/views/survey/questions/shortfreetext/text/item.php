@@ -19,7 +19,7 @@
     <div class='form-group'>
 
         <!-- Label -->
-        <label class='control-label col-xs-12 col-sm-2' for='answer<?php echo $name; ?>' class='hide label'>
+        <label class='control-label col-xs-12 col-sm-2 hide label' for='answer<?php echo $name; ?>' >
             <?php eT('Your answer'); ?>
         </label>
 

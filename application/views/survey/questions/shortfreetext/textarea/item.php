@@ -13,20 +13,21 @@
  */
 ?>
 
-<p class='question answer-item text-item <?php echo $extraclass;?>'>
+<!-- Short free text, textarea item -->
+<p class='question answer-item text-item <?php echo $extraclass;?>' >
     <label for='<?php echo $freeTextId;?>' class='hide label'>
         <?php echo $labelText;?>
     </label>
 
-<textarea
-    class="form-control  textarea '.$kpclass.'"
-    name="<?php echo $name;?>"
-    id="<?php echo $freeTextId;?>"
-    rows="<?php echo $drows; ?>"
-    cols="<?php echo $tiwidth; ?>"
-    <?php echo $maxlength; ?>
-    onkeyup="<?php echo $checkconditionFunction; ?>"
->
-<?php echo $dispVal; ?>
-</textarea>
+    <textarea
+        class="form-control  textarea <?php echo $kpclass; ?>"
+        name="<?php echo $name;?>"
+        id="<?php echo $freeTextId;?>"
+        rows="<?php echo $drows; ?>"
+        cols="<?php echo $tiwidth; ?>"
+        <?php echo $maxlength; ?>
+        onkeyup="<?php echo $checkconditionFunction; ?>"
+    >
+    <?php echo $dispVal; ?>
+    </textarea>
 </p>

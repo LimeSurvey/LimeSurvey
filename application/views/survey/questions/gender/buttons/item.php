@@ -17,7 +17,7 @@
             <span class="fa fa-venus lead gender-icon"  ></span>
             <span class="gender-text">
                 <?php eT('Female');?>
-            <span>
+            </span>
         </button>
 
         <button class="btn btn-info btn-lg ls-icons" type="button"  data-id="answer<?php echo $name;?>M" >
