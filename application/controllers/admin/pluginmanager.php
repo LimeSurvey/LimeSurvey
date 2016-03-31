@@ -60,8 +60,12 @@ class PluginManager extends Survey_Common_Action
             }
         }
 
+        if(Yii::app()->request->getParam('pageSize')) {
+            Yii::app()->user->setState('pageSize', intval(Yii::app()->request->getParam('pageSize')));
+        }
+
         $aData['fullpagebar']['returnbutton']['url'] = 'index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('Close');
+        $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin panel');
         $aData['data'] = $data;
         $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
     }

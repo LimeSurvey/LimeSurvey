@@ -8,7 +8,7 @@
 */
 
 ?>
-<?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
+<?php $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize'])); ?>
 
 <h3 class="pagetitle"><?php eT('Plugin manager'); ?></h3>
 <div style="width: 75%; margin: auto;">
@@ -16,13 +16,41 @@
     /* @var $this ConfigController */
     /* @var $dataProvider CActiveDataProvider */
 
-    $dataProvider = new CArrayDataProvider($data);
+    $sort = new CSort();
+    $sort->attributes = array(
+        'name'=>array(
+            'asc'=> 'name',
+            'desc'=> 'name desc',
+        ),
+        'description'=>array(
+            'asc'=> 'description',
+            'desc'=> 'description desc',
+        ),
+        'status'=>array(
+            'asc'=> 'active',
+            'desc'=> 'active desc',
+            'default'=> 'desc',
+        ),
+    );
+    $sort->defaultOrder = array(
+        'name'=>CSort::SORT_ASC,
+    );
+
+    $providerOptions = array(
+        'pagination'=>array(
+            'pageSize'=>$pageSize,
+        ),
+        'sort'=>$sort,
+        'caseSensitiveSort'=> false,
+    );
+
+    $dataProvider = new CArrayDataProvider($data, $providerOptions);
 
     $gridColumns = array(
         array(// display the status
-            'class' => 'CDataColumn',
             'header' => gT('Status'),
             'type' => 'html',
+            'name' => 'status',
             //'value' => function($data) { return ($data['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Active'), array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Inactive'), array('width' => 32, 'height' => 32))); }
             'value' => function($data)
             {
@@ -36,10 +64,18 @@
                 }
             }
         ),
+        array(// display the 'name' attribute
+            'header' => gT('Plugin'),
+            'name' => 'name'
+        ),
+        array(// display the 'description' attribute
+            'header' => gT('Description'),
+            'name' => 'description'
+        ),
         array(// display the activation link
-            'class' => 'CDataColumn',
-            'type' => 'raw',
+            'type' => 'html',
             'header' => gT('Action'),
+            'name' => 'action',
             'value' => function($data) {
                 if ($data['active'] == 0)
                 {
@@ -54,16 +90,6 @@
                 return $output;
             }
         ),
-        array(// display the 'name' attribute
-            'class' => 'CDataColumn',
-            'header' => gT('Plugin'),
-            'name' => 'name'
-        ),
-        array(// display the 'description' attribute
-            'class' => 'CDataColumn',
-            'header' => gT('Description'),
-            'name' => 'description'
-        ),
     );
 
     /*
@@ -77,6 +103,7 @@
 
     $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider'=>$dataProvider,
+        'id' => 'plugins-grid',
         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
             CHtml::dropDownList(
                 'pageSize',
@@ -84,8 +111,15 @@
                 Yii::app()->params['pageSizeOptions'],
                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
         'columns'=>$gridColumns,
-        'rowCssClassExpression'=> function ($data, $row) { return ($row % 2 ? 'even' : 'odd') . ' ' . ($data['new']==1 ? "new" : "old"); },
-        'itemsCssClass' => 'items table-condensed table-bordered'
     ));
     ?>
 </div>
+
+<script type="text/javascript">
+jQuery(function($) {
+    // To update rows per page via ajax
+    $(document).on("change", '#pageSize', function() {
+        $.fn.yiiGridView.update('plugins-grid',{ data:{ pageSize: $(this).val() }});
+    });
+});
+</script>
