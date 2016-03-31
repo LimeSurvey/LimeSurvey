@@ -253,6 +253,7 @@ class RegisterController extends LSYii_Controller {
         $event->set('from', $sFrom);
         $event->set('bounce',$sBounce );
         $event->set('token', $oToken->attributes);
+        App()->getPluginManager()->dispatchEvent($event);
         $aMail['subject'] = $event->get('subject');
         $aMail['message'] = $event->get('body');
         $sTo = $event->get('to');
