@@ -3093,11 +3093,22 @@ function do_multiplenumeric($ia)
                 $sValue = rtrim(rtrim($sValue,"0"),".");
                 $sValue = str_replace('.',$sSeparator,$sValue);
             }
-
+            
+            if (trim($aQuestionAttributes['num_value_int_only'])==1)
+            {
+                $extraclass .=" integeronly";
+                $answertypeclass = " integeronly";
+                $integeronly=1;
+            }
+            else
+            {
+                $integeronly=0;
+            }
 
             $itemDatas = array(
                 'qid'=>$ia[0],
                 'extraclass'=>$extraclass,
+                'answertypeclass'=>$answertypeclass,
                 'sDisplayStyle'=>$sDisplayStyle,
                 'kpclass'=>$kpclass,
                 'alert'=>$alert,
@@ -3114,7 +3125,7 @@ function do_multiplenumeric($ia)
                 'dispVal'=>$sValue,
                 'maxlength'=>$maxlength,
                 'labelText'=>$labelText,
-                'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+                'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type, \'onchange\','.$integeronly.')',
                 'slider_orientation' => $slider_orientation,
                 'slider_step'    => $slider_step    ,
                 'slider_min'     => $slider_min     ,
@@ -3129,6 +3140,7 @@ function do_multiplenumeric($ia)
                 'slider_showminmax' => $aQuestionAttributes['slider_showminmax'],
                 'sSeparator'=> $sSeparator,
                 'sUnformatedValue'=> $sUnformatedValue,
+                'integeronly'=> $integeronly,
             );
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/item', $itemDatas, true);
 

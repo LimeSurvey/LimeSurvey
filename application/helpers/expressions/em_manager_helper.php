@@ -2615,7 +2615,7 @@
                                     $subqValidSelector = $sq['jsVarName_on'];
                                 case 'N': //NUMERICAL QUESTION TYPE
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-                                    $sq_eqn = 'is_int('.$sq_name.') || is_empty('.$sq_name.')';
+                                    $sq_eqn = '( is_int('.$sq_name.') || is_empty('.$sq_name.') )';
                                     break;
                                 default:
                                     break;
