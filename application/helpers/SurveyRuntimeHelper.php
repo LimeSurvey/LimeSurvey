@@ -352,6 +352,8 @@ class SurveyRuntimeHelper {
         $sTemplatePath = $oTemplate->path;
         $sTemplateViewPath = $oTemplate->viewPath;
 
+        $flashmessage = makeFlashMessage();
+
         //$sTemplatePath=getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR;
 
         // TODO : check if necessary :
@@ -720,7 +722,6 @@ class SurveyRuntimeHelper {
                     sendCacheHeaders();
                     doHeader();
 
-                    $flashmessage = makeFlashMessage();
 
                     echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata, 'SubmitStartpageI', false, NULL, array(), true );
 
@@ -892,7 +893,6 @@ class SurveyRuntimeHelper {
             }
         }
 
-        $flashmessage = makeFlashMessage();
         $redata = compact(array_keys(get_defined_vars()));
 
         // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
@@ -1123,7 +1123,6 @@ class SurveyRuntimeHelper {
         // First call to templatereplace
 
         echo "<!-- SurveyRunTimeHelper -->";
-        $flashmessage = makeFlashMessage();
         $redata = compact(array_keys(get_defined_vars()));
         echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"), array(), $redata);
         $aPopup=array(); // We can move this part where we want now
