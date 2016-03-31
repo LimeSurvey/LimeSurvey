@@ -4202,7 +4202,7 @@ function do_array_10point($ia)
         $inputnames[]=$myfname;
         $fn++;
     }
-    //$answer .=  $answer_t_content . "\t\n</tbody>\n</table></div>\n";
+    $answer .=  $answer_t_content;
     $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/close_table', array(), true);
     return array($answer, $inputnames);
 }
