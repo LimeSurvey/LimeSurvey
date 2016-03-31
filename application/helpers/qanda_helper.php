@@ -4148,7 +4148,7 @@ function do_array_10point($ia)
 
     $answer_t_content = '';
     $trbc = '';
-    foreach ($aSubquestions as $ansrow)
+    foreach ($aSubquestions as $j => $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
         $answertext = $ansrow['question'];
@@ -4169,7 +4169,8 @@ function do_array_10point($ia)
                     'answertext'=>$answertext,
                     'value'=>$value,
                     'error'=>$error,
-                    'sDisplayStyle'=>$sDisplayStyle
+                    'sDisplayStyle'=>$sDisplayStyle,
+                    'zebra' => 2 - ($j % 2)
                 ), true);
 
 
