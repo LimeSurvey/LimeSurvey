@@ -4213,8 +4213,7 @@ function do_array_10point($ia)
     return array($answer, $inputnames);
 }
 
-// ---------------------------------------------------------------
-// TMSW TODO - Can remove DB query by passing in answer list from EM
+
 function do_array_yesnouncertain($ia)
 {
     global $thissurvey;
@@ -4327,78 +4326,71 @@ function do_array_yesnouncertain($ia)
     return array($answer, $inputnames);
 }
 
-// TMSW TODO - Can remove DB query by passing in answer list from EM
+
 function do_array_increasesamedecrease($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
-    $extraclass ="";
+    $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
+    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $extraclass              = "";
+    $caption                 = gT("An array with sub-question on each line. The answers are increase, same, decrease and are contained in the table header. ");
+    $checkconditionFunction  = "checkconditions";
+    $qquery                  = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
+    $qresult                 = dbExecuteAssoc($qquery);   //Checked
+    $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $answerwidth             = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:20;
+    $cellwidth               = 3; // number of columns
 
-    $caption=gT("An array with sub-question on each line. The answers are increase, same, decrease and are contained in the table header. ");
-    $checkconditionFunction = "checkconditions";
-
-    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $qresult = dbExecuteAssoc($qquery);   //Checked
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    if (trim($aQuestionAttributes['answer_width'])!='')
-    {
-        $answerwidth=$aQuestionAttributes['answer_width'];
-    }
-    else
-    {
-        $answerwidth = 20;
-    }
-    $cellwidth  = 3; // number of columns
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
         $caption.=gT("The last cell are for no answer. ");
     }
+
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
-    foreach($qresult->readAll() as $qrow)
+    foreach ($qresult->readAll() as $qrow)
     {
         $other = $qrow['other'];
     }
-    if ($aQuestionAttributes['random_order']==1) {
+
+    if ($aQuestionAttributes['random_order']==1)
+    {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
     }
     else
     {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
-    $ansresult = dbExecuteAssoc($ansquery);  //Checked
-    $aSubquestions = $ansresult->readAll();
-    $anscount = count($aSubquestions);
 
-    $fn = 1;
+    $ansresult      = dbExecuteAssoc($ansquery);  //Checked
+    $aSubquestions  = $ansresult->readAll();
+    $anscount       = count($aSubquestions);
+    $fn             = 1;
+    $odd_even       = '';
+    $sColumns       = "";
 
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/header', array(
-        'extraclass'=>$extraclass,
-        'answerwidth'=>$answerwidth,
-    ), true);
-
-    $odd_even = '';
     for ($xc=1; $xc<=3; $xc++)
     {
-        $odd_even = alternation($odd_even);
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
-        //$answer .= "<col class=\"$odd_even\" style='width: $cellwidth%;'/>\n";
+        $odd_even  = alternation($odd_even);
+        $sColumns .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/columns/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        $odd_even = alternation($odd_even);
-        //$answer .= "<col class=\"col-no-answer $odd_even\" style='width: $cellwidth%;' />\n";
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
+        $odd_even  = alternation($odd_even);
+        $sColumns .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/columns/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
     }
 
-    $show_no_answer = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)?true:false; //Question is not mandatory
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/open_table_head', array('show_no_answer'=>$show_no_answer), true);
+    $no_answer  = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)?true:false; //Question is not mandatory
 
-    $trbc = '';
-    $answer_body = '';
-    foreach($aSubquestions as $i => $ansrow)
+    $sHeaders        = Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/rows/cells/thead', array('no_answer'=>$no_answer), true);
+
+    $trbc            = '';
+    $answer_body     = '';
+
+    // rows
+    $sRows = '';
+    foreach ($aSubquestions as $i => $ansrow)
     {
         $myfname        = $ia[1].$ansrow['title'];
         $answertext     = $ansrow['question'];
@@ -4411,7 +4403,7 @@ function do_array_increasesamedecrease($ia)
         $NAchecked      = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
         $no_answer      = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)?true:false;
 
-        $answer_body .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/tr', array(
+        $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/rows/answer_row', array(
                     'myfname'=> $myfname,
                     'sDisplayStyle'=> $sDisplayStyle,
                     'answertext'=> $answertext,
@@ -4429,7 +4421,16 @@ function do_array_increasesamedecrease($ia)
         $inputnames[]=$myfname;
         $fn++;
     }
-    $answer .=  $answer_body . Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/close_table', array(),  true);
+
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/answer', array(
+        'extraclass' => $extraclass,
+        'answerwidth'=> $answerwidth,
+        'sColumns'   => $sColumns,
+        'sHeaders'   => $sHeaders,
+        'sRows'      => $sRows,
+        'anscount'   => $anscount,
+    ), true);
+
     return array($answer, $inputnames);
 }
 
