@@ -1,5 +1,7 @@
 <?php
 /**
+ * Generate a row for the table
+ *
  * @var $myfname
  * @var $error
  * @var $answertext
@@ -11,6 +13,8 @@
  * @var $formatedRowTotal
  */
 ?>
+
+<!-- answer_row -->
 <tr id="javatbd<?php echo $myfname;?>" class="<?php //TODO: alternation ?> well subquestion-list questions-list">
     <th class="answertext">
         <?php if($error): ?>
@@ -45,3 +49,4 @@
     <!-- Formated total -->
     <?php echo $formatedRowTotal; ?>
 </tr>
+<!-- end of answer_row -->

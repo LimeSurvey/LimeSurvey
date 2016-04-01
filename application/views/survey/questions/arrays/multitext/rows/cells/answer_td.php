@@ -1,5 +1,7 @@
 <?php
 /**
+ * Answer cell
+ *
  * @var $ld
  * @var $myfname2
  * @var $labelText $labelans[$thiskey]
@@ -9,7 +11,8 @@
  * @var $value
  */
 ?>
-<!-- answer td -->
+
+<!-- answer_td -->
 <td class="answer-cell-4 answer_cell_00<?php echo $ld;?> answer-item text-item">
     <label class="hidden-md hidden-lg read" for="answer<?php echo $myfname2; ?>">
         <?php echo $labelText;?>
@@ -30,3 +33,4 @@
         value="<?php echo $value;?>"
     />
 </td>
+<!-- end of answer_td -->

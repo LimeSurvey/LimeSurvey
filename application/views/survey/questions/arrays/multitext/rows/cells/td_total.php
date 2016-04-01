@@ -1,9 +1,10 @@
 <?php
 /**
+ * Cell for total
  * @var $empty
  */
 ?>
-<!-- row_total -->
+<!-- td_total -->
 <td class="total information-item">
     <?php if($empty):?>
         &nbsp;
@@ -12,3 +13,4 @@
         <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled form-control" />
     <?php endif;?>
 </td>
+<!-- end of td_total -->
