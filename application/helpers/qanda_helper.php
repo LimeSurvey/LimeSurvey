@@ -4106,11 +4106,11 @@ function do_array_10point($ia)
     $anscount = count($aSubquestions);
 
     $fn = 1;
-    $headerDatas = array(
-        'extraclass'=>$extraclass,
-        'answerwidth' => $answerwidth
-    );
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/header', $headerDatas, true);
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/header', array(
+                        'extraclass'=>$extraclass,
+                        'answerwidth' => $answerwidth
+                    ),
+                true);
 
     $odd_even = '';
     for ($xc=1; $xc<=10; $xc++)
@@ -4395,6 +4395,7 @@ function do_array_increasesamedecrease($ia)
     $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/open_table_head', array('show_no_answer'=>$show_no_answer), true);
 
     $trbc = '';
+    $answer_body = '';
     foreach($aSubquestions as $i => $ansrow)
     {
         $myfname        = $ia[1].$ansrow['title'];
@@ -4408,7 +4409,7 @@ function do_array_increasesamedecrease($ia)
         $NAchecked      = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
         $no_answer      = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)?true:false;
 
-        $answer_body = Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/tr', array(
+        $answer_body .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/increasesamedecrease/tr', array(
                     'myfname'=> $myfname,
                     'sDisplayStyle'=> $sDisplayStyle,
                     'answertext'=> $answertext,

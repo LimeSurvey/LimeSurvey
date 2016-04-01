@@ -1,0 +1,25 @@
+<?php
+/**
+ * @var $i
+ * @var $myfname
+ * @var $CHECKED
+ * @var $checkconditionFunction
+ * @var $value
+ */
+?>
+
+<!-- td_input -->
+<td data-title='<?php echo $i;?>' class="answer-cell-2 answer_cell_00<?php echo $i;?> answer-item radio-item">
+    <label for="answer<?php echo $myfname;?>-<?php echo $i; ?>">
+        <input
+            class="radio"
+            type="radio"
+            name="<?php echo $myfname; ?>"
+            id="answer<?php echo $myfname; ?>-<?php echo $i;?>"
+            value="<?php echo $value; ?>"
+            <?php echo $CHECKED;?>
+            onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
+         />
+    </label>
+</td>
+<!-- end of td_input -->
