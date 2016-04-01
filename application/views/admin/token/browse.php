@@ -40,7 +40,7 @@
             if($aData['mandatory'] == 'Y'){
                 $customEdit = ', editrules:{custom:true, custom_func:checkMandatoryAttr}';
             }
-            $uidNames[] = '{ "name":"' . $sFieldname . '", "index":"' . $sFieldname . '", "sorttype":"string", "sortable": true, "align":"left", "editable":true, "width":75' . $customEdit . '}';
+            $uidNames[] = '{ "name":"' . $sFieldname . '", "index":"' . $sFieldname . '", "sorttype":"string", "sortable": true, "align":"left", "editable":true, "width":100' . $customEdit . '}';
             $aColumnHeaders[]=$aData['description'];
         }
         $columnNames='"'.implode('","',$aColumnHeaders).'"';
@@ -120,7 +120,7 @@
     { "name":"emailstatus", "index":"emailstatus","align":"left","width": 80,"sorttype":"string", "sortable": true, "editable":true},
     { "name":"token", "index":"token","align":"left", "sorttype":"int", "sortable": true,"width":150,"editable":true},
     { "name":"language", "index":"language","align":"left", "sorttype":"int", "sortable": true,"width":100,"editable":true, "formatter":'select', "edittype":"select", "editoptions":{"value":"<?php echo $aLanguageNames; ?>"}},
-    { "name":"sent", "index":"sent","align":"left", "sorttype":"int", "sortable": true,"width":130,"editable":true},
+    { "name":"sent", "index":"sent","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
     { "name":"remindersent", "index":"remindersent","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
     { "name":"remindercount", "index":"remindercount","align":"right", "sorttype":"int", "sortable": true,"width":80,"editable":true, "classes": "jqgrid-tokens-number-padding"},
     { "name":"completed", "index":"completed","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},

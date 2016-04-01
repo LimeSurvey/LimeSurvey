@@ -245,7 +245,7 @@ $(document).ready(function() {
                 e.metaKey = false;
             }).selectable({
                 tolerance: 'fit'
-            })
+            });
         }
     },{
         multipleSearch:true,
