@@ -1,5 +1,7 @@
 <?php
 /**
+ * Generate a row for the table
+ *
  * @var $myfname
  * @var $sDisplayStyle
  * @var $answertext
@@ -13,7 +15,8 @@
  * @var $error
  */
 ?>
-<!-- tr -->
+
+<!-- answer_row -->
 <tr id="javatbd<?php echo $myfname;?>" class="well answers-list radio-list array<?php echo $zebra; ?>"  <?php echo $sDisplayStyle; ?>>
     <!-- Answer text /  Errors -->
     <th class="answertext">
@@ -89,3 +92,4 @@
         </td>
     <?php endif;?>
 </tr>
+<!-- end of answer_row -->

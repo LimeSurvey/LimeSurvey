@@ -4117,14 +4117,11 @@ function do_array_10point($ia)
         $sColumns .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/columns/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
     }
 
-    // => col or answer
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         $sColumns .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/columns/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
     }
-
-
 
     $sHeaders = '';
     for ($xc=1; $xc<=10; $xc++)
@@ -4205,7 +4202,6 @@ function do_array_10point($ia)
         $fn++;
     }
 
-
     $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/answer', array(
                         'extraclass'    => $extraclass,
                         'answerwidth'   => $answerwidth,
@@ -4222,34 +4218,25 @@ function do_array_10point($ia)
 function do_array_yesnouncertain($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
-    $extraclass ="";
+    $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
+    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $extraclass              = "";
+    $caption                 = gT("An array with sub-question on each line. The answers are yes, no, uncertain and are in the table header. ");
+    $checkconditionFunction  = "checkconditions";
+    $qquery                  = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
+    $qresult                 = dbExecuteAssoc($qquery);    //Checked
+    $qrow                    = $qresult->readAll();
+    $other                   = isset($qrow['other']) ? $qrow['other'] : '';
+    $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $answerwidth             = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:20;
+    $cellwidth               = 3; // number of columns
 
-    $caption=gT("An array with sub-question on each line. The answers are yes, no, uncertain and are in the table header. ");
-    $checkconditionFunction = "checkconditions";
-
-    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $qresult = dbExecuteAssoc($qquery);    //Checked
-    $qrow = $qresult->readAll();
-    $other = isset($qrow['other']) ? $qrow['other'] : '';
-    //// REM : This should generate a bug...
-    //$aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    if (trim($aQuestionAttributes['answer_width'])!='')
-    {
-        $answerwidth=$aQuestionAttributes['answer_width'];
-    }
-    else
-    {
-        $answerwidth = 20;
-    }
-    $cellwidth  = 3; // number of columns
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
         $caption.=gT("The last cell are for no answer. ");
     }
+
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
     if ($aQuestionAttributes['random_order']==1)
@@ -4260,29 +4247,29 @@ function do_array_yesnouncertain($ia)
     {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
-    $ansresult = dbExecuteAssoc($ansquery);    //Checked
-    $aSubquestions = $ansresult->readAll();
-    $anscount = count($aSubquestions);
-    $fn = 1;
 
-    $answer = Yii::app()->getController()->renderPartial(
-                '/survey/questions/arrays/yesnouncertain/header',
-                array('answerwidth'=>$answerwidth, 'extraclass'=>$extraclass), true);
+    $ansresult      = dbExecuteAssoc($ansquery);    //Checked
+    $aSubquestions  = $ansresult->readAll();
+    $anscount       = count($aSubquestions);
+    $fn             = 1;
 
     $odd_even = '';
+    $sColumns = '';
+
     for ($xc=1; $xc<=3; $xc++)
     {
-        $odd_even = alternation($odd_even);
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/yesnouncertain/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
+        $odd_even  = alternation($odd_even);
+        $sColumns .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/yesnouncertain/columns/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
     }
+
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        $odd_even = alternation($odd_even);
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/yesnouncertain/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth, 'no_answer'=>true ), true);
+        $odd_even  = alternation($odd_even);
+        $sColumns .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/yesnouncertain/columns/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth, 'no_answer'=>true ), true);
     }
 
     $no_answer = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)?true:false;
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/yesnouncertain/thead', array('no_answer'=>$no_answer, 'anscount'=>$anscount), true);
+    $sHeaders  = Yii::app()->getController()->renderPartial('/survey/questions/arrays/yesnouncertain/rows/cells/thead', array('no_answer'=>$no_answer, 'anscount'=>$anscount), true);
 
     $answer_t_content = '';
     if ($anscount==0)
@@ -4291,7 +4278,9 @@ function do_array_yesnouncertain($ia)
     }
     else
     {
-        foreach($aSubquestions as $i => $ansrow)
+        $sRows = '';
+
+        foreach ($aSubquestions as $i => $ansrow)
         {
             $myfname = $ia[1].$ansrow['title'];
             $answertext = $ansrow['question'];
@@ -4299,37 +4288,42 @@ function do_array_yesnouncertain($ia)
             $error = ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ))?true:false;
 
             // Get array_filter stuff
-            //list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
             $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
-
             $no_answer = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)?true:false;
-            $value = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
-            $Ychecked = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')?'CHECKED':'';
-            $Uchecked = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'U')?'CHECKED':'';
-            $Nchecked = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'N')?'CHECKED':'';
+            $value     = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
+            $Ychecked  = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')?'CHECKED':'';
+            $Uchecked  = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'U')?'CHECKED':'';
+            $Nchecked  = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'N')?'CHECKED':'';
             $NAchecked = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
 
-            $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/yesnouncertain/tr', array(
-                        'myfname'=> $myfname,
-                        'sDisplayStyle'=> $sDisplayStyle,
-                        'answertext'=> $answertext,
-                        'Ychecked'=> $Ychecked,
-                        'Uchecked'=> $Uchecked,
-                        'Nchecked'=>$Nchecked,
-                        'NAchecked'=>$NAchecked,
-                        'value'=>$value,
-                        'checkconditionFunction'=>$checkconditionFunction,
-                        'error'=>$error,
-                        'no_answer'=>$no_answer,
-                        'zebra' => 2 - ($i % 2)
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/yesnouncertain/rows/answer_row', array(
+                        'myfname'                => $myfname,
+                        'sDisplayStyle'          => $sDisplayStyle,
+                        'answertext'             => $answertext,
+                        'Ychecked'               => $Ychecked,
+                        'Uchecked'               => $Uchecked,
+                        'Nchecked'               => $Nchecked,
+                        'NAchecked'              => $NAchecked,
+                        'value'                  => $value,
+                        'checkconditionFunction' => $checkconditionFunction,
+                        'error'                  => $error,
+                        'no_answer'              => $no_answer,
+                        'zebra'                  => 2 - ($i % 2)
                     ), true);
-
             $inputnames[]=$myfname;
             $fn++;
         }
     }
-    //$answer .=  $answer_t_content . "\t\n</tbody>\n</table>\n";
-    $answer .= $answer_t_content . Yii::app()->getController()->renderPartial('/survey/questions/arrays/yesnouncertain/close_table', array(), true);
+
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/yesnouncertain/answer', array(
+                    'answerwidth' => $answerwidth,
+                    'extraclass'  => $extraclass,
+                    'sColumns'    => $sColumns,
+                    'sHeaders'    => $sHeaders,
+                    'sRows'       => $sRows,
+                    'anscount'    => $anscount,
+                ), true);
+
     return array($answer, $inputnames);
 }
 
