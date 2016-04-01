@@ -126,7 +126,7 @@
                     </div>
 
                     <div class='form-group'>
-                          <?php echo CHtml::label(gT("Bypass date control before sending email."),'bypassdatecontrol', array('title'=>gt("If some tokens have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),'unescaped', 'class' => 'control-label col-sm-2')); ?>
+                          <?php echo CHtml::label(gT("Bypass date control before sending email:"),'bypassdatecontrol', array('title'=>gt("If some tokens have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),'unescaped', 'class' => 'control-label col-sm-2')); ?>
                           <div class='col-sm-1'>
                               <?php echo CHtml::checkbox('bypassdatecontrol', false); ?>
                           </div>
