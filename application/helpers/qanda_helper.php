@@ -3394,6 +3394,8 @@ function do_shortfreetext($ia)
             'dispVal'=>$dispVal,
             'maxlength' => $maxlength,
             'kpclass'=>$kpclass,
+
+            // Not used when textarea? "Display rows" in advanced settings.
             'prefix'=>$prefix,
             'suffix'=>$suffix,
             'sm_col' => decide_sm_col($prefix, $suffix)
@@ -6301,7 +6303,7 @@ function decide_sm_col($prefix, $suffix)
 {
     if ($prefix !== '' && $suffix !== '')
     {
-        // Each -fix has 2 col space
+        // Each prefix/suffix has 2 col space
         return 8;
     }
     elseif ($prefix !== '' || $suffix !=='')

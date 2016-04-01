@@ -25,11 +25,11 @@
 
         <!-- Prefix -->
         <?php if ($prefix !== ''): ?>
-            <span class='col-xs-12 col-sm-2 text-right'><?php echo $prefix; ?></span>
+            <span class='col-xs-12 col-sm-2 prefix-text-right'><?php echo $prefix; ?></span>
         <?php endif; ?>
 
         <!-- Input -->
-        <div class='col-xs-12 col-sm-<?php echo $sm_col; ?>'>
+        <div class='col-xs-12 col-sm-<?php echo max($sm_col - 5, 6); ?>'>
             <input
                 class="form-control text <?php echo $kpclass;?>"
                 type="text"

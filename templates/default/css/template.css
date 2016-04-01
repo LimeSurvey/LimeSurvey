@@ -840,6 +840,10 @@ table {
     margin-top: 3em;
 }
 
+.prefix-text-right {
+    text-align: right;
+}
+
 /**
  * No more tables
  * OBS: Media specific CSS should be last in this file.
@@ -1000,6 +1004,10 @@ table {
         text-align: left;
     }
 
+    /* As above, collapse prefix/suffix to above/below input */
+    .prefix-text-right {
+        text-align: left;
+    }
 
 }
 
