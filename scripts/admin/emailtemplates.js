@@ -82,6 +82,12 @@ function editAttachmentRelevance(e)
  */
 function addAttachment(target, url, relevance, size)
 {
+    // This happens when email body editor is ck stuff
+    if (target.length == 2)
+    {
+        target = target[1];
+    }
+
     if (typeof relevance == 'undefined')
     {
         var relevance = '1';
