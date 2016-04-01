@@ -81,9 +81,6 @@ function retrieveAnswers($ia)
     //globalise required config variables
     global $thissurvey; //These are set by index.php
 
-    //
-
-
     //DISPLAY
     $display = $ia[7];
 
@@ -103,19 +100,19 @@ function retrieveAnswers($ia)
 
     // TMSW - populate this directly from LEM? - this this is global
     $question_text = array(
-    'all' => '' // All has been added for backwards compatibility with templates that use question_start.pstpl (now redundant)
-    ,'text' => $qtitle
-    ,'code' => $ia[2]
-    ,'number' => $number
-    ,'help' => ''
-    ,'mandatory' => ''
-    ,'man_message' => ''
-    ,'valid_message' => ''
-    ,'file_valid_message' => ''
-    ,'class' => ''
-    ,'man_class' => ''
-    ,'input_error_class' => ''// provides a class.
-    ,'essentials' => ''
+        'all' => '' // All has been added for backwards compatibility with templates that use question_start.pstpl (now redundant)
+        ,'text' => $qtitle
+        ,'code' => $ia[2]
+        ,'number' => $number
+        ,'help' => ''
+        ,'mandatory' => ''
+        ,'man_message' => ''
+        ,'valid_message' => ''
+        ,'file_valid_message' => ''
+        ,'class' => ''
+        ,'man_class' => ''
+        ,'input_error_class' => ''// provides a class.
+        ,'essentials' => ''
     );
 
     // We get the question type name if defined
@@ -200,6 +197,7 @@ function retrieveAnswers($ia)
                     $qtitle .= Yii::app()->getController()->renderPartial('/survey/question_help/help', array('message'=>$message, 'classes'=>''), true);
                 }
                 break;
+
             case 'P': //Multiple choice with comments checkbox + text
                 $values=do_multiplechoice_withcomments($ia);
                 if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
@@ -5044,13 +5042,6 @@ function do_array_multitext($ia)
                 $error = false;
                 if ($emptyresult == 1)
                 {
-                    /*
-                    $answertext ='
-                                <div class="alert alert-danger" role="alert">'.
-                                        $answertext
-                                    .'
-                                </div>';
-                    */
                     $error = true;
                 }
             }
@@ -5155,7 +5146,7 @@ function do_array_multitext($ia)
 
     }
     else
-    {        
+    {
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/empty_error', array(), true);
         $inputnames='';
     }
@@ -5168,106 +5159,116 @@ function do_array_multitext($ia)
 function do_array_multiflexi($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
-    $repeatheadings = Yii::app()->getConfig("repeatheadings");
-    $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
-    $extraclass ="";
-    $answertypeclass = "";
 
-    $caption=gT("An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. ");
-    $checkconditionFunction = "fixnum_checkconditions";
-    $defaultvaluescript = '';
-    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
-    $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
+    $aLastMoveResult            = LimeExpressionManager::GetLastMoveResult();
+    $aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $repeatheadings             = Yii::app()->getConfig("repeatheadings");
+    $minrepeatheadings          = Yii::app()->getConfig("minrepeatheadings");
+    $extraclass                 = "";
+    $answertypeclass            = "";
+    $caption                    = gT("An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. ");
+    $checkconditionFunction     = "fixnum_checkconditions";
+    $defaultvaluescript         = '';
+    $qquery                     = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
+    $other                      = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
 
+    /*
+     * Question Attributes
+     */
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    if (trim($aQuestionAttributes['multiflexible_max'])!='' && trim($aQuestionAttributes['multiflexible_min']) ==''){
-        $maxvalue=$aQuestionAttributes['multiflexible_max'];
-        $extraclass .=" maxvalue maxvalue-".trim($aQuestionAttributes['multiflexible_max']);
-        if(isset($minvalue['value']) && $minvalue['value'] == 0) {$minvalue = 0;} else {$minvalue=1;}
+
+    // Define min and max value
+    if (trim($aQuestionAttributes['multiflexible_max'])!='' && trim($aQuestionAttributes['multiflexible_min']) =='')
+    {
+        $maxvalue    =  $aQuestionAttributes['multiflexible_max'];
+        $minvalue    = (isset($minvalue['value']) && $minvalue['value'] == 0)?0:1;
+        $extraclass .= " maxvalue maxvalue-".trim($aQuestionAttributes['multiflexible_max']);
     }
-    if (trim($aQuestionAttributes['multiflexible_min'])!='' && trim($aQuestionAttributes['multiflexible_max']) ==''){
-        $minvalue=$aQuestionAttributes['multiflexible_min'];
-        $extraclass .=" minvalue minvalue-".trim($aQuestionAttributes['multiflexible_max']);
-        $maxvalue=$aQuestionAttributes['multiflexible_min'] + 10;
+
+    if (trim($aQuestionAttributes['multiflexible_min'])!='' && trim($aQuestionAttributes['multiflexible_max']) =='')
+    {
+        $minvalue    =  $aQuestionAttributes['multiflexible_min'];
+        $maxvalue    = $aQuestionAttributes['multiflexible_min'] + 10;
+        $extraclass .= " minvalue minvalue-".trim($aQuestionAttributes['multiflexible_max']);
     }
-    if (trim($aQuestionAttributes['multiflexible_min'])=='' && trim($aQuestionAttributes['multiflexible_max']) ==''){
-        if(isset($minvalue['value']) && $minvalue['value'] == 0) {$minvalue = 0;} else {$minvalue=1;}
-        $maxvalue=10;
+
+    if (trim($aQuestionAttributes['multiflexible_min'])=='' && trim($aQuestionAttributes['multiflexible_max']) =='')
+    {
+        $maxvalue   = 10;
+        $minvalue   = (isset($minvalue['value']) && $minvalue['value'] == 0)?0:1;
+
     }
-    if (trim($aQuestionAttributes['multiflexible_min']) !='' && trim($aQuestionAttributes['multiflexible_max']) !=''){
-        if($aQuestionAttributes['multiflexible_min'] < $aQuestionAttributes['multiflexible_max']){
-            $minvalue=$aQuestionAttributes['multiflexible_min'];
-            $maxvalue=$aQuestionAttributes['multiflexible_max'];
+
+    if (trim($aQuestionAttributes['multiflexible_min']) !='' && trim($aQuestionAttributes['multiflexible_max']) !='')
+    {
+        if ($aQuestionAttributes['multiflexible_min'] < $aQuestionAttributes['multiflexible_max'])
+        {
+            $minvalue   = $aQuestionAttributes['multiflexible_min'];
+            $maxvalue   = $aQuestionAttributes['multiflexible_max'];
         }
     }
 
-    if (trim($aQuestionAttributes['multiflexible_step'])!='' && $aQuestionAttributes['multiflexible_step'] > 0)
-    {
-        $stepvalue=$aQuestionAttributes['multiflexible_step'];
-    }
-    else
-    {
-        $stepvalue=1;
-    }
+    $stepvalue = (trim($aQuestionAttributes['multiflexible_step'])!='' && $aQuestionAttributes['multiflexible_step'] > 0)?$aQuestionAttributes['multiflexible_step']:1;
 
     if($aQuestionAttributes['reverse']==1)
     {
-        $tmp = $minvalue;
-        $minvalue = $maxvalue;
-        $maxvalue = $tmp;
-        $reverse=true;
-        $stepvalue=-$stepvalue;
+        $tmp        = $minvalue;
+        $minvalue   = $maxvalue;
+        $maxvalue   = $tmp;
+        $reverse    = true;
+        $stepvalue  = -$stepvalue;
     }
     else
     {
-        $reverse=false;
+        $reverse    = false;
     }
 
-    $checkboxlayout=false;
-    $inputboxlayout=false;
+    $checkboxlayout = false;
+    $inputboxlayout = false;
+
     if ($aQuestionAttributes['multiflexible_checkbox']!=0)
     {
-        $minvalue=0;
-        $maxvalue=1;
-        $checkboxlayout=true;
-        $answertypeclass =" checkbox";
-        $caption.=gT("Check or uncheck the answer for each subquestion. ");
+        $minvalue            =  0;
+        $maxvalue            =  1;
+        $checkboxlayout      =  true;
+        $answertypeclass     =  " checkbox";
+        $caption            .= gT("Check or uncheck the answer for each subquestion. ");
     }
     elseif ($aQuestionAttributes['input_boxes']!=0 )
     {
-        $inputboxlayout=true;
-        $answertypeclass .=" numeric-item text";
-        $extraclass .= " numberonly";
-        $caption.=gT("Each answers are a number. ");
+        $inputboxlayout      = true;
+        $answertypeclass    .= " numeric-item text";
+        $extraclass         .= " numberonly";
+        $caption            .= gT("Each answers are a number. ");
     }
     else
     {
-        $answertypeclass =" dropdown";
-        $caption.=gT("Select the answer for each subquestion. ");
+        $answertypeclass     = " dropdown";
+        $caption            .= gT("Select the answer for each subquestion. ");
     }
-    if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
+
+    if (ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
     {
-        $repeatheadings = intval($aQuestionAttributes['repeat_headings']);
-        $minrepeatheadings = 0;
+        $repeatheadings     = intval($aQuestionAttributes['repeat_headings']);
+        $minrepeatheadings  = 0;
     }
+
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maximum_chars= intval(trim($aQuestionAttributes['maximum_chars']));
-        $maxlength= "maxlength='{$maximum_chars}' ";
-        $extraclass .=" maxchars maxchars-".$maximum_chars;
+        $maximum_chars   = intval(trim($aQuestionAttributes['maximum_chars']));
+        $maxlength       = "maxlength='{$maximum_chars}' ";
+        $extraclass     .=" maxchars maxchars-".$maximum_chars;
     }
     else
     {
-        $maxlength= "";
+        $maxlength  = "";
     }
 
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
-        $kpclass = " num-keypad";
+        $kpclass     = " num-keypad";
         $extraclass .=" inputkeypad";
     }
     else
@@ -5277,62 +5278,72 @@ function do_array_multiflexi($ia)
 
     if (trim($aQuestionAttributes['answer_width'])!='')
     {
-        $answerwidth=$aQuestionAttributes['answer_width'];
+        $answerwidth    = $aQuestionAttributes['answer_width'];
         $useAnswerWidth = true;
     }
     else
     {
-        $answerwidth=20;
+        $answerwidth    = 20;
 
         // If answerwidth is not given, we want to default to Bootstrap column.
         // Otherwise bug on phone screen.
         $useAnswerWidth = false;
     }
-    $columnswidth=100-($answerwidth*2);
 
-    $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
-    $lresult = dbExecuteAssoc($lquery);
-    $aQuestions=$lresult->readAll();
-    $labelans=array();
-    $labelcode=array();
+    $columnswidth   = 100-($answerwidth*2);
+    $lquery         = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
+    $lresult        = dbExecuteAssoc($lquery);
+    $aQuestions     = $lresult->readAll();
+    $labelans       = array();
+    $labelcode      = array();
+
     foreach ($aQuestions as $lrow)
     {
-        $labelans[]=$lrow['question'];
-        $labelcode[]=$lrow['title'];
+        $labelans[]  =$lrow['question'];
+        $labelcode[] =$lrow['title'];
     }
+
     if ($numrows=count($labelans))
     {
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
-        $cellwidth=$columnswidth/$numrows;
+        $cellwidth  =   $columnswidth/$numrows;
+        $cellwidth  =   sprintf('%02d', $cellwidth);
+        $sQuery     = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." AND scale_id=0 AND question like '%|%'";
+        $iCount     = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
-        $cellwidth=sprintf('%02d', $cellwidth);
-
-        $sQuery = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." AND scale_id=0 AND question like '%|%'";
-        $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
-        if ($iCount>0) {
-            $right_exists=true;
-            $answerwidth=$answerwidth/2;
-            $caption.=gT("The last cell give some information. ");
-        } else {
-            $right_exists=false;
+        if ($iCount>0)
+        {
+            $right_exists    =  true;
+            $answerwidth     =  $answerwidth/2;
+            $caption        .=  gT("The last cell give some information. ");
         }
+        else
+        {
+            $right_exists   = false;
+        }
+
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-        if ($aQuestionAttributes['random_order']==1) {
+        if ($aQuestionAttributes['random_order']==1)
+        {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
         }
         else
         {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
+
         $ansresult = dbExecuteAssoc($ansquery)->readAll();  //Checked
+
         if (trim($aQuestionAttributes['parent_order']!=''))
         {
-            $iParentQID=(int) $aQuestionAttributes['parent_order'];
-            $aResult=array();
-            $sessionao = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['answer_order'];
+            $iParentQID = (int) $aQuestionAttributes['parent_order'];
+            $aResult    = array();
+            $sessionao  = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['answer_order'];
+
             foreach ($sessionao[$iParentQID] as $aOrigRow)
             {
-                $sCode=$aOrigRow['title'];
+                $sCode  = $aOrigRow['title'];
+
                 foreach ($ansresult as $aRow)
                 {
                     if ($sCode==$aRow['title'])
@@ -5341,230 +5352,184 @@ function do_array_multiflexi($ia)
                     }
                 }
             }
-            $ansresult=$aResult;
+            $ansresult  = $aResult;
         }
         $anscount = count($ansresult);
         $fn=1;
 
-        $mycols = "\t<colgroup class=\"col-responses\">\n"
-        //. "\n\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
-        . "\n\t<col class=\"answertext\"style='width: $answerwidth%;' />\n";
-
-        $answer_head_line = "\t<th >&nbsp;</th>\n";
-        $odd_even = '';
-        foreach ($labelans as $ld)
-        {
-            $answer_head_line .= "\t<th  class='th-11'>".$ld."</th>\n";
-            $odd_even = alternation($odd_even);
-            //$mycols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-            $mycols .= "<col class=\"$odd_even\" style='width: $cellwidth%;' />\n";
-        }
-        if ($right_exists)
-        {
-            $answer_head_line .= "\t<td>&nbsp;</td>";
-            $odd_even = alternation($odd_even);
-            //$mycols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
-            $mycols .= "<col class=\"answertextright $odd_even\"  style='width: $answerwidth%;' />\n";
-        }
-        $answer_head = "\n\t<thead>\n<tr class=\"dontread\">\n"
-        . $answer_head_line
-        . "</tr>\n\t</thead>\n";
-        $mycols .= "\t</colgroup>\n";
-
-        $trbc = '';
-        //$answer = "<div class='no-more-tables'>\n<table class=\"table-in-qanda-7 question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"{$caption}\">\n"
-        $answer = "<div class='no-more-tables'>
-                    \n<table class=\"table-in-qanda-7 question subquestion-list questions-list {$answertypeclass}-list {$extraclass}\">\n"
-        . $mycols
-        . $answer_head . "\n";
-        $answer .= "      <tbody>";
+        $sAnswerRows = '';
         foreach ($ansresult as $ansrow)
         {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
             {
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
-                    $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
-                    $answer .= "<tr class=\"repeat hidden-xs headings dontread\">\n"
-                    . $answer_head_line
-                    . "</tr>\n\n";
+                    $answer .=  Yii::app()->getController()->renderPartial('/survey/questions/arrays/multiflexi/rows/repeat_header', array(
+                                'labelans'      =>  $labelans,
+                                'right_exists'  =>  $right_exists,
+                                'cellwidth'     =>  $cellwidth,
+                                'answerwidth'   =>  $answerwidth,
+                            ),  true);
                 }
             }
-            $myfname = $ia[1].$ansrow['title'];
-            $answertext = $ansrow['question'];
-            $answertextsave=$answertext;
+
+            $myfname        = $ia[1].$ansrow['title'];
+            $answertext     = $ansrow['question'];
+            $answertextsave = $answertext;
+
             /* Check the sub Q mandatory violation */
+            $error = false;
+
             if ($ia[6]=='Y' && !empty($aMandatoryViolationSubQ))
             {
                 //Go through each labelcode and check for a missing answer! Default :If any are found, highlight this line, checkbox : if one is not found : don't highlight
                 // PS : we really need a better system : event for EM !
-                $emptyresult=($aQuestionAttributes['multiflexible_checkbox']!=0) ? 1 : 0;
-                foreach($labelcode as $ld)
+                $emptyresult    = ($aQuestionAttributes['multiflexible_checkbox']!=0) ? 1 : 0;
+
+                foreach ($labelcode as $ld)
                 {
-                    $myfname2=$myfname.'_'.$ld;
-                    if($aQuestionAttributes['multiflexible_checkbox']!=0)
+                    $myfname2   = $myfname.'_'.$ld;
+                    if ($aQuestionAttributes['multiflexible_checkbox']!=0)
                     {
-                        if(!in_array($myfname2, $aMandatoryViolationSubQ))
+                        if (!in_array($myfname2, $aMandatoryViolationSubQ))
                         {
-                            $emptyresult=0;
+                            $emptyresult    = 0;
                         }
                     }
                     else
                     {
-                        if(in_array($myfname2, $aMandatoryViolationSubQ))
+                        if (in_array($myfname2, $aMandatoryViolationSubQ))
                         {
-                            $emptyresult=1;
+                            $emptyresult    =   1;
                         }
                     }
                 }
-                if ($emptyresult == 1)
-                {
-                    //$answertext = '<span class="errormandatory">'.$answertext.'</span>';
-                    $answertext ='
-                                <div class="alert alert-danger" role="alert">'.
-                                        $answertext
-                                    .'
-                                </div>';
 
-                }
+                $error = ($emptyresult == 1)?true:false;
             }
+
+            $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+            $sSeparator = $sSeparator['separator'];
 
             // Get array_filter stuff
-            $trbc = alternation($trbc , 'row');
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc subquestion-list questions-list {$answertypeclass}-list");
+            $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
-            $answer .= $htmltbody2;
 
-            if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
+            if (strpos($answertext,'|'))
+            {
+                $answertext =   substr($answertext,0, strpos($answertext,'|'));
+            }
 
-            ///////////////////////
-            // table-in-qanda-7
-            // $labelans
-            //$answer .= "\t<th data-title=\" \" class=\"answertext\" width=\"$answerwidth%\">\n"
-            if ($useAnswerWidth)
-            {
-                $answer .= "\t<th class=\"answertext\" style='width: $answerwidth%;'>\n";
-            }
-            else
-            {
-                $answer .= "\t<th class='answertext col-xs-12 col-sm-6'>\n";
-            }
-            $answer .= "$answertext\n"
-            . $hiddenfield
-            . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-            {
-                $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-            }
-            $answer .= "\" />\n\t</th>\n <!-- close th -->";
+            $row_value = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))?$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]:'';
+
             $first_hidden_field = '';
-            $thiskey=0;
+            $thiskey            = 0;
+            $answer_tds         = '';
+
             foreach ($labelcode as $i => $ld)
             {
+                $myfname2   = $myfname."_$ld";
+                $value      = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]))?$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]:'';
+
                 if ($checkboxlayout == false)
                 {
-                    $myfname2=$myfname."_$ld";
 
-                    if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]))
-                    {
-                        $myfname2_java_value = " value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]}\" ";
-                    }
-                    else
-                    {
-                        $myfname2_java_value = "";
-                    }
-                    $answer .= "\t<td data-title=\"{$labelans[$i]}\"  class=\"answer-cell-5 answer_cell_00$ld question-item answer-item {$answertypeclass}-item $extraclass\">\n"
-                    . "\t<label for=\"answer{$myfname2}\" class='col-xs-12 col-sm-6'><input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n";
-                    //. "<label class=\"hidden-sm hidden-md hidden-lg read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n";
-                    $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
-                    $sSeparator = $sSeparator['separator'];
-                    if($inputboxlayout == false) {
-                        $answer .= "\t<select class=\"multiflexiselect form-control\" name=\"$myfname2\" id=\"answer{$myfname2}\""
-                        . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
-                        . "<option value=\"\">".gT('...')."</option>\n";
+                    $answer_tds .=  Yii::app()->getController()->renderPartial('/survey/questions/arrays/multiflexi/rows/cells/answer_td', array(
+                                        'dataTitle'                 => $labelans[$i],
+                                        'ld'                        => $ld,
+                                        'answertypeclass'           => $answertypeclass,
+                                        'answertext'                => $answertext,
+                                        'stepvalue'                 => $stepvalue,
+                                        'extraclass'                => $extraclass,
+                                        'myfname2'                  => $myfname2,
+                                        'error'                     => $error,
+                                        'inputboxlayout'            => $inputboxlayout,
+                                        'checkconditionFunction'    => $checkconditionFunction,
+                                        'minvalue'                  => $minvalue,
+                                        'maxvalue'                  => $maxvalue,
+                                        'reverse'                   => $reverse,
+                                        'value'                     => $value,
+                                        'sSeparator'                => $sSeparator,
+                                        'kpclass'                   => $kpclass,
+                                        'maxlength'                 => $maxlength,
+                                    ),  true);
 
-                        for($ii=$minvalue; ($reverse? $ii>=$maxvalue:$ii<=$maxvalue); $ii+=$stepvalue) {
-                            $answer .= '<option value="'.str_replace('.',$sSeparator,$ii).'"';
-                            if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && (string)$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == (string)$ii) {
-                                $answer .= SELECTED;
-                            }
-                            $answer .= ">".str_replace('.',$sSeparator,$ii)."</option>\n";
-                        }
-                        $answer .= "\t</select>\n";
-                    } elseif ($inputboxlayout == true)
-                    {
-                        $answer .= "\t<input type='text' class=\"multiflexitext text {$kpclass}\" name=\"$myfname2\" id=\"answer{$myfname2}\" {$maxlength} size=5 "
-                        . " onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\""
-                        . " value=\"";
-                        if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && is_numeric($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {
-                            $answer .= str_replace('.',$sSeparator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]);
-                        }
-                        $answer .= "\" />\n";
-                    }
-                    $answer .= "\t</label></td>\n";
 
                     $inputnames[]=$myfname2;
                     $thiskey++;
                 }
                 else
                 {
-                    $myfname2=$myfname."_$ld";
+
                     if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == '1')
                     {
-                        $myvalue = '1';
+                        $myvalue    = '1';
                         $setmyvalue = CHECKED;
                     }
                     else
                     {
-                        $myvalue = '';
+                        $myvalue    = '';
                         $setmyvalue = '';
                     }
 
-                    ////////////
-
-                    $answer .= "\t<td data-title=\"{$labelans[$thiskey]}\" class=\"answer-cell-6 answer_cell_00$ld question-item answer-item {$answertypeclass}-item\">\n"
-                    . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" value=\"$myvalue\"/>\n"
-                    . "\t<input type=\"hidden\" name=\"$myfname2\" id=\"answer{$myfname2}\" value=\"$myvalue\" />\n";
-                    $answer .= "\t<input type=\"checkbox\" class=\"checkbox {$extraclass}\" name=\"cbox_$myfname2\" id=\"cbox_$myfname2\" $setmyvalue "
-                    . " onclick=\"cancelBubbleThis(event); "
-                    . " aelt=document.getElementById('answer{$myfname2}');"
-                    . " jelt=document.getElementById('java{$myfname2}');"
-                    . " if(this.checked) {"
-                    . "  aelt.value=1;jelt.value=1;$checkconditionFunction(1,'{$myfname2}',aelt.type);"
-                    . " } else {"
-                    . "  aelt.value='';jelt.value='';$checkconditionFunction('','{$myfname2}',aelt.type);"
-                    . " }; return true;\" "
-                    //                    . " onchange=\"checkconditions(this.value, this.name, this.type)\" "
-                    . " />\n";
-                    $answer .=  "<label class=\"hide read\" for=\"cbox_{$myfname2}\">{$labelans[$thiskey]}</label>\n";
-                    $inputnames[]=$myfname2;
-                    //                    $answer .= "</label>\n"
-                    $answer .= ""
-                    . "\t</td>\n";
+                    $answer_tds .=  Yii::app()->getController()->renderPartial('/survey/questions/arrays/multiflexi/rows/cells/answer_td_checkboxes', array(
+                                        'dataTitle'                 => $labelans[$i],
+                                        'ld'                        => $ld,
+                                        'answertypeclass'           => $answertypeclass,
+                                        'value'                     => $myvalue,
+                                        'setmyvalue'                => $setmyvalue,
+                                        'myfname2'                  => $myfname2,
+                                        'checkconditionFunction'    => $checkconditionFunction,
+                                        'extraclass'                => $extraclass,
+                                    ),  true);
+                    $inputnames[]   = $myfname2;
                     $thiskey++;
                 }
             }
+
+            $rightTd = false;$answertextright= '';
+
             if (strpos($answertextsave,'|'))
             {
-                $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-                //$answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext</td>\n";
-                $answer .= "\t<td class=\"answertextright\" style='text-align:left; width: $answerwidth; '>$answertext</td>\n";
+                $answertextright    = substr($answertextsave,strpos($answertextsave,'|')+1);
+                $rightTd            = true;
             }
             elseif ($right_exists)
             {
-                //$answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
-                $answer .= "\t<td class=\"answertextright\" style='text-align:left; width: $answerwidth;'>&nbsp;</td>\n";
+                $rightTd = true;
             }
 
-            $answer .= "</tr>\n";
-            //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
+            // answer_row
+            $sAnswerRows .=  Yii::app()->getController()->renderPartial('/survey/questions/arrays/multiflexi/rows/answer_row', array(
+                                'sDisplayStyle'     => $sDisplayStyle,
+                                'useAnswerWidth'    => $useAnswerWidth,
+                                'answerwidth'       => $answerwidth,
+                                'myfname'           => $myfname,
+                                'error'             => $error,
+                                'row_value'         => $row_value,
+                                'answertext'        => $answertext,
+                                'answertextright'   => $answertextright,
+                                'answer_tds'        => $answer_tds,
+                                'rightTd'           => $rightTd,
+                            ),  true);
             $fn++;
         }
-        $answer .= "\t</tbody>\n</table>\n<!-- qanda-table-7 -->\n</div><!-- no-more-tables container -->";
+
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multiflexi/answer', array(
+                            'answertypeclass'   => $answertypeclass,
+                            'extraclass'        => $extraclass,
+                            'answerwidth'       => $answerwidth,
+                            'labelans'          => $labelans,
+                            'cellwidth'         => $cellwidth,
+                            'right_exists'      => $right_exists,
+                            'sAnswerRows'        => $sAnswerRows,
+                        ),  true);
+
     }
     else
     {
-        $answer = "\n<p class=\"error\">".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
+        //$answer = "\n<p class=\"error\">".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
+        $answer     = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multiflexi/empty_error', array(),  true);
         $inputnames = '';
     }
     return array($answer, $inputnames);
@@ -5738,39 +5703,44 @@ function do_arraycolumns($ia)
 // ---------------------------------------------------------------
 function do_array_dual($ia)
 {
-
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
-    $repeatheadings = Yii::app()->getConfig("repeatheadings");
-    $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
-    $extraclass ="";
-    $answertypeclass = ""; // Maybe not
-    $caption="";// Just leave empty, are replaced after
-    $inputnames=array();
-    $labelans1=array();
-    $labelans=array();
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $aLastMoveResult            = LimeExpressionManager::GetLastMoveResult();
+    $aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $repeatheadings             = Yii::app()->getConfig("repeatheadings");
+    $minrepeatheadings          = Yii::app()->getConfig("minrepeatheadings");
+    $extraclass                 = "";
+    $answertypeclass            = ""; // Maybe not
+    $caption                    = "";// Just leave empty, are replaced after
+    $inputnames                 = array();
+    $labelans1                  = array();
+    $labelans                   = array();
 
-    if ($aQuestionAttributes['random_order']==1) {
+    /*
+     * Get Question Attributes
+     */
+    $aQuestionAttributes        =  QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+
+    // Get questions and answers by defined order
+    if ($aQuestionAttributes['random_order']==1)
+    {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
     }
     else
     {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY question_order";
     }
-    $ansresult = dbExecuteAssoc($ansquery);   //Checked
-    $aSubQuestions=$ansresult->readAll();
-    $anscount = count($aSubQuestions);
 
-    $lquery =  "SELECT * FROM {{answers}} WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY sortorder, code";
-    $lresult = dbExecuteAssoc($lquery); //Checked
-    $aAnswersScale0=$lresult->readAll();
+    $ansresult      = dbExecuteAssoc($ansquery);   //Checked
+    $aSubQuestions  = $ansresult->readAll();
+    $anscount       = count($aSubQuestions);
+    $lquery         = "SELECT * FROM {{answers}} WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY sortorder, code";
+    $lresult        = dbExecuteAssoc($lquery); //Checked
+    $aAnswersScale0 = $lresult->readAll();
+    $lquery1        = "SELECT * FROM {{answers}} WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY sortorder, code";
+    $lresult1       = dbExecuteAssoc($lquery1); //Checked
+    $aAnswersScale1 = $lresult1->readAll();
 
-    $lquery1 = "SELECT * FROM {{answers}} WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY sortorder, code";
-    $lresult1 = dbExecuteAssoc($lquery1); //Checked
-    $aAnswersScale1=$lresult1->readAll();
-
+    // Set attributes
     if ($aQuestionAttributes['use_dropdown']==1)
     {
         $useDropdownLayout = true;
@@ -5792,38 +5762,18 @@ function do_array_dual($ia)
         $repeatheadings = intval($aQuestionAttributes['repeat_headings']);
         $minrepeatheadings = 0;
     }
-    if (trim($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
-        $leftheader= $aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
-    }
-    else
-    {
-        $leftheader ='';
-    }
 
-    if (trim($aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
-    {
-        $rightheader= $aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
-    }
-    else
-    {
-        $rightheader ='';
-    }
-    if (trim($aQuestionAttributes['answer_width'])!='')
-    {
-        $answerwidth=$aQuestionAttributes['answer_width'];
-    }
-    else
-    {
-        $answerwidth=20;
-    }
+    $leftheader     = (trim($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')?$leftheader= $aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]:'';
+    $rightheader    = (trim($aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')?$aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]:'';
+    $answerwidth    = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:20;
+
     // Find if we have rigth and center text
-    // TODO move "|" to attribute
-    $sQuery = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%'";
-    $rigthCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
-    $rightexists= ($rigthCount>0);// $right_exists: flag to find out if there are any right hand answer parts. leaving right column but don't force with
-    $sQuery = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%|%'";
-    $centerCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
-    $centerexists= ($centerCount>0);// $center_exists: flag to find out if there are any center hand answer parts. leaving center column but don't force with
+    $sQuery         = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%'";
+    $rigthCount     = Yii::app()->db->createCommand($sQuery)->queryScalar();
+    $rightexists    = ($rigthCount>0);// $right_exists: flag to find out if there are any right hand answer parts. leaving right column but don't force with
+    $sQuery         = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%|%'";
+    $centerCount    = Yii::app()->db->createCommand($sQuery)->queryScalar();
+    $centerexists   = ($centerCount>0);// $center_exists: flag to find out if there are any center hand answer parts. leaving center column but don't force with
 
     // Label and code for input
     foreach ($aAnswersScale0 as $lrow)
