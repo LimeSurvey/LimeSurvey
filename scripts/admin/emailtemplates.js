@@ -23,7 +23,11 @@ $(document).ready(function(){
 
 function KCFinder_callback(url)
 {
-    addAttachment(window.KCFinder.target, url);
+    // Get target table with class "attachments"
+    var target = $.grep(window.KCFinder.target, function(e) {
+        return e.className === 'attachments';
+    });
+    addAttachment(target, url);
     window.KCFinder = null;
 }
 
@@ -82,12 +86,6 @@ function editAttachmentRelevance(e)
  */
 function addAttachment(target, url, relevance, size)
 {
-    // This happens when email body editor is ck stuff
-    if (target.length == 2)
-    {
-        target = target[1];
-    }
-
     if (typeof relevance == 'undefined')
     {
         var relevance = '1';
