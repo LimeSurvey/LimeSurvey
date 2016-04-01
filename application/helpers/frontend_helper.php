@@ -815,7 +815,14 @@ function submitfailed($errormsg = '', $query = null)
         $email .= gT("DATA TO BE ENTERED","unescaped").":\n";
         foreach ($_SESSION['survey_'.$surveyid]['insertarray'] as $value)
         {
-            $email .= "$value: {$_SESSION['survey_'.$surveyid][$value]}\n";
+            if (isset($_SESSION['survey_' . $surveyid][$value]))
+            {
+                $email .= "$value: {$_SESSION['survey_'.$surveyid][$value]}\n";
+            }
+            else
+            {
+                $email .= "$value: N/A (value not set in session)\n";
+            }
         }
         $email .= "\n".gT("SQL CODE THAT FAILED","unescaped").":\n"
         . "$subquery\n\n"
