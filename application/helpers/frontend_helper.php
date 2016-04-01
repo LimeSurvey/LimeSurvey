@@ -286,6 +286,9 @@ function makeLanguageChanger($sSelectedLanguage)
 
 /**
  * Construct flash message container
+ * Used in templatereplace to replace {FLASHMESSAGE} in startpage.tstpl
+ *
+ * @return string
  */
 function makeFlashMessage() {
     $html = "";
@@ -875,7 +878,6 @@ function buildsurveysession($surveyid,$preview=false)
             doHeader();
             // No or bad answer to required security question
 
-            $flashmessage = makeFlashMessage();
             $redata = compact(array_keys(get_defined_vars()));
             echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[875]');
             //echo makedropdownlist();
@@ -955,7 +957,6 @@ function buildsurveysession($surveyid,$preview=false)
         {
             sendCacheHeaders();
             doHeader();
-            $flashmessage = makeFlashMessage();
             $redata = compact(array_keys(get_defined_vars()));
             echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1594]');
             //echo makedropdownlist();
@@ -1039,8 +1040,6 @@ function buildsurveysession($surveyid,$preview=false)
             sendCacheHeaders();
             doHeader();
 
-            $flashmessage = makeFlashMessage();
-
             $redata = compact(array_keys(get_defined_vars()));
             echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1676]');
             echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1677]');
@@ -1080,7 +1079,6 @@ function buildsurveysession($surveyid,$preview=false)
                 sendCacheHeaders();
                 doHeader();
                 //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
-                $flashmessage = makeFlashMessage();
                 $redata = compact(array_keys(get_defined_vars()));
                 echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1719]');
                 echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1720]');
@@ -1106,7 +1104,6 @@ function buildsurveysession($surveyid,$preview=false)
                 $gettoken = $clienttoken;
                 sendCacheHeaders();
                 doHeader();
-                $flashmessage = makeFlashMessage();
                 // No or bad answer to required security question
                 $redata = compact(array_keys(get_defined_vars()));
                 echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1745]');
@@ -1265,7 +1262,6 @@ function buildsurveysession($surveyid,$preview=false)
         sendCacheHeaders();
         doHeader();
 
-        $flashmessage = makeFlashMessage();
         $redata = compact(array_keys(get_defined_vars()));
         echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[1914]');
         echo templatereplace(file_get_contents($sTemplateViewPath."survey.pstpl"),array(),$redata,'frontend_helper[1915]');
@@ -2102,7 +2098,6 @@ function checkCompletedQuota($surveyid,$return=false)
         header("Location: ".$sUrl);
     }
     doHeader();
-    $flashmessage = makeFlashMessage();
     echo templatereplace(file_get_contents($sTemplateViewPath."/startpage.pstpl"),array(),$aDataReplacement);
     echo templatereplace(file_get_contents($sTemplateViewPath."/completed.pstpl"),array("COMPLETED"=>$sHtmlQuotaMessage,"URL"=>$sHtmlQuotaUrl),$aDataReplacement);
     echo templatereplace(file_get_contents($sTemplateViewPath."/endpage.pstpl"),array(),$aDataReplacement);
@@ -2199,7 +2194,6 @@ function display_first_page() {
     $oTemplate = Template::model()->getInstance('', $surveyid);
     $sTemplatePath = $oTemplate->path;
     $sTemplateViewPath = $oTemplate->viewPath;
-    $flashmessage = makeFlashMessage();
     echo templatereplace(file_get_contents($sTemplateViewPath."startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
     echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','autocomplete'=>'off', 'class'=>'frontend_helper'));
 
