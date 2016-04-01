@@ -4107,50 +4107,48 @@ function do_array_10point($ia)
     $anscount = count($aSubquestions);
 
     $fn = 1;
-    // => answer
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/header', array(
-                        'extraclass'=>$extraclass,
-                        'answerwidth' => $answerwidth
-                    ),
-                true);
 
     $odd_even = '';
+
+    $sColumns = '';
     for ($xc=1; $xc<=10; $xc++)
     {
         $odd_even = alternation($odd_even);
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
+        $sColumns .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/columns/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
     }
 
+    // => col or answer
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
+        $sColumns .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/columns/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
     }
 
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/open_table_head', array(), true);
 
+
+    $sHeaders = '';
     for ($xc=1; $xc<=10; $xc++)
     {
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/table_headers', array(
+        $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/rows/cells/thead', array(
             'class'=>'th-3',
             'style'=>'',
             'th_content'=>$xc,
         ), true);
-        //$answer .= "\t<th  class='th-3'>$xc</th>\n";
     }
+
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/table_headers', array(
+        $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/rows/cells/thead', array(
             'class'=>'th-4',
             'style'=>'',
             'th_content'=>gT('No answer'),
         ), true);
     }
 
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/close_table_head', array(), true);
-
     $answer_t_content = '';
     $trbc = '';
+
+    $sRows = '';
     foreach ($aSubquestions as $j => $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
@@ -4166,22 +4164,12 @@ function do_array_10point($ia)
         // Value
         $value = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
 
-        $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/tr_open', array(
-                    'myfname'=>$myfname,
-                    'answerwidth'=>$answerwidth,
-                    'answertext'=>$answertext,
-                    'value'=>$value,
-                    'error'=>$error,
-                    'sDisplayStyle'=>$sDisplayStyle,
-                    'zebra' => 2 - ($j % 2)
-                ), true);
-
-
+        $answer_tds = '';
         for ($i=1; $i<=10; $i++)
         {
             $CHECKED = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)?'CHECKED':'';
 
-            $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/td_input', array(
+            $answer_tds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/rows/cells/answer_td_input', array(
                 'i'=>$i,
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
@@ -4193,7 +4181,7 @@ function do_array_10point($ia)
         if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1)
         {
             $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
-            $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/td_input', array(
+            $answer_tds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/rows/cells/answer_td_input', array(
                 'i'=>gT("No answer"),
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
@@ -4201,13 +4189,31 @@ function do_array_10point($ia)
                 'value'=>'',
             ), true);
         }
-        //$answer_t_content .= "</tr>\n";
-        $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/close_row', array(), true);
+
+        $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/rows/answer_row', array(
+                    'myfname'       => $myfname,
+                    'answerwidth'   => $answerwidth,
+                    'answertext'    => $answertext,
+                    'value'         => $value,
+                    'error'         => $error,
+                    'sDisplayStyle' => $sDisplayStyle,
+                    'zebra'         => 2 - ($j % 2),
+                    'answer_tds'    => $answer_tds,
+                ), true);
+
         $inputnames[]=$myfname;
         $fn++;
     }
-    $answer .=  $answer_t_content;
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/close_table', array(), true);
+
+
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/answer', array(
+                        'extraclass'    => $extraclass,
+                        'answerwidth'   => $answerwidth,
+                        'sColumns'      => $sColumns,
+                        'sHeaders'      => $sHeaders,
+                        'sRows'         => $sRows,
+                    ),
+                true);
     return array($answer, $inputnames);
 }
 

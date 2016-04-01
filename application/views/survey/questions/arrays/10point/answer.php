@@ -1,30 +1,26 @@
 <?php
 /**
- * array 5 point choice Html : Header
+ * array 10 point choice Html : Header
  *
  * @var $sColumns   : the columns, generated with the view columns/col.php
  * @var $sHeaders   : the headers, generated with the view rows/cell/thead.php
  * @var $sRows      : the rows, generated with the view rows/answer_row.php
  * @var $extraclass
+ * @var $answerwidth
  */
 ?>
-<!-- Array 5 point choice -->
+<!-- Array 10 point choice -->
 
 <!-- answer -->
-<div class="no-more-tables no-more-tables-5-point">
+<div class="no-more-tables no-more-tables-10-point">
     <table class="table question subquestion-list questions-list <?php echo $extraclass; ?>">
-
-        <!-- Columns -->
         <colgroup class="col-responses">
-            <col class="col-answers" />
-
+            <col class="col-answers" width="<?php echo $answerwidth;?>%"/>
             <?php
                 // columns/col.php
                 echo $sColumns;
             ?>
         </colgroup>
-
-        <!-- Table headers -->
         <thead>
             <tr class="array1 dontread">
                 <th>&nbsp;</th>
@@ -33,10 +29,9 @@
                     // rows/cell/thead.php
                     echo $sHeaders;
                 ?>
+
             </tr>
         </thead>
-
-        <!-- Table Body -->
         <tbody>
             <?php
                 // rows/answer_row.php
