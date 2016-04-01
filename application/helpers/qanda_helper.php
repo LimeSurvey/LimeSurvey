@@ -3582,6 +3582,7 @@ function do_shortfreetext($ia)
         $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
     }
 
+    $inputnames = array();
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
 
@@ -3677,6 +3678,7 @@ function do_longfreetext($ia)
         $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
     }
 
+    $inputnames = array();
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
 }
@@ -3755,6 +3757,7 @@ function do_hugefreetext($ia)
         $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
     }
 
+    $inputnames = array();
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
 }
