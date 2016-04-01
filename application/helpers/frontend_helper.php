@@ -794,12 +794,16 @@ function submitfailed($errormsg = '', $query = null)
     global $thissurvey;
     global $subquery, $surveyid;
 
-    $completed = "<br /><strong><font size='2' color='red'>"
-    . gT("Did Not Save")."</strong></font><br /><br />\n\n"
-    . gT("An unexpected error has occurred and your responses cannot be saved.")."<br /><br />\n";
+    $completed = "<p><span class='fa fa-exclamation-triangle'></span>&nbsp;<strong>"
+    . gT("Did Not Save")."</strong></p>"
+    . "<p>"
+    . gT("An unexpected error has occurred and your responses cannot be saved.")
+    . "</p>";
     if ($thissurvey['adminemail'])
     {
-        $completed .= gT("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.")."<br /><br />\n";
+        $completed .= "<p>";
+        $completed .= gT("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.");
+        $completed .= "</p>";
         if ($debug>0)
         {
             $completed.='Error message: '.htmlspecialchars($errormsg).'<br />';
