@@ -4439,51 +4439,45 @@ function do_array_increasesamedecrease($ia)
 function do_array($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
-    $repeatheadings = Yii::app()->getConfig("repeatheadings");
-    $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
-    $extraclass ="";
-    $caption="";// Just leave empty, are replaced after
-    $checkconditionFunction = "checkconditions";
-    $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
-
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    if (trim($aQuestionAttributes['answer_width'])!='')
-    {
-        $answerwidth=$aQuestionAttributes['answer_width'];
-    }
-    else
-    {
-        $answerwidth=20;
-    }
-    $columnswidth=100-$answerwidth;
+    $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
+    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $repeatheadings          = Yii::app()->getConfig("repeatheadings");
+    $minrepeatheadings       = Yii::app()->getConfig("minrepeatheadings");
+    $extraclass              = "";
+    $caption                 = "";// Just leave empty, are replaced after
+    $checkconditionFunction  = "checkconditions";
+    $qquery                  = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
+    $other                   = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
+    $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $answerwidth             = (trim($aQuestionAttributes['answer_width'])!='')?$aQuestionAttributes['answer_width']:20;
+    $columnswidth            = 100-$answerwidth;
 
     if ($aQuestionAttributes['use_dropdown'] == 1)
     {
         $useDropdownLayout = true;
-        $extraclass .=" dropdown-list";
-        $caption=gT("An array with sub-question on each line. You have to select your answer.");
+        $extraclass       .= " dropdown-list";
+        $caption           = gT("An array with sub-question on each line. You have to select your answer.");
     }
     else
     {
         $useDropdownLayout = false;
-        $caption=gT("An array with sub-question on each line. The answers are contained in the table header. ");
+        $caption           = gT("An array with sub-question on each line. The answers are contained in the table header. ");
     }
-    if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
+
+    if (ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
     {
-        $repeatheadings = intval($aQuestionAttributes['repeat_headings']);
+        $repeatheadings    = intval($aQuestionAttributes['repeat_headings']);
         $minrepeatheadings = 0;
     }
 
-    $lresult= Answer::model()->findAll(array('order'=>'sortorder, code', 'condition'=>'qid=:qid AND language=:language AND scale_id=0', 'params'=>array(':qid'=>$ia[0],':language'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'])));
-    $labelans=array();
-    $labelcode=array();
+    $lresult    = Answer::model()->findAll(array('order'=>'sortorder, code', 'condition'=>'qid=:qid AND language=:language AND scale_id=0', 'params'=>array(':qid'=>$ia[0],':language'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'])));
+    $labelans   = array();
+    $labelcode  = array();
+
     foreach ($lresult as $lrow)
     {
-        $labelans[]=$lrow->answer;
-        $labelcode[]=$lrow->code;
+        $labelans[]  = $lrow->answer;
+        $labelcode[] = $lrow->code;
     }
 
     if ($useDropdownLayout === false && count($lresult) > 0)
@@ -4491,92 +4485,87 @@ function do_array($ia)
         $sQuery = "SELECT count(qid) FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
         $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
-        if ($iCount>0) {
-            $right_exists=true;
-            $answerwidth=$answerwidth/2;
+        if ($iCount>0)
+        {
+            $right_exists = true;
+            $answerwidth  = $answerwidth/2;
         }
         else
         {
-            $right_exists=false;
+            $right_exists = false;
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-        if ($aQuestionAttributes['random_order']==1) {
+        if ($aQuestionAttributes['random_order']==1)
+        {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
         }
         else
         {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
-        $ansresult = dbExecuteAssoc($ansquery); //Checked
-        $aQuestions=$ansresult->readAll();
-        $anscount = count($aQuestions);
-        $fn=1;
 
-        $numrows = count($labelans);
+        $ansresult  = dbExecuteAssoc($ansquery); //Checked
+        $aQuestions = $ansresult->readAll();
+        $anscount   = count($aQuestions);
+        $fn         = 1;
+        $numrows    = count($labelans);
+
         if ($right_exists)
         {
             ++$numrows;
-            $caption.=gT("After answers, a cell give some information. ");
+            $caption .= gT("After answers, a cell give some information. ");
         }
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             ++$numrows;
-            $caption.=gT("The last cell are for no answer. ");
+            $caption .= gT("The last cell are for no answer. ");
         }
+
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-
-        $answer_start = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/header', array(
-            'extraclass'=>$extraclass
-        ),  true);
-
-        //$answer_head_line='<td>&nbsp;</td>';
-
-        $answer_head_line = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/headline', array(
-            'class'=>'',
-            'content'=>'&nbsp;',
+        $sHeaders = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/rows/cells/thead', array(
+            'class'   => '',
+            'content' => '&nbsp;',
         ),  true);
 
         foreach ($labelans as $ld)
         {
-            $answer_head_line .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/headline', array(
-                'class'=>'th-9',
-                'content'=>$ld,
+            $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/rows/cells/thead', array(
+                'class'   => 'th-9',
+                'content' => $ld,
             ),  true);
         }
 
         if ($right_exists)
         {
-            $answer_head_line .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/headline', array(
-                'class'=>'',
-                'content'=>'&nbsp;',
+            $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/rows/cells/thead', array(
+                'class'     => '',
+                'content'   => '&nbsp;',
             ),  true);
         }
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
         {
-            $answer_head_line .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/headline', array(
-                'class'=>'th-10',
-                'content'=>gT('No answer'),
+            $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/rows/cells/thead', array(
+                'class'   => 'th-10',
+                'content' => gT('No answer'),
             ),  true);
         }
 
-        $answer_head = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/thead', array(
-            'answer_head_line'=>$answer_head_line
-        ),  true);
+        $answer     = '';
+        $trbc       = '';
+        $inputnames = array();
 
-        $answer = '';
-        $trbc = '';
-        $inputnames=array();
-        foreach($aQuestions as $i => $ansrow)
+        $sRows = '';
+        foreach ($aQuestions as $i => $ansrow)
         {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
             {
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
                     // Close actual body and open another one
-                    $answer .=  Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/close_open_body', array(
-                                'answer_head_line'=>$answer_head_line
+                    $sRows .=  Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/rows/repeat_header', array(
+                                'sHeaders'=>$sHeaders
                             ),  true);
                 }
             }
@@ -4589,23 +4578,14 @@ function do_array($ia)
             $error          = (in_array($myfname, $aMandatoryViolationSubQ))?true:false;             /* Check the mandatory sub Q violation */
             $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
             $sDisplayStyle  = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
-
+            $thiskey        = 0;
+            $answer_tds     = '';
             $fn++;
-
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/row_start', array(
-                        'myfname'=>$myfname,
-                        'answertext'=>$answertext,
-                        'value'=>$value,
-                        'error'=>$error,
-                        'zebra' => 2 - ($i % 2)
-                    ),  true);
-
-            $thiskey=0;
 
             foreach ($labelcode as $ld)
             {
-                $CHECKED = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ld)?'CHECKED':'';
-                $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/td', array(
+                $CHECKED     = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ld)?'CHECKED':'';
+                $answer_tds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/rows/cells/answer_td', array(
                             'myfname'=>$myfname,
                             'ld'=>$ld,
                             'label'=>$labelans[$thiskey],
@@ -4615,80 +4595,93 @@ function do_array($ia)
                 $thiskey++;
             }
 
+
             if (strpos($answertextsave,'|'))
             {
-                $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-                $answer_head_line .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/headline', array(
-                    'class'=>'answertextright',
-                    'content'=>$answertext,
+                $answertext        = substr($answertextsave,strpos($answertextsave,'|')+1);
+
+                // ==> head
+                $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/rows/cells/thead', array(
+                    'class'   => 'answertextright',
+                    'content' => $answertext,
                 ),  true);
-
-
             }
             elseif ($right_exists)
             {
-                $answer_head_line .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/headline', array(
-                    'class'=>'answertextright',
-                    'content'=>'&nbsp;',
+                $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/rows/cells/thead', array(
+                    'class'   => 'answertextright',
+                    'content' => '&nbsp;',
                 ),  true);
             }
 
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
                 $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
-                $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/td', array(
-                            'myfname'=>$myfname,
-                            'ld'=>'',
-                            'label'=>gT('No answer'),
-                            'CHECKED'=>$CHECKED,
-                            'checkconditionFunction'=>$checkconditionFunction,
+                $answer_tds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/rows/cells/answer_td', array(
+                            'myfname'                => $myfname,
+                            'ld'                     => '',
+                            'label'                  => gT('No answer'),
+                            'CHECKED'                => $CHECKED,
+                            'checkconditionFunction' => $checkconditionFunction,
                         ),  true);
             }
 
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/row_end', array(), true);
+            // ==> row
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/rows/answer_row', array(
+                        'answer_tds' => $answer_tds,
+                        'myfname'    => $myfname,
+                        'answertext' => $answertext,
+                        'value'      => $value,
+                        'error'      => $error,
+                        'zebra'      => 2 - ($i % 2)
+                    ),  true);
             $inputnames[]=$myfname;
-            //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
         }
 
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/close_body', array(), true);
-
-        $answer_cols =  Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/colgroup_start', array(
-            'answerwidth'=>$answerwidth,
-        ), true);
 
         $odd_even = '';
+        $sColumns = '';
         foreach ($labelans as $c)
         {
             $odd_even = alternation($odd_even);
-            $answer_cols =  Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/col', array(
-                'class'=>$odd_even,
-                'cellwidth'=>$cellwidth,
+            $sColumns =  Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/columns/col', array(
+                'class'     => $odd_even,
+                'cellwidth' => $cellwidth,
             ), true);
         }
+
+        // ==> cols
         if ($right_exists)
         {
             $odd_even = alternation($odd_even);
-            $answer_cols =  Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/col', array(
-                'class'=>'answertextright '.$odd_even,
-                'cellwidth'=>$cellwidth,
+            $sColumns =  Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/columns/col', array(
+                'class'     => 'answertextright '.$odd_even,
+                'cellwidth' => $cellwidth,
             ), true);
         }
+
+        // ==> cols
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
         {
             $odd_even = alternation($odd_even);
-            $answer_cols =  Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/col', array(
-                'class'=>'col-no-answer '.$odd_even,
-                'cellwidth'=>$cellwidth,
+            $sColumns =  Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/columns/col', array(
+                'class'     => 'col-no-answer '.$odd_even,
+                'cellwidth' => $cellwidth,
             ), true);
         }
 
-        $answer_cols .=  Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/colgroup_stop', array(), true);
-
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/table_close', array(), true);;
-        $answer = $answer_start . $answer_cols . $answer_head .$answer;
+        // ==> answer
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/answer', array(
+            'answerwidth'=> $answerwidth,
+            'anscount'   => $anscount,
+            'sRows'      => $sRows,
+            'extraclass' => $extraclass,
+            'sHeaders'   => $sHeaders,
+            'sColumns'   => $sColumns,
+        ),  true);
     }
 
-    // Dro
+    // Dropdown layout
 
     elseif ($useDropdownLayout === true && count($lresult)> 0)
     {

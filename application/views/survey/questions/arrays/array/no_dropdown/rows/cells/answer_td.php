@@ -9,6 +9,7 @@
  */
 ?>
 
+<!-- answer_td -->
 <td data-title='<?php echo $label;?>' class="answer-cell-3 answer_cell_00<?php echo $ld;?> answer-item radio-item">
     <label for="answer<?php echo $myfname;?>-<?php echo $ld; ?>">
         <input
@@ -22,3 +23,4 @@
         />
     </label>
 </td>
+<!-- end of answer_td -->
