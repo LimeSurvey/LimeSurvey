@@ -5435,11 +5435,7 @@
                             $message .= $this->gT('Error in SQL update');  // TODO - add  SQL error?
                         }
 
-                        // TODO: Put this in a separate function, like EM::addFrontendFlashMessage()
-                        $originalPrefix = Yii::app()->user->getStateKeyPrefix();
-                        Yii::app()->user->setStateKeyPrefix('frontend');
-                        Yii::app()->user->setFlash('error', $message);
-                        Yii::app()->user->setStateKeyPrefix($originalPrefix);
+                        LimeExpressionManager::addFrontendFlashMessage('error', $message);
 
                     }
                     // Save Timings if needed
@@ -10155,6 +10151,21 @@ EOD;
                     $this->knownVars['TOKEN:' . strtoupper($attribute)] = $blankVal;
                 }
             }
+        }
+
+        /**
+         * Add a flash message to state-key 'frontend{survey id}'
+         * The flash messages are templatereplaced in startpage.tstpl, {FLASHMESSAGE}
+         *
+         * @param string $type Yii type of flash: `error`, `notice`, 'success'
+         * @param string $message
+         * @return void
+         */
+        public static function addFrontendFlashMessage($type, $message) {
+            $originalPrefix = Yii::app()->user->getStateKeyPrefix();
+            Yii::app()->user->setStateKeyPrefix('frontend' . $this->sid);
+            Yii::app()->user->setFlash('error', $message);
+            Yii::app()->user->setStateKeyPrefix($originalPrefix);
         }
 
     }

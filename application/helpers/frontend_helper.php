@@ -291,10 +291,11 @@ function makeLanguageChanger($sSelectedLanguage)
  * @return string
  */
 function makeFlashMessage() {
+    global $surveyid;
     $html = "";
 
     $originalPrefix = Yii::app()->user->getStateKeyPrefix();
-    Yii::app()->user->setStateKeyPrefix('frontend');
+    Yii::app()->user->setStateKeyPrefix('frontend' . $surveyid);
 
     $mapYiiToBootstrapClass = array(
         'error' => 'danger',
