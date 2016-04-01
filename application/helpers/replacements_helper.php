@@ -719,7 +719,7 @@ EOD;
     $coreReplacements['GROUPNAME'] = $_groupname;
     $coreReplacements['LANG'] = App()->language;
     $coreReplacements['LANGUAGECHANGER'] = isset($languagechanger) ? $languagechanger : '';    // global
-    $coreReplacements['FLASHMESSAGE'] = isset($flashmessage) ? $flashmessage : '';
+    $coreReplacements['FLASHMESSAGE'] = makeFlashMessage();  // TODO: Really generate this each time function is called? Only relevant for startpage.tstpl
     $coreReplacements['LOADERROR'] = isset($errormsg) ? $errormsg : ''; // global
     $coreReplacements['LOADFORM'] = $_loadform;
     $coreReplacements['LOADHEADING'] = gT("Load a previously saved survey");
