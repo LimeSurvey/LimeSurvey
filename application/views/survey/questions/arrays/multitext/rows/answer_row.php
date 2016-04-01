@@ -2,11 +2,11 @@
 /**
  * Generate a row for the table
  *
+ * @var $answer_tds  : the cells of each row, generated with the view rows/cells/*.php 
  * @var $myfname
  * @var $error
  * @var $answertext
  * @var $value
- * @var $answer_tds
  * @var $rightTd
  * @var $rightTdEmpty
  * @var answerwidth

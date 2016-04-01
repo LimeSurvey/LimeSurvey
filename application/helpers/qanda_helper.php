@@ -3864,19 +3864,17 @@ function do_gender($ia)
 function do_array_5point($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
-    $extraclass ="";
-
-    $caption=gT("An array with sub-question on each line. The answers are value from 1 to 5 and are contained in the table header. ");
-    $checkconditionFunction = "checkconditions";
-
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
+    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $extraclass              = "";
+    $caption                 = gT("An array with sub-question on each line. The answers are value from 1 to 5 and are contained in the table header. ");
+    $checkconditionFunction  = "checkconditions";
+    $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if (trim($aQuestionAttributes['answer_width'])!='')
     {
-        $answerwidth=$aQuestionAttributes['answer_width'];
-        $extraclass .=" answerwidth-".trim($aQuestionAttributes['answer_width']);
+        $answerwidth = $aQuestionAttributes['answer_width'];
+        $extraclass .= " answerwidth-".trim($aQuestionAttributes['answer_width']);
     }
     else
     {
@@ -3888,20 +3886,24 @@ function do_array_5point($ia)
     {
         ++$cellwidth; // add another column
     }
-    $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
-    $sQuery = "SELECT question FROM {{questions}} WHERE parent_qid=".$ia[0]." AND question like '%|%'";
-    $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
+    $cellwidth  = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
+    $sQuery     = "SELECT question FROM {{questions}} WHERE parent_qid=".$ia[0]." AND question like '%|%'";
+    $iCount     = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
-    if ($iCount>0) {
-        $right_exists=true;
-        $answerwidth=$answerwidth/2;
-    } else {
-        $right_exists=false;
+    if ($iCount>0)
+    {
+        $right_exists = true;
+        $answerwidth  = $answerwidth/2;
+    }
+    else
+    {
+        $right_exists = false;
     }
 
 
-    if ($aQuestionAttributes['random_order']==1) {
+    if ($aQuestionAttributes['random_order']==1)
+    {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
     }
     else
@@ -3909,63 +3911,49 @@ function do_array_5point($ia)
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
 
-    $ansresult = dbExecuteAssoc($ansquery);     //Checked
+    $ansresult     = dbExecuteAssoc($ansquery);     //Checked
     $aSubquestions = $ansresult->readAll();
-    $anscount = count($aSubquestions);
+    $anscount      = count($aSubquestions);
+    $fn            = 1;
+    $sColumns       = $sHeaders = $sRows = $answer_tds = '';
 
-    $fn = 1;
-
-    $headerDatas = array(
-        'extraclass'=>$extraclass,
-    );
-    //$answer = '<div class="no-more-tables no-more-tables-5-point">';
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/header', $headerDatas, true);
-
-    $odd_even = '';
 
     for ($xc=1; $xc<=5; $xc++)
     {
-        $odd_even = alternation($odd_even);
-        //$answer .= "<col class=\"$odd_even\" style='width: $cellwidth%;' />\n";
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
+        $sColumns  .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
     }
+
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        $odd_even = alternation($odd_even);
-        //$answer .= "<col class=\"col-no-answer $odd_even\" style='width: $cellwidth%;' />\n";
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/col', array('odd_even'=>$odd_even,'cellwidth'=>$cellwidth), true);
+        $sColumns  .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
     }
-
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/open_table_head', array(), true);
-
 
     for ($xc=1; $xc<=5; $xc++)
     {
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/table_headers', array(
+        $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/thead', array(
             'class'=>'th-1',
             'style'=>'',
             'th_content'=>$xc,
         ), true);
-        //$answer .= "\t<th class='th-1'>$xc</th>\n";
     }
 
     if ($right_exists)
     {
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/table_headers', array(
+        $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/thead', array(
             'class'=>'',
             'style'=>'width: '.$answerwidth.'%;',
             'th_content'=>'&nbsp;',
         ), true);
     }
+
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/table_headers', array(
+        $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/thead', array(
             'class'=>'th-2',
             'style'=>'',
             'th_content'=>gT('No answer'),
         ), true);
     }
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/close_table_head', array(), true);
 
 
     $answer_t_content = '';
@@ -3989,20 +3977,11 @@ function do_array_5point($ia)
         // Value
         $value = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
 
-        $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/tr_open', array(
-                    'myfname'=>$myfname,
-                    'answerwidth'=>$answerwidth,
-                    'answertext'=>$answertext,
-                    'value'=>$value,
-                    'error'=>$error,
-                    'sDisplayStyle'=>$sDisplayStyle,
-                    'zebra' => 2 - ($j % 2)
-                ), true);
-
+        // ==> tds
         for ($i=1; $i<=5; $i++)
         {
             $CHECKED = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)?'CHECKED':'';
-            $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/td_input', array(
+            $answer_tds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/answer_td_input', array(
                 'i'=>$i,
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
@@ -4011,29 +3990,29 @@ function do_array_5point($ia)
             ), true);
         }
 
+        // => tds
         $answertext2 = $ansrow['question'];
         if (strpos($answertext2,'|'))
         {
             $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
-            //$answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left; width: $answerwidth%;' >$answertext2</td>\n";
-            $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/td_answertext', array(
+            $answer_tds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/answer_td_answertext', array(
                 'answerwidth'=>$answerwidth,
                 'answertext2'=>$answertext2,
             ), true);
         }
         elseif ($right_exists)
         {
-            //$answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
-            $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/td_answertext', array(
+            $answer_tds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/answer_td_answertext', array(
                 'answerwidth'=>$answerwidth,
                 'answertext2'=>'&nbsp;',
             ), true);
         }
 
+        // ==>tds
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
-            $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/td_input', array(
+            $answer_tds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/answer_td_input', array(
                 'i'=>gT("No answer"),
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
@@ -4043,17 +4022,30 @@ function do_array_5point($ia)
 
         }
 
-        //$answer_t_content .= "</tr>\n";
-        $answer_t_content .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/close_row', array(), true);
+        $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/answer_row', array(
+                    'answer_tds'=>$answer_tds,
+                    'myfname'=>$myfname,
+                    'answerwidth'=>$answerwidth,
+                    'answertext'=>$answertext,
+                    'value'=>$value,
+                    'error'=>$error,
+                    'sDisplayStyle'=>$sDisplayStyle,
+                    'zebra' => 2 - ($j % 2)
+                ), true);
 
+        $answer_tds = '';
         $fn++;
         $inputnames[]=$myfname;
     }
 
-    $answer .= $answer_t_content;
-     //$answer .  "\n</tbody>\t</table>\n</div>\n";
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/close_table', array(), true);
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/answer', array(
+                'extraclass'=>$extraclass,
+                'sColumns'=>$sColumns,
+                'sHeaders'=>$sHeaders,
+                'sRows'=>$sRows,
+            ), true);
 
+    //$answer .= $answer_t_content;
     return array($answer, $inputnames);
 }
 
@@ -4886,7 +4878,7 @@ function do_array_multitext($ia)
 
                 if ($show_grand == true)
                 {
-                    $row_total   = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/row_total', array('empty'=>true),  true);
+                    $row_total   = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/cells/td_total', array('empty'=>true),  true);
                     $col_head    = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/rows/cells/thead', array('totalText'=>gT('Grand Total'), 'classes'=>''),  true);
                     $grand_total = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/rows/cells/td_grand_total', array('empty'=>false),  true);
                 };
@@ -4895,7 +4887,7 @@ function do_array_multitext($ia)
 
             case 'B':
                 $totals_class = $show_totals = 'both';
-                $row_total    = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/row_total', array('empty'=>false),  true);
+                $row_total    = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/cells/td_total', array('empty'=>false),  true);
                 $col_total    = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/columns/col_total', array('empty'=>false, 'label'=>false),  true);
                 $col_head     = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>''),  true);
                 $row_head     = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>'answertext'),  true);
