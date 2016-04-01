@@ -4103,6 +4103,7 @@ function do_array_10point($ia)
     $anscount = count($aSubquestions);
 
     $fn = 1;
+    // => answer
     $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/10point/header', array(
                         'extraclass'=>$extraclass,
                         'answerwidth' => $answerwidth
@@ -4881,7 +4882,7 @@ function do_array_multitext($ia)
 
                 if ($show_grand == true)
                 {
-                    $row_total   = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/cells/td_total', array('empty'=>true),  true);
+                    $row_total   = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/rows/cells/td_total', array('empty'=>true),  true);
                     $col_head    = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/rows/cells/thead', array('totalText'=>gT('Grand Total'), 'classes'=>''),  true);
                     $grand_total = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/rows/cells/td_grand_total', array('empty'=>false),  true);
                 };
@@ -4890,7 +4891,7 @@ function do_array_multitext($ia)
 
             case 'B':
                 $totals_class = $show_totals = 'both';
-                $row_total    = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/cells/td_total', array('empty'=>false),  true);
+                $row_total    = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/rows/cells/td_total', array('empty'=>false),  true);
                 $col_total    = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/columns/col_total', array('empty'=>false, 'label'=>false),  true);
                 $col_head     = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>''),  true);
                 $row_head     = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>'answertext'),  true);
