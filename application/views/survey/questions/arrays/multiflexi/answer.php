@@ -1,0 +1,56 @@
+<?php
+/**
+ * Global container for the answer
+ *
+ * @var $answertypeclass
+ * @var $extraclass
+ * @var $answerwidth
+ * @var $labelans
+ * @var $cellwidth
+ * @var $right_exists
+ *
+ */
+?>
+<!-- answer -->
+<div class="no-more-tables">
+    <table class="table question subquestions-list questions-list <?php echo $answertypeclass; ?>-list <?php echo $extraclass; ?>">
+
+        <colgroup class="col-responses">
+            <col class="answertext" style='width: <?php echo $answerwidth;?>%;'/>
+
+            <?php foreach ($labelans as $i=>$ld):?>
+                <col class="<?php // TODO: array2 alternation ?>" style='width: <?php echo $cellwidth;?>%;'/>
+            <?php endforeach;?>
+
+            <?php if ($right_exists):?>
+                <col class="answertextright <?php // TODO: array2 alternation ?>" style='width: <?php echo $answerwidth;?>%;' />
+            <?php endif;?>
+        </colgroup>
+
+        <thead>
+            <tr class="dontread">
+                <th>&nbsp;</th>
+
+                <?php foreach ($labelans as $ld): ?>
+                    <th  class='th-11'>
+                        <?php echo $ld;?>
+                    </th>
+                <?php endforeach;?>
+
+                <?php if ($right_exists):?>
+                    <th>
+                        &nbsp;
+                    </th>
+                <?php endif;?>
+            </tr>
+        </thead>
+
+        <tbody>
+            <?php
+                // Defined in answer_row view
+                echo $sAnswerRows;
+            ?>
+        </tbody>
+    </table>
+</div>
+<!-- end of answer -->

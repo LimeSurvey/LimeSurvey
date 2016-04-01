@@ -21,7 +21,7 @@
             <col class="answertext" style='width: <?php echo $answerwidth;?>%;'/>
 
             <?php foreach ($labelans as $i=>$ld):?>
-                <col class="<?php // TODO: array2 alternation ?>" style='width: <?php echo $cellwidth;?>%;'/>
+                <col class="<?php // TODO: array2 alternation ?> <?php echo $classes; ?>" style='width: <?php echo $cellwidth; ?>%;' />
             <?php endforeach;?>
 
             <?php if ($right_exists):?>
