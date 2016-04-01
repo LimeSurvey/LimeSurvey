@@ -831,9 +831,6 @@ function submitfailed($errormsg = '', $query = null)
         . gT("ERROR MESSAGE","unescaped").":\n"
         . $errormsg."\n\n";
         SendEmailMessage($email, gT("Error saving results","unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
-        //echo "<!-- EMAIL CONTENTS:\n$email -->\n";
-        //An email has been sent, so we can kill off this session.
-        killSurveySession($surveyid);
     }
     else
     {
