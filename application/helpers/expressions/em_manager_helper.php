@@ -10165,7 +10165,7 @@ EOD;
         public static function addFrontendFlashMessage($type, $message, $surveyid) {
             $originalPrefix = Yii::app()->user->getStateKeyPrefix();
             Yii::app()->user->setStateKeyPrefix('frontend' . $surveyid);
-            Yii::app()->user->setFlash('error', $message);
+            Yii::app()->user->setFlash($type, $message);
             Yii::app()->user->setStateKeyPrefix($originalPrefix);
         }
 
