@@ -294,8 +294,11 @@ function makeFlashMessage() {
     global $surveyid;
     $html = "";
 
+    $language = Yii::app()->getLanguage();
     $originalPrefix = Yii::app()->user->getStateKeyPrefix();
-    Yii::app()->user->setStateKeyPrefix('frontend' . $surveyid);
+    // Bug in Yii? Getting the state-key prefix changes the locale, so set the language manually after.
+    Yii::app()->setLanguage($language);
+    Yii::app()->user->setStateKeyPrefix('frontend');
 
     $mapYiiToBootstrapClass = array(
         'error' => 'danger',
