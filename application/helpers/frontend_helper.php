@@ -822,7 +822,7 @@ function submitfailed($errormsg = '', $query = null)
             }
             else
             {
-                $email .= "$value: N/A (value not set in session)\n";
+                $email .= "$value: N/A\n";
             }
         }
         $email .= "\n".gT("SQL CODE THAT FAILED","unescaped").":\n"
