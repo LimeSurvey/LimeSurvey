@@ -3392,7 +3392,11 @@ function do_shortfreetext($ia)
             'tiwidth'=>$tiwidth,
             'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
             'dispVal'=>$dispVal,
-            'maxlength' => $maxlength
+            'maxlength' => $maxlength,
+            'kpclass'=>$kpclass,
+            'prefix'=>$prefix,
+            'suffix'=>$suffix,
+            'sm_col' => decide_sm_col($prefix, $suffix)
         );
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/textarea/item', $itemDatas, true);
     }
@@ -3472,6 +3476,7 @@ function do_shortfreetext($ia)
             'location_mapheight'=>$aQuestionAttributes['location_mapheight'],
             'questionHelp'=>$questionHelp,
             'question_text_help'=>$question_text['help'],
+            'sm_col' => decide_sm_col($prefix, $suffix)
         );
         $answer = Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/location_mapservice/item', $itemDatas, true);
 
@@ -3564,6 +3569,7 @@ function do_shortfreetext($ia)
             'tiwidth'=>$tiwidth,
             'dispVal'=>$dispVal,
             'maxlength'=>$maxlength,
+            'sm_col' => decide_sm_col($prefix, $suffix)
         );
         $answer = Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/text/item', $itemDatas, true);
 
@@ -6289,4 +6295,30 @@ function do_array_dual($ia)
     ." -->\n"
     ."</script>\n";
     return array($answer, $inputnames);
+}
+
+/**
+ * Depending on prefix and suffix, the center col will vary
+ * on sm screens (xs is always 12).
+ *
+ * @param string $prefix
+ * @param string $suffix
+ * @return int
+ */
+function decide_sm_col($prefix, $suffix)
+{
+    if ($prefix !== '' && $suffix !== '')
+    {
+        // Each -fix has 2 col space
+        return 8;
+    }
+    elseif ($prefix !== '' || $suffix !=='')
+    {
+        return 10;
+    }
+    else
+    {
+        return 12;
+    }
+
 }

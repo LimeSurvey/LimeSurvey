@@ -24,10 +24,12 @@
         </label>
 
         <!-- Prefix -->
-        <?php echo $prefix; ?>
+        <?php if ($prefix !== ''): ?>
+            <span class='col-xs-12 col-sm-2 text-right'><?php echo $prefix; ?></span>
+        <?php endif; ?>
 
         <!-- Input -->
-        <div class='col-xs-12 col-sm-10'>
+        <div class='col-xs-12 col-sm-<?php echo $sm_col; ?>'>
             <input
                 class="form-control text <?php echo $kpclass;?>"
                 type="text"
@@ -41,7 +43,9 @@
         </div>
 
         <!-- Suffix -->
-        <?php echo $suffix; ?>
+        <?php if ($suffix !== ''): ?>
+            <span class='col-xs-12 col-sm-2 text-left'><?php echo $suffix; ?></span>
+        <?php endif; ?>
 
     </div>
 </div>
