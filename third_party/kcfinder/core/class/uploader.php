@@ -220,18 +220,18 @@ class uploader {
             list($unused, $protocol, $domain, $unused, $port, $path) = $patt;
             $path = path::normalize($path);
             $this->config['uploadURL'] = "$protocol://$domain" . (strlen($port) ? ":$port" : "") . "/$path";
-            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+            $this->config['uploadDir'] = $this->realpath(strlen($this->config['uploadDir'])
                 ? path::normalize($this->config['uploadDir'])
-                : path::url2fullPath("/$path");
-            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+                : path::url2fullPath("/$path"));
+            $this->typeDir = $this->realpath("{$this->config['uploadDir']}/{$this->type}");
             $this->typeURL = "{$this->config['uploadURL']}/{$this->type}";
 
         // SITE ROOT
         } elseif ($this->config['uploadURL'] == "/") {
-            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+            $this->config['uploadDir'] = $this->realpath(strlen($this->config['uploadDir'])
                 ? path::normalize($this->config['uploadDir'])
-                : path::normalize($_SERVER['DOCUMENT_ROOT']);
-            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+                : path::normalize(realpath($_SERVER['DOCUMENT_ROOT'])));
+            $this->typeDir = $this->realpath("{$this->config['uploadDir']}/{$this->type}");
             $this->typeURL = "/{$this->type}";
 
         // ABSOLUTE & RELATIVE
@@ -239,10 +239,10 @@ class uploader {
             $this->config['uploadURL'] = (substr($this->config['uploadURL'], 0, 1) === "/")
                 ? path::normalize($this->config['uploadURL'])
                 : path::rel2abs_url($this->config['uploadURL']);
-            $this->config['uploadDir'] = strlen($this->config['uploadDir'])
+            $this->config['uploadDir'] = $this->realpath(strlen($this->config['uploadDir'])
                 ? path::normalize($this->config['uploadDir'])
-                : path::url2fullPath($this->config['uploadURL']);
-            $this->typeDir = "{$this->config['uploadDir']}/{$this->type}";
+                : path::url2fullPath($this->config['uploadURL']));
+            $this->typeDir = $this->realpath("{$this->config['uploadDir']}/{$this->type}");
             $this->typeURL = "{$this->config['uploadURL']}/{$this->type}";
         }
 
@@ -308,6 +308,13 @@ class uploader {
             } elseif (!is_readable($this->typeDir))
                 $this->backMsg("Cannot read upload folder.");
         }
+    }
+
+    protected function realpath($path) {
+        $rPath = realpath($file);
+        if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN")
+            $rPath = str_replace("\\", "/", $rPath);
+        return $rPath;
     }
 
     public function upload() {
@@ -405,9 +412,7 @@ class uploader {
     }
 
     protected function checkFilePath($file) {
-        $rPath = realpath($file);
-        if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN")
-            $rPath = str_replace("\\", "/", $rPath);
+        $rPath = $this->realpath($file);
         return (substr($rPath, 0, strlen($this->typeDir)) === $this->typeDir);
     }
 
