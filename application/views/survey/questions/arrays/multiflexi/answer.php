@@ -2,6 +2,7 @@
 /**
  * Global container for the answer
  *
+ * @var $sRows           : the rows, generated with the view rows/answer_row.php
  * @var $answertypeclass
  * @var $extraclass
  * @var $answerwidth
@@ -47,7 +48,7 @@
 
         <tbody>
             <?php
-                // Defined in answer_row view
+                // rows/answer_row.php
                 echo $sAnswerRows;
             ?>
         </tbody>

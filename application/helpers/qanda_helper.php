@@ -3909,22 +3909,19 @@ function do_array_5point($ia)
     $aSubquestions = $ansresult->readAll();
     $anscount      = count($aSubquestions);
     $fn            = 1;
-    $sColumns       = $sHeaders = $sRows = $sTds = '';
+    $sColumns       = $sHeaders = $sRows = $answer_tds = '';
 
 
-    // => column
     for ($xc=1; $xc<=5; $xc++)
     {
         $sColumns  .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
     }
 
-    // => column
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $sColumns  .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
     }
 
-    // => $headers
     for ($xc=1; $xc<=5; $xc++)
     {
         $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/thead', array(
@@ -3934,7 +3931,6 @@ function do_array_5point($ia)
         ), true);
     }
 
-    // => ANSWER
     if ($right_exists)
     {
         $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/thead', array(
@@ -3944,7 +3940,6 @@ function do_array_5point($ia)
         ), true);
     }
 
-    // => ANSWER
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/thead', array(
@@ -3958,7 +3953,6 @@ function do_array_5point($ia)
     $answer_t_content = '';
     $n=0;
 
-    // => sRows
     foreach ($aSubquestions as $j => $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
@@ -3981,7 +3975,7 @@ function do_array_5point($ia)
         for ($i=1; $i<=5; $i++)
         {
             $CHECKED = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)?'CHECKED':'';
-            $sTds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/td_input', array(
+            $answer_tds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/answer_td_input', array(
                 'i'=>$i,
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
@@ -3995,15 +3989,14 @@ function do_array_5point($ia)
         if (strpos($answertext2,'|'))
         {
             $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
-            //$answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left; width: $answerwidth%;' >$answertext2</td>\n";
-            $sTds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/td_answertext', array(
+            $answer_tds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/answer_td_answertext', array(
                 'answerwidth'=>$answerwidth,
                 'answertext2'=>$answertext2,
             ), true);
         }
         elseif ($right_exists)
         {
-            $sTds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/td_answertext', array(
+            $answer_tds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/answer_td_answertext', array(
                 'answerwidth'=>$answerwidth,
                 'answertext2'=>'&nbsp;',
             ), true);
@@ -4013,7 +4006,7 @@ function do_array_5point($ia)
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
-            $sTds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/td_input', array(
+            $answer_tds .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/answer_td_input', array(
                 'i'=>gT("No answer"),
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
@@ -4024,7 +4017,7 @@ function do_array_5point($ia)
         }
 
         $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/answer_row', array(
-                    'sTds'=>$sTds,
+                    'answer_tds'=>$answer_tds,
                     'myfname'=>$myfname,
                     'answerwidth'=>$answerwidth,
                     'answertext'=>$answertext,
@@ -4034,7 +4027,7 @@ function do_array_5point($ia)
                     'zebra' => 2 - ($j % 2)
                 ), true);
 
-        $sTds = '';
+        $answer_tds = '';
         $fn++;
         $inputnames[]=$myfname;
     }

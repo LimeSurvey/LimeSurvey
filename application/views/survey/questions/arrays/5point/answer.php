@@ -4,12 +4,13 @@
  *
  * @var $sColumns   : the columns, generated with the view columns/col.php
  * @var $sHeaders   : the headers, generated with the view rows/cell/thead.php
+ * @var $sRows      : the rows, generated with the view rows/answer_row.php
  * @var $extraclass
  */
 ?>
 <!-- Array 5 point choice -->
 
-<!-- header -->
+<!-- answer -->
 <div class="no-more-tables no-more-tables-5-point">
     <table class="table question subquestion-list questions-list <?php echo $extraclass; ?>">
 
@@ -32,19 +33,17 @@
                     // rows/cell/thead.php
                     echo $sHeaders;
                 ?>
-                <!-- close_table_head -->
-                    </tr>
+            </tr>
         </thead>
 
         <!-- Table Body -->
         <tbody>
 
             <?php
+                // rows/answer_row.php
                 echo $sRows;
             ?>
-
         </tbody>
     </table>
 </div>
-
-<!-- end of header -->
+<!-- end of answer -->

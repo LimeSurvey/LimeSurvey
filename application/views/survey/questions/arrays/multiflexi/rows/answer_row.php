@@ -2,6 +2,7 @@
 /**
  * Generate a row for the table
  *
+ * @var $answer_tds      : the cells of each row, generated with the view rows/cells/*.php 
  * @var $sDisplayStyle
  * @var $useAnswerWidth
  * @var $answerwidth
@@ -10,7 +11,6 @@
  * @var $row_value
  * @var $answertext
  * @var $answertextright
- * @var $answer_tds
  * @var $rightTd
  */
 ?>

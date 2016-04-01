@@ -2,7 +2,7 @@
 /**
  * Generate a row for the table
  *
- * @var $sTds           : the cells of each row, generated with the view rows/cells/*.php
+ * @var $answer_tds        : the cells of each row, generated with the view rows/cells/*.php
  * @var $myfname
  * @var $answerwidth
  * @var $answertext
@@ -25,7 +25,7 @@
 
     <?php
         // defined in rows/cells/*
-        echo $sTds;
+        echo $answer_tds;
     ?>
 
 </tr>
