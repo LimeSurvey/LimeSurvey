@@ -3855,6 +3855,7 @@ function do_gender($ia)
         $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/radio/item', $itemDatas, true);
     }
 
+    $inputnames = array();
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
 }
