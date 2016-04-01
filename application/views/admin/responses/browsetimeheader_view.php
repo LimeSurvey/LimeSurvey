@@ -1,3 +1,4 @@
+<div class='side-body'>
 <div class="header ui-widget-header"><?php echo eT('Time statistics'); ?></div>
 <script type='text/javascript'>
     var strdeleteconfirm='<?php echo eT('Do you really want to delete this response?', 'js'); ?>';

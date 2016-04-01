@@ -1194,6 +1194,9 @@ class Survey_Common_Action extends CAction
                 $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/responses/sa/browse/surveyid/".$aData['surveyid']) );
             }
 
+            $aData['menu']['edition'] = false;
+            $aData['menu']['close'] = true;
+
             $this->getController()->renderPartial("/admin/responses/browsemenubar_view", $aData);
         }
     }
