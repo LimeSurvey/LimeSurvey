@@ -14,20 +14,23 @@
 ?>
 
 <!-- Short free text, textarea item -->
-<p class='question answer-item text-item <?php echo $extraclass;?>' >
-    <label for='<?php echo $freeTextId;?>' class='hide label'>
-        <?php echo $labelText;?>
-    </label>
+<div class='question answer-item text-item <?php echo $extraclass;?>' >
 
-    <textarea
-        class="form-control  textarea <?php echo $kpclass; ?>"
-        name="<?php echo $name;?>"
-        id="<?php echo $freeTextId;?>"
-        rows="<?php echo $drows; ?>"
-        cols="<?php echo $tiwidth; ?>"
-        <?php echo $maxlength; ?>
-        onkeyup="<?php echo $checkconditionFunction; ?>"
-    >
-    <?php echo $dispVal; ?>
-    </textarea>
-</p>
+    <div class='form-group'>
+
+        <label for='<?php echo $freeTextId;?>' class='hide label'>
+            <?php echo $labelText;?>
+        </label>
+
+        <textarea
+            class="form-control textarea <?php echo $kpclass; ?> col-xs-12"
+            name="<?php echo $name;?>"
+            id="<?php echo $freeTextId;?>"
+            rows="<?php echo $drows; ?>"
+            cols="<?php echo $tiwidth; ?>"
+            <?php echo $maxlength; ?>
+            onkeyup="<?php echo $checkconditionFunction; ?>"
+        ><?php echo $dispVal; ?></textarea>
+
+    </div>
+</div>
