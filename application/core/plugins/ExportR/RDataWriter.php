@@ -8,7 +8,7 @@ class RDataWriter extends CsvWriter {
      * @var string
      */
     public $na = '';
-    
+
     public $fieldmap = null;
 
     public function init(\SurveyObj $survey, $sLanguageCode, \FormattingOptions $oOptions) {
@@ -20,7 +20,7 @@ class RDataWriter extends CsvWriter {
         $this->doHeaders = true;
 
         $oOptions->answerFormat = "short";      // force answer codes
-        
+
         // Save fieldmap so we can use it in transformResponseValue
         $this->fieldmap = $survey->fieldMap;
     }
@@ -54,7 +54,7 @@ class RDataWriter extends CsvWriter {
                     return 3;
                 }
                 break;
-                
+
             case 'G':       // Gender question
                 if ($value == 'F') {
                     return 1;
@@ -62,7 +62,7 @@ class RDataWriter extends CsvWriter {
                     return 2;
                 }
                 break;
-                
+
             case 'M':       // Multiple choice
             case 'P':
                 if (!empty($column) && isset($this->fieldmap[$column])) {
@@ -72,17 +72,17 @@ class RDataWriter extends CsvWriter {
                         return $value;
                     }
                 }
-                    
+
                 if ($value == 'Y') {            // Yes
-                    return 2;
+                    return 1;
                 } elseif ($value === '') {      // No
-                    return 1;       
+                    return 0;
                 } else {                        // Not shown
                     return $this->na;
                 }
                 break;
 
-            case 'Y':       // Yes no question   
+            case 'Y':       // Yes no question
                 if ($value == 'Y') {
                     return 1;
                 } elseif ($value == 'N') {
