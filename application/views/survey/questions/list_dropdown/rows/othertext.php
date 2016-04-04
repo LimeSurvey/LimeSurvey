@@ -8,6 +8,8 @@
  * @var $checkconditionFunction
  */
 ?>
+
+<!-- othertext -->
 <script type="text/javascript">
     <!--
         function showhideother(name, value)
@@ -37,3 +39,4 @@
     alt='<?php eT('Other answer'); ?>'
     onchange='<?php echo $checkconditionFunction;?>(this.value, this.name, this.type);'
 />
+<!-- end of othertext -->

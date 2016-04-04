@@ -773,7 +773,7 @@ function do_boilerplate($ia)
         $answer .= return_timer_script($aQuestionAttributes, $ia);
     }
 
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/boilerplate/boilerplate', array('ia'=>$ia), true);
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/boilerplate/answer', array('ia'=>$ia), true);
     $inputnames[]=$ia[1];
 
     return array($answer, $inputnames);
@@ -782,18 +782,16 @@ function do_boilerplate($ia)
 function do_equation($ia)
 {
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $sEquation=(trim($aQuestionAttributes['equation'])) ? $aQuestionAttributes['equation'] : $ia[3];
-    $sValue = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES);
+    $sEquation           = (trim($aQuestionAttributes['equation'])) ? $aQuestionAttributes['equation'] : $ia[3];
+    $sValue              = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES);
 
-    $aData = array(
-        'ia'=>$ia,
-        'sValue'=>$sValue,
-        'sEquation'=>$sEquation,
-    );
+    $answer       = Yii::app()->getController()->renderPartial('/survey/questions/equation/answer', array(
+        'name'      => $ia[1],
+        'sValue'    => $sValue,
+        'sEquation' => $sEquation,
+    ), true);
 
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/equation/equation', $aData, true);
-    $inputnames[]=$ia[1];
-
+    $inputnames[] = $ia[1];
     return array($answer, $inputnames);
 }
 
@@ -806,8 +804,7 @@ function do_5pointchoice($ia)
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $id = 'slider'.time().rand(0,100);
 
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/5pointchoice_header', array('id'=>$id), true);
-
+    $sRows = "";
     for ($fp=1; $fp<=5; $fp++)
     {
         $checkedState = '';
@@ -817,14 +814,17 @@ function do_5pointchoice($ia)
             $checkedState = ' CHECKED ';
         }
 
-        $aData = array(
-            'ia' => $ia,
-            'fp' => $fp,
-            'checkedState' => $checkedState,
+        $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/rows/item_row', array(
+            'name'                   => $ia[1],
+            'value'                  => $fp,
+            'id'                     => $ia[1].$fp,
+            'labelText'              => $fp,
+            'itemExtraClass'         => 'col-md-1',
+            'checkedState'           => $checkedState,
             'checkconditionFunction' => $checkconditionFunction,
-        );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/item_row', $aData, true);
+        ), true);
     }
+
     if ($ia[6] != "Y"  && SHOW_NO_ANSWER == 1) // Add "No Answer" option if question is not mandatory
     {
         $checkedState = '';
@@ -833,14 +833,18 @@ function do_5pointchoice($ia)
             $checkedState = ' CHECKED ';
         }
         $aData = array(
-            'ia' => $ia,
-            'checkedState' => $checkedState,
+            'name'                   => $ia[1],
+            'value'                  => $fp,
+            'id'                     => $ia[1].'NANS',
+            'labelText'              => gT('No answer'),
+            'itemExtraClass'         => 'noanswer-item',
+            'checkedState'           => $checkedState,
             'checkconditionFunction' => $checkconditionFunction,
         );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/item_noanswer_row', $aData, true);
+        $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/rows/item_row', $aData, true);
 
     }
-    $sJavaValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+    $sessionValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
 
     $inputnames[]=$ia[1];
 
@@ -858,12 +862,15 @@ function do_5pointchoice($ia)
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."slider-rating.js");
     }
 
-    $aData = array(
-        'ia' => $ia,
-        'sJavaValue' => $sJavaValue,
+
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/answer', array(
+        'id'            => $id,
+        'sliderId'      => $ia[0],
+        'name'          => $ia[1],
+        'sessionValue'  => $sessionValue,
+        'sRows'         => $sRows,
         'slider_rating' => $slider_rating,
-    );
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/5pointchoice_footer', $aData, true);
+    ), true);
 
     return array($answer, $inputnames);
 }
@@ -872,102 +879,100 @@ function do_5pointchoice($ia)
 function do_date($ia)
 {
     global $thissurvey;
-    // Rem: this should generate a bug...
-    //$aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $checkconditionFunction = "checkconditions";
+    $dateformatdetails      = getDateFormatDataForQID($aQuestionAttributes,$thissurvey);
+    $numberformatdatat      = getRadixPointData($thissurvey['surveyls_numberformat']);
 
-    $sDateLangvarJS=" translt = {
+    $sDateLangvarJS         = " translt = {
          alertInvalidDate: '" . gT('Date entered is invalid!','js') . "',
         };";
 
     App()->getClientScript()->registerScript("sDateLangvarJS",$sDateLangvarJS,CClientScript::POS_HEAD);
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("third_party").'jstoolbox/date.js');
-    $checkconditionFunction = "checkconditions";
-
-    $dateformatdetails = getDateFormatDataForQID($aQuestionAttributes,$thissurvey);
-    $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
 
     // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
     if (trim($aQuestionAttributes['date_min'])!='')
     {
-        $date_min=trim($aQuestionAttributes['date_min']);
-        $date_time_em=strtotime(LimeExpressionManager::ProcessString("{".$date_min."}",$ia[0]));
-        if(ctype_digit($date_min) && (strlen($date_min)==4) && ($date_min>=1900) && ($date_min<=2099))
+        $date_min      = trim($aQuestionAttributes['date_min']);
+        $date_time_em  = strtotime(LimeExpressionManager::ProcessString("{".$date_min."}",$ia[0]));
+
+        if (ctype_digit($date_min) && (strlen($date_min)==4) && ($date_min>=1900) && ($date_min<=2099))
         {
-            // backward compatibility: if only a year is given, add month and day
-            $mindate=$date_min.'-01-01';
+            $mindate = $date_min.'-01-01'; // backward compatibility: if only a year is given, add month and day
         }
         elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/",$date_min))// it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
         {
-            $mindate=$date_min;
+            $mindate = $date_min;
         }
-        elseif($date_time_em)
+        elseif ($date_time_em)
         {
-            $mindate=date("Y-m-d",$date_time_em);
+            $mindate = date("Y-m-d",$date_time_em);
         }
         else
         {
-            $mindate='{'.$aQuestionAttributes['date_min'].'}';
+            $mindate = '{'.$aQuestionAttributes['date_min'].'}';
         }
     }
     else
     {
-        $mindate='1900-01-01'; // Why 1900 ?
+        $mindate = '1900-01-01'; // Why 1900 ?
     }
+
     // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
     if (trim($aQuestionAttributes['date_max'])!='')
     {
-        $date_max=trim($aQuestionAttributes['date_max']);
-        $date_time_em=strtotime(LimeExpressionManager::ProcessString("{".$date_max."}",$ia[0]));
+        $date_max     = trim($aQuestionAttributes['date_max']);
+        $date_time_em = strtotime(LimeExpressionManager::ProcessString("{".$date_max."}",$ia[0]));
+
         if (ctype_digit($date_max) && (strlen($date_max)==4) && ($date_max>=1900) && ($date_max<=2099))
         {
-            // backward compatibility: if only a year is given, add month and day
-            $maxdate=$date_max.'-12-31';
+            $maxdate = $date_max.'-12-31'; // backward compatibility: if only a year is given, add month and day
         }
         elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/",$date_max))// it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
         {
-            $maxdate=$date_max;
+            $maxdate = $date_max;
         }
         elseif($date_time_em)
         {
-            $maxdate=date("Y-m-d",$date_time_em);
+            $maxdate = date("Y-m-d",$date_time_em);
         }
         else
         {
-            $maxdate='{'.$aQuestionAttributes['date_max'].'}';
+            $maxdate = '{'.$aQuestionAttributes['date_max'].'}';
         }
     }
     else
     {
-        $maxdate='2037-12-31'; // Why 2037 ?
+        $maxdate = '2037-12-31'; // Why 2037 ?
     }
 
     if (trim($aQuestionAttributes['dropdown_dates'])==1)
     {
-        if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) &
+        if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) &&
            ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]!='INVALID'))
         {
-            $datetimeobj = new Date_Time_Converter($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]], "Y-m-d H:i:s");
-            $currentyear = $datetimeobj->years;
-            $currentmonth = $datetimeobj->months;
-            $currentdate = $datetimeobj->days;
-            $currenthour = $datetimeobj->hours;
+            $datetimeobj   = new Date_Time_Converter($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]], "Y-m-d H:i:s");
+            $currentyear   = $datetimeobj->years;
+            $currentmonth  = $datetimeobj->months;
+            $currentdate   = $datetimeobj->days;
+            $currenthour   = $datetimeobj->hours;
             $currentminute = $datetimeobj->minutes;
         }
         else
         {
             // If date is invalid get the POSTED value
-            $currentdate = App()->request->getPost("day{$ia[1]}",'');
-            $currentmonth = App()->request->getPost("month{$ia[1]}",'');
-            $currentyear = App()->request->getPost("year{$ia[1]}",'');
-            $currenthour = App()->request->getPost("hour{$ia[1]}",'');
+            $currentdate   = App()->request->getPost("day{$ia[1]}",'');
+            $currentmonth  = App()->request->getPost("month{$ia[1]}",'');
+            $currentyear   = App()->request->getPost("year{$ia[1]}",'');
+            $currenthour   = App()->request->getPost("hour{$ia[1]}",'');
             $currentminute = App()->request->getPost("minute{$ia[1]}",'');
         }
 
         $dateorder = preg_split('/([-\.\/ :])/', $dateformatdetails['phpdate'],-1,PREG_SPLIT_DELIM_CAPTURE );
-        $answer = Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/date_header', array(), true);
-        //$answer='<p class="question date answer-item dropdown-item date-item">';
+
+        $sRows = '';
         foreach($dateorder as $datepart)
         {
             switch($datepart)
@@ -975,7 +980,7 @@ function do_date($ia)
                 // Show day select box
                 case 'j':
                 case 'd':
-                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/day', array('dayId'=>$ia[1], 'currentdate'=>$currentdate), true);
+                    $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/day', array('dayId'=>$ia[1], 'currentdate'=>$currentdate), true);
                     break;
                     // Show month select box
                 case 'n':
@@ -1017,7 +1022,7 @@ function do_date($ia)
                             break;
                     }
 
-                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/month', array('monthId'=>$ia[1], 'currentmonth'=>$currentmonth, 'montharray'=>$montharray), true);
+                    $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/month', array('monthId'=>$ia[1], 'currentmonth'=>$currentmonth, 'montharray'=>$montharray), true);
                     break;
                     // Show year select box
                 case 'y':
@@ -1059,18 +1064,18 @@ function do_date($ia)
                         $step = -1;
                         $reverse = false;
                     }
-                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/year', array('yearId'=>$ia[1], 'currentyear'=>$currentyear,'yearmax'=>$yearmax,'reverse'=>$reverse,'yearmin'=>$yearmin,'step'=>$step), true);
+                    $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/year', array('yearId'=>$ia[1], 'currentyear'=>$currentyear,'yearmax'=>$yearmax,'reverse'=>$reverse,'yearmin'=>$yearmin,'step'=>$step), true);
                     break;
                 case 'H':
                 case 'h':
                 case 'g':
                 case 'G':
-                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/hour', array('hourId'=>$ia[1], 'currenthour'=>$currenthour,), true);
+                    $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/hour', array('hourId'=>$ia[1], 'currenthour'=>$currenthour,), true);
                     break;
                 case 'i':
-                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/minute', array('minuteId'=>$ia[1], 'currentminute'=>$currenthour, 'dropdown_dates_minute_step'=>$aQuestionAttributes['dropdown_dates_minute_step'], 'datepart'=>$datepartdatepart ), true);
+                    $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/minute', array('minuteId'=>$ia[1], 'currentminute'=>$currenthour, 'dropdown_dates_minute_step'=>$aQuestionAttributes['dropdown_dates_minute_step'], 'datepart'=>$datepartdatepart ), true);
                     break;
-                default:  $answer .= $datepart;
+                default:  $sRows .= $datepart;
             }
         }
 
@@ -1082,21 +1087,18 @@ function do_date($ia)
             $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
         }
 
-        $footerData = array(
-            'name'=>$ia[1],
-            'dateoutput'=>htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8'),
-            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-            'dateformatdetails'=>$dateformatdetails['jsdate'],
-            'dateformat'=>$dateformatdetails['dateformat'],
-        );
 
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/date_footer', $footerData, true);
+        // ==> answer
+        $answer    = Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/answer', array(
+            'sRows'                  => $sRows,
+            'name'                   => $ia[1],
+            'dateoutput'             => htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8'),
+            'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+            'dateformatdetails'      => $dateformatdetails['jsdate'],
+            'dateformat'             => $dateformatdetails['dateformat'],
+        ), true);
+
         App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}","doDropDownDate({$ia[0]});",CClientScript::POS_HEAD);
-        // MayDo:
-        // add js code to
-        //        - fill dropdown boxes according to min/max
-        //        - if one datefield box is changed update all others
-        //        - would need a LOT of JS
     }
     else
     {
@@ -1104,44 +1106,40 @@ function do_date($ia)
         App()->getClientScript()->registerPackage('jqueryui-timepicker');
 
         // Locale for datepicker and timpicker extension
-
         if (App()->language !== 'en')
         {
             Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-".App()->language.".js");
             Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jquery-ui-timepicker-addon/i18n/jquery-ui-timepicker-".App()->language.".js");
         }
         // Format the date  for output
-        $dateoutput=trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
+        $dateoutput = trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
         if ($dateoutput!='' & $dateoutput!='INVALID')
         {
             $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
-            $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
+            $dateoutput  = $datetimeobj->convert($dateformatdetails['phpdate']);
         }
 
         $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
         $goodchars = "0123456789".substr($goodchars,0,1);
         // Max length of date : Get the date of 1999-12-30 at 32:59:59 to be sure to have space with non leading 0 format
         // "+1" makes room for a trailing space in date/time values
-        $iLength=strlen(date($dateformatdetails['phpdate'],mktime(23,59,59,12,30,1999)))+1;
-
-
-        $selectorData=array(
-            'name'=>$ia[1],
-            'iLength'=>$iLength,
-            'mindate'=>$mindate,
-            'maxdate'=>$maxdate,
-            'dateformatdetails'=>$dateformatdetails['dateformat'],
-            'dateformatdetailsjs'=>$dateformatdetails['jsdate'],
-            'goodchars'=>"return goodchars(event,'".$goodchars."')",
-            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-            'language'=>App()->language,
-            'hidetip'=>trim($aQuestionAttributes['hide_tip'])==0,
-            'dateoutput'=>$dateoutput,
-            'qid' => $ia[0],
-        );
+        $iLength   = strlen(date($dateformatdetails['phpdate'],mktime(23,59,59,12,30,1999)))+1;
 
         // HTML for date question using datepicker
-        $answer = Yii::app()->getController()->renderPartial('/survey/questions/date/selector/selector', $selectorData, true);
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/date/selector/answer', array(
+            'name'                   => $ia[1],
+            'iLength'                => $iLength,
+            'mindate'                => $mindate,
+            'maxdate'                => $maxdate,
+            'dateformatdetails'      => $dateformatdetails['dateformat'],
+            'dateformatdetailsjs'    => $dateformatdetails['jsdate'],
+            'goodchars'              => "return goodchars(event,'".$goodchars."')",
+            'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+            'language'               => App()->language,
+            'hidetip'                => trim($aQuestionAttributes['hide_tip'])==0,
+            'dateoutput'             => $dateoutput,
+            'qid'                    => $ia[0],
+        ), true);
     }
     $inputnames[]=$ia[1];
 
@@ -1152,18 +1150,16 @@ function do_date($ia)
 function do_language($ia)
 {
     $checkconditionFunction = "checkconditions";
-    $answerlangs = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
-    $answerlangs [] = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
+    $answerlangs            = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
+    $answerlangs[]          = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
+    $sLang                  = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
 
-    // Get actual answer
-    $sLang=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
-
-    if(!in_array($sLang,$answerlangs))
+    if (!in_array($sLang,$answerlangs))
     {
-        $sLang=Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
+        $sLang = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
     }
 
-    $inputnames[]=$ia[1];
+    $inputnames[] = $ia[1];
 
     $languageData = array(
         'name'=>$ia[1],
@@ -1172,14 +1168,7 @@ function do_language($ia)
         'sLang'=>$sLang,
     );
 
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/language/language', $languageData, true);
-    $answer .= "<script type='text/javascript'>\n"
-    . "/*<![CDATA[*/\n"
-    ."$('#answer{$ia[1]}').change(function(){ "
-    ."$('<input type=\"hidden\">').attr('name','lang').val($(this).val()).appendTo($('form#limesurvey'));"
-    ." })\n"
-    ." /*]]>*/\n"
-    ."</script>\n";
+    $answer  = Yii::app()->getController()->renderPartial('/survey/questions/language/answer', $languageData, true);
     return array($answer, $inputnames);
 }
 
@@ -1193,39 +1182,43 @@ function do_list_dropdown($ia)
     $checkconditionFunction = "checkconditions";
 
     // Question attribute variables
-    //$aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
     $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
     $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang])!='')?$aQuestionAttributes['other_replace_text'][$sSurveyLang]:gT('Other:'); // text for 'other'
     $optCategorySeparator   = (trim($aQuestionAttributes['category_separator'])!='')?$aQuestionAttributes['category_separator']:'';
-    if($optCategorySeparator=='')
+
+    if ($optCategorySeparator=='')
+    {
         unset($optCategorySeparator);
+    }
 
     //// Retrieving datas
 
     // Getting question
     $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$sSurveyLang));
-    $other = $oQuestion->other;
+    $other     = $oQuestion->other;
 
     // Getting answers
     $ansresult = $oQuestion->getOrderedAnswers($aQuestionAttributes['random_order'], $aQuestionAttributes['alphasort'] );
 
     $dropdownSize = '';
 
-
     if (isset($aQuestionAttributes['dropdown_size']) && $aQuestionAttributes['dropdown_size'] > 0)
     {
-        $_height = sanitize_int($aQuestionAttributes['dropdown_size']) ;
+        $_height    = sanitize_int($aQuestionAttributes['dropdown_size']) ;
         $_maxHeight = count($ansresult);
+
         if ((!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])) && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             ++$_maxHeight;  // for No Answer
         }
+
         if (isset($other) && $other=='Y')
         {
             ++$_maxHeight;  // for Other
         }
+
         if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
         {
             ++$_maxHeight;  // for 'Please choose:'
@@ -1239,43 +1232,27 @@ function do_list_dropdown($ia)
     }
 
     $prefixStyle = 0;
+
     if (isset($aQuestionAttributes['dropdown_prefix']))
     {
         $prefixStyle = sanitize_int($aQuestionAttributes['dropdown_prefix']) ;
     }
-    $_rowNum=0;
-    $_prefix='';
 
-    $selectData = array(
-        'name'=>$ia[1],
-        'dropdownSize'=>$dropdownSize,
-        'checkconditionFunction'=>$checkconditionFunction,
-        'value'=>'',
-    );
+    $_rowNum = 0;
+    $_prefix = '';
 
-    if (isset($other) && $other=='Y')
-    {
-        $sselect_show_hide = ' showhideother(this.name, this.value);';
-        $selectData = array(
-            'name'=>$ia[1],
-            'dropdownSize'=>$dropdownSize,
-            'checkconditionFunction'=> $checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide,
-            'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
-        );
+    $value            = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+    $select_show_hide = (isset($other) && $other=='Y')?' showhideother(this.name, this.value);':'';
+    $sOptions         = '';
 
-    }
-
-
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select', $selectData, true);
-
+    // If no answer previously selected
     if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
     {
-        $optionData = array(
+        $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/option', array(
             'value'=>'',
             'opt_select'=>'SELECTED',
             'answer'=>gT('Please choose...')
-        );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
+        ), true);
     }
 
     if (!isset($optCategorySeparator))
@@ -1291,12 +1268,12 @@ function do_list_dropdown($ia)
             {
                 $_prefix = ++$_rowNum . ') ';
             }
-            $optionData = array(
+            // ==> rows
+            $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/option', array(
                 'value'=>$ansrow['code'],
                 'opt_select'=>$opt_select,
                 'answer'=>flattenText($_prefix.$ansrow['answer'])
-            );
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
+            ), true);
         }
     }
     else
@@ -1320,9 +1297,8 @@ function do_list_dropdown($ia)
 
         foreach ($optgroups as $categoryname => $optionlistarray)
         {
-            $optgroupData = array('categoryname'=>flattenText($categoryname));
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/optgroup_header', $optgroupData, true);
 
+            $sOptGroupOptions = '';
             foreach ($optionlistarray as $optionarray)
             {
                 if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $optionarray['code'])
@@ -1334,15 +1310,19 @@ function do_list_dropdown($ia)
                     $opt_select = '';
                 }
 
-                $optionData = array(
+                // ==> rows
+                $sOptGroupOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/option', array(
                     'value'=>$optionarray['code'],
                     'opt_select'=>$opt_select,
                     'answer'=>flattenText($optionarray['answer'])
-                );
-                $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
+                ), true);
             }
 
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/optgroup_footer', $optgroupData, true);
+
+            $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/optgroup', array(
+                'categoryname'      => flattenText($categoryname),
+                'sOptGroupOptions'  => $sOptGroupOptions,
+            ), true);
         }
         $opt_select='';
         foreach ($defaultopts as $optionarray)
@@ -1356,13 +1336,12 @@ function do_list_dropdown($ia)
                 $opt_select = '';
             }
 
-
-            $optionData = array(
+            // ==> rows
+            $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/option', array(
                 'value'=>$optionarray['code'],
                 'opt_select'=>$opt_select,
                 'answer'=>flattenText($optionarray['answer'])
-            );
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
+            ), true);
         }
     }
 
@@ -1380,17 +1359,17 @@ function do_list_dropdown($ia)
             $_prefix = ++$_rowNum . ') ';
         }
 
-        $optionData = array(
+        $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/option', array(
             'value'=>'-oth-',
             'opt_select'=>$opt_select,
             'answer'=>flattenText($_prefix.$othertext)
-        );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
+        ), true);
     }
 
     if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '') && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
-        if ($prefixStyle == 1) {
+        if ($prefixStyle == 1)
+        {
             $_prefix = ++$_rowNum . ') ';
         }
 
@@ -1400,13 +1379,11 @@ function do_list_dropdown($ia)
             'opt_select'=>$opt_select,
             'answer'=>$_prefix.gT('No answer')
         );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
+        // ==> rows
+        $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/option', $optionData, true);
     }
 
-
-
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select_footer', $selectData, true);
-
+    $sOther = '';
     if (isset($other) && $other=='Y')
     {
         $aData = array();
@@ -1416,12 +1393,24 @@ function do_list_dropdown($ia)
         $thisfieldname="$ia[1]other";
         $aData['value'] = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname]))?htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname],ENT_QUOTES):'';
 
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/othertext', $aData, true);
+        // ==> other
+        $sOther .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/othertext', $aData, true);
 
         $inputnames[]=$ia[1].'other';
 
-        // TODO: check if needed : $answer .= "</p>";
     }
+
+    // ==> answer
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/answer', array(
+        'sOptions'               => $sOptions,
+        'sOther'                 => $sOther,
+        'name'                   => $ia[1],
+        'dropdownSize'           => $dropdownSize,
+        'checkconditionFunction' => $checkconditionFunction,
+        'value'                  => $value,
+        'select_show_hide'       => $select_show_hide,
+    ), true);
+
 
     $inputnames[]=$ia[1];
 
@@ -3818,12 +3807,11 @@ function do_yesno($ia)
 function do_gender($ia)
 {
     $checkconditionFunction = "checkconditions";
-    $fChecked = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'F')?'CHECKED':'';
-    $mChecked = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M')?'CHECKED':'';
-    $naChecked = '';
-
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $displayType = $aQuestionAttributes['display_type'];
+    $fChecked               = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'F')?'CHECKED':'';
+    $mChecked               = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M')?'CHECKED':'';
+    $naChecked              = '';
+    $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $displayType            = $aQuestionAttributes['display_type'];
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
@@ -3837,26 +3825,27 @@ function do_gender($ia)
     $noAnswer = (isset($noAnswer))?$noAnswer:false;
 
     $itemDatas = array(
-        'name'=>$ia[1],
-        'fChecked' => $fChecked,
-        'mChecked' => $mChecked,
-        'naChecked'=> $naChecked,
-        'noAnswer' => $noAnswer,
-        'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-        'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+        'name'                   => $ia[1],
+        'fChecked'               => $fChecked,
+        'mChecked'               => $mChecked,
+        'naChecked'              => $naChecked,
+        'noAnswer'               => $noAnswer,
+        'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+        'value'                  => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
     );
 
-    if($displayType===0)
+    if ($displayType===0)
     {
-        $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/buttons/item', $itemDatas, true);
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/buttons/answer', $itemDatas, true);
     }
     else
     {
-        $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/radio/item', $itemDatas, true);
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/radio/answer', $itemDatas, true);
     }
 
-    $inputnames = array();
-    $inputnames[]=$ia[1];
+    $inputnames   = array();
+    $inputnames[] = $ia[1];
+
     return array($answer, $inputnames);
 }
 
@@ -4600,7 +4589,6 @@ function do_array($ia)
             {
                 $answertext        = substr($answertextsave,strpos($answertextsave,'|')+1);
 
-                // ==> head
                 $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/rows/cells/thead', array(
                     'class'   => 'answertextright',
                     'content' => $answertext,
@@ -4626,7 +4614,6 @@ function do_array($ia)
                         ),  true);
             }
 
-            // ==> row
             $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/rows/answer_row', array(
                         'answer_tds' => $answer_tds,
                         'myfname'    => $myfname,
@@ -4650,7 +4637,6 @@ function do_array($ia)
             ), true);
         }
 
-        // ==> cols
         if ($right_exists)
         {
             $odd_even = alternation($odd_even);
@@ -4660,7 +4646,6 @@ function do_array($ia)
             ), true);
         }
 
-        // ==> cols
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
         {
             $odd_even = alternation($odd_even);
@@ -4670,7 +4655,6 @@ function do_array($ia)
             ), true);
         }
 
-        // ==> answer
         $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/answer', array(
             'answerwidth'=> $answerwidth,
             'anscount'   => $anscount,
@@ -4686,30 +4670,41 @@ function do_array($ia)
     elseif ($useDropdownLayout === true && count($lresult)> 0)
     {
         foreach($lresult as $lrow)
-            $labels[]=Array('code' => $lrow->code,
-            'answer' => $lrow->answer);
+        {
+            $labels[]=array(
+                'code'   => $lrow->code,
+                'answer' => $lrow->answer
+            );
+        }
+
         $sQuery = "SELECT count(question) FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
         $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
-        if ($iCount>0) {
-            $right_exists=true;
-            $answerwidth=$answerwidth/2;
-        } else {
-            $right_exists=false;
+
+        if ($iCount>0)
+        {
+            $right_exists = true;
+            $answerwidth  = $answerwidth/2;
+        }
+        else
+        {
+            $right_exists = false;
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-        if ($aQuestionAttributes['random_order']==1) {
+        if ($aQuestionAttributes['random_order']==1)
+        {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
         }
         else
         {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
-        $ansresult = dbExecuteAssoc($ansquery); //Checked
-        $aQuestions = $ansresult->readAll();
-        $anscount = count($aQuestions);
-        $fn=1;
 
-        $numrows = count($labels);
+        $ansresult  = dbExecuteAssoc($ansquery); //Checked
+        $aQuestions = $ansresult->readAll();
+        $anscount   = count($aQuestions);
+        $fn         = 1;
+        $numrows    = count($labels);
+
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             ++$numrows;
@@ -4718,19 +4713,13 @@ function do_array($ia)
         {
             ++$numrows;
         }
-        $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-        $answer_start = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/header', array(
-            'extraclass'=>$extraclass
-        ),  true);
-
-        $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/open_body', array(
-            'extraclass'=>$extraclass
-        ),  true);
+        $cellwidth    = round( ($columnswidth / $numrows ) , 1 );
 
         $trbc = '';
         $inputnames=array();
 
+        $sRows = "";
         foreach ($aQuestions as $ansrow)
         {
             $myfname        = $ia[1].$ansrow['title'];
@@ -4759,22 +4748,28 @@ function do_array($ia)
                 $options[$y]['text']      = flattenText($lrow['answer']);
             }
 
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/row', array(
-                'myfname'=>$myfname,
-                'answertext'=>$answertext,
-                'value'=>$value,
-                'error'=>$error,
-                'checkconditionFunction'=>$checkconditionFunction,
-                'options'=>$options,
-                'thRight'=>$thRight,
-                'tdRight'=>$tdRight,
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/rows/answer_row', array(
+                'myfname'                => $myfname,
+                'answertext'             => $answertext,
+                'value'                  => $value,
+                'error'                  => $error,
+                'checkconditionFunction' => $checkconditionFunction,
+                'options'                => $options,
+                'thRight'                => $thRight,
+                'tdRight'                => $tdRight,
             ),  true);
 
             $inputnames[]=$myfname;
             $fn++;
         }
-        $close = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/close_body', array(), true);
-        $answer = $answer_start . $answer . $close;
+
+
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/answer', array
+        (
+            'extraclass' => $extraclass,
+            'sRows'      => $sRows,
+        ),  true);
+
     }
     else
     {

@@ -160,21 +160,6 @@ class GlobalSettings extends Survey_Common_Action
         $sAdmintheme = sanitize_paranoid_string($_POST['admintheme']);
         setGlobalSetting('admintheme', $sAdmintheme);
 
-        // we check if it's a user theme
-        $usertemplatethemerootdir = Yii::app()->getConfig("uploaddir").'/admintheme/'.$sAdmintheme;
-        if ($usertemplatethemerootdir && file_exists($usertemplatethemerootdir) && is_dir($usertemplatethemerootdir) )
-        {
-            $adminimagebaseurl = Yii::app()->getBaseUrl(true)."/upload/admintheme/$sAdmintheme/images/";
-            setGlobalSetting('adminimagebaseurl', $adminimagebaseurl);
-            setGlobalSetting('adminimageurl', $adminimagebaseurl.'images/14/');
-        }
-        else
-        {
-            $adminimagebaseurl = Yii::app()->getBaseUrl(true)."/styles/$sAdmintheme/images/";
-            setGlobalSetting('adminimagebaseurl', $adminimagebaseurl);
-            setGlobalSetting('adminimageurl', $adminimagebaseurl.'/14/');
-        }
-
         //setGlobalSetting('adminthemeiconsize', trim(file_get_contents(Yii::app()->getConfig("styledir").DIRECTORY_SEPARATOR.sanitize_paranoid_string($_POST['admintheme']).DIRECTORY_SEPARATOR.'iconsize')));
         setGlobalSetting('emailmethod', strip_tags($_POST['emailmethod']));
         setGlobalSetting('emailsmtphost', strip_tags(returnGlobal('emailsmtphost')));

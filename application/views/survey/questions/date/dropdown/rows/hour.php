@@ -1,10 +1,11 @@
 <?php
 /**
  * Hour dropdown Html
- * @var $hourId = $ia[1];
+ * @var $hourId 
  * @var $currenthour
  */
 ?>
+<!-- hour -->
 <label for="hour<?php echo $hourId; ?>" class="hide">
     <?php eT('Hour'); ?>
 </label>
@@ -21,3 +22,4 @@
         </option>
     <?php endfor;?>
 </select>
+<!-- end of hour -->

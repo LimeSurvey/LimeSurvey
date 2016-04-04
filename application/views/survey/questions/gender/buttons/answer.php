@@ -2,14 +2,18 @@
 /**
  * Gender question, button item Html
  *
- * $name
- * $checkconditionFunction
- * $fChecked
- * $mChecked
- * $naChecked
- * $value
+ * @var $name
+ * @var $checkconditionFunction
+ * @var $fChecked
+ * @var $mChecked
+ * @var $naChecked
+ * @var $value
  */
 ?>
+
+<!--Gender question, buttons display -->
+
+<!-- answer -->
 <div class="answers-list radio-list gender-button">
 
     <div class='hidden'>  <!-- Hide this for now -->
@@ -108,3 +112,4 @@
         });
     });
 </script>
+<!-- end of answer -->

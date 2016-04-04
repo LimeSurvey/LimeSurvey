@@ -2,15 +2,18 @@
 /**
  * Gender question, radio item Html
  *
- * $name                        $ia[1]
- * $checkconditionFunction      $checkconditionFunction $checkconditionFunction(this.value, this.name, this.type)
- * $fChecked
- * $mChecked
- * $naChecked
- * $value                       $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]
+ * @var $name
+ * @var $checkconditionFunction
+ * @var $fChecked
+ * @var $mChecked
+ * @var $naChecked
+ * @var $value
  */
 ?>
 
+<!--Gender question, radio display -->
+
+<!-- answer -->
 <div class="answers-list radio-list">
 
     <!-- Female -->
@@ -74,3 +77,4 @@
         value="<?php echo $value;?>"
     />
 </div>
+<!-- end of answer -->

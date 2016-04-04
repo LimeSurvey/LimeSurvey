@@ -1,11 +1,13 @@
 <?php
 /**
  * Month dropdown Html
- * @var $monthId = $monthId;
+ * @var $monthId
  * @var $currentmonth
  * @var $montharray
  */
 ?>
+
+<!-- month -->
 <label for="month<?php echo $monthId; ?>" class="hide">
     <?php eT('Month'); ?>
 </label>
@@ -20,3 +22,4 @@
         </option>
     <?php endfor;?>
 </select>
+<!-- end of month -->

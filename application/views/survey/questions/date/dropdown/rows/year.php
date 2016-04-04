@@ -1,7 +1,7 @@
 <?php
 /**
  * Year dropdown Html
- * @var $yearId = $ia[1];
+ * @var $yearId
  * @var $currentyear
  * @var $yearmax
  * @var $reverse
@@ -9,6 +9,8 @@
  * @var $step
  */
 ?>
+
+<!-- year -->
 <label for="year<?php echo $yearId; ?>" class="hide">
     <?php eT('Year'); ?>
 </label>
@@ -23,3 +25,4 @@
         </option>
     <?php endfor; ?>
 </select>
+<!-- end of year -->

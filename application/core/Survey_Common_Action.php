@@ -232,9 +232,6 @@ class Survey_Common_Action extends CAction
         // Gather the data
         $aData = $this->_addPseudoParams($aData); //// the check of the surveyid should be done in the Admin controller it self.
 
-        // Defingin images url
-        define('IMAGE_BASE_URL', Yii::app()->getConfig('adminimagebaseurl'));
-
         //// This will be handle by subviews inclusions
         $aViewUrls = (array) $aViewUrls; $sViewPath = '/admin/';
         if (!empty($sAction))
@@ -383,7 +380,7 @@ class Survey_Common_Action extends CAction
      */
     function _updatenotification()
     {
-        if( !Yii::app()->user->isGuest )
+        if( !Yii::app()->user->isGuest && Yii::app()->getConfig('updatable'))
         {
             $updateModel = new UpdateForm();
             $updateNotification = $updateModel->updateNotification;
@@ -508,7 +505,7 @@ class Survey_Common_Action extends CAction
 
             $updateModel = new UpdateForm();
             $updateNotification = $updateModel->updateNotification;
-            $aData['showupdate'] = ( $updateNotification->result && ! $updateNotification->unstable_update );
+            $aData['showupdate'] = Yii::app()->getConfig('updatable') && $updateNotification->result && ! $updateNotification->unstable_update ;
 
             $this->getController()->renderPartial("/admin/super/adminmenu", $aData);
         }
