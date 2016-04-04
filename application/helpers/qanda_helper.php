@@ -3604,11 +3604,11 @@ function getLatLongFromIp($sIPAddress){
 function do_longfreetext($ia)
 {
     global $thissurvey;
-    $extraclass ="";
+    $extraclass = "";
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
-        $kpclass = "text-keypad";
+        $kpclass     = "text-keypad";
         $extraclass .=" inputkeypad";
     }
     else
@@ -3617,54 +3617,53 @@ function do_longfreetext($ia)
     }
 
     $checkconditionFunction = "checkconditions";
-
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maximum_chars= intval(trim($aQuestionAttributes['maximum_chars']));
-        $maxlength= "maxlength='{$maximum_chars}' ";
-        $extraclass .=" maxchars maxchars-".$maximum_chars;
+        $maximum_chars = intval(trim($aQuestionAttributes['maximum_chars']));
+        $maxlength     = "maxlength='{$maximum_chars}' ";
+        $extraclass   .= " maxchars maxchars-".$maximum_chars;
     }
     else
     {
-        $maxlength= "";
+        $maxlength = "";
     }
 
     if (trim($aQuestionAttributes['display_rows'])!='')
     {
-        $drows=$aQuestionAttributes['display_rows'];
+        $drows = $aQuestionAttributes['display_rows'];
     }
     else
     {
         $drows=5;
     }
+
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
-        $tiwidth=$aQuestionAttributes['text_input_width'];
-        $extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
-        $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-        $extraclass .=" col-sm-".trim($col);
+        $tiwidth     = $aQuestionAttributes['text_input_width'];
+        $extraclass .= " inputwidth-".trim($aQuestionAttributes['text_input_width']);
+        $col         = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
+        $extraclass .= " col-sm-".trim($col);
     }
     else
     {
-        $tiwidth=40;
+        $tiwidth = 40;
     }
 
     $dispVal = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])?htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]):'';
 
-    $itemDatas = array(
-        'extraclass'=>$extraclass,
-        'kpclass'=>$kpclass,
-        'name'=>$ia[1],
-        'drows'=>$drows,
-        'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-        'dispVal'=>$dispVal,
-        'tiwidth'=>$tiwidth,
-        'maxlength'=>$maxlength,
-    );
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/longfreetext/item', $itemDatas, true);
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/longfreetext/answer', array(
+        'extraclass'             => $extraclass,
+        'kpclass'                => $kpclass,
+        'name'                   => $ia[1],
+        'drows'                  => $drows,
+        'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+        'dispVal'                => $dispVal,
+        'tiwidth'                => $tiwidth,
+        'maxlength'              => $maxlength,
+    ), true);
 
 
     if (trim($aQuestionAttributes['time_limit'])!='')

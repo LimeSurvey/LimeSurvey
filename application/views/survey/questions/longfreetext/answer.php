@@ -3,15 +3,17 @@
  * Lon free text question, item Html
  *
  * @var $extraclass
- * @var $name                        $ia[1]
+ * @var $name
  * @var $drows
  * @var $tiwidth
  * @var $maxlength
- * @var $checkconditionFunction      $checkconditionFunction.'(this.value, this.name, this.type)'
+ * @var $checkconditionFunction
  * @var $dispVal
  */
 ?>
-<!-- longfreetext item -->
+<!-- Long Free Text -->
+
+<!-- answer -->
 <p class='question answer-item text-item <?php echo $extraclass; ?>'>
     <label for='answer<?php echo $name; ?>' class='hide label'>
         <?php eT('Your answer'); ?>
@@ -29,4 +31,4 @@
 <?php echo $dispVal;?>
 </textarea>
 </p>
-<!-- End : longfreetext item -->
+<!-- end of answer -->
