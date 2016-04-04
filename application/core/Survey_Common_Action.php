@@ -291,7 +291,7 @@ class Survey_Common_Action extends CAction
         {
             ///
             $this->_fullpagebar($aData);
-            if (Yii::app()->getConfig('updatable')) $this->_updatenotification();
+            $this->_updatenotification();
             $this->_notifications();
             //// TODO : Move this div inside each correct view ASAP !
             echo '
@@ -380,7 +380,7 @@ class Survey_Common_Action extends CAction
      */
     function _updatenotification()
     {
-        if( !Yii::app()->user->isGuest )
+        if( !Yii::app()->user->isGuest && Yii::app()->getConfig('updatable'))
         {
             $updateModel = new UpdateForm();
             $updateNotification = $updateModel->updateNotification;
