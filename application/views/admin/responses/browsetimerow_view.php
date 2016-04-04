@@ -35,15 +35,19 @@
         'dataProvider' => $model->search($iSurveyID, $language),
 
         // Number of row per page selection
-        'id' => 'survey-grid',
+        'id' => 'time-grid',
         'emptyText'=>gT('No surveys found.'),
+        'itemsCssClass' => 'table-striped',
 
         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
             CHtml::dropDownList(
                 'pageSize',
-                10,
+                $pageSize,
                 Yii::app()->params['pageSizeOptions'],
                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
+
+        'ajaxUpdate' => true,
+        'afterAjaxUpdate' => 'doToolTip',
 
         'columns' => array_merge($columns,
             array(array(

@@ -1429,9 +1429,17 @@ class responses extends Survey_Common_Action
         }
         */
 
+        // Set number of page
+        if (isset($_GET['pageSize']))
+        {
+            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+        }
+
+
         //interview Time statistics
         $aData['model'] = SurveyTimingDynamic::model($iSurveyID);
 
+        $aData['pageSize'] = 10;
         $aData['statistics'] = SurveyTimingDynamic::model($iSurveyID)->statistics();
         $aData['num_total_answers'] = SurveyDynamic::model($iSurveyID)->count();
         $aData['num_completed_answers'] = SurveyDynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
