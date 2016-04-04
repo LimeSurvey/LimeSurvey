@@ -2637,7 +2637,7 @@ function do_file_upload($ia)
                 <div class="modal-content" style="vertical-align: middle;">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">' . ngT("Upload file|Upload files", 1) . '</h4>
+                        <h4 class="modal-title">' . ngT("Upload file|Upload files", $aQuestionAttributes['max_num_of_files']) . '</h4>
                     </div>
                     <div class="modal-body file-upload-modal-body">
                         <iframe id="uploader" name="uploader" class="externalSite" src="' . $uploadurl . '"></iframe>
