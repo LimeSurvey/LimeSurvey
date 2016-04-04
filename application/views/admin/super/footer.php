@@ -31,6 +31,25 @@
 	</div>
 </footer>
 
+<!-- Modal for confirmation -->
+<div id="confirmation-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirm</h4>
+            </div>
+            <div class="modal-body">
+                <p><?php eT("Are you sure?"); ?></p>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-primary btn-ok"><?php eT("Yes"); ?></a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><?php eT("No"); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

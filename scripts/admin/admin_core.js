@@ -58,7 +58,11 @@ $(document).ready(function(){
     }
     doToolTip();
     $('.btntooltip').tooltip();
+    $('[data-tooltip="true"]').tooltip();
 
+    // Since you can only have one option per data-toggle,
+    // we need this to enable both modal and toggle on one
+    // button. E.g., <button data-toggle='modal' data-tooltip='true' title="foo">...</button>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
@@ -192,6 +196,14 @@ $(document).ready(function(){
         });
         $("#question_type.none").change();
     }
+
+    // Confirmation modal
+    $('#confirmation-modal').on('show.bs.modal', function(e) {
+        // .btn-ok is the confirm <a> in the modal
+        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+    });
+
+
 });
 
 function qTypeDropdownInit()
