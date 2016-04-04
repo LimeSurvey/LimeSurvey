@@ -44,8 +44,8 @@
                 <p><?php eT("Are you sure?"); ?></p>
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-primary btn-ok"><?php eT("Yes"); ?></a>
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><?php eT("No"); ?></button>
+                <a type="button" class="btn btn-primary btn-ok"><span class='fa fa-check'></span>&nbsp;<?php eT("Yes"); ?></a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><span class='fa fa-ban'></span>&nbsp;<?php eT("No"); ?></button>
             </div>
         </div>
     </div>
