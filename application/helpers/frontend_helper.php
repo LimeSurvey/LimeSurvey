@@ -613,7 +613,7 @@ function sendSubmitNotifications($surveyid)
     // TODO: What is holdpass, and is it OK to skip these lines if it is set? Related to 'Resume later' functionality
     if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['survey_'.$surveyid]['scid']) && isset($_SESSION['survey_'.$surveyid]['holdpass']))
     {
-        $aReplacementVars['RELOADURL']="".Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/".$_SESSION['survey_'.$surveyid]['scid']."/loadname/".urlencode($_SESSION['survey_'.$surveyid]['holdname'])."/loadpass/".urlencode($_SESSION['survey_'.$surveyid]['holdpass'])."/lang/".urlencode(App()->language));
+        $aReplacementVars['RELOADURL']=Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/".$_SESSION['survey_'.$surveyid]['scid']."/lang/".urlencode(App()->language),array('loadname'=>$_SESSION['survey_'.$surveyid]['holdname'],'loadpass'=>$_SESSION['survey_'.$surveyid]['holdpass']));
         if ($bIsHTML)
         {
             $aReplacementVars['RELOADURL']="<a href='{$aReplacementVars['RELOADURL']}'>{$aReplacementVars['RELOADURL']}</a>";

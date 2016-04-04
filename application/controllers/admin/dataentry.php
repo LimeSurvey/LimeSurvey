@@ -1855,11 +1855,10 @@ class dataentry extends Survey_Common_Action
                                     $message .= gT("Name").": ".$saver['identifier']."\n";
                                     $message .= gT("Password").": ".$saver['password']."\n\n";
                                     $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
-                                    $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/loadall/reload/scid/{$scid}/loadname/".rawurlencode ($saver['identifier'])."/loadpass/".rawurlencode ($saver['password'])."/lang/".rawurlencode($saver['language']));
-                                    if (isset($tokendata['token'])) { $message .= "/token/".rawurlencode($tokendata['token']); }
-
+                                    $aParams=array('lang'=>$saver['language'],'loadname'=>$saver['identifier'],'loadpass'=>$saver['password']);
+                                    if (isset($tokendata['token'])) { $aParams['token']= $tokendata['token']; }
+                                    $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/loadall/reload/scid/{$scid}/",$aParams);
                                     $from = $thissurvey['adminemail'];
-
                                     if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
                                     {
                                         $emailsent="Y";
