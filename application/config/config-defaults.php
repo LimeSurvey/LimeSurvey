@@ -384,7 +384,7 @@ $config['pdflogofile'] = 'logo_pdf.png';  // File name of logo for single answer
 $config['pdflogowidth'] = '50';           // Logo width
 $config['pdfheadertitle'] = '';           // Header title (bold font). If this config param is empty and header is enabled, site name is used
 $config['pdfheaderstring'] = '';          // Header string (under title). If this config param is empty and header is enabled, survey name is used
-$config['bPdfQuestionFill'] = '1';  	   // Background in questions should be painted (1) or transparent (0)	
+$config['bPdfQuestionFill'] = '1';  	   // Background in questions should be painted (1) or transparent (0)
 $config['bPdfQuestionBold'] = '0';		  // Questions in bold (1) or normal (0)
 $config['bPdfQuestionBorder'] = '1'; 	  // Border in questions. Accepts 0:no border, 1:border
 $config['bPdfResponseBorder'] = '1';	  // Border in responses. Accepts 0:no border, 1:border
@@ -624,8 +624,7 @@ $config['sCKEditorURL']            = $config['third_party'].'ckeditor';
 //$config['sCKEditorURL']            = '/scripts/admin/ckeditor.36';
 $config['usertemplaterooturl']     = $config['uploadurl'].'/templates';     // Location of the user templates
 
-$config['adminimagebaseurl']       = $config['styleurl'].$config['admintheme'].'/images/';     // for the definition of IMAGE_BASE_URL in render_wrapped_template.
-$config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'/images/14/';         // Location of button bar files for admin script
+$config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'/images/';         // Location of button bar files for admin script
 
 
 

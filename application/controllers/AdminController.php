@@ -56,8 +56,6 @@ class AdminController extends LSYii_Controller
     */
     public function error($message, $sURL = array())
     {
-        define('IMAGE_BASE_URL', Yii::app()->getConfig('adminimagebaseurl'));
-
         $this->_getAdminHeader();
         $sOutput = "<div class='messagebox ui-corner-all'>\n";
         $sOutput .= '<div class="warningheader">'.gT('Error').'</div><br />'."\n";
@@ -131,7 +129,6 @@ class AdminController extends LSYii_Controller
     */
     public function run($action)
     {
-
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}'))
         {
@@ -376,7 +373,6 @@ class AdminController extends LSYii_Controller
 
         $aData['imageurl'] = Yii::app()->getConfig("imageurl");
         $aData['url'] = $url;
-
         return $this->renderPartial("/admin/super/footer", $aData, $return);
 
     }

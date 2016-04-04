@@ -71,7 +71,6 @@ class UserAction extends Survey_Common_Action
             $noofsurveyslist[$i] = $this->_getSurveyCountForUser($userlist[$i]);
         }
 
-        //$aData['imageurl'] = IMAGE_BASE_URL;
         $aData['noofsurveyslist'] = $noofsurveyslist;
 
         $aData['title_bar']['title'] = gT('User administration');

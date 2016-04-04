@@ -232,9 +232,6 @@ class Survey_Common_Action extends CAction
         // Gather the data
         $aData = $this->_addPseudoParams($aData); //// the check of the surveyid should be done in the Admin controller it self.
 
-        // Defingin images url
-        define('IMAGE_BASE_URL', Yii::app()->getConfig('adminimagebaseurl'));
-
         //// This will be handle by subviews inclusions
         $aViewUrls = (array) $aViewUrls; $sViewPath = '/admin/';
         if (!empty($sAction))
