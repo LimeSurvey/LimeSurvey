@@ -3816,12 +3816,11 @@ function do_yesno($ia)
 function do_gender($ia)
 {
     $checkconditionFunction = "checkconditions";
-    $fChecked = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'F')?'CHECKED':'';
-    $mChecked = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M')?'CHECKED':'';
-    $naChecked = '';
-
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $displayType = $aQuestionAttributes['display_type'];
+    $fChecked               = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'F')?'CHECKED':'';
+    $mChecked               = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M')?'CHECKED':'';
+    $naChecked              = '';
+    $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $displayType            = $aQuestionAttributes['display_type'];
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
@@ -3835,26 +3834,27 @@ function do_gender($ia)
     $noAnswer = (isset($noAnswer))?$noAnswer:false;
 
     $itemDatas = array(
-        'name'=>$ia[1],
-        'fChecked' => $fChecked,
-        'mChecked' => $mChecked,
-        'naChecked'=> $naChecked,
-        'noAnswer' => $noAnswer,
-        'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-        'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+        'name'                   => $ia[1],
+        'fChecked'               => $fChecked,
+        'mChecked'               => $mChecked,
+        'naChecked'              => $naChecked,
+        'noAnswer'               => $noAnswer,
+        'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+        'value'                  => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
     );
 
-    if($displayType===0)
+    if ($displayType===0)
     {
-        $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/buttons/item', $itemDatas, true);
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/buttons/answer', $itemDatas, true);
     }
     else
     {
-        $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/radio/item', $itemDatas, true);
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/gender/radio/answer', $itemDatas, true);
     }
 
-    $inputnames = array();
-    $inputnames[]=$ia[1];
+    $inputnames   = array();
+    $inputnames[] = $ia[1];
+
     return array($answer, $inputnames);
 }
 
