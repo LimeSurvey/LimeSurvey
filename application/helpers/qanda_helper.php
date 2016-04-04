@@ -2053,21 +2053,21 @@ function do_multiplechoice($ia)
 
     // General variables
     global $thissurvey;
-    $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
-    $inputnames             = array(); // TODO : check if really used
-    $checkconditionFunction = "checkconditions"; // name of the function to check condition TODO : check is used more than once
-    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
+    $kpclass                = testKeypad($thissurvey['nokeyboard']);     // Virtual keyboard (probably obsolete today)
+    $inputnames             = array();                                   // TODO : check if really used
+    $checkconditionFunction = "checkconditions";                         // name of the function to check condition TODO : check is used more than once
+    $iSurveyId              = Yii::app()->getConfig('surveyID');         // survey id
     $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
 
     // Question attribute variables
-    $aQuestionAttributes    = getQuestionAttributeValues($ia[0]); // Question attributes
-    $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang])!='')?$aQuestionAttributes['other_replace_text'][$sSurveyLang]:gT('Other:'); // text for 'other'
-    $iNbCols                  = (trim($aQuestionAttributes['display_columns'])!='')?$aQuestionAttributes['display_columns']:1; // number of columns
+    $aQuestionAttributes    = getQuestionAttributeValues($ia[0]);                                                                                                          // Question attributes
+    $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang])!='')?$aQuestionAttributes['other_replace_text'][$sSurveyLang]:gT('Other:');  // text for 'other'
+    $iNbCols                = (trim($aQuestionAttributes['display_columns'])!='')?$aQuestionAttributes['display_columns']:1;                                               // number of columns
 
     if ($aQuestionAttributes['other_numbers_only']==1)
     {
-        $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
-        $sSeparator = $sSeparator['separator'];
+        $sSeparator                 = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeparator                 = $sSeparator['separator'];
         $oth_checkconditionFunction = "fixnum_checkconditions";
     }
     else
@@ -2079,24 +2079,22 @@ function do_multiplechoice($ia)
 
     // Getting question
     $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$sSurveyLang));
-    $other = $oQuestion->other;
+    $other     = $oQuestion->other;
 
     // Getting answers
     $ansresult = $oQuestion->getOrderedSubQuestions($aQuestionAttributes['random_order'], $aQuestionAttributes['exclude_all_others'] );
-    $anscount = count($ansresult);
-    $anscount = ($other == 'Y') ? $anscount+1 : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
+    $anscount  = count($ansresult);
+    $anscount  = ($other == 'Y') ? $anscount+1 : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
 
     //// Columns containing answer rows, set by user in question attribute
     /// TODO : move to a dedicated function
 
-    /// IKIKIKI
-
-
     // setting variables
-    $iMaxRowsByColumn = 0; // How many answer rows by column
-    $iRowCount = 0;
-    $isOpen = false;       // Is a column opened
+    $iMaxRowsByColumn = 0;           // How many answer rows by column
+    $iRowCount        = 0;
+    $isOpen           = false;       // Is a column opened
 
+    // TODO: check if still used
     if($iNbCols > 1)
     {
         // First we calculate the width of each column
@@ -2108,30 +2106,23 @@ function do_multiplechoice($ia)
         // Then, we calculate how many answer rows in each column
         $iMaxRowsByColumn = ceil($anscount / $iNbCols);
         $first = true; // The very first item will open a bootstrap row containing the columns
-
     }
-
-    // Generate question header
-    $aData = array(
-                'ia' => $ia,
-                'anscount' => $anscount,
-            );
-
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/multiplechoice_header', $aData, true);
 
     /// Generate answer rows
     $i = 0;
+
+    $sRows = '';
     foreach ($ansresult as $ansrow)
     {
-        $i++; // general count of loop, to check if the item is the last one for column process. Never reset.
-        $iRowCount++; // counter of number of row by column. Is reset to zero each time a column is full.
-        $myfname = $ia[1].$ansrow['title'];
-        $extra_class="";
+        $i++;                                       // general count of loop, to check if the item is the last one for column process. Never reset.
+        $iRowCount++;                               // counter of number of row by column. Is reset to zero each time a column is full.
+        $myfname     = $ia[1].$ansrow['title'];
+        $extra_class ="";
 
         /* Check for array_filter */
         $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
+        $checkedState  = '';
 
-        $checkedState = '';
         /* If the question has already been ticked, check the checkbox */
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
@@ -2142,15 +2133,8 @@ function do_multiplechoice($ia)
         }
 
         $sCheckconditionFunction = $checkconditionFunction.'(this.value, this.name, this.type)';
-
-        /* Now add the hidden field to contain information about this answer */
-        $sValue = '';
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-        {
-            $sValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-        }
-
-        $inputnames[]=$myfname;
+        $sValue                  = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))?$sValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]:'';
+        $inputnames[]            = $myfname;
 
         ////
         // Open Column
@@ -2158,26 +2142,28 @@ function do_multiplechoice($ia)
         // and if this is the first answer row, or if the column has been closed and the row count reset before.
         if($iNbCols > 1 && $iRowCount == 1 )
         {
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>$first), true);
-            $isOpen = true; // If a column is not closed, it will be closed at the end of the process
-            $first = false; // The row containing the column has been opened at the first call.
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/questions/multiplechoice/columns/column_header', array(
+                'iColumnWidth' => $iColumnWidth,
+                'first'        => $first), true);
+            $isOpen  = true;  // If a column is not closed, it will be closed at the end of the process
+            $first   = false; // The row containing the column has been opened at the first call.
         }
 
         ////
         // Insert row
         // Display the answer row
-        $aData = array(
-            'extra_class'=> $extra_class,
-            'sDisplayStyle' => $sDisplayStyle,
-            'ia'=>$ia,
-            'ansrow'=>$ansrow,
-            'checkedState'=>$checkedState,
+        $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/rows/answer_row', array(
+            'extra_class'             => $extra_class,
+            'sDisplayStyle'           => $sDisplayStyle,
+            'name'                    => $ia,
+            'title'                   => $ansrow['title'],
+            'question'                => $question,
+            'ansrow'                  => $ansrow,
+            'checkedState'            => $checkedState,
             'sCheckconditionFunction' => $sCheckconditionFunction,
-            'myfname'=>$myfname,
-            'sValue'=>$sValue,
-        );
-
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_row', $aData, true);
+            'myfname'                 => $myfname,
+            'sValue'                  => $sValue,
+        ), true);
 
         ////
         // Close column
@@ -2187,13 +2173,14 @@ function do_multiplechoice($ia)
         // the column will remain opened, and it will be closed by 'other' answer row if set or at the end of the process
         if($iNbCols > 1 && $iRowCount == $iMaxRowsByColumn )
         {
-            $last = ($i == $anscount)?true:false; // If this loop count equal to the number of answers, then this answer is the last one.
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_column_footer', array('last'=>$last), true);
+            $last      = ($i == $anscount)?true:false; // If this loop count equal to the number of answers, then this answer is the last one.
+            $sRows   .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/columns/column_footer', array('last'=>$last), true);
             $iRowCount = 0;
-            $isOpen = false;
+            $isOpen    = false;
         }
     }
 
+    //==>  rows
     if ($other == 'Y')
     {
         $iRowCount++;
@@ -2239,25 +2226,23 @@ function do_multiplechoice($ia)
         // or if the column has been closed and the row count reset before.
         if($iNbCols > 1 && $iRowCount == 1 )
         {
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/questions/multiplechoice/columns/column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
         }
 
         ////
         // Insert row
         // Display the answer row
-        $aData = array(
-            'myfname'=>$myfname,
-            'sDisplayStyle' => $sDisplayStyle,
-            'othertext'=>$othertext,
-            'checkedState'=>$checkedState,
-            'kpclass'=>$kpclass,
-            'sValue'=>$sValue,
-            'oth_checkconditionFunction'=>$oth_checkconditionFunction,
-            'checkconditionFunction'=>$checkconditionFunction,
-            'sValueHidden'=>$sValueHidden,
-
-        );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_other_row', $aData, true);
+        $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/rows/answer_row_other', array(
+            'myfname'                    => $myfname,
+            'sDisplayStyle'              => $sDisplayStyle,
+            'othertext'                  => $othertext,
+            'checkedState'               => $checkedState,
+            'kpclass'                    => $kpclass,
+            'sValue'                     => $sValue,
+            'oth_checkconditionFunction' => $oth_checkconditionFunction,
+            'checkconditionFunction'     => $checkconditionFunction,
+            'sValueHidden'               => $sValueHidden,
+        ), true);
 
         ////
         // Close column
@@ -2265,9 +2250,9 @@ function do_multiplechoice($ia)
         // Other is always the last answer, so it's always closing the col and the bootstrap row containing the columns
         if($iNbCols > 1 )
         {
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_column_footer', array('last'=>true), true);
+            $sRows    .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/columns/column_footer', array('last'=>true), true);
             $iRowCount = 0;
-            $isOpen = false;
+            $isOpen    = false;
         }
     }
 
@@ -2278,11 +2263,17 @@ function do_multiplechoice($ia)
     // That can happen only when no 'other' option is set, and the maximum answer rows has not been reached in the last question
     if($iNbCols > 1 && $isOpen )
     {
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/item_column_footer', array('last'=>true), true);
+        $sRows   .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/columns/column_footer', array('last'=>true), true);
         $iRowCount = 0;
     }
 
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/multiplechoice_footer', array(), true);
+    // ==> answer
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/answer', array(
+                'sRows'    => $sRows,
+                'name'     => $ia[1],
+                'anscount' => $anscount,
+            ), true);
+
     return array($answer, $inputnames);
 }
 

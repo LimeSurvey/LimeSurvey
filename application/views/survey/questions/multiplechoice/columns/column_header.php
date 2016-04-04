@@ -7,6 +7,9 @@
  * @var $iColumnWidth
  */
  ?>
-    <!-- on small screen, each column is full widht, so it look like a single colunm-->
+
+ <!-- column_header -->
+     <!-- on small screen, each column is full widht, so it look like a single colunm-->
     <div class="col-sm-<?php echo $iColumnWidth?> col-xs-12">
         <div class="row">
+<!-- end of column_header -->
