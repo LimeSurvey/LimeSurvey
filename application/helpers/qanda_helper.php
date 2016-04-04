@@ -773,7 +773,7 @@ function do_boilerplate($ia)
         $answer .= return_timer_script($aQuestionAttributes, $ia);
     }
 
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/boilerplate/boilerplate', array('ia'=>$ia), true);
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/boilerplate/answer', array('ia'=>$ia), true);
     $inputnames[]=$ia[1];
 
     return array($answer, $inputnames);

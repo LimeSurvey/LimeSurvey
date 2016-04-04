@@ -1,13 +1,15 @@
 <?php
 /**
  * File upload question Html
- * @var $fileid         $ia[1]
- * @var $value          htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES,'utf-8')."
+ * @var $fileid
+ * @var $value
  * @var $filecountvalue
  */
 ?>
 
-<!-- Upload button -->
+<!-- File Upload  -->
+
+<!--answer -->
 <div class='upload-button'>
     <a
         id='upload_<?php echo $fileid;?>'
@@ -22,3 +24,4 @@
 <input type='hidden' id='<?php echo $fileid;?>_filecount' name='<?php echo $fileid;?>_filecount' value="<?php echo $filecountvalue?>" />
 <div id='<?php echo $fileid;?>_uploadedfiles'>
 </div>
+<!-- end of answer -->

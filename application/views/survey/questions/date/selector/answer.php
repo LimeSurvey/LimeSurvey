@@ -16,6 +16,8 @@
  */
 ?>
 
+<!-- Date, selector layout -->
+
 <!-- answer -->
 <p class='question answer-item text-item date-item form-group'>
     <label for='answer<?php echo $name;?>' class='hide label'>
