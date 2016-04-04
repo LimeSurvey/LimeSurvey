@@ -806,8 +806,7 @@ function do_5pointchoice($ia)
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $id = 'slider'.time().rand(0,100);
 
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/5pointchoice_header', array('id'=>$id), true);
-
+    $sRows = "";
     for ($fp=1; $fp<=5; $fp++)
     {
         $checkedState = '';
@@ -817,14 +816,17 @@ function do_5pointchoice($ia)
             $checkedState = ' CHECKED ';
         }
 
-        $aData = array(
-            'ia' => $ia,
-            'fp' => $fp,
-            'checkedState' => $checkedState,
+        $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/rows/item_row', array(
+            'name'                   => $ia[1],
+            'value'                  => $fp,
+            'id'                     => $ia[1].$fp,
+            'labelText'              => $fp,
+            'itemExtraClass'         => 'col-md-1',
+            'checkedState'           => $checkedState,
             'checkconditionFunction' => $checkconditionFunction,
-        );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/item_row', $aData, true);
+        ), true);
     }
+
     if ($ia[6] != "Y"  && SHOW_NO_ANSWER == 1) // Add "No Answer" option if question is not mandatory
     {
         $checkedState = '';
@@ -833,14 +835,18 @@ function do_5pointchoice($ia)
             $checkedState = ' CHECKED ';
         }
         $aData = array(
-            'ia' => $ia,
-            'checkedState' => $checkedState,
+            'name'                   => $ia[1],
+            'value'                  => $fp,
+            'id'                     => $ia[1].'NANS',
+            'labelText'              => gT('No answer'),
+            'itemExtraClass'         => 'noanswer-item',
+            'checkedState'           => $checkedState,
             'checkconditionFunction' => $checkconditionFunction,
         );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/item_noanswer_row', $aData, true);
+        $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/rows/item_row', $aData, true);
 
     }
-    $sJavaValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+    $sessionValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
 
     $inputnames[]=$ia[1];
 
@@ -858,12 +864,16 @@ function do_5pointchoice($ia)
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."slider-rating.js");
     }
 
-    $aData = array(
-        'ia' => $ia,
-        'sJavaValue' => $sJavaValue,
+
+    // ==> answer
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/answer', array(
+        'id'            => $id,
+        'sliderId'      => $ia[0],
+        'name'          => $ia[1],
+        'sessionValue'  => $sessionValue,
+        'sRows'         => $sRows,
         'slider_rating' => $slider_rating,
-    );
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/5pointchoice_footer', $aData, true);
+    ), true);
 
     return array($answer, $inputnames);
 }
