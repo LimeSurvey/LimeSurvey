@@ -1440,30 +1440,30 @@ function do_list_radio($ia)
     $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
 
     // Question attribute variables
-    //$aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang])!='')?$aQuestionAttributes['other_replace_text'][$sSurveyLang]:gT('Other:'); // text for 'other'
-    $iNbCols                  = (trim($aQuestionAttributes['display_columns'])!='')?$aQuestionAttributes['display_columns']:1; // number of columns
+    $othertext           = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang])!='')?$aQuestionAttributes['other_replace_text'][$sSurveyLang]:gT('Other:'); // text for 'other'
+    $iNbCols             = (trim($aQuestionAttributes['display_columns'])!='')?$aQuestionAttributes['display_columns']:1; // number of columns
 
     //// Retrieving datas
 
     // Getting question
     $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$sSurveyLang));
-    $other = $oQuestion->other;
+    $other     = $oQuestion->other;
 
     // Getting answers
     $ansresult = $oQuestion->getOrderedAnswers($aQuestionAttributes['random_order'], $aQuestionAttributes['alphasort'] );
-    $anscount = count($ansresult);
-    $anscount = ($other == 'Y') ? $anscount+1 : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
-    $anscount = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)  ? $anscount+1 : $anscount; //Count up if "No answer" is showing
+    $anscount  = count($ansresult);
+    $anscount  = ($other == 'Y') ? $anscount+1 : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
+    $anscount  = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)  ? $anscount+1 : $anscount; //Count up if "No answer" is showing
 
     //// Columns containing answer rows, set by user in question attribute
     /// TODO : move to a dedicated function
 
     // setting variables
     $iMaxRowsByColumn = 0; // How many answer rows by column
-    $iRowCount = 0;
-    $isOpen = false;       // Is a column opened
+    $iRowCount        = 0;
+    $isOpen           = false;       // Is a column opened
 
     if($iNbCols > 1)
     {
@@ -1478,6 +1478,7 @@ function do_list_radio($ia)
         $first = true; // The very first item will open a bootstrap row containing the columns
     }
 
+    // ==> answer
     $answer = Yii::app()->getController()->renderPartial('/survey/questions/listradio/listradio_header', array(), true);
 
     //Time Limit
@@ -1490,17 +1491,17 @@ function do_list_radio($ia)
     // Get array_filter stuff
 
     $i = 0;
+
+    // ==> rows
     foreach ($ansresult as $key=>$ansrow)
     {
         $i++; // general count of loop, to check if the item is the last one for column process. Never reset.
         $iRowCount++; // counter of number of row by column. Is reset to zero each time a column is full.
         $myfname = $ia[1].$ansrow['code'];
 
-        //$check_ans = '';
         $checkedState = '';
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code'])
         {
-            //$check_ans = CHECKED;
             $checkedState = 'CHECKED';
         }
 
@@ -1515,8 +1516,8 @@ function do_list_radio($ia)
         if($iNbCols > 1 && $iRowCount == 1 )
         {
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>$first), true);
-            $isOpen = true; // If a column is not closed, it will be closed at the end of the process
-            $first = false; // The row containing the column has been opened at the first call.
+            $isOpen  = true; // If a column is not closed, it will be closed at the end of the process
+            $first   = false; // The row containing the column has been opened at the first call.
         }
 
 
@@ -1597,6 +1598,7 @@ function do_list_radio($ia)
         // or if the column has been closed and the row count reset before.
         if($iNbCols > 1 && $iRowCount == 1 )
         {
+            //  ==> col ?
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
         }
         $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
@@ -1615,6 +1617,8 @@ function do_list_radio($ia)
             'oth_checkconditionFunction'=>$oth_checkconditionFunction.'(this.value, this.name, this.type)',
             'checkconditionFunction'=>$checkconditionFunction,
         );
+
+        // ==> rows
         $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_other_row', $aData, true);
 
         $inputnames[]=$thisfieldname;
@@ -1626,6 +1630,8 @@ function do_list_radio($ia)
         if($iNbCols > 1 && $iRowCount == $iMaxRowsByColumn )
         {
             $last = ($i == $anscount)?true:false; // If this loop count equal to the number of answers, then this answer is the last one.
+
+            // ==> cols ?
             $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_column_footer', array('last'=>$last), true);
             $iRowCount = 0;
             $isOpen = false;
@@ -1684,6 +1690,8 @@ function do_list_radio($ia)
     }
 
     //END OF ITEMS
+
+    // ==> answer
     $sJavaValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
     $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/listradio_footer', array('ia'=>$ia, 'sJavaValue'=>$sJavaValue), true);
 
@@ -2570,7 +2578,7 @@ function do_file_upload($ia)
         'value' => $value,
         'filecountvalue'=>$filecountvalue,
     );
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/file_upload/item', $fileuploadDatas, true);
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/file_upload/answer', $fileuploadDatas, true);
 
     $answer .= '<script type="text/javascript">
     var surveyid = '.Yii::app()->getConfig('surveyID').';
