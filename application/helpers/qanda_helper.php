@@ -4881,7 +4881,7 @@ function do_array_multitext($ia)
                 if ($show_grand == true)
                 {
                     $row_total   = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/rows/cells/td_total', array('empty'=>true),  true);
-                    $col_head    = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/rows/cells/thead', array('totalText'=>gT('Grand Total'), 'classes'=>''),  true);
+                    $col_head    = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/rows/cells/thead', array('totalText'=>gT('Grand total'), 'classes'=>''),  true);
                     $grand_total = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/rows/cells/td_grand_total', array('empty'=>false),  true);
                 };
                 $caption    .= gT("The last column shows the total for the row. ");
