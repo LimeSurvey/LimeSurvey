@@ -1,4 +1,4 @@
-<div id="notif-container" class="col-lg-12 content-right" style="z-index: 10100">
+<div id="notif-container" class="col-lg-12 content-right" style="z-index: 999">
     <?php foreach($aMessage as $message):?>
         <?php
             if(isset($message['type']) && in_array($message['type'],array('error','success','danger','warning','info')))
