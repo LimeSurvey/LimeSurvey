@@ -782,18 +782,16 @@ function do_boilerplate($ia)
 function do_equation($ia)
 {
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $sEquation=(trim($aQuestionAttributes['equation'])) ? $aQuestionAttributes['equation'] : $ia[3];
-    $sValue = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES);
+    $sEquation           = (trim($aQuestionAttributes['equation'])) ? $aQuestionAttributes['equation'] : $ia[3];
+    $sValue              = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES);
 
-    $aData = array(
-        'ia'=>$ia,
-        'sValue'=>$sValue,
-        'sEquation'=>$sEquation,
-    );
+    $answer       = Yii::app()->getController()->renderPartial('/survey/questions/equation/answer', array(
+        'name'      => $ia[1],
+        'sValue'    => $sValue,
+        'sEquation' => $sEquation,
+    ), true);
 
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/equation/equation', $aData, true);
-    $inputnames[]=$ia[1];
-
+    $inputnames[] = $ia[1];
     return array($answer, $inputnames);
 }
 
