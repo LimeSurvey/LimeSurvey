@@ -1223,9 +1223,17 @@ class responses extends Survey_Common_Action
         }
     }
 
+    /**
+     * Time statistics for responses
+     *
+     * @param int $iSurveyID
+     * @return void
+     */
     public function time($iSurveyID)
     {
         $aData = $this->_getData(array('iSurveyId' => $iSurveyID));
+
+        /*
         extract($aData);
         $aViewUrls = array();
 
@@ -1253,23 +1261,59 @@ class responses extends Survey_Common_Action
                 }
             }
         }
+        */
+
+        $aData['columns'] = array(
+            array(
+                'header' => gT('ID'),
+                'name' => 'id',
+                'value'=> '$data->id',
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs')
+            ),
+            array(
+                'header' => gT('Total time'),
+                'name' => 'interviewtime',
+                'value' => '$data->interviewtime'
+            )
+        );
 
         $fields = createTimingsFieldMap($iSurveyID, 'full',true,false,$aData['language']);
-
+        //echo '<pre>'; var_dump($fields); echo '</pre>';
         foreach ($fields as $fielddetails)
         {
             // headers for answer id and time data
             if ($fielddetails['type'] == 'id')
+            {
                 $fnames[] = array($fielddetails['fieldname'], $fielddetails['question']);
+            }
+
             if ($fielddetails['type'] == 'interview_time')
+            {
                 $fnames[] = array($fielddetails['fieldname'], gT('Total time'));
+            }
+
             if ($fielddetails['type'] == 'page_time')
+            {
                 $fnames[] = array($fielddetails['fieldname'], gT('Group') . ": " . $fielddetails['group_name']);
+                $aData['columns'][] = array(
+                    'header' => gT('Group: ') . $fielddetails['group_name'],
+                    'name' => $fielddetails['fieldname']
+                );
+            }
+
             if ($fielddetails['type'] == 'answer_time')
+            {
                 $fnames[] = array($fielddetails['fieldname'], gT('Question') . ": " . $fielddetails['title']);
+                $aData['columns'][] = array(
+                    'header' => gT('Question: ') . $fielddetails['title'],
+                    'name' => $fielddetails['fieldname']
+                );
+            }
         }
         $fncount = count($fnames);
 
+        /*
         //NOW LETS CREATE A TABLE WITH THOSE HEADINGS
         foreach ($fnames as $fn)
         {
@@ -1344,7 +1388,9 @@ class responses extends Survey_Common_Action
         $aData['last'] = $last;
         $aData['next'] = $next;
         $aData['end'] = $end;
+        */
         $aViewUrls[] = 'browsetimeheader_view';
+        /*
 
         $aData['fncount'] = $fncount;
         $bgcc = 'oddrow';
@@ -1377,15 +1423,20 @@ class responses extends Survey_Common_Action
             $aData['browsedatafield'] = $browsedatafield;
             $aData['bgcc'] = $bgcc;
             $aData['dtrow'] = $dtrow;
+            */
             $aViewUrls['browsetimerow_view'][] = $aData;
+            /*
         }
+        */
 
         //interview Time statistics
-        $aData['statistics'] = SurveyTimingDynamic::model($iSurveyId)->statistics();
+        $aData['model'] = SurveyTimingDynamic::model($iSurveyID);
+
+        $aData['statistics'] = SurveyTimingDynamic::model($iSurveyID)->statistics();
         $aData['num_total_answers'] = SurveyDynamic::model($iSurveyID)->count();
         $aData['num_completed_answers'] = SurveyDynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
         $aViewUrls[] = 'browsetimefooter_view';
-        $this->_renderWrappedTemplate('',$aViewUrls, $aData);
+        $this->_renderWrappedTemplate('', $aViewUrls, $aData);
     }
 
     /**

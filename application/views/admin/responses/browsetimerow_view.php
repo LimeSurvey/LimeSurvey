@@ -1,3 +1,4 @@
+<?php /*
 <tr class='<?php echo $bgcc; ?>' valign='top'>
     <td align='center'><input type='checkbox' class='cbResponseMarker' value='<?php echo $dtrow['id']; ?>' name='markedresponses[]' /></td>
     <td align='center'>
@@ -27,3 +28,29 @@
     ?>
 
 </tr>
+*/ ?>
+
+<?php
+    $this->widget('bootstrap.widgets.TbGridView', array(
+        'dataProvider' => $model->search($iSurveyID, $language),
+
+        // Number of row per page selection
+        'id' => 'survey-grid',
+        'emptyText'=>gT('No surveys found.'),
+
+        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+            CHtml::dropDownList(
+                'pageSize',
+                10,
+                Yii::app()->params['pageSizeOptions'],
+                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
+
+        'columns' => array_merge($columns,
+            array(array(
+                'header' => '',
+                'name' => 'actions',
+                'value'=>'$data->buttons',
+                'type'=>'raw',
+                'htmlOptions' => array('class' => ''),
+            )))
+    ));
