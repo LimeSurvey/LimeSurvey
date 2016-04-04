@@ -1,6 +1,6 @@
 <?php
 /**
- * array array, no dropdown, Html : Header
+ * array array, no dropdown, Html
  *
  * @var $sColumns   : the columns, generated with the view columns/col.php
  * @var $sHeaders   : the headers, generated with the view rows/cell/thead.php

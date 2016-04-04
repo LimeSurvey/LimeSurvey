@@ -4600,7 +4600,6 @@ function do_array($ia)
             {
                 $answertext        = substr($answertextsave,strpos($answertextsave,'|')+1);
 
-                // ==> head
                 $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/rows/cells/thead', array(
                     'class'   => 'answertextright',
                     'content' => $answertext,
@@ -4626,7 +4625,6 @@ function do_array($ia)
                         ),  true);
             }
 
-            // ==> row
             $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/rows/answer_row', array(
                         'answer_tds' => $answer_tds,
                         'myfname'    => $myfname,
@@ -4650,7 +4648,6 @@ function do_array($ia)
             ), true);
         }
 
-        // ==> cols
         if ($right_exists)
         {
             $odd_even = alternation($odd_even);
@@ -4660,7 +4657,6 @@ function do_array($ia)
             ), true);
         }
 
-        // ==> cols
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
         {
             $odd_even = alternation($odd_even);
@@ -4670,7 +4666,6 @@ function do_array($ia)
             ), true);
         }
 
-        // ==> answer
         $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/answer', array(
             'answerwidth'=> $answerwidth,
             'anscount'   => $anscount,
@@ -4686,30 +4681,41 @@ function do_array($ia)
     elseif ($useDropdownLayout === true && count($lresult)> 0)
     {
         foreach($lresult as $lrow)
-            $labels[]=Array('code' => $lrow->code,
-            'answer' => $lrow->answer);
+        {
+            $labels[]=array(
+                'code'   => $lrow->code,
+                'answer' => $lrow->answer
+            );
+        }
+
         $sQuery = "SELECT count(question) FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
         $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
-        if ($iCount>0) {
-            $right_exists=true;
-            $answerwidth=$answerwidth/2;
-        } else {
-            $right_exists=false;
+
+        if ($iCount>0)
+        {
+            $right_exists = true;
+            $answerwidth  = $answerwidth/2;
+        }
+        else
+        {
+            $right_exists = false;
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-        if ($aQuestionAttributes['random_order']==1) {
+        if ($aQuestionAttributes['random_order']==1)
+        {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
         }
         else
         {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
-        $ansresult = dbExecuteAssoc($ansquery); //Checked
-        $aQuestions = $ansresult->readAll();
-        $anscount = count($aQuestions);
-        $fn=1;
 
-        $numrows = count($labels);
+        $ansresult  = dbExecuteAssoc($ansquery); //Checked
+        $aQuestions = $ansresult->readAll();
+        $anscount   = count($aQuestions);
+        $fn         = 1;
+        $numrows    = count($labels);
+
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             ++$numrows;
@@ -4718,19 +4724,13 @@ function do_array($ia)
         {
             ++$numrows;
         }
-        $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-        $answer_start = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/header', array(
-            'extraclass'=>$extraclass
-        ),  true);
-
-        $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/open_body', array(
-            'extraclass'=>$extraclass
-        ),  true);
+        $cellwidth    = round( ($columnswidth / $numrows ) , 1 );
 
         $trbc = '';
         $inputnames=array();
 
+        $sRows = "";
         foreach ($aQuestions as $ansrow)
         {
             $myfname        = $ia[1].$ansrow['title'];
@@ -4759,22 +4759,28 @@ function do_array($ia)
                 $options[$y]['text']      = flattenText($lrow['answer']);
             }
 
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/row', array(
-                'myfname'=>$myfname,
-                'answertext'=>$answertext,
-                'value'=>$value,
-                'error'=>$error,
-                'checkconditionFunction'=>$checkconditionFunction,
-                'options'=>$options,
-                'thRight'=>$thRight,
-                'tdRight'=>$tdRight,
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/rows/answer_row', array(
+                'myfname'                => $myfname,
+                'answertext'             => $answertext,
+                'value'                  => $value,
+                'error'                  => $error,
+                'checkconditionFunction' => $checkconditionFunction,
+                'options'                => $options,
+                'thRight'                => $thRight,
+                'tdRight'                => $tdRight,
             ),  true);
 
             $inputnames[]=$myfname;
             $fn++;
         }
-        $close = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/close_body', array(), true);
-        $answer = $answer_start . $answer . $close;
+
+
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/dropdown/answer', array
+        (
+            'extraclass' => $extraclass,
+            'sRows'      => $sRows,
+        ),  true);
+
     }
     else
     {
