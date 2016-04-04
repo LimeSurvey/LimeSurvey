@@ -57,15 +57,6 @@ $(document).ready(function(){
         }, $.datepicker.regional[LS.data.language]);
     }
     doToolTip();
-    $('.btntooltip').tooltip();
-    $('[data-tooltip="true"]').tooltip();
-
-    // Since you can only have one option per data-toggle,
-    // we need this to enable both modal and toggle on one
-    // button. E.g., <button data-toggle='modal' data-tooltip='true' title="foo">...</button>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
 
     $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
     $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
@@ -321,6 +312,17 @@ function validatefilename (form, strmessage )
 
 function doToolTip()
 {
+    $('.btntooltip').tooltip();
+
+    // Since you can only have one option per data-toggle,
+    // we need this to enable both modal and toggle on one
+    // button. E.g., <button data-toggle='modal' data-tooltip='true' title="foo">...</button>
+    $('[data-tooltip="true"]').tooltip();
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
     // ToolTip on menu
     $(".sf-menu li").each(function() {
         tipcontent=$(this).children("a").children("img").attr('alt');
