@@ -157,6 +157,7 @@
                 'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
                 'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/survey/sa/view/surveyid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                 'ajaxUpdate' => true,
+                'afterAjaxUpdate' => 'doToolTip'
             ));
             ?>
         </div>
