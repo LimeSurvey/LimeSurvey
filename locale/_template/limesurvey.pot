@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-04-04 08:31:53+00:00\n"
+"POT-Creation-Date: 2016-04-04 08:38:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8822,15 +8822,12 @@ msgid "Total"
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4868
+#: application/helpers/qanda_helper.php:4884
 msgid "Grand total"
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4873
 msgid "The last row shows the total for the column. "
-msgstr ""
-
-#: application/helpers/qanda_helper.php:4884
-msgid "Grand Total"
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4887
