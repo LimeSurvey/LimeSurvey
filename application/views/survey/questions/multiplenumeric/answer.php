@@ -1,6 +1,6 @@
 <?php
 /**
- * Multiple Numerical question item Html
+ * Multiple Numerical question Html
  *
  * @var $sRows      : the rows, generated with the views rows/answer_row.php
  *

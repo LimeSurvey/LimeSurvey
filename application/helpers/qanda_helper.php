@@ -2644,15 +2644,15 @@ function do_file_upload($ia)
 function do_multipleshorttext($ia)
 {
     global $thissurvey;
-    $extraclass ="";
-    $answer='';
+    $extraclass          = "";
+    $answer              = '';
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if ($aQuestionAttributes['numbers_only']==1)
     {
-        $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
-        $sSeparator = $sSeparator['separator'];
-        $extraclass .=" numberonly";
+        $sSeparator             = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeparator             = $sSeparator['separator'];
+        $extraclass            .= " numberonly";
         $checkconditionFunction = "fixnum_checkconditions";
     }
     else
@@ -2663,23 +2663,23 @@ function do_multipleshorttext($ia)
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maximum_chars= intval(trim($aQuestionAttributes['maximum_chars']));
-        $maxlength= "maxlength='{$maximum_chars}' ";
-        $extraclass .=" maxchars maxchars-".$maximum_chars;
+        $maximum_chars = intval(trim($aQuestionAttributes['maximum_chars']));
+        $maxlength     = "maxlength='{$maximum_chars}' ";
+        $extraclass   .= " maxchars maxchars-".$maximum_chars;
     }
     else
     {
-        $maxlength= "";
+        $maxlength = "";
     }
 
-    $tiwidth=(trim($aQuestionAttributes['text_input_width'])!='')?$aQuestionAttributes['text_input_width']:'';
-    $sInputContainerWidth=(trim($aQuestionAttributes['text_input_columns'])!='')?$aQuestionAttributes['text_input_columns']:'6';
-    $sLabelWidth=(trim($aQuestionAttributes['label_input_columns'])!='')?$aQuestionAttributes['label_input_columns']:'6';
+    $tiwidth              = (trim($aQuestionAttributes['text_input_width'])!='')?$aQuestionAttributes['text_input_width']:'';
+    $sInputContainerWidth = (trim($aQuestionAttributes['text_input_columns'])!='')?$aQuestionAttributes['text_input_columns']:'6';
+    $sLabelWidth          = (trim($aQuestionAttributes['label_input_columns'])!='')?$aQuestionAttributes['label_input_columns']:'6';
 
     if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
     {
-        $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
-        $extraclass .=" withprefix";
+        $prefix      = $aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass .= " withprefix";
     }
     else
     {
@@ -2688,8 +2688,8 @@ function do_multipleshorttext($ia)
 
     if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
     {
-        $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
-        $extraclass .=" withsuffix";
+        $suffix      = $aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass .= " withsuffix";
     }
     else
     {
@@ -2706,25 +2706,16 @@ function do_multipleshorttext($ia)
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
 
-    $ansresult = dbExecuteAssoc($ansquery);    //Checked
+    $ansresult     = dbExecuteAssoc($ansquery);    //Checked
     $aSubquestions = $ansresult->readAll();
-    $anscount = count($aSubquestions)*2;
-    $fn = 1;
-    $answer_main = '';
-    $label_width = 0;
+    $anscount      = count($aSubquestions)*2;
+    $fn            = 1;
+    $answer_main   = '';
+    $label_width   = 0;
+    $sRows         = '';
 
-    if ($anscount==0)
+    if ($anscount!=0)
     {
-        $inputnames=array();
-        $answer_main .= '<div class="alert alert-danger" role="alert">'."\n";
-        $answer_main .= gT('Error: This question has no answers.')."\n";
-        $answer_main .= '</div>';
-
-    }
-    else
-    {
-        $answer = Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/header', array(), true);
-
         // Display TextArea
         if (trim($aQuestionAttributes['display_rows'])!='')
         {
@@ -2750,26 +2741,25 @@ function do_multipleshorttext($ia)
                     $dispVal .= htmlspecialchars($dispVal);
                 }
 
-                $itemTextareaDatas = array(
-                    'alert'=>false,
-                    'tiwidth'=>$tiwidth,
-                    'sInputContainerWidth'=>$sInputContainerWidth,
-                    'sLabelWidth'=>$sLabelWidth,
-                    'maxlength'=>'',
-                    'extraclass'=>$extraclass,
-                    'sDisplayStyle'=>$sDisplayStyle,
-                    'prefix'=>$prefix,
-                    'myfname'=>$myfname,
-                    'labelText'=>$ansrow['question'],
-                    'prefix'=>$prefix,
-                    'kpclass'=>$kpclass,
-                    'rows'=>$drows,
-                    'maxlength'=>$maxlength,
-                    'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-                    'dispVal'=>$dispVal,
-                    'suffix'=>$suffix,
-                );
-                $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/item_textarea', $itemTextareaDatas, true);
+                $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/rows/answer_row_textarea', array(
+                    'alert'                  => false,
+                    'tiwidth'                => $tiwidth,
+                    'sInputContainerWidth'   => $sInputContainerWidth,
+                    'sLabelWidth'            => $sLabelWidth,
+                    'maxlength'              => '',
+                    'extraclass'             => $extraclass,
+                    'sDisplayStyle'          => $sDisplayStyle,
+                    'prefix'                 => $prefix,
+                    'myfname'                => $myfname,
+                    'labelText'              => $ansrow['question'],
+                    'prefix'                 => $prefix,
+                    'kpclass'                => $kpclass,
+                    'rows'                   => $drows,
+                    'maxlength'              => $maxlength,
+                    'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+                    'dispVal'                => $dispVal,
+                    'suffix'                 => $suffix,
+                ), true);
 
                 $fn++;
                 $inputnames[]=$myfname;
@@ -2792,7 +2782,7 @@ function do_multipleshorttext($ia)
                 }
 
                 $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
-                $dispVal = '';
+                $dispVal       = '';
 
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
@@ -2804,32 +2794,41 @@ function do_multipleshorttext($ia)
                     $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
                 }
 
-                $itemInputextDatas = array(
-                    'alert'=>$alert,
-                    'labelname'=>'answer'.$myfname,
-                    'maxlength'=>$maxlength,
-                    'tiwidth'=>$tiwidth,
-                    'sInputContainerWidth'=>$sInputContainerWidth,
-                    'sLabelWidth'=>$sLabelWidth,
-                    'extraclass'=>$extraclass,
-                    'sDisplayStyle'=>$sDisplayStyle,
-                    'prefix'=>$prefix,
-                    'myfname'=>$myfname,
-                    'question'=>$ansrow['question'],
-                    'prefix'=>$prefix,
-                    'kpclass'=>$kpclass,
-                    'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-                    'dispVal'=>$dispVal,
-                    'suffix'=>$suffix,
-                );
-                $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/item_inputtext', $itemInputextDatas, true);
+                $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/rows/answer_row_inputtext', array(
+                    'alert'                  => $alert,
+                    'labelname'              => 'answer'.$myfname,
+                    'maxlength'              => $maxlength,
+                    'tiwidth'                => $tiwidth,
+                    'sInputContainerWidth'   => $sInputContainerWidth,
+                    'sLabelWidth'            => $sLabelWidth,
+                    'extraclass'             => $extraclass,
+                    'sDisplayStyle'          => $sDisplayStyle,
+                    'prefix'                 => $prefix,
+                    'myfname'                => $myfname,
+                    'question'               => $ansrow['question'],
+                    'prefix'                 => $prefix,
+                    'kpclass'                => $kpclass,
+                    'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+                    'dispVal'                => $dispVal,
+                    'suffix'                 => $suffix,
+                ), true);
                 $fn++;
                 $inputnames[]=$myfname;
             }
 
         }
+
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/answer', array(
+                    'sRows' => $sRows,
+                  ), true);
+
     }
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/footer', array(), true);
+    else
+    {
+        $inputnames   = array();
+        $answer       = Yii::app()->getController()->renderPartial('/survey/questions/multipleshorttext/empty', array(), true);
+    }
+
     return array($answer, $inputnames);
 }
 
