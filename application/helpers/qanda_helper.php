@@ -1705,42 +1705,46 @@ function do_listwithcomment($ia)
     $checkconditionFunction = "checkconditions";
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
     $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
-    if (!isset($maxoptionsize)) {$maxoptionsize=35;}
 
-    // Question attribute variables
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    if (!isset($maxoptionsize))
+    {
+        $maxoptionsize=35;
+    }
 
-    // Getting question
-    $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$sSurveyLang));
+
+    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);                       // Question attribute variables
+    $oQuestion           = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$sSurveyLang));     // Getting question
 
     // Getting answers
-    $ansresult = $oQuestion->getOrderedAnswers($aQuestionAttributes['random_order'], $aQuestionAttributes['alphasort'] );
-    $anscount = count($ansresult);
-
-    $answer = '';
-
+    $ansresult    = $oQuestion->getOrderedAnswers($aQuestionAttributes['random_order'], $aQuestionAttributes['alphasort'] );
+    $anscount     = count($ansresult);
     $hint_comment = gT('Please enter your comment here');
+
     if ($aQuestionAttributes['use_dropdown']!=1 && $anscount <= $dropdownthreshold)
     {
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/list/header', array(), true);
+
+        $sRows = '';
         foreach ($ansresult as $ansrow)
         {
             $check_ans = '';
+
             if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code'])
             {
                 $check_ans = CHECKED;
             }
+
             $itemData = array(
-                'name'=>$ia[1],
-                'id'=>'answer'.$ia[1].$ansrow['code'],
-                'value'=>$ansrow['code'],
-                'check_ans'=>$check_ans,
-                'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type);',
-                'labeltext'=>$ansrow['answer'],
+                'name'                   => $ia[1],
+                'id'                     => 'answer'.$ia[1].$ansrow['code'],
+                'value'                  => $ansrow['code'],
+                'check_ans'              => $check_ans,
+                'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type);',
+                'labeltext'              => $ansrow['answer'],
             );
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/list/item', $itemData, true);
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/list/rows/answer_row', $itemData, true);
         }
 
+        // ==> rows
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             if ((!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') ||($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' ' ))
@@ -1761,41 +1765,35 @@ function do_listwithcomment($ia)
                 'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
                 'labeltext'=>gT('No answer'),
             );
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/list/item', $itemData, true);
+
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/list/rows/answer_row', $itemData, true);
         }
 
         $fname2 = $ia[1].'comment';
         $tarows = ($anscount > 8)?$anscount/1.2:4;
 
-        $footerData = array(
-            'id'=>'answer'.$ia[1].'comment',
-            'hint_comment'=>$hint_comment,
-            'kpclass'=>$kpclass,
-            'name'=>$ia[1].'comment',
-            'tarows'=>floor($tarows),
-            'has_comment_saved'=>isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2],
-            'comment_saved'=>htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]),
-            'java_name'=>'java'.$ia[1],
-            'java_id'=>'java'.$ia[1],
-            'java_value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]
-        );
 
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/list/footer', $footerData, true);
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/list/answer', array(
+            'sRows'             => $sRows,
+            'id'                => 'answer'.$ia[1].'comment',
+            'hint_comment'      => $hint_comment,
+            'kpclass'           => $kpclass,
+            'name'              => $ia[1].'comment',
+            'tarows'            => floor($tarows),
+            'has_comment_saved' => isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2],
+            'comment_saved'     => htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]),
+            'java_name'         => 'java'.$ia[1],
+            'java_id'           => 'java'.$ia[1],
+            'java_value'        => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]
+        ), true);
+
 
         $inputnames[]=$ia[1];
         $inputnames[]=$ia[1].'comment';
     }
     else //Dropdown list
     {
-        $headerData = array(
-            'name'=> $ia[1],
-            'id'=> 'answer'.$ia[1],
-            'checkconditionFunction'=> $checkconditionFunction.'(this.value, this.name, this.type)',
-            'show_noanswer'=> is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]),
-        );
-
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/dropdown/header', $headerData, true);
-
+        $sOptions= '';
         foreach ($ansresult as $ansrow)
         {
             $check_ans = '';
@@ -1809,7 +1807,7 @@ function do_listwithcomment($ia)
                 'check_ans' => $check_ans,
                 'option_text' => $ansrow['answer'],
             );
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/dropdown/item', $itemData, true);
+            $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/dropdown/rows/option', $itemData, true);
 
             if (strlen($ansrow['answer']) > $maxoptionsize)
             {
@@ -1829,29 +1827,43 @@ function do_listwithcomment($ia)
                 'check_ans' => $check_ans,
                 'option_text' => gT('No answer'),
             );
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/dropdown/item', $itemData, true);
+            $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/dropdown/rows/option', $itemData, true);
         }
         $fname2 = $ia[1].'comment';
-        if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
-        if ($tarows > 15) {$tarows=15;}
+
+        if ($anscount > 8)
+        {
+            $tarows = $anscount/1.2;
+        }
+        else
+        {
+            $tarows = 4;
+        }
+
+        if ($tarows > 15)
+        {
+            $tarows=15;
+        }
         $maxoptionsize=$maxoptionsize*0.72;
+
         if ($maxoptionsize < 33) {$maxoptionsize=33;}
         if ($maxoptionsize > 70) {$maxoptionsize=70;}
 
-        $footerData = array(
-            'id'=>'answer'.$ia[1].'comment',
-            'label_text'=>$hint_comment,
-            'kpclass'=>$kpclass,
-            'name'=>$ia[1].'comment',
-            'tarows'=>$tarows,
-            'maxoptionsize'=>$maxoptionsize,
-            'has_comment_saved'=>isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2],
-            'comment_saved'=>htmlspecialchars( $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]),
-            'java_name'=>'java'.$ia[1],
-            'java_id'=>'java'.$ia[1],
-            'java_value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
-        );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/dropdown/footer', $footerData, true);
+
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/list_with_comment/dropdown/answer', array(
+            'sOptions'               => $sOptions,
+            'name'                   => $ia[1],
+            'id'                     => 'answer'.$ia[1],
+            'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+            'show_noanswer'          => is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]),
+            'label_text'             => $hint_comment,
+            'kpclass'                => $kpclass,
+            'tarows'                 => $tarows,
+            'maxoptionsize'          => $maxoptionsize,
+            'has_comment_saved'      => isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2],
+            'comment_saved'          => htmlspecialchars( $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]),
+            'value'             => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+        ), true);
 
         $inputnames[]=$ia[1];
         $inputnames[]=$ia[1].'comment';

@@ -1,6 +1,6 @@
 <?php
 /**
- * List with comment item Html
+ * List with comment, list layout, Html
  *
  * @var $name                           $ia[1]
  * @var $id                             answer'.$ia[1].$ansrow['code'].'
@@ -11,6 +11,7 @@
  * @var $li_classes
  */
 ?>
+<!-- answer_row -->
 <div class="answer-item radio-item <?php if(isset($li_classes)){echo $li_classes;}?>">
     <div class='form-group'>
         <input
@@ -27,3 +28,4 @@
         </label>
     </div>
 </div>
+<!-- end of answer_row -->

@@ -30,7 +30,7 @@
             onchange="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type);<?php echo $select_show_hide; ?>"
     >
         <?php
-            // rows/item_options.php
+            // rows/option.php
             echo $sOptions;
         ?>
 
@@ -44,7 +44,7 @@
     />
 
     <?php
-        // rows/item_options.php
+        // rows/othertext.php
         echo $sOther;
     ?>
 </p>
