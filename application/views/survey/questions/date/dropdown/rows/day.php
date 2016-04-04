@@ -1,11 +1,12 @@
 <?php
 /**
  * Day dropdown Html
- * @var $dayId = $ia[1];
+ * @var $dayId 
  * @var $currentdate
  */
 ?>
 
+<!-- day -->
 <label for="day<?php echo $dayId;?>" class="hide">
     <?php eT('Day'); ?>
 </label>
@@ -20,3 +21,4 @@
         </option>
     <?php endfor; ?>
 </select>
+<!-- end of day -->

@@ -1,13 +1,14 @@
 <?php
 /**
  * Minute dropdown Html
- * @var $minuteId = $ia[1];
+ * @var $minuteId
  * @var $currentminute
- * @var $dropdown_dates_minute_step     $aQuestionAttributes['dropdown_dates_minute_step']
+ * @var $dropdown_dates_minute_step
  * @var $datepart
  */
 ?>
 
+<!-- minute -->
 <label for="minute<?php echo $minuteId; ?>" class="hide">
     <?php eT('Minute'); ?>
 </label>
@@ -26,3 +27,4 @@
         </option>
     <?php endfor;?>
 </select>
+<!-- end of minute -->

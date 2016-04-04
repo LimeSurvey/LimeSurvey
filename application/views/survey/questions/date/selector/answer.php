@@ -1,20 +1,22 @@
 <?php
 /**
  * Date Html, selector style :
- * @var $name                           $ia[1]
- * @var $qid                            $ia[0]
+ * @var $name
+ * @var $qid
  * @var $iLength
  * @var $dateoutput
  * @var $mindate
  * @var $maxdate
- * @var $dateformatdetails              $dateformatdetails['dateformat']
- * @var $dateformatdetailsjs            $dateformatdetails['jsdate']
- * @var $goodchars                      return goodchars(event,'".$goodchars."')
- * @var $checkconditionFunction         $checkconditionFunction(this.value, this.name, this.type)
- * @var $language                       App()->language
- * @var $hidetip                        trim($aQuestionAttributes['hide_tip'])==0
+ * @var $dateformatdetails
+ * @var $dateformatdetailsjs
+ * @var $goodchars
+ * @var $checkconditionFunction
+ * @var $language
+ * @var $hidetip
  */
 ?>
+
+<!-- answer -->
 <p class='question answer-item text-item date-item form-group'>
     <label for='answer<?php echo $name;?>' class='hide label'>
         <?php echo sprintf(gT('Date in the format: %s'),$dateformatdetails); ?>
@@ -66,3 +68,5 @@
 <?php endif;?>
 
 <input type='hidden' class="namecontainer" data-name="<?php echo $qid; ?>" />
+
+<!-- end of answer -->

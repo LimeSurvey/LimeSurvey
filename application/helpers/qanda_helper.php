@@ -865,7 +865,6 @@ function do_5pointchoice($ia)
     }
 
 
-    // ==> answer
     $answer = Yii::app()->getController()->renderPartial('/survey/questions/5pointchoice/answer', array(
         'id'            => $id,
         'sliderId'      => $ia[0],
@@ -882,102 +881,100 @@ function do_5pointchoice($ia)
 function do_date($ia)
 {
     global $thissurvey;
-    // Rem: this should generate a bug...
-    //$aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $checkconditionFunction = "checkconditions";
+    $dateformatdetails      = getDateFormatDataForQID($aQuestionAttributes,$thissurvey);
+    $numberformatdatat      = getRadixPointData($thissurvey['surveyls_numberformat']);
 
-    $sDateLangvarJS=" translt = {
+    $sDateLangvarJS         = " translt = {
          alertInvalidDate: '" . gT('Date entered is invalid!','js') . "',
         };";
 
     App()->getClientScript()->registerScript("sDateLangvarJS",$sDateLangvarJS,CClientScript::POS_HEAD);
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("third_party").'jstoolbox/date.js');
-    $checkconditionFunction = "checkconditions";
-
-    $dateformatdetails = getDateFormatDataForQID($aQuestionAttributes,$thissurvey);
-    $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
 
     // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
     if (trim($aQuestionAttributes['date_min'])!='')
     {
-        $date_min=trim($aQuestionAttributes['date_min']);
-        $date_time_em=strtotime(LimeExpressionManager::ProcessString("{".$date_min."}",$ia[0]));
-        if(ctype_digit($date_min) && (strlen($date_min)==4) && ($date_min>=1900) && ($date_min<=2099))
+        $date_min      = trim($aQuestionAttributes['date_min']);
+        $date_time_em  = strtotime(LimeExpressionManager::ProcessString("{".$date_min."}",$ia[0]));
+
+        if (ctype_digit($date_min) && (strlen($date_min)==4) && ($date_min>=1900) && ($date_min<=2099))
         {
-            // backward compatibility: if only a year is given, add month and day
-            $mindate=$date_min.'-01-01';
+            $mindate = $date_min.'-01-01'; // backward compatibility: if only a year is given, add month and day
         }
         elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/",$date_min))// it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
         {
-            $mindate=$date_min;
+            $mindate = $date_min;
         }
-        elseif($date_time_em)
+        elseif ($date_time_em)
         {
-            $mindate=date("Y-m-d",$date_time_em);
+            $mindate = date("Y-m-d",$date_time_em);
         }
         else
         {
-            $mindate='{'.$aQuestionAttributes['date_min'].'}';
+            $mindate = '{'.$aQuestionAttributes['date_min'].'}';
         }
     }
     else
     {
-        $mindate='1900-01-01'; // Why 1900 ?
+        $mindate = '1900-01-01'; // Why 1900 ?
     }
+
     // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
     if (trim($aQuestionAttributes['date_max'])!='')
     {
-        $date_max=trim($aQuestionAttributes['date_max']);
-        $date_time_em=strtotime(LimeExpressionManager::ProcessString("{".$date_max."}",$ia[0]));
+        $date_max     = trim($aQuestionAttributes['date_max']);
+        $date_time_em = strtotime(LimeExpressionManager::ProcessString("{".$date_max."}",$ia[0]));
+
         if (ctype_digit($date_max) && (strlen($date_max)==4) && ($date_max>=1900) && ($date_max<=2099))
         {
-            // backward compatibility: if only a year is given, add month and day
-            $maxdate=$date_max.'-12-31';
+            $maxdate = $date_max.'-12-31'; // backward compatibility: if only a year is given, add month and day
         }
         elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/",$date_max))// it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
         {
-            $maxdate=$date_max;
+            $maxdate = $date_max;
         }
         elseif($date_time_em)
         {
-            $maxdate=date("Y-m-d",$date_time_em);
+            $maxdate = date("Y-m-d",$date_time_em);
         }
         else
         {
-            $maxdate='{'.$aQuestionAttributes['date_max'].'}';
+            $maxdate = '{'.$aQuestionAttributes['date_max'].'}';
         }
     }
     else
     {
-        $maxdate='2037-12-31'; // Why 2037 ?
+        $maxdate = '2037-12-31'; // Why 2037 ?
     }
 
     if (trim($aQuestionAttributes['dropdown_dates'])==1)
     {
-        if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) &
+        if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) &&
            ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]!='INVALID'))
         {
-            $datetimeobj = new Date_Time_Converter($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]], "Y-m-d H:i:s");
-            $currentyear = $datetimeobj->years;
-            $currentmonth = $datetimeobj->months;
-            $currentdate = $datetimeobj->days;
-            $currenthour = $datetimeobj->hours;
+            $datetimeobj   = new Date_Time_Converter($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]], "Y-m-d H:i:s");
+            $currentyear   = $datetimeobj->years;
+            $currentmonth  = $datetimeobj->months;
+            $currentdate   = $datetimeobj->days;
+            $currenthour   = $datetimeobj->hours;
             $currentminute = $datetimeobj->minutes;
         }
         else
         {
             // If date is invalid get the POSTED value
-            $currentdate = App()->request->getPost("day{$ia[1]}",'');
-            $currentmonth = App()->request->getPost("month{$ia[1]}",'');
-            $currentyear = App()->request->getPost("year{$ia[1]}",'');
-            $currenthour = App()->request->getPost("hour{$ia[1]}",'');
+            $currentdate   = App()->request->getPost("day{$ia[1]}",'');
+            $currentmonth  = App()->request->getPost("month{$ia[1]}",'');
+            $currentyear   = App()->request->getPost("year{$ia[1]}",'');
+            $currenthour   = App()->request->getPost("hour{$ia[1]}",'');
             $currentminute = App()->request->getPost("minute{$ia[1]}",'');
         }
 
         $dateorder = preg_split('/([-\.\/ :])/', $dateformatdetails['phpdate'],-1,PREG_SPLIT_DELIM_CAPTURE );
-        $answer = Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/date_header', array(), true);
-        //$answer='<p class="question date answer-item dropdown-item date-item">';
+
+        $sRows = '';
         foreach($dateorder as $datepart)
         {
             switch($datepart)
@@ -985,7 +982,7 @@ function do_date($ia)
                 // Show day select box
                 case 'j':
                 case 'd':
-                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/day', array('dayId'=>$ia[1], 'currentdate'=>$currentdate), true);
+                    $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/day', array('dayId'=>$ia[1], 'currentdate'=>$currentdate), true);
                     break;
                     // Show month select box
                 case 'n':
@@ -1027,7 +1024,7 @@ function do_date($ia)
                             break;
                     }
 
-                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/month', array('monthId'=>$ia[1], 'currentmonth'=>$currentmonth, 'montharray'=>$montharray), true);
+                    $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/month', array('monthId'=>$ia[1], 'currentmonth'=>$currentmonth, 'montharray'=>$montharray), true);
                     break;
                     // Show year select box
                 case 'y':
@@ -1069,18 +1066,18 @@ function do_date($ia)
                         $step = -1;
                         $reverse = false;
                     }
-                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/year', array('yearId'=>$ia[1], 'currentyear'=>$currentyear,'yearmax'=>$yearmax,'reverse'=>$reverse,'yearmin'=>$yearmin,'step'=>$step), true);
+                    $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/year', array('yearId'=>$ia[1], 'currentyear'=>$currentyear,'yearmax'=>$yearmax,'reverse'=>$reverse,'yearmin'=>$yearmin,'step'=>$step), true);
                     break;
                 case 'H':
                 case 'h':
                 case 'g':
                 case 'G':
-                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/hour', array('hourId'=>$ia[1], 'currenthour'=>$currenthour,), true);
+                    $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/hour', array('hourId'=>$ia[1], 'currenthour'=>$currenthour,), true);
                     break;
                 case 'i':
-                    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/minute', array('minuteId'=>$ia[1], 'currentminute'=>$currenthour, 'dropdown_dates_minute_step'=>$aQuestionAttributes['dropdown_dates_minute_step'], 'datepart'=>$datepartdatepart ), true);
+                    $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/minute', array('minuteId'=>$ia[1], 'currentminute'=>$currenthour, 'dropdown_dates_minute_step'=>$aQuestionAttributes['dropdown_dates_minute_step'], 'datepart'=>$datepartdatepart ), true);
                     break;
-                default:  $answer .= $datepart;
+                default:  $sRows .= $datepart;
             }
         }
 
@@ -1092,21 +1089,18 @@ function do_date($ia)
             $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
         }
 
-        $footerData = array(
-            'name'=>$ia[1],
-            'dateoutput'=>htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8'),
-            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-            'dateformatdetails'=>$dateformatdetails['jsdate'],
-            'dateformat'=>$dateformatdetails['dateformat'],
-        );
 
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/date_footer', $footerData, true);
+        // ==> answer
+        $answer    = Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/answer', array(
+            'sRows'                  => $sRows,
+            'name'                   => $ia[1],
+            'dateoutput'             => htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8'),
+            'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+            'dateformatdetails'      => $dateformatdetails['jsdate'],
+            'dateformat'             => $dateformatdetails['dateformat'],
+        ), true);
+
         App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}","doDropDownDate({$ia[0]});",CClientScript::POS_HEAD);
-        // MayDo:
-        // add js code to
-        //        - fill dropdown boxes according to min/max
-        //        - if one datefield box is changed update all others
-        //        - would need a LOT of JS
     }
     else
     {
@@ -1114,44 +1108,40 @@ function do_date($ia)
         App()->getClientScript()->registerPackage('jqueryui-timepicker');
 
         // Locale for datepicker and timpicker extension
-
         if (App()->language !== 'en')
         {
             Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-".App()->language.".js");
             Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jquery-ui-timepicker-addon/i18n/jquery-ui-timepicker-".App()->language.".js");
         }
         // Format the date  for output
-        $dateoutput=trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
+        $dateoutput = trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
         if ($dateoutput!='' & $dateoutput!='INVALID')
         {
             $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
-            $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
+            $dateoutput  = $datetimeobj->convert($dateformatdetails['phpdate']);
         }
 
         $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
         $goodchars = "0123456789".substr($goodchars,0,1);
         // Max length of date : Get the date of 1999-12-30 at 32:59:59 to be sure to have space with non leading 0 format
         // "+1" makes room for a trailing space in date/time values
-        $iLength=strlen(date($dateformatdetails['phpdate'],mktime(23,59,59,12,30,1999)))+1;
-
-
-        $selectorData=array(
-            'name'=>$ia[1],
-            'iLength'=>$iLength,
-            'mindate'=>$mindate,
-            'maxdate'=>$maxdate,
-            'dateformatdetails'=>$dateformatdetails['dateformat'],
-            'dateformatdetailsjs'=>$dateformatdetails['jsdate'],
-            'goodchars'=>"return goodchars(event,'".$goodchars."')",
-            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-            'language'=>App()->language,
-            'hidetip'=>trim($aQuestionAttributes['hide_tip'])==0,
-            'dateoutput'=>$dateoutput,
-            'qid' => $ia[0],
-        );
+        $iLength   = strlen(date($dateformatdetails['phpdate'],mktime(23,59,59,12,30,1999)))+1;
 
         // HTML for date question using datepicker
-        $answer = Yii::app()->getController()->renderPartial('/survey/questions/date/selector/selector', $selectorData, true);
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/date/selector/answer', array(
+            'name'                   => $ia[1],
+            'iLength'                => $iLength,
+            'mindate'                => $mindate,
+            'maxdate'                => $maxdate,
+            'dateformatdetails'      => $dateformatdetails['dateformat'],
+            'dateformatdetailsjs'    => $dateformatdetails['jsdate'],
+            'goodchars'              => "return goodchars(event,'".$goodchars."')",
+            'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+            'language'               => App()->language,
+            'hidetip'                => trim($aQuestionAttributes['hide_tip'])==0,
+            'dateoutput'             => $dateoutput,
+            'qid'                    => $ia[0],
+        ), true);
     }
     $inputnames[]=$ia[1];
 
