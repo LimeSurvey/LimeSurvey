@@ -3169,29 +3169,32 @@ function do_multiplenumeric($ia)
 function do_numerical($ia)
 {
     global $thissurvey;
-
-
-    $extraclass ="";
-    $answertypeclass = "numeric";
-
+    $extraclass             = "";
+    $answertypeclass        = "numeric";
     $checkconditionFunction = "fixnum_checkconditions";
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
-        $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
-        $extraclass .=" withprefix";
+    $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
+    {
+        $prefix      = $aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass .= " withprefix";
     }
     else
     {
         $prefix = '';
     }
-    if ($aQuestionAttributes['thousands_separator'] == 1) {
+
+    if ($aQuestionAttributes['thousands_separator'] == 1)
+    {
         App()->clientScript->registerPackage('jquery-price-format');
         App()->clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts').'numerical_input.js');
         $extraclass .= " thousandsseparator";
     }
-    if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
-        $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
-        $extraclass .=" withsuffix";
+
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
+    {
+        $suffix      = $aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass .= " withsuffix";
     }
     else
     {
@@ -3210,44 +3213,44 @@ function do_numerical($ia)
     }
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
-        $tiwidth=$aQuestionAttributes['text_input_width'];
-        //$extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
-        $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-        $extraclass .=" col-sm-".trim($col);
+        $tiwidth     = $aQuestionAttributes['text_input_width'];
+        $col         = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
+        $extraclass .= " col-sm-".trim($col);
     }
     else
     {
-        $tiwidth=10;
+        $tiwidth = 10;
     }
 
     if (trim($aQuestionAttributes['num_value_int_only'])==1)
     {
-        $acomma="";
-        $extraclass .=" integeronly";
+        $acomma           = "";
+        $extraclass      .= " integeronly";
         $answertypeclass .= " integeronly";
-        $integeronly=1;
+        $integeronly      = 1;
     }
     else
     {
-        $acomma=getRadixPointData($thissurvey['surveyls_numberformat']);
-        $acomma = $acomma['separator'];
-        $integeronly=0;
+        $acomma      = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $acomma      = $acomma['separator'];
+        $integeronly = 0;
     }
 
-    $fValue=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+    $fValue     = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
+
     // Fix the display value : Value is stored as decimal in SQL then return dot and 0 after dot. Seems only for numerical question type
     if(strpos($fValue,"."))
     {
-        $fValue=rtrim(rtrim($fValue,"0"),".");
+        $fValue = rtrim(rtrim($fValue,"0"),".");
     }
     $fValue = str_replace('.',$sSeparator,$fValue);
 
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
-        $extraclass .=" inputkeypad";
+        $extraclass      .= " inputkeypad";
         $answertypeclass .= " num-keypad";
     }
     else
@@ -3255,19 +3258,18 @@ function do_numerical($ia)
         $kpclass = "";
     }
 
-    $itemDatas = array(
-        'extraclass'=>$extraclass,
-        'id'=>$ia[1],
-        'prefix'=>$prefix,
-        'answertypeclass'=>$answertypeclass,
-        'tiwidth'=>$tiwidth,
-        'fValue'=>$fValue,
-        'checkconditionFunction'=>$checkconditionFunction,
-        'integeronly'=>$integeronly,
-        'maxlength'=>$maxlength,
-        'suffix'=>$suffix,
-    );
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/numerical/item', $itemDatas, true);
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/numerical/answer', array(
+        'extraclass'             => $extraclass,
+        'id'                     => $ia[1],
+        'prefix'                 => $prefix,
+        'answertypeclass'        => $answertypeclass,
+        'tiwidth'                => $tiwidth,
+        'fValue'                 => $fValue,
+        'checkconditionFunction' => $checkconditionFunction,
+        'integeronly'            => $integeronly,
+        'maxlength'              => $maxlength,
+        'suffix'                 => $suffix,
+    ), true);
 
     $inputnames[]=$ia[1];
     $mandatory=null;
