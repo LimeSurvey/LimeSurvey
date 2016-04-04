@@ -1182,39 +1182,43 @@ function do_list_dropdown($ia)
     $checkconditionFunction = "checkconditions";
 
     // Question attribute variables
-    //$aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
     $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
     $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang])!='')?$aQuestionAttributes['other_replace_text'][$sSurveyLang]:gT('Other:'); // text for 'other'
     $optCategorySeparator   = (trim($aQuestionAttributes['category_separator'])!='')?$aQuestionAttributes['category_separator']:'';
-    if($optCategorySeparator=='')
+
+    if ($optCategorySeparator=='')
+    {
         unset($optCategorySeparator);
+    }
 
     //// Retrieving datas
 
     // Getting question
     $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$sSurveyLang));
-    $other = $oQuestion->other;
+    $other     = $oQuestion->other;
 
     // Getting answers
     $ansresult = $oQuestion->getOrderedAnswers($aQuestionAttributes['random_order'], $aQuestionAttributes['alphasort'] );
 
     $dropdownSize = '';
 
-
     if (isset($aQuestionAttributes['dropdown_size']) && $aQuestionAttributes['dropdown_size'] > 0)
     {
-        $_height = sanitize_int($aQuestionAttributes['dropdown_size']) ;
+        $_height    = sanitize_int($aQuestionAttributes['dropdown_size']) ;
         $_maxHeight = count($ansresult);
+
         if ((!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])) && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             ++$_maxHeight;  // for No Answer
         }
+
         if (isset($other) && $other=='Y')
         {
             ++$_maxHeight;  // for Other
         }
+
         if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
         {
             ++$_maxHeight;  // for 'Please choose:'
@@ -1228,43 +1232,27 @@ function do_list_dropdown($ia)
     }
 
     $prefixStyle = 0;
+
     if (isset($aQuestionAttributes['dropdown_prefix']))
     {
         $prefixStyle = sanitize_int($aQuestionAttributes['dropdown_prefix']) ;
     }
-    $_rowNum=0;
-    $_prefix='';
 
-    $selectData = array(
-        'name'=>$ia[1],
-        'dropdownSize'=>$dropdownSize,
-        'checkconditionFunction'=>$checkconditionFunction,
-        'value'=>'',
-    );
+    $_rowNum = 0;
+    $_prefix = '';
 
-    if (isset($other) && $other=='Y')
-    {
-        $sselect_show_hide = ' showhideother(this.name, this.value);';
-        $selectData = array(
-            'name'=>$ia[1],
-            'dropdownSize'=>$dropdownSize,
-            'checkconditionFunction'=> $checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide,
-            'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
-        );
+    $value            = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+    $select_show_hide = (isset($other) && $other=='Y')?' showhideother(this.name, this.value);':'';
+    $sOptions         = '';
 
-    }
-
-
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select', $selectData, true);
-
+    // If no answer previously selected
     if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
     {
-        $optionData = array(
+        $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/option', array(
             'value'=>'',
             'opt_select'=>'SELECTED',
             'answer'=>gT('Please choose...')
-        );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
+        ), true);
     }
 
     if (!isset($optCategorySeparator))
@@ -1280,12 +1268,12 @@ function do_list_dropdown($ia)
             {
                 $_prefix = ++$_rowNum . ') ';
             }
-            $optionData = array(
+            // ==> rows
+            $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/option', array(
                 'value'=>$ansrow['code'],
                 'opt_select'=>$opt_select,
                 'answer'=>flattenText($_prefix.$ansrow['answer'])
-            );
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
+            ), true);
         }
     }
     else
@@ -1309,9 +1297,8 @@ function do_list_dropdown($ia)
 
         foreach ($optgroups as $categoryname => $optionlistarray)
         {
-            $optgroupData = array('categoryname'=>flattenText($categoryname));
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/optgroup_header', $optgroupData, true);
 
+            $sOptGroupOptions = '';
             foreach ($optionlistarray as $optionarray)
             {
                 if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $optionarray['code'])
@@ -1323,15 +1310,19 @@ function do_list_dropdown($ia)
                     $opt_select = '';
                 }
 
-                $optionData = array(
+                // ==> rows
+                $sOptGroupOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/option', array(
                     'value'=>$optionarray['code'],
                     'opt_select'=>$opt_select,
                     'answer'=>flattenText($optionarray['answer'])
-                );
-                $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
+                ), true);
             }
 
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/optgroup_footer', $optgroupData, true);
+
+            $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/optgroup', array(
+                'categoryname'      => flattenText($categoryname),
+                'sOptGroupOptions'  => $sOptGroupOptions,
+            ), true);
         }
         $opt_select='';
         foreach ($defaultopts as $optionarray)
@@ -1345,13 +1336,12 @@ function do_list_dropdown($ia)
                 $opt_select = '';
             }
 
-
-            $optionData = array(
+            // ==> rows
+            $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/option', array(
                 'value'=>$optionarray['code'],
                 'opt_select'=>$opt_select,
                 'answer'=>flattenText($optionarray['answer'])
-            );
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
+            ), true);
         }
     }
 
@@ -1369,17 +1359,17 @@ function do_list_dropdown($ia)
             $_prefix = ++$_rowNum . ') ';
         }
 
-        $optionData = array(
+        $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/option', array(
             'value'=>'-oth-',
             'opt_select'=>$opt_select,
             'answer'=>flattenText($_prefix.$othertext)
-        );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
+        ), true);
     }
 
     if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '') && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
-        if ($prefixStyle == 1) {
+        if ($prefixStyle == 1)
+        {
             $_prefix = ++$_rowNum . ') ';
         }
 
@@ -1389,13 +1379,11 @@ function do_list_dropdown($ia)
             'opt_select'=>$opt_select,
             'answer'=>$_prefix.gT('No answer')
         );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/option', $optionData, true);
+        // ==> rows
+        $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/option', $optionData, true);
     }
 
-
-
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/select_footer', $selectData, true);
-
+    $sOther = '';
     if (isset($other) && $other=='Y')
     {
         $aData = array();
@@ -1405,12 +1393,24 @@ function do_list_dropdown($ia)
         $thisfieldname="$ia[1]other";
         $aData['value'] = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname]))?htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname],ENT_QUOTES):'';
 
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/othertext', $aData, true);
+        // ==> other
+        $sOther .= Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/rows/othertext', $aData, true);
 
         $inputnames[]=$ia[1].'other';
 
-        // TODO: check if needed : $answer .= "</p>";
     }
+
+    // ==> answer
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/list_dropdown/answer', array(
+        'sOptions'               => $sOptions,
+        'sOther'                 => $sOther,
+        'name'                   => $ia[1],
+        'dropdownSize'           => $dropdownSize,
+        'checkconditionFunction' => $checkconditionFunction,
+        'value'                  => $value,
+        'select_show_hide'       => $select_show_hide,
+    ), true);
+
 
     $inputnames[]=$ia[1];
 
