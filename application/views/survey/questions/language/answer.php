@@ -1,12 +1,15 @@
 <?php
 /**
- * Language Html
- * @var $name                        $ia[1]
- * @var $checkconditionFunction      $checkconditionFunction(this.value, this.name, this.type);
+ * Language HTML
+ * @var $name
+ * @var $checkconditionFunction
  * @var $answerlangs
  * @var $sLang
  */
 ?>
+<!-- Language -->
+
+<!-- answer -->
 <p class="question answer-item dropdown-item langage-item">
     <label for='answer<?php echo $name; ?>' class='hide label'>
         <?php eT('Choose your language'); ?>
@@ -22,3 +25,12 @@
     </select>
     <input type="hidden" name="java<?php echo $name; ?>" id="java<?php echo $name; ?>" value="<?php echo $sLang; ?>" />
 </p>
+
+<script type='text/javascript'>
+/*<![CDATA[*/
+    $('#answer<?php echo $name; ?>').change(function(){
+        $('<input type="hidden">').attr('name','lang').val($(this).val()).appendTo($('form#limesurvey'));
+    });
+/*]]>*/
+</script>
+<!-- end of answer -->

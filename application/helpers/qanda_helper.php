@@ -1150,18 +1150,16 @@ function do_date($ia)
 function do_language($ia)
 {
     $checkconditionFunction = "checkconditions";
-    $answerlangs = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
-    $answerlangs [] = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
+    $answerlangs            = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
+    $answerlangs[]          = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
+    $sLang                  = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
 
-    // Get actual answer
-    $sLang=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
-
-    if(!in_array($sLang,$answerlangs))
+    if (!in_array($sLang,$answerlangs))
     {
-        $sLang=Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
+        $sLang = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
     }
 
-    $inputnames[]=$ia[1];
+    $inputnames[] = $ia[1];
 
     $languageData = array(
         'name'=>$ia[1],
@@ -1170,14 +1168,7 @@ function do_language($ia)
         'sLang'=>$sLang,
     );
 
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/language/language', $languageData, true);
-    $answer .= "<script type='text/javascript'>\n"
-    . "/*<![CDATA[*/\n"
-    ."$('#answer{$ia[1]}').change(function(){ "
-    ."$('<input type=\"hidden\">').attr('name','lang').val($(this).val()).appendTo($('form#limesurvey'));"
-    ." })\n"
-    ." /*]]>*/\n"
-    ."</script>\n";
+    $answer  = Yii::app()->getController()->renderPartial('/survey/questions/language/answer', $languageData, true);
     return array($answer, $inputnames);
 }
 
