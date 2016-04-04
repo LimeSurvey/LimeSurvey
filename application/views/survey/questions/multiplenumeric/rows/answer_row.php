@@ -27,6 +27,8 @@
  * @var $sSeparator
  */
 ?>
+<!-- answer_row -->
+
 <!-- question attribute "display_rows" is set -> we need a textarea to be able to show several rows -->
 <div  id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item  text-item <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?>>
     <?php if($alert):?>
@@ -237,3 +239,4 @@
         -->
     </script>
 <?php endif; ?>
+<!-- end of answer_row -->

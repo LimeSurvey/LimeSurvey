@@ -2277,29 +2277,28 @@ function do_multiplechoice($ia)
     return array($answer, $inputnames);
 }
 
-// ---------------------------------------------------------------
-// TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_multiplechoice_withcomments($ia)
 {
     global $thissurvey;
-    $inputnames= array();
-    $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $inputnames = array();
-    $qaquery = "SELECT qid,attribute FROM {{question_attributes}} WHERE value LIKE '".strtolower($ia[2])."'";
-    $qaresult = Yii::app()->db->createCommand($qaquery)->query();     //Checked
+    $kpclass    = testKeypad($thissurvey['nokeyboard']);                                                            // Virtual keyboard (probably obsolete today)
+    $inputnames = array();
+    $qaquery    = "SELECT qid,attribute FROM {{question_attributes}} WHERE value LIKE '".strtolower($ia[2])."'";
+    $qaresult   = Yii::app()->db->createCommand($qaquery)->query();                                                 //Checked
 
     foreach($qaresult->readAll() as $qarow)
     {
-        $qquery = "SELECT qid FROM {{questions}} WHERE sid=".$thissurvey['sid']." AND qid=".$qarow['qid'];
-        $qresult = Yii::app()->db->createCommand($qquery)->query(); //Checked
+        $qquery  = "SELECT qid FROM {{questions}} WHERE sid=".$thissurvey['sid']." AND qid=".$qarow['qid'];
+        $qresult = Yii::app()->db->createCommand($qquery)->query();                                                 //Checked
     }
+
     $checkconditionFunction = "checkconditions";
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if ($aQuestionAttributes['other_numbers_only']==1)
     {
-        $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
-        $sSeparator = $sSeparator['separator'];
+        $sSeparator                 = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeparator                 = $sSeparator['separator'];
         $oth_checkconditionFunction = "fixnum_checkconditions";
     }
     else
@@ -2309,7 +2308,7 @@ function do_multiplechoice_withcomments($ia)
 
     if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
     {
-        $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $othertext = $aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
     }
     else
     {
@@ -2317,22 +2316,19 @@ function do_multiplechoice_withcomments($ia)
     }
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
-    $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
-    if ($aQuestionAttributes['random_order']==1) {
+    $other  = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
+    if ($aQuestionAttributes['random_order']==1)
+    {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
-    } else {
+    }
+    else
+    {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
+
     $ansresult = Yii::app()->db->createCommand($ansquery)->query();  //Checked
-    $anscount = count($ansresult)*2;
-
-    $answer = "";
-    $headerDatas = array(
-        'name'=>'MULTI'.$ia[1],
-        'value'=> $anscount
-    );
-
-    $answer_main = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/header', $headerDatas, true);
+    $anscount  = count($ansresult)*2;
+    $answer    = "";
 
     $fn = 1;
     if (!isset($other)){
@@ -2357,7 +2353,7 @@ function do_multiplechoice_withcomments($ia)
     }
 
     $nbCol = $longest_question;
-
+    $sRows = "";
     foreach ($toIterate as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
@@ -2391,28 +2387,27 @@ function do_multiplechoice_withcomments($ia)
         $inputnames[]=$myfname2;
 
         $inputCOmmentValue = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);
-        $itemDatas = array(
-            'sDisplayStyle'=>$sDisplayStyle,
-            'kpclass'=>$kpclass,
-            'title'=>'',
-            'liclasses' => 'responsive-content question-item answer-item checkbox-text-item',
-            'name'=>$myfname,
-            'id'=>'answer'.$myfname,
-            'value'=>'Y', // TODO : check if it should be the same than javavalue
-            'classes'=>'',
-            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-            'checkconditionFunctionComment'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-            'labeltext'=>$ansrow['question'],
-            'javainput'=>true,
-            'javaname'=>'java'.$myfname,
-            'javavalue'=>$javavalue,
-            'checked'=>$checked,
-            'inputCommentId'=>'answer'.$myfname2,
-            'commentLabelText'=>gT('Make a comment on your choice here:'),
-            'inputCommentName'=>$myfname2,
-            'inputCOmmentValue'=>$inputCOmmentValue,
-        );
-        $answer_main .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/item', $itemDatas, true);
+        $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/rows/answer_row', array(
+            'sDisplayStyle'                 => $sDisplayStyle,
+            'kpclass'                       => $kpclass,
+            'title'                         => '',
+            'liclasses'                     => 'responsive-content question-item answer-item checkbox-text-item',
+            'name'                          => $myfname,
+            'id'                            => 'answer'.$myfname,
+            'value'                         => 'Y', // TODO : check if it should be the same than javavalue
+            'classes'                       => '',
+            'checkconditionFunction'        => $checkconditionFunction.'(this.value, this.name, this.type)',
+            'checkconditionFunctionComment' => $checkconditionFunction.'(this.value, this.name, this.type)',
+            'labeltext'                     => $ansrow['question'],
+            'javainput'                     => true,
+            'javaname'                      => 'java'.$myfname,
+            'javavalue'                     => $javavalue,
+            'checked'                       => $checked,
+            'inputCommentId'                => 'answer'.$myfname2,
+            'commentLabelText'              => gT('Make a comment on your choice here:'),
+            'inputCommentName'              => $myfname2,
+            'inputCOmmentValue'             => $inputCOmmentValue,
+        ), true);
 
     }
     if ($other == 'Y')
@@ -2443,35 +2438,38 @@ function do_multiplechoice_withcomments($ia)
             $value = '';
         }
 
-        $itemDatas = array(
-            'liclasses' => 'other question-item answer-item checkbox-text-item other-item',
-            'liid'=>'javatbd'.$myfname,
-            'kpclass'=>$kpclass,
-            'title'=>gT('Other'),
-            'sDisplayStyle'=>$sDisplayStyle,
-            'name'=>$myfname,
-            'id'=>'answer'.$myfname,
-            'value'=>$value, // TODO : check if it should be the same than javavalue
-            'classes'=>'',
-            'checkconditionFunction'=>$oth_checkconditionFunction.'(this.value, this.name, this.type)',
-            'checkconditionFunctionComment'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-            'labeltext'=>$othertext,
-            'inputCommentId'=>'answer'.$myfname2,
-            'commentLabelText'=>gT('Make a comment on your choice here:'),
-            'inputCommentName'=>$myfname2,
-            'inputCOmmentValue'=>$inputCOmmentValue,
-            'checked'=>$checked,
-            'javainput'=>false,
-            'javaname'=>'',
-            'javavalue'=>'',
-        );
-        $answer_main .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/item', $itemDatas, true);
+        $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/rows/answer_row', array(
+            'liclasses'                     => 'other question-item answer-item checkbox-text-item other-item',
+            'liid'                          => 'javatbd'.$myfname,
+            'kpclass'                       => $kpclass,
+            'title'                         => gT('Other'),
+            'sDisplayStyle'                 => $sDisplayStyle,
+            'name'                          => $myfname,
+            'id'                            => 'answer'.$myfname,
+            'value'                         => $value, // TODO : check if it should be the same than javavalue
+            'classes'                       => '',
+            'checkconditionFunction'        => $oth_checkconditionFunction.'(this.value, this.name, this.type)',
+            'checkconditionFunctionComment' => $checkconditionFunction.'(this.value, this.name, this.type)',
+            'labeltext'                     => $othertext,
+            'inputCommentId'                => 'answer'.$myfname2,
+            'commentLabelText'              => gT('Make a comment on your choice here:'),
+            'inputCommentName'              => $myfname2,
+            'inputCOmmentValue'             => $inputCOmmentValue,
+            'checked'                       => $checked,
+            'javainput'                     => false,
+            'javaname'                      => '',
+            'javavalue'                     => '',
+        ), true);
         $inputnames[]=$myfname;
         $inputnames[]=$myfname2;
     }
 
-    $answer_main .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/footer', array(), true);
-    $answer = $answer_main;
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice_with_comments/answer', array(
+        'sRows' => $sRows,
+        'name'=>'MULTI'.$ia[1],
+        'value'=> $anscount
+    ), true);
+
 
     if($aQuestionAttributes['commented_checkbox']!="allways" && $aQuestionAttributes['commented_checkbox_auto'])
     {
@@ -2840,15 +2838,16 @@ function do_multipleshorttext($ia)
 function do_multiplenumeric($ia)
 {
     global $thissurvey;
-    $extraclass ="";
+    $extraclass             = "";
     $checkconditionFunction = "fixnum_checkconditions";
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $answer='';
-    $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
-    $sSeparator = $sSeparator['separator'];
-    //Must turn on the "numbers only javascript"
-    $extraclass .=" numberonly";
-    if ($aQuestionAttributes['thousands_separator'] == 1) {
+    $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $answer                 = '';
+    $sSeparator             = getRadixPointData($thissurvey['surveyls_numberformat']);
+    $sSeparator             = $sSeparator['separator'];
+    $extraclass            .= " numberonly";                                                //Must turn on the "numbers only javascript"
+
+    if ($aQuestionAttributes['thousands_separator'] == 1)
+    {
         App()->clientScript->registerPackage('jquery-price-format');
         App()->clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts').'numerical_input.js');
         $extraclass .= " thousandsseparator";
@@ -2856,64 +2855,65 @@ function do_multiplenumeric($ia)
 
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
-        // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maximum_chars= intval(trim($aQuestionAttributes['maximum_chars']));
-        $maxlength= "maxlength='{$maximum_chars}' ";
-        $extraclass .=" maxchars maxchars-".$maximum_chars;
+        $maximum_chars = intval(trim($aQuestionAttributes['maximum_chars'])); // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
+        $maxlength     = "maxlength='{$maximum_chars}' ";
+        $extraclass   .= " maxchars maxchars-".$maximum_chars;
     }
     else
     {
-        $maxlength= " maxlength='25' ";
+        $maxlength = " maxlength='25' ";
     }
 
-    if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
-        $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
-        $extraclass .=" withprefix";
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
+    {
+        $prefix      = $aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass .= " withprefix";
     }
     else
     {
         $prefix = '';
     }
 
-    if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
-        $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
-        $extraclass .=" withsuffix";
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
+    {
+        $suffix      = $aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass .= " withsuffix";
     }
     else
     {
         $suffix = '';
     }
-    //
-    $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
+
+    $kpclass            = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $numbersonly_slider = ''; // DEPRECATED
 
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
-        $tiwidth=$aQuestionAttributes['text_input_width'];
-        //$extraclass .=" inputwidth".trim($aQuestionAttributes['text_input_width']);
-        $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-        $extraclass .=" col-sm-".trim($col);
+        $tiwidth     = $aQuestionAttributes['text_input_width'];
+        $col         = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
+        $extraclass .= " col-sm-".trim($col);
     }
     else
     {
-        $tiwidth=10;
+        $tiwidth = 10;
     }
-    $prefixclass="numeric";
+
+    $prefixclass = "numeric";
+
     if ($aQuestionAttributes['slider_layout']==1)
     {
-        $prefixclass="slider";
-        $slider_layout=true;
-        $extraclass .=" withslider";
-        $slider_step=trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_accuracy']}}",$ia[0],array(),false,1,1,false,false,true));
-        $slider_step =  (is_numeric($slider_step))?$slider_step:1;
-        $slider_min = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_min']}}",$ia[0],array(),false,1,1,false,false,true));
-        $slider_mintext = $slider_min =  (is_numeric($slider_min))?$slider_min:0;
-        $slider_max = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_max']}}",$ia[0],array(),false,1,1,false,false,true));
-        $slider_maxtext = $slider_max =  (is_numeric($slider_max))?$slider_max:100;
-        // OBS: default answer != initial value. This is initial value.
-        $slider_default=trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_default']}}",$ia[0],array(),false,1,1,false,false,true));
-        $slider_default =  (is_numeric($slider_default))?$slider_default:"";
-        $slider_orientation= (trim($aQuestionAttributes['slider_orientation'])==0)?'horizontal':'vertical';
+        $prefixclass          = "slider";
+        $slider_layout        = true;
+        $extraclass          .= " withslider";
+        $slider_step          = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_accuracy']}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_step          = (is_numeric($slider_step))?$slider_step:1;
+        $slider_min           = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_min']}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_mintext       = $slider_min =  (is_numeric($slider_min))?$slider_min:0;
+        $slider_max           = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_max']}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_maxtext       = $slider_max =  (is_numeric($slider_max))?$slider_max:100;
+        $slider_default       = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_default']}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_default       = (is_numeric($slider_default))?$slider_default:"";
+        $slider_orientation   = (trim($aQuestionAttributes['slider_orientation'])==0)?'horizontal':'vertical';
         $slider_custom_handle = (trim($aQuestionAttributes['slider_custom_handle']));
 
         switch(trim($aQuestionAttributes['slider_handle']))
@@ -2950,8 +2950,7 @@ function do_multiplenumeric($ia)
     }
     else
     {
-        $slider_layout = false;
-
+        $slider_layout  = false;
         $slider_step    = '';
         $slider_min     = '';
         $slider_mintext = '';
@@ -2977,45 +2976,50 @@ function do_multiplenumeric($ia)
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
 
-    $ansresult = dbExecuteAssoc($ansquery);    //Checked
+    $ansresult     = dbExecuteAssoc($ansquery);    //Checked
     $aSubquestions = $ansresult->readAll();
-    $anscount = count($aSubquestions)*2;
-    $fn = 1;
+    $anscount      = count($aSubquestions)*2;
+    $fn            = 1;
+    $sRows         = "";
 
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/header', array('prefixclass'=>$prefixclass), true);
     $answer_main = '';
 
     if ($anscount==0)
     {
-        $inputnames=array();
-        $noanswer = true;
-        $answer .= '    <p class="text-danger">'.gT('Error: This question has no answers.')."</p>\n";
+        $inputnames =array();
+        $noanswer   = true;
+        $answer    = Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/empty', array(), true);
     }
     else
     {
         foreach($aSubquestions as $ansrow)
         {
             $labelText = $ansrow['question'];
-            $myfname = $ia[1].$ansrow['title'];
-            if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
+            $myfname   = $ia[1].$ansrow['title'];
+
+            if ($ansrow['question'] == "")
+            {
+                $ansrow['question'] = "&nbsp;";
+            }
+
             if ($slider_layout === false || $slider_separator == '')
             {
                 $theanswer = $ansrow['question'];
-                $sliders = false;
+                $sliders   = false;
             }
             else
             {
-                $aAnswer=explode($slider_separator,$ansrow['question']);
-                $theanswer=(isset($aAnswer[0]))?$aAnswer[0]:"";
-                $labelText=$theanswer;
-                $sliderleft=(isset($aAnswer[1]))?$aAnswer[1]:"";
-                $sliderright=(isset($aAnswer[2]))?$aAnswer[2]:"";
-                $sliders = true;
+                $aAnswer     = explode($slider_separator,$ansrow['question']);
+                $theanswer   = (isset($aAnswer[0]))?$aAnswer[0]:"";
+                $labelText   = $theanswer;
+                $sliderleft  = (isset($aAnswer[1]))?$aAnswer[1]:"";
+                $sliderright = (isset($aAnswer[2]))?$aAnswer[2]:"";
+                $sliders     = true;
             }
 
-            $aAnswer=(isset($aAnswer))?$aAnswer:'';
-            $sliderleft=(isset($sliderleft))?$sliderleft:"";
-            $sliderright=(isset($sliderright))?$sliderright:"";
+            $aAnswer     = (isset($aAnswer))?$aAnswer:'';
+            $sliderleft  = (isset($sliderleft))?$sliderleft:"";
+            $sliderright = (isset($sliderright))?$sliderright:"";
 
             // color code missing mandatory questions red
             $alert='';
@@ -3038,8 +3042,6 @@ function do_multiplenumeric($ia)
             // 3. Else the init value
             // 4. Else the middle start
             // 5. If no value at all, or if middle start, the "user no action" is recorded as null in the database
-            //
-            // Dev team is invited to tell if they agree/disagree with this order.
 
             // For bootstrap slider, the value can't be NULL so we set it by default to the slider minimum value.
             // The old behaviour of "null" value (corresponding to user no action) is implemented via $slider_user_no_action
@@ -3050,19 +3052,19 @@ function do_multiplenumeric($ia)
             // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/scripts/bootstrap-slider.js#l1453-l1461
             // If the bootstrapSlider were updated, most of this javascript would not be necessary.
 
-            $sValue = $slider_min;
-            $slider_user_no_action=1;
+            $sValue                = $slider_min;
+            $slider_user_no_action =1;
 
             // value stored in _SESSION
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
             {
-                $sValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-                $slider_user_no_action=0;
+                $sValue                = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                $slider_user_no_action = 0;
             }
             elseif( $slider_default != "" )
             {
-                $sValue = $slider_default;
-                $slider_user_no_action=0;
+                $sValue                = $slider_default;
+                $slider_user_no_action = 0;
             }
             elseif( isset($slider_middlestart) && $slider_middlestart!='')
             {
@@ -3077,55 +3079,55 @@ function do_multiplenumeric($ia)
                 $sValue = str_replace('.',$sSeparator,$sValue);
             }
 
-
-            $itemDatas = array(
-                'qid'=>$ia[0],
-                'extraclass'=>$extraclass,
-                'sDisplayStyle'=>$sDisplayStyle,
-                'kpclass'=>$kpclass,
-                'alert'=>$alert,
-                'theanswer'=>$theanswer,
-                'labelname'=>'answer'.$myfname,
-                'prefixclass'=>$prefixclass,
-                'sliders'=>$sliders,
-                'sliderleft'=>$sliderleft,
-                'sliderright'=>$sliderright,
-                'prefix'=>$prefix,
-                'suffix'=>$suffix,
-                'tiwidth'=>$tiwidth,
-                'myfname'=>$myfname,
-                'dispVal'=>$sValue,
-                'maxlength'=>$maxlength,
-                'labelText'=>$labelText,
-                'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-                'slider_orientation' => $slider_orientation,
-                'slider_step'    => $slider_step    ,
-                'slider_min'     => $slider_min     ,
-                'slider_mintext' => $slider_mintext ,
-                'slider_max'     => $slider_max     ,
-                'slider_maxtext' => $slider_maxtext ,
-                'slider_default' => $slider_default ,
-                'slider_handle' => $slider_handle,
-                'slider_reset' => $slider_reset,
-                'slider_custom_handle' => $slider_custom_handle,
-                'slider_user_no_action' => $slider_user_no_action,
-                'slider_showminmax' => $aQuestionAttributes['slider_showminmax'],
-                'sSeparator'=> $sSeparator,
-                'sUnformatedValue'=> $sUnformatedValue,
-            );
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/item', $itemDatas, true);
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/rows/answer_row', array(
+                'qid'                    => $ia[0],
+                'extraclass'             => $extraclass,
+                'sDisplayStyle'          => $sDisplayStyle,
+                'kpclass'                => $kpclass,
+                'alert'                  => $alert,
+                'theanswer'              => $theanswer,
+                'labelname'              => 'answer'.$myfname,
+                'prefixclass'            => $prefixclass,
+                'sliders'                => $sliders,
+                'sliderleft'             => $sliderleft,
+                'sliderright'            => $sliderright,
+                'prefix'                 => $prefix,
+                'suffix'                 => $suffix,
+                'tiwidth'                => $tiwidth,
+                'myfname'                => $myfname,
+                'dispVal'                => $sValue,
+                'maxlength'              => $maxlength,
+                'labelText'              => $labelText,
+                'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+                'slider_orientation'     => $slider_orientation,
+                'slider_step'            => $slider_step    ,
+                'slider_min'             => $slider_min     ,
+                'slider_mintext'         => $slider_mintext ,
+                'slider_max'             => $slider_max     ,
+                'slider_maxtext'         => $slider_maxtext ,
+                'slider_default'         => $slider_default ,
+                'slider_handle'          => $slider_handle,
+                'slider_reset'           => $slider_reset,
+                'slider_custom_handle'   => $slider_custom_handle,
+                'slider_user_no_action'  => $slider_user_no_action,
+                'slider_showminmax'      => $aQuestionAttributes['slider_showminmax'],
+                'sSeparator'             => $sSeparator,
+                'sUnformatedValue'       => $sUnformatedValue,
+            ), true);
 
             $fn++;
             $inputnames[]=$myfname;
         }
-        $displaytotal=false;
+        $displaytotal     = false;
         $equals_num_value = false;
+
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''
         || trim($aQuestionAttributes['max_num_value']) != ''
         )
         {
             $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
+
             if (trim($aQuestionAttributes['equals_num_value']) != '')
             {
                 $equals_num_value = true;
@@ -3133,16 +3135,20 @@ function do_multiplenumeric($ia)
 
             $displaytotal = true;
         }
-        $footerDatas = array(
-            'equals_num_value'=>$equals_num_value,
-            'id'=>$ia[0],
-            'prefix'=>$prefix,
-            'suffix'=>$suffix,
-            'sumRemainingEqn'=>(isset($qinfo))?$qinfo['sumRemainingEqn']:'',
-            'displaytotal'=>$displaytotal,
-            'sumEqn'=>(isset($qinfo))?$qinfo['sumEqn']:'',
-        );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/footer', $footerDatas, true);
+
+
+        $answer      = Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/answer', array(
+                        'sRows'            => $sRows,
+                        'prefixclass'      => $prefixclass,
+                        'equals_num_value' => $equals_num_value,
+                        'id'               => $ia[0],
+                        'prefix'           => $prefix,
+                        'suffix'           => $suffix,
+                        'sumRemainingEqn'  => (isset($qinfo))?$qinfo['sumRemainingEqn']:'',
+                        'displaytotal'     => $displaytotal,
+                        'sumEqn'           => (isset($qinfo))?$qinfo['sumEqn']:'',
+                       ), true);
+
     }
 
     if($aQuestionAttributes['slider_layout']==1)
@@ -3152,6 +3158,7 @@ function do_multiplenumeric($ia)
 
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
+
     return array($answer, $inputnames);
 }
 

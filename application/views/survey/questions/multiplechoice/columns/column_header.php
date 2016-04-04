@@ -3,7 +3,6 @@
  * Multiple Choice Html : column containing item row
  * This view is used only if user set more than one column in the question attribute.
  *
- * @var $first           for the very first item, the bootstrap row containing the cols must be opened
  * @var $iColumnWidth
  */
  ?>

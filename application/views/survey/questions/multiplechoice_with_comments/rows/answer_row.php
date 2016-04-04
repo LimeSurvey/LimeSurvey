@@ -23,6 +23,7 @@
  * @var $inputCOmmentValue          if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
  */
 ?>
+<!-- answer_row -->
 <li class='<?php echo $liclasses;?>'>
     <!-- Checkbox and label -->
     <div class="option col-xs-12 form-group" <?php echo $sDisplayStyle ;?> >
@@ -69,3 +70,4 @@
         />
     </div>
 </li>
+<!-- end of answer_row -->
