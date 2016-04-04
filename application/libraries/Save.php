@@ -136,7 +136,14 @@ class Save {
         }
 
         $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $_POST['savename']));
-        if (!empty($duplicate) && $duplicate->count() > 0)  // OK - AR count
+        $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $_POST['savename']));
+        if (strpos($_POST['savename'],'/'!==false || strpos($_POST['savepass'],'/'!==false)) || strpos($_POST['savename'],'&'!==false || strpos($_POST['savepass'],'&'!==false))
+            || strpos($_POST['savename'],'\\'!==false || strpos($_POST['savepass'],'\\'!==false)))
+        {
+            $errormsg .= gT("You may not use slashes or ampersands in your name or password.")."<br />\n";
+            return;
+        }
+        elseif (!empty($duplicate) && $duplicate->count() > 0)  // OK - AR count
         {
             $errormsg .= gT("This name has already been used for this survey. You must use a unique save name.")."<br />\n";
             return;
@@ -206,8 +213,12 @@ class Save {
                 $message .= gT("Name").": ".$_POST['savename']."\n";
                 $message .= gT("Password").": ".$_POST['savepass']."\n\n";
                 $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
-                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$scid}/loadname/".rawurlencode ($_POST['savename'])."/loadpass/".rawurlencode ($_POST['savepass'])."/lang/".rawurlencode (App()->language));
-                if ($clienttoken) $message .= "/token/{$clienttoken}";
+                $aParams=array('scid'=>$scid,'lang'=>App()->language,'loadname'=>$_POST['savename'],'loadpass'=>$_POST['savepass']);
+                if (!empty($clienttoken))
+                {
+                    $aParams['token'] = $clienttoken;
+                }
+                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload",$aParams);
 
                 $from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
                 if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
