@@ -1434,17 +1434,17 @@ function do_list_radio($ia)
     // General variables
     global $dropdownthreshold;
     global $thissurvey;
-    $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
-    $checkconditionFunction = "checkconditions"; // name of the function to check condition TODO : check is used more than once
-    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
-    $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
+    $kpclass                = testKeypad($thissurvey['nokeyboard']);                                             // Virtual keyboard (probably obsolete today)
+    $checkconditionFunction = "checkconditions";                                                                 // name of the function to check condition TODO : check is used more than once
+    $iSurveyId              = Yii::app()->getConfig('surveyID');                                                 // survey id
+    $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang'];                                         // survey language
 
     // Question attribute variables
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $othertext           = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang])!='')?$aQuestionAttributes['other_replace_text'][$sSurveyLang]:gT('Other:'); // text for 'other'
-    $iNbCols             = (trim($aQuestionAttributes['display_columns'])!='')?$aQuestionAttributes['display_columns']:1; // number of columns
-
+    $othertext           = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang])!='')?$aQuestionAttributes['other_replace_text'][$sSurveyLang]:gT('Other:');  // text for 'other'
+    $iNbCols             = (trim($aQuestionAttributes['display_columns'])!='')?$aQuestionAttributes['display_columns']:1;                                               // number of columns
+    $sTimer              = (trim($aQuestionAttributes['time_limit'])!='')?return_timer_script($aQuestionAttributes, $ia):'';                                            //Time Limit
     //// Retrieving datas
 
     // Getting question
@@ -1465,7 +1465,7 @@ function do_list_radio($ia)
     $iRowCount        = 0;
     $isOpen           = false;       // Is a column opened
 
-    if($iNbCols > 1)
+    if ($iNbCols > 1)
     {
         // First we calculate the width of each column
         // Max number of column is 12 http://getbootstrap.com/css/#grid
@@ -1478,21 +1478,11 @@ function do_list_radio($ia)
         $first = true; // The very first item will open a bootstrap row containing the columns
     }
 
-    // ==> answer
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/listradio/listradio_header', array(), true);
-
-    //Time Limit
-    if (trim($aQuestionAttributes['time_limit'])!='')
-    {
-        // TODO : refactore this function
-        $answer .= return_timer_script($aQuestionAttributes, $ia);
-    }
-
     // Get array_filter stuff
 
     $i = 0;
 
-    // ==> rows
+    $sRows = '';
     foreach ($ansresult as $key=>$ansrow)
     {
         $i++; // general count of loop, to check if the item is the last one for column process. Never reset.
@@ -1515,7 +1505,7 @@ function do_list_radio($ia)
         // and if this is the first answer row, or if the column has been closed and the row count reset before.
         if($iNbCols > 1 && $iRowCount == 1 )
         {
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>$first), true);
+            $sRows  .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/columns/column_header', array('iColumnWidth' => $iColumnWidth), true);
             $isOpen  = true; // If a column is not closed, it will be closed at the end of the process
             $first   = false; // The row containing the column has been opened at the first call.
         }
@@ -1524,15 +1514,14 @@ function do_list_radio($ia)
         ////
         // Insert row
         // Display the answer row
-        $aData = array(
+        $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/rows/answer_row', array(
             'sDisplayStyle' => $sDisplayStyle,
-            'ia'=>$ia,
-            'ansrow'=>$ansrow,
-            'checkedState'=>$checkedState,
-            'myfname'=>$myfname,
-        );
-
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_row', $aData, true);
+            'name'          => $ia[1],
+            'code'          => $ansrow['code'],
+            'answer'        => $ansrow['answer'],
+            'checkedState'  => $checkedState,
+            'myfname'       => $myfname,
+        ), true);
 
         ////
         // Close column
@@ -1542,11 +1531,10 @@ function do_list_radio($ia)
         // the column will remain opened, and it will be closed by 'other' answer row if set or at the end of the process
         if($iNbCols > 1 && $iRowCount == $iMaxRowsByColumn )
         {
-            $last = ($i == $anscount)?true:false; // If this loop count equal to the number of answers, then this answer is the last one.
-
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_column_footer', array('last'=>$last), true);
+            $last      = ($i == $anscount)?true:false; // If this loop count equal to the number of answers, then this answer is the last one.
+            $sRows    .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/columns/column_footer', array('last'=>$last), true);
             $iRowCount = 0;
-            $isOpen = false;
+            $isOpen    = false;
         }
     }
 
@@ -1598,28 +1586,24 @@ function do_list_radio($ia)
         // or if the column has been closed and the row count reset before.
         if($iNbCols > 1 && $iRowCount == 1 )
         {
-            //  ==> col ?
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/columns/column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
         }
         $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
         ////
         // Insert row
         // Display the answer row
-        $aData = array(
-            'ia' => $ia,
-            'answer_other'=>$answer_other,
-            'myfname'=>$myfname,
-            'sDisplayStyle' => $sDisplayStyle,
-            'othertext'=>$othertext,
-            'checkedState'=>$checkedState,
-            'kpclass'=>$kpclass,
-            'oth_checkconditionFunction'=>$oth_checkconditionFunction.'(this.value, this.name, this.type)',
-            'checkconditionFunction'=>$checkconditionFunction,
-        );
-
-        // ==> rows
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_other_row', $aData, true);
+        $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/rows/answer_row_other', array(
+                'name' => $ia[1],
+                'answer_other'=>$answer_other,
+                'myfname'=>$myfname,
+                'sDisplayStyle' => $sDisplayStyle,
+                'othertext'=>$othertext,
+                'checkedState'=>$checkedState,
+                'kpclass'=>$kpclass,
+                'oth_checkconditionFunction'=>$oth_checkconditionFunction.'(this.value, this.name, this.type)',
+                'checkconditionFunction'=>$checkconditionFunction,
+        ), true);
 
         $inputnames[]=$thisfieldname;
 
@@ -1630,9 +1614,7 @@ function do_list_radio($ia)
         if($iNbCols > 1 && $iRowCount == $iMaxRowsByColumn )
         {
             $last = ($i == $anscount)?true:false; // If this loop count equal to the number of answers, then this answer is the last one.
-
-            // ==> cols ?
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_column_footer', array('last'=>$last), true);
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/columns/column_footer', array(), true);
             $iRowCount = 0;
             $isOpen = false;
         }
@@ -1654,15 +1636,14 @@ function do_list_radio($ia)
 
         if($iNbCols > 1 && $iRowCount == 1 )
         {
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/columns/column_header', array('iColumnWidth' => $iColumnWidth), true);
         }
 
-        $aData = array(
-            'ia'=>$ia,
+        $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/rows/answer_row_noanswer', array(
+            'name'=>$ia[1],
             'check_ans'=>$check_ans,
             'checkconditionFunction'=>$checkconditionFunction,
-        );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_noanswer_row', $aData, true);
+        ), true);
 
 
         ////
@@ -1671,7 +1652,7 @@ function do_list_radio($ia)
         // 'No answer' is always the last answer, so it's always closing the col and the bootstrap row containing the columns
         if($iNbCols > 1 )
         {
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_column_footer', array('last'=>true), true);
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/columns/column_footer', array('last'=>true), true);
             $iRowCount = 0;
             $isOpen = false;
         }
@@ -1685,15 +1666,19 @@ function do_list_radio($ia)
     // That can happen only when no 'other' option is set, and the maximum answer rows has not been reached in the last question
     if($iNbCols > 1 && $isOpen )
     {
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/item_column_footer', array('last'=>true), true);
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/columns/column_footer', array('last'=>true), true);
         $iRowCount = 0;
     }
 
     //END OF ITEMS
 
     // ==> answer
-    $sJavaValue = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/listradio/listradio_footer', array('ia'=>$ia, 'sJavaValue'=>$sJavaValue), true);
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/listradio/answer', array(
+            'sTimer'=>$sTimer,
+            'sRows' => $sRows,
+            'name'  => $ia[1],
+            'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+    ), true);
 
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
