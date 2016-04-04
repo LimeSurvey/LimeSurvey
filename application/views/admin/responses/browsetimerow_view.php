@@ -34,11 +34,15 @@
     $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider' => $model->search($iSurveyID, $language),
 
-        // Number of row per page selection
         'id' => 'time-grid',
         'emptyText'=>gT('No surveys found.'),
         'itemsCssClass' => 'table-striped',
+        'htmlOptions' => array('class' => 'time-statistics-table'),
 
+        'ajaxUpdate' => true,
+        'afterAjaxUpdate' => 'doToolTip',
+
+        // Number of row per page selection
         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
             CHtml::dropDownList(
                 'pageSize',
@@ -46,15 +50,13 @@
                 Yii::app()->params['pageSizeOptions'],
                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
 
-        'ajaxUpdate' => true,
-        'afterAjaxUpdate' => 'doToolTip',
-
-        'columns' => array_merge($columns,
+        'columns' => array_merge(
             array(array(
                 'header' => '',
                 'name' => 'actions',
                 'value'=>'$data->buttons',
                 'type'=>'raw',
-                'htmlOptions' => array('class' => ''),
-            )))
+                'htmlOptions' => array('class' => 'time-statistics-row-buttons'),
+            )),
+            $columns)
     ));
