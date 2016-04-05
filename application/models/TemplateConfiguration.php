@@ -31,6 +31,7 @@ class TemplateConfiguration extends CFormModel
     public $filesPath;
     public $cssFramework;
     public $packages;
+    public $depends;
     public $otherFiles;
 
     public $oSurvey;
@@ -120,7 +121,7 @@ class TemplateConfiguration extends CFormModel
         $this->cssFramework = $this->config->engine->cssframework;
         $this->packages     = (array) $this->config->engine->packages->package;
         $this->otherFiles   = $this->setOtherFiles();
-
+        $this->depends      = $this->packages;
 
         $this->createTemplatePackage();
 
@@ -163,7 +164,8 @@ class TemplateConfiguration extends CFormModel
         Yii::app()->clientScript->addPackage( 'survey-template', array(
             'basePath'    => 'survey.template.path',
             'css'         => $this->config->files->css->filename,
-            'js'          => $this->config->files->js->filename
+            'js'          => $this->config->files->js->filename,
+            'depends'     => $this->depends,
         ) );
     }
 
