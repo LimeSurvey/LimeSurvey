@@ -2142,7 +2142,7 @@ function do_multiplechoice($ia)
         // and if this is the first answer row, or if the column has been closed and the row count reset before.
         if($iNbCols > 1 && $iRowCount == 1 )
         {
-            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/questions/multiplechoice/columns/column_header', array(
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/columns/column_header', array(
                 'iColumnWidth' => $iColumnWidth,
                 'first'        => $first), true);
             $isOpen  = true;  // If a column is not closed, it will be closed at the end of the process
@@ -2152,12 +2152,13 @@ function do_multiplechoice($ia)
         ////
         // Insert row
         // Display the answer row
+        echo '<pre>'; var_dump($ansrow); echo '</pre>';
         $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/rows/answer_row', array(
             'extra_class'             => $extra_class,
             'sDisplayStyle'           => $sDisplayStyle,
-            'name'                    => $ia,
+            'name'                    => $ia[1],  // field name
             'title'                   => $ansrow['title'],
-            'question'                => $question,
+            'question'                => $ansrow['question'],
             'ansrow'                  => $ansrow,
             'checkedState'            => $checkedState,
             'sCheckconditionFunction' => $sCheckconditionFunction,
@@ -3742,7 +3743,7 @@ function do_hugefreetext($ia)
         'tiwidth'=>$tiwidth,
         'maxlength'=>$maxlength,
     );
-    $answer = Yii::app()->getController()->renderPartial('/survey/questions/longfreetext/item', $itemDatas, true);
+    $answer = Yii::app()->getController()->renderPartial('/survey/questions/longfreetext/answer', $itemDatas, true);
 
     if (trim($aQuestionAttributes['time_limit']) != '')
     {
