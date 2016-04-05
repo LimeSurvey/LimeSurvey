@@ -1,4 +1,4 @@
-<div class="side-body col-lg-8">
+<div class="side-body">
     <div class="row">
         <div class="col-lg-12 content-right">
             <h3>

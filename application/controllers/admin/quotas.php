@@ -141,6 +141,24 @@ class quotas extends Survey_Common_Action
                 $aData['completed'] = $completed;
                 $aData['totalquotas'] = $totalquotas;
                 $aData['totalcompleted'] = $totalcompleted;
+
+                // Edit URL
+                $aData['editUrl'] = App()->createUrl("admin/quotas/sa/editquota/surveyid/" . $iSurveyId, array(
+                    'sid' => $iSurveyId,
+                    'action' => 'quotas',
+                    'quota_id' => $aQuotaListing['id'],
+                    'subaction' => 'quota_editquota'
+
+                ));
+
+                // Delete URL
+                $aData['deleteUrl'] = App()->createUrl("admin/quotas/sa/delquota/surveyid/" . $iSurveyId, array(
+                    'sid' => $iSurveyId,
+                    'action' => 'quotas',
+                    'quota_id' => $aQuotaListing['id'],
+                    'subaction' => 'quota_delquota'
+                ));
+
                 $aViewUrls['output'] .= $this->getController()->renderPartial("/admin/quotas/viewquotasrow_view", $aData, true);
                 $aData['output'] .= $this->getController()->renderPartial("/admin/quotas/viewquotasrow_view", $aData, true);
 
