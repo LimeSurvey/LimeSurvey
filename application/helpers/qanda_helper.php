@@ -2152,7 +2152,6 @@ function do_multiplechoice($ia)
         ////
         // Insert row
         // Display the answer row
-        echo '<pre>'; var_dump($ansrow); echo '</pre>';
         $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/rows/answer_row', array(
             'extra_class'             => $extra_class,
             'sDisplayStyle'           => $sDisplayStyle,
