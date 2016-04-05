@@ -260,6 +260,7 @@ class quotas extends Survey_Common_Action
                 $oQuotaLanguageSettings->quotals_urldescrip = $_POST['quotals_urldescrip_' . $sLang];
                 $oQuotaLanguageSettings->save();
             }
+            Yii::app()->user->setFlash('success', gT("New quota saved"));
         }
 
         self::_redirectToIndex($iSurveyId);
@@ -366,9 +367,13 @@ class quotas extends Survey_Common_Action
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'delete');
 
-        Quota::model()->deleteByPk(Yii::app()->request->getPost('quota_id'));
-        QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => Yii::app()->request->getPost('quota_id')));
-        QuotaMember::model()->deleteAllByAttributes(array('quota_id' => Yii::app()->request->getPost('quota_id')));
+        $quotaId = Yii::app()->request->getQuery('quota_id');
+
+        Quota::model()->deleteByPk($quotaId);
+        QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $quotaId));
+        QuotaMember::model()->deleteAllByAttributes(array('quota_id' => $quotaId));
+
+        Yii::app()->user->setFlash('success', sprintf(gT("Quota with id %s was deleted"), $quotaId));
 
         self::_redirectToIndex($iSurveyId);
     }

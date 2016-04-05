@@ -24,12 +24,12 @@
     <td><?php echo $quotalisting['qlimit'];?></td>
     <td style="padding: 3px;">
         <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
-                <a href="<?php echo $editUrl; ?>" class="btn btn-xs btn-default" data-toggle='tooltip' title='<?php eT("Edit"); ?>'>
+                <a href="<?php echo $editUrl; ?>" class="btn btn-default" data-toggle='tooltip' title='<?php eT("Edit"); ?>'>
                     <span class='glyphicon glyphicon-pencil'></span>
                 </a>
         <?php } ?>
         <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','delete')) { ?>
-                <a data-href="<?php echo $deleteUrl; ?>" class="btn btn-xs btn-default" data-toggle="modal" data-target="#confirmation-modal" data-tooltip="true" title="<?php eT("Delete");?>" >
+                <a data-href="<?php echo $deleteUrl; ?>" class="btn btn-default" data-toggle="modal" data-target="#confirmation-modal" data-tooltip="true" title="<?php eT("Delete");?>" >
                     <span class='glyphicon glyphicon-trash text-danger'></span>
                 </a>
         <?php } ?>
@@ -43,7 +43,7 @@
                 'sid'=>$surveyid,
                 'quota'=>$quotalisting['id'],
             ), array(
-                'class'=>'btn btn-xs btn-default',
+                'class'=>'btn btn-default',
                 'title'=>sprintf(gT("Validation of quota %s"),$quotalisting['name']),
                 'target'=>'dialog',
                 'data-tooltip' => 'true'
