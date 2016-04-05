@@ -790,7 +790,7 @@ class SurveyRuntimeHelper {
 
                     if (trim(str_replace(array('<p>','</p>'),'',$thissurvey['surveyls_endtext'])) == '')
                     {
-                        $completed = "<br /><input type='hidden' class='hidemenubutton'/><span class='success'>" . gT("Thank you!") . "</span><br /><br />\n\n"
+                        $completed = "<br /><input type='hidden' class='hidemenubutton'/><span>" . gT("Thank you!") . "</span><br /><br />\n\n"
                         . gT("Your survey responses have been recorded.") . "<br /><br />\n";
                     }
                     else
