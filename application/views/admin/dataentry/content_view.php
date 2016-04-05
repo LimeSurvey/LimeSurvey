@@ -262,7 +262,13 @@
         <div class="col-sm-10">
             <?php
             if ($deqrow['other'] == "Y") {$meacount++;}
-            if ($dcols > 0 && $meacount >= $dcols)
+
+            /* This caused a regression in 2.5, BUT: code below ($mearesult->FetchRow())
+             * assumes that $mearesult sometimes could be an object,
+             * which is never true even in 2.06.
+             */
+            //if ($dcols > 0 && $meacount >= $dcols)
+            if (true)
             {
                 $width=sprintf("%0d", 100/$dcols);
                 $maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
@@ -289,16 +295,23 @@
             <?php }
             else
             {
-                while ($mearow = $mearesult->FetchRow())
-                { ?>
-                <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname.$mearow['code']; ?>' id='answer<?php echo $fieldname.$mearow['code']; ?>' value='Y'
-                    <?php if ($mearow['default_value'] == "Y") {  ?>checked<?php } ?>
-                    /><label for='<?php $fieldname.$mearow['code']; ?>'><?php echo $mearow['answer']; ?></label><br />
-                <?php }
-                if ($deqrow['other'] == "Y")
-                { ?>
-                <?php eT("Other",'html',$sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>other' />
-                <?php }
+                if (is_object($mearesult))
+                {
+                    while ($mearow = $mearesult->FetchRow())
+                    { ?>
+                    <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname.$mearow['code']; ?>' id='answer<?php echo $fieldname.$mearow['code']; ?>' value='Y'
+                        <?php if ($mearow['default_value'] == "Y") {  ?>checked<?php } ?>
+                        /><label for='<?php $fieldname.$mearow['code']; ?>'><?php echo $mearow['answer']; ?></label><br />
+                    <?php }
+                    if ($deqrow['other'] == "Y")
+                    { ?>
+                    <?php eT("Other",'html',$sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>other' />
+                    <?php }
+                }
+                else
+                {
+                    throw new CException("\$mearesult should be an object here");
+                }
             }?>
         </div><?php
             break;
