@@ -41,7 +41,7 @@
                 <h4 class="modal-title">Confirm</h4>
             </div>
             <div class="modal-body">
-                <p><?php eT("Are you sure?"); ?></p>
+                <p class='modal-body-text'><?php eT("Are you sure?"); ?></p>
             </div>
             <div class="modal-footer">
                 <a type="button" class="btn btn-primary btn-ok"><span class='fa fa-check'></span>&nbsp;<?php eT("Yes"); ?></a>

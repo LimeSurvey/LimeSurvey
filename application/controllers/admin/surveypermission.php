@@ -128,12 +128,15 @@ class surveypermission extends Survey_Common_Action {
                 }
                 if(Permission::model()->hasSurveyPermission($iSurveyID,'surveysecurity','delete'))
                 {
-                    $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/delete/surveyid/{$iSurveyID}"), 'post', array('style'=>"display:inline;"))
-                    ."<button onclick='return confirm(\"".gT("Are you sure you want to delete this entry?","js")."\")' type='submit' class=' btn-xs btn btn-default'><span class='glyphicon glyphicon-trash text-warning' data-toggle='tooltip' title='".gT("Delete")."'></span></button>"
-                    ."<input type='hidden' name='action' value='delsurveysecurity' />"
-                    ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
-                    ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
-                    ."</form>";
+                    $deleteUrl = App()->createUrl("admin/surveypermission/sa/delete/surveyid/" . $iSurveyID, array(
+                        'action' => 'delsurveysecurity',
+                        'user' => $PermissionRow['users_name'],
+                        'uid' => $PermissionRow['uid']
+                    ));
+                    $deleteConfirmMessage = gT("Are you sure you want to delete this entry?");
+                    $surveysecurity .= "<a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-href='{$deleteUrl}' type='submit' class='btn-xs btn btn-default'>
+                        <span class='glyphicon glyphicon-trash text-warning' data-toggle='tooltip' title='".gT("Delete")."'></span>
+                        </a>";
                 }
 
                 $surveysecurity .= "</td>\n";
@@ -586,12 +589,11 @@ class surveypermission extends Survey_Common_Action {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $aViewUrls = array();
 
-        $action = $_POST['action'];
-
+        $action = App()->getRequest()->getParam('action');
 
         $imageurl = Yii::app()->getConfig('imageurl');
-        $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : false;
-        $postusergroupid = !empty($_POST['gid']) ? $_POST['gid'] : false;// Not used
+        $postuserid = !empty(App()->getRequest()->getParam('uid')) ? App()->getRequest()->getParam('uid') : false;
+        $postusergroupid = !empty(App()->getRequest()->getParam('gid')) ? App()->getRequest()->getParam('uid') : false;// Not used
 
         if($postuserid && !in_array($postuserid,getUserList('onlyuidarray')))
         {
@@ -616,7 +618,7 @@ class surveypermission extends Survey_Common_Action {
                 if (isset($postuserid))
                 {
                     $dbresult = Permission::model()->deleteAll("uid = :uid AND entity_id = :sid AND entity = 'survey'",array(':uid' => $postuserid, ':sid' => $surveyid));
-                    $addsummary .= "<br />".gT("Username").": ".sanitize_xss_string($_POST['user'])."<br /><br />\n";
+                    $addsummary .= "<br />".gT("Username").": ".sanitize_xss_string(App()->getRequest()->getParam('user'))."<br /><br />\n";
                     $addsummary .= "<div class=\"successheader\">".gT("Success!")."</div>\n";
                 }
                 else
@@ -634,11 +636,11 @@ class surveypermission extends Survey_Common_Action {
             $aViewUrls['output'] = $addsummary;
         }
 
-            $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
-            //$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-            //$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;
+        $aData['sidemenu']['state'] = false;
+        $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
+        //$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+        //$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;
 
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }

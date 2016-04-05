@@ -192,6 +192,7 @@ $(document).ready(function(){
     $('#confirmation-modal').on('show.bs.modal', function(e) {
         // .btn-ok is the confirm <a> in the modal
         $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        $(this).find('.modal-body-text').html($(e.relatedTarget).data('message'));
     });
 
 
