@@ -1438,6 +1438,7 @@ class responses extends Survey_Common_Action
 
         //interview Time statistics
         $aData['model'] = SurveyTimingDynamic::model($iSurveyID);
+        $aData['menu']['edition'] = false;
 
         $aData['pageSize'] = 10;
         $aData['statistics'] = SurveyTimingDynamic::model($iSurveyID)->statistics();

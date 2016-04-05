@@ -1,6 +1,6 @@
 <div class='menubar surveybar' id="browsermenubarid">
     <div class='row container-fluid'>
-        <?php if(isset($menu) && !$menu['edition']): ?>
+        <?php if(isset($menu) && isset($menu['edition']) && !$menu['edition']): ?>
             <div class="col-md-12">
             <!-- Show summary information -->
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')): ?>
@@ -258,7 +258,7 @@
 
             <?php endif;?>
 
-            <?php if(isset($menu) && $menu['close']): ?>
+            <?php if(isset($menu) && isset($menu['close']) && $menu['close']): ?>
                 <a class="btn btn-danger" href="<?php echo  $menu['closeurl'];  ?>" role="button">
                     <span class="glyphicon glyphicon-close"></span>
                     <?php eT("Close");?>
