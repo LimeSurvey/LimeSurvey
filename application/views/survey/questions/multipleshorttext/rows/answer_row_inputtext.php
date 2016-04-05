@@ -2,7 +2,7 @@
 /**
 * Multiple short texts question, item input text Html
 
-* @var $question $ansrow['question']
+* @var $question
 * @var $alert
 * @var $extraclass
 * @var $sDisplayStyle
@@ -13,10 +13,11 @@
 * @var $kpclass
 * @var $maxlength
 * @var $dispVal
-* @var $checkconditionFunction     $checkconditionFunction.'(this.value, this.name, this.type);"
+* @var $checkconditionFunction
 */
 ?>
-<!--item_inputtext -->
+
+<!--answer_row_inputtext -->
 <div id="javatbd<?php echo $myfname; ?>" class="question-item answer-item text-item <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?> >
     <?php if($alert):?>
         <!--  color code missing mandatory questions red -->
@@ -45,3 +46,4 @@
         </div>
     </div>
 </div>
+<!-- end of answer_row_inputtext -->

@@ -16,9 +16,11 @@
  * @var $wrapper
  */
 ?>
+
+<!-- answer_row_other -->
 <div class="col-sm-12">
         <div id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-item form-group' <?php echo $sDisplayStyle; ?> >
-            <label for="<?php echo $myfname;?>cbox" class="answertext control-label col-xs-<?php echo $nbColLabelXs; ?> col-lg-<?php echo $nbColLabelLg; ?> other-label">
+            <label for="<?php echo $myfname;?>cbox" class="answertext control-label other-label">
                 <?php echo $othertext; ?>
                 <input
                 class="text <?php echo $kpclass; ?>"
@@ -30,7 +32,6 @@
             </label>
             <input
                 class="checkbox other-checkbox dontread"
-                style="visibility:hidden"
                 type="checkbox"
                 name="<?php echo $myfname; ?>cbox"
                 id="answer<?php echo $myfname; ?>cbox"
@@ -38,8 +39,6 @@
                 />
 
                 <script type='text/javascript'>
-                /*<![CDATA[
-                    $('#answer<?php echo $myfname; ?>cbox').prop('aria-hidden', 'true').css('visibility','');
                     $('#answer<?php echo $myfname; ?>').bind('keyup focusout',function(event)
                     {
                         if ($.trim($(this).val()).length>0)
@@ -55,7 +54,7 @@
                         <?php echo $oth_checkconditionFunction; ?>(this.value, this.name, this.type);
                     });
 
-                    $('#answer{$myfname}cbox').click(function(event)
+                    $('#answer<?php echo $myfname; ?>cbox').click(function(event)
                     {
                         if (($(this)).is(':checked') && $.trim($("#answer<?php echo $myfname; ?>").val()).length==0)
                         {
@@ -71,7 +70,6 @@
                             return true;
                         };
                     });
-                ]]>*/
                 </script>
 
                 <input
@@ -83,3 +81,4 @@
 
         </div> <!-- Form group ; item row -->
 </div>
+<!-- end of answer_row_other -->
