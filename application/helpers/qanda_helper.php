@@ -1855,7 +1855,7 @@ function do_listwithcomment($ia)
             'maxoptionsize'          => $maxoptionsize,
             'has_comment_saved'      => isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2],
             'comment_saved'          => htmlspecialchars( $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]),
-            'value'             => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+            'value'                  => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
         ), true);
 
         $inputnames[]=$ia[1];
@@ -1864,16 +1864,12 @@ function do_listwithcomment($ia)
     return array($answer, $inputnames);
 }
 
-// ---------------------------------------------------------------
-// TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_ranking($ia)
 {
-    // note to self: this function needs to define:
-    // inputnames, answer, among others
     global $thissurvey;
-    $imageurl = Yii::app()->getConfig("imageurl");
+    $imageurl               = Yii::app()->getConfig("imageurl");
     $checkconditionFunction = "checkconditions";
-    $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
+    $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
     if ($aQuestionAttributes['random_order']==1)
     {
@@ -1885,35 +1881,37 @@ function do_ranking($ia)
     }
 
     $ansresult = Yii::app()->db->createCommand($ansquery)->query()->readAll();
-    $anscount= count($ansresult);
+    $anscount  = count($ansresult);
 
     if (trim($aQuestionAttributes["max_answers"])!='')
     {
-        $max_answers=trim($aQuestionAttributes["max_answers"]);
-    } else
+        $max_answers = trim($aQuestionAttributes["max_answers"]);
+    }
+    else
     {
-        $max_answers=$anscount;
+        $max_answers = $anscount;
     }
     // Get the max number of line needed
     if(ctype_digit($max_answers) && intval($max_answers)<$anscount)
     {
-        $iMaxLine=$max_answers;
+        $iMaxLine = $max_answers;
     }
     else
     {
-        $iMaxLine=$anscount;
+        $iMaxLine = $anscount;
     }
     if (trim($aQuestionAttributes["min_answers"])!='')
     {
-        $min_answers=trim($aQuestionAttributes["min_answers"]);
+        $min_answers = trim($aQuestionAttributes["min_answers"]);
     } else
     {
-        $min_answers=0;
+        $min_answers = 0;
     }
     $answer = '';
     // First start by a ranking without javascript : just a list of select box
     // construction select box
     $answers= array();
+
     foreach ($ansresult as $ansrow)
     {
         $answers[] = $ansrow;

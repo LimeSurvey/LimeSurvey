@@ -84,6 +84,7 @@ class TemplateConfiguration extends CFormModel
 
 
 
+
         // If the template don't have a config file (maybe it has been deleted, or whatever),
         // then, we load the default template
         $this->hasConfigFile = is_file($this->path.DIRECTORY_SEPARATOR.'config.xml');
@@ -119,7 +120,51 @@ class TemplateConfiguration extends CFormModel
         $this->cssFramework = $this->config->engine->cssframework;
         $this->packages     = (array) $this->config->engine->packages->package;
         $this->otherFiles   = $this->setOtherFiles();
+
+
+        $this->createTemplatePackage();
+
         return $this;
+    }
+
+    /**
+     * Create a package for the asset manager.
+     * The asset manager will push to tmp/assets/xyxyxy/ the whole template directory (with css, js, files, etc.)
+     * And it will publish the CSS and the JS defined. So CSS can use relative path for pictures.
+     * The publication of the package itself is done for now in replacements_helper, to respect the old logic of {TEMPLATECSS} replacement keyword
+     *
+     * NOTE: To refresh the assets, the base directory of the template must be updated.
+     * The best way to do it tp change a file in its root directory
+     * (then the new directory date will also be handled by Git, Ftp, SSH, etc. whereas a directory touch could not work in every case)
+     * That's why now, the config.xml file provide a field "last_update".
+     * When this filed is changed, you can be sure that all the CSS/JS/FILES will be reload by the final user browser
+     *
+     * For more detail, see :
+     *  http://www.yiiframework.com/doc/api/1.1/CClientScript#addPackage-detail
+     *  http://www.yiiframework.com/doc/api/1.1/YiiBase#setPathOfAlias-detail
+     *
+     */
+    private function createTemplatePackage()
+    {
+        Yii::setPathOfAlias('survey.template.path', $this->path);                           // The package creation/publication need an alias
+
+        $aCssFiles   = $this->config->files->css->filename;                                 // The CSS files of this template
+        $aJsFiles    = $this->config->files->js->filename;                                  // The JS files of this template
+
+        if (getLanguageRTL(App()->language))
+        {
+            $aCssFiles = array_merge($aCssFiles, $this->config->files->rtl->css->filename); // In RTL mode, more CSS files can be necessary
+            $aJsFiles  = array_merge($aJsFiles, $this->config->files->rtl->js->filename);   // In RTL mode, more JS files can be necessary
+        }
+
+        // The package "survey-template" will be available from anywhere in the app now.
+        // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template' );
+        // It will create the asset directory, and publish the css and js files
+        Yii::app()->clientScript->addPackage( 'survey-template', array(
+            'basePath'    => 'survey.template.path',
+            'css'         => $this->config->files->css->filename,
+            'js'          => $this->config->files->js->filename
+        ) );
     }
 
     /**

@@ -66,11 +66,13 @@ class index extends CAction {
 
         useFirebug();
 
-        ob_start(function($buffer, $phase) {
+        ob_start(function($buffer, $phase)
+        {
             App()->getClientScript()->render($buffer);
             App()->getClientScript()->reset();
             return $buffer;
         });
+
         ob_implicit_flush(false);
         $this->action();
         ob_flush();
@@ -84,7 +86,8 @@ class index extends CAction {
 
         // only attempt to change session lifetime if using a DB backend
         // with file based sessions, it's up to the admin to configure maxlifetime
-        if(isset(Yii::app()->session->connectionID)) {
+        if(isset(Yii::app()->session->connectionID))
+        {
             @ini_set('session.gc_maxlifetime', Yii::app()->getConfig('iSessionExpirationTime'));
         }
 

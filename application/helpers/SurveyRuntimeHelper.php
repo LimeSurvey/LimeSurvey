@@ -354,16 +354,6 @@ class SurveyRuntimeHelper {
 
         $flashmessage = makeFlashMessage();
 
-        //$sTemplatePath=getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR;
-
-        // TODO : check if necessary :
-        /*
-        if (isset ($_SESSION['survey_'.$surveyid]['templatepath']))
-        {
-            $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
-        }
-        */
-
         // $LEMdebugLevel - customizable debugging for Lime Expression Manager
         $LEMdebugLevel = 0;   // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
         $LEMskipReprocessing=false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
@@ -430,9 +420,7 @@ class SurveyRuntimeHelper {
             {
                 buildsurveysession($surveyid);
 
-                //TODO : check if necessary
-                //$sTemplatePath = $_SESSION[$LEMsessid]['templatepath'];
-
+                
                 if($surveyid != LimeExpressionManager::getLEMsurveyId())
                     LimeExpressionManager::SetDirtyFlag();
 
