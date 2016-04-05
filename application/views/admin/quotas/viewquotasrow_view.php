@@ -46,8 +46,7 @@
                 'class'=>'btn btn-xs btn-default',
                 'title'=>sprintf(gT("Validation of quota %s"),$quotalisting['name']),
                 'target'=>'dialog',
-                'title' => gT("Validate"),
-                'data-toggle' => 'tooltip'
+                'data-tooltip' => 'true'
             ));
         } ?>
     </td></tr>

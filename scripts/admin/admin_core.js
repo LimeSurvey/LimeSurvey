@@ -688,7 +688,8 @@ function linksInDialog()
             iframe.attr({
                 src: src,
             });
-            dialog.dialog("option", "title", title).dialog("open");
+            dialog.dialog("option", "title", title);
+            dialog.dialog("open");
         });
     });
 }
