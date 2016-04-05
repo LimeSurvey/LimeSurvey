@@ -130,6 +130,21 @@ class TemplateConfiguration extends CFormModel
     }
 
     /**
+     * Update the configuration file "last update" node.
+     * It forces the asset manager to republish all the assets
+     * So after a modification of the CSS or the JS, end user will not have to refresh the cache of their browser.
+     * For now, it's called only from template editor
+     */
+    public function actualizeLastUpdate()
+    {
+        $date = date("Y-m-d H:i:s");
+        $config = simplexml_load_file(realpath ($this->xmlFile));
+        $config->metadatas->last_update = $date;
+        $config->asXML( realpath ($this->xmlFile) );
+        touch ( $this->path );
+    }
+
+    /**
      * Create a package for the asset manager.
      * The asset manager will push to tmp/assets/xyxyxy/ the whole template directory (with css, js, files, etc.)
      * And it will publish the CSS and the JS defined. So CSS can use relative path for pictures.
