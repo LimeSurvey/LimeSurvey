@@ -145,111 +145,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $oTemplate = Template::model()->getInstance($templatename);
     }
 
-    $aCssFiles = $oTemplate->config->files->css->filename;
-    $aJsFiles = $oTemplate->config->files->js->filename;
-    $aOtherFiles = $oTemplate->otherFiles;
-
-//var_dump($aOtherFiles); die();
     if(stripos ($line,"{TEMPLATECSS}"))
     {
-        // If the template has files for css, we can't publish the files one by one, but we must publish them as a whole directory
-        // TODO : extend asset manager so it check for file modification even in directory mode
-        if(!YII_DEBUG  || count($aOtherFiles)<0 ) //Asset manager off in debug mode
-        {
-            foreach($aCssFiles as $sCssFile)
-            {
-                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
-                {
-                    Yii::app()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( $oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile  ),$sCssFile['media']);
-                }
-            }
-        }
-        else
-        {
-            foreach($aCssFiles as $sCssFile)
-            {
-                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
-                {
-                    Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile",$sCssFile['media']);
-                }
-            }
-        }
-        /* RTL CSS */
-        if (getLanguageRTL(App()->language))
-        {
-            $aCssFiles = $oTemplate->config->files->rtl->css->filename;
-            if(!YII_DEBUG)
-            {
-                foreach($aCssFiles as $sCssFile)
-                {
-                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
-                    {
-                        Yii::app()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( $oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile  ),$sCssFile['media']);
-                    }
-                }
-            }
-            else
-            {
-                foreach($aCssFiles as $sCssFile)
-                {
-                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
-                    {
-                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile",$sCssFile['media']);
-                    }
-                }
-            }
-        }
+        // This package is created in model TemplateConfiguration::createTemplatePackage
+        Yii::app()->clientScript->registerPackage( 'survey-template' );
     }
 
-    if(stripos ($line,"{TEMPLATEJS}"))
-    {
-        if(!YII_DEBUG) //Asset manager off in debug mode
-        {
-            foreach($aJsFiles as $sJsFile)
-            {
-                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
-                {
-                    App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile ) );
-                }
-            }
-        }
-        else
-        {
-            foreach($aJsFiles as $sJsFile)
-            {
-                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
-                {
-                    Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
-                }
-            }
 
-        }
-        /* RTL JS */
-        if (getLanguageRTL(App()->language))
-        {
-            $aJsFiles = (array) $oTemplate->config->files->rtl->js->filename;
-            if(!YII_DEBUG)
-            {
-                foreach($aJsFiles as $aJsFile)
-                {
-                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $aJsFile))
-                    {
-                        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $oTemplate->path .DIRECTORY_SEPARATOR. $aJsFile ) );
-                    }
-                }
-            }
-            else
-            {
-                foreach($aJsFiles as $sJsFile)
-                {
-                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
-                    {
-                        Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
-                    }
-                }
-            }
-        }
-    }
     // surveyformat
     if (isset($thissurvey['format']))
     {

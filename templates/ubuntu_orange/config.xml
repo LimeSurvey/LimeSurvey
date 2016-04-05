@@ -10,6 +10,7 @@
         <license>GNU General Public License version 2 or later</license>
         <version>1.0</version>
         <description>LimeSurvey Template.</description>
+        <last_update>2016-04-05 11:11:00</last_update>
     </metadatas>
 
     <files>
@@ -36,7 +37,7 @@
         <!-- The logo is used for now only for Surveys List  -->
         <logo>
             <filename>files/logo.png</filename>
-        </logo>        
+        </logo>
     </files>
 
     <!-- For template editor -->
