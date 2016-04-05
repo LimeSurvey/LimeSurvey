@@ -140,8 +140,8 @@ class TemplateConfiguration extends CFormModel
         $date = date("Y-m-d H:i:s");
         $config = simplexml_load_file(realpath ($this->xmlFile));
         $config->metadatas->last_update = $date;
-        $config->asXML( realpath ($this->xmlFile) );
-        touch ( $this->path );
+        $config->asXML( realpath ($this->xmlFile) );                // Belt
+        touch ( $this->path );                                      // & Suspenders ;-)
     }
 
     /**

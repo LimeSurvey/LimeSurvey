@@ -57,7 +57,7 @@ class Authentication extends Survey_Common_Action
         /* @var $identity LSUserIdentity */
         $identity = $beforeLogin->get('identity');
 
-        if (!$beforeLogin->isStopped() && is_null(App()->getRequest()->getPost('login_submit')))
+        if (!$beforeLogin->isStopped() && is_null(App()->getRequest()->getPost('login_submit')) )
         {
             if (!is_null($beforeLogin->get('default'))) {
                 $aData['defaultAuth'] = $beforeLogin->get('default');
@@ -74,8 +74,10 @@ class Authentication extends Survey_Common_Action
             App()->getPluginManager()->dispatchEvent($newLoginForm);
             $aData['summary'] = $this->_getSummary('logout');
             $aData['pluginContent'] = $newLoginForm->getAllContent();
-            $this->_renderWrappedTemplate('authentication', 'login', $aData);
-        } else {
+            //$this->_renderWrappedTemplate('authentication', 'login', $aData);
+        }
+        else
+        {
              // Handle getting the post and populating the identity there
             $authMethod = App()->getRequest()->getPost('authMethod', $identity->plugin);
             $identity->plugin = $authMethod;
@@ -99,7 +101,9 @@ class Authentication extends Survey_Common_Action
 
                 $this->_doRedirect();
 
-            } else {
+            }
+            else
+            {
                 // Failed
                 $event = new PluginEvent('afterFailedLoginAttempt');
                 $event->set('identity', $identity);
@@ -114,6 +118,8 @@ class Authentication extends Survey_Common_Action
                 $this->getController()->redirect(array('/admin/authentication/sa/login'));
             }
         }
+        // If for any reason, the plugin bugs, we can't let the user with a blank screen.
+        $this->_renderWrappedTemplate('authentication', 'login', $aData);
     }
 
     /**
@@ -295,6 +301,7 @@ class Authentication extends Survey_Common_Action
     {
         $aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        die();
     }
 
 }
