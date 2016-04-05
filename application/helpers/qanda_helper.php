@@ -1900,37 +1900,22 @@ function do_ranking($ia)
         $answers[] = $ansrow;
     }
 
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/header', array(), true);
-
     for ($i=1; $i<=$iMaxLine; $i++)
     {
         $myfname=$ia[1].$i;
-        if($i==1)
-        {
-            $labeltext =gT('First choice');
-        }
-        else
-        {
-            $labeltext = sprintf(gT('Choice of rank %s'),$i);
-        }
+        $labeltext = ($i==1)?gT('First choice'):sprintf(gT('Choice of rank %s'),$i);
 
-        $itemListHeaderDatas = array(
-            'myfname'=>$myfname,
-            'labeltext'=>$labeltext,
-        );
-
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item_list_header', $itemListHeaderDatas, true);
-
+        $sOptions = '';
         if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
         {
             $itemDatas = array(
-                'value' => '',
-                'selected'=>'SELECTED',
-                'classes'=>'',
-                'id'=> '',
-                'optiontext'=>gT('Please choose...'),
+                'value'      => '',
+                'selected'   => 'SELECTED',
+                'classes'    => '',
+                'id'         => '',
+                'optiontext' => gT('Please choose...'),
             );
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item', $itemDatas, true);
+            $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/rows/answer_row', $itemDatas, true);
         }
 
         foreach ($answers as $ansrow)
@@ -1954,29 +1939,14 @@ function do_ranking($ia)
                 'optiontext'=>flattenText($ansrow['answer']),
             );
 
-            $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item', $itemDatas, true);
+            $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/rows/answer_row', $itemDatas, true);
         }
         $itemlistfooterDatas = array(
-            'javaname'=>'java'.$myfname,
-            'thisvalue'=>$thisvalue,
-            'answers'=>$answers
         );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/item_list_footer', $itemlistfooterDatas, true);
         $inputnames[]=$myfname;
     }
 
-    $itemlistfooterDatas = array(
-        'javaname'=>'java'.$myfname,
-        'thisvalue'=>$thisvalue,
-    );
-    $secondlistDatas = array(
-        'rankId'=>$ia[0],
-        'rankingName'=>$ia[1],
-        'max_answers'=>$max_answers,
-        'min_answers'=>$min_answers,
-        'answers'=>$answers
-    );
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/second_list', $secondlistDatas, true);
+
     App()->getClientScript()->registerPackage('jquery-actual'); // Needed to with jq1.9 ?
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."ranking.js");
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "ranking.css");
@@ -2000,16 +1970,24 @@ function do_ranking($ia)
     // hide_tip is managed by css with EM
     $rank_help = gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.",'js');
 
-    $aData = array();
-    $aData['qid']=$ia[0];
-    $aData['choice_title']=$choice_title;
-    $aData['rank_title']=$rank_title;
-    $aData['rank_help']=$rank_help;
-    $aData['showpopups']=$aQuestionAttributes["showpopups"];
-    $aData['samechoiceheight']=$aQuestionAttributes["samechoiceheight"];
-    $aData['samelistheight']=$aQuestionAttributes["samelistheight"];
-
-    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/script', $aData, true);
+    $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/answer', array(
+                    'sOptions'          => $sOptions,
+                    'thisvalue'         => $thisvalue,
+                    'answers'           => $answers,
+                    'myfname'           => $myfname,
+                    'labeltext'         => $labeltext,
+                    'rankId'            => $ia[0],
+                    'rankingName'       => $ia[1],
+                    'max_answers'       => $max_answers,
+                    'min_answers'       => $min_answers,
+                    'answers'           => $answers,
+                    'choice_title'      => $choice_title,
+                    'rank_title'        => $rank_title,
+                    'rank_help'         => $rank_help,
+                    'showpopups'        => $aQuestionAttributes["showpopups"],
+                    'samechoiceheight'  => $aQuestionAttributes["samechoiceheight"],
+                    'samelistheight'    => $aQuestionAttributes["samelistheight"],
+            ), true);
     return array($answer, $inputnames);
 }
 
@@ -3265,10 +3243,11 @@ function do_shortfreetext($ia)
 {
     global $thissurvey;
 
-    $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
+    $sGoogleMapsAPIKey  = trim(Yii::app()->getConfig("googleMapsAPIKey"));
+
     if ($sGoogleMapsAPIKey!='')
     {
-        $sGoogleMapsAPIKey='&key='.$sGoogleMapsAPIKey;
+        $sGoogleMapsAPIKey = '&key='.$sGoogleMapsAPIKey;
     }
 
     $extraclass ="";
@@ -3276,9 +3255,9 @@ function do_shortfreetext($ia)
 
     if ($aQuestionAttributes['numbers_only']==1)
     {
-        $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
-        $sSeparator = $sSeparator['separator'];
-        $extraclass .=" numberonly";
+        $sSeparator             = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeparator             = $sSeparator['separator'];
+        $extraclass            .= " numberonly";
         $checkconditionFunction = "fixnum_checkconditions";
     }
     else
@@ -3288,36 +3267,39 @@ function do_shortfreetext($ia)
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maximum_chars= intval(trim($aQuestionAttributes['maximum_chars']));
-        $maxlength= "maxlength='{$maximum_chars}' ";
-        $extraclass .=" maxchars maxchars-".$maximum_chars;
+        $maximum_chars  = intval(trim($aQuestionAttributes['maximum_chars']));
+        $maxlength      = "maxlength='{$maximum_chars}' ";
+        $extraclass    .=" maxchars maxchars-".$maximum_chars;
     }
     else
     {
-        $maxlength= "";
+        $maxlength  = "";
     }
+
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
-        $tiwidth=$aQuestionAttributes['text_input_width'];
-        $extraclass .=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
-        $col = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-        $extraclass .=" col-sm-".trim($col);
+        $tiwidth     = $aQuestionAttributes['text_input_width'];
+        $extraclass .= " inputwidth-".trim($aQuestionAttributes['text_input_width']);
+        $col         = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
+        $extraclass .= " col-sm-".trim($col);
     }
     else
     {
-        $tiwidth=50;
+        $tiwidth = 50;
     }
-    if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
-        $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
-        $extraclass .=" withprefix";
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
+    {
+        $prefix      = $aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass .= " withprefix";
     }
     else
     {
         $prefix = '';
     }
-    if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
-        $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
-        $extraclass .=" withsuffix";
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
+    {
+        $suffix      = $aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass .= " withsuffix";
     }
     else
     {
@@ -3326,8 +3308,8 @@ function do_shortfreetext($ia)
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
-        $kpclass = "text-keypad";
-        $extraclass .=" inputkeypad";
+        $kpclass     = "text-keypad";
+        $extraclass .= " inputkeypad";
     }
     else
     {
@@ -3339,17 +3321,20 @@ function do_shortfreetext($ia)
     if (trim($aQuestionAttributes['display_rows'])!='')
     {
         //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
-        $drows=$aQuestionAttributes['display_rows'];
+        $drows = $aQuestionAttributes['display_rows'];
 
         //if a textarea should be displayed we make it equal width to the long text question
         //this looks nicer and more continuous
         if($tiwidth == 50)
         {
-            $tiwidth=40;
+            $tiwidth = 40;
         }
         $dispVal = "";
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
+
+        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
+        {
             $dispVal = str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
+
             if ($aQuestionAttributes['numbers_only']==1)
             {
                 $dispVal = str_replace('.',$sSeparator,$dispVal);
@@ -3357,32 +3342,29 @@ function do_shortfreetext($ia)
             $dispVal = htmlspecialchars($dispVal);
         }
 
-        $itemDatas = array(
-            'extraclass'=>$extraclass,
-            'freeTextId'=>'answer'.$ia[1],
-            'labelText'=>gT('Your answer'),
-            'name'=>$ia[1],
-            'drows'=>$drows,
-            'tiwidth'=>$tiwidth,
-            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-            'dispVal'=>$dispVal,
-            'maxlength' => $maxlength,
-            'kpclass'=>$kpclass,
-
-            // Not used when textarea? "Display rows" in advanced settings.
-            'prefix'=>$prefix,
-            'suffix'=>$suffix,
-            'sm_col' => decide_sm_col($prefix, $suffix)
-        );
-        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/textarea/item', $itemDatas, true);
+        $answer .= Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/textarea/item', array(
+            'extraclass'             => $extraclass,
+            'freeTextId'             => 'answer'.$ia[1],
+            'labelText'              => gT('Your answer'),
+            'name'                   => $ia[1],
+            'drows'                  => $drows,
+            'tiwidth'                => $tiwidth,
+            'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+            'dispVal'                => $dispVal,
+            'maxlength'              => $maxlength,
+            'kpclass'                => $kpclass,
+            'prefix'                 => $prefix,
+            'suffix'                 => $suffix,
+            'sm_col'                 => decide_sm_col($prefix, $suffix)
+        ), true);
     }
     elseif((int)($aQuestionAttributes['location_mapservice'])==1)
     {
-        $mapservice = $aQuestionAttributes['location_mapservice'];
+        $mapservice      = $aQuestionAttributes['location_mapservice'];
         $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
-        $currentLatLong = null;
-        $floatLat = 0;
-        $floatLng = 0;
+        $currentLatLong  = null;
+        $floatLat        = 0;
+        $floatLng        = 0;
 
         // Get the latitude/longtitude for the point that needs to be displayed by default
         if (strlen($currentLocation) > 2)
@@ -3393,12 +3375,15 @@ function do_shortfreetext($ia)
         else
         {
             if ((int)($aQuestionAttributes['location_nodefaultfromip'])==0)
+            {
                 $currentLatLong = getLatLongFromIp(getIPAddress());
+            }
+
             if (!isset($currentLatLong) || $currentLatLong==false)
             {
                 $floatLat = 0;
                 $floatLng = 0;
-                $LatLong = explode(" ",trim($aQuestionAttributes['location_defaultcoordinates']));
+                $LatLong  = explode(" ",trim($aQuestionAttributes['location_defaultcoordinates']));
 
                 if (isset($LatLong[0]) && isset($LatLong[1]))
                 {
@@ -3437,36 +3422,35 @@ function do_shortfreetext($ia)
             $question_text['help'] = gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
         }
 
-        $itemDatas = array(
-            'extraclass'=>$extraclass,
-            'freeTextId'=>'answer'.$ia[1],
-            'labelText'=>gT('Your answer'),
-            'name'=>$ia[1],
-            'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-            'value'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
-            'kpclass'=>$kpclass,
-            'currentLocation'=>$currentLocation,
-            'strBuild'=>$strBuild,
-            'location_mapservice'=>$aQuestionAttributes['location_mapservice'],
-            'location_mapzoom'=>$aQuestionAttributes['location_mapzoom'],
-            'location_mapheight'=>$aQuestionAttributes['location_mapheight'],
-            'questionHelp'=>$questionHelp,
-            'question_text_help'=>$question_text['help'],
-            'sm_col' => decide_sm_col($prefix, $suffix)
-        );
-        $answer = Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/location_mapservice/item', $itemDatas, true);
+        $answer = Yii::app()->getController()->renderPartial('/survey/questions/shortfreetext/location_mapservice/item', array(
+            'extraclass'             => $extraclass,
+            'freeTextId'             => 'answer'.$ia[1],
+            'labelText'              => gT('Your answer'),
+            'name'                   => $ia[1],
+            'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+            'value'                  => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
+            'kpclass'                => $kpclass,
+            'currentLocation'        => $currentLocation,
+            'strBuild'               => $strBuild,
+            'location_mapservice'    => $aQuestionAttributes['location_mapservice'],
+            'location_mapzoom'       => $aQuestionAttributes['location_mapzoom'],
+            'location_mapheight'     => $aQuestionAttributes['location_mapheight'],
+            'questionHelp'           => $questionHelp,
+            'question_text_help'     => $question_text['help'],
+            'sm_col'                 => decide_sm_col($prefix, $suffix)
+        ), true);
 
     }
     elseif((int)($aQuestionAttributes['location_mapservice'])==100)
     {
         $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
-        $currentCenter = $currentLatLong = null;
+        $currentCenter   = $currentLatLong = null;
 
         // Get the latitude/longtitude for the point that needs to be displayed by default
         if (strlen($currentLocation) > 2 && strpos($currentLocation,";"))
         {
             $currentLatLong = explode(';',$currentLocation);
-            $currentCenter = $currentLatLong = array($currentLatLong[0],$currentLatLong[1]);
+            $currentCenter  = $currentLatLong = array($currentLatLong[0],$currentLatLong[1]);
         }
         elseif ((int)($aQuestionAttributes['location_nodefaultfromip'])==0)
         {
