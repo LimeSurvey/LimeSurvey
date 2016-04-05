@@ -59,9 +59,14 @@ class index extends CAction {
 
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
 
+
         if($oTemplate->cssFramework == 'bootstrap')
         {
-            App()->bootstrap->register();
+            // We now use the bootstrap package isntead of the Yiistrap TbApi::register() method
+            // Then instead of using the composer dependency system for templates
+            // We can use the package dependency system
+            Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport');
+            App()->bootstrap->registerAllScripts();
         }
 
         useFirebug();

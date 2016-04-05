@@ -122,6 +122,7 @@ class TemplateConfiguration extends CFormModel
         $this->packages     = (array) $this->config->engine->packages->package;
         $this->otherFiles   = $this->setOtherFiles();
         $this->depends      = $this->packages;
+        $this->depends[]    = (string) $this->cssFramework;
 
         $this->createTemplatePackage();
 

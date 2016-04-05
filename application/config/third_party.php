@@ -14,6 +14,21 @@ return array(
         ),
     ),
 
+    // Bootstrap
+    // This package replace the Yiistrap regiter() function
+    // Then instead of using the composer dependency system for templates (will be used for LS3)
+    // We can use the package dependency system (easier for now)
+    'bootstrap' => array(
+        'basePath' => 'bootstrap',
+        'css'=> array(
+            'css/bootstrap.css',
+            'yiistrap.css',
+        ),
+        'depends' => array(
+            'jquery',
+        )
+    ),
+
     // jQuery UI
     'jqueryui' => array(
         'baseUrl' => 'third_party/jqueryui/',
