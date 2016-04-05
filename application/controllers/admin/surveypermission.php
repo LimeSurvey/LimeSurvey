@@ -160,23 +160,45 @@ class surveypermission extends Survey_Common_Action {
                     unset($aPDetails['title']);
                     $iCount=0;
                     $iPermissionCount=0;
+                    $sTooltip = "";
                     foreach ($aPDetails as $sPDetailKey=>$sPDetailValue)
                     {
-                        if ($sPDetailValue && Permission::model()->hasSurveyPermission($iSurveyID,$sPKey,$sPDetailKey,$PermissionRow['uid']) && !($sPKey=='survey' && $sPDetailKey=='read')) $iCount++;
-                        if ($sPDetailValue) $iPermissionCount++;
+                        if ($sPDetailValue 
+                            && Permission::model()->hasSurveyPermission($iSurveyID,$sPKey,$sPDetailKey,$PermissionRow['uid']) 
+                            && !($sPKey=='survey' && $sPDetailKey=='read')) 
+                        {
+                            $iCount++;
+                            $sTooltip .= $sPDetailKey . ", ";
+                        }
+                        if ($sPDetailValue) 
+                        {
+                            $iPermissionCount++;
+                        }
                     }
-                    if ($sPKey=='survey')  $iPermissionCount--;
+
+                    if ($sPKey=='survey') 
+                    {
+                        $iPermissionCount--;
+                    }
+
+                    // Remove last ',' and make first char upper-case
+                    $sTooltip = substr($sTooltip, 0, -2);
+                    $sTooltip = ucfirst($sTooltip);
+
+                    // Full icon = all permissions
                     if ($iCount==$iPermissionCount) {
-                        $insert = "<div class=\"fa fa-check\">&nbsp;</div>";
+                        $insert = "<div data-toggle='tooltip' data-title='" . $sTooltip. "' class=\"fa fa-check\">&nbsp;</div>";
                     }
+                    // Blurred icon, meaning only partial permissions
                     elseif ($iCount>0){
-                        $insert = "<div class=\"fa fa-check mixed\">&nbsp;</div>";
+                        $insert = "<div data-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check mixed\">&nbsp;</div>";
                     }
                     else
                     {
                         $insert = "<div>&nbsp;</div>";
                     }
-                    $surveysecurity .= "<td>\n$insert\n</td>\n";
+
+                    $surveysecurity .= "<td class='text-center' >\n$insert\n</td>\n";
                 }
 
                 $surveysecurity .= "</tr>\n";
