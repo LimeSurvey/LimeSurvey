@@ -23,12 +23,13 @@ class surveypermission extends Survey_Common_Action {
     /**
      * Load survey security screen.
      *
-     * @param int|string $surveyid
+     * @param int|string $iSurveyID
      * @return void
      * @todo Export HTML to view
      */
-    function index($iSurveyID)
+    public function index($iSurveyID)
     {
+        $aData = array();
         $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
         $aViewUrls = array();
 
@@ -149,7 +150,7 @@ class surveypermission extends Survey_Common_Action {
                 }
                 else
                 {
-                    $surveysecurity .= "---";
+                    $surveysecurity .= "&#8211;";
                 }
                 unset($group_names);
 
@@ -198,7 +199,7 @@ class surveypermission extends Survey_Common_Action {
                     }
                     else
                     {
-                        $insert = "<div>&nbsp;</div>";
+                        $insert = "<div>&#8211;</div>";
                     }
 
                     $surveysecurity .= "<td class='text-center' >\n$insert\n</td>\n";
@@ -248,11 +249,11 @@ class surveypermission extends Survey_Common_Action {
     }
 
     /**
-    * surveypermission::addusergroup()
-    * Function responsible to add usergroup.
-    * @param mixed $surveyid
-    * @return void
-    */
+     * surveypermission::addusergroup()
+     * Function responsible to add usergroup.
+     * @param mixed $surveyid
+     * @return void
+     */
     function addusergroup($surveyid)
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
@@ -357,11 +358,11 @@ class surveypermission extends Survey_Common_Action {
     }
 
     /**
-    * surveypermission::adduser()
-    * Function responsible to add user.
-    * @param mixed $surveyid
-    * @return void
-    */
+     * surveypermission::adduser()
+     * Function responsible to add user.
+     * @param mixed $surveyid
+     * @return void
+     */
     function adduser($surveyid)
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
@@ -440,11 +441,11 @@ class surveypermission extends Survey_Common_Action {
     }
 
     /**
-    * surveypermission::set()
-    * Function responsible to set permissions to a user/usergroup.
-    * @param mixed $surveyid
-    * @return void
-    */
+     * surveypermission::set()
+     * Function responsible to set permissions to a user/usergroup.
+     * @param mixed $surveyid
+     * @return void
+     */
     function set($surveyid)
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
@@ -578,11 +579,11 @@ class surveypermission extends Survey_Common_Action {
     }
 
     /**
-    * surveypermission::delete()
-    * Function responsible to delete a user/usergroup.
-    * @param mixed $surveyid
-    * @return void
-    */
+     * surveypermission::delete()
+     * Function responsible to delete a user/usergroup.
+     * @param mixed $surveyid
+     * @return void
+     */
     function delete($surveyid)
     {
 
@@ -646,11 +647,11 @@ class surveypermission extends Survey_Common_Action {
     }
 
     /**
-    * surveypermission::surveyright()
-    * Function responsible to process setting of permission of a user/usergroup.
-    * @param mixed $surveyid
-    * @return void
-    */
+     * surveypermission::surveyright()
+     * Function responsible to process setting of permission of a user/usergroup.
+     * @param mixed $surveyid
+     * @return void
+     */
     function surveyright($surveyid)
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
