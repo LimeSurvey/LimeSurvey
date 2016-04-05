@@ -41,36 +41,36 @@
             </div>
         </div>
 
-            <!-- Language tabs -->
-            <ul class="nav nav-tabs">
-                <?php foreach ($langs as $lang): ?>
-                    <li role="presentation" <?php if ($lang==$baselang){echo 'class="active"';}?>>
-                        <a data-toggle="tab" href="#edittxtele<?php echo $lang ?>">
-                            <?php echo getLanguageNameFromCode($lang,false); ?>
-                            <?php if ($lang==$baselang) {echo '('.gT("Base language").')';} ;?>
-                        </a>
-                    </li>
-                <?php endforeach?>
-            </ul>
-            <div class='tab-content'>
-            <?php foreach ($aTabContents as $i => $sTabContent)
-            {
-                echo CHtml::tag(
-                    'div', 
-                    array(
-                        'id' => 'edittxtele' . $i,
-                        'class' => 'tab-pane fade in' . ($i == $baselang ? ' active ' : ''),
-                    ), 
-                    $sTabContent
-                );
-            }?>
-            </div>
-        <p>
-            <input type="hidden" name="sid" value="<?php echo $surveyid;?>" />
-            <input type="hidden" name="action" value="quotas" />
-            <input type="hidden" name="subaction" value="modifyquota" />
-            <input type="hidden" name="quota_id" value="<?php echo $quotainfo['id'];?>" />
-        </p>
+        <!-- Language tabs -->
+        <ul class="nav nav-tabs">
+            <?php foreach ($langs as $lang): ?>
+                <li role="presentation" <?php if ($lang==$baselang){echo 'class="active"';}?>>
+                    <a data-toggle="tab" href="#edittxtele<?php echo $lang ?>">
+                        <?php echo getLanguageNameFromCode($lang,false); ?>
+                        <?php if ($lang==$baselang) {echo '('.gT("Base language").')';} ;?>
+                    </a>
+                </li>
+            <?php endforeach?>
+        </ul>
+        <div class='tab-content'>
+        <?php foreach ($aTabContents as $i => $sTabContent)
+        {
+            echo CHtml::tag(
+                'div', 
+                array(
+                    'id' => 'edittxtele' . $i,
+                    'class' => 'tab-pane fade in' . ($i == $baselang ? ' active ' : ''),
+                ), 
+                $sTabContent
+            );
+        }?>
+        </div>
+
+        <input type="submit" name="submit" class="hidden" />
+        <input type="hidden" name="sid" value="<?php echo $surveyid;?>" />
+        <input type="hidden" name="action" value="quotas" />
+        <input type="hidden" name="subaction" value="modifyquota" />
+        <input type="hidden" name="quota_id" value="<?php echo $quotainfo['id'];?>" />
     </form>
 
 </div></div></div>

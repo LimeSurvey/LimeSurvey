@@ -385,8 +385,9 @@ class quotas extends Survey_Common_Action
         $aData = $this->_getData($iSurveyId);
         $aLangs = $aData['aLangs'];
         $aViewUrls = array();
+        $quotaId = Yii::app()->request->getQuery('quota_id');
 
-        $aQuotaInfo = Quota::model()->findByPk(Yii::app()->request->getPost('quota_id'));
+        $aQuotaInfo = Quota::model()->findByPk($quotaId);
         $aData['quotainfo'] = $aQuotaInfo;
 
         $first=true;
@@ -398,7 +399,7 @@ class quotas extends Survey_Common_Action
                 $aTabTitles[$sLanguage].= ' (' . gT("Base language") . ')';
                 $first = false;
             }
-            $aData['langquotainfo'] = QuotaLanguageSetting::model()->findByAttributes(array('quotals_quota_id' => Yii::app()->request->getPost('quota_id'), 'quotals_language' => $sLanguage));
+            $aData['langquotainfo'] = QuotaLanguageSetting::model()->findByAttributes(array('quotals_quota_id' => $quotaId, 'quotals_language' => $sLanguage));
             $aData['lang'] = $sLanguage;
             $aTabContents[$sLanguage] = $this->getController()->renderPartial('/admin/quotas/editquotalang_view', $aData, true);
         }
@@ -431,7 +432,7 @@ class quotas extends Survey_Common_Action
 
         if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
         {
-            $result = Quota::model()->findAllByPk(Yii::app()->request->getPost('quota_id'));
+            $result = Quota::model()->findAllByPk(Yii::app()->request->getQuery('quota_id'));
             foreach ($result as $aQuotaDetails)
             {
                 $quota_name = $aQuotaDetails['name'];
