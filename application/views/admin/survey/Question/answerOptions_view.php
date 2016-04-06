@@ -112,7 +112,10 @@
                                                     <?php eT("Subquestion"); ?>
                                                 </th>
                                                 <?php if ($first): ?>
-                                                    <th  class="col-md-1">
+                                                    <th id='rel-eq-th' class='col-md-1'>
+                                                        <?php eT("Relevance equation"); ?>
+                                                    </th>
+                                                    <th class="col-md-1">
                                                         <?php eT("Action"); ?>
                                                     </th>
                                                 <?php endif; ?>
@@ -300,6 +303,15 @@
                                                 </td>
                                             <?php endif;?>
 
+                                            <!-- Relevance equation -->
+                                            <?php if ($first):  /* default lang - input field */?>
+                                                <td>
+                                                    <input data-toggle="tooltip" data-title="<?php eT("Click to expand"); ?>" type='text' class='relevance form-control input-lg' id='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
+                                                </td>
+                                            <?php else:       /* additional language: just print rel. equation */  ?>
+                                                <span style="display: none" class="relevance"> <?php echo $row->relevance; ?> </span>
+                                            <?php endif; ?>
+
                                             <!-- Icons edit/delete -->
                                             <td style="vertical-align: middle;" class="subquestion-actions">
 
@@ -312,10 +324,10 @@
                                                     ?>
                                                     <?php if($viewType=='subQuestions'): ?>
                                                         <span class="icon-add text-success btnaddanswer" data-code="<?php echo $title; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new subquestion after this one") ?>"></span>
-                                                        <span class="glyphicon glyphicon-trash text-success btndelanswer"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Delete this subquestion") ?>"></span>
+                                                        <span class="glyphicon glyphicon-trash text-danger btndelanswer"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Delete this subquestion") ?>"></span>
                                                     <?php elseif($viewType=='answerOptions'): ?>
                                                         <span class="icon-add text-success btnaddanswer"  data-code="<?php echo $title; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new answer option after this one") ?>"></span>
-                                                        <span class="glyphicon glyphicon-trash text-warning btndelanswer" data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></span>
+                                                        <span class="glyphicon glyphicon-trash text-danger btndelanswer" data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></span>
                                                     <?php endif; ?>
                                                 <?php endif; ?>
 
@@ -323,17 +335,8 @@
                                                 <?php if($viewType=='subQuestions'): ?>
                                                     <?php if ($scale_id==0):   /* relevance column */ ?>
                                                         <?php if($first): ?>
-                                                            <?php if ($row->relevance!="1" && trim($row->relevance)!=""): ?>
-                                                                <span class="icon-conditions text-success btntogglerelevance" data-toggle="tooltip" data-placement="bottom" title='<?php eT("Toggle subquestion relevance") ?>'></span>
-                                                            <?php else:   /* no relevance equation: icon deactivated */  ?>
-                                                                <span class="icon-conditions text-success btntogglerelevance" data-toggle="tooltip" data-placement="bottom" title='<?php eT("Toggle subquestion relevance") ?>'></span>
-                                                            <?php endif;?>
+                                                            <!-- Don't need toggle icon -->
                                                         <?php endif;?>
-                                                        <?php if ($first):  /* default lang - input field */?>
-                                                            <input style="display: none" type='text' class='relevance form-control input-lg' id='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
-                                                        <?php else:       /* additional language: just print rel. equation */  ?>
-                                                            <span style="display: none" class="relevance"> <?php echo $row->relevance; ?> </span>
-                                                        <?php endif; ?>
                                                     <?php endif; ?>
                                                 <?php endif; ?>
                                             </td>

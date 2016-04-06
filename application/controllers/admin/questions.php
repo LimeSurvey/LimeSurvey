@@ -849,7 +849,6 @@ class questions extends Survey_Common_Action
         $aData['formName'] = 'editsubquestionsform';
 
         $aViewUrls['_subQuestionsAndAnwsersJsVariables'][] = $aData;
-        //$aViewUrls['subQuestion_view'][] = $aData;
         $aViewUrls['answerOptions_view'][] = $aData;
 
         return $aViewUrls;
