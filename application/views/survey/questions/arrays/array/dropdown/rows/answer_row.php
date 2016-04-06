@@ -10,8 +10,8 @@
  * @var $tdRight
  */
 ?>
-<tr id="javatbd<?php echo $myfname;?>" class="well question-item answer-item dropdown-item">
-    <th class="answertext" style="padding: 1em;">
+<tr id="javatbd<?php echo $myfname;?>" class="well question-item answer-item dropdown-item array<?php echo $zebra; ?>">
+    <th class="answertext align-middle">
         <?php if($error): ?>
             <div class="alert alert-danger" role="alert">
                 <?php echo $answertext; ?>
@@ -37,13 +37,12 @@
             <?php endforeach; ?>
         </select>
     </td>
-    <?php if($thRight):?>
-        <th class="answertextright">
-            <?php echo $answertext;?>
+
+    <?php if ($right_exists): ?>
+        <th class='answertextright align-middle'>
+            <label>
+                <?php echo $answertextright; ?>
+            </label>
         </th>
     <?php endif; ?>
-
-    <?php if($tdRight):?>
-        <td class="answertextright">&nbsp;</td>
-    <?php endif;?>
 </tr>

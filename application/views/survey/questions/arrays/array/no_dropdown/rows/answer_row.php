@@ -33,5 +33,16 @@
         echo $answer_tds;
     ?>
 
+    <?php if ($right_exists): ?>
+        <th class='answertextright'>
+            <?php echo $answertextright; ?>
+        </th>
+    <?php endif; ?>
+
+    <?php
+        // No answer should come after right text at bipolar question
+        echo $no_answer_td;
+    ?>
+
 </tr>
 <!-- answer_row -->
