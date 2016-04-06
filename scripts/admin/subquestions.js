@@ -450,7 +450,9 @@ function code_duplicates_check()
         if (arrHasDupes(codearray))
         {
             //alert(duplicatesubquestioncode);
-            $notifycontainer.notify("create", 'error-notify', { message:duplicatesubquestioncode});
+            $('#notif-container').notify("create", 'error-notify', { 
+                message: duplicatesubquestioncode
+            });
             cansubmit= false;
         }
     });
@@ -846,7 +848,7 @@ function quickaddlabels()
             {
                 var idAndScale = '' + randomid + '_' + scale_id;
                 var relevanceTooltip = !relevanceIsExpanded() ? 
-                    'data-toggle="tooltip" data-title="Click to expand"' :
+                    'data-toggle="tooltip" data-title="' + clickToExpand + '"' :
                     '';
 
                 tablerows=tablerows+

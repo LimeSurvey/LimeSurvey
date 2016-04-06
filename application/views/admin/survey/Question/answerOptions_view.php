@@ -304,12 +304,14 @@
                                             <?php endif;?>
 
                                             <!-- Relevance equation -->
-                                            <?php if ($first):  /* default lang - input field */?>
-                                                <td>
-                                                    <input data-toggle="tooltip" data-title="<?php eT("Click to expand"); ?>" type='text' class='relevance form-control input-lg' id='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
-                                                </td>
-                                            <?php else:       /* additional language: just print rel. equation */  ?>
-                                                <span style="display: none" class="relevance"> <?php echo $row->relevance; ?> </span>
+                                            <?php if($viewType == 'subQuestions'): ?>
+                                                <?php if ($first):  /* default lang - input field */?>
+                                                    <td>
+                                                        <input data-toggle="tooltip" data-title="<?php eT("Click to expand"); ?>" type='text' class='relevance form-control input-lg' id='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
+                                                    </td>
+                                                <?php else:       /* additional language: just print rel. equation */  ?>
+                                                    <span style="display: none" class="relevance"> <?php echo $row->relevance; ?> </span>
+                                                <?php endif; ?>
                                             <?php endif; ?>
 
                                             <!-- Icons edit/delete -->
