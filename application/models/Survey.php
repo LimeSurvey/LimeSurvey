@@ -230,7 +230,7 @@ class Survey extends LSActiveRecord
     }
 
     /**
-    * filterTemplateSave to fix some template name 
+    * filterTemplateSave to fix some template name
     */
     public function filterTemplateSave($sTemplateName)
     {
@@ -260,7 +260,7 @@ class Survey extends LSActiveRecord
     public function permission($loginID)
     {
         $loginID = (int) $loginID;
-        if(Permission::model()->hasGlobalPermission('surveys','read'))// Test global before adding criteria
+        if(Permission::model()->hasGlobalPermission('surveys','read',$loginID))// Test global before adding criteria
             return $this;
         $criteria = $this->getDBCriteria();
         $criteria->mergeWith(array(
