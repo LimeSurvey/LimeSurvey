@@ -587,7 +587,8 @@ function maxlengthtextarea(){
 /* add a title on cell with answer */
 function doToolTipTable()
 {
-   $(document).on("mouseover"," td.answer-item",function(){
-        $( this).attr('title',$(this).find("label").text());
+    $(document).on("mouseover"," td.answer-item",function() {
+        var text = $(this).find('label').text();
+        $(this).attr('title', trim(text));
     });
 }
