@@ -1,7 +1,6 @@
 .settings
 .project
 /upload/surveys/*
-/styles/gringegreen/images/Thumbs.db
 /upload/templates/*
 /upload/labels/*
 !/upload/labels/readme.txt
@@ -19,7 +18,6 @@
 !/tmp/assets/.gitignore
 !/tmp/assets/index.html
 /tmp/runtime/cache/*
-/framework
 .svn
 /third_party/jqgrid/src
 .settings/org.eclipse.php.core.prefs
