@@ -90,7 +90,6 @@
                                 data-slider-min='<?php echo $slider_min;?>'
                                 data-slider-max='<?php echo $slider_max;?>'
                                 data-slider-step='<?php echo $slider_step;?>'
-                                data-slider-value='<?php echo $slider_default;?>'
                                 data-slider-orientation='<?php echo $slider_orientation;?>'
                                 data-slider-handle='<?php echo $slider_handle;?>'
                                 data-slider-tooltip='always'
