@@ -593,8 +593,8 @@ class surveypermission extends Survey_Common_Action {
         $action = App()->getRequest()->getParam('action');
 
         $imageurl = Yii::app()->getConfig('imageurl');
-        $postuserid = !empty(App()->getRequest()->getParam('uid')) ? App()->getRequest()->getParam('uid') : false;
-        $postusergroupid = !empty(App()->getRequest()->getParam('gid')) ? App()->getRequest()->getParam('uid') : false;// Not used
+        $postuserid = (!empty(App()->getRequest()->getParam('uid'))) ? App()->getRequest()->getParam('uid') : false;
+        $postusergroupid = (!empty(App()->getRequest()->getParam('gid'))) ? App()->getRequest()->getParam('uid') : false;// Not used
 
         if($postuserid && !in_array($postuserid,getUserList('onlyuidarray')))
         {
