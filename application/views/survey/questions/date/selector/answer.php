@@ -24,7 +24,7 @@
         <?php echo sprintf(gT('Date in the format: %s'),$dateformatdetails); ?>
     </label>
 
-    <span class='col-xs-12 col-sm-6'>
+    <span class='col-xs-12 col-sm-4'>
         <i class='glyphicon glyphicon-calendar form-control-feedback'></i>
         <input
             class='form-control popupdate'
