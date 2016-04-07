@@ -14,7 +14,7 @@
  */
 ?>
 
-<div class="question answer-item text-item <?php echo $extraclass; ?>">
+<div class="question answer-item text-item <?php echo $extraclass; ?> form-horizontal">
 
     <div class='form-group'>
 

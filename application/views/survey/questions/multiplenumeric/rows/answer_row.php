@@ -29,7 +29,6 @@
 ?>
 <!-- answer_row -->
 
-<!-- question attribute "display_rows" is set -> we need a textarea to be able to show several rows -->
 <div  id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item  text-item <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?>>
     <?php if($alert):?>
         <div class="alert alert-danger errormandatory"  role="alert">
@@ -139,9 +138,9 @@
     /**
     * Slider custom handle
     */
-    .slider-handle.custom {
-    background: transparent none;
-    /* You can customize the handle and set a background image */
+    .slider-handle.custom
+    {
+        background: transparent none; /* You can customize the handle and set a background image */
     }
     .slider-handle.custom::before
     {

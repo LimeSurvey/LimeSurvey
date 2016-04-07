@@ -10,7 +10,7 @@
 <!-- Language -->
 
 <!-- answer -->
-<p class="question answer-item dropdown-item langage-item">
+<p class="question answer-item dropdown-item langage-item col-sm-3">
     <label for='answer<?php echo $name; ?>' class='hide label'>
         <?php eT('Choose your language'); ?>
     </label>
