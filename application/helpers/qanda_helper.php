@@ -4615,8 +4615,8 @@ function do_array($ia)
         $sColumns = '';
         foreach ($labelans as $c)
         {
-            $odd_even = alternation($odd_even);
-            $sColumns =  Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/columns/col', array(
+            $odd_even .= alternation($odd_even);
+            $sColumns .=  Yii::app()->getController()->renderPartial('/survey/questions/arrays/array/no_dropdown/columns/col', array(
                 'class'     => $odd_even,
                 'cellwidth' => $cellwidth,
             ), true);
