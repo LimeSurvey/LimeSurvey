@@ -1059,10 +1059,13 @@ table.question.subquestion-list.questions-list tr th.answertext {
 
 }
 
+body .navbar-default .navbar-brand:hover {
+    color: #ffffff;
+}
+
 /* On iPad etc only */
 @media only screen and (max-width: 800px) and (min-width: 768px) {
     .five-point-choice .noanswer-item {
         padding: 0;
     }
 }
-
