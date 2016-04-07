@@ -1900,22 +1900,24 @@ function do_ranking($ia)
         $answers[] = $ansrow;
     }
 
+    $inputnames = array();
+    $sSelects = '';
+
     for ($i=1; $i<=$iMaxLine; $i++)
     {
         $myfname=$ia[1].$i;
         $labeltext = ($i==1)?gT('First choice'):sprintf(gT('Choice of rank %s'),$i);
+        $itemDatas = array();
 
-        $sOptions = '';
         if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
         {
-            $itemDatas = array(
+            $itemDatas[] = array(
                 'value'      => '',
                 'selected'   => 'SELECTED',
                 'classes'    => '',
                 'id'         => '',
                 'optiontext' => gT('Please choose...'),
             );
-            $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/rows/answer_row', $itemDatas, true);
         }
 
         foreach ($answers as $ansrow)
@@ -1931,21 +1933,28 @@ function do_ranking($ia)
                 $selected = '';
             }
 
-            $itemDatas = array(
+            $itemDatas[] = array(
                 'value' => $ansrow['code'],
                 'selected'=>$selected,
                 'classes'=>'',
-                'id'=> '',
                 'optiontext'=>flattenText($ansrow['answer']),
+                'thisvalue' => $thisvalue
             );
 
-            $sOptions .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/rows/answer_row', $itemDatas, true);
         }
-        $itemlistfooterDatas = array(
+
+        $sSelects .= Yii::app()->getController()->renderPartial(
+            '/survey/questions/ranking/rows/answer_row',
+            array(
+                'myfname' => $myfname,
+                'labeltext' => $labeltext,
+                'options' => $itemDatas
+            ),
+            true
         );
+
         $inputnames[]=$myfname;
     }
-
 
     App()->getClientScript()->registerPackage('jquery-actual'); // Needed to with jq1.9 ?
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."ranking.js");
@@ -1971,7 +1980,7 @@ function do_ranking($ia)
     $rank_help = gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.",'js');
 
     $answer .= Yii::app()->getController()->renderPartial('/survey/questions/ranking/answer', array(
-                    'sOptions'          => $sOptions,
+                    'sSelects'          => $sSelects,
                     'thisvalue'         => $thisvalue,
                     'answers'           => $answers,
                     'myfname'           => $myfname,

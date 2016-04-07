@@ -25,22 +25,10 @@
 <!-- answer -->
 <div class="ranking-answers">
     <ul class="list-unstyled answers-list select-list">
-        <li class="select-item">
-            <label for="answer<?php echo $myfname;?>">
-                <?php echo $labeltext;?>
-            </label>
-
-            <select  class='form-control' name="<?php echo $myfname;?>" id="answer<?php echo $myfname;?>">
-
-                <?php
-                    // rows/answer_row.php
-                    echo  $sOptions;
-                ?>
-            </select>
-
-            <!-- Hidden form: maybe can be replaced with ranking.js -->
-            <input type="hidden" id="java<?php echo $myfname;?>" disabled="disabled" value="<?php echo $thisvalue; ?>"/>
-        </li>
+        <?php
+            // rows/answer_row.php
+            echo  $sSelects;
+        ?>
     </ul>
 
     <div style='display:none' id='ranking-<?php echo $rankId;?>-maxans'>

@@ -8,6 +8,20 @@
  * @var $optiontext
  */
 ?>
-<option value="<?php echo $value;?>" <?php echo $selected;?> class='<?php echo $classes?>' id='<?php echo $id;?>'>
-    <?php echo $optiontext;?>
-</option>
+
+<li class="select-item">
+    <label for="answer<?php echo $myfname;?>">
+        <?php echo $labeltext;?>
+    </label>
+
+    <select  class='form-control' name="<?php echo $myfname;?>" id="answer<?php echo $myfname;?>">
+        <?php foreach($options as $option): ?>
+            <option value="<?php echo $option['value'];?>" <?php echo $option['selected'];?> class='<?php echo $option['classes']?>'>
+                <?php echo $option['optiontext'];?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+
+    <!-- Hidden form: maybe can be replaced with ranking.js -->
+    <input type="hidden" id="java<?php echo $myfname;?>" disabled="disabled" value="<?php echo $thisvalue; ?>"/>
+</li>
