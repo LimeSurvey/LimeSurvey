@@ -1937,8 +1937,7 @@ function do_ranking($ia)
                 'value' => $ansrow['code'],
                 'selected'=>$selected,
                 'classes'=>'',
-                'optiontext'=>flattenText($ansrow['answer']),
-                'thisvalue' => $thisvalue
+                'optiontext'=>flattenText($ansrow['answer'])
             );
 
         }
@@ -1948,7 +1947,8 @@ function do_ranking($ia)
             array(
                 'myfname' => $myfname,
                 'labeltext' => $labeltext,
-                'options' => $itemDatas
+                'options' => $itemDatas,
+                'thisvalue' => $thisvalue
             ),
             true
         );
