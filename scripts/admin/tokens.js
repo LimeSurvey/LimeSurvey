@@ -349,10 +349,15 @@ $(document).ready(function() {
                 {
                     var newForm = jQuery('<form>', {
                         'action': inviteurl,
-                        'target': '_blank'
+                        'target': '_blank',
+                        'method': 'POST'
                     }).append(jQuery('<input>', {
                         'name': 'tokenids',
                         'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
+                        'type': 'hidden'
+                    })).append(jQuery('<input>', {
+                        'name': 'YII_CSRF_TOKEN',
+                        'value': LS.data.csrfToken,
                         'type': 'hidden'
                     })).appendTo('body');
                     newForm.submit();
@@ -374,10 +379,15 @@ $(document).ready(function() {
                 {
                     var newForm = jQuery('<form>', {
                         'action': remindurl,
-                        'target': '_blank'
+                        'target': '_blank',
+                        'method': 'POST'
                     }).append(jQuery('<input>', {
                         'name': 'tokenids',
                         'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
+                        'type': 'hidden'
+                    })).append(jQuery('<input>', {
+                        'name': 'YII_CSRF_TOKEN',
+                        'value': LS.data.csrfToken,
                         'type': 'hidden'
                     })).appendTo('body');
                     newForm.submit();
