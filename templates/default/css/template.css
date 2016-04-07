@@ -843,6 +843,10 @@ table.question.subquestion-list.questions-list tr th.answertext {
     right: 1em;
 }
 
+.label {
+    font-size: 90%;
+}
+
 /**
  * No more tables
  * OBS: Media specific CSS should be last in this file.
