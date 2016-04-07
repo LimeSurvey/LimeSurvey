@@ -195,6 +195,10 @@ $(document).ready(function(){
         $(this).find('.modal-body-text').html($(e.relatedTarget).data('message'));
     });
 
+    // Error modal
+    $('#error-modal').on('show.bs.modal', function(e) {
+        $(this).find('.modal-body-text').html($(e.relatedTarget).data('message'));
+    });
 
 });
 
@@ -367,6 +371,23 @@ function arrHasDupes( A ) {                          // finds any duplicate arra
     for (i=0; i<n; i++) {                        // outer loop uses each item i at 0 through n
         for (j=i+1; j<n; j++) {              // inner loop only compares items j at i+1 to n
             if (A[i]==A[j]) return true;
+    }}
+    return false;
+}
+
+/**
+ * Like arrHasDupes, but returns the duplicated item
+ *
+ * @param {array} A
+ * @return {mixed|boolean} Array item] or false if no duplicate is found
+ */
+function arrHasDupesWhich(A) {
+    var i, j, n;
+    n=A.length;
+    // to ensure the fewest possible comparisons
+    for (i=0; i<n; i++) {                        // outer loop uses each item i at 0 through n
+        for (j=i+1; j<n; j++) {              // inner loop only compares items j at i+1 to n
+            if (A[i]==A[j]) return A[i];
     }}
     return false;
 }

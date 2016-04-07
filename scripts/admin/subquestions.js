@@ -440,6 +440,8 @@ function popupeditor()
 
 function code_duplicates_check()
 {
+    //$('.code[data-toggle="tooltip"]').data('toggle', '').tooltip('destroy');
+
     languages=langs.split(';');
     var cansubmit=true;
     $('#tabpage_'+languages[0]+' .answertable tbody').each(function(){
@@ -447,11 +449,31 @@ function code_duplicates_check()
         $(this).find('tr .code').each(function(){
             codearray.push($(this).val().toLowerCase());
         });
-        if (arrHasDupes(codearray))
+        var theDuplicate = arrHasDupesWhich(codearray);
+        if (theDuplicate !== false)
         {
-            //alert(duplicatesubquestioncode);
-            $('#notif-container').notify("create", 'error-notify', { 
-                message: duplicatesubquestioncode
+
+            $('.code').each( function() {
+                if ($(this).val() == theDuplicate) {
+                    var $theDuplicateElement = $(this);
+
+                    $('#error-modal .modal-body-text').html(duplicatesubquestioncode);
+                    $('#error-modal').modal();
+
+                    // Tooltip doesn't scroll
+                    /*
+                    $theDuplicateElement.data('toggle', 'tooltip');
+                    $theDuplicateElement.data('title', duplicatesubquestioncode);
+                    $theDuplicateElement.tooltip({
+                        placement: 'left'
+                    })
+                    $theDuplicateElement.tooltip('show');
+                    */
+
+                    // Flash the elements that are duplicates
+                    $theDuplicateElement.fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+            
+                }
             });
             cansubmit= false;
         }
