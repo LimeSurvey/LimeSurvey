@@ -597,12 +597,13 @@ class surveypermission extends Survey_Common_Action {
         $gid = App()->getRequest()->getParam('gid');
         $postuserid = (!empty($uid)) ? $uid : false;
         $postusergroupid = (!empty($gid)) ? $gid : false;// Not used
+        $userList = getUserList('onlyuidarray');
 
-        if($postuserid && !in_array($postuserid,getUserList('onlyuidarray')))
+        if($postuserid && !in_array($postuserid,$userList))
         {
             $this->getController()->error('Access denied');
         }
-        elseif( $postusergroupid &&  !in_array($postusergroupid,getUserList('onlyuidarray')))
+        elseif($postusergroupid && !in_array($postusergroupid, $userList))
         {
             $this->getController()->error('Access denied');
         }
