@@ -18,7 +18,7 @@
 ?>
 
 <!--answer_row_inputtext -->
-<div id="javatbd<?php echo $myfname; ?>" class="question-item answer-item text-item <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?> >
+<div id="javatbd<?php echo $myfname; ?>" class="question-item answer-item text-item form-horizontal <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?> >
     <?php if($alert):?>
         <!--  color code missing mandatory questions red -->
         <div class="alert alert-danger errormandatory" role="alert">
