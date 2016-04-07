@@ -102,100 +102,10 @@ li.responsive-content
     width: 100%;
 }
 
-
-
-/**
-* no more tables
-*/
-
-@media only screen and (max-width: 800px) {
-
-    /* Force table to not be like tables anymore */
-    .no-more-tables table,
-    .no-more-tables thead,
-    .no-more-tables tbody,
-    .no-more-tables th,
-    .no-more-tables td,
-    .no-more-tables tr {
-        display: block;
-    }
-
-    .no-more-tables table.subquestions-list td {
-        text-align: left;
-    }
-
-    /* Hide table headers (but not display: none;, for accessibility) */
-    .no-more-tables thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-    .no-more-tables tr { border: 1px solid #ccc; padding: 1em ; }
-
-    /* Line header ; color is h4 color */
-    .no-more-tables tr th { font-size: 1.1em; text-align: center; color: #317eac;}
-
-    .no-more-tables .checkbox  {
-        position: relative;
-        top: 6px;
-    }
-
-    .no-more-tables td {
-        /* Behave  like a "row" */
-        min-height: 2em;
-        border: none;
-        position: relative;
-        /*padding-left: 95%;*/
-        padding-bottom: 1em;
-        white-space: normal;
-        text-align:left;
-    }
-
-    .array-multi-flexi  .no-more-tables td, .no-more-tables-array-dual-dropdown-layout  td, .no-more-tables-array-multi-text td{
-        padding-left: 0%;
-    }
-
-
-    .no-more-tables td:before {
-        /* Now like a table header */
-        position: absolute;
-        /* Top/left values mimic padding */
-        top: 6px;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        text-align:left;
-        font-weight: bold;
-    }
-
-    /*
-    Label the data
-    */
-    /*.no-more-tables td:before { content: attr(data-title); }*/
-
-    .no-more-tables-10-point tr{
-        padding-bottom: 100px;
-    }
-
-    .no-more-tables-10-point td{
-        width: 2em;
-        margin: 0px;
-        padding: 0px;
-        float: left;
-        text-align:left;
-    }
-
-
-    .no-more-tables-10-point td:before {
-        /* Now like a table header */
-        position: relative;
-        left: 2px;
-        /* Top/left values mimic padding */
-    }
+/* Don't wrap "No answer" for 10-point array */
+.table-in-qanda-2 thead th {
+    white-space: nowrap;
 }
-
 
 
 /**
@@ -484,7 +394,7 @@ fieldset[disabled] .checkbox label {
 
 
     .questions-list tbody tr {
-        height: 3em;
+        min-height: 3em;
     }
 
 }
@@ -539,7 +449,6 @@ input[type="radio"],
 .radio input[type="radio"],
 .radio-inline input[type="radio"] {
   position: relative;
-  margin-top: 6px;
   margin-right: 4px;
   vertical-align: top;
   border: none;
@@ -745,20 +654,6 @@ input[type="checkbox"]:disabled:checked:after,
     padding: 0px;
 }
 
-
-/**
- * Array question
- */
-table.question.subquestion-list.questions-list th,table.question.subquestion-list.questions-list tr, table.subquestions-list th, table.subquestions-list td
-{
- text-align: center;
-}
-
-table.question.subquestion-list.questions-list tr.answers-list th
-{
- text-align: left;
-}
-
 /**
  * For em-type
  */
@@ -793,9 +688,9 @@ table.question.subquestion-list.questions-list tr.answers-list th
     text-align: center;
 }
 
-#outerframeContainer {
-    min-height: 80%;
-}
+/*#outerframeContainer {
+    height: 100%;
+}*/
 
 #surveyListFooter {
     width: 100%;
@@ -847,4 +742,336 @@ html body .navbar.navbar-default.navbar-fixed-top {
 
 .navbar-brand {
     height: auto;
+}
+
+/* For striped tables */
+.array2 {
+    background-color: #f9f9f9;
+}
+
+/* Make sure table covers hole page */
+table {
+    width: 100%;
+}
+
+/* Give help text some space */
+.question-help {
+    margin-top: 1em;
+}
+
+/* Wrap text in e.g. gender button "No answer */
+.wrap-normal {
+    white-space: normal;
+}
+
+/* Center modal vertically, used by file-upload modal */
+.modal {
+    text-align: center;
+    padding: 0!important;
+}
+.modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+}
+.modal-dialog {
+    display: inline-block;
+     text-align: left;
+     vertical-align: middle;
+}
+
+/* Make file upload modal fit to iframe */
+.file-upload-modal-body iframe {
+    height: inherit;
+    width: 100%;
+    border: none;
+}
+.file-upload-modal-body {
+    padding: 0;
+    height: 500px;
+}
+.file-upload-modal-footer {
+    margin-top: 0;
+}
+
+.slider.slider-horizontal {
+    width: 100%;
+
+    /* The reset button will be under the slider, so allow some margin */
+    margin-bottom: 1em;
+}
+
+/* When slider has both show-min-max and reset button, add space between
+ * left badge and reset button */
+.slider-min-badge {
+    margin-right: 1em;
+}
+
+.slider-left-span {
+    text-align: right;
+}
+
+.slider-right-span {
+    text-align: left;
+}
+
+.slider-container {
+    margin-top: 3.5em;
+    margin-bottom: 2.5em;
+}
+
+#yii-flash-message {
+    margin-top: 3em;
+}
+
+.prefix-text-right {
+    text-align: right;
+}
+
+.align-middle {
+    vertical-align: middle !important;
+}
+
+table.question.subquestion-list.questions-list tr th.answertext {
+    text-align: right;
+}
+
+/**
+ * No more tables
+ * OBS: Media specific CSS should be last in this file.
+ * iPad has width 768px (according to Chrome dev tool)
+ * Google Nexus 10 has width 800px.
+ * (Both in portrait mode.)
+ * We don't have to collapse tables on pads.
+ */
+@media only screen and (max-width: 767px) {
+
+    /* Remove margin */
+    .row {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Add some margin for multiple short text */
+    .form-group.row {
+        margin-bottom: 15px;
+    }
+
+    /* Force table to not be like tables anymore */
+    .no-more-tables table,
+    .no-more-tables thead,
+    .no-more-tables tbody,
+    .no-more-tables th,
+    .no-more-tables td {
+        display: block;
+    }
+
+    .no-more-tables tr {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .no-more-tables table.subquestions-list td {
+        text-align: left;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    .no-more-tables thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .no-more-tables tr,
+    .array-by-columns-div .radio-list {
+        border: 1px solid #ccc;
+        padding: 1em;
+    }
+
+    /* Line header ; color is h4 color */
+    .no-more-tables tr th,
+    .array-by-columns-div .answertext {
+        font-size: 1.1em;
+        text-align: center;
+        color: #317eac;
+    }
+
+    .no-more-tables tr th {
+        text-align: left;
+    }
+
+    .array-by-columns-div .answertext {
+        padding: 8px;
+        padding-left: 0;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .array-by-columns-div .radio-item {
+        padding-bottom: 8px;
+    }
+
+    .no-more-tables .checkbox  {
+        position: relative;
+        top: 6px;
+    }
+
+    .no-more-tables td {
+        /* Behave  like a "row" */
+        min-height: 2em;
+        border: none;
+        position: relative;
+        /*padding-left: 95%;*/
+        padding-bottom: 1em;
+        white-space: normal;
+        text-align:left;
+    }
+
+    .array-multi-flexi  .no-more-tables td, .no-more-tables-array-dual-dropdown-layout  td, .no-more-tables-array-multi-text td{
+        padding-left: 0%;
+    }
+
+
+    .no-more-tables td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align:left;
+        font-weight: bold;
+    }
+
+    /*
+    Label the data
+    */
+    /*.no-more-tables td:before { content: attr(data-title); }*/
+
+    .no-more-tables-10-point td {
+        width: 2em;
+        margin: 0px;
+        padding: 0px;
+        float: left;
+        text-align:left;
+    }
+
+    /* Don't wrap "No answer" on two lines */
+    .no-more-tables-10-point label {
+        white-space: nowrap;
+    }
+
+    .no-more-tables-10-point td:before, .no-more-tables-5-point td:before {
+        /* Now like a table header */
+        position: relative;
+        left: 2px;
+        /* Top/left values mimic padding */
+    }
+
+    /* When tables are collapsed, remove margin top so the labels look centered */
+    input[type="radio"],
+    .radio input[type="radio"],
+    .radio-inline input[type="radio"] {
+      margin-top: 4px;
+    }
+
+    .five-point-choice .col-xs-12 {
+        padding-bottom: 8px;  /* For 5-point-choice; TODO: Should look like 5-point-array? */
+    }
+
+    /* Hide the first column in array-by-column */
+    .array-by-columns-table tr > *:nth-child(1) {
+        display: none;
+    }
+
+    /* Need some more space on phone */
+    .array-multi-flexi .answertext {
+        padding-bottom: 0.5em;
+    }
+
+    .array-multi-flexi .answer-item label {
+        padding-bottom: 0.5em;
+    }
+
+    /* On phone, left and right slider text is above and below slider */
+    .slider-left-span {
+        text-align: left;
+    }
+
+    /* As above, collapse prefix/suffix to above/below input */
+    .prefix-text-right {
+        text-align: left;
+    }
+
+    table.question.subquestion-list.questions-list tr th.answertext {
+        text-align: left;
+    }
+
+}
+
+/** On small phones, leave some more space */
+@media only screen and (max-width: 400px) {
+
+    .col-sm-12 {
+        padding: 0;
+    }
+
+    .col-xs-12 {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+    /* For yes-no question, shrink the buttons a bit on phone screens */
+    .btn-lg, .btn-group-lg label {
+        padding: 10px 15px;
+    }
+
+    .slider.slider-horizontal {
+        /* Slider can be full width on phones */
+        width: 100%;
+    }
+
+    /* Center label under radio button on phones */
+    .five-point-choice label {
+        margin-left: 5px;
+    }
+
+    /* Make file-upload pop-up shorter on phones */
+    .file-upload-modal-body {
+        padding: 0;
+        height: 300px;
+    }
+
+    /* Modal should be in front of navbar, so the close icon is visible */
+    .modal {
+        z-index: 3000;
+    }
+
+    /* Less margin on phones */
+    .slider.slider-horizontal {
+        margin-bottom: 0.4em;
+    }
+
+
+}
+
+body .navbar-default .navbar-brand:hover {
+    color: #ffffff;
+}
+
+/* Hide survey title in group by group mode*/
+body.groupbygroup #surveynametitle, body.groupbygroup #surveydescription
+{
+    display: none;
+}
+
+/* On iPad etc only */
+@media only screen and (max-width: 800px) and (min-width: 768px) {
+    .five-point-choice .noanswer-item {
+        padding: 0;
+    }
 }

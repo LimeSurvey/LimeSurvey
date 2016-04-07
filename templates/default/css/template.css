@@ -688,9 +688,9 @@ input[type="checkbox"]:disabled:checked:after,
     text-align: center;
 }
 
-#outerframeContainer {
+/*#outerframeContainer {
     height: 100%;
-}
+}*/
 
 #surveyListFooter {
     width: 100%;
@@ -1061,6 +1061,12 @@ table.question.subquestion-list.questions-list tr th.answertext {
 
 body .navbar-default .navbar-brand:hover {
     color: #ffffff;
+}
+
+/* Hide survey title in group by group mode*/
+body.groupbygroup #surveynametitle, body.groupbygroup #surveydescription
+{
+    display: none;
 }
 
 /* On iPad etc only */

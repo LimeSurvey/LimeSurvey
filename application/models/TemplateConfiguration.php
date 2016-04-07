@@ -151,7 +151,7 @@ class TemplateConfiguration extends CFormModel
      * The publication of the package itself is done for now in replacements_helper, to respect the old logic of {TEMPLATECSS} replacement keyword
      *
      * NOTE 1 : To refresh the assets, the base directory of the template must be updated.
-     * The best way to do it tp change a file in its root directory
+     * The best way to do it, is to change a file in its root directory
      * (then the new directory date will also be handled by Git, Ftp, SSH, etc. whereas a directory touch could not work in every case)
      * That's why now, the config.xml file provide a field "last_update".
      * When this filed is changed, you can be sure that all the CSS/JS/FILES will be reload by the final user browser
@@ -159,8 +159,11 @@ class TemplateConfiguration extends CFormModel
      * NOTE 2: the process describe above works fine for publishing changes on template via Git, ComfortUpdates and manual update
      * because pulling/copying a new file in a directory changes its date. BUT, when working on a local installation, it can happen that
      * just changing/saving the XML file is not enough to update the directory's modification date (in Linux system, you can even have: "unknow modification date")
-     * The date of the directory must then been changed manually. To avoid them to do it each time, Asset Manager is now off when debug mode is on
-     * (see: {TEMPLATECSS} replacement in replacements_helper)
+     * The date of the directory must then been changed manually.
+     * To avoid them to do it each time, Asset Manager is now off when debug mode is on (see: {TEMPLATECSS} replacement in replacements_helper).
+     * Developpers should then think about :
+     * 1. refreshing their brower's cache (ctrl + F5) to see their changes
+     * 2. update the config.xml last_update before pushing, to be sure that end users will have the new version
      *
      * For more detail, see :
      *  http://www.yiiframework.com/doc/api/1.1/CClientScript#addPackage-detail

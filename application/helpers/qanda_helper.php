@@ -2439,6 +2439,7 @@ function do_multiplechoice_withcomments($ia)
         ." /*]]>*/\n"
         ."</script>\n";
     }
+    
     return array($answer, $inputnames);
 }
 
