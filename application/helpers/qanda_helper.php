@@ -1058,7 +1058,9 @@ function do_date($ia)
                 case 'i':
                     $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/minute', array('minuteId'=>$ia[1], 'currentminute'=>$currenthour, 'dropdown_dates_minute_step'=>$aQuestionAttributes['dropdown_dates_minute_step'], 'datepart'=>$datepartdatepart ), true);
                     break;
-                default:  $sRows .= $datepart;
+                default:
+                //$sRows .= $datepart;
+
             }
         }
 
