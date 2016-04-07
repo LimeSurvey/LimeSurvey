@@ -159,7 +159,8 @@ class TemplateConfiguration extends CFormModel
      * NOTE 2: the process describe above works fine for publishing changes on template via Git, ComfortUpdates and manual update
      * because pulling/copying a new file in a directory changes its date. BUT, when working on a local installation, it can happen that
      * just changing/saving the XML file is not enough to update the directory's modification date (in Linux system, you can even have: "unknow modification date")
-     * The date of the directory must then been changed manually
+     * The date of the directory must then been changed manually. To avoid them to do it each time, Asset Manager is now off when debug mode is on
+     * (see: {TEMPLATECSS} replacement in replacements_helper)
      *
      * For more detail, see :
      *  http://www.yiiframework.com/doc/api/1.1/CClientScript#addPackage-detail
