@@ -57,7 +57,7 @@ Changes from 2.50+ (build 160404) to 2.50+ (build 160405) Apr 05, 2016
 #Updated translation: Italian by lfanfoni
 #Updated translation: Italian (Informal) by lfanfoni
 #Updated translation: Kurdish (Sorani) by RastiK5
-#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Bokmal) by pmonstad
 #Updated translation: Norwegian (Nynorsk) by pmonstad
 #Updated translation: Polish by elisa
 #Updated translation: Polish (Informal) by elisa
