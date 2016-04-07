@@ -838,6 +838,11 @@ table.question.subquestion-list.questions-list tr th.answertext {
     text-align: right;
 }
 
+/* Used for date-picker icon within input */
+.form-control-feedback {
+    right: 1em;
+}
+
 /**
  * No more tables
  * OBS: Media specific CSS should be last in this file.
@@ -1009,6 +1014,11 @@ table.question.subquestion-list.questions-list tr th.answertext {
 
     table.question.subquestion-list.questions-list tr th.answertext {
         text-align: left;
+    }
+
+    /* Used for date-picker icon within input */
+    .form-control-feedback {
+        right: 0.5em;
     }
 
 }

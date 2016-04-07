@@ -17,7 +17,6 @@ function doPopupDate(qId){
         format=$('#dateformat'+basename).val();
         language=$('#datelanguage'+basename).val();
         $("#question"+qId+" .popupdate").datetimepicker({
-            showOn: 'both',
             changeYear: true,
             changeMonth: true,
             defaultDate: +0,
