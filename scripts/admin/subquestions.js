@@ -471,7 +471,7 @@ function code_duplicates_check()
                     */
 
                     // Flash the elements that are duplicates
-                    $theDuplicateElement.fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+                    //$theDuplicateElement.fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
             
                 }
             });
