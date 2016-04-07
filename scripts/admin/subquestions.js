@@ -59,7 +59,7 @@ function bindExpandRelevanceEquation()
 {
     $('.relevance').unbind('click').on('click', function() {
         $('#rel-eq-th').toggleClass('col-md-1 col-md-4', 'fast');
-        $('.relevance').tooltip('destroy');
+        $('.relevance').data('toggle', '').tooltip('destroy');
         $('.relevance').unbind('click');
     });
 }
@@ -70,6 +70,38 @@ function bindExpandRelevanceEquation()
 function relevanceIsExpanded()
 {
     return $('#rel-eq-th').hasClass('col-md-4');
+}
+
+/**
+ * Bind click to expand relevance equation
+ * if not already expanded.
+ *
+ * @return {void}
+ */
+function bindClickIfNotExpanded()
+{
+    if (!relevanceIsExpanded())
+    {
+        bindExpandRelevanceEquation();
+        // Activate tooltip
+        $('[data-toggle="tooltip"]').tooltip()
+    }
+
+}
+
+/**
+ * Get toolrip data for relevance equation.
+ * If expanded, returns empty string
+ *
+ * @return {string}
+ */
+function getRelevanceToolTip()
+{
+    var relevanceTooltip = !relevanceIsExpanded() ? 
+        'data-toggle="tooltip" data-title="' + clickToExpand + '"' :
+        '';
+
+    return relevanceTooltip;
 }
 
 function deleteinput()
@@ -187,6 +219,8 @@ function addinput()
             */
 
             // Line insertion
+            var idAndScale = '' + randomid + '_' + scale_id;
+
             inserthtml= '<tr id="row_'+newposition+'" class="row_'+newposition+'" style="">';
             inserthtml+='   <td style="vertical-align: middle;">';
             inserthtml+='       <span class="glyphicon glyphicon-move"></span>';
@@ -201,13 +235,17 @@ function addinput()
             inserthtml+='       </div>';
             inserthtml+='  </td>';
 
+            inserthtml+='  <td>';
+            inserthtml+='      <input id="relevance_' + idAndScale + '" name="relevance_' + idAndScale + '" class="relevance form-control input-lg" type="text" value="1" ' + getRelevanceToolTip() + '/>';
+            inserthtml+='  </td>';
+
             inserthtml+='  <td style="vertical-align: middle;">';
             inserthtml+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
             inserthtml+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="glyphicon glyphicon-pencil btneditanswerena"></span>';
             inserthtml+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="glyphicon glyphicon-pencil btneditanswerdis" alt="Give focus to the HTML editor popup window" style="display: none;"></span>';
             inserthtml+='           </a>';
             inserthtml+='       <span class="icon-add text-success btnaddanswer" data-code="'+htmlspecialchars(sNextCode)+'"></span>';
-            inserthtml+='       <span class="glyphicon glyphicon-trash text-success btndelanswer"  ></span>';
+            inserthtml+='       <span class="glyphicon glyphicon-trash text-danger btndelanswer"  ></span>';
             inserthtml+='  </td>' + relbutton + '</tr>';
         }
         else
@@ -261,6 +299,8 @@ function addinput()
     $('.row_'+newposition).show(); //Workaround : IE does not show with fadeIn only
 
     $('.tab-page:first .answertable tbody').sortable('refresh');
+
+    bindClickIfNotExpanded();
 
 }
 
@@ -869,9 +909,6 @@ function quickaddlabels()
             if (x==0)
             {
                 var idAndScale = '' + randomid + '_' + scale_id;
-                var relevanceTooltip = !relevanceIsExpanded() ? 
-                    'data-toggle="tooltip" data-title="' + clickToExpand + '"' :
-                    '';
 
                 tablerows=tablerows+
                 '<tr id="row_'+k+'" class="row_'+k+'">'+
@@ -897,7 +934,7 @@ function quickaddlabels()
                 '   </td>'+
 
                 '   <td>' +
-                '       <input id="relevance_' + idAndScale + '" name="relevance_' + idAndScale + '" class="relevance form-control input-lg" type="text" value="1" ' + relevanceTooltip + '/>' +
+                '       <input id="relevance_' + idAndScale + '" name="relevance_' + idAndScale + '" class="relevance form-control input-lg" type="text" value="1" ' + getRelevanceToolTip() + '/>' +
                 '   </td>' +
 
                 '   <td>'+
@@ -957,15 +994,7 @@ function quickaddlabels()
     updaterowproperties();
     $('#quickaddModal').modal('hide')
 
-    // Possibly bind click to expand relevance equation again
-    if (!relevanceIsExpanded())
-    {
-        bindExpandRelevanceEquation();
-    }
-
-    // Activate tooltip
-    $('[data-toggle="tooltip"]').tooltip()
-
+    bindClickIfNotExpanded();
 }
 
 function getlabel()
