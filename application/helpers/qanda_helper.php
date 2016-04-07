@@ -3049,7 +3049,9 @@ function do_multiplenumeric($ia)
                 $sValue = str_replace('.',$sSeparator,$sValue);
             }
 
-            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/rows/answer_row', array(
+            if(!$sliders)
+            {
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/rows/input/answer_row', array(
                 'qid'                    => $ia[0],
                 'extraclass'             => $extraclass,
                 'sDisplayStyle'          => $sDisplayStyle,
@@ -3058,9 +3060,6 @@ function do_multiplenumeric($ia)
                 'theanswer'              => $theanswer,
                 'labelname'              => 'answer'.$myfname,
                 'prefixclass'            => $prefixclass,
-                'sliders'                => $sliders,
-                'sliderleft'             => $sliderleft,
-                'sliderright'            => $sliderright,
                 'prefix'                 => $prefix,
                 'suffix'                 => $suffix,
                 'tiwidth'                => $tiwidth,
@@ -3069,22 +3068,46 @@ function do_multiplenumeric($ia)
                 'maxlength'              => $maxlength,
                 'labelText'              => $labelText,
                 'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
-                'slider_orientation'     => $slider_orientation,
-                'slider_step'            => $slider_step    ,
-                'slider_min'             => $slider_min     ,
-                'slider_mintext'         => $slider_mintext ,
-                'slider_max'             => $slider_max     ,
-                'slider_maxtext'         => $slider_maxtext ,
-                'slider_default'         => $slider_default ,
-                'slider_handle'          => $slider_handle,
-                'slider_reset'           => $slider_reset,
-                'slider_custom_handle'   => $slider_custom_handle,
-                'slider_user_no_action'  => $slider_user_no_action,
-                'slider_showminmax'      => $aQuestionAttributes['slider_showminmax'],
-                'sSeparator'             => $sSeparator,
-                'sUnformatedValue'       => $sUnformatedValue,
             ), true);
-
+            }
+            else
+            {
+                $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/rows/sliders/answer_row', array(
+                    'qid'                    => $ia[0],
+                    'extraclass'             => $extraclass,
+                    'sDisplayStyle'          => $sDisplayStyle,
+                    'kpclass'                => $kpclass,
+                    'alert'                  => $alert,
+                    'theanswer'              => $theanswer,
+                    'labelname'              => 'answer'.$myfname,
+                    'prefixclass'            => $prefixclass,
+                    'sliders'                => $sliders,
+                    'sliderleft'             => $sliderleft,
+                    'sliderright'            => $sliderright,
+                    'prefix'                 => $prefix,
+                    'suffix'                 => $suffix,
+                    'tiwidth'                => $tiwidth,
+                    'myfname'                => $myfname,
+                    'dispVal'                => $sValue,
+                    'maxlength'              => $maxlength,
+                    'labelText'              => $labelText,
+                    'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+                    'slider_orientation'     => $slider_orientation,
+                    'slider_step'            => $slider_step    ,
+                    'slider_min'             => $slider_min     ,
+                    'slider_mintext'         => $slider_mintext ,
+                    'slider_max'             => $slider_max     ,
+                    'slider_maxtext'         => $slider_maxtext ,
+                    'slider_default'         => $slider_default ,
+                    'slider_handle'          => $slider_handle,
+                    'slider_reset'           => $slider_reset,
+                    'slider_custom_handle'   => $slider_custom_handle,
+                    'slider_user_no_action'  => $slider_user_no_action,
+                    'slider_showminmax'      => $aQuestionAttributes['slider_showminmax'],
+                    'sSeparator'             => $sSeparator,
+                    'sUnformatedValue'       => $sUnformatedValue,
+                ), true);
+            }
             $fn++;
             $inputnames[]=$myfname;
         }

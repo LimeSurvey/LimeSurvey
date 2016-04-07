@@ -40,30 +40,9 @@
             <?php echo $labelText;?>
         </label>
         <div>
-            <?php if(!$sliders): ?>
-                <span class='pull-left'><?php echo $sliderleft;?></span>
-                <input
-                    class="text form-control numeric <?php echo $kpclass;?>"
-                    type="text"
-                    size="<?php echo $tiwidth;?>"
-                    name="<?php echo $myfname;?>"
-                    id="answer<?php echo $myfname; ?>"
-                    value="<?php echo $dispVal;?>"
-                    onkeyup="<?php echo $checkconditionFunction; ?>"
-                    title="<?php eT('Only numbers may be entered in this field.'); ?>"
-                    <?php echo $maxlength; ?>
-                />
-                <span class='pull-right'><?php echo $sliderright;?></span>
-            <?php else:?>
-                <div class='slider-container row'>
 
-                    <!-- If reset button, put it after slider. Unless on phone screen, then it's below slider. -->
-                    <?php if ($slider_reset): ?>
-                        <div class='col-xs-12 col-sm-10'>
-                    <?php else: ?>
-                        <div class='col-xs-12'>
-                    <?php endif; ?>
-
+        <div class='slider-container row'>
+            <div class='col-xs-12 col-sm-6'>
                         <?php if (!empty($sliderright) || !empty($sliderleft)): ?>
                             <span class='pull-left col-xs-12 col-sm-3 slider-left-span'><?php echo $sliderleft;?></span>
                         <?php endif; ?>
@@ -126,7 +105,7 @@
 
                 </div>
 
-            <?php endif;?>
+
         </div>  <!-- xs-12 -->
         <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo $slider_user_no_action?>" />
     </div> <!-- form group -->
