@@ -151,10 +151,16 @@ class TemplateConfiguration extends CFormModel
      * The publication of the package itself is done for now in replacements_helper, to respect the old logic of {TEMPLATECSS} replacement keyword
      *
      * NOTE: To refresh the assets, the base directory of the template must be updated.
-     * The best way to do it tp change a file in its root directory
+     * The best way to do it is to change a file in its root directory
      * (then the new directory date will also be handled by Git, Ftp, SSH, etc. whereas a directory touch could not work in every case)
      * That's why now, the config.xml file provide a field "last_update".
      * When this filed is changed, you can be sure that all the CSS/JS/FILES will be reload by the final user browser
+     *
+     * As a developer, if you change e.g. css/template.css it will not be enough to 
+     * re-publish the package. You also have to change the _last_update field.
+     *
+     * Use-case for this limitation: End-user never has to clear cache in browser to 
+     * renew template files.
      *
      * For more detail, see :
      *  http://www.yiiframework.com/doc/api/1.1/CClientScript#addPackage-detail
