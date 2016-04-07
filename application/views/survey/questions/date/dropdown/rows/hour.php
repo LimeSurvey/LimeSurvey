@@ -3,6 +3,7 @@
  * Hour dropdown Html
  * @var $hourId
  * @var $currenthour
+ * @var $datepart
  */
 ?>
 <!-- hour -->

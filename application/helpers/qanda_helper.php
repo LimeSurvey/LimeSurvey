@@ -1053,13 +1053,13 @@ function do_date($ia)
                 case 'h':
                 case 'g':
                 case 'G':
-                    $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/hour', array('hourId'=>$ia[1], 'currenthour'=>$currenthour,), true);
+                    $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/hour', array('hourId'=>$ia[1], 'currenthour'=>$currenthour, 'datepart'=>$datepart), true);
                     break;
                 case 'i':
-                    $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/minute', array('minuteId'=>$ia[1], 'currentminute'=>$currenthour, 'dropdown_dates_minute_step'=>$aQuestionAttributes['dropdown_dates_minute_step'], 'datepart'=>$datepartdatepart ), true);
+                    $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/minute', array('minuteId'=>$ia[1], 'currentminute'=>$currenthour, 'dropdown_dates_minute_step'=>$aQuestionAttributes['dropdown_dates_minute_step'], 'datepart'=>$datepart ), true);
                     break;
                 default:
-                //$sRows .= $datepart;
+                $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/date/dropdown/rows/datepart', array('datepart'=>$datepart ), true);
 
             }
         }

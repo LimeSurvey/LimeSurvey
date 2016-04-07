@@ -13,7 +13,7 @@
     <label for="minute<?php echo $minuteId; ?>" class="hide">
         <?php eT('Minute'); ?>
     </label>
-    <select id="minute<?php echo $minuteId; ?>" name="minute<?php echo $minuteId; ?>" class="minute">
+    <select id="minute<?php echo $minuteId; ?>" name="minute<?php echo $minuteId; ?>" class="minute form-control">
         <option value="">
             <?php eT('Minute'); ?>
         </option>
