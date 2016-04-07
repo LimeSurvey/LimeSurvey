@@ -4722,7 +4722,6 @@ function do_array($ia)
             {
                 $answertextright = null;
             }
-            traceVar($answertextright);
 
             $options = array();
 
