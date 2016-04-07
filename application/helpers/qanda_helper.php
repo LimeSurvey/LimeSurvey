@@ -2185,7 +2185,7 @@ function do_multiplechoice($ia)
         // or if the column has been closed and the row count reset before.
         if($iNbCols > 1 && $iRowCount == 1 )
         {
-            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/questions/multiplechoice/columns/column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
+            $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/multiplechoice/columns/column_header', array('iColumnWidth' => $iColumnWidth, 'first'=>false), true);
         }
 
         ////
@@ -2439,7 +2439,7 @@ function do_multiplechoice_withcomments($ia)
         ." /*]]>*/\n"
         ."</script>\n";
     }
-    
+
     return array($answer, $inputnames);
 }
 
