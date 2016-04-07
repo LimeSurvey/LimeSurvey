@@ -35,6 +35,27 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160405) to 2.50+ (build 160407) Apr 07, 2016
+-Fixed issue #10816: Entry box for Subquestion relevance equations is to (Olle Haerstedt)
+-Fixed issue #10844: Various issues using the LS 2.50 default template (Olle Haerstedt)
+-Fixed issue #10850: Questions attributes "Display columns:" wrong default value 6->1 (t6nnp6nn)
+-Fixed issue #10861: Second label of bipolar marix question does not (Olle Haerstedt)
+-Fixed issue #10871: Invitation/Reminder buttons at bottom of token table do not function (Olle Haerstedt)
+-Fixed issue #10875: Remote control list_surveys can list whole surveys, and not only needed (Denis Chenu)
+-Fixed issue #10883: Error 500 survey permission (Olle Haerstedt)
+-Fixed issue #10884: Ranking question always in error when filled in (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by mdekker, Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
 Changes from 2.50+ (build 160404) to 2.50+ (build 160405) Apr 05, 2016
 -Fixed issue #10654: Notice messages shown when disabling update (Carsten Schmitz)
 -Fixed issue #10474: Some characters not accepted for "save & resume later" passwords in links sent by email (Carsten Schmitz)
