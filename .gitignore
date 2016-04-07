@@ -3,7 +3,6 @@
 /upload/surveys/*
 /upload/templates/*
 /upload/labels/*
-!/upload/labels/readme.txt
 /tmp/runtime/HTML
 /application/controllers/admin/updater.php
 /tmp/*.html
@@ -16,7 +15,6 @@
 /nbproject
 /tmp/assets/*
 !/tmp/assets/.gitignore
-!/tmp/assets/index.html
 /tmp/runtime/cache/*
 .svn
 /third_party/jqgrid/src
@@ -25,3 +23,5 @@
 /application/config/config.php
 application/config/_config.php
 *.un~
+!index.html
+!readme.txt
