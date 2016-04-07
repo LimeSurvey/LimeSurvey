@@ -4437,6 +4437,7 @@ function do_array($ia)
         $labelcode[] = $lrow->code;
     }
 
+    // No-dropdown layout
     if ($useDropdownLayout === false && count($lresult) > 0)
     {
         $sQuery = "SELECT count(qid) FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
@@ -4529,11 +4530,11 @@ function do_array($ia)
 
             $myfname        = $ia[1].$ansrow['title'];
             $answertext     = $ansrow['question'];
-            $answertext     = (strpos($answertext,'|'))?substr($answertext,0, strpos($answertext,'|')):$answertext;
-            $answerwidth    = (strpos($answertext,'|'))?$answerwidth/2:$answerwidth;
+            $answertext     = (strpos($answertext,'|') !== false) ? substr($answertext,0, strpos($answertext,'|')) : $answertext;
+            $answerwidth    = (strpos($answertext,'|') !== false) ? $answerwidth/2 : $answerwidth;
             $answertextsave = $answertext;
 
-            if ($right_exists)
+            if ($right_exists && strpos($ansrow['question'], '|') !== false)
             {
                 $answertextright = substr($ansrow['question'], strpos($ansrow['question'], '|') + 1);
             }
@@ -4562,6 +4563,7 @@ function do_array($ia)
                 $thiskey++;
             }
 
+            /*
             if (strpos($answertextsave,'|'))
             {
                 $answertext        = substr($answertextsave,strpos($answertextsave,'|')+1);
@@ -4578,6 +4580,7 @@ function do_array($ia)
                     'content' => '&nbsp;',
                 ),  true);
             }
+            */
 
             // NB: $ia[6] = mandatory
             $no_answer_td = '';
@@ -4648,7 +4651,6 @@ function do_array($ia)
     }
 
     // Dropdown layout
-
     elseif ($useDropdownLayout === true && count($lresult)> 0)
     {
         foreach($lresult as $lrow)
@@ -4706,13 +4708,13 @@ function do_array($ia)
         {
             $myfname        = $ia[1].$ansrow['title'];
             $answertext     = $ansrow['question'];
-            $answertext     = (strpos($answertext,'|'))?substr($answertext,0, strpos($answertext,'|')):$answertext;
-            $answerwidth    = (strpos($answertext,'|'))?$answerwidth/2:$answerwidth;
+            $answertext     = (strpos($answertext,'|') !== false) ? substr($answertext,0, strpos($answertext,'|')):$answertext;
+            $answerwidth    = (strpos($answertext,'|') !== false) ? $answerwidth/2:$answerwidth;
             $error          = (in_array($myfname, $aMandatoryViolationSubQ))?true:false;             /* Check the mandatory sub Q violation */
             $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
             $sDisplayStyle  = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
-            if ($right_exists)
+            if ($right_exists && (strpos($ansrow['question'], '|') !== false))
             {
                 $answertextright = substr($ansrow['question'], strpos($ansrow['question'], '|') + 1);
             }
