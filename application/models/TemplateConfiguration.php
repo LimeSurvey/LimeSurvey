@@ -150,17 +150,16 @@ class TemplateConfiguration extends CFormModel
      * And it will publish the CSS and the JS defined. So CSS can use relative path for pictures.
      * The publication of the package itself is done for now in replacements_helper, to respect the old logic of {TEMPLATECSS} replacement keyword
      *
-     * NOTE: To refresh the assets, the base directory of the template must be updated.
-     * The best way to do it is to change a file in its root directory
+     * NOTE 1 : To refresh the assets, the base directory of the template must be updated.
+     * The best way to do it tp change a file in its root directory
      * (then the new directory date will also be handled by Git, Ftp, SSH, etc. whereas a directory touch could not work in every case)
      * That's why now, the config.xml file provide a field "last_update".
      * When this filed is changed, you can be sure that all the CSS/JS/FILES will be reload by the final user browser
      *
-     * As a developer, if you change e.g. css/template.css it will not be enough to 
-     * re-publish the package. You also have to change the _last_update field.
-     *
-     * Use-case for this limitation: End-user never has to clear cache in browser to 
-     * renew template files.
+     * NOTE 2: the process describe above works fine for publishing changes on template via Git, ComfortUpdates and manual update
+     * because pulling/copying a new file in a directory changes its date. BUT, when working on a local installation, it can happen that
+     * just changing/saving the XML file is not enough to update the directory's modification date (in Linux system, you can even have: "unknow modification date")
+     * The date of the directory must then been changed manually
      *
      * For more detail, see :
      *  http://www.yiiframework.com/doc/api/1.1/CClientScript#addPackage-detail
