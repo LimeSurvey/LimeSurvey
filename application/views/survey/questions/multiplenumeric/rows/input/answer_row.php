@@ -54,7 +54,7 @@
         </span>
 
         <!-- xs-12 -->
-        <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo $slider_user_no_action?>" />
+        <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo $dispVal;?>" />
     </div> <!-- form group -->
 </div>
 <!-- end of answer_row -->
