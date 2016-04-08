@@ -311,7 +311,7 @@ class uploader {
     }
 
     protected function realpath($path) {
-        $rPath = realpath($file);
+        $rPath = realpath($path);
         if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN")
             $rPath = str_replace("\\", "/", $rPath);
         return $rPath;
