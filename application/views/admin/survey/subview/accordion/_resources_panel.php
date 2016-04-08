@@ -4,6 +4,7 @@
  */
 ?>
 
+</form>
 <!-- ressources panel -->
 <div id='resources' class="tab-pane fade in">
     <?php echo CHtml::form(Yii::app()->getConfig('publicurl') . "third_party/kcfinder/browse.php?language=".sTranslateLangCode2CK( App()->language), 'get', array('id'=>'browsesurveyresources', 'name'=>'browsesurveyresources', 'target'=>'_blank', 'class'=>'form30')); ?>

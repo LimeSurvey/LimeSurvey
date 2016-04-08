@@ -126,25 +126,6 @@
             </div>
         </div>
 
-        <!-- Resources -->
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingSeven">
-                <h4 class="panel-title">
-                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
-                    </a>
-                    <a class="collapsed" role="button" data-toggle="collapse" href="#resourcesoptions" aria-expanded="false" aria-controls="resourcesoptions">
-                        <?php  eT("Resources"); ?>
-                    </a>
-                </h4>
-            </div>
-            <div id="resourcesoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="resourcesoptions">
-                <div class="panel-body">
-                    <?php $this->renderPartial('/admin/survey/subview/accordion/_resources_panel', $data); ?>
-                </div>
-            </div>
-        </div>
-
         <!-- PLugin settings -->
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingEight">
@@ -160,6 +141,25 @@
             <div id="pluginsoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="pluginoptions">
                 <div class="panel-body">
                     <?php $this->renderPartial('/admin/survey/subview/accordion/_plugins_panel', $data); ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources -->
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingSeven">
+                <h4 class="panel-title">
+                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </a>
+                    <a class="collapsed" role="button" data-toggle="collapse" href="#resourcesoptions" aria-expanded="false" aria-controls="resourcesoptions">
+                        <?php  eT("Resources"); ?>
+                    </a>
+                </h4>
+            </div>
+            <div id="resourcesoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="resourcesoptions">
+                <div class="panel-body">
+                    <?php $this->renderPartial('/admin/survey/subview/accordion/_resources_panel', $data); ?>
                 </div>
             </div>
         </div>
