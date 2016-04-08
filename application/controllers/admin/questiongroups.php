@@ -59,23 +59,30 @@ class questiongroups extends Survey_Common_Action
             if (isset($fatalerror))
             {
                 @unlink($sFullFilepath);
-                $this->getController()->error($fatalerror);
+                Yii::app()->user->setFlash('error', $fatalerror);
+                $this->getController()->redirect(array('admin/questiongroups/sa/importview/surveyid/' . $surveyid));
             }
 
             Yii::app()->loadHelper('admin/import');
 
             // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
             if (strtolower($sExtension) == 'lsg')
+            {
                 $aImportResults = XMLImportGroup($sFullFilepath, $iSurveyID);
+            }
             else
-                $this->getController()->error('Unknown file extension');
+            {
+                Yii::app()->user->setFlash('error', gT("Unknown file extension"));
+                $this->getController()->redirect(array('admin/questiongroups/sa/importview/surveyid/' . $surveyid));
+            }
             LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
             fixLanguageConsistency($iSurveyID);
 
             if (isset($aImportResults['fatalerror']))
             {
                 unlink($sFullFilepath);
-                $this->getController()->error($aImportResults['fatalerror']);
+                Yii::app()->user->setFlash('error', $aImportResults['fatalerror']);
+                $this->getController()->redirect(array('admin/questiongroups/sa/importview/surveyid/' . $surveyid));
             }
 
             unlink($sFullFilepath);
@@ -271,8 +278,6 @@ class questiongroups extends Survey_Common_Action
                     Yii::app()->setFlashMessage(gT('You can now add a question in this group.'),'warning');
                     sprintf(gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".gT("minitab method")."</a>");
                 }
-
-
 
             }
 
