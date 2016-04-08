@@ -907,6 +907,8 @@
         $criteria2->compare('question', $this->title, true, 'AND');
         $criteria->mergeWith($criteria2, 'OR');
 
+        $criteria->order = 'question_order ASC';
+
         $dataProvider=new CActiveDataProvider('Question', array(
             'criteria'=>$criteria,
             'sort'=>$sort,
