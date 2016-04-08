@@ -843,8 +843,19 @@ table.question.subquestion-list.questions-list tr th.answertext {
     right: 1em;
 }
 
+/* Used for multiple numeric sum and remain 
+ * Overwrite Bootstrap label font-size 75% */
 .label {
     font-size: 90%;
+}
+
+/* Increase-same-decrease array */
+.row-inc-same-dec .radio-item {
+    text-align: center;
+}
+
+.thead-inc-same-dec th {
+    text-align: center;
 }
 
 /**

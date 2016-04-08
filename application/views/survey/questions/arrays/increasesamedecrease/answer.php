@@ -24,7 +24,7 @@
                 echo $sColumns;
             ?>
         </colgroup>
-        <thead>
+        <thead class="thead-inc-same-dec">
             <tr class="array1 dontread">
                 <th>&nbsp;</th>
 
