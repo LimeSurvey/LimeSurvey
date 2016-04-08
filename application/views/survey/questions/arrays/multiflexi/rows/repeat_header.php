@@ -14,12 +14,17 @@
 
 <tbody>
     <tr class="dontread repeat headings hidden-xs">
-        <?php foreach ($labelans as $i=>$ld):?>
-            <col class="<?php // TODO: array2 alternation ?>" style='width: <?php echo $cellwidth;?>%;'/>
+        <th>&nbsp;</th>
+        <?php foreach ($labelans as $ld): ?>
+            <th  class='th-11'>
+                <?php echo $ld;?>
+            </th>
         <?php endforeach;?>
 
         <?php if ($right_exists):?>
-            <col class="answertextright <?php // TODO: array2 alternation ?>" style='width: <?php echo $answerwidth;?>%;' />
+            <th>
+                &nbsp;
+            </th>
         <?php endif;?>
     </tr>
 <!-- end of repeat header -->

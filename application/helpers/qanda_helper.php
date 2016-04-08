@@ -5184,6 +5184,7 @@ function do_array_multiflexi($ia)
 {
     global $thissurvey;
 
+    $answer                     = '';
     $aLastMoveResult            = LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings             = Yii::app()->getConfig("repeatheadings");
@@ -5388,7 +5389,7 @@ function do_array_multiflexi($ia)
             {
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
-                    $answer .=  Yii::app()->getController()->renderPartial('/survey/questions/arrays/multiflexi/rows/repeat_header', array(
+                    $sAnswerRows .=  Yii::app()->getController()->renderPartial('/survey/questions/arrays/multiflexi/rows/repeat_header', array(
                                 'labelans'      =>  $labelans,
                                 'right_exists'  =>  $right_exists,
                                 'cellwidth'     =>  $cellwidth,
