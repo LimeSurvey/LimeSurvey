@@ -5384,7 +5384,7 @@ function do_array_multiflexi($ia)
         $fn=1;
 
         $sAnswerRows = '';
-        foreach ($ansresult as $ansrow)
+        foreach ($ansresult as $j => $ansrow)
         {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
             {
@@ -5537,6 +5537,7 @@ function do_array_multiflexi($ia)
                                 'answertextright'   => $answertextright,
                                 'answer_tds'        => $answer_tds,
                                 'rightTd'           => $rightTd,
+                                'zebra'                  => 2 - ($j % 2)
                             ),  true);
             $fn++;
         }

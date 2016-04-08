@@ -16,7 +16,7 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="<?php //TODO: alternation ?> well subquestion-list questions-list <?php echo $sDisplayStyle;?>">
+<tr id="javatbd<?php echo $myfname;?>" class="<?php //TODO: alternation ?> well subquestion-list questions-list array<?php echo $zebra; ?> <?php echo $sDisplayStyle;?>">
     <?php if ($useAnswerWidth): ?>
         <th class="answertext" style='width:<?php echo $answerwidth;?>%;' >
     <?php else: ?>
