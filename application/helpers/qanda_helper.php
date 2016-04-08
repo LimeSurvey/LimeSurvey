@@ -5015,7 +5015,7 @@ function do_array_multitext($ia)
 
         $trbc = '';
         $sRows = '';
-        foreach ($aQuestions as $ansrow)
+        foreach ($aQuestions as $j => $ansrow)
         {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
             {
@@ -5114,6 +5114,7 @@ function do_array_multitext($ia)
                                 'rightTdEmpty'      =>  $rightTdEmpty,
                                 'answerwidth'       =>  $answerwidth,
                                 'formatedRowTotal'  =>  $formatedRowTotal,
+                                'zebra'                  => 2 - ($j % 2)
                             ),  true);
 
             $fn++;
@@ -5610,8 +5611,7 @@ function do_arraycolumns($ia)
             $fn=1;
             $cellwidth=$anscount;
             $cellwidth=round(( 50 / $cellwidth ) , 1);
-            //$answer = "\n<table class=\"table-in-qanda-8  question subquestions-list questions-list\" summary=\"{$caption}\">\n"
-            $answer = "\n<table class=\"array-by-columns-table table-in-qanda-8 table question subquestion-list questions-list\">\n"
+            $answer = "\n<table class=\"array-by-columns-table table-array-by-column table question subquestion-list questions-list\">\n"
             . "\t<colgroup class=\"col-responses\">\n"
             //. "\t<col class=\"col-answers\" width=\"50%\" />\n";
             . "\t<col class=\"col-answers\" style='width: 50%' />\n";
@@ -5624,7 +5624,7 @@ function do_arraycolumns($ia)
                 $answer .= "<col class=\"$odd_even_well question-item answers-list radio-list\" style='width: $cellwidth%;' />\n";
             }
             $answer .= "\t</colgroup>\n\n"
-            . "\t<thead>\n"
+            . "\t<thead class='thead-array-by-column'>\n"
             . "<tr>\n"
             . "\t<td>&nbsp;</td>\n";
 

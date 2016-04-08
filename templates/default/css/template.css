@@ -850,11 +850,14 @@ table.question.subquestion-list.questions-list tr th.answertext {
 }
 
 /* Increase-same-decrease array */
-.row-inc-same-dec .radio-item {
+.row-inc-same-dec .radio-item,
+.thead-inc-same-dec th {
     text-align: center;
 }
 
-.thead-inc-same-dec th {
+/* Array-by-column. */
+.table-array-by-column .radio-item,
+.thead-array-by-column th {
     text-align: center;
 }
 
@@ -1034,6 +1037,12 @@ table.question.subquestion-list.questions-list tr th.answertext {
     /* Used for date-picker icon within input */
     .form-control-feedback {
         right: 0.5em;
+    }
+
+    /* Increase-same-decrease array */
+    .row-inc-same-dec .radio-item,
+    .thead-inc-same-dec th {
+        text-align: left;
     }
 
 }
