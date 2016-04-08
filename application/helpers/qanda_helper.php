@@ -5149,23 +5149,24 @@ function do_array_multitext($ia)
         }
 
         $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multitext/answer', array(
-                    'answerwidth'       => $answerwidth,
-                    'col_head'          => $col_head,
-                    'cellwidth'         => $cellwidth,
-                    'labelans'          => $labelans,
-                    'right_exists'      => $right_exists,
-                    'showGrandTotal'    => $showGrandTotal,
-                    'q_table_id_HTML'   => $q_table_id_HTML,
-                    'extraclass'        => $extraclass,
-                    'num_class'         => $num_class,
-                    'totals_class'      => $totals_class,
-                    'showtotals'        => $showtotals,
-                    'row_head'          => $row_head,
-                    'total'             => $total,
-                    'q_table_id'        => $q_table_id,
-                    'radix'             => $radix,
-                    'name'              => $ia[0],
-                    'sRows'             => $sRows,
+                    'answerwidth'               => $answerwidth,
+                    'col_head'                  => $col_head,
+                    'cellwidth'                 => $cellwidth,
+                    'labelans'                  => $labelans,
+                    'right_exists'              => $right_exists,
+                    'showGrandTotal'            => $showGrandTotal,
+                    'q_table_id_HTML'           => $q_table_id_HTML,
+                    'extraclass'                => $extraclass,
+                    'num_class'                 => $num_class,
+                    'totals_class'              => $totals_class,
+                    'showtotals'                => $showtotals,
+                    'row_head'                  => $row_head,
+                    'total'                     => $total,
+                    'q_table_id'                => $q_table_id,
+                    'radix'                     => $radix,
+                    'name'                      => $ia[0],
+                    'sRows'                     => $sRows,
+                    'checkconditionFunction'    => $checkconditionFunction
                 ),  true);
     }
     else
