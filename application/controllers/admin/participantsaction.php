@@ -1196,7 +1196,6 @@ class participantsaction extends Survey_Common_Action
                 'filterbea' => $filterblankemails,
                 'participant_id_exists' => in_array('participant_id', $fieldlist)
             );
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "attributeMapCSV.css");
             App()->getClientScript()->registerPackage('qTip2');
             App()->getClientScript()->registerPackage('jquery-nestedSortable');
             App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "attributeMapCSV.js" ));
