@@ -1387,6 +1387,15 @@ function db_upgrade_all($iOldDBVersion) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>257),"stg_name='DBVersion'");
         }
 
+        /**
+         * Remove adminimageurl from global settings
+         */
+        if ($iOldDBVersion < 258) {
+            Yii::app()->getDb()->createCommand(
+                "DELETE FROM {{settings_global}} WHERE stg_name='adminimageurl'"
+            )->execute();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>258),"stg_name='DBVersion'");
+        }
 
         $oTransaction->commit();
         // Activate schema caching
