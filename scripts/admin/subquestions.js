@@ -24,7 +24,6 @@ $(document).on("click","#editsubquestionsform :submit", function() {
 
 $(document).ready(function(){
 
-
     $('.tab-page:first .answertable tbody').sortable({
         containment:'parent',
         start:startmove,
@@ -35,8 +34,20 @@ $(document).ready(function(){
     $('.btnlsbrowser').click(lsbrowser);
     $('#btnlsreplace').click(transferlabels);
     $('#btnlsinsert').click(transferlabels);
-    $('#btnqareplace').click(quickaddlabels);
-    $('#btnqainsert').click(quickaddlabels);
+
+
+    $('#quickaddModal').on('show.bs.modal', function(e) {
+        var scale_id = $(e.relatedTarget).data('scale-id');
+
+        $('#btnqainsert').unbind('click').on('click', function () {
+            quickaddlabels(scale_id, 'add');
+        });
+
+        $('#btnqareplace').unbind('click').on('click', function () {
+            quickaddlabels(scale_id, 'replace');
+        });
+    });
+
     $('#labelsets').click(lspreview);
     $('#languagefilter').click(lsbrowser);
     $('.bthsaveaslabel').click(getlabel);
@@ -107,9 +118,7 @@ function getRelevanceToolTip()
 function deleteinput()
 {
     // 1.) Check if there is at least one answe
-    console.log('delete input start');
     countanswers=$(this).closest("tbody").children("tr").length;//Maybe use class is better
-    console.log(countanswers);
     if (countanswers>1)
     {
         // 2.) Remove the table row
@@ -157,8 +166,6 @@ function deleteinput()
 
 function addinput()
 {
-    console.log('------------------------------------------------------------------');
-    console.log('addinput start');
     var sID=$('input[name=sid]').val();
     var gID=$('input[name=gid]').val();
     var qID=$('input[name=qid]').val();
@@ -168,13 +175,9 @@ function addinput()
 
     languages=langs.split(';');
     sNextCode=getNextCode($(this).data('code'));
-    console.log('sNextCode: '+sNextCode);
-    console.log('before while');
 
     sNextCode=getNextCode($(this).parent().parent().find('.code').val());
 
-    console.log('sNextCode: '+sNextCode);
-    console.log('languages: '+languages);
     classes=$(this).parent().parent().attr('class').split(' ');
     for (x in classes)
     {
@@ -183,10 +186,8 @@ function addinput()
             position=classes[x].substr(4);
         }
     }
-    console.log('position:'+position);
     //newposition = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;
     newposition = Number($('#rowcontainer').find('tr').index($(this).closest('tr')))+1;
-    console.log('newposition: '+newposition);
     info=$(this).closest('table').attr('id').split("_");
     language=info[1];
     scale_id=info[2];
@@ -196,11 +197,8 @@ function addinput()
 
     sNextCode=getNextCode($(this).parent().parent().find('.code').val());
 
-    console.log('sNextCode: '+sNextCode);
-
     for (x in languages)
     {
-        console.log('x: '+x);
         var randomid='new'+Math.floor(Math.random()*111111);
         relbutton='';
 
@@ -281,7 +279,6 @@ function addinput()
             inserthtml+='   </td>' + relbutton + '</tr>';
         }
         tablerow.after(inserthtml);
-        console.log("insertion");
 
         tablerow.next().find('.btnaddanswer').click(addinput);
 
@@ -400,7 +397,6 @@ function getNextCode(sSourceCode)
         i=1;
         found=true;
         mNumberFound=-1;
-        console.log('sSourceCode: '+sSourceCode);
         while (i<=sSourceCode.length && found)
         {
             found=is_numeric(sSourceCode.substr(-i));
@@ -690,8 +686,6 @@ function transferlabels()
         var lsreplace=false;
     }
 
-    console.log('lsreplace: '+lsreplace);
-
     if (lsreplace)
     {
         $('.answertable:eq('+scale_id+') tbody tr').each(function()
@@ -850,22 +844,20 @@ function transferlabels()
 
 }
 
-function quickaddlabels()
+/**
+ * Quick-add subquestions/answers
+ *
+ * @param {int} scale_id
+ * @param {string} addOrReplace - Either 'add' or 'replace'
+ * @return {void}
+ */
+function quickaddlabels(scale_id, addOrReplace)
 {
     var sID=$('input[name=sid]').val();
     var gID=$('input[name=gid]').val();
     var qID=$('input[name=qid]').val();
 
-    if ($(this).attr('id')=='btnqareplace')
-    {
-        var lsreplace=true;
-    }
-    else
-    {
-        var lsreplace=false;
-    }
-    scale_id = 0;
-
+    var lsreplace = (addOrReplace === 'replace');
 
     if (lsreplace)
     {
@@ -876,6 +868,7 @@ function quickaddlabels()
     }
 
     languages=langs.split(';');
+
     for (x in languages)
     {
         lsrows=$('#quickaddarea').val().split("\n");

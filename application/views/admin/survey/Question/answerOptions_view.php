@@ -365,7 +365,7 @@
                                         <?php eT('Predefined label sets...'); ?>
                                     </button>
 
-                                    <button <?php echo $disabled; ?>  id='btnquickadd_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btn btn-default' type='button'  data-toggle="modal" data-target="#quickaddModal">
+                                    <button <?php echo $disabled; ?>  id='btnquickadd_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btn btn-default' type='button'  data-toggle="modal" data-target="#quickaddModal" data-scale-id="<?php echo $scale_id; ?>">
                                         <?php eT('Quick add...'); ?>
                                     </button>
 
