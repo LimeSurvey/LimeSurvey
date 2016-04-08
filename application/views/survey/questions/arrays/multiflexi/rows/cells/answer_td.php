@@ -15,7 +15,7 @@
  * @var $minvalue
  * @var $maxvalue
  * @var $reverse
- * @var $value 
+ * @var $value
  * @var $sSeparator
  * @var $kpclass
  * @var $maxlength
@@ -57,7 +57,7 @@
             <!-- InputBox Layout -->
             <input
                 type='text'
-                class="multiflexitext text <?php echo $kpclass;?>"
+                class="multiflexitext text form-control <?php echo $kpclass;?>"
                 name="<?php echo $myfname2; ?>"
                 id="answer<?php echo $myfname2;?>"
                 <?php echo $maxlength; ?>

@@ -1,75 +1,119 @@
-<div class='header ui-widget-header'><?php eT("Import survey resources"); ?></div>
-<div class='messagebox ui-corner-all'>
-    <div class="successheader"><?php eT("Success") ?></div><br />
-    <?php eT("File upload succeeded.") ?><br /><br />
-    <?php eT("Reading file..") ?><br /><br />
-<?php
-    $ImportListHeader = '';
-    if (!count($aErrorFilesInfo) &&count($aImportedFilesInfo))
-    {
-        $status = gT("Success");
-        $statusClass = 'successheader';
-        $okfiles = count($aImportedFilesInfo);
-        $errfiles=0;
-        $ImportListHeader .= "<br /><strong><u>" . gT("Imported Files List") . ":</u></strong><br />\n";
-    }
-    elseif (count($aErrorFilesInfo) &&count($aImportedFilesInfo))
-    {
-        $status = gT("Partial");
-        $statusClass = 'partialheader';
-        $okfiles = count($aImportedFilesInfo);
-        $errfiles = count($aErrorFilesInfo);
-        $ErrorListHeader = "<br /><strong><u>" . gT("Error Files List") . ":</u></strong><br />\n";
-        $ImportListHeader .= "<br /><strong><u>" . gT("Imported Files List") . ":</u></strong><br />\n";
-    }
-    else
-    {
-        $okfiles = 0;
-        $status = gT("Error");
-        $statusClass = 'warningheader';
-        $errfiles = count($aErrorFilesInfo);
-        $ErrorListHeader = "<br /><strong><u>" . gT("Error Files List") . ":</u></strong><br />\n";
-    }
-?>
-    <strong><?php eT("Imported Resources for"); ?>" SID:</strong> <?php echo $surveyid; ?><br /><br />
-    <div class="<?php echo $statusClass; ?>">
-        <?php echo $status; ?>
+<?php if (!count($aErrorFilesInfo) &&count($aImportedFilesInfo)): ?>
+<div class="side-body">
+    <div class="row welcome survey-action">
+        <div class="col-sm-12 content-right">
+            <div class="jumbotron message-box">
+                <h2><?php eT("Import survey resources"); ?></h2>
+                <p class="lead text-success">
+                    <?php eT("Success");?>
+                </p>
+                <p>
+                    <?php eT("Resources Import Summary"); ?>
+                </p>
+                <p>
+                    <?php eT("Total Imported files"); ?>: <?php echo count($aImportedFilesInfo); ?><br />
+                </p>
+                <p>
+                    <strong><?php eT("Imported Files List") ?>:</strong>
+                </p>
+                <p>
+                    <ul>
+                        <?php
+                        foreach ($aImportedFilesInfo as $entry)
+                        {
+                            echo CHtml::tag('li', array(), gT("File") . ': ' . $entry["filename"]);
+                        }
+                        ?>
+                    </ul>
+                </p>
+                <p>
+                    <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_top')" />
+                </p>
+            </div>
+        </div>
     </div>
-    <br />
-    <strong>
-        <u><?php eT("Resources Import Summary"); ?></u>
-    </strong>
-    <br />
-    <?php eT("Total Imported files"); ?>: <?php echo count($okfiles); ?><br />
-    <?php eT("Total Errors"); ?>: <?php echo count($errfiles); ?><br />
-    <?php
-if (!empty($aImportedFilesInfo))
-{
-?>
-    <strong><?php eT("Imported Files List") ?>:</strong><br />
-    <ul>
-<?php
-    foreach ($aImportedFilesInfo as $entry)
-    {
-        echo CHtml::tag('li', array(), gT("File") . ': ' . $entry["filename"]);
-    }
-?>
-    </ul>
-<?php
-}
-?>
-<?php
-if (!empty($aErrorFilesInfo))
-{
-    echo $ErrorListHeader;
-    foreach ($aErrorFilesInfo as $entry)
-    {
-        echo CHtml::tag('li', array(), gT("File") . ': ' . $entry['filename'] . " (" . $entry['status'] . ")");
-    }
-?>
-    </ul>
-<?php
-}
-?>
-    <input type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editsurveysettings/surveyid/' . $surveyid); ?>', '_top')" />
 </div>
+<?php elseif(count($aErrorFilesInfo) &&count($aImportedFilesInfo)): ?>
+    <div class="side-body">
+        <div class="row welcome survey-action">
+            <div class="col-sm-12 content-right">
+                <div class="jumbotron message-box message-box-warning">
+                    <h2><?php eT("Import survey resources"); ?></h2>
+                    <p class="lead text-warning">
+                        <?php eT("Partial");?>
+                    </p>
+                    <p>
+                        <?php eT("Resources Import Summary"); ?>
+                    </p>
+                    <p>
+                        <?php eT("Total Imported files"); ?>: <?php echo count($aImportedFilesInfo); ?><br />
+                        <?php eT("Total Errors"); ?>: <?php echo count($aErrorFilesInfo); ?><br />
+                    </p>
+                    <p>
+                        <strong><?php eT("Imported Files List"); ?>:</strong>
+                    </p>
+                    <p>
+                        <ul>
+                            <?php
+                            foreach ($aImportedFilesInfo as $entry)
+                            {
+                                echo CHtml::tag('li', array(), gT("File") . ': ' . $entry["filename"]);
+                            }
+                            ?>
+                        </ul>
+                    </p>
+                    <p>
+                        <strong class="text-warning"><?php eT("Error Files List"); ?>:</strong>
+                    </p>
+                    <p>
+                        <?php
+                            foreach ($aErrorFilesInfo as $entry)
+                            {
+                                echo CHtml::tag('li', array(), gT("File") . ': ' . $entry['filename'] . " (" . $entry['status'] . ")");
+                            }
+                        ?>
+                        </ul>
+                    </p>
+                    <p>
+                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_top')" />
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php else:?>
+    <div class="side-body">
+        <div class="row welcome survey-action">
+            <div class="col-sm-12 content-right">
+                <div class="jumbotron message-box message-box-error">
+                    <h2><?php eT("Import survey resources"); ?></h2>
+                    <p class="lead text-danger">
+                        <?php eT("Error");?>
+                    </p>
+                    <p>
+                        <?php eT("Resources Import Summary"); ?>
+                    </p>
+                    <p>
+                        <?php eT("Total Imported files"); ?>: 0<br />
+                        <?php eT("Total Errors"); ?>: <?php echo count($aErrorFilesInfo); ?><br />
+                    </p>
+                    <p>
+                        <strong class="text-warning"><?php eT("Error Files List"); ?>:</strong>
+                    </p>
+                    <p>
+                        <?php
+                            foreach ($aErrorFilesInfo as $entry)
+                            {
+                                echo CHtml::tag('li', array(), gT("File") . ': ' . $entry['filename'] . " (" . $entry['status'] . ")");
+                            }
+                        ?>
+                        </ul>
+                    </p>
+                    <p>
+                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_top')" />
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
