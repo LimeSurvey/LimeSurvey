@@ -9,8 +9,8 @@ $(document).ready(function() {
         var max = Math.max($('.droppable-new').height(), $('.droppable-csv').height());
         console.log('max', max);
 
-        $('.droppable-new').height(max);
-        $('.droppable-csv').height(max);
+        $('.droppable-new').css('min-height', max);
+        $('.droppable-csv').css('min-height', max);
     }
     
     adjustHeights();    
@@ -79,7 +79,7 @@ $(document).ready(function() {
             $('.mappable-attribute-wrapper').droppable('enable');
             $('.mappable-attribute-wrapper.paired').droppable('disable');
             
-            //adjustHeights();
+            adjustHeights();
         } 
     });
 
@@ -117,7 +117,7 @@ $(document).ready(function() {
 
             newDraggable.wrap("<div class='col-sm-6'></div>");
 
-            //adjustHeights();
+            adjustHeights();
         }
     });
     
@@ -147,7 +147,7 @@ $(document).ready(function() {
             var name = $elem.attr('data-name');
             $elem.prepend('<input type="text" id="td_' + id + '" value="' + name + '">');
             $elem.detach().appendTo('.newcreate');
-            //adjustHeights();
+            adjustHeights();
         });
     });
 
