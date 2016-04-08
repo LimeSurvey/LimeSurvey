@@ -229,24 +229,31 @@ class SurveyAdmin extends Survey_Common_Action
 
         if (!empty($iSurveyID))
         {
-            $aData['display']['menu_bars']['surveysummary'] = 'importsurveyresources';
+
 
             if (Yii::app()->getConfig('demoMode'))
-                $this->getController()->error(gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
+            {
+                Yii::app()->user->setFlash('error',gT("Demo mode only: Uploading files is disabled in this system."));
+                $this->getController()->redirect(array('admin/survey/sa/editlocalsettings/surveyid/' . $iSurveyID));
+            }
 
             // Create temporary directory
             // If dangerous content is unzipped
             // then no one will know the path
-            $extractdir = $this->_tempdir(Yii::app()->getConfig('tempdir'));
+            $extractdir  = $this->_tempdir(Yii::app()->getConfig('tempdir'));
             $zipfilename = $_FILES['the_file']['tmp_name'];
             $basedestdir = Yii::app()->getConfig('uploaddir') . "/surveys";
-            $destdir = $basedestdir . "/$iSurveyID/";
+            $destdir     = $basedestdir . "/$iSurveyID/";
 
             Yii::app()->loadLibrary('admin.pclzip');
             $zip = new PclZip($zipfilename);
 
             if (!is_writeable($basedestdir))
-                $this->getController()->error(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
+            {
+                Yii::app()->user->setFlash('error',sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir));
+                $this->getController()->redirect(array('admin/survey/sa/editlocalsettings/surveyid/' . $iSurveyID));
+            }
+
 
             if (!is_dir($destdir))
                 mkdir($destdir);
@@ -257,8 +264,10 @@ class SurveyAdmin extends Survey_Common_Action
             if (is_file($zipfilename))
             {
                 if ($zip->extract($extractdir) <= 0)
-                    $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
-
+                {
+                    Yii::app()->user->setFlash('error',gT("This file is not a valid ZIP file archive. Import failed. "). $zip->errorInfo(true) );
+                    $this->getController()->redirect(array('admin/survey/sa/editlocalsettings/surveyid/' . $iSurveyID));
+                }
                 // now read tempdir and copy authorized files only
                 $folders = array('flash', 'files', 'images');
                 foreach ($folders as $folder)
@@ -275,17 +284,23 @@ class SurveyAdmin extends Survey_Common_Action
                 unlink($zipfilename);
 
                 if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo))
-                    $this->getController()->error(gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
+                {
+                    Yii::app()->user->setFlash('error',gT("This ZIP archive contains no valid Resources files. Import failed."));
+                    $this->getController()->redirect(array('admin/survey/sa/editlocalsettings/surveyid/' . $iSurveyID));
+                }
             }
             else
-                $this->getController()->error(sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
+            {
 
+                Yii::app()->user->setFlash('error',sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
+                $this->getController()->redirect(array('admin/survey/sa/editlocalsettings/surveyid/' . $iSurveyID));
+            }
             $aData = array(
             'aErrorFilesInfo' => $aErrorFilesInfo,
             'aImportedFilesInfo' => $aImportedFilesInfo,
             'surveyid' => $iSurveyID
             );
-
+            $aData['display']['menu_bars']['surveysummary'] = true;
             $this->_renderWrappedTemplate('survey', 'importSurveyResources_view', $aData);
         }
     }
