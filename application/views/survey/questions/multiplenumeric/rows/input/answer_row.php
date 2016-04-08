@@ -31,9 +31,11 @@
             <?php echo $labelText;?>
         </label>
 
-        <span class='pull-left col-sm-offset-1'  style="margin-top: 0.5em;">
-            <?php echo $prefix; ?>
-        </span>
+        <?php if (!empty($prefix)): ?>
+            <span class='pull-left col-sm-offset-1'  style="margin-top: 0.5em;">
+                <?php echo $prefix; ?>
+            </span>
+        <?php endif; ?>
 
         <div class='col-sm-1' style="min-width: 7em;">
                 <input
@@ -49,9 +51,11 @@
                 />
         </div>
 
-        <span class='pull-left'  style="margin-top: 0.5em;">
-            <?php echo $suffix;?>
-        </span>
+        <?php if (!empty($suffix)): ?>
+            <span class='pull-left'  style="margin-top: 0.5em;">
+                <?php echo $suffix;?>
+            </span>
+        <?php endif; ?>
 
         <!-- xs-12 -->
         <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo $dispVal;?>" />
