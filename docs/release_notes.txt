@@ -35,6 +35,18 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160407) to 2.50+ (build 160408) Apr 08, 2016
+-Fixed issue #10776: Quick Add not working for x-scale in Array (Numbers) (Olle Haerstedt)
+-Fixed issue #10820: kcfinder not working with symlinked /upload (reverted from commit 36c988bc75dcc680d7bf20c6df6f6d5e27ad6c3d) (Carsten Schmitz)
+-Fixed issue #10889: When importing a group in the wrong language, error (Olle Haerstedt)
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Portugal) by susete
+
 Changes from 2.50+ (build 160405) to 2.50+ (build 160407) Apr 07, 2016
 -Fixed issue #10816: Entry box for Subquestion relevance equations is to (Olle Haerstedt)
 -Fixed issue #10844: Various issues using the LS 2.50 default template (Olle Haerstedt)
