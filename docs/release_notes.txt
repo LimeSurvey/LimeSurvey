@@ -35,6 +35,23 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160408) to 2.50+ (build 160411) Apr 11, 2016
+-Fixed issue #10844: Various issues using the LS 2.50 default template (Olle Haerstedt)
+-Fixed issue #10893: Error when saving survey settings (LouisGac)
+-Fixed issue #10899: Kcfinder browse.php is shown, not executed (Carsten Schmitz)
+-Fixed issue #10901: I cant open a survey in RTL Language (Olle Haerstedt)
+-Fixed issue #10904: Installer not styled anymore (LouisGac)
+-Fixed issue #10905: Too many leading zeros in CSS for answer cells (Carsten Schmitz)
+-Fixed issue #10907: Display columns error (LouisGac)
+#Updated translation: French (France) by arnaud21
+#Updated translation: Greek by kiolalis
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow, vipgroup
+
 Changes from 2.50+ (build 160407) to 2.50+ (build 160408) Apr 08, 2016
 -Fixed issue #10776: Quick Add not working for x-scale in Array (Numbers) (Olle Haerstedt)
 -Fixed issue #10820: kcfinder not working with symlinked /upload (reverted from commit 36c988bc75dcc680d7bf20c6df6f6d5e27ad6c3d) (Carsten Schmitz)
