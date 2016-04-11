@@ -23,7 +23,7 @@
             <label for="<?php echo $myfname;?>cbox" class="answertext control-label other-label">
                 <?php echo $othertext; ?>
                 <input
-                class="text <?php echo $kpclass; ?>"
+                class="form-control text <?php echo $kpclass; ?>"
                 type="text"
                 name="<?php echo $myfname; ?>"
                 id="answer<?php echo $myfname; ?>"
