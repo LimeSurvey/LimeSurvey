@@ -488,13 +488,11 @@ html {
 }
 
 body {
-    font-family: Noto;
     font-size: 14px;
     line-height: 1.428571429;
 }
 
 input,button,select,textarea {
-    font-family: Noto;
     font-size: inherit;
     line-height: inherit;
 }
@@ -564,7 +562,6 @@ hr {
 }
 
 h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
-    font-family: Noto;
     font-weight: 500;
     line-height: 1.1;
     color: inherit;
@@ -780,7 +777,6 @@ address {
 }
 
 code,kbd,pre,samp {
-    font-family: Noto Mono;
 }
 
 code {
