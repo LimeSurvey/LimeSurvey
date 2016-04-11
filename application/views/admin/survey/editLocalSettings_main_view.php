@@ -38,7 +38,15 @@
                             <?php $this->renderPartial('/admin/survey/subview/accordion/_accordion_container', array('data'=>$settings_data)); ?>
                         </div>
                     </div>
-                    <input type='submit' class="hide" />
+
+                    <!--
+                        This hidden button is now necessary to save the form.
+                        Before, there where several nested forms in Global settings, which is invalid in html
+                        The submit button from the "import ressources" was submitting the whole form.
+                        Now, the "import ressources" is outside the global form, in a modal ( subview/import_ressources_modal.php)
+                        So the globalsetting form needs its own submit button
+                    -->
+                    <input type='submit' class="hide" id="globalsetting_submit" />
                 </form>
             </div>
 
