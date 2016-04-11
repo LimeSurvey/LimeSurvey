@@ -841,6 +841,7 @@ table.question.subquestion-list.questions-list tr th.answertext {
 /* Used for date-picker icon within input */
 .form-control-feedback {
     right: 1em;
+    left: auto;
 }
 
 /* Used for multiple numeric sum and remain 
