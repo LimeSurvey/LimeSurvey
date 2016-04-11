@@ -3,12 +3,11 @@
  * Plugin options panel
  */
 ?>
-<div id='resources' class="tab-pane fade in">
-<?php
-   if (isset($pluginSettings))
-   {
-       foreach ($pluginSettings as $id => $plugin)
-       {
+<?php if (isset($pluginSettings)): ?>
+    <div id='plugin' class="tab-pane fade in">
+        <?php
+        foreach ($pluginSettings as $id => $plugin)
+        {
             $this->widget('ext.SettingsWidget.SettingsWidget', array(
                 'settings' => $plugin['settings'],
                 'form' => false,
@@ -16,17 +15,7 @@
                 'prefix' => "plugin[{$plugin['name']}]"
 
             ));
-//                   foreach ($plugin['settings'] as $name => $setting)
-//                   {
-//                       $name = "plugin[{$plugin['name']}][$name]";
-//                       echo CHtml::tag('li', array(), $PluginSettings->renderSetting($name, $setting, null, true));
-//                   }
-            }
-
-
-//               Yii::import('application.helpers.PluginSettingsHelper');
-//               $PluginSettings = new PluginSettingsHelper();
-    }
-
-?>
-</div>
+        }
+        ?>
+    </div>
+<?php endif; ?>
