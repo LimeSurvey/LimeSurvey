@@ -9,6 +9,8 @@ Use the tool R2 (nodejs) in styles/Sea_Green/css/ to convert from ltr to rtl. So
     $ git checkout adminstyle-rtl.css  # This file is manually edited
     $ for file in *.css; do if [ "$file" == "adminstyle-rtl.css" ] ; then continue; fi; r2 "$file" "${file/.css/-rtl.css}"; done
 
+PLEASE OBSERVE: The only file which has manually RTL-style is adminstyle-rtl.css. All other rtl-files are generated using R2.
+
 Things to check:
 
 * Plugin settings. Core plugins should use localization.
