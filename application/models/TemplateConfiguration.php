@@ -174,13 +174,13 @@ class TemplateConfiguration extends CFormModel
     {
         Yii::setPathOfAlias('survey.template.path', $this->path);                           // The package creation/publication need an alias
 
-        $aCssFiles   = $this->config->files->css->filename;                                 // The CSS files of this template
-        $aJsFiles    = $this->config->files->js->filename;                                  // The JS files of this template
+        $aCssFiles   = (array) $this->config->files->css->filename;                                 // The CSS files of this template
+        $aJsFiles    = (array) $this->config->files->js->filename;                                  // The JS files of this template
 
         if (getLanguageRTL(App()->language))
         {
-            $aCssFiles = array_merge($aCssFiles, $this->config->files->rtl->css->filename); // In RTL mode, more CSS files can be necessary
-            $aJsFiles  = array_merge($aJsFiles, $this->config->files->rtl->js->filename);   // In RTL mode, more JS files can be necessary
+            $aCssFiles = array_merge($aCssFiles, (array) $this->config->files->rtl->css->filename); // In RTL mode, more CSS files can be necessary
+            $aJsFiles  = array_merge($aJsFiles, (array) $this->config->files->rtl->js->filename);   // In RTL mode, more JS files can be necessary
         }
 
         // The package "survey-template" will be available from anywhere in the app now.
