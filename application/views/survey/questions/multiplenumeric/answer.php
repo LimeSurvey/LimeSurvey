@@ -32,6 +32,7 @@
                     <span id="remainingvalue_<?php echo $id; ?>" class="dynamic_remaining">
                         <?php echo $prefix; ?>
                         {<?php echo $sumRemainingEqn;?>}
+                        <?php echo $suffix; ?>
                     </span>
                 </div>
             </div>
