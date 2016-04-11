@@ -844,7 +844,7 @@ table.question.subquestion-list.questions-list tr th.answertext {
     left: auto;
 }
 
-/* Used for multiple numeric sum and remain 
+/* Used for multiple numeric sum and remain
  * Overwrite Bootstrap label font-size 75% */
 .label {
     font-size: 90%;
@@ -852,12 +852,6 @@ table.question.subquestion-list.questions-list tr th.answertext {
 
 body .navbar-default .navbar-brand:hover {
     color: #ffffff;
-}
-
-/* Hide survey title in group by group mode*/
-body.groupbygroup #surveynametitle, body.groupbygroup #surveydescription
-{
-    display: none;
 }
 
 .input-multi-num {
