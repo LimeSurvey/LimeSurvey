@@ -40,6 +40,9 @@
         </print_css>
         <rtl>
             <css>
+                <filename>css/jquery-ui-custom-rtl.css</filename>
+                <filename>css/bootstrap-slider-rtl.css</filename>
+                <filename>css/flat_and_modern-rtl.css</filename>
                 <filename>css/template-rtl.css</filename>
             </css>
             <js>
