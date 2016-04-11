@@ -35,6 +35,13 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160411) to 2.50+ (build 160412) Apr 11, 2016
+-Fixed issue #10755: Return to admin panel button do not work (Olle Haerstedt)
+-Fixed issue #10901: I cant open a survey in RTL Language (Olle Haerstedt)
+-Fixed issue: Saving global settings didn't submit (LouisGac)
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+
 Changes from 2.50+ (build 160408) to 2.50+ (build 160411) Apr 11, 2016
 -Fixed issue #10844: Various issues using the LS 2.50 default template (Olle Haerstedt)
 -Fixed issue #10893: Error when saving survey settings (LouisGac)
