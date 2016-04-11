@@ -59,7 +59,15 @@ class SettingsWidget extends CWidget
 
         // Register assets.
         Yii::app()->getClientScript()->registerPackage('jquery');
-        Yii::app()->getClientScript()->registerCssFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/settingswidget.css'));
+        if (getLanguageRTL(App()->language))
+        {
+            Yii::app()->getClientScript()->registerCssFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/settingswidget-rtl.css'));
+        }
+        else
+        {
+            Yii::app()->getClientScript()->registerCssFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/settingswidget.css'));
+        }
+
         Yii::app()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/settingswidget.js'));
 
         // Add default form class.
