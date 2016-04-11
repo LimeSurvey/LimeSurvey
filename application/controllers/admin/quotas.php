@@ -373,7 +373,7 @@ class quotas extends Survey_Common_Action
         QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $quotaId));
         QuotaMember::model()->deleteAllByAttributes(array('quota_id' => $quotaId));
 
-        Yii::app()->user->setFlash('success', sprintf(gT("Quota with id %s was deleted"), $quotaId));
+        Yii::app()->user->setFlash('success', sprintf(gT("Quota with ID %s was deleted"), $quotaId));
 
         self::_redirectToIndex($iSurveyId);
     }
