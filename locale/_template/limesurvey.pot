@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-04-08 12:36:06+00:00\n"
+"POT-Creation-Date: 2016-04-11 09:02:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1734,13 +1734,13 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4544
 #: application/helpers/qanda_helper.php:4628
 #: application/helpers/qanda_helper.php:4764
-#: application/helpers/qanda_helper.php:5595
-#: application/helpers/qanda_helper.php:5596
-#: application/helpers/qanda_helper.php:5885
-#: application/helpers/qanda_helper.php:6065
-#: application/helpers/qanda_helper.php:6079
-#: application/helpers/qanda_helper.php:6252
-#: application/helpers/qanda_helper.php:6288
+#: application/helpers/qanda_helper.php:5597
+#: application/helpers/qanda_helper.php:5598
+#: application/helpers/qanda_helper.php:5886
+#: application/helpers/qanda_helper.php:6066
+#: application/helpers/qanda_helper.php:6080
+#: application/helpers/qanda_helper.php:6253
+#: application/helpers/qanda_helper.php:6289
 #: application/helpers/userstatistics_helper.php:718
 #: application/helpers/userstatistics_helper.php:757
 #: application/helpers/userstatistics_helper.php:1588
@@ -4560,8 +4560,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:1239
 #: application/helpers/qanda_helper.php:1921
 #: application/helpers/qanda_helper.php:4764
-#: application/helpers/qanda_helper.php:6239
-#: application/helpers/qanda_helper.php:6275
+#: application/helpers/qanda_helper.php:6240
+#: application/helpers/qanda_helper.php:6276
 #: application/views/admin/dataentry/content_view.php:124
 #: application/views/admin/dataentry/content_view.php:136
 #: application/views/survey/questions/list_with_comment/dropdown/answer.php:32
@@ -8785,7 +8785,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4228
 #: application/helpers/qanda_helper.php:4339
 #: application/helpers/qanda_helper.php:4514
-#: application/helpers/qanda_helper.php:5837
+#: application/helpers/qanda_helper.php:5838
 msgid "The last cell are for no answer. "
 msgstr ""
 
@@ -8810,7 +8810,7 @@ msgid "After answers, a cell give some information. "
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4818
-#: application/helpers/qanda_helper.php:5194
+#: application/helpers/qanda_helper.php:5195
 msgid "An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. "
 msgstr ""
 
@@ -8848,43 +8848,43 @@ msgid "The last row shows the total for the column and the last column shows the
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4991
-#: application/helpers/qanda_helper.php:5343
+#: application/helpers/qanda_helper.php:5344
 msgid "The last cell give some information. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5260
+#: application/helpers/qanda_helper.php:5261
 msgid "Check or uncheck the answer for each subquestion. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5267
+#: application/helpers/qanda_helper.php:5268
 msgid "Each answers are a number. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5272
+#: application/helpers/qanda_helper.php:5273
 msgid "Select the answer for each subquestion. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5572
+#: application/helpers/qanda_helper.php:5574
 msgid "An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5716
+#: application/helpers/qanda_helper.php:5717
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5722
-#: application/helpers/qanda_helper.php:6306
+#: application/helpers/qanda_helper.php:5723
+#: application/helpers/qanda_helper.php:6307
 #: application/views/survey/questions/arrays/array/dropdown/empty.php:3
 #: application/views/survey/questions/arrays/multiflexi/empty_error.php:2
 #: application/views/survey/questions/arrays/multitext/empty_error.php:2
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5775
+#: application/helpers/qanda_helper.php:5776
 msgid "An array with sub-question on each line, with 2 answers to provide on each line. You have to select the answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5783
+#: application/helpers/qanda_helper.php:5784
 msgid "An array with sub-question on each line, with 2 answers to provide on each line. The answers are contained in the table header. "
 msgstr ""
 
@@ -11975,28 +11975,32 @@ msgid "Uploaded resources management"
 msgstr ""
 
 #: application/views/admin/labels/_labelviewrightcontent_view.php:28
-#: application/views/admin/survey/subview/accordion/_resources_panel.php:14
+#: application/views/admin/survey/subview/accordion/_resources_panel.php:12
 #: application/views/admin/survey/subview/tabResourceManagement_view.php:6
 msgid "Files"
 msgstr ""
 
 #: application/views/admin/labels/_labelviewrightcontent_view.php:28
-#: application/views/admin/survey/subview/accordion/_resources_panel.php:14
+#: application/views/admin/survey/subview/accordion/_resources_panel.php:12
 #: application/views/admin/survey/subview/tabResourceManagement_view.php:6
 msgid "Flash"
 msgstr ""
 
 #: application/views/admin/labels/_labelviewrightcontent_view.php:28
-#: application/views/admin/survey/subview/accordion/_resources_panel.php:14
+#: application/views/admin/survey/subview/accordion/_resources_panel.php:12
 #: application/views/admin/survey/subview/tabResourceManagement_view.php:6
 msgid "Images"
 msgstr ""
 
 #: application/views/admin/labels/_labelviewrightcontent_view.php:31
+#: application/views/admin/survey/subview/accordion/_resources_panel.php:14
+#: application/views/admin/survey/subview/tabResourceManagement_view.php:7
 msgid "Browse uploaded resources"
 msgstr ""
 
 #: application/views/admin/labels/_labelviewrightcontent_view.php:40
+#: application/views/admin/survey/subview/accordion/_resources_panel.php:22
+#: application/views/admin/survey/subview/tabResourceManagement_view.php:13
 msgid "Export resources as ZIP archive"
 msgstr ""
 
@@ -12005,6 +12009,8 @@ msgid "Select ZIP file:"
 msgstr ""
 
 #: application/views/admin/labels/_labelviewrightcontent_view.php:66
+#: application/views/admin/survey/subview/accordion/_resources_panel.php:37
+#: application/views/admin/survey/subview/tabResourceManagement_view.php:24
 msgid "Import resources ZIP archive"
 msgstr ""
 
@@ -15500,24 +15506,9 @@ msgstr ""
 msgid "Use CAPTCHA for save and load:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_resources_panel.php:15
-#: application/views/admin/survey/subview/tabResourceManagement_view.php:7
-msgid "Browse Uploaded Resources"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_resources_panel.php:22
-#: application/views/admin/survey/subview/tabResourceManagement_view.php:13
-msgid "Export Resources As ZIP Archive"
-msgstr ""
-
 #: application/views/admin/survey/subview/accordion/_resources_panel.php:32
 #: application/views/admin/survey/subview/tabResourceManagement_view.php:21
 msgid "Select ZIP File:"
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_resources_panel.php:37
-#: application/views/admin/survey/subview/tabResourceManagement_view.php:24
-msgid "Import Resources ZIP Archive"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:11
