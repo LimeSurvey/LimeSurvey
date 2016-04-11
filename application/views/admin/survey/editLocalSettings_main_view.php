@@ -38,6 +38,7 @@
                             <?php $this->renderPartial('/admin/survey/subview/accordion/_accordion_container', array('data'=>$settings_data)); ?>
                         </div>
                     </div>
+                    <input type='submit' class="hide" />
                 </form>
             </div>
 
