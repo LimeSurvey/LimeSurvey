@@ -27,7 +27,7 @@
         </div> <!-- alert -->
     <?php endif;?>
     <div class="form-group row">
-        <label class='control-label numeric-label pull-left' for="answer<?php echo $myfname; ?>" style="margin-top: 0.5em;">
+        <label class='control-label numeric-label pull-left col-sm-4 text-right' for="answer<?php echo $myfname; ?>" style="margin-top: 0.5em;">
             <?php echo $labelText;?>
         </label>
 
@@ -61,4 +61,5 @@
         <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo $dispVal;?>" />
     </div> <!-- form group -->
 </div>
+<div class='clearfix visible-*'></div>
 <!-- end of answer_row -->
