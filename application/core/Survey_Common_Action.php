@@ -844,6 +844,7 @@ class Survey_Common_Action extends CAction
                 $aForbiddenWordsInUrl = isset($aData['surveybar']['closebutton']['forbidden'])?$aData['surveybar']['closebutton']['forbidden']:array();
                 $aForbiddenWordsInUrl[]='assessmentedit';
                 $aForbiddenWordsInUrl[]='setsurveysecurity';
+                $aForbiddenWordsInUrl[]='importsurveyresources';
                 $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl), $aForbiddenWordsInUrl );
             }
 
