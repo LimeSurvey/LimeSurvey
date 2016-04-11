@@ -17,6 +17,10 @@
         <license>GNU General Public License version 2 or later</license>
         <version>1.0</version>
         <description>Default LimeSurvey Template.</description>
+        <!--
+             The last_update field must be updated before each release,
+             to be sure that the asset manager will publish new assets and make visible CSS changes for final users (without browser cache refresh)
+         -->
         <last_update>2016-04-07 10:00:00</last_update>
     </metadatas>
 
@@ -38,6 +42,14 @@
         <print_css>
             <filename>css/print_template.css</filename>
         </print_css>
+
+        <!--
+            Those files will be loaded for right to left languages only
+            NOTE 1: If for any reason, you need to edit the RTL behaviors, feel free to contact the LimeSurvey team about it.
+            We'll be always pleased to make better the right to left display
+
+            NOTE 2: those files are generated with the script R2. See: https://github.com/ded/R2
+        -->     
         <rtl>
             <css>
                 <filename>css/jquery-ui-custom-rtl.css</filename>
@@ -77,15 +89,12 @@
         <cssframework>bootstrap</cssframework>
         <!-- Path of the pstpl files -->
         <pstpldirectory>views</pstpldirectory>
-        <!--
-            Where the files of the template will be uploaded
-            Warning : if the template contain files, the whole directory template will published via the Asset Manager,
-            and not the files one by one. It change the update strategy, and a single change to a css file will not change the asset tmp directory
-            Overwriting the Asset Manager will be necessary to resolve this problem.
-        -->
+
+        <!-- Asset manager will copy the whole template directory to tmp. So it's possible to refer any file in the files directory in CSS via relative path (e.g: '../files/foo.jpg')   -->
         <filesdirectory>files</filesdirectory>
 
         <!-- Here, you can publish packages set as third party extensions in application/config/third_party -->
+        <!-- If bootstrap is registred as a css framework, it will be loaded first -->
         <packages>
             <package>jqueryui</package>
             <package>jquery-touch-punch</package>
