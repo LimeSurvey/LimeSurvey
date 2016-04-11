@@ -860,16 +860,16 @@ body.groupbygroup #surveynametitle, body.groupbygroup #surveydescription
     display: none;
 }
 
-/* Increase-same-decrease array */
-.row-inc-same-dec .radio-item,
-.thead-inc-same-dec th {
-    text-align: center;
+.input-multi-num {
+    width: 10em;
 }
 
-/* Array-by-column. */
-.table-array-by-column .radio-item,
-.thead-array-by-column th {
-    text-align: center;
+/* Only use <label> to get vertical align easy. Don't want boldness. */
+.no-label {
+    font-weight: normal;
+}
+
+.table-multi-num label {
 }
 
 /**
@@ -889,6 +889,19 @@ body.groupbygroup #surveynametitle, body.groupbygroup #surveydescription
     {
         text-align: center;
     }
+
+    /* Increase-same-decrease array */
+    .row-inc-same-dec .radio-item,
+    .thead-inc-same-dec th {
+        text-align: center;
+    }
+
+    /* Array-by-column. */
+    .table-array-by-column .radio-item,
+    .thead-array-by-column th {
+        text-align: center;
+    }
+
 
     .table-dual-scale .separator {
         width: 6%;
@@ -1078,6 +1091,15 @@ body.groupbygroup #surveynametitle, body.groupbygroup #surveydescription
     .row-inc-same-dec .radio-item,
     .thead-inc-same-dec th {
         text-align: left;
+    }
+
+    .table-multi-num.no-more-tables tr {
+        border: none;
+    }
+
+    /* Used for <td></td> in multiple-numeric */
+    td.hide-on-small-screen {
+        display: none;
     }
 
 }

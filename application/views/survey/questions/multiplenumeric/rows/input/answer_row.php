@@ -20,46 +20,50 @@
 ?>
 <!-- answer_row -->
 
-<div  id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item  text-item <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?>>
-    <?php if($alert):?>
-        <div class="alert alert-danger errormandatory"  role="alert">
-            <?php echo $labelText;?>
-        </div> <!-- alert -->
-    <?php endif;?>
-    <div class="form-group row">
-        <label class='control-label numeric-label pull-left col-sm-4 text-right' for="answer<?php echo $myfname; ?>" style="margin-top: 0.5em;">
+<tr  id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item  text-item" <?php echo $sDisplayStyle;?>>
+    <td class='text-right align-middle'>
+        <?php if($alert):?>
+            <div class="alert alert-danger errormandatory"  role="alert">
+                <?php echo $labelText;?>
+            </div> <!-- alert -->
+        <?php endif;?>
+
+        <label class='control-label numeric-label' for="answer<?php echo $myfname; ?>">
             <?php echo $labelText;?>
         </label>
+    </td>
 
-        <?php if (!empty($prefix)): ?>
-            <span class='pull-left col-sm-offset-1'  style="margin-top: 0.5em;">
+    <?php if (!empty($prefix)): ?>
+        <td class='text-right align-middle'>
+            <label class='no-label'>
                 <?php echo $prefix; ?>
-            </span>
-        <?php endif; ?>
+            </label>
+        </td>
+    <?php endif; ?>
 
-        <div class='col-sm-1' style="min-width: 7em;">
-                <input
-                    class="text form-control numeric <?php echo $kpclass;?>"
-                    type="text"
-                    size="<?php echo $tiwidth;?>"
-                    name="<?php echo $myfname;?>"
-                    id="answer<?php echo $myfname; ?>"
-                    value="<?php echo $dispVal;?>"
-                    onkeyup="<?php echo $checkconditionFunction; ?>"
-                    title="<?php eT('Only numbers may be entered in this field.'); ?>"
-                    <?php echo $maxlength; ?>
-                />
-        </div>
+    <td class='input-multi-num'>
+        <input
+            class="text form-control numeric <?php echo $kpclass;?>"
+            type="text"
+            size="<?php echo $tiwidth;?>"
+            name="<?php echo $myfname;?>"
+            id="answer<?php echo $myfname; ?>"
+            value="<?php echo $dispVal;?>"
+            onkeyup="<?php echo $checkconditionFunction; ?>"
+            title="<?php eT('Only numbers may be entered in this field.'); ?>"
+            <?php echo $maxlength; ?>
+        />
+    </td>
 
-        <?php if (!empty($suffix)): ?>
-            <span class='pull-left'  style="margin-top: 0.5em;">
+    <?php if (!empty($suffix)): ?>
+        <td class='align-middle'>
+            <label class='no-label'>
                 <?php echo $suffix;?>
-            </span>
-        <?php endif; ?>
+            </label>
+        </td>
+    <?php endif; ?>
 
-        <!-- xs-12 -->
-        <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo $dispVal;?>" />
-    </div> <!-- form group -->
-</div>
-<div class='clearfix visible-*'></div>
+    <!-- xs-12 -->
+    <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo $dispVal;?>" />
+</tr>
 <!-- end of answer_row -->

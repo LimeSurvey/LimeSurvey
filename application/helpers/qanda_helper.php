@@ -3129,8 +3129,9 @@ function do_multiplenumeric($ia)
             $displaytotal = true;
         }
 
-
-        $answer      = Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/answer', array(
+        // TODO: Slider and multiple-numeric input should really be two different question types
+        $templateFile = $sliders ? 'answer' : 'answer_input';
+        $answer      = Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/' . $templateFile, array(
                         'sRows'            => $sRows,
                         'prefixclass'      => $prefixclass,
                         'equals_num_value' => $equals_num_value,

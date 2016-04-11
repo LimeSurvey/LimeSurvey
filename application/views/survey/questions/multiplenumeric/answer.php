@@ -1,6 +1,6 @@
 <?php
 /**
- * Multiple Numerical question Html
+ * Multiple Numerical question Html for slider.
  *
  * @var $sRows      : the rows, generated with the views rows/answer_row.php
  *
@@ -11,6 +11,7 @@
  * @var $sumRemainingEqn
  * @var $displaytotal
  * @var $sumEqn
+ * @var $prefix
  */
 ?>
 <!-- Multiple Numerical -->
