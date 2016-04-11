@@ -416,7 +416,6 @@ $(function()
             if (sidemenu.hasClass('exploring'))
             {
                 $sideMenutoTop = (sidemenu.offset().top - $(window).scrollTop());
-                console.log($sideMenutoTop);
 
                 if ($sideMenutoTop > 0 && surveybar.hasClass('navbar-fixed-top') )
                 {

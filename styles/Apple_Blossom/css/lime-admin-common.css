@@ -1725,8 +1725,7 @@ iframe#dialog {
     overflow-x: hidden;
 }
 
-#labelsetbrowserModal .modal-dialog
-{
+#labelsetbrowserModal .modal-dialog {
     width: 80%;
 }
 
@@ -1738,22 +1737,19 @@ iframe#dialog {
 }
 
 /* Subquestion */
-td.subquestion-actions span:hover
-{
+td.subquestion-actions span:hover {
     cursor: pointer;
 }
 
 /* edit survey */
-.template-img
-{
+.template-img {
     padding-top: 0;
 }
 
 /* Accordion*/
- .full-page-wrapper .handleAccordion
- {
-     display: none;
- }
+.full-page-wrapper .handleAccordion {
+    display: none;
+}
 
 /* Box in resopnses list need a little more space */
 #displayresponses_cb {
@@ -1765,7 +1761,21 @@ td.subquestion-actions span:hover
     width: 50%;
 }
 
-.lead
-{
+.lead {
     font-weight: 300;
+}
+
+/* Make sure buttons is onw row */
+.time-statistics-row-buttons {
+    white-space: nowrap;
+}
+
+/* Proper overflow */
+.time-statistics-table {
+    overflow: auto;
+}
+
+/* In survey permissions, make grey check icon if only partial permissions */
+.mixed {
+    opacity: 0.4;
 }
