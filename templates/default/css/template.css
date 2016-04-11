@@ -850,6 +850,16 @@ table.question.subquestion-list.questions-list tr th.answertext {
     font-size: 90%;
 }
 
+body .navbar-default .navbar-brand:hover {
+    color: #ffffff;
+}
+
+/* Hide survey title in group by group mode*/
+body.groupbygroup #surveynametitle, body.groupbygroup #surveydescription
+{
+    display: none;
+}
+
 /* Increase-same-decrease array */
 .row-inc-same-dec .radio-item,
 .thead-inc-same-dec th {
@@ -860,6 +870,22 @@ table.question.subquestion-list.questions-list tr th.answertext {
 .table-array-by-column .radio-item,
 .thead-array-by-column th {
     text-align: center;
+}
+
+/**
+ * On big screen only, iPad and up
+ */
+@media only screen and (min-width: 768px) {
+
+    /* Dual-scale array */
+    .table-dual-scale .radio-item,
+    .table-dual-scale th {
+        text-align: center;
+    }
+
+    .table-dual-scale .separator {
+        width: 6%;
+    }
 }
 
 /**
@@ -1092,16 +1118,6 @@ table.question.subquestion-list.questions-list tr th.answertext {
     }
 
 
-}
-
-body .navbar-default .navbar-brand:hover {
-    color: #ffffff;
-}
-
-/* Hide survey title in group by group mode*/
-body.groupbygroup #surveynametitle, body.groupbygroup #surveydescription
-{
-    display: none;
 }
 
 /* On iPad etc only */

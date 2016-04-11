@@ -5915,8 +5915,7 @@ function do_array_dual($ia)
                 $answer_head1 = "";
             }
             $answer .= '<div class="no-more-tables no-more-tables-array-dual">';
-            //$answer .= "\n<table class=\"table-in-qanda-9 question subquestions-list questions-list\" summary=\"{$caption}\">\n"
-            $answer .= "\n<table class=\"no-more-tables table-in-qanda-9 table question subquestion-list questions-list\">\n"
+            $answer .= "\n<table class=\"no-more-tables table-dual-scale table question subquestion-list questions-list\">\n"
             . $mycolumns
             . "\n\t<thead>\n"
             . $answer_head1
