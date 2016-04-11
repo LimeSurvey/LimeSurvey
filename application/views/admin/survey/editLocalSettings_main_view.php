@@ -40,6 +40,7 @@
                     </div>
                 </form>
             </div>
-        </div>
 
+            <?php $this->renderPartial('/admin/survey/subview/import_ressources_modal', $settings_data); ?>
+        </div>
 </div>
