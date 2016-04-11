@@ -12,7 +12,7 @@
 
 <!-- answer -->
 <div class="no-more-tables no-more-tables-5-point">
-    <table class="table question subquestion-list questions-list <?php echo $extraclass; ?>">
+    <table class="table question table-5-point-array subquestion-list questions-list <?php echo $extraclass; ?>">
 
         <!-- Columns -->
         <colgroup class="col-responses">

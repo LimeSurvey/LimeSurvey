@@ -879,18 +879,26 @@ body.groupbygroup #surveynametitle, body.groupbygroup #surveydescription
 
     /* Dual-scale array */
     .table-dual-scale .radio-item,
-    .table-dual-scale th {
+    .table-dual-scale th,
+    /* 10-point array */
+    .table-10-point-array .radio-item,
+    .table-10-point-array th,
+    /* 5-point array */
+    .table-5-point-array .radio-item,
+    .table-5-point-array th
+    {
         text-align: center;
     }
 
     .table-dual-scale .separator {
         width: 6%;
     }
+
 }
 
 /**
  * No more tables
- * OBS: Media specific CSS should be last in this file.
+ * OBS: Media specific CSS must be last in this file.
  * iPad has width 768px (according to Chrome dev tool)
  * Google Nexus 10 has width 800px.
  * (Both in portrait mode.)
@@ -1126,3 +1134,5 @@ body.groupbygroup #surveynametitle, body.groupbygroup #surveydescription
         padding: 0;
     }
 }
+
+/******** OBS: Media specific CSS must be last in this file. ********/
