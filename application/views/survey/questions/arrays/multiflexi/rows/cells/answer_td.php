@@ -23,7 +23,7 @@
 ?>
 
 <!-- answer_td -->
-<td data-title="<?php echo $dataTitle;?>"  class="answer-cell-5 answer_cell_00<?php echo $ld;?> question-item answer-item <?php echo $answertypeclass; ?>-item <?php echo $extraclass; ?>">
+<td data-title="<?php echo $dataTitle;?>"  class="answer-cell-5 answer_cell_<?php echo $ld;?> question-item answer-item <?php echo $answertypeclass; ?>-item <?php echo $extraclass; ?>">
     <label for="answer<?php echo $myfname2;?>" class='col-xs-12 col-sm-12'>
 
         <input
