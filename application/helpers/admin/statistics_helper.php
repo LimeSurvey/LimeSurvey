@@ -2912,7 +2912,7 @@ class statistics_helper {
                 //edit labels and put them into another array
                 if ((incompleteAnsFilterState() != "complete"))
                 {
-                    $flatLabel = wordwrap(flattenText(gT("Not completed or Not displayed")), 20, "\n");
+                    $flatLabel = gT("Not completed or Not displayed");
                     // If the flatten label is empty (like for picture, or HTML, etc.)
                     // We replace it by the subquestion code
                     if($flatLabel == '')
@@ -2925,7 +2925,7 @@ class statistics_helper {
                 else
                 {
 
-                    $flatLabel = wordwrap(flattenText(gT("Not displayed")), 20, "\n");
+                    $flatLabel = gT("Not displayed");
                     // If the flatten label is empty (like for picture, or HTML, etc.)
                     // We replace it by the subquestion code
                     if($flatLabel == '')
