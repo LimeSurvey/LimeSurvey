@@ -3140,6 +3140,7 @@ function do_multiplenumeric($ia)
                         'sumRemainingEqn'  => (isset($qinfo))?$qinfo['sumRemainingEqn']:'',
                         'displaytotal'     => $displaytotal,
                         'sumEqn'           => (isset($qinfo))?$qinfo['sumEqn']:'',
+                        'prefix'           => $prefix,  // Need to know this to place sum/remaining correctly
                        ), true);
 
     }
