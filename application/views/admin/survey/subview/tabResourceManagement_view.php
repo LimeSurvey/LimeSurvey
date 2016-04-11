@@ -4,13 +4,13 @@
             <li>
                 <label>&nbsp;</label>
                 <?php echo CHtml::dropDownList('type', 'files', array('files' =>  gT('Files','unescaped'), 'flash' =>  gT('Flash','unescaped'), 'images' =>  gT('Images','unescaped'))); ?>
-                <input type='submit' value="<?php  eT("Browse Uploaded Resources") ?>" />
+                <input type='submit' value="<?php  eT("Browse uploaded resources") ?>" />
             </li>
             <li>
                 <label>&nbsp;</label>
                 <input type='button'<?php echo $disabledIfNoResources; ?>
                        onclick='window.open("<?php echo $this->createUrl("admin/export/sa/resources/export/survey/surveyid/$surveyid"); ?>", "_blank")'
-                       value="<?php  eT("Export Resources As ZIP Archive") ?>"  />
+                       value="<?php  eT("Export resources as ZIP archive") ?>"  />
             </li>
         </ul>
     </form>
@@ -21,7 +21,7 @@
             <li><label for='the_file'><?php  eT("Select ZIP File:"); ?></label>
                 <input id='the_file' name='the_file' type='file' /></li>
             <li><label>&nbsp;</label>
-                <input type='button' value='<?php  eT("Import Resources ZIP Archive"); ?>' <?php echo $ZIPimportAction; ?> /></li>
+                <input type='button' value='<?php  eT("Import resources ZIP archive"); ?>' <?php echo $ZIPimportAction; ?> /></li>
         </ul>
     </form>
 </div>

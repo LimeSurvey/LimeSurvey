@@ -9,9 +9,9 @@
     <ul class="list-unstyled">
         <li>
             <label>&nbsp;</label>
-            <?php echo CHtml::dropDownList('type', 'files', array('files' =>  gT('Files','unescaped'), 'flash' =>  gT('Flash','unescaped'), 'images' =>  gT('Images','unescaped'))); ?>                
+            <?php echo CHtml::dropDownList('type', 'files', array('files' =>  gT('Files','unescaped'), 'flash' =>  gT('Flash','unescaped'), 'images' =>  gT('Images','unescaped'))); ?>
             <a href="<?php echo Yii::app()->getConfig('publicurl') ; ?>third_party/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK( App()->language); ?>'" type='btn btn-default btn-lg'  target='_blank'>
-                <?php  eT("Browse Uploaded Resources") ?>
+                <?php  eT("Browse uploaded resources") ?>
             </a>
         </li>
         <li>
@@ -19,7 +19,7 @@
             <input type='button'<?php echo $disabledIfNoResources; ?>
                 class="btn btn-default"
                    onclick='window.open("<?php echo $this->createUrl("admin/export/sa/resources/export/survey/surveyid/$surveyid"); ?>", "_blank")'
-                   value="<?php  eT("Export Resources As ZIP Archive") ?>"  />
+                   value="<?php  eT("Export resources as ZIP archive") ?>"  />
         </li>
     </ul>
 
@@ -34,7 +34,7 @@
             </li>
             <li>
                 <label>&nbsp;</label>
-                <input type='button' class="btn btn-default" value='<?php  eT("Import Resources ZIP Archive"); ?>' <?php echo $ZIPimportAction; ?> />
+                <input type='button' class="btn btn-default" value='<?php  eT("Import resources ZIP archive"); ?>' <?php echo $ZIPimportAction; ?> />
             </li>
         </ul>
     </form>
