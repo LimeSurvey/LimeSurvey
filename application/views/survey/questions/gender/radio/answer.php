@@ -17,7 +17,7 @@
 <div class="answers-list radio-list">
 
     <!-- Female -->
-    <div class="col-xs-4 answer-item radio-item">
+    <div class="col-xs-4 answer-item radio-item radio">
         <input
             class="radio"
             type="radio"
@@ -26,15 +26,21 @@
             value="F"
             <?php echo $fChecked; ?>
             onclick="<?php echo $checkconditionFunction; ?>"
+            aria-labelledby="label-answer<?php echo $name;?>F"
         />
 
-        <label for="answer<?php echo $name;?>F" class="answertext">
+        <label for="answer<?php echo $name;?>F" class="answertext"></label>
+        <!--
+             The label text is provided inside a div,
+             To respect the global HTML flow of other question types
+        -->
+        <div class="label-text label-clickable" id="label-answer<?php echo $name;?>F">
             <?php eT('Female');?>
-        </label>
+        </div>
     </div>
 
     <!-- Male -->
-    <div class="col-xs-4 answer-item radio-item">
+    <div class="col-xs-4 answer-item radio-item radio">
         <input
             class="radio"
             type="radio"
@@ -43,16 +49,22 @@
             value="M"
             <?php echo $mChecked;?>
             onclick="<?php echo $checkconditionFunction; ?>"
+            aria-labelledby="label-answer<?php echo $name;?>M"
         />
 
-        <label for="answer<?php echo $name;?>M" class="answertext">
+        <label for="answer<?php echo $name;?>M" class="answertext"></label>
+        <!--
+             The label text is provided inside a div,
+             To respect the global HTML flow of other question types
+        -->
+        <div class="label-text label-clickable" id="label-answer<?php echo $name;?>M">
             <?php eT('Male');?>
-        </label>
+        </div>
     </div>
 
     <!-- No answer -->
     <?php if($noAnswer):?>
-        <div class="col-xs-4 answer-item radio-item noanswer-item">
+        <div class="col-xs-4 answer-item radio-item noanswer-item radio">
             <input
                 class="radio"
                 type="radio"
@@ -61,11 +73,17 @@
                 value=""
                 <?php echo $naChecked;?>
                 onclick="<?php echo $checkconditionFunction; ?>"
+                aria-labelledby="label-answer<?php echo $name;?>"
             />
 
-            <label for="answer<?php echo $name;?>" class="answertext">
+            <label for="answer<?php echo $name;?>" class="answertext"></label>
+            <!--
+                 The label text is provided inside a div,
+                 To respect the global HTML flow of other question types
+            -->
+            <div class="label-text label-clickable" id="label-answer<?php echo $name;?>">
                 <?php eT('No answer'); ?>
-            </label>
+            </div>
         </div>
     <?php endif;?>
 
