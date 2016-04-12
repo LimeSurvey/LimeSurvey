@@ -30,7 +30,7 @@
          so final user can add paragraph, div, or whatever he wants in the subquestion text
          This field is related to the input thanks to attribute aria-labelledby
     -->
-    <div class="label-text" id="label-answer<?php echo $id; ?>">
+    <div class="label-text label-clickable" id="label-answer<?php echo $id; ?>">
         <?php echo $labelText; ?>
     </div>
 </div>

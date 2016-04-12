@@ -109,15 +109,16 @@ function replaceColumnWithDiv(that) {
 }
 
 $(document).ready(function(){
-/*
-    $('.checkbox-item').each(function(){
-        $(this).addClass('checkbox');
+
+    $('.label-clickable').each(function(){
+        var $that    = $(this);
+        var $inputEl = $("#"+$that.attr('id').replace("label-", ""));
+        $that.on('click', function(){
+            console.log($inputEl.attr('id'));
+            $inputEl.trigger( "click" );
+        });
     });
 
-
-    $('.radio-item').each(function(){
-        $(this).addClass('radio');
-    });*/
     // iPad has width 768, Google Nexus 10 width 800
     // It's OK to keep tables on pads.
     if($(window).width() < 768)
@@ -135,6 +136,7 @@ $(document).ready(function(){
                 else
                 {
                     // TODO: Remove this logic for screen reader
+                    // Only used for array dual scale and array columns now.
                     $that.find('label').prepend($label);
                 }
 

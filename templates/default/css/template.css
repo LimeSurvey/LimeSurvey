@@ -739,3 +739,8 @@ td.answer-item.text-center
     position: relative;
     bottom: 0px;
 }
+
+.label-clickable:hover
+{
+    cursor: pointer;
+}
