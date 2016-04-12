@@ -34,6 +34,9 @@
             <filename>css/bootstrap-slider.css</filename>
             <filename>css/flat_and_modern.css</filename>
             <filename>css/template.css</filename>
+            <filename>fonts/font-awesome.css</filename>
+            <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
+            <filename>css/awesome-bootstrap-checkbox/bootswatch-reset.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
@@ -49,7 +52,7 @@
             We'll be always pleased to make better the right to left display
 
             NOTE 2: those files are generated with the script R2. See: https://github.com/ded/R2
-        -->     
+        -->
         <rtl>
             <css>
                 <filename>css/jquery-ui-custom-rtl.css</filename>
