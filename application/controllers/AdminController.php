@@ -302,20 +302,37 @@ class AdminController extends LSYii_Controller
         // Typecasting as array directly does not work in PHP 5.3.17 so we loop over the XML entries
         foreach($oAdmintheme->config->files->js->filename as $aFile)
         {
-            $aData['aPackageScripts'][]=(string)$aFile;
-        }
-        foreach($oAdmintheme->config->files->css->filename as $aFile)
-        {
-            $aData['aPackageStyles'][]=(string)$aFile;
-        }
-        if ($aData['bIsRTL'])
-        {
-            foreach ($aData['aPackageStyles'] as &$filename)
-            {
-                $filename = str_replace('.css', '-rtl.css', $filename);
-            }
+            $aData['aPackageScripts'][] = (string)$aFile;
         }
 
+        // RTL style
+        if ($aData['bIsRTL'])
+        {
+            if (!isset($oAdmintheme->config->files->rtl) 
+                || !isset($oAdmintheme->config->files->rtl->css))
+            {
+                throw new CException("Invalid template configuration: No CSS files found for right-to-left languages");
+            }
+
+            foreach ($oAdmintheme->config->files->rtl->css->filename as $aFile)
+            {
+                $aData['aPackageStyles'][] = (string) $aFile;
+            }
+        }
+        else
+        {
+            // Non-RTL style
+            foreach($oAdmintheme->config->files->css->filename as $aFile)
+            {
+                $aData['aPackageStyles'][] = (string)$aFile;
+            }
+        }
+            //foreach ($aData['aPackageStyles'] as &$filename)
+            //{
+                //$filename = str_replace('.css', '-rtl.css', $filename);
+            //}
+
+        //echo '<pre>'; var_dump($aData); echo '</pre>';die;
         $sOutput = $this->renderPartial("/admin/super/header", $aData, true);
 
         // Define images url
