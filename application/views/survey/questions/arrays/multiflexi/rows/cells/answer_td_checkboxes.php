@@ -45,6 +45,7 @@
                 aelt.value=1;
                 jelt.value=1;
                 <?php echo $checkconditionFunction; ?>(1,'<?php echo $myfname2;?>',aelt.type);
+            }
             else
             {
                 aelt.value='';
