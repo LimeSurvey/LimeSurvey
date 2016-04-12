@@ -854,10 +854,6 @@ body .navbar-default .navbar-brand:hover {
     color: #ffffff;
 }
 
-.input-multi-num {
-    width: 10em;
-}
-
 /* Only use <label> to get vertical align easy. Don't want boldness. */
 .no-label {
     font-weight: normal;
