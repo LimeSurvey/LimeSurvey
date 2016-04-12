@@ -35,6 +35,24 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160412) to 2.50+ (build 160413) Apr 12, 2016
+-Fixed issue #10795: Label text in statistics graph is missing a space (Carsten Schmitz)
+-Fixed issue #10844: Various issues using the LS 2.50 default template (Olle Haerstedt)
+-Fixed issue #10901: Cannot open a survey in RTL Language (Olle Haerstedt)
+-Fixed issue: Various issues using the LS 2.50 default template (Olle Haerstedt)
+-Fixed issue: Global settings being randomly deleted (Louis Gac)
+-Removed translation: Kazakh (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow
+
 Changes from 2.50+ (build 160411) to 2.50+ (build 160412) Apr 11, 2016
 -Fixed issue #10755: Return to admin panel button do not work (Olle Haerstedt)
 -Fixed issue #10901: I cant open a survey in RTL Language (Olle Haerstedt)
