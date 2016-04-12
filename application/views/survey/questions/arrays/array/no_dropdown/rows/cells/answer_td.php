@@ -1,5 +1,6 @@
 <?php
 /**
+ * Array, no drop down
  * @var $label
  * @var $ld
  * @var $myfname
@@ -21,9 +22,7 @@
         onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
         aria-labelledby="label-answer<?php echo $myfname;?>-<?php echo $ld; ?>"
     />
-    <label for="answer<?php echo $myfname;?>-<?php echo $ld; ?>" >
-
-    </label>
+    <label for="answer<?php echo $myfname;?>-<?php echo $ld; ?>" ></label>
 
     <!--
          The label text is provided inside a div,

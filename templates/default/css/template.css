@@ -454,30 +454,6 @@ body .navbar-default .navbar-brand:hover {
  */
 @media only screen and (min-width: 768px) {
 
-    /* Dual-scale array */
-    .table-dual-scale .radio-item,
-    .table-dual-scale th,
-    /* 10-point array */
-    .table-10-point-array .radio-item,
-    .table-10-point-array th,
-    /* 5-point array */
-    .table-5-point-array .radio-item,
-    .table-5-point-array th
-    {
-        text-align: center;
-    }
-
-    /* Increase-same-decrease array */
-    .row-inc-same-dec .radio-item,
-    .thead-inc-same-dec th {
-        text-align: center;
-    }
-
-    /* Array-by-column. */
-    .table-array-by-column .radio-item,
-    .thead-array-by-column th {
-        text-align: center;
-    }
 
 
     .table-dual-scale .separator {
@@ -601,11 +577,6 @@ body .navbar-default .navbar-brand:hover {
     /*.no-more-tables td:before { content: attr(data-title); }*/
 
     .no-more-tables-10-point td {
-        width: 2em;
-        margin: 0px;
-        padding: 0px;
-        float: left;
-        text-align:left;
     }
 
     /* Don't wrap "No answer" on two lines */
@@ -752,9 +723,31 @@ td.answer-item.text-center
     padding-left: 25px;
 }
 
+.table-5-point-array td.answer-item.text-center
+{
+    padding-left: 39px;
+}
+
+.table-10-point-array  td.answer-item.text-center
+{
+    padding-left: 36px;
+}
+
 /* center the label text in no more table mode */
 .label-text{
     display: inline;
     position: relative;
     bottom: 2px;
+}
+
+.table-5-point-array .label-text{
+    display: inline;
+    position: relative;
+    bottom: 0px;
+}
+
+.table-10-point-array .label-text{
+    display: inline;
+    position: relative;
+    bottom: 0px;
 }

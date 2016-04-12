@@ -1,5 +1,7 @@
 <?php
 /**
+ * Array 5 point choice
+ *
  * @var $answerwidth
  * @var $answertext2
  */

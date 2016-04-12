@@ -1,5 +1,6 @@
 <?php
 /**
+ * Array 5 point choice
  *
  * @var $class
  * @var $style
@@ -8,7 +9,7 @@
 ?>
 
 <!-- thead -->
-<th class="<?php echo $class; ?>" style="<?php echo $style; ?>" >
+<th class="<?php echo $class; ?> text-center" style="<?php echo $style; ?>" >
     <?php echo $th_content;?>
 </th>
 <!-- end of thead -->
