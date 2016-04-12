@@ -11,7 +11,7 @@
 ?>
 
 <!-- answer_row -->
-<div id='javatbd<?php echo $myfname; ?>' class='form-group answer-item radio-item' <?php echo $sDisplayStyle; ?> >
+<div id='javatbd<?php echo $myfname; ?>' class='form-group answer-item radio-item radio' <?php echo $sDisplayStyle; ?> >
     <input
         class="radio"
         type="radio"
@@ -20,9 +20,17 @@
         id="answer<?php echo $name.$code; ?>"
         <?php echo $checkedState;?>
         onclick="if (document.getElementById('answer<?php echo $name; ?>othertext') != null) document.getElementById('answer<?php echo $name; ?>othertext').value='';checkconditions(this.value, this.name, this.type)"
+        aria-labelledby="label-answer<?php echo $name.$code; ?>"
      />
-    <label for="answer<?php echo $name.$code; ?>" class="control-label radio-label">
-         <?php echo $answer; ?>
-    </label>
+    <label for="answer<?php echo $name.$code; ?>" class="control-label radio-label"></label>
+
+    <!--
+         The label text is provided inside a div,
+         so final user can add paragraph, div, or whatever he wants in the subquestion text
+         This field is related to the input thanks to attribute aria-labelledby
+    -->
+    <div class="label-text label-clickable" id="label-answer<?php echo $name.$code; ?>">
+        <?php echo $answer; ?>
+    </div>
 </div>
 <!-- end of answer_row -->
