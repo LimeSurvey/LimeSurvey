@@ -73,27 +73,83 @@ function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
    }
 }
 
+/**
+ * Remake table @that with divs, by column
+ * Used by array-by-column question type on
+ * small screen
+ *
+ * @param {object} that The table jQuery object
+ * @return void
+ */
+function replaceColumnWithDiv(that) {
+    var newHtml = '';
+    var nrOfColumns = $(that).find('tr:first th').length;
+    newHtml += "<div class='array-by-columns-div'>";
+    for (var i = 0; i < nrOfColumns; i++)
+    {
+        // Fetch each column from the table and put content in div
+        newHtml += "<div class='well radio-list array" + (i % 2 === 0 ? "2" : "1") + " '>";
+        $(that).find('tr > *:nth-child('+ (i + 2) + ')').each(function(j) {
+            // First one is header
+            if (j === 0) {
+                newHtml += "<div class='answertext'>";
+                newHtml += $(this).html();
+                newHtml += "</div>";
+            }
+            else {
+                newHtml += "<div class='radio-item'>";
+                newHtml += $(this).html();
+                newHtml += "</div>";
+            }
+        });
+        newHtml += "</div>";
+    }
+    newHtml += "</div>";
+    $(that).replaceWith(newHtml);
+}
+
 $(document).ready(function(){
 
-    if($(window).width() < 800)
+    // Make the label clickable
+    $('.label-clickable').each(function(){
+        var $that    = $(this);
+        var $inputEl = $("#"+$that.attr('id').replace("label-", ""));
+        $that.on('click', function(){
+            console.log($inputEl.attr('id'));
+            $inputEl.trigger( "click" );
+        });
+    });
+
+    // iPad has width 768, Google Nexus 10 width 800
+    // It's OK to keep tables on pads.
+    if($(window).width() < 768)
     {
-        if($('.no-more-tables').length > 0)
+        if($('.no-more-tables, .array-by-columns-table').length > 0)
         {
-            $('.no-more-tables').find('td').each(function(){
+            $('.no-more-tables, .array-by-columns-table').find('td').each(function(){
                 $that = $(this);
                 $label = $that.data('title');
                 $input = $that.find('input');
-                if($input.is(':checkbox'))
+                if($input.is(':checkbox') || $that.hasClass('radio'))
                 {
-                    $that.find('label').removeClass('hide');
+                    $that.find('.hide').removeClass('hide');
                 }
                 else
                 {
+                    // TODO: Remove this logic for screen reader
+                    // Only used for array dual scale and array columns now.
                     $that.find('label').prepend($label);
                 }
 
             });
         }
+
+        // Brutally remake the array-by-columns question type to divs,
+        // because you can't wrap table columns
+        $('.array-by-columns-table').each(function() {
+            replaceColumnWithDiv(this);
+        });
+
     }
 
     //var outerframeDistanceFromTop = 50;
@@ -240,4 +296,8 @@ $(document).ready(function(){
         $surveyListFooter = $('#surveyListFooter');
         $('#outerframeContainer').after($surveyListFooter);
     }
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 });

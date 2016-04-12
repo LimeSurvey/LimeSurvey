@@ -110,6 +110,7 @@ function replaceColumnWithDiv(that) {
 
 $(document).ready(function(){
 
+    // Make the label clickable
     $('.label-clickable').each(function(){
         var $that    = $(this);
         var $inputEl = $("#"+$that.attr('id').replace("label-", ""));
