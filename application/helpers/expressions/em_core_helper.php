@@ -270,17 +270,17 @@ class ExpressionManager {
             return false;
         }
 
-        $bNumericArg1 = (is_numeric($arg1[0]) || $arg1[0] == '');
-        $bNumericArg2 = (is_numeric($arg2[0]) || $arg2[0] == '');
+        $bNumericArg1 = !$arg1[0] || strval(floatval($arg1[0]))===strval($arg1[0]);
+        $bNumericArg2 = !$arg2[0] || strval(floatval($arg2[0]))===strval($arg2[0]);
 
-        $bStringArg1 = (!$bNumericArg1 || $arg1[0] == '');
-        $bStringArg2 = (!$bNumericArg2 || $arg2[0] == '');
+        $bStringArg1 = !$arg1[0] || !$bNumericArg1;
+        $bStringArg2 = !$arg1[0] || !$bNumericArg2;
 
         $bBothNumeric = ($bNumericArg1 && $bNumericArg2);
         $bBothString = ($bStringArg1 && $bStringArg2);
         $bMismatchType=(!$bBothNumeric && !$bBothString);
 
-        // Set bBothString if one is forced to be string, only if bith can be numeric. Mimic JS and PHO
+        // Set bBothString if one is forced to be string, only if both can be numeric. Mimic JS and PHP
         // Not sure if needed to test if [2] is set. : TODO review
         if($bBothNumeric){
             $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// Question can return NUMERIC or WORD : DQ and DS is string entered by user, STRING is a result of a String function

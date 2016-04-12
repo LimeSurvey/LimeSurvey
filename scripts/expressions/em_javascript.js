@@ -736,10 +736,10 @@ function LEMval(alias)
                 return value;
             }
             else {
-                if (!LEMis_numeric(value) || (value.length > 0 && value[0]==0)) {// so keep 0 prefixes on numbers
-                    return value;
+                if (parseFloat(value)+""===value) {// return numeric only if it don't update string : see bugs #10860 + #08324 + #07805. Still issue with big number : difference in PHp/JS (Firefox) : 1234567890123456
+                    return parseFloat(value);
                 }
-                return +value;  // convert it to numeric
+                return value;
             }
         }
         case 'rowdivid':
