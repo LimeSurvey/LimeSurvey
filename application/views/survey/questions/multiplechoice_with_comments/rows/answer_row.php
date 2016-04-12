@@ -26,31 +26,40 @@
 <!-- answer_row -->
 <li class='<?php echo $liclasses;?>'>
     <!-- Checkbox and label -->
-    <div class="option col-xs-12 form-group" <?php echo $sDisplayStyle ;?> >
+    <div class="option col-xs-12 form-group checkbox" <?php echo $sDisplayStyle ;?> >
+        <input
+            class="checkbox <?php echo $classes; echo $kpclass; ?>"
+            title="<?php echo $title;?>"
+            type="checkbox"
+            name="<?php echo $name; ?>"
+            id="<?php echo $id;?>"
+            value="<?php echo $value?>"
+            <?php echo $checked;?>
+            onclick="<?php echo $checkconditionFunction;?>"
+            aria-labelledby="label-<?php echo $id;?>"
+          />
+
+        <label for="<?php echo $id;?>" class="answertext control-label"></label>
+
+        <!--
+             The label text is provided inside a div,
+             so final user can add paragraph, div, or whatever he wants in the subquestion text
+             This field is related to the input thanks to attribute aria-labelledby
+        -->
+        <div class="label-text label-clickable" id="label-<?php echo $id;?>">
+            <?php echo $labeltext;?>
+        </div>
+
+
+        <?php if($javainput):?>
             <input
-                    class="checkbox <?php echo $classes; echo $kpclass; ?>"
-                    title="<?php echo $title;?>"
-                    type="checkbox"
-                    name="<?php echo $name; ?>"
-                    id="<?php echo $id;?>"
-                    value="<?php echo $value?>"
-                    <?php echo $checked;?>
-                    onclick="<?php echo $checkconditionFunction;?>"
+            type='hidden'
+            name='<?php echo $javaname?>'
+            id='<?php echo $javaname?>'
+            value='<?php echo $javavalue;?>'
+            <?php echo $checked;?>
             />
-
-            <label for="<?php echo $id;?>" class="answertext control-label">
-                <?php echo $labeltext;?>
-            </label>
-
-            <?php if($javainput):?>
-                <input
-                type='hidden'
-                name='<?php echo $javaname?>'
-                id='<?php echo $javaname?>'
-                value='<?php echo $javavalue;?>'
-                <?php echo $checked;?>
-                />
-            <?php endif;?>
+        <?php endif;?>
     </div>
 
     <!-- Comment -->
