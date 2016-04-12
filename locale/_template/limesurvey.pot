@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-04-11 10:29:26+00:00\n"
+"POT-Creation-Date: 2016-04-12 08:27:24+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1422,7 +1422,7 @@ msgid "We recommend that before you proceed, you export the entire survey from t
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:179
-#: application/controllers/admin/questions.php:1460
+#: application/controllers/admin/questions.php:1459
 msgid "Continue?"
 msgstr ""
 
@@ -1726,20 +1726,20 @@ msgstr ""
 #: application/helpers/qanda_helper.php:1365
 #: application/helpers/qanda_helper.php:1744
 #: application/helpers/qanda_helper.php:1806
-#: application/helpers/qanda_helper.php:3952
-#: application/helpers/qanda_helper.php:4014
-#: application/helpers/qanda_helper.php:4133
-#: application/helpers/qanda_helper.php:4174
-#: application/helpers/qanda_helper.php:4544
-#: application/helpers/qanda_helper.php:4628
-#: application/helpers/qanda_helper.php:4764
-#: application/helpers/qanda_helper.php:5597
-#: application/helpers/qanda_helper.php:5598
-#: application/helpers/qanda_helper.php:5886
-#: application/helpers/qanda_helper.php:6066
-#: application/helpers/qanda_helper.php:6080
-#: application/helpers/qanda_helper.php:6253
-#: application/helpers/qanda_helper.php:6289
+#: application/helpers/qanda_helper.php:3954
+#: application/helpers/qanda_helper.php:4016
+#: application/helpers/qanda_helper.php:4135
+#: application/helpers/qanda_helper.php:4176
+#: application/helpers/qanda_helper.php:4546
+#: application/helpers/qanda_helper.php:4630
+#: application/helpers/qanda_helper.php:4766
+#: application/helpers/qanda_helper.php:5599
+#: application/helpers/qanda_helper.php:5600
+#: application/helpers/qanda_helper.php:5888
+#: application/helpers/qanda_helper.php:6067
+#: application/helpers/qanda_helper.php:6081
+#: application/helpers/qanda_helper.php:6254
+#: application/helpers/qanda_helper.php:6290
 #: application/helpers/userstatistics_helper.php:718
 #: application/helpers/userstatistics_helper.php:757
 #: application/helpers/userstatistics_helper.php:1588
@@ -2712,7 +2712,7 @@ msgstr ""
 #: application/views/admin/labels/_labelviewrightcontent_view.php:67
 #: application/views/admin/survey/Question/importQuestion_view.php:12
 #: application/views/admin/survey/QuestionGroups/importGroup_view.php:12
-#: application/views/admin/survey/subview/import_ressources_modal.php:21
+#: application/views/admin/survey/subview/import_ressources_modal.php:20
 #: application/views/admin/survey/subview/tabImport_view.php:8
 #: application/views/admin/survey/subview/tabImport_view.php:47
 #: application/views/admin/survey/subview/tabResourceManagement_view.php:17
@@ -3165,35 +3165,35 @@ msgstr ""
 msgid "Question was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1311
+#: application/controllers/admin/questions.php:1310
 msgid "You are not authorized to delete questions."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1443
+#: application/controllers/admin/questions.php:1442
 msgid "The existing label set has assessment values assigned."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1443
+#: application/controllers/admin/questions.php:1442
 msgid "If you replace the label set the existing asssessment values will be lost."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1447
+#: application/controllers/admin/questions.php:1446
 msgid "The existing label set has different/more languages."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1447
+#: application/controllers/admin/questions.php:1446
 msgid "If you replace the label set these translations will be lost."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1454
+#: application/controllers/admin/questions.php:1453
 msgid "Do you really want to continue?"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1458
+#: application/controllers/admin/questions.php:1457
 msgid "You are about to replace an existing label set with the current answer options."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1766
+#: application/controllers/admin/questions.php:1765
 #: application/views/admin/super/_question_explorer.php:72
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:18
 msgid "You can't add questions while the survey is active."
@@ -4558,9 +4558,9 @@ msgstr ""
 #: application/helpers/common_helper.php:7350
 #: application/helpers/qanda_helper.php:1239
 #: application/helpers/qanda_helper.php:1921
-#: application/helpers/qanda_helper.php:4764
-#: application/helpers/qanda_helper.php:6240
-#: application/helpers/qanda_helper.php:6276
+#: application/helpers/qanda_helper.php:4766
+#: application/helpers/qanda_helper.php:6241
+#: application/helpers/qanda_helper.php:6277
 #: application/views/admin/dataentry/content_view.php:124
 #: application/views/admin/dataentry/content_view.php:136
 #: application/views/survey/questions/list_with_comment/dropdown/answer.php:32
@@ -8143,7 +8143,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3115
 #: application/helpers/expressions/em_manager_helper.php:3309
 #: application/views/admin/dataentry/content_view.php:473
-#: application/views/survey/questions/multiplenumeric/rows/input/answer_row.php:49
+#: application/views/survey/questions/multiplenumeric/rows/input/answer_row.php:53
 #: application/views/survey/questions/numerical/answer.php:32
 msgid "Only numbers may be entered in this field."
 msgstr ""
@@ -8755,8 +8755,8 @@ msgstr ""
 msgid "Upload file|Upload files"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3383
-#: application/helpers/qanda_helper.php:3463
+#: application/helpers/qanda_helper.php:3385
+#: application/helpers/qanda_helper.php:3465
 #: application/views/admin/templates/templateeditor_printoutput_view.php:3
 #: application/views/survey/questions/longfreetext/answer.php:19
 #: application/views/survey/questions/numerical/answer.php:22
@@ -8764,63 +8764,63 @@ msgstr ""
 msgid "Your answer"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3457
+#: application/helpers/qanda_helper.php:3459
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3527
+#: application/helpers/qanda_helper.php:3529
 msgid "Click to set the location or drag and drop the pin. You may may also enter coordinates"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3868
+#: application/helpers/qanda_helper.php:3870
 msgid "An array with sub-question on each line. The answers are value from 1 to 5 and are contained in the table header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4067
+#: application/helpers/qanda_helper.php:4069
 msgid "An array with sub-question on each line. The answers are value from 1 to 10 and are contained in the table header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4086
-#: application/helpers/qanda_helper.php:4228
-#: application/helpers/qanda_helper.php:4339
-#: application/helpers/qanda_helper.php:4514
-#: application/helpers/qanda_helper.php:5838
+#: application/helpers/qanda_helper.php:4088
+#: application/helpers/qanda_helper.php:4230
+#: application/helpers/qanda_helper.php:4341
+#: application/helpers/qanda_helper.php:4516
+#: application/helpers/qanda_helper.php:5840
 msgid "The last cell are for no answer. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4215
+#: application/helpers/qanda_helper.php:4217
 msgid "An array with sub-question on each line. The answers are yes, no, uncertain and are in the table header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4328
+#: application/helpers/qanda_helper.php:4330
 msgid "An array with sub-question on each line. The answers are increase, same, decrease and are contained in the table header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4451
+#: application/helpers/qanda_helper.php:4453
 msgid "An array with sub-question on each line. You have to select your answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4456
+#: application/helpers/qanda_helper.php:4458
 msgid "An array with sub-question on each line. The answers are contained in the table header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4509
+#: application/helpers/qanda_helper.php:4511
 msgid "After answers, a cell give some information. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4818
-#: application/helpers/qanda_helper.php:5195
+#: application/helpers/qanda_helper.php:4820
+#: application/helpers/qanda_helper.php:5197
 msgid "An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4878
+#: application/helpers/qanda_helper.php:4880
 msgid "Each answer is a number. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4886
-#: application/helpers/qanda_helper.php:4901
-#: application/helpers/qanda_helper.php:4916
-#: application/helpers/qanda_helper.php:4917
+#: application/helpers/qanda_helper.php:4888
+#: application/helpers/qanda_helper.php:4903
+#: application/helpers/qanda_helper.php:4918
+#: application/helpers/qanda_helper.php:4919
 #: application/views/admin/assessments_view.php:87
 #: application/views/admin/assessments_view.php:132
 #: application/views/admin/survey/listSurveys_view.php:134
@@ -8829,61 +8829,61 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4890
-#: application/helpers/qanda_helper.php:4906
+#: application/helpers/qanda_helper.php:4892
+#: application/helpers/qanda_helper.php:4908
 msgid "Grand total"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4895
+#: application/helpers/qanda_helper.php:4897
 msgid "The last row shows the total for the column. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4909
+#: application/helpers/qanda_helper.php:4911
 msgid "The last column shows the total for the row. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4928
+#: application/helpers/qanda_helper.php:4930
 msgid "The last row shows the total for the column and the last column shows the total for the row. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4991
-#: application/helpers/qanda_helper.php:5344
+#: application/helpers/qanda_helper.php:4993
+#: application/helpers/qanda_helper.php:5346
 msgid "The last cell give some information. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5261
+#: application/helpers/qanda_helper.php:5263
 msgid "Check or uncheck the answer for each subquestion. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5268
+#: application/helpers/qanda_helper.php:5270
 msgid "Each answers are a number. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5273
+#: application/helpers/qanda_helper.php:5275
 msgid "Select the answer for each subquestion. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5574
+#: application/helpers/qanda_helper.php:5576
 msgid "An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5717
+#: application/helpers/qanda_helper.php:5719
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5723
-#: application/helpers/qanda_helper.php:6307
+#: application/helpers/qanda_helper.php:5725
+#: application/helpers/qanda_helper.php:6308
 #: application/views/survey/questions/arrays/array/dropdown/empty.php:3
 #: application/views/survey/questions/arrays/multiflexi/empty_error.php:2
 #: application/views/survey/questions/arrays/multitext/empty_error.php:2
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5776
+#: application/helpers/qanda_helper.php:5778
 msgid "An array with sub-question on each line, with 2 answers to provide on each line. You have to select the answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5784
+#: application/helpers/qanda_helper.php:5786
 msgid "An array with sub-question on each line, with 2 answers to provide on each line. The answers are contained in the table header. "
 msgstr ""
 
@@ -9250,190 +9250,186 @@ msgid "Japanese"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:373
-msgid "Kazakh"
-msgstr ""
-
-#: application/helpers/surveytranslator_helper.php:380
 msgid "Kinyarwanda"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:387
+#: application/helpers/surveytranslator_helper.php:380
 msgid "Korean"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:394
+#: application/helpers/surveytranslator_helper.php:387
 msgid "Kurdish (Sorani)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:402
+#: application/helpers/surveytranslator_helper.php:395
 msgid "Kyrgyz"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:409
+#: application/helpers/surveytranslator_helper.php:402
 msgid "Lithuanian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:416
+#: application/helpers/surveytranslator_helper.php:409
 msgid "Latvian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:423
+#: application/helpers/surveytranslator_helper.php:416
 msgid "Macedonian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:430
+#: application/helpers/surveytranslator_helper.php:423
 msgid "Mongolian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:437
+#: application/helpers/surveytranslator_helper.php:430
 msgid "Malay"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:444
+#: application/helpers/surveytranslator_helper.php:437
 msgid "Maltese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:451
+#: application/helpers/surveytranslator_helper.php:444
 msgid "Marathi"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:458
+#: application/helpers/surveytranslator_helper.php:451
 msgid "Norwegian (Bokmal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:465
+#: application/helpers/surveytranslator_helper.php:458
 msgid "Norwegian (Nynorsk)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:472
+#: application/helpers/surveytranslator_helper.php:465
 msgid "Occitan"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:479
+#: application/helpers/surveytranslator_helper.php:472
 msgid "Pashto"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:486
+#: application/helpers/surveytranslator_helper.php:479
 msgid "Persian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:493
+#: application/helpers/surveytranslator_helper.php:486
 msgid "Papiamento (Aruba)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:501
+#: application/helpers/surveytranslator_helper.php:494
 msgid "Papiamento (Curaçao and Bonaire)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:509
+#: application/helpers/surveytranslator_helper.php:502
 msgid "Polish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:516
+#: application/helpers/surveytranslator_helper.php:509
 msgid "Polish (Informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:524
+#: application/helpers/surveytranslator_helper.php:517
 msgid "Portuguese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:531
+#: application/helpers/surveytranslator_helper.php:524
 msgid "Portuguese (Brazilian)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:538
+#: application/helpers/surveytranslator_helper.php:531
 msgid "Punjabi"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:545
+#: application/helpers/surveytranslator_helper.php:538
 msgid "Russian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:552
+#: application/helpers/surveytranslator_helper.php:545
 msgid "Romanian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:559
+#: application/helpers/surveytranslator_helper.php:552
 msgid "Slovak"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:566
+#: application/helpers/surveytranslator_helper.php:559
 msgid "Sinhala"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:573
+#: application/helpers/surveytranslator_helper.php:566
 msgid "Slovenian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:580
+#: application/helpers/surveytranslator_helper.php:573
 msgid "Serbian (Cyrillic)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:587
+#: application/helpers/surveytranslator_helper.php:580
 msgid "Serbian (Latin)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:594
+#: application/helpers/surveytranslator_helper.php:587
 msgid "Spanish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:601
+#: application/helpers/surveytranslator_helper.php:594
 msgid "Spanish (Argentina)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:608
+#: application/helpers/surveytranslator_helper.php:601
 msgid "Spanish (Argentina) (Informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:616
+#: application/helpers/surveytranslator_helper.php:609
 msgid "Spanish (Chile)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:623
+#: application/helpers/surveytranslator_helper.php:616
 msgid "Spanish (Mexico)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:630
+#: application/helpers/surveytranslator_helper.php:623
 msgid "Swahili"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:638
+#: application/helpers/surveytranslator_helper.php:631
 msgid "Swedish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:645
+#: application/helpers/surveytranslator_helper.php:638
 msgid "Tamil"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:652
+#: application/helpers/surveytranslator_helper.php:645
 msgid "Turkish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:659
+#: application/helpers/surveytranslator_helper.php:652
 msgid "Thai"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:666
+#: application/helpers/surveytranslator_helper.php:659
 msgid "Ukrainian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:673
+#: application/helpers/surveytranslator_helper.php:666
 msgid "Urdu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:680
+#: application/helpers/surveytranslator_helper.php:673
 msgid "Vietnamese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:687
+#: application/helpers/surveytranslator_helper.php:680
 msgid "Zulu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:717
+#: application/helpers/surveytranslator_helper.php:710
 msgid "Dot (.)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:718
+#: application/helpers/surveytranslator_helper.php:711
 msgid "Comma (,)"
 msgstr ""
 
@@ -12009,8 +12005,8 @@ msgstr ""
 
 #: application/views/admin/labels/_labelviewrightcontent_view.php:66
 #: application/views/admin/survey/subview/accordion/_resources_panel.php:35
-#: application/views/admin/survey/subview/import_ressources_modal.php:18
-#: application/views/admin/survey/subview/import_ressources_modal.php:31
+#: application/views/admin/survey/subview/import_ressources_modal.php:17
+#: application/views/admin/survey/subview/import_ressources_modal.php:30
 #: application/views/admin/survey/subview/tabResourceManagement_view.php:24
 msgid "Import resources ZIP archive"
 msgstr ""
@@ -13245,7 +13241,7 @@ msgid "Settings for plugin: %s"
 msgstr ""
 
 #: application/views/admin/pluginmanager/configure.php:5
-#: application/views/admin/survey/subview/accordion/_plugins_panel.php:15
+#: application/views/admin/survey/subview/accordion/_plugins_panel.php:14
 #: application/views/admin/survey/subview/tabPluginSettings_view.php:10
 msgid "Settings for plugin %s"
 msgstr ""
@@ -15571,7 +15567,7 @@ msgstr ""
 msgid "Target (sub-)question:"
 msgstr ""
 
-#: application/views/admin/survey/subview/import_ressources_modal.php:25
+#: application/views/admin/survey/subview/import_ressources_modal.php:24
 #: application/views/admin/survey/subview/tabResourceManagement_view.php:21
 msgid "Select ZIP File:"
 msgstr ""
@@ -17730,11 +17726,13 @@ msgstr ""
 msgid "Other answer"
 msgstr ""
 
-#: application/views/survey/questions/multiplenumeric/answer.php:30
+#: application/views/survey/questions/multiplenumeric/answer.php:31
+#: application/views/survey/questions/multiplenumeric/answer_input.php:38
 msgid "Remaining: "
 msgstr ""
 
-#: application/views/survey/questions/multiplenumeric/answer.php:44
+#: application/views/survey/questions/multiplenumeric/answer.php:46
+#: application/views/survey/questions/multiplenumeric/answer_input.php:61
 msgid "Total: "
 msgstr ""
 
