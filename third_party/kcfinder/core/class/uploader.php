@@ -311,7 +311,14 @@ class uploader {
     }
 
     protected function realpath($path) {
-        $rPath = realpath($path);
+        // PHP's realpath() does not work on files that don't exist, but
+        // there might be a symlink somewhere in the path so we need to
+        // check it.
+        $existing_path = $path;
+        while (!file_exists($existing_path)) {
+            $existing_path = dirname($existing_path);
+        }
+        $rPath = realpath($existing_path) . substr($path, strlen($existing_path));
         if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN")
             $rPath = str_replace("\\", "/", $rPath);
         return $rPath;
