@@ -10,7 +10,7 @@
         <license>GNU General Public License version 2 or later</license>
         <version>1.0</version>
         <description>LimeSurvey Template.</description>
-        <last_update>2016-04-05 11:11:00</last_update>
+        <last_update>2016-04-12 19:57:00</last_update>
     </metadatas>
 
     <files>
@@ -19,6 +19,9 @@
             <filename>css/bootstrap-slider.css</filename>
             <filename>css/ubuntu_orange.css</filename>
             <filename>css/template.css</filename>
+            <filename>css/font-awesome.css</filename>
+            <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
+            <filename>css/awesome-bootstrap-checkbox/bootswatch-reset.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
