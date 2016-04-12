@@ -14,7 +14,7 @@
 ?>
 
 <!-- answer_td_checkboxes -->
-<td data-title="<?php echo $dataTitle;?>" class="answer-cell-6 answer_cell_<?php echo $ld; ?> question-item answer-item <?php echo $answertypeclass;?>-item">
+<td data-title="<?php echo $dataTitle;?>" class="answer-cell-6 answer_cell_<?php echo $ld; ?> question-item answer-item <?php echo $answertypeclass;?>-item checkbox-item checkbox text-center">
 
     <input
         type="hidden"
@@ -54,10 +54,19 @@
             }
             return true;"
         onchange="checkconditions(this.value, this.name, this.type)"
+        aria-labelledby="label-cbox_<?php echo $myfname2;?>"
         />
 
-        <label class="hide read" for="cbox_<?php echo $myfname2;?>">
+        <label for="cbox_<?php echo $myfname2;?>"></label>
+
+        <!--
+             The label text is provided inside a div,
+             so final user can add paragraph, div, or whatever he wants in the subquestion text
+             This field is related to the input thanks to attribute aria-labelledby
+        -->
+        <div class="hide label-text" id="label-cbox_<?php echo $myfname2;?>">
             <?php echo $dataTitle;?>
-        </label>
+        </div>
+
     </td>
 <!-- end of answer_td_checkboxes -->

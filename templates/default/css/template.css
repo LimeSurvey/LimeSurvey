@@ -737,17 +737,5 @@ td.answer-item.text-center
 .label-text{
     display: inline;
     position: relative;
-    bottom: 2px;
-}
-
-.table-5-point-array .label-text{
-    display: inline;
-    position: relative;
-    bottom: 0px;
-}
-
-.table-10-point-array .label-text{
-    display: inline;
-    position: relative;
     bottom: 0px;
 }

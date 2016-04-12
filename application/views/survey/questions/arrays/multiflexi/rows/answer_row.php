@@ -2,7 +2,7 @@
 /**
  * Generate a row for the table
  *
- * @var $answer_tds      : the cells of each row, generated with the view rows/cells/*.php 
+ * @var $answer_tds      : the cells of each row, generated with the view rows/cells/*.php
  * @var $sDisplayStyle
  * @var $useAnswerWidth
  * @var $answerwidth

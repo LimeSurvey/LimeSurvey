@@ -30,16 +30,16 @@
 
         <thead>
             <tr class="dontread">
-                <th>&nbsp;</th>
+                <th class="text-center">&nbsp;</th>
 
                 <?php foreach ($labelans as $ld): ?>
-                    <th  class='th-11'>
+                    <th  class='th-11  text-center'>
                         <?php echo $ld;?>
                     </th>
                 <?php endforeach;?>
 
                 <?php if ($right_exists):?>
-                    <th>
+                    <th class="text-center">
                         &nbsp;
                     </th>
                 <?php endif;?>
