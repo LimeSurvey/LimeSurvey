@@ -24,7 +24,7 @@
 
 <!-- answer -->
 <div class="no-more-tables no-more-tables-array-multi-text">
-    <table <?php echo $q_table_id_HTML;?> class="table question subquestion-list questions-list <?php echo $extraclass;?> <?php echo $num_class;?> <?php echo $totals_class;?>">
+    <table <?php echo $q_table_id_HTML;?> class="table table-multi-text question subquestion-list questions-list <?php echo $extraclass;?> <?php echo $num_class;?> <?php echo $totals_class;?>">
 
         <colgroup class="col-responses">
 
