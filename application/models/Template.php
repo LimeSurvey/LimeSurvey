@@ -306,9 +306,9 @@ class Template extends LSActiveRecord
         $Resource = opendir($standardTemplatesPath);
         while ($Item = readdir($Resource))
         {
-            if (is_dir($Item) && $Item != "." && $Item != "..")
+            if (is_dir($standardTemplatesPath . $Item) && $Item != "." && $Item != "..")
             {
-                touch($Directory . $Item);
+                touch($standardTemplatesPath . $Item);
             }
         }
     }
