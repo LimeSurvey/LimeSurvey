@@ -270,17 +270,17 @@ class ExpressionManager {
             return false;
         }
 
-        $bNumericArg1 = (is_numeric($arg1[0]) || $arg1[0] == '');
-        $bNumericArg2 = (is_numeric($arg2[0]) || $arg2[0] == '');
+        $bNumericArg1 = !$arg1[0] || strval(floatval($arg1[0]))===strval($arg1[0]);
+        $bNumericArg2 = !$arg2[0] || strval(floatval($arg2[0]))===strval($arg2[0]);
 
-        $bStringArg1 = (!$bNumericArg1 || $arg1[0] == '');
-        $bStringArg2 = (!$bNumericArg2 || $arg2[0] == '');
+        $bStringArg1 = !$arg1[0] || !$bNumericArg1;
+        $bStringArg2 = !$arg1[0] || !$bNumericArg2;
 
         $bBothNumeric = ($bNumericArg1 && $bNumericArg2);
         $bBothString = ($bStringArg1 && $bStringArg2);
         $bMismatchType=(!$bBothNumeric && !$bBothString);
 
-        // Set bBothString if one is forced to be string, only if bith can be numeric. Mimic JS and PHO
+        // Set bBothString if one is forced to be string, only if both can be numeric. Mimic JS and PHP
         // Not sure if needed to test if [2] is set. : TODO review
         if($bBothNumeric){
             $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// Question can return NUMERIC or WORD : DQ and DS is string entered by user, STRING is a result of a String function
@@ -1549,7 +1549,7 @@ class ExpressionManager {
                             }
 
                             if ($this->groupSeq == -1 || $groupSeq == -1 || $questionSeq == -1 || $this->questionSeq == -1) {
-                                $class = 'em-var-static'; 
+                                $class = 'em-var-static';
                             }
                             elseif ($groupSeq > $this->groupSeq) {
                                 $class = 'em-var-before em-var-diffgroup';
@@ -2556,14 +2556,14 @@ function exprmgr_stripos($haystack , $needle ,$offset=0)
  * @param string $haystack : checked string
  * @param string $needle : string to find
  * @param boolean $before_needle : portion to return
- * @return string|false 
+ * @return string|false
  */
 function exprmgr_stristr($haystack,$needle,$before_needle=false)
 {
     return mb_stristr($haystack,$needle,$before_needle,'UTF-8');
 }
 /**
- * Get unicode string length 
+ * Get unicode string length
  * @param string $string
  * @return int
  */
@@ -2589,14 +2589,14 @@ function exprmgr_strpos($haystack , $needle ,$offset=0)
  * @param string $haystack : checked string
  * @param string $needle : string to find
  * @param boolean $before_needle : portion to return
- * @return string|false 
+ * @return string|false
  */
 function exprmgr_strstr($haystack,$needle,$before_needle=false)
 {
     return mb_strstr($haystack,$needle,$before_needle,'UTF-8');
 }
 /**
- * Make an unicode string lowercase 
+ * Make an unicode string lowercase
  * @param string $string
  * @return string
  */
@@ -2605,7 +2605,7 @@ function exprmgr_strtolower($string)
     return mb_strtolower ($string,'UTF-8');
 }
 /**
- * Make an unicode string uppercase 
+ * Make an unicode string uppercase
  * @param string $string
  * @return string
  */
@@ -2660,20 +2660,20 @@ function exprmgr_sumifop($args)
 
 /**
  * Find the closest matching numerical input values in a list an replace it by the
- * corresponding value within another list 
- * 
+ * corresponding value within another list
+ *
  * @author Johannes Weberhofer, 2013
  *
  * @param numeric $fValueToReplace
- * @param numeric $iStrict - 1 for exact matches only otherwise interpolation the 
+ * @param numeric $iStrict - 1 for exact matches only otherwise interpolation the
  * 		  closest value should be returned
  * @param string $sTranslateFromList - comma seperated list of numeric values to translate from
  * @param string $sTranslateToList - comma seperated list of numeric values to translate to
  * @return numeric
  */
-function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, $sTranslateToList) 
+function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, $sTranslateToList)
 {
-	if ( (is_numeric($fValueToReplace)) && ($iStrict!=null) && ($sTranslateFromList!=null) && ($sTranslateToList!=null) ) 
+	if ( (is_numeric($fValueToReplace)) && ($iStrict!=null) && ($sTranslateFromList!=null) && ($sTranslateToList!=null) )
 	{
 		$aFromValues = explode( ',', $sTranslateFromList);
 		$aToValues = explode( ',', $sTranslateToList);
@@ -2695,7 +2695,7 @@ function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, 
 					$fMinimumDiff = $fCurrentDiff;
 					$iNearestIndex = $i;
 				}
-			}					
+			}
 			if ( $iStrict !== 1 ) {
 				return $aToValues[$iNearestIndex];
 			}
