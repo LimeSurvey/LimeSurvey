@@ -268,7 +268,7 @@ class RegisterController extends LSYii_Controller {
             {
                 if (isset($aAttachments['registration']))
                 {
-                    LimeExpressionManager::singleton()->loadTokenInformation($aSurveyInfo['sid'], $emrow['token']);
+                    LimeExpressionManager::singleton()->loadTokenInformation($aSurveyInfo['sid'], $sToken);
 
                     foreach ($aAttachments['registration'] as $aAttachment)
                     {
