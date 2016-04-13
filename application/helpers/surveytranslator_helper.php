@@ -910,15 +910,15 @@
             else { return $detaillanguages[$codetosearch]['description'];}
         }
         else
-            // else return default en code
-            return false;
+            // else return code
+            return $codetosearch;
     }
 
 
     function getLanguageRTL($sLanguageCode)
     {
         $aLanguageData= getLanguageData(false,$sLanguageCode);
-        if (isset($aLanguageData[$sLanguageCode]['rtl']))
+        if (isset($aLanguageData[$sLanguageCode]) && isset($aLanguageData[$sLanguageCode]['rtl']))
         {
             return $aLanguageData[$sLanguageCode]['rtl'];
         }

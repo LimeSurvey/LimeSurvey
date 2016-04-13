@@ -299,7 +299,7 @@ $surveyid = $surveyinfo['sid'];
                     </p>
 
                     <p>
-                        <strong><?php echo gT("Survey URL");?>:</strong><br/>
+                        <strong><?php echo gT("Survey URL:");?></strong><br/>
                         <small><em><?php echo getLanguageNameFromCode($surveyinfo['language'],false); ?></em></small><br/>
                             <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language'])); ?>
                             <?php
@@ -328,7 +328,7 @@ $surveyid = $surveyinfo['sid'];
                     <!-- Survey URL -->
                     <tr>
                         <td>
-                            <strong> <?php echo gT("Survey URL");?>:</strong>
+                            <strong> <?php echo gT("Survey URL:");?></strong>
                         </td>
                         <td>
                         </td>
