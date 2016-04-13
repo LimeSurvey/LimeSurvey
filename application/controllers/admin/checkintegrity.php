@@ -262,7 +262,7 @@ class CheckIntegrity extends Survey_Common_Action
     private function _deleteQuotaLanguageSettings()
     {
         $oCriteria = new CDbCriteria;
-        $oCriteria->join = 'LEFT JOIN {{quota}} q ON t.quotals_quota_id=q.id';
+        $oCriteria->join = 'LEFT JOIN {{quota}} q ON {{quota_languagesettings}}.quotals_quota_id=q.id';
         $oCriteria->condition = '(q.id IS NULL)';
         QuotaLanguageSetting::model()->deleteAll($oCriteria);
         if (QuotaLanguageSetting::model()->hasErrors()) safeDie(QuotaLanguageSetting::model()->getError());
@@ -276,7 +276,7 @@ class CheckIntegrity extends Survey_Common_Action
     private function _deleteQuotas(array $aData)
     {
         $oCriteria = new CDbCriteria;
-        $oCriteria->join = 'LEFT JOIN {{surveys}} q ON t.sid=q.sid';
+        $oCriteria->join = 'LEFT JOIN {{surveys}} q ON {{quota}}.sid=q.sid';
         $oCriteria->condition = '(q.sid IS NULL)';
         Quota::model()->deleteAll($oCriteria);
         if (Quota::model()->hasErrors()) safeDie(Quota::model()->getError());
