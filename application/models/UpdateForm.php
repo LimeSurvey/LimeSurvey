@@ -266,16 +266,18 @@ class UpdateForm extends CFormModel
     {
         if (file_exists($this->tempdir.DIRECTORY_SEPARATOR.$file_to_unzip))
         {
-            // To debug pcl_zip, uncomment the following line :    require_once('/var/www/limesurvey/LimeSurvey/application/libraries/admin/pclzip/pcltrace.lib.php'); require_once('/var/www/limesurvey/LimeSurvey/application/libraries/admin/pclzip/pclzip-trace.lib.php'); PclTraceOn(2);
-            // To debug pcl_zip, comment the following line:
+            // To debug pcl_zip, uncomment the following line :
+            // require_once('/var/www/limesurvey/LimeSurvey/application/libraries/admin/pclzip/pcltrace.lib.php'); require_once('/var/www/limesurvey/LimeSurvey/application/libraries/admin/pclzip/pclzip-trace.lib.php'); PclTraceOn(2);
             Yii::app()->loadLibrary("admin/pclzip");
 
             $archive = new PclZip($this->tempdir.DIRECTORY_SEPARATOR.$file_to_unzip);
 
             // TODO : RESTORE REPLACE NEWER !!
+            // To debug pcl_zip, uncomment the following line :
             //if ($archive->extract(PCLZIP_OPT_PATH, $this->rootdir.'/', PCLZIP_OPT_REPLACE_NEWER)== 0)
             if ($archive->extract(PCLZIP_OPT_PATH, $this->rootdir.DIRECTORY_SEPARATOR, PCLZIP_OPT_REPLACE_NEWER)== 0)
             {
+                // To debug pcl_zip, uncomment the following line :
                 //PclTraceDisplay(); die();
                 $return = array('result'=>FALSE, 'error'=>'unzip_error', 'message'=>$archive->errorInfo(true));
                 return (object) $return;
@@ -354,6 +356,15 @@ class UpdateForm extends CFormModel
         return (object) $return;
     }
 
+    /**
+     * Republish all the assets
+     * For now, only for frontEnd templates
+     * (backend theme are still based on file assets, not directory assets )
+     */
+    public function republishAssets()
+    {
+        Template::model()->forceAssets();
+    }
 
     /**
      * Update the version file to the destination build version

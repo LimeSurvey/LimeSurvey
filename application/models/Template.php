@@ -294,7 +294,22 @@ class Template extends LSActiveRecord
         {
             self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId);
         }
-
         return self::$instance;
+    }
+
+    /**
+     * Touch each directory in standard template directory to force assset manager to republish them
+     */
+    public static function forceAssets()
+    {
+        $standardTemplatesPath = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR;
+        $Resource = opendir($standardTemplatesPath);
+        while ($Item = readdir($Resource))
+        {
+            if (is_dir($Item) && $Item != "." && $Item != "..")
+            {
+                touch($Directory . $Item);
+            }
+        }
     }
 }

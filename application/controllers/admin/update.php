@@ -299,6 +299,9 @@ class update extends Survey_Common_Action
                                 $updateModel->removeTmpFile('update.zip');
                                 $updateModel->removeTmpFile('comfort_updater_cookie.txt');
 
+                                // Force asset manager to republish the assets for all templates
+                                $updateModel->republishAssets();
+
                                 Yii::app()->session['update_result'] = null;
                                 Yii::app()->session['security_update'] = null;
                                 $today = new DateTime("now");
