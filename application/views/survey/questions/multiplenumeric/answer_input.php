@@ -17,7 +17,7 @@
 <!-- Multiple Numerical -->
 
 <!-- answer -->
-<div class='subquestions-list questions-list text-list <?php echo $prefixclass?>-list'>
+<div class='subquestion-list questions-list text-list <?php echo $prefixclass?>-list'>
 
     <table class='table no-more-tables table-multi-num'>
         <?php

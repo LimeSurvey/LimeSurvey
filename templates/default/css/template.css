@@ -539,10 +539,6 @@ td.answer-item.text-center
         width: 100%;
     }
 
-    .no-more-tables table.subquestions-list td {
-        text-align: left;
-    }
-
     /* Hide table headers (but not display: none;, for accessibility) */
     .no-more-tables thead tr {
         position: absolute;

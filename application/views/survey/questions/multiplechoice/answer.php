@@ -11,7 +11,7 @@
 <!-- Multiple Choice -->
 
 <!-- answer -->
-<div class="row multiple-choice-container subquestions-list questions-list checkbox-list">
+<div class="row multiple-choice-container subquestion-list questions-list checkbox-list">
         <input type="hidden" name="MULTI<?php echo $name; ?>" value="<?php echo $anscount; ?>" />
 
         <?php

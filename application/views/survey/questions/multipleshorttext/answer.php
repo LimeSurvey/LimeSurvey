@@ -9,7 +9,7 @@
 <!-- Multiple Shor Text -->
 
 <!-- answer -->
-<div class="list-unstyled subquestions-list questions-list text-list">
+<div class="list-unstyled subquestion-list questions-list text-list">
     <?php
         echo $sRows;
     ?>
