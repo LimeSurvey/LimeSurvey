@@ -1782,7 +1782,7 @@ class statistics_helper {
                         $fname= "$al[1]";
                     }
 
-                    $bAnswer = false; // For view
+                    $bAnswer = true; // For view
                     $bSum = false;
                 }
 
@@ -2388,7 +2388,6 @@ class statistics_helper {
     */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
-
         /* Set up required variables */
         $TotalCompleted = 0; //Count of actually completed answers
         $statisticsoutput="";
@@ -2652,7 +2651,7 @@ class statistics_helper {
                     $fname= "$al[1]";
                 }
 
-                $bAnswer = false; // For view
+                $bAnswer = true; // For view
                 $bSum = false;
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {

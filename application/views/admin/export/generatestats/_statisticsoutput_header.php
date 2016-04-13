@@ -26,13 +26,11 @@
         </tr>
         <!-- width depend on how much items... -->
         <tr>
-            <?php if($bAnswer): ?>
-                <th width='' align='center' >
-                    <strong>
-                        <?php eT("Answer");?>
-                    </strong>
-                </th>
-            <?php endif; ?>
+            <th width='' align='center' >
+                <strong>
+                    <?php eT("Answer");?>
+                </strong>
+            </th>
 
             <th width='' align='center' >
                 <strong><?php eT("Count"); ?></strong>
