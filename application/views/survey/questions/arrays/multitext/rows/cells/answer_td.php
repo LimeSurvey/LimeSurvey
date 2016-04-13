@@ -28,7 +28,8 @@
         type="text"
         name="<?php echo $myfname2; ?>"
         id="answer<?php echo $myfname2; ?>"
-        class="form-control <?php echo $kpclass; ?> <?php echo $maxlength; ?>"
+        class="form-control <?php echo $kpclass; ?>"
+        <?php echo $maxlength; ?>
         size="<?php echo $inputwidth; ?>"
         value="<?php echo $value;?>"
     />
