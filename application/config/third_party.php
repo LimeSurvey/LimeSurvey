@@ -21,8 +21,10 @@ return array(
     'bootstrap' => array(
         'basePath' => 'bootstrap',
         'css'=> array(
+            /* Not needed for templates ! they use their own theme !
             'css/bootstrap.css',
             'css/yiistrap.css',
+            */
         ),
         'depends' => array(
             'jquery',
