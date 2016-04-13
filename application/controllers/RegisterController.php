@@ -260,6 +260,27 @@ class RegisterController extends LSYii_Controller {
         $sFrom = $event->get('from');
         $sBounce = $event->get('bounce');
 
+        $aRelevantAttachments = array();
+        if (isset($aSurveyInfo['attachments']))
+        {
+            $aAttachments = unserialize($aSurveyInfo['attachments']);
+            if (!empty($aAttachments))
+            {
+                if (isset($aAttachments['registration']))
+                {
+                    LimeExpressionManager::singleton()->loadTokenInformation($aSurveyInfo['sid'], $emrow['token']);
+
+                    foreach ($aAttachments['registration'] as $aAttachment)
+                    {
+                        if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance']))
+                        {
+                            $aRelevantAttachments[] = $aAttachment['url'];
+                        }
+                    }
+                }
+            }
+        }
+
         if ($event->get('send', true) == false)
         {
             $this->sMessage=$event->get('message', $this->sMailMessage); // event can send is own message
@@ -270,7 +291,7 @@ class RegisterController extends LSYii_Controller {
                 $oToken->save();
             }
         }
-        elseif (SendEmailMessage($aMail['message'], $aMail['subject'], $sTo, $sFrom, $sitename,$useHtmlEmail,$sBounce))
+        elseif (SendEmailMessage($aMail['message'], $aMail['subject'], $sTo, $sFrom, $sitename,$useHtmlEmail,$sBounce,$aRelevantAttachments))
         {
             // TLR change to put date into sent
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
