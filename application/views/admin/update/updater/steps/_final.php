@@ -4,9 +4,6 @@
  * @var int $destinationBuild the destination build
  */
 ?>
-<?php
-    Template::model()->forceAssets();
- ?>
 <h2 class="maintitle"><?php eT('Update complete!'); ?></h2>
 <div class="updater-background">
     <?php

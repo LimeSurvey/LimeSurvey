@@ -363,7 +363,23 @@ class UpdateForm extends CFormModel
      */
     public function republishAssets()
     {
+        // Republish the template assets
         Template::model()->forceAssets();
+
+        // Edit the file republish_assets.php 
+        @ini_set('auto_detect_line_endings', true);
+        $versionlines = file($this->rootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'republish_assets.php');
+        $handle       = fopen($this->rootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'republish_assets.php', "w");
+        foreach ($versionlines as $line)
+        {
+            if(strpos($line,'republish_assets')!==false)
+            {
+                $line='$config[\'republish_assets\'] = false;'."\r\n";
+            }
+            fwrite($handle,$line);
+        }
+        fclose($handle);
+
     }
 
     /**
@@ -549,13 +565,19 @@ class UpdateForm extends CFormModel
 
 
     /**
-    * Prints the update notification
+    * Check if an update is available, and prints the update notification
+    * It also check if the assets need to be republished
     *
     * @access protected
     * @return mixed
     */
     public function getUpdateNotification()
     {
+        if(Yii::app()->getConfig("republish_assets"))
+        {
+            self::republishAssets();
+        }
+
         if(Yii::app()->getConfig('updatable'))
         {
             $today = new DateTime("now");

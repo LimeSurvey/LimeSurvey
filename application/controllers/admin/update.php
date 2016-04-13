@@ -300,7 +300,8 @@ class update extends Survey_Common_Action
                                 $updateModel->removeTmpFile('comfort_updater_cookie.txt');
 
                                 // Force asset manager to republish the assets for all templates
-                                $updateModel->republishAssets();
+                                //$updateModel->republishAssets();
+                                Template::model()->forceAssets();
 
                                 Yii::app()->session['update_result'] = null;
                                 Yii::app()->session['security_update'] = null;
