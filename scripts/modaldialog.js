@@ -19,24 +19,22 @@ function openUploadModalDialog(){
         var windowwidth = $(window).width()-30;
         var dialogwidth= Math.min(windowwidth, 940);
 
-        //$('#uploader').dialog('destroy').remove(); // destroy the old modal dialog
-        //$('<iframe id=\"uploader\" name=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
-        console.log('fieldname', fieldname);
         $('#file-upload-modal-' + fieldname).modal();
         $('#file-upload-modal-' + fieldname).on('show.bs.modal', function() {
             $('#file-upload-modal-' + fieldname).find('iframe').css('height', 'inherit');
         });
         $('#file-upload-modal-' + fieldname).on('hide.bs.modal', function() {
             var pass;
-            if(document.getElementById('uploader').contentDocument) {
-                if(document.getElementById('uploader').contentDocument.defaultView)
+            var uploaderId = 'uploader' + fieldname;
+            if(document.getElementById(uploaderId).contentDocument) {
+                if(document.getElementById(uploaderId).contentDocument.defaultView)
                     {       /*Firefox*/
-                    pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);
+                    pass=document.getElementById(uploaderId).contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);
                 }else{       /*IE8*/
-                    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
+                    pass=document.getElementById(uploaderId).contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
                 }
             }else{    /*IE6*/
-                pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
+                pass=document.getElementById(uploaderId).contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
             }
             return pass;
         });
