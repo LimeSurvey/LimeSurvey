@@ -44,7 +44,7 @@
                 <p class='modal-body-text'><?php eT("Are you sure?"); ?></p>
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-primary btn-ok"><span class='fa fa-check'></span>&nbsp;<?php eT("Yes"); ?></a>
+                <a class="btn btn-primary btn-ok"><span class='fa fa-check'></span>&nbsp;<?php eT("Yes"); ?></a>
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><span class='fa fa-ban'></span>&nbsp;<?php eT("No"); ?></button>
             </div>
         </div>
@@ -64,7 +64,7 @@
                 <p class='modal-body-text'><?php eT("An error occurred."); ?></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"></span>&nbsp;<?php eT("Close"); ?></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
             </div>
         </div>
     </div>

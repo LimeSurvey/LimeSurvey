@@ -272,7 +272,5 @@
                         <span class='hint warning'><?php eT("Note that you cannot undo a delete if you proceed. The data will be gone."); ?></span></p>
                 </form><?php
             } ?>
-                </p>
         </div>
     </div>
-</div>
