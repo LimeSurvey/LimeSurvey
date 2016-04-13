@@ -280,12 +280,12 @@ class Statistics_userController extends LSYii_Controller {
                     foreach($result as $row)
                     {
                         $fquery = "SELECT * FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang AND scale_id = 1 ORDER BY question_order, title";
-                        $fresult = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
+                        $fresult = Yii::app()->db->createCommand($fquery)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $sLanguage, PDO::PARAM_STR)->queryAll();
                         foreach($fresult as $frow)
                         {
                             $myfield2 = $myfield . reset($row) . "_" . $frow['title'];
-                        $allfields[]=$myfield2;
-                    }
+                            $allfields[]=$myfield2;
+                        }
                     }
                     break;
                 case "R": //RANKING
