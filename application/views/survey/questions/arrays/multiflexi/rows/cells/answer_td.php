@@ -39,7 +39,7 @@
         <?php if($inputboxlayout == false):?>
             <!-- InputBox Layout False -->
             <select
-                class="multiflexiselect form-control"
+                class="multiflexiselect form-control text-right"
                 name="<?php echo $myfname2; ?>"
                 id="answer<?php echo $myfname2;?>"
                 onchange="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"

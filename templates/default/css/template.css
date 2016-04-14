@@ -425,10 +425,6 @@ table.table-multi-text tbody tr th {
     vertical-align: middle;
 }
 
-table.question.subquestion-list.questions-list tr th.answertext {
-    text-align: right;
-}
-
 table.question.subquestion-list.questions-list.table-multi-text thead tr th {
     text-align: center;
 }
@@ -757,4 +753,9 @@ td.answer-item.text-center
 .label-clickable:hover
 {
     cursor: pointer;
+}
+
+.table > tbody > tr > th
+{
+    vertical-align: middle;
 }
