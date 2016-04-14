@@ -35,6 +35,31 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160414) to 2.50+ (build 160415) Apr 14, 2016
+-Fixed issue #10222: Attachments for registration emails don't get attached (Carsten Schmitz)
+-Fixed issue #10774: Column header at wrong position (Olle Haerstedt)
+-Fixed issue #10933: The Maximum characters on array(Texts) Type not working (Olle Haerstedt)
+-Fixed issue #10934: EM regexMatch function don't show pattern error (Denis Chenu)
+-Fixed issue #10936: FileUpload doesn't work correctly when there's two in same group (Olle Haerstedt)
+-Fixed issue #10953: Using mktime() EM function broke survey administration (Denis Chenu)
+-Fixed issue: Srray number wrong header alignment (LouisGac)
+-Fixed issue: Headers were right align in arrays text (LouisGac)
+-Fixed issue: No column for suffix in array 5 point choice (LouisGac)
+-Fixed issue: Short free text, prefix and suffix not centered (LouisGac)
+-Fixed issue: Text in headers and input left align in arrays text with number only option (LouisGac)
+-New feature: Arrays, mute headers when exlusive option is choosen (LouisGac)
+-New feature: Better display for Open Layer map (LouisGac)
+-New feature: Force asset manager to republish assets for manual updates (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Ukrainian
+
 Changes from 2.50+ (build 160413) to 2.50+ (build 160414) Apr 13, 2016
 -Fixed issue: Error when running integrity check and trying to remove orphan quotas (Carsten Schmitz)
 -Fixed issue #10860 : Regular expression fail with specific value (Denis Chenu)
