@@ -17,7 +17,7 @@
 ?>
 
 <!-- answer_row_other -->
-<div id='javatbd<?php echo $myfname; ?>' class='form-group answer-item col-sm-12 radio-item other-item other radio' <?php echo $sDisplayStyle; ?> >
+<div id='javatbd<?php echo $myfname; ?>' class='form-group answer-item col-xs-12 radio-item other-item other radio' <?php echo $sDisplayStyle; ?> >
     <!-- Checkbox + label -->
     <div class="pull-left othertext-label-checkox-container">
         <input

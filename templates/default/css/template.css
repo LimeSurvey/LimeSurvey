@@ -784,3 +784,7 @@ table.numbers-only th, table.numbers-only input {
     position: static;
     margin-left: 0px;
 }
+
+.short-free-text .prefix, .short-free-text .suffix {
+    padding-top: 10px;
+}

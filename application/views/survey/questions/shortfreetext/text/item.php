@@ -14,7 +14,7 @@
  */
 ?>
 
-<div class="question answer-item text-item <?php echo $extraclass; ?> form-horizontal">
+<div class="question answer-item text-item <?php echo $extraclass; ?> form-horizontal short-free-text">
 
     <div class='form-group'>
 
@@ -25,7 +25,7 @@
 
         <!-- Prefix -->
         <?php if ($prefix !== ''): ?>
-            <span class='col-xs-12 col-sm-2 prefix-text-right'><?php echo $prefix; ?></span>
+            <span class='col-xs-12 col-sm-2 prefix-text-right prefix'><?php echo $prefix; ?></span>
         <?php endif; ?>
 
         <!-- Input -->
@@ -44,7 +44,7 @@
 
         <!-- Suffix -->
         <?php if ($suffix !== ''): ?>
-            <span class='col-xs-12 col-sm-2 text-left'><?php echo $suffix; ?></span>
+            <span class='col-xs-12 col-sm-2 text-left suffix'><?php echo $suffix; ?></span>
         <?php endif; ?>
 
     </div>
