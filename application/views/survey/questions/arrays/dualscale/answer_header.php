@@ -2,6 +2,11 @@
 
 /**
  * Header row for dual-scale array
+ * @var $labelans0 - Labels for answers
+ * @var $labelans1
+ * @var $shownoanswer
+ * @var $rightexists
+ * @var $class - Extra class, like 'repeat headers'
  */
 
 ?>
