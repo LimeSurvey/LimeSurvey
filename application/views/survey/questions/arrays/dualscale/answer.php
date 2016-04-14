@@ -111,7 +111,7 @@
 
                 <?php echo $ansrow['htmlbody2']; ?>
 
-                <th class="answertext">
+                <th class="answertext text-right">
 
                     <?php echo $ansrow['hiddenfield']; ?>
                     
