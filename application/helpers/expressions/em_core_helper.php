@@ -2106,6 +2106,14 @@ class ExpressionManager {
                             . sprintf(gT("Function supports this many arguments, where -1=unlimited: %s"), implode(',', $numArgsAllowed)), $funcNameToken);
                     return false;
                 }
+                if(function_exists("geterrors_".$funcName))
+                {
+                    if($sError=call_user_func_array("geterrors_".$funcName,$params))
+                    {
+                        $this->RDP_AddError($sError,$funcNameToken);
+                        return false;
+                    }
+                }
             }
             catch (Exception $e)
             {
@@ -2872,23 +2880,34 @@ function expr_mgr_htmlspecialchars_decode($string)
 
 /**
  * Return true of $input matches the regular expression $pattern
- * @param <type> $pattern
- * @param <type> $input
- * @return <type>
+ * @param string $pattern
+ * @param string $input
+ * @return boolean
  */
 function exprmgr_regexMatch($pattern, $input)
 {
-    try {
-        // 'u' is the regexp modifier for unicode so that non-ASCII string will nbe validated properly
-        $result = @preg_match($pattern.'u', $input);
-    } catch (Exception $e) {
-        $result = false;
-        // How should errors be logged?
-        echo sprintf(gT('Invalid PERL Regular Expression: %s'), htmlspecialchars($pattern));
+    // Test the regexp pattern agains null : must always return 0, false if error happen
+    if(@preg_match($pattern.'u', null) === false)
+    {
+        return false; // invalid : true or false ?
     }
-    return $result;
+    // 'u' is the regexp modifier for unicode so that non-ASCII string will be validated properly
+    return preg_match($pattern.'u', $input);
 }
-
+/**
+ * Return error information from pattern of regular expression $pattern
+ * @param string $pattern
+ * @param string $input
+ * @return string|null
+ */
+function geterrors_exprmgr_regexMatch($pattern, $input)
+{
+    // @todo : use set_error_handler to get the preg_last_error
+    if(@preg_match($pattern.'u', null) === false)
+    {
+        return sprintf(gT('Invalid PERL Regular Expression: %s'), htmlspecialchars($pattern));
+    }
+}
 /**
  * Display number with comma as radix separator, if needed
  * @param type $value
