@@ -247,7 +247,6 @@ li.responsive-content
  .strong
  {
      font-weight: bold;
-     font-size: 1.2em;
      display: inline-block;
      padding: 0.2em;
  }
@@ -421,8 +420,12 @@ table {
     vertical-align: middle !important;
 }
 
-table.question.subquestion-list.questions-list tr th.answertext {
-    text-align: right;
+table.table-multi-text tbody tr th {
+    vertical-align: middle;
+}
+
+table.question.subquestion-list.questions-list.table-multi-text thead tr th {
+    text-align: center;
 }
 
 /* Used for date-picker icon within input */
@@ -446,15 +449,15 @@ body .navbar-default .navbar-brand:hover {
     font-weight: normal;
 }
 
-.table-multi-num label {
+/* Center radio buttons in array-by-column */
+.table-array-by-column td.radio-item.text-center.answer-item {
+    padding-left: 47px;
 }
 
 /**
  * On big screen only, iPad and up
  */
 @media only screen and (min-width: 768px) {
-
-
 
     .table-dual-scale .separator {
         width: 6%;
@@ -495,10 +498,6 @@ body .navbar-default .navbar-brand:hover {
     .no-more-tables tr {
         display: inline-block;
         width: 100%;
-    }
-
-    .no-more-tables table.subquestions-list td {
-        text-align: left;
     }
 
     /* Hide table headers (but not display: none;, for accessibility) */
@@ -705,12 +704,15 @@ body .navbar-default .navbar-brand:hover {
     }
 }
 
-/******** OBS: Media specific CSS must be last in this file. ********/
-
 
 /**
  * Display adjust, question type by question type
  */
+
+.radio input[type="radio"]:disabled + label
+{
+    opacity: 0.25;
+}
 
 
 /*
@@ -720,18 +722,19 @@ body .navbar-default .navbar-brand:hover {
 /* center the radio list in the td*/
 td.answer-item.text-center
 {
-    padding-left: 25px;
+    padding-left: 39px;
 }
 
 .table-5-point-array td.answer-item.text-center
 {
-    padding-left: 39px;
+    padding-left: 54px;
 }
 
 .table-10-point-array  td.answer-item.text-center
 {
-    padding-left: 36px;
+    padding-left: 52px;
 }
+
 
 /* center the label text in no more table mode */
 .label-text{
@@ -743,4 +746,44 @@ td.answer-item.text-center
 .label-clickable:hover
 {
     cursor: pointer;
+}
+
+.table > tbody > tr > th
+{
+    vertical-align: middle;
+}
+
+table.numbers-only th, table.numbers-only input {
+    text-align: right;
+}
+
+.othertext-label-checkox-container {
+    padding-top: 5px;
+    margin-right: 5px;
+}
+
+.multiple-choice-with-comment.table{
+    table-layout: auto;
+    width: initial;
+}
+ .multiple-choice-with-comment.table > tbody > tr > td {
+     padding-left: 18px;
+     vertical-align: middle;
+ }
+
+ /* alignment for small screens*/
+ .multiple-choice-with-comment.table > tbody > tr > td.comment-container {
+     padding-left: 14px;
+ }
+.checkbox input[type="checkbox"] {
+    position: static;
+    margin-left: 0px;
+}
+
+.short-free-text .prefix, .short-free-text .suffix,.geoloc-item .search-icon, .geoloc-item .checkbox  {
+    padding-top: 10px;
+}
+
+.geoname_search {
+    margin-bottom: 10px;
 }

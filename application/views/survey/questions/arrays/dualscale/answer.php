@@ -102,7 +102,7 @@
                 <?php endif; ?>
 
                 <!-- tr -->
-                <?php echo $ansrow['htmlbody2']; ?>
+                <?php echo $ansrow['htmltbody2']; ?>
 
                 <th class="answertext">
 
