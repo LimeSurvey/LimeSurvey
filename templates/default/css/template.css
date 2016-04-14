@@ -458,45 +458,11 @@ body .navbar-default .navbar-brand:hover {
 }
 
 /**
- * Display adjust, question type by question type
- */
-
-/*
-    Arrays Question
-*/
-
-/* center the radio list in the td*/
-td.answer-item.text-center
-{
-    padding-left: 25px;
-}
-
-.table-5-point-array td.answer-item.text-center
-{
-    padding-left: 39px;
-}
-
-.table-10-point-array  td.answer-item.text-center
-{
-    padding-left: 36px;
-}
-
-/* center the label text in no more table mode */
-.label-text{
-    display: inline;
-    position: relative;
-    bottom: 0px;
-}
-
-.label-clickable:hover
-{
-    cursor: pointer;
-}
-
-/**
  * On big screen only, iPad and up
  */
 @media only screen and (min-width: 768px) {
+
+
 
     .table-dual-scale .separator {
         width: 6%;
@@ -745,7 +711,45 @@ td.answer-item.text-center
 
 /******** OBS: Media specific CSS must be last in this file. ********/
 
+
+/**
+ * Display adjust, question type by question type
+ */
+
 .radio input[type="radio"]:disabled + label
 {
     opacity: 0.25;
+}
+
+
+/*
+    Arrays Question
+*/
+
+/* center the radio list in the td*/
+td.answer-item.text-center
+{
+    padding-left: 39px;
+}
+
+.table-5-point-array td.answer-item.text-center
+{
+    padding-left: 54px;
+}
+
+.table-10-point-array  td.answer-item.text-center
+{
+    padding-left: 52px;
+}
+
+/* center the label text in no more table mode */
+.label-text{
+    display: inline;
+    position: relative;
+    bottom: 0px;
+}
+
+.label-clickable:hover
+{
+    cursor: pointer;
 }
