@@ -5663,18 +5663,18 @@ function do_arraycolumns($ia)
                     $aData['aQuestions'][$j]['myfname'] = $myfname;
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
                     {
-                        $aData['aQuestions'][$j]['checked'] = CHECKED;
+                        $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                     }
                     elseif (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $ansrow['code'] == '')
                     {
-                        $aData['aQuestions'][$j]['checked'] = CHECKED;
+                        $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                         // Humm.. (by lemeur), not sure this section can be reached
                         // because I think $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] is always set (by save.php ??) !
                         // should remove the !isset part I think !!
                     }
                     else
                     {
-                        $aData['aQuestions'][$j]['checked'] = "";
+                        $aData['checked'][$ansrow['code']][$ld] = "";
                     }
                 }
             }
