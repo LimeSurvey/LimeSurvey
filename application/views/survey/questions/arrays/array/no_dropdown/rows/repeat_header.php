@@ -5,7 +5,7 @@
  * @var $sHeaders
  */
 ?>
-<!-- repeat_header -->
+<!-- repeat_header no drop down -->
 </tbody>
 
 <tbody>
