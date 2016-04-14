@@ -3419,10 +3419,6 @@ class statistics_helper {
                 {
                 }
                 // file upload lack headPDF
-                var_dump($tablePDF);
-                var_dump($outputs);
-                echo '<pre>'; var_dump($rt); echo '</pre>';
-                echo '<pre>'; var_dump($gdata); echo '</pre>';die;
                 //throw new CException('$headPDF is not defined');
             }
             $this->pdf->headTable($headPDF,$tablePDF);
