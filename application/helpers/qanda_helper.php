@@ -5924,7 +5924,7 @@ function do_array_dual($ia)
 
                 // Get array_filter stuff
                 list($htmltbody2, $hiddenfield) = return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
-                $aData['aSubQuestions'][$i]['htmlbody2'] = $htmltbody2;
+                $aData['aSubQuestions'][$i]['htmltbody2'] = $htmltbody2;
                 $aData['aSubQuestions'][$i]['hiddenfield'] = $hiddenfield;
 
                 array_push($inputnames, $myfname0);

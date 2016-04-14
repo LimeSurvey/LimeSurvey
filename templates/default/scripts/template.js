@@ -97,7 +97,7 @@ function replaceColumnWithDiv(that) {
                 newHtml += "</div>";
             }
             else {
-                newHtml += "<div class='radio-item'>";
+                newHtml += "<div class='radio-item radio'>";
                 newHtml += $(this).html();
                 newHtml += "</div>";
             }
