@@ -103,19 +103,21 @@
                         </tr>
                 <?php endif; ?>
 
-                <?php if ($ansrow['showmandatoryviolation']): ?>
-                    <div class="alert alert-danger" role="alert">
-                        <?php echo $ansrow['answertext']; ?>
-                    </div>
-                <?php endif; ?>
-
                 <?php echo $ansrow['htmlbody2']; ?>
 
                 <th class="answertext">
 
                     <?php echo $ansrow['hiddenfield']; ?>
                     
-                    <?php echo $ansrow['answertext']; ?>
+                    <?php if ($ansrow['showmandatoryviolation']): ?>
+                        <div class="label label-danger">
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;
+                            <?php echo $ansrow['answertext']; ?>
+                        </div>
+                    <?php else: ?>
+                        <?php echo $ansrow['answertext']; ?>
+                    <?php endif; ?>
+
 
                     <input type="hidden" disabled="disabled" name="java<?php echo $ansrow['myfid0']; ?>" 
                         id="java<?php echo $ansrow['myfid0']; ?>" value=""
@@ -131,6 +133,7 @@
 
                 </th>
 
+                <!-- First label set -->
                 <?php foreach ($labelcode0 as $j => $ld): ?>
                     <?php if ($j === 0 && $leftheader != ''): ?>
                         <td class='visible-xs'><em><?php echo $leftheader; ?></em></td>
@@ -142,11 +145,12 @@
                             name="<?php echo $ansrow['myfname0']; ?>" 
                             value="<?php echo $ld; ?>" 
                             id="answer<?php echo $ansrow['myfid0']; ?>-<?php echo $ld; ?>"
-                            <?php echo $labelcode0_checked[$j]; ?>
+                            <?php echo $labelcode0_checked[$ansrow['title']][$ld]; ?>
                         />
                         <label for="answer<?php echo $ansrow['myfid0']; ?>-<?php echo $ld; ?>">
                             <span class="hide label-text"><?php echo $ld;?></span>
                         </label>
+                    </td>
                 <?php endforeach; ?>
 
                 <?php if (count($labelans1) > 0):  // if second label set is used ?>
@@ -165,6 +169,7 @@
                         <?php endif; ?>
                     </td>
 
+                    <!-- Second label set -->
                     <?php foreach ($labelcode1 as $k => $ld): ?>
                         <?php if ($k === 0 && $rightheader != ''): ?>
                             <td class='visible-xs'><em><?php echo $rightheader; ?></em></td>
@@ -176,7 +181,7 @@
                                 name="<?php echo $ansrow['myfname1']; ?>" 
                                 value="<?php echo $ld; ?>" 
                                 id="answer<?php echo $ansrow['myfid1']; ?>-<?php echo $ld; ?>"
-                                <?php echo $labelcode1_checked[$k]; ?>
+                                <?php echo $labelcode1_checked[$ansrow['title']][$ld]; ?>
                             />
                             <label for="answer<?php echo $ansrow['myfid1']; ?>-<?php echo $ld; ?>">
                                 <span class="hide label-text"><?php echo $ld;?></span>

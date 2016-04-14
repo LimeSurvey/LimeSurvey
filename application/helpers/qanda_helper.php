@@ -5859,11 +5859,9 @@ function do_array_dual($ia)
 
             // And no each line of body
             $trbc = '';
-            $aData['aSubQuestions'] = array();
+            $aData['aSubQuestions'] = $aSubQuestions;
             foreach ($aSubQuestions as $i => $ansrow)
             {
-
-                $aData['aSubQuestions'][$i] = $ansrow;
 
                 // Build repeat headings if needed
                 if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
@@ -5953,18 +5951,18 @@ function do_array_dual($ia)
                     }
                 }
 
-                $hiddenanswers='';
-                foreach ($labelcode0 as $j => $ld)
+                foreach ($labelcode0 as $j => $ld)  // First label set
                 {
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == $ld)
                     {
-                        $aData['labelcode0_checked'][$j] = CHECKED;
+                        $aData['labelcode0_checked'][$ansrow['title']][$ld] = CHECKED;
                     }
                     else
                     {
-                        $aData['labelcode0_checked'][$j] = '';
+                        $aData['labelcode0_checked'][$ansrow['title']][$ld] = "";
                     }
                 }
+
                 if (count($labelans1) > 0) // if second label set is used
                 {
                     if ($shownoanswer)// No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
@@ -5986,11 +5984,11 @@ function do_array_dual($ia)
                     {
                         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $ld)
                         {
-                            $aData['labelcode1_checked'][$j] = CHECKED;
+                            $aData['labelcode1_checked'][$ansrow['title']][$ld] = CHECKED;
                         }
                         else
                         {
-                            $aData['labelcode1_checked'][$j] = "";
+                            $aData['labelcode1_checked'][$ansrow['title']][$ld] = "";
                         }
                     }
                 }
