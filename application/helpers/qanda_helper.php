@@ -106,8 +106,6 @@ function retrieveAnswers($ia)
         ,'essentials'         => ''
     );
 
-
-
     $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$lang));
 
     switch ($ia[4])
@@ -4877,6 +4875,7 @@ function do_array_multitext($ia)
             $q_table_id      = 'totals_'.$ia[0];
             $q_table_id_HTML = ' id="'.$q_table_id.'"';
         }
+        
         $num_class   = ' numbers-only';
         $extraclass .= " numberonly";
         $caption    .= gT("Each answer is a number. ");
@@ -5866,7 +5865,6 @@ function do_array_dual($ia)
             $aData['labelans1'] = $labelans1;
             $aData['labelcode1'] = $labelcode1;
             $aData['separatorwidth'] = ($centerexists) ? "style='width: $cellwidth%;' ":"";
-            
             $aData['shownoanswer'] = $shownoanswer;
             $aData['rightexists'] = $rightexists;
             $aData['rigthwidth'] = ($rightexists) ? "style='width: $cellwidth%;' ":"";
@@ -5875,7 +5873,7 @@ function do_array_dual($ia)
             $aData['leftheader'] = $leftheader;
             $aData['rightheader'] = $rightheader;
             $aData['rigthclass'] = ($rightexists) ? " header_answer_text_right" : "";
-            
+
             // And no each line of body
             $trbc = '';
             $aData['aSubQuestions'] = array();
@@ -5961,7 +5959,7 @@ function do_array_dual($ia)
 
                 if (count($labelans1) > 0) // if second label set is used
                 {
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1])) 
+                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]))
                     {
                         //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
                         $aData['aSubQuestions'][$i]['sessionfname1'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
@@ -6045,7 +6043,7 @@ function do_array_dual($ia)
             }
 
             $answer = Yii::app()->getController()->renderPartial(
-                '/survey/questions/arrays/dualscale/answer', 
+                '/survey/questions/arrays/dualscale/answer',
                 $aData,
                 true
             );

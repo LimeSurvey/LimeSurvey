@@ -21,35 +21,42 @@
 <div class="col-sm-12">
     <div id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-item form-group checkbox' <?php echo $sDisplayStyle; ?> >
 
-        <!-- checkbox -->
-        <input
-            class="checkbox other-checkbox dontread"
-            type="checkbox"
-            name="<?php echo $myfname; ?>cbox"
-            id="answer<?php echo $myfname; ?>cbox"
-            <?php echo $checkedState; ?>
-            aria-labelledby="label-<?php echo $myfname;?>cbox"
-         />
+        <div class="row">
+            <!-- Checkbox + label -->
+            <div class="col-sm-2 othertext-label-checkox-container">
+                <!-- checkbox -->
+                <input
+                    class="checkbox other-checkbox dontread"
+                    type="checkbox"
+                    name="<?php echo $myfname; ?>cbox"
+                    id="answer<?php echo $myfname; ?>cbox"
+                    <?php echo $checkedState; ?>
+                    aria-labelledby="label-<?php echo $myfname;?>cbox"
+                 />
 
-         <!-- label -->
-         <label for="<?php echo $myfname;?>cbox" class="answertext control-label other-label"></label>
-         <!--
-              The label text is provided inside a div,
-              so final user can add paragraph, div, or whatever he wants in the subquestion text
-              This field is related to the input thanks to attribute aria-labelledby
-         -->
-         <div class="label-text label-clickable" id="label-<?php echo $myfname;?>cbox">
-                 <?php echo $othertext; ?>
-         </div>
+                 <!-- label -->
+                 <label for="<?php echo $myfname;?>cbox" class="answertext"></label>
+                 <!--
+                      The label text is provided inside a div,
+                      so final user can add paragraph, div, or whatever he wants in the subquestion text
+                      This field is related to the input thanks to attribute aria-labelledby
+                 -->
+                 <div class="label-text label-clickable" id="label-<?php echo $myfname;?>cbox">
+                         <?php echo $othertext; ?>
+                 </div>
+            </div>
 
-         <!-- comment -->
-         <input
-            class="form-control text <?php echo $kpclass; ?>"
-             type="text"
-             name="<?php echo $myfname; ?>"
-             id="answer<?php echo $myfname; ?>"
-             value="<?php echo $sValue; ?>"
-         />
+            <!-- comment -->
+            <div class="col-sm-8">
+                <input
+                    class="form-control text <?php echo $kpclass; ?>"
+                    type="text"
+                    name="<?php echo $myfname; ?>"
+                    id="answer<?php echo $myfname; ?>"
+                    value="<?php echo $sValue; ?>"
+                />
+            </div>
+        </div>
 
         <!-- hidden input -->
         <input
