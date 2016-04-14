@@ -33,7 +33,7 @@
     <?php endif; ?>
 
     <?php if ($shownoanswer): ?>
-        <th class="header_no_answer"><?php eT('No answer'); ?></th>
+        <th class="header_no_answer text-center"><?php eT('No answer'); ?></th>
     <?php endif; ?>
 
 </tr>
