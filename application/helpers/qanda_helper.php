@@ -5819,9 +5819,18 @@ function do_array_dual($ia)
     {
         $answer = "";
         $fn=1;// Used by repeat_heading
+
+        // No drop-down
         if ($useDropdownLayout === false)
         {
+            $aData = array();
+            $aData['answertypeclass'] = $answertypeclass;
+
             $columnswidth = 100 - $answerwidth;
+            $labelans0 = array();
+            $labelans1 = array();
+            $labelcode0 = array();
+            $labelcode1 = array();
             foreach ($aAnswersScale0 as $lrow)
             {
                 $labelans0[]=$lrow['answer'];
@@ -5846,51 +5855,63 @@ function do_array_dual($ia)
 
             // Header row and colgroups
             //$mycolumns = "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
-            $mycolumns = "\t<col class=\"col-answers\" style='width: $answerwidth%;'/>\n";
-            $answer_head_line = "\t<th class=\"header_answer_text\">&nbsp;</th>\n\n";
-            $mycolumns .= "\t<colgroup class=\"col-responses group-1\">\n";
-            $odd_even = '';
-            foreach ($labelans0 as $ld)
-            {
-                $answer_head_line .= "\t<th  class='th-12'>".$ld."</th>\n";
-                $odd_even = alternation($odd_even);
-                //$mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-                $mycolumns .= "<col class=\"$odd_even\" style='width: $cellwidth%;' />\n";
-            }
-            $mycolumns .= "\t</colgroup>\n";
-            if (count($labelans1)>0) // if second label set is used
-            {
-                $separatorwidth=($centerexists)? "style='width:$cellwidth%;' ":"";
+            $aData['answerwidth'] = $answerwidth;
+            //$mycolumns = "\t<col class=\"col-answers\" style='width: $answerwidth%;'/>\n";
+            //$answer_head_line = "\t<th class=\"header_answer_text\">&nbsp;</th>\n\n";
+            //$mycolumns .= "\t<colgroup class=\"col-responses group-1\">\n";
+            //$odd_even = '';
+            $aData['cellwidth'] = $cellwidth;
+            $aData['labelans0'] = $labelans0;
+            $aData['labelcode0'] = $labelcode0;
+            //foreach ($labelans0 as $ld)
+            //{
+                //$answer_head_line .= "\t<th  class='th-12'>".$ld."</th>\n";
+                //$odd_even = alternation($odd_even);
+                //$mycolumns .= "<col class=\"$odd_even\" style='width: $cellwidth%;' />\n";
+            //}
+            //$mycolumns .= "\t</colgroup>\n";
+            $aData['labelans1'] = $labelans1;
+            $aData['labelcode1'] = $labelcode1;
+            $aData['separatorwidth'] = ($centerexists) ? "style='width: $cellwidth%;' ":"";
+            
+            //if (count($labelans1)>0) // if second label set is used
+            //{
                 //$separatorwidth='';
-                $mycolumns .=  "\t<col class=\"separator\" {$separatorwidth}/>\n";
-                $mycolumns .= "\t<colgroup class=\"col-responses group-2\">\n";
-                $answer_head_line .= "\n\t<td class=\"header_separator\">&nbsp;</td>\n\n"; // Separator : and No answer for accessibility for first colgroup
-                foreach ($labelans1 as $ld)
-                {
-                    $answer_head_line .= "\t<th  class='th-13'>".$ld."</th>\n";
-                    $odd_even = alternation($odd_even);
-                    //$mycolumns .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-                    $mycolumns .= "<col class=\"$odd_even\" style='width: $cellwidth%;' />\n";
-                }
-                $mycolumns .= "\t</colgroup>\n";
-            }
-            if($shownoanswer || $rightexists)
-            {
-                $rigthwidth=($rightexists)? "style='width: $cellwidth%;' ":"";
-                //$rigthwidth="";
-                $mycolumns .=  "\t<col class=\"separator rigth_separator\" {$rigthwidth}/>\n";
-                $answer_head_line .= "\n\t<td class=\"header_separator rigth_separator\">&nbsp;</td>\n";
-            }
-            if($shownoanswer)
-            {
-                //$mycolumns .=  "\t<col class=\"col-no-answer\"  width=\"$cellwidth%\" />\n";
-                $mycolumns .=  "\t<col class=\"col-no-answer\"  style='width: $cellwidth%;'/>\n";
-                $answer_head_line .= "\n\t<th class=\"header_no_answer\">".gT('No answer')."</th>\n";
-            }
-            $answer_head2 = "\n<tr class=\"array1 header_row dontread\">\n"
-            . $answer_head_line
-            . "</tr>\n";
+                //$mycolumns .=  "\t<col class=\"separator\" {$separatorwidth}/>\n";
+                //$mycolumns .= "\t<colgroup class=\"col-responses group-2\">\n";
+                //$answer_head_line .= "\n\t<td class=\"header_separator\">&nbsp;</td>\n\n"; // Separator : and No answer for accessibility for first colgroup
+                //foreach ($labelans1 as $ld)
+                //{
+                    //$answer_head_line .= "\t<th  class='th-13'>".$ld."</th>\n";
+                    //$odd_even = alternation($odd_even);
+                    //$mycolumns .= "<col class=\"$odd_even\" style='width: $cellwidth%;' />\n";
+                //}
+                //$mycolumns .= "\t</colgroup>\n";
+            //}
+            $aData['shownoanswer'] = $shownoanswer;
+            $aData['rightexists'] = $rightexists;
+            $aData['rigthwidth'] = ($rightexists) ? "style='width: $cellwidth%;' ":"";
+            //if($shownoanswer || $rightexists)
+            //{
+                //$mycolumns .=  "\t<col class=\"separator rigth_separator\" {$rigthwidth}/>\n";
+                //$answer_head_line .= "\n\t<td class=\"header_separator rigth_separator\">&nbsp;</td>\n";
+            //}
+            //if($shownoanswer)
+            //{
+                //$mycolumns .=  "\t<col class=\"col-no-answer\"  style='width: $cellwidth%;'/>\n";
+                //$answer_head_line .= "\n\t<th class=\"header_no_answer\">".gT('No answer')."</th>\n";
+            //}
+
+            //$answer_head2 = "\n<tr class=\"array1 header_row dontread\">\n"
+            //. $answer_head_line
+            //. "</tr>\n";
+
             // build first row of header if needed
+            $aData['leftheader'] = $leftheader;
+            $aData['rightheader'] = $rightheader;
+            $aData['rigthclass'] = ($rightexists) ? " header_answer_text_right" : "";
+            
+            /*
             if ($leftheader != '' || $rightheader !='')
             {
                 $answer_head1 = "<tr class=\"array1 groups header_row\">\n"
@@ -5916,48 +5937,62 @@ function do_array_dual($ia)
             {
                 $answer_head1 = "";
             }
-            $answer .= '<div class="no-more-tables no-more-tables-array-dual">';
-            $answer .= "\n<table class=\"no-more-tables table-dual-scale table question subquestion-list questions-list\">\n"
-            . $mycolumns
-            . "\n\t<thead>\n"
-            . $answer_head1
-            . $answer_head2
-            . "\n\t</thead>\n"
-            . "<tbody>\n";
+            */
+
+            //$answer .= '<div class="no-more-tables no-more-tables-array-dual">';
+            //$answer .= "\n<table class=\"no-more-tables table-dual-scale table question subquestion-list questions-list\">\n"
+
+            //. $mycolumns
+            //. "\n\t<thead>\n"
+            //. $answer_head1
+            //. $answer_head2
+            //. "\n\t</thead>\n"
+
+            //. "<tbody>\n";
 
             // And no each line of body
             $trbc = '';
-            foreach ($aSubQuestions as $ansrow)
+            $aData['aSubQuestions'] = array();
+            foreach ($aSubQuestions as $i => $ansrow)
             {
+
+                $aData['aSubQuestions'][$i] = $ansrow;
+
                 // Build repeat headings if needed
                 if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
                 {
                     if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                     {
-                        $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
+                        $aData['aSubQuestions'][$i]['repeatheadings'] = true;
+                        //$answer .= "</tbody>\n<tbody>";// Close actual body and open another one
                         //$answer .= $answer_head1;
-                        $answer .= "\n<tr class=\"hidden-xs repeat headings\">\n"
-                        . $answer_head_line
-                        . "</tr>\n";
+                        //$answer .= "\n<tr class=\"hidden-xs repeat headings\">\n"
+                        //. $answer_head_line
+                        //. "</tr>\n";
                     }
                 }
+                else
+                {
+                    $aData['aSubQuestions'][$i]['repeatheadings'] = false;
+                }
+
                 $trbc = alternation($trbc , 'row');
-                $answertext=$ansrow['question'];
+                $answertext = $ansrow['question'];
 
                 // rigth and center answertext: not explode for ? Why not
                 if(strpos($answertext,'|'))
                 {
-                    $answertextrigth=substr($answertext,strpos($answertext,'|')+1);
+                    $answertextright=substr($answertext,strpos($answertext,'|')+1);
                     $answertext=substr($answertext,0, strpos($answertext,'|'));
                 }
                 else
                 {
-                    $answertextrigth="";
+                    $answertextright="";
                 }
                 if($centerexists)
                 {
-                    $answertextcenter=substr($answertextrigth,0, strpos($answertextrigth,'|'));
-                    $answertextrigth=substr($answertextrigth,strpos($answertextrigth,'|')+1);
+                    $answertextcenter=substr($answertextright,0, strpos($answertextright,'|'));
+                    $answertextright=substr($answertextright,strpos($answertextright,'|')+1);
                 }
                 else
                 {
@@ -5969,130 +6004,199 @@ function do_array_dual($ia)
                 $myfid0 = $ia[1].$ansrow['title'].'_0';
                 $myfname1 = $ia[1].$ansrow['title'].'#1'; // new multi-scale-answer
                 $myfid1 = $ia[1].$ansrow['title'].'_1';
+                $aData['aSubQuestions'][$i]['myfname'] = $myfname;
+                $aData['aSubQuestions'][$i]['myfname0'] = $myfname0;
+                $aData['aSubQuestions'][$i]['myfid0'] = $myfid0;
+                $aData['aSubQuestions'][$i]['myfname1'] = $myfname1;
+                $aData['aSubQuestions'][$i]['myfid1'] = $myfid1;
+
+                $aData['aSubQuestions'][$i]['answertext'] = $ansrow['question'];
+
                 /* Check the Sub Q mandatory violation */
                 if ($ia[6]=='Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)))
                 {
-                    //$answertext = "<span class='errormandatory'>{$answertext}</span>";
-                    $answertext ='
-                                <div class="alert alert-danger" role="alert">'.
-                                        $answertext
-                                    .'
-                                </div>';
+                    $aData['aSubQuestions'][$i]['showmandatoryviolation'] = true;
+                    //$answertext ='
+                    //<div class="alert alert-danger" role="alert">'.
+                            //$answertext
+                        //.'
+                    //</div>';
                 }
+                else
+                {
+                    $aData['aSubQuestions'][$i]['showmandatoryviolation'] = false;
+                }
+
                 // Get array_filter stuff
-                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
-                $answer .= $htmltbody2;
+                list($htmltbody2, $hiddenfield) = return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc answers-list radio-list");
+                $aData['aSubQuestions'][$i]['htmlbody2'] = $htmltbody2;
+                $aData['aSubQuestions'][$i]['hiddenfield'] = $hiddenfield;
+                //$answer .= $htmltbody2;
 
+                array_push($inputnames, $myfname0);
 
-                array_push($inputnames,$myfname0);
-                $answer .= "\t<th class=\"answertext\">\n"
-                . $hiddenfield
-                . "$answertext\n";
+                //$answer .= "\t<th class=\"answertext\">\n"
+                //. $hiddenfield
+                //. "$answertext\n";
                 // Hidden answers used by EM: sure can be added in javascript
-                $answer .= "<input type=\"hidden\" disabled=\"disabled\" name=\"java$myfid0\" id=\"java$myfid0\" value=\"";
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0])) {$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0];}
-                $answer .= "\" />\n";
+                //$answer .= "<input type=\"hidden\" disabled=\"disabled\" name=\"java$myfid0\" id=\"java$myfid0\" value=\"";
+
+                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0])) 
+                {
+                    //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0];
+                    $aData['aSubQuestions'][$i]['sessionfname0'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0];
+                }
+                else
+                {
+                    $aData['aSubQuestions'][$i]['sessionfname0'] = '';
+                }
+                //$answer .= "\" />\n";
+
                 if (count($labelans1)>0) // if second label set is used
                 {
-                    $answer .= "<input type=\"hidden\" disabled=\"disabled\" name=\"java$myfid1\" id=\"java$myfid1\" value=\"";
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1])) {$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];}
-                    $answer .= "\" />\n";
-                }
-                $answer .= "\t</th>\n";
-                $hiddenanswers='';
-                $thiskey=0;
-                $first = true;
-                foreach ($labelcode0 as $ld)
-                {
-                    if ($first && $leftheader != '')
+                    //$answer .= "<input type=\"hidden\" disabled=\"disabled\" name=\"java$myfid1\" id=\"java$myfid1\" value=\"";
+
+                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1])) 
                     {
-                        $answer .= "<td class='visible-xs'><em>$leftheader</em></td>";
-                        $first = false;
+                        //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
+                        $aData['aSubQuestions'][$i]['sessionfname1'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
+                    }
+                    else
+                    {
+                        $aData['aSubQuestions'][$i]['sessionfname1'] = '';
                     }
 
-                    $answer .= "\t<td data-title='" . $labelans0[$thiskey] . "' class=\"answer_cell_1_$ld answer-item {$answertypeclass}-item\">\n"
-                    . "\t<label for=\"answer{$myfid0}-{$ld}\"><input class=\"radio\" type=\"radio\" name=\"$myfname0\" value=\"$ld\" id=\"answer$myfid0-$ld\" ";
+                    //$answer .= "\" />\n";
+                }
+
+                //$answer .= "\t</th>\n";
+
+                $hiddenanswers='';
+                //$thiskey=0;
+                //$first = true;
+                foreach ($labelcode0 as $j => $ld)
+                {
+                    //if ($first && $leftheader != '')
+                    //{
+                        //$answer .= "<td class='visible-xs'><em>$leftheader</em></td>";
+                        //$first = false;
+                    //}
+
+                    //$answer .= "\t<td data-title='" . $labelans0[$thiskey] . "' class=\"answer_cell_1_$ld answer-item {$answertypeclass}-item\">\n"
+                    //. "\t<label for=\"answer{$myfid0}-{$ld}\"><input class=\"radio\" type=\"radio\" name=\"$myfname0\" value=\"$ld\" id=\"answer$myfid0-$ld\" ";
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == $ld)
                     {
-                        $answer .= CHECKED;
+                        //$answer .= CHECKED;
+                        $aData['labelcode0_checked'][$j] = CHECKED;
                     }
-                    $answer .= "  />\n"
+                    else
+                    {
+                        $aData['labelcode0_checked'][$j] = '';
+                    }
+                    //$answer .= "  />\n"
                     //. "<label class=\"hide read\" for=\"answer{$myfid0}-{$ld}\">$labelans0[$thiskey]</label>\n"
-                    . "\n\t</label></td>\n";
-                    $thiskey++;
+                    //. "\n\t</label></td>\n";
+                    //$thiskey++;
                 }
-                if (count($labelans1)>0) // if second label set is used
+                if (count($labelans1) > 0) // if second label set is used
                 {
-                    $answer .= "\t<td data-title='' class=\"dual_scale_separator information-item\">";
+                    //$answer .= "\t<td data-title='' class=\"dual_scale_separator information-item\">";
                     if ($shownoanswer)// No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
                     {
-                        $answer .= "\t<label for='answer$myfid0-'><input class='radio jshide read' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
+                        //$answer .= "\t<label for='answer$myfid0-'><input class='radio jshide read' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "")
                         {
                             $answer .= CHECKED;
+                            $aData['myfname0_notset'] = CHECKED;
                         }
-                        $answer .= " />\n";
+                        else
+                        {
+                            $aData['myfname0_notset'] = "";
+                        }
+                        //$answer .= " />\n";
                     }
                     //$answer .=  "<label for='answer$myfid0-' class= \"hide read\">".gT("No answer")."</label>";
-                    $answer .= "\t{$answertextcenter}</label></td>\n"; // separator
-                    array_push($inputnames,$myfname1);
-                    $thiskey=0;
-                    $first = true;
-                    foreach ($labelcode1 as $ld) // second label set
-                    {
-                        if ($first && $rightheader != '')
-                        {
-                            $answer .= "<td class='visible-xs'><em>$rightheader</em></td>";
-                            $first = false;
-                        }
+                    //$answer .= "\t{$answertextcenter}</label></td>\n"; // separator
 
-                        $answer .= "\t<td data-title='{$labelans1[$thiskey]}' class=\"answer_cell_2_$ld  answer-item radio-item\">\n"
-                        . "\t<label for=\"answer{$myfid1}-{$ld}\"><input class=\"radio\" type=\"radio\" name=\"$myfname1\" value=\"$ld\" id=\"answer$myfid1-$ld\" ";
+                    array_push($inputnames,$myfname1);
+
+                    foreach ($labelcode1 as $j => $ld) // second label set
+                    {
+                        //if ($first && $rightheader != '')
+                        //{
+                            //$answer .= "<td class='visible-xs'><em>$rightheader</em></td>";
+                            //$first = false;
+                        //}
+
+                        //$answer .= "\t<td data-title='{$labelans1[$thiskey]}' class=\"answer_cell_2_$ld  answer-item radio-item\">\n"
+                        //. "\t<label for=\"answer{$myfid1}-{$ld}\"><input class=\"radio\" type=\"radio\" name=\"$myfname1\" value=\"$ld\" id=\"answer$myfid1-$ld\" ";
                         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $ld)
                         {
-                            $answer .= CHECKED;
+                            //$answer .= CHECKED;
+                            $aData['labelcode1_checked'][$j] = CHECKED;
                         }
-                        $answer .= " />\n"
-                        //. "<label class=\"hide read\" for=\"answer{$myfid1}-{$ld}\">{$labelans1[$thiskey]}</label>\n"
-                        . "\t</label></td>\n";
-                        $thiskey++;
+                        else
+                        {
+                            $aData['labelcode1_checked'][$j] = "";
+                        }
+                        //$answer .= " />\n"
+                        //. "\t</label></td>\n";
+                        //$thiskey++;
                     }
                 }
-                if ($shownoanswer || $rightexists)
-                {
-                    $answer .= "\t<td class=\"answertextright dual_scale_separator information-item\">{$answertextrigth}</td>\n";
-                }
+                $aData['answertextright'] = $answertextright;
+                //if ($shownoanswer || $rightexists)
+                //{
+                    //$answer .= "\t<td class=\"answertextright dual_scale_separator information-item\">{$answertextright}</td>\n";
+                //}
                 if ($shownoanswer)
                 {
-                    $answer .= "\t<td  data-title='".gT("No answer")."' class=\"dual_scale_no_answer answer-item radio-item noanswer-item\">\n";
+                    //$answer .= "\t<td  data-title='".gT("No answer")."' class=\"dual_scale_no_answer answer-item radio-item noanswer-item\">\n";
                     if (count($labelans1)>0)
                     {
-                        $answer .= "\t<label for='answer$myfid1-'><input class='radio' type='radio' name='$myfname1' value='' id='answer$myfid1-' ";
+                        //$answer .= "\t<label for='answer$myfid1-'><input class='radio' type='radio' name='$myfname1' value='' id='answer$myfid1-' ";
+
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == "")
                         {
                             $answer .= CHECKED;
+                            $aData['myfname1_notset'] = CHECKED;
+                        }
+                        else
+                        {
+                            $aData['myfname1_checked'] = "";
                         }
                         // --> START NEW FEATURE - SAVE
-                        $answer .= " />\n";
+                        //$answer .= " />\n";
                         //$answer .= "<label class='hide read' for='answer$myfid1-'>".gT("No answer")."</label>";
                     }
                     else
                     {
-                        $answer .= "\t<label for='answer$myfid0-'><input   data-title='".gT("No answer")."' class='radio' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
+                        //$answer .= "\t<label for='answer$myfid0-'><input   data-title='".gT("No answer")."' class='radio' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "")
                         {
                             $answer .= CHECKED;
+                            $aData['myfname0_notset'] = CHECKED;
+                        }
+                        else
+                        {
+                            $aData['myfname0_notset'] = '';
                         }
                         //$answer .= "<label class='hide read' for='answer$myfid0-'>".gT("No answer")."<label>\n";
-                        $answer .= " />\n";
+                        //$answer .= " />\n";
                     }
-                    $answer .= "\t</label></td>\n";
+                    //$answer .= "\t</label></td>\n";
                 }
-                $answer .= "</tr>\n";
+                //$answer .= "</tr>\n";
                 $fn++;
             }
-            $answer.="</tbody>\n";
-            $answer.="</table></div>";
+            //$answer.="</tbody>\n";
+            //$answer.="</table></div>";
+
+            $answer = Yii::app()->getController()->renderPartial(
+                '/survey/questions/arrays/dualscale/answer', 
+                $aData,
+                true
+            );
         }
 
 

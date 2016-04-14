@@ -2388,6 +2388,15 @@ class statistics_helper {
     */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
+        if (($outputType=='pdf' && $outputs['qtype'] === "|"))
+        {
+            return array(
+                "statisticsoutput" => "",
+                "pdf" => null,
+                "astatdata" => array()
+            );
+        }
+
         /* Set up required variables */
         $TotalCompleted = 0; //Count of actually completed answers
         $statisticsoutput="";
@@ -3404,6 +3413,18 @@ class statistics_helper {
         {
             //$tablePDF = array();
             $tablePDF = array_merge_recursive($tablePDF, $footPDF);
+            if (!isset($headPDF))
+            {
+                if ($outputs['qtype'] === "|")
+                {
+                }
+                // file upload lack headPDF
+                var_dump($tablePDF);
+                var_dump($outputs);
+                echo '<pre>'; var_dump($rt); echo '</pre>';
+                echo '<pre>'; var_dump($gdata); echo '</pre>';die;
+                //throw new CException('$headPDF is not defined');
+            }
             $this->pdf->headTable($headPDF,$tablePDF);
             //$this->pdf->tableintopdf($tablePDF);
 
