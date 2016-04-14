@@ -763,3 +763,7 @@ td.answer-item.text-center
 table.numbers-only th, table.numbers-only input {
     text-align: right;
 }
+
+.othertext-label-checkox-container {
+    padding-top: 10px;
+}
