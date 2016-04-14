@@ -785,6 +785,10 @@ table.numbers-only th, table.numbers-only input {
     margin-left: 0px;
 }
 
-.short-free-text .prefix, .short-free-text .suffix {
+.short-free-text .prefix, .short-free-text .suffix,.geoloc-item .search-icon, .geoloc-item .checkbox  {
     padding-top: 10px;
+}
+
+.geoname_search {
+    margin-bottom: 10px;
 }
