@@ -41,6 +41,25 @@
         <?php endif; ?>
 
         <thead>
+            <?php if ($leftheader != '' || $rightheader !=''): ?>
+                <tr class="array1 groups header_row">
+                    <th class="header_answer_text">&nbsp;</th>
+                    <th colspan="<?php echo count($labelans0); ?>" class="dsheader text-center"><?php echo $leftheader; ?></th>
+
+                    <?php if (count($labelans1) > 0): ?>
+                        <td class="header_separator">&nbsp;</td>  <!-- // Separator -->
+                        <th colspan="<?php echo count($labelans1); ?>" class="dsheader text-center"><?php echo $rightheader; ?></th>
+                    <?php endif; ?>
+
+                    <?php if($shownoanswer || $rightexists): ?>
+                        <td class="header_separator <?php echo $rigthclass; ?>">&nbsp;</td>
+                        <?php if($shownoanswer): ?>
+                            <th class="header_no_answer">&nbsp;</th>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </tr>
+            <?php endif; ?>
+
             <!-- Render header -->
             <?php echo Yii::app()->getController()->renderPartial(
                     '/survey/questions/arrays/dualscale/answer_header', 
@@ -55,24 +74,6 @@
                 ); 
             ?>
 
-            <?php if ($leftheader != '' || $rightheader !=''): ?>
-                <tr class="array1 groups header_row">
-                    <th class="header_answer_text">&nbsp;</th>
-                    <th colspan="<?php echo count($labelans0); ?>" class="dsheader"><?php echo $leftheader; ?></th>
-
-                    <?php if (count($labelans1) > 0): ?>
-                        <td class="header_separator">&nbsp;</td>  <!-- // Separator -->
-                        <th colspan="<?php echo count($labelans1); ?>" class="dsheader"><?php echo $rightheader; ?></th>
-                    <?php endif; ?>
-
-                    <?php if($shownoanswer || $rightexists): ?>
-                        <td class="header_separator <?php echo $rigthclass; ?>">&nbsp;</td>
-                        <?php if($shownoanswer): ?>
-                            <th class="header_no_answer">&nbsp;</th>
-                        <?php endif; ?>
-                    <?php endif; ?>
-                </tr>
-            <?php endif; ?>
         </thead>
 
         <tbody>
@@ -134,8 +135,7 @@
                     <?php if ($j === 0 && $leftheader != ''): ?>
                         <td class='visible-xs'><em><?php echo $leftheader; ?></em></td>
                     <?php endif; ?>
-                    <td data-title='<?php echo $ld; ?>' class="answer_cell_1_<?php echo $ld; ?> answer-item <?php echo $answertypeclass; ?>-item\">
-                    <label for="answer<?php echo $ansrow['myfid0']; ?>-<?php echo $ld; ?>">
+                    <td data-title='<?php echo $ld; ?>' class="answer_cell_1_<?php echo $ld; ?> answer-item <?php echo $answertypeclass; ?>-item text-center radio">
                         <input 
                             class="radio" 
                             type="radio" 
@@ -144,7 +144,9 @@
                             id="answer<?php echo $ansrow['myfid0']; ?>-<?php echo $ld; ?>"
                             <?php echo $labelcode0_checked[$j]; ?>
                         />
-                    </label>
+                        <label for="answer<?php echo $ansrow['myfid0']; ?>-<?php echo $ld; ?>">
+                            <span class="hide label-text"><?php echo $ld;?></span>
+                        </label>
                 <?php endforeach; ?>
 
                 <?php if (count($labelans1) > 0):  // if second label set is used ?>
@@ -167,16 +169,17 @@
                         <?php if ($k === 0 && $rightheader != ''): ?>
                             <td class='visible-xs'><em><?php echo $rightheader; ?></em></td>
                         <?php endif; ?>
-                        <td data-title='<?php echo $labelans1[$k]; ?>' class="answer_cell_2_<?php echo $ld; ?> answer-item radio-item">
+                        <td data-title='<?php echo $labelans1[$k]; ?>' class="answer_cell_2_<?php echo $ld; ?> answer-item radio-item text-center radio">
+                            <input 
+                                class="radio" 
+                                type="radio" 
+                                name="<?php echo $ansrow['myfname1']; ?>" 
+                                value="<?php echo $ld; ?>" 
+                                id="answer<?php echo $ansrow['myfid1']; ?>-<?php echo $ld; ?>"
+                                <?php echo $labelcode1_checked[$k]; ?>
+                            />
                             <label for="answer<?php echo $ansrow['myfid1']; ?>-<?php echo $ld; ?>">
-                                <input 
-                                    class="radio" 
-                                    type="radio" 
-                                    name="<?php echo $ansrow['myfname1']; ?>" 
-                                    value="<?php echo $ld; ?>" 
-                                    id="answer<?php echo $ansrow['myfid1']; ?>-<?php echo $ld; ?>"
-                                    <?php echo $labelcode1_checked[$k]; ?>
-                                />
+                                <span class="hide label-text"><?php echo $ld;?></span>
                             </label>
                         </td>
                     <?php endforeach; ?>
@@ -191,9 +194,8 @@
 
                 <!-- No answer column -->
                 <?php if ($shownoanswer): ?>
-                    <td  data-title='<?php eT("No answer"); ?>' class="dual_scale_no_answer answer-item radio-item noanswer-item">
+                    <td  data-title='<?php eT("No answer"); ?>' class="dual_scale_no_answer answer-item radio-item noanswer-item text-center radio">
                         <?php if (count($labelans1) > 0): ?>
-                            <label for='answer<?php echo $ansrow['myfid1']; ?>-'>
                                 <input 
                                     class='radio' 
                                     type='radio' 
@@ -202,9 +204,10 @@
                                     id='answer<?php echo $ansrow['myfid1']; ?>-'
                                     <?php echo $myfname1_notset; ?>
                                 />
+                            <label for='answer<?php echo $ansrow['myfid1']; ?>-'>
+                                <span class="hide label-text"><?php eT("No answer"); ?></span>
                             </label>
                         <?php else: ?>
-                            <label for='answer<?php echo $ansrow['myfid0']; ?>-'>
                                 <input 
                                     data-title='<?php eT("No answer"); ?>' 
                                     class='radio' 
@@ -214,6 +217,8 @@
                                     id='answer<?php echo $ansrow['myfid0']; ?>-'
                                     <?php echo $myfname0_notset; ?>
                                 />
+                            <label for='answer<?php echo $ansrow['myfid0']; ?>-'>
+                                <span class="hide label-text"><?php eT("No answer"); ?></span>
                             </label>
                         <?php endif; ?>
                     </td>
