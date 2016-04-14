@@ -366,15 +366,15 @@ class UpdateForm extends CFormModel
         // Republish the template assets
         Template::model()->forceAssets();
 
-        // Edit the file republish_assets.php 
+        // Edit the file republish_assets.php
         @ini_set('auto_detect_line_endings', true);
-        $versionlines = file($this->rootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'republish_assets.php');
-        $handle       = fopen($this->rootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'republish_assets.php', "w");
+        $versionlines = file($this->rootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'version.php');
+        $handle       = fopen($this->rootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'version.php', "w");
         foreach ($versionlines as $line)
         {
             if(strpos($line,'republish_assets')!==false)
             {
-                $line='$config[\'republish_assets\'] = false;'."\r\n";
+                $line='$config[\'republish_assets\'] = false;'.PHP_EOL;
             }
             fwrite($handle,$line);
         }

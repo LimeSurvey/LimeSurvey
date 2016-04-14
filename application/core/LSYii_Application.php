@@ -45,8 +45,7 @@ class LSYii_Application extends CWebApplication
         $email_config = require(__DIR__ . '/../config/email.php');
         $version_config = require(__DIR__ . '/../config/version.php');
         $updater_version_config = require(__DIR__ . '/../config/updater_version.php');
-        $republish_assets_config = require(__DIR__ . '/../config/republish_assets.php');
-        $settings = array_merge($ls_config, $version_config, $email_config, $updater_version_config, $republish_assets_config);
+        $settings = array_merge($ls_config, $version_config, $email_config, $updater_version_config);
 
 
         if(file_exists(__DIR__ . '/../config/config.php'))
