@@ -86,23 +86,22 @@
                     <!-- Close body and open another one -->
                     </tbody>
                     <tbody>
-                        <tr class="hidden-xs repeat headings">
-                            <!-- Render header -->
-                            <?php echo Yii::app()->getController()->renderPartial(
-                                    '/survey/questions/arrays/dualscale/answer_header', 
-                                    array(
-                                        'labelans0'    => $labelans0,
-                                        'labelans1'    => $labelans1,
-                                        'shownoanswer' => $shownoanswer,
-                                        'rightexists'  => $rightexists,
-                                        'class'        => 'hidden-xs repeat headings'
-                                    ),
-                                    true
-                                ); 
-                            ?>
-                        </tr>
+                        <!-- Render repeated header -->
+                        <?php echo Yii::app()->getController()->renderPartial(
+                                '/survey/questions/arrays/dualscale/answer_header',
+                                array(
+                                    'labelans0'    => $labelans0,
+                                    'labelans1'    => $labelans1,
+                                    'shownoanswer' => $shownoanswer,
+                                    'rightexists'  => $rightexists,
+                                    'class'        => 'hidden-xs repeat headings'
+                                ),
+                                true
+                            );
+                        ?>
                 <?php endif; ?>
 
+                <!-- tr -->
                 <?php echo $ansrow['htmlbody2']; ?>
 
                 <th class="answertext">
@@ -228,6 +227,8 @@
                         <?php endif; ?>
                     </td>
                 <?php endif; ?>
+
+                </tr>
 
             <?php endforeach; ?>
 
