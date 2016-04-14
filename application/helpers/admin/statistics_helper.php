@@ -2388,6 +2388,8 @@ class statistics_helper {
     */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
+        // TODO: Should not be necessary - this combination should never happen
+        // File-upload is not displayed in PDF
         if (($outputType=='pdf' && $outputs['qtype'] === "|"))
         {
             return array(
