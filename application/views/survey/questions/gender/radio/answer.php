@@ -14,10 +14,10 @@
 <!--Gender question, radio display -->
 
 <!-- answer -->
-<div class="answers-list radio-list">
+<ul class="answers-list radio-list list-unstyled">
 
     <!-- Female -->
-    <div class="col-xs-4 answer-item radio-item radio">
+    <li class="answer-item radio-item radio">
         <input
             class="radio"
             type="radio"
@@ -37,10 +37,10 @@
         <div class="label-text label-clickable" id="label-answer<?php echo $name;?>F">
             <?php eT('Female');?>
         </div>
-    </div>
+    </li>
 
     <!-- Male -->
-    <div class="col-xs-4 answer-item radio-item radio">
+    <li class="answer-item radio-item radio">
         <input
             class="radio"
             type="radio"
@@ -60,11 +60,11 @@
         <div class="label-text label-clickable" id="label-answer<?php echo $name;?>M">
             <?php eT('Male');?>
         </div>
-    </div>
+    </li>
 
     <!-- No answer -->
     <?php if($noAnswer):?>
-        <div class="col-xs-4 answer-item radio-item noanswer-item radio">
+        <li class="answer-item radio-item noanswer-item radio">
             <input
                 class="radio"
                 type="radio"
@@ -84,7 +84,7 @@
             <div class="label-text label-clickable" id="label-answer<?php echo $name;?>">
                 <?php eT('No answer'); ?>
             </div>
-        </div>
+        </li>
     <?php endif;?>
 
     <!-- Value -->
@@ -94,5 +94,5 @@
         id="java<?php echo $name; ?>"
         value="<?php echo $value;?>"
     />
-</div>
+</ul>
 <!-- end of answer -->
