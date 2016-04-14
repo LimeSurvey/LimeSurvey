@@ -744,3 +744,8 @@ td.answer-item.text-center
 }
 
 /******** OBS: Media specific CSS must be last in this file. ********/
+
+.radio input[type="radio"]:disabled + label
+{
+    opacity: 0.25;
+}
