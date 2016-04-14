@@ -191,7 +191,7 @@ class ExpressionManager {
 'ltrim' => array('ltrim', 'ltrim', gT('Strip whitespace (or other characters) from the beginning of a string'), 'string ltrim(string [, charlist])', 'http://php.net/ltrim', 1,2),
 'max' => array('max', 'Math.max', gT('Find highest value'), 'number max(arg1, arg2, ... argN)', 'http://php.net/max', -2),
 'min' => array('min', 'Math.min', gT('Find lowest value'), 'number min(arg1, arg2, ... argN)', 'http://php.net/min', -2),
-'mktime' => array('exprmgr_mktime', 'mktime', gT('Get UNIX timestamp for a date (each of the 6 arguments are optional)'), 'number mktime([hour [, minute [, second [, month [, day [, year ]]]]]])', 'http://php.net/mktime', 0,1,2,3,4,5,6),
+'mktime' => array('mktime', 'mktime', gT('Get UNIX timestamp for a date (each of the 6 arguments are optional)'), 'number mktime([hour [, minute [, second [, month [, day [, year ]]]]]])', 'http://php.net/mktime', 0,1,2,3,4,5,6),
 'nl2br' => array('nl2br', 'nl2br', gT('Inserts HTML line breaks before all newlines in a string'), 'string nl2br(string)', 'http://php.net/nl2br', 1,1),
 'number_format' => array('number_format', 'number_format', gT('Format a number with grouped thousands'), 'string number_format(number)', 'http://php.net/number-format', 1),
 'pi' => array('pi', 'LEMpi', gT('Get value of pi'), 'number pi()', '', 0),
@@ -2921,23 +2921,6 @@ function exprmgr_fixnum($value)
         return $newval;
     }
     return $value;
-}
-/**
- * Get Unix timestamp for a date : false if parameters is invalid.
- * PHP 5.3.3 send E_STRICT notice without param, then replace by time if needed
- * @param int[] $args as [$hour,$minute,$second,$month,$day,$year]
- * @return int|boolean
- */
-function exprmgr_mktime($args=null)
-{
-    if(!count($args))
-    {
-        return time();
-    }
-    else
-    {
-        return mktime($args);
-    }
 }
 /**
  * Returns true if all non-empty values are unique
