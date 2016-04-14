@@ -18,7 +18,7 @@
         <th class='th-12'><?php echo $ld; ?></th>
     <?php endforeach; ?>
 
-    <?php if (count($labelans1) > 1): ?>
+    <?php if (count($labelans1) > 0): ?>
 
         <td class="header_separator">&nbsp;</td>  <!-- Separator : and No answer for accessibility for first colgroup -->
 
