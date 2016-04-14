@@ -17,37 +17,42 @@
 ?>
 
 <!-- answer_row_other -->
-<div id='javatbd<?php echo $myfname; ?>' class='form-group answer-item radio-item other-item other radio' <?php echo $sDisplayStyle; ?> >
-    <input
-    class="radio"
-    type="radio"
-    value="-oth-"
-    name="<?php echo $name; ?>"
-    id="SOTH<?php echo $name;?>"
-    <?php echo $checkedState;?>
-    onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
-    aria-labelledby="label-SOTH<?php echo $name; ?>"
-    />
+<div id='javatbd<?php echo $myfname; ?>' class='form-group answer-item col-sm-12 radio-item other-item other radio' <?php echo $sDisplayStyle; ?> >
+    <!-- Checkbox + label -->
+    <div class="pull-left othertext-label-checkox-container">
+        <input
+        class="radio"
+        type="radio"
+        value="-oth-"
+        name="<?php echo $name; ?>"
+        id="SOTH<?php echo $name;?>"
+        <?php echo $checkedState;?>
+        onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
+        aria-labelledby="label-SOTH<?php echo $name; ?>"
+        />
 
-    <label for="SOTH<?php echo $name; ?>" class="answertext control-label label-radio"></label>
+        <label for="SOTH<?php echo $name; ?>" class="answertext control-label label-radio"></label>
 
-    <!--
-         The label text is provided inside a div,
-         so final user can add paragraph, div, or whatever he wants in the subquestion text
-         This field is related to the input thanks to attribute aria-labelledby
-    -->
-    <div class="label-text label-clickable" id="label-SOTH<?php echo $name; ?>">
-            <?php echo $othertext; ?>
+        <!--
+             The label text is provided inside a div,
+             so final user can add paragraph, div, or whatever he wants in the subquestion text
+             This field is related to the input thanks to attribute aria-labelledby
+        -->
+        <div class="label-text label-clickable" id="label-SOTH<?php echo $name; ?>">
+                <?php echo $othertext; ?>
+        </div>
     </div>
 
-
-    <input
-    type="text"
-    class="form-control text <?php echo $kpclass; ?>"
-    id="answer<?php echo $name; ?>othertext"
-    name="<?php echo $name; ?>other"
-    title="<?php eT('Other'); ?>" <?php echo $answer_other;?>
-    onkeyup="if($.trim($(this).val())!=''){ $('#SOTH<?php echo $name; ?>').click(); };  <?php echo $oth_checkconditionFunction; ?>"
-    />
+    <!-- comment -->
+    <div class="pull-left">
+        <input
+        type="text"
+        class="form-control text <?php echo $kpclass; ?> input-sm"
+        id="answer<?php echo $name; ?>othertext"
+        name="<?php echo $name; ?>other"
+        title="<?php eT('Other'); ?>" <?php echo $answer_other;?>
+        onkeyup="if($.trim($(this).val())!=''){ $('#SOTH<?php echo $name; ?>').click(); };  <?php echo $oth_checkconditionFunction; ?>"
+        />
+    </div>
 </div>
 <!-- end of answer_row_other -->
