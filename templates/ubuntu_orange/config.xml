@@ -21,7 +21,6 @@
             <filename>css/template.css</filename>
             <filename>css/font-awesome.css</filename>
             <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
-            <filename>css/awesome-bootstrap-checkbox/bootswatch-reset.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
