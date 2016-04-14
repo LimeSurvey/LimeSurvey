@@ -2909,7 +2909,7 @@ function questionAttributes($returnByName=false)
         "caption"=>gT('Sub-question validation tip'));
 
         $qattributes["exclude_all_others"]=array(
-        "types"=>":ABCEFMPKQ",
+        "types"=>"ABCEFMPKQ",
         'category'=>gT('Logic'),
         'sortorder'=>130,
         'inputtype'=>'text',

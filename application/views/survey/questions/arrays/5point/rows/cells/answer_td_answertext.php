@@ -7,8 +7,8 @@
  */
 ?>
 
-<!-- td_answertext -->
+<!-- answer_td_answertext -->
 <td class="answertextright" style='text-align:left; width: <?php echo $answerwidth; ?>%;'>
     <?php echo $answertext2;?>
 </td>
-<!-- endof td_answertext -->
+<!-- endof answer_td_answertext -->

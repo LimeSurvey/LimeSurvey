@@ -9,6 +9,7 @@
  * @var $labelans
  * @var $cellwidth
  * @var $right_exists
+ * @var $textAlignment
  *
  */
 ?>
@@ -33,13 +34,13 @@
                 <th class="text-center">&nbsp;</th>
 
                 <?php foreach ($labelans as $ld): ?>
-                    <th  class='th-11  text-center'>
+                    <th  class='th-11  text-<?php echo $textAlignment; ?>'>
                         <?php echo $ld;?>
                     </th>
                 <?php endforeach;?>
 
                 <?php if ($right_exists):?>
-                    <th class="text-center">
+                    <th class="text-<?php echo $textAlignment; ?>">
                         &nbsp;
                     </th>
                 <?php endif;?>

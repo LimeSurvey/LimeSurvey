@@ -23,9 +23,7 @@
 ?>
 
 <!-- answer_td -->
-<td data-title="<?php echo $dataTitle;?>"  class="answer-cell-5 answer_cell_<?php echo $ld;?> question-item answer-item <?php echo $answertypeclass; ?>-item <?php echo $extraclass; ?>">
-    <label for="answer<?php echo $myfname2;?>" class='col-xs-12 col-sm-12'>
-
+<td class="answer-cell-5 answer_cell_<?php echo $ld;?> question-item answer-item <?php echo $answertypeclass; ?>-item <?php echo $extraclass; ?>">
         <input
             type="hidden"
             name="java<?php echo $myfname2;?>"
@@ -33,13 +31,20 @@
             value="<?php echo $value; ?>"
         />
 
+        <label for="answer<?php echo $myfname2;?>" class='col-xs-12 col-sm-12'></label>
+
+        <div class="text-right visible-xs" id="label-answer<?php echo $myfname2;?>">
+            <?php echo $dataTitle;?>
+        </div>
         <?php if($inputboxlayout == false):?>
             <!-- InputBox Layout False -->
             <select
                 class="multiflexiselect form-control"
                 name="<?php echo $myfname2; ?>"
                 id="answer<?php echo $myfname2;?>"
-                onchange="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)">
+                onchange="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
+                aria-labelledby="label-answer<?php echo $myfname2;?>"
+            >
 
                 <option value="">
                     <?php eT('...'); ?>
@@ -57,7 +62,7 @@
             <!-- InputBox Layout -->
             <input
                 type='text'
-                class="multiflexitext text form-control <?php echo $kpclass;?>"
+                class="multiflexitext text form-control <?php echo $kpclass;?> text-right"
                 name="<?php echo $myfname2; ?>"
                 id="answer<?php echo $myfname2;?>"
                 <?php echo $maxlength; ?>
@@ -66,6 +71,5 @@
                 value="<?php echo $value; ?>"
                 />
         <?php endif; ?>
-    </label>
 </td>
 <!-- end of answer_td -->

@@ -365,21 +365,6 @@ class UpdateForm extends CFormModel
     {
         // Republish the template assets
         Template::model()->forceAssets();
-
-        // Edit the file republish_assets.php 
-        @ini_set('auto_detect_line_endings', true);
-        $versionlines = file($this->rootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'republish_assets.php');
-        $handle       = fopen($this->rootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'republish_assets.php', "w");
-        foreach ($versionlines as $line)
-        {
-            if(strpos($line,'republish_assets')!==false)
-            {
-                $line='$config[\'republish_assets\'] = false;'."\r\n";
-            }
-            fwrite($handle,$line);
-        }
-        fclose($handle);
-
     }
 
     /**
@@ -563,6 +548,22 @@ class UpdateForm extends CFormModel
 
     }
 
+    /**
+     * Checl if assets needs to be updated
+     */
+    private function checkAssets()
+    {
+        $iAssetVersionNumber  = Yii::app()->getConfig('assetsversionnumber');        // From version.php
+        $iCurrentAssetVersion = GetGlobalSetting('AssetsVersion');                       // From setting_global table
+
+        if ( intval($iAssetVersionNumber) > intval($iCurrentAssetVersion) )
+        {
+            self::republishAssets();
+            setGlobalSetting('AssetsVersion',$iAssetVersionNumber);
+        }
+    }
+
+
 
     /**
     * Check if an update is available, and prints the update notification
@@ -573,11 +574,7 @@ class UpdateForm extends CFormModel
     */
     public function getUpdateNotification()
     {
-        if(Yii::app()->getConfig("republish_assets"))
-        {
-            self::republishAssets();
-        }
-
+        $this->checkAssets();
         if(Yii::app()->getConfig('updatable'))
         {
             $today = new DateTime("now");

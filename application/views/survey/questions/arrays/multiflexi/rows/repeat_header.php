@@ -6,6 +6,7 @@
  * @var $right_exists
  * @var $cellwidth
  * @var $answerwidth
+ * @var $textAlignment
  */
 ?>
 
@@ -16,7 +17,7 @@
     <tr class="dontread repeat headings hidden-xs">
         <th>&nbsp;</th>
         <?php foreach ($labelans as $ld): ?>
-            <th  class='th-11'>
+            <th  class='th-11  text-<?php echo $textAlignment;?>'>
                 <?php echo $ld;?>
             </th>
         <?php endforeach;?>

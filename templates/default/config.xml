@@ -32,11 +32,12 @@
         <css>
             <filename>css/jquery-ui-custom.css</filename>
             <filename>css/bootstrap-slider.css</filename>
-            <filename>css/flat_and_modern.css</filename>
-            <filename>css/template.css</filename>
+
             <filename>css/font-awesome.css</filename>
-            <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
-            <filename>css/awesome-bootstrap-checkbox/bootswatch-reset.css</filename>
+            <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>            
+            <filename>css/flat_and_modern.css</filename>
+
+            <filename>css/template.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
