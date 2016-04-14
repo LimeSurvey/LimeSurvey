@@ -766,4 +766,23 @@ table.numbers-only th, table.numbers-only input {
 
 .othertext-label-checkox-container {
     padding-top: 5px;
+    margin-right: 5px;
+}
+
+.multiple-choice-with-comment.table{
+    table-layout: auto;
+    width: initial;
+}
+ .multiple-choice-with-comment.table > tbody > tr > td {
+     padding-left: 18px;
+     vertical-align: middle;
+ }
+
+ /* alignment for small screens*/
+ .multiple-choice-with-comment.table > tbody > tr > td.comment-container {
+     padding-left: 14px;
+ }
+.checkbox input[type="checkbox"] {
+    position: static;
+    margin-left: 0px;
 }

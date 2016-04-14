@@ -24,9 +24,11 @@
  */
 ?>
 <!-- answer_row -->
-<li class='<?php echo $liclasses;?>'>
-    <!-- Checkbox and label -->
-    <div class="option col-xs-12 form-group checkbox" <?php echo $sDisplayStyle ;?> >
+<tr class='<?php echo $liclasses;?>'>
+
+    <!-- Checkbox + label -->
+    <!-- <div class="pull-left othertext-label-checkox-container checkbox"  <?php // echo $sDisplayStyle ;?>> -->
+    <td class="checkbox"  <?php echo $sDisplayStyle ;?>>
         <input
             class="checkbox <?php echo $classes; echo $kpclass; ?>"
             title="<?php echo $title;?>"
@@ -60,16 +62,18 @@
             <?php echo $checked;?>
             />
         <?php endif;?>
-    </div>
+    </td>
 
     <!-- Comment -->
-    <div class="comment col-xs-12 form-group" <?php echo $sDisplayStyle; ?>>
+    <!-- <div class="pull-left"  <?php // echo $sDisplayStyle; ?>> -->
+    <td <?php echo $sDisplayStyle; ?> class="comment-container">
+    <!-- <div class="comment col-xs-12 form-group" <?php // echo $sDisplayStyle; ?>> -->
         <label for='<?php echo $inputCommentId;?>' class="answer-comment hide control-label">
             <?php echo $commentLabelText;?>
         </label>
 
         <input
-            class='form-control text <?php echo $kpclass; ?>'
+            class='form-control text input-sm <?php echo $kpclass; ?>'
             type='text'
             size='40'
             id='<?php echo $inputCommentId;?>'
@@ -77,6 +81,6 @@
             value='<?php echo $inputCOmmentValue; ?>'
             onkeyup='<?php echo $checkconditionFunctionComment;?>'
         />
-    </div>
-</li>
+    </td>
+</tr>
 <!-- end of answer_row -->

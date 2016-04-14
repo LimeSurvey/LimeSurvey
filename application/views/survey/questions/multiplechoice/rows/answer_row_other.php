@@ -41,7 +41,7 @@
                   This field is related to the input thanks to attribute aria-labelledby
              -->
              <div class="label-text label-clickable" id="label-<?php echo $myfname;?>cbox">
-                     <?php echo $othertext; ?> &nbsp;
+                     <?php echo $othertext; ?>
              </div>
         </div>
 
