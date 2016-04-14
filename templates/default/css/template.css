@@ -759,3 +759,7 @@ td.answer-item.text-center
 {
     vertical-align: middle;
 }
+
+table.numbers-only th, table.numbers-only input {
+    text-align: right;
+}

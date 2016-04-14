@@ -106,8 +106,6 @@ function retrieveAnswers($ia)
         ,'essentials'         => ''
     );
 
-
-
     $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$lang));
 
     switch ($ia[4])
@@ -4877,6 +4875,7 @@ function do_array_multitext($ia)
             $q_table_id      = 'totals_'.$ia[0];
             $q_table_id_HTML = ' id="'.$q_table_id.'"';
         }
+        
         $num_class   = ' numbers-only';
         $extraclass .= " numberonly";
         $caption    .= gT("Each answer is a number. ");
@@ -5878,7 +5877,7 @@ function do_array_dual($ia)
             $aData['labelans1'] = $labelans1;
             $aData['labelcode1'] = $labelcode1;
             $aData['separatorwidth'] = ($centerexists) ? "style='width: $cellwidth%;' ":"";
-            
+
             //if (count($labelans1)>0) // if second label set is used
             //{
                 //$separatorwidth='';
@@ -5915,7 +5914,7 @@ function do_array_dual($ia)
             $aData['leftheader'] = $leftheader;
             $aData['rightheader'] = $rightheader;
             $aData['rigthclass'] = ($rightexists) ? " header_answer_text_right" : "";
-            
+
             /*
             if ($leftheader != '' || $rightheader !='')
             {
@@ -6046,7 +6045,7 @@ function do_array_dual($ia)
                 // Hidden answers used by EM: sure can be added in javascript
                 //$answer .= "<input type=\"hidden\" disabled=\"disabled\" name=\"java$myfid0\" id=\"java$myfid0\" value=\"";
 
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0])) 
+                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]))
                 {
                     //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0];
                     $aData['aSubQuestions'][$i]['sessionfname0'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0];
@@ -6061,7 +6060,7 @@ function do_array_dual($ia)
                 {
                     //$answer .= "<input type=\"hidden\" disabled=\"disabled\" name=\"java$myfid1\" id=\"java$myfid1\" value=\"";
 
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1])) 
+                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]))
                     {
                         //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
                         $aData['aSubQuestions'][$i]['sessionfname1'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
@@ -6198,7 +6197,7 @@ function do_array_dual($ia)
             //$answer.="</table></div>";
 
             $answer = Yii::app()->getController()->renderPartial(
-                '/survey/questions/arrays/dualscale/answer', 
+                '/survey/questions/arrays/dualscale/answer',
                 $aData,
                 true
             );
