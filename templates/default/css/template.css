@@ -450,15 +450,15 @@ body .navbar-default .navbar-brand:hover {
     font-weight: normal;
 }
 
-.table-multi-num label {
+/* Center radio buttons in array-by-column */
+.table-array-by-column td.radio-item.text-center.answer-item {
+    padding-left: 47px;
 }
 
 /**
  * On big screen only, iPad and up
  */
 @media only screen and (min-width: 768px) {
-
-
 
     .table-dual-scale .separator {
         width: 6%;
@@ -704,8 +704,6 @@ body .navbar-default .navbar-brand:hover {
         padding: 0;
     }
 }
-
-/******** OBS: Media specific CSS must be last in this file. ********/
 
 
 /**
