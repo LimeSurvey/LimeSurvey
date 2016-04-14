@@ -742,6 +742,11 @@ td.answer-item.text-center
     padding-left: 52px;
 }
 
+.array-multi-flexi .checkbox-list td.answer-item.text-center
+{
+    padding-left: 45px;
+}
+
 /* center the label text in no more table mode */
 .label-text{
     display: inline;

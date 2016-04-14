@@ -5255,6 +5255,7 @@ function do_array_multiflexi($ia)
 
     $checkboxlayout = false;
     $inputboxlayout = false;
+    $textAlignment  = 'right';
 
     if ($aQuestionAttributes['multiflexible_checkbox']!=0)
     {
@@ -5263,6 +5264,7 @@ function do_array_multiflexi($ia)
         $checkboxlayout      =  true;
         $answertypeclass     =  " checkbox";
         $caption            .= gT("Check or uncheck the answer for each subquestion. ");
+        $textAlignment       = 'center';
     }
     elseif ($aQuestionAttributes['input_boxes']!=0 )
     {
@@ -5270,6 +5272,7 @@ function do_array_multiflexi($ia)
         $answertypeclass    .= " numeric-item text";
         $extraclass         .= " numberonly";
         $caption            .= gT("Each answers are a number. ");
+        $textAlignment       = 'right';
     }
     else
     {
@@ -5399,6 +5402,7 @@ function do_array_multiflexi($ia)
                                 'right_exists'  =>  $right_exists,
                                 'cellwidth'     =>  $cellwidth,
                                 'answerwidth'   =>  $answerwidth,
+                                'textAlignment' => $textAlignment,
                             ),  true);
                 }
             }
@@ -5529,7 +5533,6 @@ function do_array_multiflexi($ia)
                 $rightTd = true;
             }
 
-            // answer_row
             $sAnswerRows .=  Yii::app()->getController()->renderPartial('/survey/questions/arrays/multiflexi/rows/answer_row', array(
                                 'sDisplayStyle'     => $sDisplayStyle,
                                 'useAnswerWidth'    => $useAnswerWidth,
@@ -5554,12 +5557,12 @@ function do_array_multiflexi($ia)
                             'cellwidth'         => $cellwidth,
                             'right_exists'      => $right_exists,
                             'sAnswerRows'       => $sAnswerRows,
+                            'textAlignment'     => $textAlignment,
                         ),  true);
 
     }
     else
     {
-        //$answer = "\n<p class=\"error\">".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $answer     = Yii::app()->getController()->renderPartial('/survey/questions/arrays/multiflexi/empty_error', array(),  true);
         $inputnames = '';
     }
