@@ -5622,30 +5622,11 @@ function do_arraycolumns($ia)
 
         if ($anscount>0)
         {
-            $fn=1;
             $cellwidth=$anscount;
             $cellwidth=round(( 50 / $cellwidth ) , 1);
-            $answer = '';
-            //$answer = "\n<table class=\"array-by-columns-table table-array-by-column table question subquestion-list questions-list\">\n"
-            //. "\t<colgroup class=\"col-responses\">\n"
-            //. "\t<col class=\"col-answers\" style='width: 50%' />\n";
-            $odd_even = '';
 
             $aData['anscount'] = $anscount;
             $aData['cellwidth'] = $cellwidth;
-
-            for( $c = 0 ; $c < $anscount ; ++$c )
-            {
-                //$odd_even = alternation($odd_even);
-                //$odd_even_well = ($odd_even == 'odd')?$odd_even.' well':$odd_even;
-                //$answer .= "<col class=\"$odd_even question-item answers-list radio-list\" width=\"$cellwidth%\" />\n";
-                //$answer .= "<col class=\"$odd_even_well question-item answers-list radio-list\" style='width: $cellwidth%;' />\n";
-            }
-            //$answer .= "\t</colgroup>\n\n"
-            //. "\t<thead class='thead-array-by-column'>\n"
-            //. "<tr>\n"
-            //. "\t<td>&nbsp;</td>\n";
-
             $aData['aQuestions'] = $aQuestions;
 
             foreach ($aQuestions as $ansrow)
@@ -5657,70 +5638,35 @@ function do_arraycolumns($ia)
             $aData['anscode'] = $anscode;
             $aData['answers'] = $answers;
 
-            $trbc = '';
-            $odd_even = '';
             for ($_i=0;$_i<count($answers);++$_i)
             {
-                $ld = $answers[$_i];
                 $myfname = $ia[1].$anscode[$_i];
-                $trbc = alternation($trbc , 'row');
                 /* Check the Sub Q mandatory violation */
                 if ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ))
                 {
                     $aData['aQuestions'][$_i]['errormandatory'] = true;
-                    //$ld = "<span class=\"errormandatory\">{$ld}</span>";
-                    //$ld ='
-                                //<div class="alert alert-danger " role="alert">'.
-                                        //$ld
-                                    //.'
-                                //</div>';
-
                 }
                 else
                 {
                     $aData['aQuestions'][$_i]['errormandatory'] = false;
                 }
-                //$odd_even = alternation($odd_even);
-                //$answer .= "\t<th class=\"$odd_even\">$ld</th>\n";
             }
-            unset($trbc);
-            //$answer .= "</tr>\n\t</thead>\n\n\t<tbody>\n";
-            $ansrowcount=0;
-            $ansrowtotallength=0;
-            foreach($aQuestions as $ansrow)
-            {
-                $ansrowcount++;
-                $ansrowtotallength=$ansrowtotallength+strlen($ansrow['question']);
-            }
-
-            $aData['ansrowtotallength'] = $ansrowtotallength;
-
-            $percwidth = 100 - ($cellwidth*$anscount);
 
             $aData['labels'] = $labels;
             $aData['checkconditionFunction'] = $checkconditionFunction;
 
             foreach($labels as $ansrow)
             {
-                //$answer .= "<tr>\n"
-                //. "\t<th class=\"arraycaptionleft dontread\">{$ansrow['answer']}</th>\n";
-                $i = 0;
                 foreach ($anscode as $j => $ld)
                 {
                     $myfname=$ia[1].$ld;
                     $aData['aQuestions'][$j]['myfname'] = $myfname;
-                    //$answer .= "\t<td data-title='" . $ansrow['answer'] . "' class=\"answer-cell-7 answer_cell_$ld answer-item radio-item\">\n"
-                    //. "\t<label for=\"answer".$myfname.'-'.$ansrow['code']."\">
-                    //  <input class=\"radio\" type=\"radio\" name=\"".$myfname.'" value="'.$ansrow['code'].'" '
-                    //. 'id="answer'.$myfname.'-'.$ansrow['code'].'" ';
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
                     {
-                        $answer .= CHECKED;
                         $aData['aQuestions'][$j]['checked'] = CHECKED;
                     }
                     elseif (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $ansrow['code'] == '')
                     {
-                        $answer .= CHECKED;
                         $aData['aQuestions'][$j]['checked'] = CHECKED;
                         // Humm.. (by lemeur), not sure this section can be reached
                         // because I think $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] is always set (by save.php ??) !
@@ -5730,23 +5676,14 @@ function do_arraycolumns($ia)
                     {
                         $aData['aQuestions'][$j]['checked'] = "";
                     }
-                    //$answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-                    //. "\t</label></td>\n";
-                    $i += 1;
                 }
-                unset($trbc);
-                //$answer .= "</tr>\n";
-                $fn++;
             }
 
-            //$answer .= "\t</tbody>\n</table>\n";
             foreach($anscode as $j => $ld)
             {
                 $myfname=$ia[1].$ld;
-                //$answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
-                    //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
                     $aData['aQuestions'][$j]['myfname_value'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
                 }
                 else
@@ -5754,7 +5691,6 @@ function do_arraycolumns($ia)
                     $aData['aQuestions'][$j]['myfname_value'] = '';
                 }
 
-                //$answer .= "\" />\n";
                 $inputnames[]=$myfname;
             }
 
