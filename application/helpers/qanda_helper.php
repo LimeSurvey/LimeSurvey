@@ -3861,7 +3861,6 @@ function do_gender($ia)
 * @param $ia
 * @return unknown_type
 */
-// TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_array_5point($ia)
 {
     global $thissurvey;
@@ -3889,19 +3888,6 @@ function do_array_5point($ia)
     }
 
     $cellwidth  = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
-    $sQuery     = "SELECT question FROM {{questions}} WHERE parent_qid=".$ia[0]." AND question like '%|%'";
-    $iCount     = Yii::app()->db->createCommand($sQuery)->queryScalar();
-
-    if ($iCount>0)
-    {
-        $right_exists = true;
-        $answerwidth  = $answerwidth/2;
-    }
-    else
-    {
-        $right_exists = false;
-    }
-
 
     if ($aQuestionAttributes['random_order']==1)
     {
@@ -3916,8 +3902,18 @@ function do_array_5point($ia)
     $aSubquestions = $ansresult->readAll();
     $anscount      = count($aSubquestions);
     $fn            = 1;
-    $sColumns       = $sHeaders = $sRows = $answer_tds = '';
+    $sColumns      = $sHeaders = $sRows = $answer_tds = '';
 
+    // Check if any subquestion use suffix/prefix
+    $right_exists  = false;
+    foreach ($aSubquestions as $j => $ansrow)
+    {
+        $answertext2   = $ansrow['question'];
+        if (strpos($answertext2,'|'))
+        {
+            $right_exists  = true;
+        }
+    }
 
     for ($xc=1; $xc<=5; $xc++)
     {
@@ -3925,6 +3921,12 @@ function do_array_5point($ia)
     }
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    {
+        $sColumns  .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
+    }
+
+    // Column for suffix
+    if ($right_exists)
     {
         $sColumns  .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
     }
@@ -3938,6 +3940,7 @@ function do_array_5point($ia)
         ), true);
     }
 
+    // Header for suffix
     if ($right_exists)
     {
         $sHeaders .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/cells/thead', array(
@@ -3978,7 +3981,6 @@ function do_array_5point($ia)
         // Value
         $value = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
 
-        // ==> tds
         for ($i=1; $i<=5; $i++)
         {
             $CHECKED = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)?'CHECKED':'';
@@ -3991,8 +3993,8 @@ function do_array_5point($ia)
             ), true);
         }
 
-        // => tds
-        $answertext2 = $ansrow['question'];
+        // Suffix
+        $answertext2   = $ansrow['question'];
         if (strpos($answertext2,'|'))
         {
             $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
@@ -4024,14 +4026,14 @@ function do_array_5point($ia)
         }
 
         $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/rows/answer_row', array(
-                    'answer_tds'=>$answer_tds,
-                    'myfname'=>$myfname,
-                    'answerwidth'=>$answerwidth,
-                    'answertext'=>$answertext,
-                    'value'=>$value,
-                    'error'=>$error,
-                    'sDisplayStyle'=>$sDisplayStyle,
-                    'zebra' => 2 - ($j % 2)
+                    'answer_tds'    => $answer_tds,
+                    'myfname'       => $myfname,
+                    'answerwidth'   => $answerwidth,
+                    'answertext'    => $answertext,
+                    'value'         => $value,
+                    'error'         => $error,
+                    'sDisplayStyle' => $sDisplayStyle,
+                    'zebra'         => 2 - ($j % 2)
                 ), true);
 
         $answer_tds = '';
@@ -4040,10 +4042,10 @@ function do_array_5point($ia)
     }
 
     $answer = Yii::app()->getController()->renderPartial('/survey/questions/arrays/5point/answer', array(
-                'extraclass'=>$extraclass,
-                'sColumns'=>$sColumns,
-                'sHeaders'=>$sHeaders,
-                'sRows'=>$sRows,
+                'extraclass' => $extraclass,
+                'sColumns'   => $sColumns,
+                'sHeaders'   => $sHeaders,
+                'sRows'      => $sRows,
             ), true);
 
     //$answer .= $answer_t_content;
