@@ -287,9 +287,11 @@ function retrieveAnswers($ia)
 
     if ($ia[6] == 'Y')
     {
-        $qtitle = Yii::app()->getController()->renderPartial('/survey/question_help/asterisk', array(), true);
-        $qtitle .= $qtitle;
-        $question_text['mandatory'] = gT('*');
+
+        //$qtitle .= Yii::app()->getController()->renderPartial('/survey/question_help/asterisk', array(), true);
+        //$qtitle .= $qtitle;
+        //$question_text['mandatory'] = gT('*');
+        $question_text['mandatory'] = Yii::app()->getController()->renderPartial('/survey/question_help/asterisk', array(), true);
     }
 
     //If this question is mandatory but wasn't answered in the last page
@@ -4875,7 +4877,7 @@ function do_array_multitext($ia)
             $q_table_id      = 'totals_'.$ia[0];
             $q_table_id_HTML = ' id="'.$q_table_id.'"';
         }
-        
+
         $num_class   = ' numbers-only';
         $extraclass .= " numberonly";
         $caption    .= gT("Each answer is a number. ");
@@ -5929,7 +5931,7 @@ function do_array_dual($ia)
 
                 array_push($inputnames, $myfname0);
 
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0])) 
+                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]))
                 {
                     $aData['aSubQuestions'][$i]['sessionfname0'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0];
                 }
