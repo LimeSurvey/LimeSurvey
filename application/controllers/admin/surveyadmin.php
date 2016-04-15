@@ -1234,7 +1234,13 @@ class SurveyAdmin extends Survey_Common_Action
         $thereIsPostData = $request->getPost('orgdata') !== null;
         $userHasPermissionToUpdate = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
 
-        if ($thereIsPostData && $userHasPermissionToUpdate)
+        if (!$userHasPermissionToUpdate)
+        {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
+
+        if ($thereIsPostData)
         {
             // Save the new ordering
             $this->_reorderGroup($iSurveyID);
