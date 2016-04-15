@@ -34,7 +34,7 @@ class SurveyRuntimeHelper {
         $html = '';
         $html .=  "\n\n<!-- PRESENT THE INDEX MENU -->\n";
         $html .=  CHtml::openTag('li', array('id' => 'index-menu', 'class'=>'dropdown'));
-        $html .=  CHtml::link(gT("Question index").'&nbsp<span class="caret"></span>', array('#'), array('class'=>'dropdown-toggle', 'data-toggle'=>"dropdown", 'role'=>"button", 'aria-haspopup'=>"true", 'aria-expanded'=>"false"));
+        $html .=  CHtml::link(gT("Question index").'&nbsp;<span class="caret"></span>', array('#'), array('class'=>'dropdown-toggle', 'data-toggle'=>"dropdown", 'role'=>"button", 'aria-haspopup'=>"true", 'aria-expanded'=>"false"));
         $html .=  CHtml::openTag('ul', array('class'=>'dropdown-menu'));
         foreach ($_SESSION[$LEMsessid]['grouplist'] as $key => $group)
         {
@@ -76,7 +76,7 @@ class SurveyRuntimeHelper {
     {
         $html = '';
         $html .=  CHtml::openTag('li', array('id' => 'index', 'class'=>'dropdown'));
-        $html .=  CHtml::link(gT("Question index").'&nbsp<span class="caret"></span>', array('#'), array('class'=>'dropdown-toggle',  'data-toggle'=>"dropdown", 'role'=>"button", 'aria-haspopup'=>"true", 'aria-expanded'=>"false"));
+        $html .=  CHtml::link(gT("Question index").'&nbsp;<span class="caret"></span>', array('#'), array('class'=>'dropdown-toggle',  'data-toggle'=>"dropdown", 'role'=>"button", 'aria-haspopup'=>"true", 'aria-expanded'=>"false"));
         $html .=  CHtml::openTag('ul', array('class'=>'dropdown-menu'));
         $html .=  CHtml::openTag('li');
         $html .=  CHtml::link(gT("Question by question mode not yet supported."), array('#'));
@@ -92,7 +92,7 @@ class SurveyRuntimeHelper {
         $html = '';
         $html .=  "\n\n<!-- PRESENT THE INDEX -->\n";
         $html .=  CHtml::openTag('li', array('id' => 'index', 'class'=>'dropdown'));
-        $html .=  CHtml::link(gT("Question index").'&nbsp<span class="caret"></span>', array('#'), array('class'=>'dropdown-toggle',  'data-toggle'=>"dropdown", 'role'=>"button", 'aria-haspopup'=>"true", 'aria-expanded'=>"false"));
+        $html .=  CHtml::link(gT("Question index").'&nbsp;<span class="caret"></span>', array('#'), array('class'=>'dropdown-toggle',  'data-toggle'=>"dropdown", 'role'=>"button", 'aria-haspopup'=>"true", 'aria-expanded'=>"false"));
         $html .=  CHtml::openTag('ul', array('class'=>'dropdown-menu'));
 
         $stepIndex = LimeExpressionManager::GetStepIndexInfo();
