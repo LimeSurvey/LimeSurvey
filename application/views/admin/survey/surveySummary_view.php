@@ -65,28 +65,30 @@ $surveyid = $surveyinfo['sid'];
 
                         <!-- Switch : Show questions group by group -->
                         <?php $switchvalue = ($surveyinfo['format']=='G') ? 1 : 0 ; ?>
-                        <div class="row">
-                            <div class="col-sm-12">
+                        <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
+                            <div class="row">
+                                <div class="col-sm-12">
 
-                                <label for="format"><?php eT('Format:');?></label>
-                                <div id='switchchangeformat' class="btn-group" role="group">
-                                  <button type="button" data-value='S' class="btn btn-default <?php if($surveyinfo['format']=='S'){echo 'active';}?>"><?php eT('Question by question');?></button>
-                                  <button type="button" data-value='G' class="btn btn-default <?php if($surveyinfo['format']=='G'){echo 'active';}?>"><?php eT('Group by group');?></button>
-                                  <button type="button" data-value='A' class="btn btn-default <?php if($surveyinfo['format']=='A'){echo 'active';}?>"><?php eT('All in one');?></button>
+                                    <label for="format"><?php eT('Format:');?></label>
+                                    <div id='switchchangeformat' class="btn-group" role="group">
+                                      <button type="button" data-value='S' class="btn btn-default <?php if($surveyinfo['format']=='S'){echo 'active';}?>"><?php eT('Question by question');?></button>
+                                      <button type="button" data-value='G' class="btn btn-default <?php if($surveyinfo['format']=='G'){echo 'active';}?>"><?php eT('Group by group');?></button>
+                                      <button type="button" data-value='A' class="btn btn-default <?php if($surveyinfo['format']=='A'){echo 'active';}?>"><?php eT('All in one');?></button>
+                                    </div>
+                                    <input type="hidden" id="switch-url" data-url="<?php echo $this->createUrl("admin/survey/sa/changeFormat/surveyid/".$surveyinfo['sid']);?>" />
+                                    <br/><br/>
+                                    <?php /*
+                                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                        'name' => 'groupbygroup',
+                                        'id'=>'switchchangeformat',
+                                        'value'=>$switchvalue,
+                                    ));?>
+
+                                    <br/><br/>
+                                    */?>
                                 </div>
-                                <input type="hidden" id="switch-url" data-url="<?php echo $this->createUrl("admin/survey/sa/changeFormat/surveyid/".$surveyinfo['sid']);?>" />
-                                <br/><br/>
-                                <?php /*
-                                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                    'name' => 'groupbygroup',
-                                    'id'=>'switchchangeformat',
-                                    'value'=>$switchvalue,
-                                ));?>
-
-                                <br/><br/>
-                                */?>
                             </div>
-                        </div>
+                        <?php endif; ?>
 
 
                         <!-- Add Question / group -->
@@ -260,12 +262,14 @@ $surveyid = $surveyinfo['sid'];
                     </div>
 
                     <div class="col-sm-6">
-                        <!-- Template carroussel -->
-                        <?php $this->renderPartial( "/admin/survey/subview/_template_carousel", array(
-                            'templates'=>$templates,
-                            'surveyinfo'=>$surveyinfo,
-                            'iSurveyId'=>$surveyid,
-                        )); ?>
+                        <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
+                            <!-- Template carroussel -->
+                            <?php $this->renderPartial( "/admin/survey/subview/_template_carousel", array(
+                                'templates'=>$templates,
+                                'surveyinfo'=>$surveyinfo,
+                                'iSurveyId'=>$surveyid,
+                            )); ?>
+                        <?php endif; ?>
                     </div>
 
                     <!-- last visited question -->
