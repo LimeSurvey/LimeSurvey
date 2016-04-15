@@ -5997,7 +5997,7 @@ function do_array_dual($ia)
                 $aData['answertextright'] = $answertextright;
                 if ($shownoanswer)
                 {
-                    if (count($labelans1)>0)
+                    if (count($labelans1) > 0)
                     {
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == "")
                         {
@@ -6006,7 +6006,7 @@ function do_array_dual($ia)
                         }
                         else
                         {
-                            $aData['myfname1_checked'] = "";
+                            $aData['myfname1_notset'] = "";
                         }
                     }
                     else
