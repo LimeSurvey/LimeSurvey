@@ -168,6 +168,7 @@ class questiongroups extends Survey_Common_Action
             $aData['surveybar']['importquestiongroup'] = true;
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;  // Close button
             $aData['surveybar']['savebutton']['form'] = true;
+            $aData['surveybar']['saveandclosebutton']['form'] = true;
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'addGroup_view', $aData);
         }
     }
@@ -284,7 +285,10 @@ class questiongroups extends Survey_Common_Action
             // http://local.lsinst/LimeSurvey_206/index.php/admin/survey/sa/view/surveyid/282267/gid/10
             // http://local.lsinst/LimeSurvey_206/index.php//282267/gid/10
 
-            $this->getController()->redirect(array('admin/questiongroups/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
+            if(Yii::app()->request->getPost('close-after-save') === 'true')
+            {
+                $this->getController()->redirect(array('admin/questiongroups/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
+            }
         }
     }
 
