@@ -1509,8 +1509,7 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
 
 #comfortUpdateGeneralWrap h3.maintitle {
   background-color: transparent;
-  color: #328637;
-  border-bottom: 1px solid #328637; }
+ }
 
 #comfortUpdateGeneralWrap .on {
   font-weight: bold;
@@ -1520,7 +1519,6 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
 
 #comfortUpdateGeneralWrap .on span {
   display: block;
-  background-color: #328637;
   color: #fff;
   padding: 0.1em;
   padding-left: 0.5em;
