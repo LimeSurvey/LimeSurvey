@@ -65,6 +65,7 @@
 
             <?php $this->widget('bootstrap.widgets.TbGridView', array(
                 'dataProvider'=>$dataProvider,
+                'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).'),
                 'columns' => array(
                     array(
                         'header' => gT('Position'),
