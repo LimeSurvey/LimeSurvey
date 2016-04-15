@@ -8,7 +8,13 @@
 
 <div class='menubar surveybar' id="surveybarid">
     <div class='row container-fluid'>
-        <div class="col-md-8 col-xs-6">
+
+        <?php // If there are no save or close buttons, take up some more space (useful for 1366x768 screens) ?>
+        <?php if (!isset($surveybar['savebutton']['form']) && (!isset($surveybar['saveandclosebutton'])) && (!isset($surveybar['closebutton']))): ?>
+            <div class="col-md-12 col-xs-6">
+        <?php else: ?>
+            <div class="col-md-8 col-xs-6">
+        <?php endif; ?>
 
             <!-- Add a new group -->
             <?php if(isset($surveybar['buttons']['newgroup'])):?>
