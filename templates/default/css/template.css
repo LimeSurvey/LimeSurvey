@@ -453,6 +453,14 @@ body .navbar-default .navbar-brand:hover {
     padding-left: 47px;
 }
 
+.ddprefix {
+    padding-right: 1em;
+}
+
+.ddsuffix {
+    padding-left: 1em;
+}
+
 /**
  * On big screen only, iPad and up
  */

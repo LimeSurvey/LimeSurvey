@@ -15,26 +15,25 @@
     <table class="table-in-qanda-10 question subquestion-list questions-list dropdown-list">
 
         <!-- Column groups -->
-
         <col class="answertext" style='width: <?php echo $answerwidth; ?>%;' />
 
         <?php if ($ddprefix != '' || $ddsuffix != ''): ?>
             <colgroup style='width: <?php echo $cellwidth; ?>%;' >
         <?php endif; ?>
 
-        <?php if ($ddprefix != ''): ?>
-            <col class="ddprefix" />
-        <?php endif; ?>
+            <?php if ($ddprefix != ''): ?>
+                <col class="ddprefix" />
+            <?php endif; ?>
 
-        <col class="dsheader" <?php echo $headcolwidth; ?> />
+            <col class="dsheader" <?php echo $headcolwidth; ?> />
 
-        <?php if ($ddsuffix != ''): ?>
-            <col class="ddsuffix" />
-        <?php endif; ?>
+            <?php if ($ddsuffix != ''): ?>
+                <col class="ddsuffix" />
+            <?php endif; ?>
 
-        <?php if ($ddprefix != '' || $ddsuffix != ''): ?>
-            </colgroup>
-        <?php endif; ?>
+            <?php if ($ddprefix != '' || $ddsuffix != ''): ?>
+                </colgroup>
+            <?php endif; ?>
 
         <col class="ddarrayseparator" style='width: <?php echo $separatorwidth; ?>%'/>
 
@@ -42,15 +41,15 @@
             <colgroup style='width: <?php echo $cellwidth; ?>%;' >
         <?php endif; ?>
 
-        <?php if ($ddprefix != ''): ?>
-            <col class="ddprefix" />
-        <?php endif; ?>
+            <?php if ($ddprefix != ''): ?>
+                <col class="ddprefix" />
+            <?php endif; ?>
 
-        <col class="dsheader" <?php echo $headcolwidth; ?> />
+            <col class="dsheader" <?php echo $headcolwidth; ?> />
 
-        <?php if ($ddsuffix != ''): ?>
-            <col class="ddsuffix" />
-        <?php endif; ?>
+            <?php if ($ddsuffix != ''): ?>
+                <col class="ddsuffix" />
+            <?php endif; ?>
 
         <?php if ($ddprefix != '' || $ddsuffix != ''): ?>
             </colgroup>
@@ -110,7 +109,7 @@
                     <!-- Prefix -->
 
                     <?php if ($ddprefix != ''): ?>
-                        <td class="ddprefix information-item">
+                        <td class="ddprefix information-item text-right">
                             <?php echo $ddprefix; ?>
                         </td>
                     <?php endif; ?>
@@ -164,7 +163,7 @@
                     <!-- Prefix -->
 
                     <?php if ($ddprefix != ''): ?>
-                        <td class="ddprefix information-item">
+                        <td class="ddprefix information-item text-right">
                             <?php echo $ddprefix; ?>
                         </td>
                     <?php endif; ?>
