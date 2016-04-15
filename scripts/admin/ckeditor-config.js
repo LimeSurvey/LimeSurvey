@@ -43,17 +43,16 @@ CKEDITOR.editorConfig = function( config )
         ['Maximize','Createlimereplacementfields'],
         ['Cut','Copy','Paste','PasteText','PasteFromWord'],
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat','Source'],
-        ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
-        '/',
-        ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-        ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
+        ['Image','Flash'],['Table','HorizontalRule','Smiley','SpecialChar'],
+        ['Bold','Italic','Underline','Strike'],['Subscript','Superscript'],
+        ['NumberedList','BulletedList'],['Outdent','Indent','Blockquote','CreateDiv'],
         ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
         ['BidiLtr', 'BidiRtl'],
-        ['Link','Unlink','Anchor','Iframe'],
-        '/',
+        [ 'ShowBlocks','Templates'],
+        ['Link','Unlink'],
         ['Styles','Format','Font','FontSize'],
-        ['TextColor','BGColor'],
-        [ 'ShowBlocks','Templates']
+        ['Anchor','Iframe'],
+        ['TextColor','BGColor']
     ];
    config.toolbar_inline2 =
     [
