@@ -933,6 +933,7 @@ class Survey_Common_Action extends CAction
             }
             $aData['aGroups'] = $aGroups;
             $aData['surveycontent'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'read');
+            $aData['surveycontentupdate'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'update');
             $this->getController()->renderPartial("/admin/super/sidemenu", $aData);
         }
         else

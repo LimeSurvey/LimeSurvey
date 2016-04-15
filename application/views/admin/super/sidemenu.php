@@ -126,7 +126,7 @@
                                     <?php endif; ?>
 
                                     <!-- Organize questions -->
-                                    <?php if($surveycontent):?>
+                                    <?php if($surveycontentupdate):?>
                                         <?php if ($activated):?>
                                             <li class="disabled">
                                                 <a href='#'>
