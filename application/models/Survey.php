@@ -794,7 +794,7 @@ class Survey extends LSActiveRecord
 
         $button = '<a class="btn btn-default" href="'.$sSummaryUrl.'" role="button" data-toggle="tooltip" title="'.gT('Survey summary').'"><span class="glyphicon glyphicon-list-alt" ></span></a>';
 
-        if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'edit'))
+        if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update'))
         {
             $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('General settings & texts').'"><span class="glyphicon glyphicon-pencil" ></span></a>';
         }
