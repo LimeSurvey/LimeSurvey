@@ -6064,66 +6064,16 @@ function do_array_dual($ia)
             else {
                 $interddSep = '';
             }
-            $colspan_1 = '';
-            $colspan_2 = '';
-            $suffix_cell = '';
-            //$answer .= '<div class="no-more-tables no-more-tables-array-dual-dropdown-layout">';
-            //$answer .= "\n<table class=\"table-in-qanda-10 question subquestion-list questions-list dropdown-list\">\n"
-            //. "\t<col class=\"answertext\" style='width: $answerwidth%;' />\n";
             $aData['answerwidth'] = $answerwidth;
             $aData['ddprefix'] = $ddprefix;
             $aData['ddsuffix'] = $ddsuffix;
             $aData['cellwidth'] = $cellwidth;
 
-            if($ddprefix != '' || $ddsuffix != '')
-            {
-                //$answer .= "\t<colgroup style='width: $cellwidth%;' >\n";
-            }
-
-            if($ddprefix != '')
-            {
-                //$answer .= "\t\t<col class=\"ddprefix\" />\n";
-                //$colspan_1 = ' colspan="2"';
-                $aData['colspan_1'] = ' colspan="2"';
-            }
-
             ////// TODO: check in prev headcolwidth if style='width:$cellwidth' and not style='width:\"$cellwidth\"'
             $headcolwidth = ($ddprefix != '' || $ddsuffix != '') ? "" : " style='width: $cellwidth%';";
             $aData['headcolwidth'] = $headcolwidth;
 
-            //$answer .= "\t<col class=\"dsheader\" {$headcolwidth} />\n";
-
-            if($ddsuffix != '')
-            {
-                //$answer .= "\t<col class=\"ddsuffix\" />\n";
-            }
-
-            if($ddprefix != '' || $ddsuffix != '')
-            {
-                //$answer .= "\t</colgroup>\n";
-            }
-
             $aData['separatorwidth'] = $separatorwidth;
-
-            //$answer .= "\t<col class=\"ddarrayseparator\" style='width: $separatorwidth%'/>\n";
-
-            if($ddprefix != '' || $ddsuffix != '')
-            {
-                //$answer .= "\t<colgroup style='width: $cellwidth%;' >\n";
-            }
-            if($ddprefix != '')
-            {
-                //$answer .= "\t\t<col class=\"ddprefix\" />\n";
-            }
-            //$answer .= "\t<col class=\"dsheader\"{$headcolwidth} />\n";
-            if($ddsuffix != '')
-            {
-                //$answer .= "\t<col class=\"ddsuffix\" />\n";
-            }
-            if($ddprefix != '' || $ddsuffix != '')
-            {
-                //$answer .= "\t</colgroup>\n";
-            }
 
             // colspan : for header only
             if($ddprefix != '' && $ddsuffix != '')
@@ -6139,21 +6089,9 @@ function do_array_dual($ia)
                 $colspan="";
             }
             $aData['colspan'] = $colspan;
-
-            // headers
-            //$answer .= "\n\t<thead>\n"
-            //. "<tr>\n"
-            //. "\t<td>&nbsp;</td>\n"
-            //. "\t<th  class='th-14' {$colspan}>$leftheader</th>\n"
-            //. "\t<td>&nbsp;</td>\n"
-            //. "\t<th class='th-15' {$colspan}>$rightheader</th>\n";
-
             $aData['leftheader'] = $leftheader;
             $aData['rightheader'] = $rightheader;
 
-            //$answer .="\t</tr>\n"
-            //. "\t</thead>\n";
-            //$answer .= "\n<tbody>\n";
             $trbc = '';
             $aData['aSubQuestions'] = $aSubQuestions;
             foreach ($aSubQuestions as $i => $ansrow)
@@ -6178,131 +6116,25 @@ function do_array_dual($ia)
                 // Set mandatory alert
                 $aData['aSubQuestions'][$i]['alert'] = ($ia[6]=='Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)));
 
-                /*
-                if ($ia[6]=='Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)))
-                {
-                    $answertext ='
-                        <div class="alert alert-danger" role="alert">'.
-                                $ansrow['question']
-                            .'
-                        </div>';
-                }
-                else
-                {
-                    $answertext=$ansrow['question'];
-                }
-                */
-                $answertext = '';  // todo: remove
-
                 list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc subquestion-list questions-list dropdown-list");
                 $aData['aSubQuestions'][$i]['htmltbody2'] = $htmltbody2;
                 $aData['aSubQuestions'][$i]['hiddenfield'] = $hiddenfield;
-
-                $answer .= $htmltbody2;
-                //$answer .= "\t<th class=\"answertext\">\n"
-                //. "<label for=\"answer$myfid0\">{$answertext}</label>\n";
-                // Hidden answers used by EM: sure can be added in javascript
-
-                //$answer .= "<input type=\"hidden\" disabled=\"disabled\" name=\"java$myfid0\" id=\"java$myfid0\" value=\"{$sActualAnswer0}\" />\n";
-                //$answer .= "<input type=\"hidden\" disabled=\"disabled\" name=\"java$myfid1\" id=\"java$myfid1\" value=\"{$sActualAnswer1}\" />\n";
-
-                //$answer . "\t</th>\n";
-                // Selector 0
-
-                //if($ddprefix != '')
-                //{
-                    //$answer .= "\t<td class=\"ddprefix information-item\">$ddprefix</td>\n";
-                //}
-                //$answer .= "\t<td class=\"answer-item dropdown-item\">\n"
-                //. "<select class='form-control' name=\"$myfname0\" id=\"answer$myfid0\">\n";
-
-                // Show the 'Please choose' if there are no answer actually
-                //if ($sActualAnswer0 == '')
-                //{
-                    //$answer .= "\t<option value=\"\" ".SELECTED.">".gT('Please choose...')."</option>\n";
-                //}
-
                 $aData['labels0'] = $labels0;
                 $aData['labels1'] = $labels1;
-
-                /*
-                foreach ($labels0 as $lrow)
-                {
-                    $answer .= "\t<option value=\"".$lrow['code'].'" ';
-                    if ($sActualAnswer0 == $lrow['code'])
-                    {
-                        $answer .= SELECTED;
-                    }
-                    $answer .= '>'.flattenText($lrow['title'])."</option>\n";
-                }
-                */
-
                 $aData['aSubQuestions'][$i]['showNoAnswer'] = ($ia[6] != 'Y' && SHOW_NO_ANSWER);
-                //if ($sActualAnswer0 != '' && $ia[6] != 'Y' && SHOW_NO_ANSWER)
-                //{
-                    //$answer .= "\t<option value=\"\">".gT('No answer')."</option>\n";
-                //}
-
-                //$answer .= "</select>\n";
-                //$answer .= "</td>\n";
-
-                //if($ddsuffix != '')
-                //{
-                    //$answer .= "\t<td class=\"ddsuffix information-item\">$ddsuffix</td>\n";
-                //}
+                $aData['interddSep'] = $interddSep;
 
                 $inputnames[]=$myfname0;
 
-                $aData['interddSep'] = $interddSep;
-                //$answer .= "\t<td class=\"ddarrayseparator information-item\">$interddSep</td>\n"; //Separator
-
-                // Selector 1
-                //if($ddprefix != '')
-                //{
-                    //$answer .= "\t<td class='ddprefix information-item'>$ddprefix</td>\n";
-                //}
-
-                //$answer .= "\t<td class=\"answer-item dropdown-item\">\n"
-                //. "<label class=\"hide read\" for=\"answer{$myfid1}\">{$answertext}</label>"
-                //. "<select class='form-control' name=\"$myfname1\" id=\"answer$myfid1\">\n";
-
-                // Show the 'Please choose' if there are no answer actually
-                //if ($sActualAnswer1 == '')
-                //{
-                    //$answer .= "\t<option value=\"\" ".SELECTED.">".gT('Please choose...')."</option>\n";
-                //}
-                //foreach ($labels1 as $lrow1)
-                //{
-                    //$answer .= "\t<option value=\"".$lrow1['code'].'" ';
-                    //if ($sActualAnswer1 == $lrow1['code'])
-                    //{
-                        //$answer .= SELECTED;
-                    //}
-                    //$answer .= '>'.flattenText($lrow1['title'])."</option>\n";
-                //}
-                //if ($sActualAnswer1 != '' && $ia[6] != 'Y' && SHOW_NO_ANSWER)
-                //{
-                 //   $answer .= "\t<option value=\"\">".gT('No answer')."</option>\n";
-                //}
-                //$answer .= "</select>\n";
-                //$answer .= "</td>\n";
-                //if($ddsuffix != '')
-                //{
-                    //$answer .= "\t<td class=\"ddsuffix information-item\">$ddsuffix</td>\n";
-                //}
                 $inputnames[]=$myfname1;
 
-                //$answer .= "</tr>\n";
             }
-            //$answer .= "\t</tbody>\n";
-            //$answer .= "</table>\n</div>";
 
             $answer = Yii::app()->getController()->renderPartial(
                 '/survey/questions/arrays/dualscale/answer_dropdown',
                 $aData,
                 true
             );
-            
         }
     }
     else

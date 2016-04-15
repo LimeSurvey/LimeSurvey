@@ -134,7 +134,7 @@
                             <!-- First label set -->
                             <?php foreach ($labels0 as $lrow): ?>
                                 <option 
-                                    value="<? php echo $lrow['code']; ?>"
+                                    value="<?php echo $lrow['code']; ?>"
                                     <?php if ($ansrow['sActualAnswer0'] == $lrow['code']): echo SELECTED; endif; ?>
                                 >
 
@@ -187,7 +187,7 @@
                             <!-- Second label set -->
                             <?php foreach ($labels1 as $lrow): ?>
                                 <option 
-                                    value="<? php echo $lrow['code']; ?>"
+                                    value="<?php echo $lrow['code']; ?>"
                                     <?php if ($ansrow['sActualAnswer1'] == $lrow['code']): echo SELECTED; endif; ?>
                                 >
 
