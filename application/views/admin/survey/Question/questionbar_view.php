@@ -95,7 +95,7 @@ $aReplacementData=array();
                     <span class="glyphicon glyphicon-trash text-danger"></span>
                     <?php eT("Delete"); ?>
                 </a>
-            <?php else:?>
+            <?php elseif (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')): ?>
                 <a href='<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
                     class="btn btn-default"
                     onclick="alert('<?php eT("You can't delete this question group because the survey is currently active.","js"); ?>')">
@@ -126,30 +126,19 @@ $aReplacementData=array();
                         <?php eT("Copy"); ?>
                     </a>
                 <?php endif;?>
-            <?php else:?>
-                    <a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You don't have the necessary permission.","js"); ?>');">
-                        <span class="icon-copy"></span>
-                        <?php eT("Copy"); ?>
-                    </a>
             <?php endif;?>
 
             <!-- conditions -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')):?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
-                        <span class="icon-conditions"></span>
-                        <?php eT("Set conditions "); ?>
-                    </a>
-            <?php else:?>
-                    <a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You don't have the necessary permission.","js"); ?>')">
-                        <span class="icon-conditions"></span>
-                        <?php eT("Set conditions "); ?>
-                    </a>
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+                    <span class="icon-conditions"></span>
+                    <?php eT("Set conditions "); ?>
+                </a>
             <?php endif;?>
 
 
             <!-- subquestions -->
-
-            <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')):?>
+            <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')):?>
                 <?php if($qtypes[$qrrow['type']]['subquestions'] >0):?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
                         <span class="icon-defaultanswers"></span>
@@ -158,8 +147,9 @@ $aReplacementData=array();
                 <?php endif;?>
             <?php endif;?>
 
+
             <!-- Answer Options -->
-            <?php if( Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] > 0 ):?>
+            <?php if( Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update') && $qtypes[$qrrow['type']]['answerscales'] > 0 ):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
                     <span class="icon-defaultanswers"></span>
                     <?php eT("Edit answer options "); ?>

@@ -414,6 +414,13 @@ class questions extends Survey_Common_Action
     */
     public function answeroptions($surveyid, $gid, $qid)
     {
+        // Abort if user lacks permission to update survey content
+        if (!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
+        {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $surveyid = sanitize_int($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
@@ -616,6 +623,13 @@ class questions extends Survey_Common_Action
     */
     public function subquestions($surveyid, $gid, $qid)
     {
+        // Abort if user lacks permission to update survey content
+        if (!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
+        {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $aData['gid'] = $gid = sanitize_int($gid);
         $aData['qid'] = $qid = sanitize_int($qid);
@@ -658,6 +672,13 @@ class questions extends Survey_Common_Action
     */
     public function _editsubquestion($surveyid, $gid, $qid)
     {
+        // Abort if user lacks permission to update survey content
+        if (!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
+        {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $surveyid = sanitize_int($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
@@ -1037,8 +1058,8 @@ class questions extends Survey_Common_Action
             // Prepare selector Mode TODO: with and without image
             if (!$adding)
             {
-                // Abort if user lacks edit permission
-                if (!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','edit'))
+                // Abort if user lacks update permission
+                if (!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
                 {
                     Yii::app()->user->setFlash('error', gT("Access denied"));
                     $this->getController()->redirect(Yii::app()->request->urlReferrer);
