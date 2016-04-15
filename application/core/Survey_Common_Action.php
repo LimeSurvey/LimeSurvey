@@ -782,6 +782,15 @@ class Survey_Common_Action extends CAction
             // as q WHERE c.qid = q.qid AND q.sid=$iSurveyID"; //Getting a count of conditions for this survey
             // TMSW Condition->Relevance:  How is conditionscount used?  Should Relevance do the same?
 
+            // Only show survey properties menu if at least one item is permitted
+            $aData['showSurveyPropertiesMenu'] =
+                $aData['surveylocale']
+                || $aData['surveysettings']
+                || $aData['surveysecurity']
+                || $aData['surveycontent']
+                || $aData['quotas']
+                || $aData['assessments'];
+
             $iConditionCount = Condition::model()->with(Array('questions'=>array('condition'=>'sid ='.$iSurveyID)))->count();
 
             $aData['surveycontent'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');

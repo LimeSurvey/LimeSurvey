@@ -75,7 +75,7 @@
                         </a>
 
                     <!-- can't activate -->
-                    <?php else : ?>
+                    <?php elseif (Permission::model()->hasSurveyPermission($surveyid, 'surveyactivation', 'update')): ?>
                         <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                             <button type="button" class="btn btn-success btntooltip" disabled="disabled">
                                 <?php eT("Activate this survey"); ?>
@@ -142,7 +142,7 @@
                 <?php endif; ?>
 
                 <!-- Survey Properties -->
-                <?php if( !isset($surveybar['active_survey_properties']) ):?>
+                <?php if(!isset($surveybar['active_survey_properties']) && $showSurveyPropertiesMenu):?>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="icon-edit" ></span>
@@ -239,7 +239,7 @@
                             <?php endif; ?>
                       </ul>
                     </div>
-                <?php else:?>
+                <?php elseif (isset($surveybar['active_survey_properties'])):?>
                         <button type="button" class="btn btn-default btntooltip active">
                             <span class="icon-expressionmanagercheck" ></span>
                             <?php echo $surveybar['active_survey_properties']['txt'];?>
