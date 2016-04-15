@@ -110,6 +110,19 @@ function replaceColumnWithDiv(that) {
 
 $(document).ready(function(){
 
+    // Scroll to first error
+    if($(".input-error").length > 0) {
+        $('#bootstrap-alert-box-modal').on('hidden.bs.modal', function () {
+            console.log('answer error found');
+            $firstError = $(".input-error").first();
+            $pixToScroll = ( $firstError.offset().top - 100 );
+            $('html, body').animate({
+                 scrollTop: $pixToScroll + 'px'
+             }, 'fast');
+        });
+    }
+
+
     // Make the label clickable
     $('.label-clickable').each(function(){
         var $that    = $(this);
@@ -248,18 +261,16 @@ $(document).ready(function(){
         $('.emtip').each(function(){
             if($(this).hasClass('error'))
             {
-                $(this).parents('div.alert.questionhelp').removeClass('alert-info').addClass('alert-danger');
-                $(this).addClass('strong');
+                $(this).parents('div.questionhelp').removeClass('text-info').addClass('text-danger');
             }
         });
 
         // On em change
         $('.emtip').each(function(){
-
             $(this).on('classChangeError', function() {
-                $parent = $(this).parent('div.alert.questionhelp');
-                $parent.removeClass('alert').removeClass('alert-info',1);
-                $parent.addClass('alert-danger',1).addClass('alert');
+                $parent = $(this).parent('div.questionhelp');
+                $parent.removeClass('text-info',1);
+                $parent.addClass('text-danger',1);
 
                 if ($parent.hasClass('hide-tip'))
                 {
@@ -267,21 +278,20 @@ $(document).ready(function(){
                     $parent.addClass('tip-was-hidden',1);
                 }
 
-                $(this).addClass('strong');
-
-
+                $questionContainer = $(this).parents('div.question-container');
+                $questionContainer.addClass('input-error');
             });
 
             $(this).on('classChangeGood', function() {
-                $parent = $(this).parents('div.alert.questionhelp');
-                $parent.removeClass('alert-danger');
-                $(this).removeClass('strong');
-                $parent.addClass('alert-info');
+                $parent = $(this).parents('div.questionhelp');
+                $parent.removeClass('text-danger');
+                $parent.addClass('text-info');
                 if ($parent.hasClass('tip-was-hidden'))
                 {
                     $parent.removeClass('tip-was-hidden').addClass('hide-tip');
                 }
-
+                $questionContainer = $(this).parents('div.question-container');
+                $questionContainer.removeClass('input-error');
             });
         });
     }
@@ -302,4 +312,27 @@ $(document).ready(function(){
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
+
+
 });
+window.alert = function(message, title) {
+    if($("#bootstrap-alert-box-modal").length == 0) {
+        $("body").append('<div id="bootstrap-alert-box-modal" class="modal fade">\
+            <div class="modal-dialog">\
+                <div class="modal-content">\
+                    <div class="modal-header" style="min-height:40px;">\
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\
+                        <h4 class="modal-title"></h4>\
+                    </div>\
+                    <div class="modal-body"><p></p></div>\
+                    <div class="modal-footer">\
+                        <a href="#" data-dismiss="modal" class="btn btn-default">Close</a>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>');
+    }
+    $("#bootstrap-alert-box-modal .modal-header h4").text(title || "");
+    $("#bootstrap-alert-box-modal .modal-body p").text(message || "");
+    $("#bootstrap-alert-box-modal").modal('show');
+};

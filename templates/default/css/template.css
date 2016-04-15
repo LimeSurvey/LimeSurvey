@@ -7,7 +7,6 @@
 div[id^="group-"]>div {
     background-color: #fff;
     margin-bottom: 1em;
-    border: none;
  }
 
  div[id^="group-"]>div.group-container {
@@ -786,4 +785,92 @@ table.numbers-only th, table.numbers-only input {
 
 .geoname_search {
     margin-bottom: 10px;
+}
+
+
+
+
+/** Question Design **/
+
+body div.row .question-container {
+    margin-bottom: 2em;
+}
+
+.answer-container, .question-help-container
+{
+    border-color: #dbdbdb;
+    border-style: solid;
+}
+
+.answer-container
+{
+    border-width: 0px 1px 0px 1px;
+    padding-top: 3em;
+    background-color: white;
+}
+
+.question-help-container
+{
+    border-width: 0px 1px 1px 1px;
+    padding-bottom: 5px;
+}
+
+
+/** Header **/
+.question-title-container, .questionvalidcontainer {
+    background-color: #233140;
+}
+
+.question-title-container {
+    color: white;
+    padding: 2em 1em 1em 1em;
+
+}
+
+.questionvalidcontainer {
+    position: relative;
+    text-align: center;
+    padding-bottom: 1em;
+}
+
+.questionvalidcontainer .text-danger{
+    color: #E75041;
+    font-weight: bold;
+}
+
+.questionvalidcontainer .text-info{
+    color: #B9CC14;
+    font-weight: bold;
+}
+
+/* Arrow */
+.questionvalidcontainer:after {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-top-color: #233140;
+    border-width: 0.9em;
+    margin-left: -0.9em;
+}
+
+/* Asterix */
+.asterisk {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.asterisk:before {
+    content: "\f069";
+}
+
+.input-error {
+    border: 1px solid #E75041;
 }

@@ -420,7 +420,7 @@ class SurveyRuntimeHelper {
             {
                 buildsurveysession($surveyid);
 
-                
+
                 if($surveyid != LimeExpressionManager::getLEMsurveyId())
                     LimeExpressionManager::SetDirtyFlag();
 
