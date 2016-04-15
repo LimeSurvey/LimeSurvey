@@ -391,7 +391,7 @@ class questiongroups extends Survey_Common_Action
         $gid = sanitize_int($gid);
         $aViewUrls = $aData = array();
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
         {
             Yii::app()->session['FileManagerContext'] = "edit:group:{$surveyid}";
 

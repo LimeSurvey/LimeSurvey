@@ -861,6 +861,12 @@ class questions extends Survey_Common_Action
      */
     public function newquestion($surveyid)
     {
+        if (!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
+        {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
+
         Yii::app()->loadHelper('admin/htmleditor');
         $surveyid = $iSurveyID = $aData['surveyid'] = sanitize_int($surveyid);
         App()->getClientScript()->registerPackage('qTip2');
@@ -1031,6 +1037,13 @@ class questions extends Survey_Common_Action
             // Prepare selector Mode TODO: with and without image
             if (!$adding)
             {
+                // Abort if user lacks edit permission
+                if (!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','edit'))
+                {
+                    Yii::app()->user->setFlash('error', gT("Access denied"));
+                    $this->getController()->redirect(Yii::app()->request->urlReferrer);
+                }
+
                 Yii::app()->session['FileManagerContext'] = "edit:question:{$surveyid}";
                 $aData['display']['menu_bars']['qid_action'] = 'editquestion';
 
