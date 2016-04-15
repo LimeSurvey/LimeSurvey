@@ -39,11 +39,11 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-    * Loads list of surveys and it's few quick properties.
-    *
-    * @access public
-    * @return void
-    */
+     * Loads list of surveys and its few quick properties.
+     *
+     * @access public
+     * @return void
+     */
     public function index()
     {
         $this->getController()->redirect(array('admin/survey/sa/listsurveys'));
