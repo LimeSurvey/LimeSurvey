@@ -32,7 +32,7 @@
                     <li class="panel panel-default dropdownstyle" id="questionexplorer-group-container">
 
 
-                        <?php if (!$bSurveyIsActive): ?>
+                        <?php if (!$bSurveyIsActive && Permission::model()->hasSurveyPermission($iSurveyId, 'create')): ?>
                         <div class="row ">
                             <div class="col-sm-8" >
                                 <!-- add group -->
@@ -59,14 +59,14 @@
                                     </a>
                                 </div>
 
-                                <?php if (!$bSurveyIsActive): ?>
+                                <?php if (!$bSurveyIsActive && Permission::model()->hasSurveyPermission($iSurveyId, 'create')): ?>
                                     <div class="col-sm-3" id="questions-container-<?php echo $aGroup->gid; ?>">
                                         <!-- add question to this group -->
                                         <a  data-toggle="tooltip" data-placement="top"  title="<?php eT('Add a question to this group');?>" class="" href="<?php echo $this->createUrl("/admin/questions/sa/newquestion/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
                                             <span class="glyphicon glyphicon-plus-sign"></span>
                                         </a>
                                     </div>
-                                <?php else: ?>
+                                <?php elseif (Permission::model()->hasSurveyPermission($iSurveyId, 'create')): ?>
                                     <div class="col-sm-3" id="questions-container-<?php echo $aGroup->gid; ?>">
                                         <!-- add question to this group -->
                                             <a title="<?php eT("You can't add questions while the survey is active.");?>" class='disabled' href="#" data-toggle="tooltip" data-placement="bottom">
