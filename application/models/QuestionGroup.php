@@ -240,7 +240,7 @@ class QuestionGroup extends LSActiveRecord
         $iQuestionsInGroup = Question::model()->countByAttributes(array('sid' => $this->sid, 'gid' => $this->gid, 'language' => $baselang));
 
         // Delete
-        if($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid,'surveycontent','delete' ) && $iQuestionsInGroup > 0)
+        if($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid,'surveycontent','delete' ) && $iQuestionsInGroup === 0)
         {
             $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
             if(is_null($condarray))
