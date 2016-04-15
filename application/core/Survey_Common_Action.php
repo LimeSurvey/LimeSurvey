@@ -764,7 +764,7 @@ class Survey_Common_Action extends CAction
             // Survey permission item
             $aData['surveysecurity'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'read');
             // CHANGE QUESTION GROUP ORDER BUTTON
-            $aData['surveycontent'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read');
+            $aData['surveycontentread'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read');
             $aData['groupsum'] = (getGroupSum($iSurveyID, $surveyinfo['language']) > 1);
             // SET SURVEY QUOTAS BUTTON
             $aData['quotas'] = Permission::model()->hasSurveyPermission($iSurveyID, 'quotas', 'read');
@@ -784,12 +784,18 @@ class Survey_Common_Action extends CAction
 
             // Only show survey properties menu if at least one item is permitted
             $aData['showSurveyPropertiesMenu'] =
-                $aData['surveylocale']
+                   $aData['surveylocale']
                 || $aData['surveysettings']
                 || $aData['surveysecurity']
-                || $aData['surveycontent']
+                || $aData['surveycontentread']
                 || $aData['quotas']
                 || $aData['assessments'];
+
+            // Only show tools menu if at least one item is permitted
+            $aData['showToolsMenu'] =
+                   $aData['surveydelete']
+                || $aData['surveytranslate']
+                || Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
 
             $iConditionCount = Condition::model()->with(Array('questions'=>array('condition'=>'sid ='.$iSurveyID)))->count();
 
