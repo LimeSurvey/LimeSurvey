@@ -212,20 +212,30 @@ class QuestionGroup extends LSActiveRecord
         $oSurvey=Survey::model()->findByPk($this->sid);
         $surveyIsActive = $oSurvey->active !== 'N';
         $baselang = $oSurvey->language;
+        $button = '';
 
         // Add question to this group
-        $url = Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$this->sid/gid/$this->gid");
-        $button = '<a class="btn btn-default list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-plus-sign " ></span></a>';
+        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
+        {
+            $url = Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$this->sid/gid/$this->gid");
+            $button .= '<a class="btn btn-default list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-plus-sign " ></span></a>';
+        }
 
         // Group edition
         // Edit
-        $url = Yii::app()->createUrl("admin/questiongroups/sa/edit/surveyid/$this->sid/gid/$this->gid");
-        $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Edit group').'"><span class="glyphicon glyphicon-pencil " ></span></a>';
+        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
+        {
+            $url = Yii::app()->createUrl("admin/questiongroups/sa/edit/surveyid/$this->sid/gid/$this->gid");
+            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Edit group').'"><span class="glyphicon glyphicon-pencil " ></span></a>';
+        }
 
         // View summary
-        $url = Yii::app()->createUrl("/admin/questiongroups/sa/view/surveyid/");
-        $url .= '/'.$this->sid.'/gid/'.$this->gid;
-        $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><span class="glyphicon glyphicon-list-alt " ></span></a>';
+        if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read'))
+        {
+            $url = Yii::app()->createUrl("/admin/questiongroups/sa/view/surveyid/");
+            $url .= '/'.$this->sid.'/gid/'.$this->gid;
+            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><span class="glyphicon glyphicon-list-alt " ></span></a>';
+        }
 
         $iQuestionsInGroup = Question::model()->countByAttributes(array('sid' => $this->sid, 'gid' => $this->gid, 'language' => $baselang));
 
