@@ -21,7 +21,7 @@
 <div id="javatbd<?php echo $myfname; ?>" class="question-item answer-item text-item form-horizontal <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?> >
     <?php if($alert):?>
         <!--  color code missing mandatory questions red -->
-        <div class="alert alert-danger errormandatory" role="alert">
+        <div class="label label-danger errormandatory" role="alert">
             <?php echo $question; ?>
         </div>
     <?php endif;?>

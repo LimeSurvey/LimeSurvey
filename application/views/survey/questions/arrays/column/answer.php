@@ -23,8 +23,8 @@
 
             <?php foreach ($aQuestions as $question): ?>
                 <?php if ($question['errormandatory']): ?>
-                    <th>
-                        <div class="alert alert-danger " role="alert">
+                    <th class='text-center'>
+                        <div class="label label-danger" role="alert">
                             <?php echo $question['question']; ?>
                         </div>
                     </th>
