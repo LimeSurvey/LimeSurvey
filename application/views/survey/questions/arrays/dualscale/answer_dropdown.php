@@ -14,6 +14,7 @@
 <div class="no-more-tables no-more-tables-array-dual-dropdown-layout">
     <table class="table-in-qanda-10 question subquestion-list questions-list dropdown-list">
 
+        <?php /*
         <!-- Column groups -->
         <col class="answertext" style='width: <?php echo $answerwidth; ?>%;' />
 
@@ -54,6 +55,7 @@
         <?php if ($ddprefix != '' || $ddsuffix != ''): ?>
             </colgroup>
         <?php endif; ?>
+        */ ?>
 
         <!-- Header -->
 
