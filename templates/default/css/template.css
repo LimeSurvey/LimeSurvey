@@ -509,6 +509,10 @@ table > tbody > tr > td.ddprefix {
         width: 100%;
     }
 
+    .no-more-tables tbody {
+        padding: 0 1em 0 1em;
+    }
+
     /* Hide table headers (but not display: none;, for accessibility) */
     .no-more-tables thead tr {
         position: absolute;
@@ -675,7 +679,7 @@ table > tbody > tr > td.ddprefix {
     .array-by-columns-div .radio-list {
         border: 1px solid #ccc;
         padding: 1em;
-        margin: 0.5em;
+        margin: 1em;
     }
 
 
