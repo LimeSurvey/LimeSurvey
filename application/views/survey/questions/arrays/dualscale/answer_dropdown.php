@@ -61,9 +61,9 @@
         <thead>
             <tr>
                 <td>&nbsp;</td>
-                <th  class='th-14' <?php echo $colspan; ?>><?php echo $leftheader; ?></th>
+                <th  class='th-14 text-center' <?php echo $colspan; ?>><?php echo $leftheader; ?></th>
                 <td>&nbsp;</td>
-                <th class='th-15' <?php echo $colspan; ?>><?php echo $rightheader; ?></th>
+                <th class='th-15 text-center' <?php echo $colspan; ?>><?php echo $rightheader; ?></th>
             </tr>
         </thead>
 
@@ -144,7 +144,7 @@
                             <?php endforeach; ?>
 
                             <!-- No answer -->
-                            <?php if ($ansrow['showNoAnswer']): ?>
+                            <?php if ($ansrow['showNoAnswer0']): ?>
                                 <option value=""><?php eT('No answer'); ?></option>
                             <?php endif; ?>
 
@@ -197,7 +197,7 @@
                             <?php endforeach; ?>
 
                             <!-- No answer -->
-                            <?php if ($ansrow['showNoAnswer']): ?>
+                            <?php if ($ansrow['showNoAnswer1']): ?>
                                 <option value=""><?php eT('No answer'); ?></option>
                             <?php endif; ?>
 

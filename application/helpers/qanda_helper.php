@@ -6121,7 +6121,8 @@ function do_array_dual($ia)
                 $aData['aSubQuestions'][$i]['hiddenfield'] = $hiddenfield;
                 $aData['labels0'] = $labels0;
                 $aData['labels1'] = $labels1;
-                $aData['aSubQuestions'][$i]['showNoAnswer'] = ($ia[6] != 'Y' && SHOW_NO_ANSWER);
+                $aData['aSubQuestions'][$i]['showNoAnswer0'] = ($sActualAnswer0 != '' && $ia[6] != 'Y' && SHOW_NO_ANSWER);
+                $aData['aSubQuestions'][$i]['showNoAnswer1'] = ($sActualAnswer1 != '' && $ia[6] != 'Y' && SHOW_NO_ANSWER);
                 $aData['interddSep'] = $interddSep;
 
                 $inputnames[]=$myfname0;
