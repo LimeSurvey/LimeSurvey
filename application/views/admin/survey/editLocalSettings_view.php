@@ -70,7 +70,7 @@
     <div class="form-group">
         <label class="control-label col-sm-2"><?php eT("Date format:"); ?></label>
 
-        <div class="col-sm-9">
+        <div class="col-sm-3">
             <select size='1' id='dateformat_<?php echo $esrow['surveyls_language']; ?>' name='dateformat_<?php echo $esrow['surveyls_language']; ?>' class="form-control">
                 <?php foreach (getDateFormatData(0,Yii::app()->session['adminlang']) as $index=>$dateformatdata): ?>
                     <option value='<?php echo $index; ?>'
@@ -86,7 +86,7 @@
     <!-- Decimal mark -->
     <div class="form-group">
         <label class="control-label col-sm-2"><?php eT("Decimal mark:"); ?></label>
-        <div class="col-sm-9">
+        <div class="col-sm-3">
             <select size='1' id='numberformat_<?php echo $esrow['surveyls_language']; ?>' name='numberformat_<?php echo $esrow['surveyls_language']; ?>' class="form-control">
                 <?php foreach (getRadixPointData() as $index=>$radixptdata): ?>
                     <option value='<?php echo $index; ?>'

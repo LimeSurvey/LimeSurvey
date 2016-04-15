@@ -21,12 +21,12 @@
             <div class="modal-body">
                     <input type='hidden' name='surveyid' value='<?php echo $surveyid; ?>' />
                     <input type='hidden' name='action' value='importsurveyresources' />
-                    <label for='the_file'><?php  eT("Select ZIP File:"); ?></label>
+                    <label for='the_file'><?php  eT("Select ZIP file:"); ?></label>
                     <input id='the_file' name='the_file' type='file' />
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><?php  eT("Close");?></button>
                 <input type='button' class="btn btn-default" value='<?php  eT("Import resources ZIP archive"); ?>' <?php echo $ZIPimportAction; ?> />
             </div>
             </form>
