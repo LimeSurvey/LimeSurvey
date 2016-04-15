@@ -12,7 +12,7 @@
 ?>
 
 <div class="no-more-tables no-more-tables-array-dual-dropdown-layout">
-    <table class="table-in-qanda-10 question subquestion-list questions-list dropdown-list">
+    <table class="table table-in-qanda-10 question subquestion-list questions-list dropdown-list">
 
         <?php /*
         <!-- Column groups -->

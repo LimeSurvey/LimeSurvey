@@ -453,12 +453,9 @@ body .navbar-default .navbar-brand:hover {
     padding-left: 47px;
 }
 
-.ddprefix {
+table > tbody > tr > td.ddprefix {
     padding-right: 1em;
-}
-
-.ddsuffix {
-    padding-left: 1em;
+    vertical-align: middle;
 }
 
 /**
@@ -468,6 +465,11 @@ body .navbar-default .navbar-brand:hover {
 
     .table-dual-scale .separator {
         width: 6%;
+    }
+
+    table > tbody > tr > td.ddsuffix {
+        padding-left: 1em;
+        vertical-align: middle;
     }
 
 }
@@ -666,9 +668,16 @@ body .navbar-default .navbar-brand:hover {
     }
 
     .col-xs-12 {
-        padding-right: 5px;
-        padding-left: 5px;
+        padding-right: 0;
+        padding-left: 0;
     }
+
+    .array-by-columns-div .radio-list {
+        border: 1px solid #ccc;
+        padding: 1em;
+        margin: 0.5em;
+    }
+
 
     /* For yes-no question, shrink the buttons a bit on phone screens */
     .btn-lg, .btn-group-lg label {
