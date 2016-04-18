@@ -29,20 +29,17 @@
                             <div class="col-sm-6">
                                 <!-- Data Selection -->
                                 <?php $this->renderPartial('/admin/export/statistics_subviews/_dataselection', array('selectshow'=>$selectshow, 'selecthide'=>$selecthide, 'selectinc'=>$selectinc, 'survlangs'=>$survlangs, 'sStatisticsLanguage'=>$sStatisticsLanguage)) ; ?>
-
                                 <!-- Response ID -->
                                 <?php $this->renderPartial('/admin/export/statistics_subviews/_responseid', array()) ; ?>
-
-                                <!-- Submission date -->
-                                <?php $this->renderPartial('/admin/export/statistics_subviews/_submissiondate', array('datestamp'=>$datestamp)) ; ?>
+                                <!-- Output format -->
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_outputformat', array()) ; ?>
                             </div>
 
                             <div class="col-sm-6">
                                 <!-- Output options -->
                                 <?php $this->renderPartial('/admin/export/statistics_subviews/_outputoptions', array('error'=>$error, 'showtextinline'=>$showtextinline, 'usegraph'=>$usegraph, 'showtextinline'=>$showtextinline)) ; ?>
-
-                                <!-- Output format -->
-                                <?php $this->renderPartial('/admin/export/statistics_subviews/_outputformat', array()) ; ?>
+                                <!-- Submission date -->
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_submissiondate', array('datestamp'=>$datestamp)) ; ?>
                             </div>
                         </div>
 
