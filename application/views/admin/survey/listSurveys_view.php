@@ -25,14 +25,14 @@
 
                 <!-- search input -->
                 <div class="form-group">
-                    <?php echo $form->label($model, 'search', array('label'=>gT('Search:'),'class'=>'control-label')); ?>
+                    <?php echo $form->label($model, 'searched_value', array('label'=>gT('Search:'),'class'=>'control-label')); ?>
                     <?php echo $form->textField($model, 'searched_value', array('class'=>'form-control')); ?>
                 </div>
 
                 <!-- select state -->
                 <div class="form-group">
                     <?php echo $form->label($model, 'active', array('label'=>gT('Active:'),'class'=>'control-label')); ?>
-                    <select name="active" class="form-control">
+                    <select name="active" id='Survey_active' class="form-control">
                         <option value="" <?php if( $model->active==""){echo "selected";}?>><?php eT('(Any state)');?></option>
                         <option value="Y" <?php if( $model->active=="Y"){echo "selected";}?>><?php eT('Yes');?></option>
                         <option value="N" <?php if( $model->active=="N"){echo "selected";}?>><?php eT('No');?></option>

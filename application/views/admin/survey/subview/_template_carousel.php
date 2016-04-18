@@ -20,20 +20,19 @@
                         <img class="img-responsive imgSelectTemplate" src="<?php echo $template['preview']; ?>" alt="<?php echo $key;?>">
                             <?php if($key==$surveyinfo['template']):?>
                                 <button
-                                    href="#"
                                     class="selectTemplate btn btn-default btn-success btn-xs disabled"
                                     data-selectedtext="<?php eT("Selected!");?>"
-                                    data-unselectedtext="<?php eT('Select');?> &nbsp <?php echo $key;?>">
+                                    data-unselectedtext="<?php eT('Select');?> &nbsp; <?php echo $key;?>">
                                         <?php eT('Selected!');?>
                                 </button>
                             <?php else:?>
                                 <button
                                     data-selectedtext="<?php eT("Selected!");?>"
-                                    data-unselectedtext="<?php eT('Select');?> &nbsp <?php echo $key;?>"
+                                    data-unselectedtext="<?php eT('Select');?> &nbsp; <?php echo $key;?>"
                                     data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/changetemplate/surveyid/$iSurveyId/template/$key" ); ?>"
                                     data-template="<?php echo $key;?>"
                                     class="selectTemplate btn btn-default btn-xs">
-                                    <?php eT('Select');?>&nbsp<?php echo $key;?>
+                                    <?php eT('Select');?>&nbsp;<?php echo $key;?>
                                 </button>
                             <?php endif;?>
                     </div>

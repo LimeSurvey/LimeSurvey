@@ -68,7 +68,7 @@
     <!-- Use CAPTCHA for survey access -->
     <?php $usecap = $esrow['usecaptcha']; // Just a short-hand ?>
     <div class="form-group">
-        <label class="col-sm-6 control-label" for='usecaptcha'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
+        <label class="col-sm-6 control-label" for='usecaptcha_surveyaccess'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
         <div class="col-sm-6">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                 'name' => 'usecaptcha_surveyaccess',
@@ -80,7 +80,7 @@
 
     <!-- Use CAPTCHA for registration -->
     <div class="form-group">
-        <label class="col-sm-6 control-label" for='usecaptcha'><?php  eT("Use CAPTCHA for registration:"); ?></label>
+        <label class="col-sm-6 control-label" for='usecaptcha_registration'><?php  eT("Use CAPTCHA for registration:"); ?></label>
         <div class="col-sm-6">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                 'name' => 'usecaptcha_registration',
@@ -93,7 +93,7 @@
 
     <!-- Use CAPTCHA for save and load -->
     <div class="form-group">
-        <label class="col-sm-6 control-label" for='usecaptcha'><?php  eT("Use CAPTCHA for save and load:"); ?></label>
+        <label class="col-sm-6 control-label" for='usecaptcha_saveandload'><?php  eT("Use CAPTCHA for save and load:"); ?></label>
         <div class="col-sm-6">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                 'name' => 'usecaptcha_saveandload',

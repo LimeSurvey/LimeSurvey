@@ -40,7 +40,7 @@
                                     data-toggle="tooltip"
                                     data-placement="bottom"
                                     title="<?php eT('Add a group');?>"
-                                    class="" href="<?php echo $this->createUrl("/admin/questiongroups/sa/add/surveyid/$iSurveyId"); ?>">
+                                    href="<?php echo $this->createUrl("/admin/questiongroups/sa/add/surveyid/$iSurveyId"); ?>">
                                     <span class="glyphicon glyphicon-plus-sign"></span>
                                     <?php eT('Add group');?>
                                 </a>

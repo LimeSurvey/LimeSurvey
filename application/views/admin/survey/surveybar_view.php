@@ -140,7 +140,7 @@
 
                     <!-- uniq language -->
                     <?php else: ?>
-                        <a accesskey='d' class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" role="button"  accesskey='d' target='_blank'>
+                        <a class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" role="button"  accesskey='d' target='_blank'>
                             <span class="icon-do" ></span>
                             <?php echo $icontext;?>
                         </a>
@@ -321,7 +321,6 @@
                                   </li>
 
                                   <?php if(!$activated): ?>
-                                      <li>
                                               <li role="separator" class="divider"></li>
 
                                               <!-- Regenerate question codes -->
@@ -344,7 +343,6 @@
                                                     <?php eT("By question group");?>
                                                 </a>
                                              </li>
-                                      </li>
                                   <?php endif; ?>
                               <?php endif; ?>
                         </ul>
@@ -562,7 +560,6 @@
                             <span class="glyphicon glyphicon-list"></span>
                             <?php eT("List questions");?>
                         </a>
-                    </li>
                 <?php endif; ?>
 
 

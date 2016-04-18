@@ -30,7 +30,7 @@ PrepareEditorScript(false, $this);
                         <?php } ?>
                 </select>
             </div>
-            <span class='text-warning'> <?php  eT("*This setting cannot be changed later!"); ?></span></li>
+            <span class='text-warning'> <?php  eT("*This setting cannot be changed later!"); ?></span>
         </div>
 
         <!-- Title -->
