@@ -18,7 +18,7 @@
                     <th style="width:20%"><?php eT("Quota name");?></th>
                     <th style="width:20%"><?php eT("Status");?></th>
                     <th style="width:30%"><?php eT("Quota action");?></th>
-                    <th style="width:5%"><?php eT("Completed");?></th>
+                    <th style="width:5%; padding-right: 1em;"><?php eT("Completed");?></th>
                     <th style="width:5%"><?php eT("Limit");?></th>
                     <th style="width:20%"><?php eT("Action");?></th>
                 </tr>
