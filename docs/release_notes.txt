@@ -34,6 +34,41 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 2.50+ (build 160415) to 2.50+ (build 160418) Apr 18, 2016
+-Fixed issue #10829: Survey admins presented with inappropriate control (Olle Haerstedt)
+-Fixed issue #10908: Disable next button with time limit is not working (Olle Haerstedt)
+-Fixed issue #10928: Adding Conditions in the Conditions Designer does not work for Conditions based on Token Fields (Olle Haerstedt)
+-Fixed issue #10929: Missing translation in home page configuration (Carsten Schmitz)
+-Fixed issue #10944: Bad design when designing a survey on 1366x768 resolution (Carsten Schmitz)
+-Fixed issue #10945: Add button Save and close when creating a new group (Olle Haerstedt)
+-Fixed issue #10959: Missing translation (Carsten Schmitz)
+-Fixed issue #10960: Dual-scale dropdown looks weird (Olle Haerstedt)
+-Fixed issue #10961: bad layout quota design (Olle Haerstedt)
+-Fixed issue #10962: adding answer to quota seems odd (Olle Haerstedt)
+-Fixed issue #10964: Bad layout on narrow screens in statistics (Carsten Schmitz)
+-Fixed issue #10965: Tiny caption text issue (Carsten Schmitz)
+-Fixed issue #10966: Donate link in footer opens in parent window (Carsten Schmitz)
+-Fixed issue #10967: Non-formatted date format in data integrity check (Carsten Schmitz)
+-Fixed issue #10968: Slider reset button wrongly styled (Olle Haerstedt)
+-Dixed issue: ComfortUpdate colors in lime-admin-comon (LouisGac)
+-Fixed issue: Internal server error at then end of the update process from 2.06 (LouisGac)
+-Fixed update #10829: Survey admins presented with inappropriate control (Olle Haerstedt)
+-New feature: Default template errors/alerts system enhanced (LouisGac)
+-New feature: Frontend, scroll to first error (LouisGac)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by ritapas, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Korean by spn
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Portugal) by anticorpo, devUSIT, samarta
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Turkish by kayazeren
 
 Changes from 2.50+ (build 160414) to 2.50+ (build 160415) Apr 14, 2016
 -Fixed issue #10222: Attachments for registration emails don't get attached (Carsten Schmitz)
