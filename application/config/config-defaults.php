@@ -649,14 +649,14 @@ $config['plugindir']               = 'webroot.plugins';
 // AuditLog Default values
 $config['auditLog'] = array(
     'AuditLog_Log_Enable' =>'1', // default param to enable auditLog
-    'AuditLog_Log_UserSave' =>'0', // Log if a user was modified or created
+    'AuditLog_Log_UserSave' =>'1', // Log if a user was modified or created
     'AuditLog_Log_UserLogin' =>'1', // Log if a user is logged successfully
-    'AuditLog_Log_UserLogout' =>'0', // Log if user has logout
+    'AuditLog_Log_UserLogout' =>'1', // Log if user has logout
     'AuditLog_Log_UserFailedLoginAttempt' =>'1', // Log if a user login has failed
-    'AuditLog_Log_UserDelete' =>'0', // Log if a user was deleted
+    'AuditLog_Log_UserDelete' =>'1', // Log if a user was deleted
     'AuditLog_Log_ParticipantSave' =>'1', // Log if a participant was modified or created
     'AuditLog_Log_ParticipantDelete' =>'1', // Log if a participant was deleted
-    'AuditLog_Log_UserPermissionsChanged' =>'0', // Log if a user permmisions has changed
+    'AuditLog_Log_UserPermissionsChanged' =>'1', // Log if a user permmisions has changed
     'AuditLog_Log_SurveySettings' =>'1', // Log if a Survey settings has changed.
 );
 
