@@ -422,6 +422,9 @@ class quotas extends Survey_Common_Action
         $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }
 
+    /**
+     * Add new answer to quota
+     */
     function new_answer($iSurveyId, $sSubAction = 'new_answer')
     {
         $iSurveyId = sanitize_int($iSurveyId);
@@ -475,8 +478,8 @@ class quotas extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
-        $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId;  // Close button
+        $aData['surveybar']['closebutton']['forbidden'][] = 'new_answer';
 
         $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }
