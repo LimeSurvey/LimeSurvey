@@ -97,8 +97,8 @@
                     </div>
                     <?php if ($slider_reset): ?>
                         <div class='col-xs-2'>
-                            <div class='pull-left'>
-                                <span id="answer<?php echo $myfname; ?>_resetslider" class='btn btn-default fa fa-times slider-reset'>&nbsp;<?php eT("Reset"); ?></span>
+                            <div id="answer<?php echo $myfname; ?>_resetslider" class='pull-left btn btn-default'>
+                                <span class='fa fa-times slider-reset' aria-hidden='true'></span>&nbsp;<?php eT("Reset"); ?>
                             </div>
                         </div>
                     <?php endif; ?>
