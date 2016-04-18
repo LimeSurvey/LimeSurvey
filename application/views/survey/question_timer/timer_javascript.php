@@ -32,6 +32,8 @@
             var warning2display='LS_question'+questionid+'_warning_2';
             var expireddisplay='question'+questionid+'_timer';
             var timersessionname='timer_question_'+questionid;
+            var disable_next = <?php echo $disable_next; ?>;
+
             $('#'+timersessionname).val(timeleft);
             timeleft--;
             cookietimer=subcookiejar.fetch('limesurvey_timers',timersessionname);
@@ -46,11 +48,11 @@
 
             <?php if($disable_next > 0): ?>// $disable_next can be 1 or 0 (it's a select).
 
-                if(timeleft > $disable_next)
+                if(timeleft > disable_next)
                 {
                     $('#movenextbtn').prop('disabled',true);$('#movenextbtn.ui-button').button( 'option', 'disabled', true );
                 }
-                else if ($disable_next >= 1 && timeleft <= $disable_next)
+                else if (disable_next >= 1 && timeleft <= disable_next)
                 {
                     $('#movenextbtn').prop('disabled',false);$('#movenextbtn.ui-button').button( 'option', 'disabled', false );
                 }
