@@ -3050,11 +3050,23 @@ function do_multiplenumeric($ia)
                 $sValue = str_replace('.',$sSeparator,$sValue);
             }
 
+            if (trim($aQuestionAttributes['num_value_int_only'])==1)
+            {
+                $extraclass .=" integeronly";
+                $answertypeclass = " integeronly";
+                $integeronly=1;
+            }
+            else
+            {
+                $integeronly=0;
+            }
+
             if(!$sliders)
             {
             $sRows .= Yii::app()->getController()->renderPartial('/survey/questions/multiplenumeric/rows/input/answer_row', array(
                 'qid'                    => $ia[0],
                 'extraclass'             => $extraclass,
+                'answertypeclass'        => $answertypeclass,
                 'sDisplayStyle'          => $sDisplayStyle,
                 'kpclass'                => $kpclass,
                 'alert'                  => $alert,
@@ -3068,7 +3080,8 @@ function do_multiplenumeric($ia)
                 'dispVal'                => $sValue,
                 'maxlength'              => $maxlength,
                 'labelText'              => $labelText,
-                'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+                'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type, \'onchange\','.$integeronly.')',
+                'integeronly'=> $integeronly,
             ), true);
             }
             else
