@@ -1218,7 +1218,10 @@ input[type="checkbox"]:disabled:checked:after,
   padding: 1em; }
 
 .container-fluid .ui-widget-content .ui-state-default, .container-fluid .ui-jqgrid .ui-jqgrid-bdiv {
-  padding: 0.5em; }
+  padding: 0.5em;
+  /* Too much padding for tabs (both bootstrap and jquery ui) */
+  padding-bottom: 0;
+}
 
 .ui-dialog, .ui-jqdialog, .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable {
   border-radius: 4px;

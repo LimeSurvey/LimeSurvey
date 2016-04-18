@@ -188,6 +188,10 @@ function selectTabFromOper() {
 }
 
 $(document).ready(function(){
+
+    // We must run this to enable the tabsactivate event
+    $('#conditiontarget, #conditionsource').tabs();
+
 	$('#conditiontarget').on('tabsactivate', function(event, ui) {
 		$('#editTargetTab').val('#' + ui.newPanel.prop("id"));	
 	});
