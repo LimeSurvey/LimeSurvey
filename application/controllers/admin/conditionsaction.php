@@ -1224,7 +1224,7 @@ class conditionsaction extends Survey_Common_Action {
                     {
                         $img_tag = '<span class="glyphicon glyphicon-trash"></span>';
                         $additional_main_content = CHtml::link($img_tag, '#', array(
-                        'onclick'     =>     "if ( confirm('".gT("Are you sure you want to delete all conditions set in this scenario?", "js")."')) { document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}"
+                            'onclick'     =>     "if ( confirm('".gT("Are you sure you want to delete all conditions set in this scenario?", "js")."')) { document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}"
                         ));
 
                         $img_tag = '<span class="glyphicon glyphicon-pencil"></span>';

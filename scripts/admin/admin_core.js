@@ -188,10 +188,39 @@ $(document).ready(function(){
         $("#question_type.none").change();
     }
 
-    // Confirmation modal
+    /**
+     * Confirmation modal
+     *
+     * Either provide a data-href to redirect after OK button is clicked,
+     * or data-onclick to be run when OK is clicked.
+     */
     $('#confirmation-modal').on('show.bs.modal', function(e) {
         // .btn-ok is the confirm <a> in the modal
-        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        var href = $(e.relatedTarget).data('href');
+        var onclick = $(e.relatedTarget).data('onclick');
+
+        if (href != '' && href !== undefined) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        }
+        else if (onclick != '' && onclick !== undefined) {
+
+            var onclick_fn = eval(onclick);
+
+            if (typeof onclick_fn == 'function') {
+                $(this).find('.btn-ok').on('click', function(ev) {
+                    $('#confirmation-modal').modal('hide');
+                    onclick_fn();
+                });
+            }
+            else {
+                throw "Confirmation modal: onclick is not a function.";
+            }
+
+        }
+        else {
+            throw "Confirmation modal: Found neither data-href or data-onclick.";
+        }
+
         $(this).find('.modal-body-text').html($(e.relatedTarget).data('message'));
     });
 
