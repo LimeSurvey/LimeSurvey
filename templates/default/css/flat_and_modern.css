@@ -7015,9 +7015,41 @@ a.list-group-item-danger.active:focus {
 }
 
 
-
-
-
+/**
+ * Question design
+ */
  body{
      background-color: #f6f6f6;
+ }
+
+ .answer-container, .question-help-container
+ {
+     border-color: #dbdbdb;
+ }
+
+
+ /** Header **/
+ .question-title-container, .questionvalidcontainer {
+     background-color: #233140;
+ }
+
+
+
+ .questionvalidcontainer .text-danger{
+     color: #E75041;
+ }
+
+ .questionvalidcontainer .text-info{
+     color: #B9CC14;
+ }
+
+ /* Arrow */
+ .questionvalidcontainer:after {
+     border-top-color: #233140;
+ }
+
+
+/* Errors */
+ .input-error {
+     border: 1px solid #E75041;
  }

@@ -819,7 +819,6 @@ body div.row .question-container {
 
 .answer-container, .question-help-container
 {
-    border-color: #dbdbdb;
     border-style: solid;
 }
 
@@ -838,9 +837,6 @@ body div.row .question-container {
 
 
 /** Header **/
-.question-title-container, .questionvalidcontainer {
-    background-color: #233140;
-}
 
 .question-title-container {
     color: white;
@@ -855,7 +851,6 @@ body div.row .question-container {
 }
 
 .questionvalidcontainer .text-danger{
-    color: #E75041;
     font-weight: bold;
 }
 
@@ -890,8 +885,4 @@ body div.row .question-container {
 }
 .asterisk:before {
     content: "\f069";
-}
-
-.input-error {
-    border: 1px solid #E75041;
 }
