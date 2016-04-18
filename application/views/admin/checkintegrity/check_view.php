@@ -246,7 +246,7 @@
                                 <ul class='response-tables-list list-unstyled'>
                                     <?php
                                         foreach ($redundantsurveytables as $surveytable) {?>
-                                        <li><input type='checkbox' id='cbox_<?php echo $surveytable['table']?>' value='<?php echo $surveytable['table']?>' name='oldsmultidelete[]' /><label for='cbox_<?php echo $surveytable['table']?>'><?php echo $surveytable['details']?></label></li><?php
+                                        <li><input type='checkbox' id='cbox_<?php echo $surveytable['table']?>' value='<?php echo $surveytable['table']?>' name='oldsmultidelete[]' /> <label for='cbox_<?php echo $surveytable['table']?>'><?php echo $surveytable['details']?></label></li><?php
                                     }?>
                                 </ul>
                             </li>

@@ -681,7 +681,13 @@ class CheckIntegrity extends Survey_Common_Action
                     $iDay = substr($sDateTime, 6, 2);
                     $iHour = substr($sDateTime, 8, 2);
                     $iMinute = substr($sDateTime, 10, 2);
-                    $sDate = date('d M Y  H:i', mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
+                    $sDate = date('Y-m-d H:i:s', mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
+
+                    $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+                    Yii::app()->loadLibrary('Date_Time_Converter');
+                    $datetimeobj = new date_time_converter(dateShift($sDate,'Y-m-d H:i:s',getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
+                    $sDate=$datetimeobj->convert($dateformatdetails['phpdate'] . " H:i");
+
                     $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
                     $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();
                     if ($aFirstRow['recordcount']==0) { // empty table - so add it to immediate deletion
