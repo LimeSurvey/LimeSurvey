@@ -260,7 +260,7 @@
                                 <ul class='token-tables-list list-unstyled'>
                                     <?php
                                         foreach ($redundanttokentables as $tokentable) {?>
-                                        <li><input type='checkbox' id='cbox_<?php echo $tokentable['table']?>' value='<?php echo $tokentable['table']?>' name='oldsmultidelete[]' /><label for='cbox_<?php echo $tokentable['table']?>'><?php echo $tokentable['details']?></label></li><?php
+                                        <li><input type='checkbox' id='cbox_<?php echo $tokentable['table']?>' value='<?php echo $tokentable['table']?>' name='oldsmultidelete[]' /> <label for='cbox_<?php echo $tokentable['table']?>'><?php echo $tokentable['details']?></label></li><?php
                                     }?>
                                 </ul>
                             </li>
