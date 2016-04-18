@@ -625,6 +625,12 @@ class tokens extends Survey_Common_Action
 
             foreach ($aData as $k => $v)
                 $token->$k = $v;
+
+            $beforeParticipantSave = new PluginEvent('beforeParticipantSave');
+            $beforeParticipantSave->set('model',$token );
+            $beforeParticipantSave->set('iSurveyID',$iSurveyId );
+            App()->getPluginManager()->dispatchEvent($beforeParticipantSave);
+
             echo $token->update();
         }
         // if add it will insert a new row
@@ -901,6 +907,13 @@ class tokens extends Survey_Common_Action
         {
             self::_newtokentable($iSurveyID);
         }
+        
+        $token = Token::model($iSurveyID)->find('tid=' . $sTokenIDs);
+
+        $beforeParticipantDelete = new PluginEvent('beforeParticipantDelete');
+        $beforeParticipantDelete->set('model',$token );
+        $beforeParticipantDelete->set('iSurveyID',$iSurveyID );
+        App()->getPluginManager()->dispatchEvent($beforeParticipantDelete);
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
         {

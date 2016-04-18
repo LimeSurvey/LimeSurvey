@@ -646,6 +646,20 @@ $config['questiontypedir']         = $config['rootdir'].DIRECTORY_SEPARATOR.'app
 // Use alias notation, we should move to this format everywhere.
 $config['plugindir']               = 'webroot.plugins';
 
+// AuditLog Default values
+$config['auditLog'] = array(
+    'AuditLog_Log_Enable' =>'1', // default param to enable auditLog
+    'AuditLog_Log_UserSave' =>'1', // Log if a user was modified or created
+    'AuditLog_Log_UserLogin' =>'1', // Log if a user is logged successfully
+    'AuditLog_Log_UserLogout' =>'1', // Log if user has logout
+    'AuditLog_Log_UserFailedLoginAttempt' =>'1', // Log if a user login has failed
+    'AuditLog_Log_UserDelete' =>'1', // Log if a user was deleted
+    'AuditLog_Log_ParticipantSave' =>'1', // Log if a participant was modified or created
+    'AuditLog_Log_ParticipantDelete' =>'1', // Log if a participant was deleted
+    'AuditLog_Log_UserPermissionsChanged' =>'1', // Log if a user permmisions has changed
+    'AuditLog_Log_SurveySettings' =>'1', // Log if a Survey settings has changed.
+);
+
 // (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric caracters; 0 : leave all caracters
 $config['bFixNumAuto']             = 1;
 // (javascript) Send real value entered when using Numeric question type in Expression Manager : 0 : {NUMERIC} with bad caracters send '', 1 : {NUMERIC} send all caracters entered
