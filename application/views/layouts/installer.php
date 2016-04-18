@@ -11,11 +11,12 @@
         <?php
         App()->getClientScript()->registerPackage('jqueryui');
         App()->bootstrap->register();
+        App()->getClientScript()->registerPackage('fontawesome');
+
         App()->getClientScript()->registerCssFile(App()->baseUrl . '/styles/Sea_Green/css/lime-admin-colors.css');
         App()->getClientScript()->registerCssFile(App()->baseUrl . '/styles/Sea_Green/css/lime-admin-common.css');
         App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/main.css');
         App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/fonts.css');
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/font-awesome.css');
 
         $script = "$(function() {
         $('.on').animate({

@@ -7,11 +7,14 @@
         $list .= CHtml::link($survey->localizedTitle, array('survey/index', 'sid' => $survey->sid, 'lang' => App()->language), array('class' => 'surveytitle btn btn-primary'));
         if ($survey->publicstatistics == "Y")
         {
-            //$list .= CHtml::link('(' . gT('View statistics') . ')', array('statistics_user/action', 'surveyid' => $survey->sid,'language' => App()->language));
-            $list .= '<a class="view-stats btn btn-success" data-toggle="tooltip" title="'.gT('View statistics').'" href="'.App()->createUrl('statistics_user/action/surveyid/'.$survey->sid.'/language/'.App()->language).'">';
-            $list .= '  <span class="glyphicon glyphicon-stats"></span>';
-            //$list .= '  (' . gT('View statistics') . ')';
-            $list .= '</a>';
+            $list .= CHtml::link('<span class="fa fa-bar-chart" aria-hidden="true"></span><span class="sr-only">'. gT('View statistics') .'</span>',
+                        array('statistics_user/action', 'surveyid' => $survey->sid,'language' => App()->language),
+                        array(
+                            'class'=>'view-stats btn btn-success',
+                            'title'=>gT('View statistics'),
+                            'data-toggle'=>'tooltip',
+                        )
+                    );
         }
         $list .= CHtml::closeTag('li');
 

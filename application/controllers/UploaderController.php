@@ -14,7 +14,7 @@
 
 class UploaderController extends SurveyController {
     function run($actionID)
-    {   
+    {
         $surveyid=Yii::app()->session['LEMsid'];
         $oSurvey=Survey::model()->findByPk($surveyid);
         if(!$oSurvey)
@@ -340,7 +340,6 @@ class UploaderController extends SurveyController {
         {
             App()->clientScript->registerCssFile("{$sTemplateUrl}" . (string) $cssFile);
         }
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/font-awesome.css');
 
         $header = getHeader($meta);
 

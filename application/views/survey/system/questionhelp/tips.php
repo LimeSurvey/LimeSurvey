@@ -8,6 +8,6 @@
 ?>
 <div id='vmsg_<?php echo $qid; ?>_<?php echo $vclass; ?>' class='em_<?php echo $vclass; ?> emtip '>
 
-    <span class='glyphicon glyphicon-info-sign'></span>
-    &nbsp;<?php echo $vtip; ?>
+    <span class='fa fa-exclamation-circle' aria-hidden="true"></span>
+    <?php echo $vtip; ?>
 </div>
