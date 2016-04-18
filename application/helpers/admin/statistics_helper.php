@@ -2383,10 +2383,11 @@ class statistics_helper {
     * @param mixed $surveyid
     * @param mixed $sql
     * @param mixed $usegraph
+    * @param mixed $ansID
      *
      *
     */
-    protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
+    protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $ansID=1, $browse, $sLanguage)
     {
         // TODO: Should not be necessary - this combination should never happen
         // File-upload is not displayed in PDF
@@ -2749,7 +2750,13 @@ class statistics_helper {
                 }
 
                 //text for answer column is always needed
-                $fname="$al[1] ($al[0])";
+                //choice whether to show answer id
+                if($ansID==0){
+                    $fname="$al[1]";
+                }
+                else{
+                    $fname="$al[1] ($al[0])";
+                }
 
             }    //end if -> show aggregated data
 
@@ -3775,7 +3782,7 @@ class statistics_helper {
     /**
      * Generates statistics with subviews
      */
-    public function generate_html_chartjs_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
+    public function generate_html_chartjs_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $ansID=1, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
     {
         $aStatisticsData=array();
 
@@ -3969,7 +3976,7 @@ class statistics_helper {
                 //2. Collect and Display results #######################################################################
                 if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
                 {
-                    $display=$this->displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguageCode);
+                    $display=$this->displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $ansID, $browse, $sLanguageCode);
                     $sOutputHTML .= $display['statisticsoutput'];
                     $aStatisticsData = array_merge($aStatisticsData, $display['astatdata']);
                 }    //end if -> collect and display results
@@ -4015,7 +4022,7 @@ class statistics_helper {
     * @param mixed $browse  Show browse buttons
     * @return buffer
     */
-    public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
+    public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $ansID=1, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
     {
 
         $aStatisticsData=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly

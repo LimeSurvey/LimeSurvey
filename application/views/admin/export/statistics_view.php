@@ -39,7 +39,7 @@
 
                             <div class="col-sm-6">
                                 <!-- Output options -->
-                                <?php $this->renderPartial('/admin/export/statistics_subviews/_outputoptions', array('error'=>$error, 'showtextinline'=>$showtextinline, 'usegraph'=>$usegraph, 'showtextinline'=>$showtextinline)) ; ?>
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_outputoptions', array('error'=>$error, 'showtextinline'=>$showtextinline, 'usegraph'=>$usegraph, 'ansID'=>$ansID, 'showtextinline'=>$showtextinline)) ; ?>
 
                                 <!-- Output format -->
                                 <?php $this->renderPartial('/admin/export/statistics_subviews/_outputformat', array()) ; ?>

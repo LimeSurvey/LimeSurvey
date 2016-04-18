@@ -18,6 +18,13 @@
                 <?php if($error != '') { echo "<div id='grapherror' style='display:none'>$error<hr /></div>"; } ?>
             </div>
 
+            <div class='form-group'>
+                <label for='ansID'  class="col-sm-5 control-label" ><?php eT("Display answer IDs:"); ?></label>
+                <div class='col-sm-1'>
+                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'ansID', 'id'=>'ansID', 'value'=>true, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
+                </div>
+            </div>
+
             <div class="form-group col-sm-12">
                 <div class="col-sm-offset-1 alert alert-info alert-dismissible" role="alert">
                     <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>×</span></button>

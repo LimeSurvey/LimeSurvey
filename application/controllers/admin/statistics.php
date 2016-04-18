@@ -473,20 +473,21 @@ class statistics extends Survey_Common_Action {
         if (isset($summary) && $summary)
         {
             $usegraph=isset($_POST['usegraph']) ? 1 : 0;
+            $ansID=isset($_POST['ansID']) ? 1 : 0;
             $aData['usegraph'] = $usegraph;
             $outputType = $_POST['outputtype'];
 
 
             switch($outputType){
                 case 'html':
-                    $statisticsoutput .=  $helper->generate_html_chartjs_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
+                    $statisticsoutput .=  $helper->generate_html_chartjs_statistics($surveyid,$summary,$summary,$usegraph,$ansID,$outputType,'DD',$statlang);
                     break;
                 case 'pdf':
-                    $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'I',$statlang);
+                    $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$ansID,$outputType,'I',$statlang);
                     exit;
                     break;
                 case 'xls':
-                    $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
+                    $helper->generate_statistics($surveyid,$summary,$summary,$usegraph,$ansID,$outputType,'DD',$statlang);
                     exit;
                     break;
                 default:
@@ -496,7 +497,9 @@ class statistics extends Survey_Common_Action {
         }    //end if -> show summary results
 
         $usegraph=isset($_POST['usegraph']) ? 1 : 0;
+        $ansID=isset($_POST['ansID']) ? 1 : 0;
         $aData['usegraph'] = $usegraph;
+        $aData['ansID'] = $ansID;
 
         $aData['sStatisticsLanguage']=$statlang;
         $aData['output'] = $statisticsoutput;
