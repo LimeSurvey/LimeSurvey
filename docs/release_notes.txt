@@ -59,6 +59,18 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.06LTS (build 160329) to 2.06LTS (build 160417) April 17, 2016
+-Fixed issue #10222: Attachments for registration emails don't get attached (Carsten Schmitz)
+-Fixed issue #10474: Some characters not accepted for "save & resume later" passwords in links sent by email (Carsten Schmitz)
+-Fixed issue #10586: Multiple choice exported to R, levels are wrong on factor() syntax file (Carsten Schmitz)
+-Fixed issue #10860: Regular expression fail with specific value (Denis Chenu)
+-Fixed issue #10875: Remote control list_surveys list all surveys, and not only needed (Denis Chenu)
+-Fixed issue #10923: Statistics of questiontype array(numbers) not (Olle Haerstedt)
+-Fixed issue #10934: EM regexMatch function don't show pattern error (Denis Chenu)
+-Fixed issue #10950: Smilies are missing in the popup html editor (Carsten Schmitz)
+-Fixed issue: Event beforeTokenEmail is not dispatched for register (Denis Chenu)
+
 Changes from 2.06LTS (build 160315) to 2.06LTS (build 160329) March 30, 2016
 -Fixed issue #10435: Broken HTML or script can broke Survey Logic File (Denis Chenu)
 -Fixed issue #10801: PHP notice + bad relevance set in Array text subquestion edit (Denis Chenu)
