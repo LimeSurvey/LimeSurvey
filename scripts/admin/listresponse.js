@@ -148,7 +148,7 @@ $(function() {
         'navButtonAdd',
         '#pager',
         {
-            buttonicon : "ui-icon-calculator",
+            buttonicon : "fa fa-columns",
             caption : "",
             title : sSelectColumns,
             onClickButton : function() {
@@ -181,18 +181,19 @@ $(function() {
             //caption:sDownLoad, // Remove it ? no it's more clear ;)
             caption:'',
             title:sDownLoad, // Todo dynamically update download selected , download all
-            buttonicon:"glyphicon glyphicon-download-alt",
+            buttonicon:"fa fa-download",
             onClickButton: function(){
                 selectedlist=jQuery("#displayresponses").getGridParam('selarrrow').join(",");//  Or send like an array ?
                 if(selectedlist!="")
                 {
-                    sendPost(jsonActionUrl,null,["oper","responseid"],["downloadzip",selectedlist]);
+                    sendPost(jsonActionUrl,null,["oper","id"],["downloadzip",selectedlist]);
                 }
                 else
                 {
                     if(confirm(sConfirmationArchiveMessage))
-                        sendPost(jsonActionUrl,null,["oper"],["downloadzip"]);;
-                    //sendPost(sDownloadUrl,null,"responseid",0);
+                    {
+                        sendPost(jsonActionUrl,null,["oper"],["downloadzip"]);
+                    }
                 }
             },
             position:"last",
