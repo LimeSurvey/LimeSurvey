@@ -98,6 +98,15 @@ class GlobalSettings extends Survey_Common_Action
         $data['fullpagebar']['saveandclosebutton']['form'] = 'frmglobalsettings';
         $data['fullpagebar']['closebutton']['url'] = 'admin/';  // Close button
 
+        // List of available encodings
+        $data['aEncodings'] = aEncodingsArray();
+
+        // Sort list of encodings
+        asort($data['aEncodings']);
+
+        // Get current setting from DB
+        $data['thischaracterset'] = getGlobalSetting('characterset');
+
         $this->_renderWrappedTemplate('', 'globalSettings_view', $data);
     }
 
@@ -221,6 +230,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('surveyPreview_require_Auth', $_POST['surveyPreview_require_Auth']);
         setGlobalSetting('RPCInterface', $_POST['RPCInterface']);
         setGlobalSetting('rpc_publish_api', (bool) $_POST['rpc_publish_api']);
+        setGlobalSetting('characterset', $_POST['characterset']);
         $savetime = ((float)$_POST['timeadjust'])*60 . ' minutes'; //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
             $savetime = '+' . $savetime;

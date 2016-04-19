@@ -231,6 +231,20 @@ class dataentry extends Survey_Common_Action
     {
         unset($aEncodings['auto']);
         asort($aEncodings);
+
+        // Get default character set from global settings
+        $thischaracterset = getGlobalSetting('characterset');
+
+        // If no encoding was set yet, use the old "utf8" default
+        if($thischaracterset == "")
+        {
+            $thischaracterset = "utf8";
+        }
+
+        // Create encodings list using the Yii's CHtml helper
+        $charsetsout = CHtml::listOptions($thischaracterset, $aEncodings, $aEncodings);
+
+        $aData['charsetsout'] = $charsetsout;
         $aData['aEncodings']=$aEncodings;
         $aData['tableExists'] = tableExists("{{survey_$surveyid}}");
 

@@ -2374,6 +2374,7 @@ class tokens extends Survey_Common_Action
 
         // If there are error with file : show the form
         $aData['aEncodings'] = $aEncodings;
+        asort($aData['aEncodings']);
         $aData['iSurveyId'] = $iSurveyId;
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
@@ -2383,15 +2384,25 @@ class tokens extends Survey_Common_Action
         unset($aTokenTableFields['remindercount']);
         unset($aTokenTableFields['usesleft']);
         foreach ($aTokenTableFields as $sKey=>$sValue)
+        {
+            if ($sValue['description']!=$sKey)
             {
-                if ($sValue['description']!=$sKey)
-                {
-                   $sValue['description'] .= ' - '.$sKey;
-                }
-                $aNewTokenTableFields[$sKey]= $sValue['description'];
+               $sValue['description'] .= ' - '.$sKey;
             }
-            $aData['aTokenTableFields'] = $aNewTokenTableFields;
-            $this->_renderWrappedTemplate('token', array( 'csvupload'), $aData);
+            $aNewTokenTableFields[$sKey]= $sValue['description'];
+        }
+        $aData['aTokenTableFields'] = $aNewTokenTableFields;
+
+        // Get default character set from global settings
+        $thischaracterset = getGlobalSetting('characterset');
+        // If no encoding was set yet, use the old "auto" default
+        if($thischaracterset == "")
+        {
+            $thischaracterset = "auto";
+        }
+        $aData['thischaracterset'] = $thischaracterset;
+
+        $this->_renderWrappedTemplate('token', array( 'csvupload'), $aData);
 
     }
 

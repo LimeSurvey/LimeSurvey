@@ -162,6 +162,24 @@
         </div>
     </div>
 
+    <div class='form-group'>
+        <label class='col-sm-4 control-label' for='characterset'><?php eT("Character set for file import/export:") ?></label>
+        <div class='col-sm-6'>
+            <select class='form-control' name='characterset' id='characterset'>
+                <?php foreach ($aEncodings as $code => $charset): ?>
+                    <option
+                        value='<?php echo $code; ?>'
+                        <?php if (array_key_exists($thischaracterset, $aEncodings) && $code == $thischaracterset): ?>
+                            selected='selected'
+                        <?php elseif (!array_key_exists($thischaracterset, $aEncodings) && $code == "auto"): ?>
+                            selected='selected'
+                        <?php endif; ?>
+                    >
+                    <?php echo $charset; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
 
 
 <?php if (Yii::app()->getConfig("demoMode")==true):?>
