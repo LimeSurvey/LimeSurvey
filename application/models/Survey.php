@@ -843,8 +843,8 @@ class Survey extends LSActiveRecord
             'desc'=>'sid desc',
           ),
           'title'=>array(
-            'asc'=>'surveys_languagesettings.surveyls_title',
-            'desc'=>'surveys_languagesettings.surveyls_title desc',
+            'asc'=>'languagesettings.surveyls_title',
+            'desc'=>'languagesettings.surveyls_title desc',
           ),
 
           'creation_date'=>array(
@@ -853,8 +853,8 @@ class Survey extends LSActiveRecord
           ),
 
           'owner'=>array(
-            'asc'=>'users.users_name',
-            'desc'=>'users.users_name desc',
+            'asc'=>'owner.users_name',
+            'desc'=>'owner.users_name desc',
           ),
 
           'anonymized_responses'=>array(
@@ -870,9 +870,7 @@ class Survey extends LSActiveRecord
         );
 
         $criteria = new CDbCriteria;
-        $criteria->with=array('defaultlanguage');
-        $criteria->join  = 'LEFT JOIN {{surveys_languagesettings}} AS surveys_languagesettings ON ( surveys_languagesettings.surveyls_language = t.language AND t.sid = surveys_languagesettings.surveyls_survey_id )';
-        $criteria->join .= 'LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
+        $criteria->with=array('defaultlanguage','owner');
 
         // Permission
         if(!Permission::model()->hasGlobalPermission("surveys",'read'))
@@ -886,7 +884,7 @@ class Survey extends LSActiveRecord
         $criteria2 = new CDbCriteria;
         $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.sid::varchar' : 't.sid');
         $criteria2->compare($sid_reference, $this->searched_value, true, 'OR');
-        $criteria2->compare('surveys_languagesettings.surveyls_title', $this->searched_value, true, 'OR');
+        $criteria2->compare('defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
         $criteria2->compare('t.admin', $this->searched_value, true, 'OR');
 
         // Active filter
