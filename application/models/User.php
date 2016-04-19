@@ -19,7 +19,7 @@ class User extends LSActiveRecord
     */
     public $lang='auto';
 
-    
+
     /**
     * Returns the static model of Settings table
     *
@@ -92,8 +92,8 @@ class User extends LSActiveRecord
         return $data;
     }
     /**
-    * 
-    * 
+    *
+    *
     * @param mixed $postuserid
     */
     function parentAndUser($postuserid)
@@ -177,12 +177,12 @@ class User extends LSActiveRecord
          // Postgres delivers bytea fields as streams :-o - if this is not done it looks like Postgres saves something unexpected
         if (gettype($this->password)=='resource')
         {
-            $this->password=stream_get_contents($this->password,-1,0); 
+            $this->password=stream_get_contents($this->password,-1,0);
         }
         return parent::beforeSave();
     }
-    
-    
+
+
     /**
     * Delete user
     *
@@ -218,17 +218,17 @@ class User extends LSActiveRecord
     public function getName($userid)
     {
         static $aOwnerCache = array();
-        
+
         if (array_key_exists($userid, $aOwnerCache)) {
             $result = $aOwnerCache[$userid];
         } else {
             $result = Yii::app()->db->createCommand()->select('full_name')->from('{{users}}')->where("uid = :userid")->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
             $aOwnerCache[$userid] = $result;
         }
-        
+
         return $result;
     }
-    
+
     public function getuidfromparentid($parentid)
     {
         return Yii::app()->db->createCommand()->select('uid')->from('{{users}}')->where('parent_id = :parent_id')->bindParam(":parent_id", $parentid, PDO::PARAM_INT)->queryRow();
@@ -252,7 +252,7 @@ class User extends LSActiveRecord
 
     /**
     * Updates user password hash
-    * 
+    *
     * @param int $iUserID The User ID
     * @param string $sPassword The clear text password
     */
@@ -292,4 +292,51 @@ class User extends LSActiveRecord
 			'permissions' => array(self::HAS_MANY, 'Permission', 'uid')
 		);
 	}
+
+    /**
+    * Returns Users from string id list
+    *
+    * @access public
+    * @return array User list
+    */
+    public static function getArrayUsers($stringUsersList, $outputformat='fullinfoarray')
+    {
+        if (!empty(Yii::app()->session['loginID']))
+        {
+            $myuid=sanitize_int(Yii::app()->session['loginID']);
+        }
+        if (Permission::model()->hasGlobalPermission('superadmin','read') )
+        {
+            if (isset($myuid))
+            {
+                $sDatabaseType = Yii::app()->db->getDriverName();
+                $uresult = Yii::app()->db->createCommand()
+                    ->select('users_name,uid,email,full_name,parent_id')
+                    ->from('{{users}} u')
+                    ->where(array('in', 'uid', explode (',',$stringUsersList)))
+                    ->queryAll();
+            }
+            else
+            {
+                return array(); // Or die maybe
+            }
+        }
+        else
+        {
+            return array(); // Or die maybe
+        }
+        $userlist = array();
+        foreach ($uresult as $srow)
+        {
+            if ($outputformat != 'onlyuidarray')
+            {
+                $userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'] );
+            }
+            else
+            {
+                $userlist[] = $srow['uid'];
+            }
+        }
+        return $userlist;
+    }
 }
