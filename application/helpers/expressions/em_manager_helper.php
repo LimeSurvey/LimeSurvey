@@ -3288,11 +3288,11 @@
                     switch ($type)
                     {
                         case 'N':
-                            $qtips['default']='';
+                            unset($qtips['default']);
                             $qtips['value_integer']=$this->gT("Only an integer value may be entered in this field.");
                             break;
                         case 'K':
-                            $qtips['default']='';
+                            unset($qtips['default']);
                             $qtips['value_integer']=$this->gT("Only integer values may be entered in these fields.");
                             break;
                         default:
