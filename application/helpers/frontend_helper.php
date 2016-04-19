@@ -271,11 +271,11 @@ function makeLanguageChanger($sSelectedLanguage)
         $sSelected=$sSelectedLanguage;
 
         $sHTMLCode= CHtml::beginForm(App()->createUrl('surveys/publiclist'),'get', array('class' => 'form-horizontal'));
-        $sHTMLCode.=CHtml::label(gT("Language:"), 'lang',array('class'=>'control-label col-xs-8'));
-        $sHTMLCode .= "<div class='col-xs-2'>";
+        $sHTMLCode.=CHtml::label(gT("Language:"), 'lang',array('class'=>'control-label col-xs-4 col-sm-8'));
+        $sHTMLCode .= "<div class='col-xs-7 col-sm-2'>";
         $sHTMLCode.= CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass));
         $sHTMLCode .= "</div>";
-        $sHTMLCode .= "<div class='col-xs-2'>";
+        $sHTMLCode .= "<div class='col-xs-1 col-sm-2'>";
         $sHTMLCode.="<button class='changelang jshide' value='changelang' id='changelangbtn' type='submit'>".gT("Change the language")."</button>";
         $sHTMLCode .= "</div>";
         $sHTMLCode.= CHtml::endForm();

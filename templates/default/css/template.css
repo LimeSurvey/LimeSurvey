@@ -662,6 +662,10 @@ table > tbody > tr > td.ddprefix {
         display: none;
     }
 
+    #langchanger-label {
+        padding-top: 11px;
+    }
+
 }
 
 /** On small phones, leave some more space */
@@ -713,7 +717,6 @@ table > tbody > tr > td.ddprefix {
     .slider.slider-horizontal {
         margin-bottom: 0.4em;
     }
-
 
 }
 
