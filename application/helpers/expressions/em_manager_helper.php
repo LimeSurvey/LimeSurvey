@@ -6560,12 +6560,16 @@
                     $stringToParse = '';
                     foreach ($LEM->qid2validationEqn[$qid]['tips'] as $vclass=>$vtip)
                     {
-                        $tipsDatas = array(
-                            'qid'   =>$qid,
-                            'vclass'=>$vclass,
-                            'vtip'  =>$vtip,
-                        );
-                        $stringToParse .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/tips', $tipsDatas, true);
+                        // Only add non-empty tip
+                        if (trim($vtip) != "")
+                        {
+                            $tipsDatas = array(
+                                'qid'   =>$qid,
+                                'vclass'=>$vclass,
+                                'vtip'  =>$vtip,
+                            );
+                            $stringToParse .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/tips', $tipsDatas, true);
+                        }
                     }
 
                     $prettyPrintValidTip = $stringToParse;
