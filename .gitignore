@@ -25,3 +25,5 @@ application/config/_config.php
 *.un~
 !index.html
 !readme.txt
+/tmp/runtime/URI/*.ser
+/tmp/runtime/CSS/*.ser
