@@ -9,56 +9,77 @@
 			'AuditLog_Log_UserSave' => array(
 				'type' => 'checkbox',
 				'label' => 'Log if a user was modified or created',
+                'default' => '1',
 			),
 			'AuditLog_Log_UserLogin' => array(
 				'type' => 'checkbox',
 				'label' => 'Log if a user is logged successfully',
+                'default' => '1',
 			),
 			'AuditLog_Log_UserLogout' => array(
 				'type' => 'checkbox',
 				'label' => 'Log if user has logout',
+                'default' => '1',
 			),
 			'AuditLog_Log_UserFailedLoginAttempt' => array(
 				'type' => 'checkbox',
 				'label' => 'Log if a user login has failed',
+                'default' => '1',
 			),
 			'AuditLog_Log_UserDelete' => array(
 				'type' => 'checkbox',
 				'label' => 'Log if a user was deleted',
+                'default' => '1',
 			),
 			'AuditLog_Log_ParticipantSave' => array(
 				'type' => 'checkbox',
 				'label' => 'Log if a participant was modified or created',
+                'default' => '1',
 			),
 			'AuditLog_Log_ParticipantDelete' => array(
 				'type' => 'checkbox',
 				'label' => 'Log if a participant was deleted',
+                'default' => '1',
 			),
 			'AuditLog_Log_UserPermissionsChanged' => array(
 				'type' => 'checkbox',
 				'label' => 'Log if a user permissions changes',
+                'default' => '1',
 			),
 			'AuditLog_Log_SurveySettings' => array(
 				'type' => 'checkbox',
 				'label' => 'Log if a user changes survey settings',
+                'default' => '1',
 			),
 		);
-
+//// AuditLog Default values
+//$config['auditLog'] = array(
+//    'AuditLog_Log_Enable' =>'1', // default param to enable auditLog
+//    'AuditLog_Log_UserSave' =>'1', // Log if a user was modified or created
+//    'AuditLog_Log_UserLogin' =>'1', // Log if a user is logged successfully
+//    'AuditLog_Log_UserLogout' =>'1', // Log if user has logout
+//    'AuditLog_Log_UserFailedLoginAttempt' =>'1', // Log if a user login has failed
+//    'AuditLog_Log_UserDelete' =>'1', // Log if a user was deleted
+//    'AuditLog_Log_ParticipantSave' =>'1', // Log if a participant was modified or created
+//    'AuditLog_Log_ParticipantDelete' =>'1', // Log if a participant was deleted
+//    'AuditLog_Log_UserPermissionsChanged' =>'1', // Log if a user permmisions has changed
+//    'AuditLog_Log_SurveySettings' =>'1', // Log if a Survey settings has changed.
+//);
 
 		/**
 		* Get default values from config-defaults
 		* @return
 		*/
-		protected function AssignDefaultValues() {
-			$this->settings['AuditLog_Log_UserSave']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_UserSave'];
-			$this->settings['AuditLog_Log_UserLogin']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_UserLogin'];
-			$this->settings['AuditLog_Log_UserLogout']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_UserLogout'];
-			$this->settings['AuditLog_Log_UserFailedLoginAttempt']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_UserSave'];
-			$this->settings['AuditLog_Log_UserDelete']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_UserFailedLoginAttempt'];
-			$this->settings['AuditLog_Log_ParticipantSave']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_ParticipantSave'];
-			$this->settings['AuditLog_Log_ParticipantDelete']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_ParticipantDelete'];
-			$this->settings['AuditLog_Log_UserPermissionsChanged']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_UserPermissionsChanged'];
-		}
+//		protected function AssignDefaultValues() {
+//			$this->settings['AuditLog_Log_UserSave']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_UserSave'];
+//			$this->settings['AuditLog_Log_UserLogin']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_UserLogin'];
+//			$this->settings['AuditLog_Log_UserLogout']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_UserLogout'];
+//			$this->settings['AuditLog_Log_UserFailedLoginAttempt']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_UserSave'];
+//			$this->settings['AuditLog_Log_UserDelete']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_UserFailedLoginAttempt'];
+//			$this->settings['AuditLog_Log_ParticipantSave']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_ParticipantSave'];
+//			$this->settings['AuditLog_Log_ParticipantDelete']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_ParticipantDelete'];
+//			$this->settings['AuditLog_Log_UserPermissionsChanged']['default'] = getGlobalSetting('auditLog')['AuditLog_Log_UserPermissionsChanged'];
+//		}
 
         public function init() {
             $this->subscribe('beforeSurveySettings');
@@ -72,7 +93,7 @@
             $this->subscribe('beforeLogout');
             $this->subscribe('afterSuccessfulLogin');
             $this->subscribe('afterFailedLoginAttempt');
-			$this->AssignDefaultValues();
+			//$this->AssignDefaultValues();
         }
 
 		/**
@@ -384,7 +405,7 @@
                         'type' => 'select',
                         'options'=>array(0=>'No',
                             1=>'Yes'),
-						'default' => getGlobalSetting('auditLog')['AuditLog_Log_Enable'],
+						'default' => 1,//getGlobalSetting('auditLog')['AuditLog_Log_Enable'],
                         'tab' => 'notification', // @todo: Setting no used yet
                         'category' => 'Auditing for person-related data', // @todo: Setting no used yet
                         'label' => 'Audit log for this survey',
