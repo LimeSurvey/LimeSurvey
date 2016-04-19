@@ -731,16 +731,16 @@ class Survey extends LSActiveRecord
         }
         else
         {
-            $table = '{{survey_' . $this->sid . '}}';
+            $sResponseTable = '{{survey_' . $this->sid . '}}';
             Yii::app()->cache->flush();
-            if (!Yii::app()->db->schema->getTable($table))
+            if ($this->active!='Y')
             {
                 $this->fac = 0;
                 return '0';
             }
             else
             {
-                $answers = Yii::app()->db->createCommand('select count(*) from '.$table.' where submitdate IS NOT NULL')->queryScalar();
+                $answers = Yii::app()->db->createCommand('select count(*) from '.$sResponseTable.' where submitdate IS NOT NULL')->queryScalar();
                 $this->fac = $answers;
                 return $answers;
             }
@@ -757,7 +757,7 @@ class Survey extends LSActiveRecord
         {
             $table = '{{survey_' . $this->sid . '}}';
             Yii::app()->cache->flush();
-            if (!Yii::app()->db->schema->getTable($table))
+            if ($this->active!='Y')
             {
                 $this->pac = 0;
                 return 0;
@@ -870,6 +870,7 @@ class Survey extends LSActiveRecord
         );
 
         $criteria = new CDbCriteria;
+        $criteria->with=array('defaultlanguage');
         $criteria->join  = 'LEFT JOIN {{surveys_languagesettings}} AS surveys_languagesettings ON ( surveys_languagesettings.surveyls_language = t.language AND t.sid = surveys_languagesettings.surveyls_survey_id )';
         $criteria->join .= 'LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
 

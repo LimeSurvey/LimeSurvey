@@ -69,9 +69,9 @@ $surveyid = $surveyinfo['sid'];
                             <div class="row">
                                 <div class="col-sm-12">
 
-                                    <label for="switchchangeformat"><?php eT('Format:');?></label>
+                                    <label for="switch"><?php eT('Format:');?></label>
                                     <div id='switchchangeformat' class="btn-group" role="group">
-                                      <button type="button" data-value='S' class="btn btn-default <?php if($surveyinfo['format']=='S'){echo 'active';}?>"><?php eT('Question by question');?></button>
+                                      <button id='switch' type="button" data-value='S' class="btn btn-default <?php if($surveyinfo['format']=='S'){echo 'active';}?>"><?php eT('Question by question');?></button>
                                       <button type="button" data-value='G' class="btn btn-default <?php if($surveyinfo['format']=='G'){echo 'active';}?>"><?php eT('Group by group');?></button>
                                       <button type="button" data-value='A' class="btn btn-default <?php if($surveyinfo['format']=='A'){echo 'active';}?>"><?php eT('All in one');?></button>
                                     </div>
