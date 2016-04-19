@@ -1233,6 +1233,12 @@ class database extends Survey_Common_Action
             $oSurvey->tokenlength = App()->request->getPost('tokenlength');
             $oSurvey->adminemail = App()->request->getPost('adminemail');
             $oSurvey->bounce_email = App()->request->getPost('bounce_email');
+
+            $event = new PluginEvent('newSurveySettings');
+            $event->set('newSurvey', $oSurvey);
+            $event->set('survey', $iSurveyID);
+            App()->getPluginManager()->dispatchEvent($event);
+
             if ($oSurvey->save())
             {
                 Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
