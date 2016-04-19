@@ -3058,6 +3058,7 @@ function do_multiplenumeric($ia)
             }
             else
             {
+                $answertypeclass = "";
                 $integeronly=0;
             }
 
