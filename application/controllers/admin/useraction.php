@@ -186,6 +186,91 @@ class UserAction extends Survey_Common_Action
     }
 
     /**
+    * Send email to LimeSurvey selected users
+    *
+    */
+    function sendMailToUser()
+    {
+        if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
+            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+            $this->getController()->redirect(array("admin/user/sa/index"));
+        }
+        if (!Yii::app()->request->getPost('action'))
+        {
+            Yii::app()->loadHelper('/admin/htmleditor');
+            $usersArrayid = Yii::app()->request->getPost("usersid");
+            $extra= '';
+            if (count($usersArrayid) > 0)
+            {
+                $aData['usersString'] = implode (',',$usersArrayid);
+                $arrayUsers = User::getArrayUsers($aData['usersString']);
+                $aData['arrayUsers'] = $arrayUsers;
+                $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer();
+                $this->_renderWrappedTemplate('token','sendmail', $aData);
+            }
+            else {
+                $extra .= "<br />" .gt("You must select a least one user") . "<br />";
+                $classMsg = 'warningheader';
+                $sHeader= gT("Warning");
+
+                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Warning"), $sHeader, $classMsg, $extra,
+                $this->getController()->createUrl("admin/user/sa/index"), gT("Back to list users"),array());
+                $this->_renderWrappedTemplate('user', $aViewUrls);
+            }
+        }
+        else {
+            $usersArrayid = Yii::app()->request->getPost("usersString");
+            $arrayUsers = User::getArrayUsers($usersArrayid);
+            $subject = htmlspecialchars(Yii::app()->request->getPost("subject"));
+            $body =  Yii::app()->request->getPost("body");
+            $from = Yii::app()->getConfig("siteadminname") . " <" . Yii::app()->getConfig("siteadminemail") . ">";
+            $extra = '';
+            $classMsg = '';
+
+            foreach ($arrayUsers as $user) {
+                $to = $user['full_name'] . " <" . $user['email'] . '>';
+                global $maildebug;
+                $event = new PluginEvent('beforeTokenEmail');
+                $event->set('subject', $subject);
+                $event->set('to', $user['email']);
+                $event->set('body', $body);
+                $event->set('from', $from);
+                $event->set('bounce', Yii::app()->getConfig("siteadminbounce"));
+                $oUser = User::model()->findByPk($user['uid']);
+                $event->set('token', $oUser->attributes);
+                App()->getPluginManager()->dispatchEvent($event);
+                $to = $event->get('to');
+                $from = $event->get('from');
+                if ($event->get('send', true) == false)
+                {
+                    // This is some ancient global used for error reporting instead of a return value from the actual mail function..
+                    $maildebug = $event->get('error', $maildebug);
+                    $success = $event->get('error') == null;
+                }
+                else {
+                    $success = SendEmailMessage($body, $subject, $to, $from, Yii::app()->getConfig("sitename"), true, Yii::app()->getConfig("siteadminbounce"));
+                }
+
+                if ($success){
+                    $extra .= $user['full_name'].", email: ".$user['email'].".<br />";
+                }
+                else {
+                    $fieldsarray["{FULLNAME}"] = $user['full_name'];
+                    $fieldsarray["{EMAIL}"] = $user['email'];
+                    $extra .= htmlspecialchars(ReplaceFields(gT("Email to {FULLNAME} ({EMAIL}) failed. Error message:",'unescaped') . " " . $maildebug , $fieldsarray)). "<br />";
+                }
+
+            }
+            $classMsg = 'successheader';
+            $sHeader= gT("Email sent");
+            $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer();
+            $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Email sent"), $sHeader, $classMsg, $extra,
+            $this->getController()->createUrl("admin/user/sa/index"), gT("Back to list users"),array());
+            $this->_renderWrappedTemplate('user', $aViewUrls, $aData);
+        }
+    }
+
+    /**
     * Delete user
     */
     public function deluser()

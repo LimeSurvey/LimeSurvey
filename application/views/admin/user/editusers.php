@@ -1,3 +1,30 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#selectedusers').click(function(e) {
+            e.stopPropagation();
+            var checkboxes =  $('input:checkbox[name="selectedusers[]"]');
+            if($(this).is(':checked')) {
+                checkboxes.prop('checked', true);
+            } else {
+                checkboxes.prop('checked', false);
+            }
+        });
+
+        $('#imgselectedusers').click(function(e) {
+            e.preventDefault();
+            var form = $("#sendusersform");
+            var input = $("input[name='selectedusers[]']:checked")   ;
+            input.each(function(i,check){
+                $("<input type='hidden' value='"+check.value+"' >")
+                .attr("name", "usersid[]")
+                .appendTo(form);
+            });
+            form.submit();
+        });
+    });
+</script>
+<?php echo CHtml::form(array('admin/user/sa/sendMailToUser'), 'post', array('id'=>'sendusersform'));?>
+</form>
 <h3 class="pagetitle"><?php eT("User control");?></h3>
 
 <div class="row" style="margin-bottom: 100px">
@@ -6,6 +33,7 @@
 <table id='users' class='users table table-striped'>
     <thead>
         <tr>
+            <th class=""><input id='selectedusers' type='checkbox' class='cbox' value='<?php echo $row['id']; ?>' name='selectedusers' role='checkbox' style=""></th>
             <th class="col-md-2"><?php eT("Action");?></th>
             <th class="col-md-1" ><?php eT("User ID");?></th>
             <th class="col-md-2" ><?php eT("Username");?></th>
@@ -19,8 +47,10 @@
     </thead>
     <tbody>
         <tr >
+            <td><input id='selectedusers_<?php echo $usrhimself['uid']; ?>' type='checkbox' class='cbox' value='<?php echo  $usrhimself['uid']; ?>' name='selectedusers[]' role='checkbox'/>
+            </td>
             <td style='padding:3px;'>
-                <?php echo CHtml::form(array('admin/user/sa/modifyuser'), 'post');?>
+                <?php echo CHtml::form(array('admin/user/sa/modifyuser'), 'post',array('class'=>'pull-left'));?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo eT("Edit this user"); ?>" >
                         <button type='submit' class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil text-success"></span></button> <?php // eT("Edit this user");?>
                         <input type='hidden' name='action' value='modifyuser' />
@@ -29,7 +59,7 @@
                 </form>
 
                 <?php if ($usrhimself['parent_id'] != 0 && Permission::model()->hasGlobalPermission('users','delete') ) { ?>
-                <?php echo CHtml::form(array('admin/user/sa/deluser'), 'post', array('onsubmit'=>'return confirm("'.gT("Are you sure you want to delete this entry?","js").'")') );?>
+                <?php echo CHtml::form(array('admin/user/sa/deluser'), 'post', array('class'=>'pull-left','onsubmit'=>'return confirm("'.gT("Are you sure you want to delete this entry?","js").'")') );?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo eT("Delete this user"); ?>" >
                         <button type='submit' class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash  text-danger"></span></button> <?php //<?php eT("Delete this user");?>;?>
                         <input type='hidden' name='action' value='deluser' />
@@ -37,10 +67,18 @@
                         <input type='hidden' name='uid' value='<?php echo $usrhimself['uid'];?>' />
                     </span>
                 </form>
-                <?php } ?>
+                <?php }
+
+                if ((Permission::model()->hasGlobalPermission('superadmin','read') || (Permission::model()->hasGlobalPermission('users','delete') && $usr['parent_id'] == Yii::app()->session['loginID']))) { ?>
+                    <?php echo CHtml::form(array('admin/user/sa/sendMailToUser'), 'post',array( 'class'=>'pull-left'));?>
+                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo eT("Send custom email"); ?>" >
+                        <button class="btn btn-default btn-xs" type="submit" ><span class="icon-invite"></span></button>
+                        <input type='hidden' name='usersid[]' value='<?php echo htmlspecialchars($usrhimself['uid']);?>' />
+                        </span>
+                    </form>
+                <?php }?>
 
             </td>
-
             <td><strong><?php echo $usrhimself['uid'];?></strong></td>
             <td><strong><?php echo htmlspecialchars($usrhimself['user']);?></strong></td>
             <td><strong><?php echo htmlspecialchars($usrhimself['email']);?></strong></td>
@@ -61,7 +99,8 @@
                 $usr = $usr_arr[$i];
             ?>
             <tr>
-
+            <td>  <input id='selectedusers_<?php echo  $usr['uid']; ?>' type='checkbox' class='cbox' value='<?php echo  $usr['uid']; ?>' name='selectedusers[]' role='checkbox'/>
+                </td>
                 <td style='padding:3px;'>
                     <?php if (Permission::model()->hasGlobalPermission('superadmin','read') || $usr['uid'] == Yii::app()->session['loginID'] || (Permission::model()->hasGlobalPermission('users','update') && $usr['parent_id'] == Yii::app()->session['loginID'])) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/modifyuser'), 'post', array( 'class'=>'pull-left'));?>
@@ -107,6 +146,14 @@
                             </span>
                         </form>
                         <?php }
+                        if ((Permission::model()->hasGlobalPermission('superadmin','read') || (Permission::model()->hasGlobalPermission('users','delete')  && $usr['parent_id'] == Yii::app()->session['loginID']))&& $usr['uid']!=1) { ?>
+                            <?php echo CHtml::form(array('admin/user/sa/sendMailToUser'), 'post');?>
+                                <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo eT("Send custom email"); ?>" >
+                                <button class="btn btn-default btn-xs limebutton" type="submit" > <span class="icon-invite"></span></button>
+                                <input type='hidden' name='usersid[]' value='<?php echo htmlspecialchars($usr['uid']);?>' />
+                                </span>
+                            </form>
+                        <?php }
                         if (Yii::app()->session['loginID'] == "1" && $usr['parent_id'] !=1 ) { ?>
 
                         <?php echo CHtml::form(array('admin/user/sa/setasadminchild'), 'post');?>
@@ -151,39 +198,51 @@
 <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','create')) { ?>
     <?php echo CHtml::form(array('admin/user/sa/adduser'), 'post', array('class'=>'form-inline'));?>
         <table class='users table table-responsive' id="user-control-table"><tr class='oddrow'>
+                <!--td>
+                    <img id="imgselectedusers" alt="<?php eT("Send custom email")?>" src="/styles/gringegreen/images/invite.png" style='padding:1px 1px 5px 1px' >
+                    <button id="imgselectedusers" class="btn btn-default btn-sm" type="submit">
+                        <span class="icon-invite text-success"></span>
+                        <?php eT("Send custom email");?>
+                    </button>
+                </td-->
                 <?php if (App()->getPluginManager()->isPluginActive('AuthLDAP')) {
-                          echo "<td  class='col-md-1'>";
+                          echo "<td  class='col-md-2' style=\"vertical-align:bottom;text-align:center\">";
                           echo CHtml::dropDownList('user_type', 'DB', array('DB' => gT("Internal database authentication",'unescaped'), 'LDAP' => gT("LDAP authentication",'unescaped')));
                           echo "</td>";
                       }
                       else
                       {
-                          echo "<td class='col-md-1'><input type='hidden' id='user_type' name='user_type' value='DB'/></td>";
+                          echo "<td class='col-md-2' style=\"text-align:center\"><input type='hidden' id='user_type' name='user_type' value='DB'/></td>";
                       }
                 ?>
 
-                <td class="col-lg-2">
+                <td class="col-lg-2" style="vertical-align:bottom;text-align:center">
                     <div class="form-group">
                         <label for="new_user"><?php eT("Username");?></label>
                         <input type='text' id='new_user' name='new_user' required />
                     </div>
                 </td>
-                <td class="col-md-2">
+                <td class="col-md-2" style="vertical-align:bottom;text-align:center">
                     <div class="form-group">
                         <label for="new_email" ><?php eT("Email");?></label>
                         <input type='email' id='new_email' name='new_email' required />
                     </div>
                 </td>
-                <td class="col-md-2">
+                <td class="col-md-2" style="vertical-align:bottom;text-align:center">
                     <div class="form-group">
                         <label for="new_full_name"><?php eT("Full name");?></label>
                         <input type='text' id='new_full_name' name='new_full_name' required />
                     </div>
                 </td>
-                <td class="col-md-2">
-                    <input type='submit' id='add_user_btn' class="btn btn-default" value='<?php eT("Add user");?>' />
+                <td class="col-md-2" style="vertical-align:bottom;text-align:center">
+                    <input type='submit' id='add_user_btn' class="btn btn-default" value='<?php eT("Add user");?>' style="width:180px" />
                     <input type='hidden' name='action' value='adduser' /></td>
-                <td style='width:5%'>&nbsp;</td>
+                <td class="col-md-2"  style="vertical-align:bottom;text-align:center">
+                        <button id="imgselectedusers" class="btn btn-default " type="submit">
+                        <span class="icon-invite text-success"></span>
+                        <?php eT("Send custom email");?>
+                     </button>
+                </td>
              </tr>
              </table></form><br />
 <?php } ?>
