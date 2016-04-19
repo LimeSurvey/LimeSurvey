@@ -7,13 +7,6 @@
     </div>
 </div>
 
-<!-- Language Changer -->
-<div class="row language-changer">
-    <div class="col-sm-12 ">
-        {LANGUAGECHANGER}
-    </div>
-</div>
-
 <!-- Survey Welcome -->
 <div class="row survey-welcome">
     <div class="col-sm-12 ">
