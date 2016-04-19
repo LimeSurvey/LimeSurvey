@@ -6,52 +6,52 @@
         static protected $name = 'auditlog';
 
         protected $settings = array(
-			'AuditLog_Log_UserSave' => array(
-				'type' => 'checkbox',
-				'label' => 'Log if a user was modified or created',
+            'AuditLog_Log_UserSave' => array(
+                'type' => 'checkbox',
+                'label' => 'Log if a user was modified or created',
                 'default' => '1',
-			),
-			'AuditLog_Log_UserLogin' => array(
-				'type' => 'checkbox',
-				'label' => 'Log if a user is logged successfully',
+            ),
+            'AuditLog_Log_UserLogin' => array(
+                'type' => 'checkbox',
+                'label' => 'Log if a user is logged successfully',
                 'default' => '1',
-			),
-			'AuditLog_Log_UserLogout' => array(
-				'type' => 'checkbox',
-				'label' => 'Log if user has logout',
+            ),
+            'AuditLog_Log_UserLogout' => array(
+                'type' => 'checkbox',
+                'label' => 'Log if user has logout',
                 'default' => '1',
-			),
-			'AuditLog_Log_UserFailedLoginAttempt' => array(
-				'type' => 'checkbox',
-				'label' => 'Log if a user login has failed',
+            ),
+            'AuditLog_Log_UserFailedLoginAttempt' => array(
+                'type' => 'checkbox',
+                'label' => 'Log if a user login has failed',
                 'default' => '1',
-			),
-			'AuditLog_Log_UserDelete' => array(
-				'type' => 'checkbox',
-				'label' => 'Log if a user was deleted',
+            ),
+            'AuditLog_Log_UserDelete' => array(
+                'type' => 'checkbox',
+                'label' => 'Log if a user was deleted',
                 'default' => '1',
-			),
-			'AuditLog_Log_ParticipantSave' => array(
-				'type' => 'checkbox',
-				'label' => 'Log if a participant was modified or created',
+            ),
+            'AuditLog_Log_ParticipantSave' => array(
+                'type' => 'checkbox',
+                'label' => 'Log if a participant was modified or created',
                 'default' => '1',
-			),
-			'AuditLog_Log_ParticipantDelete' => array(
-				'type' => 'checkbox',
-				'label' => 'Log if a participant was deleted',
+            ),
+            'AuditLog_Log_ParticipantDelete' => array(
+                'type' => 'checkbox',
+                'label' => 'Log if a participant was deleted',
                 'default' => '1',
-			),
-			'AuditLog_Log_UserPermissionsChanged' => array(
-				'type' => 'checkbox',
-				'label' => 'Log if a user permissions changes',
+            ),
+            'AuditLog_Log_UserPermissionsChanged' => array(
+                'type' => 'checkbox',
+                'label' => 'Log if a user permissions changes',
                 'default' => '1',
-			),
-			'AuditLog_Log_SurveySettings' => array(
-				'type' => 'checkbox',
-				'label' => 'Log if a user changes survey settings',
+            ),
+            'AuditLog_Log_SurveySettings' => array(
+                'type' => 'checkbox',
+                'label' => 'Log if a user changes survey settings',
                 'default' => '1',
-			),
-		);
+            ),
+        );
 
 
         public function init() {
@@ -68,15 +68,15 @@
             $this->subscribe('afterFailedLoginAttempt');
         }
 
-		/**
-		* check for setting for a single operation event, login user, save or delete
-		* @return boolean
-		*/
-		private function checkSetting($settingName) {
-			$pluginsettings = $this->getPluginSettings(true);
-			// Logging will done if setted to true
-			return $pluginsettings[$settingName]['current'] == 1;
-		}
+        /**
+        * check for setting for a single operation event, login user, save or delete
+        * @return boolean
+        */
+        private function checkSetting($settingName) {
+            $pluginsettings = $this->getPluginSettings(true);
+            // Logging will done if setted to true
+            return $pluginsettings[$settingName]['current'] == 1;
+        }
 
 
         /**
@@ -85,9 +85,9 @@
         */
         public function beforeLogout()
         {
-			if (!$this->checkSetting('AuditLog_Log_UserLogout')) {
-				return;
-			}
+            if (!$this->checkSetting('AuditLog_Log_UserLogout')) {
+                return;
+            }
             $oUser = $this->api->getCurrentUser();
             if ($oUser != false)
             {
@@ -107,9 +107,9 @@
         */
         public function afterSuccessfulLogin()
         {
-			if (!$this->checkSetting('AuditLog_Log_UserLogin')) {
-				return;
-			}
+            if (!$this->checkSetting('AuditLog_Log_UserLogin')) {
+                return;
+            }
 
             $iUserID=$this->api->getCurrentUser()->uid;
             $oAutoLog = $this->api->newModel($this, 'log');
@@ -126,9 +126,9 @@
         */
         public function afterFailedLoginAttempt()
         {
-			if (!$this->checkSetting('AuditLog_Log_UserFailedLoginAttempt')) {
-				return;
-			}
+            if (!$this->checkSetting('AuditLog_Log_UserFailedLoginAttempt')) {
+                return;
+            }
             $event = $this->getEvent();
             $identity = $event->get('identity');
             $oAutoLog = $this->api->newModel($this, 'log');
@@ -145,9 +145,9 @@
         public function beforePermissionSetSave()
         {
 
-			if (!$this->checkSetting('AuditLog_Log_UserPermissionsChanged')) {
-				return;
-			}
+            if (!$this->checkSetting('AuditLog_Log_UserPermissionsChanged')) {
+                return;
+            }
 
             $event = $this->getEvent();
             $aNewPermissions=$event->get('aNewPermissions');
@@ -179,10 +179,10 @@
         {
 
             $event = $this->getEvent();
-			$iSurveyID=$event->get('iSurveyID');
-			if (!$this->checkSetting('AuditLog_Log_ParticipantSave') || !$this->get('auditing', 'Survey', $iSurveyID, false)) {
-				return;
-			}
+            $iSurveyID=$event->get('iSurveyID');
+            if (!$this->checkSetting('AuditLog_Log_ParticipantSave') || !$this->get('auditing', 'Survey', $iSurveyID, false)) {
+                return;
+            }
 
             $oNewParticipant=$this->getEvent()->get('model');
             if ($oNewParticipant->isNewRecord)
@@ -233,10 +233,10 @@
         public function beforeParticipantDelete()
         {
             $event = $this->getEvent();
-			$iSurveyID=$event->get('iSurveyID');
-			if (!$this->checkSetting('AuditLog_Log_ParticipantDelete') || !$this->get('auditing', 'Survey', $iSurveyID, false)) {
-				return;
-			}
+            $iSurveyID=$event->get('iSurveyID');
+            if (!$this->checkSetting('AuditLog_Log_ParticipantDelete') || !$this->get('auditing', 'Survey', $iSurveyID, false)) {
+                return;
+            }
 
             $oNewParticipant=$this->getEvent()->get('model');
             $oCurrentUser=$this->api->getCurrentUser();
@@ -261,9 +261,9 @@
         public function beforeUserSave()
         {
 
-			if (!$this->checkSetting('AuditLog_Log_UserSave')) {
-				return;
-			}
+            if (!$this->checkSetting('AuditLog_Log_UserSave')) {
+                return;
+            }
             $oUserData=$this->getEvent()->get('model');
 
             $oCurrentUser=$this->api->getCurrentUser();
@@ -320,9 +320,9 @@
         */
         public function beforeUserDelete()
         {
-			if (!$this->checkSetting('AuditLog_Log_UserDelete')) {
-				return;
-			}
+            if (!$this->checkSetting('AuditLog_Log_UserDelete')) {
+                return;
+            }
 
             $oUserData=$this->getEvent()->get('model');
             $oCurrentUser=$this->api->getCurrentUser();
@@ -367,7 +367,7 @@
         */
         public function beforeSurveySettings()
         {
-			$pluginsettings = $this->getPluginSettings(true);
+            $pluginsettings = $this->getPluginSettings(true);
 
             $event = $this->getEvent();
             $event->set("surveysettings.{$this->id}", array(
@@ -377,7 +377,7 @@
                         'type' => 'select',
                         'options'=>array(0=>'No',
                             1=>'Yes'),
-						'default' => 1,
+                        'default' => 1,
                         'tab' => 'notification', // @todo: Setting no used yet
                         'category' => 'Auditing for person-related data', // @todo: Setting no used yet
                         'label' => 'Audit log for this survey',
@@ -398,8 +398,8 @@
                 }
             }
 
-			if (!$this->checkSetting('AuditLog_Log_SurveySettings') || !$this->get('auditing', 'Survey', $iSurveyID, false)) {
-				return;
+            if (!$this->checkSetting('AuditLog_Log_SurveySettings') || !$this->get('auditing', 'Survey', $iSurveyID, false)) {
+                return;
             }
 
             $oCurrentUser=$this->api->getCurrentUser();
