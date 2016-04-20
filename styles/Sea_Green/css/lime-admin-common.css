@@ -1780,3 +1780,7 @@ td.subquestion-actions span:hover {
 .mixed {
     opacity: 0.4;
 }
+
+#sidemenu-home {
+    padding-left: 15px;
+}
