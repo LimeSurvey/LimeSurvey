@@ -74,8 +74,16 @@
 
             </div>
 
+            <div id="quick-menu-container" style="display: none;">
+                <a href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
+                    <div class='quick-icon-wrapper' data-toggle="tooltip" data-title="<?php eT("Home"); ?>" data-placement="right">
+                        <span class="glyphicon glyphicon-home"></span>
+                    </div>
+                </a>
+            </div>
+
             <!-- Main Menu -->
-            <div class="side-menu-container  hidden-xs">
+            <div class="side-menu-container hidden-xs">
                 <ul class="nav navbar-nav sidemenuscontainer  hidden-xs">
 
                     <!-- Question & Groups-->

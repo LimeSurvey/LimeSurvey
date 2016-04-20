@@ -1784,3 +1784,18 @@ td.subquestion-actions span:hover {
 #sidemenu-home {
     padding-left: 15px;
 }
+
+#quick-menu-container {
+    position: absolute;
+    width: 50px;
+    right: 0;
+    top: 50px;
+}
+
+.quick-icon-wrapper {
+    padding: 15px;
+}
+
+#quick-menu-container .glyphicon {
+    font-size: 18px;
+}
