@@ -16,7 +16,7 @@ CKEDITOR.editorConfig = function( config )
     config.autoParagraph = false;
     config.basicEntities = false; // For <, >, & ( and nbsp)
     config.entities = false; // For ' ( and a lot of other but not <>&)
-    config.uiColor = '#FFFFFF';
+    config.uiColor = '#F1f1f1';
     if($('html').attr('dir') == 'rtl') {
         config.contentsLangDirection = 'rtl';
     }
