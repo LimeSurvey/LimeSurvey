@@ -11,8 +11,7 @@ CKEDITOR.editorConfig = function( config )
     config.removeDialogTabs = 'link:upload;image:Upload';
 
     config.skin = 'bootstrapck';
-    config.toolbarCanCollapse = false;
-    config.resize_enabled = false;
+    //config.toolbarCanCollapse = true;
     config.autoParagraph = false;
     config.basicEntities = false; // For <, >, & ( and nbsp)
     config.entities = false; // For ' ( and a lot of other but not <>&)
