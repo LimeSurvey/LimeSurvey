@@ -79,7 +79,7 @@
                 <a
                     href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>"
                     data-toggle="tooltip"
-                    data-title="<?php eT("Home"); ?>"
+                    data-title="<?php eT("Survey"); ?>"
                     data-placement="right"
                 >
                     <div class='quick-icon-wrapper'>
