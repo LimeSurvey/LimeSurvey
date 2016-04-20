@@ -1218,7 +1218,10 @@ input[type="checkbox"]:disabled:checked:after,
   padding: 1em; }
 
 .container-fluid .ui-widget-content .ui-state-default, .container-fluid .ui-jqgrid .ui-jqgrid-bdiv {
-  padding: 0.5em; }
+  padding: 0.5em;
+  /* Too much padding for tabs (both bootstrap and jquery ui) */
+  padding-bottom: 0;
+}
 
 .ui-dialog, .ui-jqdialog, .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable {
   border-radius: 4px;
@@ -1776,4 +1779,28 @@ td.subquestion-actions span:hover {
 /* In survey permissions, make grey check icon if only partial permissions */
 .mixed {
     opacity: 0.4;
+}
+
+#sidemenu-home {
+    padding-left: 15px;
+}
+
+#quick-menu-container {
+    position: absolute;
+    width: 50px;
+    right: 0;
+    top: 50px;
+}
+
+.quick-icon-wrapper {
+    padding: 15px;
+    height: 50px;
+}
+
+#quick-menu-container .glyphicon {
+    font-size: 18px;
+}
+
+#quick-menu-container .navbar-brand {
+    padding: 0
 }

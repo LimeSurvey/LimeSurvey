@@ -9,6 +9,7 @@ $(document).ready(function(){
     var absoluteWrapper = $('.absolute-wrapper');
     var sidemenusContainer = $('.sidemenuscontainer');
     var accordionContainer = $('#accordion-container');
+    var quickmenuContainer = $('#quick-menu-container');
 
     // Check if we have a right-to-left language
     var rtl = $("html").attr('dir') === "rtl";
@@ -35,7 +36,7 @@ $(document).ready(function(){
         $that = $('.toggleside');
 
         $('.side-menu').css($.extend({
-          opacity: 0.5
+          //opacity: 0.5
         }, left_or_right_250));
 
         $thatWidth = sideBody.width();
@@ -50,12 +51,14 @@ $(document).ready(function(){
         $that.addClass("showside");
 
         absoluteWrapper.css($.extend({
-          opacity: 0.5
+          //opacity: 0.5
         }, left_or_right_250));
 
-        sidemenusContainer.css({
-            opacity: 0,
-        });
+        sidemenusContainer.hide();
+        quickmenuContainer.show();
+    }
+    else {
+        quickmenuContainer.hide();
     }
 
     // To prevent the user to try to open or close it before the animation ended (because of  $('.side-body').width())
@@ -103,7 +106,7 @@ $(document).ready(function(){
 
         // Move the side menu
         sideMenu.animate($.extend({
-            opacity: 0.5
+            //opacity: 0.5
             }, left_or_right_250),
             500,
             function() {}
@@ -122,14 +125,13 @@ $(document).ready(function(){
                    });
 
                    absoluteWrapper.animate($.extend({
-                       opacity: 0.5
+                       //opacity: 0.5
                    }, left_or_right_250),
                    500, function() {
                    });
 
-                   sidemenusContainer.animate({
-                       opacity: 0,
-                   }, 500);
+                   sidemenusContainer.fadeOut();
+                   quickmenuContainer.fadeIn();
 
                    chevronChangeState('opened', 'closed');
                    enableChevrons();
@@ -165,7 +167,7 @@ $(document).ready(function(){
         disableChevrons();
 
         sideMenu.animate($.extend({
-                opacity: 1
+                //opacity: 1
             }, left_or_right_0),
             500, function() {
             });
@@ -180,14 +182,13 @@ $(document).ready(function(){
             });
 
             absoluteWrapper.animate($.extend({
-                opacity: 1
+                //opacity: 1
             }, left_or_right_0),
             500, function() {
             });
 
-            sidemenusContainer.animate({
-                opacity: 1,
-            }, 500);
+            sidemenusContainer.fadeIn();
+            quickmenuContainer.fadeOut();
 
             chevronChangeState('closed', 'opened');
             enableChevrons();
@@ -201,13 +202,13 @@ $(document).ready(function(){
 
         sideMenu.animate({
                 backgroundColor: "white",
-                opacity: 1,
+                //opacity: 1,
                 width: $('body').width(),
             }, 500, function() {
             });
 
             absoluteWrapper.animate({
-                opacity: 1,
+                //opacity: 1,
                 backgroundColor: "white",
                 width: $('body').width(),
             }, 500, function() {
