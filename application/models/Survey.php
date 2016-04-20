@@ -843,8 +843,8 @@ class Survey extends LSActiveRecord
             'desc'=>'sid desc',
           ),
           'title'=>array(
-            'asc'=>'languagesettings.surveyls_title',
-            'desc'=>'languagesettings.surveyls_title desc',
+            'asc'=>'defaultlanguage.surveyls_title',
+            'desc'=>'defaultlanguage.surveyls_title desc',
           ),
 
           'creation_date'=>array(
