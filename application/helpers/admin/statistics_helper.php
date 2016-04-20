@@ -3417,11 +3417,8 @@ class statistics_helper {
             $tablePDF = array_merge_recursive($tablePDF, $footPDF);
             if (!isset($headPDF))
             {
-                if ($outputs['qtype'] === "|")
-                {
-                }
-                // file upload lack headPDF
-                //throw new CException('$headPDF is not defined');
+                // TODO: Why is $headPDF sometimes undefined here?
+                $headPDF = array();
             }
             $this->pdf->headTable($headPDF,$tablePDF);
             //$this->pdf->tableintopdf($tablePDF);
