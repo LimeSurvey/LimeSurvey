@@ -11,7 +11,7 @@
 ?>
 
 <!-- answer_row -->
-<div id='javatbd<?php echo $myfname; ?>' class='form-group answer-item radio-item radio' <?php echo $sDisplayStyle; ?> >
+<div id='javatbd<?php echo $myfname; ?>' class='col-xs-12 form-group answer-item radio-item radio' <?php echo $sDisplayStyle; ?> >
     <input
         class="radio"
         type="radio"

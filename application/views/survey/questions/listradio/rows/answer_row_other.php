@@ -17,7 +17,7 @@
 ?>
 
 <!-- answer_row_other -->
-<div id='javatbd<?php echo $myfname; ?>' class='form-group answer-item col-xs-12 radio-item other-item other radio' <?php echo $sDisplayStyle; ?> >
+<div id='javatbd<?php echo $myfname; ?>' class='col-xs-12 form-group answer-item radio-item radio' <?php echo $sDisplayStyle; ?> >
     <!-- Checkbox + label -->
     <div class="pull-left othertext-label-checkox-container">
         <input
@@ -39,12 +39,12 @@
              This field is related to the input thanks to attribute aria-labelledby
         -->
         <div class="label-text label-clickable" id="label-SOTH<?php echo $name; ?>">
-                <?php echo $othertext; ?>
+                <?php echo $othertext; ?>&nbsp;
         </div>
     </div>
 
     <!-- comment -->
-    <div class="pull-left">
+    <div class="pull-left ">
         <input
         type="text"
         class="form-control text <?php echo $kpclass; ?> input-sm"

@@ -666,19 +666,15 @@ table > tbody > tr > td.ddprefix {
         padding-top: 11px;
     }
 
+    .col-xs-12.question-container {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
 }
 
 /** On small phones, leave some more space */
 @media only screen and (max-width: 400px) {
-
-    .col-sm-12 {
-        padding: 0;
-    }
-
-    .col-xs-12 {
-        padding-right: 0;
-        padding-left: 0;
-    }
 
     .array-by-columns-div .radio-list {
         border: 1px solid #ccc;
@@ -686,6 +682,17 @@ table > tbody > tr > td.ddprefix {
         margin: 1em;
     }
 
+    /*
+    .col-sm-12.answer {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    */
+
+    .no-more-tables tbody {
+        padding-left: 0;
+        padding-right: 0;
+    }
 
     /* For yes-no question, shrink the buttons a bit on phone screens */
     .btn-lg, .btn-group-lg label {

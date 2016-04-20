@@ -9,7 +9,7 @@
 ?>
 
 <!-- answer_row_noanswer -->
-<div  class="form-group answer-item radio-item no-anwser-item radio">
+<div  class="col-xs-12 form-group answer-item radio-item no-anwser-item radio">
     <input
     class="radio"
     type="radio"
