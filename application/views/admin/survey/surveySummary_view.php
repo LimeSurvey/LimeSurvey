@@ -513,7 +513,7 @@ $surveyid = $surveyinfo['sid'];
                             <?php $templatename = $surveyinfo['template'];
                             if (Permission::model()->hasGlobalPermission('templates','read'))
                             {
-                                $templateurl_url = $this->createAbsoluteUrl("admin/templates/sa/view/editfile/startpage.pstpl/screenname/welcome/templatename/$templatename"); ?>
+                                $templateurl_url = $this->createAbsoluteUrl("admin/templates/sa/view/editfile/startpage.pstpl/screenname/welcome",array('templatename'=>$templatename)); ?>
                                 <a href='<?php echo $templateurl_url?>' target='_blank'><?php echo $templatename; ?></a>
                                 <?php
                             }

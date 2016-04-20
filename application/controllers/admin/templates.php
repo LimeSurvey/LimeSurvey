@@ -416,7 +416,7 @@ class templates extends Survey_Common_Action
         {
             $templatename = Yii::app()->getConfig("defaulttemplate");
         }
-        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname,'templatename'=>$templatename));
     }
 
     /**
@@ -470,7 +470,6 @@ class templates extends Survey_Common_Action
             $editfileindex = App()->request->getPost('editfileindex');
             $useindex = App()->request->getPost('useindex');
             $this->getController()->redirect(array('admin/templates/sa/view/editfile/'.$editfileindex.'/screenname/'.returnGlobal('screenname').'/templatename/'.$sTemplateName.'/useindex/'.$useindex));
-            //$this->getController()->redirect(array("admin/templates/sa/view/editfile/" . returnGlobal('editfile') . "/screenname/" . returnGlobal('screenname') . "/templatename/" . $sTemplateName));
         }
     }
 

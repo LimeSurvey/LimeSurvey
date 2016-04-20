@@ -181,14 +181,14 @@
         <div class="col-md-7 text-right form-inline">
             <div class="form-group">
                 <label for='templatedir'><?php eT("Template:"); ?></label>
-                <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/view/editfile/".$editfile."/screenname/".$screenname); ?>/templatename/'+escape(this.value), '_top')">
+                <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/view/editfile/".$editfile."/screenname/".$screenname); ?>?templatename='+encodeURI(this.value), '_top')">
                     <?php echo templateoptions($templates, $templatename); ?>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for='listboxtemplates'><?php eT("Screen:"); ?></label>
-                <select class="listboxtemplates form-control" id='listboxtemplates' name='screenname' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/screenredirect/editfile/".$editfile."/templatename/".$templatename); ?>/screenname/'+escape(this.value), '_top')">
+                <select class="listboxtemplates form-control" id='listboxtemplates' name='screenname' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/screenredirect?editfile/".$editfile."/templatename/".$templatename); ?>?screenname='+encodeURI(this.value), '_top')">
                     <?php echo makeoptions($screens, "id", "name", HTMLEscape($screenname) ); ?>
                 </select>
             </div>
