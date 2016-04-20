@@ -1,23 +1,4 @@
 <script language="javascript">
-    $(document).ready(function ()
-        {
-            LoadSelected() ;
-            mydialog.SetOkButton( true ) ;
-            SelectField( 'cquestions' ) ;
-    });
-
-    var eSelected = dialog.Selection.GetSelectedElement() ;
-
-    function LoadSelected()
-    {
-        if ( !eSelected )
-            return ;
-        if ( eSelected.tagName == 'SPAN' && eSelected._fckLimeReplacementFields )
-            document.getElementById('cquestions').value = eSelected._fckLimeReplacementFields ;
-        else
-            eSelected == null ;
-    }
-
     function Ok()
     {
         var sValue = document.getElementById('cquestions').value ;
@@ -26,15 +7,13 @@
         return true ;
     }
 </script>
-</head>
-<body scroll="no" style="OVERFLOW: hidden;">
 <div class="form-group">
     <?php
     if (count($replFields) > 0 || isset($cquestions) )
     {
         $InsertansUnsupportedtypes= Yii::app()->getConfig('InsertansUnsupportedtypes');
         ?>
-        <select name='cquestions' id='cquestions' size='14' ondblclick="$('.cke_dialog_ui_button_ok').children().click();" class='form-control'>
+        <select name='cquestions' id='cquestions' size='14' style='width:390px' ondblclick="$('.cke_dialog_ui_button_ok').children().click();" class='form-control'>
             <?php
             $noselection = false;
         }
