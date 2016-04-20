@@ -158,7 +158,7 @@
                     // When user change the value of the slider :
                     // we need to show the tooltip (if it was hidden)
                     // and to update the value of the input element with correct format
-                    theSlider.on('slideStop', function(){
+                    theSlider.on('slideStart', function(){
                         $('#javatbd' + myfname).find('div.tooltip').show(); // Show the tooltip
                         $sliderNoActionEl.val(0); // The user did an action
                         value = $inputEl.val(); // We get the current value of the bootstrapSlider
