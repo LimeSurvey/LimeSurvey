@@ -75,11 +75,40 @@
             </div>
 
             <div id="quick-menu-container" style="display: none;">
-                <a href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
-                    <div class='quick-icon-wrapper' data-toggle="tooltip" data-title="<?php eT("Home"); ?>" data-placement="right">
-                        <span class="glyphicon glyphicon-home"></span>
+                <!-- TODO: Placement right won't work with right-to-left -->
+                <a
+                    href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>"
+                    data-toggle="tooltip"
+                    data-title="<?php eT("Home"); ?>"
+                    data-placement="right"
+                >
+                    <div class='quick-icon-wrapper'>
+                        <span class="glyphicon glyphicon-home navbar-brand"></span>
                     </div>
                 </a>
+                <?php if ($bSurveyIsActive): ?>
+                    <a
+                        target='_blank'
+                        href='<?php echo $this->createUrl(
+                            "survey/index",
+                            array(
+                                'sid'=>$surveyid,
+                                'newtest'=>"Y",
+                                'lang'=>$oSurvey->language
+                            )
+                        );?>'
+                        data-toggle="tooltip"
+                        data-title="<?php eT("Execute survey"); ?>"
+                        data-placement="right"
+                    >
+                        <div class='quick-icon-wrapper'>
+                            <span class="glyphicon glyphicon-cog navbar-brand"></span>
+                        </div>
+                    </a>
+                <?php else: ?>
+                    <a>
+                    </a>
+                <?php endif; ?>
             </div>
 
             <!-- Main Menu -->

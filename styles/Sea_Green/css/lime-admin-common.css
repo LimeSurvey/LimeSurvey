@@ -1794,8 +1794,13 @@ td.subquestion-actions span:hover {
 
 .quick-icon-wrapper {
     padding: 15px;
+    height: 50px;
 }
 
 #quick-menu-container .glyphicon {
     font-size: 18px;
+}
+
+#quick-menu-container .navbar-brand {
+    padding: 0
 }
