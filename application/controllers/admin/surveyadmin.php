@@ -1055,7 +1055,7 @@ class SurveyAdmin extends Survey_Common_Action
 
             $aData['surveybar']['savebutton']['form'] = 'globalsetting';
             $aData['surveybar']['savebutton']['useformid'] = 'true';
-            if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update'))
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
             {
                 $aData['surveybar']['saveandclosebutton']['form'] = true;
             }
