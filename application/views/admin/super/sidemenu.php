@@ -86,29 +86,24 @@
                         <span class="glyphicon glyphicon-home navbar-brand"></span>
                     </div>
                 </a>
-                <?php if ($bSurveyIsActive): ?>
-                    <a
-                        target='_blank'
-                        href='<?php echo $this->createUrl(
-                            "survey/index",
-                            array(
-                                'sid'=>$surveyid,
-                                'newtest'=>"Y",
-                                'lang'=>$oSurvey->language
-                            )
-                        );?>'
-                        data-toggle="tooltip"
-                        data-title="<?php eT("Execute survey"); ?>"
-                        data-placement="right"
-                    >
-                        <div class='quick-icon-wrapper'>
-                            <span class="glyphicon glyphicon-cog navbar-brand"></span>
-                        </div>
-                    </a>
-                <?php else: ?>
-                    <a>
-                    </a>
-                <?php endif; ?>
+                <a
+                    target='_blank'
+                    href='<?php echo $this->createUrl(
+                        "survey/index",
+                        array(
+                            'sid'=>$surveyid,
+                            'newtest'=>"Y",
+                            'lang'=>$oSurvey->language
+                        )
+                    );?>'
+                    data-toggle="tooltip"
+                    data-title="<?php if ($bSurveyIsActive): eT("Execute survey"); else: eT("Test survey"); endif; ?>"
+                    data-placement="right"
+                >
+                    <div class='quick-icon-wrapper'>
+                        <span class="glyphicon glyphicon-cog navbar-brand"></span>
+                    </div>
+                </a>
             </div>
 
             <!-- Main Menu -->
