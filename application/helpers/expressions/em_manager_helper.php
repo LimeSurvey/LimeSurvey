@@ -6380,7 +6380,7 @@
                         }
                         if (!($qInfo['type'] == '!' || $qInfo['type'] == 'L'))
                         {
-                            $sMandatoryText .= $LEM->gT('Please check at least one item.');
+                            $sMandatoryText = $LEM->gT('Please check at least one item.');
                             $mandatoryTip .= Yii::app()->getController()->renderPartial('/survey/system/questionhelp/mandatory_tip', array(
                                     'sMandatoryText'=>$sMandatoryText,
                             ), true);
