@@ -34,6 +34,36 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 2.50+ (build 160418) to 2.50+ (build 160421) Apr 21, 2016
+-New feature: Configuration AuditLog config page + new log survey settings change event (Daniel Gimeno)
+-New feature: Enable integer-only answers in multiple numeric fields (Daniel Gimeno)
+-Fixed issue #10390: Commit to set default charset at global settings got (Olle Haerstedt)
+-Fixed issue #10712: Some screens are not disabled if user doesn't have permissions to update a survey (Carsten Schmitz)
+-Fixed issue #10846: Checked responses are not read when load "surveys file" (Denis Chenu)
+-Fixed issue #10941: Two problems in statistics PDF export (Olle Haerstedt)
+-Fixed issue #10956: Double inclusion of language selector in welcome (Olle Haerstedt)
+-Fixed issue #10969: Slider call out only shows up after sliding and releasing the slider (Olle Haerstedt)
+-Fixed issue #10976: Empty help string/info icon on numerical input with (Olle Haerstedt)
+-Fixed issue #10982: Theme/Template Editor adds whitespace to the beginning and end of loaded/saved files (Carsten Schmitz)
+-Fixed issue #10985: Theme editor  unable to handle theme names with special characters (Carsten Schmitz)
+-Fixed issue #10990: Pasting text not possible in Internet Explorer 11 (Carsten Schmitz)
+-Fixed issue #10993: Alignment of radio buttons (Olle Haerstedt)
+-Fixed issue #10988: Undefined variable: sMandatoryText - crashing survey on start (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by rachelfeiya, yanglaw
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Portugal) by sazevedo, valins, anticorpo, devUSIT, samarta
+#Updated translation: Russian by vipgroup
+
 Changes from 2.50+ (build 160415) to 2.50+ (build 160418) Apr 18, 2016
 -Fixed issue #10829: Survey admins presented with inappropriate control (Olle Haerstedt)
 -Fixed issue #10908: Disable next button with time limit is not working (Olle Haerstedt)
