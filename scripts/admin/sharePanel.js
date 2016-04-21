@@ -88,7 +88,7 @@ $(document).ready(function() {
             edit:false,
             alertcap: sWarningMsg,
             alerttext: sSelectRowMsg,
-            deltitle: sDeleteShares, 
+            deltitle: sDeleteShares,
             searchtitle: sSearchMsg,
             refreshtitle: refreshListTxt},
         {closeAfterDel: true,
@@ -110,19 +110,19 @@ $(document).ready(function() {
                 }
                 dialog.offset(selRowCoordinates);
             }
-            
+
         },
         {   Find: sFindButtonCaption,
             Reset: sResetButtonCaption,
             width:600,
             caption: sSearchTitle,
-            odata : [ sOperator1, sOperator2, sOperator3, sOperator4, sOperator5, sOperator6, sOperator7, sOperator8, sOperator9, sOperator10, sOperator11, sOperator12, sOperator13, sOperator14 ],
             groupOps: [    { op: "AND", text: sOptionAnd },    { op: "OR",  text: sOptionOr }    ],
 
             closeAfterSearch: true,
             closeAfterReset: true
-        } //Default settings for search                             
+        } //Default settings for search
     );
+    $.jgrid.search.odata= [ sOperator1, sOperator2, sOperator3, sOperator4, sOperator5, sOperator6, sOperator7, sOperator8, sOperator9, sOperator10, sOperator11, sOperator12, sOperator13, sOperator14 ],
     $.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnEspace:true});
 
 

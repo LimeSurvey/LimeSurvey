@@ -23,7 +23,7 @@ $(document).ready(function() {
     ];
 
     $("#flashinfo").css("opacity", 0); //Make sure the flash message doesn't display in IE
-    
+
     // Set some custom messages
     $.jgrid.edit.msg.required = sRequired;
 
@@ -72,7 +72,7 @@ $(document).ready(function() {
     $.extend($.fn.fmatter.rowactions = function(act) {
             var delOptions = {
                 bCancel: sCancel,
-                bSubmit: sDeleteButtonCaption,                
+                bSubmit: sDeleteButtonCaption,
                 caption: deleteCaption,
                 msg: deleteMsg,
                 reloadAfterSubmit: true,
@@ -109,7 +109,7 @@ $(document).ready(function() {
         }, //Default settings for edit
         { addCaption: addCaption,
             bCancel: sCancel,
-            bSubmit: sSaveButtonCaption,                
+            bSubmit: sSaveButtonCaption,
             closeAfterAdd: true,
             width: 400,
             afterSubmit: function () {
@@ -141,15 +141,14 @@ $(document).ready(function() {
             Reset: sResetButtonCaption,
             width:600,
             caption: sSearchTitle,
-            odata : [ sOperator1, sOperator2, sOperator3, sOperator4, sOperator5, sOperator6, sOperator7, sOperator8, sOperator9, sOperator10, sOperator11, sOperator12, sOperator13, sOperator14 ],
             groupOps: [    { op: "AND", text: sOptionAnd },    { op: "OR",  text: sOptionOr }    ],
-            
+
             closeAfterSearch: true,
             closeAfterReset: true
         }, //Default settings for search
         {closeAfterAdd:true}
     );
-
+    $.jgrid.search.odata= [ sOperator1, sOperator2, sOperator3, sOperator4, sOperator5, sOperator6, sOperator7, sOperator8, sOperator9, sOperator10, sOperator11, sOperator12, sOperator13, sOperator14 ],
     jQuery('#attributeControl').jqGrid({});
 
 

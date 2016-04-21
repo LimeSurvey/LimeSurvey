@@ -127,16 +127,12 @@ $(function() {
             caption : sSearchCaption,
             Find : sFind,
             multipleSearch: true,
-            odata : [ sOperator1, sOperator2, sOperator3,
-                sOperator4, sOperator5, sOperator6,
-                sOperator7, sOperator8, sOperator9,
-                sOperator10, sOperator11, sOperator12,
-                sOperator13, sOperator14 ],
             Reset : sReset,
             width: 700
         }
 
     );
+    $.jgrid.search.odata= [ sOperator1, sOperator2, sOperator3, sOperator4, sOperator5, sOperator6, sOperator7, sOperator8, sOperator9, sOperator10, sOperator11, sOperator12, sOperator13, sOperator14 ],
 
     /* quick search toolbar */
     jQuery("#displayresponses").jqGrid('filterToolbar', {
