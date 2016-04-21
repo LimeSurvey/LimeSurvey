@@ -31,7 +31,21 @@
     <div class="form-group">
         <label class="col-sm-6 control-label" for='startdate'><?php  eT("Start date/time:"); ?></label>
         <div class="col-sm-6">
-            <input type='text' class='popupdatetime' id='startdate' size='20' name='startdate' value="<?php echo $startdate; ?>"  />
+            <?php $this->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+                    'name' => "startdate",
+                    'id' => 'startdate',
+                    'value' => $startdate,
+                    'pluginOptions' => array(
+                        'format' => $dateformatdetails['jsdate'] . " HH:MM",
+                        'singleDatePicker' => true,
+                        'startDate' => date("Y-m-d hh:ii", time()),
+                        'drops' => 'up',  // TODO: Does not work. Why?
+                        'timePicker' => true,
+                        'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work
+                        'timePickerIncrement' => 1
+                    )
+                ));
+            ?>
         </div>
     </div>
 
@@ -39,7 +53,21 @@
     <div class="form-group">
         <label class="col-sm-6 control-label" for='expires'><?php  eT("Expiry date/time:"); ?></label>
         <div class="col-sm-6">
-            <input type='text' class='popupdatetime' id='expires' size='20' name='expires' value="<?php echo $expires; ?>"  />
+            <?php $this->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+                    'name' => "expires",
+                    'id' => 'expires',
+                    'value' => $expires,
+                    'pluginOptions' => array(
+                        'format' => $dateformatdetails['jsdate'] . " HH:MM",
+                        'singleDatePicker' => true,
+                        'startDate' => date("Y-m-d", time()),
+                        'drops' => 'up',  // TODO: Does not work. Why?
+                        'timePicker' => true,
+                        'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work
+                        'timePickerIncrement' => 1
+                    )
+                ));
+            ?>
         </div>
     </div>
 

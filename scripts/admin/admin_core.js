@@ -37,25 +37,6 @@ $(document).ready(function(){
         },500);
     }
 
-    if(typeof(userdateformat) !== 'undefined')
-        {
-        $(".popupdate").each(function(i,e) {
-            format=$('#dateformat'+e.name).val();
-            if(!format) format = userdateformat;
-            $(e).datepicker({ dateFormat: format,
-                showOn: 'button',
-                changeYear: true,
-                changeMonth: true,
-                duration: 'fast'
-            }, $.datepicker.regional[LS.data.language]);
-        });
-        $(".popupdatetime").datepicker({ dateFormat: userdateformat+' 00:00',
-            showOn: 'button',
-            changeYear: true,
-            changeMonth: true,
-            duration: 'fast'
-        }, $.datepicker.regional[LS.data.language]);
-    }
     doToolTip();
 
     $('button,input[type=submit],input[type=button],input[type=reset],.button').button();

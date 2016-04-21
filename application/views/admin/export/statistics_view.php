@@ -39,7 +39,7 @@
                                 <!-- Output options -->
                                 <?php $this->renderPartial('/admin/export/statistics_subviews/_outputoptions', array('error'=>$error, 'showtextinline'=>$showtextinline, 'usegraph'=>$usegraph, 'showtextinline'=>$showtextinline)) ; ?>
                                 <!-- Submission date -->
-                                <?php $this->renderPartial('/admin/export/statistics_subviews/_submissiondate', array('datestamp'=>$datestamp)) ; ?>
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_submissiondate', array('datestamp'=>$datestamp, 'dateformatdetails' => $dateformatdetails)) ; ?>
                             </div>
                         </div>
 

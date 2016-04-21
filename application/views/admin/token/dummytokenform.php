@@ -79,13 +79,40 @@
                 <div class="form-group">
                     <label  class="col-sm-2 control-label" for='validfrom'><?php eT("Valid from"); ?>:</label>
                     <div class="col-sm-3">
-                        <input type='text' class='popupdatetime' size='20' id='validfrom' name='validfrom' value="<?php if (isset($validfrom)){$datetimeobj = new Date_Time_Converter($validfrom, "Y-m-d H:i:s");echo $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');}?>" /> 
+                        <?php $this->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+                                'name' => "validfrom",
+                                'value' => isset($validfrom) ? $validfrom : '',
+                                'pluginOptions' => array(
+                                    'format' => $dateformatdetails['jsdate'] . " HH:MM",
+                                    'singleDatePicker' => true,
+                                    'startDate' => date("Y-m-d", time()),
+                                    'drops' => 'up',  // TODO: Does not work. Why?
+                                    'timePicker' => true,
+                                    'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work
+                                    'timePickerIncrement' => 1
+                                )
+                            ));
+                        ?>
+                        <span class="help-block"><?php printf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')); ?></span>
                     </div>        
                     
-                    <label  class="col-sm-2 control-label" for='validuntil'><?php eT('until'); ?></label>
+                    <label  class="col-sm-2 control-label" for='validuntil'><?php eT('Until:'); ?></label>
                     <div class="col-sm-3">
-                        <input type='text' size='20' id='validuntil' name='validuntil' class='popupdatetime' value="<?php if (isset($validuntil)){$datetimeobj = new Date_Time_Converter($validuntil, "Y-m-d H:i:s");echo $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');}?>" /> 
-                        <span class="help-block"><?php printf(gT('Format: %s'), $dateformatdetails['dateformat'] . ' ' . gT('hh:mm')); ?></span>
+                        <?php $this->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+                                'name' => "validuntil",
+                                'value' => isset($validuntil) ? $validuntil : '',
+                                'pluginOptions' => array(
+                                    'format' => $dateformatdetails['jsdate'] . " HH:MM",
+                                    'singleDatePicker' => true,
+                                    'startDate' => date("Y-m-d", time()),
+                                    'drops' => 'up',
+                                    'timePicker' => true,
+                                    'timePicker12Hour' => false,
+                                    'timePickerIncrement' => 1
+                                )
+                            ));
+                        ?>
+                        <span class="help-block"><?php printf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')); ?></span>
                     </div>
                 </div>
                 

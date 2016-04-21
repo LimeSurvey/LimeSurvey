@@ -517,6 +517,7 @@ class statistics extends Survey_Common_Action {
         $aData['error'] = $error;
         $aData['oStatisticsHelper'] = $helper;
         $aData['fresults'] = (isset($aData['fresults']))?$aData['fresults']:false;
+        $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         $this->_renderWrappedTemplate('export', 'statistics_view', $aData);
 

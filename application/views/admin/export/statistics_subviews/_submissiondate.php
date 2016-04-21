@@ -7,19 +7,61 @@
             <div class='form-group'>
                 <label class="col-sm-4 control-label" for='datestampE'><?php eT("Equals:"); ?></label>
                 <div class="col-sm-5">
-                    <?php echo CHtml::textField('datestampE',isset($_POST['datestampE'])?$_POST['datestampE']:'',array('id'=>'datestampE', 'class'=>'popupdate', 'size'=>'12'));?>
+                    <?php $this->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+                            'name' => "datestampE",
+                            'id' => 'datestampE',
+                            'value' => isset($_POST['datestampE']) ? $_POST['datestampE'] : '',
+                            'pluginOptions' => array(
+                                'format' => $dateformatdetails['jsdate'] . " HH:MM",
+                                'singleDatePicker' => true,
+                                'startDate' => date("Y-m-d", time()),
+                                'drops' => 'up',  // TODO: Does not work. Why?
+                                'timePicker' => true,
+                                'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work
+                                'timePickerIncrement' => 1
+                            )
+                        ));
+                    ?>
                 </div>
             </div>
             <div class='form-group'>
                 <label class="col-sm-4 control-label" for='datestampG'><?php eT("Later than:");?></label>
                 <div class="col-sm-5">
-                    <?php echo CHtml::textField('datestampG',isset($_POST['datestampG'])?$_POST['datestampG']:'',array('id'=>'datestampG', 'class'=>'popupdate', 'size'=>'12'));?>
+                    <?php $this->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+                            'name' => "datestampG",
+                            'id' => 'datestampG',
+                            'value' => isset($_POST['datestampG']) ? $_POST['datestampG'] : '',
+                            'pluginOptions' => array(
+                                'format' => $dateformatdetails['jsdate'] . " HH:MM",
+                                'singleDatePicker' => true,
+                                'startDate' => date("Y-m-d", time()),
+                                'drops' => 'up',  // TODO: Does not work. Why?
+                                'timePicker' => true,
+                                'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work
+                                'timePickerIncrement' => 1
+                            )
+                        ));
+                    ?>
                 </div>
             </div>
             <div class='form-group'>
                 <label class="col-sm-4 control-label" for='datestampL'><?php eT("Earlier than:");?></label>
                 <div class="col-sm-5">
-                    <?php echo CHtml::textField('datestampL',isset($_POST['datestampL'])?$_POST['datestampL']:'',array('id'=>'datestampL', 'class'=>'popupdate', 'size'=>'12'));?>
+                    <?php $this->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+                            'name' => "datestampL",
+                            'id' => 'datestampL',
+                            'value' => isset($_POST['datestampL']) ? $_POST['datestampL'] : '',
+                            'pluginOptions' => array(
+                                'format' => $dateformatdetails['jsdate'] . " HH:MM",
+                                'singleDatePicker' => true,
+                                'startDate' => date("Y-m-d", time()),
+                                'drops' => 'up',  // TODO: Does not work. Why?
+                                'timePicker' => true,
+                                'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work
+                                'timePickerIncrement' => 1
+                            )
+                        ));
+                    ?>
                 </div>
             </div>
             <input type='hidden' name='summary[]' value='datestampE' />
