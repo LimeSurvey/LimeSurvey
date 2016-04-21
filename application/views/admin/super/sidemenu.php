@@ -74,37 +74,7 @@
 
             </div>
 
-            <div id="quick-menu-container" style="display: none;">
-                <!-- TODO: Placement right won't work with right-to-left -->
-                <a
-                    href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>"
-                    data-toggle="tooltip"
-                    data-title="<?php eT("Survey"); ?>"
-                    data-placement="right"
-                >
-                    <div class='quick-icon-wrapper'>
-                        <span class="glyphicon glyphicon-home navbar-brand"></span>
-                    </div>
-                </a>
-                <a
-                    target='_blank'
-                    href='<?php echo $this->createUrl(
-                        "survey/index",
-                        array(
-                            'sid'=>$surveyid,
-                            'newtest'=>"Y",
-                            'lang'=>$oSurvey->language
-                        )
-                    );?>'
-                    data-toggle="tooltip"
-                    data-title="<?php if ($bSurveyIsActive): eT("Execute survey"); else: eT("Test survey"); endif; ?>"
-                    data-placement="right"
-                >
-                    <div class='quick-icon-wrapper'>
-                        <span class="glyphicon glyphicon-cog navbar-brand"></span>
-                    </div>
-                </a>
-            </div>
+            <?php echo $quickmenu; ?>
 
             <!-- Main Menu -->
             <div class="side-menu-container hidden-xs">
