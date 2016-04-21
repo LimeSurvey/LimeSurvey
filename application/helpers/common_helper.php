@@ -1802,8 +1802,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid == false) {
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
-    $sOldLanguage=App()->language;
-    App()->setLanguage($sLanguage);
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full")
     {
@@ -1904,6 +1902,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
     }
 
+    $sOldLanguage=App()->language;
+    App()->setLanguage($sLanguage);
     // Collect all default values once so don't need separate query for each question with defaults
     // First collect language specific defaults
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"

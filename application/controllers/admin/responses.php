@@ -499,7 +499,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true,
                 'width'=>'150',
                 'align'=>'left',
-                'label'=>gT('Email'),
+                'label'=>gT('Email')
             );
             // If token exist, test if token is set in params, add it to defaultSearch
             if($sTokenSearch= Yii::app()->request->getQuery('token'))
