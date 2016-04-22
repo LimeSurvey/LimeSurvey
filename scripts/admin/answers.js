@@ -113,9 +113,7 @@ function addinput()
             '       <input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/>'+
             '   </td>'+
             '   <td>'+
-            '       <div class="col-sm-12">'+
             '           <input type="text" size="20" class="answer first-inanswerjs form-control input-lg" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />'+
-            '       </div>'+
             '   </td>'+
             '   <td>'+
             '           <a class="editorLink">'+
@@ -135,9 +133,7 @@ function addinput()
             '   <td>'+htmlspecialchars(sNextCode)+'</td>'+
 
             '   <td>'+
-            '       <div class="col-sm-12">'+
             '           <input type="text" size="20" class="answer second-in-answerjs form-control input-lg" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />'+
-            '       </div>'+
             '   </td>'+
             '   <td>'+
             '           <a class="editorLink">'+
@@ -572,9 +568,7 @@ function transferlabels()
                                 '   </td>'+
 
                                 '   <td>'+
-                                '       <div class="col-sm-12">'+
                                 '           <input type="text" size="20" class="answer third-in-answerjs  form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                                '       </div>'+
                                 '   </td>'+
 
                                 '   <td>'+
@@ -598,9 +592,7 @@ function transferlabels()
                                 '   </td>'+
 
                                 '   <td>'+
-                                '       <div class="col-sm-12">'+
                                 '           <input type="text" size="20" class="answer fourth-in-answerjs form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                                '       </div>'+
                                 '   </td>'+
 
                                 '   <td>'+
@@ -629,9 +621,7 @@ function transferlabels()
                         '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
 
                         '   <td>'+
-                        '       <div class="col-sm-12">'+
                         '           <input type="text" size="20" class="answer fifth-in-answerjs form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
-                        '       </div>'+
                         '   </td>'+
 
                         '   <td>'+
@@ -744,9 +734,7 @@ function quickaddlabels()
                 '       <input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/>'+
                 '   </td>'+
                 '   <td style="vertical-align: middle;">'+
-                '       <div class="col-sm-12">'+
                 '           <input type="text" size="20" class="answer form-control input-lg" value="'+escaped_value+'"></input>'+
-                '       </div>'+
                 '   </td>'+
                 '   <td>'+
                 '           <a class="editorLink">'+
@@ -766,9 +754,7 @@ function quickaddlabels()
                 '   <td>&nbsp;</td>'+
                 '   <td>&nbsp;</td>'+
                 '   <td>'+
-                '       <div class="col-sm-12">'+
                 '           <input type="text" size="20" class="answer sixt-in-answerjs form-control input-lg" value="'+escaped_value+'"></input>'+
-                '       </div>'+
                 '   </td>'+
                 '   <td>'+
                 '           <a class="editorLink">'+
