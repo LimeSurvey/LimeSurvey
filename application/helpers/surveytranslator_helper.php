@@ -34,18 +34,18 @@
     function getDateFormatData($iDateFormat=0,$sLanguageCode='en')
     {
         $aDateFormats= array(
-        1=> array ('phpdate' => 'd.m.Y', 'jsdate' => 'DD.MM.YYYY', 'dateformat' => gT('dd.mm.yyyy')),
-        2=> array ('phpdate' => 'd-m-Y', 'jsdate' => 'DD-MM-YYYY', 'dateformat' => gT('dd-mm-yyyy')),
-        3=> array ('phpdate' => 'Y.m.d', 'jsdate' => 'YYYY.MM.DD', 'dateformat' => gT('yyyy.mm.dd')),
-        4=> array ('phpdate' => 'j.n.Y', 'jsdate' => 'D.M.YYYY',   'dateformat' => gT('d.m.yyyy')),
-        5=> array ('phpdate' => 'd/m/Y', 'jsdate' => 'DD/MM/YYYY', 'dateformat' => gT('dd/mm/yyyy')),
-        6=> array ('phpdate' => 'Y-m-d', 'jsdate' => 'YYYY-MM-DD', 'dateformat' => gT('yyyy-mm-dd')),
-        7=> array ('phpdate' => 'Y/m/d', 'jsdate' => 'YYYY/MM/DD', 'dateformat' => gT('yyyy/mm/dd')),
-        8=> array ('phpdate' => 'j/n/Y', 'jsdate' => 'D/M/YYYY',   'dateformat' => gT('d/m/yyyy')),
-        9=> array ('phpdate' => 'm-d-Y', 'jsdate' => 'MM-DD-YYYY', 'dateformat' => gT('mm-dd-yyyy')),
-        10=>array ('phpdate' => 'm.d.Y', 'jsdate' => 'MM.DD.YYYY', 'dateformat' => gT('mm.dd.yyyy')),
-        11=>array ('phpdate' => 'm/d/Y', 'jsdate' => 'MM/DD/YYYY', 'dateformat' => gT('mm/dd/yyyy')),
-        12=>array ('phpdate' => 'j-n-Y', 'jsdate' => 'D-M-YYYY',   'dateformat' => gT('d-m-yyyy'))
+        1=> array ('phpdate' => 'd.m.Y', 'jsdate' => 'dd.mm.yyyy', 'dateformat' => gT('dd.mm.yyyy')),
+        2=> array ('phpdate' => 'd-m-Y', 'jsdate' => 'dd-mm-yyyy', 'dateformat' => gT('dd-mm-yyyy')),
+        3=> array ('phpdate' => 'Y.m.d', 'jsdate' => 'yyyy.mm.dd', 'dateformat' => gT('yyyy.mm.dd')),
+        4=> array ('phpdate' => 'j.n.Y', 'jsdate' => 'd.m.yyyy',   'dateformat' => gT('d.m.yyyy')),
+        5=> array ('phpdate' => 'd/m/Y', 'jsdate' => 'dd/mm/yyyy', 'dateformat' => gT('dd/mm/yyyy')),
+        6=> array ('phpdate' => 'Y-m-d', 'jsdate' => 'yyyy-mm-dd', 'dateformat' => gT('yyyy-mm-dd')),
+        7=> array ('phpdate' => 'Y/m/d', 'jsdate' => 'yyyy/mm/dd', 'dateformat' => gT('yyyy/mm/dd')),
+        8=> array ('phpdate' => 'j/n/Y', 'jsdate' => 'd/m/yyyy',   'dateformat' => gT('d/m/yyyy')),
+        9=> array ('phpdate' => 'm-d-Y', 'jsdate' => 'mm-dd-yyyy', 'dateformat' => gT('mm-dd-yyyy')),
+        10=>array ('phpdate' => 'm.d.Y', 'jsdate' => 'mm.dd.yyyy', 'dateformat' => gT('mm.dd.yyyy')),
+        11=>array ('phpdate' => 'm/d/Y', 'jsdate' => 'mm/dd/yyyy', 'dateformat' => gT('mm/dd/yyyy')),
+        12=>array ('phpdate' => 'j-n-Y', 'jsdate' => 'd-m-yyyy',   'dateformat' => gT('d-m-yyyy'))
         );
 
         if ($iDateFormat > 12 || $iDateFormat<0) {
@@ -789,8 +789,8 @@
     */
     function getJSDateFromDateFormat($sDateformat)
     {
-        // The only difference from dateformat is that Jsdate does not support truncated years
-        return str_replace(array('yy'), array('y'), $sDateformat);
+        // No constraints for Bootstrap time-picker
+        return $sDateformat;
     }
 
 

@@ -1114,7 +1114,7 @@ function do_date($ia)
         $iLength   = strlen(date($dateformatdetails['phpdate'],mktime(23,59,59,12,30,1999)))+1;
 
         // For WhDateTimePicker, case is for some reason reversed in date format
-        $dateformat = $dateformatdetails['dateformat'];
+        $dateformat = $dateformatdetails['jsdate'];
         // Reverse case, trick from here: http://stackoverflow.com/a/6612519/2138090
         $dateformatReversed = strtolower($dateformat) ^ strtoupper($dateformat) ^ $dateformat;
         $dateformatReversed = str_replace("hh", "HH", $dateformatReversed);  // HH (hours) need still be in upper-case for 00-23 representation (not AM/PM)
