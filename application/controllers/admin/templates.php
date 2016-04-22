@@ -372,7 +372,6 @@ class templates extends Survey_Common_Action
     */
     public function index($editfile = 'startpage.pstpl', $screenname = 'welcome', $templatename = '', $useindex=false)
     {
-
         if(!$templatename)
         {
             $templatename = Yii::app()->getConfig("defaulttemplate");
@@ -398,25 +397,6 @@ class templates extends Survey_Common_Action
         // This helps handle the load/save buttons)
         else
             unset(Yii::app()->session['step']);
-    }
-
-    /**
-    * templates::screenredirect()
-    * Function that modify order of arguments and pass to main viewing function i.e. view()
-    *
-    * @access public
-    * @param string $editfile
-    * @param string $templatename
-    * @param string $screenname
-    * @return void
-    */
-    public function screenredirect($editfile = 'startpage.pstpl', $templatename = '', $screenname = 'welcome')
-    {
-        if(!$templatename)
-        {
-            $templatename = Yii::app()->getConfig("defaulttemplate");
-        }
-        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname,'templatename'=>$templatename));
     }
 
     /**

@@ -188,7 +188,7 @@
 
             <div class="form-group">
                 <label for='listboxtemplates'><?php eT("Screen:"); ?></label>
-                <select class="listboxtemplates form-control" id='listboxtemplates' name='screenname' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/screenredirect?editfile/".$editfile."/templatename/".$templatename); ?>?screenname='+encodeURI(this.value), '_top')">
+                <select class="listboxtemplates form-control" id='listboxtemplates' name='screenname' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/view/editfile/".$editfile);?>/screenname/'+encodeURI(this.value)+'?templatename=<?php echo urlencode ($templatename); ?>', '_top')">
                     <?php echo makeoptions($screens, "id", "name", HTMLEscape($screenname) ); ?>
                 </select>
             </div>
