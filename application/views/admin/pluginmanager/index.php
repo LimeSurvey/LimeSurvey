@@ -77,16 +77,22 @@
             'header' => gT('Action'),
             'name' => 'action',
             'value' => function($data) {
-                if ($data['active'] == 0)
+
+                $output='';
+                if(Permission::model()->hasGlobalPermission('settings','update'))
                 {
-                    $output = "<a href='" . Yii::app()->createUrl('/admin/pluginmanager/sa/activate', array('id' => $data['id'])) . "' class='btn btn-default btn-xs btntooltip'><span class='fa fa-power-off'>&nbsp;</span>".gT('Activate')."</a>";
-                } else {
-                    $output = "<a href='" . Yii::app()->createUrl('/admin/pluginmanager/sa/deactivate', array('id' => $data['id'])) . "'class='btn btn-warning btn-xs'><span class='fa fa-power-off'>&nbsp;</span>".gT('Deactivate')."</a>";
+                    if ($data['active'] == 0)
+                    {
+                        $output = "<a href='" . Yii::app()->createUrl('/admin/pluginmanager/sa/activate', array('id' => $data['id'])) . "' class='btn btn-default btn-xs btntooltip'><span class='fa fa-power-off'>&nbsp;</span>".gT('Activate')."</a>";
+                    } else {
+                        $output = "<a href='" . Yii::app()->createUrl('/admin/pluginmanager/sa/deactivate', array('id' => $data['id'])) . "'class='btn btn-warning btn-xs'><span class='fa fa-power-off'>&nbsp;</span>".gT('Deactivate')."</a>";
+                    }
                 }
                 if(count($data['settings'])>0)
                 {
                     $output .= "&nbsp;<a href='" . Yii::app()->createUrl('/admin/pluginmanager/sa/configure', array('id' => $data['id'])) . "' class='btn btn-default btn-xs'><span class='icon-edit'>&nbsp;</span>" . gT('Configure') . "</a>";
                 }
+
                 return $output;
             }
         ),
@@ -116,10 +122,10 @@
 </div>
 
 <script type="text/javascript">
-jQuery(function($) {
-    // To update rows per page via ajax
-    $(document).on("change", '#pageSize', function() {
-        $.fn.yiiGridView.update('plugins-grid',{ data:{ pageSize: $(this).val() }});
+    jQuery(function($) {
+        // To update rows per page via ajax
+        $(document).on("change", '#pageSize', function() {
+            $.fn.yiiGridView.update('plugins-grid',{ data:{ pageSize: $(this).val() }});
+        });
     });
-});
 </script>

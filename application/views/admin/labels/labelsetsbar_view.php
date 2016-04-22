@@ -13,13 +13,13 @@
 
             <!-- View buttons -->
             <?php if (isset($labelbar['buttons']['view'])):?>
-                <!-- Add -->
-                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/newlabelset");?>" role="button">
-                    <span class="icon-add text-success"></span>
-                    <?php eT("Create or import new label set(s)"); ?>
-                </a>
-
-
+                <?php if (Permission::model()->hasGlobalPermission('labelsets','create') || Permission::model()->hasGlobalPermission('labelsets','import')):?>
+                    <!-- Add -->
+                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/newlabelset");?>" role="button">
+                        <span class="icon-add text-success"></span>
+                        <?php eT("Create or import new label set(s)"); ?>
+                    </a>
+                    <?php endif; ?>
                 <!-- Export Multiple -->
                 <?php if ( count($labelsets) > 0 ): ?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
@@ -27,8 +27,8 @@
                             <span class="icon-export text-success"></span>
                             <?php eT("Export multiple label sets"); ?>
                         </a>
-                    <?php endif; ?>
-                <?php else:?>
+                        <?php endif; ?>
+                    <?php else:?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
                         <span title="<?php eT("No label sets available"); ?>" data-toggle="tooltip" data-placement="bottom" style="display: inline-block">
                             <a class="btn btn-default disabled" role="button" >
@@ -36,46 +36,46 @@
                                 <?php eT("Export multiple label sets"); ?>
                             </a>
                         </span>
-                    <?php endif; ?>
+                        <?php endif; ?>
                 <?php endif; ?>
-            <?php endif; ?>
+                <?php endif; ?>
 
 
             <!-- Edition buttons -->
 
-             <?php if (isset($labelbar['buttons']['edition'])):?>
+            <?php if (isset($labelbar['buttons']['edition'])):?>
 
-                 <?php if (isset($labelbar['buttons']['edit'])): ?>
-                     <!-- Edit label set -->
-                     <?php if (Permission::model()->hasGlobalPermission('labelsets','update')):?>
-                         <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/editlabelset/lid/".$lid);?>" role="button">
-                             <span class="glyphicon glyphicon-pencil  text-success"></span>
-                             <?php eT("Edit label set"); ?>
-                         </a>
-                     <?php endif; ?>
-
-
-                     <!-- Export this label set -->
-                     <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
-                         <a class="btn btn-default" href="<?php echo $this->createUrl("admin/export/sa/dumplabel/lid/$lid");?>" role="button">
-                             <span class="icon-export text-success"></span>
-                             <?php eT("Export this label set"); ?>
-                         </a>
-                     <?php endif; ?>
-                 <?php endif; ?>
+                <?php if (isset($labelbar['buttons']['edit'])): ?>
+                    <!-- Edit label set -->
+                    <?php if (Permission::model()->hasGlobalPermission('labelsets','update')):?>
+                        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/editlabelset/lid/".$lid);?>" role="button">
+                            <span class="glyphicon glyphicon-pencil  text-success"></span>
+                            <?php eT("Edit label set"); ?>
+                        </a>
+                        <?php endif; ?>
 
 
-                 <!-- Delete label set -->
+                    <!-- Export this label set -->
+                    <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
+                        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/export/sa/dumplabel/lid/$lid");?>" role="button">
+                            <span class="icon-export text-success"></span>
+                            <?php eT("Export this label set"); ?>
+                        </a>
+                        <?php endif; ?>
+                    <?php endif; ?>
+
+
+                <!-- Delete label set -->
                 <?php if (isset($labelbar['buttons']['delete']) && $labelbar['buttons']['delete'] == true ): ?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets','delete')): ?>
                         <a class="btn btn-default" role="button" data-action='deletelabelset' data-url='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' data-confirm='<?php eT('Do you really want to delete this label set?'); ?>' >
                             <span class="glyphicon glyphicon-trash  text-warning"></span>
                             <?php eT("Delete label set"); ?>
                         </a>
+                        <?php endif; ?>
                     <?php endif; ?>
-                <?php endif; ?>
 
-             <?php endif;?>
+                <?php endif;?>
 
         </div>
 
@@ -93,7 +93,7 @@
                     <?php eT('Return to admin panel'); ?>
                 </a>
 
-            <?php endif; ?>
+                <?php endif; ?>
 
             <!-- edition action buttons -->
             <?php if (isset($labelbar['buttons']['edition'])):?>
@@ -102,7 +102,7 @@
 
                     <?php echo $labelbar['savebutton']['text'];?>
                 </a>
-            <?php endif;?>
+                <?php endif;?>
 
             <!-- Close -->
             <?php if(isset($labelbar['closebutton']['url'])):?>
@@ -110,7 +110,7 @@
                     <span class="glyphicon glyphicon-close"></span>
                     <?php eT("Close");?>
                 </a>
-            <?php endif;?>
+                <?php endif;?>
         </div>
     </div>
 </div>

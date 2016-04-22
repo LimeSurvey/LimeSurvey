@@ -25,7 +25,6 @@ if (!defined('BASEPATH'))
 */
 class UserAction extends Survey_Common_Action
 {
-
     public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
@@ -38,6 +37,11 @@ class UserAction extends Survey_Common_Action
     */
     public function index()
     {
+        if (!Permission::model()->hasGlobalPermission('users','read')) {
+            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+            $this->getController()->redirect(array("admin/"));
+        }
+
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'users.js' ));
 
@@ -279,7 +283,10 @@ class UserAction extends Survey_Common_Action
      */
     public function deleteFinalUser($result, $transfer_surveys_to)
     {
-
+        if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('users','delete')) {
+            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+            $this->getController()->redirect(array("admin/user/sa/index"));
+        }
         $postuserid = (int) Yii::app()->request->getPost("uid");
         $postuser = flattenText(Yii::app()->request->getPost("user"));
         // Never delete initial admin (with findByAttributes : found the first user without parent)
@@ -367,7 +374,6 @@ class UserAction extends Survey_Common_Action
     */
     public function moduser()
     {
-
         $postuserid = (int) Yii::app()->request->getPost("uid");
         $postuser = flattenText(Yii::app()->request->getPost("user"));
         $postemail = flattenText(Yii::app()->request->getPost("email"));

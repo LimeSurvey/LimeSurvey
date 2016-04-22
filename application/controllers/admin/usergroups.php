@@ -262,6 +262,11 @@ class Usergroups extends Survey_Common_Action
     */
     public function index($ugid = false, $header = false)
     {
+        if(!Permission::model()->hasGlobalPermission('usergroups','view'))
+        {
+            Yii::app()->session['flashmessage'] =gT('Access denied!');
+            $this->getController()->redirect(App()->createUrl("/admin"));
+        }
         if ($ugid != false)
             $ugid = (int)$ugid;
 

@@ -54,7 +54,7 @@
                     'default' => gT("Default",'unescaped'),
                     'full' => gT("Full selector",'unescaped'),
                     'none' => gT("Simple selector",'unescaped')
-                ), array('class'=>"form-control",'unescaped'));
+                ), array('class'=>"form-control"));
                 ?>
             </div>
         </div>

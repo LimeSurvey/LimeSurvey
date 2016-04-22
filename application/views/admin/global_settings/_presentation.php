@@ -157,7 +157,7 @@
     <div class="form-group">
 	    <label class="col-sm-6 control-label"  for='bPdfQuestionFill'><?php eT("Add gray background to questions in PDF:"); ?></label>
 		   <div class="col-sm-6">
-               <select class="form-control"  id='pdfQuestionFill' name='bPdfQuestionFill'>
+               <select class="form-control"  id='bPdfQuestionFill' name='bPdfQuestionFill'>
 			       <option value="1" <?php echo $selPdfQuestionFill[1]; ?> ><?php eT('Yes'); ?></option>
 				   <option value="0" <?php echo $selPdfQuestionFill[0]; ?> ><?php eT('No'); ?></option>
 			  </select>

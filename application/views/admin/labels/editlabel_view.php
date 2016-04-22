@@ -18,7 +18,7 @@
                         <?php echo $tabitem; ?>
                     </a>
                 </li>
-                <?php if ($action == "newlabelset"): ?>
+                <?php if ($action == "newlabelset" && Permission::model()->hasGlobalPermission('labelsets','import')): ?>
                     <li>
                         <a data-toggle="tab"  href='#neweditlblset1'><?php eT("Import label set(s)"); ?></a>
                     </li>
@@ -101,7 +101,7 @@
 
 
                 <!-- Import -->
-                <?php if ($action == "newlabelset"): ?>
+                <?php if ($action == "newlabelset" && Permission::model()->hasGlobalPermission('labelsets','import')): ?>
                     <div id='neweditlblset1' class="tab-pane fade in" >
                         <?php echo CHtml::form(array("admin/labels/sa/import"), 'post',array('enctype'=>'multipart/form-data', 'class'=>'form-horizontal','id'=>'importlabels','name'=>"importlabels")); ?>
                                 <div class="form-group">
