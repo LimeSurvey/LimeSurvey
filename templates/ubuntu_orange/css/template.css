@@ -762,7 +762,7 @@ table.numbers-only th, table.numbers-only input {
     margin-right: 5px;
 }
 
-.multiple-choice-with-comment.table{
+.multiple-choice-with-comment.table, .table-multi-num.table{
     table-layout: auto;
     width: initial;
 }

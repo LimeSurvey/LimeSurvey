@@ -41,19 +41,20 @@
         </td>
     <?php endif; ?>
 
-    <td class='col-sm-<?php echo $tiwidth;?>'>
-        <input
-            class="text form-control numeric <?php echo $kpclass;?>"
-            type="text"
-            size=""
-            name="<?php echo $myfname;?>"
-            id="answer<?php echo $myfname; ?>"
-            value="<?php echo $dispVal;?>"
-            onkeyup="<?php echo $checkconditionFunction; ?>"
-            title="<?php eT('Only numbers may be entered in this field.'); ?>"
-            <?php echo $maxlength; ?>
-        />
-
+    <td>
+        <div class="col-sm-<?php echo $tiwidth;?>">
+            <input
+                class="text form-control numeric <?php echo $kpclass;?>"
+                type="text"
+                size=""
+                name="<?php echo $myfname;?>"
+                id="answer<?php echo $myfname; ?>"
+                value="<?php echo $dispVal;?>"
+                onkeyup="<?php echo $checkconditionFunction; ?>"
+                title="<?php eT('Only numbers may be entered in this field.'); ?>"
+                <?php echo $maxlength; ?>
+                />
+        </div>
     </td>
 
     <?php if (!empty($suffix)): ?>
