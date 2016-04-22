@@ -7,10 +7,12 @@ Some user think ergonomy of LimeSurvey 2.50 is not better than 2.06 version. But
 - Download and extract <http://extensions.sondages.pro/IMG/auto/limesurvey_sondages-pro.zip>
 - [Run_the_installation_script](https://manual.limesurvey.org/Installation#Run_the_installation_script)
 
-### Final step
--
+
 ## Improvement and history ##
-* 1.0.7
+* 1.0.9
+    * New feature #10571: beforeController event (for web)
+    * Fix from core lts
+* 1.0.8
     * Fix from core lts
 * 1.0.7
     * Fix from core lts : thousand_separator
