@@ -9,61 +9,61 @@
         </li>
 
         <li><label for='datestamp'><?php  eT("Date Stamp?"); ?></label>
-            <?php if ($esrow['active'] == "Y") { ?>
-                <?php if ($esrow['datestamp'] != "Y") {
-                         eT("Responses will not be date stamped.");
-                    } else {
-                         eT("Responses will be date stamped.");
+            <?php if ($esrow['active'] == "Y") {
+                if ($esrow['datestamp'] != "Y") {
+                    eT("Responses will not be date stamped.");
+                } else {
+                    eT("Responses will be date stamped.");
                 } ?>
                 <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                <?php echo CHtml::hiddenField('datestamp',$esrow['datestamp']); // Maybe use a readonly dropdown ? ?>
-                <?php } else { ?>
-                    <?php echo CHtml::dropDownList('datestamp', $esrow['datestamp'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped')),array('onchange'=>'alertDateStampAnonymization();')); ?>
-                <?php } ?>
+                <?php echo CHtml::hiddenField('datestamp',$esrow['datestamp']); // Maybe use a readonly dropdown ?
+            } else {
+                echo CHtml::dropDownList('datestamp', $esrow['datestamp'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped')),array('onchange'=>'alertDateStampAnonymization();'));
+            } ?>
         </li>
 
         <li><label for='ipaddr'><?php  eT("Save IP Address?"); ?></label>
-            <?php if ($esrow['active'] == "Y") { ?>
-                <?php  if ($esrow['ipaddr'] != "Y") {
-                         eT("Responses will not have the IP address logged.");
-                    } else {
-                         eT("Responses will have the IP address logged");
+            <?php if ($esrow['active'] == "Y") {
+                if ($esrow['ipaddr'] != "Y") {
+                    eT("Responses will not have the IP address logged.");
+                } else {
+                    eT("Responses will have the IP address logged");
                 } ?>
                 <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                <?php echo CHtml::hiddenField('ipaddr',$esrow['ipaddr']); // Maybe use a readonly dropdown? ?>
-                <?php } else { ?>
-                    <?php echo CHtml::dropDownList('ipaddr', $esrow['ipaddr'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped'))); ?>
-                <?php } ?>
+                <?php echo CHtml::hiddenField('ipaddr',$esrow['ipaddr']); // Maybe use a readonly dropdown?
+            } else {
+                echo CHtml::dropDownList('ipaddr', $esrow['ipaddr'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped')));
+            } ?>
         </li>
 
         <li><label for='refurl'><?php  eT("Save referrer URL?"); ?></label>
 
-            <?php if ($esrow['active'] == "Y") { ?>
-                <?php  if ($esrow['refurl'] != "Y") {
-                         eT("Responses will not have their referring URL logged.");
-                    } else {
-                         eT("Responses will have their referring URL logged.");
+            <?php if ($esrow['active'] == "Y") {
+                if ($esrow['refurl'] != "Y") {
+                    eT("Responses will not have their referring URL logged.");
+                } else {
+                    eT("Responses will have their referring URL logged.");
                 } ?>
                 <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                <?php echo CHtml::hiddenField('refurl',$esrow['refurl']); // Maybe use a readonly dropdown ??>
-                <?php } else { ?>
-                    <?php echo CHtml::dropDownList('refurl', $esrow['refurl'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped'))); ?>
-                <?php } ?>
+                <?php echo CHtml::hiddenField('refurl',$esrow['refurl']); // Maybe use a readonly dropdown ?
+            } else {
+                echo CHtml::dropDownList('refurl', $esrow['refurl'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped')));
+            } ?>
         </li>
 
         <li><label for='savetimings'><?php  eT("Save timings?"); ?></label>
             <?php
             if ($esrow['active']=="Y")
-                { ?>
+            { ?>
                 <?php if ($esrow['savetimings'] != "Y") {   eT("Timings will not be saved.");}
-                    else {  eT("Timings will be saved.");} ?>
+                else {  eT("Timings will be saved.");} ?>
                 <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                <?php echo CHtml::hiddenField('savetimings',$esrow['savetimings']); // Maybe use a readonly dropdown ??>
-                <?php }
-                else
-                { ?>
-                    <?php echo CHtml::dropDownList('savetimings', $esrow['savetimings'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped'))); ?>
-            <?php } ?>
+                <?php echo CHtml::hiddenField('savetimings',$esrow['savetimings']); // Maybe use a readonly dropdown ?
+            }
+            else
+            {
+                echo CHtml::dropDownList('savetimings', $esrow['savetimings'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped')));
+            } ?>
         </li>
 
         <li><label for='assessments'><?php  eT("Enable assessment mode?"); ?></label>

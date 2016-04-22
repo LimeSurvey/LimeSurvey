@@ -211,7 +211,6 @@ class QuestionGroup extends LSActiveRecord
         // Find out if the survey is active to disable add-button
         $oSurvey=Survey::model()->findByPk($this->sid);
         $surveyIsActive = $oSurvey->active !== 'N';
-        $baselang = $oSurvey->language;
         $button = '';
 
         // Add question to this group

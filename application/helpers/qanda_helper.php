@@ -2877,11 +2877,11 @@ function do_multiplenumeric($ia)
     {
         $tiwidth     = $aQuestionAttributes['text_input_width'];
         $col         = ($aQuestionAttributes['text_input_width']<=12)?$aQuestionAttributes['text_input_width']:12;
-        $extraclass .= " col-sm-".trim($col);
+        //$extraclass .= " col-sm-".trim($col);
     }
     else
     {
-        $tiwidth = 10;
+        $tiwidth = 6;
     }
 
     $prefixclass = "numeric";
@@ -2932,6 +2932,12 @@ function do_multiplenumeric($ia)
 
         $slider_separator= (trim($aQuestionAttributes['slider_separator'])!='')?$aQuestionAttributes['slider_separator']:"";
         $slider_reset=($aQuestionAttributes['slider_reset'])?1:0;
+
+        // If the slider reset is ON, slider should be max 10 columns
+        if($slider_reset)
+        {
+            $tiwidth = ($tiwidth < 10)?$tiwidth:10;
+        }
 
     }
     else

@@ -26,8 +26,10 @@ class GlobalSettings extends Survey_Common_Action
     {
         parent::__construct($controller, $id);
 
-        if (!Permission::model()->hasGlobalPermission('settings','read')) {
-            die();
+        if (! Permission::model()->hasGlobalPermission('settings', 'read') )
+        {
+            Yii::app()->session['flashmessage'] =gT('Access denied!');
+            $this->getController()->redirect(App()->createUrl("/admin"));
         }
     }
 
@@ -39,11 +41,6 @@ class GlobalSettings extends Survey_Common_Action
     */
     public function index()
     {
-        if (! Permission::model()->hasGlobalPermission('settings', 'view') )
-        {
-            Yii::app()->session['flashmessage'] =gT('Access denied!');
-            $this->getController()->redirect(App()->createUrl("/admin"));
-        }
         if (!empty($_POST['action'])) {
             $this->_saveSettings();
         }
@@ -52,12 +49,6 @@ class GlobalSettings extends Survey_Common_Action
 
     public function showphpinfo()
     {
-        if (! Permission::model()->hasGlobalPermission('settings', 'view') )
-        {
-            Yii::app()->session['flashmessage'] =gT('Access denied!');
-            $this->getController()->redirect(App()->createUrl("/admin"));
-        }
-
         if (!Yii::app()->getConfig('demoMode')) {
             phpinfo();
         }
