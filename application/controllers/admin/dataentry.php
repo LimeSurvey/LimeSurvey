@@ -736,7 +736,7 @@ class dataentry extends Survey_Common_Action
                                     'id' => 'datestampL',
                                     'value' => $thisdate,
                                     'pluginOptions' => array(
-                                        'format' => $dateformatdetails['jsdate'] . " HH:MM",
+                                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                         'singleDatePicker' => true,
                                         'startDate' => date("Y-m-d", time()),
                                         'drops' => 'up',  // TODO: Does not work. Why?

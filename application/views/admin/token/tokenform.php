@@ -141,7 +141,7 @@
                                 'name' => "validfrom",
                                 'value' => isset($validfrom) ? $validfrom : '',
                                 'pluginOptions' => array(
-                                    'format' => $dateformatdetails['jsdate'] . " HH:MM",
+                                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                     'singleDatePicker' => true,
                                     'startDate' => date("Y-m-d", time()),
                                     'drops' => 'up',  // TODO: Does not work. Why?
@@ -160,7 +160,7 @@
                                 'name' => "validuntil",
                                 'value' => isset($validuntil) ? $validuntil : '',
                                 'pluginOptions' => array(
-                                    'format' => $dateformatdetails['jsdate'] . " HH:MM",
+                                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                     'singleDatePicker' => true,
                                     'startDate' => date("Y-m-d", time()),
                                     'drops' => 'up',
