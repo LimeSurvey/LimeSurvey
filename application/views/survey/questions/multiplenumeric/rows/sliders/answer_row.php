@@ -27,9 +27,8 @@
  * @var $sSeparator
  */
 ?>
-<!-- answer_row -->
 
-<div  id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item  text-item <?php echo $extraclass;?>" <?php echo $sDisplayStyle;?>>
+<div  id='javatbd<?php echo $myfname; ?>' class="question-item answer-item numeric-item  text-item <?php echo $extraclass;?> col-sm-12" <?php echo $sDisplayStyle;?>>
     <?php if($alert):?>
         <div class="label label-danger errormandatory"  role="alert">
             <?php echo $labelText;?>
@@ -42,7 +41,7 @@
         <div>
 
         <div class='slider-container row'>
-            <div class='col-xs-12 col-sm-6'>
+            <div class='col-xs-12 col-sm-<?php echo $tiwidth; ?>'>
                         <?php if (!empty($sliderright) || !empty($sliderleft)): ?>
                             <span class='pull-left col-xs-12 col-sm-3 slider-left-span'><?php echo $sliderleft;?></span>
                         <?php endif; ?>
@@ -58,7 +57,6 @@
                             <input
                                 class="text form-control pull-left <?php echo $kpclass;?>"
                                 type="text"
-                                size="<?php echo $tiwidth;?>"
                                 name="<?php echo $myfname;?>"
                                 id="answer<?php echo $myfname; ?>"
                                 value="<?php echo $dispVal;?>"
@@ -106,7 +104,7 @@
                 </div>
 
 
-        </div>  <!-- xs-12 -->
+        </div>
         <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo $slider_user_no_action?>" />
     </div> <!-- form group -->
 </div>
