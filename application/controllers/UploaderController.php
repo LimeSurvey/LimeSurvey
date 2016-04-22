@@ -14,7 +14,7 @@
 
 class UploaderController extends SurveyController {
     function run($actionID)
-    {   
+    {
         $surveyid=Yii::app()->session['LEMsid'];
         $oSurvey=Survey::model()->findByPk($surveyid);
         if(!$oSurvey)
@@ -313,7 +313,6 @@ class UploaderController extends SurveyController {
         App()->clientScript->registerScript('sLangScriptVar',$sLangScriptVar,CClientScript::POS_HEAD);
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'ajaxupload.js');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'uploader.js');
-        App()->getClientScript()->registerScriptFile("{$sTemplateUrl}scripts/template.js");
         App()->clientScript->registerCssFile(Yii::app()->getConfig("publicstyleurl")."uploader.css");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "uploader-files.css");
         App()->bootstrap->register();
@@ -340,7 +339,6 @@ class UploaderController extends SurveyController {
         {
             App()->clientScript->registerCssFile("{$sTemplateUrl}" . (string) $cssFile);
         }
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/font-awesome.css');
 
         $header = getHeader($meta);
 
