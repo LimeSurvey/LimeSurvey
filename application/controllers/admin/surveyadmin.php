@@ -1511,7 +1511,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _tabPublicationAccess($esrow)
     {
-        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
         $startdate = '';
         if ($esrow['startdate'])
         {
