@@ -50,7 +50,7 @@
                             <!-- Description -->
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for='description_<?php echo $grouplang; ?>'><?php eT("Description:"); ?></label>
-                                <div class="col-sm-3 input-group">
+                                <div class="col-sm-4 input-group">
                                     <?php echo CHtml::textArea("description_{$grouplang}","",array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"description_{$grouplang}")); ?>
                                     <?php echo getEditor("group-desc","description_".$grouplang, "[".gT("Description:", "js")."](".$grouplang.")",$surveyid,'','',$action); ?>
                                 </div>
