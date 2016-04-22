@@ -300,6 +300,11 @@ class questiongroups extends Survey_Common_Action
             {
                 $this->getController()->redirect(array('admin/questiongroups/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
             }
+            else
+            {
+                // After save, go to edit
+                $this->getController()->redirect(array("admin/questiongroups/sa/edit/surveyid/$surveyid/gid/$gid"));
+            }
         }
         else
         {

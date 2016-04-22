@@ -687,7 +687,10 @@ class Survey_Common_Action extends CAction
             if(isset($aData['questiongroupbar']['closebutton']['url']))
             {
                 $sAlternativeUrl = $aData['questiongroupbar']['closebutton']['url'];
-                $aData['questiongroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+                $aForbiddenWordsInUrl = array(
+                    'add'
+                );
+                $aData['questiongroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl), $aForbiddenWordsInUrl);
             }
 
             $this->getController()->renderPartial("/admin/survey/QuestionGroups/questiongroupbar_view", $aData);
@@ -860,6 +863,7 @@ class Survey_Common_Action extends CAction
                 $aForbiddenWordsInUrl[]='assessmentedit';
                 $aForbiddenWordsInUrl[]='setsurveysecurity';
                 $aForbiddenWordsInUrl[]='importsurveyresources';
+                $aForbiddenWordsInUrl[]='add';
                 $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl), $aForbiddenWordsInUrl );
             }
 
