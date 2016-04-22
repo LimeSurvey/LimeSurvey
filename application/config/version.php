@@ -9,14 +9,12 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- *
  */
 
 $config['versionnumber'] = "2.06+ SondagesPro";
 $config['dbversionnumber'] = 184;
-$config['buildnumber'] = '200315 - SondagesPro 1.0.8';
+$config['buildnumber'] = '160422 - SondagesPro 1.0.9';
 $config['updatable'] = false;
 
 return $config;
-
 ?>

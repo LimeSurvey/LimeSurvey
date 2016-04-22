@@ -2634,6 +2634,10 @@ function do_multiplechoice_withcomments($ia)
             }
             $answer_main .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
         }
+        else
+        {
+            $value = '';
+        }
         $fn++;
         // --> START NEW FEATURE - SAVE
         $answer_main .= " />\n\t</label>\n</span>\n"
