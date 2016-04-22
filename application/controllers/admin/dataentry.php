@@ -733,7 +733,6 @@ class dataentry extends Survey_Common_Action
                                 /*
                                 $aDataentryoutput .= Yii::app()->getController()->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
                                     'name' => $fname['fieldname'],
-                                    'id' => 'datestampL',
                                     'value' => $thisdate,
                                     'pluginOptions' => array(
                                         'format' => $dateformatdetails['jsdate'] . " HH:mm",
