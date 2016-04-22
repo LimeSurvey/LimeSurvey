@@ -108,7 +108,7 @@ function bindClickIfNotExpanded()
  */
 function getRelevanceToolTip()
 {
-    var relevanceTooltip = !relevanceIsExpanded() ? 
+    var relevanceTooltip = !relevanceIsExpanded() ?
         'data-toggle="tooltip" data-title="' + clickToExpand + '"' :
         '';
 
@@ -393,41 +393,31 @@ function updatecodes()
 
 function getNextCode(sSourceCode)
 {
-
-        i=1;
-        found=true;
-        mNumberFound=-1;
-        while (i<=sSourceCode.length && found)
+    sourcecode = sSourceCode;
+    i=1;
+    found=true;
+    foundnumber=-1;
+    sclength = sourcecode.length;
+    while (i<=sclength && found == true)
+    {
+        found=is_numeric(sourcecode.substr(sclength-i,i));
+        if (found)
         {
-            found=is_numeric(sSourceCode.substr(-i));
-            if (found)
-                {
-                mNumberFound=sSourceCode.substr(-i);
-                i++;
-            }
+            foundnumber=sourcecode.substr(sclength-i,i);
+            i++;
         }
-        if (mNumberFound==-1)
-        {
-            sBaseCode=sSourceCode;
-            mNumberFound=0
-        }
-        else
-        {
-            sBaseCode=sSourceCode.substr(0,sSourceCode.length-mNumberFound.length);
-        }
-        var iNumberFound=+mNumberFound;
-        do
-        {
-            iNumberFound=iNumberFound+1;
-            sNewNumber=iNumberFound+'';
-            sResult=sBaseCode+sNewNumber;
-            if (sResult.length>5)
-            {
-              sResult=sResult.substr(sResult.length - 5);
-            }
-        }
-        while (areCodesUnique(sResult)==false);
-        return(sResult);
+    }
+    if (foundnumber==-1)
+    {
+        return(sourcecode);
+    }
+    else
+    {
+        foundnumber++;
+        foundnumber=foundnumber+'';
+        result=sourcecode.substr(0,sclength-foundnumber.length)+foundnumber;
+        return(result);
+    }
 }
 
 /**
@@ -508,7 +498,7 @@ function code_duplicates_check()
 
                     // Flash the elements that are duplicates
                     //$theDuplicateElement.fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-            
+
                 }
             });
             cansubmit= false;
