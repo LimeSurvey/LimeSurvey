@@ -253,40 +253,32 @@ function updatecodes()
 
 function getNextCode(sSourceCode)
 {
+    sourcecode = sSourceCode;
     i=1;
     found=true;
-    mNumberFound=-1;
-    while (i<=sSourceCode.length && found)
+    foundnumber=-1;
+    sclength = sourcecode.length;
+    while (i<=sclength && found == true)
     {
-        found=is_numeric(sSourceCode.substr(-i));
+        found=is_numeric(sourcecode.substr(sclength-i,i));
         if (found)
-            {
-            mNumberFound=sSourceCode.substr(-i);
+        {
+            foundnumber=sourcecode.substr(sclength-i,i);
             i++;
         }
     }
-    if (mNumberFound==-1)
+    if (foundnumber==-1)
     {
-        sBaseCode=sSourceCode;
-        mNumberFound=0
+        return(sourcecode);
     }
     else
     {
-        sBaseCode=sSourceCode.substr(0,sSourceCode.length-mNumberFound.length);
+        foundnumber++;
+        foundnumber=foundnumber+'';
+        result=sourcecode.substr(0,sclength-foundnumber.length)+foundnumber;
+        return(result);
     }
-    var iNumberFound=+mNumberFound;
-    do
-    {
-        iNumberFound=iNumberFound+1;
-        sNewNumber=iNumberFound+'';
-        sResult=sBaseCode+sNewNumber;
-        if (sResult.length>5)
-        {
-          sResult=sResult.substr(sResult.length - 5);
-        }
-    }
-    while (areCodesUnique(sResult)==false);
-    return(sResult);
+
 }
 
 function is_numeric (mixed_var) {
