@@ -21,13 +21,15 @@
 <!-- answer -->
 <div class='question answer-item text-item date-item form-group'>
     <label for='answer<?php echo $name;?>' class='hide label'>
-        <?php echo sprintf(gT('Date in the format: %s'),$dateformatdetails); ?>
+        <?php echo sprintf(gT('Date in the format: %s'), $dateformatdetails); ?>
     </label>
 
     <span class='col-xs-12 col-sm-4'>
         <i class='glyphicon glyphicon-calendar form-control-feedback'></i>
+
+        <?php /* Old input, not used since switching to Bootstrap DateTimePicker
         <input
-            class='form-control popupdate'
+            class='form-control'
             type="text"
             size="<?php echo $iLength;?>"
             name="<?php echo $name;?>"
@@ -37,6 +39,32 @@
             onkeypress="<?php echo $goodchars;?>"
             onchange="<?php echo $checkconditionFunction;?>"
         />
+        */
+        ?>
+
+        <?php $this->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                'name' => $name,
+                'id' => "answer" . $name,
+                'value' => $dateoutput,
+                'pluginOptions' => array(
+                    'class' => 'test',
+                    'format' => $dateformatReversed,
+                    'singleDatePicker' => true,
+                    'startDate' => date("Y-m-d H:i", time()),
+                    'drops' => 'up',  // TODO: Does not work. Why?
+                    // Show hour and minute picker if we have HH or MM in date format
+                    'pickTime' => (strpos($dateformatdetails, "HH") !== false || strpos($dateformatdetails, "MM") !== false),
+                    'pickDate' => !$hideCalendar,
+                    'timePicker12Hour' => false,
+                    'timePicker24Hour' => true,
+                    'timePickerIncrement' => 1,
+                ),
+                'htmlOptions' => array(
+                    'onkeypress' => $goodchars,
+                    'onchange' => "$checkconditionFunction"
+                )
+            ));
+        ?>
     </span>
 
     <input

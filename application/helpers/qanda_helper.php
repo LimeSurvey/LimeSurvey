@@ -1088,14 +1088,17 @@ function do_date($ia)
     else
     {
         //register timepicker extension
-        App()->getClientScript()->registerPackage('jqueryui-timepicker');
+        //App()->getClientScript()->registerPackage('jqueryui-timepicker');
+        App()->getClientScript()->registerPackage('bootstrap-daterangepicker');
 
         // Locale for datepicker and timpicker extension
         if (App()->language !== 'en')
         {
-            Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-".App()->language.".js");
-            Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jquery-ui-timepicker-addon/i18n/jquery-ui-timepicker-".App()->language.".js");
+            // TODO: Multi-lang
+            //Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-".App()->language.".js");
+            //Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jquery-ui-timepicker-addon/i18n/jquery-ui-timepicker-".App()->language.".js");
         }
+
         // Format the date  for output
         $dateoutput = trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
         if ($dateoutput!='' & $dateoutput!='INVALID')
@@ -1110,6 +1113,17 @@ function do_date($ia)
         // "+1" makes room for a trailing space in date/time values
         $iLength   = strlen(date($dateformatdetails['phpdate'],mktime(23,59,59,12,30,1999)))+1;
 
+        // For WhDateTimePicker, case is for some reason reversed in date format
+        $dateformat = $dateformatdetails['dateformat'];
+        // Reverse case, trick from here: http://stackoverflow.com/a/6612519/2138090
+        $dateformatReversed = strtolower($dateformat) ^ strtoupper($dateformat) ^ $dateformat;
+        $dateformatReversed = str_replace("hh", "HH", $dateformatReversed);  // HH (hours) need still be in upper-case for 00-23 representation (not AM/PM)
+
+        // Hide calendar if there's no year, month or day in format
+        $hideCalendar = strpos($dateformatReversed, 'Y') === false
+            && strpos($dateformatReversed, 'D') === false
+            && strpos($dateformatReversed, 'M') === false;
+
         // HTML for date question using datepicker
         $answer = Yii::app()->getController()->renderPartial('/survey/questions/date/selector/answer', array(
             'name'                   => $ia[1],
@@ -1117,6 +1131,7 @@ function do_date($ia)
             'mindate'                => $mindate,
             'maxdate'                => $maxdate,
             'dateformatdetails'      => $dateformatdetails['dateformat'],
+            'dateformatReversed'     => $dateformatReversed,
             'dateformatdetailsjs'    => $dateformatdetails['jsdate'],
             'goodchars'              => "return goodchars(event,'".$goodchars."')",
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
@@ -1124,6 +1139,7 @@ function do_date($ia)
             'hidetip'                => trim($aQuestionAttributes['hide_tip'])==0,
             'dateoutput'             => $dateoutput,
             'qid'                    => $ia[0],
+            'hideCalendar'           => $hideCalendar
         ), true);
     }
     $inputnames[]=$ia[1];
