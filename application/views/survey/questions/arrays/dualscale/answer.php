@@ -62,7 +62,7 @@
 
             <!-- Render header -->
             <?php echo Yii::app()->getController()->renderPartial(
-                    '/survey/questions/arrays/dualscale/answer_header', 
+                    '/survey/questions/arrays/dualscale/answer_header',
                     array(
                         'labelans0'    => $labelans0,
                         'labelans1'    => $labelans1,
@@ -71,7 +71,7 @@
                         'class'        => ''
                     ),
                     true
-                ); 
+                );
             ?>
 
         </thead>
@@ -107,10 +107,10 @@
                 <th class="answertext">
 
                     <?php echo $ansrow['hiddenfield']; ?>
-                    
+
                     <?php if ($ansrow['showmandatoryviolation']): ?>
                         <div class="label label-danger">
-                            <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;
+                            <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
                             <?php echo $ansrow['answertext']; ?>
                         </div>
                     <?php else: ?>
@@ -118,13 +118,13 @@
                     <?php endif; ?>
 
 
-                    <input type="hidden" disabled="disabled" name="java<?php echo $ansrow['myfid0']; ?>" 
+                    <input type="hidden" disabled="disabled" name="java<?php echo $ansrow['myfid0']; ?>"
                         id="java<?php echo $ansrow['myfid0']; ?>" value=""
                         <?php echo $ansrow['sessionfname0']; ?>
                     />
 
                     <?php if (count($labelans1) > 0): ?>
-                        <input type="hidden" disabled="disabled" name="java<?php echo $ansrow['myfid1']; ?>" 
+                        <input type="hidden" disabled="disabled" name="java<?php echo $ansrow['myfid1']; ?>"
                             id="java<?php echo $ansrow['myfid1']; ?>" value=""
                             <?php echo $ansrow['sessionfname1']; ?>
                         />
@@ -138,11 +138,11 @@
                         <td class='visible-xs'><em><?php echo $leftheader; ?></em></td>
                     <?php endif; ?>
                     <td data-title='<?php echo $ld; ?>' class="answer_cell_1_<?php echo $ld; ?> answer-item <?php echo $answertypeclass; ?>-item text-center radio">
-                        <input 
-                            class="radio" 
-                            type="radio" 
-                            name="<?php echo $ansrow['myfname0']; ?>" 
-                            value="<?php echo $ld; ?>" 
+                        <input
+                            class="radio"
+                            type="radio"
+                            name="<?php echo $ansrow['myfname0']; ?>"
+                            value="<?php echo $ld; ?>"
                             id="answer<?php echo $ansrow['myfid0']; ?>-<?php echo $ld; ?>"
                             <?php echo $labelcode0_checked[$ansrow['title']][$ld]; ?>
                         />
@@ -156,11 +156,11 @@
                     <td data-title='' class="dual_scale_separator information-item">
                         <?php if ($shownoanswer): // No answer for accessibility and no javascript (but hide hide even with no js: need reworking) ?>
                             <label for='answer<?php echo $ansrow['myfid0']; ?>-'>
-                                <input 
-                                    class='radio jshide read' 
-                                    type='radio' 
-                                    name='<?php echo $ansrow['myfname0']; ?>' 
-                                    value='' 
+                                <input
+                                    class='radio jshide read'
+                                    type='radio'
+                                    name='<?php echo $ansrow['myfname0']; ?>'
+                                    value=''
                                     id='answer<?php echo $ansrow['myfid0']; ?>-'
                                     <?php echo $myfname0_notset; ?>
                                 />
@@ -174,11 +174,11 @@
                             <td class='visible-xs'><em><?php echo $rightheader; ?></em></td>
                         <?php endif; ?>
                         <td data-title='<?php echo $labelans1[$k]; ?>' class="answer_cell_2_<?php echo $ld; ?> answer-item radio-item text-center radio">
-                            <input 
-                                class="radio" 
-                                type="radio" 
-                                name="<?php echo $ansrow['myfname1']; ?>" 
-                                value="<?php echo $ld; ?>" 
+                            <input
+                                class="radio"
+                                type="radio"
+                                name="<?php echo $ansrow['myfname1']; ?>"
+                                value="<?php echo $ld; ?>"
                                 id="answer<?php echo $ansrow['myfid1']; ?>-<?php echo $ld; ?>"
                                 <?php echo $labelcode1_checked[$ansrow['title']][$ld]; ?>
                             />
@@ -200,11 +200,11 @@
                 <?php if ($shownoanswer): ?>
                     <td  data-title='<?php eT("No answer"); ?>' class="dual_scale_no_answer answer-item radio-item noanswer-item text-center radio">
                         <?php if (count($labelans1) > 0): ?>
-                                <input 
-                                    class='radio' 
-                                    type='radio' 
-                                    name='<?php echo $ansrow['myfname1']; ?>' 
-                                    value='' 
+                                <input
+                                    class='radio'
+                                    type='radio'
+                                    name='<?php echo $ansrow['myfname1']; ?>'
+                                    value=''
                                     id='answer<?php echo $ansrow['myfid1']; ?>-'
                                     <?php echo $myfname1_notset; ?>
                                 />
@@ -212,12 +212,12 @@
                                 <span class="hide label-text"><?php eT("No answer"); ?></span>
                             </label>
                         <?php else: ?>
-                                <input 
-                                    data-title='<?php eT("No answer"); ?>' 
-                                    class='radio' 
-                                    type='radio' 
-                                    name='<?php echo $ansrow['myfname0']; ?>' 
-                                    value='' 
+                                <input
+                                    data-title='<?php eT("No answer"); ?>'
+                                    class='radio'
+                                    type='radio'
+                                    name='<?php echo $ansrow['myfname0']; ?>'
+                                    value=''
                                     id='answer<?php echo $ansrow['myfid0']; ?>-'
                                     <?php echo $myfname0_notset; ?>
                                 />

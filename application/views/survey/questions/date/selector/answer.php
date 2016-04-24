@@ -25,7 +25,7 @@
     </label>
 
     <span class='col-xs-12 col-sm-4'>
-        <i class='glyphicon glyphicon-calendar form-control-feedback'></i>
+        <i class='fa fa-calendar form-control-feedback' aria-hidden='true'></i>
         <input
             class='form-control popupdate'
             type="text"

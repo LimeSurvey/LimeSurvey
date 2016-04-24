@@ -7047,6 +7047,7 @@ function getLabelSets($languages = null)
 
 function getHeader($meta = false)
 {
+    /* Todo : move this to layout/public.html */
     global $embedded,$surveyid ;
     Yii::app()->loadHelper('surveytranslator');
 
@@ -7063,7 +7064,7 @@ function getHeader($meta = false)
     {
         $languagecode = Yii::app()->getConfig('defaultlang');
     }
-
+    App()->getClientScript()->registerPackage('fontawesome');
     $header=  "<!DOCTYPE html>\n"
     . "<html lang=\"{$languagecode}\"";
 
@@ -7082,7 +7083,7 @@ function getHeader($meta = false)
         return $header;
     }
 
-    global $embedded_headerfunc;
+    global $embedded_headerfunc; // Did this work ? Can be removed or not ?
 
     if ( function_exists( $embedded_headerfunc ) )
         return $embedded_headerfunc($header);

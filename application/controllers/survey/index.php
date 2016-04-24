@@ -36,19 +36,8 @@ class index extends CAction {
         $param = $this->_getParameters(func_get_args(), $_POST);
         $surveyid = $param['sid'];
 
-        // Font awesome
-        if(!YII_DEBUG)
-        {
-            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles-public/font-awesome-43.min.css') );
-        }
-        else
-        {
-            App()->getClientScript()->registerCssFile( Yii::app()->getBaseUrl(true).'/styles-public/font-awesome-43-debugmode.min.css' );
-        }
-
         $oTemplate = Template::model()->getInstance('', $surveyid);
         $this->oTemplate = $oTemplate;
-
         App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN);// Ensure all js var is set before rendering the page (User can click before $.ready)
 
@@ -56,7 +45,6 @@ class index extends CAction {
         {
             App()->getClientScript()->registerPackage($package);
         }
-
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
 
 

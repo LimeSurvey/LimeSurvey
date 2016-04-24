@@ -5,6 +5,6 @@
  */
 ?>
 <p class='errormandatory text-danger' role='alert'>
-    <span class='glyphicon glyphicon-exclamation-sign'></span>
+    <span class='fa fa-exclamation-circle' aria-hidden="true"></span>
     <?php echo $sMandatoryText; ?>
 </p>
