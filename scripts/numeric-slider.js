@@ -11,7 +11,7 @@
  * @param {number} qId The qid of the question where apply.
  */
 function doNumericSlider(qID,jsonOptions) {
-    
+
     var slider_list=$("#question"+qID+" .slider-list");
     var havevalue,startvalue;
     if(slider_list)
