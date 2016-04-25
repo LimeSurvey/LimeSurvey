@@ -35,7 +35,7 @@
         <div class='col-sm-9'></div>
     </div>
     <?php
-    if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update'))
+    if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
     { ?>
         <div class='form-group'>
             <label class='control-label col-sm-2' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
