@@ -204,14 +204,31 @@ function templateExtractFilter($p_event, &$p_header)
 
 /**
  * Determine the storage path for a file
+ * TODO: remove all that logic.
  *
  * @param string $template
  * @param string $templatefile
  */
 function gettemplatefilename($template, $templatefile) {
-    switch (pathinfo($templatefile, PATHINFO_EXTENSION)) {
+    switch (pathinfo($templatefile, PATHINFO_EXTENSION))
+    {
         case 'pstpl':
-            return $template.'/views/'.$templatefile;
+            // Default 2.5 templates
+            if (file_exists($template.'/views/'.$templatefile))
+            {
+                return $template.'/views/'.$templatefile;
+            }
+            // Default 2.06 templates
+            elseif(file_exists($template.'/'.$templatefile))
+            {
+                return $template.'/'.$templatefile;
+            }
+            // Something else
+            else
+            {
+                $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+                return $template.'/'.$oEditedTemplate->viewPath.'/'.$templatefile;
+            }
             break;
         case 'css':
             return $template.'/'.$templatefile;
