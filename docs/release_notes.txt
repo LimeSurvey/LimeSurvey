@@ -35,6 +35,49 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160421) to 2.50+ (build 160425) Apr 25, 2016
+-Fixed issue #11004: [security] Unauthorized access to certain admin pages by restricted admins (Carsten Schmitz)
+-Fixed issue #10274: Bad layout of mini calendar in statistics (Olle Haerstedt)
+-Fixed issue #10474: Characters not accepted for "save & resume later" passwords in links sent by email (Carsten Schmitz)
+-Fixed issue #10704: Missing translation in response filter (Carsten Schmitz)
+-Fixed issue #10748: Mix of languages in response browsing (Carsten Schmitz)
+-Fixed issue #10886: Export to XML: question type List Radio not exported (Olle Haerstedt)
+-Fixed issue #10939: Public Survey List (root of app) includes a different set of CSS files from the Survey itself, and in the wrong order (LouisGac)
+-Fixed issue #10946: Design issue when entering answer options on double matrix question (LouisGac)
+-Fixed issue #10949: Numbering of sub questions The first subquestion is numbered with leading 0, like SQ001, while the following is numbered SQ2, SQ3 etc. (LouisGac)
+-Fixed issue #11000: Slider question rendered too small (LouisGac)
+-Fixed issue #11001: Selecting a screen in the template editor fails (Carsten Schmitz)
+-Fixed issue #11005: Button link error (Carsten Schmitz)
+-Fixed issue #11010: PHP notice when create a new survey (Olle Haerstedt)
+-Fixed issue #11011: Blank screen after adding new group (Olle Haerstedt)
+-Fixed issue #11012: Delete Group button in group list view (Olle Haerstedt)
+-Fixed issue #11013: Small editor when adding/editing a question group (Carsten Schmitz)
+-Fixed issue #11014: Multiple numeric input with narrow colum is aligned too right (LouisGac)
+-Fixed issue #11017: Missing Save and Close button (Olle Haerstedt)
+-Fixed issue #11018: User with only statistics access can see survey in list (Denis Chenu)
+-Fixed issue #11022: Better alignment of the percent in the progress bar (Olle Haerstedt)
+-Fixed issue: If an invalid admin theme is set (e.g. after upgrade) the global settings are not properly read (Carsten Schmitz)
+-Fixed issue: template.js path forced in uploader controller (LouisGac)
+-New feature #10571: beforeController event (for web) (Denis Chenu)
+-New feature #10954: Always add font-awesome in public and admin (Denis Chenu)
+#Updated translation: Basque by zubiegi
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by t6nnp6nn
+#Updated translation: French (France) by arnaud21
+#Updated translation: Galician by dariogomez, Calidonia, monfero
+#Updated translation: German by HonkXL
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Argentina) by fvergniaud
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.50+ (build 160418) to 2.50+ (build 160421) Apr 21, 2016
 -New feature: Configuration AuditLog config page + new log survey settings change event (Daniel Gimeno)
 -New feature: Enable integer-only answers in multiple numeric fields (Daniel Gimeno)
