@@ -55,15 +55,16 @@
                 ?>
             <div class="col-sm-10">
                 <?php if(canShowDatePicker($dateformatdetails)): ?>
-                    <?php Yii::app()->getController()->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+                    <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                         'name' => $fieldname,
                         'pluginOptions' => array(
-                            'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                            'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
                             'singleDatePicker' => true,
                             'startDate' => date("Y-m-d", time()),
                             'drops' => 'up',  // TODO: Does not work. Why?
                             'timePicker' => true,
-                            'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work
+                            'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work?
+                            'timePicker24Hour' => true,
                             'timePickerIncrement' => 1
                         )
                     )); ?>

@@ -79,11 +79,11 @@
                 <div class="form-group">
                     <label  class="col-sm-2 control-label" for='validfrom'><?php eT("Valid from"); ?>:</label>
                     <div class="col-sm-3">
-                        <?php $this->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+                        <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                                 'name' => "validfrom",
                                 'value' => isset($validfrom) ? $validfrom : '',
                                 'pluginOptions' => array(
-                                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                    'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
                                     'singleDatePicker' => true,
                                     'startDate' => date("Y-m-d", time()),
                                     'drops' => 'up',  // TODO: Does not work. Why?
@@ -98,11 +98,11 @@
                     
                     <label  class="col-sm-2 control-label" for='validuntil'><?php eT('Until:'); ?></label>
                     <div class="col-sm-3">
-                        <?php $this->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+                        <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                                 'name' => "validuntil",
                                 'value' => isset($validuntil) ? $validuntil : '',
                                 'pluginOptions' => array(
-                                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                    'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
                                     'singleDatePicker' => true,
                                     'startDate' => date("Y-m-d", time()),
                                     'drops' => 'up',

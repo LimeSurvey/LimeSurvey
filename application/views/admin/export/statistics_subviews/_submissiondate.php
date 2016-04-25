@@ -7,12 +7,12 @@
             <div class='form-group'>
                 <label class="col-sm-4 control-label" for='datestampE'><?php eT("Equals:"); ?></label>
                 <div class="col-sm-5">
-                    <?php $this->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+                    <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "datestampE",
                             'id' => 'datestampE',
                             'value' => isset($_POST['datestampE']) ? $_POST['datestampE'] : '',
                             'pluginOptions' => array(
-                                'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
                                 'singleDatePicker' => true,
                                 'startDate' => date("Y-m-d H:i", time()),
                                 'drops' => 'up',  // TODO: Does not work. Why?
@@ -27,12 +27,12 @@
             <div class='form-group'>
                 <label class="col-sm-4 control-label" for='datestampG'><?php eT("Later than:");?></label>
                 <div class="col-sm-5">
-                    <?php $this->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+                    <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "datestampG",
                             'id' => 'datestampG',
                             'value' => isset($_POST['datestampG']) ? $_POST['datestampG'] : '',
                             'pluginOptions' => array(
-                                'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
                                 'singleDatePicker' => true,
                                 'startDate' => date("Y-m-d H:i", time()),
                                 'drops' => 'up',  // TODO: Does not work. Why?
@@ -47,12 +47,12 @@
             <div class='form-group'>
                 <label class="col-sm-4 control-label" for='datestampL'><?php eT("Earlier than:");?></label>
                 <div class="col-sm-5">
-                    <?php $this->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+                    <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "datestampL",
                             'id' => 'datestampL',
                             'value' => isset($_POST['datestampL']) ? $_POST['datestampL'] : '',
                             'pluginOptions' => array(
-                                'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
                                 'singleDatePicker' => true,
                                 'startDate' => date("Y-m-d H:i", time()),
                                 'drops' => 'up',  // TODO: Does not work. Why?

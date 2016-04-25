@@ -1116,8 +1116,7 @@ function do_date($ia)
         // For WhDateTimePicker, case is for some reason reversed in date format
         $dateformat = $dateformatdetails['jsdate'];
         // Reverse case, trick from here: http://stackoverflow.com/a/6612519/2138090
-        $dateformatReversed = strtolower($dateformat) ^ strtoupper($dateformat) ^ $dateformat;
-        $dateformatReversed = str_replace("hh", "HH", $dateformatReversed);  // HH (hours) need still be in upper-case for 00-23 representation (not AM/PM)
+        $dateformatReversed = reverseDateToFitDatePicker($dateformat);
 
         // Hide calendar if there's no year, month or day in format
         $hideCalendar = strpos($dateformatReversed, 'Y') === false

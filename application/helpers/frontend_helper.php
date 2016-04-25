@@ -2340,3 +2340,17 @@ function getMove()
     }
     return $move;
 }
+
+/**
+ * The DateTimePicker uses another date-format
+
+ * @param string $dateFormat - Like 'yyyy-mm-dd'
+ * @return string - E.g 'YYYY-MM-DD'
+ */
+function reverseDateToFitDatePicker($dateformat)
+{
+    // Reverse case, trick from here: http://stackoverflow.com/a/6612519/2138090
+    $newDateFormat = strtolower($dateformat) ^ strtoupper($dateformat) ^ $dateformat;
+    $newDateFormat = str_replace("hh", "HH", $newDateFormat);  // HH (hours) need still be in upper-case for 00-23 representation (not AM/PM)
+    return $newDateFormat;
+}

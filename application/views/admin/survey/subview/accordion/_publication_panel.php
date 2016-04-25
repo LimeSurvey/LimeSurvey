@@ -31,12 +31,12 @@
     <div class="form-group">
         <label class="col-sm-6 control-label" for='startdate'><?php  eT("Start date/time:"); ?></label>
         <div class="col-sm-6">
-            <?php $this->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+            <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                     'name' => "startdate",
                     'id' => 'startdate',
                     'value' => $startdate,
                     'pluginOptions' => array(
-                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                        'format' => reverseDateToFitDatePicker($dateformatdetails['datetime']) . " HH:mm",
                         'singleDatePicker' => true,
                         'startDate' => date("Y-m-d hh:ii", time()),
                         'drops' => 'up',  // TODO: Does not work. Why?
@@ -53,12 +53,12 @@
     <div class="form-group">
         <label class="col-sm-6 control-label" for='expires'><?php  eT("Expiry date/time:"); ?></label>
         <div class="col-sm-6">
-            <?php $this->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+            <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                     'name' => "expires",
                     'id' => 'expires',
                     'value' => $expires,
                     'pluginOptions' => array(
-                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                        'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
                         'singleDatePicker' => true,
                         'startDate' => date("Y-m-d", time()),
                         'drops' => 'up',  // TODO: Does not work. Why?

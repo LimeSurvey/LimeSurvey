@@ -731,11 +731,11 @@ class dataentry extends Survey_Common_Action
                                 )
                                 );
                                 /*
-                                $aDataentryoutput .= Yii::app()->getController()->widget('yiiwheels.widgets.daterangepicker.WhDateRangePicker', array(
+                                Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                                     'name' => $fname['fieldname'],
                                     'value' => $thisdate,
                                     'pluginOptions' => array(
-                                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                        'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
                                         'singleDatePicker' => true,
                                         'startDate' => date("Y-m-d", time()),
                                         'drops' => 'up',  // TODO: Does not work. Why?
