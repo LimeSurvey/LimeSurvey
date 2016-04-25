@@ -140,6 +140,29 @@
                 </li>
             <?php endif;?>
 
+            <!-- Extra menus from plugins -->
+            <?php // TODO: This views should be in same module as ExtraMenu and ExtraMenuItem classes (not plugin) ?>
+            <?php foreach ($extraMenus as $menu): ?>
+                <li class="dropdown">
+                    <?php if ($menu->isDropDown()): ?>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $menu->getLabel(); ?>&nbsp;<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <?php foreach ($menu->getMenuItems() as $menuItem): ?>
+                                <?php if ($menuItem->isDivider()): ?>
+                                    <li class="divider"></li>
+                                <?php else: ?>
+                                    <li>
+                                        <a href="<?php echo $menuItem->getHref(); ?>"><?php echo $menuItem->getLabel(); ?></a>
+                                    </li>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else: ?>
+                        <a href="<?php echo $menu->getHref(); ?>"><?php echo $menu->getLabel(); ?></a>
+                    <?php endif; ?>
+                </li>
+            <?php endforeach; ?>
+
             <?php if($showupdate): ?>
             <li class="">
                 <a href="#notifications">
