@@ -725,15 +725,16 @@ td.answer-item.text-center
     padding-left: 39px;
 }
 
-.table-5-point-array td.answer-item.text-center
-{
-    padding-left: 54px;
-}
-
 .table-10-point-array  td.answer-item.text-center
 {
-    padding-left: 52px;
+    padding-left: 40px;
 }
+
+.table-10-point-array  thead tr th.text-center
+{
+    padding-left: 0px;
+}
+
 
 
 /* center the label text in no more table mode */
