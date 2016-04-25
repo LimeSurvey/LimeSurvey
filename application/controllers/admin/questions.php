@@ -895,6 +895,7 @@ class questions extends Survey_Common_Action
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['importquestion'] = true;
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+        $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['closebutton']['url'] = '/admin/survey/sa/listquestions/surveyid/'.$iSurveyID;  // Close button
 
         $this->abortIfSurveyIsActive($surveyinfo);
