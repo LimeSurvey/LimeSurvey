@@ -36,7 +36,7 @@
                     'id' => 'startdate',
                     'value' => $startdate,
                     'pluginOptions' => array(
-                        'format' => reverseDateToFitDatePicker($dateformatdetails['datetime']) . " HH:mm",
+                        'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
                         'singleDatePicker' => true,
                         'startDate' => date("Y-m-d hh:ii", time()),
                         'drops' => 'up',  // TODO: Does not work. Why?
