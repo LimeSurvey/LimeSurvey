@@ -81,6 +81,8 @@ function replaceColumnWithDiv(that) {
 
 $(document).ready(function(){
 
+    $("#checkjavascript").hide();
+
     // Scroll to first error
     if($(".input-error").length > 0) {
         $('#bootstrap-alert-box-modal').on('hidden.bs.modal', function () {

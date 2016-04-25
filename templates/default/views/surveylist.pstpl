@@ -1,3 +1,9 @@
+
+<div class="alert alert-danger" role="alert"  id="checkjavascript">
+    {CHECKJAVASCRIPT}
+</div>
+
+
 <div class="row" id="surveys-list-container">
     <div class="jumbotron" id="surveys-list-jumbotron">
         {SITELOGO}

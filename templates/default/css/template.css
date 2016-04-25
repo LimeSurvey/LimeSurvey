@@ -898,3 +898,9 @@ body div.row .question-container {
 .asterisk:before {
     content: "\f069";
 }
+
+
+/* Check javascript */
+#checkjavascript {
+    margin-top: 100px;
+}

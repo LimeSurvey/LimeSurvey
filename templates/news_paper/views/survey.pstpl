@@ -1,6 +1,4 @@
 <!-- Survey Description survey.pstpl -->
-<div class="row" id="survey-header">
-    <div class="col-sm-12 ">
-        {CHECKJAVASCRIPT}
-    </div>
+<div class="alert alert-danger" role="alert"  id="checkjavascript">
+    {CHECKJAVASCRIPT}
 </div>
