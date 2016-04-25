@@ -1088,16 +1088,7 @@ function do_date($ia)
     else
     {
         //register timepicker extension
-        //App()->getClientScript()->registerPackage('jqueryui-timepicker');
         App()->getClientScript()->registerPackage('bootstrap-daterangepicker');
-
-        // Locale for datepicker and timpicker extension
-        if (App()->language !== 'en')
-        {
-            // TODO: Multi-lang
-            //Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-".App()->language.".js");
-            //Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jquery-ui-timepicker-addon/i18n/jquery-ui-timepicker-".App()->language.".js");
-        }
 
         // Format the date  for output
         $dateoutput = trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
