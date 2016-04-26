@@ -14,7 +14,7 @@
 
 $config['versionnumber'] = "2.50+";
 $config['dbversionnumber'] = 258;
-$config['buildnumber'] = '';
+$config['buildnumber'] = 160421;
 $config['updatable'] = true;
 $config['assetsversionnumber'] = 4;
 //$config['updaterversion'] = 1;

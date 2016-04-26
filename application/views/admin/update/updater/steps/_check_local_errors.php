@@ -23,8 +23,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="span8"><?php eT('Available space in directory:');?></th>
-            <th class="span2"  style="text-align: right"></th>
+            <th class="col-sm-10"><?php eT('Available space in directory:');?></th>
+            <th class="col-sm-1"  style="text-align: right"></th>
+            <th class="col-sm-1"  style="text-align: right"></th>
         </tr>
     </thead>
     <tbody>
@@ -32,14 +33,17 @@
             <?php if($file->freespace !== 'pass'): ?>
                 <tr>
                     <td><?php echo $file->name;?></td>
-                    <td class="<?php if($file->freespace){echo "success" ;}else{echo "error";}?>" style="text-align: right">
-                        <?php if($file->freespace): ?>
-                            <?php eT('OK');?>
-                        <?php else: ?>
-                            <?php eT('Not enough space'); ?>
-                            <?php $errors = true; $ignore = true; ?>
-                        <?php endif; ?>
-                    </td>
+                    <td></td>
+                    <?php if($file->freespace): ?>
+                        <td><span class="fa fa-check text-success" alt="right"></span></td>
+                    <?php else: ?>
+                        <td>
+                            <h3 class="label label-danger">
+                                <?php eT('Not enough space'); ?>
+                            </h3>
+                        </td>
+                        <?php $errors = true; $ignore = true; ?>
+                    <?php endif; ?>
                 </tr>
             <?php endif; ?>
         <?php endforeach; ?>
@@ -54,25 +58,60 @@
     </div>
 <?php endif;?>
 
+<?php if($localChecks->mysql->docheck !== 'pass'): ?>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col-sm-10"><?php eT('MYSQL version required');?></th>
+                <th class="col-sm-1"  style="text-align: right"></th>
+                <th class="col-sm-1"  style="text-align: right"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><?php echo $localChecks->mysql->mysql_ver;?></td>
+                <td></td>
+                <?php if($localChecks->mysql->result): ?>
+                    <td><span class="fa fa-check text-success" alt="right"></span></td>
+                <?php else: ?>
+                    <td>
+                        <h3 class="label label-danger">
+                            <?php printf(gT('MYSQL version is only %s'),$localChecks->mysql->local_mysql_ver);?>
+                        </h3>
+                    </td>
+                    <?php $errors = TRUE; $cant_ignore = true; $ignore = false; ?>
+                <?php endif; ?>
+            </tr>
+        </tbody>
+    </table>
+<?php endif;?>
+
 <table class="table">
     <thead>
         <tr>
             <th class="col-sm-10"><?php eT('PHP version required');?></th>
-            <th class="col-sm-2"  style="text-align: right"></th>
+            <th class="col-sm-1"  style="text-align: right"></th>
+            <th class="col-sm-1"  style="text-align: right"></th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td class="col-sm-10"><?php echo $localChecks->php->php_ver;?></td>
-            <td class="col-sm-2 <?php if($localChecks->php->result){echo "success" ;}else{echo "error";}?>" style="text-align: right">
-                <?php if($localChecks->php->result): ?>
-                    <?php eT('OK');?>
-                <?php else: ?>
-                    <?php eT('Not enough space'); ?>
-                    <?php printf(gT('PHP version is only %s'),$localChecks->php->local_php_ver);?>
-                    <?php $errors = TRUE; $cant_ignore = true;?>
-                <?php endif; ?>
-            </td>
+            <td class="col-sm-8"><?php echo $localChecks->php->php_ver;?></td>
+
+            <td class="col-sm-1"></td>
+
+            <?php if($localChecks->php->result): ?>
+                <td>
+                    <span class="fa fa-check text-success" alt="right"></span>
+                </td>
+            <?php else: ?>
+                <td>
+                    <h3 class="label label-danger">
+                        <?php printf(gT('PHP version is only %s'),$localChecks->php->local_php_ver);?>
+                    </h3>
+                </td>
+                <?php $errors = TRUE; $cant_ignore = true; $ignore = false;?>
+            <?php endif; ?>
         </tr>
     </tbody>
 </table>
@@ -81,25 +120,35 @@
     <thead>
         <tr>
             <th class="col-sm-10"><?php eT('Required PHP modules:');?></th>
-            <th class="col-sm-12"  style="text-align: right"></th>
+            <th class="col-sm-1"  style="text-align: right"></th>
+            <th class="col-sm-1"  style="text-align: right"></th>
         </tr>
     </thead>
     <tbody>
         <?php foreach($localChecks->php_modules as $name => $module):?>
         <tr>
-            <td class="col-sm-10"><?php echo $name;?></td>
-            <td class="col-sm-2 <?php if($module->installed){echo "success" ;}else{ if(isset($module->required)){echo "error";}else{echo "warning";}}?>" style="text-align: right">
-                <?php if($module->installed): ?>
-                    <?php eT('OK');?>
-                <?php else: ?>
-                    <?php if(isset($module->required)): ?>
-                        <?php eT('No'); ?> !
-                        <?php $errors = TRUE; $cant_ignore = true; ?>
-                    <?php elseif(isset($module->optional)): ?>
+            <td><?php echo $name;?></td>
+            <td></td>
+
+            <?php if($module->installed): ?>
+                <td>
+                    <span class="fa fa-check text-success" alt="right"></span>
+                </td>
+            <?php elseif(isset($module->required)): ?>
+                <td>
+                    <span class="label label-danger">
+                        <?php eT('Not found!'); ?>
+                    </span>
+                </td>
+                <?php $errors = TRUE; $cant_ignore = true; $ignore = false;?>
+            <?php else: ?>
+                <td>
+                    <span class="label label-danger">
                         <?php eT('No (but optional)'); ?>
-                    <?php endif;?>
-                <?php endif; ?>
-            </td>
+                    </span>
+                </td>
+            <?php endif; ?>
+
         </tr>
         <?php endforeach; ?>
     </tbody>
