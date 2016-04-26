@@ -42,7 +42,8 @@
                         'drops' => 'up',  // TODO: Does not work. Why?
                         'timePicker' => true,
                         'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work
-                        'timePickerIncrement' => 1
+                        'timePickerIncrement' => 1,
+                        'language'=>convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                     )
                 ));
             ?>

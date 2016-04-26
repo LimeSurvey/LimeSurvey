@@ -9,7 +9,7 @@
 
     <!-- Survey title -->
     <div class="form-group">
-        <label class="col-sm-2 question-group-title control-label" for="short_title<?php echo $esrow['surveyls_language']; ?>">
+        <label class="col-sm-2 question-group-title control-label" for="short_title_<?php echo $esrow['surveyls_language']; ?>">
             <?php eT("Survey title:"); ?>
         </label>
         <div class="col-sm-9">

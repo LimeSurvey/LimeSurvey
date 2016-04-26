@@ -960,7 +960,7 @@
     *
     * @param mixed $sLocale LimeSurvey locale code
     */
-    function translateLStoDateTimePickerLocale($sLocale)
+    function convertLStoDateTimePickerLocale($sLocale)
     {
         // Strip informal string always for easier matching
         $sLocale=str_replace('-informal','',$sLocale);

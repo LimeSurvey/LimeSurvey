@@ -40,8 +40,6 @@ class Survey_Common_Action extends CAction
     */
     public function runWithParams($params)
     {
-        App()->getClientScript()->registerPackage('bootstrap-daterangepicker');
-
         // Default method that would be called if the subaction and run() do not exist
         $sDefault = 'index';
 

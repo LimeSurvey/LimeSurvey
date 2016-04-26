@@ -285,20 +285,5 @@ return array(
         'css' => array(
             'leaflet.css'
         ),
-    ),
-
-    // Bootstrap DateRangePicker
-    'bootstrap-daterangepicker' => array(
-        'baseUrl' => 'third_party/bootstrap-daterangepicker-2.1.19/',
-        'js' => array(
-            'moment.js',
-            'daterangepicker.js'
-        ),
-        'css' => array(
-            'daterangepicker.css'
-        ),
-        'depends' => array(
-            'bootstrap'
-        )
     )
 );
