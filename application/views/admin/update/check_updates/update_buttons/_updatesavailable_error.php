@@ -40,6 +40,12 @@
             $sMessage = gT('Your version is not updatable via ComfortUpdate. Please update manually.');
             break;
 
+        case 'update_disable':
+            $sTile = gT('Error!');
+            $sHeader = gT('Not updatable!');
+            $sMessage = gT('comfortUpdate is disabled in your LimeSurvey configuration. Please contact your administrator for more informations.');
+            break;
+
         case 'no_build':
             $sTile = gT('Error!');
             $sHeader = gT('No build version found!');
