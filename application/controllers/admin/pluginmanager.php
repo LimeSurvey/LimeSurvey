@@ -103,7 +103,16 @@ class PluginManager extends Survey_Common_Action
                     $iStatus = 1;
                 } else
                 {
-                    Yii::app()->user->setFlash('error', gT('Failed to activate the plugin.'));
+                    $customMessage = $result->get('message');
+                    if ($customMessage)
+                    {
+                        Yii::app()->user->setFlash('error', $customMessage);
+                    }
+                    else
+                    {
+                        Yii::app()->user->setFlash('error', gT('Failed to activate the plugin.'));
+                    }
+
                     $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
                 }
             }
@@ -139,7 +148,16 @@ class PluginManager extends Survey_Common_Action
                     $iStatus = 0;
                 } else
                 {
-                    Yii::app()->user->setFlash('error', gT('Failed to deactivate the plugin.'));
+                    $customMessage = $result->get('message');
+                    if ($customMessage)
+                    {
+                        Yii::app()->user->setFlash('error', $customMessage);
+                    }
+                    else
+                    {
+                        Yii::app()->user->setFlash('error', gT('Failed to activate the plugin.'));
+                    }
+
                     $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
                 }
             }
