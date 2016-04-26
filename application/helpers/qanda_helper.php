@@ -1079,7 +1079,7 @@ function do_date($ia)
             'name'                   => $ia[1],
             'dateoutput'             => htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8'),
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
-            'dateformatdetails'      => $dateformatdetails['jsdate'],
+            'dateformatdetails'      => $dateformatdetails['jsdate_original'],
             'dateformat'             => $dateformatdetails['dateformat'],
         ), true);
 
