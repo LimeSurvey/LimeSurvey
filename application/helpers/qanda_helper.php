@@ -1087,9 +1087,6 @@ function do_date($ia)
     }
     else
     {
-        //register timepicker extension
-        App()->getClientScript()->registerPackage('bootstrap-daterangepicker');
-
         // Format the date  for output
         $dateoutput = trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
         if ($dateoutput!='' & $dateoutput!='INVALID')
