@@ -1228,7 +1228,7 @@ class templates extends Survey_Common_Action
 
                 $aData['aReplacements'] = array(
                     'MOVEPREVBUTTON' => '<button type="submit" id="moveprevbtn" value="moveprev" name="moveprev" accesskey="p" class="submit button btn btn-default btn-lg ">Previous</button>',
-                    'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-default btn-lg ">Next</button>'
+                    'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-primary btn-lg ">Next</button>'
                 );
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/navigator.pstpl", $aData, $oEditedTemplate));
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/endpage.pstpl", $aData, $oEditedTemplate));
@@ -1249,7 +1249,7 @@ class templates extends Survey_Common_Action
                 */
 
                 $aData['aReplacements'] = array(
-                    'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-default btn-lg">Next</button>'
+                    'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-primary btn-lg">Next</button>'
                 );
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath  . "/navigator.pstpl", $aData, $oEditedTemplate));
 

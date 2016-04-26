@@ -1692,14 +1692,14 @@ function surveymover()
         $sMoveNext="";
     }
 
-    $sClass .= " btn btn-default btn-lg ";
+    $sClass .= " btn btn-lg ";
 
     // Construction of mover
     $sMovePrevButton = '';
     if($sMovePrev){
         $sLangMoveprev=gT("Previous");
         //$sSurveyMover.= CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass));
-        $sMovePrevButton = CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass));
+        $sMovePrevButton = CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass." btn-default"));
     }
     if($sMovePrev && $sMoveNext){
         $sSurveyMover .= " ";
@@ -1717,7 +1717,7 @@ function surveymover()
         }
 
         //$sSurveyMover.= CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass));
-        $sMoveNextButton = CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass));
+        $sMoveNextButton = CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass." btn-primary"));
      }
     //return $sSurveyMover;
     return array('sMovePrevButton' => $sMovePrevButton, 'sMoveNextButton'=>$sMoveNextButton);
@@ -2339,4 +2339,18 @@ function getMove()
         }
     }
     return $move;
+}
+
+/**
+ * The DateTimePicker uses another date-format
+
+ * @param string $dateFormat - Like 'yyyy-mm-dd'
+ * @return string - E.g 'YYYY-MM-DD'
+ */
+function reverseDateToFitDatePicker($dateformat)
+{
+    // Reverse case, trick from here: http://stackoverflow.com/a/6612519/2138090
+    $newDateFormat = strtolower($dateformat) ^ strtoupper($dateformat) ^ $dateformat;
+    $newDateFormat = str_replace("hh", "HH", $newDateFormat);  // HH (hours) need still be in upper-case for 00-23 representation (not AM/PM)
+    return $newDateFormat;
 }
