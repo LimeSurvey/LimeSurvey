@@ -4,13 +4,13 @@
  */
 ?>
 
-<div class="side-body">                           
-	<h3><?php eT("Create dummy tokens"); ?></h3>        
-                                                  
-	<div class="row">                             
-		<div class="col-lg-12 content-right">     
+<div class="side-body">
+	<h3><?php eT("Create dummy tokens"); ?></h3>
+
+	<div class="row">
+		<div class="col-lg-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/adddummies/surveyid/{$surveyid}/subaction/add"), 'post', array('id'=>'edittoken', 'name'=>'edittoken', 'class'=>'form30 form-horizontal')); ?>
-            
+
                 <!-- ID  -->
                 <div class="form-group">
                     <label  class="col-sm-2 control-label">ID:</label>
@@ -18,7 +18,7 @@
                         <p class="form-control-static"><?php eT("Auto"); ?></p>
                     </div>
                 </div>
-                
+
                 <!-- Number of tokens  -->
                 <div class="form-group">
                     <label  class="col-sm-2 control-label" for='amount'><?php eT("Number of tokens"); ?>:</label>
@@ -26,7 +26,7 @@
                         <input class='form-control' type='text' size='20' id='amount' name='amount' value="100" />
                     </div>
                 </div>
-                
+
                 <!-- Token length  -->
                 <div class="form-group">
                     <label  class="col-sm-2 control-label" for='tokenlen'><?php eT("Token length"); ?>:</label>
@@ -34,7 +34,7 @@
                         <input class='form-control' type='text' size='20' id='tokenlen' name='tokenlen' value="<?php echo $tokenlength; ?>" />
                     </div>
                 </div>
-                
+
                 <!-- First name  -->
                 <div class="form-group">
                     <label  class="col-sm-2 control-label" for='firstname'><?php eT("First name"); ?>:</label>
@@ -42,7 +42,7 @@
                         <input class='form-control' type='text' size='30' id='firstname' name='firstname' value="" />
                     </div>
                 </div>
-                
+
                 <!-- Last name  -->
                 <div class="form-group">
                     <label  class="col-sm-2 control-label" for='lastname'><?php eT("Last name"); ?>:</label>
@@ -50,7 +50,7 @@
                         <input class='form-control' type='text' size='30'  id='lastname' name='lastname' value="" />
                     </div>
                 </div>
-                
+
                 <!-- Email  -->
                 <div class="form-group">
                     <label  class="col-sm-2 control-label" for='email'><?php eT("Email"); ?>:</label>
@@ -58,7 +58,7 @@
                         <input class='form-control' type='email' maxlength='320' size='50' id='email' name='email' value="" />
                     </div>
                 </div>
-                
+
                 <!-- Language  -->
                 <div class="form-group">
                     <label  class="col-sm-2 control-label" for='language'><?php eT("Language"); ?>:</label>
@@ -66,7 +66,7 @@
                         <?php echo languageDropdownClean($surveyid, Survey::model()->findByPk($surveyid)->language); ?>
                     </div>
                 </div>
-                
+
                 <!-- Uses left  -->
                 <div class="form-group">
                     <label  class="col-sm-2 control-label" for='usesleft'><?php eT("Uses left:"); ?></label>
@@ -74,7 +74,7 @@
                         <input class='form-control' type='text' size='20' id='usesleft' name='usesleft' value="1" />
                     </div>
                 </div>
-                
+
                 <!--  Validity -->
                 <div class="form-group">
                     <label  class="col-sm-2 control-label" for='validfrom'><?php eT("Valid from"); ?>:</label>
@@ -85,18 +85,13 @@
                                 'value' => isset($validfrom) ? $validfrom : '',
                                 'pluginOptions' => array(
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                    'singleDatePicker' => true,
-                                    'startDate' => date("Y-m-d", time()),
-                                    'drops' => 'up',  // TODO: Does not work. Why?
-                                    'timePicker' => true,
-                                    'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work
-                                    'timePickerIncrement' => 1
+                                    'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                                 )
                             ));
                         ?>
                         <span class="help-block"><?php printf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')); ?></span>
-                    </div>        
-                    
+                    </div>
+
                     <label  class="col-sm-2 control-label" for='validuntil'><?php eT('Until:'); ?></label>
                     <div class="col-sm-3 has-feedback">
                         <i class='fa fa-calendar form-control-feedback'></i>
@@ -105,19 +100,14 @@
                                 'value' => isset($validuntil) ? $validuntil : '',
                                 'pluginOptions' => array(
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                    'singleDatePicker' => true,
-                                    'startDate' => date("Y-m-d", time()),
-                                    'drops' => 'up',
-                                    'timePicker' => true,
-                                    'timePicker12Hour' => false,
-                                    'timePickerIncrement' => 1
+                                    'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                                 )
                             ));
                         ?>
                         <span class="help-block"><?php printf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')); ?></span>
                     </div>
                 </div>
-                
+
                 <!-- Attribute fields  -->
                 <?php foreach ($aAttributeFields as $attr_name => $attr_description): ?>
                     <div class="form-group">
@@ -127,7 +117,7 @@
                         </div>
                     </div>
                 <?php endforeach; ?>
-                
+
                 <!-- Buttons  -->
                 <p>
                     <input type='submit' class="hidden" value='<?php eT("Add dummy tokens"); ?>' />

@@ -38,13 +38,7 @@
                     'value' => $startdate,
                     'pluginOptions' => array(
                         'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                        'singleDatePicker' => true,
-                        'startDate' => date("Y-m-d hh:ii", time()),
-                        'drops' => 'up',  // TODO: Does not work. Why?
-                        'timePicker' => true,
-                        'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work
-                        'timePickerIncrement' => 1,
-                        'language'=>convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                     )
                 ));
             ?>
@@ -62,12 +56,7 @@
                     'value' => $expires,
                     'pluginOptions' => array(
                         'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                        'singleDatePicker' => true,
-                        'startDate' => date("Y-m-d", time()),
-                        'drops' => 'up',  // TODO: Does not work. Why?
-                        'timePicker' => true,
-                        'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work
-                        'timePickerIncrement' => 1
+                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                     )
                 ));
             ?>

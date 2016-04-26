@@ -13,13 +13,8 @@
                             'id' => 'datestampE',
                             'value' => isset($_POST['datestampE']) ? $_POST['datestampE'] : '',
                             'pluginOptions' => array(
-                                'format' => ($dateformatdetails['jsdate']) . " HH:mm",
-                                'singleDatePicker' => true,
-                                'startDate' => date("Y-m-d H:i", time()),
-                                'drops' => 'up',  // TODO: Does not work. Why?
-                                'timePicker' => true,
-                                'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work
-                                'timePickerIncrement' => 1
+                                'format' => ($dateformatdetails['jsdate']),
+                                'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                             )
                         ));
                     ?>
@@ -35,12 +30,7 @@
                             'value' => isset($_POST['datestampG']) ? $_POST['datestampG'] : '',
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                'singleDatePicker' => true,
-                                'startDate' => date("Y-m-d H:i", time()),
-                                'drops' => 'up',  // TODO: Does not work. Why?
-                                'timePicker' => true,
-                                'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work
-                                'timePickerIncrement' => 1
+                                'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                             )
                         ));
                     ?>
@@ -56,12 +46,7 @@
                             'value' => isset($_POST['datestampL']) ? $_POST['datestampL'] : '',
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                'singleDatePicker' => true,
-                                'startDate' => date("Y-m-d H:i", time()),
-                                'drops' => 'up',  // TODO: Does not work. Why?
-                                'timePicker' => true,
-                                'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work
-                                'timePickerIncrement' => 1
+                                'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                             )
                         ));
                     ?>

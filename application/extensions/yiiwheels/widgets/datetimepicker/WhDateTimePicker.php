@@ -61,7 +61,6 @@ class WhDateTimePicker extends CInputWidget
 	{
 		$this->attachBehavior('ywplugin', array('class' => 'yiiwheels.behaviors.WhPlugin'));
 		$this->htmlOptions['id'] = TbArray::getValue('id', $this->htmlOptions, $this->getId());
-		$this->htmlOptions['data-format'] = $this->format;
 	}
 
 	/**
@@ -84,7 +83,7 @@ class WhDateTimePicker extends CInputWidget
 			list($name, $id) = $this->resolveNameID();
 
 			$options['id'] = $id . '_datetimepicker';
-			TbHtml::addCssClass('input-append', $options);
+			TbHtml::addCssClass('input-group date', $options);
 
 			echo TbHtml::openTag('div', $options);
 			if ($this->hasModel()) {
@@ -92,9 +91,10 @@ class WhDateTimePicker extends CInputWidget
 			} else {
 				echo TbHtml::textField($name, $this->value, $this->htmlOptions);
 			}
-			echo TbHtml::openTag('span', array('class' => 'add-on'));
-			echo '<i data-time-icon="' . $this->iconTime . '" data-date-icon="' . $this->iconDate . '"></i>';
+            echo TbHtml::openTag('span', array('class' => 'input-group-addon'));
+			echo TbHtml::openTag('span', array('class' => 'glyphicon glyphicon-calendar'));
 			echo TbHtml::closeTag('span');
+            echo TbHtml::closeTag('span');
 			echo TbHtml::closeTag('div');
 		}
 	}
@@ -112,9 +112,9 @@ class WhDateTimePicker extends CInputWidget
 
 		/* @var $cs CClientScript */
 		$cs = Yii::app()->getClientScript();
-        $this->getYiiWheels()->registerAssetJs('moment.min.js');
 		$cs->registerCssFile($assetsUrl . '/css/bootstrap-datetimepicker.min.css');
-		$cs->registerScriptFile($assetsUrl . '/js/bootstrap-datetimepicker.min.js', CClientScript::POS_END);
+        $cs->registerScriptFile($assetsUrl . '/js/moment-with-locales.js', CClientScript::POS_END);
+		$cs->registerScriptFile($assetsUrl . '/js/bootstrap-datetimepicker.js', CClientScript::POS_END);
 		if (isset($this->pluginOptions['language'])) {
 			$cs->registerScriptFile(
 				$assetsUrl . '/js/locales/bootstrap-datetimepicker.' . $this->pluginOptions['language'] . '.js'

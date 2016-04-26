@@ -49,15 +49,17 @@
                 'pluginOptions' => array(
                     'class' => 'test',
                     'format' => $dateformatdetailsjs,
+                    'locale' => convertLStoDateTimePickerLocale($language)
+                    /*
+                    Min/max Date implementation missing?
                     'singleDatePicker' => true,
                     'startDate' => date("Y-m-d H:i", time()),
-                    'drops' => 'up',  // TODO: Does not work. Why?
                     // Show hour and minute picker if we have HH or MM in date format
                     'pickTime' => (strpos($dateformatdetails, "HH") !== false || strpos($dateformatdetails, "MM") !== false),
                     'pickDate' => !$hideCalendar,
                     'timePicker12Hour' => false,
                     'timePicker24Hour' => true,
-                    'timePickerIncrement' => 1,
+                    'timePickerIncrement' => 1,*/
                 ),
                 'htmlOptions' => array(
                     'onkeypress' => $goodchars,

@@ -60,13 +60,7 @@
                         'name' => $fieldname,
                         'pluginOptions' => array(
                             'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                            'singleDatePicker' => true,
-                            'startDate' => date("Y-m-d", time()),
-                            'drops' => 'up',  // TODO: Does not work. Why?
-                            'timePicker' => true,
-                            'timePicker12Hour' => false,  // NB: timePicker24Hour = true does not work?
-                            'timePicker24Hour' => true,
-                            'timePickerIncrement' => 1
+                            'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                         )
                     )); ?>
                     <input type='hidden' name='dateformat<?php echo $fieldname; ?>' id='dateformat<?php echo $fieldname; ?>' value='<?php echo $dateformatdetails['jsdate']; ?>'  />
