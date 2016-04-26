@@ -6,7 +6,8 @@
         <div class="panel-body">
             <div class='form-group'>
                 <label class="col-sm-4 control-label" for='datestampE'><?php eT("Equals:"); ?></label>
-                <div class="col-sm-5">
+                <div class="col-sm-5 has-feedback">
+                    <i class='fa fa-calendar form-control-feedback'></i>
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "datestampE",
                             'id' => 'datestampE',
@@ -26,7 +27,8 @@
             </div>
             <div class='form-group'>
                 <label class="col-sm-4 control-label" for='datestampG'><?php eT("Later than:");?></label>
-                <div class="col-sm-5">
+                <div class="col-sm-5 has-feedback">
+                    <i class='fa fa-calendar form-control-feedback'></i>
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "datestampG",
                             'id' => 'datestampG',
@@ -46,7 +48,8 @@
             </div>
             <div class='form-group'>
                 <label class="col-sm-4 control-label" for='datestampL'><?php eT("Earlier than:");?></label>
-                <div class="col-sm-5">
+                <div class="col-sm-5 has-feedback">
+                    <i class='fa fa-calendar form-control-feedback'></i>
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "datestampL",
                             'id' => 'datestampL',
