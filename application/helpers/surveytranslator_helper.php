@@ -956,14 +956,19 @@
     }
 
     /**
-    * This functions translates LimeSurvey specific locale code to match a Yii locale
+    * This functions translates LimeSurvey specific locale code to a matching datetimepicker locale
     *
     * @param mixed $sLocale LimeSurvey locale code
     */
-    function translateLStoYiiLocale($sLocale)
+    function translateLStoDateTimePickerLocale($sLocale)
     {
-        // Strip informal string
+        // Strip informal string always for easier matching
         $sLocale=str_replace('-informal','',$sLocale);
+
+        $aConversions=array();
+        if (isset($aConversions[$sLocale])){
+            $sLocale=$aConversions[$sLocale];
+        }
         return $sLocale;
     }
 
