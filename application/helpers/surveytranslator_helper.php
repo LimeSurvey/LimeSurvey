@@ -816,6 +816,7 @@
             $aDateFormatDetails['dateformat'] = trim($aQidAttributes['date_format']);
             $aDateFormatDetails['phpdate'] = getPHPDateFromDateFormat($aDateFormatDetails['dateformat']);
             $aDateFormatDetails['jsdate'] = getJSDateFromDateFormat($aDateFormatDetails['dateformat']);
+            $aDateFormatDetails['jsdate_original'] = $aDateFormatDetails['dateformat'];  // In dropdown, this is fed to Date in Javascript, not Bootstrap
         }
         else
         {
