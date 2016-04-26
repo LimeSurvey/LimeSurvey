@@ -35,6 +35,22 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160425) to 2.50+ (build 160426) Apr 26, 2016
+-Fixed issue: Date picker not properly working in administration (Carsten Schmitz)
+-Fixed issue #10972: Unable to edit pstpl files located at template root (2.06 templates) (LouisGac)
+-Fixed issue #11016: 10 point array does not fit on tablet screen (LouisGac)
+-Fixed issue #11027: Better styling of progress bar in 2.5 templates (Olle Haerstedt)
+-Fixed issue #11034: No javascript warning is not viewable (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Latvian (Informal) by marcic
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+
 Changes from 2.50+ (build 160421) to 2.50+ (build 160425) Apr 25, 2016
 -Fixed issue #11004: [security] Unauthorized access to certain admin pages by restricted admins (Carsten Schmitz)
 -Fixed issue #10274: Bad layout of mini calendar in statistics (Olle Haerstedt)
