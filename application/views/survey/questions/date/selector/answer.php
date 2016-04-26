@@ -48,7 +48,7 @@
                 'value' => $dateoutput,
                 'pluginOptions' => array(
                     'class' => 'test',
-                    'format' => $dateformatReversed,
+                    'format' => $dateformatdetailsjs,
                     'singleDatePicker' => true,
                     'startDate' => date("Y-m-d H:i", time()),
                     'drops' => 'up',  // TODO: Does not work. Why?

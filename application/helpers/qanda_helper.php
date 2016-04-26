@@ -1104,15 +1104,10 @@ function do_date($ia)
         // "+1" makes room for a trailing space in date/time values
         $iLength   = strlen(date($dateformatdetails['phpdate'],mktime(23,59,59,12,30,1999)))+1;
 
-        // For WhDateTimePicker, case is for some reason reversed in date format
-        $dateformat = $dateformatdetails['jsdate'];
-        // Reverse case, trick from here: http://stackoverflow.com/a/6612519/2138090
-        $dateformatReversed = reverseDateToFitDatePicker($dateformat);
-
-        // Hide calendar if there's no year, month or day in format
-        $hideCalendar = strpos($dateformatReversed, 'Y') === false
-            && strpos($dateformatReversed, 'D') === false
-            && strpos($dateformatReversed, 'M') === false;
+        // Hide calendar (but show hour/minute) if there's no year, month or day in format
+        $hideCalendar = strpos($dateformatdetails['jsdate'], 'Y') === false
+            && strpos($dateformatdetails['jsdate'], 'D') === false
+            && strpos($dateformatdetails['jsdate'], 'M') === false;
 
         // HTML for date question using datepicker
         $answer = Yii::app()->getController()->renderPartial('/survey/questions/date/selector/answer', array(
@@ -1121,7 +1116,6 @@ function do_date($ia)
             'mindate'                => $mindate,
             'maxdate'                => $maxdate,
             'dateformatdetails'      => $dateformatdetails['dateformat'],
-            'dateformatReversed'     => $dateformatReversed,
             'dateformatdetailsjs'    => $dateformatdetails['jsdate'],
             'goodchars'              => "return goodchars(event,'".$goodchars."')",
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',

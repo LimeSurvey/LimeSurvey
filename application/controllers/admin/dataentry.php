@@ -735,7 +735,7 @@ class dataentry extends Survey_Common_Action
                                     'name' => $fname['fieldname'],
                                     'value' => $thisdate,
                                     'pluginOptions' => array(
-                                        'format' => reverseDateToFitDatePicker($dateformatdetails['jsdate']) . " HH:mm",
+                                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                         'singleDatePicker' => true,
                                         'startDate' => date("Y-m-d", time()),
                                         'drops' => 'up',  // TODO: Does not work. Why?
