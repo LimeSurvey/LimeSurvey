@@ -22,7 +22,7 @@
             'id' => 'startdate',
             'value' => isset($startdate) ? $startdate : '',
             'pluginOptions' => array(
-                'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
+                'format' => reverseDateToFitDatePicker($dateformatdetails['jsdate']) . " HH:mm",
                 'singleDatePicker' => true,
                 'startDate' => date("Y-m-d H:i", time()),
                 'drops' => 'up',  // TODO: Does not work. Why?
@@ -47,7 +47,7 @@
         'id' => 'expires',
         'value' => isset($expires) ? $expires : '',
         'pluginOptions' => array(
-            'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
+            'format' => reverseDateToFitDatePicker($dateformatdetails['jsdate']) . " HH:mm",
             'singleDatePicker' => true,
             'startDate' => date("Y-m-d H:i", time()),
             'drops' => 'up',  // TODO: Does not work. Why?

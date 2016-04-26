@@ -83,7 +83,7 @@
                                 'name' => "validfrom",
                                 'value' => isset($validfrom) ? $validfrom : '',
                                 'pluginOptions' => array(
-                                    'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
+                                    'format' => reverseDateToFitDatePicker($dateformatdetails['jsdate']) . " HH:mm",
                                     'singleDatePicker' => true,
                                     'startDate' => date("Y-m-d", time()),
                                     'drops' => 'up',  // TODO: Does not work. Why?
@@ -102,7 +102,7 @@
                                 'name' => "validuntil",
                                 'value' => isset($validuntil) ? $validuntil : '',
                                 'pluginOptions' => array(
-                                    'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
+                                    'format' => reverseDateToFitDatePicker($dateformatdetails['jsdate']) . " HH:mm",
                                     'singleDatePicker' => true,
                                     'startDate' => date("Y-m-d", time()),
                                     'drops' => 'up',

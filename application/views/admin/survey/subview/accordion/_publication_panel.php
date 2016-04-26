@@ -36,7 +36,7 @@
                     'id' => 'startdate',
                     'value' => $startdate,
                     'pluginOptions' => array(
-                        'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
+                        'format' => reverseDateToFitDatePicker($dateformatdetails['jsdate']) . " HH:mm",
                         'singleDatePicker' => true,
                         'startDate' => date("Y-m-d hh:ii", time()),
                         'drops' => 'up',  // TODO: Does not work. Why?
@@ -58,7 +58,7 @@
                     'id' => 'expires',
                     'value' => $expires,
                     'pluginOptions' => array(
-                        'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
+                        'format' => reverseDateToFitDatePicker($dateformatdetails['jsdate']) . " HH:mm",
                         'singleDatePicker' => true,
                         'startDate' => date("Y-m-d", time()),
                         'drops' => 'up',  // TODO: Does not work. Why?

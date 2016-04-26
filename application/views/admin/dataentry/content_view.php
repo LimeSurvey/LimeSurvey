@@ -58,7 +58,7 @@
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                         'name' => $fieldname,
                         'pluginOptions' => array(
-                            'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
+                            'format' => reverseDateToFitDatePicker($dateformatdetails['jsdate']) . " HH:mm",
                             'singleDatePicker' => true,
                             'startDate' => date("Y-m-d", time()),
                             'drops' => 'up',  // TODO: Does not work. Why?

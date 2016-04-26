@@ -12,7 +12,7 @@
                             'id' => 'datestampE',
                             'value' => isset($_POST['datestampE']) ? $_POST['datestampE'] : '',
                             'pluginOptions' => array(
-                                'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
+                                'format' => ($dateformatdetails['jsdate']) . " HH:mm",
                                 'singleDatePicker' => true,
                                 'startDate' => date("Y-m-d H:i", time()),
                                 'drops' => 'up',  // TODO: Does not work. Why?
@@ -32,7 +32,7 @@
                             'id' => 'datestampG',
                             'value' => isset($_POST['datestampG']) ? $_POST['datestampG'] : '',
                             'pluginOptions' => array(
-                                'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
+                                'format' => reverseDateToFitDatePicker($dateformatdetails['jsdate']) . " HH:mm",
                                 'singleDatePicker' => true,
                                 'startDate' => date("Y-m-d H:i", time()),
                                 'drops' => 'up',  // TODO: Does not work. Why?
@@ -52,7 +52,7 @@
                             'id' => 'datestampL',
                             'value' => isset($_POST['datestampL']) ? $_POST['datestampL'] : '',
                             'pluginOptions' => array(
-                                'format' => reverseDateToFitDatePicker($dateformatdetails['dateformat']) . " HH:mm",
+                                'format' => reverseDateToFitDatePicker($dateformatdetails['jsdate']) . " HH:mm",
                                 'singleDatePicker' => true,
                                 'startDate' => date("Y-m-d H:i", time()),
                                 'drops' => 'up',  // TODO: Does not work. Why?
