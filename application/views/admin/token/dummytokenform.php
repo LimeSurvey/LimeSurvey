@@ -85,6 +85,8 @@
                                 'value' => isset($validfrom) ? $validfrom : '',
                                 'pluginOptions' => array(
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                    'allowInputToggle' =>true,
+                                    'showClear' => true,
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                                 )
                             ));
@@ -100,6 +102,8 @@
                                 'value' => isset($validuntil) ? $validuntil : '',
                                 'pluginOptions' => array(
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                    'allowInputToggle' =>true,
+                                    'showClear' => true,
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                                 )
                             ));

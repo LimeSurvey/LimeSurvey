@@ -38,6 +38,8 @@
                     'value' => $startdate,
                     'pluginOptions' => array(
                         'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                        'allowInputToggle' =>true,
+                        'showClear' => true,
                         'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                     )
                 ));
@@ -56,6 +58,8 @@
                     'value' => $expires,
                     'pluginOptions' => array(
                         'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                        'allowInputToggle' =>true,
+                        'showClear' => true,
                         'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                     )
                 ));
