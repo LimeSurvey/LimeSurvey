@@ -49,6 +49,8 @@
                 'pluginOptions' => array(
                     'class' => 'test',
                     'format' => $dateformatdetailsjs,
+                    'allowInputToggle' =>true,
+                    'showClear' => true,
                     'locale' => convertLStoDateTimePickerLocale($language)
                     /*
                     Min/max Date implementation missing?

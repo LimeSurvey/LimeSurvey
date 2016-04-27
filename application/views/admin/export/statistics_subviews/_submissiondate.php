@@ -14,6 +14,8 @@
                             'value' => isset($_POST['datestampE']) ? $_POST['datestampE'] : '',
                             'pluginOptions' => array(
                                 'format' => ($dateformatdetails['jsdate']),
+                                'allowInputToggle' =>true,
+                                'showClear' => true,
                                 'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                             )
                         ));
@@ -30,6 +32,8 @@
                             'value' => isset($_POST['datestampG']) ? $_POST['datestampG'] : '',
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                'allowInputToggle' =>true,
+                                'showClear' => true,
                                 'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                             )
                         ));
@@ -46,6 +50,8 @@
                             'value' => isset($_POST['datestampL']) ? $_POST['datestampL'] : '',
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                'allowInputToggle' =>true,
+                                'showClear' => true,
                                 'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                             )
                         ));
