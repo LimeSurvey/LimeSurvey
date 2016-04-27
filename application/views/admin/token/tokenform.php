@@ -137,7 +137,6 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label"  for='validfrom'><?php eT("Valid from"); ?>:</label>
                 <div class="col-sm-2 has-feedback">
-                    <i class='fa fa-calendar form-control-feedback'></i>
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                         'name' => "validfrom",
                         'value' => isset($validfrom) ? $validfrom : '',
@@ -167,7 +166,6 @@
 
                 <label class="col-sm-2 control-label"  for='validuntil'><?php eT('Until:'); ?></label>
                 <div class="col-sm-2 has-feedback">
-                    <i class='fa fa-calendar form-control-feedback'></i>
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                         'name' => "validuntil",
                         'value' => isset($validuntil) ? $validuntil : '',

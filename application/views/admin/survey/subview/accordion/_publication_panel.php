@@ -31,7 +31,6 @@
     <div class="form-group">
         <label class="col-sm-6 control-label" for='startdate'><?php  eT("Start date/time:"); ?></label>
         <div class="col-sm-6 has-feedback">
-            <i class='fa fa-calendar form-control-feedback'></i>
             <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                     'name' => "startdate",
                     'id' => 'startdate',
@@ -64,7 +63,6 @@
     <div class="form-group">
         <label class="col-sm-6 control-label" for='expires'><?php  eT("Expiry date/time:"); ?></label>
         <div class="col-sm-6 has-feedback">
-            <i class='fa fa-calendar form-control-feedback'></i>
             <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                     'name' => "expires",
                     'id' => 'expires',

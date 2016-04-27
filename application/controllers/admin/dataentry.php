@@ -731,8 +731,6 @@ class dataentry extends Survey_Common_Action
                                 )
                                 );
                                 /*
-                                <div ? class has-feedback
-                                <i class='fa fa-calendar form-control-feedback'></i>
                                 Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                                     'name' => $fname['fieldname'],
                                     'value' => $thisdate,
