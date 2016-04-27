@@ -158,7 +158,13 @@
                                     <li class="dropdown-header"><?php echo $menuItem->getLabel();?></li>
                                 <?php else: ?>
                                     <li>
-                                        <a href="<?php echo $menuItem->getHref(); ?>"><?php echo $menuItem->getLabel(); ?></a>
+                                        <a href="<?php echo $menuItem->getHref(); ?>">
+                                            <!-- Spit out icon if present -->
+                                            <?php if ($menuItem->getIconClass() != ''): ?>
+                                              <span class="<?php echo $menuItem->getIconClass(); ?>">&nbsp;</span>
+                                            <?php endif; ?>
+                                            <?php echo $menuItem->getLabel(); ?>
+                                        </a>
                                     </li>
                                 <?php endif; ?>
                             <?php endforeach; ?>

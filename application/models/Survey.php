@@ -632,6 +632,62 @@ class Survey extends LSActiveRecord
         return $activeword;
     }
 
+    /**
+     * Get state of survey, which can be one of five:
+     * 1. Not active
+     * 2. Expired
+     * 3. Will expire in the future (running now)
+     * 3. Will run in future
+     * 4. Running now (no expiration date)
+     *
+     * Code copied from getRunning below.
+     *
+     * @return string - 'inactive', 'expired', 'willRun', 'willExpire' or 'running'
+     */
+    public function getState()
+    {
+        if($this->active == 'N')
+        {
+            return 'inactive';
+        }
+        elseif ($this->expires != '' || $this->startdate != '')
+        {
+            // Time adjust
+            $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))) );
+            $sStop   = ($this->expires != '')?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires)) ):$sNow;
+            $sStart  =  ($this->startdate != '')?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate)) ):$sNow;
+
+            // Time comparaison
+            $oNow   = new DateTime($sNow);
+            $oStop  = new DateTime($sStop);
+            $oStart = new DateTime($sStart);
+
+            $bExpired = ($oStop < $oNow);
+            $bWillRun = ($oStart > $oNow);
+
+            if ($bExpired)
+            {
+                return 'expired';
+            }
+            elseif ($bWillRun)
+            {
+                return 'willRun';
+            }
+            else
+            {
+                return 'willExpire';
+            }
+        }
+        // If it's active, and doesn't have expire date, it's running
+        else
+        {
+            return 'running';
+        }
+    }
+
+    /**
+     * @todo Document code, please.
+     */
     public function getRunning()
     {
 
