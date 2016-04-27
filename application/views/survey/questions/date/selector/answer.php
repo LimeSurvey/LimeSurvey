@@ -49,20 +49,20 @@
                     'format' => $dateformatdetailsjs,
                     'allowInputToggle' =>true,
                     'showClear' => true,
-                    'tooltips' => array(
-                        'clear'=> gT('Clear selection'),
-                        'prevMonth'=> gT('Previous month'),
-                        'nextMonth'=> gT('Next month'),
-                        'selectYear'=> gT('Select year'),
-                        'prevYear'=> gT('Previous year'),
-                        'nextYear'=> gT('Next year'),
-                        'selectDecade'=> gT('Select decade'),
-                        'prevDecade'=> gT('Previous decade'),
-                        'nextDecade'=> gT('Next decade'),
-                        'prevCentury'=> gT('Previous century'),
-                        'nextCentury'=> gT('Next century)')
-                    ),
-                    'locale' => convertLStoDateTimePickerLocale($language),
+                            'tooltips' => array(
+                                'clear'=> gT('Clear selection'),
+                                'prevMonth'=> gT('Previous month'),
+                                'nextMonth'=> gT('Next month'),
+                                'selectYear'=> gT('Select year'),
+                                'prevYear'=> gT('Previous year'),
+                                'nextYear'=> gT('Next year'),
+                                'selectDecade'=> gT('Select decade'),
+                                'prevDecade'=> gT('Previous decade'),
+                                'nextDecade'=> gT('Next decade'),
+                                'prevCentury'=> gT('Previous century'),
+                                'nextCentury'=> gT('Next century')
+                            ),
+                    'locale' => convertLStoDateTimePickerLocale($language)
                     'maxDate' => $maxdate,
                     'minDate' => $mindate,
                     'sideBySide' => true

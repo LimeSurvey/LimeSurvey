@@ -749,7 +749,7 @@ class dataentry extends Survey_Common_Action
                                             'prevDecade'=> gT('Previous decade'),
                                             'nextDecade'=> gT('Next decade'),
                                             'prevCentury'=> gT('Previous century'),
-                                            'nextCentury'=> gT('Next century)')
+                                            'nextCentury'=> gT('Next century')
                                         ),
                                         'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                                     )
