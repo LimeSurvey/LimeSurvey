@@ -62,7 +62,7 @@
                                 'prevCentury'=> gT('Previous century'),
                                 'nextCentury'=> gT('Next century')
                             ),
-                    'locale' => convertLStoDateTimePickerLocale($language)
+                    'locale' => convertLStoDateTimePickerLocale($language),
                     'maxDate' => $maxdate,
                     'minDate' => $mindate,
                     'sideBySide' => true
