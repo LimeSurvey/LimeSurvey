@@ -47,7 +47,6 @@
                 'id' => "answer" . $name,
                 'value' => $dateoutput,
                 'pluginOptions' => array(
-                    'class' => 'test',
                     'format' => $dateformatdetailsjs,
                     'allowInputToggle' =>true,
                     'showClear' => true,
