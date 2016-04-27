@@ -62,7 +62,10 @@
                         'prevCentury'=> gT('Previous century'),
                         'nextCentury'=> gT('Next century)')
                     ),
-                    'locale' => convertLStoDateTimePickerLocale($language)
+                    'locale' => convertLStoDateTimePickerLocale($language),
+                    'maxDate' => $maxdate,
+                    'minDate' => $mindate,
+                    'sideBySide' => true
                     /*
                     Min/max Date implementation missing?
                     'singleDatePicker' => true,
@@ -81,6 +84,12 @@
             ));
         ?>
     </span>
+    <script>
+        $(document).ready(function() {
+            // Min and max date sets default value, so use this to override it
+            $('#answer<?php echo $name; ?>').val('<?php echo $dateoutput; ?>');
+        });
+    </script>
 
     <input
         type='hidden'
