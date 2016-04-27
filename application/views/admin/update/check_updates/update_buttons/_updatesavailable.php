@@ -6,6 +6,20 @@
  * @var obj $clang : the translate object, now moved to global function TODO : remove it
  */
 ?>
+
+<?php
+// if the server provided a HTML message
+if(isset($updateInfos->html))
+{
+    if($updateInfos->html != "")
+        echo $updateInfos->html;
+
+    // And we unset this html message for the loop on update versions don't crush on it
+    unset($updateInfos->html);
+}
+?>
+
+
 <ul>
 <li>
 <label><?php eT('The following LimeSurvey updates are available:');?></label><br>
@@ -14,19 +28,6 @@
 <tr><th>
 <?php eT('Version'); ?></th><th><?php eT('Actions'); ?></th></tr>
 </thead>
-<?php
-// First we check if the server provided a specific HTML message
-if(isset($updateInfos->html))
-{
-    if($updateInfos->html != "")
-        echo '<tr><td>'.$updateInfos->html.'</tr></td>';
-
-    // And we unset this html message for the loop on update versions don't crush on it
-    unset($updateInfos->html);
-}
-
-?>
-
 
 <?php foreach ($updateInfos as $aUpdateVersion):?>
     <?php $aUpdateVersion = (array) $aUpdateVersion;?>
@@ -36,6 +37,12 @@ if(isset($updateInfos->html))
                 // display infos about the update. e.g : "2.05+ (150508) (stable)"
                 echo $aUpdateVersion['versionnumber'];?> (<?php echo $aUpdateVersion['build'];?>) <?php if ($aUpdateVersion['branch']!='master') eT('(unstable)'); else eT('(stable)');
             ?>
+
+            <?php if(isset($aUpdateVersion['html'])):?>
+                <?php if($aUpdateVersion['html']!=''):?>
+                    <?php echo $aUpdateVersion['html'];?>
+                <?php endif;?>
+            <?php endif;?>
         </td>
         <td>
             <?php $url = Yii::app()->createUrl("admin/update/sa/getwelcome"); ?>

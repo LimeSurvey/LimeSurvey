@@ -4,7 +4,6 @@
  * @var obj $errorObject the object error
  */
 // TODO : move to the controler
-//$urlNew = Yii::app()->createUrl("admin/globalsettings", array("update"=>'newKey'));
 $urlNew = Yii::app()->createUrl("admin/globalsettings", array("update"=>'newKey', 'destinationBuild' => $_REQUEST['destinationBuild']));
 // We first build the error message.
 // View is right place to do this, so it's easy for further integrators to change messages.
@@ -136,6 +135,7 @@ switch ($errorObject->error)
         break;
 }
 ?>
+
 
 <h2 class="maintitle" style="color: red;"><?php echo $title;?></h2>
 <div style="padding: 10px">

@@ -280,9 +280,11 @@ class UpdateForm extends CFormModel
             $archive = new PclZip($this->tempdir.DIRECTORY_SEPARATOR.$file_to_unzip);
 
             // TODO : RESTORE REPLACE NEWER !!
+            // To debug pcl_zip, uncomment the following line :
             //if ($archive->extract(PCLZIP_OPT_PATH, $this->rootdir.'/', PCLZIP_OPT_REPLACE_NEWER)== 0)
             if ($archive->extract(PCLZIP_OPT_PATH, $this->rootdir.DIRECTORY_SEPARATOR, PCLZIP_OPT_REPLACE_NEWER)== 0)
             {
+                // To debug pcl_zip, uncomment the following line :
                 //PclTraceDisplay(); die();
                 $return = array('result'=>FALSE, 'error'=>'unzip_error', 'message'=>$archive->errorInfo(true));
                 return (object) $return;
@@ -518,6 +520,7 @@ class UpdateForm extends CFormModel
                 if ($currentDbVersion < $dbChecks->dbVersion )
                 {
                     $dbSize = $this->_getDbTotalSize();
+                    $backupDb->message = 'db_change';
 
                     if ($dbSize <= $dbChecks->dbSize )
                     {
@@ -608,13 +611,15 @@ class UpdateForm extends CFormModel
                         $next_update_check = $today->add(new DateInterval('P1D'));
                         Yii::app()->session['next_update_check'] = $next_update_check;
                         Yii::app()->session['update_result'] = false;
+                        Yii::app()->session['unstable_update'] = false;
                     }
                 }
                 else
                 {
                     $update_available = Yii::app()->session['update_result'];
+                    $unstable_update_available = Yii::app()->session['unstable_update'];
                     $security_update_available = Yii::app()->session['security_update'];
-                    $updates = array('result'=>$update_available , 'security_update'=>$security_update_available);
+                    $updates = array('result'=>$update_available , 'security_update'=>$security_update_available, 'unstable_update'=>$unstable_update_available);
                 }
         }
         else
@@ -918,7 +923,7 @@ class UpdateForm extends CFormModel
         return($return);
     }
 
-    //a
+    // Get the minimum required mysql version from the server
     private function _getMysqlChecks($build)
     {
         $checks = new stdClass();

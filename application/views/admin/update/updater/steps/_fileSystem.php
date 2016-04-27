@@ -22,10 +22,10 @@
     
     <?php $this->renderPartial("./update/updater/steps/textaeras/_readonlyfiles", array("readonlyfiles"=>$readonlyfiles) );?>
     <?php $this->renderPartial("./update/updater/steps/textaeras/_existingfiles", array("existingfiles"=>$existingfiles) );?>
-    <?php $this->renderPartial("./update/updater/steps/textaeras/_modifiedfiles", array("modifiedfiles"=>$modifiedfiles) );?>       
+    <?php $this->renderPartial("./update/updater/steps/textaeras/_modifiedfiles", array("modifiedfiles"=>$modifiedfiles) );?>
 
-    
-    
+
+
     <?php if (count($readonlyfiles)>0):?>
             <br />
             <p>

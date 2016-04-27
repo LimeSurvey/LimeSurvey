@@ -15,6 +15,7 @@
     <?php $this->renderPartial("./update/_ajaxVariables"); ?>
 
     <div id="updaterWrap">
+
         <!-- The check buttons : render by ajax only if no step is required by url or post -->
         <?php $this->renderPartial("./update/check_updates/_checkButtons", array( "thisupdatecheckperiod"=>$thisupdatecheckperiod, "updatelastcheck"=>$updatelastcheck,"UpdateNotificationForBranch"=>$UpdateNotificationForBranch )); ?>
         <!-- The updater  -->

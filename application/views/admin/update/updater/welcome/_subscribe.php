@@ -11,17 +11,6 @@
         echo $serverAnswer->html;
 ?>
 
-
-<?php if(isset($serverAnswer->alert_message) && $serverAnswer->alert_message=="subscribe_lts"):?>
-    <div id="update-alert" class="alert alert-info alert-dismissible" role="alert" style="background-color: #fff; border: 1px solid #800051; color: #800051; margin-top:  1em;">
-        <button aria-disabled="false" role="button" type="button" class="close ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" data-dismiss="alert" aria-label="Close"><span class="ui-button-text"><span aria-hidden="true">×</span></span></button>
-        <?php printf(gT('To use comfortUpdate for LTS version, %s you need to subscribe to a Premium Package %s. Free keys are not accepted.'), '<a href="https://www.limesurvey.org/services">', '</a>' );?>
-
-
-    </div>
-<?php endif;?>
-
-
 <div class="updater-background">
     <p>
     <?php eT('The LimeSurvey ComfortUpdate is a great feature to easily update to the latest version of LimeSurvey. To use it you will need an update key.');?></p><p>
@@ -35,6 +24,7 @@
         $aclose = '</a>';
     ?><br>
     <?php echo sprintf(gT("If you don't have an account on limesurvey.org, please %sregister first%s."),$aopen, $aclose);?></p>
+
     <?php
         $url = Yii::app()->createUrl('/admin/update/sa/submitkey');
         echo CHtml::beginForm($url, 'post', array("id"=>"submitKeyForm"));
