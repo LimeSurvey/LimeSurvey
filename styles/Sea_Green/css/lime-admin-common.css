@@ -1804,3 +1804,8 @@ td.subquestion-actions span:hover {
 #quick-menu-container .navbar-brand {
     padding: 0
 }
+
+/* Needed for DateTimePicker in survey settings */
+.panel-group .panel {
+    overflow: visible;
+}
