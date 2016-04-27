@@ -26,7 +26,8 @@
                                     'prevDecade'=> gT('Previous decade'),
                                     'nextDecade'=> gT('Next decade'),
                                     'prevCentury'=> gT('Previous century'),
-                                    'nextCentury'=> gT('Next century')
+                                    'nextCentury'=> gT('Next century'),
+                                'selectTime'=> gT('Select time')
                                 ),
                                 'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                             )
@@ -56,7 +57,8 @@
                                     'prevDecade'=> gT('Previous decade'),
                                     'nextDecade'=> gT('Next decade'),
                                     'prevCentury'=> gT('Previous century'),
-                                    'nextCentury'=> gT('Next century')
+                                    'nextCentury'=> gT('Next century'),
+                                'selectTime'=> gT('Select time')
                                 ),
 
                                 'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
@@ -87,7 +89,8 @@
                                     'prevDecade'=> gT('Previous decade'),
                                     'nextDecade'=> gT('Next decade'),
                                     'prevCentury'=> gT('Previous century'),
-                                    'nextCentury'=> gT('Next century')
+                                    'nextCentury'=> gT('Next century'),
+                                'selectTime'=> gT('Select time')
                                 ),
                                 'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                             )

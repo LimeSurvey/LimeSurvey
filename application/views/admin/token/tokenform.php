@@ -155,7 +155,8 @@
                                 'prevDecade'=> gT('Previous decade'),
                                 'nextDecade'=> gT('Next decade'),
                                 'prevCentury'=> gT('Previous century'),
-                                'nextCentury'=> gT('Next century')
+                                'nextCentury'=> gT('Next century'),
+                                'selectTime'=> gT('Select time')
                             ),
                             'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                         )
@@ -166,7 +167,8 @@
 
                 <label class="col-sm-2 control-label"  for='validuntil'><?php eT('Until:'); ?></label>
                 <div class="col-sm-2 has-feedback">
-                    <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                    <?php
+                    Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                         'name' => "validuntil",
                         'value' => isset($validuntil) ? $validuntil : '',
                         'pluginOptions' => array(
@@ -184,7 +186,9 @@
                                 'prevDecade'=> gT('Previous decade'),
                                 'nextDecade'=> gT('Next decade'),
                                 'prevCentury'=> gT('Previous century'),
-                                'nextCentury'=> gT('Next century')
+                                'nextCentury'=> gT('Next century'),
+                                'selectTime'=> gT('Select time')
+
                             ),
                             'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                         )
