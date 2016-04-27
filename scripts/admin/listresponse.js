@@ -34,7 +34,7 @@ $(document).on("click","[data-delete]",function(event){
         .done(function() {
             jQuery("#displayresponses").delRowData(responseid);
         });
-        $( this ).dialog( "close" ); 
+        $( this ).dialog( "close" );
     };
     buttons[sCancel] = function(){ $( this ).dialog( "close" ); };
     var dialog=$("<p>"+strdeleteconfirm+"</p>").dialog({
@@ -177,7 +177,7 @@ $(function() {
                                 });
                                 $.post( jsonBaseUrl+"&sa=setHiddenColumns", { aHiddenFields: hidden.join("|") } );
                             }
-                        } 
+                        }
                 });
             }
         }
@@ -187,20 +187,21 @@ $(function() {
         jQuery("#displayresponses").navButtonAdd('#pager',{
             caption:sDownLoad, // Remove it ? no it's more clear ;)
             title:sDownLoad, // Todo dynamically update download selected , download all
-            buttonicon:"ui-icon-arrowstop-1-s", 
+            buttonicon:"ui-icon-arrowstop-1-s",
             onClickButton: function(){
                 selectedlist=jQuery("#displayresponses").getGridParam('selarrrow').join(",");//  Or send like an array ?
                 if(selectedlist!="")
                 {
-                    sendPost(jsonActionUrl,null,["oper","responseid"],["downloadzip",selectedlist]);
+                    sendPost(jsonActionUrl,null,["oper","id"],["downloadzip",selectedlist]);
                 }
                 else
                 {
                     if(confirm(sConfirmationArchiveMessage))
+                    {
                         sendPost(jsonActionUrl,null,["oper"],["downloadzip"]);;
-                    //sendPost(sDownloadUrl,null,"responseid",0);
+                    }
                 }
-            }, 
+            },
             position:"last",
         });
     }

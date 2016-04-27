@@ -296,7 +296,7 @@ td {
     opacity:.50;
 }
 
-select, textarea, 
+select, textarea,
 input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"]
 {
     color:navy;
@@ -1237,7 +1237,7 @@ textarea.updater-changelog {
     clear:none;
 }*/
 .editorLink {
-	vertical-align: top;
+    vertical-align: top;
 }
 
 .form30 ul.editor-parent {
@@ -1489,7 +1489,7 @@ thead th
 }
 .userpermissions input[type="checkbox"],
 .usersurveypermissions [type="checkbox"] {
-	margin: 0;
+    margin: 0;
 }
 
 #responsedetail td{
@@ -1618,17 +1618,17 @@ ol.organizer {
 }
 
 .button-list button{
-	margin-bottom: 0.5em;
-	padding: 0;
+    margin-bottom: 0.5em;
+    padding: 0;
 }
 
 #saveaslabel p {
-	padding: 0;
+    padding: 0;
     text-align:left
 }
 
 #saveaslabel p.label-name-wrapper {
-	margin-top: -10px;
+    margin-top: -10px;
 }
 
 #gbox_displaysurveys{
@@ -1673,70 +1673,70 @@ tr.editedrow{
 
 /* main DIV element */
 #showlogicfilediv {
-  	margin: 0px 50px 20px 50px;
-  	padding:0px;
-	text-align: left;
+      margin: 0px 50px 20px 50px;
+      padding:0px;
+    text-align: left;
 }
 
 
 
 /* main table */
 #logicfiletable {
-	margin-top: 20px;
-	text-align: center;
-	width: 100%;
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
 }
 
 table#logicfiletable, #logicfiletable td, #logicfiletable th {
-	border: 1px solid #000;
-	border-collapse: collapse;
-	padding: 4px;
+    border: 1px solid #000;
+    border-collapse: collapse;
+    padding: 4px;
 }
 
 table#logicfiletable th {
     font-size: 1.2em;font-size: 1.2rem;
-	font-type: bold;
+    font-type: bold;
 }
 
 
 
 /* inner table listing question attributes */
 table#logicfileattributetable, #logicfileattributetable td, #logicfileattributetable th {
-	border: 1px dotted #000;
-	border-collapse: collapse;
-	padding: 4px;
+    border: 1px dotted #000;
+    border-collapse: collapse;
+    padding: 4px;
 }
 
 table#logicfileattributetable {
-	margin: 10px auto;
+    margin: 10px auto;
 }
 
 table#logicfileattributetable th {
-	background-color: #D3D3D3;
+    background-color: #D3D3D3;
     font-size: 1em;font-size: 1rem;
-	font-type: bold;
+    font-type: bold;
 }
 table#logicfileattributetable td {
-	background-color: #FFFFFF;
+    background-color: #FFFFFF;
 }
 
 
 
 /* different background colors for different survey elements */
 tr.LEMgroup td {
-	background-color: lightgrey;
+    background-color: lightgrey;
 }
 
 tr.LEMquestion {
-	background-color: #EAF2D3;
+    background-color: #EAF2D3;
 }
 
 tr.LEManswer td {
-	background-color: white;
+    background-color: white;
 }
 
 tr.LEMsubq td {
-	background-color: lightyellow;
+    background-color: lightyellow;
 }
 
 
@@ -1750,32 +1750,32 @@ tr.LEMsubq td {
 }
 
 .LEMheading, .LEMerror{
-	text-align: left;
-	margin:20px 50px 0px 50px;
-	color: red;
+    text-align: left;
+    margin:20px 50px 0px 50px;
+    color: red;
     font-size: 1.2em;font-size: 1.2rem;
 }
 
 td.LEMerror  {
-	text-align: center;
+    text-align: center;
 }
 
 .mandatory {
-	color: red;
+    color: red;
 }
 
 
 .highlighterror {
-	border: 2px solid #FF00FF;
-	color: red;
+    border: 2px solid #FF00FF;
+    color: red;
 }
 
 #cquestions {
     width: auto !important;
     max-width: 95%;
-    font-family: Verdana; 
-    background-color: #FFFFFF; 
-    font-size:10; 
+    font-family: Verdana;
+    background-color: #FFFFFF;
+    font-size:10;
     border: 0px;
 }
 
@@ -1786,19 +1786,19 @@ td.LEMerror  {
 /* Edit answer and sub-question action buttons */
 
 .ui-tabs .action-buttons {
-	margin: 1em 0 0 0;
-	text-align: center;
+    margin: 1em 0 0 0;
+    text-align: center;
 }
 
 .ui-tabs .action-buttons button {
-	margin: 0 0.5em;
-	padding: 0;
+    margin: 0 0.5em;
+    padding: 0;
 }
 
 /* Data consistency & redundancy  check */
 
 .messagebox.data-integrity .hint {
-	line-height: 1em;
+    line-height: 1em;
 }
 
 .messagebox.data-integrity .hint.warning {
@@ -1806,42 +1806,146 @@ td.LEMerror  {
 }
 
 .messagebox.data-integrity.consistency {
-	padding-bottom: 1.1em;
+    padding-bottom: 1.1em;
 }
 
 .messagebox.data-integrity.consistency input[type="submit"] {
-	margin: 0.8em 0 0 0;
+    margin: 0.8em 0 0 0;
 }
 
 .data-consistency-list {
-	margin: 0.4em 0.8em 0 2.8em;
+    margin: 0.4em 0.8em 0 2.8em;
 }
 
 .data-redundancy-list {
-	margin-right: 0.8em;
+    margin-right: 0.8em;
 }
 
 .data-redundancy-list > li {
-	padding-top: 0.4em;
+    padding-top: 0.4em;
 }
 
 .data-redundancy-list ul {
-	margin: 0 0 0.8em 1.1em;
+    margin: 0 0 0.8em 1.1em;
 }
 
 .data-redundancy-list ul li {
-	display: table-row;
+    display: table-row;
 }
 
 .data-redundancy-list ul input,
 .data-redundancy-list ul label {
-	display: table-cell;
+    display: table-cell;
 }
 
 .data-redundancy-list input[type="checkbox"] {
-	margin-top: 0.15em;
+    margin-top: 0.15em;
 }
 
 .data-redundancy-list ul label {
-	padding-left: 0.4em;
+    padding-left: 0.4em;
+}
+
+
+
+
+/* New ComfortUpdate */
+
+.updater-background p,
+#updaterContent p {
+    text-align:left;
+}
+
+.on {
+   font-weight: bold;
+   font-size: 1em;
+   padding-left : 0.5em;
+   padding-top : 0.5em;
+}
+
+.off {
+    font-size: 0.9em;
+    padding-left : 0.5em;
+    padding-top : 0.5em;
+}
+
+#localChecksContainer {
+    min-height: 190px;
+}
+
+/*Quick hack for LS 2.06 surveys menu*/
+label, legend {
+    display : inline-block;
+    font-family: verdana, arial, sans-serif;
+    text-align: left;
+    color: #666;
+}
+
+#updaterContent{
+    width: 890px;
+    float: left;
+}
+
+#progressContainer{
+    width: 220px;
+    float: left;
+}
+
+#welcomeMessageContainer{
+    width: 510px;
+    float: left;
+    border-right:1px solid #EEE;
+    padding-top:1em;
+}
+
+#welcomeMessageContainer p{
+    text-align:left;
+}
+
+#welcomeMessageContainer li{
+    list-style-type:square;
+    overflow:visible;
+}
+
+#welcomeMessageContainerButtons{
+    float: left;
+}
+
+#keyInfos{
+    width: 320px;
+    float: left;
+    padding-left: 20px;
+    background-color: #fff;
+}
+
+#keyInfosbuttons{
+    float: right;
+    clear: both;
+    padding-top: 100px;
+}
+
+.checkLine{
+    float: left;
+}
+
+.resultLine{
+    float: right;
+}
+
+#ajaxupdaterLayoutLoading{
+    text-align : center;
+    margin-top: 200px;
+    margin-bottom: 200px;
+    display: none;
+}
+
+#udapteButtonsContainer{
+    text-align: center;
+}
+
+#ajaxContainerLoading{
+    text-align : center;
+    margin-top: 70px;
+    margin-bottom: 100px;
+    display: none;
 }

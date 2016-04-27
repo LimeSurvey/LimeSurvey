@@ -137,8 +137,8 @@ class Save {
 
         $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $_POST['savename']));
         $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $_POST['savename']));
-        if (strpos($_POST['savename'],'/'!==false || strpos($_POST['savepass'],'/'!==false)) || strpos($_POST['savename'],'&'!==false || strpos($_POST['savepass'],'&'!==false))
-            || strpos($_POST['savename'],'\\'!==false || strpos($_POST['savepass'],'\\'!==false)))
+        if (strpos($_POST['savename'],'/')!==false || strpos($_POST['savepass'],'/')!==false || strpos($_POST['savename'],'&')!==false || strpos($_POST['savepass'],'&')!==false
+            || strpos($_POST['savename'],'\\')!==false || strpos($_POST['savepass'],'\\')!==false)
         {
             $errormsg .= gT("You may not use slashes or ampersands in your name or password.")."<br />\n";
             return;
