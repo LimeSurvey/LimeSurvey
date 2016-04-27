@@ -6,6 +6,11 @@
 ?>
 <h2 class="maintitle"><?php eT("Subscribe to ComfortUpdate!");?></h2>
 
+<?php
+    if( isset($serverAnswer->html) )
+        echo $serverAnswer->html;
+?>
+
 <div class="updater-background">
     <br/>
     <p>
@@ -25,6 +30,7 @@
         $url = Yii::app()->createUrl('/admin/update/sa/submitkey');
         echo CHtml::beginForm($url, 'post', array("id"=>"submitKeyForm"));
         echo CHtml::hiddenField('destinationBuild', $_REQUEST['destinationBuild']);
+		echo CHtml::label(gT('Enter your update key:'),'inputKey');
         echo CHtml::textField('keyid', '', array("id"=>"inputKey"));
         echo CHtml::submitButton('submit', array("class"=>"btn btn-default", "id"=>"submitKeyButton"));
     ?>

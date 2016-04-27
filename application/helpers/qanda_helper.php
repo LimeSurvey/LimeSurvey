@@ -1414,7 +1414,6 @@ function do_list_radio($ia)
     //// Init variables
 
     // General variables
-    global $dropdownthreshold;
     global $thissurvey;
     $kpclass                = testKeypad($thissurvey['nokeyboard']);                                             // Virtual keyboard (probably obsolete today)
     $checkconditionFunction = "checkconditions";                                                                 // name of the function to check condition TODO : check is used more than once
@@ -1673,9 +1672,7 @@ function do_listwithcomment($ia)
     //// Init variables
 
     // General variables
-    global $dropdownthreshold;
     global $thissurvey;
-    $dropdownthreshold      = Yii::app()->getConfig("dropdownthreshold");
     $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
     $checkconditionFunction = "checkconditions";
     $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
@@ -1695,7 +1692,7 @@ function do_listwithcomment($ia)
     $anscount     = count($ansresult);
     $hint_comment = gT('Please enter your comment here');
 
-    if ($aQuestionAttributes['use_dropdown']!=1 && $anscount <= $dropdownthreshold)
+    if ($aQuestionAttributes['use_dropdown']!=1)
     {
 
         $sRows = '';

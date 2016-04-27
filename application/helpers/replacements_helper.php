@@ -628,7 +628,16 @@ EOD;
         $_endtext = $thissurvey['surveyls_endtext'];
     }
 
-    $sitelogo = (!empty($oTemplate->siteLogo))?'<img class="img-responsive" src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'"/>':'';
+    //$sitelogo = (!empty($oTemplate->siteLogo))?'<img class="img-responsive" src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'"/>':'';
+    $sitelogo = '';
+
+    if(!empty($oTemplate->siteLogo))
+    {
+        if (file_exists ($oTemplate->path.'/'.$oTemplate->siteLogo ))
+        {
+            $sitelogo= '<img class="img-responsive" src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'"/>';
+        }
+    }
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();

@@ -12,7 +12,7 @@
         <li>
             <label>&nbsp;</label>
             <?php echo CHtml::dropDownList('type', 'files', array('files' =>  gT('Files','unescaped'), 'flash' =>  gT('Flash','unescaped'), 'images' =>  gT('Images','unescaped')), array('class'=>'btn btn-default')); ?>
-            <a class="btn btn-default" href="<?php echo Yii::app()->getConfig('publicurl') ; ?>third_party/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK( App()->language); ?>'" target='_blank'>
+            <a class="btn btn-default" href="<?php echo Yii::app()->request->getBaseUrl() ; ?>/third_party/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK( App()->language); ?>'" target='_blank'>
                 <?php  eT("Browse uploaded resources") ?>
             </a>
         </li>

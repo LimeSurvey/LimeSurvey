@@ -354,8 +354,11 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function view($iSurveyID, $gid = null, $qid = null)
     {
-        // We load the panel packages for quick actions
+        $beforeSurveyAdminView = new PluginEvent('beforeSurveyAdminView');
+        $beforeSurveyAdminView->set('surveyId', $iSurveyID);
+        App()->getPluginManager()->dispatchEvent($beforeSurveyAdminView);
 
+        // We load the panel packages for quick actions
         $iSurveyID = sanitize_int($iSurveyID);
         if (isset($gid))
             $gid = sanitize_int($gid);

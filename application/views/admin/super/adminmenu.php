@@ -169,25 +169,7 @@
                 </li>
             <?php endforeach; ?>
 
-            <?php if($showupdate): ?>
-            <li class="">
-                <a href="#notifications">
-                    <?php if($showupdate): ?>
-                        <span class=" label update-small-notification <?php if(Yii::app()->session['notificationstate']=='1' || Yii::app()->session['unstable_update'] ){echo 'hidden';};?>" >1</span>
-                    <?php endif;?>
-                    <i class="nav-icon fa fa-bullhorn"></i>
-                </a>
 
-                <!-- NOTIFICATIONS -->
-                <?php if($showupdate): ?>
-                <ul class="dropdown-menu update-small-notification <?php if(Yii::app()->session['notificationstate']=='1' || Yii::app()->session['unstable_update'] ){echo 'hidden';};?>" role="menu">
-                    <li class="hidden-xs  notifications-list " id="main-navbar-notifications" >
-                        <strong><?php eT("A new update is available.");?> </strong> <a href="<?php echo Yii::app()->createUrl("admin/update"); ?>"><?php eT('Click here to use ComfortUpdate.');?></a>
-                    </li>
-                </ul> <!-- / .dropdown-menu -->
-                <?php endif;?>
-            </li>
-            <?php endif;?>
         </ul>
     </div><!-- /.nav-collapse -->
 </nav>

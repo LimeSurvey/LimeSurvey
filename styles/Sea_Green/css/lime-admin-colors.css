@@ -1944,6 +1944,16 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
 /**
  * comfortUpdate
  */
+#comfortUpdateGeneralWrap h3.maintitle {
+  background-color: transparent;
+  color: #328637;
+  border-bottom: 1px solid #328637; }
+
+#comfortUpdateGeneralWrap .on span {
+  display: block;
+  background-color: #328637;
+  color: #fff; }
+
 #sideMenu #dropdown #explorer li#questionexplorer-group-container:hover, #sideMenu #dropdown li#questionexplorer-group-container:hover > a {
   background-color: #fafafa;
   color: #163c19; }

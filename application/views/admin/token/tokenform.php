@@ -137,12 +137,27 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label"  for='validfrom'><?php eT("Valid from"); ?>:</label>
                 <div class="col-sm-2 has-feedback">
-                    <i class='fa fa-calendar form-control-feedback'></i>
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                         'name' => "validfrom",
                         'value' => isset($validfrom) ? $validfrom : '',
                         'pluginOptions' => array(
                             'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                            'allowInputToggle' =>true,
+                            'showClear' => true,
+                            'tooltips' => array(
+                                'clear'=> gT('Clear selection'),
+                                'prevMonth'=> gT('Previous month'),
+                                'nextMonth'=> gT('Next month'),
+                                'selectYear'=> gT('Select year'),
+                                'prevYear'=> gT('Previous year'),
+                                'nextYear'=> gT('Next year'),
+                                'selectDecade'=> gT('Select decade'),
+                                'prevDecade'=> gT('Previous decade'),
+                                'nextDecade'=> gT('Next decade'),
+                                'prevCentury'=> gT('Previous century'),
+                                'nextCentury'=> gT('Next century'),
+                                'selectTime'=> gT('Select time')
+                            ),
                             'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                         )
                     ));
@@ -152,12 +167,29 @@
 
                 <label class="col-sm-2 control-label"  for='validuntil'><?php eT('Until:'); ?></label>
                 <div class="col-sm-2 has-feedback">
-                    <i class='fa fa-calendar form-control-feedback'></i>
-                    <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                    <?php
+                    Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                         'name' => "validuntil",
                         'value' => isset($validuntil) ? $validuntil : '',
                         'pluginOptions' => array(
                             'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                            'allowInputToggle' =>true,
+                            'showClear' => true,
+                            'tooltips' => array(
+                                'clear'=> gT('Clear selection'),
+                                'prevMonth'=> gT('Previous month'),
+                                'nextMonth'=> gT('Next month'),
+                                'selectYear'=> gT('Select year'),
+                                'prevYear'=> gT('Previous year'),
+                                'nextYear'=> gT('Next year'),
+                                'selectDecade'=> gT('Select decade'),
+                                'prevDecade'=> gT('Previous decade'),
+                                'nextDecade'=> gT('Next decade'),
+                                'prevCentury'=> gT('Previous century'),
+                                'nextCentury'=> gT('Next century'),
+                                'selectTime'=> gT('Select time')
+
+                            ),
                             'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                         )
                     ));

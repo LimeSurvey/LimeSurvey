@@ -269,9 +269,16 @@ html {
 
 #update-container {
   margin-top: 10px;
-  z-index: 10100; }
+   z-index: 999; }
   #update-container .alert {
     margin-bottom: 5px; }
+
+#ajaxupdaterLayoutLoading{
+    text-align : center;
+    margin-top: 200px;
+    margin-bottom: 200px;
+    display: none;
+}
 
 .box {
   border-radius: 3px;
@@ -1522,7 +1529,6 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
 
 #comfortUpdateGeneralWrap .on span {
   display: block;
-  color: #fff;
   padding: 0.1em;
   padding-left: 0.5em;
   width: 40%; }
@@ -1803,4 +1809,9 @@ td.subquestion-actions span:hover {
 
 #quick-menu-container .navbar-brand {
     padding: 0
+}
+
+/* Needed for DateTimePicker in survey settings */
+.panel-group .panel {
+    overflow: visible;
 }
