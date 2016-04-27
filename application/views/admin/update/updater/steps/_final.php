@@ -3,6 +3,7 @@
  * This view display the result of the update
  * @var int $destinationBuild the destination build
  */
+opcache_reset();
 ?>
 
 <h2 class="maintitle"><?php eT('Update complete!'); ?></h2>
