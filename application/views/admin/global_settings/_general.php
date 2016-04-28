@@ -181,6 +181,22 @@
         </div>
     </div>
 
+    <div class='form-group'>
+        <label class='col-sm-4 control-label' for='sideMenuBehaviour'><?php eT("Side-menu behaviour:"); ?></label>
+        <div class='col-sm-6'>
+            <select class='form-control' name='sideMenuBehaviour' id='sideMenuBehaviour'>
+                <option value='alwaysClosed' 
+                    <?php if ($sideMenuBehaviour == 'alwaysClosed'): echo ' selected'; endif;?>
+                ><?php eT("Always closed"); ?></option>
+                <option value='adaptive'
+                    <?php if ($sideMenuBehaviour == 'adaptive' || empty($sideMenuBehaviour)): echo ' selected'; endif;?>
+                ><?php eT("Adaptive"); ?> </option>
+                <option value='alwaysOpen'
+                    <?php if ($sideMenuBehaviour == 'alwaysOpen'): echo ' selected'; endif;?>
+                ><?php eT("Always open"); ?></option>
+            </select>
+        </div>
+    </div>
 
 <?php if (Yii::app()->getConfig("demoMode")==true):?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>

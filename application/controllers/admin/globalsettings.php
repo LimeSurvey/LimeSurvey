@@ -109,6 +109,8 @@ class GlobalSettings extends Survey_Common_Action
         // Get current setting from DB
         $data['thischaracterset'] = getGlobalSetting('characterset');
 
+        $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
+
         $this->_renderWrappedTemplate('', 'globalSettings_view', $data);
     }
 
@@ -233,6 +235,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('RPCInterface', $_POST['RPCInterface']);
         setGlobalSetting('rpc_publish_api', (bool) $_POST['rpc_publish_api']);
         setGlobalSetting('characterset', $_POST['characterset']);
+        setGlobalSetting('sideMenuBehaviour', $_POST['sideMenuBehaviour']);
         $savetime = ((float)$_POST['timeadjust'])*60 . ' minutes'; //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
             $savetime = '+' . $savetime;
