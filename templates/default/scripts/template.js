@@ -79,9 +79,11 @@ function replaceColumnWithDiv(that) {
     $(that).replaceWith(newHtml);
 }
 
-$(document).ready(function(){
 
-    $("#checkjavascript").hide();
+
+
+$(document).ready(function()
+{
 
     // Scroll to first error
     if($(".input-error").length > 0) {
