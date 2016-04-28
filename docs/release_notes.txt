@@ -35,6 +35,30 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.50+ (build 160426) to 2.50+ (build 160428) Apr 28, 2016
+-Fixed issue #10997: Update-message corrupts menu on top of the page (LouisGac)
+-Fixed issue #11052: JS error with Date/Time question (Olle Haerstedt)
+-Fixed issue #11054: Template editor crashing. When an admin copies a template and deletes logo.png the template editor is crashing and the template cannot be opened anymore. (LouisGac)
+-Fixed issue #11056: Missing translation (Carsten Schmitz)
+-Fixed issue #11057: Missing smilies in content editor (Carsten Schmitz)
+-Fixed issue #11064: JavaScript code in source code not visible (Carsten Schmitz)
+-Fixed issue: Bad link for Browse uploaded ressources if publicurl is set (Denis Chenu)
+-Fixed issue: survey taking, random javascript error about modal function on console (LouisGac)
+-New feature #10958: Add btn-primary to next and submit (Denis Chenu)
+-New feature: ComfortUpdate improvements (LouisGac)
+-New feature: Disable comfortUpdate alerts from version.php (LouisGac)
+-New feature: Syntaxhighlighting in source code view when editing survey content (Carsten Schmitz)
+-Removed feature: Obsolete setting dropdownthreshold (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Hong Kong) (Traditional) by aqualam
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Thai by tomzt
+
 Changes from 2.50+ (build 160425) to 2.50+ (build 160426) Apr 26, 2016
 -Fixed issue: Date picker not properly working in administration (Carsten Schmitz)
 -Fixed issue #10972: Unable to edit pstpl files located at template root (2.06 templates) (LouisGac)
