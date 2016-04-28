@@ -261,8 +261,7 @@
         ,LimeReplacementFieldsType : \"".$fieldtype."\"
         ,LimeReplacementFieldsAction : \"".$action."\"
         ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/sa/index/")."\"
-        ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'
-        ,smiley_path : \"".Yii::app()->getConfig('imageurl')."/emoticons/texteditor/\"\n"
+        ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'"
         . $sFileBrowserAvailable
         . $htmlformatoption
         . $toolbaroption
