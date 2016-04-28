@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-04-27 11:42:12+00:00\n"
+"POT-Creation-Date: 2016-04-28 08:31:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -679,7 +679,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:512
 #: application/helpers/qanda_helper.php:2494
 #: application/models/Question.php:791 application/models/QuestionGroup.php:246
-#: application/models/QuestionGroup.php:254 application/models/Survey.php:804
+#: application/models/QuestionGroup.php:254 application/models/Survey.php:860
 #: application/views/admin/participants/attributeControl_view.php:4
 #: application/views/admin/participants/displayParticipants_view.php:65
 #: application/views/admin/quotas/viewquotasrow_view.php:32
@@ -704,6 +704,22 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:371
 msgid "You can upload %s under %s KB each."
+msgstr ""
+
+#: application/controllers/admin/ExpressionValidate.php:65
+msgid "Quota name (%s)"
+msgstr ""
+
+#: application/controllers/admin/ExpressionValidate.php:69
+msgid "Quota message (%s)"
+msgstr ""
+
+#: application/controllers/admin/ExpressionValidate.php:73
+msgid "URL (%s)"
+msgstr ""
+
+#: application/controllers/admin/ExpressionValidate.php:77
+msgid "URL description (%s)"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:86
@@ -1401,16 +1417,16 @@ msgstr ""
 #: application/views/admin/survey/subview/addPanelIntegrationParameter_view.php:43
 #: application/views/admin/token/browse.php:62
 #: application/views/admin/update/updater/_error.php:162
-#: application/views/admin/update/updater/steps/_backup.php:76
+#: application/views/admin/update/updater/steps/_backup.php:77
 #: application/views/admin/update/updater/steps/_change_log.php:65
-#: application/views/admin/update/updater/steps/_check_local_errors.php:121
-#: application/views/admin/update/updater/steps/_check_local_errors.php:149
+#: application/views/admin/update/updater/steps/_check_local_errors.php:170
+#: application/views/admin/update/updater/steps/_check_local_errors.php:198
 #: application/views/admin/update/updater/steps/_fileSystem.php:40
 #: application/views/admin/update/updater/steps/_fileSystem.php:55
 #: application/views/admin/update/updater/welcome/_error.php:87
 #: application/views/admin/update/updater/welcome/_error_files_update_updater.php:25
-#: application/views/admin/update/updater/welcome/_subscribe.php:33
-#: application/views/admin/update/updater/welcome/_updater_update.php:26
+#: application/views/admin/update/updater/welcome/_subscribe.php:39
+#: application/views/admin/update/updater/welcome/_updater_update.php:25
 #: application/views/admin/update/updater/welcome/_welcome.php:81
 msgid "Cancel"
 msgstr ""
@@ -1634,7 +1650,6 @@ msgstr ""
 #: application/views/admin/token/managetokenattributes.php:71
 #: application/views/admin/token/managetokenattributes.php:72
 #: application/views/admin/token/remind.php:109
-#: application/views/admin/update/updater/steps/_check_local_errors.php:96
 #: application/views/survey/questions/arrays/yesnouncertain/rows/answer_row.php:78
 #: application/views/survey/questions/arrays/yesnouncertain/rows/answer_row.php:95
 #: application/views/survey/questions/arrays/yesnouncertain/rows/cells/thead.php:10
@@ -2744,9 +2759,6 @@ msgstr ""
 #: application/views/admin/survey/Question/question_subviews/_modals.php:113
 #: application/views/admin/token/browse.php:64
 #: application/views/admin/token/browse.php:76
-#: application/views/admin/update/updater/steps/_check_local_errors.php:37
-#: application/views/admin/update/updater/steps/_check_local_errors.php:69
-#: application/views/admin/update/updater/steps/_check_local_errors.php:93
 msgid "OK"
 msgstr ""
 
@@ -3776,13 +3788,12 @@ msgstr ""
 #: application/views/admin/quotas/newanswertwo_view.php:12
 #: application/views/admin/templates/templateeditor_register_view.php:15
 #: application/views/admin/token/emailwarning.php:8
-#: application/views/admin/update/updater/steps/_backup.php:79
+#: application/views/admin/update/updater/steps/_backup.php:80
 #: application/views/admin/update/updater/steps/_change_log.php:70
-#: application/views/admin/update/updater/steps/_check_local_errors.php:153
+#: application/views/admin/update/updater/steps/_check_local_errors.php:202
 #: application/views/admin/update/updater/steps/_fileSystem.php:57
-#: application/views/admin/update/updater/steps/_updater_updated.php:20
 #: application/views/admin/update/updater/welcome/_key_updated.php:16
-#: application/views/admin/update/updater/welcome/_updater_update.php:28
+#: application/views/admin/update/updater/welcome/_updater_update.php:27
 #: application/views/admin/update/updater/welcome/_welcome.php:85
 #: application/views/entertoken_view.php:48
 #: application/views/register/registerForm.php:29
@@ -4326,7 +4337,7 @@ msgstr ""
 #: application/views/admin/authentication/error.php:6
 #: application/views/admin/error_view.php:5
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:20
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:74
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:86
 msgid "Ok"
 msgstr ""
 
@@ -5271,7 +5282,7 @@ msgid "Clear Responses"
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:793
-#: application/helpers/replacements_helper.php:686
+#: application/helpers/replacements_helper.php:695
 #: application/views/admin/templates/templateeditor_completed_view.php:2
 msgid "Thank you!"
 msgstr ""
@@ -5843,7 +5854,7 @@ msgstr ""
 #: application/helpers/common_helper.php:3004
 #: application/helpers/common_helper.php:3367
 #: application/helpers/userstatistics_helper.php:2934
-#: application/models/Permission.php:84 application/models/Survey.php:809
+#: application/models/Permission.php:84 application/models/Survey.php:865
 #: application/views/admin/export/statistics_subviews/_statistics_header.php:3
 #: application/views/admin/export/statistics_user_view.php:14
 #: application/views/admin/export/statistics_view.php:14
@@ -5913,18 +5924,18 @@ msgstr ""
 msgid "One or more surveys seem to be broken, please check data integrity of the LimeSurvey database."
 msgstr ""
 
-#: application/helpers/common_helper.php:296 application/models/Survey.php:678
+#: application/helpers/common_helper.php:296 application/models/Survey.php:734
 #: application/views/admin/quotas/viewquotasrow_view.php:10
 #: application/views/admin/survey/listSurveys_view.php:78
 msgid "Active"
 msgstr ""
 
-#: application/helpers/common_helper.php:301 application/models/Survey.php:661
+#: application/helpers/common_helper.php:301 application/models/Survey.php:717
 #: application/views/admin/survey/listSurveys_view.php:39
 msgid "Expired"
 msgstr ""
 
-#: application/helpers/common_helper.php:306 application/models/Survey.php:641
+#: application/helpers/common_helper.php:306 application/models/Survey.php:697
 msgid "Inactive"
 msgstr ""
 
@@ -8972,83 +8983,83 @@ msgstr ""
 msgid "Load now"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:636
+#: application/helpers/replacements_helper.php:645
 msgid "Answers cleared"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:639
+#: application/helpers/replacements_helper.php:648
 msgid "Your assessment"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:640
+#: application/helpers/replacements_helper.php:649
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:660
+#: application/helpers/replacements_helper.php:669
 msgid "Load a previously saved survey"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:661
+#: application/helpers/replacements_helper.php:670
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:661
+#: application/helpers/replacements_helper.php:670
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:669
+#: application/helpers/replacements_helper.php:678
 msgid "A Note On Privacy"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:669
+#: application/helpers/replacements_helper.php:678
 msgid "This survey is anonymous."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:669
+#: application/helpers/replacements_helper.php:678
 msgid "The record of your survey responses does not contain any identifying information about you, unless a specific survey question explicitly asked for it."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:669
+#: application/helpers/replacements_helper.php:678
 msgid "If you used an identifying token to access this survey, please rest assured that this token will not be stored together with your responses. It is managed in a separate database and will only be updated to indicate whether you did (or did not) complete this survey. There is no way of matching identification tokens with survey responses."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:680
+#: application/helpers/replacements_helper.php:689
 msgid "Save your unfinished survey"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:681
+#: application/helpers/replacements_helper.php:690
 msgid "Enter a name and password for this survey and click save below."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:681
+#: application/helpers/replacements_helper.php:690
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:681
+#: application/helpers/replacements_helper.php:690
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:681
+#: application/helpers/replacements_helper.php:690
 msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:686
+#: application/helpers/replacements_helper.php:695
 msgid "You have completed answering the questions in this survey."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:686
+#: application/helpers/replacements_helper.php:695
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr ""
 
-#: application/helpers/replacements_helper.php:803
-#: application/helpers/replacements_helper.php:873
+#: application/helpers/replacements_helper.php:812
+#: application/helpers/replacements_helper.php:882
 msgid "Load unfinished survey"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:804
-#: application/helpers/replacements_helper.php:827
-#: application/helpers/replacements_helper.php:874
-#: application/helpers/replacements_helper.php:896
+#: application/helpers/replacements_helper.php:813
+#: application/helpers/replacements_helper.php:836
+#: application/helpers/replacements_helper.php:883
+#: application/helpers/replacements_helper.php:905
 msgid "Resume later"
 msgstr ""
 
@@ -10085,25 +10096,25 @@ msgstr ""
 msgid "running"
 msgstr ""
 
-#: application/models/Survey.php:660
+#: application/models/Survey.php:716
 msgid "Expire"
 msgstr ""
 
-#: application/models/Survey.php:662
+#: application/models/Survey.php:718
 msgid "Start"
 msgstr ""
 
-#: application/models/Survey.php:795
+#: application/models/Survey.php:851
 #: application/views/admin/survey/surveySummary_view.php:294
 msgid "Survey summary"
 msgstr ""
 
-#: application/models/Survey.php:799
+#: application/models/Survey.php:855
 #: application/views/admin/survey/surveybar_view.php:165
 msgid "General settings & texts"
 msgstr ""
 
-#: application/models/Survey.php:819
+#: application/models/Survey.php:875
 #: application/views/admin/survey/surveySummary_view.php:126
 #: application/views/admin/survey/surveySummary_view.php:164
 #: application/views/admin/survey/surveySummary_view.php:182
@@ -10113,7 +10124,7 @@ msgstr ""
 msgid "Add new question"
 msgstr ""
 
-#: application/models/Survey.php:823
+#: application/models/Survey.php:879
 #: application/views/admin/survey/surveySummary_view.php:109
 #: application/views/admin/survey/surveySummary_view.php:146
 #: application/views/admin/survey/surveybar_view.php:25
@@ -10449,7 +10460,7 @@ msgid "Note that you cannot undo a delete if you proceed. The data will be gone.
 msgstr ""
 
 #: application/views/admin/checkintegrity/fix_view.php:16
-#: application/views/admin/update/updater/steps/_check_local_errors.php:124
+#: application/views/admin/update/updater/steps/_check_local_errors.php:173
 #: application/views/admin/update/updater/steps/_fileSystem.php:42
 #: application/views/installer/precheck_view.php:150
 msgid "Check again"
@@ -14022,15 +14033,6 @@ msgstr ""
 msgid "Edit your personal preferences"
 msgstr ""
 
-#: application/views/admin/super/adminmenu.php:179
-msgid "A new update is available."
-msgstr ""
-
-#: application/views/admin/super/adminmenu.php:179
-#: application/views/admin/update/_update_notification.php:20
-msgid "Click here to use ComfortUpdate."
-msgstr ""
-
 #: application/views/admin/super/footer.php:41
 msgid "Confirm"
 msgstr ""
@@ -14097,7 +14099,7 @@ msgid "Edit global settings"
 msgstr ""
 
 #: application/views/admin/super/welcome.php:16
-#: application/views/admin/update/_updateContainer.php:24
+#: application/views/admin/update/_updateContainer.php:21
 msgid "ComfortUpdate"
 msgstr ""
 
@@ -16685,6 +16687,10 @@ msgstr ""
 msgid "Auto Translate"
 msgstr ""
 
+#: application/views/admin/update/_update_notification.php:20
+msgid "Click here to use ComfortUpdate."
+msgstr ""
+
 #: application/views/admin/update/_update_notification.php:25
 msgid "New UNSTABLE update available:"
 msgstr ""
@@ -16702,52 +16708,44 @@ msgstr ""
 msgid "New update available:"
 msgstr ""
 
-#: application/views/admin/update/check_updates/_checkButtons.php:15
-msgid "Please wait, data loading..."
-msgstr ""
-
-#: application/views/admin/update/check_updates/_checkButtons.php:27
-msgid "Updates"
-msgstr ""
-
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:12
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:31
 msgid "The following LimeSurvey updates are available:"
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:34
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:42
 msgid "LimeSurvey version"
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:37
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:45
 msgid "Branch"
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:40
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:48
 msgid "Update type"
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:63
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:77
 msgid "unstable"
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:67
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:81
 msgid "stable"
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:74
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:88
 msgid "Security update"
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:78
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:92
 msgid "Regular update"
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:91
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:105
 msgid "Use ComfortUpdate"
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:95
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:97
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:109
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:111
 msgid "Download"
 msgstr ""
 
@@ -16757,6 +16755,7 @@ msgstr ""
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:44
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:50
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:56
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:68
 msgid "Error!"
 msgstr ""
 
@@ -16789,6 +16788,7 @@ msgid "Your version is up to date!"
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:39
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:45
 msgid "Not updatable!"
 msgstr ""
 
@@ -16796,28 +16796,44 @@ msgstr ""
 msgid "Your version is not updatable via ComfortUpdate. Please update manually."
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:45
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:46
+msgid "comfortUpdate is disabled in your LimeSurvey configuration. Please contact your administrator for more informations."
+msgstr ""
+
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:51
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:57
 msgid "No build version found!"
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:46
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:52
 msgid "It seems you're using a version coming from the LimeSurvey GitHub repository. You can't use ComfortUpdate."
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:52
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:58
 msgid "You disabled ComfortUpdate in your configuration file."
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:57
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:62
+msgid "Maintenance!"
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:63
+msgid "The ComfortUpdate service is currently undergoing maintenance."
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:64
+msgid "Please have patience and retry in 30 minutes. Thank you for your understanding."
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:69
 msgid "Unknown error!"
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:58
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:70
 msgid "An unknown error occured."
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:58
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:70
 #: application/views/admin/update/updater/_error.php:69
 #: application/views/admin/update/updater/_error.php:87
 #: application/views/admin/update/updater/_error.php:93
@@ -16826,7 +16842,7 @@ msgstr ""
 msgid "Please contact the LimeSurvey team."
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:59
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:71
 msgid "Error code:"
 msgstr ""
 
@@ -17039,7 +17055,7 @@ msgid "File backup created: %s"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_backup.php:24
-#: application/views/admin/update/updater/steps/_backup.php:33
+#: application/views/admin/update/updater/steps/_backup.php:34
 msgid "Download this file"
 msgstr ""
 
@@ -17047,38 +17063,38 @@ msgstr ""
 msgid "DB backup created:"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_backup.php:40
+#: application/views/admin/update/updater/steps/_backup.php:41
 msgid "At the end of the process the database will be updated."
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_backup.php:42
+#: application/views/admin/update/updater/steps/_backup.php:43
 msgid "Your database is too big to be saved!"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_backup.php:42
-#: application/views/admin/update/updater/steps/_backup.php:48
-#: application/views/admin/update/updater/steps/_backup.php:51
-#: application/views/admin/update/updater/steps/_backup.php:54
+#: application/views/admin/update/updater/steps/_backup.php:43
+#: application/views/admin/update/updater/steps/_backup.php:49
+#: application/views/admin/update/updater/steps/_backup.php:52
+#: application/views/admin/update/updater/steps/_backup.php:55
 msgid "Before proceeding please back up your database using a backup tool!"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_backup.php:45
+#: application/views/admin/update/updater/steps/_backup.php:46
 msgid "This update will not change the database. No database backup is required."
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_backup.php:48
+#: application/views/admin/update/updater/steps/_backup.php:49
 msgid "Your database type is not MySQL!"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_backup.php:51
+#: application/views/admin/update/updater/steps/_backup.php:52
 msgid "We could not zip your database!"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_backup.php:54
+#: application/views/admin/update/updater/steps/_backup.php:55
 msgid "Unable to backup your database for unknown reason."
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_backup.php:66
+#: application/views/admin/update/updater/steps/_backup.php:67
 msgid "Please check any problems above and then proceed to the final step."
 msgstr ""
 
@@ -17094,36 +17110,47 @@ msgstr ""
 msgid "Available space in directory:"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_check_local_errors.php:39
-#: application/views/admin/update/updater/steps/_check_local_errors.php:71
+#: application/views/admin/update/updater/steps/_check_local_errors.php:42
 msgid "Not enough space"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_check_local_errors.php:51
+#: application/views/admin/update/updater/steps/_check_local_errors.php:55
 msgid "Note : In some hosting, like shared hosting, it can happen that the available free space is not correctly evaluated. If you checked manually that you have enough free space to update, please, just ignore this error."
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_check_local_errors.php:60
+#: application/views/admin/update/updater/steps/_check_local_errors.php:65
+msgid "MYSQL version required"
+msgstr ""
+
+#: application/views/admin/update/updater/steps/_check_local_errors.php:79
+msgid "MYSQL version is only %s"
+msgstr ""
+
+#: application/views/admin/update/updater/steps/_check_local_errors.php:92
 msgid "PHP version required"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_check_local_errors.php:72
+#: application/views/admin/update/updater/steps/_check_local_errors.php:110
 msgid "PHP version is only %s"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_check_local_errors.php:83
+#: application/views/admin/update/updater/steps/_check_local_errors.php:122
 msgid "Required PHP modules:"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_check_local_errors.php:99
+#: application/views/admin/update/updater/steps/_check_local_errors.php:140
+msgid "Not found!"
+msgstr ""
+
+#: application/views/admin/update/updater/steps/_check_local_errors.php:147
 msgid "No (but optional)"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_check_local_errors.php:130
+#: application/views/admin/update/updater/steps/_check_local_errors.php:179
 msgid "Ignore"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_check_local_errors.php:140
+#: application/views/admin/update/updater/steps/_check_local_errors.php:189
 msgid "Everything looks alright. Please proceed to the next step."
 msgstr ""
 
@@ -17131,30 +17158,31 @@ msgstr ""
 msgid "Checking existing LimeSurvey files..."
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_final.php:7
+#: application/views/admin/update/updater/steps/_final.php:9
 msgid "Update complete!"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_final.php:10
+#: application/views/admin/update/updater/steps/_final.php:12
 #: application/views/admin/update/updater/steps/_old_step4b.php:35
 msgid "Buildnumber was successfully updated to %s."
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_final.php:11
+#: application/views/admin/update/updater/steps/_final.php:13
 #: application/views/admin/update/updater/steps/_old_step4b.php:36
 msgid "The update is now complete!"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_final.php:15
-msgid "If needed the database will be updated as a last step."
+#: application/views/admin/update/updater/steps/_final.php:17
+msgid "if needed the database will be updated as a last step."
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_final.php:18
+#: application/views/admin/update/updater/steps/_final.php:20
 #: application/views/admin/update/updater/steps/_old_step4b.php:37
 msgid "As a last step you should clear your browser cache now."
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_final.php:22
+#: application/views/admin/update/updater/steps/_final.php:24
+#: application/views/admin/update/updater/steps/_updater_updated.php:20
 msgid "Click this button to log out."
 msgstr ""
 
@@ -17205,15 +17233,15 @@ msgstr ""
 msgid "The following files will be modified or deleted but were already modified by someone else."
 msgstr ""
 
-#: application/views/admin/update/updater/steps/textaeras/_readonlyfiles.php:12
+#: application/views/admin/update/updater/steps/textaeras/_readonlyfiles.php:11
 msgid "Warning: The following files/directories need to be updated but their permissions are set to read-only."
 msgstr ""
 
-#: application/views/admin/update/updater/steps/textaeras/_readonlyfiles.php:14
+#: application/views/admin/update/updater/steps/textaeras/_readonlyfiles.php:13
 msgid "You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice."
 msgstr ""
 
-#: application/views/admin/update/updater/steps/textaeras/_readonlyfiles.php:25
+#: application/views/admin/update/updater/steps/textaeras/_readonlyfiles.php:23
 msgid "All files in local directories are writable."
 msgstr ""
 
@@ -17237,16 +17265,20 @@ msgstr ""
 msgid "Subscribe to ComfortUpdate!"
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_subscribe.php:12
+#: application/views/admin/update/updater/welcome/_subscribe.php:17
 msgid "The LimeSurvey ComfortUpdate is a great feature to easily update to the latest version of LimeSurvey. To use it you will need an update key."
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_subscribe.php:17
+#: application/views/admin/update/updater/welcome/_subscribe.php:22
 msgid "You can get a free trial update key from %syour account on the limesurvey.org website%s."
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_subscribe.php:22
+#: application/views/admin/update/updater/welcome/_subscribe.php:27
 msgid "If you don't have an account on limesurvey.org, please %sregister first%s."
+msgstr ""
+
+#: application/views/admin/update/updater/welcome/_subscribe.php:33
+msgid "Enter your update key:"
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_updater_update.php:14
