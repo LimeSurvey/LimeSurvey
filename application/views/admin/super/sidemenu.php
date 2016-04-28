@@ -14,17 +14,26 @@
 ?>
 
     <!-- State when page is loaded : for JavaScript-->
-    <?php if(isset($sidemenu['state']) && $sidemenu['state']==false ):?>
-       <input type="hidden" id="close-side-bar" />
+    <?php if ($sideMenuBehaviour == 'adaptive'): ?>
+        <?php if(isset($sidemenu['state']) && $sidemenu['state']==false ):?>
+           <input type="hidden" id="close-side-bar" />
+        <?php endif;?>
+    <?php elseif ($sideMenuBehaviour == 'alwaysClosed'): ?>
+           <input type="hidden" id="close-side-bar" />
+    <?php elseif ($sideMenuBehaviour == 'alwaysOpen'): ?>
+        <!-- Do nothing -->
     <?php endif;?>
 
     <!-- To handle correctly the side menu positioning -->
-    <div class="absolute-wrapper hidden-xs" style="z-index: 100;"> </div>
+        <div
+            class="absolute-wrapper hidden-xs"
+            style="z-index: 100; <?php if ($sideMenuBehaviour == 'alwaysClosed'): echo 'left: -250px;'; endif; ?> ">
+        </div>
 
     <!-- sideMenu -->
-    <div class="side-menu  hidden-xs" id="sideMenu" style="z-index: 101;">
+    <div class="side-menu <?php if ($sideMenuBehaviour == 'alwaysClosed'): echo ' side-menu-hidden'; endif; ?> hidden-xs" id="sideMenu" style="z-index: 101;">
 
-        <nav class="navbar navbar-default  hidden-xs">
+        <nav class="navbar navbar-default hidden-xs">
 
             <!-- Header : General -->
             <div class="navbar-header  hidden-xs">
@@ -78,7 +87,7 @@
 
             <!-- Main Menu -->
             <div class="side-menu-container hidden-xs">
-                <ul class="nav navbar-nav sidemenuscontainer  hidden-xs">
+                <ul class="nav navbar-nav sidemenuscontainer hidden-xs" style="<?php if ($sideMenuBehaviour == 'alwaysClosed'): echo 'display: none;'; endif; ?>">
 
                     <!-- Question & Groups-->
                     <li class="panel panel-default dropdownlvl1" id="dropdown">

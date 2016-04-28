@@ -1,4 +1,4 @@
-<div id="quick-menu-container" style="display: none;">
+<div id="quick-menu-container">
     <!-- TODO: Placement right won't work with right-to-left -->
     <a
         href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>"
