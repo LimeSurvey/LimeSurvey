@@ -2341,17 +2341,8 @@ class statistics_helper {
                     $iMaxLabelLength = 0;
                     foreach($labels as $key => $label)
                     {
-                        $cleanLabel = str_replace('"', " ", $label);
-                        $cleanLabel = preg_replace( "/\r|\n/", "", $cleanLabel );
-                        
-                        // A line break would be better.
-                        // But: https://github.com/chartjs/Chart.js/issues/608
-                        if( strlen( $cleanLabel ) > 10 )
-                        {
-                            $cleanLabel = substr($cleanLabel, 0, 10).'...';
-                        }
-
-                        $labels[$key] =  $cleanLabel;
+                        $cleanLabel = viewHelper::flatEllipsizeText($label, true, 20);
+                        $labels[$key] = $cleanLabel;
                         $iMaxLabelLength = (strlen( $cleanLabel ) > $iMaxLabelLength)?strlen( $cleanLabel ):$iMaxLabelLength;
                     }
 
