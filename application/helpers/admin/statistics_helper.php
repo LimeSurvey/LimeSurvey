@@ -2343,7 +2343,15 @@ class statistics_helper {
                     {
                         $cleanLabel = str_replace('"', " ", $label);
                         $cleanLabel = preg_replace( "/\r|\n/", "", $cleanLabel );
-                        $labels[$key] = $cleanLabel;
+                        
+                        // A line break would be better.
+                        // But: https://github.com/chartjs/Chart.js/issues/608
+                        if( strlen( $cleanLabel ) > 10 )
+                        {
+                            $cleanLabel = substr($cleanLabel, 0, 10).'...';
+                        }
+
+                        $labels[$key] =  $cleanLabel;
                         $iMaxLabelLength = (strlen( $cleanLabel ) > $iMaxLabelLength)?strlen( $cleanLabel ):$iMaxLabelLength;
                     }
 
