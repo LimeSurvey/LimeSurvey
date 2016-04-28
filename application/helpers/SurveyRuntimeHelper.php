@@ -1231,6 +1231,7 @@ class SurveyRuntimeHelper {
             echo "\n\n<!-- START THE GROUP (in SurveyRunTime ) -->\n";
             echo "\n\n<div id='group-$_gseq'";
             $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($_gseq);
+
             if  ($gnoshow && !$previewgrp)
             {
                 echo " style='display: none;'";
@@ -1239,7 +1240,11 @@ class SurveyRuntimeHelper {
             echo templatereplace(file_get_contents($sTemplateViewPath."startgroup.pstpl"), array(), $redata);
             echo "\n";
 
-            if (!$previewquestion && trim($redata['groupdescription'])!="")
+            $aSurveyinfo = getSurveyInfo($surveyid);
+            $showgroupinfo = $aSurveyinfo['showgroupinfo'];
+            $showgroupdesc = $showgroupinfo == 'B' /* both */ || $showgroupinfo == 'D'; /* (group-) description */
+
+            if (!$previewquestion && trim($redata['groupdescription'])!="" && $showgroupdesc)
             {
                 echo templatereplace(file_get_contents($sTemplateViewPath."groupdescription.pstpl"), array(), $redata);
             }
