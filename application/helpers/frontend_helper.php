@@ -245,11 +245,11 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
 */
 function makeLanguageChanger($sSelectedLanguage)
 {
-    $aLanguages=getLanguageDataRestricted(true,$sSelectedLanguage);// Order by native
+    $aLanguages=getLanguageDataRestricted(true);// Order by native
     if(count($aLanguages)>1)
     {
 #        $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
-#        foreach(getLanguageDataRestricted(true, $sSelectedLanguage) as $sLanguageID=>$aLanguageProperties)
+#        foreach(getLanguageDataRestricted(true) as $sLanguageID=>$aLanguageProperties)
 #        {
 #            $sLanguageUrl=Yii::app()->getController()->createUrl('survey/index',array('lang'=>$sLanguageID));
 #            $sHTMLCode .= "<option value='{$sLanguageUrl}'";

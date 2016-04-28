@@ -72,7 +72,7 @@
 
                                         <td>
                                             <select size='5' style='min-width:420px;' id='available_languages' name='available_languages'  class="form-control">
-                                                <?php foreach (getLanguageDataRestricted(false, Yii::app()->session['adminlang']) as  $langkey=>$langname)
+                                                <?php foreach (getLanguageDataRestricted(false) as  $langkey=>$langname)
                                                 {
                                                     if (in_array($langkey,$langidsarray)==false)  // base languag must not be shown here
                                                     { ?>

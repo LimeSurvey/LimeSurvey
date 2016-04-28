@@ -660,7 +660,7 @@
         //Ukrainian
         $supportedLanguages['uk']['description'] = gT('Ukrainian');
         $supportedLanguages['uk']['nativedescription'] = 'ukrayins&#x2B9;kyy';
-      	$supportedLanguages['uk']['rtl'] = false;
+          $supportedLanguages['uk']['rtl'] = false;
         $supportedLanguages['uk']['dateformat'] = 1;
         $supportedLanguages['uk']['radixpoint'] = 1;
 
@@ -983,20 +983,28 @@
         return strtolower($sLocale);
     }
 
-    function getLanguageDataRestricted($bOrderByNative=false,$sLanguageCode='en') {
-        $aLanguageData=getLanguageData($bOrderByNative, $sLanguageCode);
+    function getLanguageDataRestricted($bOrderByNative=false, $sDetail='full') {
+        $aLanguageData=getLanguageData($bOrderByNative);
 
         if (trim(Yii::app()->getConfig('restrictToLanguages'))!='')
         {
             foreach(explode(' ',trim(Yii::app()->getConfig('restrictToLanguages'))) AS $key) {
-                $aArray[$key] = $aLanguageData[$key];
+                $aResult[$key] = $aLanguageData[$key];
             }
         }
         else
         {
-            $aArray=$aLanguageData;
+            $aResult=$aLanguageData;
         }
-        return $aArray;
+        if ($sDetail=='short')
+        {
+            foreach ($aResult as $sKey=>$aLanguageData)
+            {
+                $aNewArray[$sKey]=$aLanguageData['description'];
+            }
+            $aResult=$aNewArray;
+        }
+        return $aResult;
     }
 
 

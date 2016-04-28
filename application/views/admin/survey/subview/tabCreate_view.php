@@ -21,7 +21,7 @@ PrepareEditorScript(false, $this);
             <label class="col-sm-2 control-label" for='language' title='<?php  eT("This is the base language of your survey and it can't be changed later. You can add more languages after you have created the survey."); ?>'><?php  eT("Base language:"); ?><span class='annotationasterisk'>*</span></label>
             <div class="col-sm-5">
                 <select id='language' name='language'  class="form-control">
-                    <?php foreach (getLanguageDataRestricted (false, Yii::app()->session['adminlang']) as $langkey2 => $langname) { ?>
+                    <?php foreach (getLanguageDataRestricted (false) as $langkey2 => $langname) { ?>
                         <option value='<?php echo $langkey2; ?>'
                             <?php if (Yii::app()->getConfig('defaultlang') == $langkey2) { ?>
                                 selected='selected'
