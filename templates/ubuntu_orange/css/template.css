@@ -473,7 +473,7 @@ body .navbar-default .navbar-brand:hover {
  * (Both in portrait mode.)
  * We don't have to collapse tables on pads.
  */
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 801px) {
 
     /* Remove margin */
     .row {
