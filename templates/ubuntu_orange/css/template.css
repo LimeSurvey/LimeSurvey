@@ -808,3 +808,8 @@ table.numbers-only th, table.numbers-only input {
 #checkjavascript {
     margin-top: 100px;
 }
+
+/*label font weight*/
+label, th {
+    font-weight: normal;
+}
