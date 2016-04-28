@@ -13,6 +13,7 @@
  *
  */
 ?>
+<!-- _statisticsoutput_graphs -->
     <?php if(count($labels) < 70): ?>
         <!-- Charts -->
         <div class="row">
@@ -66,3 +67,4 @@
     var labels_<?php echo $qqid; ?>=<?php echo json_encode($labels); // the array of labels ?>;
     var grawdata_<?php echo $qqid;?>=<?php echo json_encode($grawdata); // the datas to generate the graph ?>;
 </script>
+<!-- endof  _statisticsoutput_graphs -->

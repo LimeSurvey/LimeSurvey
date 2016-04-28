@@ -108,7 +108,7 @@ function init_chart_js_graph_with_datasets($type,$qid)
             window.chartjs[$qid].destroy();
         }
     }
-    
+
     window.chartjs[$qid] = new Chart($canvas)[$type]({
         labels: $labels,
         datasets: [{
@@ -178,7 +178,7 @@ $(document).ready(function() {
 
     if($('#showGraphOnPageLoad').length>0)
     {
-        $('.chartjs-container').loadGraph();
+        $('#statisticsoutput .row').first().find('.chartjs-container').loadGraph();
     }
 
     $('#generalfilters-chevron').click(function(){
