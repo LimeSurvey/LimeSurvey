@@ -709,6 +709,7 @@ EOD;
     $coreReplacements['TOKEN'] = (!$anonymized ? $_token : '');// Silently replace TOKEN by empty string
     $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
+    $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
     if(!isset($replacements['QID']))
     {
         Yii::import('application.helpers.SurveyRuntimeHelper');
