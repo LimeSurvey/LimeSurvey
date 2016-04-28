@@ -20,7 +20,7 @@
     <tbody>
         <tr >
             <td style='padding:3px;'>
-                <?php echo CHtml::form(array('admin/user/sa/modifyuser'), 'post');?>
+                <?php echo CHtml::form(array('admin/user/sa/modifyuser'), 'post',array('class'=>'pull-left'));?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo eT("Edit this user"); ?>" >
                         <button type='submit' class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil text-success"></span></button> <?php // eT("Edit this user");?>
                         <input type='hidden' name='action' value='modifyuser' />
@@ -29,9 +29,9 @@
                 </form>
 
                 <?php if ($usrhimself['parent_id'] != 0 && Permission::model()->hasGlobalPermission('users','delete') ) { ?>
-                <?php echo CHtml::form(array('admin/user/sa/deluser'), 'post', array('onsubmit'=>'return confirm("'.gT("Are you sure you want to delete this entry?","js").'")') );?>
+                <?php echo CHtml::form(array('admin/user/sa/deluser'), 'post', array('class'=>'pull-left','onsubmit'=>'return confirm("'.gT("Are you sure you want to delete this entry?","js").'")') );?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo eT("Delete this user"); ?>" >
-                        <button type='submit' class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash  text-danger"></span></button> <?php //<?php eT("Delete this user");?>;?>
+                        <button type='submit' class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash  text-danger"></span></button> <?php //<?php eT("Delete this user");?>
                         <input type='hidden' name='action' value='deluser' />
                         <input type='hidden' name='user' value='<?php echo htmlspecialchars($usrhimself['user']);?>' />
                         <input type='hidden' name='uid' value='<?php echo $usrhimself['uid'];?>' />
@@ -164,20 +164,17 @@
 
                 <td class="col-lg-2">
                     <div class="form-group">
-                        <label for="new_user"><?php eT("Username");?></label>
-                        <input type='text' id='new_user' name='new_user' required />
+                        <label for="new_user"><?php eT("Username:");?></label> <input type='text' id='new_user' name='new_user' required />
                     </div>
                 </td>
                 <td class="col-md-2">
                     <div class="form-group">
-                        <label for="new_email" ><?php eT("Email");?></label>
-                        <input type='email' id='new_email' name='new_email' required />
+                        <label for="new_email" ><?php eT("Email:");?></label> <input type='email' id='new_email' name='new_email' required />
                     </div>
                 </td>
                 <td class="col-md-2">
                     <div class="form-group">
-                        <label for="new_full_name"><?php eT("Full name");?></label>
-                        <input type='text' id='new_full_name' name='new_full_name' required />
+                        <label for="new_full_name"><?php eT("Full name:");?></label> <input type='text' id='new_full_name' name='new_full_name' required />
                     </div>
                 </td>
                 <td class="col-md-2">
