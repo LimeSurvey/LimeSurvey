@@ -455,7 +455,7 @@ class Survey_Common_Action extends CAction
             }
 
             // Count active survey
-            $aData['dataForConfigMenu']['activesurveyscount'] = $aData['activesurveyscount'] = Survey::model()->count("active = 'Y'");
+            $aData['dataForConfigMenu']['activesurveyscount'] = $aData['activesurveyscount'] = Survey::model()->permission(Yii::app()->user->getId())->active()->count();
 
             // Count survey
             $aData['dataForConfigMenu']['surveyscount'] = Survey::model()->count();
