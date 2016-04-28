@@ -312,5 +312,9 @@ window.alert = function(message, title) {
     }
     $("#bootstrap-alert-box-modal .modal-header h4").text(title || "");
     $("#bootstrap-alert-box-modal .modal-body p").text(message || "");
-    $("#bootstrap-alert-box-modal").modal('show');
+
+    $(document).ready(function()
+    {
+        $("#bootstrap-alert-box-modal").modal('show');
+    });
 };
