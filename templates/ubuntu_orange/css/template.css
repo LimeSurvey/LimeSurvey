@@ -739,9 +739,8 @@ td.answer-item.text-center
 
 /* center the label text in no more table mode */
 .label-text{
-    display: inline;
-    position: relative;
-    bottom: 0px;
+    margin-top: -24px;
+    margin-left: 20px;
 }
 
 .label-clickable:hover
