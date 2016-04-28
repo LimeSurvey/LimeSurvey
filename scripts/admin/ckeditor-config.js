@@ -10,6 +10,7 @@ CKEDITOR.editorConfig = function( config )
     config.filebrowserFlashUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=flash';
     config.removeDialogTabs = 'link:upload;image:Upload';
 
+    config.allowedContent = true;
     config.skin = 'bootstrapck';
     //config.toolbarCanCollapse = true;
     config.autoParagraph = false;
@@ -62,7 +63,7 @@ CKEDITOR.editorConfig = function( config )
         ['Link','Unlink','Image'],
         ['Source']
     ];
-   config.extraPlugins = "xml,ajax,limereplacementfields";
+   config.extraPlugins = "xml,ajax,limereplacementfields,codemirror";
 };
 
 (function () {
