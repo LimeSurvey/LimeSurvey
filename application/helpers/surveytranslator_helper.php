@@ -536,13 +536,6 @@
         $supportedLanguages['pa']['dateformat'] = 2;
         $supportedLanguages['pa']['radixpoint'] = 0;
 
-        // Russian
-        $supportedLanguages['ru']['description'] = gT('Russian');
-        $supportedLanguages['ru']['nativedescription'] = '&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;';
-        $supportedLanguages['ru']['rtl'] = false;
-        $supportedLanguages['ru']['dateformat'] = 1;
-        $supportedLanguages['ru']['radixpoint'] = 1;
-
         // Romanian
         $supportedLanguages['ro']['description'] = gT('Romanian');
         $supportedLanguages['ro']['nativedescription'] = 'Rom&#226;na';
@@ -550,12 +543,12 @@
         $supportedLanguages['ro']['dateformat'] = 1;
         $supportedLanguages['ro']['radixpoint'] = 1;
 
-        // Slovak
-        $supportedLanguages['sk']['description'] = gT('Slovak');
-        $supportedLanguages['sk']['nativedescription'] = 'Sloven&#269;ina';
-        $supportedLanguages['sk']['rtl'] = false;
-        $supportedLanguages['sk']['dateformat'] = 4;
-        $supportedLanguages['sk']['radixpoint'] = 1;
+        // Russian
+        $supportedLanguages['ru']['description'] = gT('Russian');
+        $supportedLanguages['ru']['nativedescription'] = '&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;';
+        $supportedLanguages['ru']['rtl'] = false;
+        $supportedLanguages['ru']['dateformat'] = 1;
+        $supportedLanguages['ru']['radixpoint'] = 1;
 
         // Sinhala
         $supportedLanguages['si']['description'] = gT('Sinhala');
@@ -563,6 +556,13 @@
         $supportedLanguages['si']['rtl'] = false;
         $supportedLanguages['si']['dateformat'] = 5;
         $supportedLanguages['si']['radixpoint'] = 0;
+
+        // Slovak
+        $supportedLanguages['sk']['description'] = gT('Slovak');
+        $supportedLanguages['sk']['nativedescription'] = 'Sloven&#269;ina';
+        $supportedLanguages['sk']['rtl'] = false;
+        $supportedLanguages['sk']['dateformat'] = 4;
+        $supportedLanguages['sk']['radixpoint'] = 1;
 
         // Slovenian
         $supportedLanguages['sl']['description'] = gT('Slovenian');
@@ -964,12 +964,23 @@
     {
         // Strip informal string always for easier matching
         $sLocale=str_replace('-informal','',$sLocale);
-
-        $aConversions=array();
+        $aConversions=array('ca-valencia'=>'ca',
+                            'hy'=>'hy-am',
+                            'zh-Hans'=>'zh-cn',
+                            'zh-Hant-HK'=>'zh-cn',
+                            'zh-Hant-TW'=>'zh-tw',
+                            'prs'=>'fa',
+                            'pa'=>'pa-in',
+                            'sr'=>'sr-cyrl',
+                            'es-AR'=>'es',
+                            'es-CL'=>'es',
+                            'es-MX'=>'es',
+                            'swh'=>'sw'
+                            );
         if (isset($aConversions[$sLocale])){
             $sLocale=$aConversions[$sLocale];
         }
-        return $sLocale;
+        return strtolower($sLocale);
     }
 
     function getLanguageDataRestricted($bOrderByNative=false,$sLanguageCode='en') {
