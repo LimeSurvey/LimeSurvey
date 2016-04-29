@@ -1194,7 +1194,7 @@ class database extends Survey_Common_Action
             $oSurvey->format = App()->request->getPost('format');
             $oSurvey->template = Yii::app()->request->getPost('template');
             $oSurvey->assessments = App()->request->getPost('assessments');
-            $oSurvey->additional_languages =  implode(' ',Yii::app()->request->getPost('additional_languages'));
+            $oSurvey->additional_languages =  implode(' ',Yii::app()->request->getPost('additional_languages',array()));
             if ($oSurvey->active!='Y')
             {
                 $oSurvey->anonymized = App()->request->getPost('anonymized');
