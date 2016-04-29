@@ -32,7 +32,7 @@
                         <table id='languageSelection'>
             <tr>
                 <td>
-                <select class="form-control"  style='min-width:220px;' size='5' id='includedLanguages' name='includedLanguages' multiple='multiple'><?php
+                <select class="form-control"  style='min-width:220px;' size='10' id='includedLanguages' name='includedLanguages' multiple='multiple'><?php
                             foreach ($restrictToLanguages as $sLanguageCode) {?>
                             <option value='<?php echo $sLanguageCode; ?>'><?php echo $allLanguages[$sLanguageCode]['description']; ?></option>
                             <?php
@@ -52,7 +52,7 @@
                     </button>
                 </td>
                 <td >
-                <select class="form-control"  size='5' style='min-width:220px;' id='excludedLanguages' name='excludedLanguages' multiple='multiple'>
+                <select class="form-control"  size='10' style='min-width:220px;' id='excludedLanguages' name='excludedLanguages' multiple='multiple'>
                         <?php foreach ($excludedLanguages as $sLanguageCode) {
                             ?><option value='<?php echo $sLanguageCode; ?>'><?php echo $allLanguages[$sLanguageCode]['description']; ?></option><?php
                         } ?>
