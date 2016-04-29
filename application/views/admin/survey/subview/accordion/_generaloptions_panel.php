@@ -39,7 +39,7 @@
                 'value' => Survey::model()->findByPk($surveyid)->additionalLanguages,
                 'name' => 'additional_languages',
                 'pluginOptions' => array(
-                    'placeholder' => 'Select additional languages',
+                    'placeholder' => gt('Select additional languages','unescaped'),
             )));
             /*
 
