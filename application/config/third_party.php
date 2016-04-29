@@ -10,7 +10,7 @@ return array(
     'jquery' => array(
         'baseUrl' => 'third_party/jquery/',
         'js' => array(
-            'jquery-1.12.1.min.js'
+            'jquery-2.2.3.min.js'
         ),
     ),
 
@@ -43,7 +43,7 @@ return array(
     'jqueryui' => array(
         'baseUrl' => 'third_party/jqueryui/',
         'js' => array(
-            'js/jquery-ui-1.10.3.custom.min.js'
+            'js/jquery-ui-1.11.4.min.js'
         ),
         'css' => array(
             //'css/jquery-ui.css'
