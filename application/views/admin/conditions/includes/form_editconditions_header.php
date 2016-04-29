@@ -64,7 +64,7 @@
                             <li role='presentation'>
                                 <a data-toggle='tab'href="#SRCTOKENATTRS">
                                     <span>
-                                        <?php eT("Token fields"); ?>
+                                        <?php eT("Survey participant attributes"); ?>
                                     </span>
                                 </a>
                             </li>

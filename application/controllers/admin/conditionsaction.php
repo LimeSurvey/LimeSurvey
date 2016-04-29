@@ -1859,6 +1859,7 @@ class conditionsaction extends Survey_Common_Action {
             ."\t</div>\n";
             // Previous answers tab @SGQA@ placeholders
             $aViewUrls['output'] .= "\t<div id='PREVQUESTIONS'  class='tab-pane fade in'>\n"
+            ."\t\t<br /><label for='prevQuestionSGQA'>".gT("Answer from previous question")."</label>\n"
             ."\t\t<select class='form-control' name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>\n";
             foreach ($cquestions as $cqn)
             { // building the @SGQA@ placeholders options
@@ -1873,11 +1874,11 @@ class conditionsaction extends Survey_Common_Action {
                 }
             }
             $aViewUrls['output'] .= "\t\t</select>\n"
-            ."\t\t<br /><span id='prevQuestionSGQALabel'>".gT("Answer from previous questions")."</span>\n"
             ."\t</div>\n";
 
             // Token tab
             $aViewUrls['output'] .= "\t<div id='TOKENATTRS'  class='tab-pane fade in'>\n"
+            ."\t\t<br /><label for='tokenAttr'>".gT("Attributes of the survey participant")."</label>\n"
             ."\t\t<select class='form-control' name='tokenAttr' id='tokenAttr' size='7'>\n";
             foreach (getTokenFieldsAndNames($iSurveyID) as $tokenattr => $tokenattrName)
             {
@@ -1885,7 +1886,6 @@ class conditionsaction extends Survey_Common_Action {
             }
 
             $aViewUrls['output'] .= "\t\t</select>\n"
-            ."\t\t<br /><span id='tokenAttrLabel'>".gT("Attributes values from the participant's token")."</span>\n"
             ."\t</div>\n";
 
             // Regexp Tab
