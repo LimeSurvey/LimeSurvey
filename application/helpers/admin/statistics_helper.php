@@ -3299,32 +3299,42 @@ class statistics_helper {
             unset($extraline);
 
             ///// HERE RENDER statisticsoutput_answer
-            $aData['label']=$label;
-            $aData['grawdata']=$grawdata;
-            $aData['gdata']=$gdata;
-            $aData['extraline']=(isset($extraline))?$extraline:false;
-            $aData['aggregated']=(isset($aggregated))?$aggregated:false;
-            $aData['aggregatedPercentage']=(isset($aggregatedPercentage))?$aggregatedPercentage:false;
-            $aData['sumitems']=(isset($sumitems))?$sumitems:false;
-            $aData['sumpercentage']=(isset($sumpercentage))?$sumpercentage:false;
-            $aData['TotalCompleted']=(isset($TotalCompleted))?$TotalCompleted:false;
-            $aData['casepercentage']=(isset($casepercentage))?$casepercentage:false;
+            $aData['label']                = $label;
+            $aData['grawdata']             = $grawdata;
+            $aData['gdata']                = $gdata;
 
-            $aData['bNAgData']=(isset($bNAgData))?$bNAgData:false;
-            $aData['bNAgDataExtraLine']=(isset($bNAgDataExtraLine))?$bNAgDataExtraLine:false;
-            $aData['showAggregatedPercentage']=(isset($showAggregatedPercentage))?$showAggregatedPercentage:false;
-            $aData['showEmptyAggregatedPercentage']=(isset($showEmptyAggregatedPercentage))?$showEmptyAggregatedPercentage:false;
-            $aData['bShowSumAnswer']=(isset($bShowSumAnswer))?$bShowSumAnswer:false;
+            $aData['extraline']            = (isset($extraline))?$extraline:false;
+            $aData['aggregated']           = (isset($aggregated))?$aggregated:false;
+            $aData['aggregatedPercentage'] = (isset($aggregatedPercentage))?$aggregatedPercentage:false;
+            $aData['sumitems']             = (isset($sumitems))?$sumitems:false;
+            $aData['sumpercentage']        = (isset($sumpercentage))?$sumpercentage:false;
+            $aData['TotalCompleted']       = (isset($TotalCompleted))?$TotalCompleted:false;
+            $aData['casepercentage']       = (isset($casepercentage))?$casepercentage:false;
+
+            $aData['bNAgData']                      = (isset($bNAgData))?$bNAgData:false;
+            $aData['bNAgDataExtraLine']             = (isset($bNAgDataExtraLine))?$bNAgDataExtraLine:false;
+            $aData['showAggregatedPercentage']      = (isset($showAggregatedPercentage))?$showAggregatedPercentage:false;
+            $aData['showEmptyAggregatedPercentage'] = (isset($showEmptyAggregatedPercentage))?$showEmptyAggregatedPercentage:false;
+            $aData['bShowSumAnswer']                = (isset($bShowSumAnswer))?$bShowSumAnswer:false;
 
             // Generate answer
             // _statisticsoutput_answer
             $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_answer', $aData, true);
 
+            $extraline            = false;
+            $aggregated           = false;
+            $aggregatedPercentage = false;
+            $sumitems             = false;
+            $sumpercentage        = false;
+            $TotalCompleted       = false;
+            $casepercentage       = false;
+
             $bNAgData=false;
             $bNAgDataExtraLine=false;
             $showAggregatedPercentage=false;
             $showEmptyAggregatedPercentage=false;
-            $bShowSumAnswer=false;            
+            $bShowSumAnswer=false;
+
 
 
         }    //end while
