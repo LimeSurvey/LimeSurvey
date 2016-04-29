@@ -159,7 +159,7 @@
   position: relative;
   padding: 0.5em;
   margin-bottom: 1em;
-  animation: fadein 1s; }
+}
 
 body {
   font-size: 14px;
@@ -826,11 +826,11 @@ div.panel.disabled {
 .content-right {
   padding-left: 0;
   padding-right: 0;
-  animation: fadein 1s; }
+}
   .content-right .col-lg-12 {
     padding-left: 0;
     padding-right: 0;
-    animation: fadein 1s; }
+}
 
 .toWhite a:hover {
   font-weight: 700; }
@@ -838,7 +838,7 @@ div.panel.disabled {
 .col-lg-12.content-right {
   padding-left: 0;
   padding-right: 0;
-  animation: fadein 1s; }
+}
 
 .container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
   color: #fff; }
