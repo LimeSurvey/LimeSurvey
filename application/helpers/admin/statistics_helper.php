@@ -2387,26 +2387,17 @@ class statistics_helper {
     */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
-        // TODO: Should not be necessary - this combination should never happen
-        // File-upload is not displayed in PDF
-        if (($outputType=='pdf' && $outputs['qtype'] === "|"))
-        {
-            return array(
-                "statisticsoutput" => "",
-                "pdf" => null,
-                "astatdata" => array()
-            );
-        }
 
         /* Set up required variables */
-        $TotalCompleted = 0; //Count of actually completed answers
-        $statisticsoutput="";
-        $sDatabaseType = Yii::app()->db->getDriverName();
-        $tempdir = Yii::app()->getConfig("tempdir");
-        $tempurl = Yii::app()->getConfig("tempurl");
-        $firstletter = substr($rt, 0, 1);
-        $astatdata=array();
-        if ($usegraph==1)
+        $TotalCompleted     = 0; //Count of actually completed answers
+        $statisticsoutput   = "";
+        $sDatabaseType      = Yii::app()->db->getDriverName();
+        $tempdir            = Yii::app()->getConfig("tempdir");
+        $tempurl            = Yii::app()->getConfig("tempurl");
+        $firstletter        = substr($rt, 0, 1);
+        $astatdata          = array();
+
+        if ($usegraph==1 && $outputType != 'html')
         {
             //for creating graphs we need some more scripts which are included here
             require_once(APPPATH.'/third_party/pchart/pchart/pChart.class');
@@ -2661,8 +2652,10 @@ class statistics_helper {
                     $fname= "$al[1]";
                 }
 
+                $bShowCount  = true;
+                $bShowPercentage = true;
                 $bAnswer = true; // For view
-                $bSum = false;
+                $bSum    = false;
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
                     $headPDF2 = array();
@@ -2703,6 +2696,8 @@ class statistics_helper {
                                 break;
                             case 'html':
                                 //four columns
+                                $bShowCount  = true;
+                                $bShowPercentage = true;
                                 $bAnswer = true;
                                 $bSum = true;
                                 break;
@@ -2735,7 +2730,8 @@ class statistics_helper {
                                 //three columns
                                 $bAnswer = true; // For view
                                 $bSum = false;
-
+                                $bShowCount  = true;
+                                $bShowPercentage = true;
                                 break;
                             default:
 
@@ -2776,6 +2772,8 @@ class statistics_helper {
                             //three columns
                             $bAnswer = true; // For view
                             $bSum = false;
+                            $bShowCount  = true;
+                            $bShowPercentage = true;
                             break;
                         default:
 
@@ -3019,8 +3017,10 @@ class statistics_helper {
         $itemcounter = 1;
 
         $aData['outputs'] = (isset($outputs))?$outputs:'';
-        $aData['bSum'] = (isset($bSum))?$bSum:'';
-        $aData['bAnswer'] = (isset($bAnswer))?$bAnswer:'';
+        $aData['bSum'] = (isset($bSum))?$bSum:false;
+        $aData['bAnswer'] = (isset($bAnswer))?$bAnswer:false;
+        $aData['bShowCount'] = (isset($bShowCount))?$bShowCount:false;
+        $aData['bShowPercentage'] = (isset($bShowPercentage))?$bShowPercentage:false;
         $statisticsoutput =  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_header', $aData, true);
 
         //loop through all available answers
@@ -3082,9 +3082,14 @@ class statistics_helper {
                         break;
                     case 'html':
                         //output when having no data
+                        /// _statisticsoutput_answer
+                        $bNAgData = true;
+                        if (isset($extraline))
+                        {
+                            $bNAgDataExtraLine = $extraline;
+                        }
                         break;
                     default:
-
 
                         break;
                 }
@@ -3166,6 +3171,15 @@ class statistics_helper {
 
                         case 'html':
                             //output percentage
+                            $bNAgData = true;
+                            if ($aggregatedPercentage !== 'na')
+                            {
+                                $showAggregatedPercentage = true;
+                            }
+                            else
+                            {
+                                $showEmptyAggregatedPercentage = true;
+                            }
                             break;
 
                         default:
@@ -3225,6 +3239,7 @@ class statistics_helper {
 
                                 break;
                             case 'html':
+                                    $bShowSumAnswer = true;
                                 break;
                             default:
 
@@ -3256,6 +3271,12 @@ class statistics_helper {
                             break;
                         case 'html':
                             //output percentage
+                            $bNAgData = true;
+                            if(isset($extraline))
+                            {
+                                $bNAgDataExtraLine = $extraline;
+                            }
+
                             break;
                         default:
 
@@ -3288,6 +3309,14 @@ class statistics_helper {
             $aData['sumpercentage']=(isset($sumpercentage))?$sumpercentage:false;
             $aData['TotalCompleted']=(isset($TotalCompleted))?$TotalCompleted:false;
             $aData['casepercentage']=(isset($casepercentage))?$casepercentage:false;
+
+            $aData['bNAgData']=(isset($bNAgData))?$bNAgData:false;
+            $aData['bNAgDataExtraLine']=(isset($bNAgDataExtraLine))?$bNAgDataExtraLine:false;
+            $aData['showAggregatedPercentage']=(isset($showAggregatedPercentage))?$showAggregatedPercentage:false;
+            $aData['showEmptyAggregatedPercentage']=(isset($showEmptyAggregatedPercentage))?$showEmptyAggregatedPercentage:false;
+            $aData['bShowSumAnswer']=(isset($bShowSumAnswer))?$bShowSumAnswer:false;
+
+
 
             // Generate answer
             // _statisticsoutput_answer
@@ -3469,6 +3498,7 @@ class statistics_helper {
 
 
         if ($outputType=='html') {
+
         }
 
         // _statisticsoutput_graphs.php
