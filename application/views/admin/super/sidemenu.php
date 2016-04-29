@@ -14,7 +14,7 @@
 ?>
 
     <!-- State when page is loaded : for JavaScript-->
-    <?php if ($sideMenuBehaviour == 'adaptive'): ?>
+    <?php if ($sideMenuBehaviour == 'adaptive' || $sideMenuBehaviour == ''): ?>
         <?php if(isset($sidemenu['state']) && $sidemenu['state']==false ):?>
            <input type="hidden" id="close-side-bar" />
         <?php endif;?>
