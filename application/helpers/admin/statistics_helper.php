@@ -1869,10 +1869,10 @@ class statistics_helper {
             if (($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
             {
                 //is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
-                //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == "on") && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
+                //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == 1) && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
                 // TIBO: TODO WE MUST SKIP THE FOLLOWING SECTION FOR TYPE A and 5 when
                 // showaggreagated data is set and set to 1
-                if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == "on") )
+                if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == 1) )
                 {
                     //counter
                     $i=0;
@@ -1912,7 +1912,7 @@ class statistics_helper {
                 if (incompleteAnsFilterState() == "incomplete") {$criteria->addCondition("submitdate IS NULL");}
                 elseif (incompleteAnsFilterState() == "complete") {$criteria->addCondition("submitdate IS NOT NULL");}
                 $multiNotDisplayed=SurveyDynamic::model($surveyid)->count($criteria);
-                if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == "on") )
+                if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == 1) )
                 {
                     //counter
                     $i=0;
@@ -2847,10 +2847,10 @@ class statistics_helper {
         if (($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
         {
             //is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
-            //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == "on") && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
+            //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == 1) && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
             // TIBO: TODO WE MUST SKIP THE FOLLOWING SECTION FOR TYPE A and 5 when
             // showaggreagated data is set and set to 1
-            if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == "on") )
+            if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == 1) )
             {
                 //counter
                 $i=0;
@@ -2956,7 +2956,7 @@ class statistics_helper {
             if (incompleteAnsFilterState() == "incomplete") {$criteria->addCondition("submitdate IS NULL");}
             elseif (incompleteAnsFilterState() == "complete") {$criteria->addCondition("submitdate IS NOT NULL");}
             $multiNotDisplayed=SurveyDynamic::model($surveyid)->count($criteria);
-            if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == "on") )
+            if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == 1) )
             {
                 //counter
                 $i=0;
