@@ -162,6 +162,10 @@
                         value = $inputEl.val(); // We get the current value of the bootstrapSlider
                         displayValue = value.toString().replace('.',$separator); // We format it with the right separator
                         $inputEl.val(displayValue); // We parse it to the element
+                    });
+
+                    theSlider.on('slideStop', function() {
+                        $inputEl.trigger('onkeyup');
                         LEMrel<?php echo $qid; ?>() // We call the EM
                     });
 
