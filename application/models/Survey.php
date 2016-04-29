@@ -926,7 +926,11 @@ class Survey extends LSActiveRecord
         );
 
         $criteria = new CDbCriteria;
-        $criteria->with=array('defaultlanguage','owner');
+        if (!in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
+        {
+            // Only do eager loading if not using MSSQL because there is a bug in Yii regarding this
+            $criteria->with=array('defaultlanguage','owner');
+        }
 
         // Permission
         if(!Permission::model()->hasGlobalPermission("surveys",'read'))
