@@ -109,11 +109,11 @@ class WhDateTimePicker extends CInputWidget
 		/* publish assets dir */
 		$path = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'assets';
 		$assetsUrl = $this->getAssetsUrl($path);
+        $this->getYiiWheels()->registerAssetJs('moment-with-locales.js');
 
 		/* @var $cs CClientScript */
 		$cs = Yii::app()->getClientScript();
 		$cs->registerCssFile($assetsUrl . '/css/bootstrap-datetimepicker.min.css');
-        $cs->registerScriptFile($assetsUrl . '/js/moment-with-locales.js', CClientScript::POS_END);
 		$cs->registerScriptFile($assetsUrl . '/js/bootstrap-datetimepicker.js', CClientScript::POS_END);
 		if (isset($this->pluginOptions['language'])) {
 			$cs->registerScriptFile(
