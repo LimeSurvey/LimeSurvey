@@ -864,6 +864,7 @@ class Survey_Common_Action extends CAction
                 $sAlternativeUrl = $aData['surveybar']['closebutton']['url'];
                 $aForbiddenWordsInUrl = isset($aData['surveybar']['closebutton']['forbidden'])?$aData['surveybar']['closebutton']['forbidden']:array();
                 $aForbiddenWordsInUrl[]='assessmentedit';
+                $aForbiddenWordsInUrl[]='newsurvey';
                 $aForbiddenWordsInUrl[]='editlocalsettings';
                 $aForbiddenWordsInUrl[]='setsurveysecurity';
                 $aForbiddenWordsInUrl[]='importsurveyresources';
