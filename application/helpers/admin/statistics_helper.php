@@ -3676,7 +3676,7 @@ class statistics_helper {
                 $statisticsoutput .=  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_graphs', $aData, true);
 
             }
-            $statisticsoutput .= "</table><br /> \n";
+            $statisticsoutput .= "</table></div><br /> <!-- in statistics helper --> \n";
         }
 
         return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$this->pdf, "astatdata"=>$astatdata);
