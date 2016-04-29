@@ -926,14 +926,18 @@ class Survey extends LSActiveRecord
         );
 
         $criteria = new CDbCriteria;
-        $criteria->with=array('defaultlanguage','owner');
+        if (!in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
+        {
+            // Only do eager loading if not using MSSQL because there is a bug in Yii regarding this
+            $criteria->with=array('defaultlanguage','owner');
+        }
 
         // Permission
         if(!Permission::model()->hasGlobalPermission("surveys",'read'))
         {
             $criteria->join .= "LEFT JOIN {{permissions}} AS permissions ON ( permissions.entity_id=t.sid AND permissions.entity='survey' AND permissions.uid=:userid  ) ";
-            $criteria->condition = 'permissions.read_p=1';
-            $criteria->params=(array(':userid'=>Yii::app()->user->id ));
+            $criteria->condition = 'permissions.read_p=1 or owner_id=:userid2';
+            $criteria->params=(array(':userid'=>Yii::app()->user->id,':userid2'=>Yii::app()->user->id ));
         }
 
         // Search filter
