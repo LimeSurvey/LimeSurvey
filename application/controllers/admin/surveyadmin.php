@@ -221,7 +221,6 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
 
-        $this->_renderWrappedTemplate('survey', 'editSurvey_view', $aData);
     }
 
     /**

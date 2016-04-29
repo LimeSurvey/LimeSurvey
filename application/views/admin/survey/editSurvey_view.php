@@ -9,24 +9,24 @@
 
             <?php $controller->renderPartial('/admin/survey/subview/tab_view',$data); ?>
             <?php
-                if ($action == "editsurveysettings") 
+                if ($action == "editsurveysettings")
                 {
-                    //     
+                    //
                     $sURL = 'admin/survey/sa/editsurveysettings/surveyid/'. $esrow['sid'];
                     $sURL="admin/database/index/updatesurveysettings";
                 }
                 else
-                { 
+                {
                     $sURL="admin/survey/sa/insert";
                 }
             ?>
             <?php echo CHtml::form(array($sURL), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'form30')); ?>
-	
+
 	<div class="row">
 		<div class="col-lg-12 content-right">
-		    <div class="tab-content">		
+		    <div class="tab-content">
 			<?php
-			    
+
 			    $controller->renderPartial('/admin/survey/subview/tabGeneralEditSurvey_view',$data);
 			    if (isset($pluginSettings))
 			    {
@@ -37,10 +37,10 @@
 			    $controller->renderPartial('/admin/survey/subview/tabNotification_view',$data);
 			    $controller->renderPartial('/admin/survey/subview/tabTokens_view',$data);
 			    $controller->renderPartial('/admin/survey/subview/tabPanelIntegration_view',$data);
-				$controller->renderPartial('/admin/survey/subview/tabResourceManagement_view',$data);		    
+				$controller->renderPartial('/admin/survey/subview/tabResourceManagement_view',$data);
 			?>
 			</div>
-	
+
 			<input type='hidden' id='sid' name='sid' value="<?php echo $esrow['sid'];?>" />
 			<input type='hidden' name='languageids' id='languageids' value="<?php echo $esrow['additional_languages'];?>" />
 			<input type='hidden' name='language' value="<?php echo $esrow['language'];?>" />
@@ -58,21 +58,15 @@
             <?php $this->renderPartial('survey/subview/addPanelIntegrationParameter_view', array('questions' => $questions)); ?>
 
 			</form>
-			
+
 		</div>
 	</div>
 </div>
 
 <script>
-	function UpdateLanguageIDs(mylangs,confirmtxt)
+	function ConfirmLanguageChange(confirmtxt)
 {
-    document.getElementById("languageids").value = '';
-
-    var lbBox = document.getElementById("additional_languages");
-    for (var i = 0; i < lbBox.options.length; i++)
-        {
-        document.getElementById("languageids").value = document.getElementById("languageids").value + lbBox.options[i].value+ ' ';
-    }
+    mylangs=$('#oldlanguages').val();
     if (mylangs)
         {
         if (checklangs(mylangs))
