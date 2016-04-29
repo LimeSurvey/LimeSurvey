@@ -3316,11 +3316,16 @@ class statistics_helper {
             $aData['showEmptyAggregatedPercentage']=(isset($showEmptyAggregatedPercentage))?$showEmptyAggregatedPercentage:false;
             $aData['bShowSumAnswer']=(isset($bShowSumAnswer))?$bShowSumAnswer:false;
 
-
-
             // Generate answer
             // _statisticsoutput_answer
             $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_answer', $aData, true);
+
+            $bNAgData=false;
+            $bNAgDataExtraLine=false;
+            $showAggregatedPercentage=false;
+            $showEmptyAggregatedPercentage=false;
+            $bShowSumAnswer=false;            
+
 
         }    //end while
 
