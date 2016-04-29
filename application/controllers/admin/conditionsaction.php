@@ -93,7 +93,7 @@ class conditionsaction extends Survey_Common_Action {
             $method = array(
             "<"      => gT("Less than"),
             "<="     => gT("Less than or equal to"),
-            "=="     => gT("equals"),
+            "=="     => gT("Equals"),
             "!="     => gT("Not equal to"),
             ">="     => gT("Greater than or equal to"),
             ">"      => gT("Greater than"),
