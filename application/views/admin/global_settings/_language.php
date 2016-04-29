@@ -29,7 +29,7 @@
     <div class="form-group">
             <label class="col-sm-4 control-label"  for='includedLanguages'><?php eT("Available languages:"); ?></label>
             <div class="col-sm-6">
-                        <table id='languageSelection'>
+            <table id='languageSelection'>
             <tr>
                 <td>
                 <select class="form-control"  style='min-width:220px;' size='10' id='includedLanguages' name='includedLanguages' multiple='multiple'><?php
