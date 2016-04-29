@@ -27,14 +27,14 @@
 
     <!-- Additional Languages -->
     <div class="form-group">
-        <label class="col-sm-3 text-right"  for='additional_languages'><?php  eT("Additional Languages"); ?>:</label>
+        <label class="col-sm-3 control-label"  for='additional_languages'><?php  eT("Additional Languages"); ?>:</label>
         <div class="col-sm-9">
             <?php
             $aAllLanguages=getLanguageDataRestricted (false,'short');
             unset($aAllLanguages[$esrow['language']]);
             Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
                 'asDropDownList' => true,
-                'htmlOptions'=>array('multiple'=>'multiple'),
+                'htmlOptions'=>array('multiple'=>'multiple','style'=>"width: 100%"),
                 'data' => $aAllLanguages,
                 'value' => Survey::model()->findByPk($surveyid)->additionalLanguages,
                 'name' => 'additional_languages',
