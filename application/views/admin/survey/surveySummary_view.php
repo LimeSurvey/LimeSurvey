@@ -21,7 +21,6 @@ $surveyid = $surveyinfo['sid'];
 
 
 ?>
-<div class="side-body">
 
     <!-- Quick Actions -->
     <h3 id="survey-action-title"><?php eT('Survey quick actions'); ?><span data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="glyphicon glyphicon-chevron-up"></span></h3>
@@ -584,4 +583,3 @@ $surveyid = $surveyinfo['sid'];
                 </table>
             </div>
         </div>
-</div>

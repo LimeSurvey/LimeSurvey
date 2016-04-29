@@ -1218,9 +1218,13 @@ class Survey_Common_Action extends CAction
         // If the survey is new (ie: it has no group), it is opened by default
         $setting_entry = 'quickaction_'.Yii::app()->user->getId();
         $aData['quickactionstate'] = ($sumcount2<1)?1:getGlobalSetting($setting_entry);
+        $sideMenuBehaviour = getGlobalSetting('sideMenuBehaviour');
 
-
-        $this->getController()->renderPartial("/admin/survey/surveySummary_view", $aData);
+        $content = $this->getController()->renderPartial("/admin/survey/surveySummary_view", $aData, true);
+        $this->getController()->renderPartial("/admin/super/sidebody", array(
+            'content' => $content,
+            'sideMenuBehaviour' => $sideMenuBehaviour
+        ));
     }
 
     /**
