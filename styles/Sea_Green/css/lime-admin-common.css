@@ -153,7 +153,8 @@
 .side-body, .full-page-wrapper {
   min-height: 100%;
   position: relative;
-  margin-bottom: 65px; }
+  margin-bottom: 65px;
+}
 
 .side-body h3, .pagetitle, .list-surveys h3 {
   position: relative;
@@ -700,7 +701,12 @@ div.panel.disabled {
 
 .side-body {
   min-height: 700px;
-  margin-left: 320px; }
+  margin-left: 70px; 
+}
+
+.side-body-margin {
+    margin-left: 320px;
+}
 
 .question-group-collapse-title {
   display: block;
