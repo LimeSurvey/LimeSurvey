@@ -2,6 +2,7 @@
 
 /**
  * @todo Not used, copied to admin/pluginmanager.php. Delete this file?
+ * @todo Actually, it's used for action direct.
  */
 class PluginsController extends LSYii_Controller
 {
@@ -184,6 +185,7 @@ class PluginsController extends LSYii_Controller
             $this->renderText($sOutput);
         }
     }
+
     /**
      * Launch the event newUnsecureRequest
      * @param $plugin : the target
