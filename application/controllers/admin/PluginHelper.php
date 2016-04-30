@@ -24,7 +24,6 @@ class PluginHelper extends Survey_Common_Action
 
         $aData['surveybar']['buttons']['view']= true;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyId.")";
-        $this->_renderWrappedTemplate('', array(), $aData);
 
         $content = $this->getContent($plugin, $method);
 
@@ -33,7 +32,7 @@ class PluginHelper extends Survey_Common_Action
         $aData['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $aData['content'] = $content;
         $aData['activated'] = $surveyinfo['active'];
-        $this->getController()->renderPartial('/admin/super/sidebody', $aData);
+        $this->_renderWrappedTemplate(null, array('super/sidebody'), $aData);
         
     }
 
