@@ -84,7 +84,7 @@
                                 'header'=>gT('Description'),
                                 'name'=>'description',
                                 'type'=>'raw',
-                                'value'=>'$data->description',
+                                'value'=>'viewHelper::flatEllipsizeText($data->description,true,0)',
                                 'htmlOptions' => array('class' => 'col-md-6'),
                             ),
 
