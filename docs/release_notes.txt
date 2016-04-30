@@ -35,6 +35,43 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160428) to 2.50+ (build 160430) Apr 30, 2016
+-Fixed issue #10944: Replace language selector in survey settings with a more space-saving select box (Carsten Schmitz)
+-Fixed issue #10998: Simple statistic graphics wrong when label is too long (LouisGac)
+-Fixed issue #11016: 10 point array does not fit on tablet screen (LouisGac)
+-Fixed issue #11024: missing a translation for close button in modal (survey taking) (LouisGac)
+-Fixed issue #11035: Group name and group description styling shown (Olle Haerstedt)
+-Fixed issue #11039: Labels are of non-equal weigth (LouisGac)
+-Fixed issue #11042: Sorting of questions in the limesurvey view (LouisGac)
+-Fixed issue #11051: wrong alignment of label when multilines (LouisGac)
+-Fixed issue #11058: endless loop between assesments and edit settings (LouisGac)
+-Fixed issue #11067: Number of active surveys is shown to a user without own surveys (Carsten Schmitz)
+-Fixed issue #11072: slider numerical input does not update expression (Olle Haerstedt)
+-Fixed issue #11080: Minor spelling mistake (Carsten Schmitz)
+-Fixed issue: Admin survey list not displaying owned surveys (Carsten Schmitz)
+-Fixed issue: Checkjavascript alert wasn't hidden enough quickly (LouisGac)
+-Fixed issue: Close button looping after creating a survey (LouisGac)
+-Fixed issue: Incorrect rendering of advanced statistics for Sum Answers and extralines (LouisGac)
+-Fixed issue: Loop on save and close button on new survey creation. (LouisGac)
+-Fixed issue: Simple stats wasn't loading all graphs when too many questions (LouisGac)
+-Fixed issue: Statistics, "Subtotals based on displayed questions" switch not respected (LouisGac)
+-Fixed issue: Sum(Answers) shown twice in statistics (LouisGac)
+-Fixed issue: Survey list not properly paginating when using MSSQL (Carsten Schmitz)
+-Fixed issue: When editing users the buttons don't display correctly for non-admin users (Carsten Schmitz)
+-New feature: Choose if side-menu should be always hidden, always closed or adaptive (default) (Olle Harstedt)
+-New feature: Double column to display advanced statistics (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
 
 Changes from 2.50+ (build 160426) to 2.50+ (build 160428) Apr 28, 2016
 -Fixed issue #10997: Update-message corrupts menu on top of the page (LouisGac)
