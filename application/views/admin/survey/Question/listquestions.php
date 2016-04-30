@@ -76,7 +76,7 @@
                             array(
                                 'header' => gt('Question'),
                                 'name' => 'question',
-                                'value'=>'strip_tags($data->question)',
+                                'value'=>'viewHelper::flatEllipsizeText($data->question,true,0)',
                                 'htmlOptions' => array('class' => 'col-md-5'),
                             ),
                             array(
@@ -117,7 +117,6 @@
                                 $pageSize,
                                 Yii::app()->params['pageSizeOptions'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-
                                 'columns' => $columns,
                                 'ajaxUpdate' => true,
                             ));
