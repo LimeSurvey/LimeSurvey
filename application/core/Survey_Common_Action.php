@@ -797,11 +797,18 @@ class Survey_Common_Action extends CAction
                 || $aData['quotas']
                 || $aData['assessments'];
 
+            $event = new PluginEvent('beforeToolsMenuRender', $this);
+            $event->set('surveyId', $iSurveyID);
+            App()->getPluginManager()->dispatchEvent($event);
+            $extraToolsMenuItems = $event->get('menuItems');
+            $aData['extraToolsMenuItems'] = $extraToolsMenuItems;
+
             // Only show tools menu if at least one item is permitted
             $aData['showToolsMenu'] =
                    $aData['surveydelete']
                 || $aData['surveytranslate']
-                || Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
+                || Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')
+                || !is_null($extraToolsMenuItems);
 
             $iConditionCount = Condition::model()->with(Array('questions'=>array('condition'=>'sid ='.$iSurveyID)))->count();
 
@@ -967,7 +974,7 @@ class Survey_Common_Action extends CAction
      * @return string
      * @todo Make quick-menu user configurable
      */
-    private function renderQuickmenu(array $aData)
+    protected function renderQuickmenu(array $aData)
     {
         $event = new PluginEvent('afterQuickMenuLoad', $this);
         $event->set('aData', $aData);
