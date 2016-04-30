@@ -25,7 +25,7 @@ class PluginHelper extends Survey_Common_Action
         $aData['surveybar']['buttons']['view']= true;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyId.")";
 
-        $content = $this->getContent($plugin, $method);
+        $content = $this->getContent($surveyId, $plugin, $method);
 
         $aData['sidemenu'] = array();
         $aData['sidemenu']['state'] = false;
@@ -43,7 +43,7 @@ class PluginHelper extends Survey_Common_Action
      * @param string $method Name of the plugin method
      * @return string
      */
-    protected function getContent($plugin, $method)
+    protected function getContent($surveyId, $plugin, $method)
     {
         // Get plugin class, abort if not found
         try
@@ -68,7 +68,7 @@ class PluginHelper extends Survey_Common_Action
             throw new \CException("Plugin $plugin has no method $method");
         }
 
-        return $refMethod->invoke($pluginInstance);
+        return $refMethod->invoke($pluginInstance, $surveyId);
 
     }
 }
