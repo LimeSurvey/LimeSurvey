@@ -33,8 +33,7 @@ class translate extends Survey_Common_Action {
             echo $this->translate_google_api();
             return;
         }
-
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'translation.js' ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'translation.js');
 
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
         $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;

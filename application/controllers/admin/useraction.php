@@ -43,7 +43,7 @@ class UserAction extends Survey_Common_Action
         }
 
         App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'users.js' ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'users.js');
 
 
         $userlist = getUserList();
@@ -558,7 +558,7 @@ class UserAction extends Survey_Common_Action
             $aData['oUser'] = $oUser;
 
             App()->getClientScript()->registerPackage('jquery-tablesorter');
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "userpermissions.js" ));
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'userpermissions.js');
 
             $aData['fullpagebar']['savebutton']['form'] = 'savepermissions';
             $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';  // Close button
@@ -575,8 +575,7 @@ class UserAction extends Survey_Common_Action
     public function setusertemplates()
     {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'users.js' ));
-
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'users.js');
         $postuserid = (int) Yii::app()->request->getPost("uid");
         $aData['postuser']  = flattenText(Yii::app()->request->getPost("user"));
         $aData['postemail'] = flattenText(Yii::app()->request->getPost("email"));

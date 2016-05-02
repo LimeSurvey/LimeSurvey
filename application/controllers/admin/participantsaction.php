@@ -62,7 +62,7 @@ class participantsaction extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jqgrid');
         if (!empty($sScript))
         {
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . $sScript . '.js' ));
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', $sScript . '.js');
             $this->_renderWrappedTemplate('participants', array('participantsPanel', $sScript), $aData);
         }
     }
@@ -1002,9 +1002,7 @@ class participantsaction extends Survey_Common_Action
                 'attributevalues' => ParticipantAttributeName::model()->getAttributesValues($iAttributeId),
                 'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
                 );
-        //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'participants.css');
-        //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'viewAttribute.css');
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "viewAttribute.js"));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'viewAttribute.js');
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'viewAttribute'), $aData);
     }
 
@@ -1198,7 +1196,7 @@ class participantsaction extends Survey_Common_Action
             );
             App()->getClientScript()->registerPackage('qTip2');
             App()->getClientScript()->registerPackage('jquery-nestedSortable');
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "attributeMapCSV.js" ));
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'attributeMapCSV.js');
 
             $sAttributeMapJS="var copyUrl = '".App()->createUrl("admin/participants/sa/uploadCSV")."';\n"
             ."var displayParticipants = '".App()->createUrl("admin/participants/sa/displayParticipants")."';\n"
@@ -1514,14 +1512,14 @@ class participantsaction extends Survey_Common_Action
         $iShareUserId = Yii::app()->request->getPost('shareuser');
         $bCanEdit = Yii::app()->request->getPost('can_edit');
 
-	    // Some input validation needed
+        // Some input validation needed
         if ($iShareUserId == '') {
             printf(gT("Please select a user"));
             return;
         }
 
         $i = 0;
-	//  $iShareUserId == 0 means any user
+    //  $iShareUserId == 0 means any user
         if (Permission::model()->hasGlobalPermission('participantpanel','update') && $iShareUserId !== '')
             foreach ($iParticipantId as $iId)
             {
@@ -1655,7 +1653,7 @@ class participantsaction extends Survey_Common_Action
     public function attributeMap()
     {
         Yii::app()->loadHelper('common');
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "attributeMap.js" ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'attributeMap.js');
 
         $iSurveyId = Yii::app()->request->getPost('survey_id');
         $redirect = Yii::app()->request->getPost('redirect');
@@ -1727,8 +1725,8 @@ class participantsaction extends Survey_Common_Action
     public function attributeMapToken()
     {
         Yii::app()->loadHelper('common');
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "attributeMapToken.js"));
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') ."css/attributeMapToken.css");
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'attributeMapToken.js');
+        $this->registerCssFile( 'ADMIN', 'attributeMapToken.css' );
 
         $iSurveyID = (int)Yii::app()->request->getQuery('sid');
         $aCPDBAttributes = ParticipantAttributeName::model()->getCPDBAttributes();

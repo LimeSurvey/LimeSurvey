@@ -13,25 +13,25 @@ use Plugin;
         public $api;
         /**
          * Array mapping guids to question object class names.
-         * @var type 
+         * @var type
          */
         protected $guidToQuestion = array();
-        
+
         protected $plugins = array();
-        
+
         protected $pluginDirs = array(
             'webroot.plugins', // User plugins
             'application.core.plugins' // Core plugins
         );
-        
+
         protected $stores = array();
 
         protected $subscriptions = array();
-        
+
         /**
          * Creates the plugin manager.
-         * 
-         * 
+         *
+         *
          * a reference to an already constructed reference.
          */
         public function init() {
@@ -44,17 +44,17 @@ use Plugin;
         }
         /**
          * Return a list of installed plugins, but only if the files are still there
-         * 
+         *
          * This prevents errors when a plugin was installed but the files were removed
          * from the server.
-         * 
+         *
          * @return array
          */
         public function getInstalledPlugins()
         {
-            $pluginModel = Plugin::model();    
+            $pluginModel = Plugin::model();
             $records = $pluginModel->findAll();
-            
+
             $plugins = array();
 
             foreach ($records as $record) {
@@ -65,7 +65,7 @@ use Plugin;
             }
             return $plugins;
         }
-        
+
         /**
          * Return the status of plugin (true/active or false/desactive)
          *
@@ -104,7 +104,7 @@ use Plugin;
             return $this->stores[$storageClass];
         }
 
-        
+
         /**
          * This function returns an API object, exposing an API to each plugin.
          * In the current case this is the LimeSurvey API.
@@ -173,7 +173,7 @@ use Plugin;
          * This function dispatches an event to all registered plugins.
          * @param PluginEvent $event Object holding all event properties
          * @param string|array $target Optional name of plugin to fire the event on
-         * 
+         *
          * @return PluginEvent
          */
         public function dispatchEvent(PluginEvent $event, $target = array())
@@ -186,15 +186,15 @@ use Plugin;
             {
                 foreach($this->subscriptions[$eventName] as $subscription)
                 {
-                    if (!$event->isStopped() 
-                     && (empty($target) || in_array(get_class($subscription[0]), $target))) 
+                    if (!$event->isStopped()
+                     && (empty($target) || in_array(get_class($subscription[0]), $target)))
                     {
                         $subscription[0]->setEvent($event);
                         call_user_func($subscription);
                     }
                 }
             }
-            
+
             return $event;
         }
 
@@ -240,7 +240,7 @@ use Plugin;
         {
             $result = array();
             $class = "{$pluginClass}";
-            
+
             if (!class_exists($class, false)) {
                 $found = false;
                 if (!is_null($pluginDir)) {
@@ -248,7 +248,7 @@ use Plugin;
                 } else {
                     $dirs = $this->pluginDirs;
                 }
-                
+
                 foreach ($this->pluginDirs as $pluginDir) {
                     $file = Yii::getPathOfAlias($pluginDir . ".$pluginClass.{$pluginClass}") . ".php";
                     if (file_exists($file)) {
@@ -257,23 +257,23 @@ use Plugin;
                         break;
                     }
                 }
-                
+
                 if (!$found) {
                     return false;
                 }
             }
-            
+
             $result['description'] = call_user_func(array($class, 'getDescription'));
             $result['pluginName'] = call_user_func(array($class, 'getName'));
             $result['pluginClass'] = $class;
             return $result;
         }
-        
+
         /**
          * Returns the instantiated plugin
          *
          * @param string $pluginName
-         * @param int $id Identifier used for identifying a specific plugin instance. 
+         * @param int $id Identifier used for identifying a specific plugin instance.
          * If ommitted will return the first instantiated plugin with the given name.
          * @return iPlugin|null The plugin or null when missing
          */
@@ -291,7 +291,7 @@ use Plugin;
                 }
             }
             else
-            { 
+            {
                 if ((!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName))
                 {
                     if ($this->getPluginInfo($pluginName) !== false) {
@@ -318,20 +318,24 @@ use Plugin;
          */
         public function loadPlugins()
         {
-            try {
-                $pluginModel = Plugin::model();    
+            // If DB version is less than 165 : plugins table don't exist. 175 update it (boolean to integer for active)
+            if(App()->getConfig('DBVersion')>= 165)
+            {
+                $pluginModel = Plugin::model();
                 $records = $pluginModel->findAllByAttributes(array('active'=>1));
-            
-                foreach ($records as $record) {
+
+                foreach ($records as $record)
+                {
                     $this->loadPlugin($record->name, $record->id);
                 }
-            } catch (Exception $exc) {
-                // Something went wrong, maybe no database was present so we load no plugins
             }
-
+            else
+            {
+                // Log it ? tracevar ?
+            }
             $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this));    // Alow plugins to do stuff after all plugins are loaded
         }
-        
+
         /**
          * Get a list of question objects and load some information about them.
          * This registers the question object classes with Yii.
@@ -368,10 +372,10 @@ use Plugin;
                     }
                 }
             }
-            
+
             return $this->guidToQuestion;
         }
-        
+
         /**
          * Construct a question object from a GUID.
          * @param string $guid
@@ -389,7 +393,7 @@ use Plugin;
                 return $questionObject;
             }
         }
-        
-        
+
+
     }
 ?>

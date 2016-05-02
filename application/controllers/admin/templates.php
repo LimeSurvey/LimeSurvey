@@ -382,21 +382,25 @@ class templates extends Survey_Common_Action
         {
             $templatename = 'default';
         }
+
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, $useindex);
         App()->getClientScript()->reset();
-
-        // After reseting, we need register again the script : maybe move it to endScripts_view for allways needed scripts ?
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "admin_core.js" ));
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH  . 'templates.js'));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'admin_core.js');
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'templates.js');
         App()->getClientScript()->registerPackage('ace');
+
         $aData['fullpagebar']['returnbutton']=true;
         $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
 
-        if ($screenname != 'welcome')
-            Yii::app()->session['step'] = 1;
         // This helps handle the load/save buttons)
+        if ($screenname != 'welcome')
+        {
+            Yii::app()->session['step'] = 1;
+        }
         else
+        {
             unset(Yii::app()->session['step']);
+        }
     }
 
     /**
@@ -762,7 +766,7 @@ class templates extends Survey_Common_Action
 
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('jquery-touch-punch');
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH."survey_runtime.js" ));
+            $this->registerScriptFile( 'SCRIPT_PATH', 'survey_runtime.js');
 
             App()->getClientScript()->render($myoutput);
             @fwrite($fnew, $myoutput);
@@ -917,11 +921,11 @@ class templates extends Survey_Common_Action
         if($oEditedTemplate->cssFramework=='bootstrap')
         {
             // Core templates (are published only if exists)
-            $oEditedTemplate->config->files->css->filename[]="../../styles-public/bootstrap-for-template-editor.css";
+            //$oEditedTemplate->config->files->css->filename[-1]="../../styles-public/bootstrap-for-template-editor.css";
             $oEditedTemplate->config->files->js->filename[]="../../scripts/bootstrap-for-template-editor.js";
 
             // User templates (are published only if exists)
-            $oEditedTemplate->config->files->css->filename[]="../../../styles-public/bootstrap-for-template-editor.css";
+            //$oEditedTemplate->config->files->css->filename[-1]="../../../styles-public/bootstrap-for-template-editor.css";
             $oEditedTemplate->config->files->js->filename[]="../../../scripts/bootstrap-for-template-editor.js";
         }
 
@@ -1196,18 +1200,33 @@ class templates extends Survey_Common_Action
                 );
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/startpage.pstpl", $aData, $oEditedTemplate));
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/survey.pstpl", $aData, $oEditedTemplate));
+
+                // Normally output by survey_runtime
+                $myoutput = array_merge($myoutput, array('<div id="group-0">'));
+
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/startgroup.pstpl", $aData, $oEditedTemplate));
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/groupdescription.pstpl", $aData, $oEditedTemplate));
 
                 $aReplacements = array(
                 'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
                 'QUESTION_CODE' => '1a',
-                'QUESTIONHELP' => 'helpful text',
-                'QUESTION_MANDATORY' => gT("*"),
+                'QUESTIONHELP' => '<div class="text-info questionhelp">
+                    <span class="fa fa-question-circle" aria-hidden="true"></span>
+                    &nbsp;helpful text
+                </div>', // Normally output by survey_runtime
+                'QUESTION_MANDATORY' => '<span class="text-danger asterisk"></span>',//gT("*"),  // Normally output by survey_runtime
                 'QUESTION_MAN_CLASS' => ' mandatory',
                 'QUESTION_ESSENTIALS' => 'id="question1"',
                 'QUESTION_CLASS' => 'list-radio',
                 'QUESTION_NUMBER' => '1',
+                'QUESTION_VALID_MESSAGE'=>'
+                <div class="questionhelp text-info" role="alert" id="vmsg_4496">
+                    <div id="vmsg_4496_num_answers" class="em_num_answers emtip good">
+                        <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+                        '.gT('Tip when question is valid').'
+                    </div>
+                </div>
+                ',
                 );
                 $aReplacements['ANSWER'] = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array(), true);
                 $aData['aReplacements'] = $aReplacements;
@@ -1217,8 +1236,16 @@ class templates extends Survey_Common_Action
                 'QUESTION_TEXT' => gT('Please explain something in detail:'),
                 'QUESTION_CODE' => '2a',
                 'QUESTION_ESSENTIALS' => 'id="question2"',
-                'QUESTION_CLASS' => 'text-long',
+                'QUESTION_CLASS' => 'text-long input-error',
                 'QUESTION_NUMBER' => '2',
+                'QUESTION_VALID_MESSAGE'=>'
+                <div class="questionhelp text-info" role="alert" id="vmsg_4496">
+                    <div id="vmsg_4496_num_answers" class="em_num_answers emtip error">
+                        <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+                        '.gT('Tip when question is not valid').'                        
+                    </div>
+                </div>
+                '
                 );
                 $aReplacements['ANSWER'] = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
                 $aData['aReplacements'] = $aReplacements;
@@ -1226,9 +1253,12 @@ class templates extends Survey_Common_Action
 
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/endgroup.pstpl", $aData, $oEditedTemplate));
 
+                // Normally output by survey_runtime
+                $myoutput = array_merge($myoutput, array('</div>'));
+
                 $aData['aReplacements'] = array(
-                    'MOVEPREVBUTTON' => '<button type="submit" id="moveprevbtn" value="moveprev" name="moveprev" accesskey="p" class="submit button btn btn-default btn-lg ">Previous</button>',
-                    'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-primary btn-lg ">Next</button>'
+                    'MOVEPREVBUTTON' => '<button type="submit" id="moveprevbtn" value="moveprev" name="moveprev" accesskey="p" class="submit button btn btn-default btn-lg ">'.gT('Previous').'</button>',
+                    'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-primary btn-lg ">'.gT('Next').'</button>'
                 );
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/navigator.pstpl", $aData, $oEditedTemplate));
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/endpage.pstpl", $aData, $oEditedTemplate));
@@ -1237,21 +1267,14 @@ class templates extends Survey_Common_Action
             case 'welcome':
                 unset($files);
 
+                $aData['aReplacements'] = array(
+                    'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-primary btn-lg">'.gT('Next').'</button>'
+                );
 
                 foreach ($Welcome as $qs) {
                     $files[] = array("name" => $qs);
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
                 }
-                /*
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath  . "/startpage.pstpl", $aData, $oEditedTemplate));
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath  . "/welcome.pstpl", $aData, $oEditedTemplate));
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath  . "/privacy.pstpl", $aData, $oEditedTemplate));
-                */
-
-                $aData['aReplacements'] = array(
-                    'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-primary btn-lg">Next</button>'
-                );
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath  . "/navigator.pstpl", $aData, $oEditedTemplate));
 
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath  . "/endpage.pstpl", $aData, $oEditedTemplate));
                 break;
@@ -1459,8 +1482,7 @@ class templates extends Survey_Common_Action
             //$aCssfileseditable = (array) $oEditedTemplate->config->files_editable->css->filename;
             $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
         }
-
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'admin_core.js' ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'admin_core.js');
         return $aViewUrls;
     }
 

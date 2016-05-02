@@ -939,8 +939,9 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= '</div>';
                             App()->getClientScript()->registerPackage('jquery-actual');
 
-                            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH.'ranking.js' ));
-                            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles-public/ranking.css') );
+                            $this->registerScriptFile( 'SCRIPT_PATH', 'ranking.js');
+                            $this->registerCssFile( 'PUBLIC', 'ranking.css' );
+
                             $aDataentryoutput .= "<script type='text/javascript'>\n"
                                 .  "  <!--\n"
                                 . "var aRankingTranslations = {
@@ -2194,9 +2195,9 @@ class dataentry extends Survey_Common_Action
                                     $answers[] = $ansrow;
                                 }
                             $cdata['answers']=$answers;
-                            App()->getClientScript()->registerPackage('jquery-actual');
-                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
-                            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
+                            App()->getClientScript()->registerPackage('jquery-actual');                            
+                            $this->registerScriptFile( 'SCRIPT_PATH', 'ranking.js');
+                            $this->registerCssFile( 'PUBLIC', 'ranking.css' );
                             unset($answers);
                             break;
                         case "M": //Multiple choice checkbox (Quite tricky really!)

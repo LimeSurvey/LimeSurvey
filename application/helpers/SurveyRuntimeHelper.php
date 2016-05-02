@@ -1241,10 +1241,10 @@ class SurveyRuntimeHelper {
             echo "\n";
 
             $aSurveyinfo = getSurveyInfo($surveyid);
-            $showgroupinfo = $aSurveyinfo['showgroupinfo'];
-            $showgroupdesc = $showgroupinfo == 'B' /* both */ || $showgroupinfo == 'D'; /* (group-) description */
+            $showgroupinfo_ = $aSurveyinfo['showgroupinfo'];
+            $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
 
-            if (!$previewquestion && trim($redata['groupdescription'])!="" && $showgroupdesc)
+            if (!$previewquestion && trim($redata['groupdescription'])!="" && $showgroupdesc_)
             {
                 echo templatereplace(file_get_contents($sTemplateViewPath."groupdescription.pstpl"), array(), $redata);
             }

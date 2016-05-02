@@ -79,7 +79,7 @@ class Assessments extends Survey_Common_Action
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['savebutton']['form'] = TRUE;
         $aData['gid']=null;
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'assessments.js' ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'assessments.js');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

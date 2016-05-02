@@ -1,15 +1,14 @@
-<?php 
+<?php
 
     /**
-     * 
+     *
      */
     class LimeDebug extends CWidget
     {
         public function run()
         {
             if (YII_DEBUG && in_array(getIPAddress(), array("127.0.0.1","::1")))
-            {
-                //App()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(Yii::getPathOfAlias('ext.LimeScript.assets'). '/script.js'));
+            {                
                 $data = array(
                     'session' => $_SESSION,
                     'server' => $_SERVER

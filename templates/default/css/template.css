@@ -913,3 +913,8 @@ body div.row .question-container {
 label, th {
     font-weight: normal;
 }
+
+#surveys-list-container
+{
+    margin-top: 50px;
+}

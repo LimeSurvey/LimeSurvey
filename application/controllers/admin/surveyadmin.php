@@ -1689,36 +1689,14 @@ class SurveyAdmin extends Survey_Common_Action
     /**
     * Executes registerScriptFile for all needed script/style files
     *
-    * @param array $files
     * @return void
     */
-    private function _registerScriptFiles($files = array())
+    private function _registerScriptFiles()
     {
-        if (empty($files))
-        {
-            $generalscripts_path = Yii::app()->getConfig('generalscripts');
-            $adminscripts_path = Yii::app()->getConfig('adminscripts');
-            $styleurl = Yii::app()->getConfig('styleurl');
-
-            $js_files = array(
-                $adminscripts_path . 'surveysettings.js',
-            );
-
-            $css_files = array(
-            );
-        }
-
-        foreach ($js_files as $file)
-        {
-            App()->getClientScript()->registerScriptFile(  $file );
-        }
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'surveysettings.js');
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('jqgrid');
 
-        foreach ($css_files as $file)
-        {
-            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( $file) );
-        }
     }
 
     /**

@@ -817,3 +817,8 @@ table.numbers-only th, table.numbers-only input {
 label, th {
     font-weight: normal;
 }
+
+#surveys-list-container
+{
+    margin-top: 50px;
+}

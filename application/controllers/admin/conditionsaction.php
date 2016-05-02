@@ -1192,8 +1192,7 @@ class conditionsaction extends Survey_Common_Action {
 
             if ($scenariocount > 0)
             {
-
-                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("adminscripts").'checkgroup.js');
+                $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'checkgroup.js');
                 foreach ($scenarioresult as $scenarionr)
                 {
                     $scenariotext = "";
@@ -1896,9 +1895,8 @@ class conditionsaction extends Survey_Common_Action {
 
             $aViewUrls['output'] .= "</div>\n"; // end conditiontarget div
 
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'conditions.js');
 
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("adminscripts").'conditions.js');
-            //App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'jquery/lime-conditions-tabs.js');
 
             if ($subaction == "editthiscondition" && isset($p_cid))
             {
