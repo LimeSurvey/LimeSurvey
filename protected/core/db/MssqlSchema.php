@@ -48,4 +48,15 @@ class MssqlSchema extends CMssqlSchema
         $this->connection->createCommand("CREATE DATABASE [$name]")->execute();
         return true;
     }
+
+    public function tableExists($name)
+    {
+        try {
+
+            App()->db->createCommand("SELECT 1 FROM {{%$name}}")->execute();
+            return true;
+        } catch (\CDbException $e) {
+            return false;
+        }
+    }
 }

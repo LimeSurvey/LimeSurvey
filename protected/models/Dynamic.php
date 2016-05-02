@@ -72,17 +72,12 @@ abstract class Dynamic extends ActiveRecord
      */
     public static function valid($id, $refresh = false)
     {
-        $result = false;
         $tableName = static::constructTableName($id);
         if (is_numeric($id) && (!isset(self::$valid[$tableName]) || $refresh)) {
-            try {
-                App()->db->createCommand("SELECT 1 FROM `$tableName`")->execute();
-                self::$valid[$tableName] = true;
-            } catch (\CDbException $e) {
-                self::$valid[$tableName] = false;
-            }
+            bP('dynamic model table exists');
+            self::$valid[$tableName] = App()->db->schema->tableExists($tableName);
+            eP('dynamic model table exists');
         }
-
         return self::$valid[$tableName];
     }
 

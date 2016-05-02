@@ -49,4 +49,10 @@ class MysqlSchema extends CMysqlSchema
         return true;
     }
 
+    public function tableExists($name)
+    {
+        $tables = $this->dbConnection->createCommand('SHOW TABLES LIKE :name')->queryAll(false, [':name' => $name]);
+        return count($tables) === 1;
+    }
+
   }
