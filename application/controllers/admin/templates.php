@@ -1200,18 +1200,33 @@ class templates extends Survey_Common_Action
                 );
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/startpage.pstpl", $aData, $oEditedTemplate));
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/survey.pstpl", $aData, $oEditedTemplate));
+
+                // Normally output by survey_runtime
+                $myoutput = array_merge($myoutput, array('<div id="group-0">'));
+
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/startgroup.pstpl", $aData, $oEditedTemplate));
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/groupdescription.pstpl", $aData, $oEditedTemplate));
 
                 $aReplacements = array(
                 'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
                 'QUESTION_CODE' => '1a',
-                'QUESTIONHELP' => 'helpful text',
-                'QUESTION_MANDATORY' => gT("*"),
+                'QUESTIONHELP' => '<div class="text-info questionhelp">
+                    <span class="fa fa-question-circle" aria-hidden="true"></span>
+                    &nbsp;helpful text
+                </div>', // Normally output by survey_runtime
+                'QUESTION_MANDATORY' => '<span class="text-danger asterisk"></span>',//gT("*"),  // Normally output by survey_runtime
                 'QUESTION_MAN_CLASS' => ' mandatory',
                 'QUESTION_ESSENTIALS' => 'id="question1"',
                 'QUESTION_CLASS' => 'list-radio',
                 'QUESTION_NUMBER' => '1',
+                'QUESTION_VALID_MESSAGE'=>'
+                <div class="questionhelp text-info" role="alert" id="vmsg_4496">
+                    <div id="vmsg_4496_num_answers" class="em_num_answers emtip good">
+                        <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+                        Tip when question is valid
+                    </div>
+                </div>
+                ',
                 );
                 $aReplacements['ANSWER'] = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array(), true);
                 $aData['aReplacements'] = $aReplacements;
@@ -1221,14 +1236,25 @@ class templates extends Survey_Common_Action
                 'QUESTION_TEXT' => gT('Please explain something in detail:'),
                 'QUESTION_CODE' => '2a',
                 'QUESTION_ESSENTIALS' => 'id="question2"',
-                'QUESTION_CLASS' => 'text-long',
+                'QUESTION_CLASS' => 'text-long input-error',
                 'QUESTION_NUMBER' => '2',
+                'QUESTION_VALID_MESSAGE'=>'
+                <div class="questionhelp text-info" role="alert" id="vmsg_4496">
+                    <div id="vmsg_4496_num_answers" class="em_num_answers emtip error">
+                        <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+                        Tip when question is not valid
+                    </div>
+                </div>
+                '
                 );
                 $aReplacements['ANSWER'] = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
                 $aData['aReplacements'] = $aReplacements;
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/question.pstpl", $aData, $oEditedTemplate));
 
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/endgroup.pstpl", $aData, $oEditedTemplate));
+
+                // Normally output by survey_runtime
+                $myoutput = array_merge($myoutput, array('</div>'));
 
                 $aData['aReplacements'] = array(
                     'MOVEPREVBUTTON' => '<button type="submit" id="moveprevbtn" value="moveprev" name="moveprev" accesskey="p" class="submit button btn btn-default btn-lg ">Previous</button>',
