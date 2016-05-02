@@ -281,16 +281,18 @@ class tokens extends Survey_Common_Action
 
         // Javascript
         App()->getClientScript()->registerPackage('jqgrid');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "tokens.js");
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
+
+
         // CSS
         // Right to Left
         if (getLanguageRTL($_SESSION['adminlang']))
         {
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "css/jqgrid-rtl.css" );
+            $this->registerCssFile( 'ADMIN', 'jqgrid-rtl.css' );
         }
         else
         {
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "css/jqgrid.css" );
+            $this->registerCssFile( 'ADMIN', 'jqgrid.css' );
         }
 
         Yii::app()->loadHelper('surveytranslator');
@@ -914,7 +916,7 @@ class tokens extends Survey_Common_Action
         $beforeParticipantDelete->set('model',$token );
         $beforeParticipantDelete->set('iSurveyID',$iSurveyID );
         App()->getPluginManager()->dispatchEvent($beforeParticipantDelete);
-        
+
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
         {
             $aTokenIds = explode(',', $sTokenIDs); //Make the tokenids string into an array
@@ -2093,8 +2095,7 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
-
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'tokensimport.js');
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokensimport.js');
         $aEncodings =aEncodingsArray();
 
         if (Yii::app()->request->isPostRequest) // && Yii::app()->request->getPost('subaction')=='upload')

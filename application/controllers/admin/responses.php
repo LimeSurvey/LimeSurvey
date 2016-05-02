@@ -370,7 +370,7 @@ class responses extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jqgrid');
 
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'listresponse.js');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "css/jqgrid.css" );
+        $this->registerCssFile( 'ADMIN', 'jqgrid.css' );
 
         $aData = $this->_getData($iSurveyId);
         $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
