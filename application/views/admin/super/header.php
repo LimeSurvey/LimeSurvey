@@ -16,6 +16,7 @@
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-cookie');
         App()->getClientScript()->registerPackage('fontawesome');
+        
         // Bootstrap
         App()->bootstrap->register();
 

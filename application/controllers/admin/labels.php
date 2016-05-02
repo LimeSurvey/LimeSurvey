@@ -175,7 +175,6 @@ class labels extends Survey_Common_Action
         {
             if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('labelsets','update'))
             {
-                App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish(ADMIN_SCRIPT_PATH . 'labels.js' ));
                 $result = LabelSet::model()->findAllByAttributes(array('lid' => $lid));
                 foreach ($result as $row)
                 {
@@ -250,7 +249,6 @@ class labels extends Survey_Common_Action
         $aData = array();
 
         // Includes some javascript files
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'labels.js' ));
         App()->getClientScript()->registerPackage('jquery-json');
         // Checks if user have the sufficient rights to manage the labels
         // Get a result containing labelset with the specified id
@@ -423,8 +421,6 @@ class labels extends Survey_Common_Action
     {
         if (Permission::model()->hasGlobalPermission('labelsets','export'))
         {
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'labels.js' ));
-
             $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
             $aData['labelbar']['savebutton']['text'] = gT("Export multiple label sets");
             $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl('admin/labels/sa/view'), array('newlabelset') );
@@ -499,6 +495,8 @@ class labels extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array())
     {
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH ', 'labels.js');
+
         if (!isset($aData['display']['menu_bars']['labels']) || $aData['display']['menu_bars']['labels'] != false)
         {
             if (empty($aData['labelsets']))

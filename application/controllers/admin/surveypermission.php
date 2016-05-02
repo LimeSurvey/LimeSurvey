@@ -49,7 +49,7 @@ class surveypermission extends Survey_Common_Action {
         $aBaseSurveyPermissions=Permission::model()->getSurveyBasePermissions();
         $userList=getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
         App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "surveypermissions.js" ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'surveypermissions.js');
 
         $surveysecurity = '<div class="side-body" id="edit-permissions">';
         $surveysecurity .="<h3>".gT("Survey permissions")."</h3>\n";
@@ -167,20 +167,20 @@ class surveypermission extends Survey_Common_Action {
                     $sTooltip = "";
                     foreach ($aPDetails as $sPDetailKey=>$sPDetailValue)
                     {
-                        if ($sPDetailValue 
-                            && Permission::model()->hasSurveyPermission($iSurveyID,$sPKey,$sPDetailKey,$PermissionRow['uid']) 
-                            && !($sPKey=='survey' && $sPDetailKey=='read')) 
+                        if ($sPDetailValue
+                            && Permission::model()->hasSurveyPermission($iSurveyID,$sPKey,$sPDetailKey,$PermissionRow['uid'])
+                            && !($sPKey=='survey' && $sPDetailKey=='read'))
                         {
                             $iCount++;
                             $sTooltip .= $sPDetailKey . ", ";
                         }
-                        if ($sPDetailValue) 
+                        if ($sPDetailValue)
                         {
                             $iPermissionCount++;
                         }
                     }
 
-                    if ($sPKey=='survey') 
+                    if ($sPKey=='survey')
                     {
                         $iPermissionCount--;
                     }
@@ -483,8 +483,8 @@ class surveypermission extends Survey_Common_Action {
         {
             $usersummary = '<div class="side-body" id="edit-permissions">';
 
-            App()->getClientScript()->registerPackage('jquery-tablesorter');
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "surveypermissions.js" ));
+            App()->getClientScript()->registerPackage('jquery-tablesorter');            
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'surveypermissions.js');
             if ($action == "setsurveysecurity")
             {
                 $query = "select users_name from {{users}} where uid=:uid";

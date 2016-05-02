@@ -30,7 +30,15 @@ class AdminController extends LSYii_Controller
         $this->_sessioncontrol();
         define('ADMIN_SCRIPT_PATH', realpath ( Yii::app()->basePath .'/../scripts/admin/') . '/');
         define('SCRIPT_PATH', realpath ( Yii::app()->basePath .'/../scripts/') . '/');
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'/admin_core.js' ));
+
+        if(!YII_DEBUG)
+        {
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'/admin_core.js' ));
+        }
+        else
+        {
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
+        }
 
         $this->user_id = Yii::app()->user->getId();
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid'));}         //SurveyID
@@ -335,7 +343,14 @@ class AdminController extends LSYii_Controller
         $sOutput = $this->renderPartial("/admin/super/header", $aData, true);
 
         // Define images url
-        define('LOGO_URL', App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$oAdmintheme->name.'/images/logo.png'));
+        if(!YII_DEBUG)
+        {
+            define('LOGO_URL', App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$oAdmintheme->name.'/images/logo.png'));
+        }
+        else
+        {
+            define('LOGO_URL', Yii::app()->getBaseUrl().'/styles/'.$oAdmintheme->name.'/images/logo.png');
+        }
 
         // Define presentation text on welcome page
         if($oAdmintheme->config->metadatas->presentation)

@@ -294,7 +294,7 @@ class responses extends Survey_Common_Action
             {
                 Yii::app()->session['flashmessage'] = gT("This response ID is invalid.");
             }
-			
+
             $aViewUrls[] = 'browseidfooter_view';
             $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
@@ -369,7 +369,7 @@ class responses extends Survey_Common_Action
         }
         App()->getClientScript()->registerPackage('jqgrid');
 
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "listresponse.js" ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'listresponse.js');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "css/jqgrid.css" );
 
         $aData = $this->_getData($iSurveyId);
@@ -1524,17 +1524,13 @@ class responses extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction='', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'browse.js' ));
-
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'browse.js');
         $iSurveyId = $aData['iSurveyId'];
-
         $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
-
         $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData["surveyinfo"] = $surveyinfo;
         $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
-
         parent::_renderWrappedTemplate('responses', $aViewUrls, $aData);
     }
 

@@ -424,7 +424,7 @@ class questions extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'answers.js' ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'answers.js');
         App()->getClientScript()->registerPackage('jquery-selectboxes');
 
         $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
@@ -634,7 +634,7 @@ class questions extends Survey_Common_Action
         $aData['gid'] = $gid = sanitize_int($gid);
         $aData['qid'] = $qid = sanitize_int($qid);
 
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'subquestions.js' ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'subquestions.js');
         App()->getClientScript()->registerPackage('jquery-blockUI');
         App()->getClientScript()->registerPackage('jquery-selectboxes');
         Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
@@ -983,8 +983,7 @@ class questions extends Survey_Common_Action
         {
             $aData['oqresult'] = array();
         }
-
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'questions.js' ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'questions.js');
 
         $aViewUrls['editQuestion_view'][] = $aData;
         $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
@@ -1232,7 +1231,7 @@ class questions extends Survey_Common_Action
                 $oqresult = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang, 'parent_qid'=> 0), array('order' => 'question_order'));
                 $aData['oqresult'] = $oqresult;
             }
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'questions.js' ));
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'questions.js');
 
             $aData['sValidateUrl'] = ($adding || $copying)?$this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate','surveyid'=>$surveyid)):$this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate','surveyid'=>$surveyid,'qid'=>$qid));
 

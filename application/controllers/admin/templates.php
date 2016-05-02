@@ -385,9 +385,9 @@ class templates extends Survey_Common_Action
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, $useindex);
         App()->getClientScript()->reset();
 
-        // After reseting, we need register again the script : maybe move it to endScripts_view for allways needed scripts ?
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "admin_core.js" ));
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH  . 'templates.js'));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'admin_core.js');
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'templates.js');
+
         App()->getClientScript()->registerPackage('ace');
         $aData['fullpagebar']['returnbutton']=true;
         $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
@@ -762,7 +762,7 @@ class templates extends Survey_Common_Action
 
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('jquery-touch-punch');
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH."survey_runtime.js" ));
+            $this->registerScriptFile( 'SCRIPT_PATH', 'survey_runtime.js');
 
             App()->getClientScript()->render($myoutput);
             @fwrite($fnew, $myoutput);
@@ -1459,8 +1459,7 @@ class templates extends Survey_Common_Action
             //$aCssfileseditable = (array) $oEditedTemplate->config->files_editable->css->filename;
             $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
         }
-
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'admin_core.js' ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'admin_core.js');
         return $aViewUrls;
     }
 

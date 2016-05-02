@@ -144,8 +144,8 @@ class export extends Survey_Common_Action {
 
         Yii::app()->loadHelper("admin/exportresults");
 
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH . '/expressions/em_javascript.js' ));
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . '/exportresults.js' ));
+        $this->registerScriptFile( 'SCRIPT_PATH', '/expressions/em_javascript.js');
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', '/exportresults.js');
 
         $sExportType = Yii::app()->request->getPost('type');
         $sHeadingFormat = Yii::app()->request->getPost('headstyle');
@@ -1091,7 +1091,7 @@ class export extends Survey_Common_Action {
         $aData['sidemenu']['state'] = false;
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
- 
+
         array_unshift($aData['slangs'],$aData['baselang']);
 
         Yii::import("application.libraries.admin.quexmlpdf",TRUE);

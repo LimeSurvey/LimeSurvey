@@ -1040,7 +1040,7 @@ class Survey_Common_Action extends CAction
     * @param int Survey id
     * @param string Action to be performed
     */
-    function _surveysummary($aData)
+    public function _surveysummary($aData)
     {
         $iSurveyID = $aData['surveyid'];
 
@@ -1238,7 +1238,7 @@ class Survey_Common_Action extends CAction
     /**
     * Browse Menu Bar
     */
-    function _browsemenubar($aData)
+    public function _browsemenubar($aData)
     {
         if (!empty($aData['display']['menu_bars']['browse']) && !empty($aData['surveyid']))
         {
@@ -1268,7 +1268,7 @@ class Survey_Common_Action extends CAction
     * @param int $ugid
     * @return void
     */
-    function _userGroupBar($aData)
+    public function _userGroupBar($aData)
     {
         $ugid = (isset($aData['ugid'])) ? $aData['ugid'] : 0 ;
         if (!empty($aData['display']['menu_bars']['user_group']))
@@ -1310,6 +1310,47 @@ class Survey_Common_Action extends CAction
             }
 
             $this->getController()->renderPartial('/admin/usergroup/usergroupbar_view', $data);
+        }
+    }
+
+    /**
+     * This function will register a script file,
+     * and will choose if it should use the asset manager or not
+     * @param string $cPATH : the CONSTANT name of the path of the script file (need to be converted in url if asset manager is not used)
+     * @param string $sFile : the file to publish
+     */
+    public function registerScriptFile( $cPATH, $sFile )
+    {
+        if (!YII_DEBUG)
+        {
+            $path = ($cPATH == 'ADMIN_SCRIPT_PATH')?ADMIN_SCRIPT_PATH:SCRIPT_PATH;                                  // We get the wanted constant
+            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $path . $sFile ));     // We publish the asset
+        }
+        else
+        {
+            $url = ($cPATH == 'ADMIN_SCRIPT_PATH')?Yii::app()->getConfig('adminscripts'):Yii::app()->getConfig('generalscripts');   // We get the wanted url defined in config
+            App()->getClientScript()->registerScriptFile( $url . $sFile );                                                          // We publish the script
+        }
+    }
+
+    /**
+     * This function will register a script file,
+     * and will choose if it should use the asset manager or not
+     * @param string $sPath : the type the path of the css file to publish ( public, template, etc)
+     * @param string $sFile : the file to publish
+     */
+    public function registerCssFile( $sPath, $sFile )
+    {
+        if (!YII_DEBUG)
+        {
+            $path = ($sPath == 'PUBLIC')?dirname(Yii::app()->request->scriptFile).'/styles-public/':'';                             // We get the wanted constant
+            App()->getClientScript()->registerCssFile(  App()->getAssetManager()->publish($path.$sFile) );                         // We publish the asset
+        }
+        else
+        {
+            $url = ($sPath == 'PUBLIC')?Yii::app()->getConfig('publicstyleurl'):Yii::app()->getConfig('adminstyleurl').'/css/';     // We get the wanted url defined in config
+            App()->getClientScript()->registerCssFile( $url.$sFile );                                                               // We publish the css file
+            
         }
     }
 
