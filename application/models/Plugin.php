@@ -29,4 +29,56 @@ class Plugin extends CActiveRecord {
     public function tableName() {
         return '{{plugins}}';
     }
+
+    public function getConfig() {
+        $file = Yii::app()->basePath
+            . DIRECTORY_SEPARATOR . '..'
+            . DIRECTORY_SEPARATOR . 'plugins'
+            . DIRECTORY_SEPARATOR . $this->name
+            . DIRECTORY_SEPARATOR . 'config.php';
+
+        // No config file, just return empty array
+        if (!file_exists($file)) {
+            return array();
+        }
+
+        $config = include($file);
+
+        if (!isset($config['version'])) {
+            throw new Exception("Config file need a version number");
+        }
+
+        // Compare with 0.0.1-dev, which is the lowest possible version.
+        $isPhpVersion = version_compare($config['version'], '0.0.1-dev');
+
+        if ($isPhpVersion === -1) {
+            throw new Exception("Version in config is not a PHP version: " . $config['version']);
+        }
+
+        $status = $this->getStatus($config['version']);
+
+        return $config;
+    }
+
+    /**
+     * Return version status, e.g. "alpha" if
+     * version is "1.2.3-alpha"
+     *
+     * @param string $version
+     * @return string
+     */
+    protected function getStatus($version) {
+        $versionAndStatus = explode('-', $version);
+        var_dump($versionAndStatus);
+
+        if (count($versionAndStatus) === 1) {
+            return "";
+        }
+        elseif (count($versionAndStatus) === 2) {
+            return $versionAndStatus[1];
+        }
+        else {
+            throw new Exception("Invalid version: more than one slash ('-'): " . $version);
+        }
+    }
 }
