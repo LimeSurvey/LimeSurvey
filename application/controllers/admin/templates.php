@@ -382,21 +382,25 @@ class templates extends Survey_Common_Action
         {
             $templatename = 'default';
         }
+
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, $useindex);
         App()->getClientScript()->reset();
-
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'admin_core.js');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'templates.js');
-
         App()->getClientScript()->registerPackage('ace');
+
         $aData['fullpagebar']['returnbutton']=true;
         $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
 
-        if ($screenname != 'welcome')
-            Yii::app()->session['step'] = 1;
         // This helps handle the load/save buttons)
+        if ($screenname != 'welcome')
+        {
+            Yii::app()->session['step'] = 1;
+        }
         else
+        {
             unset(Yii::app()->session['step']);
+        }
     }
 
     /**
@@ -917,12 +921,12 @@ class templates extends Survey_Common_Action
         if($oEditedTemplate->cssFramework=='bootstrap')
         {
             // Core templates (are published only if exists)
-            $oEditedTemplate->config->files->css->filename[]="../../styles-public/bootstrap-for-template-editor.css";
-            $oEditedTemplate->config->files->js->filename[]="../../scripts/bootstrap-for-template-editor.js";
+            $oEditedTemplate->config->files->css->filename[-1]="../../styles-public/bootstrap-for-template-editor.css";
+            $oEditedTemplate->config->files->js->filename[-1]="../../scripts/bootstrap-for-template-editor.js";
 
             // User templates (are published only if exists)
-            $oEditedTemplate->config->files->css->filename[]="../../../styles-public/bootstrap-for-template-editor.css";
-            $oEditedTemplate->config->files->js->filename[]="../../../scripts/bootstrap-for-template-editor.js";
+            $oEditedTemplate->config->files->css->filename[-1]="../../../styles-public/bootstrap-for-template-editor.css";
+            $oEditedTemplate->config->files->js->filename[-1]="../../../scripts/bootstrap-for-template-editor.js";
         }
 
         //App()->getClientScript()->reset();
