@@ -16,16 +16,19 @@
                         . "});
                             function ConfirmLanguageChange(confirmtxt)
                         {
-                            mylangs=$('#oldlanguages').val().split(' ');
-                            if (mylangs)
+                           if ($('#oldlanguages').val().trim()=='')
+                           {
+                                mylangs= []
+                           }
+                           else{
+                                mylangs=$('#oldlanguages').val().split(' ');
+                           }
+                            if (checkSelect2Languages(mylangs))
                                 {
-                                if (checkSelect2Languages(mylangs))
-                                    {
-                                    return true;
-                                } else
-                                    {
-                                    return confirm(confirmtxt);
-                                }
+                                return true;
+                            } else
+                                {
+                                return confirm(confirmtxt);
                             }
                         };
     function checkSelect2Languages(mylangs)
