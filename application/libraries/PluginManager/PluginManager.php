@@ -318,8 +318,8 @@ use Plugin;
          */
         public function loadPlugins()
         {
-            // Test if table exist before try to load any plugins: this happen during update of DB
-            if(tableExists('plugins'))
+            // If DB version is less than 165 : plugins table don't exist. 175 update it (boolean to integer for active)
+            if(App()->getConfig('DBVersion')>= 165)
             {
                 $pluginModel = Plugin::model();
                 $records = $pluginModel->findAllByAttributes(array('active'=>1));
