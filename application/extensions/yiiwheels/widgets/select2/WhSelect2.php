@@ -43,9 +43,6 @@ class WhSelect2 extends CInputWidget
      */
     public function init()
     {
-        if (empty($this->data) && $this->asDropDownList === true) {
-            throw new CException(Yii::t('zii', '"data" attribute cannot be blank'));
-        }
 
         $this->attachBehavior('ywplugin', array('class' => 'yiiwheels.behaviors.WhPlugin'));
     }
