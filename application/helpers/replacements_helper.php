@@ -134,6 +134,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         }
         else
         {
+
             // In debug mode, the Asset Manager is not used
             // So, dev don't need to update the directory date to get the new version of their template.
             // They must think about refreshing their brower's cache (ctrl + F5)
@@ -141,6 +142,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $aCssFiles = $oTemplate->config->files->css->filename;
             $aJsFiles = $oTemplate->config->files->js->filename;
             $aOtherFiles = $oTemplate->otherFiles;
+
+            //var_dump($aCssFiles);var_dump($aJsFiles);die();
 
             foreach($aCssFiles as $sCssFile)
             {
