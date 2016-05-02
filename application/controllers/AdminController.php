@@ -130,10 +130,10 @@ class AdminController extends LSYii_Controller
     public function run($action)
     {
         // Check if the DB is up to date
-        if (Yii::app()->db->schema->getTable('{{surveys}}'))
+        if (Yii::app()->db->schema->getTable('{{surveys}}') )
         {
             $sDBVersion = getGlobalSetting('DBVersion');
-            if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate' && $action != 'authentication')
+            if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate')
                 $this->redirect(array('/admin/databaseupdate/sa/db'));
         }
 
@@ -307,7 +307,7 @@ class AdminController extends LSYii_Controller
         // RTL style
         if ($aData['bIsRTL'])
         {
-            if (!isset($oAdmintheme->config->files->rtl) 
+            if (!isset($oAdmintheme->config->files->rtl)
                 || !isset($oAdmintheme->config->files->rtl->css))
             {
                 throw new CException("Invalid template configuration: No CSS files found for right-to-left languages");
