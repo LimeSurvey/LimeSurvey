@@ -22,7 +22,7 @@
         onclick="if (document.getElementById('answer<?php echo $name; ?>othertext') != null) document.getElementById('answer<?php echo $name; ?>othertext').value='';checkconditions(this.value, this.name, this.type)"
         aria-labelledby="label-answer<?php echo $name.$code; ?>"
      />
-    <label for="answer<?php echo $name.$code; ?>" class="control-label radio-label"></label>
+    <label for="answer<?php echo $name.$code; ?>" class="control-label radio-label">
 
     <!--
          The label text is provided inside a div,
@@ -31,6 +31,6 @@
     -->
     <div class="label-text label-clickable" id="label-answer<?php echo $name.$code; ?>">
         <?php echo $answer; ?>
-    </div>
+    </div></label>
 </div>
 <!-- end of answer_row -->

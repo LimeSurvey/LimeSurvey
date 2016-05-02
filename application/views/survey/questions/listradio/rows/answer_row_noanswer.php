@@ -20,7 +20,7 @@
     onclick="if (document.getElementById('answer<?php echo $name;?>othertext') != null) document.getElementById('answer<?php echo $name; ?>othertext').value='';<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
     aria-labelledby="label-answer<?php echo $name; ?>NANS"
     />
-    <label for="answer<?php echo $name; ?>NANS" class="answertext control-label label-radio"></label>
+    <label for="answer<?php echo $name; ?>NANS" class="answertext control-label label-radio">
 
     <!--
          The label text is provided inside a div,
@@ -29,6 +29,6 @@
     -->
     <div class="label-text label-clickable" id="label-answer<?php echo $name; ?>NANS">
         <?php echo eT('No answer'); ?>
-    </div>
+    </div></label>
 </div>
 <!-- endof answer_row_noanswer -->

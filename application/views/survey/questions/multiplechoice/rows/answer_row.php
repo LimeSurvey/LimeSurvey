@@ -27,7 +27,7 @@
                 aria-labelledby="label-answer<?php echo $name.$title; ?>"
             />
 
-            <label for="answer<?php echo $name.$title; ?>" class="answertext"></label>
+            <label for="answer<?php echo $name.$title; ?>" class="answertext">
 
             <!--
                  The label text is provided inside a div,
@@ -36,7 +36,7 @@
             -->
             <div class="label-text label-clickable" id="label-answer<?php echo $name.$title; ?>">
                     <?php echo $question; ?>
-            </div>
+            </div></label>
 
             <input
                 type="hidden"

@@ -31,7 +31,7 @@
         aria-labelledby="label-SOTH<?php echo $name; ?>"
         />
 
-        <label for="SOTH<?php echo $name; ?>" class="answertext control-label label-radio"></label>
+        <label for="SOTH<?php echo $name; ?>" class="answertext control-label label-radio">
 
         <!--
              The label text is provided inside a div,
@@ -40,7 +40,7 @@
         -->
         <div class="label-text label-clickable" id="label-SOTH<?php echo $name; ?>">
                 <?php echo $othertext; ?>&nbsp;
-        </div>
+        </div></label>
     </div>
 
     <!-- comment -->

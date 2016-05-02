@@ -34,7 +34,7 @@
              />
 
              <!-- label -->
-             <label for="<?php echo $myfname;?>cbox" class="answertext"></label>
+             <label for="<?php echo $myfname;?>cbox" class="answertext">
              <!--
                   The label text is provided inside a div,
                   so final user can add paragraph, div, or whatever he wants in the subquestion text
@@ -42,7 +42,7 @@
              -->
              <div class="label-text label-clickable" id="label-<?php echo $myfname;?>cbox">
                      <?php echo $othertext; ?>
-             </div>
+             </div></label>
         </div>
 
         <!-- comment -->
