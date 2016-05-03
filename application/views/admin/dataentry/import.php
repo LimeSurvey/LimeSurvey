@@ -1,7 +1,7 @@
 <?php
     App()->getClientScript()->registerCssFile(Yii::app()->getBaseUrl() . '/styles/configure.css');
 ?>
-<div class="side-body">
+<div class="side-body <?php echo getSideBodyClass(false); ?>">
     <h3><?php eT("Import responses from a deactivated survey table"); ?></h3>
         <div class="row">
             <div class="col-lg-12 content-right">

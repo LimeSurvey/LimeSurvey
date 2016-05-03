@@ -17,10 +17,12 @@ $(document).ready(function(){
     if (rtl) {
         var left_or_right_250 = {right: -250};
         var left_or_right_0 = {right: 0};
+        var margin_left_or_right = {'margin-right': '320px'};
     }
     else {
         var left_or_right_250 = {left: -250};
         var left_or_right_0 = {left: 0};
+        var margin_left_or_right = {'margin-left': '320px'};
     }
 
     /**
@@ -42,9 +44,9 @@ $(document).ready(function(){
         $thatWidth = sideBody.width();
         sideBody.width($thatWidth);
 
-        sideBody.css($.extend({
-          width: $thatWidth + 250
-        }, left_or_right_250));
+        //sideBody.css($.extend({
+          //width: $thatWidth + 250
+        //}, left_or_right_250));
         sideBody.parent().css( "overflow-x", "hidden" );
 
         $that.removeClass("hideside");
@@ -89,7 +91,6 @@ $(document).ready(function(){
         setTimeout(function(){
             sideBodyHeight = sideBody.height();
             targetHeight = $target.height();
-            console.log('targetHeight: '+targetHeight);
             //alert(sidemenuHeight);
             if( sideBodyHeight < ( targetHeight + $correction ) )
             {
@@ -118,23 +119,25 @@ $(document).ready(function(){
 
         // Move the side body
         sideBody.animate(
-                   $.extend({
-                       width: $thatWidth + 250
-                   }, left_or_right_250),
-                   500, function() {
-                   });
+           $.extend({
+               width: $thatWidth + 250
+           }, left_or_right_250),
+           500,
+           function() {}
+       );
 
-                   absoluteWrapper.animate($.extend({
-                       //opacity: 0.5
-                   }, left_or_right_250),
-                   500, function() {
-                   });
+       absoluteWrapper.animate($.extend({
+           //opacity: 0.5
+           }, left_or_right_250),
+           500,
+           function() {}
+       );
 
-                   sidemenusContainer.fadeOut();
-                   quickmenuContainer.fadeIn();
+       sidemenusContainer.fadeOut();
+       quickmenuContainer.fadeIn();
 
-                   chevronChangeState('opened', 'closed');
-                   enableChevrons();
+       chevronChangeState('opened', 'closed');
+       enableChevrons();
     });
 
     /**
@@ -170,28 +173,28 @@ $(document).ready(function(){
                 //opacity: 1
             }, left_or_right_0),
             500, function() {
-            });
+        });
 
-            $thatWidth = sideBody.width();
-            sideBody.width($thatWidth);
+        $thatWidth = sideBody.width();
+        sideBody.width($thatWidth);
 
-            sideBody.animate($.extend({
-                width: $thatWidth - 250
-            }, left_or_right_0),
-            500, function() {
-            });
+        sideBody.animate($.extend({
+            width: $thatWidth - 250
+        }, left_or_right_0, margin_left_or_right),
+        500, function() {
+        });
 
-            absoluteWrapper.animate($.extend({
-                //opacity: 1
-            }, left_or_right_0),
-            500, function() {
-            });
+        absoluteWrapper.animate($.extend({
+            //opacity: 1
+        }, left_or_right_0),
+        500, function() {
+        });
 
-            sidemenusContainer.fadeIn();
-            quickmenuContainer.fadeOut();
+        sidemenusContainer.fadeIn();
+        quickmenuContainer.fadeOut();
 
-            chevronChangeState('closed', 'opened');
-            enableChevrons();
+        chevronChangeState('closed', 'opened');
+        enableChevrons();
     });
 
     /**
@@ -228,7 +231,6 @@ $(document).ready(function(){
     * Stretch the accordion
     */
     jQuery(document).on('click', '.handleAccordion.opened', function(){
-                console.log('stretched accordion');
         // Disable this feature for RTL for now
         if (rtl) {
             return;
@@ -353,7 +355,6 @@ $(document).ready(function(){
 
           var windowswidth = window.innerWidth;
           var sideBodyWidth = sideBody.width();
-          console.log('sideBodyWidth start: '+sideBodyWidth);
           $( window ).resize(function() {
               //console.log('sideBodyWidth before: '+sideBodyWidth);
               //console.log( windowswidth - window.innerWidth);

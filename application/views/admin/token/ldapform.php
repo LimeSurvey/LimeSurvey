@@ -4,7 +4,7 @@
  */
 ?>
 
-<div class="side-body">                           
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Import tokens from LDAP"); ?></h3>        
                                                   
     <div class="row">                             

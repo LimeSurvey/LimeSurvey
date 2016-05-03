@@ -1,5 +1,5 @@
 <!-- Token export options -->
-<div class="side-body">
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Token export options"); ?></h3>
     <div class="row">
         <div class="col-lg-12 content-right">

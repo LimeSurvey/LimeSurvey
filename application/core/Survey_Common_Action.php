@@ -1342,15 +1342,15 @@ class Survey_Common_Action extends CAction
     public function registerCssFile( $sPath, $sFile )
     {
         if (!YII_DEBUG)
-        {
-            $path = ($sPath == 'PUBLIC')?dirname(Yii::app()->request->scriptFile).'/styles-public/':'';                             // We get the wanted constant
+        {            
+            $path = ($sPath == 'PUBLIC')?dirname(Yii::app()->request->scriptFile).'/styles-public/':ADMIN_CSS_PATH;                             // We get the wanted constant
             App()->getClientScript()->registerCssFile(  App()->getAssetManager()->publish($path.$sFile) );                         // We publish the asset
         }
         else
         {
             $url = ($sPath == 'PUBLIC')?Yii::app()->getConfig('publicstyleurl'):Yii::app()->getConfig('adminstyleurl').'/css/';     // We get the wanted url defined in config
             App()->getClientScript()->registerCssFile( $url.$sFile );                                                               // We publish the css file
-            
+
         }
     }
 

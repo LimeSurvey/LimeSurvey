@@ -1,4 +1,5 @@
-<div class="side-body col-lg-8">
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <div class='col-lg-8'>
             <h3>
                 <?php eT("queXML PDF export");?>
             </h3>
@@ -196,3 +197,4 @@
             echo CHtml::htmlButton(gT('Reset to default settings'),array('type'=>'submit','class'=>'btn btn-default btn-xs'));?>
         </form>
     </div>
+</div>

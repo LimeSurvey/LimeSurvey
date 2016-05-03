@@ -3,7 +3,7 @@
 * Response Summary view
 */
 ?>
-<div class="side-body">
+<div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3><?php eT("Response summary"); ?></h3>
     <div class="row">
         <div class="col-lg-12 content-right">

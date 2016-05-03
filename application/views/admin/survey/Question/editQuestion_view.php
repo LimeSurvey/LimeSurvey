@@ -1,9 +1,7 @@
 <?php PrepareEditorScript(true, $this); ?>
 <?php $this->renderPartial("./survey/Question/question_subviews/_ajax_variables", $ajaxDatas); ?>
 
-
-
-<div class="side-body" id="edit-question-body">
+<div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
 
     <!-- Page Title-->
     <h3>

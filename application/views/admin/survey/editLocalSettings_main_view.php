@@ -17,7 +17,7 @@
     $data = array('aTabTitles'=>$aTabTitles, 'aTabContents'=>$aTabContents, 'has_permissions'=>$has_permissions, 'surveyid'=>$surveyid,'surveyls_language'=>$surveyls_language);
 ?>
 
-<div class="side-body" id="edit-survey-text-element">
+<div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
         <h3 class="pagetitle"><?php echo gT("Edit survey text elements and settings"); ?></h3>
 

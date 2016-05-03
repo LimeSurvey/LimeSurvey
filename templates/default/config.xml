@@ -17,18 +17,14 @@
         <license>GNU General Public License version 2 or later</license>
         <version>1.0</version>
         <description>Default LimeSurvey Template.</description>
-        <!--
-             The last_update field must be updated before each release,
-             to be sure that the asset manager will publish new assets and make visible CSS changes for final users (without browser cache refresh)
-         -->
-        <last_update>2016-04-12 19:46:00</last_update>
+        <last_update>2016-05-13 10:46:00</last_update>
     </metadatas>
 
+    <!--
+        Here the list of the css/js files to load.
+        Any file here will be loaded via the asset manager
+    -->
     <files>
-        <!--
-            Here the list of the css/js files to load.
-            Any file here will be loaded via the asset manager
-        -->
         <css>
             <filename>css/jquery-ui-custom.css</filename>
             <filename>css/bootstrap-slider.css</filename>
@@ -92,6 +88,15 @@
         <cssframework>bootstrap</cssframework>
         <!-- Path of the pstpl files -->
         <pstpldirectory>views</pstpldirectory>
+
+        <!--
+            Set to yes to overwrite the question views,
+            then, just copy application/views/survey/* to template/{your_view_directory}/survey/
+            You also must allow the template to overwrite the views from your site configuration
+            In application/config/config.php, find :     'config'=>array
+            and add this line in it : 'allow_templates_to_overwrite_views'=>1
+        -->
+        <overwrite_question_views>false</overwrite_question_views>
 
         <!-- Asset manager will copy the whole template directory to tmp. So it's possible to refer any file in the files directory in CSS via relative path (e.g: '../files/foo.jpg')   -->
         <filesdirectory>files</filesdirectory>

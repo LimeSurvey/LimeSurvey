@@ -51,7 +51,7 @@ class surveypermission extends Survey_Common_Action {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'surveypermissions.js');
 
-        $surveysecurity = '<div class="side-body" id="edit-permissions">';
+        $surveysecurity = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
         $surveysecurity .="<h3>".gT("Survey permissions")."</h3>\n";
         $surveysecurity .= '<div class="row"><div class="col-lg-12 content-right">';
         $result2 = Permission::model()->getUserDetails($iSurveyID);
@@ -268,7 +268,7 @@ class surveypermission extends Survey_Common_Action {
         if($action == "addusergroupsurveysecurity")
         {
             //////////////////
-            $addsummary = '<div class="side-body" id="edit-permissions">';
+            $addsummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
             $addsummary .= '<div class="row"><div class="col-lg-12 content-right">';
 
             $result = Survey::model()->findAll('sid = :surveyid AND owner_id = :owner_id',array(':surveyid' => $surveyid, ':owner_id' => Yii::app()->session['loginID']));
@@ -377,7 +377,7 @@ class surveypermission extends Survey_Common_Action {
         if($action == "addsurveysecurity")
         {
 
-            $addsummary = '<div class="side-body" id="edit-permissions">';
+            $addsummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
             $addsummary .= '<div class="row"><div class="col-lg-12 content-right">';
 
 
@@ -481,7 +481,7 @@ class surveypermission extends Survey_Common_Action {
 
         if( Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update') )
         {
-            $usersummary = '<div class="side-body" id="edit-permissions">';
+            $usersummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
 
             App()->getClientScript()->registerPackage('jquery-tablesorter');            
             $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'surveypermissions.js');
@@ -611,7 +611,7 @@ class surveypermission extends Survey_Common_Action {
         if($action == "delsurveysecurity")
         {
 
-            $addsummary = '<div class="side-body" id="edit-permissions">';
+            $addsummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
             $addsummary .= '<div class="row"><div class="col-lg-12 content-right">';
             $addsummary .= "<div class=\"jumbotron message-box\">\n";
             $addsummary .= "<h2>".gT("Deleting User")."</h2>\n";
@@ -678,7 +678,7 @@ class surveypermission extends Survey_Common_Action {
         if ($action == "surveyrights" && Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update'))
         {
 
-            $addsummary = '<div class="side-body" id="edit-permissions">';
+            $addsummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
             $addsummary .= '<div class="row"><div class="col-lg-12 content-right">';
 
             $addsummary .= "<div class=\"jumbotron message-box\">\n";

@@ -53,6 +53,8 @@ class AdminController extends LSYii_Controller
 
         // Variable not used, but keep it here so the object is initialized at the right place.
         $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
+        $oAdmintheme = new AdminTheme; 
+        $oAdmintheme->setAdminTheme();
     }
 
     /**
@@ -304,6 +306,7 @@ class AdminController extends LSYii_Controller
         // Register admin theme package with asset manager
         $oAdmintheme = new AdminTheme; // We get the package datas from the model
         $oAdmintheme->setAdminTheme();
+
         $aData['sAdmintheme'] = $oAdmintheme->name;
         $aData['aPackageScripts']=$aData['aPackageStyles']=array();
         // Typecasting as array directly does not work in PHP 5.3.17 so we loop over the XML entries

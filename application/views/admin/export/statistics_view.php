@@ -8,7 +8,7 @@
 <!-- Javascript variables  -->
 <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage'=>$sStatisticsLanguage, 'surveyid'=>$surveyid, 'showtextinline'=>$showtextinline)) ; ?>
 
-<div class="side-body" id="statisticsview">
+<div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
         <span class="glyphicon glyphicon-stats"></span> &nbsp;&nbsp;&nbsp;
         <?php eT("Statistics"); ?>

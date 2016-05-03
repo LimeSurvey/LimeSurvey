@@ -12,7 +12,7 @@
  *
  */
 ?>
-<div class="side-body">
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
 <div class="row welcome survey-action">
     <div class="col-lg-12 content-right">
         <div class='jumbotron message-box'>

@@ -48,6 +48,11 @@ class AdminTheme extends CFormModel
 
         // The template configuration.
         $this->config = simplexml_load_file($this->path.'/config.xml');
+        if (!defined('ADMIN_CSS_PATH'))
+        {
+            define('ADMIN_CSS_PATH', $this->path . '/css/');
+        }
+
         return $this;
     }
 

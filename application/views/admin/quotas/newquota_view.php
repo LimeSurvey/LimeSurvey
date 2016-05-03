@@ -1,4 +1,5 @@
-<div class="side-body col-lg-8">
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <div class='col-lg-8'>
     <div class="row">
         <div class="col-lg-12 content-right">
             <h3>
@@ -101,4 +102,4 @@
             </form>
         </div>
     </div>
-</div></div>
+</div></div></div>

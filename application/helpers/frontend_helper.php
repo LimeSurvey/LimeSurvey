@@ -2340,3 +2340,41 @@ function getMove()
     }
     return $move;
 }
+
+/**
+ * Get the margin class for side-body div depending
+ * on side-menu behaviour config and page (edit or not
+ * etc).
+ *
+ * @param boolean $sideMenustate - False for pages with hidden side-menu
+ * @return string
+ */
+function getSideBodyClass($sideMenustate)
+{
+    $sideMenuBehaviour = getGlobalSetting('sideMenuBehaviour');
+
+    $class = "";
+
+    if ($sideMenuBehaviour == 'adaptive' || $sideMenuBehaviour == '')
+    {
+        // Adaptive and closed, as in edit question
+        if (!$sideMenustate)
+        {
+            $class = 'side-body-margin';
+        }
+    }
+    elseif ($sideMenuBehaviour == 'alwaysClosed')
+    {
+        $class = 'side-body-margin';
+    }
+    elseif ($sideMenuBehaviour == 'alwaysOpen')
+    {
+        // No margin class
+    }
+    else
+    {
+        throw new \CException("Unknown value for sideMenuBehaviour: $sideMenuBehaviour");
+    }
+
+    return $class;
+}

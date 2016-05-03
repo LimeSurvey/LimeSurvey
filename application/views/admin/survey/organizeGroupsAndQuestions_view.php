@@ -4,7 +4,7 @@
     App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . 'organize.css');
 ?>
 
-<div class="side-body" id="edit-survey-text-element">
+<div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(true); ?>'>
     <div class="row">
         <h3><?php eT('Organize question groups/questions');?></h3>
         <p>

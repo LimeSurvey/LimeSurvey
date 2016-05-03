@@ -8,6 +8,19 @@
     */
 ?>
 <?php
+    $sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
+    if ($sideMenuBehaviour == 'alwaysClosed' 
+        || ($sideMenuBehaviour == 'adaptive'
+        && !$sidemenu['state']))
+    {
+        $showSideMenu = false;
+    }
+    else
+    {
+        $showSideMenu = true;
+    }
+?>
+<?php
     // TODO : move to controller
     $bSurveyIsActive = (isset($surveyIsActive))?$surveyIsActive:$oSurvey->active=='Y';
     $sidemenu = (isset($sidemenu))?$sidemenu:array();
@@ -27,11 +40,11 @@
     <!-- To handle correctly the side menu positioning -->
         <div
             class="absolute-wrapper hidden-xs"
-            style="z-index: 100; <?php if ($sideMenuBehaviour == 'alwaysClosed'): echo 'left: -250px;'; endif; ?> ">
+            style="z-index: 100; <?php if (!$showSideMenu): echo 'left: -250px;'; endif; ?> ">
         </div>
 
     <!-- sideMenu -->
-    <div class="side-menu <?php if ($sideMenuBehaviour == 'alwaysClosed'): echo ' side-menu-hidden'; endif; ?> hidden-xs" id="sideMenu" style="z-index: 101;">
+    <div class="side-menu <?php if (!$showSideMenu): echo ' side-menu-hidden'; endif; ?> hidden-xs" id="sideMenu" style="z-index: 101;">
 
         <nav class="navbar navbar-default hidden-xs">
 
@@ -87,7 +100,7 @@
 
             <!-- Main Menu -->
             <div class="side-menu-container hidden-xs">
-                <ul class="nav navbar-nav sidemenuscontainer hidden-xs" style="<?php if ($sideMenuBehaviour == 'alwaysClosed'): echo 'display: none;'; endif; ?>">
+                <ul class="nav navbar-nav sidemenuscontainer hidden-xs" style="<?php if (!$showSideMenu): echo 'display: none;'; endif; ?>">
 
                     <!-- Question & Groups-->
                     <li class="panel panel-default dropdownlvl1" id="dropdown">

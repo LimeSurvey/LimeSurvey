@@ -1,4 +1,4 @@
-<div class="side-body">
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
         <div class="col-sm-12 content-right">
             <div class="jumbotron message-box message-box-error">

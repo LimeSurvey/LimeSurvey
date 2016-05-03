@@ -1,4 +1,4 @@
-<div class="side-body">
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
         <div class="col-lg-12 content-right">
             <h3>

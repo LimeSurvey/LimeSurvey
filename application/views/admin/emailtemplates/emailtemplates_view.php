@@ -27,7 +27,7 @@
     });
 </script>
 
-<div class="side-body">
+<div class="side-body <?php echo getSideBodyClass(false); ?>">
 	<h3><?php eT("Edit email templates"); ?></h3>
 
 	<div class="row">

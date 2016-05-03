@@ -1,4 +1,4 @@
-<div class="side-body">
+<div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3>
         <span style='font-weight:bold;'><?php eT('Saved responses'); ?></span>
         <?php echo $sSurveyName . ' ' . sprintf(gT('ID: %s'), $iSurveyId); ?>

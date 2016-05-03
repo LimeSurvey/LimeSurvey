@@ -1,4 +1,4 @@
-<div class="side-body">
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Bounce settings"); ?></h3>
     <div class="row">
         <div class="col-sm-12">

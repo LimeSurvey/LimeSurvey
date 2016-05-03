@@ -1,5 +1,5 @@
 <?php if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck)): ?>
-<div class="side-body">
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
         <div class="col-sm-12 content-right">
             <div class="jumbotron message-box message-box-error">
@@ -40,7 +40,8 @@
 </div>
 <?php else:?>
 
-<div class='side-body container message-box col-sm-10' >
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='container message-box col-sm-10'>
     <div class='row'>
         <h2 class='col-sm-7 col-sm-offset-2'><?php eT("Warning: Please read this carefully before proceeding!"); ?></h2>
     </div>
@@ -215,6 +216,7 @@
         </div>
     </div>
     </form>
+    </div>
 </div>
 </div>
 <?php endif;?>
