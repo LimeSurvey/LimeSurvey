@@ -1,6 +1,6 @@
 <?php
 
-namespace \ls\menu;
+namespace ls\menu;
 
 /**
  * Interface descriptions here: https://manual.limesurvey.org/Extra_menus_event

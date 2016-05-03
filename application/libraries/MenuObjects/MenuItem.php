@@ -1,6 +1,6 @@
 <?php
 
-namespace \ls\menu;
+namespace ls\menu;
 
 class MenuItem implements MenuItemInterface
 {
