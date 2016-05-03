@@ -678,10 +678,8 @@ class SurveyAdmin extends Survey_Common_Action
                     $this->_renderWrappedTemplate('survey', 'activateSurvey_view', $aData);
                     return;
                 }
-
-                $aViewUrls['output'].= "<div class='warningheader'><input type ='button' value = '".gT('Edit dates')."' onclick=\"location.href='".Yii::app()->getController()->createUrl("admin/survey?sa=editsurveysettings&surveyid=".$iSurveyID."#publication")."';\" /><input style='margin-left:10px' type='submit' value='".gT("Activate anyway")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/survey/sa/activate/surveyid/".$iSurveyID)."?activate=1")."\" /></div>";
-                $aViewUrls['output'].= "</div>";
-                $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
+                $aViewUrls['output'].= "<div class='warningheader'><input type ='button' value = '".gT('Edit dates')."' onclick=\"location.href='".Yii::app()->getController()->createUrl("admin/survey?sa=editlocalsettings&surveyid=".$iSurveyID."#publicationoptions")."';\" /><input style='margin-left:10px' type='submit' value='".gT("Activate anyway")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/survey/sa/activate/surveyid/".$iSurveyID)."?activate=1")."\" /></div>";
+                $this->_renderWrappedTemplate('super', 'messagebox', array('title'=>gT('Survey activation'), 'message'=>$aViewUrls['output']));
                 return;
             }
             $this->_renderWrappedTemplate('survey', 'activateSurvey_view', $aData);
