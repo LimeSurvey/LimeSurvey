@@ -4,7 +4,7 @@
  */
 ?>
 
-<div class="side-body">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false); ?>
     <div class="row">
         <div class="col-lg-12 content-right">
             <div class="jumbotron message-box">

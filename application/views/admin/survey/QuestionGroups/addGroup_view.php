@@ -10,7 +10,7 @@
 </script>
 
 <?php echo PrepareEditorScript(false, $this); $active = 1;?>
-<div class="side-body" id="edit-survey-text-element">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false, 'edit-survey-text-element'); ?>
     <h3><?php eT("Add question group"); ?></h3>
     <div class="row">
 

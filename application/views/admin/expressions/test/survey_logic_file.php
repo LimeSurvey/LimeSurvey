@@ -3,7 +3,7 @@
 ?>
 
 <?php if(!$fullPage):?>
-<div class="side-body" id="edit-survey-text-element">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false, 'edit-survey-text-element'); ?>
 <?php endif;?>
 	<h3><?php eT("Edit survey settings");?></h3>
 

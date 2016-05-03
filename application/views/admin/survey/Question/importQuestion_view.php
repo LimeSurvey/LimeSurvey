@@ -5,7 +5,7 @@
  * 
  */
 ?>
-<div class="side-body" id="edit-question-body">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false, 'edit-question-body'); ?>
     <h3><?php eT("Import a question"); ?></h3>
     <div class="row">
         <div class="col-lg-12">

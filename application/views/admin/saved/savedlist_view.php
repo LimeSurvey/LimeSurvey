@@ -1,4 +1,4 @@
-<div class="side-body">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), true); ?>
     <h3>
         <span style='font-weight:bold;'><?php eT('Saved responses'); ?></span>
         <?php echo $sSurveyName . ' ' . sprintf(gT('ID: %s'), $iSurveyId); ?>

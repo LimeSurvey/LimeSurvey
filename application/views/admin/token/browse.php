@@ -138,8 +138,7 @@
     }
 </script>
 
-
-<div class="side-body">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), true); ?>
 	<h3><?php eT("Survey participants",'js'); ?></h3>
 
     <div class='scrolling-wrapper'

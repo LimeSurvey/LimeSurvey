@@ -4,7 +4,7 @@
 	$controller = $yii->getController();
 ?>
 
-<div class="side-body" id="edit-survey-text-element">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), $sidemenu['state'], 'edit-survey-text-element'); ?>
 	<h3><?php eT("Edit survey settings");?></h3>
 
             <?php $controller->renderPartial('/admin/survey/subview/tab_view',$data); ?>

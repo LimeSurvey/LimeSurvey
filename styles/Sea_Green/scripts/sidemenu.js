@@ -17,10 +17,12 @@ $(document).ready(function(){
     if (rtl) {
         var left_or_right_250 = {right: -250};
         var left_or_right_0 = {right: 0};
+        var margin_left_or_right = {'margin-right': '320px'};
     }
     else {
         var left_or_right_250 = {left: -250};
         var left_or_right_0 = {left: 0};
+        var margin_left_or_right = {'margin-left': '320px'};
     }
 
     /**
@@ -42,9 +44,9 @@ $(document).ready(function(){
         $thatWidth = sideBody.width();
         sideBody.width($thatWidth);
 
-        sideBody.css($.extend({
-          width: $thatWidth + 250
-        }, left_or_right_250));
+        //sideBody.css($.extend({
+          //width: $thatWidth + 250
+        //}, left_or_right_250));
         sideBody.parent().css( "overflow-x", "hidden" );
 
         $that.removeClass("hideside");
@@ -102,6 +104,7 @@ $(document).ready(function(){
     *  Close sidemenu
     */
     jQuery(document).on('click', '#chevronClose.opened', function(){
+        console.log('#chevronClose.opened');
         disableChevrons();
 
         // Move the side menu
@@ -118,29 +121,32 @@ $(document).ready(function(){
 
         // Move the side body
         sideBody.animate(
-                   $.extend({
-                       width: $thatWidth + 250
-                   }, left_or_right_250),
-                   500, function() {
-                   });
+           $.extend({
+               width: $thatWidth + 250
+           }, left_or_right_250),
+           500,
+           function() {}
+       );
 
-                   absoluteWrapper.animate($.extend({
-                       //opacity: 0.5
-                   }, left_or_right_250),
-                   500, function() {
-                   });
+       absoluteWrapper.animate($.extend({
+           //opacity: 0.5
+           }, left_or_right_250),
+           500,
+           function() {}
+       );
 
-                   sidemenusContainer.fadeOut();
-                   quickmenuContainer.fadeIn();
+       sidemenusContainer.fadeOut();
+       quickmenuContainer.fadeIn();
 
-                   chevronChangeState('opened', 'closed');
-                   enableChevrons();
+       chevronChangeState('opened', 'closed');
+       enableChevrons();
     });
 
     /**
     * Unstreched side menu
     */
     jQuery(document).on('click', '#chevronClose.stretched', function(){
+        console.log('#chevronClose.stretched');
         disableChevrons();
         sideMenu.animate({
                 width: 300,
@@ -164,40 +170,42 @@ $(document).ready(function(){
     * Show the side menu
     */
     jQuery(document).on('click', '#chevronStretch.closed', function(){
+        console.log('#chevronStretch.closed');
         disableChevrons();
 
         sideMenu.animate($.extend({
                 //opacity: 1
             }, left_or_right_0),
             500, function() {
-            });
+        });
 
-            $thatWidth = sideBody.width();
-            sideBody.width($thatWidth);
+        $thatWidth = sideBody.width();
+        sideBody.width($thatWidth);
 
-            sideBody.animate($.extend({
-                width: $thatWidth - 250
-            }, left_or_right_0),
-            500, function() {
-            });
+        sideBody.animate($.extend({
+            width: $thatWidth - 250
+        }, left_or_right_0, margin_left_or_right),
+        500, function() {
+        });
 
-            absoluteWrapper.animate($.extend({
-                //opacity: 1
-            }, left_or_right_0),
-            500, function() {
-            });
+        absoluteWrapper.animate($.extend({
+            //opacity: 1
+        }, left_or_right_0),
+        500, function() {
+        });
 
-            sidemenusContainer.fadeIn();
-            quickmenuContainer.fadeOut();
+        sidemenusContainer.fadeIn();
+        quickmenuContainer.fadeOut();
 
-            chevronChangeState('closed', 'opened');
-            enableChevrons();
+        chevronChangeState('closed', 'opened');
+        enableChevrons();
     });
 
     /**
     * Stretch the side menu
     */
     jQuery(document).on('click', '#chevronStretch.opened', function(){
+        console.log('#chevronStretch.opened');
         disableChevrons();
 
         sideMenu.animate({

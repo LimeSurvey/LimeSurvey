@@ -3,7 +3,7 @@
  * Display the result of the exportation
  */
 ?>
-<div class="side-body" id="edit-survey-text-element">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false, 'edit-survey-text-element'); ?>
     <div class="row">
         <div class="col-lg-12">
             

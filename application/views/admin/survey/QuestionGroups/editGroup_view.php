@@ -3,7 +3,7 @@
     $count = 0;
 ?>
 
-<div class="side-body" id="edit-group">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false, 'edit-group'); ?>
     <div class="row">
         <div class="col-lg-12 content-right">
             <h3><?php eT("Edit Group"); ?></h3>

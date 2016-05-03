@@ -1,4 +1,4 @@
-<div class="side-body">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false); ?>
     <h3><?php echo sprintf(gT("View response ID %d"), $id); ?></h3>
         <div class="row">
             <div class="col-lg-12 content-right">

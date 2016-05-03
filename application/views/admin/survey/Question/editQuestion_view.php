@@ -2,8 +2,7 @@
 <?php $this->renderPartial("./survey/Question/question_subviews/_ajax_variables", $ajaxDatas); ?>
 
 
-
-<div class="side-body" id="edit-question-body">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), $sidemenu['state'], 'edit-question-body'); ?>
 
     <!-- Page Title-->
     <h3>

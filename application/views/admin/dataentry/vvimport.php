@@ -1,4 +1,4 @@
-<div class="side-body">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false); ?>
     <?php if($tableExists):?>
     <h3><?php eT("Import a VV survey file"); ?></h3>
     <?php endif;?>

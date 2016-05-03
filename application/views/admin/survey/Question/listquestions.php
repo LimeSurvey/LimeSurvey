@@ -5,7 +5,7 @@
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 
-<div class="side-body">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), true); ?>
     <h3><?php eT('Questions in this survey'); ?></h3>
 
     <div class="row">

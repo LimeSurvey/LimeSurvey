@@ -2340,3 +2340,59 @@ function getMove()
     }
     return $move;
 }
+
+/**
+ * Side-body width is different depending on
+ * if side-menu is opened or closed.
+ *
+ * @param string $sideMenuBehaviour - Either 'adaptive', 'alwaysClosed' or 'alwaysOpen'
+ * @param boolean $sideMenustate - false for closed side-menu
+ * @param string $id - Id of div element
+ * @param boolean $returnString - If true, does not echo but returns string instead
+ * @return string
+ */
+function renderBeginSidebody($sideMenuBehaviour, $sideMenustate = true, $id = null, $returnString = false)
+{
+    $classes = array();
+    $classes[] = 'side-body';
+
+    if ($sideMenuBehaviour == 'adaptive' || $sideMenuBehaviour == '')
+    {
+        // Adaptive and closed, as in edit question
+        if (!$sideMenustate)
+        {
+            $classes[] = 'side-body-margin';
+        }
+    }
+    elseif ($sideMenuBehaviour == 'alwaysClosed')
+    {
+        $classes[] = 'side-body-margin';
+    }
+    elseif ($sideMenuBehaviour == 'alwaysOpen')
+    {
+    }
+    else
+    {
+        throw new InvalidArgumentException("Unknown value for sideMenuBehaviour: $sideMenuBehaviour");
+    }
+
+    $html = "<div class='";
+    $html .= implode(' ', $classes);
+    $html .= "' ";
+
+    if ($id !== null)
+    {
+        $html .= " id='$id'";
+    }
+
+    $html .= ">";
+
+    if ($returnString)
+    {
+        return $html;
+    }
+    else
+    {
+        echo $html;
+    }
+}

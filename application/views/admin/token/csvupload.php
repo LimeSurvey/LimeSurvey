@@ -5,7 +5,7 @@
  */
 ?>
 
-<div class="side-body">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false); ?>
     <h3><?php eT("Import tokens from CSV file"); ?></h3>
 
     <div class="row">

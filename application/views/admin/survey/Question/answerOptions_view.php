@@ -1,4 +1,4 @@
-<div class="side-body" id="edit-question-body">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false, 'edit-question-body'); ?>
     <h3>
         <?php echo $pageTitle; ?>
     </h3>

@@ -1208,9 +1208,7 @@ class tokens extends Survey_Common_Action
         $cancel=Yii::app()->request->getPost('cancel','');
         $tokenfields = getAttributeFieldNames($iSurveyId);
         $sAttributeToDelete=Yii::app()->request->getPost('deleteattribute','');
-        tracevar($sAttributeToDelete);
         if(!in_array($sAttributeToDelete,$tokenfields)) $sAttributeToDelete=false;
-        tracevar($sAttributeToDelete);
         if ($cancel=='cancel')
         {
             Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl("/admin/tokens/sa/managetokenattributes/surveyid/$iSurveyId"));

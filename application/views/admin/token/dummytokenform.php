@@ -4,7 +4,7 @@
  */
 ?>
 
-<div class="side-body">
+<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false); ?>
 	<h3><?php eT("Create dummy tokens"); ?></h3>
 
 	<div class="row">
