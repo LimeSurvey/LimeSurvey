@@ -91,7 +91,6 @@ $(document).ready(function(){
         setTimeout(function(){
             sideBodyHeight = sideBody.height();
             targetHeight = $target.height();
-            console.log('targetHeight: '+targetHeight);
             //alert(sidemenuHeight);
             if( sideBodyHeight < ( targetHeight + $correction ) )
             {
@@ -104,7 +103,6 @@ $(document).ready(function(){
     *  Close sidemenu
     */
     jQuery(document).on('click', '#chevronClose.opened', function(){
-        console.log('#chevronClose.opened');
         disableChevrons();
 
         // Move the side menu
@@ -146,7 +144,6 @@ $(document).ready(function(){
     * Unstreched side menu
     */
     jQuery(document).on('click', '#chevronClose.stretched', function(){
-        console.log('#chevronClose.stretched');
         disableChevrons();
         sideMenu.animate({
                 width: 300,
@@ -170,7 +167,6 @@ $(document).ready(function(){
     * Show the side menu
     */
     jQuery(document).on('click', '#chevronStretch.closed', function(){
-        console.log('#chevronStretch.closed');
         disableChevrons();
 
         sideMenu.animate($.extend({
@@ -205,7 +201,6 @@ $(document).ready(function(){
     * Stretch the side menu
     */
     jQuery(document).on('click', '#chevronStretch.opened', function(){
-        console.log('#chevronStretch.opened');
         disableChevrons();
 
         sideMenu.animate({
@@ -236,7 +231,6 @@ $(document).ready(function(){
     * Stretch the accordion
     */
     jQuery(document).on('click', '.handleAccordion.opened', function(){
-                console.log('stretched accordion');
         // Disable this feature for RTL for now
         if (rtl) {
             return;
@@ -361,7 +355,6 @@ $(document).ready(function(){
 
           var windowswidth = window.innerWidth;
           var sideBodyWidth = sideBody.width();
-          console.log('sideBodyWidth start: '+sideBodyWidth);
           $( window ).resize(function() {
               //console.log('sideBodyWidth before: '+sideBodyWidth);
               //console.log( windowswidth - window.innerWidth);
