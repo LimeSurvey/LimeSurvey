@@ -1,4 +1,4 @@
-<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false, 'edit-question-body'); ?>
+<div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
         <?php eT('Edit default answer values') ?>               
     </h3>

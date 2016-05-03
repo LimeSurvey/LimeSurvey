@@ -1,5 +1,5 @@
 <?php if (isset($step1)): ?>
-    <?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false); ?>
+    <div class='side-body <?php echo getSideBodyClass(false); ?>'>
         <div class="row welcome survey-action">
             <div class="col-sm-12 content-right">
                 <div class="jumbotron message-box message-box-error">
@@ -70,7 +70,7 @@
 
 
     <?php else: ?>
-    <?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false); ?>
+    <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
         <div class="col-sm-12 content-right">
             <div class="jumbotron message-box">

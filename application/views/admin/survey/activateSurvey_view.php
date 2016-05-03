@@ -1,5 +1,5 @@
 <?php if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck)): ?>
-<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false); ?>
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
         <div class="col-sm-12 content-right">
             <div class="jumbotron message-box message-box-error">
@@ -40,7 +40,7 @@
 </div>
 <?php else:?>
 
-<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false); ?>
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
 <div class='container message-box col-sm-10'>
     <div class='row'>
         <h2 class='col-sm-7 col-sm-offset-2'><?php eT("Warning: Please read this carefully before proceeding!"); ?></h2>

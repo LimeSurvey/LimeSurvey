@@ -4,7 +4,7 @@
  */
 ?>
 
-<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false); ?>
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
 <?php if( count($tokenfieldlist)) : ?>
     <h3><?php eT("Manage token attribute fields"); ?></h3>
 

@@ -9,7 +9,7 @@
     var sMsgColumnCount = '<?php eT("%s of %s columns selected",'js'); ?>';
 </script>
 
-<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false); ?>
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
         <?php eT("Export results");?>
         <?php

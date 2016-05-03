@@ -1,6 +1,6 @@
-<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false); ?>
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">                             
-        <div class="col-lg-12 content-right">
+        <div class="col-lg-8 content-right">
             <h3>
                 <?php eT("Survey quota");?>: <?php eT("Add answer");?>
             </h3>

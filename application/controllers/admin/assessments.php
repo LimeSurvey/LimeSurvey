@@ -110,7 +110,7 @@ class Assessments extends Survey_Common_Action
 
         Yii::app()->loadHelper('admin/htmleditor');
 
-        $urls['output'] = renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false, null, true);
+        $urls['output'] = '<div class="side-body ' . getSideBodyClass(false) . '">';
         $urls['output'] .= '<h3>'.gT("Assessments").'</h3>';
 
         if ($surveyinfo['assessments']!='Y')

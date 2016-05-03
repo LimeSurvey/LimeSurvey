@@ -1,4 +1,4 @@
-<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false); ?>
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class='col-lg-8'>
             <h3>
                 <?php eT("queXML PDF export");?>

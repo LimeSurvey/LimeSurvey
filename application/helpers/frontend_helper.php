@@ -2342,57 +2342,39 @@ function getMove()
 }
 
 /**
- * Side-body width is different depending on
- * if side-menu is opened or closed.
+ * Get the margin class for side-body div depending
+ * on side-menu behaviour config and page (edit or not
+ * etc).
  *
- * @param string $sideMenuBehaviour - Either 'adaptive', 'alwaysClosed' or 'alwaysOpen'
- * @param boolean $sideMenustate - false for closed side-menu
- * @param string $id - Id of div element
- * @param boolean $returnString - If true, does not echo but returns string instead
+ * @param boolean $sideMenustate - False for pages with hidden side-menu
  * @return string
  */
-function renderBeginSidebody($sideMenuBehaviour, $sideMenustate = true, $id = null, $returnString = false)
+function getSideBodyClass($sideMenustate)
 {
-    $classes = array();
-    $classes[] = 'side-body';
+    $sideMenuBehaviour = getGlobalSetting('sideMenuBehaviour');
+
+    $class = "";
 
     if ($sideMenuBehaviour == 'adaptive' || $sideMenuBehaviour == '')
     {
         // Adaptive and closed, as in edit question
         if (!$sideMenustate)
         {
-            $classes[] = 'side-body-margin';
+            $class = 'side-body-margin';
         }
     }
     elseif ($sideMenuBehaviour == 'alwaysClosed')
     {
-        $classes[] = 'side-body-margin';
+        $class = 'side-body-margin';
     }
     elseif ($sideMenuBehaviour == 'alwaysOpen')
     {
+        // No margin class
     }
     else
     {
-        throw new InvalidArgumentException("Unknown value for sideMenuBehaviour: $sideMenuBehaviour");
+        throw new \CException("Unknown value for sideMenuBehaviour: $sideMenuBehaviour");
     }
 
-    $html = "<div class='";
-    $html .= implode(' ', $classes);
-    $html .= "' ";
-
-    if ($id !== null)
-    {
-        $html .= " id='$id'";
-    }
-
-    $html .= ">";
-
-    if ($returnString)
-    {
-        return $html;
-    }
-    else
-    {
-        echo $html;
-    }
+    return $class;
 }

@@ -8,7 +8,7 @@
 */
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
-<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), true); ?>
+<div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3><?php eT('Question groups in this survey'); ?></h3>
     <div class="row">
         <div class="col-lg-12 content-right">

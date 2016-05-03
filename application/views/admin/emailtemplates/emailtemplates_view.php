@@ -27,7 +27,7 @@
     });
 </script>
 
-<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false); ?>
+<div class="side-body <?php echo getSideBodyClass(false); ?>">
 	<h3><?php eT("Edit email templates"); ?></h3>
 
 	<div class="row">

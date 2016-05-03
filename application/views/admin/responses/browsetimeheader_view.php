@@ -1,4 +1,4 @@
-<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false); ?>
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php echo eT('Time statistics'); ?></h3>
     <script type='text/javascript'>
         var strdeleteconfirm='<?php echo eT('Do you really want to delete this response?', 'js'); ?>';

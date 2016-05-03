@@ -1,4 +1,4 @@
-<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), true); ?>
+<div class='side-body <?php echo getSideBodyClass(true); ?>'>
 	<h3><?php eT("Token summary"); ?></h3>
 
 	<div class="row">

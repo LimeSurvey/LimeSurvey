@@ -1,4 +1,4 @@
-<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), true); ?>
+<div class='side-body <?php echo getSideBodyClass(true); ?>'>
 	<h3><?php eT('Group summary'); ?></h3>
 	<div class="row">
 		<div class="col-lg-12 content-right">

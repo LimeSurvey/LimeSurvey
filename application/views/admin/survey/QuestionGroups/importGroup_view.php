@@ -4,7 +4,7 @@
  */
 ?>
 
-<?php renderBeginSidebody(getGlobalSetting('sideMenuBehaviour'), false, 'edit-survey-text-element'); ?>
+<div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Import question group"); ?></h3>
     <div class="row">
         <div class="col-lg-12">
