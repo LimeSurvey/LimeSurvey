@@ -1343,7 +1343,8 @@ class Survey_Common_Action extends CAction
     {
         if (!YII_DEBUG)
         {
-            $path = ($sPath == 'PUBLIC')?dirname(Yii::app()->request->scriptFile).'/styles-public/':'';                             // We get the wanted constant
+            $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));            
+            $path = ($sPath == 'PUBLIC')?dirname(Yii::app()->request->scriptFile).'/styles-public/':ADMIN_CSS_PATH;                             // We get the wanted constant
             App()->getClientScript()->registerCssFile(  App()->getAssetManager()->publish($path.$sFile) );                         // We publish the asset
         }
         else
