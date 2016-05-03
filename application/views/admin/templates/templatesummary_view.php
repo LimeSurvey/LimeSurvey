@@ -131,6 +131,37 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                 }
                 ?>
             </div>
+
+            <div class="">
+                <a href="#" data-toggle="modal" data-target="#fileHelp" />
+                    <?php eT('Tip: How to display a file in your template?'); ?>
+                </a>
+            </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="fileHelp" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel"><?php eT('Tip: How to display a picture in your template?'); ?></h4>
+                  </div>
+                  <div class="modal-body">
+                      <?php eT('To use a picture in a .pstpl file:');?><br/>
+                      <code>&lt;img src="{TEMPLATEURL}/files/yourpicture.png" /&gt;</code><br/><br/>
+                      <?php eT("To use a picture in a .css file: ");?><br/>
+                      <code>background-image: url('../files/yourpicture.png');</code>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
         </div>
     </div>
     <?php endif;?>
