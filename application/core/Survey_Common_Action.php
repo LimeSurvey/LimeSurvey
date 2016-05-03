@@ -1350,7 +1350,7 @@ class Survey_Common_Action extends CAction
         {
             $url = ($sPath == 'PUBLIC')?Yii::app()->getConfig('publicstyleurl'):Yii::app()->getConfig('adminstyleurl').'/css/';     // We get the wanted url defined in config
             App()->getClientScript()->registerCssFile( $url.$sFile );                                                               // We publish the css file
-            
+
         }
     }
 

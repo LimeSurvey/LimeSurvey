@@ -41,6 +41,8 @@ class TemplateConfiguration extends CFormModel
     public $hasConfigFile='';
     public $isOldTemplate;
 
+    public $overwrite_question_views=false;
+
     public $xmlFile;
 
     /**
@@ -84,8 +86,6 @@ class TemplateConfiguration extends CFormModel
         }
 
 
-
-
         // If the template don't have a config file (maybe it has been deleted, or whatever),
         // then, we load the default template
         $this->hasConfigFile = is_file($this->path.DIRECTORY_SEPARATOR.'config.xml');
@@ -118,6 +118,9 @@ class TemplateConfiguration extends CFormModel
 
         // condition for user's template prior to 160219
         $this->filesPath    = (isset($this->config->engine->filesdirectory))? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR : $this->path . '/files/';
+        // condition for user's template prior to 160504
+        $this->overwrite_question_views    = (isset($this->config->engine->overwrite_question_views))? $this->config->engine->overwrite_question_views=='true' : false;
+
         $this->cssFramework = $this->config->engine->cssframework;
         $this->packages     = (array) $this->config->engine->packages->package;
         $this->otherFiles   = $this->setOtherFiles();
@@ -173,6 +176,7 @@ class TemplateConfiguration extends CFormModel
     private function createTemplatePackage()
     {
         Yii::setPathOfAlias('survey.template.path', $this->path);                           // The package creation/publication need an alias
+        Yii::setPathOfAlias('survey.template.viewpath', $this->viewPath);                   // 
 
         $aCssFiles   = (array) $this->config->files->css->filename;                                 // The CSS files of this template
         $aJsFiles    = (array) $this->config->files->js->filename;                                  // The JS files of this template
