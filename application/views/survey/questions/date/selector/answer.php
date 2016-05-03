@@ -41,9 +41,16 @@
         */
         ?>
 
-        <?php $this->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+        <?php
+            echo CHtml::tag("div",array('id'=>"answer{$name}_datetimepicker",'class'=>"input-group date"),"",false);
+            echo CHtml::label(sprintf(gT('Date format: %s'),$dateformatdetails),"answer{$name}",array("class"=>"sr-only")); // @ todo : test system with screen reader for accessibility
+            echo CHtml::textField("{$name}",$dateoutput,array("class"=>"form-control","id"=>"answer{$name}",'onkeypress' => $goodchars,'onchange' => "$checkconditionFunction"));
+            echo CHtml::tag("span",array("class"=>"input-group-addon"),CHtml::tag("span",array("class"=>"fa fa-calendar","aria-hidden"=>true),""));
+            echo CHtml::closeTag("div");
+            $this->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                 'name' => $name,
-                'id' => "answer" . $name,
+                'selector'=>"#answer{$name}_datetimepicker",
+                'id' => "answer{$name}",
                 'value' => $dateoutput,
                 'pluginOptions' => array(
                     'format' => $dateformatdetailsjs,
@@ -78,19 +85,11 @@
                     'timePicker24Hour' => true,
                     'timePickerIncrement' => 1,*/
                 ),
-                'htmlOptions' => array(
-                    'onkeypress' => $goodchars,
-                    'onchange' => "$checkconditionFunction"
-                )
             ));
+            // Seems not needed now ?
+            // App()->getClientScript()->registerScript("LS_question_{$qid}","$('#answer{$name}').val('{$dateoutput}')",CClientScript::POS_READY);
         ?>
     </span>
-    <script>
-        $(document).ready(function() {
-            // Min and max date sets default value, so use this to override it
-            $('#answer<?php echo $name; ?>').val('<?php echo $dateoutput; ?>');
-        });
-    </script>
 
     <input
         type='hidden'
