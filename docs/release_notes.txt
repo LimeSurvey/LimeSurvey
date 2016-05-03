@@ -35,6 +35,18 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160503) to 2.50+ (build 160504) May 3, 2016
+-Fixed issue #11089: When side-menu is closed, the side-body shifts from right to left at page load (Olle Haerstedt)
+-Fixed issue #11107: Display tokens/responses/CPDB participants doesn't work anymore (LouisGac)
+-New feature: Added a config setting to disable by default the possibility for templates to overwrite the views (LouisGac)
+-New feature: In template editor, added a tip to explain how to display pictures in pstpl/css files (LouisGac)
+-New feature: Templates can now overwrite the question views (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+
 Changes from 2.50+ (build 160430) to 2.50+ (build 160503) May 3, 2016
 -Fixed issue #10589: OSM - Aerial View Limited To Specific Zoom Level 10 (tpartner)
 -Fixed issue #10794: Missing translation in template editor (LouisGac)
