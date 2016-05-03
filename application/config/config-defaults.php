@@ -60,6 +60,7 @@ $config['timeOutTime']        =   60 * 10;          // Lock them out for 10 minu
 
 // Site Settings
 $config['printanswershonorsconditions'] = 1;        // If set to 1, only relevant answers to questions can be printed by user. If set to 0, also questions not shown are printed
+$config['allow_templates_to_overwrite_views'] = 0;
 
 // Only applicable, of course, if you have chosen 'R' for $dropdowns and/or $lwcdropdowns
 $config['repeatheadings']     =   '25';             // The number of answers to show before repeating the headings in array (flexible) questions. Set to 0 to turn this feature off

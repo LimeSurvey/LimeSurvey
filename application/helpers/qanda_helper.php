@@ -6209,7 +6209,7 @@ function doRender($sView, $aData, $bReturn=true)
     {
         $sTemplate = $thissurvey['template'];
         $oTemplate = Template::model()->getInstance($sTemplate);                // we get the template configuration
-        if($oTemplate->overwrite_question_views===true)                         // If it's configured to overwrite the views
+        if($oTemplate->overwrite_question_views===true && Yii::app()->getConfig('allow_templates_to_overwrite_views'))                         // If it's configured to overwrite the views
         {
             $requiredView = $oTemplate->viewPath.ltrim($sView, '/');            // Then we check if it has its own version of the required view
             if( file_exists($requiredView.'.php') )                             // If it the case, the function will render this view
