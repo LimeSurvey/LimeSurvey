@@ -35,6 +35,31 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160430) to 2.50+ (build 160503) May 3, 2016
+-Fixed issue #10589: OSM - Aerial View Limited To Specific Zoom Level 10 (tpartner)
+-Fixed issue #10794: Missing translation in template editor (LouisGac)
+-Fixed issue #10918: Template example not styled, the correct fonts are not loaded (LouisGac)
+-Fixed issue #11088: Do not show all javascript in question overview (Denis Chenu)
+-Fixed issue #11094: Database update does not kick in on authentication (Carsten Schmitz)
+-Fixed issue #11095: Group Names not displayed (Olle Haerstedt)
+-Fixed issue #11098: Error on survey creation when languages are restricted to only one (Carsten Schmitz)
+-Fixed issue: JS hint when saving survey settings even if additional languages were empty (Carsten Schmitz)
+-Fixed issue: Navigator rendering was wrong in template editor (welcome page) (LouisGac)
+-Fixed issue: Template editor question page not up to date with current templates (LouisGac)
+-Fixed issue: Template editor survey list page not up to date with current templates (LouisGac)
+-Fixed issue: Update fails if we don't have plugins table (Denis Chenu)
+-New feature: Disable asset management for admin gui when debug mode is on, included for CSS and JS files loaded from the subcontrollers (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by vipgroup
+
 Changes from 2.50+ (build 160428) to 2.50+ (build 160430) Apr 30, 2016
 -Fixed issue #10944: Replace language selector in survey settings with a more space-saving select box (Carsten Schmitz)
 -Fixed issue #10998: Simple statistic graphics wrong when label is too long (LouisGac)
