@@ -528,16 +528,12 @@ class tokens extends Survey_Common_Action
 
             if($sReminderSent!='N')
             {
-                $oReminderSent = new DateTime($sReminderSent);
-                $sDateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
-                $sReminderSent = $oReminderSent->format($sDateformatdata['phpdate']);
+                $sReminderSent  = convertToGlobalSettingFormat($sReminderSent );
             }
 
             if($sCompleted!='N')
             {
-                $oCompleted      = new DateTime($sReminderSent);
-                $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);
-                $sCompleted   = $oCompleted->format($sDateformatdata['phpdate']);
+                $sCompleted  = convertToGlobalSettingFormat( $sCompleted );
             }
 
 
