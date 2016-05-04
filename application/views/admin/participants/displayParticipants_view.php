@@ -223,7 +223,7 @@ echo $colModels;
             <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $optionsearch); ?></td>
             <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $optioncontition); ?></td>
             <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
-            <td><img src=<?php echo Yii::app()->getConfig('adminimageurl') . "plus.png" ?>  id="addbutton" style="margin-bottom:4px" alt='<?php eT("Add search condition"); ?>'></td>
+            <td>&nbsp;<span class='icon-add text-success' id="addbutton" alt='<?php eT("Add search condition"); ?>'></span></td>
         </tr>
     </table>
     <br/>
