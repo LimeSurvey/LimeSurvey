@@ -149,8 +149,12 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                         <?php eT('To use a picture in a .pstpl file:');?><br/>
                         <code>&lt;img src="{TEMPLATEURL}/files/yourpicture.png" /&gt;</code><br/><br/>
                         <?php eT("To use a picture in a .css file: ");?><br/>
-                        <code>background-image: url('../files/yourpicture.png');</code>
+                        <code>background-image: url('../files/yourpicture.png');</code><br/><br/>
+                        <?php eT("To place the logo anywhere in a .pstpl file: ");?><br/>
+                        <code>{SITELOGO}</code><br/>
+                        <?php eT("it will generate a responsive image containing the logo file.");?><br/>
                     </div>
+                    
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
                     </div>
