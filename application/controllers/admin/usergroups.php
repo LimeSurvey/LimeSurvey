@@ -219,7 +219,8 @@ class Usergroups extends Survey_Common_Action
 
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         if (Permission::model()->hasGlobalPermission('usergroups','update')) {
-            if ($action == "editusergroupindb") {
+            if ($action == "editusergroupindb")
+             {
 
                 $ugid = (int)$_POST['ugid'];
 
