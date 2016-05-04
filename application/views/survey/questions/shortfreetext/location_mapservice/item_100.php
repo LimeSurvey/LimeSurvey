@@ -27,8 +27,8 @@
             <input
                 id="searchbox_<?php echo $name; ?>"
                 placeholder="<?php eT("Search"); ?>"
-                width="15"
                 class="form-control"
+                type="text"
              />
         </div>
 
