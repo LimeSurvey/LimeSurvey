@@ -924,12 +924,17 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyID);
         }
 
+        /*
+         * Broken, caused by commit e8f6f767
+         * $sTokenIDs can be a comma-separated list, which will cause
+         * a SQL error
         $token = Token::model($iSurveyID)->find('tid=' . $sTokenIDs);
 
         $beforeParticipantDelete = new PluginEvent('beforeParticipantDelete');
         $beforeParticipantDelete->set('model',$token );
         $beforeParticipantDelete->set('iSurveyID',$iSurveyID );
         App()->getPluginManager()->dispatchEvent($beforeParticipantDelete);
+        */
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
         {
