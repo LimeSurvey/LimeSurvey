@@ -15,7 +15,7 @@
 
 function doreplacement($file,$data, $oTemplate='')
 {
-    //Produce sample page from template file    
+    //Produce sample page from template file
     $aReplacements=isset($data['aReplacements']) ? $data['aReplacements'] : array();
     return (array)templatereplace(file_get_contents($file),$aReplacements,$data, 'Unspecified', false, NULL, array(), false, $oTemplate);
 }
@@ -100,35 +100,12 @@ function makeoptions($array, $value, $text, $selectedvalue) {
 /**
  * Index is the file index in the Template configuration file
  */
-function makeoptionswithindex($array, $value, $text, $selectedvalue, $prefix)
+function makeoptionswithindex($array, $prefix)
 {
-
-    if(isset( $_GET['editfile']))
-    {
-        $editfile = (string) $_GET['editfile'];
-        $editfile_infos = explode('_',$editfile);
-
-    // If user is editing a file requiring an index, $_GET['editfile'] will have a prefix (like css or js)
-    // If it's the same prefix than the one asked here, then it means he's editing one of the files of the list
-    // The edited file will have an index corresponding to the suffix of $_GET['editfile']
-    // e.g : admin/templates/sa/view/editfile/css_1/ ....
-    // Mean user is editing a css file with index 1 in the template's configuration file
-        if(isset($editfile_infos[0]) && $editfile_infos[0] == $prefix)
-            $selectedindex = $editfile_infos[1];
-    }
-    $selectedindex = (isset($selectedindex))?$selectedindex:-1;
-
-    $return='';
+    $return=array();
     foreach ($array as $index => $ar)
     {
-        $return .= "<option value='".HTMLEscape($prefix.'_'.$index)."'";
-
-        if ($index == $selectedindex)
-        {
-            $return .= " selected='selected'";
-        }
-
-        $return .= '>'.$ar[$text]."</option>\n";
+        $return[$prefix.'_'.$index]=$ar['name'];
     }
     return $return;
 }
