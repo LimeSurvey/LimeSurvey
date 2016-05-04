@@ -84,11 +84,11 @@
             </div>
         </li>
     <?php endif;?>
-
-    <input
-        type="hidden"
-        name="java<?php echo $name;?>"
-        id="java<?php echo $name;?>"
-        value="<?php echo $value;?>"
-    />
 </ul>
+
+<input
+    type="hidden"
+    name="java<?php echo $name;?>"
+    id="java<?php echo $name;?>"
+    value="<?php echo $value;?>"
+/>
