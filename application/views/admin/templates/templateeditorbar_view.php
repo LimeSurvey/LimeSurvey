@@ -1,5 +1,4 @@
 <script type="text/javascript">
-    var adminlanguage='<?php echo $codelanguage; ?>';
     var highlighter='<?php echo $highlighter; ?>';
 </script>
 <script type='text/javascript'>

@@ -1007,11 +1007,6 @@ class templates extends Survey_Common_Action
         else
             $highlighter = 'html';
 
-        if (in_array(Yii::app()->session['adminlang'], $availableeditorlanguages))
-            $codelanguage = Yii::app()->session['adminlang'];
-        else
-            $codelanguage = 'en';
-
         $templates = getTemplateList();
         if (!isset($templates[$templatename]))
             $templatename = Yii::app()->getConfig('defaulttemplate');
@@ -1396,7 +1391,6 @@ class templates extends Survey_Common_Action
         }
 
 
-        $aData['codelanguage'] = $codelanguage;
         $aData['highlighter'] = $highlighter;
         $aData['screens'] = $screens;
         foreach ($screens as $index=>$value)
