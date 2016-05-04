@@ -36,7 +36,6 @@
     name="<?php echo $name; ?>other"
     style='<?php echo $display; ?>'
     value='<?php echo $value?>'
-    alt='<?php eT('Other answer'); ?>'
     onchange='<?php echo $checkconditionFunction;?>(this.value, this.name, this.type);'
 />
 <!-- end of othertext -->
