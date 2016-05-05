@@ -43,7 +43,6 @@ class PluginManager extends Survey_Common_Action
             if (array_key_exists($oPlugin->name, $aDiscoveredPlugins))
             {
                 $aPluginSettings = App()->getPluginManager()->loadPlugin($oPlugin->name, $oPlugin->id)->getPluginSettings(false);
-                $pluginConfig = $oPlugin->getConfig();
                 $data[]          = array(
                     'id'          => $oPlugin->id,
                     'name'        => $aDiscoveredPlugins[$oPlugin->name]['pluginName'],
