@@ -240,10 +240,10 @@
 
             $sTokenIds=$this->getEvent()->get('sTokenIds');
             $aTokenIds = explode(',', $sTokenIds);
+            $oCurrentUser=$this->api->getCurrentUser();
 
             foreach ($aTokenIds as $tokenId){
                 $token = Token::model($iSurveyID)->find('tid=' . $tokenId);
-                $oCurrentUser=$this->api->getCurrentUser();
 
                 $aValues=$token->getAttributes();
 
