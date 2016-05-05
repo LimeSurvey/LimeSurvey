@@ -238,19 +238,24 @@
                 return;
             }
 
-            $oNewParticipant=$this->getEvent()->get('model');
-            $oCurrentUser=$this->api->getCurrentUser();
+            $sTokenIds=$this->getEvent()->get('sTokenIds');
+            $aTokenIds = explode(',', $sTokenIds);
 
-            $aValues=$oNewParticipant->getAttributes();
+            foreach ($aTokenIds as $tokenId){
+                $token = Token::model($iSurveyID)->find('tid=' . $tokenId);
+                $oCurrentUser=$this->api->getCurrentUser();
 
-            $oAutoLog = $this->api->newModel($this, 'log');
-            $oAutoLog->uid=$oCurrentUser->uid;
-            $oAutoLog->entity='participant';
-            $oAutoLog->action='delete';
-            $oAutoLog->entityid=$aValues['participant_id'];
-            $oAutoLog->oldvalues=json_encode($aValues);
-            $oAutoLog->fields=implode(',',array_keys($aValues));
-            $oAutoLog->save();
+                $aValues=$token->getAttributes();
+
+                $oAutoLog = $this->api->newModel($this, 'log');
+                $oAutoLog->uid=$oCurrentUser->uid;
+                $oAutoLog->entity='participant';
+                $oAutoLog->action='delete';
+                $oAutoLog->entityid=$aValues['participant_id'];
+                $oAutoLog->oldvalues=json_encode($aValues);
+                $oAutoLog->fields=implode(',',array_keys($aValues));
+                $oAutoLog->save();
+            }
         }
 
 
