@@ -356,12 +356,9 @@ $(document).ready(function(){
           var windowswidth = window.innerWidth;
           var sideBodyWidth = sideBody.width();
           $( window ).resize(function() {
-              //console.log('sideBodyWidth before: '+sideBodyWidth);
-              //console.log( windowswidth - window.innerWidth);
               sideBody.width( sideBodyWidth - (windowswidth - window.innerWidth) );
               windowswidth = window.innerWidth;
               sideBodyWidth = sideBody.width();
-              //console.log('sideBodyWidth after: '+sideBodyWidth);
 
               if( sideBodyWidth < 1420 )
               {
@@ -433,19 +430,18 @@ var drop_delete_fn = function () {};
 
 /**
  * Drag-n-drop functionality for quick-menu
+ * @todo Add this to plugin ExtraQuickMenuItems? Needs to be on every admin page.
  */
 function dragstart_handler(ev) {
-    console.log("I'm dragging!");
-    console.log(ev.target);
 
     // Use to set a image during dragging
     //var img = new Image();
     //img.src = '/limesurvey/styles/Sea_Green/images/donate.png';
     //ev.dataTransfer.setDragImage(img, 10, 10);
+
     ev.dataTransfer.dropEffect = 'move';
     ev.dataTransfer.effectAllowed = 'move';
     var html = $(ev.target).prop('outerHTML');
-    //console.log('html', html);
     ev.dataTransfer.setData("text/plain", html);
 
     drop_delete_fn = function () {
@@ -455,11 +451,7 @@ function dragstart_handler(ev) {
 
 function dragover_handler(ev) {
     ev.preventDefault();
-
-    console.log("Dragging over me");
-    //console.log(ev);
     $(ev.target).css('background-color', 'black');
-
     return false;
 }
 
@@ -471,12 +463,9 @@ function dragleave_handler(ev) {
 
 function drop_handler(ev) {
     ev.preventDefault();
-    console.log("Dropped me");
     // TODO: Why is ev.target not <a>, but <div>?
-    var $target = $(ev.target).parent();
-    //console.log(ev);
+    var $target = $(ev.target).parent().parent();
     var data = ev.dataTransfer.getData("text");
-    //console.log(data);
     $target.after(data);
     $(ev.target).css('background-color', 'white');
     drop_delete_fn();
@@ -484,6 +473,21 @@ function drop_handler(ev) {
     // Delete left-over tooltip
     $('.tooltip.fade').remove();
     doToolTip();
+
+    // Collect button name and order number
+    var data = {};
+    $('.quick-menu-item').each(function(i, item) {
+        var name = $(item).data('button-name');
+        data[name] = i;
+    });
+
+    $.ajax({
+        method: 'POST',
+        url: saveQuickMenuButtonOrderLink,
+        data: {buttons: data}
+    }).done(function(response) {
+        // Show save confirmation?
+    });
 
     //ev.dataTransfer.clearData();
 }

@@ -980,7 +980,16 @@ class Survey_Common_Action extends CAction
         $event->set('aData', $aData);
         $result = App()->getPluginManager()->dispatchEvent($event);
 
-        $aData['quickMenuItems'] = $result->get('quickMenuItems');
+        $quickMenuItems = $result->get('quickMenuItems');
+        if (!empty($quickMenuItems))
+        {
+            usort($quickMenuItems, function($b1, $b2) {
+                return (int) $b1['order'] > (int) $b2['order'];
+            });
+        }
+
+        $aData['quickMenuItems'] = $quickMenuItems;
+
 
         if ($aData['quickMenuItems'] === null)
         {
