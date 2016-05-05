@@ -47,9 +47,8 @@
             <?php endif;?>
         <?php endif;?>
 
-
         <strong><?php eT('Your update key:');?> <?php echo $serverAnswer->key_infos->keyid; ?></strong><br/>
-        <strong><?php eT('Valid until:');?> <?php echo $serverAnswer->key_infos->validuntil; ?></strong><br/>
+        <strong><?php eT('Valid until:');?> <?php echo $sValidityDate; ?></strong><br/>        
         <?php  if ($serverAnswer->key_infos->remaining_updates!=-999) { ?>
             <strong><?php eT('Remaining updates:');?> <?php echo $serverAnswer->key_infos->remaining_updates;?></strong><br/>
         <?php } ?>

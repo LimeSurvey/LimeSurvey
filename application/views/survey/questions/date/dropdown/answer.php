@@ -15,7 +15,7 @@
 <!-- Date, dropdown layout -->
 
 <!-- answer -->
-<p class="question date answer-item dropdown-item date-item">
+<div class="question date answer-item dropdown-item date-item">
 
     <?php
         // rows/*.php
@@ -34,7 +34,7 @@
             onchange="<?php echo $checkconditionFunction; ?>"
             title="<?php echo sprintf(gT('Date in the format : %s'),$dateformat);?>"
     />
-</p>
+</div>
 
 <input type="hidden" id="dateformat<?php echo $name; ?>" value="<?php echo $dateformatdetails; ?>"/>
 <!-- end of answer -->

@@ -15,7 +15,7 @@
 <div class="no-more-tables no-more-tables-10-point">
     <table class="table question table-10-point-array subquestion-list questions-list <?php echo $extraclass; ?>">
         <colgroup class="col-responses">
-            <col class="col-answers" width="<?php echo $answerwidth;?>%"/>
+            <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;'/>
             <?php
                 // columns/col.php
                 echo $sColumns;

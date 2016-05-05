@@ -179,20 +179,20 @@
 
         <!-- Right Menu -->
         <div class="col-md-7 text-right form-inline">
-            <div class="form-group">
-                <label for='templatedir'><?php eT("Template:"); ?></label>
-                <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/view/editfile/".$editfile."/screenname/".$screenname); ?>?templatename='+encodeURI(this.value), '_top')">
-                    <?php echo templateoptions($templates, $templatename); ?>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for='template'><?php eT("Template:"); ?></label>
+                    <select class="listboxtemplates form-control" id='template' name='template' onchange="javascript: $('.templatename').val(this.value); $('#general').submit();">
+                        <?php
+                        echo templateoptions($templates, $templatename); ?>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label for='listboxtemplates'><?php eT("Screen:"); ?></label>
-                <select class="listboxtemplates form-control" id='listboxtemplates' name='screenname' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/view/editfile/".$editfile);?>/screenname/'+encodeURI(this.value)+'?templatename=<?php echo urlencode ($templatename); ?>', '_top')">
-                    <?php echo makeoptions($screens, "id", "name", HTMLEscape($screenname) ); ?>
-                </select>
-            </div>
-
+                <div class="form-group">
+                    <label for='screen'><?php eT("Screen:"); ?></label>
+                    <?php echo CHtml::dropDownList('screen',$screenname,$screenselect,array(
+                    'class'=>'listboxtemplates form-control',
+                    'onchange'=>"javascript: $('.screenname').val(this.value); $('#general').submit();"));?>
+                </div>
             <?php if(isset($fullpagebar['savebutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                     <span class="glyphicon glyphicon-ok" ></span>
@@ -215,6 +215,7 @@
                     <?php eT("Return to admin panel"); ?>
                 </a>
             <?php endif;?>
+
         </div>
     </div>
 </div>

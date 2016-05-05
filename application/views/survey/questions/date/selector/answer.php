@@ -24,7 +24,7 @@
         <?php echo sprintf(gT('Date in the format: %s'), $dateformatdetails); ?>
     </label>
 
-    <span class='col-xs-12 col-sm-4'>
+    <div class='col-xs-12 col-sm-4'>
 
         <?php /* Old input, not used since switching to Bootstrap DateTimePicker
         <input
@@ -84,7 +84,7 @@
                 )
             ));
         ?>
-    </span>
+    </div>
     <script>
         $(document).ready(function() {
             // Min and max date sets default value, so use this to override it

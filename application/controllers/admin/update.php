@@ -533,7 +533,12 @@ class update extends Survey_Common_Action
             $views = array('welcome', 'subscribe', 'key_updated', 'updater_update');
             if (in_array($serverAnswer->view, $views) )
             {
-                return $this->controller->renderPartial('//admin/update/updater/welcome/_'.$serverAnswer->view, array('serverAnswer' => $serverAnswer),  false, false);
+                $sValidityDate = '';
+                if (isset($serverAnswer->key_infos->validuntil))
+                {
+                    $sValidityDate = convertToGlobalSettingFormat( $sValidityDate );
+                }
+                return $this->controller->renderPartial('//admin/update/updater/welcome/_'.$serverAnswer->view, array('serverAnswer' => $serverAnswer, 'sValidityDate'=>$sValidityDate),  false, false);
             }
             else
             {

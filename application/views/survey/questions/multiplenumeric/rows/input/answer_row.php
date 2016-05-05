@@ -46,7 +46,6 @@
             <input
                 class="text form-control numeric <?php echo $kpclass;?>"
                 type="text"
-                size=""
                 name="<?php echo $myfname;?>"
                 id="answer<?php echo $myfname; ?>"
                 value="<?php echo $dispVal;?>"
@@ -55,6 +54,7 @@
                 <?php echo $maxlength; ?>
                 />
         </div>
+        <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo $dispVal;?>" />
     </td>
 
     <?php if (!empty($suffix)): ?>
@@ -65,7 +65,5 @@
         </td>
     <?php endif; ?>
 
-    <!-- xs-12 -->
-    <input type="hidden" name="slider_user_no_action_<?php echo $myfname; ?>" id="slider_user_no_action_<?php echo $myfname; ?>" value="<?php echo $dispVal;?>" />
 </tr>
 <!-- end of answer_row -->

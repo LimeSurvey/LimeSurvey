@@ -637,7 +637,7 @@ EOD;
     {
         if (file_exists ($oTemplate->path.'/'.$oTemplate->siteLogo ))
         {
-            $sitelogo= '<img class="img-responsive" src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'"/>';
+            $sitelogo= '<img class="img-responsive" src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'" alt="site-logo"/>';
         }
     }
 
@@ -702,7 +702,7 @@ EOD;
     $coreReplacements['SURVEYLANGUAGE'] = App()->language;
     $coreReplacements['SURVEYLIST'] = (isset($surveylist))?$surveylist['list']:'';
     $coreReplacements['SURVEYLISTHEADING'] =  (isset($surveylist))?$surveylist['listheading']:'';
-    $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : '');
+    $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : 'Surveys list');
     $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl").'/surveys/'.$thissurvey['sid'].'/' : '');
     $coreReplacements['TEMPLATECSS'] = $_templatecss;
     $coreReplacements['TEMPLATEJS'] = $_templatejs;

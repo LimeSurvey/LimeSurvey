@@ -1747,7 +1747,7 @@ class conditionsaction extends Survey_Common_Action {
             ."</div>\n";
 
             // Source token Tab
-            $aViewUrls['output'] .= "<div id='SRCTOKENATTRS' class='tab-pane fade in'><select class='form-control' name='csrctoken' id='csrctoken' size='".($qcount+1)."' >\n";
+            $aViewUrls['output'] .= "<div id='SRCTOKENATTRS' class='tab-pane fade in'><select class='form-control' name='csrctoken' id='csrctoken' >\n";
             foreach (getTokenFieldsAndNames($iSurveyID) as $tokenattr => $tokenattrName)
             {
                 // Check to select

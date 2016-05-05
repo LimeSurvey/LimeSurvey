@@ -8,7 +8,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
         <div class="col-lg-12">
 
             <?php App()->getClientScript()->registerPackage('jquery-ace'); ?>
-            <h4><?php echo sprintf(gT("Editing template '%s' - File '%s'"),$templatename,$editfile); ?></h4>
+            <h4><?php echo sprintf(gT("Editing file '%s'"),$editfile); ?></h4>
 
             <?php if (!is_writable($templates[$templatename])):?>
                 <div class="alert alert-warning alert-dismissible" role="alert">
@@ -23,19 +23,27 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
         <div class="col-lg-2" id='templateleft'>
             <div style="padding-left:1em;">
                 <?php eT("Standard files:"); ?><br>
-                <select class="form-control" size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value)+'/useindex/0/', '_top')">
-                    <?php echo makeoptions($files, "name", "name", $editfile); ?>
-                </select>
-            </div>
+                <?php
+                $aSelectOptions=array(
+                    gT("Screen part files")=>makeoptionswithindex($files,'pstpl'),
+                    gT("JavaScript files")=>makeoptionswithindex($jsfiles,'js'),
+                    gT("CSS files")=>makeoptionswithindex($cssfiles,'css'));
+                $editindex='';
+                foreach($aSelectOptions as $optgroup=>$options)
+                {
+                    if (array_search($editfile,$options)!==false)
+                    {
+                        $editindex=array_search($editfile,$options);
+                        break;
+                    }
+                }
+                echo CHtml::form(array('admin/templates/sa/view'), 'post', array('id'=>'general', 'class'=>'form-inline'));
+                echo CHtml::listBox('editfile',$editindex,$aSelectOptions,
+                    array('class'=>'form-control','size'=>'20','onchange'=>"javascript: this.form.submit();"));
+                echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname'));
+                echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename')); ?>
 
-            <div style='margin-top:1em;padding-left:1em;'>
-                <?php eT("CSS & Javascript files:"); ?>
-                <br/>
-                <select  class="form-control"  size='8' name='cssfiles' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value)+'/useindex/true/', '_top')">
-                    <?php echo makeoptionswithindex($cssfiles, "name", "name", $editfile, 'css'); ?>
-                    <?php echo makeoptionswithindex($jsfiles, "name", "name", $editfile, 'js'); ?>
-                </select>
-                <br/>
+                </form>
             </div>
         </div>
         <div class="col-lg-8 templateeditor">
@@ -44,17 +52,15 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             <?php if(isset($_GET['editfile'])):?>
                 <input type='hidden' name='editfileindex' value='<?php echo $_GET['editfile']; ?>' />
                 <?php endif;?>
-            <?php if(isset($_GET['useindex'])):?>
-                <input type='hidden' name='useindex' value='<?php echo $_GET['useindex']; ?>' />
-                <?php endif;?>
-            <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
-            <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
-            <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
+            <?php echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename'));
+            echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname')); ?>
+            <input type='hidden' name='editfile' value='<?php echo $editindex; ?>' />
+            <input type='hidden' name='editfilename' value='<?php echo $editfile; ?>' />
             <input type='hidden' name='action' value='templatesavechanges' />
             <textarea name='changes' id='changes' rows='20' cols='40' data-filetype="<?php echo $sEditorFileType; ?>" class="ace <?php echo $sTemplateEditorMode; ?>" style='width:100%'><?php if (isset($editfile)) {
                 echo textarea_encode(filetext($templatename,$editfile,$templates));
             } ?></textarea>
-            <p>
+            <p class='text-center'>
                 <br/>
                 <?php if (Permission::model()->hasGlobalPermission('templates','update')):?>
                     <?php if (is_writable($templates[$templatename])):?>
@@ -87,16 +93,12 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                     <input type='submit' class='btn btn-default' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT("Are you sure you want to delete this file?","js"); ?>')"/>
                     <?php
                 }
-                ?>
-                <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
-                <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
+                echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename'));
+                echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname')); ?>
                 <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
                 <input type='hidden' name='action' value='templatefiledelete' />
                 <?php if(isset($_GET['editfile'])):?>
                     <input type='hidden' name='editfileindex' value='<?php echo $_GET['editfile']; ?>' />
-                    <?php endif;?>
-                <?php if(isset($_GET['useindex'])):?>
-                    <input type='hidden' name='useindex' value='<?php echo $_GET['useindex']; ?>' />
                     <?php endif;?>
 
                 </form>
@@ -116,16 +118,12 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                             <?php endif; ?>
                         />
                     <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
-                    <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
-                    <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
+                    <?php echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename'));
+                    echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname')); ?>
                     <input type='hidden' name='action' value='templateuploadfile' />
                     <?php if(isset($_GET['editfile'])):?>
                         <input type='hidden' name='editfileindex' value='<?php echo $_GET['editfile']; ?>' />
                         <?php endif;?>
-                    <?php if(isset($_GET['useindex'])):?>
-                        <input type='hidden' name='useindex' value='<?php echo $_GET['useindex']; ?>' />
-                        <?php endif;?>
-
                     </form>
                     <?php
                 }
@@ -134,37 +132,49 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
 
             <div class="">
                 <a href="#" data-toggle="modal" data-target="#fileHelp" />
-                    <?php eT('Tip: How to display a file in your template?'); ?>
+                <?php eT('Tip: How to display a file in your template?'); ?>
                 </a>
             </div>
-            </div>
-
-            <!-- Modal -->
-            <div class="modal fade" id="fileHelp" tabindex="-1" role="dialog">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel"><?php eT('Tip: How to display a picture in your template?'); ?></h4>
-                  </div>
-                  <div class="modal-body">
-                      <?php eT('To use a picture in a .pstpl file:');?><br/>
-                      <code>&lt;img src="{TEMPLATEURL}/files/yourpicture.png" /&gt;</code><br/><br/>
-                      <?php eT("To use a picture in a .css file: ");?><br/>
-                      <code>background-image: url('../files/yourpicture.png');</code>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="fileHelp" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"><?php eT('Tip: How to display a picture in your template?'); ?></h4>
+                    </div>
+                    <div class="modal-body">
+                        <?php eT('To use a picture in a .pstpl file:');?><br/>
+                        <code>&lt;img src="{TEMPLATEURL}/files/yourpicture.png" /&gt;</code><br/><br/>
+                        <?php eT("To use a picture in a .css file: ");?><br/>
+                        <code>background-image: url('../files/yourpicture.png');</code><br/><br/>
+                        <?php eT("To place the logo anywhere in a .pstpl file: ");?><br/>
+                        <code>{SITELOGO}</code><br/>
+                        <?php eT("it will generate a responsive image containing the logo file.");?><br/>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
     </div>
+    </div>
+    <?php else:?>
+            <?php echo CHtml::form(array('admin/templates/sa/view'), 'post', array('id'=>'general', 'style'=>'display:none;', 'class'=>'form-inline')); ?>
+                <?php
+                echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname'));
+                echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename')); ?>
+
+            </form>
     <?php endif;?>
+
 
 <div class="row template-sum" style="margin-bottom: 100px;">
     <div class="col-lg-12">

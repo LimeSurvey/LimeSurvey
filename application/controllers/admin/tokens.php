@@ -273,11 +273,11 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyId);
         }
 
-    /* build JS variable to hide buttons forbidden for the current user */
-    $aData['showDelButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete')?'true':'false';
-    $aData['showInviteButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
-    $aData['showBounceButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
-    $aData['showRemindButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
+        /* build JS variable to hide buttons forbidden for the current user */
+        $aData['showDelButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete')?'true':'false';
+        $aData['showInviteButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
+        $aData['showBounceButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
+        $aData['showRemindButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
 
         // Javascript
         App()->getClientScript()->registerPackage('jqgrid');
@@ -523,6 +523,20 @@ class tokens extends Survey_Common_Action
 
             $action .= '</div>';
 
+            $sReminderSent  = $token['remindersent'];
+            $sCompleted     = $token['completed'];
+
+            if($sReminderSent!='N')
+            {
+                $sReminderSent  = convertToGlobalSettingFormat($sReminderSent );
+            }
+
+            if($sCompleted!='N')
+            {
+                $sCompleted  = convertToGlobalSettingFormat( $sCompleted );
+            }
+
+
             $aRowToAdd['cell'] = array($token['tid'],
                 $action,
                 htmlspecialchars($token['firstname'],ENT_QUOTES),
@@ -532,9 +546,9 @@ class tokens extends Survey_Common_Action
                 htmlspecialchars($token['token'],ENT_QUOTES),
                 htmlspecialchars($token['language'],ENT_QUOTES),
                 htmlspecialchars($token['sent'],ENT_QUOTES),
-                htmlspecialchars($token['remindersent'],ENT_QUOTES),
+                htmlspecialchars($sReminderSent,ENT_QUOTES),
                 htmlspecialchars($token['remindercount'],ENT_QUOTES),
-                htmlspecialchars($token['completed'],ENT_QUOTES),
+                htmlspecialchars($sCompleted,ENT_QUOTES),
                 htmlspecialchars($token['usesleft'],ENT_QUOTES),
                 htmlspecialchars($token['validfrom'],ENT_QUOTES),
                 htmlspecialchars($token['validuntil'],ENT_QUOTES));
@@ -910,12 +924,17 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyID);
         }
 
+        /*
+         * Broken, caused by commit e8f6f767
+         * $sTokenIDs can be a comma-separated list, which will cause
+         * a SQL error
         $token = Token::model($iSurveyID)->find('tid=' . $sTokenIDs);
 
         $beforeParticipantDelete = new PluginEvent('beforeParticipantDelete');
         $beforeParticipantDelete->set('model',$token );
         $beforeParticipantDelete->set('iSurveyID',$iSurveyID );
         App()->getPluginManager()->dispatchEvent($beforeParticipantDelete);
+        */
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
         {

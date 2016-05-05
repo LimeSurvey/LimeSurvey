@@ -355,7 +355,7 @@ class UserAction extends Survey_Common_Action
                 $aData['mur'] = $sresult;
 
                 $aData['fullpagebar']['savebutton']['form'] = 'moduserform';
-                $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';  // Close button
+                $aData['fullpagebar']['closebutton']['url'] = 'admin';  // Close button
 
                 $this->_renderWrappedTemplate('user', 'modifyuser', $aData);
                 return;
@@ -396,9 +396,10 @@ class UserAction extends Survey_Common_Action
                 $sPassword = '';
             $full_name = html_entity_decode($postfull_name, ENT_QUOTES, 'UTF-8');
 
-            if (!validateEmailAddress($email)) {
-                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Could not modify user data."), "text-warning", gT("Email address is not valid."),
-                $this->getController()->createUrl('admin/user/modifyuser'), gT("Back"), array('uid' => $postuserid));
+            if (!validateEmailAddress($email))
+            {
+                Yii::app()->setFlashMessage( gT("Could not modify user data."). ' '. gT("Email address is not valid."),'error');
+                $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$postuserid));
             }
             else
             {
@@ -411,9 +412,10 @@ class UserAction extends Survey_Common_Action
                 }
                 $uresult = $oRecord->save();    // store result of save in uresult
 
-                if (empty($sPassword)) {
-                    $extra = gT("Username") . ": {$oRecord->users_name}<br />" . gT("Password") . ": (" . gT("Unchanged") . ")<br />\n";
-                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Success!"), "text-success", $extra);
+                if (empty($sPassword))
+                {
+                    Yii::app()->setFlashMessage( gT("Success!") .' <br/> '.gT("Password") . ": (" . gT("Unchanged") . ")", 'success');
+                    $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$postuserid));
                 }
                 elseif ($uresult && !empty($sPassword)) // When saved successfully
                 {
@@ -430,20 +432,24 @@ class UserAction extends Survey_Common_Action
                         $displayedPwd = preg_replace('/./', '*', $sPassword);
                     }
 
-                    $extra = gT("Username") . ": {$oRecord->users_name}<br />" . gT("Password") . ": {$displayedPwd}<br />\n";
-                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Success!"), "text-success", $extra);
+                    Yii::app()->setFlashMessage( gT("Success!") .' <br/> '.gT("Password") . ": " . $displayedPwd, 'success');
+                    $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$postuserid));
                 }
                 else
-                {   //Saving the user failed for some reason, message about email is not helpful here
+                {
+                    //Saving the user failed for some reason, message about email is not helpful here
                     // Username and/or email adress already exists.
-                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Could not modify user data."), 'text-warning');
+                    Yii::app()->setFlashMessage(  gT("Could not modify user data."),'error');
+                    $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$postuserid));
                 }
             }
         }
         else
         {
-            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+            Yii::app()->setFlashMessage(  gT("Could not modify user data."),'error');
+            $this->getController()->redirect(array("/admin/"));
         }
+
         $aData = array();
         $aData['fullpagebar']['continuebutton']['url'] = 'admin/user/sa/index';
         $this->_renderWrappedTemplate('user', $aViewUrls, $aData);

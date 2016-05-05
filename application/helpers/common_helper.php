@@ -5317,6 +5317,20 @@ function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 }
 
 /**
+* This is a convenience function to convert any date, in any date format, to the global setting date format
+*
+* @param string $sDate
+* @return string
+*/
+function convertToGlobalSettingFormat($sDate)
+{
+    $oDate           = new DateTime($sDate);                                    // We generate the Date object (PHP will deal with the format of the string)
+    $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);    // We get the Global Setting date format
+    $sDate           = $oDate->format($sDateformatdata['phpdate']);             // We apply it to the Date object to generate a string date
+    return $sDate;                                                              // We return the string date
+}
+
+/**
 * This function removes the UTF-8 Byte Order Mark from a string
 *
 * @param string $str

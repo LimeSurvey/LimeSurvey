@@ -86,13 +86,12 @@
             </div>
         </li>
     <?php endif;?>
-
-    <!-- Value -->
-    <input
-        type="hidden"
-        name="java<?php echo $name;?>"
-        id="java<?php echo $name; ?>"
-        value="<?php echo $value;?>"
-    />
 </ul>
+<!-- Value -->
+<input
+    type="hidden"
+    name="java<?php echo $name;?>"
+    id="java<?php echo $name; ?>"
+    value="<?php echo $value;?>"
+/>
 <!-- end of answer -->
