@@ -466,8 +466,14 @@ function drop_handler(ev) {
     // TODO: Why is ev.target not <a>, but <div>?
     var $target = $(ev.target).parent().parent();
     var data = ev.dataTransfer.getData("text");
-    $target.after(data);
     $(ev.target).css('background-color', 'white');
+
+    if (data.indexOf("quick-menu-item") < 0)
+    {
+        return;
+    }
+
+    $target.after(data);
     drop_delete_fn();
 
     // Delete left-over tooltip
