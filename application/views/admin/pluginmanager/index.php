@@ -76,6 +76,9 @@
             'type' => 'html',
             'header' => gT('Action'),
             'name' => 'action',
+            'htmlOptions' => array(
+                'style' => 'white-space: nowrap;'
+            ),
             'value' => function($data) {
 
                 $output='';
