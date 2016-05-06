@@ -213,7 +213,7 @@ $aReplacementData=array();
 
                     <div class="form-group">
                         <label for='questionNav'><?php eT("Move to question:");?></label>
-                        <select id='questionNav' class="form-control"  onchange="window.open(this.options[this.selectedIndex].value,'_top')"><?php echo $quesitonNavOptions;?></select>
+                        <select id='questionNav' class="form-control"  onchange="window.open(this.options[this.selectedIndex].value,'_top')"><?php echo $questionNavOptions;?></select>
                     </div>
 
                 <?php endif;?>

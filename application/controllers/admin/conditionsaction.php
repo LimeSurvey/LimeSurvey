@@ -1147,7 +1147,7 @@ class conditionsaction extends Survey_Common_Action {
         $aData['gid'] = $gid;
         $aData['imageurl'] = $imageurl;
         $aData['extraGetParams'] = $extraGetParams;
-        $aData['quesitonNavOptions'] = $questionNavOptions;
+        $aData['questionNavOptions'] = $questionNavOptions;
         $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
         $aData['javascriptpre'] = $javascriptpre;
 
@@ -1180,7 +1180,7 @@ class conditionsaction extends Survey_Common_Action {
 
             $aData['conditionsoutput'] = '';
             $aData['extraGetParams'] = $extraGetParams;
-            $aData['quesitonNavOptions'] = $questionNavOptions;
+            $aData['questionNavOptions'] = $questionNavOptions;
             $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
             $aData['javascriptpre'] = $javascriptpre;
             $aData['onlyshow'] = sprintf(gT("Only show question %s IF"),$questiontitle .': '. $sCurrentFullQuestionText);
