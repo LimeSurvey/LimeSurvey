@@ -50,7 +50,5 @@ function createToolbar(element, editor)
     {
         editor.commands.exec('replace', editor);
     });
-
-
-
+    editor.focus();
 }

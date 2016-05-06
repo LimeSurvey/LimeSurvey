@@ -38,14 +38,6 @@ function getListOfFiles($wh){
     return $arr;
 }
 
-function textarea_encode($html_code)
-{
-    $from = array('<', '>');
-    $to = array('&lt;', '&gt;');
-    $html_code = str_replace($from, $to, $html_code);
-    return $html_code;
-}
-
 /**
  * Load this editfile
  *

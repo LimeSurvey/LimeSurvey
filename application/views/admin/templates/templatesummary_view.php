@@ -53,13 +53,17 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                 <input type='hidden' name='editfileindex' value='<?php echo $_GET['editfile']; ?>' />
                 <?php endif;?>
             <?php echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename'));
-            echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname')); ?>
-            <input type='hidden' name='editfile' value='<?php echo $editindex; ?>' />
-            <input type='hidden' name='editfilename' value='<?php echo $editfile; ?>' />
-            <input type='hidden' name='action' value='templatesavechanges' />
-            <textarea name='changes' id='changes' rows='20' cols='40' data-filetype="<?php echo $sEditorFileType; ?>" class="ace <?php echo $sTemplateEditorMode; ?>" style='width:100%'><?php if (isset($editfile)) {
-                echo textarea_encode(filetext($templatename,$editfile,$templates));
-            } ?></textarea>
+            echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname'));
+            echo CHtml::hiddenField('editfile', $editindex);
+            echo CHtml::hiddenField('editfilename', $editfile);
+            echo CHtml::hiddenField('action', 'templatesavechanges');
+            echo CHtml::textArea('changes', isset($editfile)?filetext($templatename,$editfile,$templates):'',array('rows'=>'20',
+                                                                                                                   'cols'=>'40',
+                                                                                                                   'data-filetype'=>$sEditorFileType,
+                                                                                                                   'class'=>'ace '.$sTemplateEditorMode,
+                                                                                                                    'style'=>'width:100%'
+                                                                                                                    ));
+                                                                                                                    ?>
             <p class='text-center'>
                 <br/>
                 <?php if (Permission::model()->hasGlobalPermission('templates','update')):?>
