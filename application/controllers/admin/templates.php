@@ -1149,7 +1149,7 @@ class templates extends Survey_Common_Action
                 <div class="questionhelp text-info" role="alert" id="vmsg_4496">
                     <div id="vmsg_4496_num_answers" class="em_num_answers emtip good">
                         <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
-                        '.gT('Tip when question is valid').'
+                        '.gT('Hint when response is valid').'
                     </div>
                 </div>
                 ',
@@ -1168,7 +1168,7 @@ class templates extends Survey_Common_Action
                 <div class="questionhelp text-info" role="alert" id="vmsg_4496">
                     <div id="vmsg_4496_num_answers" class="em_num_answers emtip error">
                         <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
-                        '.gT('Tip when question is not valid').'
+                        '.gT('Hint when response is not valid').'
                     </div>
                 </div>
                 '

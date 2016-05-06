@@ -132,7 +132,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
 
             <div class="">
                 <a href="#" data-toggle="modal" data-target="#fileHelp" />
-                <?php eT('Tip: How to display a file in your template?'); ?>
+                <?php eT('Tip: How to embed a picture in your template?'); ?>
                 </a>
             </div>
         </div>
@@ -154,7 +154,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                         <code>{SITELOGO}</code><br/>
                         <?php eT("it will generate a responsive image containing the logo file.");?><br/>
                     </div>
-                    
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
                     </div>
