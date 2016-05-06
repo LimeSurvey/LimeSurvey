@@ -35,6 +35,27 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160504) to 2.50+ (build 160506) May 6, 2016
+-Fixed issue #10103: W3C compatiblity check fails (LouisGac)
+-Fixed issue #10792: Date format which is used in the bubble help in survey list is not formatted according to global settings (LouisGac)
+-Fixed issue #10822: Groups Edit-Form while no Rights to edit? When accessing the User-Groups Lists, a User can see the "Edit User-Group" Button and (after clicking) the Form, even if he has no rights for that group. (LouisGac)
+-Fixed issue #10859: Wronge date format in ComfortUpdate, 	The date for the Expiry is not in correct date format according to global settings. See screenshot. My global format is dd.mm.yyyy (LouisGac)
+-Fixed issue #11001: Selecting a theme in the theme editor does not function properly (Carsten Schmitz)
+-Fixed issue #11081: Select box in condition manager too low (Carsten Schmitz)
+-Fixed issue #11106: Question type dropdown overlays question menu bar (Carsten Schmitz)
+-Fixed issue #11109: labels.js error (LouisGac)
+-Fixed issue #11113: Wrong date format in use in token table (LouisGac)
+-Fixed issue: After editing profile, user was redirected to User control even if no right to access it. (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Danish by antispam
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
 Changes from 2.50+ (build 160503) to 2.50+ (build 160504) May 3, 2016
 -Fixed issue #11089: When side-menu is closed, the side-body shifts from right to left at page load (Olle Haerstedt)
 -Fixed issue #11107: Display tokens/responses/CPDB participants doesn't work anymore (LouisGac)
