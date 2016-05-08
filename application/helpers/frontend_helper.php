@@ -1984,8 +1984,8 @@ function checkCompletedQuota($surveyid,$return=false)
         {
             if(!$aQuotaInfo['active'])
                 continue;
-            if(count($aQuotaInfo['members'])===0)
-                continue;
+            if(count($aQuotaInfo['members'])===0 && ((int)getQuotaCompletedCount($surveyid, $aQuotaInfo['id']) >= (int)$aQuotaInfo['qlimit'])) // Feature #09816: Using quotas to prevent new entries
+                $aMatchedQuotas[]=$aQuotaInfo;
             $iMatchedAnswers=0;
             $bPostedField=false;
             // Array of field with quota array value
