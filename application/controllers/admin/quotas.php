@@ -159,20 +159,26 @@ class quotas extends Survey_Common_Action
                     'subaction' => 'quota_delquota'
                 ));
 
+                $aResults2 = QuotaMember::model()->findAllByAttributes(array('quota_id' => $aQuotaListing['id']));
                 $aViewUrls['output'] .= $this->getController()->renderPartial("/admin/quotas/viewquotasrow_view", $aData, true);
                 $aData['output'] .= $this->getController()->renderPartial("/admin/quotas/viewquotasrow_view", $aData, true);
 
                 //check how many sub-elements exist for a certain quota
-                $aResults2 = QuotaMember::model()->findAllByAttributes(array('quota_id' => $aQuotaListing['id']));
-
-                //loop through all sub-parts
-                foreach ($aResults2 as $aQuotaQuestions)
+                if(count($aResults2))
                 {
-                    $aQuestionAnswers = self::getQuotaAnswers($aQuotaQuestions['qid'], $iSurveyId, $aQuotaListing['id']);
-                    $aData['question_answers'] = $aQuestionAnswers;
-                    $aData['quota_questions'] = $aQuotaQuestions;
-                    $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasrowsub_view', $aData, true);
-                    //$aData['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasrowsub_view', $aData, true);
+                    //loop through all sub-parts
+                    foreach ($aResults2 as $aQuotaQuestions)
+                    {
+                        $aQuestionAnswers = self::getQuotaAnswers($aQuotaQuestions['qid'], $iSurveyId, $aQuotaListing['id']);
+                        $aData['question_answers'] = $aQuestionAnswers;
+                        $aData['quota_questions'] = $aQuotaQuestions;
+                        $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasrowsub_view', $aData, true);
+                        //$aData['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasrowsub_view', $aData, true);
+                    }
+                }
+                elseif($aQuotaListing['active'])
+                {
+                    $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewemptyquotasrowsub_view', $aData, true);
                 }
 
             }

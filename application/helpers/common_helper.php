@@ -5590,8 +5590,7 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
     $aColumnName=SurveyDynamic::model($iSurveyId)->getTableSchema()->getColumnNames();
     $aQuotas = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
     $aQuota = $aQuotas[0];
-    if (Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}') &&
-    count($aQuota['members']) > 0)
+    if (Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}'))
     {
         // Keep a list of fields for easy reference
         $aQuotaColumns = array();
