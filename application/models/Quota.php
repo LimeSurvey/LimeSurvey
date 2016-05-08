@@ -10,60 +10,64 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-     *	Files Purpose: lots of common functions
+   *    Files Purpose: lots of common functions
 */
 
 class Quota extends LSActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{quota}}';
-	}
+    /* Default attributes */
+    public $active=1;
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function primaryKey()
-	{
-		return 'id';
-	}
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
+    * @param string $class
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
-	/**
-	 * Returns the relations
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function relations()
-	{
-		$alias = $this->getTableAlias();
-		return array(
-			'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', '',
-				'on' => "$alias.id = languagesettings.quotals_quota_id"),
-		);
-	}
+    /**
+     * Returns the setting's table name to be used by the model
+     *
+     * @access public
+     * @return string
+     */
+    public function tableName()
+    {
+        return '{{quota}}';
+    }
+
+    /**
+     * Returns the primary key of this table
+     *
+     * @access public
+     * @return string
+     */
+    public function primaryKey()
+    {
+        return 'id';
+    }
+
+    /**
+     * Returns the relations
+     *
+     * @access public
+     * @return array
+     */
+    public function relations()
+    {
+        $alias = $this->getTableAlias();
+        return array(
+            'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', '',
+                'on' => "$alias.id = languagesettings.quotals_quota_id"),
+        );
+    }
 
     /**
     * Returns this model's validation rules
@@ -72,11 +76,11 @@ class Quota extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('name','LSYii_Validators'),// Maybe more restrictive 
-            array('qlimit', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'allowEmpty'=>true), 
+            array('name','LSYii_Validators'),// Maybe more restrictive
+            array('qlimit', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'allowEmpty'=>true),
             array('action', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'2', 'allowEmpty'=>true), // Default is null ?
-            array('active', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true), 
-            array('autoload_url', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true), 
+            array('active', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
+            array('autoload_url', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
         );
     }
 
@@ -96,7 +100,7 @@ class Quota extends LSActiveRecord
             return false;
         }
     }
-    
+
     function deleteQuota($condition = false, $recursive = true)
     {
         if ($recursive == true)
