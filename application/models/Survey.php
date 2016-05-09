@@ -25,12 +25,8 @@ class Survey extends LSActiveRecord
      * @var array
      */
     protected $findByPkCache = array();
-    /* Default settings for new survey */
-    /* This settings happen for whole new Survey, not only admin/survey/sa/newsurvey */
+    /* Set some setting not by default database */
     public $format = 'G';
-    public $htmlemail='Y';
-
-
     public $full_answers_account=null;
     public $partial_answers_account=null;
     public $searched_value;
