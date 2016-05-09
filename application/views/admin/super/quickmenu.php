@@ -42,13 +42,13 @@
     <?php endforeach; ?>
 </div>
 <script>
-    // TODO: Needs to be moved to ExtraQuickMenuItems plugin
+    // TODO: Needs to be moved to QuickMenu core plugin
     var saveQuickMenuButtonOrderLink = '<?php
         // Save order after drag-n-drop sorting
         echo Yii::app()->createUrl(
             'plugins/direct',
             array(
-                'plugin' => 'ExtraQuickMenuItems',
+                'plugin' => 'QuickMenu',
                 'function' => 'saveOrder'
             )
         );
