@@ -197,6 +197,24 @@ class AdminTheme extends CFormModel
     }
 
     /**
+     * Touch each directory in standard template directory to force assset manager to republish them
+     */
+    public static function forceAssets()
+    {
+        // Don't touch symlinked assets because it won't work
+        if (App()->getAssetManager()->linkAssets) return;
+        $standardTemplatesPath = Yii::app()->getConfig("styledir");
+        $Resource = opendir($standardTemplatesPath);
+        while ($Item = readdir($Resource))
+        {
+            if (is_dir($standardTemplatesPath . $Item) && $Item != "." && $Item != "..")
+            {
+                touch($standardTemplatesPath . $Item);
+            }
+        }
+    }
+
+    /**
      * Register all the styles and scripts of the current template
      * Check if RTL is needed, use asset manager if needed
      */
