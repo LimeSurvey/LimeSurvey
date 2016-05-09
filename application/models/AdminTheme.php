@@ -26,6 +26,7 @@ class AdminTheme extends CFormModel
     public $path;
     public $config;
     public $sTemplateUrl;
+    public $use_asset_manager;
 
     /** @var Template - The instance of theme object */
     private static $instance;
@@ -90,9 +91,12 @@ class AdminTheme extends CFormModel
         // TODO: replace everywhere the call to Yii::app()->getConfig('adminstyleurl) by $oAdminTheme->sTemplateUrl;
         Yii::app()->setConfig('adminstyleurl', $this->sTemplateUrl );
 
-
         // The template configuration.
         $this->config = simplexml_load_file($this->path.'/config.xml');
+
+        // If developpers want to test asset manager with debug mode on
+        $this->use_asset_manager = ( $this->config->engine->use_asset_manager_in_debug_mode == 'true');
+
         $this->defineConstants();
         $this->registerStylesAndScripts();
         return $this;
@@ -106,22 +110,15 @@ class AdminTheme extends CFormModel
      */
     public function registerCssFile( $sPath='template', $sFile='' )
     {
-        if (!YII_DEBUG)
+        if (!YII_DEBUG || $this->use_asset_manager)
         {
             $path = ($sPath == 'PUBLIC')?dirname(Yii::app()->request->scriptFile).'/styles-public/':$this->path . '/css/';         // We get the wanted constant
-            if (!Yii::app()->clientScript->isCssFileRegistered( App()->getAssetManager()->publish($path.$sFile) ) )
-            {
-                App()->getClientScript()->registerCssFile(  App()->getAssetManager()->publish($path.$sFile) );                         // We publish the asset
-            }
-
+            App()->getClientScript()->registerCssFile(  App()->getAssetManager()->publish($path.$sFile) );                         // We publish the asset
         }
         else
         {
             $url = ($sPath == 'PUBLIC')?Yii::app()->getConfig('publicstyleurl'):$this->sTemplateUrl.'/css/';                        // We get the wanted url
-            if (!Yii::app()->clientScript->isCssFileRegistered( $url.$sFile ))
-            {
-                App()->getClientScript()->registerCssFile( $url.$sFile );                                                               // We publish the css file
-            }
+            App()->getClientScript()->registerCssFile( $url.$sFile );                                                               // We publish the css file
         }
     }
 
@@ -148,7 +145,7 @@ class AdminTheme extends CFormModel
             $url  = $this->sTemplateUrl.'/scripts/';
         }
 
-        if (!YII_DEBUG)
+        if (!YII_DEBUG || $this->use_asset_manager)
         {
             App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $path . $sFile ));                      // We publish the asset
         }
@@ -201,23 +198,25 @@ class AdminTheme extends CFormModel
 
     /**
      * Register all the styles and scripts of the current template
-     * Check if RTL is needed
+     * Check if RTL is needed, use asset manager if needed
      */
     public function registerStylesAndScripts()
     {
+        // First we register the different needed packages
+        App()->bootstrap->register();                                   // Bootstrap
+        App()->getClientScript()->registerPackage('jqueryui');          // jqueryui
+        App()->getClientScript()->registerPackage('jquery-cookie');     // jquery-cookie
+        App()->getClientScript()->registerPackage('fontawesome');       // fontawesome      ??? TODO: check if needed
 
-        App()->bootstrap->register();
-        App()->getClientScript()->registerPackage('jqueryui');
-        App()->getClientScript()->registerPackage('jquery-cookie');
-        App()->getClientScript()->registerPackage('fontawesome');
+        $aCssFiles = array();
+        $aJsFiles= array();
 
-        // First we get the js files
-        foreach($this->config->files->js->filename as $jsfile)
-        {
-            $this->registerScriptFile( 'template', $jsfile );
-        }
+        // Then we add the different CSS/JS files to load in arrays
+        // It will check if it needs or not the RTL files
+        // And add the directory prefix to the file name (css/ o rjs/ )
+        // This last step is needed for the package (yii package use a single baseUrl / basePath for all files )
 
-        // Then we check if RTL is needed
+        // We check if RTL is needed
         if (getLanguageRTL(Yii::app()->language))
         {
             if (!isset($this->config->files->rtl)
@@ -228,20 +227,46 @@ class AdminTheme extends CFormModel
 
             foreach ($this->config->files->rtl->css->filename as $cssfile)
             {
-                $this->registerCssFile( 'template', $cssfile );
+                $aCssFiles[] = 'css/'.$cssfile;                                 // add the 'css/' prefix to the RTL css files
             }
 
-            // This file is needed for rtl
-            $this->registerCssFile( 'template', 'adminstyle-rtl.css' );
+            $aCssFiles[] =  'css/adminstyle-rtl.css';                           // This file is needed for rtl
         }
         else
         {
             // Non-RTL style
             foreach($this->config->files->css->filename as $cssfile)
             {
-                $this->registerCssFile( 'template', $cssfile );
+                $aCssFiles[] = 'css/'.$cssfile;                                 // add the 'css/' prefix to the RTL css files
             }
         }
+
+        foreach($this->config->files->js->filename as $jsfile)
+        {
+            $aJsFiles[] = 'scripts/'.$jsfile;                                   // add the 'js/' prefix to the RTL css files
+        }
+
+        $package = array();
+
+        if( !YII_DEBUG || $this->use_asset_manager)
+        {
+            // When defining the package with a base path (a directory on the file system)
+            // the asset manager is used
+            Yii::setPathOfAlias('admin.theme.path', $this->path);
+            $package['basePath'] = 'admin.theme.path';                          // add the base path to the package
+        }
+        else
+        {
+            // When defining the package with a base url
+            // the asset manager is not used
+            $package['baseUrl'] = $this->sTemplateUrl;                          // add the base url to the package
+        }
+
+        $package['css'] = $aCssFiles;                                           // add the css files to the package
+        $package['js'] = $aJsFiles;                                             // add the js files to the package
+
+        Yii::app()->clientScript->addPackage( 'admin-theme', $package);         // add the package
+        Yii::app()->clientScript->registerPackage('admin-theme');               // register the package
     }
 
     /**
@@ -250,7 +275,7 @@ class AdminTheme extends CFormModel
     private function defineConstants()
     {
         // Define images url
-        if(!YII_DEBUG)
+        if(!YII_DEBUG || $this->use_asset_manager)
         {
             define('LOGO_URL', App()->getAssetManager()->publish( $this->path . '/images/logo.png'));
         }
@@ -258,7 +283,6 @@ class AdminTheme extends CFormModel
         {
             define('LOGO_URL', $this->sTemplateUrl.'/images/logo.png');
         }
-
 
         // Define presentation text on welcome page
         if($this->config->metadatas->presentation)
