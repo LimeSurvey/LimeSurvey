@@ -109,12 +109,19 @@ class AdminTheme extends CFormModel
         if (!YII_DEBUG)
         {
             $path = ($sPath == 'PUBLIC')?dirname(Yii::app()->request->scriptFile).'/styles-public/':$this->path . '/css/';         // We get the wanted constant
-            App()->getClientScript()->registerCssFile(  App()->getAssetManager()->publish($path.$sFile) );                         // We publish the asset
+            if (!Yii::app()->clientScript->isCssFileRegistered( App()->getAssetManager()->publish($path.$sFile) ) )
+            {
+                App()->getClientScript()->registerCssFile(  App()->getAssetManager()->publish($path.$sFile) );                         // We publish the asset
+            }
+
         }
         else
         {
             $url = ($sPath == 'PUBLIC')?Yii::app()->getConfig('publicstyleurl'):$this->sTemplateUrl.'/css/';                        // We get the wanted url
-            App()->getClientScript()->registerCssFile( $url.$sFile );                                                               // We publish the css file
+            if (!Yii::app()->clientScript->isCssFileRegistered( $url.$sFile ))
+            {
+                App()->getClientScript()->registerCssFile( $url.$sFile );                                                               // We publish the css file
+            }
         }
     }
 
@@ -196,8 +203,9 @@ class AdminTheme extends CFormModel
      * Register all the styles and scripts of the current template
      * Check if RTL is needed
      */
-    private function registerStylesAndScripts()
+    public function registerStylesAndScripts()
     {
+
         App()->bootstrap->register();
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-cookie');

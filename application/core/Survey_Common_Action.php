@@ -228,7 +228,7 @@ class Survey_Common_Action extends CAction
     * @param array $aData Data to be passed on. Optional.
     */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
-    {
+    {        
         // Gather the data
         $aData = $this->_addPseudoParams($aData); //// the check of the surveyid should be done in the Admin controller it self.
 
@@ -1335,7 +1335,7 @@ class Survey_Common_Action extends CAction
     public function registerScriptFile( $cPATH, $sFile )
     {
         $oAdminTheme = AdminTheme::getInstance();
-        $oAdminTheme->registerScriptFile( $cPATH, $sFile );        
+        $oAdminTheme->registerScriptFile( $cPATH, $sFile );
         /*
         if (!YII_DEBUG)
         {
