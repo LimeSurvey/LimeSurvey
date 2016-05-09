@@ -522,7 +522,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
     /**
      * Get sort order of buttons from database
      *
-     * @param int $uid
+     * @param int $userId
      * @return array
      */
     public static function getOrder($userId)

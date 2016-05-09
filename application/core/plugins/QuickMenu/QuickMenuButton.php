@@ -65,7 +65,6 @@ class QuickMenuButton implements ArrayAccess {
      * $options is an array of settings for the button
      *
      * @param array<string, mixed> $options
-     * @return QuickMenuButton
      */
     public function __construct($options) {
         $this->href = $options['href'];
