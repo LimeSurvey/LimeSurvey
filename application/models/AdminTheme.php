@@ -207,9 +207,9 @@ class AdminTheme extends CFormModel
         $Resource = opendir($standardTemplatesPath);
         while ($Item = readdir($Resource))
         {
-            if (is_dir($standardTemplatesPath . $Item) && $Item != "." && $Item != "..")
+            if (is_dir($standardTemplatesPath . DIRECTORY_SEPARATOR . $Item) && $Item != "." && $Item != "..")
             {
-                touch($standardTemplatesPath . $Item);
+                touch($standardTemplatesPath . DIRECTORY_SEPARATOR . $Item);
             }
         }
     }
