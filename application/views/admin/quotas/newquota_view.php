@@ -46,18 +46,7 @@
                         ?>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label" for="active"><?php eT("Active:");?></label>
-                    <div class="col-sm-10">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => 'active',
-                            'id'=>'active',
-                            'value' => 1,
-                            'onLabel'=>gT('Yes'),
-                            'offLabel' => gT('No')));
-                        ?>
-                    </div>
-                </div>
+
                 <!--
                 <div class="form-group">
                     <div class="col-sm-10">
