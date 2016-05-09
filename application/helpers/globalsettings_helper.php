@@ -25,6 +25,8 @@ function injectglobalsettings()
     {
         foreach ($settings as $setting)
         {
+            /*
+            Should not be necessary now, all tests done in AdminTheme model
             // We first check if admintheme exist
             if ($setting->getAttribute('stg_name') == 'admintheme')
             {
@@ -32,9 +34,10 @@ function injectglobalsettings()
                 // So admintheme will have the value defined in the config-default file.
                 if (!is_dir( dirname(Yii::app()->request->scriptFile).'/styles/'.$setting->getAttribute('stg_value') ))
                 {
-                    continue;
+                    //continue;
                 }
             }
+            */
             Yii::app()->setConfig($setting->getAttribute('stg_name'), $setting->getAttribute('stg_value'));
         }
     }

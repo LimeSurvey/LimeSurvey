@@ -326,29 +326,6 @@ function getTemplateListWithPreviews()
     return Template::getTemplateListWithPreviews();
 }
 
-
-
-function getAdminThemeList()
-{
-    $sStandardTemplateRootDir=Yii::app()->getConfig("styledir");
-    $aListOfFiles = array();
-    if ($sStandardTemplateRootDir && $pHandle = opendir($sStandardTemplateRootDir))
-    {
-        while (false !== ($file = readdir($pHandle)))
-        {
-            if (is_dir($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$file) && is_file($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$file.DIRECTORY_SEPARATOR.'config.xml'))
-            {
-                $oTemplateConfig = simplexml_load_file($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$file.'/config.xml');
-                $aListOfFiles[$file] = $oTemplateConfig;
-            }
-        }
-        closedir($pHandle);
-    }
-    ksort($aListOfFiles);
-    return $aListOfFiles;
-}
-
-
 /**
 * getQuestions() queries the database for an list of all questions matching the current survey and group id
 *

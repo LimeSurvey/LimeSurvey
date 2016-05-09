@@ -34,6 +34,7 @@
 
     <div id="general" class="tab-pane col-md-6 col-md-offset-1">
             <?php $this->renderPartial("./global_settings/_general", array(
+                'aListOfThemeObjects' => $aListOfThemeObjects,
                 'aEncodings' => $aEncodings,
                 'thischaracterset' => $thischaracterset,
                 'sideMenuBehaviour' => $sideMenuBehaviour)

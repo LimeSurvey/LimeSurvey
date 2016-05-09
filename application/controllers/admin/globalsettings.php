@@ -108,8 +108,8 @@ class GlobalSettings extends Survey_Common_Action
 
         // Get current setting from DB
         $data['thischaracterset'] = getGlobalSetting('characterset');
-
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
+        $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
 
         $this->_renderWrappedTemplate('', 'globalSettings_view', $data);
     }
@@ -250,6 +250,10 @@ class GlobalSettings extends Survey_Common_Action
         {
             $url = Yii::app()->getRequest()->getUrlReferrer(Yii::app()->createUrl('admin'));
             Yii::app()->getController()->redirect($url);
+        }
+        else
+        {
+            Yii::app()->getController()->redirect(App()->createUrl('admin/globalsettings'));
         }
     }
 

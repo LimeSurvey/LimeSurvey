@@ -40,7 +40,6 @@
 
     <?php
         $thisadmintheme=getGlobalSetting('admintheme');
-        $adminthemes=getAdminThemeList();
     ?>
     <div class="form-group">
     <label class="col-sm-4 control-label"  for="admintheme">
@@ -49,7 +48,7 @@
     <div class="col-sm-6">
         <select class="form-control" name="admintheme" id="admintheme">
             <?php
-                foreach ($adminthemes as $templatename => $templateconfig)
+                foreach ($aListOfThemeObjects as $templatename => $templateconfig)
                 {
                     echo "<option value='{$templatename}'";
                     if ($thisadmintheme==$templatename) { echo " selected='selected' ";}
@@ -185,7 +184,7 @@
         <label class='col-sm-4 control-label' for='sideMenuBehaviour'><?php eT("Side-menu behaviour:"); ?></label>
         <div class='col-sm-6'>
             <select class='form-control' name='sideMenuBehaviour' id='sideMenuBehaviour'>
-                <option value='alwaysClosed' 
+                <option value='alwaysClosed'
                     <?php if ($sideMenuBehaviour == 'alwaysClosed'): echo ' selected'; endif;?>
                 ><?php eT("Always closed"); ?></option>
                 <option value='adaptive'

@@ -28,17 +28,6 @@ class AdminController extends LSYii_Controller
         parent::_init();
         App()->getComponent('bootstrap');
         $this->_sessioncontrol();
-        define('ADMIN_SCRIPT_PATH', realpath ( Yii::app()->basePath .'/../scripts/admin/') . '/');
-        define('SCRIPT_PATH', realpath ( Yii::app()->basePath .'/../scripts/') . '/');
-
-        if(!YII_DEBUG)
-        {
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'/admin_core.js' ));
-        }
-        else
-        {
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
-        }
 
         $this->user_id = Yii::app()->user->getId();
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid'));}         //SurveyID
@@ -53,8 +42,8 @@ class AdminController extends LSYii_Controller
 
         // Variable not used, but keep it here so the object is initialized at the right place.
         $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
-        $oAdmintheme = new AdminTheme; 
-        $oAdmintheme->setAdminTheme();
+        $oAdminTheme = AdminTheme::getInstance();
+        $oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'admin_core.js' );
     }
 
     /**
@@ -304,39 +293,11 @@ class AdminController extends LSYii_Controller
             $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         // Register admin theme package with asset manager
-        $oAdmintheme = new AdminTheme; // We get the package datas from the model
-        $oAdmintheme->setAdminTheme();
+        $oAdminTheme = AdminTheme::getInstance();
 
-        $aData['sAdmintheme'] = $oAdmintheme->name;
+        $aData['sAdmintheme'] = $oAdminTheme->name;
         $aData['aPackageScripts']=$aData['aPackageStyles']=array();
-        // Typecasting as array directly does not work in PHP 5.3.17 so we loop over the XML entries
-        foreach($oAdmintheme->config->files->js->filename as $aFile)
-        {
-            $aData['aPackageScripts'][] = (string)$aFile;
-        }
 
-        // RTL style
-        if ($aData['bIsRTL'])
-        {
-            if (!isset($oAdmintheme->config->files->rtl)
-                || !isset($oAdmintheme->config->files->rtl->css))
-            {
-                throw new CException("Invalid template configuration: No CSS files found for right-to-left languages");
-            }
-
-            foreach ($oAdmintheme->config->files->rtl->css->filename as $aFile)
-            {
-                $aData['aPackageStyles'][] = (string) $aFile;
-            }
-        }
-        else
-        {
-            // Non-RTL style
-            foreach($oAdmintheme->config->files->css->filename as $aFile)
-            {
-                $aData['aPackageStyles'][] = (string)$aFile;
-            }
-        }
             //foreach ($aData['aPackageStyles'] as &$filename)
             //{
                 //$filename = str_replace('.css', '-rtl.css', $filename);
@@ -344,26 +305,6 @@ class AdminController extends LSYii_Controller
 
         //echo '<pre>'; var_dump($aData); echo '</pre>';die;
         $sOutput = $this->renderPartial("/admin/super/header", $aData, true);
-
-        // Define images url
-        if(!YII_DEBUG)
-        {
-            define('LOGO_URL', App()->getAssetManager()->publish( dirname(Yii::app()->request->scriptFile).'/styles/'.$oAdmintheme->name.'/images/logo.png'));
-        }
-        else
-        {
-            define('LOGO_URL', Yii::app()->getBaseUrl().'/styles/'.$oAdmintheme->name.'/images/logo.png');
-        }
-
-        // Define presentation text on welcome page
-        if($oAdmintheme->config->metadatas->presentation)
-        {
-            define('PRESENTATION', $oAdmintheme->config->metadatas->presentation);
-        }
-        else
-        {
-            define('PRESENTATION', gT('This is the LimeSurvey admin interface. Start to build your survey from here.'));
-        }
 
         if ($return)
         {
