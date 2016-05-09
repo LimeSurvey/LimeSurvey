@@ -20,7 +20,7 @@
              The last_update field must be updated before each release,
              to be sure that the asset manager will publish new assets and make visible CSS changes for final users (without browser cache refresh)
          -->
-        <last_update>2016-04-11 13:00:00</last_update>
+        <last_update>2016-05-09 13:00:00</last_update>
     </metadatas>
 
     <!--
@@ -68,4 +68,9 @@
             </js>
         </rtl>
     </files>
+
+    <engine>
+        <!-- If you want to use asset manager, even in debug mode, set this field to true. -->
+        <use_asset_manager_in_debug_mode>false</use_asset_manager_in_debug_mode>
+    </engine>
 </config>

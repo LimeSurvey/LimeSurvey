@@ -176,7 +176,7 @@ class TemplateConfiguration extends CFormModel
     private function createTemplatePackage()
     {
         Yii::setPathOfAlias('survey.template.path', $this->path);                           // The package creation/publication need an alias
-        Yii::setPathOfAlias('survey.template.viewpath', $this->viewPath);                   // 
+        Yii::setPathOfAlias('survey.template.viewpath', $this->viewPath);                   //
 
         $aCssFiles   = (array) $this->config->files->css->filename;                                 // The CSS files of this template
         $aJsFiles    = (array) $this->config->files->js->filename;                                  // The JS files of this template

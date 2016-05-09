@@ -376,7 +376,9 @@ class templates extends Survey_Common_Action
         {
             $templatename = 'default';
         }
+
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
+
         App()->getClientScript()->reset();
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'admin_core.js');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'templates.js');
@@ -891,7 +893,6 @@ class templates extends Survey_Common_Action
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
         $files = $this->_initfiles($templatename);
-
         $cssfiles = $this->_initcssfiles($oEditedTemplate);
 
 

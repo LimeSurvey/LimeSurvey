@@ -66,17 +66,22 @@
                 <!-- Specific RTL-files -->
                 <filename>adminstyle-rtl.css</filename>
                 <filename>attributeMapToken-rtl.css</filename>
-                <filename>attributeMap-rtl.css</filename>  
+                <filename>attributeMap-rtl.css</filename>
                 <filename>bootstrap-switch.min-rtl.css</filename>
                 <filename>displayParticipants-rtl.css</filename>
                 <filename>lime-admin-common-rtl.css</filename>
-                <filename>jcarousel.responsive-rtl.css</filename>  
-                <filename>jquery-ui-rtl.css</filename>          
+                <filename>jcarousel.responsive-rtl.css</filename>
+                <filename>jquery-ui-rtl.css</filename>
                 <filename>statistics-rtl.css</filename>
-                <filename>jqgrid-rtl.css</filename>                
+                <filename>jqgrid-rtl.css</filename>
             </css>
             <js>
             </js>
         </rtl>
     </files>
+
+    <engine>
+        <!-- If you want to use asset manager, even in debug mode, set this field to true. -->
+        <use_asset_manager_in_debug_mode>false</use_asset_manager_in_debug_mode>
+    </engine>
 </config>

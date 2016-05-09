@@ -64,4 +64,9 @@
             </js>
         </rtl>
     </files>
+
+    <engine>
+        <!-- If you want to use asset manager, even in debug mode, set this field to true. -->
+        <use_asset_manager_in_debug_mode>false</use_asset_manager_in_debug_mode>
+    </engine>
 </config>
