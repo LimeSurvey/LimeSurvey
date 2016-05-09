@@ -372,7 +372,7 @@ class UpdateForm extends CFormModel
     {
         // Republish the template assets
         Template::model()->forceAssets();
-        AdminTheme::model()->forceAssets();
+        AdminTheme::forceAssets();
     }
 
     /**

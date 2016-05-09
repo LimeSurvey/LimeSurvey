@@ -174,6 +174,7 @@ class AdminController extends LSYii_Controller
         {
             $aActions[$action] = "application.controllers.admin.{$class}";
         }
+
         return $aActions;
     }
 
