@@ -354,8 +354,12 @@ class Survey_Common_Action extends CAction
         }
 
         //// TODO : Move this div inside each correct view ASAP !
-        echo '</div></div>' ;
+        echo '</div>' ;
 
+        if (!empty($aData['surveyid']))
+        {
+            echo '</div>' ;
+        }
 
 
         //// THe footer will be called directly from the layout.
@@ -1351,7 +1355,7 @@ class Survey_Common_Action extends CAction
     public function registerCssFile( $sPath, $sFile )
     {
         if (!YII_DEBUG)
-        {            
+        {
             $path = ($sPath == 'PUBLIC')?dirname(Yii::app()->request->scriptFile).'/styles-public/':ADMIN_CSS_PATH;                             // We get the wanted constant
             App()->getClientScript()->registerCssFile(  App()->getAssetManager()->publish($path.$sFile) );                         // We publish the asset
         }
