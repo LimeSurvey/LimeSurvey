@@ -32,7 +32,7 @@
             ); ?>
     </div>
 
-    <div id="general" class="tab-pane col-md-6 col-md-offset-1">
+    <div id="general" class="tab-pane col-md-10 col-md-offset-1">
             <?php $this->renderPartial("./global_settings/_general", array(
                 'aListOfThemeObjects' => $aListOfThemeObjects,
                 'aEncodings' => $aEncodings,
