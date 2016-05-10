@@ -882,17 +882,61 @@ class questions extends Survey_Common_Action
      */
     public function getSubquestionRow( $surveyid, $gid, $qid, $codes, $language='en', $first='true'  )
     {
-        // http://local.lsinst/LimeSurveyNext/index.php/admin/questions/sa/getSubquestionRow/position/1/scale_id/1/surveyid/691948/gid/76/qid/1611/language/en/first/true
-
-
+        // index.php/admin/questions/sa/getSubquestionRow/position/1/scale_id/1/surveyid/691948/gid/76/qid/1611/language/en/first/true
+        $stringCodes = json_decode($codes); // All the codes of the displayed subquestions
 
         // TODO: calcul correct value
         $position = 1;
         $scale_id = 1;
-        $code = '';
 
+        // We get the numerical part of each code and we store them in Arrays
+        // One array is to store the pure numerical values (so we can search in it for the greates value, and increment it)
+        // Another array is to store the string values (so we keep all the prefixed "0")
+        $numCodes = array();
+        foreach($stringCodes as $key => $stringCode)
+        {
+            $numericSuffix = ''; $n = 1; $numeric = true;
+            while($numeric == true && $n <= strlen($stringCode))
+            {
+                $currentCharacter = substr($stringCode, -$n, 1);   // We get the current character (at first loop it's the last one, then the one in before, etc)
+                if ( ctype_digit($currentCharacter) )
+                {
+                    $currentCharacter = (string) $currentCharacter;
+                    $numericSuffix    = (string) $numericSuffix;
+                    $numericSuffix    = $currentCharacter.$numericSuffix;
+                    $n=$n+1;
+                }
+                else
+                {
+                    $numeric = false;
+                }
+            }
+            $numCodesWithZero[$key] = (string) $numericSuffix ; // In string type, we can have   : "0001"
+            $numCodes[$key]         = (int) $numericSuffix ;    // In int type, we can only have : "1"
+        }
+
+        // Let's get the greatest code
+        $greatestNumCode          = max ($numCodes);                            // greatest code
+        $key                      = array_keys($numCodes, max($numCodes));      // its key (same key in all tables)
+        $greatesNumCodeWithZeros  = $numCodesWithZero[$key[0]];                 // its value with prefixed 0 (like : 001)
+        $stringCodeOfGreatestCode = $stringCodes[$key[0]];                      // its original submited  string (like: SQ001)
+
+        // We get the string part of it: it's the original string code, without the greates code with its 0 :
+        // like  substr ("SQ001", (strlen(SQ001)) - strlen(001) ) ==> "SQ"
+        $stringPartOfNewCode    = substr( $stringCodeOfGreatestCode,0, ( strlen($stringCodeOfGreatestCode) - strlen($greatesNumCodeWithZeros)  ) );
+
+        $numericalPartOfNewCode = $greatestNumCode+1;                           // We increment by one the greatest code
+
+        // We get the list of 0 : (using $numericalPartOfNewCode will remove the excedent 0 ; SQ009 will be followed by SQ010 )
+
+        $listOfZero = substr( $greatesNumCodeWithZeros,0, ( strlen($greatesNumCodeWithZeros) - strlen($numericalPartOfNewCode)  ) );
+
+        // When no more zero are available we want to be sure that the last 9 units will not left
+        // (like in SQ01 => SQ99 ; should become SQ100, not SQ9100)
+        $listOfZero = ($listOfZero == "9")?'':$listOfZero;
+
+        $code = $stringPartOfNewCode.$listOfZero.$numericalPartOfNewCode ;
         $activated=false;
-
 
         Yii::app()->loadHelper('admin/htmleditor');
 
