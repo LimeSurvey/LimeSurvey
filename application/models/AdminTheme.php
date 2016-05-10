@@ -125,7 +125,7 @@ class AdminTheme extends CFormModel
 
         // Then we add the different CSS/JS files to load in arrays
         // It will check if it needs or not the RTL files
-        // and it will add the directory prefix to the file name (css/ o rjs/ )
+        // and it will add the directory prefix to the file name (css/ or js/ )
         // This last step is needed for the package (yii package use a single baseUrl / basePath for css and js files )
 
         // We check if RTL is needed
@@ -149,7 +149,7 @@ class AdminTheme extends CFormModel
             // Non-RTL style
             foreach($this->config->files->css->filename as $cssfile)
             {
-                $aCssFiles[] = 'css/'.$cssfile;                                 // add the 'css/' prefix to the RTL css files
+                $aCssFiles[] = 'css/'.$cssfile;                                 // add the 'css/' prefix to the css files
             }
         }
 
@@ -170,8 +170,6 @@ class AdminTheme extends CFormModel
         }
         else
         {
-            // When defining the package with a base url
-            // the asset manager is not used
             $package['baseUrl'] = $this->sTemplateUrl;                          // add the base url to the package, so it will not use the asset manager
         }
 
@@ -185,7 +183,7 @@ class AdminTheme extends CFormModel
 
 
     /**
-     * Register a Css File from the correct directory (publict style, style, upload, etc) using the correct method (with / whithout asset manager)
+     * Register a JS File from the correct directory (publict style, style, upload, etc) using the correct method (with / whithout asset manager)
      * This function is called from the different controllers when they want to register a specific css file.
      *
      * @var string $sPath  'PUBLIC' for /styles-public/, else templates/styles
@@ -220,7 +218,7 @@ class AdminTheme extends CFormModel
         if (!$bIsInAdminTheme)                                                                                                      // If not, it's or a normal script (like ranking.js) or an admin script
         {
             $sAdminScriptPath = realpath ( Yii::app()->basePath .'/../scripts/admin/') . '/';
-            $sScriptPath      =  realpath ( Yii::app()->basePath .'/../scripts/') . '/';
+            $sScriptPath      = realpath ( Yii::app()->basePath .'/../scripts/') . '/';
             $path = ($cPATH == 'ADMIN_SCRIPT_PATH')?$sAdminScriptPath:$sScriptPath;                                                 // We get the wanted path
             $url  = ($cPATH == 'ADMIN_SCRIPT_PATH')?Yii::app()->getConfig('adminscripts'):Yii::app()->getConfig('generalscripts');  // We get the wanted url defined in config
         }
