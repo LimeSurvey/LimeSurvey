@@ -143,6 +143,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
                 'PRIMARY KEY (button_name, uid)'
             );
             $oDB->createCommand()->createTable('{{plugin_extraquickmenuitems_sortorder}}', $aFields);
+            /* Carsten says no to foreign keys because of different db
             $oDB->createCommand()->addForeignKey(
                 'fk_survey_id',
                 '{{plugin_extraquickmenuitems_sortorder}}',
@@ -152,6 +153,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
                 'CASCADE',
                 'CASCADE'
             );
+            */
             $oTransaction->commit();
         }
         catch(Exception $e)
@@ -172,7 +174,6 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
                 . htmlspecialchars($e->getMessage())
                 . "</p>"
             );
-            return;
         }
     }
 
