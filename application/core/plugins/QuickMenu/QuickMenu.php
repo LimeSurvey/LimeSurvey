@@ -49,37 +49,37 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
         ),
         'surveySettings' => array(
             'type' => 'checkbox',
-            'label' => 'Survey settings&nbsp;<span class="glyphicon icon-edit"></span>',
+            'label' => 'Survey settings&nbsp;<span class="icon-edit"></span>',
             'default' => '0',
             'help' => 'Needed permission: Survey settings - View'
         ),
         'surveySecurity' => array(
             'type' => 'checkbox',
-            'label' => 'Survey security&nbsp;<span class="glyphicon icon-security"></span>',
+            'label' => 'Survey security&nbsp;<span class="icon-security"></span>',
             'default' => '0',
             'help' => 'Needed permission: Survey security - View'
         ),
         'quotas' => array(
             'type' => 'checkbox',
-            'label' => 'Quotas&nbsp;<span class="glyphicon icon-quota"></span>',
+            'label' => 'Quotas&nbsp;<span class="icon-quota"></span>',
             'default' => '0',
             'help' => 'Needed permission: Quotas - View'
         ),
         'assessments' => array(
             'type' => 'checkbox',
-            'label' => 'Assessments&nbsp;<span class="glyphicon icon-assessments"></span>',
+            'label' => 'Assessments&nbsp;<span class="icon-assessments"></span>',
             'default' => '0',
             'help' => 'Needed permission: Assessments - View'
         ),
         'emailTemplates' => array(
             'type' => 'checkbox',
-            'label' => 'E-mail templates&nbsp;<span class="glyphicon icon-emailtemplates"></span>',
+            'label' => 'E-mail templates&nbsp;<span class="icon-emailtemplates"></span>',
             'default' => '0',
             'help' => 'Needed permission: Locale - View'
         ),
         'surveyLogicFile' => array(
             'type' => 'checkbox',
-            'label' => 'Survey logic file&nbsp;<span class="glyphicon icon-expressionmanagercheck"></span>',
+            'label' => 'Survey logic file&nbsp;<span class="icon-expressionmanagercheck"></span>',
             'default' => '0',
             'help' => 'Needed permission: Survey content - View. Uses survey base language.'
         ),
@@ -97,7 +97,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
         ),
         'responses' => array(
             'type' => 'checkbox',
-            'label' => 'Responses&nbsp;<span class="glyphicon icon-browse"></span>',
+            'label' => 'Responses&nbsp;<span class="icon-browse"></span>',
             'default' => '0',
             'help' => 'Needed permission: Responses - View'
         ),
@@ -266,42 +266,42 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
                 'name' => 'surveySettings',
                 'href' => Yii::app()->getController()->createUrl("admin/survey/sa/editlocalsettings/surveyid/$surveyId"),
                 'tooltip' => gT('General settings & texts'),
-                'iconClass' => 'glyphicon icon-edit navbar-brand',
+                'iconClass' => 'icon-edit navbar-brand',
                 'neededPermission' => array('surveysettings', 'read')
             )),
             'surveySecurity' => new QuickMenuButton(array(
                 'name' => 'surveySecurity',
                 'href' => Yii::app()->getController()->createUrl("admin/surveypermission/sa/view/surveyid/$surveyId"),
                 'tooltip' => gT('Survey permissions'),
-                'iconClass' => 'glyphicon icon-security navbar-brand',
+                'iconClass' => 'icon-security navbar-brand',
                 'neededPermission' => array('surveysecurity', 'read')
             )),
             'quotas' => new QuickMenuButton(array(
                 'name' => 'quotas',
                 'href' => Yii::app()->getController()->createUrl("admin/quotas/sa/view/surveyid/$surveyId"),
                 'tooltip' => gT('Quotas'),
-                'iconClass' => 'glyphicon icon-quota navbar-brand',
+                'iconClass' => 'icon-quota navbar-brand',
                 'neededPermission' => array('quotas', 'read')
             )),
             'assessments' => new QuickMenuButton(array(
                 'name' => 'assessments',
                 'href' => Yii::app()->getController()->createUrl("admin/assessments/sa/view/surveyid/$surveyId"),
                 'tooltip' => gT('Assessments'),
-                'iconClass' => 'glyphicon icon-assessments navbar-brand',
+                'iconClass' => 'icon-assessments navbar-brand',
                 'neededPermission' => array('assessments', 'read')
             )),
             'emailTemplates' => new QuickMenuButton(array(
                 'name' => 'emailTemplates',
                 'href' => Yii::app()->getController()->createUrl("admin/emailtemplates/sa/view/surveyid/$surveyId"),
                 'tooltip' => gT('E-mail templates'),
-                'iconClass' => 'glyphicon icon-emailtemplates navbar-brand',
+                'iconClass' => 'icon-emailtemplates navbar-brand',
                 'neededPermission' => array('surveylocale', 'read')
             )),
             'surveyLogicFile' => new QuickMenuButton(array(
                 'name' => 'surveyLogicFile',
                 'href' => Yii::app()->getController()->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyId/"),
                 'tooltip' => gT('Survey logic file'),
-                'iconClass' => 'glyphicon icon-expressionmanagercheck navbar-brand',
+                'iconClass' => 'icon-expressionmanagercheck navbar-brand',
                 'neededPermission' => array('surveycontent', 'read')
             )),
             'tokenManagement' => new QuickMenuButton(array(
@@ -322,7 +322,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
                 'name' => 'responses',
                 'href' => Yii::app()->getController()->createUrl("admin/responses/sa/browse/surveyid/$surveyId/"),
                 'tooltip' => gT('Responses'),
-                'iconClass' => 'glyphicon icon-browse navbar-brand',
+                'iconClass' => 'icon-browse navbar-brand',
                 'showOnlyWhenSurveyIsActivated' => true,
                 'neededPermission' => array('responses', 'read')
             )),
