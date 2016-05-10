@@ -886,8 +886,11 @@ class questions extends Survey_Common_Action
         $stringCodes = json_decode($codes); // All the codes of the displayed subquestions
 
         // TODO: calcul correct value
-        $position = 1;
-        $scale_id = 1;
+        $oldCode = false;
+        $position = '';
+        $scale_id = 0;
+
+        $qid = 'new'.rand ( 0 , 99999 );
 
         // We get the numerical part of each code and we store them in Arrays
         // One array is to store the pure numerical values (so we can search in it for the greates value, and increment it)
@@ -895,24 +898,24 @@ class questions extends Survey_Common_Action
         $numCodes = array();
         foreach($stringCodes as $key => $stringCode)
         {
+            // This will loop into the code, from the last character to the first letter
             $numericSuffix = ''; $n = 1; $numeric = true;
             while($numeric == true && $n <= strlen($stringCode))
             {
-                $currentCharacter = substr($stringCode, -$n, 1);   // We get the current character (at first loop it's the last one, then the one in before, etc)
-                if ( ctype_digit($currentCharacter) )
+                $currentCharacter = substr($stringCode, -$n, 1);                // get the current character
+
+                if ( ctype_digit($currentCharacter) )                           // check if it's numerical
                 {
-                    $currentCharacter = (string) $currentCharacter;
-                    $numericSuffix    = (string) $numericSuffix;
-                    $numericSuffix    = $currentCharacter.$numericSuffix;
+                    $numericSuffix    = $currentCharacter.$numericSuffix;       // store it in a string
                     $n=$n+1;
                 }
                 else
                 {
-                    $numeric = false;
+                    $numeric = false;                                           // At first non numeric character found, the loop is stoped
                 }
             }
-            $numCodesWithZero[$key] = (string) $numericSuffix ; // In string type, we can have   : "0001"
-            $numCodes[$key]         = (int) $numericSuffix ;    // In int type, we can only have : "1"
+            $numCodesWithZero[$key] = (string) $numericSuffix ;                 // In string type, we can have   : "0001"
+            $numCodes[$key]         = (int) $numericSuffix ;                    // In int type, we can only have : "1"
         }
 
         // Let's get the greatest code
@@ -925,20 +928,21 @@ class questions extends Survey_Common_Action
         // like  substr ("SQ001", (strlen(SQ001)) - strlen(001) ) ==> "SQ"
         $stringPartOfNewCode    = substr( $stringCodeOfGreatestCode,0, ( strlen($stringCodeOfGreatestCode) - strlen($greatesNumCodeWithZeros)  ) );
 
-        $numericalPartOfNewCode = $greatestNumCode+1;                           // We increment by one the greatest code
+        // We increment by one the greatest code
+        $numericalPartOfNewCode = $greatestNumCode+1;
 
         // We get the list of 0 : (using $numericalPartOfNewCode will remove the excedent 0 ; SQ009 will be followed by SQ010 )
-
         $listOfZero = substr( $greatesNumCodeWithZeros,0, ( strlen($greatesNumCodeWithZeros) - strlen($numericalPartOfNewCode)  ) );
 
-        // When no more zero are available we want to be sure that the last 9 units will not left
+        // When no more zero are available we want to be sure that the last 9 unit will not left
         // (like in SQ01 => SQ99 ; should become SQ100, not SQ9100)
         $listOfZero = ($listOfZero == "9")?'':$listOfZero;
 
+        // We finaly build the new code
         $code = $stringPartOfNewCode.$listOfZero.$numericalPartOfNewCode ;
-        $activated=false;
 
-        Yii::app()->loadHelper('admin/htmleditor');
+        $activated=false;                                                       // You can't add ne subquestion when survey is active
+        Yii::app()->loadHelper('admin/htmleditor');                             // Prepare the editor helper for the view
 
         echo '<!-- Inserted Row -->';
         $this->getController()->renderPartial('/admin/survey/Question/subquestionsAndAnswers/_subquestion', array(
@@ -953,6 +957,7 @@ class questions extends Survey_Common_Action
             'title'     => $code,
             'question'  => '',
             'relevance' => '',
+            'oldCode'   => $oldCode,
         ), false, false);
         echo '<!-- end of Inserted Row -->';
     }

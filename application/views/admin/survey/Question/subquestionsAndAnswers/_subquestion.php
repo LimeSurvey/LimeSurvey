@@ -4,8 +4,7 @@
  *
  * @var $row
  * @var $position
- * @var $position
- * @var $cale_id
+ * @var $scale_id
  * @var $activated
  * @var $first
  * @var $surveyid
@@ -15,6 +14,7 @@
  * @var $title
  * @var $question
  * @var $relevance
+ * @var $oldCode
  *
  * NB : !!! If you edit this view, remember to check if answer option row view need also to be updated !!!
  */
@@ -54,13 +54,15 @@
 
         <!-- Code (title) -->
         <td  class="code-title" style="vertical-align: middle;">
-            <input
-                type='hidden'
-                class='oldcode code-title'
-                id='oldcode_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
-                name='oldcode_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
-                value="<?php echo $title; ?>"
-            />
+            <?php if($oldCode): ?>
+                <input
+                    type='hidden'
+                    class='oldcode code-title'
+                    id='oldcode_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
+                    name='oldcode_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
+                    value="<?php echo $title; ?>"
+                />
+            <?php endif; ?>
 
             <input
                 type='text'

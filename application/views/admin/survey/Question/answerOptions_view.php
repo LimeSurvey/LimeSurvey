@@ -158,11 +158,12 @@
                                                     'first'     => $first,
                                                     'surveyid'  => $surveyid,
                                                     'gid'       => $gid,
-                                                    'qid'       => $qid,
+                                                    'qid'       => $row->qid,
                                                     'language'  => $row->language,
                                                     'title'     => $row->title,
                                                     'question'  => $row->question,
                                                     'relevance' => $row->relevance,
+                                                    'oldCode'   => true,
                                                 ));?>
 
                                             <?php elseif($viewType=='answerOptions'):?>

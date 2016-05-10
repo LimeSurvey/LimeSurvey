@@ -29,9 +29,14 @@ $(document).ready(function(){
         start:startmove,
         update:aftermove,
         distance:3});
-    $('.btnaddanswer').click(addinput);
-    $('.btndelanswer').click(deleteinput);
-    $('.btnlsbrowser').click(lsbrowser);
+
+    $(document).on("click", '.btnaddanswer', addinput);
+    $(document).on("click", '.btndelanswer', deleteinput);
+    $(document).on("click", '.btnlsbrowser', lsbrowser );
+
+    //$('.btnaddanswer').click(addinput);
+    //$('.btndelanswer').click(deleteinput);
+    //$('.btnlsbrowser').click(lsbrowser);
     $('#btnlsreplace').click(transferlabels);
     $('#btnlsinsert').click(transferlabels);
 
@@ -117,6 +122,7 @@ function getRelevanceToolTip()
 
 function deleteinput()
 {
+    
     // 1.) Check if there is at least one answe
     countanswers=$(this).closest("tbody").children("tr").length;//Maybe use class is better
     if (countanswers>1)
@@ -316,7 +322,6 @@ function addinput()
     $datas                 += '&gid='+$elDatas.data('gid');
     $datas                 += '&qid='+$elDatas.data('qid');
     $datas                 += '&codes='+$codes;
-
 
 
     $.ajax({
