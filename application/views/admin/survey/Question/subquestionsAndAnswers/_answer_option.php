@@ -7,7 +7,6 @@
 ?>
 
 <tr class='row_<?php echo $position; ?>'>
-    <?php $title = $row->code;?>
 
     <?php if ( $first ): // If survey is not activated and first language ?>
 
@@ -23,17 +22,17 @@
             <input
                 type='hidden'
                 class='oldcode code-title'
-                id='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
-                name='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
+                id='oldcode_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
+                name='oldcode_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
                 value="<?php echo $title; ?>"
             />
 
             <input
                 type='text'
                 class="code form-control input-lg"
-                id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
+                id='code_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
                 class='code code-title'
-                name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
+                name='code_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
                 value="<?php echo $title; ?>"
                 maxlength='20' size='20'
                 pattern='<?php echo $sPattern; ?>'
@@ -63,7 +62,7 @@
                 class='assessment form-control input-lg'
                 id='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                 name='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
-                value="<?php echo $row->assessment_value; ?>"
+                value="<?php echo $assessment_value; ?>"
                 maxlength='5'
                 size='5'
                 onkeypress="return goodchars(event,'-1234567890')"
@@ -76,7 +75,7 @@
                 class='assessment'
                 id='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                 name='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
-                value="<?php echo $row->assessment_value; ?>" maxlength='5' size='5'
+                value="<?php echo $assessment_value; ?>" maxlength='5' size='5'
                 onkeypress="return goodchars(event,'-1234567890')"
             />
         </td>
@@ -95,10 +94,10 @@
             type='text'
             size='20'
             class='answer form-control input-lg'
-            id='answer_<?php echo $row->language; ?>_<?php echo $row->sortorder; ?>_<?php echo $scale_id; ?>'
-            name='answer_<?php echo $row->language; ?>_<?php echo $row->sortorder; ?>_<?php echo $scale_id; ?>'
+            id='answer_<?php echo $language; ?>_<?php echo $sortorder; ?>_<?php echo $scale_id; ?>'
+            name='answer_<?php echo $language; ?>_<?php echo $sortorder; ?>_<?php echo $scale_id; ?>'
             placeholder='<?php eT("Some example answer option","js") ?>'
-            value="<?php echo $row->answer; ?>"
+            value="<?php echo $answer; ?>"
             onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}"
         />
     </td>
@@ -109,9 +108,9 @@
     <!-- Icons edit/delete -->
     <td style="vertical-align: middle;" class="subquestion-actions">
 
-        <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
+        <?php echo  getEditor("editanswer","answer_".$language."_".$qid."_{$scale_id}", "[".gT("Subquestion:", "js")."](".$language.")",$surveyid,$gid,$qid,'editanswer'); ?>
 
-        <?php if ($viewType=='answerOptions' && $first):?>
+        <?php if ( $first):?>
             <span class="icon-add text-success btnaddanswer"  data-code="<?php echo $title; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new answer option after this one") ?>"></span>
             <span class="glyphicon glyphicon-trash text-danger btndelanswer" data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></span>
         <?php endif; ?>

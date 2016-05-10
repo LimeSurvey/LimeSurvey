@@ -7,9 +7,7 @@
 ?>
 
 <!-- subquestion row -->
-<tr id='row_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'>
-    <?php $title = $row->title;?>
-
+<tr id='row_<?php echo $language; ?>_<?php echo $qid; ?>_<?php echo $scale_id; ?>'>
     <?php // If survey is active : no move button, code not editable ?>
     <?php if ($activated == 'Y'): ?>
         <!-- Move icon -->
@@ -22,7 +20,7 @@
             <input
                 class="code-title"
                 type='hidden'
-                name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>'   <?php   // TODO: uniformisation with  $row->scale_id and  $row->position ?>
+                name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>'   <?php   // TODO: uniformisation with  $scale_id and  $position ?>
                 value="<?php echo $title; ?>"
                 maxlength='20'
                 size='5'
@@ -45,17 +43,17 @@
             <input
                 type='hidden'
                 class='oldcode code-title'
-                id='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
-                name='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
+                id='oldcode_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
+                name='oldcode_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
                 value="<?php echo $title; ?>"
             />
 
             <input
                 type='text'
                 class="code form-control input-lg"
-                id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
+                id='code_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
                 class='code code-title'
-                name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
+                name='code_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
                 value="<?php echo $title; ?>"
                 maxlength='20' size='20'
                 pattern='<?php echo $sPattern; ?>'
@@ -86,10 +84,10 @@
             type='text'
             size='20'
             class='answer form-control input-lg'
-            id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
-            name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
+            id='answer_<?php echo $language; ?>_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
+            name='answer_<?php echo $language; ?>_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
             placeholder='<?php eT("Some example subquestion","js") ?>'
-            value="<?php echo $row->question; ?>"
+            value="<?php echo $question; ?>"
             onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}"
             />
     </td>
@@ -97,11 +95,11 @@
     <!-- Relevance equation -->
     <?php if ($first):?>
         <td class="relevance-equation">
-            <input data-toggle="tooltip" data-title="<?php eT("Click to expand"); ?>" type='text' class='relevance form-control input-lg' id='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
+            <input data-toggle="tooltip" data-title="<?php eT("Click to expand"); ?>" type='text' class='relevance form-control input-lg' id='relevance_<?php echo $qid; ?>_<?php echo $scale_id; ?>' name='relevance_<?php echo $qid; ?>_<?php echo $scale_id; ?>' value="<?php echo $relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
         </td>
     <?php else: ?>
         <span style="display: none" class="relevance relevance-equation">
-            <?php echo $row->relevance; ?>
+            <?php echo $relevance; ?>
         </span>
     <?php endif; ?>
 
@@ -109,7 +107,7 @@
     <!-- Icons edit/delete -->
     <td style="vertical-align: middle;" class="subquestion-actions">
 
-        <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
+        <?php echo  getEditor("editanswer","answer_".$language."_".$qid."_{$scale_id}", "[".gT("Subquestion:", "js")."](".$language.")",$surveyid,$gid,$qid,'editanswer'); ?>
 
         <?php if ( $activated != 'Y' && $first  ):?>
             <?php

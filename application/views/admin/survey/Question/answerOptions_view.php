@@ -162,6 +162,10 @@
                                                     'surveyid'=>$surveyid,
                                                     'gid'=>$gid,
                                                     'qid'=>$qid,
+                                                    'language'=>$row->language,
+                                                    'title'=>$row->title,
+                                                    'question'=>$row->question,
+                                                    'relevance' =>$row->relevance,
                                                 ));?>
                                                 <?php  $title = $row->title; //TODO: remove?>
 
@@ -172,6 +176,15 @@
                                                     'first'=>$first,
                                                     'assessmentvisible'=>$assessmentvisible,
                                                     'scale_id'=>$scale_id,
+                                                    'title'=>$row->code,
+                                                    'surveyid'=>$surveyid,
+                                                    'gid'=>$gid,
+                                                    'qid'=>$qid,
+                                                    'language'=>$row->language,
+                                                    'assessment_value' =>$row->assessment_value,
+                                                    'sortorder' =>$row->sortorder,
+                                                    'answer' =>$row->answer,
+                                                    'anslang'=>$anslang,
                                                 ));?>
                                                 <?php $title = $row->code;?>
 
