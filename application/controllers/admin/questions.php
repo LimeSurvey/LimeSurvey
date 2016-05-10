@@ -876,11 +876,29 @@ class questions extends Survey_Common_Action
     }
 
 
+
+    public function getSubquestionRowForAllLanguages($surveyid, $gid, $qid, $codes, $languages)
+    {
+        $languages = explode ( ';', json_decode($languages));
+        //var_dump($languages ); die();
+        $html = array();
+        $first = true;
+        foreach($languages as $language)
+        {
+            $html[$language] = $this->getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first);
+            $first = false;
+        }
+
+        //echo htmlentities(json_encode($html));
+        echo json_encode($html);
+    }
+
     /**
      * This function should be called via ajax request
      * It returns a EMPTY subquestion row HTML for a given ....
      */
-    public function getSubquestionRow( $surveyid, $gid, $qid, $codes, $language='en', $first='true'  )
+
+    public function getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first  )
     {
         // index.php/admin/questions/sa/getSubquestionRow/position/1/scale_id/1/surveyid/691948/gid/76/qid/1611/language/en/first/true
         $stringCodes = json_decode($codes); // All the codes of the displayed subquestions
@@ -944,8 +962,8 @@ class questions extends Survey_Common_Action
         $activated=false;                                                       // You can't add ne subquestion when survey is active
         Yii::app()->loadHelper('admin/htmleditor');                             // Prepare the editor helper for the view
 
-        echo '<!-- Inserted Row -->';
-        $this->getController()->renderPartial('/admin/survey/Question/subquestionsAndAnswers/_subquestion', array(
+        $html = '<!-- Inserted Row -->';
+        $html .= $this->getController()->renderPartial('/admin/survey/Question/subquestionsAndAnswers/_subquestion', array(
             'position'  => $position,
             'scale_id'  => $scale_id,
             'activated' => $activated,
@@ -958,8 +976,9 @@ class questions extends Survey_Common_Action
             'question'  => '',
             'relevance' => '',
             'oldCode'   => $oldCode,
-        ), false, false);
-        echo '<!-- end of Inserted Row -->';
+        ), true, false);
+        $html .= '<!-- end of Inserted Row -->';
+        return $html;
     }
 
 

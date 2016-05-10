@@ -122,7 +122,7 @@ function getRelevanceToolTip()
 
 function deleteinput()
 {
-    
+
     // 1.) Check if there is at least one answe
     countanswers=$(this).closest("tbody").children("tr").length;//Maybe use class is better
     if (countanswers>1)
@@ -169,144 +169,20 @@ function deleteinput()
     updaterowproperties();
 }
 
-/*
-function addinput()
-{
-    var sID=$('input[name=sid]').val();
-    var gID=$('input[name=gid]').val();
-    var qID=$('input[name=qid]').val();
-    var x;
 
-    scale_id=removechars($(this).closest('table').attr('id'));
-
-    languages=langs.split(';');
-    sNextCode=getNextCode($(this).data('code'));
-
-    sNextCode=getNextCode($(this).parent().parent().find('.code').val());
-
-    classes=$(this).parent().parent().attr('class').split(' ');
-    for (x in classes)
-    {
-        if (classes[x].substr(0,3)=='row')
-        {
-            position=classes[x].substr(4);
-        }
-    }
-    //newposition = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;
-    newposition = Number($('#rowcontainer').find('tr').index($(this).closest('tr')))+1;
-    info=$(this).closest('table').attr('id').split("_");
-    language=info[1];
-    scale_id=info[2];
-
-
-    languages=langs.split(';');
-
-    sNextCode=getNextCode($(this).parent().parent().find('.code').val());
-
-    for (x in languages)
-    {
-        var randomid='new'+Math.floor(Math.random()*111111);
-        relbutton='';
-
-        tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
-
-        if (x==0)
-        {
-
-
-            // Line insertion
-            var idAndScale = '' + randomid + '_' + scale_id;
-
-            inserthtml= '<tr id="row_'+newposition+'" class="row_'+newposition+'" style="">';
-            inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <span class="glyphicon glyphicon-move"></span>';
-            inserthtml+='   </td>';
-            inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <input class="code form-control input-lg" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" required="required" pattern="^[a-zA-Z0-9]*$" class="code" type="text" maxlength="20" size="20" value="'+htmlspecialchars(sNextCode)+'" />';
-            inserthtml+='   </td>';
-
-            inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <div class="">';
-            inserthtml+='           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg"  placeholder="'+htmlspecialchars(newansweroption_text)+'" value=""></input>';
-            inserthtml+='       </div>';
-            inserthtml+='  </td>';
-
-            inserthtml+='  <td>';
-            inserthtml+='      <input id="relevance_' + idAndScale + '" name="relevance_' + idAndScale + '" class="relevance form-control input-lg" type="text" value="1" ' + getRelevanceToolTip() + '/>';
-            inserthtml+='  </td>';
-
-            inserthtml+='  <td style="vertical-align: middle;">';
-            inserthtml+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
-            inserthtml+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="glyphicon glyphicon-pencil btneditanswerena"></span>';
-            inserthtml+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="glyphicon glyphicon-pencil btneditanswerdis" alt="Give focus to the HTML editor popup window" style="display: none;"></span>';
-            inserthtml+='           </a>';
-            inserthtml+='       <span class="icon-add text-success btnaddanswer" data-code="'+htmlspecialchars(sNextCode)+'"></span>';
-            inserthtml+='       <span class="glyphicon glyphicon-trash text-danger btndelanswer"  ></span>';
-            inserthtml+='  </td>' + relbutton + '</tr>';
-        }
-        else
-        {
-            if (scale_id==0)
-            {
-                relbutton ='<td>'
-                relbutton+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
-                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>';
-                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>';
-                relbutton+='           </a>';
-                //relbutton+='    <span class="icon-conditions text-success btntogglerelevance"></span>';
-                relbutton+='    <span style="display: none" class="relevance">1</span>';
-                relbutton+='</td>';
-            }
-            else
-            {
-                relbutton ='<td>'
-                relbutton+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
-                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>';
-                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>';
-                relbutton+='           </a>';
-                relbutton+='</td>';
-            }
-            inserthtml ='<tr id="row_'+newposition+'" class="row_'+newposition+'" style="display:none;">';
-            inserthtml+='   <td>&nbsp;</td>';
-            inserthtml+='   <td>'+htmlspecialchars(sNextCode)+'</td>';
-
-            inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <div class="">';
-            inserthtml+='           <input type="text" size="0" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />';
-            inserthtml+='       </div>';
-            inserthtml+='   </td>' + relbutton + '</tr>';
-        }
-        tablerow.after(inserthtml);
-
-        tablerow.next().find('.btnaddanswer').click(addinput);
-
-        tablerow.next().find('.btndelanswer').click(deleteinput);
-        tablerow.next().find('.answer').focus(function()
-        {
-            if ($(this).val()==newansweroption_text)
-            {
-                $(this).val('');
-            }
-        });
-        tablerow.next().find('.code').blur(updatecodes);
-    }
-    $('.row_'+newposition).fadeIn('slow');
-    $('.row_'+newposition).show(); //Workaround : IE does not show with fadeIn only
-
-    $('.tab-page:first .answertable tbody').sortable('refresh');
-
-    bindClickIfNotExpanded();
-
-}
-*/
-
+/**
+ * add input : the ajax way
+ */
 function addinput()
 {
     $that                  = $(this);                            // The "add" button
-    $currentRow            = $that.parents('.row-container');               // The row containing the "add" button
+    $currentRow            = $that.parents('.row-container');    // The row containing the "add" button
+    $commonId              = $currentRow.data('common-id');      // The common id of this row in the other languages
     $elDatas               = $('#add-input-javascript-datas');   // This hidden element  on the page contains various datas for this function
-    $url                   = $elDatas.data('url');              // Url for the request
+    $url                   = $elDatas.data('url');               // Url for the request
+    $errormessage          = $elDatas.data('errormessage');     // the error message if the AJAX request failed
 
+    $languages             = JSON.stringify(langs);              // The languages
 
     // We get all the subquestion codes currently displayed
     var codes = [];
@@ -322,22 +198,31 @@ function addinput()
     $datas                 += '&gid='+$elDatas.data('gid');
     $datas                 += '&qid='+$elDatas.data('qid');
     $datas                 += '&codes='+$codes;
+    $datas                 += '&languages='+$languages;
 
-
+    // We get the HTML of the different rows to insert  (one by language)
     $.ajax({
         type: "GET",
         url: $url,
-        data: $datas ,
-        success: function(html) {
-            $currentRow.after(html);                    // We inject the row
-            console.log('ok');
+        data: $datas,
+        success: function(arrayofhtml) {
+
+            // arrayofhtml is a json string containing the different HTML row by language
+            // eg: {"en":"{the html of the en row}", "fr":{the html of the fr row}}
+
+            $arrayOfHtml = JSON.parse(arrayofhtml);                             // Convert the JSON to a javascript object
+
+            // We insert each row for each language
+            $.each($arrayOfHtml, function(lang, htmlRow){
+                $elRowToUpdate = $('#row_'+lang+'_'+$commonId);                 // The row for the current language
+                $elRowToUpdate.after(htmlRow);                                  // We insert the HTML of the new row after this one
+            });
+
         },
         error :  function(html, statut){
-            alert('error');
+            alert($errormessage);
         }
     });
-
-
 }
 
 function startmove(event,ui)
