@@ -550,12 +550,16 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
             // you can get other params from the request object
             $request = $event->get('request');
 
-            //get the function name to call and use the method call_user_func
             $functionToCall = $event->get('function'); 
-            //$content = call_user_func(array($this,$functionToCall), $surveyId);
-            //set the content on the event
-            //$event->setContent($this, $content);
-            echo $this->$functionToCall($request);
+
+            if ($functionToCall == 'saveOrder')
+            {
+                echo $this->saveOrder($request);
+            }
+            else
+            {
+                throw new \CException("Invalid request: not supported method: " . $functionToCall);
+            }
         }
     }
 }
