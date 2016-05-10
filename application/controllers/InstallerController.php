@@ -876,7 +876,7 @@ class InstallerController extends CController {
         if (version_compare(PHP_VERSION, '5.3.0', '<'))
             $bProceed = !$aData['verror'] = true;
 
-        if (convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024<64 && ini_get('memory_limit')!=-1)
+        if (convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024<128 && ini_get('memory_limit')!=-1)
             $bProceed = !$aData['bMemoryError'] = true;
 
 
