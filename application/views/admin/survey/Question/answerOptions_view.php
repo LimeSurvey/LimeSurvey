@@ -152,41 +152,34 @@
                                             <!-- Line tag -->
                                             <?php if($viewType=='subQuestions'): ?>
                                                 <?php $this->renderPartial('/admin/survey/Question/subquestionsAndAnswers/_subquestion', array(
-                                                    'row'=>$row,
-                                                    'position'=>$position,
-                                                    'position'=>$position,
-                                                    'scale_id'=>$scale_id,
-                                                    'activated'=>$activated,
-                                                    'first'=>$first,
-                                                    'anslang'=>$anslang,
-                                                    'surveyid'=>$surveyid,
-                                                    'gid'=>$gid,
-                                                    'qid'=>$qid,
-                                                    'language'=>$row->language,
-                                                    'title'=>$row->title,
-                                                    'question'=>$row->question,
-                                                    'relevance' =>$row->relevance,
+                                                    'position'  => $position,
+                                                    'scale_id'  => $scale_id,
+                                                    'activated' => $activated,
+                                                    'first'     => $first,
+                                                    'surveyid'  => $surveyid,
+                                                    'gid'       => $gid,
+                                                    'qid'       => $qid,
+                                                    'language'  => $row->language,
+                                                    'title'     => $row->title,
+                                                    'question'  => $row->question,
+                                                    'relevance' => $row->relevance,
                                                 ));?>
-                                                <?php  $title = $row->title; //TODO: remove?>
 
                                             <?php elseif($viewType=='answerOptions'):?>
                                                 <?php $this->renderPartial('/admin/survey/Question/subquestionsAndAnswers/_answer_option', array(
-                                                    'row'=>$row,
-                                                    'position'=>$position,
-                                                    'first'=>$first,
-                                                    'assessmentvisible'=>$assessmentvisible,
-                                                    'scale_id'=>$scale_id,
-                                                    'title'=>$row->code,
-                                                    'surveyid'=>$surveyid,
-                                                    'gid'=>$gid,
-                                                    'qid'=>$qid,
-                                                    'language'=>$row->language,
-                                                    'assessment_value' =>$row->assessment_value,
-                                                    'sortorder' =>$row->sortorder,
-                                                    'answer' =>$row->answer,
-                                                    'anslang'=>$anslang,
+                                                    'position'          => $position,
+                                                    'first'             => $first,
+                                                    'assessmentvisible' => $assessmentvisible,
+                                                    'scale_id'          => $scale_id,
+                                                    'title'             => $row->code,
+                                                    'surveyid'          => $surveyid,
+                                                    'gid'               => $gid,
+                                                    'qid'               => $qid,
+                                                    'language'          => $row->language,
+                                                    'assessment_value'  => $row->assessment_value,
+                                                    'sortorder'         => $row->sortorder,
+                                                    'answer'            => $row->answer,
                                                 ));?>
-                                                <?php $title = $row->code;?>
 
                                             <?php endif; ?>
 

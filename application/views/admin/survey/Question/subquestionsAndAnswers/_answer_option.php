@@ -2,7 +2,21 @@
 /**
  * answer option row view
  *
- * If you edit this view, remember to check if subquestion row view need also to be updated
+ * @var $position
+ * @var $first
+ * @var $assessmentvisible
+ * @var $scale_id
+ * @var $title
+ * @var $surveyid
+ * @var $gid
+ * @var $qid
+ * @var $language
+ * @var $assessment_value
+ * @var $sortorder
+ * @var $answer
+ *
+ *
+ * NB : !!! If you edit this view, remember to check if subquestion row view need also to be updated !!!
  */
 ?>
 
@@ -98,7 +112,7 @@
             name='answer_<?php echo $language; ?>_<?php echo $sortorder; ?>_<?php echo $scale_id; ?>'
             placeholder='<?php eT("Some example answer option","js") ?>'
             value="<?php echo $answer; ?>"
-            onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}"
+            onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
         />
     </td>
 

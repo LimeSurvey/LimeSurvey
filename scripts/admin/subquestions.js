@@ -296,7 +296,9 @@ function addinput()
 
 function addinput()
 {
+    $that = $(this);
     
+
 }
 
 function startmove(event,ui)

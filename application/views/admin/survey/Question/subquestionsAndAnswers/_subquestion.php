@@ -2,7 +2,21 @@
 /**
  * subquestion row view
  *
- * If you edit this view, remember to check if answer option row view need also to be updated
+ * @var $row
+ * @var $position
+ * @var $position
+ * @var $cale_id
+ * @var $activated
+ * @var $first
+ * @var $surveyid
+ * @var $gid
+ * @var $qid
+ * @var $language
+ * @var $title
+ * @var $question
+ * @var $relevance
+ *
+ * NB : !!! If you edit this view, remember to check if answer option row view need also to be updated !!!
  */
 ?>
 
@@ -88,14 +102,14 @@
             name='answer_<?php echo $language; ?>_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
             placeholder='<?php eT("Some example subquestion","js") ?>'
             value="<?php echo $question; ?>"
-            onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}"
+            onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
             />
     </td>
 
     <!-- Relevance equation -->
     <?php if ($first):?>
         <td class="relevance-equation">
-            <input data-toggle="tooltip" data-title="<?php eT("Click to expand"); ?>" type='text' class='relevance form-control input-lg' id='relevance_<?php echo $qid; ?>_<?php echo $scale_id; ?>' name='relevance_<?php echo $qid; ?>_<?php echo $scale_id; ?>' value="<?php echo $relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
+            <input data-toggle="tooltip" data-title="<?php eT("Click to expand"); ?>" type='text' class='relevance form-control input-lg' id='relevance_<?php echo $qid; ?>_<?php echo $scale_id; ?>' name='relevance_<?php echo $qid; ?>_<?php echo $scale_id; ?>' value="<?php echo $relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}" />
         </td>
     <?php else: ?>
         <span style="display: none" class="relevance relevance-equation">
