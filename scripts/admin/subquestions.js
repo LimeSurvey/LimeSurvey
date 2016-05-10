@@ -296,8 +296,42 @@ function addinput()
 
 function addinput()
 {
-    $that = $(this);
-    
+    $that                  = $(this);                            // The "add" button
+    $currentRow            = $that.parents('.row-container');               // The row containing the "add" button
+    $elDatas               = $('#add-input-javascript-datas');   // This hidden element  on the page contains various datas for this function
+    $url                   = $elDatas.data('url');              // Url for the request
+
+
+    // We get all the subquestion codes currently displayed
+    var codes = [];
+    $('.code').each(function(){
+        codes.push($(this).val());
+    });
+
+    // We convert them to json for the request
+    $codes = JSON.stringify(codes);
+
+    //We build the datas for the request
+    $datas                  = 'surveyid='+$elDatas.data('surveyid');
+    $datas                 += '&gid='+$elDatas.data('gid');
+    $datas                 += '&qid='+$elDatas.data('qid');
+    $datas                 += '&codes='+$codes;
+
+
+
+    $.ajax({
+        type: "GET",
+        url: $url,
+        data: $datas ,
+        success: function(html) {
+            $currentRow.after(html);                    // We inject the row
+            console.log('ok');
+        },
+        error :  function(html, statut){
+            alert('error');
+        }
+    });
+
 
 }
 

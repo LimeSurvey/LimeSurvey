@@ -230,6 +230,15 @@
 
                     <p>
                         <input type='submit' class="hidden" id='saveallbtn_<?php echo $anslang; ?>' name='method' value='<?php eT("Save changes"); ?>' />
+                        <!-- For javascript -->
+                        <input
+                            type="hidden"
+                            id="add-input-javascript-datas"
+                            data-url="<?php echo App()->createUrl('/admin/questions/sa/getSubquestionRow/');?>"
+                            data-surveyid="<?php echo $surveyid;?>"
+                            data-gid="<?php echo $gid;?>"
+                            data-qid="<?php echo $qid;?>"
+                        />
                     </p>
 
                 </div>

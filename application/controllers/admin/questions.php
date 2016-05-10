@@ -880,13 +880,24 @@ class questions extends Survey_Common_Action
      * This function should be called via ajax request
      * It returns a EMPTY subquestion row HTML for a given ....
      */
-    public function getSubquestionRow($position,  $scale_id, $surveyid, $gid, $qid, $language, $first  )
+    public function getSubquestionRow( $surveyid, $gid, $qid, $codes, $language='en', $first='true'  )
     {
         // http://local.lsinst/LimeSurveyNext/index.php/admin/questions/sa/getSubquestionRow/position/1/scale_id/1/surveyid/691948/gid/76/qid/1611/language/en/first/true
+
+
+
+        // TODO: calcul correct value
+        $position = 1;
+        $scale_id = 1;
+        $code = '';
+
         $activated=false;
-        $code = 'TOTO';
+
+
         Yii::app()->loadHelper('admin/htmleditor');
-        $row = $this->getController()->renderPartial('/admin/survey/Question/subquestionsAndAnswers/_subquestion', array(
+
+        echo '<!-- Inserted Row -->';
+        $this->getController()->renderPartial('/admin/survey/Question/subquestionsAndAnswers/_subquestion', array(
             'position'  => $position,
             'scale_id'  => $scale_id,
             'activated' => $activated,
@@ -898,8 +909,8 @@ class questions extends Survey_Common_Action
             'title'     => $code,
             'question'  => '',
             'relevance' => '',
-        ), true);
-        return $row;
+        ), false, false);
+        echo '<!-- end of Inserted Row -->';
     }
 
 

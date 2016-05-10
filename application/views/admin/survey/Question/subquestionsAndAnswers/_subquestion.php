@@ -21,7 +21,7 @@
 ?>
 
 <!-- subquestion row -->
-<tr id='row_<?php echo $language; ?>_<?php echo $qid; ?>_<?php echo $scale_id; ?>'>
+<tr id='row_<?php echo $language; ?>_<?php echo $qid; ?>_<?php echo $scale_id; ?>' class="row-container">
     <?php // If survey is active : no move button, code not editable ?>
     <?php if ($activated == 'Y'): ?>
         <!-- Move icon -->

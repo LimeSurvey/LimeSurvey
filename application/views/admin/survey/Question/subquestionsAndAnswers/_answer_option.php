@@ -20,7 +20,7 @@
  */
 ?>
 
-<tr class='row_<?php echo $position; ?>'>
+<tr class='row_<?php echo $position; ?>' class="row-container">
 
     <?php if ( $first ): // If survey is not activated and first language ?>
 
