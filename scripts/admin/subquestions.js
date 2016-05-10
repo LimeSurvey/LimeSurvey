@@ -163,7 +163,7 @@ function deleteinput()
     updaterowproperties();
 }
 
-
+/*
 function addinput()
 {
     var sID=$('input[name=sid]').val();
@@ -206,15 +206,7 @@ function addinput()
 
         if (x==0)
         {
-            /*
-            if (scale_id==0)
-            {
-                relbutton  = '<td>';
-                relbutton += '  <span class="icon-conditions text-success btntogglerelevance"></span>';
-                relbutton += '  <input style="display: none" type="text" size="20" id="relevance_'+randomid+'_'+scale_id+'" name="relevance_'+randomid+'_'+scale_id+'" class="relevance"  value="1"></input>';
-                relbutton += '</td>';
-            }
-            */
+
 
             // Line insertion
             var idAndScale = '' + randomid + '_' + scale_id;
@@ -299,6 +291,12 @@ function addinput()
 
     bindClickIfNotExpanded();
 
+}
+*/
+
+function addinput()
+{
+    
 }
 
 function startmove(event,ui)

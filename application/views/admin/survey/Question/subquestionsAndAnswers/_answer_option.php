@@ -1,0 +1,119 @@
+<?php
+/**
+ * answer option row view
+ *
+ * If you edit this view, remember to check if subquestion row view need also to be updated
+ */
+?>
+
+<tr class='row_<?php echo $position; ?>'>
+    <?php $title = $row->code;?>
+
+    <?php if ( $first ): // If survey is not activated and first language ?>
+
+        <?php $sPattern = ($title)?"^([a-zA-Z0-9]*|{$title})$":"^[a-zA-Z0-9]*$"; ?>
+
+        <!-- Move icon -->
+        <td class="move-icon" >
+            <span class="glyphicon glyphicon-move"></span>
+        </td>
+
+        <!-- Code (title) -->
+        <td  class="code-title" style="vertical-align: middle;">
+            <input
+                type='hidden'
+                class='oldcode code-title'
+                id='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
+                name='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
+                value="<?php echo $title; ?>"
+            />
+
+            <input
+                type='text'
+                class="code form-control input-lg"
+                id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
+                class='code code-title'
+                name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
+                value="<?php echo $title; ?>"
+                maxlength='20' size='20'
+                pattern='<?php echo $sPattern; ?>'
+                required='required'
+            />
+        </td>
+        <?php // If survey is not active, and it's not the first language : no move button, code not editable ?>
+    <?php else:?>
+
+        <!-- Move icon -->
+        <td class="move-icon-disable">
+            &nbsp;
+        </td>
+
+        <!-- Code (title) -->
+        <td  class="code-title" style="vertical-align: middle;">
+            <?php echo $title; ?>
+        </td>
+    <?php endif; ?>
+
+
+    <!-- Assessment Value -->
+    <?php if ($assessmentvisible && $first): ?>
+        <td class="assessment-value">
+            <input
+                type='text'
+                class='assessment form-control input-lg'
+                id='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
+                name='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
+                value="<?php echo $row->assessment_value; ?>"
+                maxlength='5'
+                size='5'
+                onkeypress="return goodchars(event,'-1234567890')"
+            />
+        </td>
+    <?php elseif ( $first): ?>
+        <td style='display:none;' class="assessment-value">
+            <input
+                type='text'
+                class='assessment'
+                id='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
+                name='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
+                value="<?php echo $row->assessment_value; ?>" maxlength='5' size='5'
+                onkeypress="return goodchars(event,'-1234567890')"
+            />
+        </td>
+    <?php elseif ($assessmentvisible): ?>
+        <td class="assessment-value">
+            <?php echo $row['assessment_value']; ?>
+        </td>
+    <?php else: ?>
+        <td style='display:none;' class="assessment-value">
+        </td>
+    <?php endif; ?>
+
+    <!-- Answer (Subquestion Text) -->
+    <td  class="subquestion-text" style="vertical-align: middle;">
+        <input
+            type='text'
+            size='20'
+            class='answer form-control input-lg'
+            id='answer_<?php echo $row->language; ?>_<?php echo $row->sortorder; ?>_<?php echo $scale_id; ?>'
+            name='answer_<?php echo $row->language; ?>_<?php echo $row->sortorder; ?>_<?php echo $scale_id; ?>'
+            placeholder='<?php eT("Some example answer option","js") ?>'
+            value="<?php echo $row->answer; ?>"
+            onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}"
+        />
+    </td>
+
+    <!-- No relevance equation for answer options -->
+
+
+    <!-- Icons edit/delete -->
+    <td style="vertical-align: middle;" class="subquestion-actions">
+
+        <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
+
+        <?php if ($viewType=='answerOptions' && $first):?>
+            <span class="icon-add text-success btnaddanswer"  data-code="<?php echo $title; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new answer option after this one") ?>"></span>
+            <span class="glyphicon glyphicon-trash text-danger btndelanswer" data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></span>
+        <?php endif; ?>
+    </td>
+</tr>
