@@ -918,3 +918,18 @@ label, th {
 {
     margin-top: 50px;
 }
+
+/* text overflows, ellipsis and hyphens */
+.navbar-brand {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#outerframeContainer {
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -o-hyphens: auto;
+    hyphens: auto;
+}
