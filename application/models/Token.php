@@ -83,8 +83,8 @@
             $fields = array(
                 'tid' => 'pk',
                 'participant_id' => 'string(50)',
-                'firstname' => 'string(40)',
-                'lastname' => 'string(40)',
+                'firstname' => 'string(150)',
+                'lastname' => 'string(150)',
                 'email' => 'text',
                 'emailstatus' => 'text',
                 'token' => "string(35) {$sCollation}",
