@@ -131,18 +131,15 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
      */
     public function beforeActivate()
     {
-        $oDB = Yii::app()->getDb();
-        $oDB->schemaCachingDuration=0; // Deactivate schema caching
-        $oTransaction = $oDB->beginTransaction();
-        try
-        {
-            $aFields = array(
-                'uid' => 'integer NOT NULL',
-                'button_name' => 'string(64)',
-                'sort_order' => 'integer',
-                'PRIMARY KEY (button_name, uid)'
-            );
-            $oDB->createCommand()->createTable('{{plugin_extraquickmenuitems_sortorder}}', $aFields);
+        $aFields = array(
+            'uid' => 'integer NOT NULL',
+            'button_name' => 'string(64)',
+            'sort_order' => 'integer',
+            'PRIMARY KEY (button_name, uid)'
+        );
+        try {
+            $this->api->createTable($this, 'plugin_extraquickmenuitems_sortorder', $aFields);
+            //$oDB->createCommand()->createTable('{{plugin_extraquickmenuitems_sortorder}}', $aFields);
             /* Carsten says no to foreign keys because of different db
             $oDB->createCommand()->addForeignKey(
                 'fk_survey_id',
@@ -154,17 +151,9 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
                 'CASCADE'
             );
             */
-            $oTransaction->commit();
         }
         catch(Exception $e)
         {
-            $oTransaction->rollback();
-            // Activate schema caching
-            $oDB->schemaCachingDuration = 3600;
-            // Load all tables of the application in the schema
-            $oDB->schema->getTables();
-            // Clear the cache of all loaded tables
-            $oDB->schema->refresh();
             $event = $this->getEvent();
             $event->set('success', false);
             $event->set(
@@ -182,6 +171,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
      */
     public function beforeDeactivate()
     {
+        /*
         // Remove table
         $oDB = Yii::app()->getDb();
         $oDB->schemaCachingDuration=0; // Deactivate schema caching
@@ -210,6 +200,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
             );
             return;
         }
+        */
     }
 
 
