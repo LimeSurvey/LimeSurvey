@@ -18,7 +18,7 @@
 ?>
 
 <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-12">
 
         <!-- Form  editconditions -->
         <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"),'post',array('id'=>"editconditions",'name'=>"editconditions"));?>
