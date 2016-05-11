@@ -471,7 +471,7 @@ class tokens extends Survey_Common_Action
             // Check is we have an answer
             if (in_array($token['token'], $answeredTokens) && $bReadPermission) {
                 // @@TODO change link
-                $url = $this->getController()->createUrl("admin/responses/sa/browse/surveyid/{$iSurveyId}", array('token'=>$token['token']));
+                $url = $this->getController()->createUrl("admin/responses/sa/viewbytoken/surveyid/{$iSurveyId}", array('token'=>$token['token']));
                 $title = gT("View response details");
                 $action .= CHtml::link(
                                         '<span class="inputbuttons-square glyphicon glyphicon-list-alt text-success" title="'.$title.'"></span>',

@@ -112,9 +112,30 @@ class responses extends Survey_Common_Action
         return $aData;
     }
 
+
+    public function viewbytoken($iSurveyID, $token, $sBrowseLang = '')
+    {
+        // Get Response ID from token
+        $oResponse = SurveyDynamic::model($iSurveyID)->findByAttributes(array('token'=>$token));
+        if (!$oResponse){
+            Yii::app()->setFlashMessage(gT("Sorry, this response was not found."),'error');
+            $this->getController()->redirect(array("admin/responses/sa/browse/surveyid/{$iSurveyID}"));
+        }
+        else
+        {
+            $this->getController()->redirect(array("admin/responses/sa/view/surveyid/{$iSurveyID}/id/{$oResponse->id}"));
+        }
+
+    }
+
+
     /**
-     * @todo View what?
-     */
+    * View a single response in detail
+    *
+    * @param mixed $iSurveyID
+    * @param mixed $iId
+    * @param mixed $sBrowseLang
+    */
     public function view($iSurveyID, $iId, $sBrowseLang = '')
     {
         if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
