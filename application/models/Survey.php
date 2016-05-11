@@ -986,6 +986,8 @@ class Survey extends LSActiveRecord
             ),
         ));
 
+        $dataProvider->setTotalItemCount(count($this->findAll($criteria)));
+
         return $dataProvider;
     }
 
