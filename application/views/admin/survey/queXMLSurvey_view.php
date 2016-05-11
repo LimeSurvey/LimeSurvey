@@ -1,5 +1,5 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class='col-lg-8'>
+    <div class='row'>
             <h3>
                 <?php eT("queXML PDF export");?>
             </h3>
