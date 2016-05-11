@@ -7,7 +7,6 @@
 div[id^="group-"]>div {
     background-color: #fff;
     margin-bottom: 1em;
-    border: none;
  }
 
  div[id^="group-"]>div.group-container {
@@ -291,7 +290,7 @@ li.responsive-content
 }
 
 html, body {
-    height: 100%;
+    height: 90%;
 }
 
 /**
@@ -454,6 +453,11 @@ body .navbar-default .navbar-brand:hover {
     padding-left: 47px;
 }
 
+table > tbody > tr > td.ddprefix {
+    padding-right: 1em;
+    vertical-align: middle;
+}
+
 /**
  * On big screen only, iPad and up
  */
@@ -461,6 +465,11 @@ body .navbar-default .navbar-brand:hover {
 
     .table-dual-scale .separator {
         width: 6%;
+    }
+
+    table > tbody > tr > td.ddsuffix {
+        padding-left: 1em;
+        vertical-align: middle;
     }
 
 }
@@ -498,6 +507,10 @@ body .navbar-default .navbar-brand:hover {
     .no-more-tables tr {
         display: inline-block;
         width: 100%;
+    }
+
+    .no-more-tables tbody {
+        padding: 0 1em 0 1em;
     }
 
     /* Hide table headers (but not display: none;, for accessibility) */
@@ -649,18 +662,36 @@ body .navbar-default .navbar-brand:hover {
         display: none;
     }
 
+    #langchanger-label {
+        padding-top: 11px;
+    }
+
+    .col-xs-12.question-container {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
 }
 
 /** On small phones, leave some more space */
 @media only screen and (max-width: 400px) {
 
-    .col-sm-12 {
-        padding: 0;
+    .array-by-columns-div .radio-list {
+        border: 1px solid #ccc;
+        padding: 1em;
+        margin: 1em;
     }
 
-    .col-xs-12 {
-        padding-right: 5px;
-        padding-left: 5px;
+    /*
+    .col-sm-12.answer {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    */
+
+    .no-more-tables tbody {
+        padding-left: 0;
+        padding-right: 0;
     }
 
     /* For yes-no question, shrink the buttons a bit on phone screens */
@@ -693,7 +724,6 @@ body .navbar-default .navbar-brand:hover {
     .slider.slider-horizontal {
         margin-bottom: 0.4em;
     }
-
 
 }
 
@@ -739,7 +769,6 @@ td.answer-item.text-center
 {
     padding-left: 0px;
 }
-
 
 
 /* center the label text in no more table mode */
@@ -794,6 +823,73 @@ table.numbers-only th, table.numbers-only input {
 }
 
 
+
+
+/** Question Design **/
+
+body div.row .question-container {
+    margin-bottom: 2em;
+}
+
+.answer-container, .question-help-container
+{
+    border-style: solid;
+}
+
+.answer-container
+{
+    border-width: 0px 1px 0px 1px;
+    padding-top: 3em;
+    background-color: white;
+}
+
+.question-help-container
+{
+    border-width: 0px 1px 1px 1px;
+    padding-bottom: 5px;
+}
+
+
+/** Header **/
+
+.question-title-container {
+    color: white;
+    padding: 2em 1em 1em 1em;
+
+}
+
+.questionvalidcontainer {
+    position: relative;
+    text-align: center;
+    padding-bottom: 1em;
+}
+
+.questionvalidcontainer .text-danger{
+    font-weight: bold;
+}
+
+.questionvalidcontainer .text-info{
+    color: #B9CC14;
+    font-weight: bold;
+}
+
+/* Arrow */
+/* Will confuse survey takers?
+.questionvalidcontainer:after {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-top-color: #233140;
+    border-width: 0.9em;
+    margin-left: -0.9em;
+}
+*/
+
 /* Asterix */
 .asterisk {
     display: inline-block;
@@ -830,6 +926,7 @@ label, th {
 }
 
 #outerframeContainer {
+    min-height: 100%;
     word-wrap: break-word;
     -webkit-hyphens: auto;
     -moz-hyphens: auto;

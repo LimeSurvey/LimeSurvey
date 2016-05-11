@@ -290,7 +290,7 @@ li.responsive-content
 }
 
 html, body {
-    height: 100%;
+    height: 90%;
 }
 
 /**
@@ -926,6 +926,7 @@ label, th {
 }
 
 #outerframeContainer {
+    min-height: 100%;
     word-wrap: break-word;
     -webkit-hyphens: auto;
     -moz-hyphens: auto;
