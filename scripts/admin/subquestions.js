@@ -394,7 +394,8 @@ function code_duplicates_check()
 
     languages=langs.split(';');
     var cansubmit=true;
-    $('#tabpage_'+languages[0]+' .answertable tbody').each(function(){
+    $('#tabpage_'+languages[0]+' .answertable tbody').each(function()
+    {
         var codearray=[];
         $(this).find('tr .code').each(function(){
             codearray.push($(this).val().toLowerCase());
@@ -403,31 +404,12 @@ function code_duplicates_check()
         if (theDuplicate !== false)
         {
 
-            $('.code').each( function() {
-                if ($(this).val() == theDuplicate) {
-                    var $theDuplicateElement = $(this);
-
-                    $('#error-modal .modal-body-text').html(duplicatesubquestioncode);
-                    $('#error-modal').modal();
-
-                    // Tooltip doesn't scroll
-                    /*
-                    $theDuplicateElement.data('toggle', 'tooltip');
-                    $theDuplicateElement.data('title', duplicatesubquestioncode);
-                    $theDuplicateElement.tooltip({
-                        placement: 'left'
-                    })
-                    $theDuplicateElement.tooltip('show');
-                    */
-
-                    // Flash the elements that are duplicates
-                    //$theDuplicateElement.fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-
-                }
-            });
+            $('#error-modal .modal-body-text').html(duplicatesubquestioncode);
+            $('#error-modal').modal();
             cansubmit= false;
         }
     });
+    console.log('cansubmit: '+cansubmit);
     return cansubmit;
 }
 
