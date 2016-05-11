@@ -153,8 +153,27 @@
                 <?php endif; ?>
             <?php endif; ?>
 
+
+            <!-- Send invitations buttons -->
+            <?php if(isset($token_bar['sendinvitationbutton'])):?>
+                <a class="btn btn-default" href="#" role="button" id="send-invitation-button">
+                    <span class="icon-invite" ></span>
+                    <?php eT("Send invitations");?>
+                </a>
+            <?php endif;?>
+
+            <!-- Send reminder buttons -->
+            <?php if(isset($token_bar['sendreminderbutton'])):?>
+                <a class="btn btn-default" href="#" role="button" id="send-reminders-button">
+                    <span class="icon-invite" ></span>
+                    <?php eT("Send reminders");?>
+                </a>
+            <?php endif;?>
+
+
             <!-- Save buttons -->
             <?php if(isset($token_bar['savebutton']['form'])):?>
+
                 <a class="btn btn-success" href="#" role="button" id="save-button" data-use-form-id="<?php if (isset($token_bar['savebutton']['useformid'])){ echo '1';}?>" data-form-to-save="<?php if (is_string($token_bar['savebutton']['form'])) {echo $token_bar['savebutton']['form']; }?>">
                     <span class="glyphicon glyphicon-ok" ></span>
                     <?php eT("Save");?>

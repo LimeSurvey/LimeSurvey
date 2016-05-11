@@ -5,9 +5,9 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-	<h3><?php eT("Send email reminder"); ?></h3>
-	<div class="row">
-		<div class="col-lg-12 content-right">
+    <h3><?php eT("Send email reminder"); ?></h3>
+    <div class="row">
+        <div class="col-lg-12 content-right">
             <?php echo PrepareEditorScript(true, $this); ?>
 
             <?php if ($thissurvey['active'] != 'Y'):?>
@@ -151,3 +151,12 @@
         </form>
     </form>
 </div>
+
+
+<script>
+    $( document ).ready(function(){
+        $('#send-reminders-button').on('click', function(){
+            $("#sendreminder").submit();
+        })
+    });
+</script>

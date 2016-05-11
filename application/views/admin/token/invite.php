@@ -5,10 +5,10 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-	<h3><?php eT("Send email invitations"); ?></h3>
+    <h3><?php eT("Send email invitations"); ?></h3>
 
-	<div class="row">
-		<div class="col-lg-12 content-right">
+    <div class="row">
+        <div class="col-lg-12 content-right">
             <?php echo PrepareEditorScript(true, $this); ?>
             <div>
                 <?php if ($thissurvey[$baselang]['active'] != 'Y'): ?>
@@ -137,3 +137,11 @@
         </form>
     </div>
 </div>
+
+<script>
+    $( document ).ready(function(){
+        $('#send-invitation-button').on('click', function(){
+            $("#sendinvitation").submit();
+        })
+    });
+</script>
