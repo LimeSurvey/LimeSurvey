@@ -86,6 +86,18 @@ class TemplateConfiguration extends CFormModel
         }
 
 
+        // If the template directory doesn't exist, it can be that:
+        // - user deleted a custom theme
+        // In any case, we just set Default as the template to use
+        if (!is_dir($this->path))
+        {
+            $this->sTemplateName = 'default';
+            $this->isStandard    = true;
+            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
+            setGlobalSetting('defaulttemplate', 'Sea_Green');
+        }
+
+
         // If the template don't have a config file (maybe it has been deleted, or whatever),
         // then, we load the default template
         $this->hasConfigFile = is_file($this->path.DIRECTORY_SEPARATOR.'config.xml');
