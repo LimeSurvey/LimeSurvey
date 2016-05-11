@@ -7,9 +7,31 @@ $aReplacementData=array();
 
         <?php if(isset($questionbar['buttons']['view'])):?>
         <div class="col-md-12">
-
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')): ?>
                 <?php if (count($languagelist) > 1): ?>
+
+                    <!-- test/execute survey -->
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                        <span class="icon-do" ></span>
+                        <?php if($oSurvey->active=='N'):?>
+                            <?php eT('Test this survey');?>
+                        <?php else: ?>
+                            <?php eT('Execute this survey');?>
+                        <?php endif;?>
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" style="min-width : 252px;">
+                        <?php foreach ($languagelist as $tmp_lang): ?>
+                            <li>
+                                <a target='_blank' href='<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$tmp_lang));?>'>
+                                    <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                      </ul>
+                    </div>
 
                     <!-- preview question -->
                     <!-- Single button -->
@@ -50,6 +72,16 @@ $aReplacementData=array();
 
                 <?php else:?>
 
+                    <!-- test/execute survey -->
+                    <a class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$oSurvey->language"); ?>" role="button"  accesskey='d' target='_blank'>
+                        <span class="icon-do" ></span>
+                        <?php if($oSurvey->active=='N'):?>
+                            <?php eT('Test this survey');?>
+                        <?php else: ?>
+                            <?php eT('Execute this survey');?>
+                        <?php endif;?>
+                    </a>
+                    
                     <!-- preview question -->
                     <a class="btn btn-default" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>' role="button" target="_blank">
                         <span class="icon-do"></span>

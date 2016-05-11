@@ -120,28 +120,28 @@
                 <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
                     <?php if (count($languagelist) > 1): ?>
 
+                        <!-- test/execute survey -->
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                            <div class="btn-group">
-                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-                                <span class="icon-do" ></span>
-                                <?php if($oSurvey->active=='N'):?>
-                                    <?php eT('Test this survey');?>
-                                <?php else: ?>
-                                    <?php eT('Execute this survey');?>
-                                <?php endif;?>                                
-                                <span class="caret"></span>
-                              </button>
-                              <ul class="dropdown-menu" style="min-width : 252px;">
-                                <?php foreach ($languagelist as $tmp_lang): ?>
-                                    <li>
-                                        <a target='_blank' href='<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$tmp_lang));?>'>
-                                            <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
-                                        </a>
-                                    </li>
-                                <?php endforeach; ?>
-                              </ul>
-                            </div>
+                            <span class="icon-do" ></span>
+                            <?php if($oSurvey->active=='N'):?>
+                                <?php eT('Test this survey');?>
+                            <?php else: ?>
+                                <?php eT('Execute this survey');?>
+                            <?php endif;?>
+                            <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" style="min-width : 252px;">
+                            <?php foreach ($languagelist as $tmp_lang): ?>
+                                <li>
+                                    <a target='_blank' href='<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$tmp_lang));?>'>
+                                        <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                          </ul>
+                        </div>
 
                         <!-- preview question -->
                         <div class="btn-group">
@@ -180,7 +180,6 @@
                         </div>
                     <?php else:?>
                         <!-- Preview/Execute survey -->
-                        <?php // var_dump($oSurvey->active); die();?>
                         <a class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$oSurvey->language"); ?>" role="button"  accesskey='d' target='_blank'>
                             <span class="icon-do" ></span>
                             <?php if($oSurvey->active=='N'):?>
