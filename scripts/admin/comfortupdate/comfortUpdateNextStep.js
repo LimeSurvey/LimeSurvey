@@ -16,6 +16,7 @@ $.fn.comfortUpdateNextStep = function(options)
     $precStep = $(precStep);
     $precStep.removeClass("on").addClass("off");
     $step.removeClass("off").addClass("on");
+    $errormsg = $("#localerrormsg").data('message');
 
     return this.each(function(){
         if ( $(this).is( "form" ) ) {
@@ -52,7 +53,7 @@ $.fn.comfortUpdateNextStep = function(options)
                     },
                     error :  function(html, statut){
                         $ajaxLoader.hide();
-                        $updaterContainer.empty().append("<span class='error'>you have an error, or a notice, inside your local installation of limesurvey. See : <br/></span>");
+                        $updaterContainer.empty().append("<span class='error'>"+$errormsg+"<br/></span>");
                         $updaterContainer.append(html.responseText);
                     },
 
