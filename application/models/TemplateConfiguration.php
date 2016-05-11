@@ -94,7 +94,7 @@ class TemplateConfiguration extends CFormModel
             $this->sTemplateName = 'default';
             $this->isStandard    = true;
             $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
-            setGlobalSetting('defaulttemplate', 'Sea_Green');
+            setGlobalSetting('defaulttemplate', 'default');
         }
 
 
