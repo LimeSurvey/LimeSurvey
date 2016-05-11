@@ -1519,7 +1519,7 @@ class SurveyAdmin extends Survey_Common_Action
         {
             Yii::app()->loadLibrary('Date_Time_Converter');
             $datetimeobj = new date_time_converter($esrow["startdate"],"Y-m-d H:i:s"); //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
-            $startdate = $datetimeobj->convert("d.m.Y H:i"); //$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+            $startdate = $datetimeobj->convert("Y-m-d H:i"); //$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
         }
 
         $expires = '';
@@ -1527,7 +1527,7 @@ class SurveyAdmin extends Survey_Common_Action
         {
             Yii::app()->loadLibrary('Date_Time_Converter');
             $datetimeobj = new date_time_converter($esrow['expires'], "Y-m-d H:i:s"); //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
-            $expires = $datetimeobj->convert("d.m.Y H:i");
+            $expires = $datetimeobj->convert("Y-m-d H:i");
         }
         $aData['esrow'] = $esrow;
         $aData['startdate'] = $startdate;
