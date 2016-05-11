@@ -175,6 +175,7 @@ function deleteinput()
  */
 function addinput()
 {
+    console.log('addinput');
     $that                  = $(this);                            // The "add" button
     $currentRow            = $that.parents('.row-container');    // The row containing the "add" button
     $commonId              = $currentRow.data('common-id');      // The common id of this row in the other languages
@@ -200,6 +201,8 @@ function addinput()
     $datas                 += '&codes='+$codes;
     $datas                 += '&languages='+$languages;
 
+    console.log('$datas', $datas);
+
     // We get the HTML of the different rows to insert  (one by language)
     $.ajax({
         type: "GET",
@@ -211,6 +214,7 @@ function addinput()
             // eg: {"en":"{the html of the en row}", "fr":{the html of the fr row}}
 
             $arrayOfHtml = JSON.parse(arrayofhtml);                             // Convert the JSON to a javascript object
+            console.log('$arrayOfHtml', $arrayOfHtml);
 
             // We insert each row for each language
             $.each($arrayOfHtml, function(lang, htmlRow){
@@ -749,6 +753,7 @@ function transferlabels()
  */
 function quickaddlabels(scale_id, addOrReplace)
 {
+    console.log('quickaddlabels');
     var sID=$('input[name=sid]').val();
     var gID=$('input[name=gid]').val();
     var qID=$('input[name=qid]').val();
