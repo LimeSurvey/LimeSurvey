@@ -1826,3 +1826,16 @@ td.subquestion-actions span:hover {
 .panel-group .panel {
     overflow: visible;
 }
+
+a.explorer-group:hover,a.explorer-group:focus{
+text-decoration:none;
+}
+
+.question-explorer-group-name{
+    display: inline-block;
+    max-width: 140px;
+    overflow: hidden;
+    position: relative;
+    top: 5px;
+    text-overflow: ellipsis;
+}

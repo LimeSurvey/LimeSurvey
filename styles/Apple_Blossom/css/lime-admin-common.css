@@ -153,13 +153,14 @@
 .side-body, .full-page-wrapper {
   min-height: 100%;
   position: relative;
-  margin-bottom: 65px; }
+  margin-bottom: 65px;
+}
 
 .side-body h3, .pagetitle, .list-surveys h3 {
   position: relative;
   padding: 0.5em;
   margin-bottom: 1em;
-  animation: fadein 1s; }
+}
 
 body {
   font-size: 14px;
@@ -510,7 +511,8 @@ div.panel.disabled {
   position: fixed;
   left: 0;
   width: 300px;
-  height: 100%; }
+  height: 100%;
+}
 
 .side-menu {
   position: absolute;
@@ -693,9 +695,18 @@ div.panel.disabled {
   #sideMenu .sidemenuscontainer li:hover > a {
     font-weight: 700; }
 
+.side-menu-hidden {
+    left: -250px;
+}
+
 .side-body {
   min-height: 700px;
-  margin-left: 320px; }
+  margin-left: 320px;
+}
+
+.side-body-margin {
+    margin-left: 70px;
+}
 
 .question-group-collapse-title {
   display: block;
@@ -821,11 +832,11 @@ div.panel.disabled {
 .content-right {
   padding-left: 0;
   padding-right: 0;
-  animation: fadein 1s; }
+}
   .content-right .col-lg-12 {
     padding-left: 0;
     padding-right: 0;
-    animation: fadein 1s; }
+}
 
 .toWhite a:hover {
   font-weight: 700; }
@@ -833,7 +844,7 @@ div.panel.disabled {
 .col-lg-12.content-right {
   padding-left: 0;
   padding-right: 0;
-  animation: fadein 1s; }
+}
 
 .container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
   color: #fff; }
@@ -1814,4 +1825,17 @@ td.subquestion-actions span:hover {
 /* Needed for DateTimePicker in survey settings */
 .panel-group .panel {
     overflow: visible;
+}
+
+a.explorer-group:hover,a.explorer-group:focus{
+text-decoration:none;
+}
+
+.question-explorer-group-name{
+    display: inline-block;
+    max-width: 140px;
+    overflow: hidden;
+    position: relative;
+    top: 5px;
+    text-overflow: ellipsis;
 }
