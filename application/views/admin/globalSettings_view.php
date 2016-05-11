@@ -2,7 +2,7 @@
     App()->getClientScript()->registerPackage('jquery-selectboxes');
 ?>
 <script type="text/javascript">
-    var msgAtLeastOneLanguageNeeded = '<?php eT("You must set at last one available language.",'js'); ?>';
+    var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.",'js'); ?>';
 </script>
 
 <div class="container-fluid welcome full-page-wrapper">

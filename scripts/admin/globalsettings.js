@@ -5,6 +5,7 @@ $(document).ready(function(){
     Emailchange();
 
     $("#bounceaccounttype").change(Emailchanges);
+    $("#defaultlang").change(defaultLanguageChange);
     Emailchanges();
     $('#btnRemove').click(removeLanguages);
     $('#btnAdd').click(addLanguages);
@@ -12,11 +13,26 @@ $(document).ready(function(){
 });
 
 
+// Add a language to available languages if it was selected as default language
+function defaultLanguageChange(ui,evt){
+    if ($("#includedLanguages").containsOption($('#defaultlang').val())==false)
+    {
+        $("#excludedLanguages option[value='"+$('#defaultlang').val()+"']").remove().appendTo('#includedLanguages');
+        $("#includedLanguages").sortOptions();
+    }
+}
+
 function removeLanguages(ui,evt)
 {
-   $('#includedLanguages').copyOptions('#excludedLanguages');
-   $("#excludedLanguages").sortOptions();
-   $("#includedLanguages").removeOption(/./,true);
+    // Do not allow to remove the standard language
+    if ($.inArray($('#defaultlang').val(),$("#includedLanguages").selectedValues())>-1)
+    {
+        $("#includedLanguages option[value='"+$('#defaultlang').val()+"']").prop("selected", false);
+        alert (msgCantRemoveDefaultLanguage);
+    }
+    $('#includedLanguages').copyOptions('#excludedLanguages');
+    $("#excludedLanguages").sortOptions();
+    $("#includedLanguages").removeOption(/./,true);
 }
 
 function addLanguages(ui,evt)

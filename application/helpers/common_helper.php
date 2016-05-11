@@ -203,7 +203,7 @@ function isStandardTemplate($sTemplateName)
 function getSurveyList($returnarray=false, $surveyid=false)
 {
     static $cached = null;
-
+    $bCheckIntegrity = false;
     $timeadjust = getGlobalSetting('timeadjust');
     App()->setLanguage((isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en'));
 
@@ -220,11 +220,11 @@ function getSurveyList($returnarray=false, $surveyid=false)
             {
                 $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
             }
-            elseif(empty($bCheckIntegrity))
+            elseif(!($bCheckIntegrity))
             {
                 $bCheckIntegrity=true;
                 Yii::app()->setFlashMessage(
-                    CHtml::link(gT("One or more surveys seem to be broken, please check data integrity of the LimeSurvey database."),array("admin/checkintegrity"))
+                    CHtml::link(gT("One or more surveys seem to be broken - please use the data integrity check tool to fix this."),array("admin/checkintegrity"))
                     ,
                     'error');
             }
