@@ -23,6 +23,10 @@
             'flash' => $sAllowedExtensions,
             'images' => $sAllowedExtensions
         );
+        if (Yii::app()->getRequest()->enableCsrfValidation)
+        {
+            $_SESSION['KCFINDER']['cookieDomain'] = Yii::app()->getRequest()->csrfCookie->domain;
+        }
 
         if (Yii::app()->getConfig('demoMode') === false &&
                 isset(Yii::app()->session['loginID']) &&
