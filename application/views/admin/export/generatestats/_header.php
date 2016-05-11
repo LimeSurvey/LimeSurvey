@@ -33,3 +33,4 @@
         </form>
     <?php endif;?>
 </div>
+<input type="hidden" id="showGraphOnPageLoad" />
