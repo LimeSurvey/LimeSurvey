@@ -1847,3 +1847,12 @@ text-decoration:none;
     top: 5px;
     text-overflow: ellipsis;
 }
+
+.question-explorer-add-question {
+    position: relative;
+    top: 5px;
+}
+
+.explorer-group-title a.disabled {
+    opacity: 0.5;
+}

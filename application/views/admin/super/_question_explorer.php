@@ -64,7 +64,7 @@
                                 if (!$bSurveyIsActive && Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'create')): ?>
                                     <div class="col-sm-3" id="questions-container-<?php echo $aGroup->gid; ?>">
                                         <!-- add question to this group -->
-                                        <a  data-toggle="tooltip" data-placement="top"  title="<?php eT('Add a question to this group');?>" class="" href="<?php echo $this->createUrl("/admin/questions/sa/newquestion/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
+                                        <a  data-toggle="tooltip" data-placement="top"  title="<?php eT('Add a question to this group');?>" class="question-explorer-add-question" href="<?php echo $this->createUrl("/admin/questions/sa/newquestion/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
                                             <span class="glyphicon glyphicon-plus-sign"></span>
                                         </a>
                                     </div>
@@ -89,7 +89,7 @@
                                                 <!-- Active question -->
                                                     <div  class="question-link active" >
                                                         <span class="question-collapse-title">
-                                                            <span class="glyphicon glyphicon-list"></span>
+                                                            <span class="glyphicon glyphicon-list-alt"></span>
                                                             <strong>
                                                                 <?php echo sanitize_html_string(strip_tags($question->title));?>
                                                             </strong>
@@ -110,7 +110,7 @@
                                                                 <?php echo sanitize_html_string(strip_tags($question->title));?>
                                                             </strong>
                                                             <br/>
-                                                            <em>
+                                                            <em class="question-explorer-question">
                                                                 <?php
                                                                     echo $question->question;
                                                                 ?>

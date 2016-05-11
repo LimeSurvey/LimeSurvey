@@ -1831,6 +1831,14 @@ a.explorer-group:hover,a.explorer-group:focus{
 text-decoration:none;
 }
 
+.question-explorer-question {
+
+        display: inline-block;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+}
+
 .question-explorer-group-name{
     display: inline-block;
     max-width: 140px;
@@ -1838,4 +1846,13 @@ text-decoration:none;
     position: relative;
     top: 5px;
     text-overflow: ellipsis;
+}
+
+.question-explorer-add-question {
+    position: relative;
+    top: 5px;
+}
+
+.explorer-group-title a.disabled {
+    opacity: 0.5;
 }
