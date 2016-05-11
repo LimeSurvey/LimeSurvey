@@ -94,7 +94,7 @@
                                                                 <?php echo sanitize_html_string(strip_tags($question->title));?>
                                                             </strong>
                                                             <br/>
-                                                            <em>
+                                                            <em class="question-explorer-question">
                                                                 <?php
                                                                     echo $question->question;
                                                                 ?>
