@@ -6,14 +6,6 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     static protected $description = 'Core: LDAP authentication';
     static protected $name = 'LDAP';
 
-    /**
-     * Can we autocreate users? For the moment this is disabled, will be moved
-     * to a setting when we have more robust user creation system.
-     *
-     * @var boolean
-     */
-    protected $autoCreate = false;
-
     protected $settings = array(
         'server' => array(
             'type' => 'string',
@@ -148,8 +140,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     /**
      * Create a LDAP user
      *
-     * @param string $new_user
-     * @return null|string New user ID
+     * @return int New user ID
      */
     private function _createNewUser($new_user)
     {
@@ -507,7 +498,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
 
         // Authentication was successful, now see if we have a user or that we should create one
         if (is_null($user)) {
-            if ($this->autoCreate === true)  {
+            if ($autoCreateFlag)  {
                 /*
                  * Dispatch the newUserLogin event, and hope that after this we can find the user
                  * this allows users to create their own plugin for handling the user creation
@@ -519,10 +510,8 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 $user = $this->api->getUserByName($username);
             }
 
-            if (is_null($user)) {
-                $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
-                ldap_close($ldapconn); // all done? close connection
-                return;
+            if (!is_null($user)) {
+                $autoCreateFlag = false;
             }
         }
 
