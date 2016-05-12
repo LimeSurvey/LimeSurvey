@@ -1,5 +1,5 @@
+<div id="breadcrumb-container">
 <?php if(isset($oQuestion)): ?>
-    <div class="">
         <div class="">
             <ol class="breadcrumb">
                 <li>
@@ -29,9 +29,7 @@
                 <?php endif; ?>
             </ol>
         </div>
-    </div>
 <?php elseif(isset($oQuestionGroup)): ?>
-    <div class="">
         <div class="">
             <ol class="breadcrumb">
               <li>
@@ -56,9 +54,7 @@
               <?php endif; ?>
             </ol>
         </div>
-    </div>
 <?php elseif(isset($token)): ?>
-    <div class="">
         <div class="">
             <ol class="breadcrumb">
               <li>
@@ -76,9 +72,7 @@
             </li>
             </ol>
         </div>
-    </div>
 <?php elseif(isset($oSurvey)): ?>
-    <div class="">
         <div class="">
             <ol class="breadcrumb">
               <?php if(!isset($active)): ?>
@@ -97,5 +91,5 @@
               <?php endif; ?>
             </ol>
         </div>
-    </div>
 <?php endif;?>
+</div>

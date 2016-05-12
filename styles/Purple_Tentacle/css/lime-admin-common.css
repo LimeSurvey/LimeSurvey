@@ -1784,7 +1784,7 @@ td.subquestion-actions span:hover {
 }
 
 /* Make sure buttons is onw row */
-.time-statistics-row-buttons {
+.time-statistics-row-buttons, .nowrap {
     white-space: nowrap;
 }
 
