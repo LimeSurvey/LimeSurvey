@@ -42,7 +42,8 @@ class surveypermission extends Survey_Common_Action {
         }
 
         $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $surveyinfo = $oSurvey->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
 
@@ -52,6 +53,7 @@ class surveypermission extends Survey_Common_Action {
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'surveypermissions.js');
 
         $surveysecurity = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
+        $surveysecurity .= App()->getController()->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Survey permissions")), true, true);
         $surveysecurity .="<h3>".gT("Survey permissions")."</h3>\n";
         $surveysecurity .= '<div class="row"><div class="col-lg-12 content-right">';
         $result2 = Permission::model()->getUserDetails($iSurveyID);
@@ -483,7 +485,7 @@ class surveypermission extends Survey_Common_Action {
         {
             $usersummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
 
-            App()->getClientScript()->registerPackage('jquery-tablesorter');            
+            App()->getClientScript()->registerPackage('jquery-tablesorter');
             $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'surveypermissions.js');
             if ($action == "setsurveysecurity")
             {

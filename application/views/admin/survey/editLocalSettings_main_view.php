@@ -19,6 +19,7 @@
 
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
+        <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Edit survey text elements and settings"))); ?>
         <h3 class="pagetitle"><?php echo gT("Edit survey text elements and settings"); ?></h3>
 
         <!-- Edition container -->

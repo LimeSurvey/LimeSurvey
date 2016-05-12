@@ -1,4 +1,5 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("queXML PDF export"))); ?>
     <div class='row'>
             <h3>
                 <?php eT("queXML PDF export");?>
@@ -19,10 +20,10 @@
                     </select>
                 </div>
 </div>
-                
+
                  <div class="form-group row"><label class="col-sm-2 control-label" for='queXMLStyle'><?php eT("Style:"); ?></label>
 <div class="col-sm-10">
-            
+
             <textarea class="form-control" rows="10" cols="80" id='queXMLStyle' name='queXMLStyle'><?php echo $queXMLStyle; ?> </textarea>
         </div>
 </div>
@@ -60,7 +61,7 @@
                 'onLabel'=>gT('Yes'),
                 'offLabel'=>gT('No')));
             ?>
- 
+
         </div>
 </div>
 
@@ -74,7 +75,7 @@
                 'onLabel'=>gT('Yes'),
                 'offLabel'=>gT('No')));
             ?>
- 
+
         </div>
 </div>
 
@@ -125,7 +126,7 @@
 <div class="col-sm-10">
             <input class="form-control" type='text' size='10' id='queXMLBackgroundColourSection' name='queXMLBackgroundColourSection' value="<?php echo $queXMLBackgroundColourSection; ?>" />
         </div>
-</div>                
+</div>
 
                 <div class="form-group row"><label class="col-sm-2 control-label" for='queXMLBackgroundColourQuestion'><?php eT("Background colour for questions (0 black - 255 white)"); ?></label>
 <div class="col-sm-10">

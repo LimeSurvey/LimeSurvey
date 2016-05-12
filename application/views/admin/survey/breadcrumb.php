@@ -1,6 +1,6 @@
 <?php if(isset($oQuestion)): ?>
-    <div class="row">
-        <div class="col-sm-12">
+    <div class="">
+        <div class="">
             <ol class="breadcrumb">
                 <li>
                     <a href="<?php echo App()->createUrl('/admin/survey/sa/view/surveyid/'. $oQuestion->sid );?>">
@@ -31,8 +31,8 @@
         </div>
     </div>
 <?php elseif(isset($oQuestionGroup)): ?>
-    <div class="row">
-        <div class="col-sm-12">
+    <div class="">
+        <div class="">
             <ol class="breadcrumb">
               <li>
                   <a href="<?php echo App()->createUrl('/admin/survey/sa/view/surveyid/'. $oQuestionGroup->sid );?>">
@@ -58,8 +58,8 @@
         </div>
     </div>
 <?php elseif(isset($oSurvey)): ?>
-    <div class="row">
-        <div class="col-sm-12">
+    <div class="">
+        <div class="">
             <ol class="breadcrumb">
               <?php if(!isset($active)): ?>
                   <li>

@@ -28,10 +28,11 @@
 </script>
 
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
-	<h3><?php eT("Edit email templates"); ?></h3>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=> gT("Edit email templates"))); ?>
+    <h3><?php eT("Edit email templates"); ?></h3>
 
-	<div class="row">
-		<div class="col-lg-12 content-right">
+    <div class="row">
+        <div class="col-lg-12 content-right">
 
 <?php echo CHtml::form(array('admin/emailtemplates/sa/update/surveyid/'.$surveyid), 'post', array('name'=>'emailtemplates', 'class'=>'form-horizontal', 'id'=>'emailtemplates'));?>
 

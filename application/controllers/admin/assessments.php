@@ -97,7 +97,7 @@ class Assessments extends Survey_Common_Action
         if ($action == "assessmentedit" && Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update')) {
             $aData = $this->_collectEditData($aData);
         }
-
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $surveyinfo = getSurveyInfo($iSurveyID);
         $aData['surveyinfo'] = $surveyinfo;
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
@@ -112,6 +112,7 @@ class Assessments extends Survey_Common_Action
         Yii::app()->loadHelper('admin/htmleditor');
 
         $urls['output'] = '<div class="side-body ' . getSideBodyClass(false) . '">';
+        $urls['output'] .= App()->getController()->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Assessments")), true, true);
         $urls['output'] .= '<h3>'.gT("Assessments").'</h3>';
 
         if ($surveyinfo['assessments']!='Y')
