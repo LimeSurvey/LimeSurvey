@@ -266,12 +266,22 @@ $aReplacementData=array();
                     </a>
                 <?php endif;?>
         </div>
-        <?php if(isset($questionbar['savebuttonright'])):?>
+
+        <?php if(isset($organizebar)): ?>
+            <!-- Organize bar -->
             <div class="col-md-12 text-right form-inline">
                 <!-- Save buttons -->
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="glyphicon glyphicon-ok"></span>
                     <?php eT("Save");?>
+                </a>
+                <a class="btn btn-default" href="<?php echo $organizebar['saveandclosebuttonright']['url']; ?>" role="button" id="save-and-close-button">
+                    <span class="glyphicon glyphicon-saved"></span>
+                    <?php eT("Save and close");?>
+                </a>
+                <a class="btn btn-danger" href="<?php echo $organizebar['closebuttonright']['url']; ?>" role="button">
+                    <span class="glyphicon glyphicon-close"></span>
+                    <?php eT("Close");?>
                 </a>
             </div>
         <?php endif;?>

@@ -38,4 +38,7 @@ display:none;
 display:none;
 }
 
-
+/* To be able to drag-n-drop to empty question group */
+.question-list {
+    min-height: 50px;
+}

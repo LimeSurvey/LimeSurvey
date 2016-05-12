@@ -17,15 +17,15 @@
                 <?php
                     foreach ($aGroupsAndQuestions as  $aGroupAndQuestions)
                     {?>
-                    <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='group-item' data-level='group'>
-                        <div class="h4"> <?php echo flattenText($aGroupAndQuestions['group_name'],true);?></div>
+                    <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='panel panel-primary' data-level='group'>
+                        <div class="panel-heading"> <?php echo flattenText($aGroupAndQuestions['group_name'],true);?></div>
                         <?php if (isset ($aGroupAndQuestions['questions']))
                             {?>
-                            <ol class='question-list list-unstyled' data-level='question'>
+                            <ol class='question-list list-unstyled panel-body' data-level='question'>
                                 <?php
                                     foreach($aGroupAndQuestions['questions'] as $aQuestion)
                                     {?>
-                                    <li id='list_q<?php echo $aQuestion['qid'];?>' class='question-item' data-level='question'><div>
+                                    <li id='list_q<?php echo $aQuestion['qid'];?>' class='well well-sm' data-level='question'><div>
                                         <a class="btn hide-button" aria-hidden="true"><span class="caret"></span></a>
                                         <b><a href='<?php echo Yii::app()->getController()->createUrl('admin/questions/sa/editquestion/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']);?>'><?php echo $aQuestion['title'];?></a></b>:
                                          <?php echo $aQuestion['question'];?>
@@ -39,11 +39,11 @@
             </ol>
         </div>
 
-        <?php echo CHtml::form(array("admin/survey/sa/organize/surveyid/{$surveyid}"), 'post', array('id'=>'frmOrganize', 'onsubmit'=>'setFormSubmitting();' )); ?>
+        <?php echo CHtml::form(array("admin/survey/sa/organize/surveyid/{$surveyid}"), 'post', array('id'=>'frmOrganize')); ?>
             <p>
                 <input type='hidden' id='orgdata' name='orgdata' value='' />
                 <input type='hidden' id='close-after-save' name='close-after-save' value='' />
-                <button class='hidden' type="submit" id='btnSave' onclick='setFormSubmitting();'>
+                <button class='hidden' type="submit" id='btnSave'>
                     <?php echo eT('Save'); ?>
                 </button>
             </p>

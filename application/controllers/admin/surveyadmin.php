@@ -1311,8 +1311,8 @@ class SurveyAdmin extends Survey_Common_Action
         $initializedReplacementFields = false;
 
         $aData['organizebar']['savebuttonright'] = true;
-        //$aData['organizebar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/view/", array('surveyid' => $iSurveyID));
-        //$aData['organizebar']['returnbutton']['text'] = gT('Return to survey summary');
+        $aData['organizebar']['closebuttonright']['url'] = $this->getController()->createUrl("admin/survey/sa/view/", array('surveyid' => $iSurveyID));
+        $aData['organizebar']['saveandclosebuttonright']['url'] = true;
 
         foreach ($aGrouplist as $iGID => $aGroup)
         {
@@ -1380,7 +1380,6 @@ class SurveyAdmin extends Survey_Common_Action
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         Yii::app()->session['flashmessage'] = gT("The new question group/question order was successfully saved.");
-        $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
     }
 
     /**

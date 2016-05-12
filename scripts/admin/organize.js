@@ -45,7 +45,9 @@ $(document).ready(function(){
     });
 });
 
-
+/**
+ * Show confirmation message when user leaves without saving
+ */
 window.onload = function() {
     window.addEventListener("beforeunload", function (e) {
         if (formSubmitting) {
