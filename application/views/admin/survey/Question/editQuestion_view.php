@@ -17,6 +17,7 @@
                 else
                 {
                     eT("Edit question");
+                    echo ': <em>'.$eqrow['title'].'</em> (ID:'.$qid.')';
                 }
         ?>
     </h3>
