@@ -1396,6 +1396,13 @@ function db_upgrade_all($iOldDBVersion) {
             )->execute();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>258),"stg_name='DBVersion'");
         }
+        /**
+         * Update all quota to active, because we use it now.
+         */
+        if ($iOldDBVersion < 259) {
+            Quota::model()->updateAll(array('active'=>1));
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>259),"stg_name='DBVersion'");
+        }
 
         $oTransaction->commit();
         // Activate schema caching
