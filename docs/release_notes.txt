@@ -35,6 +35,46 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160506) to 2.50+ (build 160512) May 12, 2016
+-Fixed issue #10500: "Now" - "Tomorrow" used as min/max dates disfunction (LouisGac)
+-Fixed issue #10545: Add question icon looks enabled on active survey (LouisGac)
+-Fixed issue #10566: Design: move button Send invitations/reminders etc (LouisGac)
+-Fixed issue #10757: Design: too different layout in adding user groups and users (LouisGac)
+-Fixed issue #10783: Footer at survey list is incorrect on phone screen (LouisGac)
+-Fixed issue #10791: Duplicate subquestion id at arrary-by-column gives Javascript error (LouisGac)
+-Fixed issue #11031: HTML email is set to No by default (Denis Chenu)
+-Fixed issue #11070: Missing translation/error in ComfortUpdate (LouisGac)
+-Fixed issue #11101: Sending invitation/reminder to tokens open a new tab (LouisGac)
+-Fixed issue #11103: Design: Blacklist breaks gui consistancy (Olle Haerstedt)
+-Fixed issue #11111: Is it possible to hide the title bar in LimeSurvey with GUI-SETTINGS? (Olle Haerstedt)
+-Fixed issue #11123: In survey list, number of survey list display wrong (LouisGac)
+-Fixed issue #11130: Cannot create custom admin template (LouisGac)
+-Fixed issue #11135: Renaming default user template can broke (LouisGac)
+-Fixed issue #11143: Password save notification when saving global settings (Carsten Schmitz)
+-Fixed issue #11145: PHP memory_limit being set too low even though php.in defines a higher one (Carsten Schmitz)
+-Fixed issue #11148: Response detail view in participant list does not show the related response in detail (Carsten Schmitz)
+-Fixed issue #11151: Graphs behaving weird, in export mode, if there is only one question, graph wasn't shown (LouisGac)
+-Fixed issue #11152: Confusing advanced question attribute settings (Carsten Schmitz)
+-Fixed issue #11155: Survey start and end dates are loaded into the form incorrectly (Carsten Schmitz)
+-Fixed issue #11162: Display sid, gid and qid in question edition (LouisGac)
+-Fixed issue #9118:  Image Browse Server not working due to incorrect cookieDomain when using reverse proxy URL (Carsten Schmitz)
+-Fixed issue: Remove unclose div from admin, full page layout (LouisGac)
+-New feature: Hyphenation for survey content on small screens (very long words will be break with hyphens on recent navigators, or with word-wrap on old ones) (LouisGac)
+-New feature: New core plugin: QuickMenu (Olle Haerstedt)
+-New feature: User can add its own admin theme in upload directory (LouisGac)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Greek by korina, kiolalis
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by vipgroup
+
 Changes from 2.50+ (build 160504) to 2.50+ (build 160506) May 6, 2016
 -Fixed issue #10103: W3C compatiblity check fails (LouisGac)
 -Fixed issue #10792: Date format which is used in the bubble help in survey list is not formatted according to global settings (LouisGac)
