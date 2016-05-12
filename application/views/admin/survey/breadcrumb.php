@@ -20,7 +20,7 @@
                 <?php else: ?>
                     <li>
                         <a href="<?php echo App()->createUrl('/admin/questions/sa/view/surveyid/'.$oQuestion->sid.'/gid/'.$oQuestion->gid.'/qid/'.$oQuestion->qid );?>">
-                            <?php echo $oQuestion->groups->group_name;?>
+                            <?php echo $oQuestion->title;?>
                         </a>
                     </li>
                     <li class="active">
