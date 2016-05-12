@@ -297,12 +297,11 @@ $surveyid = $surveyinfo['sid'];
                 <!-- for very small screens -->
                 <div class="hidden-sm  hidden-md hidden-lg ">
                     <p>
-                        <strong><?php eT("Title");?>:</strong><br/>
                         <?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?>
                     </p>
 
                     <p>
-                        <strong><?php echo gT("Survey URL:");?></strong><br/>
+                        <strong><?php neT("Survey URL:|Survey URLs:",count($aAdditionalLanguages)+1);?></strong><br/>
                         <small><em><?php echo getLanguageNameFromCode($surveyinfo['language'],false); ?></em></small><br/>
                             <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language'])); ?>
                             <?php
@@ -316,22 +315,15 @@ $surveyid = $surveyinfo['sid'];
 
                     </p>
                 </div>
-
-                <!-- Table for big screens -->
+                    <h4><?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?></h4>
+               <!-- Table for big screens -->
                 <table class="items table hidden-xs" id='surveydetails'>
-                    <thead>
 
-                        <!-- Title -->
-                        <tr>
-                            <th  class="col-md-3"><?php eT("Title");?>:</th>
-                            <th><?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?></th>
-                        </tr>
-                    </thead>
 
                     <!-- Survey URL -->
                     <tr>
-                        <td>
-                            <strong> <?php echo gT("Survey URL:");?></strong>
+                        <td class='col-sm-2'>
+                            <strong> <?php neT("Survey URL:|Survey URLs:",count($aAdditionalLanguages)+1);?></strong>
                         </td>
                         <td>
                         </td>
@@ -340,11 +332,11 @@ $surveyid = $surveyinfo['sid'];
                     <!-- Base language -->
                     <tr>
                         <td style="border-top: none; padding-left: 2em">
-                            <small><?php echo getLanguageNameFromCode($surveyinfo['language'],false); ?>:</small>
+                           <?php echo getLanguageNameFromCode($surveyinfo['language'],false); ?>  <?php eT('(Base language)');?>:
                         </td>
                         <td style="border-top: none;" >
                             <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language'])); ?>
-                            <small><a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a></small>
+                            <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
                         </td>
                     </tr>
 
@@ -352,11 +344,11 @@ $surveyid = $surveyinfo['sid'];
                     <?php foreach ($aAdditionalLanguages as $langname): ?>
                         <tr>
                             <td  style="border-top: none; padding-left: 2em">
-                                <small><?php echo getLanguageNameFromCode($langname,false).":";?></small>
+                                <?php echo getLanguageNameFromCode($langname,false).":";?>
                             </td>
                             <td  style="border-top: none;" >
                                 <?php $tmp_url = $this->createAbsoluteUrl("/survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$langname)); ?>
-                                <small><a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a></small>
+                                <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -364,10 +356,10 @@ $surveyid = $surveyinfo['sid'];
                     <!-- End URL -->
                     <tr>
                         <td   style="border-top: none; padding-left: 2em">
-                            <small><?php eT("End URL");?>:</small>
+                            <?php eT("End URL:");?>
                         </td>
                         <td style="border-top: none">
-                            <small><?php echo $endurl;?></small>
+                            <?php echo $endurl;?>
                         </td>
                     </tr>
 
@@ -380,10 +372,9 @@ $surveyid = $surveyinfo['sid'];
                     <!-- Description -->
                     <tr>
                         <td style="border-top: none; padding-left: 2em">
-                            <small><?php eT("Description:");?></small>
+                            <?php eT("Description:");?>
                         </td>
                         <td style="border-top: none;" >
-                            <small>
                             <?php
                                 if (trim($surveyinfo['surveyls_description']) != '')
                                 {
@@ -391,76 +382,34 @@ $surveyid = $surveyinfo['sid'];
                                     echo LimeExpressionManager::GetLastPrettyPrintExpression();
                                 }
                             ?>
-                            </small>
                         </td>
                     </tr>
 
                     <!-- Welcome -->
                     <tr>
                         <td style="border-top: none; padding-left: 2em">
-                            <small><?php eT("Welcome:");?></small>
+                            <?php eT("Welcome:");?>
                         </td>
                         <td style="border-top: none;" >
-                            <small>
                             <?php
                                 templatereplace(flattenText($surveyinfo['surveyls_welcometext']));
                                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
                             ?>
-                            </small>
                         </td>
                     </tr>
 
                     <!-- End message -->
                     <tr>
                         <td style="border-top: none; padding-left: 2em">
-                            <small><?php eT("End message:");?></small>
+                            <?php eT("End message:");?>
                         </td>
                         <td style="border-top: none;" >
-                            <small>
                             <?php
                                 templatereplace(flattenText($surveyinfo['surveyls_endtext']));
                                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
                             ?>
-                            </small>
                         </td>
                     </tr>
-
-                    <!-- Languages -->
-                    <tr>
-                        <td>
-                            <strong><?php eT('Languages');?>:</strong>
-                        </td>
-                        <td></td>
-                    </tr>
-
-                    <!-- Base language -->
-                    <tr>
-                        <td style="border-top: none; padding-left: 2em">
-                            <small><?php eT("Base language:");?></small>
-                        </td>
-                        <td style="border-top: none;" >
-                            <small><?php echo $language;?></small>
-                        </td>
-                    </tr>
-
-                    <!-- Additional languages -->
-                    <?php foreach ($aAdditionalLanguages as $langname): ?>
-                        <tr>
-                            <?php if($count==0): ?>
-                                <td style="border-top: none; padding-left: 2em">
-                                    <small><?php eT("Additional languages:");?>
-                                </td>
-                                <?php $count++;?>
-                            <?php else:?>
-                                <td style="border-top: none; padding-left: 2em"></td>
-                            <?php endif;?>
-
-                            <td  style="border-top: none;">
-                               <small> <?php echo getLanguageNameFromCode($langname,false);?></small>
-                            </td>
-                        </tr>
-                    <?php endforeach;?>
-
                     <!-- Administrator -->
                     <tr>
                         <td>
@@ -496,7 +445,7 @@ $surveyid = $surveyinfo['sid'];
                     <!-- Expiry date/time -->
                     <tr>
                         <td>
-                            <strong><?php eT("Expiry date/time:");?></strong>
+                            <strong><?php eT("Expiration date/time:");?></strong>
                         </td>
                         <td>
                             <?php echo $expdate;?>
@@ -528,39 +477,17 @@ $surveyid = $surveyinfo['sid'];
                     <!-- Number of questions/groups -->
                     <tr>
                         <td>
-                            <strong><?php eT("Number of questions/groups");?>:</strong>
+                            <strong><?php eT("Number of questions/groups:");?></strong>
                         </td>
                         <td>
                             <?php echo $sumcount3."/".$sumcount2;?>
                         </td>
                     </tr>
 
-                    <!-- Survey currently active -->
-                    <tr>
-                        <td>
-                            <strong><?php eT("Survey currently active");?>:</strong>
-                        </td>
-                        <td>
-                            <?php echo $activatedlang;?>
-                        </td>
-                    </tr>
-
-                    <!-- Survey table name -->
-                    <?php if($activated=="Y"): ?>
-                        <tr>
-                            <td>
-                                <strong><?php eT("Survey table name");?>:</strong>
-                            </td>
-                            <td>
-                                <?php echo $surveydb;?>
-                            </td>
-                        </tr>
-                    <?php endif; ?>
-
                     <!-- Hints  -->
                     <tr>
                         <td>
-                            <strong><?php eT("Hints");?>:</strong>
+                            <strong><?php eT("Survey settings:");?></strong>
                         </td>
                         <td>
                             <?php echo $warnings.$hints;?>
