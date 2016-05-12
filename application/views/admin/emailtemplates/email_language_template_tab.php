@@ -1,14 +1,14 @@
 
 <div id='<?php echo "tab-$grouplang-$tab"; ?>' class="tab-pane fade in <?php echo $active; ?>">
     <div class='form-group'>
-        <div class='col-sm-4 col-sm-offset-2'>
+        <div class='col-sm-6 col-sm-offset-2'>
             <?php echo CHtml::link(sprintf(gT("Validate expression in %s"),$details['title']),array('admin/validate','sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab),array('title'=>$details['title'],"target"=>"dialog")); ?>
         </div>
     </div>
 
     <div class='form-group'>
         <label class='col-sm-2 control-label' for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
-        <div class='col-sm-4'>
+        <div class='col-sm-6'>
             <?php echo CHtml::textField("email_{$tab}_subj_{$grouplang}",$esrow->$details['field']['subject'],array('class' => 'form-control', 'size'=>80)); ?>
         </div>
         <div class='col-sm-1'>
@@ -18,7 +18,7 @@
 
     <div class='form-group'>
         <label class='col-sm-2 control-label' for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
-        <div class='col-sm-4'>
+        <div class='col-sm-6'>
             <?php echo CHtml::textArea("email_{$tab}_{$grouplang}",$esrow->$details['field']['body'],array('cols'=>80,'rows'=>20, 'class'=>'form-control')); ?>
             <?php echo getEditor("email-$tab","email_{$tab}_$grouplang", $details['body'].'('.$grouplang.')',$surveyid,'','','editemailtemplates'); ?>
         </div>
@@ -46,7 +46,7 @@
 
         <?php } ?>
     <div class='form-group'>
-        <div class='col-sm-5 col-sm-offset-2'>
+        <div class='col-sm-6 col-sm-offset-2'>
             <table data-template="[<?php echo $grouplang; ?>][<?php echo $tab ?>]" id ="attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" class="attachments" style="width: 100%;">
                 <tr>
                     <th><?php eT("Action"); ?></th>
@@ -71,6 +71,7 @@
                     echo '</script>';
                 }
                 ?>
+
             </table>
         </div>
     </div>
