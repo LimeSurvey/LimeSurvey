@@ -62,7 +62,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th class="col-sm-10"><?php eT('MYSQL version required');?></th>
+                <th class="col-sm-10"><?php eT('MYSQL version required:');?></th>
                 <th class="col-sm-1"  style="text-align: right"></th>
                 <th class="col-sm-1"  style="text-align: right"></th>
             </tr>
@@ -89,7 +89,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="col-sm-10"><?php eT('PHP version required');?></th>
+            <th class="col-sm-10"><?php eT('PHP version required:');?></th>
             <th class="col-sm-1"  style="text-align: right"></th>
             <th class="col-sm-1"  style="text-align: right"></th>
         </tr>
