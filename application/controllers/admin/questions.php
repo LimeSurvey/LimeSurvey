@@ -64,11 +64,14 @@ class questions extends Survey_Common_Action
         $surveyinfo = array_map('flattenText', $surveyinfo);
         $aData['activated'] = $surveyinfo['active'];
 
+        $oQuestion = $qrrow;
+        $aData['oQuestion'] = $oQuestion;
         $qrrow = $qrrow->attributes;
         $aData['languagelist'] = Survey::model()->findByPk($iSurveyID)->getAllLanguages();
         $aData['qtypes'] = $qtypes = getQuestionTypeList('', 'array');
 
             $qshowstyle = "";
+
 
         $aData['qshowstyle'] = $qshowstyle;
         $aData['surveyid'] = $iSurveyID;

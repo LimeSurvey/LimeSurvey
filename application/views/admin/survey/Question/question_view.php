@@ -1,10 +1,16 @@
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <h3><?php eT('Question summary'); ?></h3>
+    <h3><?php eT('Question summary'); ?>:  <em><?php echo  $qrrow['title'];?></em> (ID: <?php echo  $qid;?>)</h3>
     <div class="row">
         <div class="col-lg-12 content-right">
 
             <!-- Summary Table -->
             <table  id='questiondetails' <?php echo $qshowstyle; ?>>
+
+                <!-- Question Group -->
+                <tr>
+                    <td><strong><?php eT('Question group:');?></strong></td>
+                    <td><em><?php echo $oQuestion->groups->group_name;?></em> (ID:<?php echo $oQuestion->groups->gid;?>)</td>
+                </tr>
 
                 <!-- Code -->
                 <tr>
