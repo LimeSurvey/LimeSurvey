@@ -36,8 +36,10 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" for="description_<?php echo $aGroupData[$i]['language']; ?>"><?php eT("Description:"); ?></label>
                                     <div class="col-sm-5">
-                                        <?php echo CHtml::textArea("description_{$aGroupData[$i]['language']}",$aGroupData[$i]['description'],array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"description_{$aGroupData[$i]['language']}")); ?>
-                                        <?php echo getEditor("group-desc","description_".$aGroupData[$i]['language'], "[".gT("Description:", "js")."](".$aGroupData[$i]['language'].")",$surveyid,$gid,'',$action); ?>
+                                        <div class="htmleditor input-group">
+                                            <?php echo CHtml::textArea("description_{$aGroupData[$i]['language']}",$aGroupData[$i]['description'],array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"description_{$aGroupData[$i]['language']}")); ?>
+                                            <?php echo getEditor("group-desc","description_".$aGroupData[$i]['language'], "[".gT("Description:", "js")."](".$aGroupData[$i]['language'].")",$surveyid,$gid,'',$action); ?>
+                                        </div>
                                     </div>
 
                                 </div>
