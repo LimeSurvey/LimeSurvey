@@ -131,13 +131,16 @@ $aReplacementData=array();
                     <span class="glyphicon glyphicon-trash text-danger"></span>
                     <?php eT("Delete"); ?>
                 </a>
-            <?php elseif (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')): ?>
-                <a href='<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
-                    class="btn btn-default"
-                    onclick="alert('<?php eT("You can't delete this question group because the survey is currently active.","js"); ?>')">
-                    <span class="glyphicon glyphicon-trash"></span>
-                    <?php eT("Delete current question group"); ?>
-                </a>
+            <?php else: ?>
+                <a class="btn btn-default"
+                   data-toggle="modal"
+                   data-href="<?php echo $this->createUrl("admin/questions/sa/delete/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>"
+                   data-target="#confirmation-modal"
+                   data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>"
+                   >
+                    <span class="glyphicon glyphicon-trash text-danger"></span>
+                    <?php eT("Delete"); ?>
+                </a>                
             <?php endif; ?>
 
 
