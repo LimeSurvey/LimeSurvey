@@ -79,7 +79,9 @@ class printablesurvey extends Survey_Common_Action
                 $surveyexpirydate='';
             }
             //Fix $templatename : control if print_survey.pstpl exist
-            if(is_file(getTemplatePath($templatename).DIRECTORY_SEPARATOR.'print_survey.pstpl'))
+            $oTemplate = Template::model()->getTemplateConfiguration($templatename);
+            $sFullTemplatePath = $oTemplate->path;
+            if($oTemplate->viewPath . DIRECTORY_SEPARATOR . 'print_survey.pstpl')
             {
                 $templatename = $templatename;// Change nothing
             }
@@ -91,8 +93,8 @@ class printablesurvey extends Survey_Common_Action
             {
                 $templatename="default";
             }
-            $sFullTemplatePath = getTemplatePath($templatename).DIRECTORY_SEPARATOR;
-            $sFullTemplateUrl = getTemplateURL($templatename)."/";
+            $sFullTemplatePath = $oTemplate->path . DIRECTORY_SEPARATOR;
+            $sFullTemplateUrl = Template::model()->getTemplateURL($templatename)."/";
             define('PRINT_TEMPLATE_DIR' , $sFullTemplatePath , true);
             define('PRINT_TEMPLATE_URL' , $sFullTemplateUrl , true);
 
