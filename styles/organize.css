@@ -50,3 +50,11 @@ display:none;
 .organizer .question-list .well {
     cursor: move;
 }
+
+li.mjs-nestedSortable-collapsed > ol {
+    display: none;
+}
+
+.organiser .caret {
+    cursor: pointer;
+}

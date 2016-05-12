@@ -17,8 +17,13 @@
                 <?php
                     foreach ($aGroupsAndQuestions as  $aGroupAndQuestions)
                     {?>
-                    <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='panel panel-primary' data-level='group'>
-                        <div class="panel-heading"> <?php echo flattenText($aGroupAndQuestions['group_name'],true);?></div>
+                    <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='panel panel-primary mjs-nestedSortable-expanded' data-level='group'>
+
+                    <div class="panel-heading">
+                        <a class='btn btn-default btn-xs disclose'><span title="Click to show/hide children" class="caret"></span></a>
+                        &nbsp;
+                        <?php echo flattenText($aGroupAndQuestions['group_name'],true);?>
+                    </div>
                         <?php if (isset ($aGroupAndQuestions['questions']))
                             {?>
                             <ol class='question-list list-unstyled panel-body' data-level='question'>

@@ -17,6 +17,8 @@ $(document).ready(function(){
         tabSize: 25,
         rootID: 'root',
         protectRoot: true,
+        isTree: true,
+        startCollapsed: true,
         stop: function(event, ui) {
             var itemLevel = $(ui.item).attr('data-level');
             var listLevel = $(ui.item).closest('ol').attr('data-level');
@@ -39,6 +41,11 @@ $(document).ready(function(){
         },
         tolerance: 'pointer',
         toleranceElement: '> div'
+    });
+
+    $('.disclose').on('click', function() {
+        $(this).closest('li').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
+        $(this).toggleClass('ui-icon-plusthick').toggleClass('ui-icon-minusthick');
     });
 
     $('#btnSave').click(function(){
