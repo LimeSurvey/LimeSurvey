@@ -1,5 +1,6 @@
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <h3><?php eT('Question summary'); ?>:  <em><?php echo  $qrrow['title'];?></em> (ID: <?php echo  $qid;?>)</h3>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'oSurvey'=>$oSurvey)); ?>
+    <h3><?php eT('Question summary'); ?>  <small><em><?php echo  $qrrow['title'];?></em> (ID: <?php echo  $qid;?>)</small></h3>
     <div class="row">
         <div class="col-lg-12 content-right">
 
@@ -8,7 +9,7 @@
 
                 <!-- Question Group -->
                 <tr>
-                    <td><strong><?php eT('Question group:');?></strong></td>
+                    <td><strong><?php eT('Question group:');?></strong>&nbsp;&nbsp;&nbsp;</td>
                     <td><em><?php echo $oQuestion->groups->group_name;?></em> (ID:<?php echo $oQuestion->groups->gid;?>)</td>
                 </tr>
 

@@ -3417,7 +3417,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   display: inline-block;
 }
 .breadcrumb > li + li:before {
-  content: "\00a0";
+  content: ">";
   padding: 0 5px;
 }
 .pagination {

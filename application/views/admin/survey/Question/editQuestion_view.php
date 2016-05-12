@@ -2,7 +2,12 @@
 <?php $this->renderPartial("./survey/Question/question_subviews/_ajax_variables", $ajaxDatas); ?>
 
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
-
+    <?php
+        if (!$adding)
+        {
+            $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>gT('Edit question')));
+        }
+    ?>
     <!-- Page Title-->
     <h3>
         <?php

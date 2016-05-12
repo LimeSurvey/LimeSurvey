@@ -1142,6 +1142,9 @@ class conditionsaction extends Survey_Common_Action {
 
         $aViewUrls = array();
 
+        $oQuestion = Question::model()->find('qid=:qid', array(':qid'=>$qid));
+        $aData['oQuestion']=$oQuestion;        
+
         $aData['surveyid'] = $iSurveyID;
         $aData['qid'] = $qid;
         $aData['gid'] = $gid;

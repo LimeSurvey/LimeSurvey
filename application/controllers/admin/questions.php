@@ -267,11 +267,14 @@ class questions extends Survey_Common_Action
         $baselang = Survey::model()->findByPk($surveyid)->language;
         array_unshift($questlangs, $baselang);
 
-        $questionrow = Question::model()->findByAttributes(array(
+        $oQuestion = Question::model()->findByAttributes(array(
         'qid' => $qid,
         'gid' => $gid,
         'language' => $baselang
-        ))->attributes;
+        ));
+
+        $questionrow = $oQuestion->attributes;
+
         $qtproperties = getQuestionTypeList('', 'array');
 
         $langopts = array();
@@ -375,6 +378,7 @@ class questions extends Survey_Common_Action
         }
 
         $aData = array(
+        'oQuestion' => $oQuestion,
         'qid' => $qid,
         'surveyid' => $surveyid,
         'langopts' => $langopts,
@@ -690,7 +694,8 @@ class questions extends Survey_Common_Action
         $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $baselang = Survey::model()->findByPk($surveyid)->language;
 
-        $aParentQuestion = Question::model()->findByPk(array('qid' => $qid, 'language' => $baselang))->attributes;
+        $oQuestion      = Question::model()->findByPk(array('qid' => $qid, 'language' => $baselang));
+        $aParentQuestion = $oQuestion->attributes;
 
         $sQuestiontype = $aParentQuestion['type'];
         $aQuestiontypeInfo = getQuestionTypeList($sQuestiontype, 'array');
@@ -760,19 +765,6 @@ class questions extends Survey_Common_Action
                         $question->scale_id = $iScale;
                         $question->relevance = $row->relevance;
                         $question->save();
-                        /** //activerecord is not not new bugfix!
-                        Question::model()->insert(array(
-                        'qid' => $row->qid,
-                        'sid' => $surveyid,
-                        'gid' => $row->gid,
-                        'parent_qid' => $qid,
-                        'title' => $row->title,
-                        'question' => $row->question,
-                        'question_order' => $row->question_order,
-                        'language' => $language,
-                        'scale_id' => $iScale,
-                        ));
-                        */
                         switchMSSQLIdentityInsert('questions', false);
                     }
                 }
@@ -835,14 +827,14 @@ class questions extends Survey_Common_Action
         $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
         $surveyinfo = array_map('flattenText', $surveyinfo);
 
-        $aData['activated'] = $activated = $surveyinfo['active'];
-        $aData['surveyid'] = $surveyid;
-        $aData['gid'] = $gid;
-        $aData['qid'] = $qid;
+        $aData['activated']       = $activated = $surveyinfo['active'];
+        $aData['surveyid']        = $surveyid;
+        $aData['gid']             = $gid;
+        $aData['qid']             = $qid;
         $aData['aParentQuestion'] = $aParentQuestion;
-        $aData['anslangs'] = $anslangs;
-        $aData['maxsortorder'] = $maxsortorder;
-
+        $aData['anslangs']        = $anslangs;
+        $aData['maxsortorder']    = $maxsortorder;
+        $aData['oQuestion']       = $oQuestion;
 
         foreach ($anslangs as $anslang)
         {
@@ -1178,6 +1170,9 @@ class questions extends Survey_Common_Action
                 Yii::app()->session['FileManagerContext'] = "edit:question:{$surveyid}";
                 $aData['display']['menu_bars']['qid_action'] = 'editquestion';
 
+                $oQuestion = Question::model()->find('qid=:qid', array(':qid'=>$qid));
+                $aData['oQuestion']=$oQuestion;
+
                 $egresult = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
 
                 foreach ($egresult as $esrow)
@@ -1282,14 +1277,6 @@ class questions extends Survey_Common_Action
             }
             $eqrow['conditions_number'] = Condition::Model()->count("qid=:qid", array('qid' => $qid));
 
-            if($eqrow['modulename'] != null)
-            {
-                $oQuestionModule = Question::getQuestionModule($esrow['modulename']);
-                $questionTitle = (array) $oQuestionModule->title;
-                $questionModuleName = (array) $oQuestionModule->modulename;
-                $eqrow['modulename'] = $questionModuleName[0];
-                $eqrow['moduletitle'] = $questionTitle[0];
-            }
 
             $aData['eqrow'] = $eqrow;
             $aData['surveyid'] = $surveyid;
