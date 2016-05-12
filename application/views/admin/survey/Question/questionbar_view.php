@@ -132,12 +132,7 @@ $aReplacementData=array();
                     <?php eT("Delete"); ?>
                 </a>
             <?php else: ?>
-                <a class="btn btn-default"
-                   data-toggle="modal"
-                   data-href="<?php echo $this->createUrl("admin/questions/sa/delete/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>"
-                   data-target="#confirmation-modal"
-                   data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>"
-                   >
+                <a class="btn btn-default readonly btntooltip" href="#" role="button" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete a question if the survey is active."); ?>">
                     <span class="glyphicon glyphicon-trash text-danger"></span>
                     <?php eT("Delete"); ?>
                 </a>
