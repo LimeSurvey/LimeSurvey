@@ -102,7 +102,7 @@
                                 'name'=>'actions',
                                 'type'=>'raw',
                                 'value'=>'$data->buttons',
-                                'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right'),
+                                'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right nowrap'),
                             ),
 
                         );
