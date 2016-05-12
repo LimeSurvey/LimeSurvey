@@ -7,8 +7,9 @@
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(true); ?>'>
     <div class="row">
         <h3><?php eT('Organize question groups/questions');?></h3>
-        <p>
-            <?php eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.");?><br />
+        <p class='well well-sm'>
+            <span class='fa fa-info-circle'></span>&nbsp;
+            <?php eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.");?>
             <?php eT("After you are done please click the bottom 'Save' button to save your changes.");?>
         </p>
 
