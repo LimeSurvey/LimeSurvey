@@ -94,8 +94,12 @@ class Template extends LSActiveRecord
 
     public static function checkIfTemplateExists($sTemplateName)
     {
-        $sTemplatePath = self::getTemplatePath($sTemplateName);
-        return is_dir($sTemplatePath);
+        $aTemplates=self::getTemplateList();
+        if (array_key_exists($sTemplateName, $aTemplates))
+        {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -184,34 +188,38 @@ class Template extends LSActiveRecord
         }
     }
 
+    /**
+    * Returns an array of all available template names - does a basic check if the template might be valid
+    *
+    */
     public static function getTemplateList()
     {
-        $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
+        $sUserTemplateRootDir=Yii::app()->getConfig("usertemplaterootdir");
         $standardtemplaterootdir=Yii::app()->getConfig("standardtemplaterootdir");
 
         $aTemplateList=array();
 
         if ($handle = opendir($standardtemplaterootdir))
         {
-            while (false !== ($file = readdir($handle)))
+            while (false !== ($sFileName = readdir($handle)))
             {
                 // Why not return directly standardTemplate list ?
-                if (!is_file("$standardtemplaterootdir/$file") && self::isStandardTemplate($file))
+                if (!is_file("$standardtemplaterootdir/$sFileName") && self::isStandardTemplate($sFileName))
                 {
-                    $aTemplateList[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                    $aTemplateList[$sFileName] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$sFileName;
                 }
             }
             closedir($handle);
         }
 
-        if ($usertemplaterootdir && $handle = opendir($usertemplaterootdir))
+        if ($sUserTemplateRootDir && $handle = opendir($sUserTemplateRootDir))
         {
-            while (false !== ($file = readdir($handle)))
+            while (false !== ($sFileName = readdir($handle)))
             {
                 // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
+                if (!is_file("$sUserTemplateRootDir/$sFileName") && $sFileName != "." && $sFileName != ".." && $sFileName!=".svn" && (file_exists("{$sUserTemplateRootDir}/{$sFileName}/config.xml") || file_exists("{$standardtemplaterootdir}/{$sFileName}/startpage.pstpl")))
                 {
-                    $aTemplateList[$file] = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                    $aTemplateList[$sFileName] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sFileName;
                 }
             }
             closedir($handle);
