@@ -5,6 +5,7 @@ $(document).ready(function(){
     $('ol.organizer').nestedSortable({
         doNotClear: true,
         disableNesting: 'no-nest',
+        disableNestingClass: 'no-nest',
         forcePlaceholderSize: true,
         handle: 'div',
         helper: 'clone',
@@ -15,6 +16,7 @@ $(document).ready(function(){
         revert: 250,
         tabSize: 25,
         rootID: 'root',
+        protectRoot: true,
         stop: function(event, ui) {
             var itemLevel = $(ui.item).attr('data-level');
             var listLevel = $(ui.item).closest('ol').attr('data-level');

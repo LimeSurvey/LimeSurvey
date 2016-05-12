@@ -25,7 +25,7 @@
                                 <?php
                                     foreach($aGroupAndQuestions['questions'] as $aQuestion)
                                     {?>
-                                    <li id='list_q<?php echo $aQuestion['qid'];?>' class='well well-sm' data-level='question'><div>
+                                    <li id='list_q<?php echo $aQuestion['qid'];?>' class='well well-sm no-nest' data-level='question'><div>
                                         <a class="btn hide-button" aria-hidden="true"><span class="caret"></span></a>
                                         <b><a href='<?php echo Yii::app()->getController()->createUrl('admin/questions/sa/editquestion/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']);?>'><?php echo $aQuestion['title'];?></a></b>:
                                          <?php echo $aQuestion['question'];?>
