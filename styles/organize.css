@@ -42,3 +42,11 @@ display:none;
 .question-list {
     min-height: 50px;
 }
+
+.organizer .panel-heading {
+    cursor: move;
+}
+
+.organizer .question-list .well {
+    cursor: move;
+}
