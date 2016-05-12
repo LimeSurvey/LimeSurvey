@@ -159,7 +159,7 @@ class questiongroups extends Survey_Common_Action
             $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
             $baselang = Survey::model()->findByPk($surveyid)->language;
             $grplangs[] = $baselang;
-            $grplangs = array_reverse($grplangs);        
+            $grplangs = array_reverse($grplangs);
             $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'questiongroup.js');
 
             $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
@@ -356,11 +356,12 @@ class questiongroups extends Survey_Common_Action
         $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
         $aData['condarray'] = $condarray;
 
-        $grow = QuestionGroup::model()->findByPk(array('gid' => $gid, 'language' => $baselang));
-        $grow = $grow->attributes;
+        $oQuestionGroup = QuestionGroup::model()->findByPk(array('gid' => $gid, 'language' => $baselang));
+        $grow           = $oQuestionGroup->attributes;
 
         $grow = array_map('flattenText', $grow);
 
+        $aData['oQuestionGroup'] = $oQuestionGroup;
         $aData['surveyid'] = $surveyid;
         $aData['gid'] = $gid;
         $aData['grow'] = $grow;
@@ -448,7 +449,7 @@ class questiongroups extends Survey_Common_Action
             $first = true;
             foreach ($aLanguages as $sLanguage)
             {
-                $oResult = QuestionGroup::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $sLanguage));
+                $oResult = $oQuestionGroup = QuestionGroup::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $sLanguage));
                 $aData['aGroupData'][$sLanguage] = $oResult->attributes;
                 $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
                 if ($first)
@@ -458,6 +459,7 @@ class questiongroups extends Survey_Common_Action
                 }
             }
 
+            $aData['oQuestionGroup'] = $oQuestionGroup;
             $aData['sidemenu']['questiongroups'] = true;
             $aData['questiongroupbar']['savebutton']['form'] = true;
             $aData['questiongroupbar']['saveandclosebutton']['form'] = true;

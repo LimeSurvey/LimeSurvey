@@ -7,6 +7,10 @@
         {
             $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>gT('Edit question')));
         }
+        elseif(isset($oQuestionGroup))
+        {
+            $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Copy question")));
+        }
     ?>
     <!-- Page Title-->
     <h3>

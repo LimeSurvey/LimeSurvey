@@ -2,10 +2,10 @@
     echo PrepareEditorScript(false, $this);
     $count = 0;
 ?>
-
 <div id='edit-group' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-sm-12 content-right">
+            <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Edit Group"))); ?>
             <h3><?php eT("Edit Group"); ?></h3>
             <ul class="nav nav-tabs" id="edit-group-language-selection">
                 <?php foreach ($tabtitles as $i=>$eachtitle):?>
@@ -18,7 +18,7 @@
             </ul>
         </div>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-sm-12">
                 <?php echo CHtml::form(array("admin/questiongroups/sa/update/gid/{$gid}"), 'post', array('id'=>'frmeditgroup', 'name'=>'frmeditgroup', 'class'=>'form30 form-horizontal')); ?>
 
                     <div class="tab-content">

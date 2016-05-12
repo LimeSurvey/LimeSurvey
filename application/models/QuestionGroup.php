@@ -86,7 +86,10 @@ class QuestionGroup extends LSActiveRecord
     */
     public function relations()
     {
-        return array('questions' => array(self::HAS_MANY, 'Question', 'gid, language'));
+        return array(
+            'survey'    => array(self::BELONGS_TO, 'Survey', 'sid'),
+            'questions' => array(self::HAS_MANY, 'Question', 'gid, language')
+        );
     }
 
     function getAllRecords($condition=FALSE, $order=FALSE, $return_query = TRUE)

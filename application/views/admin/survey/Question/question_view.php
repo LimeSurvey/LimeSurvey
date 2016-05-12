@@ -1,5 +1,5 @@
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'oSurvey'=>$oSurvey)); ?>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion)); ?>
     <h3><?php eT('Question summary'); ?>  <small><em><?php echo  $qrrow['title'];?></em> (ID: <?php echo  $qid;?>)</small></h3>
     <div class="row">
         <div class="col-lg-12 content-right">
