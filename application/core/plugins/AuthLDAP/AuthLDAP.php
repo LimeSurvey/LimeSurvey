@@ -506,24 +506,10 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         }
 
         // Authentication was successful, now see if we have a user or that we should create one
-        if (is_null($user)) {
-            if ($this->autoCreate === true)  {
-                /*
-                 * Dispatch the newUserLogin event, and hope that after this we can find the user
-                 * this allows users to create their own plugin for handling the user creation
-                 * we will need more methods to pass username, rdn and ldap connection.
-                 */
-                $this->pluginManager->dispatchEvent(new PluginEvent('newUserLogin', $this));
-
-                // Check ourselves, we do not want fake responses from a plugin
-                $user = $this->api->getUserByName($username);
-            }
-
-            if (is_null($user)) {
+        if (is_null($user) && !$autoCreateFlag) {
                 $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
                 ldap_close($ldapconn); // all done? close connection
                 return;
-            }
         }
 
         ldap_close($ldapconn); // all done? close connection
@@ -535,15 +521,15 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             {
                 Permission::model()->setGlobalPermission($iNewUID, 'surveys', array('create_p'));
             }
+            $user = $this->api->getUserByName($username);
+            if ($user === null)
+            {
+                $this->setAuthFailure(self::ERROR_USERNAME_INVALID, gT('Credentials are valid but we failed to create a user'));
+                return;
+            }
         }
-        $user = $this->api->getUserByName($username);
-        if ($user === null)
-        {
-            $this->setAuthFailure(self::ERROR_USERNAME_INVALID, gT('Credentials are valid but we failed to create a user'));
-            return;
-        }
-
         // If we made it here, authentication was a success and we do have a valid user
+        $this->pluginManager->dispatchEvent(new PluginEvent('newUserLogin', $this));
         $this->setAuthSuccess($user);
     }
 }
