@@ -57,4 +57,25 @@
             </ol>
         </div>
     </div>
+<?php elseif(isset($oSurvey)): ?>
+    <div class="row">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+              <?php if(!isset($active)): ?>
+                  <li>
+                      <?php echo $oSurvey->defaultlanguage->surveyls_title;?> &nbsp; (ID:<?php echo $oSurvey->sid;?>)
+                  </li>
+              <?php else: ?>
+              <li>
+                  <a href="<?php echo App()->createUrl('/admin/survey/sa/view/surveyid/'. $oSurvey->sid );?>">
+                      <?php echo $oSurvey->defaultlanguage->surveyls_title;?> &nbsp; (ID:<?php echo $oSurvey->sid;?>)
+                  </a>
+              </li>
+                  <li class="active">
+                      <?php echo $active;?>
+                  </li>
+              <?php endif; ?>
+            </ol>
+        </div>
+    </div>
 <?php endif;?>
