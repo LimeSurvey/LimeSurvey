@@ -58,3 +58,15 @@ li.mjs-nestedSortable-collapsed > ol {
 .organiser .caret {
     cursor: pointer;
 }
+
+.organizer .well {
+    margin-bottom: 5px;
+}
+
+.organizer .well-sm {
+    padding: 3px;
+}
+
+.organizer .panel {
+    margin-bottom: 10px;
+}
