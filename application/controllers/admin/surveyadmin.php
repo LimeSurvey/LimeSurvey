@@ -1496,6 +1496,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $shownoanswer = getGlobalSetting('shownoanswer') ? getGlobalSetting('shownoanswer') : 'Y';
 
+        $aData = array();
         $aData['esrow'] = $esrow;
         $aData['shownoanswer'] = $shownoanswer;
         $aData['showxquestions'] = $showxquestions;
