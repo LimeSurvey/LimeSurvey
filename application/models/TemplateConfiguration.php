@@ -176,7 +176,7 @@ class TemplateConfiguration extends CFormModel
      * just changing/saving the XML file is not enough to update the directory's modification date (in Linux system, you can even have: "unknow modification date")
      * The date of the directory must then been changed manually.
      * To avoid them to do it each time, Asset Manager is now off when debug mode is on (see: {TEMPLATECSS} replacement in replacements_helper).
-     * Developpers should then think about :
+     * Developers should then think about :
      * 1. refreshing their brower's cache (ctrl + F5) to see their changes
      * 2. update the config.xml last_update before pushing, to be sure that end users will have the new version
      *

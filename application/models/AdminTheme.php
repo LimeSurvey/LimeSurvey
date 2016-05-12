@@ -99,7 +99,7 @@ class AdminTheme extends CFormModel
         // We load the admin theme's configuration file.
         $this->config = simplexml_load_file($this->path.'/config.xml');
 
-        // If developpers want to test asset manager with debug mode on
+        // If developers want to test asset manager with debug mode on
         $this->use_asset_manager = ( $this->config->engine->use_asset_manager_in_debug_mode == 'true');
 
         $this->defineConstants();           // Define the (still) necessary constants

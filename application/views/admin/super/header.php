@@ -13,11 +13,11 @@
     <!-- Assets load -->
 
     <!--
-        Notice to developpers :
+        Notice to developers :
 
 
-        If you turn debgug mode on, the asset manager will be off.
-        If you turn degbug mode off, the asset manager will be on.
+        If you turn debug mode on, the asset manager will be off.
+        If you turn degug mode off, the asset manager will be on.
 
         Without the asset manager, the CSS/JS files are published from their real url (eg: http://yourlimesurvey.url/scripts/admin/admin_core.js)
         So, once a browser loaded once those files, it cache it, and don't load it anymore.

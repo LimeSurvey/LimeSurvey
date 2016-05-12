@@ -374,7 +374,9 @@ class templates extends Survey_Common_Action
         // This can happen if the global default template is deleted
         if (!Template::checkIfTemplateExists($templatename))
         {
-            $templatename = 'default';
+            // Redirect to the default template
+            Yii::app()->setFlashMessage(sprintf(gT('Template %s does not exist.'),htmlspecialchars($templatename,ENT_QUOTES)),'error');
+            $this->getController()->redirect(array('admin/templates/sa/view/','templatename'=>'default'));
         }
 
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
