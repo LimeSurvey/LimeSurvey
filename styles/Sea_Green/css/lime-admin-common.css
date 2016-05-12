@@ -1856,3 +1856,7 @@ text-decoration:none;
 .explorer-group-title a.disabled {
     opacity: 0.5;
 }
+
+#displayResponsesContainer .ui-jqgrid-bdiv, #gbox_displaytokens .ui-jqgrid-bdiv {
+    overflow: hidden;
+}
