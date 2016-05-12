@@ -9,6 +9,8 @@ Some user think ergonomy of LimeSurvey 2.50 is not better than 2.06 version. But
 
 
 ## Improvement and history ##
+* 1.0.12
+    * Merge from core lts : Fixed issue #11145: PHP memory_limit being set too low
 * 1.0.11
     * New token table firstname/lastname to 150
 * 1.0.10
