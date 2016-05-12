@@ -4,7 +4,6 @@
  * @var int $destinationBuild the destination build
  */
 Yii::app()->cache->flush();
-opcache_reset();
 ?>
 
 <h2 class="maintitle"><?php eT('Update complete!'); ?></h2>

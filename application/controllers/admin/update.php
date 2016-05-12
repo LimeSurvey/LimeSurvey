@@ -294,7 +294,6 @@ class update extends Survey_Common_Action
                                 $today = new DateTime("now");
                                 Yii::app()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
                                 Yii::app()->cache->flush();
-                                opcache_reset();
                                 // TODO : aData should contains information about each step
                                 return $this->controller->renderPartial('update/updater/steps/_final', array('destinationBuild'=>$destinationBuild), false, false);
                             }
