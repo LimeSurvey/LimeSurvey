@@ -8,7 +8,7 @@
 <h2 class="maintitle"><?php eT('Update complete!'); ?></h2>
 <div class="updater-background">
     <?php
-        echo sprintf(gT('Buildnumber was successfully updated to %s.'),Yii::app()->session['updateinfo']['toversion']).'<br />';
+        echo sprintf(gT('Buildnumber was successfully updated to %s.'),$destinationBuild).'<br />';
         eT('The update is now complete!');
     ?>
     <br/>
