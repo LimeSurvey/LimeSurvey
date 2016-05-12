@@ -857,7 +857,12 @@ class Survey extends LSActiveRecord
           ),
 
         );
-
+        
+        // set the default sort order - latest first
+        $sort->defaultOrder =  array(
+            'creation_date'=>CSort::SORT_DESC,
+        );
+        
         $criteria = new CDbCriteria;
         $criteria->join  = 'LEFT JOIN {{surveys_languagesettings}} AS surveys_languagesettings ON ( surveys_languagesettings.surveyls_language = t.language AND t.sid = surveys_languagesettings.surveyls_survey_id )';
         $criteria->join .= 'LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
