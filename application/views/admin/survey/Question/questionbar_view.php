@@ -200,8 +200,8 @@ $aReplacementData=array();
                         <?php eT("Edit default answers"); ?>
                     </a>
             <?php endif;?>
-    </div>
-<?php endif;?>
+        </div>
+    <?php endif;?>
 
 
 <?php if(isset($questionbar['buttons']['conditions'])):?>
@@ -223,6 +223,7 @@ $aReplacementData=array();
 </div>
 <?php endif;?>
 
+        <?php if(!isset($organizebar)): // TODO: Factor out organizer bar in own view? ?>
         <div class="col-md-5 text-right form-inline">
                 <?php if(isset($questionbar['savebutton']['form'])):?>
 
@@ -266,10 +267,16 @@ $aReplacementData=array();
                     </a>
                 <?php endif;?>
         </div>
+        <?php endif; ?>
 
+        <?php // TODO: Factor out in own view? ?>
         <?php if(isset($organizebar)): ?>
             <!-- Organize bar -->
-            <div class="col-md-12 text-right form-inline">
+            <div class='col-md-7'>
+                <button id='organizer-collapse-all' class='btn btn-default'><span class='fa fa-compress'></span>&nbsp;<?php eT("Collapse all"); ?></button>
+                <button id='organizer-expand-all' class='btn btn-default'><span class='fa fa-expand'></span>&nbsp;<?php eT("Expand all"); ?></button>
+            </div>
+            <div class='col-md-5 text-right'>
                 <!-- Save buttons -->
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="glyphicon glyphicon-ok"></span>
@@ -285,5 +292,6 @@ $aReplacementData=array();
                 </a>
             </div>
         <?php endif;?>
+
     </div>
 </div>

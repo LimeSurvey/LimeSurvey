@@ -5,13 +5,17 @@
 ?>
 
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <div class="row">
         <h3><?php eT('Organize question groups/questions');?></h3>
-        <p class='well well-sm'>
-            <span class='fa fa-info-circle'></span>&nbsp;
-            <?php eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.");?>
-            <?php eT("After you are done please click the bottom 'Save' button to save your changes.");?>
-        </p>
+        <div class='row'>
+            <div class='col-sm-8'>
+                <p class='alert alert-info'>
+                    <span class='fa fa-info-circle'></span>&nbsp;
+                    <?php eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.");?>
+                    <?php eT("After you are done please click the 'Save' button to save your changes.");?>
+                </p>
+            </div>
+            <div class='col-sm-4'></div>
+        </div>
 
         <div class='movableList'>
             <ol class="organizer group-list list-unstyled" data-level='group'>
@@ -56,5 +60,4 @@
         </form>
         <!-- If user do a change in the list, and try to leave without saving, he'll be warn with this message -->
         <input type="hidden" value="off" id="didChange" data-message="<?php eT("You didn't save your changes!"); ?>" />
-    </div>
 </div>

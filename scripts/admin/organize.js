@@ -52,6 +52,16 @@ $(document).ready(function(){
         $('#orgdata').val($('ol.organizer').nestedSortable('serialize'));
         frmOrganize.submit();
     });
+
+    // Collapse all question groups
+    $('#organizer-collapse-all').on('click', function() {
+        $('.organizer').find('.mjs-nestedSortable-expanded').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
+    });
+
+    // Expand all question groups
+    $('#organizer-expand-all').on('click', function() {
+        $('.organizer').find('.mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
+    });
 });
 
 /**
