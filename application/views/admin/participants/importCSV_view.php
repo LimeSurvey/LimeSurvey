@@ -2,7 +2,7 @@
     <h3><?php eT("Import CSV"); ?></h3>
 
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-lg-8 col-lg-offset-2 content-right">
 
             <?php echo CHtml::form(array("admin/participants/sa/attributeMapCSV"), 'post', array('id'=>'addsurvey','class'=>'col-md-6 col-md-offset-3', 'enctype'=>'multipart/form-data', 'accept-charset'=>'utf-8')); ?>
 
@@ -10,7 +10,9 @@
     <label for="the_file" id="fileupload">
                 <?php eT("Choose the file to upload:"); ?>
             </label>
-    <input type="file" name="the_file" class="form-control" />
+            <span class="btn btn-default btn-file form-control">
+    <input type="file" name="the_file"  />
+    </span>
 </div>
 <div class="form-group">
             <label for="characterset" id="characterset">
