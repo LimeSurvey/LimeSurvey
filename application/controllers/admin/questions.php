@@ -477,7 +477,7 @@ class questions extends Survey_Common_Action
         $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $baselang = Survey::model()->findByPk($surveyid)->language;
 
-        $qrow = Question::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
+        $oQuestion = $qrow = Question::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
         $qtype = $qrow['type'];
 
         $qtypes = getQuestionTypeList('', 'array');
@@ -567,6 +567,7 @@ class questions extends Survey_Common_Action
         else
             $maxsortorder = 1;
 
+        $aData['oQuestion'] = $oQuestion;
         $aData['surveyid'] = $surveyid;
         $aData['gid'] = $gid;
         $aData['qid'] = $qid;
