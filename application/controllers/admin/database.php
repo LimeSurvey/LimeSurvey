@@ -521,15 +521,8 @@ class database extends Survey_Common_Action
                     Yii::app()->setFlashMessage(gT("Question could not be created."),'error');
 
                 } else {
-
-                    /**
-                     *
-                     * Copy Question
-                     *
-                     */
-
                     if ($sAction == 'copyquestion') {
-                        if (returnGlobal('copysubquestions') == "Y")
+                        if (returnGlobal('copysubquestions') == 1)
                         {
                             $aSQIDMappings = array();
                             $r1 = Question::model()->getSubQuestions(returnGlobal('oldqid'));
@@ -553,7 +546,7 @@ class database extends Survey_Common_Action
                                 }
                             }
                         }
-                        if (returnGlobal('copyanswers') == "Y")
+                        if (returnGlobal('copyanswers') == 1)
                         {
                             $r1 = Answer::model()->getAnswers(returnGlobal('oldqid'));
                             $aAnswerOptions = $r1->readAll();
@@ -574,7 +567,7 @@ class database extends Survey_Common_Action
                         /**
                          * Copy attribute
                          */
-                        if (returnGlobal('copyattributes') == "Y")
+                        if (returnGlobal('copyattributes') == 1)
                         {
                             $oOldAttributes = QuestionAttribute::model()->findAll("qid=:qid",array("qid"=>returnGlobal('oldqid')));
                             foreach($oOldAttributes as $oOldAttribute)
@@ -587,74 +580,6 @@ class database extends Survey_Common_Action
                                 $attribute->save();
                             }
                         }
-
-                        // Since 2.5, user can edit attribute while copying
-                        $qattributes = questionAttributes();
-                        $validAttributes = $qattributes[Yii::app()->request->getPost('type')];
-                        $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language),Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-
-                        foreach ($validAttributes as $validAttribute)
-                        {
-                            if ($validAttribute['i18n'])
-                            {
-                                foreach ($aLanguages as $sLanguage)
-                                {
-                                    $value=Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
-                                    $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$iQuestionID, 'language'=>$sLanguage));
-                                    if (count($iInsertCount)>0)
-                                    {
-                                        if ($value!='')
-                                        {
-                                            QuestionAttribute::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID, ':language'=>$sLanguage));
-                                        }
-                                        else
-                                        {
-                                            QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID, ':language'=>$sLanguage));
-                                        }
-                                    }
-                                    elseif($value!='')
-                                    {
-                                        $attribute = new QuestionAttribute;
-                                        $attribute->qid = $iQuestionID;
-                                        $attribute->value = $value;
-                                        $attribute->attribute = $validAttribute['name'];
-                                        $attribute->language = $sLanguage;
-                                        $attribute->save();
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                $value=Yii::app()->request->getPost($validAttribute['name']);
-
-                                if ($validAttribute['name']=='multiflexible_step' && trim($value)!='') {
-                                    $value=floatval($value);
-                                    if ($value==0) $value=1;
-                                };
-
-                                $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$iQuestionID));
-                                if (count($iInsertCount)>0)
-                                {
-                                    if($value!=$validAttribute['default'] && trim($value)!="")
-                                    {
-                                        QuestionAttribute::model()->updateAll(array('value'=>$value),'attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID));
-                                    }
-                                    else
-                                    {
-                                        QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID));
-                                    }
-                                }
-                                elseif($value!=$validAttribute['default'] && trim($value)!="")
-                                {
-                                    $attribute = new QuestionAttribute;
-                                    $attribute->qid = $iQuestionID;
-                                    $attribute->value = $value;
-                                    $attribute->attribute = $validAttribute['name'];
-                                    $attribute->save();
-                                }
-                            }
-                        }
-
                     } else {
                         $qattributes = questionAttributes();
                         $validAttributes = $qattributes[Yii::app()->request->getPost('type')];
