@@ -81,7 +81,7 @@ $aReplacementData=array();
                             <?php eT('Execute this survey');?>
                         <?php endif;?>
                     </a>
-                    
+
                     <!-- preview question -->
                     <a class="btn btn-default" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>' role="button" target="_blank">
                         <span class="icon-do"></span>
