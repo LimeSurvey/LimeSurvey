@@ -140,7 +140,7 @@ $aReplacementData=array();
                    >
                     <span class="glyphicon glyphicon-trash text-danger"></span>
                     <?php eT("Delete"); ?>
-                </a>                
+                </a>
             <?php endif; ?>
 
 
@@ -160,7 +160,7 @@ $aReplacementData=array();
                         <?php eT("Copy"); ?>
                     </a>
                 <?php else:?>
-                    <a class="btn disabled" href="#" role="button" onclick="alert('<?php eT("You can't copy a question if the survey is active.","js"); ?>');">
+                    <a class="btn readonly  btntooltip" href="#" role="button" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't copy a question if the survey is active."); ?>" >
                         <span class="icon-copy"></span>
                         <?php eT("Copy"); ?>
                     </a>
