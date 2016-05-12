@@ -139,7 +139,8 @@
 </script>
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-	<h3><?php eT("Survey participants",'js'); ?></h3>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Survey participants"))); ?>
+    <h3><?php eT("Survey participants",'js'); ?></h3>
 
     <div class='scrolling-wrapper'>
         <div  class="row">

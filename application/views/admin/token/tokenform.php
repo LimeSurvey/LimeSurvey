@@ -5,6 +5,7 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Token entry"))); ?>
     <h3>
         <?php
         if ($subaction == "edit")

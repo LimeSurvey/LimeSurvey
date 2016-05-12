@@ -1,4 +1,5 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Bounce settings"))); ?>
     <h3><?php eT("Bounce settings"); ?></h3>
     <div class="row">
         <div class="col-sm-12">

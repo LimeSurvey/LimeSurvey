@@ -6,6 +6,7 @@
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
 <?php if( count($tokenfieldlist)) : ?>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Manage token attribute fields"))); ?>
     <h3><?php eT("Manage token attribute fields"); ?></h3>
 
     <div class="row">

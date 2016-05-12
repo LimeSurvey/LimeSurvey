@@ -57,6 +57,26 @@
             </ol>
         </div>
     </div>
+<?php elseif(isset($token)): ?>
+    <div class="">
+        <div class="">
+            <ol class="breadcrumb">
+              <li>
+                  <a href="<?php echo App()->createUrl('/admin/survey/sa/view/surveyid/'. $oSurvey->sid );?>">
+                      <?php echo $oSurvey->defaultlanguage->surveyls_title;?> &nbsp; (ID:<?php echo $oSurvey->sid;?>)
+                  </a>
+              </li>
+              <li>
+                  <a href="<?php echo App()->createUrl('admin/tokens/sa/index/surveyid/'. $oSurvey->sid );?>">
+                      <?php eT('Token summary');?>
+                  </a>
+              </li>
+            <li class="active">
+                <?php echo $active;?>
+            </li>
+            </ol>
+        </div>
+    </div>
 <?php elseif(isset($oSurvey)): ?>
     <div class="">
         <div class="">
