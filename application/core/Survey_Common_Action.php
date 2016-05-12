@@ -753,11 +753,11 @@ class Survey_Common_Action extends CAction
             // TEST BUTTON
             if (!$activated)
             {
-                $aData['icontext'] = gT("Test this survey");
+                $aData['icontext'] = gT("Preview survey");
             }
             else
             {
-                $aData['icontext'] = gT("Execute this survey");
+                $aData['icontext'] = gT("Execute survey");
             }
 
             $aData['baselang'] = $oSurvey->language;

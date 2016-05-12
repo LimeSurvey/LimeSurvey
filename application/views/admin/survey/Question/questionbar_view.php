@@ -16,9 +16,9 @@ $aReplacementData=array();
 
                         <span class="icon-do" ></span>
                         <?php if($oSurvey->active=='N'):?>
-                            <?php eT('Test this survey');?>
+                            <?php eT('Preview survey');?>
                         <?php else: ?>
-                            <?php eT('Execute this survey');?>
+                            <?php eT('Execute survey');?>
                         <?php endif;?>
                         <span class="caret"></span>
                       </button>
@@ -33,17 +33,18 @@ $aReplacementData=array();
                       </ul>
                     </div>
 
-                    <!-- preview question -->
-                    <!-- Single button -->
+
+                    <!-- preview group -->
+                    <!-- Preview multilangue -->
                     <div class="btn-group">
                       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="icon-do"></span>
-                        <?php eT("Preview"); ?> <span class="caret"></span>
+                        <?php eT("Preview question group"); ?> <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu" style="min-width : 252px;">
                           <?php foreach ($languagelist as $tmp_lang): ?>
                               <li>
-                                  <a target="_blank" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $tmp_lang); ?>' >
+                                  <a target="_blank" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $tmp_lang); ?>" >
                                       <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
                                   </a>
                               </li>
@@ -51,18 +52,17 @@ $aReplacementData=array();
                       </ul>
                     </div>
 
-
-                    <!-- preview group -->
-                    <!-- Preview multilangue -->
+                    <!-- preview question -->
+                    <!-- Single button -->
                     <div class="btn-group">
                       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="icon-do"></span>
-                        <?php eT("Preview its question group"); ?> <span class="caret"></span>
+                        <?php eT("Preview question"); ?> <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu" style="min-width : 252px;">
                           <?php foreach ($languagelist as $tmp_lang): ?>
                               <li>
-                                  <a target="_blank" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $tmp_lang); ?>" >
+                                  <a target="_blank" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $tmp_lang); ?>' >
                                       <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
                                   </a>
                               </li>
@@ -76,28 +76,28 @@ $aReplacementData=array();
                     <a class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$oSurvey->language"); ?>" role="button"  accesskey='d' target='_blank'>
                         <span class="icon-do" ></span>
                         <?php if($oSurvey->active=='N'):?>
-                            <?php eT('Test this survey');?>
+                            <?php eT('Preview survey');?>
                         <?php else: ?>
-                            <?php eT('Execute this survey');?>
+                            <?php eT('Execute survey');?>
                         <?php endif;?>
                     </a>
 
-                    <!-- preview question -->
-                    <a class="btn btn-default" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>' role="button" target="_blank">
-                        <span class="icon-do"></span>
-                        <?php eT("Preview");?>
-                    </a>
 
                     <!-- preview question group -->
                     <a class="btn btn-default" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" role="button" target="_blank">
                         <span class="icon-do"></span>
-                        <?php eT("Preview its question group");?>
+                        <?php eT("Preview question group");?>
+                    </a>
+                    <!-- preview question -->
+                    <a class="btn btn-default" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>' role="button" target="_blank">
+                        <span class="icon-do"></span>
+                        <?php eT("Preview question");?>
                     </a>
                 <?php endif; ?>
             <?php else: ?>
                 <a class="btn disabled" href="#" role="button">
                     <span class="icon-do"></span>
-                    <?php eT("Preview");?>
+                    <?php eT("Preview question");?>
                 </a>
             <?php endif; ?>
 

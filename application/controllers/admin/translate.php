@@ -285,7 +285,7 @@ class translate extends Survey_Common_Action {
         $surveyinfo = array_merge($surveyinfo->attributes, $surveyinfo->defaultlanguage->attributes);
 
         $surveyinfo = array_map('flattenText', $surveyinfo);
-        $menutext = ( $surveyinfo['active'] == "N" ) ? gT("Test this survey") : gT("Execute this survey");
+        $menutext = ( $surveyinfo['active'] == "N" ) ? gT("Preview survey") : gT("Execute survey");
 
         if ( count($langs) == 0 )
         {
