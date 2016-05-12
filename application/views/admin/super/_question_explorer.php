@@ -71,17 +71,17 @@
                                 <?php elseif (Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'create')): ?>
                                     <div class="col-sm-1" id="questions-container-<?php echo $aGroup->gid; ?>">
                                         <!-- add question to this group -->
-                                            <a title="<?php eT("You can't add questions while the survey is active.");?>" class='disabled' href="#" data-toggle="tooltip" data-placement="bottom">
-                                                <span class="glyphicon glyphicon-plus-sign"></span>
-                                            </a>
+                                        <a title="<?php eT("You can't add questions while the survey is active.");?>" class='disabled question-explorer-add-question' href="#" data-toggle="tooltip" data-placement="top">
+                                            <span class="glyphicon glyphicon-plus-sign"></span>
+                                        </a>
                                     </div>
                                 <?php endif;?>
-                                <div class="col-sm-1" id="questions-container-<?php echo $aGroup->gid; ?>">
+                                <div class="col-sm-1">
                                     <!-- add question to this group -->
                                     <a  data-toggle="tooltip" data-placement="top"  title="<?php eT('Group summary');?>" class="question-explorer-add-question" href="<?php echo $this->createUrl("/admin/questiongroups/sa/view/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
                                         <span class="glyphicon glyphicon-list"></span>
                                     </a>
-                                </div>                                
+                                </div>
                             </div>
 
                             <!-- Questions -->
