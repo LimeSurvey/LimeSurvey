@@ -15,14 +15,39 @@
             <?php if(isset($questiongroupbar['buttons']['view'])):?>
                 <!-- Buttons -->
 
-                <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create')): ?>
-                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php if ($surveyIsActive) { echo eT("You can't add questions while the survey is active."); } ?>" >
-                       <a class="btn btn-default <?php if ($surveyIsActive) { echo "disabled"; } ?>" href="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>" role="button">
-                           <span class="icon-add"></span>
-                           <?php eT("Add new question to group");?>
-                       </a>
-                   </span>
-               <?php endif; ?>
+                <!-- test/execute survey -->
+                <?php if (count($languagelist) > 1): ?>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                            <span class="icon-do" ></span>
+                            <?php if($oSurvey->active=='N'):?>
+                                <?php eT('Test this survey');?>
+                            <?php else: ?>
+                                <?php eT('Execute this survey');?>
+                            <?php endif;?>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" style="min-width : 252px;">
+                            <?php foreach ($languagelist as $tmp_lang): ?>
+                                <li>
+                                    <a target='_blank' href='<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$tmp_lang));?>'>
+                                        <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php else: ?>                
+                    <a class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$oSurvey->language"); ?>" role="button"  accesskey='d' target='_blank'>
+                        <span class="icon-do" ></span>
+                        <?php if($oSurvey->active=='N'):?>
+                            <?php eT('Test this survey');?>
+                        <?php else: ?>
+                            <?php eT('Execute this survey');?>
+                        <?php endif;?>
+                    </a>
+                <?php endif;?>
 
                 <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
                     <?php if (count($languagelist) > 1): ?>
@@ -51,6 +76,17 @@
                             <?php eT("Preview this question group");?>
                         </a>
                     <?php endif; ?>
+                <?php endif; ?>
+
+
+
+                <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create')): ?>
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php if ($surveyIsActive) { echo eT("You can't add questions while the survey is active."); } ?>" >
+                       <a class="btn btn-default <?php if ($surveyIsActive) { echo "disabled"; } ?>" href="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>" role="button">
+                           <span class="icon-add"></span>
+                           <?php eT("Add new question to group");?>
+                       </a>
+                   </span>
                 <?php endif; ?>
 
                 <!-- Edit button -->
