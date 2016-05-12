@@ -4,23 +4,23 @@
             <ol class="breadcrumb">
                 <li>
                     <a href="<?php echo App()->createUrl('/admin/survey/sa/view/surveyid/'. $oQuestion->sid );?>">
-                        <?php echo $oQuestion->survey->defaultlanguage->surveyls_title;?>
+                        <?php echo $oQuestion->survey->defaultlanguage->surveyls_title;?> &nbsp; (ID:<?php echo $oQuestion->sid;?>)
                     </a>
                 </li>
 
                 <li>
                     <a href="<?php echo App()->createUrl('admin/survey/sa/listquestions/surveyid/'.$oQuestion->sid.'?group_name='.urlencode($oQuestion->groups->group_name).'&yt0=Search' );?>">
-                        <?php echo $oQuestion->groups->group_name;?>
+                        <?php echo $oQuestion->groups->group_name;?> &nbsp; (ID:<?php echo $oQuestion->gid;?>)
                     </a>
                 </li>
                 <?php if(!isset($active)): ?>
                     <li class="active">
-                        <?php echo $oQuestion->title;?>
+                        <?php echo $oQuestion->title;?> &nbsp; (ID:<?php echo $oQuestion->qid;?>)
                     </li>
                 <?php else: ?>
                     <li>
                         <a href="<?php echo App()->createUrl('/admin/questions/sa/view/surveyid/'.$oQuestion->sid.'/gid/'.$oQuestion->gid.'/qid/'.$oQuestion->qid );?>">
-                            <?php echo $oQuestion->title;?>
+                            <?php echo $oQuestion->title;?> &nbsp; (ID:<?php echo $oQuestion->qid;?>)
                         </a>
                     </li>
                     <li class="active">
@@ -36,18 +36,18 @@
             <ol class="breadcrumb">
               <li>
                   <a href="<?php echo App()->createUrl('/admin/survey/sa/view/surveyid/'. $oQuestionGroup->sid );?>">
-                      <?php echo $oQuestionGroup->survey->defaultlanguage->surveyls_title;?>
+                      <?php echo $oQuestionGroup->survey->defaultlanguage->surveyls_title;?> &nbsp; (ID:<?php echo $oQuestionGroup->sid;?>)
                   </a>
               </li>
 
               <?php if(!isset($active)): ?>
                <li class="active">
-                      <?php echo $oQuestionGroup->group_name;?>
+                      <?php echo $oQuestionGroup->group_name;?> &nbsp; (ID:<?php echo $oQuestionGroup->gid;?>)
                </li>
               <?php else: ?>
                   <li>
                       <a href="<?php echo App()->createUrl('admin/questiongroups/sa/view/surveyid/'.$oQuestionGroup->sid.'/gid/'.$oQuestionGroup->gid  );?>">
-                          <?php echo $oQuestionGroup->group_name;?>
+                          <?php echo $oQuestionGroup->group_name;?> &nbsp; (ID:<?php echo $oQuestionGroup->gid;?>)
                       </a>
                   </li>
                   <li class="active">
