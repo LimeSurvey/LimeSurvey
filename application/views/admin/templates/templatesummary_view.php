@@ -156,7 +156,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                         <code>background-image: url('../files/yourpicture.png');</code><br/><br/>
                         <?php eT("To place the logo anywhere in a .pstpl file: ");?><br/>
                         <code>{SITELOGO}</code><br/>
-                        <?php eT("it will generate a responsive image containing the logo file.");?><br/>
+                        <?php eT("This will generate a responsive image containing the logo file.");?><br/>
                     </div>
 
                     <div class="modal-footer">
