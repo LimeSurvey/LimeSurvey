@@ -1074,7 +1074,7 @@ class questions extends Survey_Common_Action
         {
 
             $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$_GET['gid']));
-            $oqresult = $oQuestionGroup->questions;
+            //$oqresult = $oQuestionGroup->questions;
             /*
             $oqresult = Question::model()->findAllByAttributes(array(
                 'sid' => $surveyid,
@@ -1086,7 +1086,7 @@ class questions extends Survey_Common_Action
             ));
             */
             $aData['oQuestionGroup'] = $oQuestionGroup;
-            $aData['oqresult'] = $oqresult;
+            //$aData['oqresult'] = $oqresult;
         }
         else
         {
