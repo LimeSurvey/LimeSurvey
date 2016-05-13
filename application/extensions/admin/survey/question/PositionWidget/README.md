@@ -15,7 +15,6 @@
 ## Usage Example:
 
 ```php
-<!-- Rendering position widget -->
 $this->widget('ext.admin.survey.question.PositionWidget.PositionWidget', array(
             'display'               => 'ajax_form_group',
             'oQuestionGroup'        => $oQuestionGroup,
@@ -29,10 +28,7 @@ $this->widget('ext.admin.survey.question.PositionWidget.PositionWidget', array(
 
 | Parameter  |  accepted value | default value | comment |
 | ---------  | --------------- | ------------- | ------- |
-| `display`  |  form_group/ajax_form_group | form_group |What kind of rendering to use. For now, only form_group, to display a static one inside right menu, or  to display a dynamic one |
-
+| `display`  |  form_group/ajax_form_group | form_group | What kind of rendering to use. For now, only form_group, to display a static one inside right menu, or  to display a dynamic one |
 | `oQuestionGroup` | Question Group Model instance | none |The question group the position is related to |
-
 | `reloadAction` | string | admin/questions/sa/ajaxReloadPositionWidget |  In ajax mode, name of the controller/action to call to get the HTML of the static widget. Update this value if you want to use the widget outside of the Questions controller (that should never happen, and if it happens, then it would be better to update this widget to a Yii module) |
-
-| `dataGroupSelectorId` | string | 'gid' |  The id of the question group selector to watch
+| `dataGroupSelectorId` | string | 'gid' |  The id of the question group selector to watch |
