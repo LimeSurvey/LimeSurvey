@@ -1,0 +1,3 @@
+[submodule "upload/templates/anovum"]
+	path = upload/templates/anovum
+	url = git@bitbucket.org:KRaves/anovum.git
