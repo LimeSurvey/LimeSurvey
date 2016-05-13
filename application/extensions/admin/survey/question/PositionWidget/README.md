@@ -25,6 +25,9 @@
 ## Paramaters
 
 display             : What kind of rendering to use. For now, only form_group, to display a static one inside right menu, or ajax_form_group to display a dynamic one
+
 oQuestionGroup      : The question group the position is related to
+
 reloadAction        : In ajax mode, name of the controller/action to call to get the HTML of the static widget. It's define by default to 'admin/questions/sa/ajaxReloadPositionWidget' Update this value if you want to use the widget outside of the Questions controller (that should never happen, and if it happens, then it would be better to update this widget to a Yii module)
+
 dataGroupSelectorId : The id of the question group selector to watch
