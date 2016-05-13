@@ -33,7 +33,7 @@
             <?php if ($activesurveyscount > 0): ?>
                 <li>
                     <a href="<?php echo $this->createUrl('admin/survey/sa/listsurveys/active/Y');?>">
-                        <?php neT("{n} active survey|{n} active surveys",$activesurveyscount); ?>
+                        <?php eT("Active surveys");?> <span class="badge badge-success"><?php echo $activesurveyscount ?></span>
                     </a>
                 </li>
             <?php endif;?>
@@ -106,36 +106,11 @@
                      </li>
 
             <!-- user menu -->
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" ><?php echo Yii::app()->session['user'];?> <span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-
-                    <!-- Edit your profile -->
-                    <li>
-                        <a href="<?php echo $this->createUrl("/admin/user/sa/modifyuser/uid/".Yii::app()->user->getId()); ?>"><?php eT("Edit your profile");?></a>
-                    </li>
-
-                    <!-- Edit your personal preferences -->
-                    <li>
-                        <a href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>"><?php eT("Edit your personal preferences");?></a>
-                    </li>
-
-                    <li class="divider"></li>
-
-                    <!-- Logout -->
-                    <li>
-                        <a href="<?php echo $this->createUrl("admin/authentication/sa/logout"); ?>">
-                            <?php eT("Logout");?>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
             <!-- active surveys -->
             <?php if ($activesurveyscount > 0): ?>
                 <li>
                     <a href="<?php echo $this->createUrl('admin/survey/sa/listsurveys/active/Y');?>">
-                        <?php neT("{n} active survey|{n} active surveys",$activesurveyscount); ?>
+                        <?php eT("Active surveys");?> <span class="badge badge-success"> <?php echo $activesurveyscount ?> </span>
                     </a>
                 </li>
             <?php endif;?>
@@ -175,7 +150,30 @@
                 </li>
             <?php endforeach; ?>
 
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" ><?php echo Yii::app()->session['user'];?> <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
 
+                    <!-- Edit your profile -->
+                    <li>
+                        <a href="<?php echo $this->createUrl("/admin/user/sa/modifyuser/uid/".Yii::app()->user->getId()); ?>"><?php eT("Edit your profile");?></a>
+                    </li>
+
+                    <!-- Edit your personal preferences -->
+                    <li>
+                        <a href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>"><?php eT("Edit your personal preferences");?></a>
+                    </li>
+
+                    <li class="divider"></li>
+
+                    <!-- Logout -->
+                    <li>
+                        <a href="<?php echo $this->createUrl("admin/authentication/sa/logout"); ?>">
+                            <?php eT("Logout");?>
+                        </a>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </div><!-- /.nav-collapse -->
 </nav>

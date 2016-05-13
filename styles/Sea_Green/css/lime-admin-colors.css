@@ -1151,6 +1151,9 @@ fieldset[disabled] .btn-link:focus {
   color: #ffffff;
   background-color: #858585; }
 
+  .badge-success {
+  background-color: #468847;
+  }
 .jumbotron {
   background-color: #9cba9e;
   background-color: transparent;
