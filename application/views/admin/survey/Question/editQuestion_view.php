@@ -7,7 +7,7 @@
     {
         $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>gT('Edit question')));
     }
-    elseif(isset($oQuestionGroup))
+    elseif(isset($oQuestionGroup)) // NB: Logic is not obvious
     {
         $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Copy question")));
     }
