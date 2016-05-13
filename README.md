@@ -1,6 +1,6 @@
 # A fork of LimeSurvey 2.06 #
 
-Some user think ergonomy of LimeSurvey 2.50 is not better than 2.06 version. But LimeSUrvey need improvement, this fork offer some improvement.
+Some user think ergonomy of LimeSurvey 2.50 is not better than 2.06 version. But LimeSurvey need improvement, this fork offer some improvement.
 
 ## Installation ##
 - See [LimeSurvey manual](https://manual.limesurvey.org/Installation)
@@ -9,6 +9,8 @@ Some user think ergonomy of LimeSurvey 2.50 is not better than 2.06 version. But
 
 
 ## Improvement and history ##
+* 1.0.13
+    * Fix Bad comparaison of NUMBER value after reloading survey
 * 1.0.12
     * Merge from core lts : Fixed issue #11145: PHP memory_limit being set too low
 * 1.0.11
