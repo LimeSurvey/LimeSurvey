@@ -269,9 +269,12 @@ class ExpressionManager {
             $this->RDP_AddError(gT("Invalid value(s) on the stack"), $token);
             return false;
         }
-
-        $bNumericArg1 = !$arg1[0] || strval(floatval($arg1[0]))===strval($arg1[0]);
-        $bNumericArg2 = !$arg2[0] || strval(floatval($arg2[0]))===strval($arg2[0]);
+        /* When value come from DB : it's set to 1.000000 (DECIMAL) : must be fixed see #11163. Response::model() must fix this . or not ? */
+        /* Don't return true always : user can entre non numeric value in a numeric value : we must compare as string then */
+        $arg1[0]=($arg1[2]=="NUMBER" && strpos($arg1[0],".")) ? rtrim(rtrim($arg1[0],"0"),".") : $arg1[0];
+        $arg2[0]=($arg2[2]=="NUMBER" && strpos($arg2[0],".")) ? rtrim(rtrim($arg2[0],"0"),".") : $arg2[0];
+        $bNumericArg1 = $arg1[0]==='' || strval(floatval($arg1[0]))===$arg1[0];
+        $bNumericArg2 = $arg2[0]==='' || strval(floatval($arg2[0]))===$arg2[0];
 
         $bStringArg1 = !$arg1[0] || !$bNumericArg1;
         $bStringArg2 = !$arg1[0] || !$bNumericArg2;
@@ -283,7 +286,7 @@ class ExpressionManager {
         // Set bBothString if one is forced to be string, only if both can be numeric. Mimic JS and PHP
         // Not sure if needed to test if [2] is set. : TODO review
         if($bBothNumeric){
-            $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// Question can return NUMERIC or WORD : DQ and DS is string entered by user, STRING is a result of a String function
+            $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// Question can return NUMBER or WORD : DQ and DS is string entered by user, STRING is a result of a String function
             if( (isset($arg1[2]) && in_array($arg1[2],$aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2],$aForceStringArray)) ) )
             {
                 $bBothNumeric=false;
@@ -341,7 +344,7 @@ class ExpressionManager {
                     $result = array(false,$token[1],'NUMBER');
                 }
                 else {
-                    // Need this explicit comparison in order to be in agreement with JavaScript
+                    // Need this explicit comparison in order to be in agreement with JavaScript : still needed since we use ==='' ?
                     if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
                         $result = array(false,$token[1],'NUMBER');
                     }
