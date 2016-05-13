@@ -284,7 +284,7 @@
 
                                     <?php if ($adding || $copying ): ?>
 
-                                        <!-- Rendering all boxes in database -->
+                                        <!-- Rendering position widget -->
                                         <?php $this->widget('ext.admin.survey.question.PositionWidget.PositionWidget', array(
                                                     'display'           => 'ajax_form_group',
                                                     'oQuestionGroup'    => $oQuestionGroup,
