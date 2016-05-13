@@ -8,7 +8,7 @@
  */
  ?>
 
-<table class="array-by-columns-table table-array-by-column table question subquestion-list questions-list">
+<table class="no-more-tables array-by-columns-table table-array-by-column table question subquestion-list questions-list">
     <colgroup class="col-responses">
         <col class="col-answers" style='width: 50%' />
 
