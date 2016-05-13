@@ -22,28 +22,27 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 */
 class TemplateConfiguration extends CFormModel
 {
-    public $sTemplateName='';
-    public $iSurveyId='';
-    public $config;
+    public $sTemplateName='';                   // The template name
+    public $iSurveyId='';                       // The current Survey Id. It can be void. It's use only to retreive the current template of a given survey
+    public $config;                             // Will contain the config.xml
 
-    public $viewPath;
-    public $siteLogo;
-    public $filesPath;
-    public $cssFramework;
-    public $packages;
-    public $depends;
-    public $otherFiles;
+    public $viewPath;                           // Path of the pstpl files
+    public $siteLogo;                           // Name of the logo file (like: logo.png)
+    public $filesPath;                          // Path of the uploaded files
+    public $cssFramework;                       // What framework css is used (for now, this parameter is used only to deactive bootstrap for retrocompatibility)
+    public $packages;                           // Array of package dependencies defined in config.xml
+    public $depends;                            // List of all dependencies (could be more that just the config.xml packages)
+    public $otherFiles;                         // Array of files in the file directory
 
-    public $oSurvey;
-    public $isStandard;
-    public $name;
-    public $path;
-    public $hasConfigFile='';
-    public $isOldTemplate;
+    public $oSurvey;                            // The survey object
+    public $isStandard;                         // Is this template a core one?
+    public $path;                               // Path of this template
+    public $hasConfigFile='';                   // Does it has a config.xml file?
+    public $isOldTemplate;                      // Is it a 2.06 template?
 
-    public $overwrite_question_views=false;
+    public $overwrite_question_views=false;     // Does it overwrites the question rendering from quanda.php?
 
-    public $xmlFile;
+    public $xmlFile;                            // What xml config file does it use? (config/minimal)
 
     /**
      * This method construct a template object, having all the needed configuration datas.
@@ -58,13 +57,15 @@ class TemplateConfiguration extends CFormModel
      */
     public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
+        // If it's called from template editor, a template name will be provided.
+        // If it's called for survey taking, a survey id will be provided
         if ($sTemplateName == '' && $iSurveyId == '')
         {
             throw new TemplateException("Template needs either template name or survey id");
         }
 
         $this->sTemplateName = $sTemplateName;
-        $this->iSurveyId = $iSurveyId;
+        $this->iSurveyId     = $iSurveyId;
 
         if ($sTemplateName=='')
         {
@@ -72,6 +73,7 @@ class TemplateConfiguration extends CFormModel
             $this->sTemplateName = $this->oSurvey->template;
         }
 
+        // We check if  it's a CORE template
         $this->isStandard = $this->setIsStandard();
 
         // If the template is standard, its root is based on standardtemplaterootdir
@@ -101,9 +103,9 @@ class TemplateConfiguration extends CFormModel
         // If the template don't have a config file (maybe it has been deleted, or whatever),
         // then, we load the default template
         $this->hasConfigFile = is_file($this->path.DIRECTORY_SEPARATOR.'config.xml');
-        $this->isOldTemplate = ( !$this->hasConfigFile && is_file($this->path.DIRECTORY_SEPARATOR.'startpage.pstpl'));
+        $this->isOldTemplate = ( !$this->hasConfigFile && is_file($this->path.DIRECTORY_SEPARATOR.'startpage.pstpl')); // TODO: more complex checks
 
-        if(!$this->hasConfigFile)
+        if (!$this->hasConfigFile)
         {
             // If it's an imported template from 2.06, we return default values
             if ( $this->isOldTemplate )
@@ -121,14 +123,15 @@ class TemplateConfiguration extends CFormModel
         {
             $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
         }
-        //var_dump(realpath ($this->xmlFile)); die();
+
+        // We load the config file
         $this->config = simplexml_load_file(realpath ($this->xmlFile));
 
-        // The template configuration.
+        // Template configuration.
         $this->viewPath = $this->path.DIRECTORY_SEPARATOR.$this->config->engine->pstpldirectory.DIRECTORY_SEPARATOR;
         $this->siteLogo = (isset($this->config->files->logo))?$this->config->files->logo->filename:'';
 
-        // condition for user's template prior to 160219
+        // condition for user's template prior to 160219 (before this build, this configuration field wasn't present in the config.xml)
         $this->filesPath    = (isset($this->config->engine->filesdirectory))? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR : $this->path . '/files/';
         // condition for user's template prior to 160504
         $this->overwrite_question_views    = (isset($this->config->engine->overwrite_question_views))? $this->config->engine->overwrite_question_views=='true' : false;
@@ -146,8 +149,6 @@ class TemplateConfiguration extends CFormModel
 
     /**
      * Update the configuration file "last update" node.
-     * It forces the asset manager to republish all the assets
-     * So after a modification of the CSS or the JS, end user will not have to refresh the cache of their browser.
      * For now, it's called only from template editor
      */
     public function actualizeLastUpdate()
@@ -162,23 +163,16 @@ class TemplateConfiguration extends CFormModel
     /**
      * Create a package for the asset manager.
      * The asset manager will push to tmp/assets/xyxyxy/ the whole template directory (with css, js, files, etc.)
-     * And it will publish the CSS and the JS defined. So CSS can use relative path for pictures.
+     * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
      * The publication of the package itself is done for now in replacements_helper, to respect the old logic of {TEMPLATECSS} replacement keyword
      *
      * NOTE 1 : To refresh the assets, the base directory of the template must be updated.
-     * The best way to do it, is to change a file in its root directory
-     * (then the new directory date will also be handled by Git, Ftp, SSH, etc. whereas a directory touch could not work in every case)
-     * That's why now, the config.xml file provide a field "last_update".
-     * When this filed is changed, you can be sure that all the CSS/JS/FILES will be reload by the final user browser
      *
-     * NOTE 2: the process describe above works fine for publishing changes on template via Git, ComfortUpdates and manual update
-     * because pulling/copying a new file in a directory changes its date. BUT, when working on a local installation, it can happen that
-     * just changing/saving the XML file is not enough to update the directory's modification date (in Linux system, you can even have: "unknow modification date")
-     * The date of the directory must then been changed manually.
-     * To avoid them to do it each time, Asset Manager is now off when debug mode is on (see: {TEMPLATECSS} replacement in replacements_helper).
+     * NOTE 2: By default, Asset Manager is off when debug mode is on.
      * Developers should then think about :
      * 1. refreshing their brower's cache (ctrl + F5) to see their changes
      * 2. update the config.xml last_update before pushing, to be sure that end users will have the new version
+     *
      *
      * For more detail, see :
      *  http://www.yiiframework.com/doc/api/1.1/CClientScript#addPackage-detail
@@ -187,8 +181,8 @@ class TemplateConfiguration extends CFormModel
      */
     private function createTemplatePackage()
     {
-        Yii::setPathOfAlias('survey.template.path', $this->path);                           // The package creation/publication need an alias
-        Yii::setPathOfAlias('survey.template.viewpath', $this->viewPath);                   //
+        Yii::setPathOfAlias('survey.template.path', $this->path);                                   // The package creation/publication need an alias
+        Yii::setPathOfAlias('survey.template.viewpath', $this->viewPath);
 
         $aCssFiles   = (array) $this->config->files->css->filename;                                 // The CSS files of this template
         $aJsFiles    = (array) $this->config->files->js->filename;                                  // The JS files of this template
