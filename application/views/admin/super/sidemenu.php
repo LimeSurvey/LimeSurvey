@@ -9,7 +9,7 @@
 ?>
 <?php
     $sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
-    if ($sideMenuBehaviour == 'alwaysClosed' 
+    if ($sideMenuBehaviour == 'alwaysClosed'
         || ($sideMenuBehaviour == 'adaptive'
         && !$sidemenu['state']))
     {
@@ -146,14 +146,16 @@
                                             <li class="disabled">
                                                 <a href='#'>
                                                     <span class="icon-organize"></span>
-                                                    <?php eT("Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>
+                                                <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo gT("Question group/question organizer disabled").' - '.gT("This survey is currently active."); ?>">
+                                                    <?php eT("Question organizer"); ?>
                                                 </a>
+                                                </span>
                                             </li>
                                         <?php else: ?>
                                             <li>
                                                 <a href="<?php echo $this->createUrl("admin/survey/sa/organize/surveyid/$surveyid"); ?>">
                                                     <span class="icon-organize"></span>
-                                                    <?php eT("Reorder question groups / questions"); ?>
+                                                    <?php eT("Question organizer"); ?>
                                                 </a>
                                             </li>
                                         <?php endif; ?>

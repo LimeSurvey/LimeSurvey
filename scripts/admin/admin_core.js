@@ -81,8 +81,10 @@ $(document).ready(function(){
 
             // html contains the buttons
             success : function(html, statut){
-                $('#survey-action-container').toggle();
-                $('#survey-action-chevron').toggleClass('glyphicon-chevron-up').toggleClass('glyphicon-chevron-down');
+                $('#survey-action-container').animate({
+            "height": "toggle", "opacity": "toggle"
+        });
+                $('#survey-action-chevron').toggleClass('glyphicon-chevron-right').toggleClass('glyphicon-chevron-down');
             },
             error :  function(html, statut){
                 alert('error');
