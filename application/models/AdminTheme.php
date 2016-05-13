@@ -115,7 +115,17 @@ class AdminTheme extends CFormModel
     public function registerStylesAndScripts()
     {
         // First we register the different needed packages
-        App()->bootstrap->register();                                   // Bootstrap
+
+        // We don't want to use any more the register functionality, to be able to set dependencies between packages
+        // ie: to control load order setting 'depends' in our package
+        // So, we take the usual Bootstrap extensions TbApi::register (called normally with  App()->bootstrap->register()) see: https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l162-l169
+        // keep here the necessary  (registerMetaTag and registerAllScripts),
+        // and move the rest to the bootstrap package.
+        // NB: registerAllScripts could be replaced by js definition in package. If needed: not a problem to do it
+
+        Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport'); // See: https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l108-l115
+        App()->bootstrap->registerAllScripts();                                                              // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l153-l160
+
         App()->getClientScript()->registerPackage('jqueryui');          // jqueryui
         App()->getClientScript()->registerPackage('jquery-cookie');     // jquery-cookie
         App()->getClientScript()->registerPackage('fontawesome');       // fontawesome      ??? TODO: check if needed
@@ -173,8 +183,9 @@ class AdminTheme extends CFormModel
             $package['baseUrl'] = $this->sTemplateUrl;                          // add the base url to the package, so it will not use the asset manager
         }
 
-        $package['css'] = $aCssFiles;                                           // add the css files to the package
-        $package['js'] = $aJsFiles;                                             // add the js files to the package
+        $package['css']     = $aCssFiles;                                           // add the css files to the package
+        $package['js']      = $aJsFiles;                                             // add the js files to the package
+        $package['depends'] = array('bootstrap');
 
         Yii::app()->clientScript->addPackage( 'admin-theme', $package);         // add the package
         Yii::app()->clientScript->registerPackage('admin-theme');               // register the package

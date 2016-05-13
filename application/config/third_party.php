@@ -21,6 +21,8 @@ return array(
     'bootstrap' => array(
         'basePath' => 'bootstrap',
         'css'=> array(
+            'css/bootstrap.css',
+            'yiistrap.css',
         ),
         'depends' => array(
             'jquery',

@@ -137,7 +137,7 @@ class TemplateConfiguration extends CFormModel
         $this->packages     = (array) $this->config->engine->packages->package;
         $this->otherFiles   = $this->setOtherFiles();
         $this->depends      = $this->packages;
-        $this->depends[]    = (string) $this->cssFramework;
+        //$this->depends[]    = (string) $this->cssFramework;                   // Bootstrap CSS is no more needed for Bootstrap templates (their custom css like "flat_and_modern.css" is a custom version of bootstrap.css )
 
         $this->createTemplatePackage();
 
