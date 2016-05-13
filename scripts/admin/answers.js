@@ -4,10 +4,7 @@ $(document).ready(function(){
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
         update:aftermove,
         distance:3});
-    $('.btnaddanswer').click(addinput);
-    $('.btndelanswer').click(deleteinput);
     $('#editanswersform').submit(checkForDuplicateCodes)
-    $('.btnlsbrowser').click(lsbrowser);
     $('#btnlsreplace').click(transferlabels);
     $('#btnlsinsert').click(transferlabels);
     $('#labelsets').click(lspreview);
@@ -18,7 +15,11 @@ $(document).ready(function(){
     $('input[name=savelabeloption]:radio').click(setlabel);
     flag = [false, false];
     $('#btnsave').click(savelabel);
-    updaterowproperties();
+    //updaterowproperties();
+
+    $(document).on("click", '.btnaddanswer', addinput);
+    $(document).on("click", '.btndelanswer', deleteinput);
+    $(document).on("click", '.btnlsbrowser', lsbrowser );
 });
 
 
@@ -67,7 +68,7 @@ function deleteinput()
     updaterowproperties();
 }
 
-
+/*
 function addinput()
 {
     var x;
@@ -159,6 +160,71 @@ function addinput()
 
     $('.tab-page:first .answertable tbody').sortable('refresh');
     updaterowproperties();
+}
+*/
+
+
+/**
+ * add input : the ajax way
+ */
+function addinput()
+{
+    $that                  = $(this);                            // The "add" button
+
+    $currentRow            = $that.parents('.row-container');    // The row containing the "add" button
+    $currentTable          = $that.parents('.answertable');
+    $commonId              = $currentRow.data('common-id');      // The common id of this row in the other languages
+    $elDatas               = $('#add-input-javascript-datas');   // This hidden element  on the page contains various datas for this function
+    $url                   = $elDatas.data('url');               // Url for the request
+    $errormessage          = $elDatas.data('errormessage');     // the error message if the AJAX request failed
+
+    $languages             = JSON.stringify(langs);              // The languages
+
+    // We get all the subquestion codes currently displayed
+    var codes = [];
+    $currentTable.find('.code').each(function(){
+        codes.push($(this).val());
+    });
+
+    // We convert them to json for the request
+    $codes = JSON.stringify(codes);
+
+    //We build the datas for the request
+    $datas                  = 'surveyid='+$elDatas.data('surveyid');
+    $datas                 += '&gid='+$elDatas.data('gid');
+    $datas                 += '&qid='+$elDatas.data('qid');
+    $datas                 += '&codes='+$codes;
+    $datas                 += '&scale_id='+$(this).data('scale-id');
+    $datas                 += '&type=answer';
+    $datas                 += '&position='+$(this).data('position');
+    $datas                 += '&assessmentvisible'+$(this).data('assessmentvisible');
+    $datas                 += '&languages='+$languages;
+
+
+    // We get the HTML of the different rows to insert  (one by language)
+    $.ajax({
+        type: "GET",
+        url: $url,
+        data: $datas,
+        success: function(arrayofhtml) {
+
+            // arrayofhtml is a json string containing the different HTML row by language
+            // eg: {"en":"{the html of the en row}", "fr":{the html of the fr row}}
+
+            $arrayOfHtml = JSON.parse(arrayofhtml);                             // Convert the JSON to a javascript object
+
+            // We insert each row for each language
+            $.each($arrayOfHtml, function(lang, htmlRow){
+                $elRowToUpdate = $('#row_'+lang+'_'+$commonId);                 // The row for the current language
+                $elRowToUpdate.after(htmlRow);                                  // We insert the HTML of the new row after this one
+            });
+
+        },
+        error :  function(html, statut){
+            console.log(statut);
+            console.log(html);
+        }
+    });
 }
 
 function aftermove(event,ui)
@@ -468,34 +534,6 @@ function lspreview()
     }
 }
 
-/**
-* This is a debug function
-* similar to var_dump in PHP
-*/
-function dump(arr,level) {
-    var dumped_text = "";
-    if(!level) level = 0;
-
-    //The padding given at the beginning of the line.
-    var level_padding = "";
-    for(var j=0;j<level+1;j++) level_padding += "    ";
-
-    if(typeof(arr) == 'object') { //Array/Hashes/Objects
-        for(var item in arr) {
-            var value = arr[item];
-
-            if(typeof(value) == 'object') { //If it is an array,
-                dumped_text += level_padding + "'" + item + "' ...\n";
-                dumped_text += dump(value,level+1);
-            } else {
-                dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
-            }
-        }
-    } else { //Stings/Chars/Numbers etc.
-        dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
-    }
-    return dumped_text;
-}
 
 function transferlabels()
 {

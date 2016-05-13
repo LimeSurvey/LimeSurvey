@@ -873,7 +873,7 @@ class questions extends Survey_Common_Action
 
 
 
-    public function getSubquestionRowForAllLanguages($surveyid, $gid, $qid, $codes, $scale_id, $languages)
+    public function getSubquestionRowForAllLanguages($surveyid, $gid, $qid, $codes, $scale_id, $type, $languages, $position, $assessmentvisible='')
     {
         $languages = explode ( ';', json_decode($languages));
         //var_dump($languages ); die();
@@ -881,7 +881,7 @@ class questions extends Survey_Common_Action
         $first = true;
         foreach($languages as $language)
         {
-            $html[$language] = $this->getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id);
+            $html[$language] = $this->getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible);
             $first = false;
         }
 
@@ -894,14 +894,14 @@ class questions extends Survey_Common_Action
      * It returns a EMPTY subquestion row HTML for a given ....
      */
 
-    public function getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id   )
+    public function getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible )
     {
         // index.php/admin/questions/sa/getSubquestionRow/position/1/scale_id/1/surveyid/691948/gid/76/qid/1611/language/en/first/true
         $stringCodes = json_decode($codes); // All the codes of the displayed subquestions
 
         // TODO: calcul correct value
         $oldCode = false;
-        $position = '';
+        $position = $position;
         $scale_id = $scale_id ;
 
         $qid = 'new'.rand ( 0 , 99999 );
@@ -943,7 +943,7 @@ class questions extends Survey_Common_Action
         $stringPartOfNewCode    = substr( $stringCodeOfGreatestCode,0, ( strlen($stringCodeOfGreatestCode) - strlen($greatesNumCodeWithZeros)  ) );
 
         // We increment by one the greatest code
-        $numericalPartOfNewCode = $greatestNumCode+1;
+        $numericalPartOfNewCode = $newPosition = $greatestNumCode+1;
 
         // We get the list of 0 : (using $numericalPartOfNewCode will remove the excedent 0 ; SQ009 will be followed by SQ010 )
         $listOfZero = substr( $greatesNumCodeWithZeros,0, ( strlen($greatesNumCodeWithZeros) - strlen($numericalPartOfNewCode)  ) );
@@ -958,21 +958,49 @@ class questions extends Survey_Common_Action
         $activated=false;                                                       // You can't add ne subquestion when survey is active
         Yii::app()->loadHelper('admin/htmleditor');                             // Prepare the editor helper for the view
 
+        if($type=='subquestion')
+        {
+            $view = '_subquestion';
+            $aData = array(
+                'position'  => $position,
+                'scale_id'  => $scale_id,
+                'activated' => $activated,
+                'first'     => $first,
+                'surveyid'  => $surveyid,
+                'gid'       => $gid,
+                'qid'       => $qid,
+                'language'  => $language,
+                'title'     => $code,
+                'question'  => '',
+                'relevance' => '',
+                'oldCode'   => $oldCode,
+            );
+        }
+        else
+        {
+            $view ='_answer_option';
+            $aData = array(
+                'assessmentvisible' => $assessmentvisible,
+                'assessment_value'  => '',
+                'answer'            => '',
+                'sortorder'         => $newPosition,
+                'position'          => $newPosition,
+                'scale_id'          => $scale_id,
+                'activated'         => $activated,
+                'first'             => $first,
+                'surveyid'          => $surveyid,
+                'gid'               => $gid,
+                'qid'               => $qid,
+                'language'          => $language,
+                'title'             => $code,
+                'question'          => '',
+                'relevance'         => '',
+                'oldCode'           => $oldCode,
+            );
+        }
+
         $html = '<!-- Inserted Row -->';
-        $html .= $this->getController()->renderPartial('/admin/survey/Question/subquestionsAndAnswers/_subquestion', array(
-            'position'  => $position,
-            'scale_id'  => $scale_id,
-            'activated' => $activated,
-            'first'     => $first,
-            'surveyid'  => $surveyid,
-            'gid'       => $gid,
-            'qid'       => $qid,
-            'language'  => $language,
-            'title'     => $code,
-            'question'  => '',
-            'relevance' => '',
-            'oldCode'   => $oldCode,
-        ), true, false);
+        $html .= $this->getController()->renderPartial('/admin/survey/Question/subquestionsAndAnswers/'.$view, $aData, true, false);
         $html .= '<!-- end of Inserted Row -->';
         return $html;
     }

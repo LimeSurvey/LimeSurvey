@@ -20,7 +20,7 @@
  */
 ?>
 
-<tr class='row_<?php echo $position; ?>' class="row-container">
+<tr class='row-container row_<?php echo $position; ?>' id='row_<?php echo $language; ?>_<?php echo $position; ?>_<?php echo $qid; ?>_<?php echo $scale_id; ?>' data-common-id="<?php echo $position; ?>_<?php echo $qid; ?>_<?php echo $scale_id; ?>">
 
     <?php if ( $first ): // If survey is not activated and first language ?>
 
@@ -125,7 +125,7 @@
         <?php echo  getEditor("editanswer","answer_".$language."_".$qid."_{$scale_id}", "[".gT("Subquestion:", "js")."](".$language.")",$surveyid,$gid,$qid,'editanswer'); ?>
 
         <?php if ( $first):?>
-            <span class="icon-add text-success btnaddanswer"  data-code="<?php echo $title; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new answer option after this one") ?>"></span>
+            <span class="icon-add text-success btnaddanswer" data-assessmentvisible='<?php echo $assessmentvisible;?>' data-position="<?php echo $position; ?>" data-code="<?php echo $title; ?>" data-scale-id="<?php echo $scale_id; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new answer option after this one") ?>"></span>
             <span class="glyphicon glyphicon-trash text-danger btndelanswer" data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></span>
         <?php endif; ?>
     </td>
