@@ -22,14 +22,12 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class AdminTheme extends CFormModel
 {
 
-    public $name;
-    public $path;
-    public $config;
-    public $sTemplateUrl;
-    public $use_asset_manager;
-
-    /** @var Template - The instance of theme object */
-    private static $instance;
+    public $name;                   // Admin Theme's name
+    public $path;                   // Admin Theme's path
+    public $sTemplateUrl;           // URL to reach Admin Theme (used to get CSS/JS/Files when asset manager is off)
+    public $config;                 // Contains the Admin Theme's configuration file
+    public $use_asset_manager;      // If true, force the use of asset manager even if debug mode is on (useful to debug asset manager's problems)
+    private static $instance;       // The instance of theme object
 
     /**
      * Get the list of admin theme, as an array containing each configuration object for each template
@@ -50,7 +48,7 @@ class AdminTheme extends CFormModel
 
     /**
      * Set the Admin Theme :
-     * - checks if the required template exist
+     * - checks if the required template exists
      * - set the admin theme variables
      * - set the admin theme constants
      * - Register all the needed CSS/JS files
@@ -58,8 +56,8 @@ class AdminTheme extends CFormModel
     public function setAdminTheme()
     {
         $sAdminThemeName           = getGlobalSetting('admintheme');                                        // We retrieve the admin theme in config ( {{settings_global}} or config-defaults.php )
-        $sStandardTemplateRootDir  = Yii::app()->getConfig("styledir");                                     // Path for the standard Admin Theme
-        $sUserTemplateDir          = Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'admintheme';   // Path for the user Admin Theme
+        $sStandardTemplateRootDir  = Yii::app()->getConfig("styledir");                                     // Path for the standard Admin Themes
+        $sUserTemplateDir          = Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'admintheme';   // Path for the user Admin Themes
 
         // Check if the required theme is a standard one
         if($this->isStandardAdminTheme($sAdminThemeName))
@@ -116,7 +114,8 @@ class AdminTheme extends CFormModel
     {
         // First we register the different needed packages
 
-        // We don't want to use any more the register functionality, to be able to set dependencies between packages
+        // Bootstrap Registration
+        // We don't want to use bootstrap extension's register functionality, to be able to set dependencies between packages
         // ie: to control load order setting 'depends' in our package
         // So, we take the usual Bootstrap extensions TbApi::register (called normally with  App()->bootstrap->register()) see: https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l162-l169
         // keep here the necessary  (registerMetaTag and registerAllScripts),
@@ -173,6 +172,7 @@ class AdminTheme extends CFormModel
         // We check if the asset manager should be use.
         // When defining the package with a base path (a directory on the file system), the asset manager is used
         // When defining the package with a base url, the file is directly registerd without the asset manager
+        // See : http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
         if( !YII_DEBUG || $this->use_asset_manager)
         {
             Yii::setPathOfAlias('admin.theme.path', $this->path);
@@ -197,7 +197,7 @@ class AdminTheme extends CFormModel
      * Register a JS File from the correct directory (publict style, style, upload, etc) using the correct method (with / whithout asset manager)
      * This function is called from the different controllers when they want to register a specific css file.
      *
-     * @var string $sPath  'PUBLIC' for /styles-public/, else templates/styles
+     * @var string $sPath  'PUBLIC' for /styles-public/, else templates/styles ('PUBLIC' is an heritage from 2.06, which was using constants to that goal.)
      * @var string $sFile   the name of the css file
      */
     public function registerCssFile( $sPath='template', $sFile='' )
@@ -219,7 +219,7 @@ class AdminTheme extends CFormModel
      * Register a Css File from the correct directory (publict style, style, upload, etc) using the correct method (with / whithout asset manager)
      * This function is called from the different controllers when they want to register a specific css file
      *
-     * @var string $sPath  'SCRIPT_PATH' for root/scripts/ ; 'ADMIN_SCRIPT_PATH' for root/scripts/admin/; else templates/scripts
+     * @var string $sPath  'SCRIPT_PATH' for root/scripts/ ; 'ADMIN_SCRIPT_PATH' for root/scripts/admin/; else templates/scripts (uppercase is an heritage from 2.06, which was using constants )
      * @var string $sFile   the name of the js file
      */
     public function registerScriptFile( $cPATH, $sFile )
@@ -269,6 +269,10 @@ class AdminTheme extends CFormModel
 
     /**
      * Touch each directory in standard admin theme directory to force assset manager to republish them
+     * NB: This function still makes problem, because it's touching direcories inside application, which could be unwritable.
+     * But: if people used comfortUpdate, the probably made it writable
+     * TODO: check if 'force' parameter could be used to publish new assets here
+     * see: http://www.yiiframework.com/doc/api/1.1/CAssetManager#forceCopy-detail
      */
     public static function forceAssets()
     {
@@ -288,7 +292,7 @@ class AdminTheme extends CFormModel
 
 
     /**
-     * Read an array containing the configuration object of all templates in a given directory
+     * Return an array containing the configuration object of all templates in a given directory
      *
      * @param string $sDir          the directory to scan
      * @return array                the array of object
