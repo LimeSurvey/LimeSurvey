@@ -1085,13 +1085,13 @@ class questions extends Survey_Common_Action
                 'order' => 'question_order'
             ));
             */
-            $aData['oQuestionGroup'] = $oQuestionGroup;
             //$aData['oqresult'] = $oqresult;
         }
         else
         {
             $aData['oqresult'] = array();
         }
+        $aData['oQuestionGroup'] = $oQuestionGroup;
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'questions.js');
 
         $aViewUrls['editQuestion_view'][] = $aData;
@@ -1133,7 +1133,11 @@ class questions extends Survey_Common_Action
         if (isset($qid))
             $qid = sanitize_int($qid);
 
+
         $aViewUrls = array();
+
+        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$gid));
+        $aData['oQuestionGroup'] = $oQuestionGroup;
         $aData['surveyid'] = $surveyid;
         $aData['gid'] = $gid;
         $aData['qid'] = $qid;

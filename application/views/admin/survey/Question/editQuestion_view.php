@@ -282,7 +282,7 @@
                                     </div>
 
 
-                                    <?php if ($adding): ?>
+                                    <?php if ($adding || $copying ): ?>
 
                                         <!-- Rendering all boxes in database -->
                                         <?php $this->widget('ext.admin.survey.question.PositionWidget.PositionWidget', array(
