@@ -873,7 +873,7 @@ class questions extends Survey_Common_Action
 
 
 
-    public function getSubquestionRowForAllLanguages($surveyid, $gid, $qid, $codes, $languages)
+    public function getSubquestionRowForAllLanguages($surveyid, $gid, $qid, $codes, $scale_id, $languages)
     {
         $languages = explode ( ';', json_decode($languages));
         //var_dump($languages ); die();
@@ -881,7 +881,7 @@ class questions extends Survey_Common_Action
         $first = true;
         foreach($languages as $language)
         {
-            $html[$language] = $this->getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first);
+            $html[$language] = $this->getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id);
             $first = false;
         }
 
@@ -894,7 +894,7 @@ class questions extends Survey_Common_Action
      * It returns a EMPTY subquestion row HTML for a given ....
      */
 
-    public function getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first  )
+    public function getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id   )
     {
         // index.php/admin/questions/sa/getSubquestionRow/position/1/scale_id/1/surveyid/691948/gid/76/qid/1611/language/en/first/true
         $stringCodes = json_decode($codes); // All the codes of the displayed subquestions
@@ -902,7 +902,7 @@ class questions extends Survey_Common_Action
         // TODO: calcul correct value
         $oldCode = false;
         $position = '';
-        $scale_id = 0;
+        $scale_id = $scale_id ;
 
         $qid = 'new'.rand ( 0 , 99999 );
 

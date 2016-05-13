@@ -175,9 +175,9 @@ function deleteinput()
  */
 function addinput()
 {
-    console.log('addinput');
     $that                  = $(this);                            // The "add" button
     $currentRow            = $that.parents('.row-container');    // The row containing the "add" button
+    $currentTable          = $that.parents('.answertable');
     $commonId              = $currentRow.data('common-id');      // The common id of this row in the other languages
     $elDatas               = $('#add-input-javascript-datas');   // This hidden element  on the page contains various datas for this function
     $url                   = $elDatas.data('url');               // Url for the request
@@ -187,7 +187,7 @@ function addinput()
 
     // We get all the subquestion codes currently displayed
     var codes = [];
-    $('.code').each(function(){
+    $currentTable.find('.code').each(function(){
         codes.push($(this).val());
     });
 
@@ -199,6 +199,7 @@ function addinput()
     $datas                 += '&gid='+$elDatas.data('gid');
     $datas                 += '&qid='+$elDatas.data('qid');
     $datas                 += '&codes='+$codes;
+    $datas                 += '&scale_id='+$(this).data('scale-id');
     $datas                 += '&languages='+$languages;
 
     console.log('$datas', $datas);

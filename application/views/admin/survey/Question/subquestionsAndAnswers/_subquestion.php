@@ -120,7 +120,7 @@
     <?php endif; ?>
 
 
-    <!-- Icons edit/delete -->
+    <!-- Icons add/edit/delete -->
     <td style="vertical-align: middle;" class="subquestion-actions">
 
         <?php echo  getEditor("editanswer","answer_".$language."_".$qid."_{$scale_id}", "[".gT("Subquestion:", "js")."](".$language.")",$surveyid,$gid,$qid,'editanswer'); ?>
@@ -130,7 +130,7 @@
                 // TODO : to merge subquestion and answer options,  implies : define in controller titles
             ?>
 
-            <span class="icon-add text-success btnaddanswer" data-code="<?php echo $title; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new subquestion after this one") ?>"></span>
+            <span class="icon-add text-success btnaddanswer" data-code="<?php echo $title; ?>" data-toggle="tooltip" data-scale-id="<?php echo $scale_id; ?>" data-placement="bottom" title="<?php eT("Insert a new subquestion after this one") ?>"></span>
             <span class="glyphicon glyphicon-trash text-danger btndelanswer"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Delete this subquestion") ?>"></span>
         <?php endif; ?>
 
