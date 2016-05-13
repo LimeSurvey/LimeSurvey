@@ -1,4 +1,5 @@
-## Question Position Widget
+# Question Position Widget
+
  This widget display a position selection for a question inside a group. It's used for now in "add new question".
  It has two modes :
 
@@ -13,21 +14,25 @@
 
 ## Usage Example:
 
+```php
 <!-- Rendering position widget -->
-<?php $this->widget('ext.admin.survey.question.PositionWidget.PositionWidget', array(
+$this->widget('ext.admin.survey.question.PositionWidget.PositionWidget', array(
             'display'               => 'ajax_form_group',
             'oQuestionGroup'        => $oQuestionGroup,
             'reloadAction'          => 'admin/questions/sa/ajaxReloadPositionWidget',
             'dataGroupSelectorId'   => $gid,
     ));
-?>
+```
+
 
 ## Paramaters
 
-display             : What kind of rendering to use. For now, only form_group, to display a static one inside right menu, or ajax_form_group to display a dynamic one
+| Parameter  |  accepted value | default value | comment |
+| ---------  | --------------- | ------------- | ------- |
+| `display`  |  form_group/ajax_form_group | form_group |What kind of rendering to use. For now, only form_group, to display a static one inside right menu, or  to display a dynamic one |
 
-oQuestionGroup      : The question group the position is related to
+| `oQuestionGroup` | Question Group Model instance | none |The question group the position is related to |
 
-reloadAction        : In ajax mode, name of the controller/action to call to get the HTML of the static widget. It's define by default to 'admin/questions/sa/ajaxReloadPositionWidget' Update this value if you want to use the widget outside of the Questions controller (that should never happen, and if it happens, then it would be better to update this widget to a Yii module)
+| `reloadAction` | string | admin/questions/sa/ajaxReloadPositionWidget |  In ajax mode, name of the controller/action to call to get the HTML of the static widget. Update this value if you want to use the widget outside of the Questions controller (that should never happen, and if it happens, then it would be better to update this widget to a Yii module) |
 
-dataGroupSelectorId : The id of the question group selector to watch
+| `dataGroupSelectorId` | string | 'gid' |  The id of the question group selector to watch
