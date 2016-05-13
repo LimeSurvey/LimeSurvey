@@ -1,4 +1,14 @@
-<div id='Position' class='form-group'>
+<?php
+/**
+ * Position Widget Form Group View
+ * Display a position selector in form-group style, fit in right accordions
+ *
+ * @var $aQuestions     A array containing the datas to create the options for each questions
+ */
+?>
+
+<!-- PositionWidget : form_group -->
+<div id='PositionWidget' class='form-group'>
     <label class="col-sm-4 control-label" for='pos'><?php eT("Position:"); ?></label>
     <div class="col-sm-8">
         <select class='form-control' name='questionposition' id='questionposition'>
@@ -10,3 +20,4 @@
         </select>
     </div>
 </div>
+<!-- end of PositionWidget : form_group -->
