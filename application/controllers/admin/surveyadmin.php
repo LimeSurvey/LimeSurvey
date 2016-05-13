@@ -1700,183 +1700,6 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-    * Update survey settings with post value
-    *
-    * @param $iSurveyId  The survey id
-    */
-    function update($iSurveyId)
-    {
-        if(!Yii::app()->request->isPostRequest)
-            throw new CHttpException(500);
-        if(!Permission::model()->hasSurveyPermission($iSurveyId,'surveysettings','update'))
-            throw new CHttpException(401,"401 Unauthorized");
-
-        // Preload survey
-        $oSurvey=Survey::model()->findByPk($iSurveyId);
-
-         // Save plugin settings.
-        $pluginSettings = App()->request->getPost('plugin', array());
-        foreach($pluginSettings as $plugin => $settings)
-        {
-            $settingsEvent = new PluginEvent('newSurveySettings');
-            $settingsEvent->set('settings', $settings);
-            $settingsEvent->set('survey', $iSurveyId);
-            App()->getPluginManager()->dispatchEvent($settingsEvent, $plugin);
-        }
-
-        /* Start to fix some param before save (TODO : use models directly ?) */
-        /* Date management */
-        Yii::app()->loadHelper('surveytranslator');
-        $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
-        Yii::app()->loadLibrary('Date_Time_Converter');
-        $startdate = App()->request->getPost('startdate');
-        if (trim($startdate)=="")
-        {
-            $startdate=null;
-        }
-        else
-        {
-            Yii::app()->loadLibrary('Date_Time_Converter');
-            $datetimeobj = new date_time_converter($startdate,$formatdata['phpdate'].' H:i'); //new Date_Time_Converter($startdate,$formatdata['phpdate'].' H:i');
-            $startdate=$datetimeobj->convert("Y-m-d H:i:s");
-        }
-        $expires = App()->request->getPost('expires');
-        if (trim($expires)=="")
-        {
-            $expires=null;
-        }
-        else
-        {
-            $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
-            $expires=$datetimeobj->convert("Y-m-d H:i:s");
-        }
-
-        // We have $oSurvey : update and save it
-        $oSurvey->admin =  Yii::app()->request->getPost('admin');
-        $oSurvey->expires =  $expires;
-        $oSurvey->startdate =  $startdate;
-        $oSurvey->faxto = App()->request->getPost('faxto');
-        $oSurvey->format = App()->request->getPost('format');
-        $oSurvey->template = Yii::app()->request->getPost('template');
-        $oSurvey->assessments = App()->request->getPost('assessments');
-        $oSurvey->additional_languages = implode(' ',Yii::app()->request->getPost('additional_languages',array()));
-        if ($oSurvey->active!='Y')
-        {
-            $oSurvey->anonymized = App()->request->getPost('anonymized');
-            $oSurvey->savetimings = App()->request->getPost('savetimings');
-            $oSurvey->datestamp = App()->request->getPost('datestamp');
-            $oSurvey->ipaddr = App()->request->getPost('ipaddr');
-            $oSurvey->refurl = App()->request->getPost('refurl');
-        }
-        $oSurvey->publicgraphs = App()->request->getPost('publicgraphs');
-        $oSurvey->usecookie = App()->request->getPost('usecookie');
-        $oSurvey->allowregister = App()->request->getPost('allowregister');
-        $oSurvey->allowsave = App()->request->getPost('allowsave');
-        $oSurvey->navigationdelay = App()->request->getPost('navigationdelay');
-        $oSurvey->printanswers = App()->request->getPost('printanswers');
-        $oSurvey->publicstatistics = App()->request->getPost('publicstatistics');
-        $oSurvey->autoredirect = App()->request->getPost('autoredirect');
-        $oSurvey->showxquestions = App()->request->getPost('showxquestions');
-        $oSurvey->showgroupinfo = App()->request->getPost('showgroupinfo');
-        $oSurvey->showqnumcode = App()->request->getPost('showqnumcode');
-        $oSurvey->shownoanswer = App()->request->getPost('shownoanswer');
-        $oSurvey->showwelcome = App()->request->getPost('showwelcome');
-        $oSurvey->allowprev = App()->request->getPost('allowprev');
-        $oSurvey->questionindex = App()->request->getPost('questionindex');
-        $oSurvey->nokeyboard = App()->request->getPost('nokeyboard');
-        $oSurvey->showprogress = App()->request->getPost('showprogress');
-        $oSurvey->listpublic = App()->request->getPost('public');
-        $oSurvey->htmlemail = App()->request->getPost('htmlemail');
-        $oSurvey->sendconfirmation = App()->request->getPost('sendconfirmation');
-        $oSurvey->tokenanswerspersistence = App()->request->getPost('tokenanswerspersistence');
-        $oSurvey->alloweditaftercompletion = App()->request->getPost('alloweditaftercompletion');
-        $oSurvey->usecaptcha = Survey::transcribeCaptchaOptions();
-        $oSurvey->emailresponseto = App()->request->getPost('emailresponseto');
-        $oSurvey->emailnotificationto = App()->request->getPost('emailnotificationto');
-        $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
-        $oSurvey->googleanalyticsstyle = App()->request->getPost('googleanalyticsstyle');
-        $oSurvey->tokenlength = App()->request->getPost('tokenlength');
-        $oSurvey->adminemail = App()->request->getPost('adminemail');
-        $oSurvey->bounce_email = App()->request->getPost('bounce_email');
-        if ($oSurvey->save())
-        {
-            Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
-        }
-        else
-        {
-            Yii::app()->setFlashMessage(gT("Survey could not be updated."),"error");
-            tracevar($oSurvey->getErrors());
-        }
-
-        /* Reload $oSurvey (language are fixed : need it ?) */
-        $oSurvey=Survey::model()->findByPk($iSurveyId);
-
-        /* Delete removed language cleanLanguagesFromSurvey do it already why redo it (cleanLanguagesFromSurvey must be moved to model) ?*/
-        $aAvailableLanguage=$oSurvey->getAllLanguages();
-        $oCriteria = new CDbCriteria;
-        $oCriteria->compare('surveyls_survey_id',$iSurveyId);
-        $oCriteria->addNotInCondition('surveyls_language',$aAvailableLanguage);
-        SurveyLanguageSetting::model()->deleteAll($oCriteria);
-
-        /* Add new language fixLanguageConsistency do it ?*/
-        foreach ($oSurvey->additionalLanguages as $sLang)
-        {
-            if ($sLang)
-            {
-                $oLanguageSettings = SurveyLanguageSetting::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$iSurveyId,':langname'=>$sLang));
-                if(!$oLanguageSettings)
-                {
-                    $oLanguageSettings= new SurveyLanguageSetting;
-                    $languagedetails=getLanguageDetails($sLang);
-                    $oLanguageSettings->surveyls_survey_id = $iSurveyId;
-                    $oLanguageSettings->surveyls_language = $sLang;
-                    $oLanguageSettings->surveyls_title = ''; // Not in default model ?
-                    $oLanguageSettings->surveyls_dateformat = $languagedetails['dateformat'];
-                    if(!$oLanguageSettings->save())
-                    {
-                        Yii::app()->setFlashMessage(gT("Survey language could not be created."),"error");
-                        tracevar($oLanguageSettings->getErrors());
-                    }
-                }
-            }
-        }
-        /* Language fix : remove and add question/group */
-        cleanLanguagesFromSurvey($iSurveyId,implode(" ",$oSurvey->additionalLanguages));
-        fixLanguageConsistency($iSurveyId,implode(" ",$oSurvey->additionalLanguages));
-
-        // Url params in json
-        $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
-        SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$iSurveyId));
-        if(isset($aURLParams))
-        {
-            foreach($aURLParams as $aURLParam)
-            {
-                $aURLParam['parameter']=trim($aURLParam['parameter']);
-                if ($aURLParam['parameter']=='' || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/',$aURLParam['parameter']) || $aURLParam['parameter']=='sid' || $aURLParam['parameter']=='newtest' || $aURLParam['parameter']=='token' || $aURLParam['parameter']=='lang')
-                {
-                    continue;  // this parameter name seems to be invalid - just ignore it
-                }
-                unset($aURLParam['act']);
-                unset($aURLParam['title']);
-                unset($aURLParam['id']);
-                if ($aURLParam['targetqid']=='') $aURLParam['targetqid']=NULL;
-                if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=NULL;
-                $aURLParam['sid']=$iSurveyId;
-
-                $param = new SurveyURLParameter;
-                foreach ($aURLParam as $k => $v)
-                    $param->$k = $v;
-                $param->save();
-            }
-        }
-
-        if (Yii::app()->request->getPost('redirect'))
-        {
-            $this->getController()->redirect(Yii::app()->request->getPost('redirect'));
-            App()->end();
-        }
-    }
-    /**
     * Saves the new survey after the creation screen is submitted
     *
     * @param $iSurveyID  The survey id to be used for the new survey. If already taken a new random one will be used.
@@ -1940,30 +1763,30 @@ class SurveyAdmin extends Survey_Common_Action
             'datestamp' => App()->request->getPost('datestamp'),
             'ipaddr' => App()->request->getPost('ipaddr'),
             'refurl' => App()->request->getPost('refurl'),
-            'usecookie' => App()->request->getPost('usecookie'),
+            'usecookie' => App()->request->getPost('usecookie')=='1'?'Y':'N',
             'emailnotificationto' => App()->request->getPost('emailnotificationto'),
             'allowregister' => App()->request->getPost('allowregister'),
             'allowsave' => App()->request->getPost('allowsave'),
             'navigationdelay' => App()->request->getPost('navigationdelay'),
-            'autoredirect' => App()->request->getPost('autoredirect'),
-            'showxquestions' => App()->request->getPost('showxquestions'),
+            'autoredirect' => App()->request->getPost('autoredirect')=='1'?'Y':'N',
+            'showxquestions' => App()->request->getPost('showxquestions')=='1'?'Y':'N',
             'showgroupinfo' => App()->request->getPost('showgroupinfo'),
             'showqnumcode' => App()->request->getPost('showqnumcode'),
             'shownoanswer' => App()->request->getPost('shownoanswer'),
-            'showwelcome' => App()->request->getPost('showwelcome'),
-            'allowprev' => App()->request->getPost('allowprev'),
+            'showwelcome' => App()->request->getPost('showwelcome')=='1'?'Y':'N',
+            'allowprev' => App()->request->getPost('allowprev')=='1'?'Y':'N',
             'questionindex' => App()->request->getPost('questionindex'),
-            'nokeyboard' => App()->request->getPost('nokeyboard'),
-            'showprogress' => App()->request->getPost('showprogress'),
-            'printanswers' => App()->request->getPost('printanswers'),
-            'listpublic' => App()->request->getPost('public'),
+            'nokeyboard' => App()->request->getPost('nokeyboard')=='1'?'Y':'N',
+            'showprogress' => App()->request->getPost('showprogress')=='1'?'Y':'N',
+            'printanswers' => App()->request->getPost('printanswers')=='1'?'Y':'N',
+            'listpublic' => App()->request->getPost('listpublic')=='1'?'Y':'N',
             'htmlemail' => App()->request->getPost('htmlemail'),
             'sendconfirmation' => App()->request->getPost('sendconfirmation'),
             'tokenanswerspersistence' => App()->request->getPost('tokenanswerspersistence'),
             'alloweditaftercompletion' => App()->request->getPost('alloweditaftercompletion'),
             'usecaptcha' => Survey::transcribeCaptchaOptions(),
-            'publicstatistics' => App()->request->getPost('publicstatistics'),
-            'publicgraphs' => App()->request->getPost('publicgraphs'),
+            'publicstatistics' => App()->request->getPost('publicstatistics')=='1'?'Y':'N',
+            'publicgraphs' => App()->request->getPost('publicgraphs')=='1'?'Y':'N',
             'assessments' => App()->request->getPost('assessments'),
             'emailresponseto' => App()->request->getPost('emailresponseto'),
             'tokenlength' => $iTokenLength

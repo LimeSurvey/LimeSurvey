@@ -138,7 +138,7 @@
                     ),
 
                     array(
-                        'header' => gT('Uses tokens'),
+                        'header' => gT('Closed group'),
                         'name' => 'uses_tokens',
                         'value'=>'$data->hasTokens',
                         'htmlOptions' => array('class' => ''),

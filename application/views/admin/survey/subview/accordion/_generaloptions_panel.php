@@ -183,4 +183,44 @@
             <input type='text' size='50' id='faxto' name='faxto'  class="form-control" />
         </div>
     </div>
+
 <?php endif;?>
+
+    <!-- Format -->
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for='format'><?php  eT("Format:"); ?></label>
+        <div class="col-sm-9">
+        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                'name' => 'format',
+                'value'=> $esrow['format'] ,
+                'selectOptions'=>array(
+                    'S' => gT('Question by Question','unescaped'),
+                    'G' => gT('Group by Group','unescaped'),
+                    'A' => gT('All in one','unescaped'))
+                ));?>
+        </div>
+    </div>
+
+    <!-- Template -->
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for='template'><?php  eT("Template:"); ?></label>
+        <div class="col-sm-5">
+            <select id='template' class="form-control"  name='template'>
+                <?php foreach (array_keys(getTemplateList()) as $tname) {
+
+                        if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $esrow['template']==htmlspecialchars($tname) ) { ?>
+                        <option value='<?php echo $tname; ?>'
+                            <?php if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) { ?>
+                                selected='selected'
+                                <?php   } elseif (!$esrow['template'] && $tname == Yii::app()->getConfig('defaulttemplate')) { ?>
+                                selected='selected'
+                                <?php } ?>
+                            ><?php echo $tname; ?></option>
+                        <?php }
+                } ?>
+            </select>
+        </div>
+        <div class="col-sm-4 template-img">
+            <img class="img-responsive" alt='<?php  eT("Template preview image"); ?>' id='preview' src='<?php echo getTemplateURL($esrow['template']); ?>/preview.png' />
+        </div>
+    </div>

@@ -7,76 +7,18 @@
 <!-- Presentation panel -->
 <div id='presentation' class="tab-pane fade in">
 
-    <!-- Format -->
-    <div class="form-group">
-        <label class="col-sm-5 control-label" for='format'><?php  eT("Format:"); ?></label>
-        <div class="col-sm-7">
-            <select id='format' name='format' class="form-control" >
-                <option value='S'
-                    <?php if ($esrow['format'] == "S" || !$esrow['format']) { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Question by Question"); ?>
-                </option>
-                <option value='G'
-                    <?php if ($esrow['format'] == "G") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Group by Group"); ?>
-                </option>
-                <option value='A'
-                    <?php if ($esrow['format'] == "A") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("All in one"); ?>
-                </option>
-            </select>
-        </div>
-    </div>
-
-    <!-- Template -->
-    <div class="form-group">
-        <label class="col-sm-5 control-label" for='template'><?php  eT("Template:"); ?></label>
-        <div class="col-sm-4">
-            <select id='template' class="form-control"  name='template'>
-                <?php foreach (array_keys(getTemplateList()) as $tname) {
-
-                        if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $esrow['template']==htmlspecialchars($tname) ) { ?>
-                        <option value='<?php echo $tname; ?>'
-                            <?php if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) { ?>
-                                selected='selected'
-                                <?php   } elseif (!$esrow['template'] && $tname == Yii::app()->getConfig('defaulttemplate')) { ?>
-                                selected='selected'
-                                <?php } ?>
-                            ><?php echo $tname; ?></option>
-                        <?php }
-                } ?>
-            </select>
-        </div>
-        <div class="col-sm-3 template-img">
-            <img class="img-responsive" alt='<?php  eT("Template preview image"); ?>' id='preview' src='<?php echo getTemplateURL($esrow['template']); ?>/preview.png' />
-        </div>
-    </div>
 
     <!-- welcome screen -->
     <div class="form-group">
         <label class="col-sm-5 control-label" for='showwelcome'><?php  eT("Show welcome screen:") ; ?></label>
         <div class="col-sm-7">
-            <select id='showwelcome' name='showwelcome' class="form-control">
-                <option value='Y'
-                    <?php if (!$esrow['showwelcome'] || $esrow['showwelcome'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Yes") ; ?>
-                </option>
-                <option value='N'
-                    <?php if ($esrow['showwelcome'] == "N") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("No") ; ?>
-                </option>
-            </select>
-
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'showwelcome',
+                'value'=> $esrow['showwelcome'] == "Y",
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')
+                ));
+            ?>
         </div>
     </div>
 
@@ -90,23 +32,15 @@
 
     <!-- Show [<< Prev] button -->
     <div class="form-group">
-        <label class="col-sm-5 control-label" for='allowprev'><?php  eT("Show [<< Previous] button:"); ?></label>
+        <label class="col-sm-5 control-label" for='allowprev'><?php  eT("Allow backward navigation:"); ?></label>
         <div class="col-sm-7">
-            <select id='allowprev' class="form-control" name='allowprev'>
-                <option value='Y'
-                    <?php if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Yes"); ?>
-                </option>
-                <option value='N'
-                    <?php if (isset($esrow['allowprev']) && $esrow['allowprev'] == "N") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("No"); ?>
-                </option>
-            </select>
-
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'allowprev',
+                'value'=> $esrow['allowprev'] == "Y",
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')
+                ));
+            ?>
         </div>
     </div>
 
@@ -115,40 +49,28 @@
         <label class="col-sm-5 control-label" for='questionindex'><?php  eT("Show question index / allow jumping:"); ?></label>
         <div class="col-sm-7">
 
-            <?php
-                $data = array(
+        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                'name' => 'questionindex',
+                'value'=> $esrow['questionindex'] ,
+                'selectOptions'=>array(
                     0 => gT('Disabled','unescaped'),
                     1 => gT('Incremental','unescaped'),
-                    2 => gT('Full','unescaped')
-                );
-                echo CHtml::dropDownList('questionindex', $esrow['questionindex'], $data, array(
-                    'id' => 'questionindex',
-                    'class' => 'form-control'
-                ));
-            ?>
-
+                    2 => gT('Full','unescaped'))
+                ));?>
         </div>
     </div>
 
     <!-- Keyboard-less operation -->
     <div class="form-group">
-        <label class="col-sm-5 control-label" for='nokeyboard'><?php  eT("Keyboard-less operation:"); ?></label>
+        <label class="col-sm-5 control-label" for='nokeyboard'><?php  eT("Show on-screen keyboard:"); ?></label>
         <div class="col-sm-7">
-            <select class="form-control"  id='nokeyboard' name='nokeyboard'>
-                <option value='Y'
-                    <?php if (!isset($esrow['nokeyboard']) || !$esrow['nokeyboard'] || $esrow['nokeyboard'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Yes"); ?>
-                </option>
-                <option value='N'
-                    <?php if (isset($esrow['nokeyboard']) && $esrow['nokeyboard'] == "N") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("No"); ?>
-                </option>
-            </select>
-
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'nokeyboard',
+                'value'=> $esrow['nokeyboard'] == "Y",
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')
+                ));
+            ?>
         </div>
     </div>
 
@@ -156,19 +78,13 @@
     <div class="form-group">
         <label class="col-sm-5 control-label" for='showprogress'><?php  eT("Show progress bar:"); ?></label>
         <div class="col-sm-7">
-            <select class="form-control" id='showprogress' name='showprogress'>
-                <option value='Y'
-                    <?php if (!isset($esrow['showprogress']) || !$esrow['showprogress'] || $esrow['showprogress'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Yes"); ?>
-                </option>
-                <option value='N'
-                    <?php if (isset($esrow['showprogress']) && $esrow['showprogress'] == "N") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("No"); ?></option>
-            </select>
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'showprogress',
+                'value'=> $esrow['showprogress'] == "Y",
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')
+                ));
+            ?>
         </div>
     </div>
 
@@ -176,21 +92,13 @@
     <div class="form-group">
         <label class="col-sm-5 control-label" for='printanswers'><?php  eT("Participants may print answers:"); ?></label>
         <div class="col-sm-7">
-            <select id='printanswers' name='printanswers' class="form-control" >
-                <option value='Y'
-                    <?php if (!isset($esrow['printanswers']) || !$esrow['printanswers'] || $esrow['printanswers'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Yes"); ?>
-                </option>
-                <option value='N'
-                    <?php if (isset($esrow['printanswers']) && $esrow['printanswers'] == "N") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("No"); ?>
-                </option>
-            </select>
-
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'printanswers',
+                'value'=> $esrow['printanswers'] == "Y",
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')
+                ));
+            ?>
         </div>
     </div>
 
@@ -198,20 +106,13 @@
     <div class="form-group">
         <label class="col-sm-5 control-label" for='publicstatistics'><?php  eT("Public statistics:"); ?></label>
         <div class="col-sm-7">
-            <select  class="form-control"  id='publicstatistics' name='publicstatistics'>
-                <option value='Y'
-                    <?php if (!isset($esrow['publicstatistics']) || !$esrow['publicstatistics'] || $esrow['publicstatistics'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Yes"); ?>
-                </option>
-                <option value='N'
-                    <?php if (isset($esrow['publicstatistics']) && $esrow['publicstatistics'] == "N") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("No"); ?>
-                </option>
-            </select>
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'publicstatistics',
+                'value'=> $esrow['publicstatistics'] == "Y",
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')
+                ));
+            ?>
         </div>
     </div>
 
@@ -219,19 +120,13 @@
     <div class="form-group">
         <label class="col-sm-5 control-label" for='publicgraphs'><?php  eT("Show graphs in public statistics:"); ?></label>
         <div class="col-sm-7">
-            <select id='publicgraphs' name='publicgraphs' class="form-control" >
-                <option value='Y'
-                    <?php if (!isset($esrow['publicgraphs']) || !$esrow['publicgraphs'] || $esrow['publicgraphs'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Yes"); ?>
-                </option>
-                <option value='N'
-                    <?php if (isset($esrow['publicgraphs']) && $esrow['publicgraphs'] == "N") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("No"); ?></option>
-            </select>
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'publicgraphs',
+                'value'=> $esrow['publicgraphs'] == "Y",
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')
+                ));
+            ?>
         </div>
     </div>
 
@@ -239,20 +134,13 @@
     <div class="form-group">
         <label class="col-sm-5 control-label" for='autoredirect'><?php  eT("Automatically load URL when survey complete:"); ?></label>
         <div class="col-sm-7">
-            <select id='autoredirect' name='autoredirect'  class="form-control" >
-                <option value='Y'
-                    <?php if (isset($esrow['autoredirect']) && $esrow['autoredirect'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Yes"); ?>
-                </option>
-                <option value='N'
-                    <?php if (!isset($esrow['autoredirect']) || $esrow['autoredirect'] != "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("No"); ?>
-                </option>
-            </select>
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'autoredirect',
+                'value'=> $esrow['autoredirect'] == "Y",
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')
+                ));
+            ?>
         </div>
     </div>
 
@@ -264,7 +152,8 @@
                 <div class="form-group">
                     <label class="col-sm-5 control-label" for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
                     <div class="col-sm-7">
-                        <input type="hidden" class="form-control"  name="showxquestions" id="" value="Y" /> <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="<?php  eT('Yes (Forced by the system administrator)'); ?>" />
+                        <input type="hidden" class="form-control"  name="showxquestions" id="" value="1" />
+                        <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="<?php  eT('Yes (Forced by the system administrator)'); ?>" />
                     </div>
                 </div>
         <?php break;?>
@@ -273,8 +162,9 @@
 
             <!-- Show "There are X questions in this survey -->
             <div class="form-group">
-                <label class="col-sm-5 control-label" for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label> <input type="hidden" name="showxquestions" id="" value="N" />
+                <label class="col-sm-5 control-label" for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
                 <div class="col-sm-7">
+                     <input type="hidden" name="showxquestions" id="" value="0" />
                      <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="<?php  eT('No (Forced by the system administrator)'); ?>" />
                 </div>
             </div>
@@ -286,22 +176,13 @@
             <div class="form-group">
                 <label class="col-sm-5 control-label" for="showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
                 <div class="col-sm-7">
-
-                    <?php $sel_showxq = array( 'Y' => '' , 'N' => '' );
-                    if (isset($esrow['showxquestions'])) {
-                        $set_showxq = $esrow['showxquestions'];
-                        $sel_showxq[$set_showxq] = ' selected="selected"';
-                    }
-                    if (empty($sel_showxq['Y']) && empty($sel_showxq['N'])) {
-                        $sel_showxq['Y'] = ' selected="selected"';
-                    }; ?>
-
-                    <select id="showxquestions" name="showxquestions" class="form-control">
-                        <option value="Y" <?php echo $sel_showxq['Y']; ?>><?php  eT('Yes'); ?></option>
-                        <option value="N" <?php echo $sel_showxq['N']; ?>><?php  eT('No'); ?></option>
-                    </select>
-
-                    <?php unset($sel_showxq,$set_showxq); ?>
+                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        'name' => 'showxquestions',
+                        'value'=> $esrow['showxquestions'] == "Y",
+                        'onLabel'=>gT('On'),
+                        'offLabel'=>gT('Off')
+                        ));
+                    ?>
                 </div>
             </div>
         <?php break;?>

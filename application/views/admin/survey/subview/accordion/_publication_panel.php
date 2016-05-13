@@ -10,20 +10,13 @@
     <div class="form-group">
         <label class="col-sm-6 control-label" for='public'><?php  eT("List survey publicly:");?></label>
         <div class="col-sm-6">
-            <select id='public' name='public'  class="form-control">
-                <option value='Y'
-                    <?php if (!isset($esrow['listpublic']) || !$esrow['listpublic'] || $esrow['listpublic'] == "Y") { ?>
-                  selected='selected'
-                    <?php } ?>
-                    ><?php  eT("Yes"); ?>
-                </option>
-                <option value='N'
-                    <?php if (isset($esrow['listpublic']) && $esrow['listpublic'] == "N") { ?>
-                  selected='selected'
-                    <?php } ?>
-                 ><?php  eT("No"); ?>
-                </option>
-            </select>
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'listpublic',
+                'value'=> $esrow['listpublic'] == "Y",
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')
+                ));
+            ?>
         </div>
     </div>
 
@@ -97,21 +90,13 @@
     <div class="form-group">
         <label class="col-sm-6 control-label" for='usecookie'><?php  eT("Set cookie to prevent repeated participation:"); ?></label>
         <div class="col-sm-6">
-            <select name='usecookie' id='usecookie'  class="form-control">
-                <option value='Y'
-                        <?php if ($esrow['usecookie'] == "Y") { ?>
-                         selected='selected'
-                        <?php } ?>
-                        ><?php  eT("Yes"); ?>
-                </option>
-                <option value='N'
-                        <?php if ($esrow['usecookie'] != "Y") { ?>
-                         selected='selected'
-                           <?php } ?>
-                        ><?php  eT("No"); ?>
-                </option>
-            </select>
-
+            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'usecookie',
+                'value'=> $esrow['usecookie'] == "Y",
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')
+                ));
+            ?>
         </div>
     </div>
 
