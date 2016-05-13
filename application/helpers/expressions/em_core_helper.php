@@ -270,8 +270,8 @@ class ExpressionManager {
             return false;
         }
 
-        $bNumericArg1 = !$arg1[0] || strval(floatval($arg1[0]))===strval($arg1[0]);
-        $bNumericArg2 = !$arg2[0] || strval(floatval($arg2[0]))===strval($arg2[0]);
+        $bNumericArg1 = $arg1[0]==='' || (isset($arg1[2]) && $arg1[2]=="NUMBER") || strval(floatval($arg1[0]))===$arg1[0];
+        $bNumericArg2 = $arg2[0]==='' || (isset($arg2[2]) && $arg2[2]=="NUMBER") || strval(floatval($arg2[0]))===$arg2[0];
 
         $bStringArg1 = !$arg1[0] || !$bNumericArg1;
         $bStringArg2 = !$arg1[0] || !$bNumericArg2;
