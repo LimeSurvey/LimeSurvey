@@ -1450,6 +1450,19 @@ class questions extends Survey_Common_Action
         }
     }
 
+
+    public function ajaxReloadPositionWidget($gid)
+    {
+        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$gid));
+        if ( is_a($oQuestionGroup, 'QuestionGroup') && Permission::model()->hasSurveyPermission($oQuestionGroup->sid, 'surveycontent', 'read'))
+        {
+            return App()->getController()->widget('ext.admin.survey.question.PositionWidget.PositionWidget', array(
+                        'display'           => 'form_group',
+                        'oQuestionGroup'    => $oQuestionGroup,
+                ));
+        }
+    }
+
     /**
     * This function prepares the data for the advanced question attributes view
     *

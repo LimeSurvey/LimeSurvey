@@ -284,10 +284,9 @@
 
                                     <?php if ($adding): ?>
 
-
                                         <!-- Rendering all boxes in database -->
                                         <?php $this->widget('ext.admin.survey.question.PositionWidget.PositionWidget', array(
-                                                    'display'           => 'form_group',
+                                                    'display'           => 'ajax_form_group',
                                                     'oQuestionGroup'    => $oQuestionGroup,
                                             ));
                                         ?>
