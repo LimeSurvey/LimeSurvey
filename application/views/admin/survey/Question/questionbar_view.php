@@ -271,8 +271,6 @@ $aReplacementData=array();
         <?php if(isset($organizebar)): ?>
             <!-- Organize bar -->
             <div class='col-md-7'>
-                <button id='organizer-collapse-all' class='btn btn-default'><span class='fa fa-compress'></span>&nbsp;<?php eT("Collapse all"); ?></button>
-                <button id='organizer-expand-all' class='btn btn-default'><span class='fa fa-expand'></span>&nbsp;<?php eT("Expand all"); ?></button>
             </div>
             <div class='col-md-5 text-right'>
                 <!-- Save buttons -->
