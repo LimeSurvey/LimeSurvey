@@ -3043,6 +3043,15 @@ function questionAttributes($returnByName=false)
         'help'=>gT('Hide this question at any time. This is useful for including data using answer prefilling.'),
         'caption'=>gT('Always hide this question'));
 
+        /* Add css class : not the best, but exist in 2.50 : can be used by any plugin */
+        $qattributes['cssclass']=array(
+            'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+            'category'=>gT('Display'),
+            'sortorder'=>102,
+            'inputtype'=>'text',
+            'help'=>gT('Add additional CSS class(es) for this question. Use a space between different CSS class names.'),
+            'caption'=>gT('CSS class(es)'));
+
         $qattributes["max_answers"]=array(
         "types"=>"MPR1:;ABCEFKQ",
         'category'=>gT('Logic'),

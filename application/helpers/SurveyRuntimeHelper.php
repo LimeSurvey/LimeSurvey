@@ -1188,13 +1188,13 @@ class SurveyRuntimeHelper {
 
     /**
     * Construction of replacement array, actually doing it with redata
-    * 
+    *
     * @param $aQuestionQanda : array from qanda helper
     * @return aray of replacement for question.psptl
     **/
     public static function getQuestionReplacement($aQuestionQanda)
     {
-        
+
         // Get the default replacement and set empty value by default
         $aReplacement=array(
             "QID"=>"",
@@ -1228,7 +1228,7 @@ class SurveyRuntimeHelper {
         $oSurveyId=Survey::model()->findByPk($iSurveyId);
         $sType=$lemQuestionInfo['info']['type'];
 
-        // Core value : not replaced 
+        // Core value : not replaced
         $aReplacement['QID']=$iQid;
         $aReplacement['GID']=$aQuestionQanda[6];// Not sure for aleatory : it's the real gid or the updated gid ? We need original gid or updated gid ?
         $aReplacement['SGQ']=$aQuestionQanda[7];
@@ -1291,8 +1291,18 @@ class SurveyRuntimeHelper {
             }
             $aReplacement['QUESTIONHELP']="<img src='{$helpicon}' alt='Help' align='left' />".$aReplacement['QUESTIONHELP'];
         }
-        // Core value :the classes
+
+         // Core value :the classes
         $aReplacement['QUESTION_CLASS'] = Question::getQuestionClass($sType);
+
+        /* Add css class from attribute: not the best, but exist in 2.50 : can be used by any plugin */
+        /* This must be moved in an extrenal plugin when we have it */
+        $aQuestionAttributes = getQuestionAttributeValues($iQid);
+        if(!empty($aQuestionAttributes['cssclass']))
+        {
+            $aReplacement['QUESTION_CLASS'] .= " ".htmlentities($aQuestionAttributes['cssclass'],ENT_QUOTES);
+        }
+
         $aMandatoryClass = array();
         if ($lemQuestionInfo['info']['mandatory'] == 'Y')// $aQuestionQanda[0]['mandatory']=="*"
         {
