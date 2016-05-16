@@ -273,8 +273,8 @@ class ExpressionManager {
         /* Don't return true always : user can entre non numeric value in a numeric value : we must compare as string then */
         $arg1[0]=($arg1[2]=="NUMBER" && strpos($arg1[0],".")) ? rtrim(rtrim($arg1[0],"0"),".") : $arg1[0];
         $arg2[0]=($arg2[2]=="NUMBER" && strpos($arg2[0],".")) ? rtrim(rtrim($arg2[0],"0"),".") : $arg2[0];
-        $bNumericArg1 = $arg1[0]==='' || strval(floatval($arg1[0]))===$arg1[0];
-        $bNumericArg2 = $arg2[0]==='' || strval(floatval($arg2[0]))===$arg2[0];
+        $bNumericArg1 = $arg1[0]==='' || strval(floatval($arg1[0]))==strval($arg1[0]);
+        $bNumericArg2 = $arg2[0]==='' || strval(floatval($arg2[0]))===strval($arg2[0]);
 
         $bStringArg1 = !$arg1[0] || !$bNumericArg1;
         $bStringArg2 = !$arg1[0] || !$bNumericArg2;
