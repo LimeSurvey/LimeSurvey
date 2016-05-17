@@ -15,7 +15,7 @@ $(document).ready(function(){
     $('input[name=savelabeloption]:radio').click(setlabel);
     flag = [false, false];
     $('#btnsave').click(savelabel);
-    //updaterowproperties();
+    updaterowproperties();
 
     $(document).on("click", '.btnaddanswer', addinput);
     $(document).on("click", '.btndelanswer', deleteinput);
@@ -68,7 +68,7 @@ function deleteinput()
     updaterowproperties();
 }
 
-/*
+/**/
 function addinput()
 {
     var x;
@@ -161,12 +161,12 @@ function addinput()
     $('.tab-page:first .answertable tbody').sortable('refresh');
     updaterowproperties();
 }
-*/
+
 
 
 /**
  * add input : the ajax way
- */
+
 function addinput()
 {
     $that                  = $(this);                            // The "add" button
@@ -200,6 +200,8 @@ function addinput()
     $datas                 += '&assessmentvisible'+$(this).data('assessmentvisible');
     $datas                 += '&languages='+$languages;
 
+    $scaleId  = $(this).data('scale-id')
+    $position = $(this).data('position')
 
     // We get the HTML of the different rows to insert  (one by language)
     $.ajax({
@@ -219,6 +221,10 @@ function addinput()
                 $elRowToUpdate.after(htmlRow);                                  // We insert the HTML of the new row after this one
             });
 
+            $('#answercount_'+$scaleId).val($position+2);
+            console.log($scaleId);
+            console.log($position);
+
         },
         error :  function(html, statut){
             console.log(statut);
@@ -226,7 +232,7 @@ function addinput()
         }
     });
 }
-
+*/
 function aftermove(event,ui)
 {
     // But first we have change the sortorder in translations, too
