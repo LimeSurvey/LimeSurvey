@@ -145,6 +145,7 @@ class Survey extends LSActiveRecord
             'permissions'     => array(self::HAS_MANY, 'Permission', array( 'entity_id'=> 'sid'  ), 'together' => true ), //
             'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language'),
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
+            'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid')),
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id'),
             'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid'),
         );
@@ -946,9 +947,10 @@ class Survey extends LSActiveRecord
         // Search filter
         $criteria2 = new CDbCriteria;
         $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.sid::varchar' : 't.sid');
-        $criteria2->with=array('defaultlanguage','owner');
+        $criteria2->with=array('correct_relation_defaultlanguage','owner');
+        //$criteria2->with=array('defaultlanguage','owner');
         $criteria2->compare($sid_reference, $this->searched_value, true, 'OR');
-        $criteria2->compare('defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
+        $criteria2->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
         $criteria2->compare('t.admin', $this->searched_value, true, 'OR');
 
         // Active filter
