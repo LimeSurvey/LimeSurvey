@@ -35,6 +35,47 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160512) to 2.50+ (build 160516) May 17, 2016
+-Fixed issue #10323: LDAP Authentication not working (Carsten Schmitz)
+-Fixed issue #11128: Browse button cosmetic isssue (Carsten Schmitz)
+-Fixed issue #11132: When copying a question question attributes are not copied (Carsten Schmitz)
+-Fixed issue #11161: Error when clicking "Import a question" button (Carsten Schmitz)
+-Fixed issue #11162: Display sid, gid and qid in admin panel (question summary) (LouisGac)
+-Fixed issue #11163: Survey response marked as 'finished' after opening email link/password twice (Denis Chenu)
+-Fixed issue #11165: Text strings are missing colons (Carsten Schmitz)
+-Fixed issue #11166: Missing build number info last stage ComfortUpdate (LouisGac)
+-Fixed issue #11170: Template CSS cannot be loaded (Olle Haerstedt)
+-Fixed issue #11173: Inconsistent use of on/off yes/no (Carsten Schmitz)
+-Fixed issue #11176: Endless redirect loop (LouisGac)
+-Fixed issue #11195: Expression Manager : bad comparaison with numeric value (Denis Chenu)
+-Fixed issue #11196: Sliders don't save negative values (Denis Chenu)
+-Fixed issue: Add subquestion in dual scales didn't work anymore (LouisGac)
+-Fixed issue: Bootstrap load order in admin GUI (LouisGac)
+-Fixed issue: Delete question button was invisible in active survey (LouisGac)
+-Fixed issue: HTML Editor display was wrong (LouisGac)
+-Fixed issue: Weird looking "copy" button while editing a question in active survey (LouisGac)
+-New feature #10051: Enable / disable quotas (Denis Chenu)
+-New feature: Breadcrumb for question edition and question group (LouisGac)
+-New feature: Button to group summary in question explorer (LouisGac)
+-New feature: Question Position Widget, ajax reload on group selector changes (LouisGac)
+-New feature: Question position widget when copying a question (LouisGac)
+-New feature: Show "Questions in group:{name}" instead of "Questions in this survey" in question list when group filter is on (LouisGac)
+-New feature: "Test/Execute" this survey from group edition (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Greek by nasprok, kiolalis
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Romanian
+
 Changes from 2.50+ (build 160506) to 2.50+ (build 160512) May 12, 2016
 -Fixed issue #10500: "Now" - "Tomorrow" used as min/max dates disfunction (LouisGac)
 -Fixed issue #10545: Add question icon looks enabled on active survey (LouisGac)
