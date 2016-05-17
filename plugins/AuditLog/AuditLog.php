@@ -13,12 +13,12 @@
             ),
             'AuditLog_Log_UserLogin' => array(
                 'type' => 'checkbox',
-                'label' => 'Log if a user is logged successfully',
+                'label' => 'Log if a user has logged in successfully',
                 'default' => '1',
             ),
             'AuditLog_Log_UserLogout' => array(
                 'type' => 'checkbox',
-                'label' => 'Log if user has logout',
+                'label' => 'Log if user has logged out',
                 'default' => '1',
             ),
             'AuditLog_Log_UserFailedLoginAttempt' => array(
@@ -380,7 +380,7 @@
                         'default' => 1,
                         'tab' => 'notification', // @todo: Setting no used yet
                         'category' => 'Auditing for person-related data', // @todo: Setting no used yet
-                        'label' => 'Audit log for this survey',
+                        'label' => 'Audit log for this survey:',
                         'current' => $this->get('auditing', 'Survey', $event->get('survey'))
                     )
                 )
