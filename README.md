@@ -9,7 +9,7 @@ Some user think ergonomy of LimeSurvey 2.50 is not better than 2.06 version. But
 
 
 ## Improvement and history ##
-* 1.0.15
+* 1.0.15/1.0.16
     * Fix bad comparaison of Number (again)
 * 1.0.14
     * Add cssclass attribute : allow to manage more easily any plugins for question
