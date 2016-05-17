@@ -5344,7 +5344,6 @@
                     switchMSSQLIdentityInsert("survey_{$this->sid}_timings", false);
                 }
             }
-
             if (count($updatedValues) > 0 || $finished)
             {
                 $query = 'UPDATE ' . $this->surveyOptions['tablename'] . ' SET ';
@@ -5375,7 +5374,6 @@
                 {
                     $val = (is_null($value) ? NULL : $value['value']);
                     $type = (is_null($value) ? NULL : $value['type']);
-
                     // Clean up the values to cope with database storage requirements : some value are fitered in ProcessCurrentResponses
                     // @todo fix whole type according to DB : use Yii for this ?
                     switch($type)
@@ -5385,7 +5383,6 @@
                             {
                                 $val=NULL;  // since some databases can't store blanks in date fields
                             }
-
                             break;
                         case '|': //File upload
                             // This block can be removed once we require 5.3 or later
@@ -5399,7 +5396,7 @@
                             {
                                 $val=NULL;  // since some databases can't store blanks in numerical inputs
                             }
-                            elseif(!preg_match("/^(\d{1,20}\.\d{0,10}|\d{1,20})$/",$val)) // DECIMAL(30,10)
+                            elseif(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$val)) // DECIMAL(30,10)
                             {
                                 // Here : we must ADD a message for the user and set the question "not valid" : show the same page + show with input-error class
                                 $val=NULL;
@@ -5409,7 +5406,6 @@
                             // @todo : control length of DB string, if answers in single choice is valid too (for example) ?
                             break;
                     }
-
                     if (is_null($val))
                     {
                         $setter[] = dbQuoteID($key) . "=NULL";
