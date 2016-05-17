@@ -141,6 +141,12 @@ class Survey extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
+
+            //permissions.entity_id=t.sid AND permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid=:userid  )
+//             $criteria->join .= "LEFT JOIN {{permissions}} AS permissions ON ( permissions.entity_id=t.sid AND permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid=:userid  ) ";
+//            $criteria->condition = 'permissions.read_p=1 or owner_id=:userid';
+
+            'permissions'     => array(self::HAS_MANY, 'Permission', array( 'entity_id'=> 'sid'  ), 'together' => true ), //
             'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language'),
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id'),
@@ -932,19 +938,32 @@ class Survey extends LSActiveRecord
         );
 
         $criteria = new CDbCriteria;
-        if (!in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
-        {
-            // Only do eager loading if not using MSSQL because there is a bug in Yii regarding this
-            $criteria->with=array('defaultlanguage','owner');
-        }
+        $criteria->together = true;
+
 
         // Permission
         if(!Permission::model()->hasGlobalPermission("surveys",'read'))
         {
-            $criteria->join .= "LEFT JOIN {{permissions}} AS permissions ON ( permissions.entity_id=t.sid AND permissions.entity='survey' AND permissions.uid=:userid  ) ";
-            $criteria->condition = 'permissions.read_p=1 or owner_id=:userid2';
-            $criteria->params=(array(':userid'=>Yii::app()->user->id,':userid2'=>Yii::app()->user->id ));
+
+/*
+            $criteria->join .= "LEFT JOIN {{permissions}} AS permissions ON ( permissions.entity_id=t.sid AND permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid=:userid  ) ";
+            $criteria->condition = 'permissions.read_p=1 or owner_id=:userid';
+            $criteria->params=(array(':userid'=>Yii::app()->user->id ));
+*/
+            $criteria->with='permissions';
+
+            //$criteria->addCondition('t1_c6=1');
+            //$criteria->compare('permissions.uid',Yii::app()->user->id);
+            $criteria->addCondition("permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid='".Yii::app()->user->id."'");
         }
+
+
+        if (!in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
+        {
+            // Only do eager loading if not using MSSQL because there is a bug in Yii regarding this
+//            $criteria->with=array('defaultlanguage','owner');
+        }
+
 
         // Search filter
         $criteria2 = new CDbCriteria;
