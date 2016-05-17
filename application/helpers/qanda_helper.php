@@ -1358,7 +1358,7 @@ function do_list_dropdown($ia)
         $optionData = array(
             'classes'=>'noanswer-item',
             'value'=>'',
-            'opt_select'=>$opt_select,
+            'opt_select'=> '', // Never selected
             'answer'=>$_prefix.gT('No answer')
         );
         // ==> rows
