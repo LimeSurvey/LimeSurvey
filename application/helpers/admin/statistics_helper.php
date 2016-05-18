@@ -3034,7 +3034,7 @@ class statistics_helper {
         {
             case "1":
                 $nbcols      = "12";
-                $canvaWidth  = "1000";
+                $canvaWidth  = "1150";
                 $canvaHeight = "800";
             break;
 
@@ -3709,7 +3709,6 @@ class statistics_helper {
                 foreach($labels as $key => $label)
                 {
                     $cleanLabel = $label;
-                    $cleanLabel = viewHelper::flatEllipsizeText($cleanLabel, true, 20);
                     $labels[$key] = $cleanLabel;
                 }
 
@@ -3733,7 +3732,7 @@ class statistics_helper {
                 $statisticsoutput .=  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_graphs', $aData, true);
 
             }
-            $statisticsoutput .= "</table></div><br /> <!-- in statistics helper --> \n";
+            $statisticsoutput .= "</table></div> <!-- in statistics helper --> \n";
         }
 
         return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$this->pdf, "astatdata"=>$astatdata);

@@ -173,6 +173,13 @@ function init_chart_js_graph_with_datas($type,$qid)
 
 $(document).ready(function() {
 
+    if($('.chartjs-container').length>0)
+    {
+        $elChartJsContainer = $('.chartjs-container').first();
+        $('.canvas-chart').width($elChartJsContainer.width());
+        console.log('$elChartJsContainer.width(): '+$elChartJsContainer.width());
+        console.log($('.canvas-chart').width());
+    }
 
     if($('#showGraphOnPageLoad').length>0)
     {
