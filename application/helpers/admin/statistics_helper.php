@@ -2821,6 +2821,8 @@ class statistics_helper {
                 {
                     $flatLabel = $al[0];
                 }
+
+                // For legend
                 $lbl[$flatLabel] = $tempcount;
 
             }
@@ -2836,6 +2838,23 @@ class statistics_helper {
 
                 $lbl[$flatLabel] = $row;
             }
+
+            // For Graph labels
+            switch($_POST['graph_labels'])
+            {
+                case 'qtext':
+                    $aGraphLabels[] = $flatLabel;
+                break;
+
+                case 'both':
+                    $aGraphLabels[] = $al[0].': '.$flatLabel;
+                break;
+
+                default:
+                    $aGraphLabels[] = $al[0];
+                break;
+            }
+
 
 
         }    //end foreach -> loop through answer data
@@ -3674,12 +3693,24 @@ class statistics_helper {
                 // We clean the labels
                 $iMaxLabelLength = 0;
 
+                // We clean the labels
+
+                // Labels for graphs
+                $iMaxLabelLength = 0;
+                foreach($aGraphLabels as $key => $label)
+                {
+                    $cleanLabel = $label;
+                    $cleanLabel = viewHelper::flatEllipsizeText($cleanLabel, true, 20);
+                    $graph_labels[$key] = $cleanLabel;
+                    $iMaxLabelLength = (strlen( $cleanLabel ) > $iMaxLabelLength)?strlen( $cleanLabel ):$iMaxLabelLength;
+                }
+
+                // Labels for legend
                 foreach($labels as $key => $label)
                 {
-                    $cleanLabel = str_replace('"', " ", $label);
-                    $cleanLabel = preg_replace( "/\r|\n/", "", $cleanLabel );
+                    $cleanLabel = $label;
+                    $cleanLabel = viewHelper::flatEllipsizeText($cleanLabel, true, 20);
                     $labels[$key] = $cleanLabel;
-                    $iMaxLabelLength = (strlen( $cleanLabel ) > $iMaxLabelLength)?strlen( $cleanLabel ):$iMaxLabelLength;
                 }
 
                 $iCanvaHeight = $iMaxLabelLength * 3;
@@ -3688,6 +3719,7 @@ class statistics_helper {
                 $qqid = str_replace ('#', '_', $qqid);
                 $aData['rt'] = $rt;
                 $aData['qqid'] = $qqid;
+                $aData['graph_labels'] = $graph_labels;
                 $aData['labels'] = $labels;
                 //$aData['COLORS_FOR_SURVEY'] = COLORS_FOR_SURVEY;
                 $aData['charttype'] = (isset($charttype))?$charttype:'Bar';

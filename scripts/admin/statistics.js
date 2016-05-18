@@ -26,14 +26,14 @@ var COLORS_FOR_SURVEY = new Array('20,130,200','232,95,51','34,205,33','210,211,
        this.each(function(){
            var $elem = $(this);
            var $type = $elem.data('type');
-           var $qid = $elem.data('qid');
+           var $qid  = $elem.data('qid');
 
            $(window).scroll(function() {
-               var $window = $(window);
-               var docViewTop = $window.scrollTop();
+               var $window       = $(window);
+               var docViewTop    = $window.scrollTop();
                var docViewBottom = docViewTop + $window.height();
-               var elemTop = $elem.offset().top;
-               var elemBottom = elemTop + $elem.height();
+               var elemTop       = $elem.offset().top;
+               var elemBottom    = elemTop + $elem.height();
 
                if((elemBottom <= docViewBottom) && (elemTop >= docViewTop))
                {
@@ -68,7 +68,7 @@ var COLORS_FOR_SURVEY = new Array('20,130,200','232,95,51','34,205,33','210,211,
        this.each(function(){
            var $elem = $(this);
            var $type = $elem.data('type');
-           var $qid = $elem.data('qid');
+           var $qid  = $elem.data('qid');
 
            // chartjs
 
@@ -94,12 +94,12 @@ var COLORS_FOR_SURVEY = new Array('20,130,200','232,95,51','34,205,33','210,211,
  */
 function init_chart_js_graph_with_datasets($type,$qid)
 {
-    var canvasId = 'chartjs-'+$qid;
-    var $canvas = document.getElementById(canvasId).getContext("2d");
-    var $canva = $('#'+canvasId);
-    var $labels = eval("labels_"+$qid);
+    var canvasId  = 'chartjs-'+$qid;
+    var $canvas   = document.getElementById(canvasId).getContext("2d");
+    var $canva    = $('#'+canvasId);
+    var $labels   = eval("labels_"+$qid);
     var $grawdata = eval("grawdata_"+$qid);
-    var $color = $canva.data('color');
+    var $color    = $canva.data('color');
 
     if (typeof chartjs != "undefined") {
         if (typeof chartjs[$qid] != "undefined") {
