@@ -49,6 +49,38 @@ class SurveyAdmin extends Survey_Common_Action
         $this->getController()->redirect(array('admin/survey/sa/listsurveys'));
     }
 
+    /**
+     * @param string $sSurveys  :json string containing the list of survey to delete
+     */
+    public function deleteMultipleSurveys($sSurveys)
+    {
+        var_dump($sSurveys);
+    }
+
+    /**
+     * @param string $sSurveys  :json string containing the list of survey to delete
+     */
+    public function activateMultipleSurveys($sSurveys)
+    {
+        var_dump($sSurveys);
+    }
+
+    /**
+     * @param string $sSurveys  :json string containing the list of survey to delete
+     */
+    public function deactivateMultipleSurveys($sSurveys)
+    {
+        var_dump($sSurveys);
+    }
+
+    /**
+     * @param string $sSurveys  :json string containing the list of survey to delete
+     */
+    public function exportMultipleSurveys($sSurveys)
+    {
+        var_dump($sSurveys);
+    }
+
     public function listsurveys()
     {
         Yii::app()->loadHelper('surveytranslator');

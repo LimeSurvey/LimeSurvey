@@ -44,6 +44,42 @@ $(document).ready(function(){
     });
 
 
+    if($('#surveyListActions').length>0){
+        $elSurveyActions = $('#surveyListActions');
+        $surveyActions = $('#surveyListActions a');
+
+        $surveyActions.each(function(){
+            $(this).on('click', function(){
+                $that        = $(this);
+                $action      = $(this).data('action');
+                $ActionUrl   = $(this).data('url');
+                $checkedSid  = $.fn.yiiGridView.getChecked('survey-grid', 'sid');
+                $modal       = $('#confirmation-modal');
+                $ActionUrl   = $ActionUrl + '/sSurveys/'+$checkedSid;
+
+                $modal.data('href', $ActionUrl);
+                $modal.find('.modal-title').text('Warning!');
+                $modal.find('.modal-body-text').text("Are you sure you want to "+$action+" all those surveys?");
+                $modal.modal();
+
+
+/*
+                switch($action)
+                {
+                    case 'delete':
+                        $modal.data('href', $ActionUrl);
+                        console.log($modal.data('href'));
+                        $modal.find('.modal-title').text('Warning!');
+                        $modal.find('.modal-body-text').text("Are you sure you want to delete all those surveys?");
+                        $modal.modal();
+                    break;
+                }
+*/
+        });
+        });
+    }
+
+
     /* Switch format group */
     if ($('#switchchangeformat').length>0){
         $('#switchchangeformat button').on('click', function(event, state) {
@@ -165,12 +201,21 @@ $(document).ready(function(){
      * or data-onclick to be run when OK is clicked.
      */
     $('#confirmation-modal').on('show.bs.modal', function(e) {
-        // .btn-ok is the confirm <a> in the modal
-        var href = $(e.relatedTarget).data('href');
+
+        if($(this).data('href'))
+        {
+            var href = $(this).data('href');    // When calling modal from javascript
+        }
+        else
+        {
+            var href = $(e.relatedTarget).data('href');
+        }
+
         var onclick = $(e.relatedTarget).data('onclick');
 
-        if (href != '' && href !== undefined) {
-            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        if (href != '' && href !== undefined)
+        {
+            $(this).find('.btn-ok').attr('href', href);
         }
         else if (onclick != '' && onclick !== undefined) {
 

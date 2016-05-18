@@ -7,12 +7,45 @@
 */
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
-<div class="col-lg-12 list-surveys">
+<div class="col-sm-12 list-surveys">
     <h3><?php eT('Survey list'); ?></h3>
 
     <!-- Search Box -->
     <div class="row">
-        <div class="col-lg-12">
+
+        <div class="col-sm-4 pull-left" id="surveyListActions">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <?php eT('With selected survey:');?>
+            <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="surveyListActions" style="left: 15px;">
+              <li>
+                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/deleteMultipleSurveys/');?>" data-action="delete">
+                      <span class="text-danger glyphicon glyphicon-trash"></span>
+                      <?php eT('Delete');?>
+                  </a>
+              </li>
+              <li>
+                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/activateMultipleSurveys/');?>" data-action="activate">
+                      <span class="fa fa-play text-success"></span><?php eT('Activate');?>
+                  </a>
+              </li>
+              <li>
+                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/deactivateMultipleSurveys/');?>" data-action="deactivate">
+                      <span class="fa fa-stop text-warning"></span>
+                      <?php eT('Deactivate');?>
+                  </a>
+              </li>
+              <li>
+                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/exportMultipleSurveys/');?>" data-action="export">
+                      <span class="icon-export"></span>
+                      <?php eT('Export');?>
+                  </a>
+              </li>
+            </ul>
+        </div>
+
+        <div class="pull-right">
             <div class="form text-right">
                 <!-- Begin Form -->
                 <?php $form=$this->beginWidget('CActiveForm', array(
@@ -50,9 +83,9 @@
 
     <!-- Grid -->
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-sm-12 content-right">
             <?php
-            $this->widget('bootstrap.widgets.TbGridView', array(
+            $surveyGrid = $this->widget('bootstrap.widgets.TbGridView', array(
                 'dataProvider' => $model->search(),
 
                 // Number of row per page selection
@@ -66,12 +99,21 @@
                         array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
 
                 'columns' => array(
+
+                    array(
+                        'id'=>'sid',
+                        'class'=>'CCheckBoxColumn',
+                        'selectableRows' => '100',
+                    ),
+
                     array(
                         'header' => gT('Survey ID'),
                         'name' => 'survey_id',
                         'value'=>'$data->sid',
                         'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                        'htmlOptions' => array('class' => 'hidden-xs')
+                        'htmlOptions' => array('class' => 'hidden-xs'),
+                        //'footer'=>$this->renderPartial('//admin/survey/subview/_surveys_list_footer', array(), true),
+                        //'oneRowFooter'=>true,
                     ),
 
                     array(
@@ -162,6 +204,7 @@
             ?>
         </div>
     </div>
+    <?php $this->renderPartial('//admin/survey/subview/_surveys_list_footer', array()); ?>
 </div>
 
 <!-- To update rows per page via ajax -->
