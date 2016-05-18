@@ -1100,24 +1100,12 @@ class questions extends Survey_Common_Action
         // NB: gid won't be set if user clicks quick-button Add question
         if (isset($_GET['gid']))
         {
-
             $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$_GET['gid']));
-            //$oqresult = $oQuestionGroup->questions;
-            /*
-            $oqresult = Question::model()->findAllByAttributes(array(
-                'sid' => $surveyid,
-                'gid' => $_GET['gid'],
-                'language' => $baselang,
-                'parent_qid'=> 0
-            ), array(
-                'order' => 'question_order'
-            ));
-            */
-            //$aData['oqresult'] = $oqresult;
         }
         else
         {
             $aData['oqresult'] = array();
+            $oQuestionGroup = QuestionGroup::model()->find(array('condition'=>'sid=:sid', 'params'=> array(':sid'=>$surveyid), 'order'=>'group_order') );
         }
         $aData['oQuestionGroup'] = $oQuestionGroup;
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'questions.js');

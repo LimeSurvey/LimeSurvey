@@ -177,8 +177,6 @@ $(document).ready(function() {
     {
         $elChartJsContainer = $('.chartjs-container').first();
         $('.canvas-chart').width($elChartJsContainer.width());
-        console.log('$elChartJsContainer.width(): '+$elChartJsContainer.width());
-        console.log($('.canvas-chart').width());
     }
 
     if($('#showGraphOnPageLoad').length>0)
