@@ -1586,7 +1586,7 @@ fieldset[disabled] .btn-link:focus {
 table.cke_editor {
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.16); }
 
-.hoverAction tr:hover {
+.hoverAction tbody tr:hover {
   color: #ffffff;
   background-color: #262626; }
 

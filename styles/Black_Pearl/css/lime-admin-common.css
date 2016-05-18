@@ -1385,12 +1385,12 @@ input:focus, textarea:focus {
 .data-entry-tbl tr.odd td, .data-entry-tbl tr.even td {
   padding: 20px 0 20px 0; }
 
-h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
+h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-right {
   position: absolute;
   right: 1em;
   top: 10px; }
 
-h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down {
+h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-right {
   cursor: pointer; }
 
 /**
@@ -1870,4 +1870,18 @@ text-decoration:none;
 
 #displayResponsesContainer .ui-jqgrid-bdiv, #gbox_displaytokens .ui-jqgrid-bdiv {
     overflow: hidden;
+}
+
+h1,.h1{
+    font-size: 24px;
+}
+h2,.h2{
+    font-size: 22px;
+}
+h3,.h3 {
+    font-size: 20px;
+}
+
+.statisticstable {
+    word-wrap: break-word;
 }
