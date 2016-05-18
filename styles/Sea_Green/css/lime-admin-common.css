@@ -1881,3 +1881,7 @@ h2,.h2{
 h3,.h3 {
     font-size: 20px;
 }
+
+.statisticstable {
+    word-wrap: break-word;
+}

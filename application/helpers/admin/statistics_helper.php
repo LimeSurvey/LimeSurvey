@@ -2387,7 +2387,6 @@ class statistics_helper {
     */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
-
         /* Set up required variables */
         $TotalCompleted     = 0; //Count of actually completed answers
         $statisticsoutput   = "";
@@ -3009,19 +3008,45 @@ class statistics_helper {
             }
         }
 
+        // Columns
+        $statsColumns = $_POST['stats_columns'];
 
+        switch($statsColumns)
+        {
+            case "1":
+                $nbcols      = "12";
+                $canvaWidth  = "1000";
+                $canvaHeight = "800";
+            break;
+
+            case "3":
+                $nbcols = "4";
+                $canvaWidth = "333";
+                $canvaHeight = "500";
+            break;
+
+            default:
+                $nbcols = "6";
+                $canvaWidth = "500";
+                $canvaHeight = "500";
+            break;
+        }
+
+        //
         //counter
         $i=0;
-
         //we need to know which item we are editing
         $itemcounter = 1;
 
-        $aData['outputs'] = (isset($outputs))?$outputs:'';
-        $aData['bSum'] = (isset($bSum))?$bSum:false;
-        $aData['bAnswer'] = (isset($bAnswer))?$bAnswer:false;
-        $aData['bShowCount'] = (isset($bShowCount))?$bShowCount:false;
+        $aData['nbcols']          = $nbcols;
+        $aData['canvaWidth']      = $canvaWidth;
+        $aData['canvaHeight']     = $canvaHeight;
+        $aData['outputs']         = (isset($outputs))?$outputs:'';
+        $aData['bSum']            = (isset($bSum))?$bSum:false;
+        $aData['bAnswer']         = (isset($bAnswer))?$bAnswer:false;
+        $aData['bShowCount']      = (isset($bShowCount))?$bShowCount:false;
         $aData['bShowPercentage'] = (isset($bShowPercentage))?$bShowPercentage:false;
-        $statisticsoutput =  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_header', $aData, true);
+        $statisticsoutput         =  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_header', $aData, true);
 
         //loop through all available answers
         ////

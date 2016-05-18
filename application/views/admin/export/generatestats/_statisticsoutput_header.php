@@ -5,10 +5,11 @@
  * @var $outputs
  * @var $bSum
  * @var $bAnswer
+ * @var $nbcols
  */
 ?>
 <!-- _statisticsoutput_header -->
-<div class="col-lg-6 sol-sm-12">
+<div class="col-lg-<?php echo $nbcols; ?> sol-sm-12">
 <table class='statisticstable table table-bordered'>
     <thead>
         <tr class='success'>
