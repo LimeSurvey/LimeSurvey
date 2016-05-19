@@ -56,6 +56,8 @@
                 <filename>css/template-rtl.css</filename>
             </css>
             <js>
+                <filename>scripts/template.js</filename>
+                <filename>scripts/bootstrap-slider.js</filename>
             </js>
             <print_css>
                 <filename>css/print_template-rtl.css</filename>
