@@ -7,28 +7,28 @@
 
 <!-- Footer -->
 <footer class='footer'>
-	<div class="container-fluid">
-		<div class="row">
-		    <!-- Link to manual -->
-		    <div class="col-xs-6 col-md-4 col-lg-1 ">
-		    	<a href='http://manual.limesurvey.org' onclick='function go(ev) { ev.preventDefault(); var win = window.open("http://manual.limesurvey.org", "_blank"); win.focus(); }; go(event);'>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Link to manual -->
+            <div class="col-xs-6 col-md-4 col-lg-1 ">
+                <a href='http://manual.limesurvey.org' onclick='function go(ev) { ev.preventDefault(); var win = window.open("http://manual.limesurvey.org", "_blank"); win.focus(); }; go(event);'>
                     <span class="glyphicon glyphicon-info-sign" id="info-footer"></span>
                 </a>
-		    </div>
+            </div>
 
-		    <!-- Support / Donate -->
-		    <div  class="col-xs-6 col-md-4  col-lg-5 text-right"  >
-		    	<a href='http://donate.limesurvey.org'>
+            <!-- Support / Donate -->
+            <div  class="col-xs-6 col-md-4  col-lg-5 text-right"  >
+                <a href='http://donate.limesurvey.org'>
                     <img alt='<?php eT("Support this project - Donate to "); ?>LimeSurvey' title='<?php eT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
                 </a>
-		    </div>
+            </div>
 
-		    <!-- Lime survey website -->
-		    <div class="col-xs-6 col-md-4 col-lg-6 text-right">
-		    	<a  title='<?php eT("Visit our website!"); ?>' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br /><?php echo $versiontitle."  ".$versionnumber." ".$buildtext;?>
-		    </div>
-		</div>
-	</div>
+            <!-- Lime survey website -->
+            <div class="col-xs-6 col-md-4 col-lg-6 text-right">
+                <a  title='<?php eT("Visit our website!"); ?>' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br /><?php echo $versiontitle."  ".$versionnumber." ".$buildtext;?>
+            </div>
+        </div>
+    </div>
 </footer>
 
 <!-- Modal for confirmation -->
@@ -42,6 +42,19 @@
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("Are you sure?"); ?></p>
+                <!-- the ajax loader -->
+                <div id="ajaxContainerLoading" >
+                    <p><?php eT('Please wait, loading data...');?></p>
+                    <div class="preloader loading">
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <a class="btn btn-primary btn-ok"><span class='fa fa-check'></span>&nbsp;<?php eT("Yes"); ?></a>

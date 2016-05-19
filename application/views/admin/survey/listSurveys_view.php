@@ -20,24 +20,24 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="surveyListActions" style="left: 15px;">
               <li>
-                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/deleteMultipleSurveys/');?>" data-action="delete">
+                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/deleteMultipleSurveys/');?>" data-action="delete" data-action-title="<?php eT('Delete surveys'); ?>">
                       <span class="text-danger glyphicon glyphicon-trash"></span>
                       <?php eT('Delete');?>
                   </a>
               </li>
               <li>
-                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/activateMultipleSurveys/');?>" data-action="activate">
+                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/activateMultipleSurveys/');?>" data-action="activate" data-action-title="<?php eT('Activate surveys'); ?>">
                       <span class="fa fa-play text-success"></span><?php eT('Activate');?>
                   </a>
               </li>
               <li>
-                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/deactivateMultipleSurveys/');?>" data-action="deactivate">
+                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/deactivateMultipleSurveys/');?>" data-action="deactivate" data-action-title="<?php eT('Deactivate surveys'); ?>">
                       <span class="fa fa-stop text-warning"></span>
                       <?php eT('Deactivate');?>
                   </a>
               </li>
               <li>
-                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/exportMultipleSurveys/');?>" data-action="export">
+                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/exportMultipleSurveys/');?>" data-action="export"  data-action-title="<?php eT('Export surveys'); ?>">
                       <span class="icon-export"></span>
                       <?php eT('Export');?>
                   </a>
@@ -206,8 +206,6 @@
     </div>
     <?php $this->renderPartial('//admin/survey/subview/_surveys_list_footer', array()); ?>
 </div>
-
-<!-- Mass action popup -->
 
 
 <!-- To update rows per page via ajax -->

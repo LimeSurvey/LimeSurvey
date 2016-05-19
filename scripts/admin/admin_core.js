@@ -44,6 +44,9 @@ $(document).ready(function(){
     });
 
 
+    /*
+     * Survey List mass actions
+     */
     if($('#surveyListActions').length>0){
         $elSurveyActions = $('#surveyListActions');
         $surveyActions = $('#surveyListActions a');
@@ -52,12 +55,23 @@ $(document).ready(function(){
             $(this).on('click', function(){
                 $that        = $(this);
                 $action      = $(this).data('action');
+                $actionTitle = $(this).data('action-title');
                 $ActionUrl   = $(this).data('url');
                 $checkedSid  = $.fn.yiiGridView.getChecked('survey-grid', 'sid');
                 $modal       = $('#confirmation-modal');
                 $ActionUrl   = $ActionUrl + '/sSurveys/'+$checkedSid;
 
-                $modal.data('href', $ActionUrl);
+                $modal.data('keepopen', true);
+                $modal.data('onclick', function(){
+                    //$modal.modal('hide');
+                    $modal.find('.modal-title').text($actionTitle);
+                    $modal.find('.modal-body-text').empty();                    
+                    $modal.find('.modal-footer').empty();
+                    $ajaxLoader = $("#ajaxContainerLoading");
+                    $ajaxLoader.show();
+                    //$modal.find('.modal-body-text').html('<h1>TOTO</h1>');
+                });
+
                 $modal.find('.modal-title').text('Warning!');
                 $modal.find('.modal-body-text').text("Are you sure you want to "+$action+" all those surveys?");
                 $modal.modal();
@@ -211,8 +225,16 @@ $(document).ready(function(){
             var href = $(e.relatedTarget).data('href');
         }
 
-        var onclick = $(e.relatedTarget).data('onclick');
+        if($(this).data('onclick'))
+        {
+            var onclick = $(this).data('onclick');
+        }
+        else
+        {
+            var onclick = $(e.relatedTarget).data('onclick');
+        }
 
+        $keepopen = $(this).data('keepopen');
         if (href != '' && href !== undefined)
         {
             $(this).find('.btn-ok').attr('href', href);
@@ -223,7 +245,10 @@ $(document).ready(function(){
 
             if (typeof onclick_fn == 'function') {
                 $(this).find('.btn-ok').on('click', function(ev) {
-                    $('#confirmation-modal').modal('hide');
+                    if(! $keepopen )
+                    {
+                        $('#confirmation-modal').modal('hide');
+                    }
                     onclick_fn();
                 });
             }
