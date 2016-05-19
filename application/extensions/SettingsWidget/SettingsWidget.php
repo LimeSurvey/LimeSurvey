@@ -220,7 +220,7 @@ class SettingsWidget extends CWidget
 
     /**
      * Echo additional HTML, without any magic
-     * 
+     *
      * @since 2015-12-16
      * @author Olle Haerstedt
      */
@@ -334,8 +334,7 @@ class SettingsWidget extends CWidget
 
     public function renderCheckbox($name, array $metaData, $form = null)
     {
-
-        $htmlOptions = $this->htmlOptions($metaData,$form);
+        $htmlOptions = $this->htmlOptions($metaData,$form,array('uncheckValue'=>false));
         $value = isset($metaData['current']) ? (bool) $metaData['current'] : false;
         return CHtml::checkBox($name, $value,$htmlOptions);
     }
@@ -501,7 +500,7 @@ class SettingsWidget extends CWidget
             unset($itemMetaData['label']);
             $itemMetaData['controlOptions']['class']=(isset($itemMetaData['controlOptions']['class']))?$itemMetaData['controlOptions']['class']:'default';
             //$cells .= CHtml::tag('td', array(), $this->renderSetting($itemName . '[]', $itemMetaData, $form, true,false));
-            // TODO $itemMetaData['htmlOtions']['id']=$itemName.$key or something like this 
+            // TODO $itemMetaData['htmlOtions']['id']=$itemName.$key or something like this
             $cells .= $this->renderSetting($itemName . '[]', $itemMetaData, $form, true,'td');
         }
         $headers .= CHtml::tag('th');
