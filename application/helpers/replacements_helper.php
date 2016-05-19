@@ -139,28 +139,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             // So, dev don't need to update the directory date to get the new version of their template.
             // They must think about refreshing their brower's cache (ctrl + F5)
 
-            $aCssFiles = $oTemplate->config->files->css->filename;
-            $aJsFiles = $oTemplate->config->files->js->filename;
             $aOtherFiles = $oTemplate->otherFiles;
 
             //var_dump($aCssFiles);var_dump($aJsFiles);die();
-
-            foreach($aCssFiles as $sCssFile)
-            {
-                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
-                {
-                    Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile",$sCssFile['media']);
-                }
-            }
-
-            foreach($aJsFiles as $sJsFile)
-            {
-                if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
-                {
-                    Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
-                }
-            }
-
 
             /* RTL CSS & JS */
             if (getLanguageRTL(App()->language))
@@ -173,6 +154,27 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                     if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
                     {
                         Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
+                    }
+                }
+
+                foreach($aJsFiles as $sJsFile)
+                {
+                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sJsFile))
+                    {
+                        Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
+                    }
+                }
+            }
+            else
+            {
+                $aCssFiles = $oTemplate->config->files->css->filename;
+                $aJsFiles = $oTemplate->config->files->js->filename;
+
+                foreach($aCssFiles as $sCssFile)
+                {
+                    if (file_exists($oTemplate->path .DIRECTORY_SEPARATOR. $sCssFile))
+                    {
+                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile",$sCssFile['media']);
                     }
                 }
 
