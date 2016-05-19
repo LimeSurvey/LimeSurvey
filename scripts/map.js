@@ -52,23 +52,23 @@ function OSGeoInitialize(question,latLng){
 		if(isNaN(MapOption.longitude) || MapOption.longitude==""){
 			MapOption.longitude=0;
 		}
-		var mapquestOSM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
+		var mapquestOSM = L.tileLayer("//{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
 			maxZoom: 19,
 			subdomains: ["otile1", "otile2", "otile3", "otile4"],
-			attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>. Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
+			attribution: 'Tiles courtesy of <a href="//www.mapquest.com/" target="_blank">MapQuest</a>. Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
 		});
-		var mapquestOAM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
+		var mapquestOAM = L.tileLayer("//{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
 			maxZoom: 10,
 			subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
-			attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+			attribution: 'Tiles courtesy of <a href="//www.mapquest.com/" target="_blank">MapQuest</a>. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
 		});
-		var mapquestHYB = L.layerGroup([L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
+		var mapquestHYB = L.layerGroup([L.tileLayer("//{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
 			maxZoom: 10,
 			subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"]
-		}), L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/hyb/{z}/{x}/{y}.png", {
+		}), L.tileLayer("//{s}.mqcdn.com/tiles/1.0.0/hyb/{z}/{x}/{y}.png", {
 			maxZoom: 19,
 			subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
-			attribution: 'Labels courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>. Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+			attribution: 'Labels courtesy of <a href="//www.mapquest.com/" target="_blank">MapQuest</a>. Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
 		})]);
 
 		var baseLayers = {
@@ -178,7 +178,7 @@ function OSGeoInitialize(question,latLng){
 			appendTo: $("#searchbox_"+name).parent(),
 			source: function( request, response ) {
 				$.ajax({
-					url: "http://api.geonames.org/searchJSON",
+					url: "//api.geonames.org/searchJSON",
 					dataType: "jsonp",
 					data: {
 						username : LSmap.geonameUser,
@@ -292,6 +292,16 @@ function GMapsInitialize(question,lat,lng) {
 		//map.panTo(event.latLng);
 		geocodeAddress(name, event.latLng);
 		$("#answer"+question).val(Math.round(event.latLng.lat()*10000)/10000 + " " + Math.round(event.latLng.lng()*10000)/10000);
+	});
+
+	$("#answer"+question).on('input', function() {
+		var c = $("#answer"+question).val().split(" ");
+		if (c.length === 2) {
+			var latLng = new google.maps.LatLng(c[0], c[1]);
+			map.panTo(latLng);
+			marker.setPosition(latLng);
+			geocodeAddress(name, latLng);
+		}
 	});
 }
 

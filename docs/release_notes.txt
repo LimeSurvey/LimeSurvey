@@ -60,6 +60,15 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.06LTS (build 160417) to 2.06LTS (build 160511) May 12, 2016
+-Fixed issue #10474: Characters not accepted for "save & resume later" passwords in links sent by email (Carsten Schmitz)
+-Fixed issue #10846: Checked responses are not read when load "surveys file" (Denis Chenu)
+-Fixed issue #10975: "Please wait connecting to server" is not changing in darkblue theme (LouisGac)
+-Fixed issue #10996: If an invalid admin theme is set (e.g. after upgrade) the global settings are not properly read (Carsten Schmitz)
+-Fixed issue #11145: PHP memory_limit being set too low even though php.in defines a higher one (Carsten Schmitz)
+-Fixed issue #9966: Unable to export result as PDF (Carsten Schmitz)
+-Fixed issue : Bad link for Browse uploaded ressources if publicurl is set (Denis Chenu)
+
 Changes from 2.06LTS (build 160329) to 2.06LTS (build 160417) April 17, 2016
 -Fixed issue #10222: Attachments for registration emails don't get attached (Carsten Schmitz)
 -Fixed issue #10474: Some characters not accepted for "save & resume later" passwords in links sent by email (Carsten Schmitz)

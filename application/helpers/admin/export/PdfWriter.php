@@ -62,7 +62,7 @@ class PdfWriter extends Writer
             {
                 if ($gid != 0)
                 {
-                    $this->pdf->addGidAnswer($questions[0]['group_name']);
+                    $this->pdf->addGidAnswer($questions[0]['group_name'],'');
                 }
                 foreach ($questions as $question)
                 {

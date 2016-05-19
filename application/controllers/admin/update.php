@@ -91,7 +91,6 @@ class update extends Survey_Common_Action
         {
             // We get the update key in the database. If it's empty, getWelcomeMessage will return subscription
             $updateKey = getGlobalSetting("update_key");
-            //$updateKey = SettingGlobal::model()->findByPk('update_key')->stg_value;
             $updateModel = new UpdateForm();
             $destinationBuild = $_REQUEST['destinationBuild'];
                $welcome = (array) $updateModel->getWelcomeMessage($updateKey, $destinationBuild);
@@ -214,7 +213,7 @@ class update extends Survey_Common_Action
             if (Yii::app()->request->getPost('destinationBuild'))
             {
                 $destinationBuild = Yii::app()->request->getPost('destinationBuild');
-                $access_token = $_REQUEST['access_token'];
+                $access_token     = $_REQUEST['access_token'];
 
                 if (Yii::app()->request->getPost('datasupdateinfo'))
                 {
@@ -294,9 +293,9 @@ class update extends Survey_Common_Action
                                 Yii::app()->session['security_update'] = null;
                                 $today = new DateTime("now");
                                 Yii::app()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
-
+                                Yii::app()->cache->flush();
                                 // TODO : aData should contains information about each step
-                                return $this->controller->renderPartial('update/updater/steps/_final', array(), false, false);
+                                return $this->controller->renderPartial('update/updater/steps/_final', array('destinationBuild'=>$destinationBuild), false, false);
                             }
                             else
                             {

@@ -3,7 +3,7 @@
     class SettingsWidget extends CWidget
     {
         protected static $counter = 0;
-        
+
         public $action;
         /**
          *
@@ -178,7 +178,7 @@
 
         public function run() {
             parent::run();
-            
+
             // Render settings
             $this->renderSettings();
             // Render buttons
@@ -288,7 +288,7 @@
         public function renderCheckbox($name, array $metaData, $form = null)
         {
 
-            $htmlOptions = $this->htmlOptions($metaData,$form);
+            $htmlOptions = $this->htmlOptions($metaData,$form,array('uncheckValue'=>false));
             $value = isset($metaData['current']) ? (bool) $metaData['current'] : false;
             return CHtml::checkBox($name, $value,$htmlOptions);
         }
@@ -317,7 +317,7 @@
                 ), true)
             );
         }
-        
+
         public function renderInfo($name, array $metaData, $form = null)
         {
             $value = isset($metaData['content']) ? $metaData['content'] : '';
@@ -357,14 +357,14 @@
             $htmlOptions = $this->htmlOptions($metaData);
             return CHtml::image($metaData['path'],$alt,$htmlOptions);
         }
-        
+
         public function renderRadio($name, array $metaData, $form = null)
         {
             $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : null);
             $htmlOptions = $this->htmlOptions($metaData,$form);
             return CHtml::radioButtonList($name, $value, $metaData['options'],$htmlOptions);
         }
-        
+
         public function renderRelevance($name, array $metaData, $form = null)
         {
             $metaData['class'][] = 'relevance';
@@ -448,7 +448,7 @@
                 unset($itemMetaData['label']);
                 $itemMetaData['controlOptions']['class']=(isset($itemMetaData['controlOptions']['class']))?$itemMetaData['controlOptions']['class']:'default';
                 //$cells .= CHtml::tag('td', array(), $this->renderSetting($itemName . '[]', $itemMetaData, $form, true,false));
-                // TODO $itemMetaData['htmlOtions']['id']=$itemName.$key or something like this 
+                // TODO $itemMetaData['htmlOtions']['id']=$itemName.$key or something like this
                 $cells .= $this->renderSetting($itemName . '[]', $itemMetaData, $form, true,'td');
             }
             $headers .= CHtml::tag('th');
@@ -458,7 +458,7 @@
                     array('icon' => 'icon-minus', 'htmlOptions' => array('class' => 'remove')),
                     array('icon' => 'icon-plus', 'htmlOptions' => array('class' => 'add')),
                 )
-                
+
             ), true));
             $out .= CHtml::openTag('table',array('class'=>'settings activecell'));
             // Create header row.

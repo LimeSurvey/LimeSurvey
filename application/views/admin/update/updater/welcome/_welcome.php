@@ -8,7 +8,6 @@
 ?>
 
 <?php $urlNew = Yii::app()->createUrl("admin/globalsettings", array("update"=>'newKey', 'destinationBuild' => $serverAnswer->destinationBuild)); ?>
-
 <h2 class="maintitle"><?php eT('Welcome to the LimeSurvey ComfortUpdate!');?></h2>
 
 <?php

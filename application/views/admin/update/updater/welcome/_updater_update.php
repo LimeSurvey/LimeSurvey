@@ -11,8 +11,6 @@
 ?>
 
 <div class="updater-background">
-    <?php eT("It seems you didn't update your LimeSurvey installation regularly.");?>
-    <br/>
     <?php eT("Before you proceed to the LimeSurvey update, we must first update ComfortUpdate itself.");?>
     <br/>
     <?php eT("At the end of the process we'll proceed to the LimeSurvey update.");?>
