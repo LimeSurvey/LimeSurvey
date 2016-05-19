@@ -42,10 +42,17 @@
         -->
         <rtl>
             <css>
-                <filename>css/template-rtl.css</filename>
+                <filename>css/jquery-ui-custom-rtl.css</filename>
+                <filename>css/bootstrap-slider-rtl.css</filename>
+                <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css</filename>
+                <filename>css/ubuntu_orange-rtl.css</filename>
+                <filename>css/template-rtl-rtl.css</filename>
             </css>
             <js>
             </js>
+            <print_css>
+                <filename>css/print_template-rtl.css</filename>
+            </print_css>
         </rtl>
         <!-- The logo is used for now only for Surveys List  -->
         <logo>
