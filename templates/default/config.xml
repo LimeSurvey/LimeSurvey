@@ -45,7 +45,7 @@
         <!--
             Those files will be loaded for right to left languages only
             NOTE 1: If for any reason, you need to edit the RTL behaviors, feel free to contact the LimeSurvey team about it.
-            We'll be always pleased to make better the right to left display
+            We'll be always pleased to make the right to left display better.
 
             NOTE 2: those files are generated with the script R2. See: https://github.com/ded/R2
         -->
@@ -53,11 +53,17 @@
             <css>
                 <filename>css/jquery-ui-custom-rtl.css</filename>
                 <filename>css/bootstrap-slider-rtl.css</filename>
+                <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css</filename>
                 <filename>css/flat_and_modern-rtl.css</filename>
                 <filename>css/template-rtl.css</filename>
             </css>
             <js>
+                <filename>scripts/template.js</filename>
+                <filename>scripts/bootstrap-slider.js</filename>
             </js>
+            <print_css>
+                <filename>css/print_template-rtl.css</filename>
+            </print_css>
         </rtl>
 
         <!-- The logo is used for now only for Surveys List  -->
