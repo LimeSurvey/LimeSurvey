@@ -34,9 +34,27 @@
                 } ?>
                 <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
                 <?php echo CHtml::hiddenField('datestamp',$esrow['datestamp']); // Maybe use a readonly dropdown? ?>
-                <?php } else { ?>
-                    <?php echo CHtml::dropDownList('datestamp', $esrow['datestamp'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped')),array('onchange'=>'alertDateStampAnonymization();', 'class'=>"form-control" )); ?>
-            <?php } ?>
+                <?php }
+                else {
+                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'datestamp',
+                    'value'=> $esrow['datestamp'] == "Y",
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off'),
+                    'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
+                        if ($('#anonymized').is(':checked') == true) {
+                          $('#datestampModal').modal();
+                        }
+                    }")
+                    ));
+                    $this->widget('bootstrap.widgets.TbModal', array(
+                        'id' => 'datestampModal',
+                        'header' => gt('Warning','unescaped'),
+                        'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.").'</p>',
+                        'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
+                    ));
+                    }
+                ?>
         </div>
     </div>
 
@@ -52,9 +70,14 @@
                 } ?>
                 <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
                 <?php echo CHtml::hiddenField('ipaddr',$esrow['ipaddr']); // Maybe use a readonly dropdown ??>
-                <?php } else { ?>
-                    <?php echo CHtml::dropDownList('ipaddr', $esrow['ipaddr'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped')), array('class'=>"form-control")); ?>
-                <?php } ?>
+                <?php } else {
+                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'ipaddr',
+                    'value'=> $esrow['ipaddr'] == "Y",
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off')
+                    ));
+                } ?>
         </div>
     </div>
 
@@ -70,9 +93,14 @@
                 } ?>
                 <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
                 <?php echo CHtml::hiddenField('refurl',$esrow['refurl']); // Maybe use a readonly dropdown ??>
-                <?php } else { ?>
-                    <?php echo CHtml::dropDownList('refurl', $esrow['refurl'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped')), array('class'=>"form-control")); ?>
-            <?php } ?>
+                <?php } else {
+                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'refurl',
+                    'value'=> $esrow['refurl'] == "Y",
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off')
+                    ));
+             } ?>
         </div>
     </div>
 
@@ -89,25 +117,42 @@
                 <?php echo CHtml::hiddenField('savetimings',$esrow['savetimings']); // Maybe use a readonly dropdown ??>
                 <?php }
                 else
-                { ?>
-                    <?php echo CHtml::dropDownList('savetimings', $esrow['savetimings'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped')), array('class'=>"form-control")); ?>
-            <?php } ?>
+                {
+                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'savetimings',
+                    'value'=> $esrow['savetimings'] == "Y",
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off')
+                    ));
+                } ?>
         </div>
     </div>
 
     <!-- Enable assessment mode -->
     <div class="form-group">
         <label class="col-sm-5 control-label" for='assessments'><?php  eT("Enable assessment mode:"); ?></label>
-        <div class="col-sm-7">
-            <?php echo CHtml::dropDownList('assessments', $esrow['assessments'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped')), array('class'=>"form-control")); ?>
-        </div>
+        <div class="col-sm-7"><?php
+            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'assessments',
+                'value'=> $esrow['assessments'] == "Y",
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')
+            ));
+        ?></div>
     </div>
 
     <!-- Participant may save and resume  -->
     <div class="form-group">
         <label class="col-sm-5 control-label" for='allowsave'><?php  eT("Participant may save and resume later:"); ?></label>
         <div class="col-sm-7">
-            <?php echo CHtml::dropDownList('allowsave', $esrow['allowsave'],array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped')), array('class'=>"form-control")); ?>
+        <?php
+            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'allowsave',
+                'value'=> $esrow['allowsave'] == "Y",
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')
+            ));
+        ?>
         </div>
     </div>
 

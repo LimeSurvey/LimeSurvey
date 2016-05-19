@@ -1768,7 +1768,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $sExpiryDate = $converter->convert("Y-m-d H:i:s");
             }
 
-            $iTokenLength=$_POST['tokenlength'];
+            $iTokenLength=(int)$_POST['tokenlength'];
             //token length has to be at least 5, otherwise set it to default (15)
             if($iTokenLength < 5)
             {
@@ -1787,18 +1787,18 @@ class SurveyAdmin extends Survey_Common_Action
             'owner_id' => Yii::app()->session['loginID'],
             'admin' => App()->request->getPost('admin'),
             'active' => 'N',
-            'anonymized' => App()->request->getPost('anonymized'),
+            'anonymized' => App()->request->getPost('anonymized')=='1'?'Y':'N',
             'faxto' => App()->request->getPost('faxto'),
             'format' => App()->request->getPost('format'),
-            'savetimings' => App()->request->getPost('savetimings'),
+            'savetimings' => App()->request->getPost('savetimings')=='1'?'Y':'N',
             'language' => App()->request->getPost('language'),
-            'datestamp' => App()->request->getPost('datestamp'),
-            'ipaddr' => App()->request->getPost('ipaddr'),
-            'refurl' => App()->request->getPost('refurl'),
+            'datestamp' => App()->request->getPost('datestamp')=='1'?'Y':'N',
+            'ipaddr' => App()->request->getPost('ipaddr')=='1'?'Y':'N',
+            'refurl' => App()->request->getPost('refurl')=='1'?'Y':'N',
             'usecookie' => App()->request->getPost('usecookie')=='1'?'Y':'N',
             'emailnotificationto' => App()->request->getPost('emailnotificationto'),
-            'allowregister' => App()->request->getPost('allowregister'),
-            'allowsave' => App()->request->getPost('allowsave'),
+            'allowregister' => App()->request->getPost('allowregister')=='1'?'Y':'N',
+            'allowsave' => App()->request->getPost('allowsave')=='1'?'Y':'N',
             'navigationdelay' => App()->request->getPost('navigationdelay'),
             'autoredirect' => App()->request->getPost('autoredirect')=='1'?'Y':'N',
             'showxquestions' => App()->request->getPost('showxquestions')=='1'?'Y':'N',
@@ -1812,14 +1812,14 @@ class SurveyAdmin extends Survey_Common_Action
             'showprogress' => App()->request->getPost('showprogress')=='1'?'Y':'N',
             'printanswers' => App()->request->getPost('printanswers')=='1'?'Y':'N',
             'listpublic' => App()->request->getPost('listpublic')=='1'?'Y':'N',
-            'htmlemail' => App()->request->getPost('htmlemail'),
-            'sendconfirmation' => App()->request->getPost('sendconfirmation'),
-            'tokenanswerspersistence' => App()->request->getPost('tokenanswerspersistence'),
-            'alloweditaftercompletion' => App()->request->getPost('alloweditaftercompletion'),
+            'htmlemail' => App()->request->getPost('htmlemail')=='1'?'Y':'N',
+            'sendconfirmation' => App()->request->getPost('sendconfirmation')=='1'?'Y':'N',
+            'tokenanswerspersistence' => App()->request->getPost('tokenanswerspersistence')=='1'?'Y':'N',
+            'alloweditaftercompletion' => App()->request->getPost('alloweditaftercompletion')=='1'?'Y':'N',
             'usecaptcha' => Survey::transcribeCaptchaOptions(),
             'publicstatistics' => App()->request->getPost('publicstatistics')=='1'?'Y':'N',
             'publicgraphs' => App()->request->getPost('publicgraphs')=='1'?'Y':'N',
-            'assessments' => App()->request->getPost('assessments'),
+            'assessments' => App()->request->getPost('assessments')=='1'?'Y':'N',
             'emailresponseto' => App()->request->getPost('emailresponseto'),
             'tokenlength' => $iTokenLength
             );

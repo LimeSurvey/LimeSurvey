@@ -9,25 +9,17 @@
     <!-- Anonymized responses -->
     <div class="form-group">
         <label  class="col-sm-6 control-label"  for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between token table and survey responses table. You won't be able to identify responses by their token."); ?>'>
-            <?php  eT("Anonymized responses:"); ?>
+            <?php  eT("Anonymized responses:");
+            ?>
             <script type="text/javascript"><!--
                 function alertPrivacy()
                 {
-                    if (document.getElementById('tokenanswerspersistence').value == 'Y')
-                        {
-                        alert('<?php  eT("You can't use Anonymized responses when Token-based answers persistence is enabled.","js"); ?>');
-                        document.getElementById('anonymized').value = 'N';
+                    if ($('#tokenanswerspersistence').is(':checked') == true) {
+                        $('#alertPrivacy1').modal();
+                        document.getElementById('anonymized').value = '0';
                     }
-                    else if (document.getElementById('anonymized').value == 'Y')
-                        {
-                        alert('<?php  eT("Warning"); ?>: <?php  eT("If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js"); ?>');
-                    }
-                }
-                function alertDateStampAnonymization()
-                {
-                    if (document.getElementById('anonymized').value == 'Y')
-                    {
-                        alert('<?php  eT("Warning"); ?>: <?php  eT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.","js"); ?>');
+                    else if ($('#anonymized').is(':checked') == true) {
+                        $('#alertPrivacy2').modal();
                     }
                 }
                 //--></script>
@@ -41,20 +33,18 @@
             } ?>
             <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
             <input type='hidden' id='anonymized' name='anonymized' value="<?php echo $esrow['anonymized']; ?>" />
-            <?php } else { ?>
-            <select  class="form-control" id='anonymized' name='anonymized' onchange='alertPrivacy();'>
-                <option value='Y'
-                    <?php if ($esrow['anonymized'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Yes"); ?></option>
-                <option value='N'
-                    <?php if ($esrow['anonymized'] != "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("No"); ?></option>
-            </select>
-            <?php } ?>
+            <?php } else {
+
+                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'anonymized',
+                    'value'=> $esrow['anonymized'] == "Y",
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off'),
+                    'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
+                        alertPrivacy();
+                    }")
+                    ));
+                }?>
         </div>
     </div>
 
@@ -64,18 +54,25 @@
             <?php  eT("Enable token-based response persistence:"); ?>
         </label>
         <div class="col-sm-6">
-            <select class="form-control" id='tokenanswerspersistence' name='tokenanswerspersistence' onchange="javascript: if (document.getElementById('anonymized').value == 'Y') { alert('<?php  eT("This option can't be set if the `Anonymized responses` option is active.","js"); ?>'); this.value='N';}">
-                <option value='Y'
-                    <?php if ($esrow['tokenanswerspersistence'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Yes"); ?></option>
-                <option value='N'
-                    <?php if ($esrow['tokenanswerspersistence'] == "N") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("No"); ?></option>
-            </select>
+        <?php
+            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            'name' => 'tokenanswerspersistence',
+            'value'=> $esrow['tokenanswerspersistence'] == "Y",
+            'onLabel'=>gT('On'),
+            'offLabel'=>gT('Off'),
+            'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
+                if ($('#anonymized').is(':checked') == true) {
+                  $('#tokenanswerspersistenceModal').modal();
+                }
+            }")
+            ));
+            $this->widget('bootstrap.widgets.TbModal', array(
+                'id' => 'tokenanswerspersistenceModal',
+                'header' => gt('Error','unescaped'),
+                'content' => '<p>'.gT("This option can't be used if the -Anonymized responses- option is active.").'</p>',
+                'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
+            ));
+        ?>
         </div>
     </div>
 
@@ -85,16 +82,14 @@
             <?php  eT("Allow multiple responses or update responses with one token:"); ?>
         </label>
         <div class="col-sm-6">
-            <select id='alloweditaftercompletion' name='alloweditaftercompletion' class="form-control">
-                <option value='Y'
-                    <?php if ($esrow['alloweditaftercompletion'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Yes"); ?></option>
-                <option value='N'
-                    <?php if ($esrow['alloweditaftercompletion'] == "N") { ?>  selected='selected' <?php } ?>
-                    ><?php  eT("No"); ?></option>
-            </select>
+        <?php
+            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'alloweditaftercompletion',
+                'value'=> $esrow['alloweditaftercompletion'] == "Y",
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')
+            ));
+        ?>
         </div>
     </div>
 
@@ -102,18 +97,14 @@
     <div class="form-group">
         <label class="col-sm-6 control-label" for='allowregister'><?php  eT("Allow public registration:"); ?></label>
         <div class="col-sm-6">
-            <select id='allowregister' name='allowregister' class="form-control">
-                <option value='Y'
-                    <?php if ($esrow['allowregister'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Yes"); ?></option>
-                <option value='N'
-                    <?php if ($esrow['allowregister'] != "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("No"); ?></option>
-            </select>
+        <?php
+            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'allowregister',
+                'value'=> $esrow['allowregister'] == "Y",
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')
+            ));
+        ?>
         </div>
     </div>
 
@@ -121,19 +112,23 @@
     <div class="form-group">
         <label class="col-sm-6 control-label" for='htmlemail'><?php  eT("Use HTML format for token emails:"); ?></label>
         <div class="col-sm-6">
-            <select name='htmlemail' id='htmlemail' onchange="alert('<?php  eT("If you switch email mode, you'll have to review your email templates to fit the new format","js"); ?>');" class="form-control">
-                <option value='Y'
-                    <?php if ($esrow['htmlemail'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Yes"); ?></option>
-                <option value='N'
-                    <?php if ($esrow['htmlemail'] == "N") { ?>
-                        selected='selected'
-                        <?php } ?>
-
-                    ><?php  eT("No"); ?></option>
-            </select>
+        <?php
+            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            'name' => 'htmlemail',
+            'value'=> $esrow['htmlemail'] == "Y",
+            'onLabel'=>gT('On'),
+            'offLabel'=>gT('Off'),
+            'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
+                  $('#htmlemailModal').modal();
+            }")
+            ));
+            $this->widget('bootstrap.widgets.TbModal', array(
+                'id' => 'htmlemailModal',
+                'header' => gt('Error','unescaped'),
+                'content' => '<p>'.gT("If you switch email mode, you'll have to review your email templates to fit the new format").'</p>',
+                'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
+            ));
+            ?>
         </div>
     </div>
 
@@ -141,18 +136,14 @@
     <div class="form-group">
         <label class="col-sm-6 control-label" for='sendconfirmation'><?php  eT("Send confirmation emails:"); ?></label>
         <div class="col-sm-6">
-            <select name='sendconfirmation' id='sendconfirmation'  class="form-control">
-                <option value='Y'
-                    <?php if ($esrow['sendconfirmation'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("Yes"); ?></option>
-                <option value='N'
-                    <?php if ($esrow['sendconfirmation'] == "N") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php  eT("No"); ?></option>
-            </select>
+        <?php
+            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => 'sendconfirmation',
+                'value'=> $esrow['sendconfirmation'] == "Y",
+                'onLabel'=>gT('On'),
+                'offLabel'=>gT('Off')
+            ));
+        ?>
         </div>
     </div>
 
@@ -164,3 +155,17 @@
         </div>
     </div>
 </div>
+<?php
+$this->widget('bootstrap.widgets.TbModal', array(
+    'id' => 'alertPrivacy1',
+    'header' => gt('Warning','unescaped'),
+    'content' => '<p>'.gT("You can't use Anonymized responses when Token-based answers persistence is enabled.").'</p>',
+    'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
+));
+$this->widget('bootstrap.widgets.TbModal', array(
+    'id' => 'alertPrivacy2',
+    'header' => gt('Warning','unescaped'),
+    'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.").'</p>',
+    'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
+));
+?>

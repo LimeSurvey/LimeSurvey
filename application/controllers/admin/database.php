@@ -1118,20 +1118,20 @@ class database extends Survey_Common_Action
             $oSurvey->faxto = App()->request->getPost('faxto');
             $oSurvey->format = App()->request->getPost('format');
             $oSurvey->template = Yii::app()->request->getPost('template');
-            $oSurvey->assessments = App()->request->getPost('assessments');
+            $oSurvey->assessments = App()->request->getPost('assessments')=='1'?'Y':'N';
             $oSurvey->additional_languages =  implode(' ',Yii::app()->request->getPost('additional_languages',array()));
             if ($oSurvey->active!='Y')
             {
-                $oSurvey->anonymized = App()->request->getPost('anonymized');
-                $oSurvey->savetimings = App()->request->getPost('savetimings');
-                $oSurvey->datestamp = App()->request->getPost('datestamp');
-                $oSurvey->ipaddr = App()->request->getPost('ipaddr');
-                $oSurvey->refurl = App()->request->getPost('refurl');
+                $oSurvey->anonymized = App()->request->getPost('anonymized')=='1'?'Y':'N';
+                $oSurvey->savetimings = App()->request->getPost('savetimings')=='1'?'Y':'N';
+                $oSurvey->datestamp = App()->request->getPost('datestamp')=='1'?'Y':'N';
+                $oSurvey->ipaddr = App()->request->getPost('ipaddr')=='1'?'Y':'N';
+                $oSurvey->refurl = App()->request->getPost('refurl')=='1'?'Y':'N';
             }
             $oSurvey->publicgraphs = App()->request->getPost('publicgraphs')=='1'?'Y':'N';
             $oSurvey->usecookie = App()->request->getPost('usecookie')=='1'?'Y':'N';
-            $oSurvey->allowregister = App()->request->getPost('allowregister');
-            $oSurvey->allowsave = App()->request->getPost('allowsave');
+            $oSurvey->allowregister = App()->request->getPost('allowregister')=='1'?'Y':'N';
+            $oSurvey->allowsave = App()->request->getPost('allowsave')=='1'?'Y':'N';
             $oSurvey->navigationdelay = App()->request->getPost('navigationdelay');
             $oSurvey->printanswers = App()->request->getPost('printanswers')=='1'?'Y':'N';
             $oSurvey->publicstatistics = App()->request->getPost('publicstatistics')=='1'?'Y':'N';
@@ -1146,10 +1146,10 @@ class database extends Survey_Common_Action
             $oSurvey->nokeyboard = App()->request->getPost('nokeyboard')=='1'?'Y':'N';
             $oSurvey->showprogress = App()->request->getPost('showprogress')=='1'?'Y':'N';
             $oSurvey->listpublic = App()->request->getPost('listpublic')=='1'?'Y':'N';
-            $oSurvey->htmlemail = App()->request->getPost('htmlemail');
-            $oSurvey->sendconfirmation = App()->request->getPost('sendconfirmation');
-            $oSurvey->tokenanswerspersistence = App()->request->getPost('tokenanswerspersistence');
-            $oSurvey->alloweditaftercompletion = App()->request->getPost('alloweditaftercompletion');
+            $oSurvey->htmlemail = App()->request->getPost('htmlemail')=='1'?'Y':'N';
+            $oSurvey->sendconfirmation = App()->request->getPost('sendconfirmation')=='1'?'Y':'N';
+            $oSurvey->tokenanswerspersistence = App()->request->getPost('tokenanswerspersistence')=='1'?'Y':'N';
+            $oSurvey->alloweditaftercompletion = App()->request->getPost('alloweditaftercompletion')=='1'?'Y':'N';
             $oSurvey->usecaptcha = Survey::transcribeCaptchaOptions();
             $oSurvey->emailresponseto = App()->request->getPost('emailresponseto');
             $oSurvey->emailnotificationto = App()->request->getPost('emailnotificationto');
