@@ -59,27 +59,18 @@
     $warning_force_ssl = sprintf(gT('Warning: Before turning on HTTPS,%s check if this link works.%s'),'<a href="https://'.$_SERVER['HTTP_HOST'].$this->createUrl("admin/globalsettings/sa").'" title="'. gT('Test if your server has SSL enabled by clicking on this link.').'">','</a>')
     .'<br/> '
     . gT("If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it.");
-    switch($thisforce_ssl)
-    {
-        case 'on':
-            $warning_force_ssl = '&nbsp;';
-            break;
-        case 'off':
-        case 'neither':
-            break;
-        default:
-            $thisforce_ssl = 'neither';
-    };
-    $this_opt = 'opt_force_ssl_'.$thisforce_ssl;
-    $$this_opt = ' selected="selected"';
 ?><div class="form-group">
             <label class="col-sm-5 control-label"  for="force_ssl"><?php eT('Force HTTPS:'); ?></label>
             <div class="col-sm-6">
-                <select class="form-control"  name="force_ssl" id="force_ssl">
-        <option value="on" <?php echo $opt_force_ssl_on; ?>><?php eT('On'); ?></option>
-        <option value="off" <?php echo $opt_force_ssl_off; ?>><?php eT('Off'); ?></option>
-        <option value="neither" <?php echo $opt_force_ssl_neither; ?>><?php eT("Don't force on or off"); ?></option>
-    </select>
+        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                'name' => 'force_ssl',
+                'value'=> $thisforce_ssl ,
+                'selectOptions'=>array(
+                "on"=>gT("On",'unescaped'),
+                "off"=>gT("Off",'unescaped'),
+                "neither"=>gT("Don't force on or off",'unescaped')
+                )
+                ));?>
         </div>
     </div>
 

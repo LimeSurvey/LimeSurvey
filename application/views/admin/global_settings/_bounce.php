@@ -16,17 +16,15 @@
 <div class="form-group">
     <label class="col-sm-4 control-label"  for='bounceaccounttype'><?php eT("Server type:"); ?></label>
     <div class="col-sm-6">
-        <select class="form-control" id='bounceaccounttype' name='bounceaccounttype'>
-            <option value='off'
-                <?php if (getGlobalSetting('bounceaccounttype')=='off') {echo " selected='selected'";}?>
-                ><?php eT("Off"); ?></option>
-            <option value='IMAP'
-                <?php if (getGlobalSetting('bounceaccounttype')=='IMAP') {echo " selected='selected'";}?>
-                ><?php eT("IMAP"); ?></option>
-            <option value='POP'
-                <?php if (getGlobalSetting('bounceaccounttype')=='POP') {echo " selected='selected'";}?>
-                ><?php eT("POP"); ?></option>
-        </select>
+        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                'name' => 'bounceaccounttype',
+                'value'=> getGlobalSetting('bounceaccounttype') ,
+                'selectOptions'=>array(
+                "off"=>gT("Off",'unescaped'),
+                "IMAP"=>gT("IMAP",'unescaped'),
+                "POP"=>gT("POP",'unescaped')
+                )
+                ));?>
     </div>
 </div>
 
@@ -57,17 +55,15 @@
 <div class="form-group">
     <label class="col-sm-4 control-label"  for='bounceencryption'><?php eT("Encryption type:"); ?></label>
     <div class="col-sm-6">
-        <select class="form-control" id='bounceencryption' name='bounceencryption'>
-            <option value='off'
-                <?php if (getGlobalSetting('bounceencryption')=='off') {echo " selected='selected'";}?>
-                ><?php eT("Off"); ?></option>
-            <option value='SSL'
-                <?php if (getGlobalSetting('bounceencryption')=='SSL') {echo " selected='selected'";}?>
-                ><?php eT("SSL"); ?></option>
-            <option value='TLS'
-                <?php if (getGlobalSetting('bounceencryption')=='TLS') {echo " selected='selected'";}?>
-                ><?php eT("TLS"); ?></option>
-        </select>
+        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                'name' => 'bounceencryption',
+                'value'=> getGlobalSetting('bounceencryption') ,
+                'selectOptions'=>array(
+                "off"=>gT("Off",'unescaped'),
+                "SSL"=>gT("SSL",'unescaped'),
+                "TLS"=>gT("TLS",'unescaped')
+                )
+                ));?>
     </div>
 </div>
 

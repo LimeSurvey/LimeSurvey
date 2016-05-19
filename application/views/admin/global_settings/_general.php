@@ -77,32 +77,31 @@
     <div class="form-group">
         <label class="col-sm-2 control-label"  for='defaulthtmleditormode'><?php eT("Default HTML editor mode:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
             <div class="col-sm-3">
-                <select class="form-control"  name='defaulthtmleditormode' id='defaulthtmleditormode'>
-            <option value='none'
-                <?php if ($thisdefaulthtmleditormode=='none') { echo "selected='selected'";} ?>
-                ><?php eT("No HTML editor"); ?></option>
-            <option value='inline'
-                <?php if ($thisdefaulthtmleditormode=='inline') { echo "selected='selected'";} ?>
-                ><?php eT("Inline HTML editor (default)"); ?></option>
-            <option value='popup'
-                <?php if ($thisdefaulthtmleditormode=='popup') { echo "selected='selected'";} ?>
-                ><?php eT("Popup HTML editor"); ?></option>
-        </select>
+            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                    'name' => 'defaulthtmleditormode',
+                    'value'=> $thisdefaulthtmleditormode ,
+                    'selectOptions'=>array(
+                    "inline"=>gT("Inline",'unescaped'),
+                    "popup"=>gT("Popup",'unescaped'),
+                    "none"=>gT("HTML source",'unescaped')
+                    )
+                    ));?>
         </div>
     </div>
 
-    <?php $thisdefaultquestionselectormode=getGlobalSetting('defaultquestionselectormode'); ?>
+    <?php
+    $thisdefaultquestionselectormode=getGlobalSetting('defaultquestionselectormode'); ?>
     <div class="form-group">
         <label class="col-sm-2 control-label"  for='defaultquestionselectormode'><?php eT("Question type selector:"); echo((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
             <div class="col-sm-3">
-                <select class="form-control"  name='defaultquestionselectormode' id='defaultquestionselectormode'>
-            <option value='default'
-                <?php if ($thisdefaultquestionselectormode=='default') { echo "selected='selected'";} ?>
-                ><?php eT("Full selector (default)"); ?></option>
-            <option value='none'
-                <?php if ($thisdefaultquestionselectormode=='none') { echo "selected='selected'";} ?>
-                ><?php eT("Simple selector"); ?></option>
-        </select>
+            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                    'name' => 'defaultquestionselectormode',
+                    'value'=> $thisdefaultquestionselectormode ,
+                    'selectOptions'=>array(
+                    "default"=>gT("Full",'unescaped'),
+                    "none"=>gT("Simple",'unescaped')
+                    )
+                    ));?>
         </div>
     </div>
 
@@ -110,14 +109,14 @@
     <div class="form-group">
         <label class="col-sm-2 control-label"  for='defaulttemplateeditormode'><?php eT("Template editor:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
             <div class="col-sm-3">
-                <select class="form-control"  name='defaulttemplateeditormode' id='defaulttemplateeditormode'>
-            <option value='default'
-                <?php if ($thisdefaulttemplateeditormode=='default') { echo "selected='selected'";} ?>
-                ><?php eT("Full template editor (default)"); ?></option>
-            <option value='none'
-                <?php if ($thisdefaulttemplateeditormode=='none') { echo "selected='selected'";} ?>
-                ><?php eT("Simple template editor"); ?></option>
-        </select>
+            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                    'name' => 'defaulttemplateeditormode',
+                    'value'=> $thisdefaulttemplateeditormode ,
+                    'selectOptions'=>array(
+                    "default"=>gT("Full",'unescaped'),
+                    "none"=>gT("Simple",'unescaped')
+                    )
+                    ));?>
         </div>
     </div>
 
@@ -126,7 +125,7 @@
         <label class="col-sm-2 control-label"  for='timeadjust'><?php eT("Time difference (in hours):"); ?></label>
             <div class="col-sm-3">
                         <span><input class="form-control"  type='text' size='10' id='timeadjust' name='timeadjust' value="<?php echo htmlspecialchars(str_replace(array('+',' hours',' minutes'),array('','',''),getGlobalSetting('timeadjust'))/60); ?>" />
-            <?php echo gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ". gT("Corrected time:").' '.convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
+            <?php echo gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')."<br>". gT("Corrected time:").' '.convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
         </span>
         </div>
     </div>
@@ -189,17 +188,15 @@
     <div class='form-group'>
         <label class='col-sm-2 control-label' for='sideMenuBehaviour'><?php eT("Side-menu behaviour:"); ?></label>
         <div class='col-sm-3'>
-            <select class='form-control' name='sideMenuBehaviour' id='sideMenuBehaviour'>
-                <option value='alwaysClosed'
-                    <?php if ($sideMenuBehaviour == 'alwaysClosed'): echo ' selected'; endif;?>
-                ><?php eT("Always closed"); ?></option>
-                <option value='adaptive'
-                    <?php if ($sideMenuBehaviour == 'adaptive' || empty($sideMenuBehaviour)): echo ' selected'; endif;?>
-                ><?php eT("Adaptive"); ?> </option>
-                <option value='alwaysOpen'
-                    <?php if ($sideMenuBehaviour == 'alwaysOpen'): echo ' selected'; endif;?>
-                ><?php eT("Always open"); ?></option>
-            </select>
+            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                    'name' => 'sideMenuBehaviour',
+                    'value'=> $sideMenuBehaviour ,
+                    'selectOptions'=>array(
+                    "alwaysClosed"=>gT("Always closed",'unescaped'),
+                    "adaptive"=>gT("Adaptive",'unescaped'),
+                    "alwaysOpen"=>gT("Always open",'unescaped')
+                    )
+                    ));?>
         </div>
     </div>
 
