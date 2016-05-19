@@ -2637,7 +2637,6 @@ function do_multipleshorttext($ia)
         $maxlength = "";
     }
 
-    $tiwidth              = (trim($aQuestionAttributes['text_input_width'])!='')?$aQuestionAttributes['text_input_width']:'';
     $sInputContainerWidth = (trim($aQuestionAttributes['text_input_columns'])!='')?$aQuestionAttributes['text_input_columns']:'6';
     $sLabelWidth          = (trim($aQuestionAttributes['label_input_columns'])!='')?$aQuestionAttributes['label_input_columns']:'6';
 
@@ -2708,7 +2707,6 @@ function do_multipleshorttext($ia)
 
                 $sRows .= doRender('/survey/questions/multipleshorttext/rows/answer_row_textarea', array(
                     'alert'                  => false,
-                    'tiwidth'                => $tiwidth,
                     'sInputContainerWidth'   => $sInputContainerWidth,
                     'sLabelWidth'            => $sLabelWidth,
                     'maxlength'              => '',
@@ -2763,7 +2761,6 @@ function do_multipleshorttext($ia)
                     'alert'                  => $alert,
                     'labelname'              => 'answer'.$myfname,
                     'maxlength'              => $maxlength,
-                    'tiwidth'                => $tiwidth,
                     'sInputContainerWidth'   => $sInputContainerWidth,
                     'sLabelWidth'            => $sLabelWidth,
                     'extraclass'             => $extraclass,

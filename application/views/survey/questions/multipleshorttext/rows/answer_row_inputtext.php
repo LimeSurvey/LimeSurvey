@@ -35,7 +35,6 @@
             <input
                 class="text <?php echo $kpclass; ?> form-control"
                 type="text"
-                size="<?php echo $tiwidth; ?>"
                 name="<?php echo $myfname; ?>"
                 id="answer<?php echo $myfname; ?>"
                 value="<?php echo $dispVal; ?>"
