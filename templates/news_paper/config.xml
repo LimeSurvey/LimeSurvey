@@ -49,10 +49,10 @@
         -->
         <rtl>
             <css>
-                <filename>css/jquery-ui-custom.css</filename>
-                <filename>css/bootstrap-slider.css</filename>
-                <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</filename>
-                <filename>css/news_paper.css</filename>
+                <filename>css/jquery-ui-custom-rtl.css</filename>
+                <filename>css/bootstrap-slider-rtl.css</filename>
+                <filename>css/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css</filename>
+                <filename>css/news_paper-rtl.css</filename>
                 <filename>css/template-rtl.css</filename>
             </css>
             <js>
