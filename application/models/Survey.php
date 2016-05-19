@@ -905,8 +905,8 @@ class Survey extends LSActiveRecord
             'desc'=>'sid desc',
           ),
           'title'=>array(
-            'asc'=>'defaultlanguage.surveyls_title',
-            'desc'=>'defaultlanguage.surveyls_title desc',
+            'asc'=>'correct_relation_defaultlanguage.surveyls_title',
+            'desc'=>'correct_relation_defaultlanguage.surveyls_title desc',
           ),
 
           'creation_date'=>array(
@@ -933,12 +933,12 @@ class Survey extends LSActiveRecord
 
         $criteria = new CDbCriteria;
         $criteria->together = true;
-
+        $criteria->with='correct_relation_defaultlanguage';
 
         // Permission
         if(!Permission::model()->hasGlobalPermission("surveys",'read'))
         {
-            $criteria->with='permissions';
+            $criteria->with='correct_relation_defaultlanguage, permissions';
             $criteria->addCondition("permissions.permission='survey' AND permissions.entity='survey'");
             $criteria->compare('permissions.uid', Yii::app()->user->id);
         }
@@ -947,8 +947,7 @@ class Survey extends LSActiveRecord
         // Search filter
         $criteria2 = new CDbCriteria;
         $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.sid::varchar' : 't.sid');
-        $criteria2->with=array('correct_relation_defaultlanguage','owner');
-        //$criteria2->with=array('defaultlanguage','owner');
+        $criteria2->with=array('owner');
         $criteria2->compare($sid_reference, $this->searched_value, true, 'OR');
         $criteria2->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
         $criteria2->compare('t.admin', $this->searched_value, true, 'OR');

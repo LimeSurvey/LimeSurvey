@@ -207,6 +207,9 @@
     <?php $this->renderPartial('//admin/survey/subview/_surveys_list_footer', array()); ?>
 </div>
 
+<!-- Mass action popup -->
+
+
 <!-- To update rows per page via ajax -->
 <script type="text/javascript">
     jQuery(function($) {
