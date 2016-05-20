@@ -51,7 +51,7 @@
 <div class="form-group">
     <label class="col-sm-6 control-label"  for="showqnumcode"><?php eT('Show question number and/or question code:'); ?></label>
     <div class="col-sm-6">
-        <?php echo  CHtml::dropDownList('showgroupinfo', getGlobalSetting('showqnumcode'),
+        <?php echo  CHtml::dropDownList('showqnumcode', getGlobalSetting('showqnumcode'),
             array("choose"=>gT('Selectable by survey admin'),
                 "both"=>gT('Show both'),
                 "number"=>gT('Show question number only'),

@@ -12,7 +12,7 @@
  */
 ?>
 
-<br /><table class='statisticssummary table table-bordered'>
+<br /><table class='table table-striped table-bordered'>
     <tr>
         <th ><?php eT("Users"); ?>:</th><td><?php echo $usercount; ?></td>
     </tr>
