@@ -1861,8 +1861,8 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            $filterduplicatetoken = (Yii::app()->request->getPost('filterduplicatetoken') && Yii::app()->request->getPost('filterduplicatetoken') == 'on');
-            $filterblankemail = (Yii::app()->request->getPost('filterblankemail') && Yii::app()->request->getPost('filterblankemail') == 'on');
+            $filterduplicatetoken = Yii::app()->request->getPost('filterduplicatetoken') == '1';
+            $filterblankemail = Yii::app()->request->getPost('filterblankemail') == '1';
 
             $ldap_queries = Yii::app()->getConfig('ldap_queries');
             $ldap_server = Yii::app()->getConfig('ldap_server');
