@@ -123,10 +123,12 @@
     <?php $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']); ?>
     <div class="form-group">
         <label class="col-sm-2 control-label"  for='timeadjust'><?php eT("Time difference (in hours):"); ?></label>
-            <div class="col-sm-3">
-                        <span><input class="form-control"  type='text' size='10' id='timeadjust' name='timeadjust' value="<?php echo htmlspecialchars(str_replace(array('+',' hours',' minutes'),array('','',''),getGlobalSetting('timeadjust'))/60); ?>" />
+        <div class="col-sm-1">
+            <span><input class="form-control"  type='text' id='timeadjust' name='timeadjust' value="<?php echo htmlspecialchars(str_replace(array('+',' hours',' minutes'),array('','',''),getGlobalSetting('timeadjust'))/60); ?>" />
+            </span>
+        </div>
+        <div class="col-sm-3">
             <?php echo gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')."<br>". gT("Corrected time:").' '.convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
-        </span>
         </div>
     </div>
 
@@ -192,9 +194,9 @@
                     'name' => 'sideMenuBehaviour',
                     'value'=> $sideMenuBehaviour ,
                     'selectOptions'=>array(
-                    "alwaysClosed"=>gT("Always closed",'unescaped'),
                     "adaptive"=>gT("Adaptive",'unescaped'),
-                    "alwaysOpen"=>gT("Always open",'unescaped')
+                    "alwaysOpen"=>gT("Always open",'unescaped'),
+                    "alwaysClosed"=>gT("Always closed",'unescaped')
                     )
                     ));?>
         </div>

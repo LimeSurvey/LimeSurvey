@@ -60,24 +60,24 @@
 
     <!-- Save IP Address -->
     <div class="form-group">
-        <label class="col-sm-5 control-label" for='ipaddr'><?php  eT("Save IP Address:"); ?></label>
+        <label class="col-sm-5 control-label" for='ipaddr'><?php  eT("Save IP address:"); ?></label>
         <div class="col-sm-7">
-            <?php if ($esrow['active'] == "Y") { ?>
-                <?php  if ($esrow['ipaddr'] != "Y") {
-                         eT("Responses will not have the IP address logged.");
-                    } else {
-                         eT("Responses will have the IP address logged");
+            <?php if ($esrow['active'] == "Y") {
+                if ($esrow['ipaddr'] != "Y") {
+                    eT("Responses will not have the IP address logged.");
+                } else {
+                    eT("Responses will have the IP address logged");
                 } ?>
                 <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                <?php echo CHtml::hiddenField('ipaddr',$esrow['ipaddr']); // Maybe use a readonly dropdown ??>
-                <?php } else {
-                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <?php echo CHtml::hiddenField('ipaddr',$esrow['ipaddr']);
+            } else {
+                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'ipaddr',
                     'value'=> $esrow['ipaddr'] == "Y",
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
-                    ));
-                } ?>
+                ));
+            } ?>
         </div>
     </div>
 
