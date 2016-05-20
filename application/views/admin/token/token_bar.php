@@ -183,7 +183,7 @@
             <?php if(isset($token_bar['exportbutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="glyphicon glyphicon glyphicon-export" ></span>
-                    <?php eT("Export tokens");?>
+                       <?php eT("Download CSV file"); ?>
                 </a>
             <?php endif;?>
 

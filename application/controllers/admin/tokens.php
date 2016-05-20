@@ -1295,8 +1295,8 @@ class tokens extends Survey_Common_Action
         {
             $fieldcontents[$fieldname] = array(
             'description' => strip_tags(Yii::app()->request->getPost('description_' . $fieldname)),
-            'mandatory' => Yii::app()->request->getPost('mandatory_' . $fieldname) == 'Y' ? 'Y' : 'N',
-            'show_register' => Yii::app()->request->getPost('show_register_' . $fieldname) == 'Y' ? 'Y' : 'N',
+            'mandatory' => Yii::app()->request->getPost('mandatory_' . $fieldname) == '1' ? 'Y' : 'N',
+            'show_register' => Yii::app()->request->getPost('show_register_' . $fieldname) == '1' ? 'Y' : 'N',
             'cpdbmap' => Yii::app()->request->getPost('cpdbmap_' . $fieldname)
             );
             foreach ($languages as $language)

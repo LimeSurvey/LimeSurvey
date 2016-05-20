@@ -8,11 +8,11 @@
                 <div class="settings-list">
 
                     <!--Survey status -->
-                    <div class=" form-group control-group setting-select" data-name="tokenstatus">
-                        <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="tokenstatus">
+                    <div class=" form-group control-group" data-name="tokenstatus">
+                        <label class="default control-label col-lg-2 col-sm-5 col-md-2" for="tokenstatus">
                             <?php eT('Survey status:'); ?>
                         </label>
-                        <div class="default col-lg-4 col-sm-5 col-md-7 controls">
+                        <div class="default col-lg-3 col-sm-5 col-md-7 controls">
                             <select id="tokenstatus" name="tokenstatus" class="form-control">
                                 <option value="0"><?php eT('All tokens'); ?></option>
                                 <option value="1"><?php eT('Completed'); ?></option>
@@ -24,39 +24,47 @@
                     </div>
 
                     <!--Invitation status -->
-                    <div class=" form-group control-group setting-select" data-name="invitationstatus">
-                        <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="invitationstatus">
+                    <div class=" form-group control-group" data-name="invitationstatus">
+                        <label class="default control-label col-lg-2 col-sm-5 col-md-2" for="invitationstatus">
                             <?php eT('Invitation status:'); ?>
                         </label>
                         <div class="default col-lg-4 col-sm-5 col-md-7 controls">
-                            <select id="invitationstatus" name="invitationstatus" class="form-control">
-                                <option value="0"><?php eT('All'); ?></option>
-                                <option value="1"><?php eT('Invited'); ?></option>
-                                <option value="2"><?php eT('Not invited'); ?></option>
-                            </select>
+                            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                'name' => 'invitationstatus',
+                                'value'=> 0 ,
+                                'selectOptions'=>array(
+                                    "0"=>gT("All",'unescaped'),
+                                    "1"=>gT("Invited",'unescaped'),
+                                    "2"=>gT("Not invited",'unescaped')
+                                )
+                            ));?>
                         </div>
                     </div>
 
                     <!--Reminder status -->
-                    <div class=" form-group control-group setting-select" data-name="reminderstatus">
-                        <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="reminderstatus">
+                    <div class=" form-group control-group" data-name="reminderstatus">
+                        <label class="default control-label col-lg-2 col-sm-5 col-md-2" for="reminderstatus">
                             <?php eT('Reminder status:'); ?>
                         </label>
                         <div class="default col-lg-4 col-sm-5 col-md-7 controls">
-                            <select id="reminderstatus" name="reminderstatus" class="form-control">
-                            <option value="0"><?php eT('All'); ?></option>
-                            <option value="1"><?php eT('Reminder(s) sent'); ?></option>
-                            <option value="2"><?php eT('No reminder(s) sent'); ?></option>
-                            </select>
+                            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                'name' => 'reminderstatus',
+                                'value'=> 0 ,
+                                'selectOptions'=>array(
+                                    "0"=>gT("All",'unescaped'),
+                                    "1"=>gT("Reminder(s) sent",'unescaped'),
+                                    "2"=>gT("No reminder(s) sent",'unescaped')
+                                )
+                            ));?>
                         </div>
                     </div>
 
                     <!--Filter by language -->
-                    <div class=" form-group control-group setting-select" data-name="tokenlanguage">
-                        <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="tokenlanguage">
+                    <div class=" form-group control-group" data-name="tokenlanguage">
+                        <label class="default control-label col-lg-2 col-sm-5 col-md-2" for="tokenlanguage">
                             <?php eT('Filter by language:'); ?>
                         </label>
-                        <div class="default col-lg-4 col-sm-5 col-md-7 controls">
+                        <div class="default col-lg-3 col-sm-5 col-md-7 controls">
                             <select id="tokenlanguage" name="tokenlanguage" class="form-control">
                                 <option value="" selected="selected"><?php eT('All'); ?>
                                 <option value="de"><?php eT('German'); ?></option>
@@ -65,29 +73,35 @@
                     </div>
 
                     <!--Filter by email address -->
-                    <div class=" form-group control-group setting-select" data-name="filteremail">
+                    <div class=" form-group control-group" data-name="filteremail">
 
-                        <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="filteremail">
+                        <label class="default control-label col-lg-2 col-sm-5 col-md-2" for="filteremail">
                             <?php eT('Filter by email address:'); ?>
                         </label>
-                        <div class="default col-lg-4 col-sm-5 col-md-7 controls">
-                            <input size="50" type="text" value="" name="filteremail" id="filteremail" />
+                        <div class="default col-lg-3 col-sm-5 col-md-7 controls">
+                            <input type="text" class="form-control" value="" name="filteremail" id="filteremail" />
                         </div>
-                        <div class="alert alert-info col-lg-3 col-sm-2 col-md-12 controls" role="alert">
+                        <div class="alert alert-info col-lg-4 col-sm-2 col-md-3 controls" role="alert">
                             <?php eT('Only export entries which contain this string in email address.'); ?>
                         </div>
 
                     </div>
 
                     <!--Delete exported tokens -->
-                    <div class=" form-group control-group setting-select" data-name="tokendeleteexported">
-                        <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="tokendeleteexported">
+                    <div class="form-group control-group " data-name="tokendeleteexported">
+                        <label class="default control-label col-lg-2 col-sm-5 col-md-2" for="tokendeleteexported">
                             <?php eT('Delete exported tokens:'); ?>
                         </label>
-                        <div class="default col-lg-4 col-sm-5 col-md-7 controls">
-                            <input type="checkbox" value="1" name="tokendeleteexported" id="tokendeleteexported" />
+                        <div class="default col-lg-3 col-sm-5 col-md-7 controls">
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                'name' => 'tokendeleteexported',
+                                'id'=>'tokendeleteexported',
+                                'value' => 0,
+                                'onLabel'=>gT('On'),
+                                'offLabel' => gT('Off')));
+                            ?>
                         </div>
-                        <div class="alert alert-warning col-lg-3 col-sm-2 col-md-12 controls" role="alert">
+                        <div class="alert alert-warning col-lg-4 col-sm-2 col-md-3 controls" role="alert">
                             <?php eT('Warning: Deleted token entries cannot be recovered.'); ?>
                         </div>
                     </div>
