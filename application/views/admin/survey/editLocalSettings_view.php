@@ -87,15 +87,18 @@
     <div class="form-group">
         <label class="control-label col-sm-2"><?php eT("Decimal mark:"); ?></label>
         <div class="col-sm-3">
-            <select size='1' id='numberformat_<?php echo $esrow['surveyls_language']; ?>' name='numberformat_<?php echo $esrow['surveyls_language']; ?>' class="form-control">
-                <?php foreach (getRadixPointData() as $index=>$radixptdata): ?>
-                    <option value='<?php echo $index; ?>'
-                    <?php if ($esrow['surveyls_numberformat']==$index): ?>
-                        selected='selected'
-                    <?php endif; ?>
-                    ><?php echo $radixptdata['desc']; ?></option>
-                <?php endforeach; ?>
-            </select>
+            <?php
+                $aRadixPoint=array();
+                foreach (getRadixPointData() as $index=>$radixptdata)
+                {
+                    $aRadixPoint[$index]=html_entity_decode($radixptdata['desc']);
+                }
+                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                'name' => 'numberformat_'.$esrow['surveyls_language'],
+                'value'=> $esrow['surveyls_numberformat'] ,
+                'selectOptions'=>$aRadixPoint
+                ));
+            ?>
         </div>
     </div>
 </div>

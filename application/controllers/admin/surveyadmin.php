@@ -1804,7 +1804,7 @@ class SurveyAdmin extends Survey_Common_Action
             'showxquestions' => App()->request->getPost('showxquestions')=='1'?'Y':'N',
             'showgroupinfo' => App()->request->getPost('showgroupinfo'),
             'showqnumcode' => App()->request->getPost('showqnumcode'),
-            'shownoanswer' => App()->request->getPost('shownoanswer'),
+            'shownoanswer' => App()->request->getPost('shownoanswer')=='1'?'Y':'N',
             'showwelcome' => App()->request->getPost('showwelcome')=='1'?'Y':'N',
             'allowprev' => App()->request->getPost('allowprev')=='1'?'Y':'N',
             'questionindex' => App()->request->getPost('questionindex'),

@@ -99,7 +99,6 @@
                                 </label>
                                 <div class="default col-lg-4 col-sm-5 col-md-7 controls">
                                     <select id="bounceaccountencryption" name="bounceaccountencryption" class="form-control">
-
                                         <option value="Off" <?php if($settings['bounceaccountencryption']=='Off' || $settings['bounceaccountencryption']==''){echo 'selected="selected"';}?>>
                                             <?php eT('None'); ?>
                                         </option>

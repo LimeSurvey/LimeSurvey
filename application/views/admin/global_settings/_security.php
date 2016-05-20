@@ -18,7 +18,6 @@
     </div>
 </div>
 
-<?php $thisfilterxsshtml=getGlobalSetting('filterxsshtml'); ?>
 <div class="form-group">
     <label class="col-sm-5 control-label"  for='filterxsshtml'><?php eT("Filter HTML for XSS:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
     <div class="col-sm-2">
@@ -27,7 +26,8 @@
             'id'=>'filterxsshtml',
             'value' => getGlobalSetting('filterxsshtml'),
             'onLabel'=>gT('On'),
-            'offLabel' => gT('Off')));
+            'offLabel' => gT('Off')
+            ));
         ?>
     </div>
     <div class="col-sm-4">

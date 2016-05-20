@@ -357,26 +357,18 @@
         <?php break;?>
 
         <?php case 2: ?>
-            <?php
-                $sel_showno = array( 'Y' => '' , 'N' => '' );
-                if (isset($esrow['shownoanswer'])) {
-                    $set_showno = $esrow['shownoanswer'];
-                    $sel_showno[$set_showno] = ' selected="selected"';
-                };
-                if (empty($sel_showno)) {
-                    $sel_showno['Y'] = ' selected="selected"';
-                };
-            ?>
 
             <!-- Show "No answer" -->
             <div class="form-group">
                 <label class="col-sm-5 control-label" for="shownoanswer"><?php  eT('Show "No answer":'); ?></label>
                 <div class="col-sm-7">
-                    <select class="form-control" id="shownoanswer" name="shownoanswer">
-                        <option value="Y"<?php echo $sel_showno['Y']; ?>><?php  eT('Yes'); ?></option>
-                        <option value="N"<?php echo $sel_showno['N']; ?>><?php  eT('No'); ?></option>
-                    </select>
-
+                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        'name' => 'shownoanswer',
+                        'value'=> $esrow['shownoanswer'] == "Y",
+                        'onLabel'=>gT('On'),
+                        'offLabel'=>gT('Off')
+                        ));
+                    ?>
                 </div>
             </div>
         <?php break;?>

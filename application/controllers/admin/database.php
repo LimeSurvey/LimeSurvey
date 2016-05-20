@@ -1139,7 +1139,7 @@ class database extends Survey_Common_Action
             $oSurvey->showxquestions = App()->request->getPost('showxquestions')=='1'?'Y':'N';
             $oSurvey->showgroupinfo = App()->request->getPost('showgroupinfo');
             $oSurvey->showqnumcode = App()->request->getPost('showqnumcode');
-            $oSurvey->shownoanswer = App()->request->getPost('shownoanswer');
+            $oSurvey->shownoanswer = App()->request->getPost('shownoanswer')=='1'?'Y':'N';
             $oSurvey->showwelcome = App()->request->getPost('showwelcome')=='1'?'Y':'N';
             $oSurvey->allowprev = App()->request->getPost('allowprev')=='1'?'Y':'N';
             $oSurvey->questionindex = App()->request->getPost('questionindex');
@@ -1155,7 +1155,7 @@ class database extends Survey_Common_Action
             $oSurvey->emailnotificationto = App()->request->getPost('emailnotificationto');
             $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
             $oSurvey->googleanalyticsstyle = App()->request->getPost('googleanalyticsstyle');
-            $oSurvey->tokenlength = App()->request->getPost('tokenlength');
+            $oSurvey->tokenlength = (App()->request->getPost('tokenlength')<5  || App()->request->getPost('tokenlength')>36)?15:App()->request->getPost('tokenlength');
             $oSurvey->adminemail = App()->request->getPost('adminemail');
             $oSurvey->bounce_email = App()->request->getPost('bounce_email');
 
