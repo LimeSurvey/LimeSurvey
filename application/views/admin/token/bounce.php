@@ -9,7 +9,7 @@
                         <div class="settings-list">
 
                             <!-- Survey bounce email -->
-                            <div class=" form-group setting control-group setting-email" data-name="bounce_email">
+                            <div class="form-group setting control-group setting-email">
                                 <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="bounce_email">
                                     <?php eT('Survey bounce email address:'); ?>
                                 </label>
@@ -19,47 +19,44 @@
                             </div>
 
                             <!-- Bounce settings to be used -->
-                            <div class=" form-group setting control-group setting-select" data-name="bounceprocessing">
+                            <div class="form-group setting control-group setting-select">
                                 <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="bounceprocessing">
                                     <?php eT('Used bounce settings:');?>
                                 </label>
                                 <div class="default col-lg-4 col-sm-5 col-md-7 controls">
-                                    <select id="bounceprocessing" name="bounceprocessing" class="form-control">
-                                        <option value="N" <?php if ($settings['bounceprocessing']=='N'){echo 'selected="selected"'; }?> >
-                                            <?php eT("None"); ?>
-                                        </option>
-                                        <option value="L" <?php if ($settings['bounceprocessing']=='L'){echo 'selected="selected"'; }?> >
-                                            <?php eT("Use settings below"); ?>
-                                        </option>
-                                        <option value="G" <?php if ($settings['bounceprocessing']=='G'){echo 'selected="selected"'; }?> >
-                                            <?php eT("Use global settings"); ?>
-                                        </option>
-                                    </select>
+                                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                        'name' => 'bounceprocessing',
+                                        'value'=> $settings['bounceprocessing'] ,
+                                        'selectOptions'=>array(
+                                            "N"=>gT("None",'unescaped'),
+                                            "L"=>gT("Use settings below",'unescaped'),
+                                            "G"=>gT("Use global settings",'unescaped')
+                                        )
+                                    ));?>
                                 </div>
                             </div>
 
                             <div id="bounceparams">
 
                             <!-- Server type -->
-                            <div class=" form-group setting control-group setting-select" data-name="bounceaccounttype">
+                            <div class=" form-group setting control-group setting-select">
                                 <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="bounceaccounttype">
                                     <?php eT("Server type:"); ?>
                                 </label>
                                 <div class="default col-lg-4 col-sm-5 col-md-7 controls">
-                                    <select id="bounceaccounttype" name="bounceaccounttype" class="form-control">
-                                        <option value="IMAP" <?php if($settings['bounceaccounttype']=="IMAP"){echo "selected";}?> >
-                                            <?php eT("IMAP"); ?>
-                                        </option>
-
-                                        <option value="POP" <?php if($settings['bounceaccounttype']=="POP"){echo "selected";}?>>
-                                            <?php eT("POP"); ?>
-                                        </option>
-                                    </select>
+                                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                        'name' => 'bounceaccounttype',
+                                        'value'=> $settings['bounceaccounttype'] ,
+                                        'selectOptions'=>array(
+                                            "IMAP"=>gT("IMAP",'unescaped'),
+                                            "POP"=>gT("POP",'unescaped')
+                                        )
+                                    ));?>
                                 </div>
                             </div>
 
                             <!-- Server name port -->
-                            <div class=" form-group setting control-group setting-string" data-name="bounceaccounthost">
+                            <div class=" form-group setting control-group setting-string">
                                 <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="bounceaccounthost">
                                     <?php eT('Server name & port:'); ?>
                                 </label>
@@ -72,7 +69,7 @@
 
 
                             <!-- User name -->
-                            <div class=" form-group setting control-group setting-string" data-name="bounceaccountuser">
+                            <div class=" form-group setting control-group setting-string">
                                 <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="bounceaccountuser">
                                     <?php eT('User name:'); ?>
                                 </label>
@@ -82,7 +79,7 @@
                             </div>
 
                             <!-- Password -->
-                            <div class=" form-group setting control-group setting-password" data-name="bounceaccountpass">
+                            <div class=" form-group setting control-group setting-password">
                                 <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="bounceaccountpass">
                                     <?php eT('Password:'); ?>
                                 </label>
@@ -93,22 +90,20 @@
                             </div>
 
                             <!-- Encryption type  -->
-                            <div class=" form-group setting control-group setting-select" data-name="bounceaccountencryption">
+                            <div class=" form-group setting control-group setting-select">
                                 <label class="default control-label col-lg-2 col-sm-5 col-md-7" for="bounceaccountencryption">
                                     <?php eT('Encryption type:'); ?>
                                 </label>
                                 <div class="default col-lg-4 col-sm-5 col-md-7 controls">
-                                    <select id="bounceaccountencryption" name="bounceaccountencryption" class="form-control">
-                                        <option value="Off" <?php if($settings['bounceaccountencryption']=='Off' || $settings['bounceaccountencryption']==''){echo 'selected="selected"';}?>>
-                                            <?php eT('None'); ?>
-                                        </option>
-                                        <option value="SSL"  <?php if($settings['bounceaccountencryption']=='SSL'){echo 'selected="selected"';}?> >
-                                            <?php eT('SSL'); ?>
-                                        </option>
-                                        <option value="TLS" <?php if($settings['bounceaccountencryption']=='TLS'){echo 'selected="selected"';}?> >
-                                            <?php eT('TLS'); ?>
-                                        </option>
-                                    </select>
+                                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                        'name' => 'bounceaccountencryption',
+                                        'value'=> $settings['bounceaccountencryption'] ,
+                                        'selectOptions'=>array(
+                                            "Off"=>gT("Off",'unescaped'),
+                                            "SSL"=>gT("SSL",'unescaped'),
+                                            "TLS"=>gT("TLS",'unescaped')
+                                        )
+                                    ));?>
                                 </div>
                             </div>
                         </div>

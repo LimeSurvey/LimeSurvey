@@ -1,7 +1,7 @@
 <div class='messagebox ui-corner-all'>
     <div class='warningheader'><?php eT("Warning"); ?></div><br />
     <?php echo CHtml::form(array("admin/tokens/sa/email/action/{$sSubAction}/surveyid/{$surveyid}"), 'post'); ?>
-    
+
         <?php eT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."); ?><br /><br />
         <?php echo str_replace("{EMAILCOUNT}", (string) $lefttosend, gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
         <br /><br />
@@ -21,7 +21,7 @@
             { ?>
                 <input type='hidden' name='maxremindercount' value="<?php echo Yii::app()->request->getPost('maxremindercount'); ?>" />
             <?php }
-            if (Yii::app()->request->getPost('bypassdatecontrol'))
+            if (Yii::app()->request->getPost('bypassdatecontrol')=='1')
             { ?>
                 <input type='hidden' name='bypassdatecontrol' value="<?php echo Yii::app()->request->getPost('bypassdatecontrol'); ?>" />
             <?php }

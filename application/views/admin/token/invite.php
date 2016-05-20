@@ -108,14 +108,28 @@
 
                         <label class='control-label col-sm-2' for='bypassbademails'><?php eT("Bypass token with failing email addresses:"); ?></label>
                         <div class='col-sm-1'>
-                            <?php echo CHtml::dropDownList('bypassbademails', 'Y',array("Y"=>gT("Yes",'unescaped'),"N"=>gT("No",'unescaped')), array('class' => 'form-control')); ?>
+                            <?php
+                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                'name' => "bypassbademails",
+                                'id'=>"bypassbademails",
+                                'value' => '1',
+                                'onLabel'=>gT('On'),
+                                'offLabel' => gT('Off')));
+                            ?>
                         </div>
                     </div>
 
                     <div class='form-group'>
                         <?php echo CHtml::label(gT("Bypass date control before sending email:"),'bypassdatecontrol', array('title'=>gt("If some tokens have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),'unescaped', 'class' => 'control-label col-sm-2')); ?>
                         <div class='col-sm-1'>
-                            <?php echo CHtml::checkbox('bypassdatecontrol', false); ?>
+                            <?php
+                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                'name' => "bypassdatecontrol",
+                                'id'=>"bypassdatecontrol",
+                                'value' => '0',
+                                'onLabel'=>gT('On'),
+                                'offLabel' => gT('Off')));
+                            ?>
                         </div>
                     </div>
 
