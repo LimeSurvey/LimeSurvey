@@ -505,16 +505,9 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             return;
         }
 
-        // Authentication was successful, now see if we have a user or that we should create one
-        if (is_null($user) && !$autoCreateFlag) {
-                $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
-                ldap_close($ldapconn); // all done? close connection
-                return;
-        }
-
         ldap_close($ldapconn); // all done? close connection
 
-        // Finally, if user didn't exist and auto creation is enabled, we create it
+        // Finally, if user didn't exist and auto creation (i.e. autoCreateFlag == true) is enabled, we create it
         if ($autoCreateFlag)
         {
             if (($iNewUID = $this->_createNewUser($username)) && $this->get('automaticsurveycreation', null, null, false))
