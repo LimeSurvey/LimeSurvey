@@ -480,7 +480,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             {
                 // if no entry or more than one entry returned
                 // then deny authentication
-                $this->setAuthFailure(100, ldap_error($ldapconn));
+                $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
                 ldap_close($ldapconn); // all done? close connection
                 return;
             }
