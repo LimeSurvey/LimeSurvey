@@ -217,7 +217,7 @@ class Template extends LSActiveRecord
             while (false !== ($sFileName = readdir($handle)))
             {
                 // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$sUserTemplateRootDir/$sFileName") && $sFileName != "." && $sFileName != ".." && $sFileName!=".svn" && (file_exists("{$sUserTemplateRootDir}/{$sFileName}/config.xml") || file_exists("{$standardtemplaterootdir}/{$sFileName}/startpage.pstpl")))
+                if (!is_file("$sUserTemplateRootDir/$sFileName") && $sFileName != "." && $sFileName != ".." && $sFileName!=".svn" && (file_exists("{$sUserTemplateRootDir}/{$sFileName}/config.xml") || file_exists("{$sUserTemplateRootDir}/{$sFileName}/startpage.pstpl")))
                 {
                     $aTemplateList[$sFileName] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sFileName;
                 }
