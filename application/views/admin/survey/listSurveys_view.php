@@ -76,11 +76,10 @@
                     array(
                         'header' => gT('Survey ID'),
                         'name' => 'survey_id',
-                        'value'=>'$data->sid',
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->sid, Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
                         'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                        'htmlOptions' => array('class' => 'hidden-xs'),
-                        //'footer'=>$this->renderPartial('//admin/survey/subview/_surveys_list_footer', array(), true),
-                        //'oneRowFooter'=>true,
+                        'htmlOptions' => array('class' => 'hidden-xs has-link'),
                     ),
 
                     array(
@@ -89,68 +88,77 @@
                         'value'=>'$data->running',
                         'type'=>'raw',
                         'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                        'htmlOptions' => array('class' => 'hidden-xs'),
+                        'htmlOptions' => array('class' => 'hidden-xs has-link'),
                     ),
 
                     array(
                         'header' => gT('Title'),
                         'name' => 'title',
-                        'value'=>'$data->defaultlanguage->surveyls_title',
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->defaultlanguage->surveyls_title, Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
+                        'htmlOptions' => array('class' => 'col-md-4 has-link'),
+                        'header' => gT('Title'),
                         'headerHtmlOptions'=>array('class' => 'col-md-4'),
-                        'htmlOptions' => array('class' => 'col-md-4'),
                     ),
 
                     array(
                         'header' => gT('Created'),
                         'name' => 'creation_date',
-                        'value'=>'$data->creationdate',
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->creationdate, Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
                         'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                        'htmlOptions' => array('class' => 'hidden-xs'),
+                        'htmlOptions' => array('class' => 'hidden-xs has-link'),
                     ),
 
                     array(
                         'header' => gT('Owner'),
                         'name' => 'owner',
-                        'value'=>'$data->owner->users_name',
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->owner->users_name, Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
                         'headerHtmlOptions'=>array('class' => 'hidden-md hidden-sm hidden-xs'),
-                        'htmlOptions' => array('class' => 'hidden-md hidden-sm hidden-xs'),
+                        'htmlOptions' => array('class' => 'hidden-md hidden-sm hidden-xs has-link'),
                     ),
 
                     array(
                         'header' => gT('Anonymized responses'),
                         'name' => 'anonymized_responses',
-                        'value'=>'$data->anonymizedResponses',
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->anonymizedResponses, Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
                         'headerHtmlOptions'=>array('class' => 'hidden-xs hidden-sm col-md-1'),
-                        'htmlOptions' => array('class' => 'hidden-xs hidden-sm col-md-1'),
+                        'htmlOptions' => array('class' => 'hidden-xs hidden-sm col-md-1 has-link'),
                     ),
 
 
                     array(
                         'header' => gT('Partial'),
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->countPartialAnswers, Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
                         'name' => 'partial',
-                        'value'=>'$data->countPartialAnswers',
-                        'htmlOptions' => array('class' => ''),
+                        'htmlOptions' => array('class' => 'has-link'),
                     ),
 
                     array(
                         'header' => gT('Full'),
                         'name' => 'full',
-                        'value'=>'$data->countFullAnswers',
-                        'htmlOptions' => array('class' => ''),
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->countFullAnswers, Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
+                        'htmlOptions' => array('class' => 'has-link'),
                     ),
 
                     array(
                         'header' => gT('Total'),
                         'name' => 'total',
-                        'value'=>'$data->countTotalAnswers',
-                        'htmlOptions' => array('class' => ''),
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->countTotalAnswers, Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
+                        'htmlOptions' => array('class' => 'has-link'),
                     ),
 
                     array(
                         'header' => gT('Closed group'),
                         'name' => 'uses_tokens',
-                        'value'=>'$data->hasTokens',
-                        'htmlOptions' => array('class' => ''),
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->hasTokens, Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
+                        'htmlOptions' => array('class' => 'has-link'),
                     ),
 
                     array(
@@ -162,18 +170,17 @@
                     ),
 
                 ),
-
-                'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
-                'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/survey/sa/view/surveyid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
+                'itemsCssClass' =>'table-striped',
+                //'htmlOptions'=>array('style'=>'cursor: pointer;'),
+                //'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
+                //'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/survey/sa/view/surveyid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                 'ajaxUpdate' => true,
                 'afterAjaxUpdate' => 'doToolTip',
                 'template'  => "{items}\n<div class=\"row-fluid\"><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                // public $template = "{items}\n<div class=\"row-fluid\"><div class=\"col-sm-4\"></div><div class=\"col-sm-4\">{pager}</div><div class=\"col-sm-4\">{summary}</div></div>";
             ));
             ?>
         </div>
     </div>
-    <?php $this->renderPartial('//admin/survey/subview/_surveys_list_footer', array()); ?>
 </div>
 
 

@@ -44,6 +44,16 @@ $(document).ready(function(){
     });
 
 
+
+    if($('#survey-grid').length>0)
+    {
+        $(document).on('click', '.has-link', function () {
+            $linkUrl = $(this).find('a').attr('href');
+            window.location.href=$linkUrl;
+            console.log($linkUrl);
+        });
+    }
+
     /*
      * Survey List mass actions
      */

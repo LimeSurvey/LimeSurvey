@@ -1897,3 +1897,16 @@ h3,.h3 {
     padding-left: 0px;
     text-align: left;
 }
+
+.has-link
+{
+    cursor: pointer;
+}
+.grid-view table tbody tr td a:hover
+{
+    text-decoration: none;
+}
+.grid-view table tbody tr td a
+{
+    color: #35363f;
+}
