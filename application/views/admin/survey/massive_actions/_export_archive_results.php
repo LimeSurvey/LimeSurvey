@@ -37,6 +37,6 @@
 </table>
 
 <?php eT('Click this link to download the archive:');?>
-<a href="<?php echo App()->createUrl('/admin/export/sa/downloadZip/sZip/'.$sZip.'/bDeleteAfter/false');?>">
+<a href="<?php echo App()->createUrl('/admin/export/sa/downloadZip/sZip/'.$sZip);?>">
     <?php echo  $sZip;?>
 </a>

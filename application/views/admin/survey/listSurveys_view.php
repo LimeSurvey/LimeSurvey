@@ -19,41 +19,41 @@
             <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" aria-labelledby="surveyListActions" style="left: 15px;">
-              <li>
-                  <a href="#"
-                     data-url="<?php echo App()->createUrl('/admin/survey/sa/deleteMultipleSurveys/');?>"
-                     data-action="delete"
-                     data-action-title="<?php eT('Delete surveys'); ?>"
-                     data-modal-warning-title="<?php eT('Warning');?>"
-                     data-modal-warning-text="<?php eT('Are you sure you want to delete all those surveys?');?>">
-                      <span class="text-danger glyphicon glyphicon-trash"></span>
-                      <?php eT('Delete');?>
-                  </a>
-              </li>
-              <li>
-                  <a href="#"
-                     data-url="<?php echo App()->createUrl('/admin/export/sa/exportMultipleArchiveSurveys/');?>"
-                     data-action="export"
-                     data-action-title="<?php eT('Export surveys'); ?>"
-                     data-modal-warning-title="<?php eT('Warning');?>"
-                     data-modal-warning-text="<?php eT('This will export the survey archives (.lsa) for all selected active surveys. They will be provided in a single zip archive. Are you sure you want to continue?');?>">
-                     <span class="icon-export"></span>
-                     <?php eT('Export');?>
-                  </a>
-              </li>
-
-
-              <li>
-                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/activateMultipleSurveys/');?>" data-action="activate" data-action-title="<?php eT('Activate surveys'); ?>">
-                      <span class="fa fa-play text-success"></span><?php eT('Activate');?>
-                  </a>
-              </li>
-              <li>
-                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/deactivateMultipleSurveys/');?>" data-action="deactivate" data-action-title="<?php eT('Deactivate surveys'); ?>">
-                      <span class="fa fa-stop text-warning"></span>
-                      <?php eT('Deactivate');?>
-                  </a>
-              </li>
+                <li>
+                    <a href="#"
+                       data-url="<?php echo App()->createUrl('/admin/survey/sa/deleteMultipleSurveys/');?>"
+                       data-action="delete"
+                       data-action-title="<?php eT('Delete surveys'); ?>"
+                       data-modal-warning-title="<?php eT('Warning');?>"
+                       data-modal-warning-text="<?php eT('Are you sure you want to delete all those surveys?');?>">
+                        <span class="text-danger glyphicon glyphicon-trash"></span>
+                        <?php eT('Delete');?>
+                    </a>
+                </li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header"> <?php eT("Export...");?></li>
+                <li>
+                    <a href="#"
+                       data-url="<?php echo App()->createUrl('/admin/export/sa/exportMultipleArchiveSurveys/');?>"
+                       data-action="export"
+                       data-action-title="<?php eT('Export surveys archives'); ?>"
+                       data-modal-warning-title="<?php eT('Warning');?>"
+                       data-modal-warning-text="<?php eT('This will export the survey archives (.lsa) for all selected active surveys. They will be provided in a single zip archive. Are you sure you want to continue?');?>">
+                       <span class="icon-export" ></span>
+                       <?php eT("Survey archive (.lsa)");?>
+                    </a>
+                </li>
+                <li>
+                    <a href="#"
+                       data-url="<?php echo App()->createUrl('/admin/export/sa/exportMultipleStructureSurveys/');?>"
+                       data-action="export"
+                       data-action-title="<?php eT('Export surveys structures'); ?>"
+                       data-modal-warning-title="<?php eT('Warning');?>"
+                       data-modal-warning-text="<?php eT('This will export the survey structure (.lss) for all selected active surveys. They will be provided in a single zip archive. Are you sure you want to continue?');?>">
+                       <span class="icon-export" ></span>
+                       <?php eT("Survey structure (.lss)");?>
+                    </a>
+                </li>
             </ul>
         </div>
 
