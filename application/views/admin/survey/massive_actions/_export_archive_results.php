@@ -36,7 +36,9 @@
     </tbody>
 </table>
 
-<?php eT('Click this link to download the archive:');?>
-<a href="<?php echo App()->createUrl('/admin/export/sa/downloadZip/sZip/'.$sZip);?>">
-    <?php echo  $sZip;?>
-</a>
+<?php if(!$bArchiveIsEmpty):?>
+    <a href="<?php echo App()->createUrl('/admin/export/sa/downloadZip/sZip/'.$sZip);?>">
+        <span class="fa fa-download"></span>
+        <?php eT('Click this link to download the archive');?>
+    </a>
+<?php endif; ?>

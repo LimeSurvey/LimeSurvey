@@ -902,7 +902,7 @@ class export extends Survey_Common_Action {
     public function exportMultipleArchiveSurveys($sSurveys)
     {
         $exportResult = $this->exportMultipleSurveys($sSurveys, 'archive');
-        Yii::app()->getController()->renderPartial('/admin/survey/massive_actions/_export_archive_results', array('aResults'=>$exportResult['aResults'], 'sZip'=>$exportResult['sZip']));
+        Yii::app()->getController()->renderPartial('/admin/survey/massive_actions/_export_archive_results', array('aResults'=>$exportResult['aResults'], 'sZip'=>$exportResult['sZip'], 'bArchiveIsEmpty'=>$exportResult['bArchiveIsEmpty']));
     }
 
 
@@ -974,7 +974,7 @@ class export extends Survey_Common_Action {
                 $aResults[$iSurveyID]['error'] = gT("We are sorry but you don't have permissions to do this.");
             }
         }
-        return array('aResults'=>$aResults, 'sZip'=>$sZip);
+        return array('aResults'=>$aResults, 'sZip'=>$sZip, 'bArchiveIsEmpty'=>$bArchiveIsEmpty);
     }
 
     /**
