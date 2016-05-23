@@ -48,14 +48,8 @@ $(document).ready(function(){
      * Survey List mass actions
      */
     if($('#surveyListActions').length>0){
-        $elSurveyActions = $('#surveyListActions');                             // The action select element
-        $surveyActions   = $('#surveyListActions a');                           // The actions in it
-
-        //$elSurveyActions.appendTo($('#massive-action-container'));
-
         // Define what should be done when clicking on a action link
-        $surveyActions.each(function(){
-            $(this).on('click', function(){
+        $(document).on('click', '#surveyListActions a', function () {
                 $that        = $(this);
                 $action      = $that.data('action');                                                // The action string, to display in the modal body (eg: sure you wann $action?)
                 $actionTitle = $that.data('action-title');                                          // The action title, to display in the modal title
@@ -130,7 +124,6 @@ $(document).ready(function(){
                     $modal.modal();
                 }
             });
-        });
     }
 
 
