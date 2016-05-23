@@ -28,7 +28,7 @@
             data-url="<?php echo App()->createUrl('/admin/export/sa/exportMultipleArchiveSurveys/');?>"
             data-action="export"
             data-modal-warning-title="<?php eT('Export survey archive');?>"
-            data-modal-warning-text="<?php eT('This will export the survey archive (.lsa) for all selected active surveys. They will be provided in a single ZIP archive. Are you sure you want to continue?');?>">
+            data-modal-warning-text="<?php eT('This will export the survey archive (.lsa) for all selected active surveys. They will be provided in a single ZIP archive.');?> <?php eT('Continue?');?>">
             <span class="icon-export" ></span>
             <?php eT("Survey archive (.lsa)");?>
             </a>
@@ -38,7 +38,7 @@
             data-url="<?php echo App()->createUrl('/admin/export/sa/exportMultipleStructureSurveys/');?>"
             data-action="export"
             data-modal-warning-title="<?php eT('Export survey structure');?>"
-            data-modal-warning-text="<?php eT('This will export the survey structure (.lss) for all selected active surveys. They will be provided in a single ZIP archive. Are you sure you want to continue?');?>">
+            data-modal-warning-text="<?php eT('This will export the survey structure (.lss) for all selected active surveys. They will be provided in a single ZIP archive.');?> <?php eT('Continue?');?>">
             <span class="icon-export" ></span>
             <?php eT("Survey structure (.lss)");?>
             </a>
