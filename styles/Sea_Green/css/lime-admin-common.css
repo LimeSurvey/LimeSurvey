@@ -1886,8 +1886,9 @@ h3,.h3 {
     word-wrap: break-word;
 }
 
-.summary-container, .summary, #massive-action-container, #surveyListActions {
-    margin: 20px 0;
+.summary-container, .summary, #massive-action-container, #surveyListActions, .pager-container .pager, .pager-container .pager .pagination{
+    margin: 0;
+    margin-bottom: 20px;
 }
 .summary-container{
     text-align: right;
