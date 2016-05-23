@@ -37,8 +37,8 @@
 </table>
 
 <?php if(!$bArchiveIsEmpty):?>
-    <a href="<?php echo App()->createUrl('/admin/export/sa/downloadZip/sZip/'.$sZip);?>">
+    <a class='btn btn-primary' href="<?php echo App()->createUrl('/admin/export/sa/downloadZip/sZip/'.$sZip);?>">
         <span class="fa fa-download"></span>
-        <?php eT('Click this link to download the archive');?>
+        <?php eT('Download archive');?>
     </a>
 <?php endif; ?>
