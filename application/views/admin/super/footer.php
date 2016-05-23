@@ -56,9 +56,14 @@
                 </div>
 
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer modal-footer-yes-no">
                 <a class="btn btn-primary btn-ok"><span class='fa fa-check'></span>&nbsp;<?php eT("Yes"); ?></a>
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><span class='fa fa-ban'></span>&nbsp;<?php eT("No"); ?></button>
+            </div>
+            <div class="modal-footer-close modal-footer" style="display: none;">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    <?php eT("Close"); ?>
+                </button>
             </div>
         </div>
     </div>

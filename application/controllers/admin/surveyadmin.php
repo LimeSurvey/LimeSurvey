@@ -54,7 +54,16 @@ class SurveyAdmin extends Survey_Common_Action
      */
     public function deleteMultipleSurveys($sSurveys)
     {
-        var_dump($sSurveys);
+        $aSurveys = json_decode($sSurveys);
+        $aResults = array();
+        foreach($aSurveys as $iSurveyID)
+        {
+            $oSurvey                        = Survey::model()->findByPk($iSurveyID);
+            $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
+            $aResults[$iSurveyID]['result'] = $oSurvey->deleteSurvey($iSurveyID, $recursive=true);
+
+        }
+        Yii::app()->getController()->renderPartial('/admin/survey/massive_actions/_delete_results', array('aResults'=>$aResults));
     }
 
     /**

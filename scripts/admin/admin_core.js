@@ -48,48 +48,80 @@ $(document).ready(function(){
      * Survey List mass actions
      */
     if($('#surveyListActions').length>0){
-        $elSurveyActions = $('#surveyListActions');
-        $surveyActions = $('#surveyListActions a');
+        $elSurveyActions = $('#surveyListActions');                             // The action select element
+        $surveyActions   = $('#surveyListActions a');                           // The actions in it
 
+        // Define what should be done when clicking on a action link
         $surveyActions.each(function(){
             $(this).on('click', function(){
                 $that        = $(this);
-                $action      = $(this).data('action');
-                $actionTitle = $(this).data('action-title');
-                $ActionUrl   = $(this).data('url');
-                $checkedSid  = $.fn.yiiGridView.getChecked('survey-grid', 'sid');
-                $modal       = $('#confirmation-modal');
-                $ActionUrl   = $ActionUrl + '/sSurveys/'+$checkedSid;
+                $action      = $that.data('action');                                              // The action string, to display in the modal body (eg: sure you wann $action?)
+                $actionTitle = $that.data('action-title');                                        // The action title, to display in the modal title
+                $actionUrl   = $that.data('url');                                                 // The url of the Survey Controller action to call
+                $checkedSid  = JSON.stringify($.fn.yiiGridView.getChecked('survey-grid', 'sid'));   // List of the clicked checkbox
+                $modal       = $('#confirmation-modal');                                            // The modal we want to use
+                $actionUrl   = $actionUrl + '/sSurveys/'+$checkedSid;
 
-                $modal.data('keepopen', true);
-                $modal.data('onclick', function(){
-                    //$modal.modal('hide');
-                    $modal.find('.modal-title').text($actionTitle);
-                    $modal.find('.modal-body-text').empty();                    
-                    $modal.find('.modal-footer').empty();
-                    $ajaxLoader = $("#ajaxContainerLoading");
-                    $ajaxLoader.show();
-                    //$modal.find('.modal-body-text').html('<h1>TOTO</h1>');
-                });
+                $modal.data('keepopen', true);                                                      // We want to update the modal content after confirmation
 
+                // Needed modal elements
+                $modalTitle    = $modal.find('.modal-title');               // Modal Title
+                $modalBody     = $modal.find('.modal-body-text');           // Modal Body
+                $modalYesNo    = $modal.find('.modal-footer-yes-no');       // Modal footer with yes/no buttons
+                $modalClose    = $modal.find('.modal-footer-close');        // Modal footer with close button
+                $ajaxLoader    = $("#ajaxContainerLoading");                // Ajax loader
+
+                // Original modal state
+                $oldModalTitle  = $modalTitle.text();
+                $oldModalBody   = $modalBody.html();
+
+                // We update the modal
                 $modal.find('.modal-title').text('Warning!');
                 $modal.find('.modal-body-text').text("Are you sure you want to "+$action+" all those surveys?");
+
+                // When user close the modal, we put it back to its original state
+                $modal.on('hidden.bs.modal', function (e) {
+                    $modal.data('onclick', null);                  // We reset the onclick event
+                    $modalTitle.text($oldModalTitle);               // the modal title
+                    $modalBody.empty().append($oldModalBody);       // modal body
+                    $modalClose.hide();                             // Hide the 'close' button
+                    $modalYesNo.show();                             // Show the 'Yes/No' buttons
+                })
+
+                // Define what should be done when user confirm the mass action
+                $modal.data('onclick', null);
+                $modal.data('onclick', function(){
+
+                    // Update the modal elements
+                    $modalTitle.text($actionTitle);                             // Change the modal title to the action title
+                    $modalBody.empty();                                         // Empty the modal body
+                    $modalYesNo.hide();                                         // Hide the 'Yes/No' buttons
+                    $modalClose.show();                                         // Show the 'close' button
+
+                    $ajaxLoader.show(); // Show the ajax loader
+
+                    // Ajax request
+                    $.ajax({
+                        url : $actionUrl,
+                        type : 'POST',
+                        dataType : 'html',
+
+                        // html contains the buttons
+                        success : function(html, statut){
+                            $.fn.yiiGridView.update('survey-grid');             // Update the surveys list
+                            $ajaxLoader.hide();                                 // Hide the ajax loader
+                            $modalBody.empty().html(html); // Inject the returned HTML in the modal body
+                        },
+                        error :  function(html, statut){
+                            $ajaxLoader.hide();
+                            $modal.find('.modal-body-text').empty().html(html);
+                            $modal.find('.modal-body-text').append(statut);
+                        }
+                    });
+                });
+
                 $modal.modal();
-
-
-/*
-                switch($action)
-                {
-                    case 'delete':
-                        $modal.data('href', $ActionUrl);
-                        console.log($modal.data('href'));
-                        $modal.find('.modal-title').text('Warning!');
-                        $modal.find('.modal-body-text').text("Are you sure you want to delete all those surveys?");
-                        $modal.modal();
-                    break;
-                }
-*/
-        });
+            });
         });
     }
 
@@ -216,6 +248,8 @@ $(document).ready(function(){
      */
     $('#confirmation-modal').on('show.bs.modal', function(e) {
 
+        var onclick = null;
+        var href = null;
         if($(this).data('href'))
         {
             var href = $(this).data('href');    // When calling modal from javascript
@@ -244,6 +278,7 @@ $(document).ready(function(){
             var onclick_fn = eval(onclick);
 
             if (typeof onclick_fn == 'function') {
+                $(this).find('.btn-ok').off('click');
                 $(this).find('.btn-ok').on('click', function(ev) {
                     if(! $keepopen )
                     {
