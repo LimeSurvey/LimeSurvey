@@ -58,7 +58,10 @@ $(document).ready(function(){
                 $checkedSid  = JSON.stringify($oCheckedSid);
 
                 $modal       = $('#confirmation-modal');                        // The modal we want to use
-                $actionUrl   = $actionUrl + '/sSurveys/'+$checkedSid;
+
+                $actionUrl   = $actionUrl;
+                $postDatas   = {sSurveys:$checkedSid};
+
                 $modal.data('keepopen', true);                                  // We want to update the modal content after confirmation
 
                 // Needed modal elements
@@ -102,7 +105,7 @@ $(document).ready(function(){
                     $.ajax({
                         url : $actionUrl,
                         type : 'POST',
-                        dataType : 'html',
+                        data :  $postDatas,
 
                         // html contains the buttons
                         success : function(html, statut){
@@ -112,8 +115,8 @@ $(document).ready(function(){
                         },
                         error :  function(html, statut){
                             $ajaxLoader.hide();
-                            $modal.find('.modal-body-text').empty().html(html);
-                            $modal.find('.modal-body-text').append(statut);
+                            $modal.find('.modal-body-text').empty().html(html.responseText);
+                            console.log(html);
                         }
                     });
                 });

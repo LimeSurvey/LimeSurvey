@@ -889,18 +889,20 @@ class export extends Survey_Common_Action {
      * Export multiple surveys structure. Called via ajax from surveys list massive action
      * @param string $sSurveys  :json string containing the list of survey to delete
      */
-    public function exportMultipleStructureSurveys($sSurveys)
+    public function exportMultipleStructureSurveys()
     {
+        $sSurveys = $_POST['sSurveys'];
         $exportResult = $this->exportMultipleSurveys($sSurveys, 'structure');
-        Yii::app()->getController()->renderPartial('/admin/survey/massive_actions/_export_archive_results', array('aResults'=>$exportResult['aResults'], 'sZip'=>$exportResult['sZip']));
+        Yii::app()->getController()->renderPartial('/admin/survey/massive_actions/_export_archive_results', array('aResults'=>$exportResult['aResults'], 'sZip'=>$exportResult['sZip'], 'bArchiveIsEmpty'=>$exportResult['bArchiveIsEmpty']));
     }
 
     /**
      * Export multiple surveys archives. Called via ajax from surveys list massive action
      * @param string $sSurveys  :json string containing the list of survey to delete
      */
-    public function exportMultipleArchiveSurveys($sSurveys)
+    public function exportMultipleArchiveSurveys()
     {
+        $sSurveys = $_POST['sSurveys'];
         $exportResult = $this->exportMultipleSurveys($sSurveys, 'archive');
         Yii::app()->getController()->renderPartial('/admin/survey/massive_actions/_export_archive_results', array('aResults'=>$exportResult['aResults'], 'sZip'=>$exportResult['sZip'], 'bArchiveIsEmpty'=>$exportResult['bArchiveIsEmpty']));
     }
