@@ -51,7 +51,7 @@ $(document).ready(function(){
         $elSurveyActions = $('#surveyListActions');                             // The action select element
         $surveyActions   = $('#surveyListActions a');                           // The actions in it
 
-        $elSurveyActions.appendTo($('#massive-action-container'));
+        //$elSurveyActions.appendTo($('#massive-action-container'));
 
         // Define what should be done when clicking on a action link
         $surveyActions.each(function(){
