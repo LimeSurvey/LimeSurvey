@@ -55,13 +55,13 @@ $(document).ready(function(){
         $surveyActions.each(function(){
             $(this).on('click', function(){
                 $that        = $(this);
-                $action      = $that.data('action');                                              // The action string, to display in the modal body (eg: sure you wann $action?)
-                $actionTitle = $that.data('action-title');                                        // The action title, to display in the modal title
-                $actionUrl   = $that.data('url');                                                 // The url of the Survey Controller action to call
+                $action      = $that.data('action');                                                // The action string, to display in the modal body (eg: sure you wann $action?)
+                $actionTitle = $that.data('action-title');                                          // The action title, to display in the modal title
+                $actionUrl   = $that.data('url');                                                   // The url of the Survey Controller action to call
                 $checkedSid  = JSON.stringify($.fn.yiiGridView.getChecked('survey-grid', 'sid'));   // List of the clicked checkbox
+
                 $modal       = $('#confirmation-modal');                                            // The modal we want to use
                 $actionUrl   = $actionUrl + '/sSurveys/'+$checkedSid;
-
                 $modal.data('keepopen', true);                                                      // We want to update the modal content after confirmation
 
                 // Needed modal elements
@@ -75,13 +75,17 @@ $(document).ready(function(){
                 $oldModalTitle  = $modalTitle.text();
                 $oldModalBody   = $modalBody.html();
 
+                // New modal contents
+                $modalWarningTitle  = $that.data('modal-warning-title');                                           // The action string, to display in the modal body (eg: sure you wann $action?)
+                $modalWarningText   = $that.data('modal-warning-text');
+
                 // We update the modal
-                $modal.find('.modal-title').text('Warning!');
-                $modal.find('.modal-body-text').text("Are you sure you want to "+$action+" all those surveys?");
+                $modal.find('.modal-title').text($modalWarningTitle);
+                $modal.find('.modal-body-text').text($modalWarningText);
 
                 // When user close the modal, we put it back to its original state
                 $modal.on('hidden.bs.modal', function (e) {
-                    $modal.data('onclick', null);                  // We reset the onclick event
+                    $modal.data('onclick', null);                   // We reset the onclick event
                     $modalTitle.text($oldModalTitle);               // the modal title
                     $modalBody.empty().append($oldModalBody);       // modal body
                     $modalClose.hide();                             // Hide the 'close' button
@@ -89,16 +93,13 @@ $(document).ready(function(){
                 })
 
                 // Define what should be done when user confirm the mass action
-                $modal.data('onclick', null);
                 $modal.data('onclick', function(){
-
                     // Update the modal elements
                     $modalTitle.text($actionTitle);                             // Change the modal title to the action title
                     $modalBody.empty();                                         // Empty the modal body
                     $modalYesNo.hide();                                         // Hide the 'Yes/No' buttons
                     $modalClose.show();                                         // Show the 'close' button
-
-                    $ajaxLoader.show(); // Show the ajax loader
+                    $ajaxLoader.show();                                         // Show the ajax loader
 
                     // Ajax request
                     $.ajax({
@@ -110,7 +111,7 @@ $(document).ready(function(){
                         success : function(html, statut){
                             $.fn.yiiGridView.update('survey-grid');             // Update the surveys list
                             $ajaxLoader.hide();                                 // Hide the ajax loader
-                            $modalBody.empty().html(html); // Inject the returned HTML in the modal body
+                            $modalBody.empty().html(html);                      // Inject the returned HTML in the modal body
                         },
                         error :  function(html, statut){
                             $ajaxLoader.hide();
@@ -120,6 +121,7 @@ $(document).ready(function(){
                     });
                 });
 
+                // open the modal
                 $modal.modal();
             });
         });

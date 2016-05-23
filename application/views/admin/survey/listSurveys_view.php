@@ -20,7 +20,12 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="surveyListActions" style="left: 15px;">
               <li>
-                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/deleteMultipleSurveys/');?>" data-action="delete" data-action-title="<?php eT('Delete surveys'); ?>">
+                  <a href="#"
+                     data-url="<?php echo App()->createUrl('/admin/survey/sa/deleteMultipleSurveys/');?>"
+                     data-action="delete"
+                     data-action-title="<?php eT('Delete surveys'); ?>"
+                     data-modal-warning-title="<?php eT('Warning');?>"
+                     data-modal-warning-text="<?php eT('Are you sure you want to delete all those surveys?');?>">
                       <span class="text-danger glyphicon glyphicon-trash"></span>
                       <?php eT('Delete');?>
                   </a>
