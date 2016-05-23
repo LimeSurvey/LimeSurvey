@@ -42,4 +42,4 @@ $p = new CHtmlPurifier();
  <input id="filesystemurl" type="hidden" data-url="<?php echo Yii::app()->createUrl("admin/update/sa/fileSystem"); ?>"/>
  <input id="checklocalerrorsurl" type="hidden" data-url="<?php echo Yii::app()->createUrl("admin/update/sa/checkLocalErrors"); ?>"/>
  <input id="welcomeurl" type="hidden" data-url="<?php echo Yii::app()->createUrl("admin/update/sa/getwelcome"); ?>"/>
-<input id="localerrormsg" type="hidden" data-message="<?php echo eT('you have an error, or a notice, inside your local installation of limesurvey. See:');?>" />
+<input id="localerrormsg" type="hidden" data-message="<?php echo eT('You have an error inside your local installation of LimeSurvey. See:');?>" />

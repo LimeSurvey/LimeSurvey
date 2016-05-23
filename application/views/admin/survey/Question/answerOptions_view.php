@@ -237,7 +237,7 @@
                             type="hidden"
                             id="add-input-javascript-datas"
                             data-url="<?php echo App()->createUrl('/admin/questions/sa/getSubquestionRowForAllLanguages/');?>"
-                            data-errormessage="<?php eT('An error occured while processing the ajax request');?>"
+                            data-errormessage="An error occured while processing the ajax request."
                             data-surveyid="<?php echo $surveyid;?>"
                             data-gid="<?php echo $gid;?>"
                             data-qid="<?php echo $qid;?>"

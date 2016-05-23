@@ -3599,7 +3599,7 @@ function questionAttributes($returnByName=false)
             11=>'92%',
             12=>'100%'
         ),
-        "help"=>gT('Relative width of then input element'),
+        "help"=>gT('Relative width of the input element'),
         "caption"=>gT('Input box width'));
 
         $qattributes["label_input_columns"]=array(

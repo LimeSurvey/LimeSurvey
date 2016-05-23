@@ -949,7 +949,7 @@ class export extends Survey_Common_Action {
                             }
                             else
                             {
-                                $aResults[$iSurveyID]['error'] = gT("unknown error");
+                                $aResults[$iSurveyID]['error'] = gT("Unknown error");
                             }
                         }
                         else

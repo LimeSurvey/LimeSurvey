@@ -8,7 +8,7 @@
 <table class="table table-striped">
     <thead>
         <th><?php eT('Survey ID');?></th>
-        <th><?php eT('Survey Title');?></th>
+        <th><?php eT('Survey title');?></th>
         <th><?php eT('Status');?></th>
     </thead>
     <tbody>
