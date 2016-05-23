@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-05-23 18:43:28+00:00\n"
+"POT-Creation-Date: 2016-05-23 19:07:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1436,8 +1436,6 @@ msgstr ""
 #: application/views/admin/survey/activateSurvey_view.php:85
 #: application/views/admin/survey/deleteSurvey_view.php:8
 #: application/views/admin/survey/massive_actions/_selector.php:18
-#: application/views/admin/survey/massive_actions/_selector.php:31
-#: application/views/admin/survey/massive_actions/_selector.php:42
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:52
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:161
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:167
@@ -15278,7 +15276,7 @@ msgid "Click this link to download the archive"
 msgstr ""
 
 #: application/views/admin/survey/massive_actions/_selector.php:9
-msgid "With selected survey:"
+msgid "Selected survey(s)..."
 msgstr ""
 
 #: application/views/admin/survey/massive_actions/_selector.php:17
@@ -15290,33 +15288,32 @@ msgid "Are you sure you want to delete all those surveys?"
 msgstr ""
 
 #: application/views/admin/survey/massive_actions/_selector.php:25
-#: application/views/admin/survey/surveybar_view.php:389
-msgid "Export..."
+msgid "Export as..."
 msgstr ""
 
 #: application/views/admin/survey/massive_actions/_selector.php:30
-msgid "Export surveys archives"
+msgid "Export survey archive"
 msgstr ""
 
-#: application/views/admin/survey/massive_actions/_selector.php:32
-msgid "This will export the survey archives (.lsa) for all selected active surveys. They will be provided in a single zip archive. Are you sure you want to continue?"
+#: application/views/admin/survey/massive_actions/_selector.php:31
+msgid "This will export the survey archive (.lsa) for all selected active surveys. They will be provided in a single ZIP archive. Are you sure you want to continue?"
 msgstr ""
 
-#: application/views/admin/survey/massive_actions/_selector.php:34
+#: application/views/admin/survey/massive_actions/_selector.php:33
 #: application/views/admin/survey/surveybar_view.php:409
 #: application/views/admin/survey/surveybar_view.php:418
 msgid "Survey archive (.lsa)"
 msgstr ""
 
+#: application/views/admin/survey/massive_actions/_selector.php:40
+msgid "Export survey structure"
+msgstr ""
+
 #: application/views/admin/survey/massive_actions/_selector.php:41
-msgid "Export surveys structures"
+msgid "This will export the survey structure (.lss) for all selected active surveys. They will be provided in a single ZIP archive. Are you sure you want to continue?"
 msgstr ""
 
 #: application/views/admin/survey/massive_actions/_selector.php:43
-msgid "This will export the survey structure (.lss) for all selected active surveys. They will be provided in a single zip archive. Are you sure you want to continue?"
-msgstr ""
-
-#: application/views/admin/survey/massive_actions/_selector.php:45
 #: application/views/admin/survey/surveybar_view.php:397
 msgid "Survey structure (.lss)"
 msgstr ""
@@ -16117,6 +16114,10 @@ msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:379
 msgid "Display / Export"
+msgstr ""
+
+#: application/views/admin/survey/surveybar_view.php:389
+msgid "Export..."
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:416
