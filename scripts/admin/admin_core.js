@@ -58,7 +58,8 @@ $(document).ready(function(){
                 $action      = $that.data('action');                                                // The action string, to display in the modal body (eg: sure you wann $action?)
                 $actionTitle = $that.data('action-title');                                          // The action title, to display in the modal title
                 $actionUrl   = $that.data('url');                                                   // The url of the Survey Controller action to call
-                $checkedSid  = JSON.stringify($.fn.yiiGridView.getChecked('survey-grid', 'sid'));   // List of the clicked checkbox
+                $oCheckedSid = $.fn.yiiGridView.getChecked('survey-grid', 'sid');                   // List of the clicked checkbox
+                $checkedSid  = JSON.stringify($oCheckedSid);
 
                 $modal       = $('#confirmation-modal');                        // The modal we want to use
                 $actionUrl   = $actionUrl + '/sSurveys/'+$checkedSid;
@@ -122,7 +123,10 @@ $(document).ready(function(){
                 });
 
                 // open the modal
-                $modal.modal();
+                if(!$.isEmptyObject($oCheckedSid))
+                {
+                    $modal.modal();
+                }
             });
         });
     }
