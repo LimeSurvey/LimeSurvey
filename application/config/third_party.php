@@ -22,7 +22,7 @@ return array(
         'basePath' => 'bootstrap',
         'css'=> array(
             'css/bootstrap.css',
-            'yiistrap.css',
+            'css/yiistrap.css',
         ),
         'depends' => array(
             'jquery',
