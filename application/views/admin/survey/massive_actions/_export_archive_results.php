@@ -3,8 +3,10 @@
  * This view display the result of delete multiple action. It's rendered via ajax for the confirmation modal in survey list
  *
  * @var $aResults   The array containing the result of each survey deletion
+ * @var $aZIPFileName
  */
 ?>
+
 <table class="table table-striped">
     <thead>
         <th><?php eT('Survey ID');?></th>
@@ -22,14 +24,19 @@
                 </td>
                 <?php if ($result['result']):?>
                     <td class="text-success">
-                        <?php echo 'deleted' ; ?>
+                        <?php echo 'Exported' ; ?>
                     </td>
                 <?php else: ?>
                     <td class="text-warning">
-                        <?php echo 'could not delete the survey' ; ?>
+                        <?php echo $result['error'] ; ?>
                     </td>
                 <?php endif;?>
             </tr>
         <?php endforeach;?>
     </tbody>
 </table>
+
+<?php eT('Click this link to download the archive:');?>
+<a href="<?php echo App()->createUrl('/admin/export/sa/downloadZip/sZip/'.$sZip.'/bDeleteAfter/false');?>">
+    <?php echo  $sZip;?>
+</a>

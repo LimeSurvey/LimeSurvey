@@ -31,6 +31,19 @@
                   </a>
               </li>
               <li>
+                  <a href="#"
+                     data-url="<?php echo App()->createUrl('/admin/export/sa/exportMultipleArchiveSurveys/');?>"
+                     data-action="export"
+                     data-action-title="<?php eT('Export surveys'); ?>"
+                     data-modal-warning-title="<?php eT('Warning');?>"
+                     data-modal-warning-text="<?php eT('This will export the survey archives (.lsa) for all selected active surveys. They will be provided in a single zip archive. Are you sure you want to continue?');?>">
+                     <span class="icon-export"></span>
+                     <?php eT('Export');?>
+                  </a>
+              </li>
+
+
+              <li>
                   <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/activateMultipleSurveys/');?>" data-action="activate" data-action-title="<?php eT('Activate surveys'); ?>">
                       <span class="fa fa-play text-success"></span><?php eT('Activate');?>
                   </a>
@@ -39,12 +52,6 @@
                   <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/deactivateMultipleSurveys/');?>" data-action="deactivate" data-action-title="<?php eT('Deactivate surveys'); ?>">
                       <span class="fa fa-stop text-warning"></span>
                       <?php eT('Deactivate');?>
-                  </a>
-              </li>
-              <li>
-                  <a href="#" data-url="<?php echo App()->createUrl('/admin/survey/sa/exportMultipleSurveys/');?>" data-action="export"  data-action-title="<?php eT('Export surveys'); ?>">
-                      <span class="icon-export"></span>
-                      <?php eT('Export');?>
                   </a>
               </li>
             </ul>

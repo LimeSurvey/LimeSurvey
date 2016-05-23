@@ -60,23 +60,23 @@ $(document).ready(function(){
                 $actionUrl   = $that.data('url');                                                   // The url of the Survey Controller action to call
                 $checkedSid  = JSON.stringify($.fn.yiiGridView.getChecked('survey-grid', 'sid'));   // List of the clicked checkbox
 
-                $modal       = $('#confirmation-modal');                                            // The modal we want to use
+                $modal       = $('#confirmation-modal');                        // The modal we want to use
                 $actionUrl   = $actionUrl + '/sSurveys/'+$checkedSid;
-                $modal.data('keepopen', true);                                                      // We want to update the modal content after confirmation
+                $modal.data('keepopen', true);                                  // We want to update the modal content after confirmation
 
                 // Needed modal elements
-                $modalTitle    = $modal.find('.modal-title');               // Modal Title
-                $modalBody     = $modal.find('.modal-body-text');           // Modal Body
-                $modalYesNo    = $modal.find('.modal-footer-yes-no');       // Modal footer with yes/no buttons
-                $modalClose    = $modal.find('.modal-footer-close');        // Modal footer with close button
-                $ajaxLoader    = $("#ajaxContainerLoading");                // Ajax loader
+                $modalTitle    = $modal.find('.modal-title');                   // Modal Title
+                $modalBody     = $modal.find('.modal-body-text');               // Modal Body
+                $modalYesNo    = $modal.find('.modal-footer-yes-no');           // Modal footer with yes/no buttons
+                $modalClose    = $modal.find('.modal-footer-close');            // Modal footer with close button
+                $ajaxLoader    = $("#ajaxContainerLoading");                    // Ajax loader
 
                 // Original modal state
                 $oldModalTitle  = $modalTitle.text();
                 $oldModalBody   = $modalBody.html();
 
                 // New modal contents
-                $modalWarningTitle  = $that.data('modal-warning-title');                                           // The action string, to display in the modal body (eg: sure you wann $action?)
+                $modalWarningTitle  = $that.data('modal-warning-title');        // The action string, to display in the modal body (eg: sure you wann $action?)
                 $modalWarningText   = $that.data('modal-warning-text');
 
                 // We update the modal
