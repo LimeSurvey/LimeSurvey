@@ -13,12 +13,12 @@
     <!-- Search Box -->
     <div class="row">
 
-        <div class="col-sm-4 pull-left" id="surveyListActions">
+        <div class="col-sm-4 pull-left dropup" id="surveyListActions">
             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
               <?php eT('With selected survey:');?>
             <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu" aria-labelledby="surveyListActions" style="left: 15px;">
+            <ul class="dropdown-menu" aria-labelledby="surveyListActions">
                 <li>
                     <a href="#"
                        data-url="<?php echo App()->createUrl('/admin/survey/sa/deleteMultipleSurveys/');?>"
@@ -203,7 +203,7 @@
                         'name' => 'actions',
                         'value'=>'$data->buttons',
                         'type'=>'raw',
-                        'htmlOptions' => array('class' => ''),
+                        'htmlOptions' => array('class' => 'text-right'),
                     ),
 
                 ),
@@ -211,7 +211,9 @@
                 'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
                 'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/survey/sa/view/surveyid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                 'ajaxUpdate' => true,
-                'afterAjaxUpdate' => 'doToolTip'
+                'afterAjaxUpdate' => 'doToolTip',
+                'template'  => "{items}\n<div class=\"row-fluid\"><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                // public $template = "{items}\n<div class=\"row-fluid\"><div class=\"col-sm-4\"></div><div class=\"col-sm-4\">{pager}</div><div class=\"col-sm-4\">{summary}</div></div>";
             ));
             ?>
         </div>

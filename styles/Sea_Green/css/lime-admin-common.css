@@ -1885,3 +1885,15 @@ h3,.h3 {
 .statisticstable {
     word-wrap: break-word;
 }
+
+.summary-container, .summary, #massive-action-container, #surveyListActions {
+    margin: 20px 0;
+}
+.summary-container{
+    text-align: right;
+}
+
+#massive-action-container, #surveyListActions{
+    padding-left: 0px;
+    text-align: left;
+}
