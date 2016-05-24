@@ -62,7 +62,7 @@
                     <?php $this->renderPartial('/admin/export/statistics_subviews/_response_filter_header', array()) ; ?>
 
                     <!-- AUTOSCROLLING DIV CONTAINING QUESTION FILTERS -->
-                    <div id='statisticsresponsefilters' class='statisticsfilters scrollheight_400' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
+                    <div id='statisticsresponsefilters' class='statisticsfilters scrollheight_400'>
                         <input type='hidden' id='filterchoice_state' name='filterchoice_state' value='<?php echo $filterchoice_state; ?>' />
 
                         <?php
