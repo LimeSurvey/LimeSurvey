@@ -68,7 +68,7 @@
 .ui-jqgrid .ui-jqgrid-htable th div {
     overflow: hidden;
     position: relative;
-    height: 17px
+    height: 20px
 }
 
 .ui-th-column,
@@ -665,4 +665,3 @@ tbody td:nth-of-type(even),
 #gbox_displaytokens .ui-jqgrid-htable th {
     text-align: left;
 }
-
