@@ -49,9 +49,6 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
         <div class="col-lg-8 templateeditor">
             <?php echo CHtml::form(array('admin/templates/sa/templatesavechanges'), 'post', array('id'=>'editTemplate', 'name'=>'editTemplate')); ?>
 
-            <?php if(isset($_GET['editfile'])):?>
-                <input type='hidden' name='editfileindex' value='<?php echo $_GET['editfile']; ?>' />
-                <?php endif;?>
             <?php echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename'));
             echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname'));
             echo CHtml::hiddenField('editfile', $editindex);
@@ -101,9 +98,6 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                 echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname')); ?>
                 <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
                 <input type='hidden' name='action' value='templatefiledelete' />
-                <?php if(isset($_GET['editfile'])):?>
-                    <input type='hidden' name='editfileindex' value='<?php echo $_GET['editfile']; ?>' />
-                    <?php endif;?>
 
                 </form>
             </div>
@@ -125,9 +119,6 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                     <?php echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename'));
                     echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname')); ?>
                     <input type='hidden' name='action' value='templateuploadfile' />
-                    <?php if(isset($_GET['editfile'])):?>
-                        <input type='hidden' name='editfileindex' value='<?php echo $_GET['editfile']; ?>' />
-                        <?php endif;?>
                     </form>
                     <?php
                 }
