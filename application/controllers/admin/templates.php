@@ -401,24 +401,6 @@ class templates extends Survey_Common_Action
     }
 
     /**
-    * Function that modify order of arguments and pass to main viewing function i.e. view()
-    *
-    * @access public
-    * @param string $templatename
-    * @param string $screenname
-    * @param string $editfile
-    * @return void
-    */
-    public function fileredirect($templatename = '', $screenname = 'welcome', $editfile = 'startpage.pstpl')
-    {
-        if(!$templatename)
-        {
-            $templatename = Yii::app()->getConfig("defaulttemplate");
-        }
-        $this->getController()->redirect(array("admin/templates/sa/view/","editfile"=>$editfile,"screenname" =>$screenname ,"templatename"=>$templatename ));
-    }
-
-    /**
     * Function responsible to delete a template file.
     *
     * @access public
@@ -448,8 +430,7 @@ class templates extends Survey_Common_Action
             {
                 Yii::app()->user->setFlash('error',sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/template folder"), htmlspecialchars($sFileToDelete)));
             }
-            $editfileindex = App()->request->getParam('editfileindex');
-            $this->getController()->redirect(array('admin/templates/sa/view/','editfile'=>$editfileindex,'screenname'=>returnGlobal('screenname'),'templatename'=>$sTemplateName));
+            $this->getController()->redirect(array('admin/templates/sa/view/','editfile'=> App()->request->getParam('editfile','pstpl_0'),'screenname'=>returnGlobal('screenname'),'templatename'=>$sTemplateName));
         }
     }
 
