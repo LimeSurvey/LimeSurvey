@@ -351,7 +351,7 @@ class Usergroups extends Survey_Common_Action
         if ($ugid == false)
         {
             $aData['usergroupbar']['returnbutton']['url']='admin/index';
-            $aData['usergroupbar']['returnbutton']['text']=gT('Return to admin panel');
+            $aData['usergroupbar']['returnbutton']['text']=gT('Return to admin home');
         }
         else
         {
