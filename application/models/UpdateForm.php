@@ -587,7 +587,7 @@ class UpdateForm extends CFormModel
     public function getUpdateNotification()
     {
         $this->checkAssets();
-        if(Yii::app()->getConfig('updatable'))
+        if(Yii::app()->getConfig('updatable') && Permission::model()->hasGlobalPermission('superadmin') )
         {
             $today = new DateTime("now");
             $next_update_check = Yii::app()->session['next_update_check'];

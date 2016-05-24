@@ -1773,8 +1773,8 @@ td.subquestion-actions span:hover {
 }
 
 /* Box in resopnses list need a little more space */
-#displayresponses_cb {
-    width: 35px !important;  /* Override jQgrid stuff */
+div#gview_displayresponses th#displayresponses_cb {
+    width: 35px;  /* Override jQgrid stuff */
 }
 
 /* View detail response, make sure left column is not too wide*/
@@ -1921,4 +1921,9 @@ h3,.h3 {
 
 .hoverAction .table-striped > tbody > tr:hover > td > a:not(.btn) {
     color: white;
+}
+
+.ui-priority-secondary
+{
+    background-color: #f5f5f5;
 }

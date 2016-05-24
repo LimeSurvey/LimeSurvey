@@ -946,7 +946,7 @@ class Survey extends LSActiveRecord
         // Permission
         if(!Permission::model()->hasGlobalPermission("surveys",'read'))
         {
-            $criteria->with='correct_relation_defaultlanguage, permissions';
+            $criteria->with='permissions';
             $criteria->addCondition("permissions.permission='survey' AND permissions.entity='survey'");
             $criteria->compare('permissions.uid', Yii::app()->user->id);
         }

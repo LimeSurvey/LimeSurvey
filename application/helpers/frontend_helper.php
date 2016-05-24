@@ -125,6 +125,7 @@ function loadanswers()
                 //Only make session variables for those in insertarray[]
                 if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$column]))
                 {
+
                     if (($_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'N' ||
                     $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'K' ||
                     $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'D') && $value == null)
@@ -136,6 +137,10 @@ function loadanswers()
                         $_SESSION['survey_'.$surveyid][$column]='';
                     }
                     else
+                    {
+                        $_SESSION['survey_'.$surveyid][$column]=$value;
+                    }
+                    if(isset($token) && !empty($token))
                     {
                         $_SESSION['survey_'.$surveyid][$column]=$value;
                     }

@@ -43,6 +43,7 @@ $(function() {
     /* Launch jqgrid */
 
     jQuery("#displayresponses").jqGrid({
+        altRows : true,
         recordtext : sRecordText,
         emptyrecords : sEmptyRecords,
         pgtext : sPageText,
@@ -88,7 +89,12 @@ $(function() {
             if($(event.target).is("a") || $(event.target).closest("a").length )
                 return false;
             return true;
-        }
+        },
+        gridComplete: function() {
+            $("#displayresponses_cb").css("width","35px");
+            $("#displayresponses tbody tr").children().first("td").css("width","35px");
+            $("#displayresponses tbody tr td").css("text-align","center");
+         }
     });
 
     /* Add navgrid */
