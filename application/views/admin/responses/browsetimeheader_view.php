@@ -1,4 +1,4 @@
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3><?php echo eT('Time statistics'); ?></h3>
     <script type='text/javascript'>
         var strdeleteconfirm='<?php echo eT('Do you really want to delete this response?', 'js'); ?>';
@@ -29,7 +29,7 @@
             <?php } ?>
             <?php echo CHtml::form(array("admin/responses/sa/time/surveyid/{$surveyid}/"), 'post', array('id'=>'browseresults')); ?>
                 <font size='1' face='verdana'>
-                
+
                 <?php eT("Records displayed:"); ?> <input type='text' size='4' value='<?php echo $limit ?>' name='limit' id='limit' />
                 <?php eT("Starting from:"); ?> <input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
                 <input type='submit' value='<?php eT("Show"); ?>' />
