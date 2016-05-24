@@ -65,7 +65,7 @@ class PluginManager extends Survey_Common_Action
         }
 
         $aData['fullpagebar']['returnbutton']['url'] = 'index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin panel');
+        $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin home');
         $aData['data'] = $data;
         $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
         if(!Permission::model()->hasGlobalPermission('settings','read'))
