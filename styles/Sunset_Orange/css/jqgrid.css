@@ -68,13 +68,13 @@
 .ui-jqgrid .ui-jqgrid-htable th div {
     overflow: hidden;
     position: relative;
-    height: 17px
+    height: 20px
 }
 
 .ui-th-column,
 .ui-jqgrid .ui-jqgrid-htable th.ui-th-column {
     overflow: hidden;
-    white-space: nowrap;
+    white-space: normal;
     text-align: center;
     border-top: 0 none;
     border-bottom: 0 none
@@ -183,6 +183,7 @@ tr.ui-search-toolbar select {
     overflow: hidden;
     height: 22px;
     padding: 0 4px 0 4px;
+    white-space: nowrap;
 }
 
 .ui-jqgrid tr.jqgfirstrow td {
