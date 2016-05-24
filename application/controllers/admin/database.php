@@ -1073,7 +1073,7 @@ class database extends Survey_Common_Action
             // Preload survey
             $oSurvey=Survey::model()->findByPk($iSurveyID);
 
-             // Save plugin settings.
+             // Save plugin settings : actually leave it before saving core : we are sure core settings is saved in LS way.
             $pluginSettings = App()->request->getPost('plugin', array());
             foreach($pluginSettings as $plugin => $settings)
             {
@@ -1158,11 +1158,6 @@ class database extends Survey_Common_Action
             $oSurvey->tokenlength = (App()->request->getPost('tokenlength')<5  || App()->request->getPost('tokenlength')>36)?15:App()->request->getPost('tokenlength');
             $oSurvey->adminemail = App()->request->getPost('adminemail');
             $oSurvey->bounce_email = App()->request->getPost('bounce_email');
-
-            $event = new PluginEvent('newSurveySettings');
-            $event->set('newSurvey', $oSurvey);
-            $event->set('survey', $iSurveyID);
-            App()->getPluginManager()->dispatchEvent($event);
 
             if ($oSurvey->save())
             {
