@@ -198,6 +198,7 @@
                     // we must force the value of the input to ''
                     // and force the thousand separator (this bug still affect 2.06)
                     $("form").submit(function (e) {
+                        $('#javatbd<?php echo $myfname; ?> slider').hide(),
                         $inputEl.bootstrapSlider('destroy');
 
                         // This problem still afect 2.06
