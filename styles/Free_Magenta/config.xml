@@ -25,8 +25,8 @@
     </metadatas>
     <files>
         <css>
-            <filename>lime-admin-colors.css</filename>
             <filename>lime-admin-common.css</filename>
+            <filename>lime-admin-colors.css</filename>
             <filename>fonts.css</filename>
             <filename>statistics.css</filename>
             <filename>bootstrap-switch.min.css</filename>
