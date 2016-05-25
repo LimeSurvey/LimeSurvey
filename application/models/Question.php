@@ -893,30 +893,26 @@
         );
 
         $criteria = new CDbCriteria;
+        $criteria->together = true;
+        $criteria->with=array('groups');
         $criteria->condition="t.sid=:surveyid AND t.language=:language AND parent_qid=0";
         $criteria->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
-        $criteria->join='LEFT JOIN {{groups}} AS groups ON ( groups.gid = t.gid AND t.language = groups.language AND groups.sid = t.sid)';
-
-
-        $criteria->compare('title', $this->title, true, 'AND');
 
         $criteria2 = new CDbCriteria;
-        $criteria2->condition="t.sid=:surveyid AND t.language=:language AND parent_qid=0";
-        $criteria2->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
-        $criteria2->join='LEFT JOIN {{groups}} AS groups ON ( groups.gid = t.gid AND t.language = groups.language AND groups.sid = t.sid)';
+        $criteria2->compare('title', $this->title, true, 'OR');
+        $criteria2->compare('question', $this->title, true, 'OR');
+        $criteria2->compare('type', $this->title, true, 'OR');
 
+        $qid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.qid::varchar' : 't.qid');
+        $criteria2->compare($qid_reference, $this->title, true, 'OR');
 
+        $criteria->mergeWith($criteria2, 'AND');
+        $criteria->order = 'group_order ASC,question_order ASC';
 
         if($this->group_name != '')
         {
             $criteria->addCondition("groups.group_name = '$this->group_name'");
-            $criteria2->addCondition("groups.group_name = '$this->group_name'");
         }
-
-        $criteria2->compare('question', $this->title, true, 'AND');
-        $criteria->mergeWith($criteria2, 'OR');
-
-        $criteria->order = 'group_order ASC,question_order ASC';
 
         $dataProvider=new CActiveDataProvider('Question', array(
             'criteria'=>$criteria,
