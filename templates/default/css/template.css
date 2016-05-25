@@ -934,3 +934,9 @@ label, th {
     -o-hyphens: auto;
     hyphens: auto;
 }
+
+.xdebug-var-dump {
+    z-index: 10000;
+    position: relative;
+    top: 10px;
+}
