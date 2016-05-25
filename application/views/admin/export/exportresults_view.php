@@ -4,8 +4,6 @@
  */
 ?>
 <script type="text/javascript">
-    var sMsgMaximumExcelColumns = '<?php eT("You can only choose 255 colums at a maximum for Excel export.",'js'); ?>';
-    var sMsgExcelColumnsReduced = '<?php eT("The number of selected columns was reduced automatically.",'js'); ?>';
     var sMsgColumnCount = '<?php eT("%s of %s columns selected",'js'); ?>';
 </script>
 
@@ -35,25 +33,23 @@
                                 </h4>
                             </div>
                             <div class="panel-body">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <?php $hasTips = false; ?>
-                                    <?php foreach ($exports as $key => $info): ?>
-                                        <?php if (!empty($info['label'])): ?>
-                                            <label class="btn btn-default <?php if($info['label']=='CSV'){ echo 'active';}?>">
-                                                <input
-                                                    name="type"
-                                                    value="<?php echo $key;?>"
-                                                    type="radio"
-                                                    <?php if($info['label']=='CSV'){ echo 'checked';}?>
-                                                    id="<?php echo $key;?>"
-                                                >
-                                                <?php echo $info['label'];?>
-                                                </label>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
+                                <div class="form-group">
+                                    <!-- Format -->
+                                    <label for='export_from' class="col-sm-2 control-label">
+                                        <?php eT("Export format:"); ?>
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <?php foreach ($exports as $key => $info): ?>
+                                            <?php if (!empty($info['label'])): ?>
+                                                <div class="radio">
+                                                    <label><input type="radio" name="type" id="<?php echo $key;?>" value="<?php echo $key;?>" <?php if($info['label']=='CSV'){ echo 'checked';}?>><?php echo $info['label'];?></label>
+                                                </div>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                                </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
                         <!-- Range -->
                         <div class="panel panel-primary" id="pannel-2" <?php  if ($SingleResponse) { echo 'style="display:none"';} ?> >
@@ -66,7 +62,7 @@
                                 <div class="form-group">
 
                                     <!-- From -->
-                                    <label for='export_from' class="col-sm-1 control-label">
+                                    <label for='export_from' class="col-sm-2 control-label">
                                         <?php eT("From:"); ?>
                                     </label>
                                     <div class="col-sm-2">
@@ -297,7 +293,7 @@
                         <div class="panel panel-primary" id="pannel-6">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <?php eT("Column control");?>
+                                    <?php eT("Columns");?>
                                 </h4>
                             </div>
                             <div class="panel-body">
@@ -305,12 +301,8 @@
                                 <?php if ($SingleResponse): ?>
                                     <input type='hidden' name='response_id' value="<?php echo $SingleResponse;?>" />
                                 <?php endif; ?>
-                                <div class="alert alert-warning alert-dismissible" role="alert">
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-                                    <?php eT('Please note: The export to Excel is currently limited to loading no more than 255 columns.'); ?>
-                                </div>
                                 <label for='colselect' class="col-sm-3 control-label">
-                                    <?php eT("Choose columns:");?>
+                                    <?php eT("Select columns:");?>
                                 </label>
                                 <div class="col-sm-9">
                                 <?php
