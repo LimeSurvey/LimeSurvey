@@ -536,7 +536,7 @@ class update extends Survey_Common_Action
                 $sValidityDate = '';
                 if (isset($serverAnswer->key_infos->validuntil))
                 {
-                    $sValidityDate = convertToGlobalSettingFormat( $sValidityDate );
+                    $sValidityDate = convertToGlobalSettingFormat( $serverAnswer->key_infos->validuntil );
                 }
                 return $this->controller->renderPartial('//admin/update/updater/welcome/_'.$serverAnswer->view, array('serverAnswer' => $serverAnswer, 'sValidityDate'=>$sValidityDate),  false, false);
             }
