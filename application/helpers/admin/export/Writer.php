@@ -32,6 +32,7 @@ abstract class Writer implements IWriter
         $this->languageCode = $sLanguageCode;
         $this->translator = new Translator();
         $this->filename = Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . randomChars(40);
+        $this->webfilename = 'results-survey'.$oSurvey->id;
     }
 
     /**

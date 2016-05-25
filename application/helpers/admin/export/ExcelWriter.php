@@ -59,7 +59,7 @@ class ExcelWriter extends Writer
         $this->workbook->writeToFile($this->filename);
         if ($this->forceDownload){
             header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            header("Content-Disposition: attachment; filename=\"Excel.xlsx\"");
+            header("Content-Disposition: attachment; filename=\"{$this->webfilename}.xlsx\"");
             header('Content-Length: ' . filesize($this->filename));
             readfile($this->filename);
         }

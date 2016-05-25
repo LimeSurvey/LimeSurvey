@@ -4112,7 +4112,7 @@ class statistics_helper {
     * @param mixed $browse  Show browse buttons
     * @return buffer
     */
-    public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
+    public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $outputTarget='I',$sLanguageCode=null, $browse = true)
     {
 
         $aStatisticsData=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
@@ -4260,7 +4260,7 @@ class statistics_helper {
             */
             require_once(APPPATH.'/third_party/pear/Spreadsheet/Excel/Xlswriter.php');
 
-            if($pdfOutput=='F')
+            if($outputTarget=='F')
             {
                 $sFileName = $sTempDir.'/statistic-survey'.$surveyid.'.xls';
                 $this->workbook = new Xlswriter($sFileName);
@@ -4278,7 +4278,7 @@ class statistics_helper {
             if (!empty($sTempDir)) {
                 $this->workbook->setTempDir($sTempDir);
             }
-            if ($pdfOutput!='F')
+            if ($outputTarget!='F')
                 $this->workbook->send('statistic-survey'.$surveyid.'.xls');
 
             // Creating the first worksheet
@@ -4460,7 +4460,7 @@ class statistics_helper {
 
                 $this->workbook->close();
 
-                if($pdfOutput=='F')
+                if($outputTarget=='F')
                 {
                     return $sFileName;
                 }
@@ -4473,14 +4473,14 @@ class statistics_helper {
             case 'pdf':
                 $this->pdf->lastPage();
 
-                if($pdfOutput=='F')
+                if($outputTarget=='F')
                 { // This is only used by lsrc to send an E-Mail attachment, so it gives back the filename to send and delete afterwards
                     $tempfilename = $sTempDir."/Survey_".$surveyid.".pdf";
-                    $this->pdf->Output($tempfilename, $pdfOutput);
+                    $this->pdf->Output($tempfilename, $outputTarget);
                     return $tempfilename;
                 }
                 else
-                    return $this->pdf->Output(gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
+                    return $this->pdf->Output(gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $outputTarget);
 
                 break;
             case 'html':
