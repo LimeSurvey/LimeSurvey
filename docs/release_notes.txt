@@ -35,6 +35,27 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160523) to 2.50+ (build 160525) May 25, 2016
+-Fixed issue #10724: Date Question Default value inconsistent behavior w/ token persistence enabled (LouisGac)
+-Fixed issue #10725: ComfortUpdate message, hide "ComfortUpdate" message for users who does not have rights to update the limesurvey. (LouisGac)
+-Fixed issue #11033: Slider question shows flash of text input on submit (LouisGac)
+-Fixed issue #11219: Missing translation (Carsten Schmitz)
+-Fixed issue #11221: Response filters cannot be opened after clicking view statistics (LouisGac)
+-Fixed issue #11223: Certain region in time statistics page are not displayed correctly (covered by side-menu) (LouisGac)
+-Fixed issue #11227: [security] XSS in template editing (Denis Chenu)
+-Fixed issue #11247: Columns in response browsing not aligned (LouisGac)
+-Fixed issue #11248: Saving plugin survey settings send PHP notice (Denis Chenu)
+-Fixed issue #11252: Consistent description for links to admin home (Carsten Schmitz)
+-Fixed issue #11253: Relation "correct_relation_defaultlanguage, permissions" is not defined in active record class "Survey". (LouisGac)
+-Fixed issue #11254: Wrong default language in statistics expert mode (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
 
 Changes from 2.50+ (build 160517) to 2.50+ (build 160523) May 23, 2016
 -New feature : Mass actions for survey list: Export archives, export structure, delete surveys (LouisGac)
