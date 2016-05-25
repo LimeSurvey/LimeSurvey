@@ -18,7 +18,7 @@
 
             <!-- Support / Donate -->
             <div  class="col-xs-6 col-md-4  col-lg-5 text-right"  >
-                <a href='http://donate.limesurvey.org'>
+                <a href='http://donate.limesurvey.org' target="_blank">
                     <img alt='<?php eT("Support this project - Donate to "); ?>LimeSurvey' title='<?php eT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
                 </a>
             </div>
