@@ -45,7 +45,7 @@
         <div class="btn-group btn-group-justified" data-toggle="buttons">
 
           <!-- Female -->
-          <label class="btn btn-primary <?php if($fChecked!=''){echo 'active';}?>">
+          <label class="btn btn-primary <?php if($fChecked!=''){echo 'active';}?>" id="label-answer<?php echo $name;?>F">
               <input
                 class="radio"
                 type="radio"
@@ -60,7 +60,7 @@
           </label>
 
           <!-- Male -->
-          <label class="btn btn-primary  <?php if($mChecked!=''){echo 'active';}?> ">
+          <label class="btn btn-primary  <?php if($mChecked!=''){echo 'active';}?> " id="label-answer<?php echo $name;?>M">
                 <input
                   class="radio"
                   type="radio"
@@ -76,7 +76,7 @@
 
           <!-- No answer -->
           <?php if($noAnswer):?>
-              <label class="btn btn-primary  <?php if($naChecked!=''){echo 'active';}?>">
+              <label class="btn btn-primary  <?php if($naChecked!=''){echo 'active';}?>" id="label-answer<?php echo $name;?>">
                   <input
                       class="radio"
                       type="radio"
