@@ -68,14 +68,6 @@ return array(
 
     ),
 
-
-        'jquery-price-format' => array(
-            'baseUrl' => 'third_party/jquery-price-format/',
-            'js' => array(
-                'jquery_price_format.js'
-            ),
-        ),
-
     'jqgrid.addons' => array(
         'baseUrl' => 'third_party/jqgrid/plugins/',
         'js' => array(
