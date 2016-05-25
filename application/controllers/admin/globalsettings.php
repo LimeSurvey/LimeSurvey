@@ -154,8 +154,8 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('restrictToLanguages', trim($aRestrictToLanguages));
         setGlobalSetting('sitename', strip_tags($_POST['sitename']));
         setGlobalSetting('defaulthtmleditormode', sanitize_paranoid_string($_POST['defaulthtmleditormode']));
-        setGlobalSetting('defaultquestionselectormode', sanitize_paranoid_string($_POST['defaultquestionselectormode']));
-        setGlobalSetting('defaulttemplateeditormode', sanitize_paranoid_string($_POST['defaulttemplateeditormode']));
+        setGlobalSetting('defaultquestionselectormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultquestionselectormode','default')));
+        setGlobalSetting('defaulttemplateeditormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaulttemplateeditormode','default')));
         if (!Yii::app()->getConfig('demoMode'))
         {
             $sTemplate=Yii::app()->getRequest()->getPost("defaulttemplate");
@@ -177,8 +177,8 @@ class GlobalSettings extends Survey_Common_Action
             setGlobalSetting('emailsmtppassword', strip_tags(returnGlobal('emailsmtppassword')));
         }
         setGlobalSetting('bounceaccounthost', strip_tags(returnGlobal('bounceaccounthost')));
-        setGlobalSetting('bounceaccounttype', strip_tags(returnGlobal('bounceaccounttype')));
-        setGlobalSetting('bounceencryption', strip_tags(returnGlobal('bounceencryption')));
+        setGlobalSetting('bounceaccounttype', Yii::app()->request->getPost('bounceaccounttype','off'));
+        setGlobalSetting('bounceencryption', Yii::app()->request->getPost('bounceencryption','off'));
         setGlobalSetting('bounceaccountuser', strip_tags(returnGlobal('bounceaccountuser')));
 
         if (returnGlobal('bounceaccountpass') != 'enteredpassword') setGlobalSetting('bounceaccountpass', strip_tags(returnGlobal('bounceaccountpass')));
@@ -232,7 +232,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('RPCInterface', $_POST['RPCInterface']);
         setGlobalSetting('rpc_publish_api', (bool) $_POST['rpc_publish_api']);
         setGlobalSetting('characterset', $_POST['characterset']);
-        setGlobalSetting('sideMenuBehaviour', $_POST['sideMenuBehaviour']);
+        setGlobalSetting('sideMenuBehaviour', Yii::app()->getRequest()->getPost('sideMenuBehaviour','adaptive'));
         $savetime = ((float)$_POST['timeadjust'])*60 . ' minutes'; //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
             $savetime = '+' . $savetime;
