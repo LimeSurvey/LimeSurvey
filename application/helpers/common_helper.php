@@ -7132,10 +7132,7 @@ function doHeader()
 function getPrintableHeader()
 {
     global $rooturl,$homeurl;
-    $headelements = '
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <script type="text/javascript" src="'.Yii::app()->getConfig('adminscripts').'printablesurvey.js"></script>
-    ';
+    $headelements = App()->getController()->renderPartial('/survey/system/print_survey/header', array(), true, true);
     return $headelements;
 }
 
