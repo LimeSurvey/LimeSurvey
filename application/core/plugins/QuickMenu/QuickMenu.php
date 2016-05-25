@@ -134,14 +134,8 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
         // Create sort order table if it doesn't exist
         if (!$this->api->tableExists($this, 'sortorder'))
         {
-            $aFields = array(
-                'uid' => 'integer NOT NULL',
-                'button_name' => 'string(64)',
-                'sort_order' => 'integer',
-                'PRIMARY KEY (button_name, uid)'
-            );
             try {
-                $this->api->createTable($this, 'sortorder', $aFields);
+                $this->createSortorderTable();
             }
             catch(Exception $e)
             {
@@ -156,6 +150,22 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
                 );
             }
         }
+    }
+
+    /**
+     * Create the table to store quick-menu sort order
+     *
+     * @return void
+     */
+    protected function createSortorderTable()
+    {
+        $aFields = array(
+            'uid' => 'integer NOT NULL',
+            'button_name' => 'string(64)',
+            'sort_order' => 'integer',
+            'PRIMARY KEY (button_name, uid)'
+        );
+        $this->api->createTable($this, 'sortorder', $aFields);
     }
 
     /**
@@ -515,6 +525,16 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
     {
         $tableName = '{{quickmenu_sortorder}}';  // TODO: Should not be hard-coded
         $db = Yii::app()->db;
+
+        $tableSchema = $db->schema->getTable($tableName);
+
+        // TODO: Should be handled by plugin version system
+        if ($tableSchema === null)
+        {
+            Yii::app()->user->setFlash('error', 'Quick-menu plugin has been updated. Please deactivate and activate it again.');
+            return;
+        }
+
         $orders = $db->createCommand()
             ->select(array('button_name', 'sort_order'))
             ->from($tableName)
