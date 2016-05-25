@@ -35,6 +35,32 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160525) to 2.50+ (build 160526) May 25, 2016
+-New feature: Question List, user can search over qid, code, question and question type (LouisGac)
+-New feature: Response Excel format now exports xlsx files (Carsten Schmitz)
+-Fixed issue #10803: Can't search by question id in question list (LouisGac)
+-Fixed issue #11184: Date question are not validated (LouisGac)
+-Fixed issue #11190: The Donate link in footer opens in parent window (LouisGac)
+-Fixed issue #11245: Email Reminders Screen Layout, information off screen (LouisGac)
+-Fixed issue #11246: Theme Bay Of Many - Layer for adding an url parameter below other elements on page (LouisGac)
+-Fixed issue #11256: Certain area in "Save & activate survey" button are covered by the footer area (LouisGac)
+-Fixed issue #11259: Confirmation window always closes automatically in survey permissions page (LouisGac)
+-Fixed issue #11260: Response View - Title "Actions" duplicated (LouisGac)
+-Fixed issue #11261: Printable survey javascript/jquery error (LouisGac)
+-Fixed issue #11264: Token attributes management button colors don't match the function (Carsten Schmitz)
+-Fixed issue #11265: When activating a survey with existing token table the information shown is wrong (Carsten Schmitz)
+-Fixed issue #11268: Comfort update shows different valid date to my account on Limesurvey.org (LouisGac)
+-Fixed issue: Missing space between survey title and survey ID. (Marcel Minke)
+-Fixed issue: Missing default values for certain global settings (Carsten Schmitz)
+-Removed feature: Thousands separator on input in numeric questions (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Japanese by nomoto
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
 Changes from 2.50+ (build 160523) to 2.50+ (build 160525) May 25, 2016
 -Fixed issue #10724: Date Question Default value inconsistent behavior w/ token persistence enabled (LouisGac)
 -Fixed issue #10725: ComfortUpdate message, hide "ComfortUpdate" message for users who does not have rights to update the limesurvey. (LouisGac)
