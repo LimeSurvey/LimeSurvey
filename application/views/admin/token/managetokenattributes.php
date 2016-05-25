@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 <p>
-                    <input type="submit" class="btn btn-default" value="<?php eT('Save'); ?>" />
+                    <input type="submit" class="btn btn-success" value="<?php eT('Save'); ?>" />
                     <input type='hidden' name='action' value='tokens' />
                     <input type='hidden' name='subaction' value='updatetokenattributedescriptions' />
                 </p>
@@ -138,7 +138,7 @@
                 </div>
             </p>
             <p>
-                <?php echo CHtml::submitButton(gT('Add fields','unescaped'), array('class'=>'btn btn-default')); ?>
+                <?php echo CHtml::submitButton(gT('Add fields','unescaped'), array('class'=>'btn btn-warning')); ?>
                 <?php echo CHtml::hiddenField('action','tokens'); ?>
                 <?php echo CHtml::hiddenField('subaction','updatetokenattributes'); ?>
                 <?php echo CHtml::hiddenField('sid',$surveyid); ?>
@@ -153,7 +153,7 @@
                     </div>
                 </p>
                 <p>
-                    <?php echo CHtml::submitButton(gT('Delete attribute','unescaped'), array('class'=>'btn btn-default')); ?>
+                    <?php echo CHtml::submitButton(gT('Delete attribute','unescaped'), array('class'=>'btn btn-danger')); ?>
                     <?php echo CHtml::hiddenField('action','tokens'); ?>
                     <?php echo CHtml::hiddenField('subaction','deletetokenattributes'); ?>
                     <?php echo CHtml::hiddenField('sid',$surveyid); ?>
