@@ -56,6 +56,7 @@ $(document).ready(function(){
 
     /*
      * List mass actions
+     * TODO: refactore it to handle the different possible actions (modal, redirect with post, redirect with session,etc. ) in cleanest way
      */
     if($('.listActions').length>0){
         // Define what should be done when clicking on a action link
@@ -70,7 +71,7 @@ $(document).ready(function(){
 
 
                 // For actions without modal, doing a redirection
-                if($that.data('redirect'))
+                if($that.data('post-redirect'))
                 {
                     var newForm = jQuery('<form>', {
                         'action': $actionUrl,
@@ -86,6 +87,16 @@ $(document).ready(function(){
                         'type': 'hidden'
                     })).appendTo('body');
                     newForm.submit();
+                    return;
+                }
+
+                if($that.data('fill-session-and-redirect'))
+                {
+                    // postUrl is defined as a var in the View
+                    $("#addcpdb").load(postUrl, {
+                        participantid:$oCheckedItems},function(){
+                            $(location).attr('href',$actionUrl);
+                    });
                     return;
                 }
 
