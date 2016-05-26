@@ -230,8 +230,6 @@
 
     <!-- CGridView -->
     <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
-    <div class="col-sm-12 list-tokens">
-        <h3><?php eT('Survey participants'); ?></h3>
 
         <!-- Todo : search boxes -->
 

@@ -27,7 +27,9 @@
         <li class="dropdown-header"> <?php eT("email");?></li>
         <li>
             <a href="#"
-            data-url="<?php echo App()->createUrl('/admin/token/sa/inviteMultipleTokens/');?>"
+            data-url="<?php echo App()->createUrl('/admin/tokens/sa/email/surveyid/'.$_GET['surveyid']);?>"
+            data-input-name="tokenids"
+            data-redirect="true"
             data-action="invite"
             data-modal-warning-title="<?php eT('Send email invitations');?>"
             data-modal-warning-text="<?php eT('Send an invitation email to the selected entries (if they have not yet been sent an invitation email)');?> <?php eT('Continue?');?>">
@@ -37,11 +39,13 @@
         </li>
         <li>
             <a href="#"
-            data-url="<?php echo App()->createUrl('/admin/token/sa/remindMultipleTokens/');?>"
+            data-url="<?php echo App()->createUrl('/admin/tokens/sa/email/action/remind/surveyid/'.$_GET['surveyid']);?>"
+            data-input-name="tokenids"
+            data-redirect="true"
             data-action="remind"
             data-modal-warning-title="<?php eT('Send email reminder');?>"
             data-modal-warning-text="<?php eT('Send a reminder email to the selected entries (if they have already received the invitation email)');?> <?php eT('Continue?');?>">
-            <span class="ui-icon ui-icon-mail-closed" ></span>
+            <span class="ui-icon ui-icon-mail-open" ></span>
             <?php eT('Send email reminder');?>
             </a>
         </li>

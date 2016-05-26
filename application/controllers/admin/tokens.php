@@ -262,7 +262,6 @@ class tokens extends Survey_Common_Action
         $iSid = $_POST['iSid'];
         TokenDynamic::model($iSid)->deleteRecords($aTokenIds);
         return true;
-        //Yii::app()->getController()->renderPartial('/admin/survey/massive_actions/_delete_results', array('aResults'=>$aResults));
     }
 
     /**

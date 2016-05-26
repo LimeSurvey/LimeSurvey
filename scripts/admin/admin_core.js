@@ -61,7 +61,6 @@ $(document).ready(function(){
         // Define what should be done when clicking on a action link
         $(document).on('click', '.listActions a', function () {
                 $that        = $(this);
-
                 $action      = $that.data('action');                                                // The action string, to display in the modal body (eg: sure you wann $action?)
                 $actionTitle = $that.data('action-title');                                          // The action title, to display in the modal title
                 $actionUrl   = $that.data('url');                                                   // The url of the Survey Controller action to call
@@ -69,12 +68,30 @@ $(document).ready(function(){
 
                 $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk'));                   // List of the clicked checkbox
 
+
+                // For actions without modal, doing a redirection
+                if($that.data('redirect'))
+                {
+                    var newForm = jQuery('<form>', {
+                        'action': $actionUrl,
+                        'target': '_blank',
+                        'method': 'POST'
+                    }).append(jQuery('<input>', {
+                        'name': $that.data('input-name'),
+                        'value': $oCheckedItems.join("|"),
+                        'type': 'hidden'
+                    })).append(jQuery('<input>', {
+                        'name': 'YII_CSRF_TOKEN',
+                        'value': LS.data.csrfToken,
+                        'type': 'hidden'
+                    })).appendTo('body');
+                    newForm.submit();
+                    return;
+                }
+
                 $oCheckedItems  = JSON.stringify($oCheckedItems);
-
                 $modal       = $('#confirmation-modal');                        // The modal we want to use
-
                 $actionUrl   = $actionUrl;
-
                 // Do we need to post sid?
                 if($that.data('sid'))
                 {
@@ -142,7 +159,7 @@ $(document).ready(function(){
 
                         // html contains the buttons
                         success : function(html, statut){
-                            $.fn.yiiGridView.update($gridid);             // Update the surveys list
+                            $.fn.yiiGridView.update($gridid);                   // Update the surveys list
                             $ajaxLoader.hide();                                 // Hide the ajax loader
                             $modalBody.empty().html(html);                      // Inject the returned HTML in the modal body
                         },
