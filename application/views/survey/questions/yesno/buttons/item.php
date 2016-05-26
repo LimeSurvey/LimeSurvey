@@ -18,7 +18,7 @@
       <div class="btn-group btn-group-justified" data-toggle="buttons" id="<?php echo $name;?>-container">
 
         <!-- Yes -->
-        <label class="btn btn-primary <?php if($yChecked){ echo "active";}?> ">
+        <label class="btn btn-primary <?php if($yChecked){ echo "active";}?>"  id="label-answer<?php echo $name;?>Y">
           <input
               class="radio"
               type="radio"
@@ -32,7 +32,7 @@
         </label>
 
         <!-- No -->
-        <label class="btn btn-primary <?php if($nChecked){ echo "active";}?> ">
+        <label class="btn btn-primary <?php if($nChecked){ echo "active";}?>"  id="label-answer<?php echo $name;?>N">
             <input
                 class="radio"
                 type="radio"
@@ -47,7 +47,7 @@
 
         <!-- No answer -->
         <?php if($noAnswer):?>
-            <label class="btn btn-primary <?php if($naChecked){ echo "active";}?>">
+            <label class="btn btn-primary <?php if($naChecked){ echo "active";}?>" id="label-answer<?php echo $name;?>">
 
                 <input
                     class="radio"
