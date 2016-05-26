@@ -342,19 +342,27 @@ class tokens extends Survey_Common_Action
         $aData['dateformatdetails'] = $dateformatdetails;
         $aLanguageCodes=Survey::model()->findByPk($iSurveyId)->getAllLanguages();
         $aLanguages=array();
+
         foreach ($aLanguageCodes as $aCode)
         {
             $aLanguages[$aCode]=getLanguageNameFromCode($aCode,false);
         }
-        $aData['aLanguages'] = $aLanguages;
 
+        $aData['aLanguages']                    = $aLanguages;
+        $surveyinfo                             = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+        $aData["surveyinfo"]                    = $surveyinfo;
+        $aData['title_bar']['title']            = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
+        $aData['sidemenu']["token_menu"]        = true;
+        $aData['token_bar']['buttons']['view']  = true;
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
-        $aData['sidemenu']["token_menu"]=TRUE;
-        $aData['token_bar']['buttons']['view']=TRUE;
-
+        /// FOR GRID View
+        $model =  TokenDynamic::model($iSurveyId);
+        $aData['model'] = $model;
+        // Set number of page
+        if (isset($_GET['pageSize']))
+        {
+            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+        }
 
 
         $this->_renderWrappedTemplate('token', array('browse'), $aData);

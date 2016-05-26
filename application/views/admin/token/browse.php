@@ -226,4 +226,45 @@
             </div>
         </div>
     </div>
+
+
+    <!-- CGridView -->
+    <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
+    <div class="col-sm-12 list-tokens">
+        <h3><?php eT('Survey participants'); ?></h3>
+
+        <!-- Todo : search boxes -->
+
+        <!-- Grid -->
+        <div class="row">
+            <div class="col-sm-12 content-right">
+                <?php
+                    $this->widget('bootstrap.widgets.TbGridView', array(
+                        'dataProvider' => $model->search(),
+                        'id' => 'token-grid',
+                        'emptyText'=>gT('No tokens found.'),
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $pageSize,
+                                Yii::app()->params['pageSizeOptions'],
+                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
+                        'itemsCssClass' =>'table-striped',
+
+                        'columns' => $model->attributesForGrid,
+
+                    ));
+                ?>
+            </div>
+        </div>
+
+        <!-- To update rows per page via ajax -->
+        <script type="text/javascript">
+            jQuery(function($) {
+                jQuery(document).on("change", '#pageSize', function(){
+                    $.fn.yiiGridView.update('survey-grid',{ data:{ pageSize: $(this).val() }});
+                });
+            });
+        </script>
+    </div>
 </div>
