@@ -52,9 +52,9 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * @param string $sSurveys  :json string containing the list of survey to delete
      */
-    public function deleteMultipleSurveys()
+    public function deleteMultiple()
     {
-        $aSurveys = json_decode($_POST['sSurveys']);
+        $aSurveys = json_decode($_POST['sItems']);
         $aResults = array();
         foreach($aSurveys as $iSurveyID)
         {

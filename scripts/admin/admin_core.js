@@ -55,7 +55,7 @@ $(document).ready(function(){
     }
 
     /*
-     * Survey List mass actions
+     * List mass actions
      */
     if($('.listActions').length>0){
         // Define what should be done when clicking on a action link
@@ -66,18 +66,14 @@ $(document).ready(function(){
                 $actionTitle = $that.data('action-title');                                          // The action title, to display in the modal title
                 $actionUrl   = $that.data('url');                                                   // The url of the Survey Controller action to call
 
-                console.log($('.listActions').attr('id'));
-                console.log($('.listActions').data('pk'));
-                $oCheckedSid = $.fn.yiiGridView.getChecked($('.listActions').data('grid-id'), $('.listActions').data('pk'));                   // List of the clicked checkbox
-                console.log($oCheckedSid);
+                $oCheckedItems = $.fn.yiiGridView.getChecked($('.listActions').data('grid-id'), $('.listActions').data('pk'));                   // List of the clicked checkbox
 
-                //$oCheckedSid = $.fn.yiiGridView.getChecked('survey-grid', 'sid');                   // List of the clicked checkbox
-                $checkedSid  = JSON.stringify($oCheckedSid);
+                $oCheckedItems  = JSON.stringify($oCheckedItems);
 
                 $modal       = $('#confirmation-modal');                        // The modal we want to use
 
                 $actionUrl   = $actionUrl;
-                $postDatas   = {sSurveys:$checkedSid};
+                $postDatas   = {sItems:$oCheckedItems};
 
                 $modal.data('keepopen', true);                                  // We want to update the modal content after confirmation
 
@@ -139,7 +135,7 @@ $(document).ready(function(){
                 });
 
                 // open the modal
-                if(!$.isEmptyObject($oCheckedSid))
+                if(!$.isEmptyObject($oCheckedItems))
                 {
                     $modal.modal();
                 }

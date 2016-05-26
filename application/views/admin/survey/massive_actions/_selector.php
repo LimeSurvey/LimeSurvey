@@ -12,7 +12,7 @@
     <ul class="dropdown-menu listActions" aria-labelledby="surveyListActions">
         <li>
             <a href="#"
-            data-url="<?php echo App()->createUrl('/admin/survey/sa/deleteMultipleSurveys/');?>"
+            data-url="<?php echo App()->createUrl('/admin/survey/sa/deleteMultiple/');?>"
             data-action="delete"
             data-action-title="<?php eT('Delete surveys'); ?>"
             data-modal-warning-title="<?php eT('Warning');?>"

@@ -891,7 +891,7 @@ class export extends Survey_Common_Action {
      */
     public function exportMultipleStructureSurveys()
     {
-        $sSurveys = $_POST['sSurveys'];
+        $sSurveys = $_POST['sItems'];
         $exportResult = $this->exportMultipleSurveys($sSurveys, 'structure');
         Yii::app()->getController()->renderPartial('/admin/survey/massive_actions/_export_archive_results', array('aResults'=>$exportResult['aResults'], 'sZip'=>$exportResult['sZip'], 'bArchiveIsEmpty'=>$exportResult['bArchiveIsEmpty']));
     }
@@ -902,7 +902,7 @@ class export extends Survey_Common_Action {
      */
     public function exportMultipleArchiveSurveys()
     {
-        $sSurveys = $_POST['sSurveys'];
+        $sSurveys = $_POST['sItems'];
         $exportResult = $this->exportMultipleSurveys($sSurveys, 'archive');
         Yii::app()->getController()->renderPartial('/admin/survey/massive_actions/_export_archive_results', array('aResults'=>$exportResult['aResults'], 'sZip'=>$exportResult['sZip'], 'bArchiveIsEmpty'=>$exportResult['bArchiveIsEmpty']));
     }
