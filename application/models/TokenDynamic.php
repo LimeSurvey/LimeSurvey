@@ -16,7 +16,6 @@
 class TokenDynamic extends LSActiveRecord
 {
     protected static $sid = 0;
-
     public $emailstatus='OK'; // Default value for email status
 
     /**
@@ -30,18 +29,19 @@ class TokenDynamic extends LSActiveRecord
     public static function model($sid = NULL)
     {
         $refresh = false;
-        if (!is_null($sid)) {
+        if (!is_null($sid))
+        {
             self::sid($sid);
             $refresh = true;
         }
-        
+
         $model = parent::model(__CLASS__);
-        
+
         //We need to refresh if we changed sid
         if ($refresh === true) $model->refreshMetaData();
         return $model;
     }
-      
+
     /**
      * Sets the survey ID for the next model
      *
@@ -92,8 +92,8 @@ class TokenDynamic extends LSActiveRecord
             array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
             array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
             array('emailstatus', 'default', 'value' => $this->emailstatus),
-            // array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
-            // array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),                          
+            // array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
+            // array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
             // Date rules currently don't work properly with MSSQL, deactivating for now
         );
     }
@@ -102,7 +102,7 @@ class TokenDynamic extends LSActiveRecord
     * Checks to make sure that all required columns exist in this tokens table
     * (some older tokens tables dont' get udated properly)
     *
-    * This method should be moved to db update for 2.05 version so it runs only 
+    * This method should be moved to db update for 2.05 version so it runs only
     * once per token table / backup token table
     */
     public function checkColumns() {
@@ -128,7 +128,7 @@ class TokenDynamic extends LSActiveRecord
         } else {
             // On some installs we have created not null for participant_id and blacklisted fix this
             $columns = array('blacklisted', 'participant_id');
-            
+
             foreach ($columns as $columnname)
             {
                 $definition = $tableSchema->getColumn($columnname);
@@ -144,12 +144,12 @@ class TokenDynamic extends LSActiveRecord
     public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
         $command = new CDbCriteria;
-        $command->condition = '';    
+        $command->condition = '';
         $command->addCondition("(completed ='N') or (completed='')");
         $command->addCondition("token <> ''");
         $command->addCondition("email <> ''");
 
-        if ($bEmail) { 
+        if ($bEmail) {
             $command->addCondition("(sent = 'N') or (sent = '')");
         } else {
             $command->addCondition("(sent <> 'N') AND (sent <> '')");
@@ -157,20 +157,20 @@ class TokenDynamic extends LSActiveRecord
 
         if ($SQLemailstatuscondition)
             $command->addCondition($SQLemailstatuscondition);
-            
+
         if ($SQLremindercountcondition)
             $command->addCondition($SQLremindercountcondition);
-            
+
         if ($SQLreminderdelaycondition)
             $command->addCondition($SQLreminderdelaycondition);
-            
-        if ($aTokenIds)     
+
+        if ($aTokenIds)
             $command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')" );
-            
+
         if ($iMaxEmails)
             $command->limit = $iMaxEmails;
-            
-        $command->order = 'tid';    
+
+        $command->order = 'tid';
 
         $oResult = TokenDynamic::model()->findAll($command);
         return $oResult;
@@ -179,11 +179,11 @@ class TokenDynamic extends LSActiveRecord
     public function findUninvitedIDs($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
         $command = new CDbCriteria;
-        $command->condition = '';    
+        $command->condition = '';
         $command->addCondition("(completed ='N') or (completed='')");
         $command->addCondition("token <> ''");
         $command->addCondition("email <> ''");
-        if ($bEmail) { 
+        if ($bEmail) {
             $command->addCondition("(sent = 'N') or (sent = '')");
         } else {
             $command->addCondition("(sent <> 'N') AND (sent <> '')");
@@ -191,20 +191,20 @@ class TokenDynamic extends LSActiveRecord
 
         if ($SQLemailstatuscondition)
             $command->addCondition($SQLemailstatuscondition);
-            
+
         if ($SQLremindercountcondition)
             $command->addCondition($SQLremindercountcondition);
-            
+
         if ($SQLreminderdelaycondition)
             $command->addCondition($SQLreminderdelaycondition);
-            
-        if ($aTokenIds)     
+
+        if ($aTokenIds)
             $command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')" );
-            
+
         if ($iMaxEmails)
             $command->limit = $iMaxEmails;
-            
-        $command->order = 'tid';    
+
+        $command->order = 'tid';
 
         $oResult=$this->getCommandBuilder()
             ->createFindCommand($this->getTableSchema(), $command)
@@ -212,7 +212,7 @@ class TokenDynamic extends LSActiveRecord
             ->queryColumn();
         return $oResult;
     }
-    
+
     function insertParticipant($data)
     {
             $token = new self;
@@ -252,7 +252,7 @@ class TokenDynamic extends LSActiveRecord
     {
         return Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$iSurveyID}}} WHERE token IS NULL OR token=''")->queryAll();
     }
-    
+
     public static function countAllAndCompleted($sid)
     {
         $select = array(
@@ -277,11 +277,11 @@ class TokenDynamic extends LSActiveRecord
         //get token length from survey settings
         $tlrow = Survey::model()->findByAttributes(array("sid"=>self::$sid));
         $iTokenLength = $tlrow->tokenlength;
-       
+
         //get all existing tokens
         $criteria = $this->getDbCriteria();
         $criteria->select = 'token';
-        $ntresult = $this->findAllAsArray($criteria);   
+        $ntresult = $this->findAllAsArray($criteria);
         foreach ($ntresult as $tkrow)
         {
             $existingtokens[] = $tkrow['token'];
@@ -299,7 +299,7 @@ class TokenDynamic extends LSActiveRecord
         //update specific token row
         $itresult = $this->updateToken($iTokenID, $newtoken);
         return $newtoken;
-    }  
+    }
 
     /**
      * Creates tokens for all token records that have empty token fields and returns the number
@@ -380,41 +380,14 @@ class TokenDynamic extends LSActiveRecord
     {
         if ($this->usesleft>0)
         {
-            $this->completed='N'; 
+            $this->completed='N';
         }
         return parent::beforeSave();
     }
 
-    public function search()
-    {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
-
-        $criteria=new CDbCriteria;
-
-        $criteria->compare('tid',$this->tid,true);
-        $criteria->compare('firstname',$this->firstname,true);
-        $criteria->compare('lastname',$this->lastname,true);
-        $criteria->compare('email',$this->email,true);
-        $criteria->compare('emailstatus',$this->emailstatus,true);
-        $criteria->compare('token',$this->token,true);
-        $criteria->compare('language',$this->language,true);
-        $criteria->compare('sent',$this->sent,true);
-        $criteria->compare('remindersent',$this->remindersent,true);
-        $criteria->compare('remindercount',$this->remindercount,true);
-        $criteria->compare('completed',$this->completed,true);
-        $criteria->compare('usesleft',$this->usesleft,true);
-        $criteria->compare('validfrom',$this->validfrom,true);
-        $criteria->compare('validuntil',$this->validuntil,true);
-
-        return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
-        ));
-    }
-
     /**
      * Get CDbCriteria for a json search string
-     * 
+     *
      * @param array $condition
      * @return \CDbCriteria
      */
@@ -422,7 +395,7 @@ class TokenDynamic extends LSActiveRecord
     {
         $i=0;
         $j=1;
-        $tobedonelater =array(); 
+        $tobedonelater =array();
         $command = new CDbCriteria;
         $command->condition = '';
         $iNumberOfConditions = (count($condition)+1)/4;
@@ -434,27 +407,27 @@ class TokenDynamic extends LSActiveRecord
             $sValue=$condition[($i*4)+2];
             switch ($sOperator)
             {
-                case 'equal': 
+                case 'equal':
                     $command->addCondition($sFieldname.' = :condition_'.$i, $sConnectingOperator);
                     $aParams[':condition_'.$i] = $sValue;
                     break;
-                case 'contains': 
+                case 'contains':
                     $command->addCondition($sFieldname.' LIKE :condition_'.$i, $sConnectingOperator);
                     $aParams[':condition_'.$i] = '%'.$sValue.'%';
                     break;
-                case 'notequal': 
+                case 'notequal':
                     $command->addCondition($sFieldname.' <> :condition_'.$i, $sConnectingOperator);
                     $aParams[':condition_'.$i] = $sValue;
                     break;
-                case 'notcontains': 
+                case 'notcontains':
                     $command->addCondition($sFieldname.' NOT LIKE :condition_'.$i, $sConnectingOperator);
                     $aParams[':condition_'.$i] = '%'.$sValue.'%';
                     break;
-                case 'greaterthan': 
+                case 'greaterthan':
                     $command->addCondition($sFieldname.' > :condition_'.$i, $sConnectingOperator);
                     $aParams[':condition_'.$i] = $sValue;
                     break;
-                case 'lessthan': 
+                case 'lessthan':
                     $command->addCondition($sFieldname.' < :condition_'.$i, $sConnectingOperator);
                     $aParams[':condition_'.$i] = $sValue;
                     break;
@@ -474,7 +447,7 @@ class TokenDynamic extends LSActiveRecord
         {
             $command->params = $aParams;
         }
-        
+
         return $command;
     }
 
@@ -506,6 +479,374 @@ class TokenDynamic extends LSActiveRecord
     function updateEmailStatus($token,$status)
     {
         return Yii::app()->db->createCommand()->update('{{tokens_'.intval(self::$sid).'}}',array('emailstatus' => $status),'token = :token',array(':token' => $token ));
+    }
+
+    public function getStandardCols()
+    {
+        return array(
+            "tid",
+            "participant_id",
+            "firstname",
+            "lastname",
+            "email",
+            "emailstatus",
+            "token",
+            "language",
+            "blacklisted",
+            "sent",
+            "remindersent",
+            "remindercount",
+            "completed",
+            "usesleft",
+            "validfrom",
+            "validuntil",
+            "mpid",
+        );
+    }
+
+    public function getCustom_attributes()
+    {
+        $columns = $this->getMetaData()->columns;
+        $attributes = array();
+
+        foreach($columns as $sColName => $oColumn)
+        {
+            if (! in_array($sColName, $this->standardCols))
+            {
+                $attributes[$sColName] = $oColumn;
+            }
+        }
+
+        return $attributes;
+    }
+
+    public function getStandardColsForGrid()
+    {
+        return array(
+            array(
+                'id'=>'tid',
+                'class'=>'CCheckBoxColumn',
+                'selectableRows' => '100',
+            ),
+
+            array(
+                'header' => gT('ID'),
+                'name' => 'tid',
+                'value'=>'$data->tid',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
+                'header' => gT('First name'),
+                'name' => 'firstname',
+                'value'=>'$data->firstname',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
+                'header' => gT('Last name'),
+                'name' => 'lastname',
+                'value'=>'$data->lastname',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
+                'header' => gT('Email address'),
+                'name' => 'email',
+                'value'=>'$data->email',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
+                'header' => gT('Email status'),
+                'name' => 'emailstatus',
+                'value'=>'$data->emailstatus',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
+                'header' => gT('Invitation sent?'),
+                'name' => 'emailstatus',
+                'value'=>'$data->emailstatus',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
+                'header' => gT('Token'),
+                'name' => 'token',
+                'value'=>'$data->token',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
+                'header' => gT('Language'),
+                'name' => 'language',
+                'value'=>'$data->language',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
+                'header' => gT('Invitation sent?'),
+                'name' => 'sent',
+                'value'=>'$data->sent',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
+                'header' => gT('Reminder sent?'),
+                'name' => 'remindersent',
+                'value'=>'$data->remindersent',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
+                'header' => gT('Reminder count'),
+                'name' => 'remindercount',
+                'value'=>'$data->remindercount',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
+                'header' => gT('Completed?'),
+                'name' => 'completed',
+                'value'=>'$data->completed',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
+                'header' => gT('Reminder sent?'),
+                'name' => 'remindersent',
+                'value'=>'$data->remindersent',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
+                'header' => gT('Uses left'),
+                'name' => 'usesleft',
+                'value'=>'$data->usesleft',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+            array(
+                'header' => gT('Uses left'),
+                'name' => 'usesleft',
+                'value'=>'$data->usesleft',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+            array(
+                'header' => gT('Valid from'),
+                'name' => 'validfrom',
+                'value'=>'$data->validfrom',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+            array(
+                'header' => gT('Valid until'),
+                'name' => 'validuntil',
+                'value'=>'$data->validuntil',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+        );
+    }
+
+    public function getAttributesForGrid()
+    {
+        $aCustomAttributesCols = array();
+        $aCustomAttributes = $this->custom_attributes;
+
+        $oSurvey = Survey::model()->findByAttributes(array("sid"=>self::$sid));
+        $aAttributedescriptions = json_decode($oSurvey->attributedescriptions);
+
+        // Custom attributes
+        foreach($aCustomAttributes as $sColName => $oColumn)
+        {
+            $aCustomAttributesCols[] = array(
+                'header' => $aAttributedescriptions->$sColName->description,
+                'name' => $sColName,
+                'value'=>'$data->'.$sColName,
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            );
+        }
+
+        $aButtons = array(array(
+            'header' => '',
+            'name' => 'actions',
+            'value'=>'$data->buttons',
+            'type'=>'raw',
+            'htmlOptions' => array('class' => 'text-right'),
+        ));
+
+
+
+        return array_merge($this->standardColsForGrid, $aCustomAttributesCols, $aButtons);
+    }
+
+    public function getbuttons()
+    {
+
+        $sPreviewUrl  = App()->createUrl("/survey/index/sid/".self::$sid."/token/".$this->token.'/lang/'.$this->language.'/newtest/Y');
+        $sEditUrl     = App()->createUrl("/admin/tokens/sa/edit/iSurveyId/".self::$sid."/iTokenId/$this->tid");
+        $sInviteUrl   = App()->createUrl("/admin/tokens/sa/email/surveyid/".self::$sid."/tokenids/$this->tid");
+        $button = '';
+
+        $button = '<a class="btn btn-default btn-xs" href="'.$sPreviewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT('Launch the survey with this token').'"><span class="icon-do" ></span></a>';
+        $button .= '<a class="btn btn-default btn-xs" href="#" role="button" data-toggle="tooltip" title="'.gT('Delete').'"><span class="text-danger glyphicon glyphicon-trash" ></span></a>';
+        $button .= '<a class="btn btn-default btn-xs" href="'.$sInviteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Send email invitation').'"><span class="icon-invite" ></span></a>';
+        $button .= '<a class="btn btn-default btn-xs" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit this token').'"><span class="icon-edit" ></span></a>';
+
+
+        return $button;
+    }
+
+    public function search()
+    {
+        $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+
+        $sort = new CSort();
+        $sort->attributes = array(
+          'tid'=>array(
+            'asc'=>'tid',
+            'desc'=>'tid desc',
+          ),
+          'partcipant'=>array(
+            'asc'=>'partcipant',
+            'desc'=>'partcipant desc',
+          ),
+
+          'firstname'=>array(
+            'asc'=>'firstname',
+            'desc'=>'firstname desc',
+          ),
+
+          'lastname'=>array(
+            'asc'=>'lastname',
+            'desc'=>'lastname desc',
+          ),
+
+          'email'=>array(
+            'asc'=>'email',
+            'desc'=>'email desc',
+          ),
+
+          'emailstatus'=>array(
+            'asc'=>'emailstatus',
+            'desc'=>'emailstatus desc',
+          ),
+
+          'token'=>array(
+            'asc'=>'token',
+            'desc'=>'token desc',
+          ),
+
+          'language'=>array(
+            'asc'=>'language',
+            'desc'=>'language desc',
+          ),
+
+          'blacklisted'=>array(
+            'asc'=>'blacklisted',
+            'desc'=>'blacklisted desc',
+          ),
+
+          'sent'=>array(
+            'asc'=>'sent',
+            'desc'=>'sent desc',
+          ),
+
+          'remindersent'=>array(
+            'asc'=>'remindersent',
+            'desc'=>'remindersent desc',
+          ),
+
+          'remindercount'=>array(
+              'asc' => 'remindercount',
+              'desc' => 'remindercount desc',
+          ),
+
+          'completed'=>array(
+            'asc'=>'completed',
+            'desc'=>'completed desc',
+          ),
+
+          'usesleft'=>array(
+            'asc'=>'usesleft',
+            'desc'=>'usesleft desc',
+          ),
+
+          'validfrom'=>array(
+            'asc'=>'validfrom',
+            'desc'=>'validfrom desc',
+          ),
+
+          'validuntil'=>array(
+            'asc'=>'validuntil',
+            'desc'=>'validuntil desc',
+          ),
+      );
+
+      // Make sortable custom attributes
+      foreach($this->custom_attributes as $sColName => $oColumn)
+      {
+          $sort->attributes[$sColName] =  array(
+              'asc'=>$sColName,
+              'desc'=>$sColName.' desc',
+          );
+      }
+
+      $criteria = new CDbCriteria;
+
+      // TODO: Search...
+
+      // Warning: Please modify the following code to remove attributes that
+      // should not be searched.
+/* OLD SEARCH :
+      $criteria=new CDbCriteria;
+
+      $criteria->compare('tid',$this->tid,true);
+      $criteria->compare('firstname',$this->firstname,true);
+      $criteria->compare('lastname',$this->lastname,true);
+      $criteria->compare('email',$this->email,true);
+      $criteria->compare('emailstatus',$this->emailstatus,true);
+      $criteria->compare('token',$this->token,true);
+      $criteria->compare('language',$this->language,true);
+      $criteria->compare('sent',$this->sent,true);
+      $criteria->compare('remindersent',$this->remindersent,true);
+      $criteria->compare('remindercount',$this->remindercount,true);
+      $criteria->compare('completed',$this->completed,true);
+      $criteria->compare('usesleft',$this->usesleft,true);
+      $criteria->compare('validfrom',$this->validfrom,true);
+      $criteria->compare('validuntil',$this->validuntil,true);
+
+      return new CActiveDataProvider($this, array(
+          'criteria'=>$criteria,
+      ));
+*/
+      $dataProvider=new CActiveDataProvider('TokenDynamic', array(
+          'sort'=>$sort,
+          'criteria'=>$criteria,
+          'pagination'=>array(
+              'pageSize'=>$pageSize,
+          ),
+      ));
+
+      return $dataProvider;
+
     }
 }
 ?>
