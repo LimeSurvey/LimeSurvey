@@ -235,7 +235,7 @@
 
         <!-- Grid -->
         <div class="row">
-            <div class="col-sm-12 content-right">
+            <div class="content-right" style="overflow-x: scroll;">
                 <?php
                     $this->widget('bootstrap.widgets.TbGridView', array(
                         'dataProvider' => $model->search(),
@@ -249,7 +249,7 @@
                                 Yii::app()->params['pageSizeOptions'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
                         'itemsCssClass' =>'table-striped',
-
+                        //'htmlOptions'=>array('style'=>'max-width: none;'),
                         'columns' => $model->attributesForGrid,
 
                     ));

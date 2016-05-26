@@ -1927,3 +1927,12 @@ h3,.h3 {
 {
     background-color: #f5f5f5;
 }
+
+#token-grid table.table {
+    width: none;
+    max-width: none;
+}
+
+#token-grid table tbody tr td {
+    min-width: 100px;
+}

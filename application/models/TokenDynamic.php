@@ -534,7 +534,7 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'actions',
                 'value'=>'$data->buttons',
                 'type'=>'raw',
-                'htmlOptions' => array('class' => 'text-right'),
+                'htmlOptions' => array('class' => 'text-left'),
             ),
 
             array(
