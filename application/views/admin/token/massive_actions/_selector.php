@@ -12,7 +12,9 @@
     <ul class="dropdown-menu" aria-labelledby="tokenListActions">
         <li>
             <a href="#"
-            data-url="<?php echo App()->createUrl('/admin/tokens/sa/deleteMultipleSurveys/');?>"
+            data-url="<?php echo App()->createUrl('/admin/tokens/sa/deleteMultiple/');?>"
+            data-keepopen="no"
+            data-sid="<?php echo $_GET['surveyid']?>"
             data-action="delete"
             data-action-title="<?php eT('Delete tokens'); ?>"
             data-modal-warning-title="<?php eT('Warning');?>"

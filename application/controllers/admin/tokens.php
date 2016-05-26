@@ -254,6 +254,17 @@ class tokens extends Survey_Common_Action
         exit; // if bounceprocessing : javascript : no more todo
     }
 
+
+    public function deleteMultiple()
+    {
+        // TODO: permission checks
+        $aTokenIds = json_decode($_POST['sItems']);
+        $iSid = $_POST['iSid'];
+        TokenDynamic::model($iSid)->deleteRecords($aTokenIds);
+        return true;
+        //Yii::app()->getController()->renderPartial('/admin/survey/massive_actions/_delete_results', array('aResults'=>$aResults));
+    }
+
     /**
     * Browse Tokens
     */
