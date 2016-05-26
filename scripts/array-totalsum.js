@@ -6,6 +6,7 @@
 
 $( document ).ready(function() {
     $('div.array-multi-flexi-text table.show-totals input:enabled').keyup(updatetotals);
+    $('div.array-multi-flexi-text table.show-totals input:enabled').each(updatetotals);
 });
 
 function updatetotals()
