@@ -353,6 +353,7 @@ class tokens extends Survey_Common_Action
         $aData["surveyinfo"]                    = $surveyinfo;
         $aData['title_bar']['title']            = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]        = true;
+        $aData['sidemenu']['state'] = false;
         $aData['token_bar']['buttons']['view']  = true;
 
         /// FOR GRID View

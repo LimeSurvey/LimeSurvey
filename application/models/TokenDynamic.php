@@ -508,6 +508,7 @@ class TokenDynamic extends LSActiveRecord
     {
         $columns = $this->getMetaData()->columns;
         $attributes = array();
+
         foreach($columns as $sColName => $oColumn)
         {
             if (! in_array($sColName, $this->standardCols))
@@ -515,6 +516,7 @@ class TokenDynamic extends LSActiveRecord
                 $attributes[$sColName] = $oColumn;
             }
         }
+
         return $attributes;
     }
 
@@ -525,6 +527,14 @@ class TokenDynamic extends LSActiveRecord
                 'id'=>'tid',
                 'class'=>'CCheckBoxColumn',
                 'selectableRows' => '100',
+            ),
+
+            array(
+                'header' => gT('ID'),
+                'name' => 'tid',
+                'value'=>'$data->tid',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
             ),
 
             array(
@@ -552,9 +562,33 @@ class TokenDynamic extends LSActiveRecord
             ),
 
             array(
+                'header' => gT('Email status'),
+                'name' => 'emailstatus',
+                'value'=>'$data->emailstatus',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
                 'header' => gT('Invitation sent?'),
                 'name' => 'emailstatus',
                 'value'=>'$data->emailstatus',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
+                'header' => gT('Token'),
+                'name' => 'token',
+                'value'=>'$data->token',
+                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs'),
+            ),
+
+            array(
+                'header' => gT('Language'),
+                'name' => 'language',
+                'value'=>'$data->language',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs'),
             ),
