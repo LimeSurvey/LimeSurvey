@@ -87,13 +87,7 @@
     </table>
 </div>
 
-<?php if(!empty($q_table_id)): ?>
-    <script type="text/javascript">
-    <!--
-        new multi_set('<?php echo $q_table_id; ?>','<?php echo $radix; ?>')
-    // -->
-    </script>
-<?php else: ?>
+<?php if(empty($q_table_id)): ?>
     <script type="text/javascript">
     <!--
         $('#question<?php echo $name;?> .question').delegate('input[type=text]:visible:enabled','blur keyup',function(event){

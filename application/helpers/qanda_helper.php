@@ -265,7 +265,7 @@ function retrieveAnswers($ia)
             break;
 
         case ';': //ARRAY (Multi Flexi) Text
-            $values=do_array_multitext($ia);  //It's like the "5th element" movie, come to life
+            $values=do_array_texts($ia);  //It's like the "5th element" movie, come to life
             break;
 
         case '1': //Array (Flexible Labels) dual scale
@@ -4808,7 +4808,7 @@ function do_array($ia)
 }
 
 
-function do_array_multitext($ia)
+function do_array_texts($ia)
 {
     global $thissurvey;
     $aLastMoveResult            = LimeExpressionManager::GetLastMoveResult();
@@ -4884,14 +4884,14 @@ function do_array_multitext($ia)
         {
             case 'R':
                 $totals_class   = $show_totals = 'row';
-                $row_total      = doRender('/survey/questions/arrays/multitext/rows/cells/td_total', array('empty'=>false),  true);
-                $col_head       = doRender('/survey/questions/arrays/multitext/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>''),  true);
+                $row_total      = doRender('/survey/questions/arrays/texts/rows/cells/td_total', array('empty'=>false),  true);
+                $col_head       = doRender('/survey/questions/arrays/texts/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>''),  true);
 
                 if ($show_grand == true)
                 {
-                    $row_head    = doRender('/survey/questions/arrays/multitext/rows/cells/thead', array('totalText'=>gT('Grand total'), 'classes'=>'answertext'),  true);
-                    $col_total   = doRender('/survey/questions/arrays/multitext/columns/col_total', array('empty'=>true),  true);
-                    $grand_total = doRender('/survey/questions/arrays/multitext/rows/cells/td_grand_total', array('empty'=>false),  true);
+                    $row_head    = doRender('/survey/questions/arrays/texts/rows/cells/thead', array('totalText'=>gT('Grand total'), 'classes'=>'answertext'),  true);
+                    $col_total   = doRender('/survey/questions/arrays/texts/columns/col_total', array('empty'=>true),  true);
+                    $grand_total = doRender('/survey/questions/arrays/texts/rows/cells/td_grand_total', array('empty'=>false),  true);
                 };
 
                 $caption    .=gT("The last row shows the total for the column. ");
@@ -4899,32 +4899,32 @@ function do_array_multitext($ia)
 
             case 'C':
                 $totals_class = $show_totals = 'col';
-                $col_total    = doRender('/survey/questions/arrays/multitext/columns/col_total', array('empty'=>false, 'label'=>true),  true);
-                $row_head     = doRender('/survey/questions/arrays/multitext/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>'answertext'),  true);
+                $col_total    = doRender('/survey/questions/arrays/texts/columns/col_total', array('empty'=>false, 'label'=>true),  true);
+                $row_head     = doRender('/survey/questions/arrays/texts/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>'answertext'),  true);
 
                 if ($show_grand == true)
                 {
-                    $row_total   = doRender('/survey/questions/arrays/multitext/rows/cells/td_total', array('empty'=>true),  true);
-                    $col_head    = doRender('/survey/questions/arrays/multitext/rows/cells/thead', array('totalText'=>gT('Grand total'), 'classes'=>''),  true);
-                    $grand_total = doRender('/survey/questions/arrays/multitext/rows/cells/td_grand_total', array('empty'=>false),  true);
+                    $row_total   = doRender('/survey/questions/arrays/texts/rows/cells/td_total', array('empty'=>true),  true);
+                    $col_head    = doRender('/survey/questions/arrays/texts/rows/cells/thead', array('totalText'=>gT('Grand total'), 'classes'=>''),  true);
+                    $grand_total = doRender('/survey/questions/arrays/texts/rows/cells/td_grand_total', array('empty'=>false),  true);
                 };
                 $caption    .= gT("The last column shows the total for the row. ");
                 break;
 
             case 'B':
                 $totals_class = $show_totals = 'both';
-                $row_total    = doRender('/survey/questions/arrays/multitext/rows/cells/td_total', array('empty'=>false),  true);
-                $col_total    = doRender('/survey/questions/arrays/multitext/columns/col_total', array('empty'=>false, 'label'=>false),  true);
-                $col_head     = doRender('/survey/questions/arrays/multitext/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>''),  true);
-                $row_head     = doRender('/survey/questions/arrays/multitext/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>'answertext'),  true);
+                $row_total    = doRender('/survey/questions/arrays/texts/rows/cells/td_total', array('empty'=>false),  true);
+                $col_total    = doRender('/survey/questions/arrays/texts/columns/col_total', array('empty'=>false, 'label'=>false),  true);
+                $col_head     = doRender('/survey/questions/arrays/texts/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>''),  true);
+                $row_head     = doRender('/survey/questions/arrays/texts/rows/cells/thead', array('totalText'=>gT('Total'), 'classes'=>'answertext'),  true);
 
                 if ($show_grand == true)
                 {
-                    $grand_total = doRender('/survey/questions/arrays/multitext/rows/cells/td_grand_total', array('empty'=>false),  true);
+                    $grand_total = doRender('/survey/questions/arrays/texts/rows/cells/td_grand_total', array('empty'=>false),  true);
                 }
                 else
                 {
-                    $grand_total = doRender('/survey/questions/arrays/multitext/rows/cells/td_grand_total', array('empty'=>true),  true);
+                    $grand_total = doRender('/survey/questions/arrays/texts/rows/cells/td_grand_total', array('empty'=>true),  true);
                 };
 
                 $caption    .= gT("The last row shows the total for the column and the last column shows the total for the row. ");
@@ -5024,7 +5024,7 @@ function do_array_multitext($ia)
                 if ( ($anscount - $fn + 1) >= $minrepeatheadings )
                 {
                     // Close actual body and open another one
-                    $sRows .=  doRender('/survey/questions/arrays/multitext/rows/repeat_header', array(
+                    $sRows .=  doRender('/survey/questions/arrays/texts/rows/repeat_header', array(
                                 'answerwidth'  => $answerwidth,
                                 'labelans'     => $labelans,
                                 'right_exists' => $right_exists,
@@ -5079,7 +5079,7 @@ function do_array_multitext($ia)
 
                 $inputnames[] =$myfname2;
                 $value        = str_replace ('"', "'", str_replace('\\', '', $myfname2value));
-                $answer_tds  .= doRender('/survey/questions/arrays/multitext/rows/cells/answer_td', array(
+                $answer_tds  .= doRender('/survey/questions/arrays/texts/rows/cells/answer_td', array(
                                     'ld'         => $ld,
                                     'myfname2'   => $myfname2,
                                     'labelText'  => $labelans[$thiskey],
@@ -5106,7 +5106,7 @@ function do_array_multitext($ia)
 
             $formatedRowTotal = str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $row_total);
 
-            $sRows .= doRender('/survey/questions/arrays/multitext/rows/answer_row', array(
+            $sRows .= doRender('/survey/questions/arrays/texts/rows/answer_row', array(
                                 'myfname'           =>  $myfname,
                                 'answertext'        =>  $answertext,
                                 'error'             =>  $error,
@@ -5151,7 +5151,7 @@ function do_array_multitext($ia)
             Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."array-totalsum.js");
         }
 
-        $answer = doRender('/survey/questions/arrays/multitext/answer', array(
+        $answer = doRender('/survey/questions/arrays/texts/answer', array(
                     'answerwidth'               => $answerwidth,
                     'col_head'                  => $col_head,
                     'cellwidth'                 => $cellwidth,
@@ -5174,7 +5174,7 @@ function do_array_multitext($ia)
     }
     else
     {
-        $answer    .= doRender('/survey/questions/arrays/multitext/empty_error', array(), true);
+        $answer    .= doRender('/survey/questions/arrays/texts/empty_error', array(), true);
         $inputnames ='';
     }
     return array($answer, $inputnames);
