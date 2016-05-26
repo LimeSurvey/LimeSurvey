@@ -243,7 +243,7 @@
                         'dataProvider' => $model->search(),
                         'id' => 'token-grid',
                         'emptyText'=>gT('No tokens found.'),
-                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').$massiveAction. sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
                                 $pageSize,

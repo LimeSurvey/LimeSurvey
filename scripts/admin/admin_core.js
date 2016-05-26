@@ -57,14 +57,21 @@ $(document).ready(function(){
     /*
      * Survey List mass actions
      */
-    if($('#surveyListActions').length>0){
+    if($('.listActions').length>0){
         // Define what should be done when clicking on a action link
-        $(document).on('click', '#surveyListActions a', function () {
+        $(document).on('click', '.listActions a', function () {
                 $that        = $(this);
+
                 $action      = $that.data('action');                                                // The action string, to display in the modal body (eg: sure you wann $action?)
                 $actionTitle = $that.data('action-title');                                          // The action title, to display in the modal title
                 $actionUrl   = $that.data('url');                                                   // The url of the Survey Controller action to call
-                $oCheckedSid = $.fn.yiiGridView.getChecked('survey-grid', 'sid');                   // List of the clicked checkbox
+
+                console.log($('.listActions').attr('id'));
+                console.log($('.listActions').data('pk'));
+                $oCheckedSid = $.fn.yiiGridView.getChecked($('.listActions').data('grid-id'), $('.listActions').data('pk'));                   // List of the clicked checkbox
+                console.log($oCheckedSid);
+
+                //$oCheckedSid = $.fn.yiiGridView.getChecked('survey-grid', 'sid');                   // List of the clicked checkbox
                 $checkedSid  = JSON.stringify($oCheckedSid);
 
                 $modal       = $('#confirmation-modal');                        // The modal we want to use

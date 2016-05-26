@@ -175,7 +175,7 @@ $(document).ready(function() {
                 jQuery('#displaytokens').editRow(row.attr('id'), true, null, null, null, null, func);
                 row.find('.inputbuttons').hide();
                 window.editing = true;
-                var validfrom = row.find('[aria-describedby="displaytokens_validfrom"]');
+                /*var validfrom = row.find('[aria-describedby="displaytokens_validfrom"]');
                 validfrom.find('input').css('width', '119px').datetimepicker({
                     showOn: 'button',
                     dateFormat: userdateformat
@@ -184,7 +184,7 @@ $(document).ready(function() {
                 validuntil.find('input').css('width', '119px').datetimepicker({
                     showOn: 'button',
                     dateFormat: userdateformat
-                });
+                });*/
 
                 jQuery('<span class="drop_editing ui-pg-button glyphicon glyphicon-remove" title="'+cancelBtn+'"></span>')
                 .appendTo(jQuery(this).parent().parent())
@@ -451,7 +451,7 @@ $(document).ready(function() {
         reloadAfterSubmit: true,
         closeOnEspace:true
     });
-	// Center modal dialogs
+    // Center modal dialogs
     $.jgrid.jqModal = $.extend($.jgrid.jqModal || {}, {
         beforeOpen: centerInfoDialog
     });

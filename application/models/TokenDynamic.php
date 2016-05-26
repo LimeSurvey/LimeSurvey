@@ -692,9 +692,7 @@ class TokenDynamic extends LSActiveRecord
             'htmlOptions' => array('class' => 'text-right'),
         ));
 
-
-
-        return array_merge($this->standardColsForGrid, $aCustomAttributesCols, $aButtons);
+        return array_merge($aButtons, $this->standardColsForGrid, $aCustomAttributesCols);
     }
 
     public function getbuttons()
@@ -706,7 +704,7 @@ class TokenDynamic extends LSActiveRecord
         $button = '';
 
         $button = '<a class="btn btn-default btn-xs" href="'.$sPreviewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT('Launch the survey with this token').'"><span class="icon-do" ></span></a>';
-        $button .= '<a class="btn btn-default btn-xs" href="#" role="button" data-toggle="tooltip" title="'.gT('Delete').'"><span class="text-danger glyphicon glyphicon-trash" ></span></a>';
+        //$button .= '<a class="btn btn-default btn-xs" href="#" role="button" data-toggle="tooltip" title="'.gT('Delete').'"><span class="text-danger glyphicon glyphicon-trash" ></span></a>';
         $button .= '<a class="btn btn-default btn-xs" href="'.$sInviteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Send email invitation').'"><span class="icon-invite" ></span></a>';
         $button .= '<a class="btn btn-default btn-xs" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit this token').'"><span class="icon-edit" ></span></a>';
 

@@ -365,6 +365,7 @@ class tokens extends Survey_Common_Action
             Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
         }
 
+        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', array(), true, false);
 
         $this->_renderWrappedTemplate('token', array('browse'), $aData);
     }

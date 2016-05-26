@@ -1889,7 +1889,7 @@ h3,.h3 {
     word-wrap: break-word;
 }
 
-.summary-container, .summary, #massive-action-container, #surveyListActions, .pager-container .pager, .pager-container .pager .pagination{
+.summary-container, .summary, #massive-action-container, #surveyListActions, .listActions, .pager-container .pager, .pager-container .pager .pagination{
     margin: 0;
     margin-bottom: 20px;
 }
@@ -1897,7 +1897,7 @@ h3,.h3 {
     text-align: right;
 }
 
-#massive-action-container, #surveyListActions{
+#massive-action-container, #surveyListActions, .listActions{
     padding-left: 0px;
     text-align: left;
 }
