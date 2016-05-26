@@ -65,17 +65,37 @@ $(document).ready(function(){
                 $action      = $that.data('action');                                                // The action string, to display in the modal body (eg: sure you wann $action?)
                 $actionTitle = $that.data('action-title');                                          // The action title, to display in the modal title
                 $actionUrl   = $that.data('url');                                                   // The url of the Survey Controller action to call
+                $gridid      = $('.listActions').data('grid-id');
 
-                $oCheckedItems = $.fn.yiiGridView.getChecked($('.listActions').data('grid-id'), $('.listActions').data('pk'));                   // List of the clicked checkbox
+                $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk'));                   // List of the clicked checkbox
 
                 $oCheckedItems  = JSON.stringify($oCheckedItems);
 
                 $modal       = $('#confirmation-modal');                        // The modal we want to use
 
                 $actionUrl   = $actionUrl;
-                $postDatas   = {sItems:$oCheckedItems};
 
-                $modal.data('keepopen', true);                                  // We want to update the modal content after confirmation
+                // Do we need to post sid?
+                if($that.data('sid'))
+                {
+                    $iSid = $that.data('sid');
+                    $postDatas   = {sItems:$oCheckedItems, iSid:$iSid};
+                }
+                else
+                {
+                    $postDatas   = {sItems:$oCheckedItems};
+                }
+
+                // Do we want to update the modal content after confirmation?
+                if($that.data('keepopen'))
+                {
+                    $keepopen = ($that.data('keepopen')==='yes');
+                }
+                else
+                {
+                    $keepopen = true;
+                }
+                $modal.data('keepopen', $keepopen);
 
                 // Needed modal elements
                 $modalTitle    = $modal.find('.modal-title');                   // Modal Title
@@ -122,7 +142,7 @@ $(document).ready(function(){
 
                         // html contains the buttons
                         success : function(html, statut){
-                            $.fn.yiiGridView.update('survey-grid');             // Update the surveys list
+                            $.fn.yiiGridView.update($gridid);             // Update the surveys list
                             $ajaxLoader.hide();                                 // Hide the ajax loader
                             $modalBody.empty().html(html);                      // Inject the returned HTML in the modal body
                         },
