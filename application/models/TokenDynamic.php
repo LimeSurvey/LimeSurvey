@@ -530,6 +530,14 @@ class TokenDynamic extends LSActiveRecord
             ),
 
             array(
+                'header' => gT('Action'),
+                'name' => 'actions',
+                'value'=>'$data->buttons',
+                'type'=>'raw',
+                'htmlOptions' => array('class' => 'text-right'),
+            ),
+
+            array(
                 'header' => gT('ID'),
                 'name' => 'tid',
                 'value'=>'$data->tid',
@@ -684,15 +692,8 @@ class TokenDynamic extends LSActiveRecord
             );
         }
 
-        $aButtons = array(array(
-            'header' => '',
-            'name' => 'actions',
-            'value'=>'$data->buttons',
-            'type'=>'raw',
-            'htmlOptions' => array('class' => 'text-right'),
-        ));
 
-        return array_merge($aButtons, $this->standardColsForGrid, $aCustomAttributesCols);
+        return array_merge($this->standardColsForGrid, $aCustomAttributesCols);
     }
 
     public function getbuttons()
