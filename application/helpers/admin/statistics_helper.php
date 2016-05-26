@@ -3756,7 +3756,7 @@ class statistics_helper {
              {
                  $sLanguageCode =  getBaseLanguageFromSurveyID($surveyid);
              }
-             Yii::app()->setLanguage($sLanguageCode);
+             //Yii::app()->setLanguage($sLanguageCode);
 
              /*
              * this variable is used in the function shortencode() which cuts off a question/answer title
@@ -4130,7 +4130,7 @@ class statistics_helper {
         {
             $sLanguageCode =  getBaseLanguageFromSurveyID($surveyid);
         }
-        Yii::app()->setLanguage($sLanguageCode);
+        //Yii::app()->setLanguage($sLanguageCode);
 
         /*
         * this variable is used in the function shortencode() which cuts off a question/answer title
