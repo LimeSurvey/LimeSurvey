@@ -713,22 +713,33 @@ class TokenDynamic extends LSActiveRecord
 
     public function getbuttons()
     {
-
         $sPreviewUrl  = App()->createUrl("/survey/index/sid/".self::$sid."/token/".$this->token.'/lang/'.$this->language.'/newtest/Y');
         $sEditUrl     = App()->createUrl("/admin/tokens/sa/edit/iSurveyId/".self::$sid."/iTokenId/$this->tid");
         $sInviteUrl   = App()->createUrl("/admin/tokens/sa/email/surveyid/".self::$sid."/tokenids/$this->tid");
-
-
-
         $button = '';
 
         if ($this->survey->isActive)
         {
             if (count($this->responses)>0)
             {
-                $sResponseUrl = App()->createUrl("admin/responses/sa/viewbytoken/surveyid/".self::$sid, array('token'=>$this->token));
-                $button .= '<a class="btn btn-default btn-xs" href="'.$sResponseUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("View response details").'"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+                // Only one answer, direct link
+                if (count($this->responses)<2)
+                {
+                    $sResponseUrl = App()->createUrl("admin/responses/sa/viewbytoken/surveyid/".self::$sid, array('token'=>$this->token));
+                    $button .= '<a class="btn btn-default btn-xs" href="'.$sResponseUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("View response details").'"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+                }
+                // Multiple answers, give choice to user
+                else
+                {
+                    // TODO: link to Response grid filtered on the base of this Token (when responses will be rewritten using CGridView instead of jQgrid)
+                    $sResponseUrl = App()->createUrl("admin/responses/sa/viewbytoken/surveyid/".self::$sid, array('token'=>$this->token));
+                    $button .= '<a class="btn btn-default btn-xs" href="'.$sResponseUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("View last response details").'"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+                }
             }
+        }
+        else
+        {
+            // Add some space for other buttons to be at the same place
         }
 
         $button .= '<a class="btn btn-default btn-xs" href="'.$sPreviewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT('Launch the survey with this token').'"><span class="icon-do" ></span></a>';
