@@ -109,8 +109,11 @@ class TokenDynamic extends LSActiveRecord
         Yii::app()->user->setState('SurveyDynamicSid', self::$sid);
         return array(
             'survey'      => array(self::BELONGS_TO, 'Survey', array(), 'condition'=>'sid='.Yii::app()->user->getState('SurveyDynamicSid'), 'together' => true),
-            'permissions' => array(self::HAS_ONE, 'Permission', array(), 'condition'=> 'entity_id='.Yii::app()->user->getState('SurveyDynamicSid').' && uid='.Yii::app()->user->id.' && entity="survey" && permission="tokens"', 'together' => true ),
             'responses'   => array(self::HAS_MANY, 'SurveyDynamic', array('token'=>'token')),
+            // Note: the permission relation provide a oriented object way of retrieving the permissions
+            // Eg: to know if user has the right to read current token :
+            // $this->permissions->read_p
+            'permissions' => array(self::HAS_ONE, 'Permission', array(), 'condition'=> 'entity_id='.Yii::app()->user->getState('SurveyDynamicSid').' && uid='.Yii::app()->user->id.' && entity="survey" && permission="tokens"', 'together' => true ),
         );
     }
 
