@@ -1933,6 +1933,10 @@ h3,.h3 {
     max-width: none;
 }
 
-#token-grid table tbody tr td {
-    min-width: 100px;
+#token-grid table thead tr #action {
+    min-width: 115px;
+}
+
+#token-grid table thead tr th {
+    white-space: nowrap;
 }

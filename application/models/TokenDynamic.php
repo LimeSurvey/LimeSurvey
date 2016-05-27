@@ -546,6 +546,7 @@ class TokenDynamic extends LSActiveRecord
 
             array(
                 'header' => gT('Action'),
+                'id'=>'action',
                 'name' => 'actions',
                 'value'=>'$data->buttons',
                 'type'=>'raw',
@@ -586,14 +587,6 @@ class TokenDynamic extends LSActiveRecord
 
             array(
                 'header' => gT('Email status'),
-                'name' => 'emailstatus',
-                'value'=>'$data->emailstatus',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
-            ),
-
-            array(
-                'header' => gT('Invitation sent?'),
                 'name' => 'emailstatus',
                 'value'=>'$data->emailstatus',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
@@ -648,21 +641,6 @@ class TokenDynamic extends LSActiveRecord
                 'htmlOptions' => array('class' => 'hidden-xs'),
             ),
 
-            array(
-                'header' => gT('Reminder sent?'),
-                'name' => 'remindersent',
-                'value'=>'$data->remindersent',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
-            ),
-
-            array(
-                'header' => gT('Uses left'),
-                'name' => 'usesleft',
-                'value'=>'$data->usesleft',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
-            ),
             array(
                 'header' => gT('Uses left'),
                 'name' => 'usesleft',
@@ -741,6 +719,7 @@ class TokenDynamic extends LSActiveRecord
         }
         else
         {
+            $button .= "<span class='blank_button'></span>";
             // TODO: Add some space for other buttons to be at the same place
         }
 
@@ -785,7 +764,7 @@ class TokenDynamic extends LSActiveRecord
 
         if (!empty($this->participant_id) && $this->participant_id != "" )
         {
-            $onClick = "sendPost('".$this->getController()->createUrl('admin/participants/sa/displayParticipants')."','',['searchcondition'],['participant_id||equal||{$this->participant_id}']);";
+            $onClick = "sendPost('".App()->createUrl('admin/participants/sa/displayParticipants')."','',['searchcondition'],['participant_id||equal||{$this->participant_id}']);";
             $button .= '<a class="btn btn-default btn-xs" href="#" role="button" data-toggle="tooltip" title="'.gT('View this person in the central participants database').'" onclick="'.$onClick.'"><span class="icon-cpdb" ></span></a>';
         }
         else
