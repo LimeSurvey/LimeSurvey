@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-05-27 11:19:26+00:00\n"
+"POT-Creation-Date: 2016-05-27 12:52:57+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2339,7 +2339,7 @@ msgstr ""
 #: application/views/admin/survey/surveybar_view.php:609
 #: application/views/admin/templates/templateeditorbar_view.php:208
 #: application/views/admin/token/managetokenattributes.php:118
-#: application/views/admin/token/token_bar.php:179
+#: application/views/admin/token/token_bar.php:185
 #: application/views/admin/translate/translatefooter_view.php:2
 #: application/views/admin/user/modifyuser.php:45
 #: application/views/admin/user/setuserpermissions.php:85
@@ -3358,7 +3358,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:811
 #: application/controllers/admin/tokens.php:495
 #: application/models/SurveyTimingDynamic.php:195
-#: application/models/TokenDynamic.php:729
+#: application/models/TokenDynamic.php:731
 #: application/views/admin/responses/browseallrow_view.php:5
 msgid "View response details"
 msgstr ""
@@ -4185,6 +4185,7 @@ msgid "Edit token entry"
 msgstr ""
 
 #: application/controllers/admin/tokens.php:539
+#: application/models/TokenDynamic.php:789
 msgid "View this person in the central participants database"
 msgstr ""
 
@@ -9190,7 +9191,7 @@ msgstr ""
 #: application/views/admin/templates/templateeditorbar_view.php:216
 #: application/views/admin/templates/templateeditorbar_view.php:255
 #: application/views/admin/templates/templatesummary_view.php:154
-#: application/views/admin/token/token_bar.php:194
+#: application/views/admin/token/token_bar.php:200
 #: application/views/admin/usergroup/usergroupbar_view.php:51
 msgid "Close"
 msgstr ""
@@ -10310,20 +10311,29 @@ msgstr ""
 msgid "Completed?"
 msgstr ""
 
-#: application/models/TokenDynamic.php:736
+#: application/models/TokenDynamic.php:738
 msgid "View last response details"
 msgstr ""
 
-#: application/models/TokenDynamic.php:745
+#: application/models/TokenDynamic.php:750
 msgid "Launch the survey with this token"
 msgstr ""
 
-#: application/models/TokenDynamic.php:747
+#: application/models/TokenDynamic.php:764
 #: application/views/admin/token/token_bar.php:99
 msgid "Send email invitation"
 msgstr ""
 
-#: application/models/TokenDynamic.php:748
+#: application/models/TokenDynamic.php:768
+#: application/views/admin/token/massive_actions/_selector.php:46
+#: application/views/admin/token/massive_actions/_selector.php:49
+#: application/views/admin/token/remind.php:8
+#: application/views/admin/token/remind.php:9
+#: application/views/admin/token/token_bar.php:107
+msgid "Send email reminder"
+msgstr ""
+
+#: application/models/TokenDynamic.php:784
 #: application/views/admin/responses/browseallrow_view.php:34
 msgid "Edit this token"
 msgstr ""
@@ -16836,14 +16846,6 @@ msgstr ""
 msgid "email"
 msgstr ""
 
-#: application/views/admin/token/massive_actions/_selector.php:46
-#: application/views/admin/token/massive_actions/_selector.php:49
-#: application/views/admin/token/remind.php:8
-#: application/views/admin/token/remind.php:9
-#: application/views/admin/token/token_bar.php:107
-msgid "Send email reminder"
-msgstr ""
-
 #: application/views/admin/token/massive_actions/_selector.php:60
 msgid "This will add all those participants to central database."
 msgstr ""
@@ -16898,19 +16900,23 @@ msgstr ""
 msgid "Generate access token"
 msgstr ""
 
-#: application/views/admin/token/token_bar.php:151
+#: application/views/admin/token/token_bar.php:142
+msgid "View in the central participant database panel"
+msgstr ""
+
+#: application/views/admin/token/token_bar.php:157
 msgid "Delete tokens table"
 msgstr ""
 
-#: application/views/admin/token/token_bar.php:161
+#: application/views/admin/token/token_bar.php:167
 msgid "Send invitations"
 msgstr ""
 
-#: application/views/admin/token/token_bar.php:169
+#: application/views/admin/token/token_bar.php:175
 msgid "Send reminders"
 msgstr ""
 
-#: application/views/admin/token/token_bar.php:186
+#: application/views/admin/token/token_bar.php:192
 msgid "Download CSV file"
 msgstr ""
 
