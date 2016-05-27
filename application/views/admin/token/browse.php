@@ -246,7 +246,7 @@
                             CHtml::dropDownList(
                                 'pageSize',
                                 $pageSize,
-                                Yii::app()->params['pageSizeOptions'],
+                                Yii::app()->params['pageSizeOptionsTokens'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
                         'itemsCssClass' =>'table-striped',
                         //'htmlOptions'=>array('style'=>'max-width: none;'),
@@ -261,7 +261,7 @@
         <script type="text/javascript">
             jQuery(function($) {
                 jQuery(document).on("change", '#pageSize', function(){
-                    $.fn.yiiGridView.update('survey-grid',{ data:{ pageSize: $(this).val() }});
+                    $.fn.yiiGridView.update('token-grid',{ data:{ pageSize: $(this).val() }});
                 });
             });
         </script>

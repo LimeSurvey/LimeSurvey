@@ -52,6 +52,7 @@ $internalConfig = array(
     'params'=>array(
         'defaultPageSize'=>10	,
         'pageSizeOptions'=>array(5=>5,10=>10,20=>20,50=>50,100=>100),
+        'pageSizeOptionsTokens'=>array(5=>5,10=>10,25=>25,50=>50,100=>100, 250=>250, 500=>500, 1000=>1000, 2500=>2500, 5000=>5000, 10000=>10000),
     ),
 
     'import' => array(
