@@ -18,9 +18,6 @@ class TokenDynamic extends LSActiveRecord
     protected static $sid = 0;
     public $emailstatus='OK'; // Default value for email status
 
-    // Simulated OOD Permissions
-    public $permissions;
-
     /**
      * Returns the static model of Settings table
      *
@@ -58,16 +55,6 @@ class TokenDynamic extends LSActiveRecord
         self::$sid = (int) $sid;
     }
 
-    public function init()
-    {
-        // Simulate OOD permissions
-        $this->permissions = new stdClass();
-        $this->permissions->bReadPermission            = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read');
-        $this->permissions->bCreatePermission          = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create');
-        $this->permissions->bTokenUpdatePermission     = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update');
-        $this->permissions->bTokenDeletePermission     = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'delete');
-        $this->permissions->bGlobalPanelReadPermission = Permission::model()->hasGlobalPermission('participantpanel','read');
-    }
     /**
      * Returns the setting's table name to be used by the model
      *
@@ -105,9 +92,6 @@ class TokenDynamic extends LSActiveRecord
             array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
             array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
             array('emailstatus', 'default', 'value' => $this->emailstatus),
-            // array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-            // array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-            // Date rules currently don't work properly with MSSQL, deactivating for now
         );
     }
 
@@ -123,8 +107,6 @@ class TokenDynamic extends LSActiveRecord
         return array(
             'survey'      => array(self::BELONGS_TO, 'Survey', array(), 'condition'=>'sid='.Yii::app()->user->getState('SurveyDynamicSid'), 'together' => true),
             'responses'   => array(self::HAS_MANY, 'SurveyDynamic', array('token'=>'token')),
-            // Note: we can't use permissions relation for now, because of pluging not being Object Oriented Designed, and owner/superadmin not having entries for everything  in permission table :'-(
-            // 'permissions' => array(self::HAS_ONE, 'Permission', array(), 'condition'=> 'entity_id='.Yii::app()->user->getState('SurveyDynamicSid').' && uid='.Yii::app()->user->id.' && entity="survey" && permission="tokens"', 'together' => true ),
         );
     }
 
@@ -713,7 +695,7 @@ class TokenDynamic extends LSActiveRecord
         $button = '';
 
         // View response details
-        if ($this->survey->isActive && $this->permissions->bReadPermission)
+        if ($this->survey->isActive && Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read'))
         {
             if (count($this->responses)>0)
             {
@@ -738,7 +720,7 @@ class TokenDynamic extends LSActiveRecord
         }
 
         // Launch the survey with this token
-        if( ($this->completed=="N" || $this->completed=="" || $this->survey->alloweditaftercompletion == "Y") && $this->permissions->bCreatePermission )
+        if( ($this->completed=="N" || $this->completed=="" || $this->survey->alloweditaftercompletion == "Y") && Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create') )
         {
             $button .= '<a class="btn btn-default btn-xs" href="'.$sPreviewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT('Launch the survey with this token').'"><span class="icon-do" ></span></a>';
         }
@@ -748,7 +730,7 @@ class TokenDynamic extends LSActiveRecord
         }
 
         // Invite or Remind
-        if ($this->emailstatus && $this->email  && $this->permissions->bTokenUpdatePermission)
+        if ($this->emailstatus && $this->email  && Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update'))
         {
             if($this->completed == 'N' && $this->usesleft > 0)
             {
@@ -774,7 +756,7 @@ class TokenDynamic extends LSActiveRecord
 
         // TODO: permission check
 
-        if ($this->permissions->bTokenUpdatePermission)
+        if (Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update'))
         {
             $button .= '<a class="btn btn-default btn-xs" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit this token').'"><span class="icon-edit" ></span></a>';
         }
@@ -783,7 +765,7 @@ class TokenDynamic extends LSActiveRecord
             $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
         }
 
-        if (!empty($this->participant_id) && $this->participant_id != "" && $this->permissions->bGlobalPanelReadPermission)
+        if (!empty($this->participant_id) && $this->participant_id != "" && Permission::model()->hasGlobalPermission('participantpanel','read'))
         {
             $onClick = "sendPost('".App()->createUrl('admin/participants/sa/displayParticipants')."','',['searchcondition'],['participant_id||equal||{$this->participant_id}']);";
             $button .= '<a class="btn btn-default btn-xs" href="#" role="button" data-toggle="tooltip" title="'.gT('View this person in the central participants database').'" onclick="'.$onClick.'"><span class="icon-cpdb" ></span></a>';
