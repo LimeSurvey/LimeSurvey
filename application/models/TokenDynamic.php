@@ -106,9 +106,10 @@ class TokenDynamic extends LSActiveRecord
     */
     public function relations()
     {
+        Yii::app()->user->setState('SurveyDynamicSid', self::$sid);
         return array(
-            //SurveyDynamic::model($iSurveyId)->findAllByAttributes(array('token'=>$visibleTokens));
-            'responses' => array(self::HAS_MANY, 'SurveyDynamic', array('token'=>'token'))
+            'survey'    => array(self::BELONGS_TO, 'Survey', array(), 'condition'=>'sid='.Yii::app()->user->getState('SurveyDynamicSid'), 'together' => true),
+            'responses' => array(self::HAS_MANY, 'SurveyDynamic', array('token'=>'token')),
         );
     }
 
@@ -721,12 +722,13 @@ class TokenDynamic extends LSActiveRecord
 
         $button = '';
 
-        Yii::app()->user->setState('SurveyDynamicSid', self::$sid);
-        if(count($this->responses)>0)
+        if ($this->survey->isActive)
         {
-
-            $sResponseUrl = App()->createUrl("admin/responses/sa/viewbytoken/surveyid/".self::$sid, array('token'=>$this->token));
-            $button .= '<a class="btn btn-default btn-xs" href="'.$sResponseUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("View response details").'"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+            if (count($this->responses)>0)
+            {
+                $sResponseUrl = App()->createUrl("admin/responses/sa/viewbytoken/surveyid/".self::$sid, array('token'=>$this->token));
+                $button .= '<a class="btn btn-default btn-xs" href="'.$sResponseUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("View response details").'"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+            }
         }
 
         $button .= '<a class="btn btn-default btn-xs" href="'.$sPreviewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT('Launch the survey with this token').'"><span class="icon-do" ></span></a>';

@@ -278,6 +278,8 @@ class Survey extends LSActiveRecord
     * @access public
     * @param int $loginID
     * @return CActiveRecord
+    *
+    * TODO: replace this by a correct relation
     */
     public function permission($loginID)
     {
@@ -771,6 +773,11 @@ class Survey extends LSActiveRecord
 
             return $answers;
         }
+    }
+
+    public function getIsActive()
+    {
+        return ($this->active === 'Y');
     }
 
     public function getFullAnswers()
