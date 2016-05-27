@@ -130,7 +130,7 @@
 
                 if (!function_exists("zip_open"))
                 {
-                    $sMessage=gT("You cannot upload templates because you do not have the necessary ZIP library installed in PHP.");
+                    $sMessage=gT("You cannot upload templates because you do not have the required ZIP library installed in PHP.");
                 }
                 else
                 {
