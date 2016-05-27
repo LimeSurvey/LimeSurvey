@@ -135,12 +135,6 @@
                     <span class="icon-do text-success"></span>
                     <?php eT("Generate access token"); ?>
                 </a>
-
-                <!-- View participants of this survey in CPDB -->
-                <a class="btn btn-default" href="#" role="button" onclick="sendPost('<?php echo $this->createUrl("/admin/participants/sa/displayParticipants"); ?>','',['searchcondition'],['surveyid||equal|| <?php echo $surveyid ?>']);">
-                    <span class="ui-icon ui-participant-link"></span>
-                    <?php eT("View in the central participant database panel"); ?>
-                </a>
                 <?php endif; ?>
             <?php endif;?>
         </div>
