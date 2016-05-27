@@ -41,11 +41,7 @@
             id="<?php echo $id; ?>"
             rows="<?php echo $tarows;?>"
             cols="30"
-            >
-            <?php if($has_comment_saved):?>
-                <?php echo $comment_saved;?>
-            <?php endif;?>
-    </textarea>
+            ><?php if($has_comment_saved):?><?php echo $comment_saved;?><?php endif;?></textarea>
 </p>
 
 <input

@@ -53,11 +53,7 @@
                         id="answer<?php echo $name ;?>comment"
                         rows="<?php echo $tarows; ?>"
                         cols="<?php echo $maxoptionsize; ?>"
-    >
-<?php if($has_comment_saved):?>
-<?php echo $comment_saved; ?>
-<?php endif;?>
-    </textarea>
+    ><?php if($has_comment_saved):?><?php echo $comment_saved; ?><?php endif;?></textarea>
 
     <input class="radio" type="hidden" name="java<?php echo $name?>" id="java<?php echo $name?>" value="<?php echo $value;?>" />
 </p>
