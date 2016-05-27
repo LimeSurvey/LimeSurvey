@@ -716,6 +716,7 @@ class TokenDynamic extends LSActiveRecord
         $sPreviewUrl  = App()->createUrl("/survey/index/sid/".self::$sid."/token/".$this->token.'/lang/'.$this->language.'/newtest/Y');
         $sEditUrl     = App()->createUrl("/admin/tokens/sa/edit/iSurveyId/".self::$sid."/iTokenId/$this->tid");
         $sInviteUrl   = App()->createUrl("/admin/tokens/sa/email/surveyid/".self::$sid."/tokenids/$this->tid");
+        $sRemindUrl   = App()->createUrl("admin/tokens/sa/email/action/remind/surveyid/".self::$sid."/tokenids/$this->tid");
         $button = '';
 
         if ($this->survey->isActive)
@@ -739,15 +740,55 @@ class TokenDynamic extends LSActiveRecord
         }
         else
         {
-            // Add some space for other buttons to be at the same place
+            // TODO: Add some space for other buttons to be at the same place
         }
 
-        $button .= '<a class="btn btn-default btn-xs" href="'.$sPreviewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT('Launch the survey with this token').'"><span class="icon-do" ></span></a>';
-        //$button .= '<a class="btn btn-default btn-xs" href="#" role="button" data-toggle="tooltip" title="'.gT('Delete').'"><span class="text-danger glyphicon glyphicon-trash" ></span></a>';
-        $button .= '<a class="btn btn-default btn-xs" href="'.$sInviteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Send email invitation').'"><span class="icon-invite" ></span></a>';
+        if( $this->completed=="N" || $this->completed=="" || $this->survey->alloweditaftercompletion == "Y" )
+        {
+            $button .= '<a class="btn btn-default btn-xs" href="'.$sPreviewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT('Launch the survey with this token').'"><span class="icon-do" ></span></a>';
+        }
+        else
+        {
+            // TODO: Add some space for other buttons to be at the same place
+        }
+
+        if($this->emailstatus && $this->email )
+        {
+            if($this->completed == 'N' && $this->usesleft > 0)
+            {
+                if($this->sent == 'N')
+                {
+                    $button .= '<a class="btn btn-default btn-xs" href="'.$sInviteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Send email invitation').'"><span class="icon-invite" ></span></a>';
+                }
+                else
+                {
+                    $button .= '<a class="btn btn-default btn-xs" href="'.$sRemindUrl.'" role="button" data-toggle="tooltip" title="'.gT('Send email reminder').'"><span class="icon-remind " ></span></a>';
+                }
+            }
+            else
+            {
+                //TODO: Add some space for other buttons to be at the same place
+            }
+
+        }
+        else
+        {
+            // TODO: Add some space for other buttons to be at the same place
+        }
+
+        // TODO: permission check
+
         $button .= '<a class="btn btn-default btn-xs" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit this token').'"><span class="icon-edit" ></span></a>';
 
-
+        if (!empty($this->participant_id) && $this->participant_id != "" )
+        {
+            $onClick = "sendPost('".$this->getController()->createUrl('admin/participants/sa/displayParticipants')."','',['searchcondition'],['participant_id||equal||{$this->participant_id}']);";
+            $button .= '<a class="btn btn-default btn-xs" href="#" role="button" data-toggle="tooltip" title="'.gT('View this person in the central participants database').'" onclick="'.$onClick.'"><span class="icon-cpdb" ></span></a>';
+        }
+        else
+        {
+            // TODO: Add some space for other buttons to be at the same place
+        }
         return $button;
     }
 
