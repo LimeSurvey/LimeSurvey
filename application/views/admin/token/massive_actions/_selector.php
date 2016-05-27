@@ -33,7 +33,7 @@
             data-action="invite"
             data-modal-warning-title="<?php eT('Send email invitations');?>"
             data-modal-warning-text="<?php eT('Send an invitation email to the selected entries (if they have not yet been sent an invitation email)');?> <?php eT('Continue?');?>">
-            <span class="ui-icon ui-icon-mail-closed" ></span>
+            <span class="icon-invite text-success" ></span>
             <?php eT('Send email invitations');?>
             </a>
         </li>
@@ -45,7 +45,7 @@
             data-action="remind"
             data-modal-warning-title="<?php eT('Send email reminder');?>"
             data-modal-warning-text="<?php eT('Send a reminder email to the selected entries (if they have already received the invitation email)');?> <?php eT('Continue?');?>">
-            <span class="ui-icon ui-icon-mail-open" ></span>
+            <span class="icon-remind text-success" ></span>
             <?php eT('Send email reminder');?>
             </a>
         </li>

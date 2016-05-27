@@ -719,11 +719,12 @@ class TokenDynamic extends LSActiveRecord
         $sRemindUrl   = App()->createUrl("admin/tokens/sa/email/action/remind/surveyid/".self::$sid."/tokenids/$this->tid");
         $button = '';
 
+        // View response details
         if ($this->survey->isActive)
         {
             if (count($this->responses)>0)
             {
-                // Only one answer, direct link
+
                 if (count($this->responses)<2)
                 {
                     $sResponseUrl = App()->createUrl("admin/responses/sa/viewbytoken/surveyid/".self::$sid, array('token'=>$this->token));
@@ -743,6 +744,7 @@ class TokenDynamic extends LSActiveRecord
             // TODO: Add some space for other buttons to be at the same place
         }
 
+        // Launch the survey with this token
         if( $this->completed=="N" || $this->completed=="" || $this->survey->alloweditaftercompletion == "Y" )
         {
             $button .= '<a class="btn btn-default btn-xs" href="'.$sPreviewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT('Launch the survey with this token').'"><span class="icon-do" ></span></a>';
@@ -752,6 +754,7 @@ class TokenDynamic extends LSActiveRecord
             // TODO: Add some space for other buttons to be at the same place
         }
 
+        // Invite or Remind
         if($this->emailstatus && $this->email )
         {
             if($this->completed == 'N' && $this->usesleft > 0)
