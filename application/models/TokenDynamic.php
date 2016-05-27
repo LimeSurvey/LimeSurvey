@@ -713,7 +713,7 @@ class TokenDynamic extends LSActiveRecord
         $button = '';
 
         // View response details
-        if ($this->survey->isActive)
+        if ($this->survey->isActive && $this->permissions->bReadPermission)
         {
             if (count($this->responses)>0)
             {
@@ -738,7 +738,7 @@ class TokenDynamic extends LSActiveRecord
         }
 
         // Launch the survey with this token
-        if( $this->completed=="N" || $this->completed=="" || $this->survey->alloweditaftercompletion == "Y" )
+        if( ($this->completed=="N" || $this->completed=="" || $this->survey->alloweditaftercompletion == "Y") && $this->permissions->bCreatePermission )
         {
             $button .= '<a class="btn btn-default btn-xs" href="'.$sPreviewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT('Launch the survey with this token').'"><span class="icon-do" ></span></a>';
         }
@@ -748,7 +748,7 @@ class TokenDynamic extends LSActiveRecord
         }
 
         // Invite or Remind
-        if($this->emailstatus && $this->email )
+        if ($this->emailstatus && $this->email  && $this->permissions->bTokenUpdatePermission)
         {
             if($this->completed == 'N' && $this->usesleft > 0)
             {
@@ -774,9 +774,16 @@ class TokenDynamic extends LSActiveRecord
 
         // TODO: permission check
 
-        $button .= '<a class="btn btn-default btn-xs" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit this token').'"><span class="icon-edit" ></span></a>';
+        if ($this->permissions->bTokenUpdatePermission)
+        {
+            $button .= '<a class="btn btn-default btn-xs" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit this token').'"><span class="icon-edit" ></span></a>';
+        }
+        else
+        {
+            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
+        }
 
-        if (!empty($this->participant_id) && $this->participant_id != "" )
+        if (!empty($this->participant_id) && $this->participant_id != "" && $this->permissions->bGlobalPanelReadPermission)
         {
             $onClick = "sendPost('".App()->createUrl('admin/participants/sa/displayParticipants')."','',['searchcondition'],['participant_id||equal||{$this->participant_id}']);";
             $button .= '<a class="btn btn-default btn-xs" href="#" role="button" data-toggle="tooltip" title="'.gT('View this person in the central participants database').'" onclick="'.$onClick.'"><span class="icon-cpdb" ></span></a>';
