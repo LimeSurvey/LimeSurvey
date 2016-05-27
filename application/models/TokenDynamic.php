@@ -719,8 +719,7 @@ class TokenDynamic extends LSActiveRecord
         }
         else
         {
-            $button .= "<span class='blank_button'></span>";
-            // TODO: Add some space for other buttons to be at the same place
+            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
         }
 
         // Launch the survey with this token
@@ -730,7 +729,7 @@ class TokenDynamic extends LSActiveRecord
         }
         else
         {
-            // TODO: Add some space for other buttons to be at the same place
+            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
         }
 
         // Invite or Remind
@@ -749,13 +748,13 @@ class TokenDynamic extends LSActiveRecord
             }
             else
             {
-                //TODO: Add some space for other buttons to be at the same place
+                $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
             }
 
         }
         else
         {
-            // TODO: Add some space for other buttons to be at the same place
+            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
         }
 
         // TODO: permission check
@@ -769,7 +768,7 @@ class TokenDynamic extends LSActiveRecord
         }
         else
         {
-            // TODO: Add some space for other buttons to be at the same place
+            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
         }
         return $button;
     }

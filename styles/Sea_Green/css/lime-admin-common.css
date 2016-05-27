@@ -1934,9 +1934,28 @@ h3,.h3 {
 }
 
 #token-grid table thead tr #action {
-    min-width: 115px;
+    min-width: 160px;
 }
 
 #token-grid table thead tr th {
     white-space: nowrap;
+}
+
+#token-grid table tr.odd .blank_button
+{
+    border-color: #f9f9f9;
+    background-color: #f9f9f9;
+}
+
+#token-grid table tr .blank_button
+{
+    border-color: white;
+    background-color: white;
+}
+
+#token-grid table tr.selected .blank_button
+{
+
+    border-color: #eee; /* from yiistrap.css*/
+    background-color: #eee;
 }
