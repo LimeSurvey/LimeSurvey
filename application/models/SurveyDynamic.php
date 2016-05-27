@@ -60,6 +60,13 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function tableName()
     {
+        // When calling Dynamic Models from relations, first, set its SID via session
+        if(!is_null(Yii::app()->user->getState('SurveyDynamicSid')))
+        {
+
+            self::sid(Yii::app()->user->getState('SurveyDynamicSid'));
+            $refresh = true;
+        }
         return '{{survey_' . self::$sid . '}}';
     }
 
