@@ -126,8 +126,18 @@
                 <!-- All buttons disabled -->
 
                 <!-- import disabled -->
-                <?php if(Permission::model()->hasGlobalPermission('templates','import')):?>
-                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
+                <?php
+
+                if (!function_exists("zip_open"))
+                {
+                    $sMessage=gT("You cannot upload templates because you do not have the necessary ZIP library installed in PHP.");
+                }
+                else
+                {
+                    $sMessage=gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/templates in order to enable this option.");
+                }
+                if(Permission::model()->hasGlobalPermission('templates','import')):?>
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                             <span class="icon-import text-muted"></span>
                             <?php eT("Import"); ?>
@@ -137,7 +147,7 @@
 
                 <!-- export disabled -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','export')):?>
-                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                             <span class="icon-export text-muted"></span>
                             <?php eT("Export"); ?>
@@ -147,7 +157,7 @@
 
                 <!-- create disabled -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
-                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                             <span class="icon-copy text-muted"></span>
                             <?php eT("Copy"); ?>
