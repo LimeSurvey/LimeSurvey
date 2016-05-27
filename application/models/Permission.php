@@ -511,11 +511,16 @@ class Permission extends LSActiveRecord
     */
     public function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD='read', $iUserID=null)
     {
+        // TODO: in entry script, if CConsoleApplication, set user as superadmin
         if(is_null($iUserID) && Yii::app() instanceof CConsoleApplication)
             return true;
         static $aPermissionStatic;
 
         /* Allow plugin to set own permission */
+        // TODO: plugin should not be able to override the permission system (security issue),
+        //      they should read permissions via the model
+        //      and they should add row in permission table  (entity = plugin, etc)
+
         $oEvent=new PluginEvent('beforeHasPermission');
         $oEvent->set('iEntityID',$iEntityID);
         $oEvent->set('sEntityName',$sEntityName);
@@ -531,12 +536,14 @@ class Permission extends LSActiveRecord
         }
 
         /* Always return true for CConsoleApplication (before or after plugin ? All other seems better after plugin) */
+        // TODO: see above about entry script and superadmin
         if(is_null($iUserID) && Yii::app() instanceof CConsoleApplication)
         {
             return true;
         }
 
         /* Always return false for unknow sCRUD */
+        // TODO: should not be necessary
         if (!in_array($sCRUD,array('create','read','update','delete','import','export')))
         {
             return false;
@@ -544,6 +551,7 @@ class Permission extends LSActiveRecord
         $sCRUD=$sCRUD.'_p';
 
         /* Always return false for guests */
+        // TODO: should not be necessary
         if(!$this->getUserId($iUserID))
         {
             return false;
@@ -554,12 +562,14 @@ class Permission extends LSActiveRecord
         }
 
         /* Always return true if you are the owner : this can be done in core plugin ? */
+        // TODO: give the rights to owner adding line in permissions table, so it will return true with the normal way
         if ($iUserID==$this->getOwnerId($iEntityID, $sEntityName))
         {
             return true;
         }
 
         /* Check if superadmin and static it */
+        // TODO: give the rights to superadmin adding line in permissions table, so it will return true with the normal way
         if (!isset($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']))
         {
             $aPermission = $this->findByAttributes(array("entity_id"=>0,'entity'=>'global', "uid"=> $iUserID, "permission"=>'superadmin'));
@@ -580,6 +590,11 @@ class Permission extends LSActiveRecord
         }
 
         /* Check in permission DB and static it */
+        // TODO: that should be the only way to get the permission,
+        // and it should be accessible from any object with relations :
+        // $obj->permissions->read or $obj->permissions->write, etc.
+        // relation :
+        // 'permissions' => array(self::HAS_ONE, 'Permission', array(), 'condition'=> 'entity_id='.{ENTITYID}.' && uid='.Yii::app()->user->id.' && entity="{ENTITY}" && permission="{PERMISSIONS}"', 'together' => true ),
         if (!isset($aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]))
         {
             $query = $this->findByAttributes(array("entity_id"=> $iEntityID, "uid"=> $iUserID, "entity"=>$sEntityName, "permission"=>$sPermission));

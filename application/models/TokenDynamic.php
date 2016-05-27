@@ -18,6 +18,9 @@ class TokenDynamic extends LSActiveRecord
     protected static $sid = 0;
     public $emailstatus='OK'; // Default value for email status
 
+    // Simulated OOD Permissions
+    public $permissions;
+
     /**
      * Returns the static model of Settings table
      *
@@ -55,6 +58,16 @@ class TokenDynamic extends LSActiveRecord
         self::$sid = (int) $sid;
     }
 
+    public function init()
+    {
+        // Simulate OOD permissions
+        $this->permissions = new stdClass();
+        $this->permissions->bReadPermission            = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read');
+        $this->permissions->bCreatePermission          = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create');
+        $this->permissions->bTokenUpdatePermission     = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update');
+        $this->permissions->bTokenDeletePermission     = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'delete');
+        $this->permissions->bGlobalPanelReadPermission = Permission::model()->hasGlobalPermission('participantpanel','read');
+    }
     /**
      * Returns the setting's table name to be used by the model
      *
@@ -110,10 +123,8 @@ class TokenDynamic extends LSActiveRecord
         return array(
             'survey'      => array(self::BELONGS_TO, 'Survey', array(), 'condition'=>'sid='.Yii::app()->user->getState('SurveyDynamicSid'), 'together' => true),
             'responses'   => array(self::HAS_MANY, 'SurveyDynamic', array('token'=>'token')),
-            // Note: the permission relation provide a oriented object way of retrieving the permissions
-            // Eg: to know if user has the right to read current token :
-            // $this->permissions->read_p
-            'permissions' => array(self::HAS_ONE, 'Permission', array(), 'condition'=> 'entity_id='.Yii::app()->user->getState('SurveyDynamicSid').' && uid='.Yii::app()->user->id.' && entity="survey" && permission="tokens"', 'together' => true ),
+            // Note: we can't use permissions relation for now, because of pluging not being Object Oriented Designed, and owner/superadmin not having entries for everything  in permission table :'-(
+            // 'permissions' => array(self::HAS_ONE, 'Permission', array(), 'condition'=> 'entity_id='.Yii::app()->user->getState('SurveyDynamicSid').' && uid='.Yii::app()->user->id.' && entity="survey" && permission="tokens"', 'together' => true ),
         );
     }
 
