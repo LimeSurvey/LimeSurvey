@@ -558,6 +558,9 @@ class TokenDynamic extends LSActiveRecord
                 'value'=>'$data->tid',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs'),
+/*                'filter'=> CHtml::dropDownList('User[compareOp]', $this->compareOp,
+                        array('>'=>'>','<'=>'<','>='=>'>=','<='=>'<=','='=>'='),array('style'=>'width:50px;')) .
+                        CHtml::textField('User[compare]',$this->compare,array('style'=>'width:100px;'))*/
             ),
 
             array(

@@ -1934,7 +1934,11 @@ h3,.h3 {
 }
 
 #token-grid table thead tr #action {
-    min-width: 140px;
+    min-width: 150px;
+}
+
+#token-grid .filter-container{
+    min-width: 50px;
 }
 
 #token-grid table thead tr th {
