@@ -33,6 +33,7 @@
             var expireddisplay='question'+questionid+'_timer';
             var timersessionname='timer_question_'+questionid;
             var disable_next = <?php echo $disable_next; ?>;
+            var disable_prev = <?php echo $disable_prev; ?>;
 
             $('#'+timersessionname).val(timeleft);
             timeleft--;
@@ -59,11 +60,11 @@
             <?php endif; ?>
 
             <?php if($disable_prev > 0): ?>
-                if(timeleft > $disable_prev)
+                if(timeleft > disable_prev)
                 {
                     $('#moveprevbtn').prop('disabled',true);$('#moveprevbtn.ui-button').button( 'option', 'disabled', true );
                 }
-                else if ($disable_prev >= 1 && timeleft <= $disable_prev)
+                else if (disable_prev >= 1 && timeleft <= disable_prev)
                 {
                     $('#moveprevbtn').prop('disabled',false);$('#moveprevbtn.ui-button').button( 'option', 'disabled', false );
                 }
