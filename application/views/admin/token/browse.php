@@ -239,6 +239,7 @@
                 <?php
                     $this->widget('bootstrap.widgets.TbGridView', array(
                         'dataProvider' => $model->search(),
+                        'filter'=>$model,
                         'id' => 'token-grid',
                         'emptyText'=>gT('No tokens found.'),
                         'template'  => "{items}\n<div class=\"row-fluid\"><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
@@ -252,6 +253,7 @@
                         //'htmlOptions'=>array('style'=>'max-width: none;'),
                         'columns' => $model->attributesForGrid,
 
+                        'ajaxUpdate'=>false,
                     ));
                 ?>
             </div>

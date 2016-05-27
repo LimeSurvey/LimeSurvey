@@ -541,8 +541,10 @@ class TokenDynamic extends LSActiveRecord
                 'selectableRows' => '100',
             ),
 
+
             array(
                 'header' => gT('Action'),
+                'filter'=>false,
                 'id'=>'action',
                 'name' => 'actions',
                 'value'=>'$data->buttons',
@@ -873,15 +875,8 @@ class TokenDynamic extends LSActiveRecord
       }
 
       $criteria = new CDbCriteria;
-
-      // TODO: Search...
-
-      // Warning: Please modify the following code to remove attributes that
-      // should not be searched.
-/* OLD SEARCH :
-      $criteria=new CDbCriteria;
-
       $criteria->compare('tid',$this->tid,true);
+      $criteria->compare('token',$this->token,true);
       $criteria->compare('firstname',$this->firstname,true);
       $criteria->compare('lastname',$this->lastname,true);
       $criteria->compare('email',$this->email,true);
@@ -896,10 +891,6 @@ class TokenDynamic extends LSActiveRecord
       $criteria->compare('validfrom',$this->validfrom,true);
       $criteria->compare('validuntil',$this->validuntil,true);
 
-      return new CActiveDataProvider($this, array(
-          'criteria'=>$criteria,
-      ));
-*/
       $dataProvider=new CActiveDataProvider('TokenDynamic', array(
           'sort'=>$sort,
           'criteria'=>$criteria,

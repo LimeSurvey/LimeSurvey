@@ -368,12 +368,19 @@ class tokens extends Survey_Common_Action
 
         /// FOR GRID View
         $model =  TokenDynamic::model($iSurveyId);
+        if(isset($_GET['TokenDynamic']))
+        {
+            $model->setAttributes($_GET['TokenDynamic'],false);
+        }
+
         $aData['model'] = $model;
         // Set number of page
         if (isset($_GET['pageSize']))
         {
             Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
         }
+
+
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', array(), true, false);
 
