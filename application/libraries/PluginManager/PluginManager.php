@@ -319,7 +319,8 @@ use Plugin;
         public function loadPlugins()
         {
             // If DB version is less than 165 : plugins table don't exist. 175 update it (boolean to integer for active)
-            if(App()->getConfig('DBVersion')>= 165)
+            $dbVersion=\SettingGlobal::model()->find("stg_name=:name",array(':name'=>'DBVersion'));// Need table SettingGlobal, but settings from DB is set only in controller, not in App, see #11294
+            if($dbVersion && $dbVersion->stg_value = 165)
             {
                 $pluginModel = Plugin::model();
                 $records = $pluginModel->findAllByAttributes(array('active'=>1));
