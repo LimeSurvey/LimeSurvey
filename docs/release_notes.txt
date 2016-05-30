@@ -35,6 +35,36 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160526) to 2.50+ (build 160529) May 30, 2016
+-Fixed issue #10838: Wrong decimal separator for total in "array text" (Carsten Schmitz)
+-Fixed issue #11124: AuditLog breaks when delete multiple list particpants. (Alfredo Esteban)
+-Fixed issue #11210: Error on installation (Carsten Schmitz)
+-Fixed issue #11254: Wrong default language in statistics expert mode (LouisGac)
+-Fixed issue #11276: Google Analytics code not running (Carsten Schmitz)
+-Fixed issue #11278: Unable to upload templates (Carsten Schmitz)
+-Fixed issue #11288: Cannot edit/update oarticipants unless having superadministrator permission (Carsten Schmitz)
+-Fixed issue #11289: User can't see their own surveys anymore (admin can't filter) (LouisGac)
+-Fixed issue #11291: cron event never happen (Denis Chenu)
+-Fixed issue #11262: No save button after editing a token
+-Fixed issue: Notice when saving a token from token edition page. (LouisGac)
+-Fixed issue: Question timers not working properly (Carsten Schmitz)
+-Fixed issue: Survey settings modifications not logged in AuditLog (Alfredo Esteban)
+-Fixed issue: Removed additional left spaces within textareas of "List with comment"(Marcel Minke)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Mexican) by c_schmitz
+
 Changes from 2.50+ (build 160525) to 2.50+ (build 160526) May 25, 2016
 -New feature: Question List, user can search over qid, code, question and question type (LouisGac)
 -New feature: Response Excel format now exports xlsx files (Carsten Schmitz)
