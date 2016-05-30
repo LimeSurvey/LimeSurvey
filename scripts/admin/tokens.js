@@ -430,6 +430,7 @@ $(document).ready(function() {
             onClickButton:addSelectedParticipantsToCPDB
         });
     }
+    /*
     $(".gridsearch").bindWithDelay("keyup", function(e) {
         var sSearchString=$.trim($(this).val());
         if(sSearchString != ""){
@@ -510,4 +511,5 @@ function updatePageAfterGrid(){
         $(".dataforward").click(function(){});
         $(".gridcontrol.dataforward").addClass("disabled");
     }
+    */
 }
