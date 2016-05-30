@@ -892,8 +892,7 @@ class tokens extends Survey_Common_Action
 
             if (count($udresult) == 0)
             {
-                //$aTokenData = array();
-                $attrfieldnames = $udresult[0]->survey->tokenAttributes;
+                $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
                 foreach ($attrfieldnames as $attr_name => $desc)
                 {
 
