@@ -8,7 +8,7 @@ $(document).ready(function(){
         });
     });
 
-    $('.edit-token').click(function(){
+    $(document).on( 'click', '.edit-token', function(){
         $that       = $(this);
         $sid        = $that.data('sid');
         $tid        = $that.data('tid');
@@ -28,11 +28,11 @@ $(document).ready(function(){
             // html contains the buttons
             success : function(html, statut){
                 $ajaxLoader.hide();
-                $('#modal-content').append(html);                      // Inject the returned HTML in the modal body
+                $('#modal-content').empty().append(html);                      // Inject the returned HTML in the modal body
             },
             error :  function(html, statut){
                 $ajaxLoader.hide();
-                $('#modal-content').append(html);
+                $('#modal-content').empty().append(html);
                 console.log(html);
             }
         });
@@ -59,18 +59,20 @@ $(document).ready(function(){
             // html contains the buttons
             success : function(html, statut){
                 $ajaxLoader.hide();
-                $.fn.yiiGridView.update($gridid);                   // Update the surveys list
+                $.fn.yiiGridView.update('token-grid');                   // Update the surveys list
                 $modal.modal('hide');
 
             },
             error :  function(html, statut){
                 $ajaxLoader.hide();
-                $('#modal-content').append(html);
+                $('#modal-content').empty().append(html);
                 console.log(html);
             }
         });
 
     });
+
+
 
 });
 

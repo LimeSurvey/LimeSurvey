@@ -2713,7 +2713,7 @@ class tokens extends Survey_Common_Action
         {
             $aData['oSurvey'] = $oSurvey;
             $aData['ajax'] = true;
-            $this->getController()->renderPartial('/admin/token/tokenform', $aData);
+            $this->getController()->renderPartial('/admin/token/tokenform', $aData, false, false);
         }
         else
         {

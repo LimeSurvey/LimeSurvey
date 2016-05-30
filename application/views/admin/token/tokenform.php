@@ -4,7 +4,8 @@
 */
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+
+<div class=' <?php if( !isset($ajax) || $ajax = false ):?> side-body <?php echo getSideBodyClass(false); ?> <?php endif;?>' >
     <?php
         if (!isset($ajax) || $ajax = false)
             $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Survey participant entry")));
@@ -67,103 +68,183 @@
                 <!-- General -->
                 <div id="general" class="tab-pane fade in  active ">
 
-                                <!-- ID  -->
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">ID:</label>
-                                    <div class="col-sm-10">
-                                        <p class="form-control-static">
-                                            <?php if ($subaction == "edit")
-                                                echo $tokenid;
-                                            else
-                                                eT("Auto");
-                                            ?>
-                                        </p>
-                                    </div>
-                                </div>
+                    <!-- ID  -->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">ID:</label>
+                        <div class="col-sm-2">
+                            <p class="form-control-static">
+                                <?php if ($subaction == "edit")
+                                    echo $tokenid;
+                                else
+                                    eT("Auto");
+                                ?>
+                            </p>
+                        </div>
 
-                                <!-- First name -->
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label" for='firstname'><?php eT("First name"); ?>:</label>
-                                    <div class="col-sm-2">
-                                        <input class='form-control' type='text' size='30' id='firstname' name='firstname' value="<?php if (isset($firstname)){echo $firstname;} ?>" /></div>
-                                </div>
+                        <label class="col-sm-2 control-label"  for='language'><?php eT("Language"); ?>:</label>
+                        <div class="col-sm-2">
+                            <?php if (isset($language)){echo languageDropdownClean($surveyid, $language);}else{echo languageDropdownClean($surveyid, Survey::model()->findByPk($surveyid)->language);}?>
+                        </div>
+                    </div>
 
-                                <!-- Last name -->
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"  for='lastname'><?php eT("Last name"); ?>:</label>
-                                    <div class="col-sm-2">
-                                        <input class='form-control' type='text' size='30'  id='lastname' name='lastname' value="<?php if (isset($lastname)){echo $lastname;} ?>" />
-                                    </div>
-                                </div>
+                    <!-- Token -->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"  for='token'><?php eT("Token"); ?>:</label>
+                        <div class="col-sm-6">
+                            <input class='form-control' type='text' size='20' name='token' id='token' value="<?php if (isset($token)){echo $token;} ?>" />
+                            <?php if ($subaction == "addnew"): ?>
+                                <span id="helpBlock" class="help-block"><?php eT("You can leave this blank, and automatically generate tokens using 'Generate Tokens'"); ?></span>
+                                <?php endif; ?>
+                        </div>
+                    </div>
 
-                                <!-- Email -->
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"  for='email'><?php eT("Email"); ?>:</label>
-                                    <div class="col-sm-2">
-                                        <input class='form-control' type='email' multiple='multiple' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email)){echo $email;} ?>" />
-                                    </div>
-                                </div>
+                    <!-- First name, Last name, Language -->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for='firstname'><?php eT("First name"); ?>:</label>
+                        <div class="col-sm-2">
+                            <input class='form-control' type='text' size='30' id='firstname' name='firstname' value="<?php if (isset($firstname)){echo $firstname;} ?>" />
+                        </div>
+                        <label class="col-sm-2 control-label"  for='lastname'><?php eT("Last name"); ?>:</label>
+                        <div class="col-sm-2">
+                            <input class='form-control' type='text' size='30'  id='lastname' name='lastname' value="<?php if (isset($lastname)){echo $lastname;} ?>" />
+                        </div>
 
-                                <!-- Email Status -->
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"  for='emailstatus'><?php eT("Email Status"); ?>:</label>
-                                    <div class="col-sm-2">
-                                        <input class='form-control' type='text' maxlength='320' size='50' id='emailstatus' name='emailstatus' placeholder='OK' value="<?php if (isset($emailstatus)){echo $emailstatus;}else{echo "OK";}?>" />
-                                    </div>
-                                </div>
+                    </div>
 
-                                <!-- Token -->
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"  for='token'><?php eT("Token"); ?>:</label>
-                                    <div class="col-sm-2">
-                                        <input class='form-control' type='text' size='20' name='token' id='token' value="<?php if (isset($token)){echo $token;} ?>" />
-                                        <?php if ($subaction == "addnew"): ?>
-                                            <span id="helpBlock" class="help-block"><?php eT("You can leave this blank, and automatically generate tokens using 'Generate Tokens'"); ?></span>
-                                            <?php endif; ?>
-                                    </div>
-                                </div>
 
-                                <!-- Language -->
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"  for='language'><?php eT("Language"); ?>:</label>
-                                    <div class="col-sm-2">
-                                        <?php if (isset($language)){echo languageDropdownClean($surveyid, $language);}else{echo languageDropdownClean($surveyid, Survey::model()->findByPk($surveyid)->language);}?>
-                                    </div>
-                                </div>
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"  for='email'><?php eT("Email"); ?>:</label>
+                        <div class="col-sm-2">
+                            <input class='form-control' type='email' multiple='multiple' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email)){echo $email;} ?>" />
+                        </div>
 
-                                <!-- Invitation sent -->
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"  for='sent'><?php eT("Invitation sent?"); ?></label>
-                                    <div class="col-sm-2">
-                                        <input class='form-control' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)){echo $sent;}else{echo "N";}?>" />
-                                    </div>
-                                </div>
+                        <!-- Email Status -->
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"  for='emailstatus'><?php eT("Email Status"); ?>:</label>
+                            <div class="col-sm-2">
+                                <input class='form-control' type='text' maxlength='320' size='50' id='emailstatus' name='emailstatus' placeholder='OK' value="<?php if (isset($emailstatus)){echo $emailstatus;}else{echo "OK";}?>" />
+                            </div>
+                        </div>
+                    </div>
 
-                                <!-- Reminder sent -->
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"  for='remindersent'><?php eT("Reminder sent?"); ?></label>
-                                    <div class="col-sm-2">
-                                        <input class='form-control' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent)){echo $remindersent;}else{echo "N";}?>" />
-                                    </div>
-                                </div>
 
-                                <!-- Reminder count -->
-                                <?php if ($subaction == "edit"): ?>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label"  for='remindercount'><?php eT("Reminder count:"); ?></label>
-                                        <div class="col-sm-2">
-                                            <input class='form-control' type='number' size='6' id='remindercount' name='remindercount' value="<?php echo $remindercount; ?>" />
-                                        </div>
-                                    </div>
-                                    <?php endif; ?>
 
-                                <!-- Completed -->
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"  for='completed'><?php eT("Completed?"); ?></label>
-                                    <div class="col-sm-2">
-                                        <input class='form-control' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)){echo $completed;}else{echo "N";}?>" />
-                                    </div>
-                                </div>
+                    <!-- Invitation sent -->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"  for='sent'><?php eT("Invitation sent?"); ?></label>
+                        <div class="col-sm-2">
+                            <?php
+                                $bSwitchValue       = (isset($sent) && $sent!='N')?"1":"0";
+                                $bRemindSwitchValue = (isset($remindersent) && $remindersent!='N')?"1":"0";
+                            ?>
+
+                            <?php
+                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                'name' => "sent-switch",
+                                'id'=>"sent-switch",
+                                'value' => $bSwitchValue,
+                                'onLabel'=>gT('Yes'),
+                                'offLabel' => gT('No')));
+                            ?>
+                            <div id="sent-date-container" <?php if(!$bSwitchValue):?>style="display: none;"<?php endif;?>>
+                            <?php
+                            Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                                'name' => "sent-date",
+                                'id'   => "sent-date",
+                                'value' => isset($validuntil) ? $validuntil : '',
+                                'pluginOptions' => array(
+                                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                    'allowInputToggle' =>true,
+                                    'showClear' => true,
+                                    'tooltips' => array(
+                                        'clear'=> gT('Clear selection'),
+                                        'prevMonth'=> gT('Previous month'),
+                                        'nextMonth'=> gT('Next month'),
+                                        'selectYear'=> gT('Select year'),
+                                        'prevYear'=> gT('Previous year'),
+                                        'nextYear'=> gT('Next year'),
+                                        'selectDecade'=> gT('Select decade'),
+                                        'prevDecade'=> gT('Previous decade'),
+                                        'nextDecade'=> gT('Next decade'),
+                                        'prevCentury'=> gT('Previous century'),
+                                        'nextCentury'=> gT('Next century'),
+                                        'selectTime'=> gT('Select time')
+
+                                    ),
+                                    'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                                )
+                            ));
+                            ?>
+                        </div>
+                            <input class='form-control hidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)){echo $sent;}else{echo "N";}?>" />
+                        </div>
+
+                        <label class="col-sm-2 control-label"  for='remindersent'><?php eT("Reminder sent?"); ?></label>
+                        <div class="col-sm-2">
+                            <?php
+                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                'name' => "remind-switch",
+                                'id'=>"remind-switch",
+                                'value' => $bRemindSwitchValue,
+                                'onLabel'=>gT('Yes'),
+                                'offLabel' => gT('No')));
+                            ?>
+
+                            <div id="remind-date-container" <?php if(!$bRemindSwitchValue):?>style="display: none;"<?php endif;?>>
+                            <?php
+                            Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                                'name' => "remind-date",
+                                'id'=>"remind-date",
+                                'value' => isset($validuntil) ? $validuntil : '',
+                                'pluginOptions' => array(
+                                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                    'allowInputToggle' =>true,
+                                    'showClear' => true,
+                                    'tooltips' => array(
+                                        'clear'=> gT('Clear selection'),
+                                        'prevMonth'=> gT('Previous month'),
+                                        'nextMonth'=> gT('Next month'),
+                                        'selectYear'=> gT('Select year'),
+                                        'prevYear'=> gT('Previous year'),
+                                        'nextYear'=> gT('Next year'),
+                                        'selectDecade'=> gT('Select decade'),
+                                        'prevDecade'=> gT('Previous decade'),
+                                        'nextDecade'=> gT('Next decade'),
+                                        'prevCentury'=> gT('Previous century'),
+                                        'nextCentury'=> gT('Next century'),
+                                        'selectTime'=> gT('Select time')
+
+                                    ),
+                                    'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                                )
+                            ));
+                            ?>
+                        </div>
+                            <input class='form-control hidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent)){echo $remindersent;}else{echo "N";}?>" />
+                        </div>
+                    </div>
+
+                    <!-- Reminder sent -->
+                    <div class="form-group">
+
+                    </div>
+
+                    <!-- Reminder count -->
+
+                        <div class="form-group">
+                            <?php if ($subaction == "edit"): ?>
+                            <label class="col-sm-2 control-label"  for='remindercount'><?php eT("Reminder count:"); ?></label>
+                            <div class="col-sm-2">
+                                <input class='form-control' type='number' size='6' id='remindercount' name='remindercount' value="<?php echo $remindercount; ?>" />
+                            </div>
+                            <?php endif; ?>
+                            <label class="col-sm-2 control-label"  for='completed'><?php eT("Completed?"); ?></label>
+                            <div class="col-sm-2">
+                                <input class='form-control' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)){echo $completed;}else{echo "N";}?>" />
+                            </div>
+
+                        </div>
 
                                 <!-- Uses left -->
                                 <div class="form-group">
@@ -280,3 +361,56 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    $('#sent-switch').bootstrapSwitch();
+    $('#remind-switch').bootstrapSwitch();
+    $('#sent-date').datetimepicker();
+    $('#remind-date').datetimepicker();
+
+    $(document).on( 'switchChange.bootstrapSwitch', '#sent-switch', function(event, state){
+        if(state==true)
+        {
+            // Show date
+            $('#sent-date-container').show();
+        }
+        if(state==false)
+        {
+            // Hide date, set hidden input to "N"
+            $('#sent-date-container').hide();
+            $('#sent').attr('value', 'N');
+        }
+        console.log(state); // true | false
+    });
+
+    $(document).on( 'switchChange.bootstrapSwitch', '#remind-switch', function(event, state){
+        if(state==true)
+        {
+            // Show date
+            $('#remind-date-container').show();
+        }
+        if(state==false)
+        {
+            // Hide date, set hidden input to "N"
+            $('#remind-date-container').hide();
+            $('#remindersent').attr('value', 'N');
+        }
+        console.log(state); // true | false
+    });
+
+    $(document).on('dp.change', '#sent-date_datetimepicker', function(e){
+        console.log('sent date changed');
+        console.log(e.date.format('MM/DD/YYYY HH:MM'));
+        $('#sent').attr('value', e.date.format('MM/DD/YYYY HH:MM'));
+    })
+
+    $(document).on('dp.change', '#remind-date_datetimepicker', function(e){
+        console.log('sent date changed');
+        console.log(e.date.format('MM/DD/YYYY HH:MM'));
+        $('#remindersent').attr('value', e.date.format('MM/DD/YYYY HH:MM'));
+    })
+
+
+
+</script>
