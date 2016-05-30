@@ -18,6 +18,10 @@ class TokenDynamic extends LSActiveRecord
     protected static $sid = 0;
     public $emailstatus='OK'; // Default value for email status
 
+    public $compare; //compare value
+    public $compareOp; //compare operator, for example [>,<,>=,<=]
+
+
     /**
      * Returns the static model of Settings table
      *
@@ -558,9 +562,9 @@ class TokenDynamic extends LSActiveRecord
                 'value'=>'$data->tid',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs'),
-/*                'filter'=> CHtml::dropDownList('User[compareOp]', $this->compareOp,
+                'filter'=> CHtml::dropDownList('User[compareOp]', $this->compareOp,
                         array('>'=>'>','<'=>'<','>='=>'>=','<='=>'<=','='=>'='),array('style'=>'width:50px;')) .
-                        CHtml::textField('User[compare]',$this->compare,array('style'=>'width:100px;'))*/
+                        CHtml::textField('User[compare]',$this->compare,array('style'=>'width:100px;'))
             ),
 
             array(
@@ -670,16 +674,16 @@ class TokenDynamic extends LSActiveRecord
     public function getAttributesForGrid()
     {
         $aCustomAttributesCols = array();
-        $aCustomAttributes = $this->custom_attributes;
+        //$aCustomAttributes = $this->custom_attributes;
 
         $oSurvey = Survey::model()->findByAttributes(array("sid"=>self::$sid));
-        $aAttributedescriptions = json_decode($oSurvey->attributedescriptions);
+        $aCustomAttributes  = $oSurvey->tokenAttributes;
 
         // Custom attributes
         foreach($aCustomAttributes as $sColName => $oColumn)
         {
             $aCustomAttributesCols[] = array(
-                'header' => $aAttributedescriptions->$sColName->description,
+                'header' => $oColumn['description'],// $aAttributedescriptions->$sColName->description,
                 'name' => $sColName,
                 'value'=>'$data->'.$sColName,
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),

@@ -113,7 +113,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label"  for='remindercount'><?php eT("Reminder count:"); ?></label>
                     <div class="col-sm-2">
-                        <input class='form-control' type='text' size='6' id='remindercount' name='remindercount' value="<?php echo $remindercount; ?>" />
+                        <input class='form-control' type='number' size='6' id='remindercount' name='remindercount' value="<?php echo $remindercount; ?>" />
                     </div>
                 </div>
                 <?php endif; ?>
@@ -130,7 +130,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label"  for='usesleft'><?php eT("Uses left:"); ?></label>
                 <div class="col-sm-2">
-                    <input class='form-control' type='text' size='20' id='usesleft' name='usesleft' value="<?php if (isset($usesleft)){echo $usesleft;}else{echo "1";}?>" />
+                    <input class='form-control' type='number' size='20' id='usesleft' name='usesleft' value="<?php if (isset($usesleft)){echo $usesleft;}else{echo "1";}?>" />
                 </div>
             </div>
 
@@ -217,7 +217,7 @@
                 {
                     case "edit":
                         ?>
-                        <input type='submit' value='<?php eT("Update token entry"); ?>' />
+                        <input type='submit' class="hidden" value='<?php eT("Update token entry"); ?>' />
                         <input type='hidden' name='subaction' value='updatetoken' />
                         <input type='hidden' name='tid' value='<?php echo $tokenid; ?>' />
                         <?php break;
