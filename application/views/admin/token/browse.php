@@ -142,92 +142,6 @@
     <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Survey participants"))); ?>
     <h3><?php eT("Survey participants",'js'); ?></h3>
 
-    <div class=''>
-        <div  class="row">
-            <div class="col-lg-12" style="margin-top: 1em;">
-                <?php
-                    // Add some script for gridsearch
-                    App()->getClientScript()->registerPackage('jquery-bindWithDelay');
-                    App()->getClientScript()->registerPackage('jqgrid.addons');
-                ?>
-                <table id="displaytokens"></table>
-                <div id="pager"></div>
-
-                <div id="search">
-                    <?php
-                        $aOptionSearch = array('' => gT('Select...','unescaped'));
-                        foreach($aTokenColumns as $sTokenColumn => $aTokenInformation)
-                        {
-                            if($aTokenInformation['search'])
-                            {
-                                $aOptionSearch[$sTokenColumn]=$aTokenInformation['description'];
-                            }
-                        }
-                        $aOptionCondition = array('' => gT('Select...','unescaped'),
-                        'equal' => gT("Equals",'unescaped'),
-                        'contains' => gT("Contains",'unescaped'),
-                        'notequal' => gT("Not equal",'unescaped'),
-                        'notcontains' => gT("Not contains",'unescaped'),
-                        'greaterthan' => gT("Greater than",'unescaped'),
-                        'lessthan' => gT("Less than",'unescaped'));
-                    ?>
-                    <table id='searchtable'>
-                        <tr>
-                            <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $aOptionSearch, array('class' => 'form-control')); ?></td>
-                            <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $aOptionCondition, array('class' => 'form-control')); ?></td>
-                            <td><input class='form-control' type="text" id="conditiontext_1" /></td>
-                            <td>
-                                <span data-toggle='tooltip' title='<?php eT("Add another search criteria");?>' class="ui-pg-button addcondition-button icon-add text-success" style="">
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-                <?php if (Permission::model()->hasGlobalPermission('participantpanel','read')) { ?>
-                    <div id="addcpdb" title="addsurvey" style="display:none">
-                        <p><?php eT("Please select the attributes that are to be added to the central database"); ?></p>
-                        <p>
-                            <select id="attributeid" name="attributeid" multiple="multiple">
-                                <?php
-                                    if(!empty($attrfieldnames))
-                                    {
-                                        foreach($attrfieldnames as $key=>$value)
-                                        {
-                                            echo "<option value='".$key."'>".$value."</option>";
-                                        }
-                                    }
-
-                                ?>
-                            </select>
-                        </p>
-
-                    </div>
-                <?php } ?>
-
-                <div id="fieldnotselected" title="<?php eT("Error") ?>" style="display:none">
-                    <p>
-                        <?php eT("Please select a field."); ?>
-                    </p>
-                </div>
-                <div id="conditionnotselected" title="<?php eT("Error") ?>" style="display:none">
-                    <p>
-                        <?php eT("Please select a condition."); ?>
-                    </p>
-                </div>
-                <div id="norowselected" title="<?php eT("Error") ?>" style="display:none">
-                    <p>
-                        <?php eT("Please select at least one participant."); ?>
-                    </p>
-                </div>
-                <div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none"></div>
-                <div>
-                <div id ='dialog-modal'></div>
-            </div>
-            </div>
-        </div>
-    </div>
-
-
     <!-- CGridView -->
     <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 
@@ -250,7 +164,6 @@
                                 Yii::app()->params['pageSizeOptionsTokens'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
                         'itemsCssClass' =>'table-striped',
-                        //'htmlOptions'=>array('style'=>'max-width: none;'),
                         'columns' => $model->attributesForGrid,
 
                         'ajaxUpdate'=>false,
