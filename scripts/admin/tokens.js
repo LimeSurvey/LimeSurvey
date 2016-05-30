@@ -3,7 +3,7 @@
  */
 $(document).ready(function(){
     $('.scrolling-wrapper').scroll(function(){
-        $('#pager').css({
+        $('#tokenListPager').css({
             'left': $(this).scrollLeft() ,
         });
     });

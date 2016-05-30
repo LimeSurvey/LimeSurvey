@@ -1963,3 +1963,13 @@ h3,.h3 {
     border-color: #eee; /* from yiistrap.css*/
     background-color: #eee;
 }
+
+.scrolling-wrapper
+{
+    overflow-x: scroll;
+}
+
+#tokenListPager
+{
+    position: relative;
+}

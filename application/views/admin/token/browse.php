@@ -142,7 +142,7 @@
     <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Survey participants"))); ?>
     <h3><?php eT("Survey participants",'js'); ?></h3>
 
-    <div class='scrolling-wrapper'>
+    <div class=''>
         <div  class="row">
             <div class="col-lg-12" style="margin-top: 1em;">
                 <?php
@@ -235,14 +235,14 @@
 
         <!-- Grid -->
         <div class="row">
-            <div class="content-right" style="overflow-x: scroll;">
+            <div class="content-right scrolling-wrapper"    >
                 <?php
                     $this->widget('bootstrap.widgets.TbGridView', array(
                         'dataProvider' => $model->search(),
                         'filter'=>$model,
                         'id' => 'token-grid',
                         'emptyText'=>gT('No tokens found.'),
-                        'template'  => "{items}\n<div class=\"row-fluid\"><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                        'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
