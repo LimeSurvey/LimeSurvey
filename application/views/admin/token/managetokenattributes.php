@@ -6,8 +6,8 @@
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <?php if( count($tokenfieldlist)) : ?>
-        <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Manage token attribute fields"))); ?>
-        <h3><?php eT("Manage token attribute fields"); ?></h3>
+        <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Manage attribute fields"))); ?>
+        <h3><?php eT("Manage attribute fields"); ?></h3>
 
         <div class="row">
             <div class="col-lg-12 content-right">
@@ -125,11 +125,11 @@
         </div>
 
         <?php endif; ?>
-    <h3><?php eT("Add or delete token attributes"); ?></h3>
+    <h3><?php eT("Add/delete survey participant attributes"); ?></h3>
 
     <div class="row">
         <div class="col-lg-12 content-right">
-            <p><?php neT('There is {n} user attribute field in this token table.|There are {n} user attribute fields in this token table.', $nrofattributes); ?></p>
+            <p><?php neT('There is {n} user attribute field in this survey participant table.|There are {n} user attribute fields in this survey participant table.', $nrofattributes); ?></p>
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
             <p>
                 <label for="addnumber"><?php eT('Number of attribute fields to add:'); ?></label>

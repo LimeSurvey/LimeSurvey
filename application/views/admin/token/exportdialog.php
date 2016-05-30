@@ -1,7 +1,7 @@
 <!-- Token export options -->
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Token export options"))); ?>
-    <h3><?php eT("Token export options"); ?></h3>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Survey participant export options"))); ?>
+    <h3><?php eT("Survey participant export options"); ?></h3>
     <div class="row">
         <div class="col-lg-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/exportdialog/surveyid/$surveyid"), 'post',array('class'=>'form-core settingswidget form-horizontal','id'=>'bouncesettings','name'=>'frmeditquestion')); ?>
@@ -90,7 +90,7 @@
                     <!--Delete exported tokens -->
                     <div class="form-group control-group " data-name="tokendeleteexported">
                         <label class="default control-label col-lg-2 col-sm-5 col-md-2" for="tokendeleteexported">
-                            <?php eT('Delete exported tokens:'); ?>
+                            <?php eT('Delete exported participants:'); ?>
                         </label>
                         <div class="default col-lg-3 col-sm-5 col-md-7 controls">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -102,7 +102,7 @@
                             ?>
                         </div>
                         <div class="alert alert-warning col-lg-4 col-sm-2 col-md-3 controls" role="alert">
-                            <?php eT('Warning: Deleted token entries cannot be recovered.'); ?>
+                            <?php eT('Warning: Deleted participants entries cannot be recovered.'); ?>
                         </div>
                     </div>
                 </div>
@@ -121,7 +121,7 @@
         'settings' => $aSettings,
         'action'=>$sAction,
         'form' => true,
-        'title' => gT("Token export options"),
+        'title' => gT("Survey participant options"),
         'buttons' => $aButtons,
     ));*/
     ?>

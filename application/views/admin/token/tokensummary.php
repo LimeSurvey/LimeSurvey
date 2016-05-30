@@ -7,7 +7,7 @@
             <table class="items table table-striped"  >
                 <tr>
                     <th>
-                        <?php eT("Total records in this token table"); ?>
+                        <?php eT("Total records"); ?>
                     </th>
                     <td>
                         <?php echo $queries['count']; ?>
@@ -15,7 +15,7 @@
                 </tr>
                 <tr>
                     <th>
-                        <?php eT("Total with no unique Token"); ?>
+                        <?php eT("Total with no unique token"); ?>
                     </th>
                     <td>
                         <?php echo $queries['invalid']; ?>

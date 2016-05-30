@@ -5,12 +5,12 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Token entry"))); ?>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Survey participant entry"))); ?>
     <h3>
         <?php
         if ($subaction == "edit")
         {
-            eT("Edit token entry");
+            eT("Edit survey participant");
             foreach ($tokendata as $Key => $Value)
             {
                 $$Key = $Value;
@@ -18,7 +18,7 @@
         }
         else
         {
-            eT("Add token entry");
+            eT("Add survey participant");
             $tokenid = "";
         }
         ?>

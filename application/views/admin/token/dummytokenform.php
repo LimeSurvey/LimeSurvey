@@ -5,8 +5,8 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Create dummy tokens"))); ?>
-    <h3><?php eT("Create dummy tokens"); ?></h3>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Create dummy participants"))); ?>
+    <h3><?php eT("Create dummy participants"); ?></h3>
 
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -22,7 +22,7 @@
 
                 <!-- Number of tokens  -->
                 <div class="form-group">
-                    <label  class="col-sm-2 control-label" for='amount'><?php eT("Number of tokens"); ?>:</label>
+                    <label  class="col-sm-2 control-label" for='amount'><?php eT("Number of participants:"); ?></label>
                     <div class="col-sm-2">
                         <input class='form-control' type='text' size='20' id='amount' name='amount' value="100" />
                     </div>
@@ -54,7 +54,7 @@
 
                 <!-- Email  -->
                 <div class="form-group">
-                    <label  class="col-sm-2 control-label" for='email'><?php eT("Email"); ?>:</label>
+                    <label  class="col-sm-2 control-label" for='email'><?php eT("Email address:"); ?></label>
                     <div class="col-sm-2">
                         <input class='form-control' type='email' maxlength='320' size='50' id='email' name='email' value="" />
                     </div>
@@ -151,7 +151,7 @@
 
                 <!-- Buttons  -->
                 <p>
-                    <input type='submit' class="hidden" value='<?php eT("Add dummy tokens"); ?>' />
+                    <input type='submit' class="hidden" value='1' />
                     <input type='hidden' name='sid' value='$surveyid' />
                 </p>
             </form>

@@ -518,7 +518,7 @@ class tokens extends Survey_Common_Action
             // Add delete icon
             if($bTokenDeletePermission){
                 $attribs = array('onclick' => 'if (confirm("' . gT("Are you sure you want to delete this entry?") . ' (' . $token['tid'] . ')")) {$("#displaytokens").delRowData(' . $token['tid'] . ');$.post(delUrl,{tid:' . $token['tid'] . '});}');
-                $action .= viewHelper::getIconLink('inputbuttons-square glyphicon glyphicon-trash text-warning', null, gT("Delete token entry"), null, 'imagelink btnDelete', $attribs);
+                $action .= viewHelper::getIconLink('inputbuttons-square glyphicon glyphicon-trash text-warning', null, gT("Delete survey participant"), null, 'imagelink btnDelete', $attribs);
             }
 
             // Add email button
@@ -538,7 +538,7 @@ class tokens extends Survey_Common_Action
 
             // Add edit button
             if($bTokenUpdatePermission) {
-                $action .= viewHelper::getIconLink('inputbuttons-square glyphicon glyphicon-pencil text-success', null, gT("Edit token entry"), null, 'imagelink token_edit');
+                $action .= viewHelper::getIconLink('inputbuttons-square glyphicon glyphicon-pencil text-success', null, gT("Edit survey participant"), null, 'imagelink token_edit');
             }
 
             // Add view button?
@@ -910,7 +910,7 @@ class tokens extends Survey_Common_Action
                 $aData['sidemenu']['state'] = false;
                 $this->_renderWrappedTemplate('token', array( 'message' => array(
                 'title' => gT("Success"),
-                'message' => gT("The token entry was successfully updated.") . "<br /><br />\n"
+                'message' => gT("The survey participant was successfully updated.") . "<br /><br />\n"
                 . "\t\t<input class='btn btn-default btn-lg' type='button' class='btn btn-large btn-default' value='" . gT("Browse participants") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId/") . "', '_top')\" />\n"
                 )), $aData);
             }
@@ -1091,7 +1091,7 @@ class tokens extends Survey_Common_Action
             if(!$invalidtokencount)
             {
                 $aData['success'] = true;
-                Yii::app()->session['flashmessage'] = gT("New dummy tokens were added.");
+                Yii::app()->session['flashmessage'] = gT("New dummy participants were added.");
                 //admin/tokens/sa/browse/surveyid/652779//
                 $this->getController()->redirect(array("/admin/tokens/sa/browse/surveyid/{$iSurveyId}"));
             }
@@ -1100,7 +1100,7 @@ class tokens extends Survey_Common_Action
                 $aData['success'] = false;
                 $message= array(
                 'title' => gT("Failed"),
-                'message' => "<p>".sprintf(gT("Only %s new dummy tokens were added after %s trials."),$newDummyToken,$invalidtokencount)
+                'message' => "<p>".sprintf(gT("Only %s new dummy participants were added after %s trials."),$newDummyToken,$invalidtokencount)
                 .gT("Try with a bigger token length.")."</p>"
                 ."\n<input type='button' value='"
                 . gT("Browse participants") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId") . "', '_top')\" />\n"

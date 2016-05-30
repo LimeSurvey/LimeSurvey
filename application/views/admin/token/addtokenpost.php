@@ -11,9 +11,9 @@
             <!-- Success -->
             <?php if ($success): ?>
                 <div class="jumbotron message-box">
-                    <h2>Add token entry</h2>
+                    <h2><?php eT("Adding survey participant entry..."); ?></h2>
                     <p class="lead text-success"><?php eT("Success"); ?></p>
-                    <p><?php eT("New token was added."); ?></p>
+                    <p><?php eT("New entry was added."); ?></p>
                     <p>
                         <input class="btn btn-large btn-default" type='button' value='<?php eT("Browse survey participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" /><br />
                         <input class="btn btn-large btn-default" type='button' value='<?php eT("Add another participant"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$surveyid"); ?>', '_top')" /><br />

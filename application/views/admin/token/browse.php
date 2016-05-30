@@ -139,7 +139,7 @@
 </script>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Survey participants"))); ?>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Display"))); ?>
     <h3><?php eT("Survey participants",'js'); ?></h3>
 
     <!-- CGridView -->

@@ -1882,7 +1882,7 @@ class dataentry extends Survey_Common_Action
                                 VALUES
                                 (".implode(',',$values).")";
                                 dbExecuteAssoc($SQL);
-                                $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("A token entry for the saved survey has been created too."));
+                                $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("A survey participant entry for the saved survey has been created too."));
                                 //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
                             }
                             if ($saver['email'])
@@ -2195,7 +2195,7 @@ class dataentry extends Survey_Common_Action
                                     $answers[] = $ansrow;
                                 }
                             $cdata['answers']=$answers;
-                            App()->getClientScript()->registerPackage('jquery-actual');                            
+                            App()->getClientScript()->registerPackage('jquery-actual');
                             $this->registerScriptFile( 'SCRIPT_PATH', 'ranking.js');
                             $this->registerCssFile( 'PUBLIC', 'ranking.css' );
                             unset($answers);

@@ -6,8 +6,8 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Import tokens from CSV file"))); ?>
-    <h3><?php eT("Import tokens from CSV file"); ?></h3>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Import survey participants from CSV file"))); ?>
+    <h3><?php eT("Import survey participants from CSV file"); ?></h3>
 
     <div class="row">
         <div class="col-lg-12 content-right">
