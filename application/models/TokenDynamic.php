@@ -684,8 +684,9 @@ class TokenDynamic extends LSActiveRecord
         // Custom attributes
         foreach($aCustomAttributes as $sColName => $oColumn)
         {
+            $desc = ($oColumn['description']!='')?$oColumn['description']:$sColName;
             $aCustomAttributesCols[] = array(
-                'header' => $oColumn['description'],// $aAttributedescriptions->$sColName->description,
+                'header' => $desc,// $aAttributedescriptions->$sColName->description,
                 'name' => $sColName,
                 'value'=>'$data->'.$sColName,
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
