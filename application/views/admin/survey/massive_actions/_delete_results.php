@@ -22,11 +22,11 @@
                 </td>
                 <?php if ($result['result']):?>
                     <td class="text-success">
-                        <?php echo 'deleted' ; ?>
+                        <?php eT('Deleted'); ?>
                     </td>
                 <?php else: ?>
                     <td class="text-warning">
-                        <?php echo 'could not delete the survey' ; ?>
+                        <?php eT('Error'); ?>
                     </td>
                 <?php endif;?>
             </tr>
