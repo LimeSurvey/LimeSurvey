@@ -103,9 +103,9 @@ class TokenDynamic extends LSActiveRecord
     */
     public function relations()
     {
-        Yii::app()->user->setState('SurveyDynamicSid', self::$sid);
+        App()->setConfig('SurveyDynamicSid', self::$sid);
         return array(
-            'survey'      => array(self::BELONGS_TO, 'Survey', array(), 'condition'=>'sid='.Yii::app()->user->getState('SurveyDynamicSid'), 'together' => true),
+            'survey'      => array(self::BELONGS_TO, 'Survey', array(), 'condition'=>'sid='.App()->getConfig('SurveyDynamicSid'), 'together' => true),
             'responses'   => array(self::HAS_MANY, 'SurveyDynamic', array('token'=>'token')),
         );
     }
