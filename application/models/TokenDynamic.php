@@ -794,6 +794,7 @@ class TokenDynamic extends LSActiveRecord
         $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
 
         $sort = new CSort();
+        $sort->defaultOrder = 'tid ASC';
         $sort->attributes = array(
           'tid'=>array(
             'asc'=>'tid',

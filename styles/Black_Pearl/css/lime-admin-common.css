@@ -1889,7 +1889,7 @@ h3,.h3 {
     word-wrap: break-word;
 }
 
-.summary-container, .summary, #massive-action-container, #surveyListActions, .pager-container .pager, .pager-container .pager .pagination{
+.summary-container, .summary, #massive-action-container, #surveyListActions, .listActions, .pager-container .pager, .pager-container .pager .pagination{
     margin: 0;
     margin-bottom: 20px;
 }
@@ -1897,7 +1897,7 @@ h3,.h3 {
     text-align: right;
 }
 
-#massive-action-container, #surveyListActions{
+#massive-action-container, #surveyListActions, .listActions{
     padding-left: 0px;
     text-align: left;
 }
@@ -1926,4 +1926,50 @@ h3,.h3 {
 .ui-priority-secondary
 {
     background-color: #f5f5f5;
+}
+
+#token-grid table.table {
+    width: none;
+    max-width: none;
+}
+
+#token-grid table thead tr #action {
+    min-width: 150px;
+}
+
+#token-grid .filter-container{
+    min-width: 50px;
+}
+
+#token-grid table thead tr th {
+    white-space: nowrap;
+}
+
+#token-grid table tr.odd .blank_button
+{
+    border-color: #f9f9f9;
+    background-color: #f9f9f9;
+}
+
+#token-grid table tr .blank_button
+{
+    border-color: white;
+    background-color: white;
+}
+
+#token-grid table tr.selected .blank_button
+{
+
+    border-color: #eee; /* from yiistrap.css*/
+    background-color: #eee;
+}
+
+.scrolling-wrapper
+{
+    overflow-x: scroll;
+}
+
+#tokenListPager
+{
+    position: relative;
 }
