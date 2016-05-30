@@ -43,6 +43,5 @@
         <?php if ($suffix !== ''): ?>
             <span class='col-xs-12 col-sm-2 text-left suffix'><?php echo $suffix; ?></span>
         <?php endif; ?>
-
     </div>
 </div>
