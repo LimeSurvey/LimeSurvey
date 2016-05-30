@@ -1174,23 +1174,23 @@ class SurveyAdmin extends Survey_Common_Action
 
                 $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
 
-                if (Yii::app()->request->getPost('copysurveyexcludequotas') == "on")
+                if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1")
                 {
                     $aExcludes['quotas'] = true;
                 }
-                if (Yii::app()->request->getPost('copysurveyexcludepermissions') == "on")
+                if (Yii::app()->request->getPost('copysurveyexcludepermissions') == "1")
                 {
                     $aExcludes['permissions'] = true;
                 }
-                if (Yii::app()->request->getPost('copysurveyexcludeanswers') == "on")
+                if (Yii::app()->request->getPost('copysurveyexcludeanswers') == "1")
                 {
                     $aExcludes['answers'] = true;
                 }
-                if (Yii::app()->request->getPost('copysurveyresetconditions') == "on")
+                if (Yii::app()->request->getPost('copysurveyresetconditions') == "1")
                 {
                     $aExcludes['conditions'] = true;
                 }
-                if (Yii::app()->request->getPost('copysurveyresetstartenddate') == "on")
+                if (Yii::app()->request->getPost('copysurveyresetstartenddate') == "1")
                 {
                     $aExcludes['dates'] = true;
                 }
@@ -1221,7 +1221,7 @@ class SurveyAdmin extends Survey_Common_Action
 
             if ($action == 'importsurvey' && !$aData['bFailed'])
             {
-                $aImportResults=importSurveyFile($sFullFilepath,(isset($_POST['translinksfields'])));
+                $aImportResults=importSurveyFile($sFullFilepath,($_POST['translinksfields']=='1'));
                 if (is_null($aImportResults) || !empty($aImportResults['error']))
                 {
                     $aData['sErrorMessage']=isset($aImportResults['error']) ? $aImportResults['error'] : gT("Unknown error.");
@@ -1230,7 +1230,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
             elseif ($action == 'copysurvey' && !$aData['bFailed'])
             {
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid')) ,(isset($_POST['translinksfields'])));
+                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid')), ($_POST['copysurveytranslinksfields']=='1'));
                 if (isset($aExcludes['conditions']))
                 {
                     Question::model()->updateAll(array('relevance'=>'1'),'sid='.$aImportResults['newsid']);

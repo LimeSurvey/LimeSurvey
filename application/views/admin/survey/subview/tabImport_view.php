@@ -18,9 +18,15 @@
 
             <!-- Convert resource links and INSERTANS fields? -->
             <div class='form-group'>
-                <label class='control-label col-sm-3' for='translinksfields'><?php  eT("Convert resource links and INSERTANS fields?"); ?> </label>
+                <label class='control-label col-sm-3' for='translinksfields'><?php  eT("Convert resource links and expression fields?"); ?> </label>
                 <div class='col-sm-4'>
-                    <input id='translinksfields' name="translinksfields" type="checkbox" checked='checked'/>
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'translinksfields',
+                    'value'=> "1",
+                    'onLabel'=>gT('On'),
+                    'offLabel'=>gT('Off')
+                    ));
+                ?>
                 </div>
             </div>
 
