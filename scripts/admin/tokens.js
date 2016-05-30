@@ -446,7 +446,7 @@ $(document).ready(function() {
             oGrid.jqGrid('setGridParam', {url: jsonUrl, postData: { }}).trigger('reloadGrid', [{current: true, page: 1}]);
         }
     }, 500);
-
+*/
     $.extend(jQuery.jgrid.edit,{
         closeAfterAdd: true,
         reloadAfterSubmit: true,
@@ -511,5 +511,5 @@ function updatePageAfterGrid(){
         $(".dataforward").click(function(){});
         $(".gridcontrol.dataforward").addClass("disabled");
     }
-    */
+
 }
