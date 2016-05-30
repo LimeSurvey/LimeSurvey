@@ -18,11 +18,6 @@ class TokenDynamic extends LSActiveRecord
     protected static $sid = 0;
     public $emailstatus='OK'; // Default value for email status
 
-    /*
-    public $compare; //compare value
-    public $compareOp; //compare operator, for example [>,<,>=,<=]
-    */
-
     /**
      * Returns the static model of Settings table
      *
@@ -563,11 +558,8 @@ class TokenDynamic extends LSActiveRecord
                 'value'=>'$data->tid',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs'),
-                /*'filter'=> CHtml::dropDownList('User[compareOp]', $this->compareOp,
-                        array('>'=>'>','<'=>'<','>='=>'>=','<='=>'<=','='=>'='),array('style'=>'width:50px;')) .
-                        CHtml::textField('User[compare]',$this->compare,array('style'=>'width:100px;'))
-                */
             ),
+
 
             array(
                 'header' => gT('First name'),
@@ -701,7 +693,7 @@ class TokenDynamic extends LSActiveRecord
     public function getbuttons()
     {
         $sPreviewUrl  = App()->createUrl("/survey/index/sid/".self::$sid."/token/".$this->token.'/lang/'.$this->language.'/newtest/Y');
-        $sEditUrl     = App()->createUrl("/admin/tokens/sa/edit/iSurveyId/".self::$sid."/iTokenId/$this->tid");
+        $sEditUrl     = App()->createUrl("/admin/tokens/sa/edit/iSurveyId/".self::$sid."/iTokenId/$this->tid/ajax/true");
         $sInviteUrl   = App()->createUrl("/admin/tokens/sa/email/surveyid/".self::$sid."/tokenids/$this->tid");
         $sRemindUrl   = App()->createUrl("admin/tokens/sa/email/action/remind/surveyid/".self::$sid."/tokenids/$this->tid");
         $button = '';
@@ -763,20 +755,21 @@ class TokenDynamic extends LSActiveRecord
         }
         else
         {
-            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
+            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span><!-- Invite or Remind --></span>';
         }
 
         // TODO: permission check
-
         if (Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update'))
         {
-            $button .= '<a class="btn btn-default btn-xs" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit this token').'"><span class="icon-edit" ></span></a>';
+            // $sEditUrl     = App()->createUrl("/admin/tokens/sa/edit/iSurveyId/".self::$sid."/iTokenId/$this->tid");
+            $button .= '<a class="btn btn-default btn-xs edit-token" href="#" data-sid="'.self::$sid.'" data-tid="'.$this->tid.'" data-url="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit this token').'"><span class="icon-edit" ></span></a>';
         }
         else
         {
-            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
+            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span><!-- Edit --></span>';
         }
 
+        // Display participant in CPDB
         if (!empty($this->participant_id) && $this->participant_id != "" && Permission::model()->hasGlobalPermission('participantpanel','read'))
         {
             $onClick = "sendPost('".App()->createUrl('admin/participants/sa/displayParticipants')."','',['searchcondition'],['participant_id||equal||{$this->participant_id}']);";
@@ -784,7 +777,7 @@ class TokenDynamic extends LSActiveRecord
         }
         else
         {
-            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
+            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ><!-- Display participant in CPDB--></span></span>';
         }
         return $button;
     }

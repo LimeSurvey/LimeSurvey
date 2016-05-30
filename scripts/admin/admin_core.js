@@ -69,8 +69,8 @@ $(document).ready(function(){
 
                 $oCheckedItems = $.fn.yiiGridView.getChecked($gridid, $('.listActions').data('pk'));                   // List of the clicked checkbox
 
-
                 // For actions without modal, doing a redirection
+                // TODO: replace all of them with the method above
                 if($that.data('post-redirect'))
                 {
                     var newForm = jQuery('<form>', {
@@ -90,6 +90,8 @@ $(document).ready(function(){
                     return;
                 }
 
+                // For actions without modal, doing a redirection
+                // Using session before redirect rather than form submission
                 if($that.data('fill-session-and-redirect'))
                 {
                     // postUrl is defined as a var in the View

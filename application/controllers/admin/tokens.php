@@ -829,15 +829,22 @@ class tokens extends Survey_Common_Action
     /**
     * Edit Tokens
     */
-    function edit($iSurveyId, $iTokenId)
+    function edit($iSurveyId, $iTokenId, $ajax=false)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $iTokenId = sanitize_int($iTokenId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
         {
+            if ($ajax)
+            {
+                eT("You do not have sufficient rights to access this page.");
+                return false;
+            }
+
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
+
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
@@ -926,7 +933,7 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            $this->_handletokenform($iSurveyId, "edit", $iTokenId);
+            $this->_handletokenform($iSurveyId, "edit", $iTokenId, $ajax);
         }
     }
 
@@ -2648,7 +2655,7 @@ class tokens extends Survey_Common_Action
     * Handle token form for addnew/edit actions
     * @param string $subaction
     */
-    function _handletokenform($iSurveyId, $subaction, $iTokenId="")
+    function _handletokenform($iSurveyId, $subaction, $iTokenId="", $ajax=false)
     {
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
@@ -2693,14 +2700,25 @@ class tokens extends Survey_Common_Action
         $aData['subaction'] = $subaction;
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $surveyinfo = $oSurvey->surveyinfo;
         $aData['sidemenu']['state'] = false;
         $aData["surveyinfo"] = $surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['savebutton']['form'] = TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
-        $this->_renderWrappedTemplate('token', array( 'tokenform'), $aData);
+
+        if ($ajax)
+        {
+            $aData['oSurvey'] = $oSurvey;
+            $aData['ajax'] = true;
+            $this->getController()->renderPartial('/admin/token/tokenform', $aData);
+        }
+        else
+        {
+            $this->_renderWrappedTemplate('token', array( 'tokenform'), $aData);
+        }
     }
 
     /**

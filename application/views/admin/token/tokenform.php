@@ -5,28 +5,44 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Survey participant entry"))); ?>
-    <h3>
+    <?php
+        if (!isset($ajax) || $ajax = false)
+            $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Survey participant entry")));
+    ?>
+
+    <?php if (!isset($ajax) || $ajax = false):?>
+        <h3>
+            <?php
+            if ($subaction == "edit")
+            {
+                eT("Edit survey participant");
+                foreach ($tokendata as $Key => $Value)
+                {
+                    $$Key = $Value;
+                }
+            }
+            else
+            {
+                eT("Add survey participant");
+                $tokenid = "";
+            }
+            ?>
+        </h3>
+    <?php else:?>
         <?php
-        if ($subaction == "edit")
-        {
-            eT("Edit survey participant");
             foreach ($tokendata as $Key => $Value)
             {
                 $$Key = $Value;
             }
-        }
-        else
-        {
-            eT("Add survey participant");
-            $tokenid = "";
-        }
-        ?>
-    </h3>
+            ?>
+    <?php endif;?>
+
 
     <div class="row">
         <div class="col-lg-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/{$subaction}/surveyid/{$surveyid}/tokenid/{$tokenid}"), 'post', array('id'=>'edittoken', 'class'=>'form-horizontal')); ?>
+
+
 
             <!-- ID  -->
             <div class="form-group">

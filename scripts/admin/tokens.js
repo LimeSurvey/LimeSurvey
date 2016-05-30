@@ -7,6 +7,71 @@ $(document).ready(function(){
             'left': $(this).scrollLeft() ,
         });
     });
+
+    $('.edit-token').click(function(){
+        $that       = $(this);
+        $sid        = $that.data('sid');
+        $tid        = $that.data('tid');
+        $actionUrl  = $that.data('url');
+        $modal      = $('#editTokenModal');
+        $modalBody  = $modal.find('.modal-body');
+        $ajaxLoader = $('#ajaxContainerLoading2');
+        $oldModalBody   = $modalBody.html();
+
+        $ajaxLoader.show();
+        $modal.modal('show');
+        // Ajax request
+        $.ajax({
+            url : $actionUrl,
+            type : 'GET',
+
+            // html contains the buttons
+            success : function(html, statut){
+                $ajaxLoader.hide();
+                $('#modal-content').append(html);                      // Inject the returned HTML in the modal body
+            },
+            error :  function(html, statut){
+                $ajaxLoader.hide();
+                $('#modal-content').append(html);
+                console.log(html);
+            }
+        });
+    });
+
+    $("#save-edittoken").click(function(){
+
+        $form       = $('#edittoken');
+        $datas      = $form.serialize();
+        $actionUrl  = $form.attr('action');
+        $gridid     = $('.listActions').data('grid-id');
+        $modal      = $('#editTokenModal');
+
+        $ajaxLoader = $('#ajaxContainerLoading2');
+        $('#modal-content').empty();
+        $ajaxLoader.show();                                         // Show the ajax loader
+
+        // Ajax request
+        $.ajax({
+            url  : $actionUrl,
+            type : 'POST',
+            data : $datas,
+
+            // html contains the buttons
+            success : function(html, statut){
+                $ajaxLoader.hide();
+                $.fn.yiiGridView.update($gridid);                   // Update the surveys list
+                $modal.modal('hide');
+
+            },
+            error :  function(html, statut){
+                $ajaxLoader.hide();
+                $('#modal-content').append(html);
+                console.log(html);
+            }
+        });
+
+    });
+
 });
 
 var conditionid=1;
