@@ -57,6 +57,7 @@
         public function init() {
             $this->subscribe('beforeSurveySettings');
             $this->subscribe('newSurveySettings');
+            $this->subscribe('beforeSurveySettingsSave');
             $this->subscribe('beforeActivate');
             $this->subscribe('beforeUserSave');
             $this->subscribe('beforeUserDelete');
@@ -398,22 +399,24 @@
         public function newSurveySettings()
         {
             $event = $this->getEvent();
-            $iSurveyID=$event->get('survey');
-            if (!is_null($event->get('settings'))){
-                foreach ($event->get('settings') as $name => $value)
-                {
+            foreach ($event->get('settings') as $name => $value)
+            {
                     $this->set($name, $value, 'Survey', $event->get('survey'));
-                }
             }
+        }
 
+        public function beforeSurveySettingsSave()
+        {
+            $event = $this->getEvent();
+            $oModifiedSurvey = $event->get('modifiedSurvey');
+            $iSurveyID = $oModifiedSurvey->sid;
             if (!$this->checkSetting('AuditLog_Log_SurveySettings') || !$this->get('auditing', 'Survey', $iSurveyID, false)) {
                 return;
             }
 
             $oCurrentUser=$this->api->getCurrentUser();
-            $newSurvey=$event->get('newSurvey');
-            if (!is_null($newSurvey)) {
-                $newAttributes = $newSurvey->getAttributes();
+            if (!is_null($oModifiedSurvey)) {
+                $newAttributes = $oModifiedSurvey->getAttributes();
                 $oldSurvey=Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
 
                 $oldAttributes= $oldSurvey->getAttributes();
@@ -424,9 +427,10 @@
                     $oAutoLog->entity='survey';
                     $oAutoLog->entityid=$iSurveyID;
                     $oAutoLog->action='update';
-                    $oAutoLog->oldvalues=json_encode($oldAttributes);
-                    $oAutoLog->newvalues=json_encode($newAttributes);
-                    $oAutoLog->fields=json_encode($diff);
+                    $oAutoLog->oldvalues=json_encode(array_diff_assoc($oldAttributes, $newAttributes));
+                    $oAutoLog->newvalues=json_encode($diff);
+                    #$oAutoLog->fields=json_encode($diff);
+                    $oAutoLog->fields=implode(',',array_keys($diff));
                     $oAutoLog->save();
                 }
             }

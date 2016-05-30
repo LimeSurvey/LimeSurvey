@@ -1159,6 +1159,10 @@ class database extends Survey_Common_Action
             $oSurvey->adminemail = App()->request->getPost('adminemail');
             $oSurvey->bounce_email = App()->request->getPost('bounce_email');
 
+            $event = new PluginEvent('beforeSurveySettingsSave');
+            $event->set('modifiedSurvey', $oSurvey);
+            App()->getPluginManager()->dispatchEvent($event);
+
             if ($oSurvey->save())
             {
                 Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
