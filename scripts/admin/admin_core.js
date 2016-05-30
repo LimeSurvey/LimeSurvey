@@ -93,7 +93,7 @@ $(document).ready(function(){
                 if($that.data('fill-session-and-redirect'))
                 {
                     // postUrl is defined as a var in the View
-                    $("#addcpdb").load(postUrl, {
+                    $(this).load(postUrl, {
                         participantid:$oCheckedItems},function(){
                             $(location).attr('href',$actionUrl);
                     });
