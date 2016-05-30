@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Some extra quick-menu items to ease everyday usage
@@ -85,7 +85,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
         ),
         'tokenManagement' => array(
             'type' => 'checkbox',
-            'label' => 'Token management&nbsp;<span class="glyphicon glyphicon-user"></span>',
+            'label' => 'Survey participants&nbsp;<span class="glyphicon glyphicon-user"></span>',
             'default' => '0',
             'help' => 'Needed permission: Token - View'
         ),
@@ -301,7 +301,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
             'tokenManagement' => new QuickMenuButton(array(
                 'name' => 'tokenManagement',
                 'href' => Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/$surveyId"),
-                'tooltip' => gT('Token management'),
+                'tooltip' => gT('Survey participants'),
                 'iconClass' => 'glyphicon glyphicon-user navbar-brand',
                 'neededPermission' => array('tokens', 'read')
             )),
@@ -363,7 +363,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
         if ($button['neededPermission'] !== null)
         {
             $hasPermission = Permission::model()->hasSurveyPermission(
-                $surveyId, 
+                $surveyId,
                 $button['neededPermission'][0],
                 $button['neededPermission'][1]
             );
@@ -564,7 +564,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
             // you can get other params from the request object
             $request = $event->get('request');
 
-            $functionToCall = $event->get('function'); 
+            $functionToCall = $event->get('function');
 
             if ($functionToCall == 'saveOrder')
             {

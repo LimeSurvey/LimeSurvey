@@ -1,6 +1,6 @@
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Token summary"))); ?>
-    <h3><?php eT("Token summary"); ?></h3>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Survey participants"))); ?>
+    <h3><?php eT("Survey participant summary"); ?></h3>
 
     <div class="row">
         <div class="col-lg-4 content-right">

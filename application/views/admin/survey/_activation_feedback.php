@@ -34,7 +34,7 @@
                         <br />
                         <input
                             type="submit"
-                            value="<?php eT("Initialise tokens"); ?>"
+                            value="<?php eT("Initialise participant table"); ?>"
                             onclick="<?php echo $onclickAction;?>"
                             />
                     </p>

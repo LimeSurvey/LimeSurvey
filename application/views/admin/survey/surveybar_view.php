@@ -483,7 +483,7 @@
                 <?php if($tokenmanagement):?>
                     <a class="btn btn-default  btntooltip hidden-xs" href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>" role="button">
                         <span class="glyphicon glyphicon-user"></span>
-                        <?php eT("Token management");?>
+                        <?php eT("Survey participants");?>
                     </a>
                 <?php endif; ?>
 

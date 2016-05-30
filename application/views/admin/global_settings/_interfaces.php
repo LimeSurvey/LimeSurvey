@@ -23,7 +23,7 @@
 
 <div class="form-group">
     <label class="col-sm-4 control-label" ><?php eT("URL:"); ?></label>
-    <div class="col-sm-6">
+    <div class="col-sm-8">
         <?php echo $this->createAbsoluteUrl("admin/remotecontrol"); ?>
     </div>
 </div>

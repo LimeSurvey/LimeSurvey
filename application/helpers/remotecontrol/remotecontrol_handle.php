@@ -1795,7 +1795,7 @@ class remotecontrol_handle
                     $oTokens = Token::model($iSurveyID)->findAllByAttributes($aAttributeValues, array('order' => 'tid', 'limit' => $iLimit, 'offset' => $iStart));
 
                 if(count($oTokens)==0)
-                    return array('status' => 'No Tokens found');
+                    return array('status' => 'No survey participants found.');
 
                 $extendedAttributes = array();
                 if($aAttributes) {

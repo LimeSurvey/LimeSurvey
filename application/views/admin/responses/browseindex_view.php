@@ -17,7 +17,7 @@
         </div>
     </div>
     <?php if(isset($with_token)): ?>
-        <h3><?php eT("Token summary"); ?></h3>
+        <h3><?php eT("Survey participant summary"); ?></h3>
         <div class="row">
             <div class="col-lg-12 content-right">
                 <table class='statisticssummary table'>

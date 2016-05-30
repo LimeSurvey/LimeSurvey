@@ -24,7 +24,7 @@
             </a>
         </li>
         <li role="separator" class="divider"></li>
-        <li class="dropdown-header"> <?php eT("email");?></li>
+        <li class="dropdown-header"> <?php eT("Email");?></li>
         <li>
             <a href="#"
             data-url="<?php echo App()->createUrl('/admin/tokens/sa/email/surveyid/'.$_GET['surveyid']);?>"

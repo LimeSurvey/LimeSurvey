@@ -189,7 +189,7 @@
 
     <div class='form-group'>
         <label class='col-sm-2 control-label' for='sideMenuBehaviour'><?php eT("Side-menu behaviour:"); ?></label>
-        <div class='col-sm-3'>
+        <div class='col-sm-4'>
             <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'sideMenuBehaviour',
                     'value'=> $sideMenuBehaviour ,

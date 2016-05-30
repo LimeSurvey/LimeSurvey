@@ -911,7 +911,7 @@ class tokens extends Survey_Common_Action
                 $this->_renderWrappedTemplate('token', array( 'message' => array(
                 'title' => gT("Success"),
                 'message' => gT("The token entry was successfully updated.") . "<br /><br />\n"
-                . "\t\t<input class='btn btn-default btn-lg' type='button' class='btn btn-large btn-default' value='" . gT("Display tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId/") . "', '_top')\" />\n"
+                . "\t\t<input class='btn btn-default btn-lg' type='button' class='btn btn-large btn-default' value='" . gT("Browse participants") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId/") . "', '_top')\" />\n"
                 )), $aData);
             }
             else
@@ -1103,7 +1103,7 @@ class tokens extends Survey_Common_Action
                 'message' => "<p>".sprintf(gT("Only %s new dummy tokens were added after %s trials."),$newDummyToken,$invalidtokencount)
                 .gT("Try with a bigger token length.")."</p>"
                 ."\n<input type='button' value='"
-                . gT("Display tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId") . "', '_top')\" />\n"
+                . gT("Browse participants") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId") . "', '_top')\" />\n"
                 );
             }
 
@@ -2561,7 +2561,7 @@ class tokens extends Survey_Common_Action
         {
             $aData['sidemenu']['state'] = false;
             $this->_renderWrappedTemplate('token', array( 'message' => array(
-            'title' => gT("Delete Tokens Table"),
+            'title' => gT("Delete survey participants table"),
             'message' => gT("If you delete this table tokens will no longer be required to access this survey.") . "<br />" . gT("A backup of this table will be made if you proceed. Your system administrator will be able to access this table.") . "<br />\n"
             . sprintf('("%s")<br /><br />', $newtableDisplay)
             . "<input class='btn btn-danger' type='submit' value='"
@@ -2580,7 +2580,7 @@ class tokens extends Survey_Common_Action
 
             $aData['sidemenu']['state'] = false;
             $this->_renderWrappedTemplate('token', array( 'message' => array(
-            'title' => gT("Delete Tokens Table"),
+            'title' => gT("Delete survey participants table"),
             'message' => '<br />' . gT("The tokens table has now been removed and tokens are no longer required to access this survey.") . "<br /> " . gT("A backup of this table has been made and can be accessed by your system administrator.") . "<br />\n"
             . sprintf('("%s")<br /><br />', $newtableDisplay)
             . "<input type='submit' class='btn btn-default' value='"
@@ -2711,7 +2711,7 @@ class tokens extends Survey_Common_Action
         $aSurveyInfo = getSurveyInfo($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens','create'))
         {
-            Yii::app()->session['flashmessage'] = gT("Tokens have not been initialised for this survey.");
+            Yii::app()->session['flashmessage'] = gT("Survey participants have not been initialised for this survey.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
@@ -2733,8 +2733,8 @@ class tokens extends Survey_Common_Action
             $aData['sidemenu']['state'] = false;
             LimeExpressionManager::SetDirtyFlag();  // LimeExpressionManager needs to know about the new token table
             $this->_renderWrappedTemplate('token', array('message' =>array(
-            'title' => gT("Token control"),
-            'message' => gT("A token table has been created for this survey.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId\")<br /><br />\n"
+            'title' => gT("Survey participants"),
+            'message' => gT("A participant table has been created for this survey.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId\")<br /><br />\n"
             . "<input type='submit' class='btn btn-default' value='"
             . gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
             )));

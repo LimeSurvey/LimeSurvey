@@ -64,7 +64,7 @@
               </li>
               <li>
                   <a href="<?php echo App()->createUrl('admin/tokens/sa/index/surveyid/'. $oSurvey->sid );?>">
-                      <?php eT('Token summary');?>
+                      <?php eT('Survey participants');?>
                   </a>
               </li>
             <li class="active">
