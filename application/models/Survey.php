@@ -951,11 +951,16 @@ class Survey extends LSActiveRecord
         $criteria->with='correct_relation_defaultlanguage';
 
         // Permission
+        // If super admin
         if(!Permission::model()->hasGlobalPermission("surveys",'read'))
         {
-            $criteria->with='permissions';
-            $criteria->addCondition("permissions.permission='survey' AND permissions.entity='survey'");
-            $criteria->compare('permissions.uid', Yii::app()->user->id);
+            // If Owner
+            if ($this->owner_id != Yii::app()->user->id)
+            {
+                $criteria->with='permissions';
+                $criteria->addCondition("permissions.permission='survey' AND permissions.entity='survey'");
+                $criteria->compare('permissions.uid', Yii::app()->user->id);
+            }
         }
 
 
