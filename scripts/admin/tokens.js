@@ -1,4 +1,41 @@
 /**
+ * jQuery Plugin to manage the date in token modal edit.
+ * Some fields, like "Completed", can have string value ('N') or a date value.
+ * They are displayed via a switch hidding or showing a date picker.
+ */
+$.fn.YesNoDate = function(options)
+{
+    var that            = $(this);
+    $(document).ready(function(){
+        var $elSwitch        = that.find('.YesNoDateSwitch').first();
+        var $elDateContainer = that.find('.date-container').first();
+        var $elDate          = that.find('.YesNoDatePicker').first();
+        var $elHiddenInput   = that.find('.YesNoDateHidden').first();
+
+        $elSwitch.bootstrapSwitch();
+        $elDate.datetimepicker();
+
+        $(document).on( 'switchChange.bootstrapSwitch', '#'+$elSwitch.attr('id'), function(event, state)
+        {
+            if (state==true)
+            {
+                // Show date
+                $elDateContainer.show();
+            }
+            else
+            {
+                // Hide date, set hidden input to "N"
+                $elDateContainer.hide();
+                $elHiddenInput.attr('value', 'N');
+            }
+        });
+
+        $(document).on('dp.change', '#'+$elDate.attr('id')+'_datetimepicker', function(e){
+            $elHiddenInput.attr('value', e.date.format('MM/DD/YYYY HH:MM'));
+        })
+    });
+}
+/**
  * Scroll the pager and the footer when scrolling horizontally
  */
 $(document).ready(function(){
