@@ -106,7 +106,7 @@
                                     'name' => "completed-date",
                                     'id'   => "completed-date",
                                     'htmlOptions'=>array('class'=>"YesNoDatePicker"),
-                                    'value' => isset($validuntil) ? $validuntil : '',
+                                    'value' => isset($completed) ? $completed : '',
                                     'pluginOptions' => array(
                                         'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                         'allowInputToggle' =>true,
@@ -212,7 +212,7 @@
                                     'name' => "sent-date",
                                     'id'   => "sent-date",
                                     'htmlOptions'=>array('class'=>"YesNoDatePicker"),
-                                    'value' => isset($validuntil) ? $validuntil : '',
+                                    'value' => isset($sent) ? $sent : '',
                                     'pluginOptions' => array(
                                         'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                         'allowInputToggle' =>true,
@@ -258,7 +258,7 @@
                                 'name' => "remind-date",
                                 'id'=>"remind-date",
                                 'htmlOptions'=>array('class'=>"YesNoDatePicker"),
-                                'value' => isset($validuntil) ? $validuntil : '',
+                                'value' => isset($remindersent) ? $remindersent : '',
                                 'pluginOptions' => array(
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                     'allowInputToggle' =>true,

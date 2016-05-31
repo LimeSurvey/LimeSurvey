@@ -1,20 +1,23 @@
 /**
- * jQuery Plugin to manage the date in token modal edit.
- * Some fields, like "Completed", can have string value ('N') or a date value.
+ * jQuery Plugin to manage the date in token modal edition.
+ * Some fields, like "Completed", can have string value (eg: 'N') or a date value.
  * They are displayed via a switch hidding or showing a date picker.
  */
 $.fn.YesNoDate = function(options)
 {
-    var that            = $(this);
+    var that            = $(this);                                              // calling element
     $(document).ready(function(){
-        var $elSwitch        = that.find('.YesNoDateSwitch').first();
-        var $elDateContainer = that.find('.date-container').first();
-        var $elDate          = that.find('.YesNoDatePicker').first();
-        var $elHiddenInput   = that.find('.YesNoDateHidden').first();
+        var $elSwitch        = that.find('.YesNoDateSwitch').first();           // switch element (generated with YiiWheels widgets)
+        var $elDateContainer = that.find('.date-container').first();            // date time picker container (to show/hide)
+        var $elDate          = that.find('.YesNoDatePicker').first();           // date time picker element (generated with YiiWheels widgets)
+        var $elHiddenInput   = that.find('.YesNoDateHidden').first();           // input form, containing the value to submit to the database
 
-        $elSwitch.bootstrapSwitch();
-        $elDate.datetimepicker();
+        // The view is called without processing output (no javascript)
+        // So we must apply js to widget elements
+        $elSwitch.bootstrapSwitch();                                            // Generate the switch
+        $elDate.datetimepicker();                                               // Generate the date time picker
 
+        // When user switch
         $(document).on( 'switchChange.bootstrapSwitch', '#'+$elSwitch.attr('id'), function(event, state)
         {
             if (state==true)
@@ -30,6 +33,7 @@ $.fn.YesNoDate = function(options)
             }
         });
 
+        // When user change date
         $(document).on('dp.change', '#'+$elDate.attr('id')+'_datetimepicker', function(e){
             $elHiddenInput.attr('value', e.date.format('MM/DD/YYYY HH:MM'));
         })
@@ -40,16 +44,15 @@ $.fn.YesNoDate = function(options)
  */
 $(document).ready(function(){
 
-    $('#sent-yes-no-date-container').YesNoDate();
-    $('#remind-yes-no-date-container').YesNoDate();
-    $('#completed-yes-no-date-container').YesNoDate();
-
     $('.scrolling-wrapper').scroll(function(){
         $('#tokenListPager').css({
             'left': $(this).scrollLeft() ,
         });
     });
 
+    /**
+     * Token edition
+     */
     $(document).on( 'click', '.edit-token', function(){
         $that       = $(this);
         $sid        = $that.data('sid');
@@ -70,11 +73,12 @@ $(document).ready(function(){
             // html contains the buttons
             success : function(html, statut){
                 $ajaxLoader.hide();
-                $('#modal-content').empty().append(html);                      // Inject the returned HTML in the modal body
+                $('#modal-content').empty().append(html);                       // Inject the returned HTML in the modal body
 
+                // Apply the yes/no/date jquery plugin to the elements loaded via ajax
                 $('#sent-yes-no-date-container').YesNoDate();
                 $('#remind-yes-no-date-container').YesNoDate();
-                $('#completed-yes-no-date-container').YesNoDate();                
+                $('#completed-yes-no-date-container').YesNoDate();
             },
             error :  function(html, statut){
                 $ajaxLoader.hide();
@@ -84,8 +88,10 @@ $(document).ready(function(){
         });
     });
 
+    /**
+     * Save token
+     */
     $("#save-edittoken").click(function(){
-
         $form       = $('#edittoken');
         $datas      = $form.serialize();
         $actionUrl  = $form.attr('action');
@@ -107,7 +113,6 @@ $(document).ready(function(){
                 $ajaxLoader.hide();
                 $.fn.yiiGridView.update('token-grid');                   // Update the surveys list
                 $modal.modal('hide');
-
             },
             error :  function(html, statut){
                 $ajaxLoader.hide();
