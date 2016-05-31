@@ -103,9 +103,8 @@ class TokenDynamic extends LSActiveRecord
     */
     public function relations()
     {
-        Yii::app()->user->setState('SurveyDynamicSid', self::$sid);
         return array(
-            'survey'      => array(self::BELONGS_TO, 'Survey', array(), 'condition'=>'sid='.Yii::app()->user->getState('SurveyDynamicSid'), 'together' => true),
+            'survey'      => array(self::BELONGS_TO, 'Survey', array(), 'condition'=>'sid='.self::$sid, 'together' => true),
             'responses'   => array(self::HAS_MANY, 'SurveyDynamic', array('token'=>'token')),
         );
     }
@@ -532,6 +531,50 @@ class TokenDynamic extends LSActiveRecord
         return $attributes;
     }
 
+    public function getSentFormated()
+    {
+        $field = $this->sent;
+        return $this->getYesNoDateFormated($field);
+    }
+
+    public function getRemindersentFormated()
+    {
+        $field = $this->remindersent;
+        return $this->getYesNoDateFormated($field);
+    }
+
+    public function getCompletedFormated()
+    {
+        $field = $this->completed;
+        return $this->getYesNoDateFormated($field);
+    }
+
+    public function getValidfromFormated()
+    {
+        $field = $this->validfrom;
+        return $this->getYesNoDateFormated($field);
+    }
+
+    public function getValiduntilFormated()
+    {
+        $field = $this->validuntil;
+        return $this->getYesNoDateFormated($field);
+    }
+
+    private function getYesNoDateFormated($field)
+    {
+        if ( $field != 'N' && $field != '')
+        {
+            $field = convertToGlobalSettingFormat($field);
+            $field = '<span class="text-success">'.$field.'</span>';
+        }
+        elseif( $field != '')
+        {
+            $field = '<i class="fa fa-minus text-warning"></i>';
+        }
+        return $field;
+    }
+
     public function getStandardColsForGrid()
     {
         return array(
@@ -612,17 +655,19 @@ class TokenDynamic extends LSActiveRecord
             array(
                 'header' => gT('Invitation sent?'),
                 'name' => 'sent',
-                'value'=>'$data->sent',
+                'type'=>'raw',
+                'value'=>'$data->sentFormated',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs  text-center'),
             ),
 
             array(
                 'header' => gT('Reminder sent?'),
                 'name' => 'remindersent',
-                'value'=>'$data->remindersent',
+                'type'=>'raw',
+                'value'=>'$data->remindersentFormated',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs text-center'),
             ),
 
             array(
@@ -636,9 +681,10 @@ class TokenDynamic extends LSActiveRecord
             array(
                 'header' => gT('Completed?'),
                 'name' => 'completed',
-                'value'=>'$data->completed',
+                'type'=>'raw',
+                'value'=>'$data->completedFormated',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs text-center'),
             ),
 
             array(
@@ -646,19 +692,21 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'usesleft',
                 'value'=>'$data->usesleft',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs text-center'),
             ),
             array(
                 'header' => gT('Valid from'),
                 'name' => 'validfrom',
-                'value'=>'$data->validfrom',
+                'type'=>'raw',
+                'value'=>'$data->validfromFormated',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs text-center'),
             ),
             array(
                 'header' => gT('Valid until'),
+                'type'=>'raw',
                 'name' => 'validuntil',
-                'value'=>'$data->validuntil',
+                'value'=>'$data->validuntilFormated',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs'),
             ),
@@ -699,7 +747,7 @@ class TokenDynamic extends LSActiveRecord
         $button = '';
 
         // View response details
-        if ($this->survey->isActive && Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read'))
+        if ($this->survey->isActive && Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read') && $this->survey->anonymized != 'Y')
         {
             if (count($this->responses)>0)
             {

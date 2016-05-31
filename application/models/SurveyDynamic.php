@@ -25,15 +25,15 @@ class SurveyDynamic extends LSActiveRecord
      * @return SurveyDynamic
      */
     public static function model($sid = NULL)
-    {         
+    {
         $refresh = false;
         if (!is_null($sid)) {
             self::sid($sid);
             $refresh = true;
         }
-        
+
         $model = parent::model(__CLASS__);
-        
+
         //We need to refresh if we changed sid
         if ($refresh === true) $model->refreshMetaData();
         return $model;
@@ -60,13 +60,7 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function tableName()
     {
-        // When calling Dynamic Models from relations, first, set its SID via session
-        if(!is_null(Yii::app()->user->getState('SurveyDynamicSid')))
-        {
-
-            self::sid(Yii::app()->user->getState('SurveyDynamicSid'));
-            $refresh = true;
-        }
+        $refresh = true;
         return '{{survey_' . self::$sid . '}}';
     }
 
@@ -108,7 +102,7 @@ class SurveyDynamic extends LSActiveRecord
         {
             return false;
         }
-        
+
     }
 
     /**
@@ -135,7 +129,7 @@ class SurveyDynamic extends LSActiveRecord
 
         return $survey->deleteAll($criteria);
     }
-    
+
     /**
      * Return criteria updated with the ones needed for including results from the timings table
      *
@@ -152,7 +146,7 @@ class SurveyDynamic extends LSActiveRecord
         {
             $criteria->select = 't.*';
         }
-		$alias = $this->getTableAlias();
+        $alias = $this->getTableAlias();
 
         $newCriteria->join = "LEFT JOIN {{survey_" . self::$sid . "_timings}} survey_timings ON $alias.id = survey_timings.id";
         $newCriteria->select = 'survey_timings.*';  // Otherwise we don't get records from the token table
@@ -175,11 +169,11 @@ class SurveyDynamic extends LSActiveRecord
         $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . self::$sid  . '}}')->getColumnNames();
         $aSelectFields=array_diff($aSelectFields, array('token'));
         $aSelect=array();
-		$alias = $this->getTableAlias();
+        $alias = $this->getTableAlias();
         foreach($aSelectFields as $sField)
             $aSelect[]="$alias.".Yii::app()->db->schema->quoteColumnName($sField);
-        $aSelectFields=$aSelect;   
-		$aSelectFields[]="$alias.token";
+        $aSelectFields=$aSelect;
+        $aSelectFields[]="$alias.token";
 
         if ($criteria->select == '*')
         {
@@ -190,18 +184,18 @@ class SurveyDynamic extends LSActiveRecord
 
         $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . self::$sid . '}}')->getColumnNames();
         $aTokenFields=array_diff($aTokenFields, array('token'));
-        
+
         $newCriteria->select = $aTokenFields;  // Otherwise we don't get records from the token table
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
     }
-    
+
     public static function countAllAndPartial($sid)
     {
         $select = array(
             'count(*) AS cntall',
-            'sum(CASE 
+            'sum(CASE
                  WHEN '. Yii::app()->db->quoteColumnName('submitdate') . ' IS NULL THEN 1
                           ELSE 0
                  END) AS cntpartial',
@@ -209,7 +203,7 @@ class SurveyDynamic extends LSActiveRecord
         $result = Yii::app()->db->createCommand()->select($select)->from('{{survey_' . $sid . '}}')->queryRow();
         return $result;
     }
-    
+
     /**
      * Return true if actual survey is completed
      *
@@ -220,7 +214,7 @@ class SurveyDynamic extends LSActiveRecord
     public function isCompleted($srid)
     {
         static $resultCache = array();
-        
+
         $sid = self::$sid;
         if (array_key_exists($sid, $resultCache) && array_key_exists($srid, $resultCache[$sid])) {
             return $resultCache[$sid][$srid];
@@ -267,7 +261,7 @@ class SurveyDynamic extends LSActiveRecord
         }
         return $exist;
     }
-    
+
     /**
      * Return next id if next response exist in database
      *
@@ -335,7 +329,7 @@ class SurveyDynamic extends LSActiveRecord
         }
         return $previous;
     }
-    
+
     /**
      * Function that returns a timeline of the surveys submissions
      *
@@ -346,36 +340,36 @@ class SurveyDynamic extends LSActiveRecord
      * @access public
      * @return array
      */
-    public function timeline($sType, $dStart, $dEnd) 
+    public function timeline($sType, $dStart, $dEnd)
     {
-            
-        $sid = self::$sid;        
+
+        $sid = self::$sid;
         $oSurvey=Survey::model()->findByPk($sid);
         if ($oSurvey['datestamp']!='Y') {
                return false;
         }
         else
-        {    
+        {
             $criteria=new CDbCriteria;
             $criteria->select = 'submitdate';
             $criteria->addCondition('submitdate >= :dstart');
-            $criteria->addCondition('submitdate <= :dend');    
+            $criteria->addCondition('submitdate <= :dend');
             $criteria->order="submitdate";
-            
+
             $criteria->params[':dstart'] = $dStart;
-            $criteria->params[':dend'] = $dEnd; 
+            $criteria->params[':dend'] = $dEnd;
             $oResult = $this->findAll($criteria);
-            
+
             if($sType=="hour")
                 $dFormat = "Y-m-d_G";
             else
                 $dFormat = "Y-m-d";
-            
+
             foreach($oResult as $sResult)
-            {        
-                $aRes[] = date($dFormat,strtotime($sResult['submitdate']));        
+            {
+                $aRes[] = date($dFormat,strtotime($sResult['submitdate']));
             }
-                
+
             return array_count_values($aRes);
         }
     }

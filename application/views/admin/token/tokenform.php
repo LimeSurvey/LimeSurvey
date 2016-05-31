@@ -206,8 +206,8 @@
                                             $bRemindSwitchValue       = "1";
                                             $remindersent             = convertToGlobalSettingFormat($remindersent);
                                         }
-
                                     ?>
+
                                     <?php
                                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                             'name' => "sent-switch",
@@ -303,6 +303,7 @@
                         <!-- From -->
                         <label class="col-sm-2 control-label"  for='validfrom'><?php eT("Valid from"); ?>:</label>
                         <div class="col-sm-4 has-feedback">
+
                             <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                                 'name' => "validfrom",
                                 'id' => "validfrom",
