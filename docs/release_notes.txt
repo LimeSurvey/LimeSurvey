@@ -63,7 +63,7 @@ Changes from 2.50+ (build 160526) to 2.50+ (build 160529) May 30, 2016
 #Updated translation: Norwegian (Nynorsk) by pmonstad
 #Updated translation: Polish by elisa
 #Updated translation: Polish (Informal) by elisa
-#Updated translation: Spanish (Mexican) by c_schmitz
+#Updated translation: Spanish (Mexican)
 
 Changes from 2.50+ (build 160525) to 2.50+ (build 160526) May 25, 2016
 -New feature: Question List, user can search over qid, code, question and question type (LouisGac)

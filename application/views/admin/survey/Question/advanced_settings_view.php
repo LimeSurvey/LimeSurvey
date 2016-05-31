@@ -36,7 +36,24 @@ $currentfieldset='';
                 {
                     switch ($aAttribute['inputtype'])
                     {
-                        // Single select
+                        // Switch
+                        case 'switch':
+                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                'name' => $aAttribute['name'],
+                                'value'=> $aAttribute['value'],
+                                'onLabel'=>gT('On'),
+                                'offLabel'=>gT('Off')
+                            ));
+                            break;
+                            // Button group
+                        case 'buttongroup':
+                            $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                'name' => $aAttribute['name'],
+                                'value'=> $aAttribute['value'] ,
+                                'selectOptions'=>$aAttribute['options']
+                            ));
+                            break;
+                            // Single select
                         case 'singleselect':
                             echo "<select class='form-control' id='{$aAttribute['name']}' name='{$aAttribute['name']}'>";
                             foreach($aAttribute['options'] as $sOptionvalue=>$sOptiontext)
@@ -51,13 +68,13 @@ $currentfieldset='';
                             echo "</select>";
                             break;
 
-                        // Text
+                            // Text
                         case 'text':?>
                             <input type='text' class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo htmlspecialchars($aAttribute['value'],ENT_QUOTES, 'UTF-8');?>' />
                             <?php
                             break;
 
-                        // Interger
+                        // Integer
                         case 'integer':?>
                             <input type='text' class="form-control" id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo $aAttribute['value'];?>' />
                             <?php
@@ -79,4 +96,8 @@ $currentfieldset='';
                 }?>
             </div>
         </div>
-<?php endforeach; ?>
+<?php endforeach;
+$sBodyJS='';
+Yii::app()->clientScript->renderBodyEnd($sBodyJS);
+echo $sBodyJS;
+?>
