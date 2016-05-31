@@ -88,7 +88,12 @@
                         <div class="col-sm-4" id="completed-yes-no-date-container">
                             <div class="row">
                                 <?php
-                                    $bCompletedValue       = (isset($completed) && $completed!='N')?"1":"0";
+                                    $bCompletedValue = "0";
+                                    if (isset($completed) && $completed!='N')
+                                    {
+                                        $bCompletedValue       = "1";
+                                        $completed             = convertToGlobalSettingFormat($completed);
+                                    }
                                 ?>
 
                                 <div class="col-sm-4">
@@ -105,35 +110,18 @@
 
                                 <div class="col-sm-8">
 
-                                    <div id="sent-date-container" class="date-container" <?php if(!$bCompletedValue):?>style="display: none;"<?php endif;?>>
-                                        <?php
-                                            Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
-                                                'name' => "completed-date",
-                                                'id'   => "completed-date",
-                                                'htmlOptions'=>array('class'=>"YesNoDatePicker"),
-                                                'value' => isset($completed) ? $completed : '',
-                                                'pluginOptions' => array(
-                                                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                                    'allowInputToggle' =>true,
-                                                    'showClear' => true,
-                                                    'tooltips' => array(
-                                                        'clear'=> gT('Clear selection'),
-                                                        'prevMonth'=> gT('Previous month'),
-                                                        'nextMonth'=> gT('Next month'),
-                                                        'selectYear'=> gT('Select year'),
-                                                        'prevYear'=> gT('Previous year'),
-                                                        'nextYear'=> gT('Next year'),
-                                                        'selectDecade'=> gT('Select decade'),
-                                                        'prevDecade'=> gT('Previous decade'),
-                                                        'nextDecade'=> gT('Next decade'),
-                                                        'prevCentury'=> gT('Previous century'),
-                                                        'nextCentury'=> gT('Next century'),
-                                                        'selectTime'=> gT('Select time')
-                                                    ),
-                                                'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
-                                                )
-                                            ));
-                                        ?>
+                                    <div id="sent-date-container" class="date-container"  <?php if(!$bCompletedValue):?>style="display: none;"<?php endif;?>>
+                                        <div id="completed-date_datetimepicker" class="input-group date">
+                                            <input
+                                                class="YesNoDatePicker form-control"
+                                                id="completed-date"
+                                                type="text"
+                                                value="<?php echo isset($completed) ? $completed : ''?>"
+                                                name="completed-date"
+                                                data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:MM"
+                                            >
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -201,8 +189,24 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <?php
+                                        // TODO: move to controller
                                         $bSwitchValue       = (isset($sent) && $sent!='N')?"1":"0";
                                         $bRemindSwitchValue = (isset($remindersent) && $remindersent!='N')?"1":"0";
+
+                                        $bSwitchValue  = "0";
+                                        if (isset($sent) && $sent!='N')
+                                        {
+                                            $bSwitchValue     = "1";
+                                            $sent             = convertToGlobalSettingFormat($sent);
+                                        }
+
+                                        $bRemindSwitchValue  = "0";
+                                        if (isset($remindersent) && $remindersent!='N')
+                                        {
+                                            $bRemindSwitchValue       = "1";
+                                            $remindersent             = convertToGlobalSettingFormat($remindersent);
+                                        }
+
                                     ?>
                                     <?php
                                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -217,35 +221,19 @@
 
                                 <div class="col-sm-8">
                                     <div id="sent-date-container" class="date-container" <?php if(!$bSwitchValue):?>style="display: none;"<?php endif;?>>
-                                        <?php
-                                        Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
-                                            'name' => "sent-date",
-                                            'id'   => "sent-date",
-                                            'htmlOptions'=>array('class'=>"YesNoDatePicker"),
-                                            'value' => isset($sent) ? $sent : '',
-                                            'pluginOptions' => array(
-                                                'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                                'allowInputToggle' =>true,
-                                                'showClear' => true,
-                                                'tooltips' => array(
-                                                    'clear'=> gT('Clear selection'),
-                                                    'prevMonth'=> gT('Previous month'),
-                                                    'nextMonth'=> gT('Next month'),
-                                                    'selectYear'=> gT('Select year'),
-                                                    'prevYear'=> gT('Previous year'),
-                                                    'nextYear'=> gT('Next year'),
-                                                    'selectDecade'=> gT('Select decade'),
-                                                    'prevDecade'=> gT('Previous decade'),
-                                                    'nextDecade'=> gT('Next decade'),
-                                                    'prevCentury'=> gT('Previous century'),
-                                                    'nextCentury'=> gT('Next century'),
-                                                    'selectTime'=> gT('Select time')
-                                                ),
-                                                'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
-                                                )
-                                            ));
-                                            ?>
+                                        <!-- Sent Date -->
+                                        <div id="sent-date_datetimepicker" class="input-group date">
+                                            <input
+                                                class="YesNoDatePicker form-control"
+                                                id="sent-date"
+                                                type="text"
+                                                value="<?php echo isset($sent) ? $sent : ''?>"
+                                                name="completed-date"
+                                                data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:MM"
+                                            >
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                         </div>
+                                    </div>
                                 </div>
                             </div>
                             <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)){echo $sent;}else{echo "N";}?>" />
@@ -271,35 +259,18 @@
                                 <div class="col-sm-8">
 
                                     <div id="remind-date-container" class="date-container" <?php if(!$bRemindSwitchValue):?>style="display: none;"<?php endif;?>>
-                                    <?php
-                                    Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
-                                        'name' => "remind-date",
-                                        'id'=>"remind-date",
-                                        'htmlOptions'=>array('class'=>"YesNoDatePicker"),
-                                        'value' => isset($remindersent) ? $remindersent : '',
-                                        'pluginOptions' => array(
-                                            'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                            'allowInputToggle' =>true,
-                                            'showClear' => true,
-                                            'tooltips' => array(
-                                                'clear'=> gT('Clear selection'),
-                                                'prevMonth'=> gT('Previous month'),
-                                                'nextMonth'=> gT('Next month'),
-                                                'selectYear'=> gT('Select year'),
-                                                'prevYear'=> gT('Previous year'),
-                                                'nextYear'=> gT('Next year'),
-                                                'selectDecade'=> gT('Select decade'),
-                                                'prevDecade'=> gT('Previous decade'),
-                                                'nextDecade'=> gT('Next decade'),
-                                                'prevCentury'=> gT('Previous century'),
-                                                'nextCentury'=> gT('Next century'),
-                                                'selectTime'=> gT('Select time')
 
-                                            ),
-                                            'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
-                                        )
-                                    ));
-                                    ?>
+                                        <div id="remind-date_datetimepicker" class="input-group date">
+                                            <input
+                                                class="YesNoDatePicker form-control"
+                                                id="remind-date"
+                                                type="text"
+                                                value="<?php echo isset($remindersent) ? $remindersent : ''?>"
+                                                name="remind-date"
+                                                data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:MM"
+                                            >
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -334,6 +305,7 @@
                         <div class="col-sm-4 has-feedback">
                             <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                                 'name' => "validfrom",
+                                'id' => "validfrom",
                                 'value' => isset($validfrom) ? $validfrom : '',
                                 'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
@@ -366,6 +338,7 @@
                                 <?php
                                     Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                                         'name' => "validuntil",
+                                        'id' => "validuntil",
                                         'value' => isset($validuntil) ? $validuntil : '',
                                         'pluginOptions' => array(
                                         'format' => $dateformatdetails['jsdate'] . " HH:mm",
