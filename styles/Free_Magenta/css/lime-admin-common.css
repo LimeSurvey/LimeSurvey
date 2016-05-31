@@ -1520,7 +1520,7 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-righ
 /**
  * comfortUpdate
  */
-#ajaxContainerLoading {
+#ajaxContainerLoading, .ajaxLoading {
   height: 130px;
   text-align: center;
   margin-top: 70px;
@@ -1972,4 +1972,9 @@ h3,.h3 {
 #tokenListPager
 {
     position: relative;
+}
+
+.blank_button span
+{
+    max-width: 12px;
 }
