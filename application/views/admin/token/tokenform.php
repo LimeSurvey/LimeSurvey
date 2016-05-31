@@ -85,9 +85,54 @@
 
                         <!-- Completed -->
                         <label class="col-sm-2 control-label"  for='completed'><?php eT("Completed?"); ?></label>
-                        <div class="col-sm-3">
-                            <input class='form-control' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)){echo $completed;}else{echo "N";}?>" />
+                        <div class="col-sm-3" id="completed-yes-no-date-container">
+                            <?php
+                                $bCompletedValue       = (isset($completed) && $completed!='N')?"1":"0";
+                            ?>
+
+                            <?php
+                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                    'name' => "completed-switch",
+                                    'id'=>"completed-switch",
+                                    'htmlOptions'=>array('class'=>"YesNoDateSwitch"),
+                                    'value' => $bCompletedValue,
+                                    'onLabel'=>gT('Yes'),
+                                    'offLabel' => gT('No')));
+                            ?>
+
+                            <div id="sent-date-container" class="date-container" <?php if(!$bCompletedValue):?>style="display: none;"<?php endif;?>>
+                                <?php
+                                Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                                    'name' => "completed-date",
+                                    'id'   => "completed-date",
+                                    'htmlOptions'=>array('class'=>"YesNoDatePicker"),
+                                    'value' => isset($validuntil) ? $validuntil : '',
+                                    'pluginOptions' => array(
+                                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                        'allowInputToggle' =>true,
+                                        'showClear' => true,
+                                        'tooltips' => array(
+                                            'clear'=> gT('Clear selection'),
+                                            'prevMonth'=> gT('Previous month'),
+                                            'nextMonth'=> gT('Next month'),
+                                            'selectYear'=> gT('Select year'),
+                                            'prevYear'=> gT('Previous year'),
+                                            'nextYear'=> gT('Next year'),
+                                            'selectDecade'=> gT('Select decade'),
+                                            'prevDecade'=> gT('Previous decade'),
+                                            'nextDecade'=> gT('Next decade'),
+                                            'prevCentury'=> gT('Previous century'),
+                                            'nextCentury'=> gT('Next century'),
+                                            'selectTime'=> gT('Select time')
+                                        ),
+                                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                                        )
+                                    ));
+                                    ?>
+                            </div>
+                            <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)){echo $completed;}else{echo "N";}?>" />
                         </div>
+
                     </div>
 
                     <!-- First name, Last name -->
@@ -385,4 +430,5 @@
 <script>
     $('#sent-yes-no-date-container').YesNoDate();
     $('#remind-yes-no-date-container').YesNoDate();
+    $('#completed-yes-no-date-container').YesNoDate();
 </script>
