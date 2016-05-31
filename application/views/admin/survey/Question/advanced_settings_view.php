@@ -97,7 +97,9 @@ $currentfieldset='';
             </div>
         </div>
 <?php endforeach;
-$sBodyJS='';
-Yii::app()->clientScript->renderBodyEnd($sBodyJS);
-echo $sBodyJS;
+foreach (Yii::app()->clientScript->scripts as $index=>$script)
+{
+    echo CHtml::script(implode("\n",$script));
+}
+Yii::app()->clientScript->reset();
 ?>
