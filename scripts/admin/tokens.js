@@ -39,6 +39,11 @@ $.fn.YesNoDate = function(options)
  * Scroll the pager and the footer when scrolling horizontally
  */
 $(document).ready(function(){
+
+    $('#sent-yes-no-date-container').YesNoDate();
+    $('#remind-yes-no-date-container').YesNoDate();
+    $('#completed-yes-no-date-container').YesNoDate();
+
     $('.scrolling-wrapper').scroll(function(){
         $('#tokenListPager').css({
             'left': $(this).scrollLeft() ,
@@ -66,6 +71,10 @@ $(document).ready(function(){
             success : function(html, statut){
                 $ajaxLoader.hide();
                 $('#modal-content').empty().append(html);                      // Inject the returned HTML in the modal body
+
+                $('#sent-yes-no-date-container').YesNoDate();
+                $('#remind-yes-no-date-container').YesNoDate();
+                $('#completed-yes-no-date-container').YesNoDate();                
             },
             error :  function(html, statut){
                 $ajaxLoader.hide();
