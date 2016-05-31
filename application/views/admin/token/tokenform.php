@@ -414,21 +414,3 @@
         </div>
     </div>
 </div>
-
-<!--
-    Script must remains inline !
-    Don't attach it as an external file with CScript !
-
-    NB: This view can be provided via ajax for the editing popup of the token grid.
-    It's called with processOutput off, to avoid to reload jQuery. Else, if jQuery is reloaded,
-    the object $.fn.yiiGridView is lost, and the table can't be updated.
-
-    TODO: extend CController to provide a renderPartial method able to process all javascript less jQuery
-    see: http://www.yiiframework.com/doc/api/1.1/CController#renderPartial-detail
- -->
-
-<script>
-    $('#sent-yes-no-date-container').YesNoDate();
-    $('#remind-yes-no-date-container').YesNoDate();
-    $('#completed-yes-no-date-container').YesNoDate();
-</script>
