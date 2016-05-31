@@ -85,7 +85,7 @@
 
                         <!-- Completed -->
                         <label class="col-sm-2 control-label"  for='completed'><?php eT("Completed?"); ?></label>
-                        <div class="col-sm-4" id="completed-yes-no-date-container">
+                        <div class="col-sm-4" id="completed-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>">
                             <div class="row">
                                 <?php
                                     $bCompletedValue = "0";
@@ -185,7 +185,7 @@
 
                         <!-- Invitation sent -->
                         <label class="col-sm-2 control-label"  for='sent'><?php eT("Invitation sent?"); ?></label>
-                        <div class="col-sm-4" id="sent-yes-no-date-container">
+                        <div class="col-sm-4" id="sent-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>">
                             <div class="row">
                                 <div class="col-sm-4">
                                     <?php
@@ -241,7 +241,7 @@
 
                         <!-- Reminder sent -->
                         <label class="col-sm-2 control-label"  for='remindersent'><?php eT("Reminder sent?"); ?></label>
-                        <div class="col-sm-4" id="remind-yes-no-date-container">
+                        <div class="col-sm-4" id="remind-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>">
 
                             <div class="row">
                                 <div class="col-sm-4">
@@ -299,71 +299,51 @@
 
                     <!-- Valid from to  -->
                     <div class="form-group">
+                        <?php
+                            if( isset($validfrom) && $validfrom!='N')
+                            {
+                                $validfrom = convertToGlobalSettingFormat($validfrom);
+                            }
+
+                            if( isset($validuntil) && $validuntil!='N')
+                            {
+                                $validuntil = convertToGlobalSettingFormat($validuntil);
+                            }
+
+                        ?>
 
                         <!-- From -->
                         <label class="col-sm-2 control-label"  for='validfrom'><?php eT("Valid from"); ?>:</label>
                         <div class="col-sm-4 has-feedback">
-
-                            <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
-                                'name' => "validfrom",
-                                'id' => "validfrom",
-                                'value' => isset($validfrom) ? $validfrom : '',
-                                'pluginOptions' => array(
-                                'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                'allowInputToggle' =>true,
-                                'showClear' => true,
-                                'tooltips' => array(
-                                    'clear'=> gT('Clear selection'),
-                                    'prevMonth'=> gT('Previous month'),
-                                    'nextMonth'=> gT('Next month'),
-                                    'selectYear'=> gT('Select year'),
-                                    'prevYear'=> gT('Previous year'),
-                                    'nextYear'=> gT('Next year'),
-                                    'selectDecade'=> gT('Select decade'),
-                                    'prevDecade'=> gT('Previous decade'),
-                                    'nextDecade'=> gT('Next decade'),
-                                    'prevCentury'=> gT('Previous century'),
-                                    'nextCentury'=> gT('Next century'),
-                                    'selectTime'=> gT('Select time')
-                                    ),
-                                'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
-                                )));
-                            ?>
-
-                            <span class='help-block'><?php echo sprintf(gT('Format: %s'), $dateformatdetails['dateformat'] . ' ' . gT('hh:mm')); ?></span>
+                            <div id="validfrom_datetimepicker" class="input-group date">
+                                <input
+                                    class="YesNoDatePicker form-control"
+                                    id="validfrom"
+                                    type="text"
+                                    value="<?php echo isset($validfrom) ? $validfrom : ''?>"
+                                    name="remind-date"
+                                    data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:MM"
+                                    data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>"
+                                >
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
                         </div>
 
                         <!-- To -->
                         <label class="col-sm-2 control-label"  for='validuntil'><?php eT('Until:'); ?></label>
                             <div class="col-sm-4 has-feedback">
-                                <?php
-                                    Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
-                                        'name' => "validuntil",
-                                        'id' => "validuntil",
-                                        'value' => isset($validuntil) ? $validuntil : '',
-                                        'pluginOptions' => array(
-                                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                        'allowInputToggle' =>true,
-                                        'showClear' => true,
-                                        'tooltips' => array(
-                                            'clear'=> gT('Clear selection'),
-                                            'prevMonth'=> gT('Previous month'),
-                                            'nextMonth'=> gT('Next month'),
-                                            'selectYear'=> gT('Select year'),
-                                            'prevYear'=> gT('Previous year'),
-                                            'nextYear'=> gT('Next year'),
-                                            'selectDecade'=> gT('Select decade'),
-                                            'prevDecade'=> gT('Previous decade'),
-                                            'nextDecade'=> gT('Next decade'),
-                                            'prevCentury'=> gT('Previous century'),
-                                            'nextCentury'=> gT('Next century'),
-                                            'selectTime'=> gT('Select time')
-                                        ),
-                                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
-                                    )));
-                                ?>
-
-                                <span class='help-block'><?php echo sprintf(gT('Format: %s'), $dateformatdetails['dateformat'] . ' ' . gT('hh:mm')); ?></span>
+                                <div id="validuntil_datetimepicker" class="input-group date">
+                                    <input
+                                        class="YesNoDatePicker form-control"
+                                        id="validuntil"
+                                        type="text"
+                                        value="<?php echo isset($validuntil) ? $validuntil : ''?>"
+                                        name="remind-date"
+                                        data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:MM"
+                                        data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>"
+                                    >
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </div>
                             </div>
                     </div>
                 </div>
@@ -409,5 +389,14 @@
     </div>
 </div>
 
-<script>
-</script>
+
+<div style="display: none;">
+<?php
+Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+    'name' => "no",
+    'id'   => "no",
+    'value' => '',
+
+));
+?>
+</div>

@@ -15,7 +15,7 @@ $.fn.YesNoDate = function(options)
         // The view is called without processing output (no javascript)
         // So we must apply js to widget elements
         $elSwitch.bootstrapSwitch();                                            // Generate the switch
-        $elDate.datetimepicker();                                               // Generate the date time picker
+        $elDate.datetimepicker({locale: that.data('locale')})                   // Generate the date time picker
 
         // When user switch
         $(document).on( 'switchChange.bootstrapSwitch', '#'+$elSwitch.attr('id'), function(event, state)
@@ -84,6 +84,16 @@ $.fn.textWidth = function(text, font) {
  */
 $(document).ready(function(){
 
+    if($('#sent-yes-no-date-container').length > 0)
+    {
+        $('#sent-yes-no-date-container').YesNoDate();
+        $('#remind-yes-no-date-container').YesNoDate();
+        $('#completed-yes-no-date-container').YesNoDate();
+
+        $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
+        $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
+    }
+
     $('.scrolling-wrapper').scroll(function(){
         $('#tokenListPager').css({
             'left': $(this).scrollLeft() ,
@@ -103,6 +113,7 @@ $(document).ready(function(){
         $ajaxLoader = $('#ajaxContainerLoading2');
         $oldModalBody   = $modalBody.html();
 
+
         $ajaxLoader.show();
         $modal.modal('show');
         // Ajax request
@@ -120,8 +131,8 @@ $(document).ready(function(){
                 $('#remind-yes-no-date-container').YesNoDate();
                 $('#completed-yes-no-date-container').YesNoDate();
 
-                $('#validfrom').datetimepicker();
-                $('#validuntil').datetimepicker();
+                $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
+                $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
 
                 var elGeneral  = $('#general');
 
@@ -306,342 +317,6 @@ $(document).ready(function() {
 
     });
 
-    oGrid=jQuery("#displaytokens").jqGrid({
-        loadtext : sLoadText,
-        recordtext: sRecordText,
-        emptyrecords: sEmptyRecords,
-        pgtext: sPageText,
-        align:"center",
-        headertitles: true,
-        url: jsonUrl,
-        editurl: editUrl,
-        direction: $('html').attr('dir'),
-        datatype: "json",
-        mtype: "post",
-        colNames : colNames,
-        colModel: colModels,
-        height: "100%",
-        rowNum: 10,
-        editable:true,
-        scrollOffset:0,
-        sortable : true,
-        sortname: 'tid',
-        sortorder: 'asc',
-        viewrecords : true,
-        rowList: [10,25,50,100,250,500,1000,2500,5000],
-        multiselect: true,
-        beforeRequest : function(){
-            $(this).addClass('load');
-        },
-        loadonce : false,
-        loadComplete: function()
-        {
-            $(this).removeClass('load');
-
-            window.editing = false;
-            jQuery(".token_edit").unbind('click').bind('click', function(e)
-            {
-                e.preventDefault();
-                if (window.editing)
-                    return true;
-                var row = jQuery(this).closest('.jqgrow');
-                var func = function()
-                {
-                    jQuery('#displaytokens').restoreRow(row.attr('id'));
-                    row.find('.inputbuttons').show();
-                    row.find('.drop_editing').remove();
-                    row.find('.save').remove();
-                    window.editing = false;
-                }
-
-                jQuery('#displaytokens').editRow(row.attr('id'), true, null, null, null, null, func);
-                row.find('.inputbuttons').hide();
-                window.editing = true;
-                /*var validfrom = row.find('[aria-describedby="displaytokens_validfrom"]');
-                validfrom.find('input').css('width', '119px').datetimepicker({
-                    showOn: 'button',
-                    dateFormat: userdateformat
-                });
-                var validuntil = row.find('[aria-describedby="displaytokens_validuntil"]');
-                validuntil.find('input').css('width', '119px').datetimepicker({
-                    showOn: 'button',
-                    dateFormat: userdateformat
-                });*/
-
-                jQuery('<span class="drop_editing ui-pg-button glyphicon glyphicon-remove" title="'+cancelBtn+'"></span>')
-                .appendTo(jQuery(this).parent().parent())
-                .click(func);
-                jQuery('<span class="save ui-pg-button glyphicon glyphicon-ok" title="'+saveBtn+'"></span>')
-                .appendTo(jQuery(this).parent().parent())
-                .click(function()
-                {
-                    jQuery('#displaytokens').saveRow(row.attr('id'), null, null, {}, function(){func();});
-                });
-            });
-            updatePageAfterGrid();
-        },
-        ondblClickRow: function(id)
-        {
-            var row = jQuery('#' + id);
-            row.find('.token_edit').click();
-        },
-        pager: "#pager",
-        caption: sCaption
-    });
-    jQuery("#displaytokens").jqGrid('navGrid','#pager',{
-        alertcap: sWarningMsg,
-        alerttext: sSelectRowMsg,
-        deltitle: sDelTitle,
-        refreshtitle: sRefreshTitle,
-        add:false,
-        del:showDelButton,
-        edit:false,
-        refresh: true,
-        search: false
-    },
-    {},
-    {
-        width : 400
-    },
-    {
-        msg:delmsg,
-        width : 700,
-        afterShowForm: function($form) {
-            var dialog = $form.closest('div.ui-jqdialog'),
-            selRowId = jQuery("#displaytokens").jqGrid('getGridParam', 'selrow'),
-            selRowCoordinates = $('#'+selRowId).offset();
-            dialog.offset(selRowCoordinates);
-        },
-        beforeSubmit : function(postdata, formid) {
-            $.post(delUrl, {
-                tid : postdata
-            },
-            function(data) {}
-            );
-            success = "dummy";
-            message = "dummy";
-            return[success,message];
-        },
-        beforeShowForm:function(form) {
-            $('#selectable').bind("mousedown", function (e) {
-                e.metaKey = false;
-            }).selectable({
-                tolerance: 'fit'
-            });
-        }
-    },{
-        multipleSearch:true,
-        multipleGroup:true
-    });
-    $("#displaytokens").navButtonAdd('#pager',{
-        caption:"",
-        title: sFind,
-        buttonicon:'ui-icon-search',
-        onClickButton:function() {
-            var dialog_buttons={};
-            dialog_buttons[searchBtn]=function(){
-                searchconditions="";
-                var dialog_buttons={};
-                if($('#field_1').val() == '') {
-                    dialog_buttons[okBtn]=function(){
-                        $( this ).dialog( "close" );
-                    };
-                    /* End of building array for button functions */
-                    $('#fieldnotselected').dialog({
-                        modal: true,
-                        title: error,
-                        buttons: dialog_buttons
-                    });
-                }
-                else if($('#condition_1').val()=="") {
-                    dialog_buttons[okBtn]=function(){
-                        $( this ).dialog( "close" );
-                    };
-                    /* End of building array for button functions */
-                    $('#conditionnotselected').dialog({
-                        modal: true,
-                        title: error,
-                        buttons: dialog_buttons
-                    });
-                } else {
-                    searchconditions = searchconditions + $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();
-                    if(conditionid > 1) {
-                        for( i=2 ; i<=conditionid; i++) {
-                            if($('#field_'+i).val()) {
-                                searchconditions = searchconditions + "||"+ $('#join_'+(i)).val()+"||"+$('#field_'+i).val()+"||"+$('#condition_'+i).val()+"||"+$('#conditiontext_'+i).val();
-                            }
-                        }
-                        //jQuery("#displaytokens").jqGrid('setGridParam',{ url:jsonSearchUrl+'/'+searchconditions}).trigger("reloadGrid");
-                    }
-                    jQuery("#displaytokens").jqGrid('setGridParam',{
-                        url:jsonSearchUrl+'/'+searchconditions,
-                        datatype: "json",
-                        gridComplete: function(){
-                            if(jQuery("#displayparticipants").jqGrid('getGridParam', 'records') == 0) {
-                                var dialog_buttons={};
-                                dialog_buttons[okBtn]=function(){
-                                    $( this ).dialog( "close" );
-                                };
-                                $("<p>"+noSearchResultsTxt+"</p>").dialog({
-                                    modal: true,
-                                    buttons: dialog_buttons,
-                                    resizable: false
-                                });
-                            }
-                        }
-                    }).trigger("reloadGrid");
-                    $(this).dialog("close");
-                }
-            };
-            dialog_buttons[cancelBtn]=function(){
-                $(this).dialog("close");
-            };
-            dialog_buttons[resetBtn]=function(){
-                $("#displaytokens").jqGrid('setGridParam', { url:jsonUrl, search: false, postData: { "filters": ""} }).trigger("reloadGrid");
-                $(this).dialog("close");
-            };
-            /* End of building array for button functions */
-            $("#search").dialog({
-                height: 300,
-                width: 750,
-                modal: true,
-                title : sFind,
-                buttons: dialog_buttons
-            });
-
-            // Set class of buttons in search criteria pop-up
-            // Very hackish, but jQgrid is hard to adapt to bootstrap
-            $('.ui-dialog-buttonset').addClass('text-center');
-            $('.ui-dialog-buttonset button').wrap('<div class="col-sm-2"></div>');
-            $('.ui-dialog-buttonset button').addClass('form-control');
-            $('.ui-widget-content').has('#search').addClass('row');
-        }
-    });
-    if(showInviteButton) {
-        $("#displaytokens").navButtonAdd('#pager',{
-            caption:"",
-            title:invitemsg,
-            buttonicon:'ui-icon-mail-closed',
-            onClickButton:function(){
-                if ($('#displaytokens').jqGrid('getGridParam', 'selarrrow').length==0)
-                {
-                    alert(sSelectRowMsg );
-                }
-                else
-                {
-                    var newForm = jQuery('<form>', {
-                        'action': inviteurl,
-                        'target': '_blank',
-                        'method': 'POST'
-                    }).append(jQuery('<input>', {
-                        'name': 'tokenids',
-                        'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
-                        'type': 'hidden'
-                    })).append(jQuery('<input>', {
-                        'name': 'YII_CSRF_TOKEN',
-                        'value': LS.data.csrfToken,
-                        'type': 'hidden'
-                    })).appendTo('body');
-                    newForm.submit();
-                }
-            }
-        });
-    }
-    if(showRemindButton) {
-        $("#displaytokens").navButtonAdd('#pager',{
-            caption:"",
-            title:remindmsg,
-            buttonicon:'ui-icon-mail-open',
-            onClickButton:function(){
-                if ($('#displaytokens').jqGrid('getGridParam', 'selarrrow').length==0)
-                {
-                    alert(sSelectRowMsg );
-                }
-                else
-                {
-                    var newForm = jQuery('<form>', {
-                        'action': remindurl,
-                        'target': '_blank',
-                        'method': 'POST'
-                    }).append(jQuery('<input>', {
-                        'name': 'tokenids',
-                        'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
-                        'type': 'hidden'
-                    })).append(jQuery('<input>', {
-                        'name': 'YII_CSRF_TOKEN',
-                        'value': LS.data.csrfToken,
-                        'type': 'hidden'
-                    })).appendTo('body');
-                    newForm.submit();
-                }
-            }
-        });
-    }
-    if(showBounceButton) {
-        $("#displaytokens").navButtonAdd('#pager', {
-            caption:"",
-            title:sBounceProcessing,
-            buttonicon:'ui-bounceprocessing',
-            onClickButton:function(){
-                $("#dialog-modal").dialog({
-                    title: sSummary,
-                    modal: true,
-                    autoOpen: false,
-                    height: 200,
-                    width: 400,
-                    show: 'blind',
-                    hide: 'blind'
-                });
-                checkbounces();
-            }
-        });
-    }
-    if (bParticipantPanelPermission==true)
-    {
-        $("#displaytokens").navSeparatorAdd("#pager",{});
-        $("#displaytokens").navButtonAdd('#pager', {
-            caption:"",
-            title:viewParticipantsLink,
-            buttonicon:'ui-participant-link',
-            onClickButton:function(){sendPost(participantlinkUrl,'',['searchcondition'],["surveyid||equal||" + survey_id]);}
-        });
-        $("#displaytokens").navButtonAdd('#pager', {
-            caption:"",
-            title:sAddParticipantToCPDBText,
-            buttonicon:'ui-add-to-cpdb-link',
-            onClickButton:addSelectedParticipantsToCPDB
-        });
-    }
-    /*
-    $(".gridsearch").bindWithDelay("keyup", function(e) {
-        var sSearchString=$.trim($(this).val());
-        if(sSearchString != ""){
-            var aSearchConditions=new Array;
-            for(col in colInformation){
-                if(colInformation[col]['quickfilter']){
-                    aSearchConditions.push(col);aSearchConditions.push('contains');aSearchConditions.push(sSearchString);aSearchConditions.push("or");
-                }
-            }
-            aSearchConditions.pop();// remove last 'or'
-            oGrid.jqGrid('setGridParam', {url: jsonUrl, postData: { searcharray: aSearchConditions} }).trigger('reloadGrid', [{current: true, page: 1}]);
-        }else{
-            oGrid.jqGrid('setGridParam', {url: jsonUrl, postData: { }}).trigger('reloadGrid', [{current: true, page: 1}]);
-        }
-    }, 500);
-*/
-    $.extend(jQuery.jgrid.edit,{
-        closeAfterAdd: true,
-        reloadAfterSubmit: true,
-        closeOnEspace:true
-    });
-    // Center modal dialogs
-    $.jgrid.jqModal = $.extend($.jgrid.jqModal || {}, {
-        beforeOpen: centerInfoDialog
-    });
-
-    // jQgrid defaults to placement bottom, so we have to fix that
-    $('[data-toggle="tooltip"]').attr('data-placement', 'top');
-    $('[data-toggle="tooltip"]').tooltip()
 
 });
 

@@ -744,7 +744,7 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['buttons']['view']=TRUE;
-
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokens.js');
         if (Yii::app()->request->getPost('subaction') == 'inserttoken')
         {
 
