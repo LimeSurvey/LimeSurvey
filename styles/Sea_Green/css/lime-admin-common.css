@@ -1973,3 +1973,8 @@ h3,.h3 {
 {
     position: relative;
 }
+
+.blank_button span
+{
+    max-width: 12px;
+}
