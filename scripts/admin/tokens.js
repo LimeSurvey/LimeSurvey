@@ -62,10 +62,14 @@ $.fn.stickLabelOnLeft  = function(options)
     });
 
     $distanceFromBorder = ( $maxWidth - $elWidestLeftLabel.width());
-    that.css({
-        position: "relative",
-        left: $distanceFromBorder,
-    });
+    if ( $distanceFromBorder < 0)
+    {
+        that.css({
+            position: "relative",
+            left: $distanceFromBorder,
+        });        
+    }
+
 }
 
 // Calculate width of text from DOM element or string. By Phil Freo <http://philfreo.com>

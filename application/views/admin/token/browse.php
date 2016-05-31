@@ -193,7 +193,7 @@
 
 <!-- Edit Token Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="editTokenModal">
-    <div class="modal-dialog" style="width: 1000px">
+    <div class="modal-dialog" style="width: 1100px">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
