@@ -40,7 +40,7 @@
 
 
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-sm-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/{$subaction}/surveyid/{$surveyid}/tokenid/{$tokenid}"), 'post', array('id'=>'edittoken', 'class'=>'form-horizontal')); ?>
 
             <!-- Tabs -->
@@ -72,7 +72,7 @@
                     <div class="form-group">
                         <!-- ID  -->
                         <label class="col-sm-2 control-label">ID:</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <p class="form-control-static">
                                 <?php
                                     if ($subaction == "edit")
@@ -85,50 +85,57 @@
 
                         <!-- Completed -->
                         <label class="col-sm-2 control-label"  for='completed'><?php eT("Completed?"); ?></label>
-                        <div class="col-sm-3" id="completed-yes-no-date-container">
-                            <?php
-                                $bCompletedValue       = (isset($completed) && $completed!='N')?"1":"0";
-                            ?>
-
-                            <?php
-                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                    'name' => "completed-switch",
-                                    'id'=>"completed-switch",
-                                    'htmlOptions'=>array('class'=>"YesNoDateSwitch"),
-                                    'value' => $bCompletedValue,
-                                    'onLabel'=>gT('Yes'),
-                                    'offLabel' => gT('No')));
-                            ?>
-
-                            <div id="sent-date-container" class="date-container" <?php if(!$bCompletedValue):?>style="display: none;"<?php endif;?>>
+                        <div class="col-sm-4" id="completed-yes-no-date-container">
+                            <div class="row">
                                 <?php
-                                Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
-                                    'name' => "completed-date",
-                                    'id'   => "completed-date",
-                                    'htmlOptions'=>array('class'=>"YesNoDatePicker"),
-                                    'value' => isset($completed) ? $completed : '',
-                                    'pluginOptions' => array(
-                                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                        'allowInputToggle' =>true,
-                                        'showClear' => true,
-                                        'tooltips' => array(
-                                            'clear'=> gT('Clear selection'),
-                                            'prevMonth'=> gT('Previous month'),
-                                            'nextMonth'=> gT('Next month'),
-                                            'selectYear'=> gT('Select year'),
-                                            'prevYear'=> gT('Previous year'),
-                                            'nextYear'=> gT('Next year'),
-                                            'selectDecade'=> gT('Select decade'),
-                                            'prevDecade'=> gT('Previous decade'),
-                                            'nextDecade'=> gT('Next decade'),
-                                            'prevCentury'=> gT('Previous century'),
-                                            'nextCentury'=> gT('Next century'),
-                                            'selectTime'=> gT('Select time')
-                                        ),
-                                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
-                                        )
-                                    ));
+                                    $bCompletedValue       = (isset($completed) && $completed!='N')?"1":"0";
+                                ?>
+
+                                <div class="col-sm-4">
+                                    <?php
+                                        $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                            'name' => "completed-switch",
+                                            'id'=>"completed-switch",
+                                            'htmlOptions'=>array('class'=>"YesNoDateSwitch"),
+                                            'value' => $bCompletedValue,
+                                            'onLabel'=>gT('Yes'),
+                                            'offLabel' => gT('No')));
                                     ?>
+                                </div>
+
+                                <div class="col-sm-8">
+
+                                    <div id="sent-date-container" class="date-container" <?php if(!$bCompletedValue):?>style="display: none;"<?php endif;?>>
+                                        <?php
+                                            Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                                                'name' => "completed-date",
+                                                'id'   => "completed-date",
+                                                'htmlOptions'=>array('class'=>"YesNoDatePicker"),
+                                                'value' => isset($completed) ? $completed : '',
+                                                'pluginOptions' => array(
+                                                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                                    'allowInputToggle' =>true,
+                                                    'showClear' => true,
+                                                    'tooltips' => array(
+                                                        'clear'=> gT('Clear selection'),
+                                                        'prevMonth'=> gT('Previous month'),
+                                                        'nextMonth'=> gT('Next month'),
+                                                        'selectYear'=> gT('Select year'),
+                                                        'prevYear'=> gT('Previous year'),
+                                                        'nextYear'=> gT('Next year'),
+                                                        'selectDecade'=> gT('Select decade'),
+                                                        'prevDecade'=> gT('Previous decade'),
+                                                        'nextDecade'=> gT('Next decade'),
+                                                        'prevCentury'=> gT('Previous century'),
+                                                        'nextCentury'=> gT('Next century'),
+                                                        'selectTime'=> gT('Select time')
+                                                    ),
+                                                'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                                                )
+                                            ));
+                                        ?>
+                                    </div>
+                                </div>
                             </div>
                             <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)){echo $completed;}else{echo "N";}?>" />
                         </div>
@@ -138,11 +145,11 @@
                     <!-- First name, Last name -->
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for='firstname'><?php eT("First name"); ?>:</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <input class='form-control' type='text' size='30' id='firstname' name='firstname' value="<?php if (isset($firstname)){echo $firstname;} ?>" />
                         </div>
                         <label class="col-sm-2 control-label"  for='lastname'><?php eT("Last name"); ?>:</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <input class='form-control' type='text' size='30'  id='lastname' name='lastname' value="<?php if (isset($lastname)){echo $lastname;} ?>" />
                         </div>
 
@@ -152,11 +159,11 @@
                     <!-- Token, language -->
                     <div class="form-group">
                         <label class="col-sm-2 control-label"  for='token'><?php eT("Token"); ?>:</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <input class='form-control' type='text' size='20' name='token' id='token' value="<?php if (isset($token)){echo $token;} ?>" />
                             <?php if ($subaction == "addnew"): ?>
                                 <span id="helpBlock" class="help-block"><?php eT("You can leave this blank, and automatically generate tokens using 'Generate Tokens'"); ?></span>
-                                <?php endif; ?>
+                            <?php endif; ?>
                         </div>
 
                         <label class="col-sm-2 control-label"  for='language'><?php eT("Language"); ?>:</label>
@@ -170,14 +177,14 @@
                     <!-- Email, Email Status  -->
                     <div class="form-group">
                         <label class="col-sm-2 control-label"  for='email'><?php eT("Email"); ?>:</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <input class='form-control' type='email' multiple='multiple' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email)){echo $email;} ?>" />
                         </div>
 
                         <!-- Email Status -->
                         <div class="form-group">
                             <label class="col-sm-2 control-label"  for='emailstatus'><?php eT("Email Status"); ?>:</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <input class='form-control' type='text' maxlength='320' size='50' id='emailstatus' name='emailstatus' placeholder='OK' value="<?php if (isset($emailstatus)){echo $emailstatus;}else{echo "OK";}?>" />
                             </div>
                         </div>
@@ -190,99 +197,112 @@
 
                         <!-- Invitation sent -->
                         <label class="col-sm-2 control-label"  for='sent'><?php eT("Invitation sent?"); ?></label>
-                        <div class="col-sm-3" id="sent-yes-no-date-container">
-                            <?php
-                                $bSwitchValue       = (isset($sent) && $sent!='N')?"1":"0";
-                                $bRemindSwitchValue = (isset($remindersent) && $remindersent!='N')?"1":"0";
-                            ?>
-
-                            <?php
-                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                    'name' => "sent-switch",
-                                    'id'=>"sent-switch",
-                                    'htmlOptions'=>array('class'=>"YesNoDateSwitch"),
-                                    'value' => $bSwitchValue,
-                                    'onLabel'=>gT('Yes'),
-                                    'offLabel' => gT('No')));
-                            ?>
-
-                            <div id="sent-date-container" class="date-container" <?php if(!$bSwitchValue):?>style="display: none;"<?php endif;?>>
-                                <?php
-                                Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
-                                    'name' => "sent-date",
-                                    'id'   => "sent-date",
-                                    'htmlOptions'=>array('class'=>"YesNoDatePicker"),
-                                    'value' => isset($sent) ? $sent : '',
-                                    'pluginOptions' => array(
-                                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                        'allowInputToggle' =>true,
-                                        'showClear' => true,
-                                        'tooltips' => array(
-                                            'clear'=> gT('Clear selection'),
-                                            'prevMonth'=> gT('Previous month'),
-                                            'nextMonth'=> gT('Next month'),
-                                            'selectYear'=> gT('Select year'),
-                                            'prevYear'=> gT('Previous year'),
-                                            'nextYear'=> gT('Next year'),
-                                            'selectDecade'=> gT('Select decade'),
-                                            'prevDecade'=> gT('Previous decade'),
-                                            'nextDecade'=> gT('Next decade'),
-                                            'prevCentury'=> gT('Previous century'),
-                                            'nextCentury'=> gT('Next century'),
-                                            'selectTime'=> gT('Select time')
-                                        ),
-                                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
-                                        )
-                                    ));
+                        <div class="col-sm-4" id="sent-yes-no-date-container">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <?php
+                                        $bSwitchValue       = (isset($sent) && $sent!='N')?"1":"0";
+                                        $bRemindSwitchValue = (isset($remindersent) && $remindersent!='N')?"1":"0";
                                     ?>
+                                    <?php
+                                        $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                            'name' => "sent-switch",
+                                            'id'=>"sent-switch",
+                                            'htmlOptions'=>array('class'=>"YesNoDateSwitch"),
+                                            'value' => $bSwitchValue,
+                                            'onLabel'=>gT('Yes'),
+                                            'offLabel' => gT('No')));
+                                    ?>
+                                </div>
+
+                                <div class="col-sm-8">
+                                    <div id="sent-date-container" class="date-container" <?php if(!$bSwitchValue):?>style="display: none;"<?php endif;?>>
+                                        <?php
+                                        Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                                            'name' => "sent-date",
+                                            'id'   => "sent-date",
+                                            'htmlOptions'=>array('class'=>"YesNoDatePicker"),
+                                            'value' => isset($sent) ? $sent : '',
+                                            'pluginOptions' => array(
+                                                'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                                'allowInputToggle' =>true,
+                                                'showClear' => true,
+                                                'tooltips' => array(
+                                                    'clear'=> gT('Clear selection'),
+                                                    'prevMonth'=> gT('Previous month'),
+                                                    'nextMonth'=> gT('Next month'),
+                                                    'selectYear'=> gT('Select year'),
+                                                    'prevYear'=> gT('Previous year'),
+                                                    'nextYear'=> gT('Next year'),
+                                                    'selectDecade'=> gT('Select decade'),
+                                                    'prevDecade'=> gT('Previous decade'),
+                                                    'nextDecade'=> gT('Next decade'),
+                                                    'prevCentury'=> gT('Previous century'),
+                                                    'nextCentury'=> gT('Next century'),
+                                                    'selectTime'=> gT('Select time')
+                                                ),
+                                                'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                                                )
+                                            ));
+                                            ?>
+                                        </div>
+                                </div>
                             </div>
                             <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)){echo $sent;}else{echo "N";}?>" />
                         </div>
 
                         <!-- Reminder sent -->
                         <label class="col-sm-2 control-label"  for='remindersent'><?php eT("Reminder sent?"); ?></label>
-                        <div class="col-sm-3" id="remind-yes-no-date-container">
-                            <?php
-                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                    'name' => "remind-switch",
-                                    'id'=>"remind-switch",
-                                    'htmlOptions'=>array('class'=>"YesNoDateSwitch"),
-                                    'value' => $bRemindSwitchValue,
-                                    'onLabel'=>gT('Yes'),
-                                    'offLabel' => gT('No')));
-                            ?>
+                        <div class="col-sm-4" id="remind-yes-no-date-container">
 
-                            <div id="remind-date-container" class="date-container" <?php if(!$bRemindSwitchValue):?>style="display: none;"<?php endif;?>>
-                            <?php
-                            Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
-                                'name' => "remind-date",
-                                'id'=>"remind-date",
-                                'htmlOptions'=>array('class'=>"YesNoDatePicker"),
-                                'value' => isset($remindersent) ? $remindersent : '',
-                                'pluginOptions' => array(
-                                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                    'allowInputToggle' =>true,
-                                    'showClear' => true,
-                                    'tooltips' => array(
-                                        'clear'=> gT('Clear selection'),
-                                        'prevMonth'=> gT('Previous month'),
-                                        'nextMonth'=> gT('Next month'),
-                                        'selectYear'=> gT('Select year'),
-                                        'prevYear'=> gT('Previous year'),
-                                        'nextYear'=> gT('Next year'),
-                                        'selectDecade'=> gT('Select decade'),
-                                        'prevDecade'=> gT('Previous decade'),
-                                        'nextDecade'=> gT('Next decade'),
-                                        'prevCentury'=> gT('Previous century'),
-                                        'nextCentury'=> gT('Next century'),
-                                        'selectTime'=> gT('Select time')
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <?php
+                                        $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                            'name' => "remind-switch",
+                                            'id'=>"remind-switch",
+                                            'htmlOptions'=>array('class'=>"YesNoDateSwitch"),
+                                            'value' => $bRemindSwitchValue,
+                                            'onLabel'=>gT('Yes'),
+                                            'offLabel' => gT('No')));
+                                    ?>
+                                </div>
 
-                                    ),
-                                    'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
-                                )
-                            ));
-                            ?>
-                        </div>
+                                <div class="col-sm-8">
+
+                                    <div id="remind-date-container" class="date-container" <?php if(!$bRemindSwitchValue):?>style="display: none;"<?php endif;?>>
+                                    <?php
+                                    Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                                        'name' => "remind-date",
+                                        'id'=>"remind-date",
+                                        'htmlOptions'=>array('class'=>"YesNoDatePicker"),
+                                        'value' => isset($remindersent) ? $remindersent : '',
+                                        'pluginOptions' => array(
+                                            'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                            'allowInputToggle' =>true,
+                                            'showClear' => true,
+                                            'tooltips' => array(
+                                                'clear'=> gT('Clear selection'),
+                                                'prevMonth'=> gT('Previous month'),
+                                                'nextMonth'=> gT('Next month'),
+                                                'selectYear'=> gT('Select year'),
+                                                'prevYear'=> gT('Previous year'),
+                                                'nextYear'=> gT('Next year'),
+                                                'selectDecade'=> gT('Select decade'),
+                                                'prevDecade'=> gT('Previous decade'),
+                                                'nextDecade'=> gT('Next decade'),
+                                                'prevCentury'=> gT('Previous century'),
+                                                'nextCentury'=> gT('Next century'),
+                                                'selectTime'=> gT('Select time')
+
+                                            ),
+                                            'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                                        )
+                                    ));
+                                    ?>
+                                    </div>
+                                </div>
+                            </div>
                             <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent)){echo $remindersent;}else{echo "N";}?>" />
                         </div>
                     </div>
@@ -293,14 +313,14 @@
                         <!-- Reminder count -->
                         <?php if ($subaction == "edit"): ?>
                             <label class="col-sm-2 control-label"  for='remindercount'><?php eT("Reminder count:"); ?></label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <input class='form-control' type='number' size='6' id='remindercount' name='remindercount' value="<?php echo $remindercount; ?>" />
                             </div>
                         <?php endif; ?>
 
                         <!-- Uses left -->
                         <label class="col-sm-2 control-label"  for='usesleft'><?php eT("Uses left:"); ?></label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <input class='form-control' type='number' size='20' id='usesleft' name='usesleft' value="<?php if (isset($usesleft)){echo $usesleft;}else{echo "1";}?>" />
                         </div>
                     </div>
@@ -311,7 +331,7 @@
 
                         <!-- From -->
                         <label class="col-sm-2 control-label"  for='validfrom'><?php eT("Valid from"); ?>:</label>
-                        <div class="col-sm-3 has-feedback">
+                        <div class="col-sm-4 has-feedback">
                             <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                                 'name' => "validfrom",
                                 'value' => isset($validfrom) ? $validfrom : '',
@@ -342,7 +362,7 @@
 
                         <!-- To -->
                         <label class="col-sm-2 control-label"  for='validuntil'><?php eT('Until:'); ?></label>
-                            <div class="col-sm-3 has-feedback">
+                            <div class="col-sm-4 has-feedback">
                                 <?php
                                     Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                                         'name' => "validuntil",
@@ -414,3 +434,6 @@
         </div>
     </div>
 </div>
+
+<script>
+</script>

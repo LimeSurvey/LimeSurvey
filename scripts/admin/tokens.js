@@ -39,6 +39,42 @@ $.fn.YesNoDate = function(options)
         })
     });
 }
+
+/**
+ * Provide to this function a element containing form-groups,
+ * it will stick the text labels on its border
+ */
+$.fn.stickLabelOnLeft  = function(options)
+{
+    var that = $(this);
+    var formgroups = that.find('.form-group');
+    $maxWidth  = 0;
+    $elWidestLeftLabel = '';
+    formgroups.each( function() {
+        var elLeftLabel = $(this).find('label').first();
+        $LeftLabelWidth = elLeftLabel.textWidth();
+
+        if ($LeftLabelWidth > $maxWidth )
+        {
+            $maxWidth =$LeftLabelWidth;
+            $elWidestLeftLabel = elLeftLabel;
+        }
+    });
+
+    $distanceFromBorder = ( $maxWidth - $elWidestLeftLabel.width());
+    that.css({
+        position: "relative",
+        left: $distanceFromBorder,
+    });
+}
+
+// Calculate width of text from DOM element or string. By Phil Freo <http://philfreo.com>
+$.fn.textWidth = function(text, font) {
+    if (!$.fn.textWidth.fakeEl) $.fn.textWidth.fakeEl = $('<span>').hide().appendTo(document.body);
+    $.fn.textWidth.fakeEl.text(text || this.val() || this.text()).css('font', font || this.css('font'));
+    return $.fn.textWidth.fakeEl.width();
+};
+
 /**
  * Scroll the pager and the footer when scrolling horizontally
  */
@@ -72,13 +108,35 @@ $(document).ready(function(){
 
             // html contains the buttons
             success : function(html, statut){
-                $ajaxLoader.hide();
+
                 $('#modal-content').empty().append(html);                       // Inject the returned HTML in the modal body
 
                 // Apply the yes/no/date jquery plugin to the elements loaded via ajax
                 $('#sent-yes-no-date-container').YesNoDate();
                 $('#remind-yes-no-date-container').YesNoDate();
                 $('#completed-yes-no-date-container').YesNoDate();
+
+
+                var elGeneral  = $('#general');
+
+                // Fake hide of modal content, so we can still get width of inner elements like labels
+                var previousCss  = $("#modal-content").attr("style");
+                $("#modal-content")
+                    .css({
+                        position:   'absolute', // Optional if #myDiv is already absolute
+                        visibility: 'hidden',
+                        display:    'block'
+                    });
+
+                // Stick the labels on the left side
+                // Sometime, the content is loaded after modal is shown, sometimes not. So, we wait 200ms just in case (For label width)
+                setTimeout(function(){
+                    elGeneral.stickLabelOnLeft();
+                    $ajaxLoader.hide();
+                    // Remove fake hide
+                    $("#modal-content").attr("style", previousCss ? previousCss : "");
+                }, 200);
+
             },
             error :  function(html, statut){
                 $ajaxLoader.hide();
