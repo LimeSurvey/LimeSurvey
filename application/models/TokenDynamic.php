@@ -103,9 +103,10 @@ class TokenDynamic extends LSActiveRecord
     */
     public function relations()
     {
+        SurveyDynamic::sid(self::$sid);
         return array(
             'survey'      => array(self::BELONGS_TO, 'Survey', array(), 'condition'=>'sid='.self::$sid, 'together' => true),
-            'responses'   => array(self::HAS_MANY, 'SurveyDynamic', array('token'=>'token')),
+            'responses'   => array(self::HAS_MANY, 'SurveyDynamic', array('token' => 'token'))
         );
     }
 
