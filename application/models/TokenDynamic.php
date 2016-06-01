@@ -16,7 +16,7 @@
 class TokenDynamic extends LSActiveRecord
 {
     protected static $sid = 0;
-    public $emailstatus='OK'; // Default value for email status
+    public $emailstatus; // Default value for email status
 
     /**
      * Returns the static model of Settings table
@@ -601,7 +601,7 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'tid',
                 'value'=>'$data->tid',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs text-right'),
             ),
 
 
@@ -610,7 +610,7 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'firstname',
                 'value'=>'$data->firstname',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs name'),
             ),
 
             array(
@@ -618,7 +618,7 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'lastname',
                 'value'=>'$data->lastname',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs name'),
             ),
 
             array(
@@ -626,7 +626,7 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'email',
                 'value'=>'$data->email',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs name'),
             ),
 
             array(
@@ -676,7 +676,7 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'remindercount',
                 'value'=>'$data->remindercount',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'htmlOptions' => array('class' => 'hidden-xs text-right'),
             ),
 
             array(
@@ -693,7 +693,7 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'usesleft',
                 'value'=>'$data->usesleft',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-center'),
+                'htmlOptions' => array('class' => 'hidden-xs text-right'),
             ),
             array(
                 'header' => gT('Valid from'),

@@ -1928,6 +1928,11 @@ h3,.h3 {
     background-color: #f5f5f5;
 }
 
+
+#token-grid .table .filters > td .filter-container {
+    padding: 0px;
+}
+
 #token-grid table.table {
     width: none;
     max-width: none;
@@ -1942,7 +1947,7 @@ h3,.h3 {
 }
 
 #token-grid table thead tr th {
-    white-space: nowrap;
+    /*white-space: nowrap;*/
 }
 
 #token-grid table tr.odd .blank_button
@@ -1962,6 +1967,10 @@ h3,.h3 {
 
     border-color: #eee; /* from yiistrap.css*/
     background-color: #eee;
+}
+
+#token-grid .name {
+    min-width: 200px;
 }
 
 .scrolling-wrapper
