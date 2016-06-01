@@ -86,6 +86,7 @@ $(document).ready(function(){
 
     if($('#sent-yes-no-date-container').length > 0)
     {
+        $('#general').stickLabelOnLeft();
         $('#sent-yes-no-date-container').YesNoDate();
         $('#remind-yes-no-date-container').YesNoDate();
         $('#completed-yes-no-date-container').YesNoDate();

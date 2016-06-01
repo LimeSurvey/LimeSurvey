@@ -1970,7 +1970,7 @@ h3,.h3 {
 }
 
 #token-grid .name {
-    min-width: 190px;
+    min-width: 150px;
 }
 
 .scrolling-wrapper
@@ -1988,7 +1988,7 @@ h3,.h3 {
     max-width: 12px;
 }
 
-#edittoken .tab-content #general .form-group .col-sm-4 .col-sm-4, #edittoken .tab-content #general .form-group .col-sm-4 .col-sm-8 
+#edittoken .tab-content #general .form-group .col-sm-4 .col-sm-4, #edittoken .tab-content #general .form-group .col-sm-4 .col-sm-8
 {
     padding: 0;
 }
