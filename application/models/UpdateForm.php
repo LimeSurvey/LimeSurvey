@@ -568,7 +568,7 @@ class UpdateForm extends CFormModel
         $iAssetVersionNumber  = Yii::app()->getConfig('assetsversionnumber');        // From version.php
         $iCurrentAssetVersion = GetGlobalSetting('AssetsVersion');                       // From setting_global table
 
-        if ( intval($iAssetVersionNumber) > intval($iCurrentAssetVersion) )
+        if ( intval($iAssetVersionNumber) != intval($iCurrentAssetVersion) )
         {
             self::republishAssets();
             setGlobalSetting('AssetsVersion',$iAssetVersionNumber);
