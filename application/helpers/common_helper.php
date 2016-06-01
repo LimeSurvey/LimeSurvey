@@ -5339,10 +5339,20 @@ function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 */
 function convertToGlobalSettingFormat($sDate)
 {
-    $oDate           = new DateTime($sDate);                                    // We generate the Date object (PHP will deal with the format of the string)
-    $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);    // We get the Global Setting date format
-    $sDate           = $oDate->format($sDateformatdata['phpdate']);             // We apply it to the Date object to generate a string date
-    return $sDate;                                                              // We return the string date
+    try
+    {
+        $oDate           = new DateTime($sDate);                                    // We generate the Date object (PHP will deal with the format of the string)
+        $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);    // We get the Global Setting date format
+        $sDate           = $oDate->format($sDateformatdata['phpdate']);             // We apply it to the Date object to generate a string date
+        return $sDate;                                                              // We return the string date
+    }
+    catch(Exception $e) {
+        $oDate           = new DateTime('1/1/1980');                                    // We generate the Date object (PHP will deal with the format of the string)
+        $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);    // We get the Global Setting date format
+        $sDate           = $oDate->format($sDateformatdata['phpdate']);             // We apply it to the Date object to generate a string date
+        return $sDate;                                                              // We return the string date
+
+    }
 }
 
 /**
