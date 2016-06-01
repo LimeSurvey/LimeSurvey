@@ -134,7 +134,7 @@ class TemplateConfiguration extends CFormModel
         // condition for user's template prior to 160219 (before this build, this configuration field wasn't present in the config.xml)
         $this->filesPath    = (isset($this->config->engine->filesdirectory))? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR : $this->path . '/files/';
         // condition for user's template prior to 160504
-        $this->overwrite_question_views    = (isset($this->config->engine->overwrite_question_views))? $this->config->engine->overwrite_question_views=='true' : false;
+        $this->overwrite_question_views    = (isset($this->config->engine->overwrite_question_views))? ( $this->config->engine->overwrite_question_views=='true' || $this->config->engine->overwrite_question_views=='yes' ) : false;
 
         $this->cssFramework = $this->config->engine->cssframework;
         $this->packages     = (array) $this->config->engine->packages->package;
