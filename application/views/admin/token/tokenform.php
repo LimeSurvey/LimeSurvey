@@ -170,12 +170,12 @@
                         </div>
 
                         <!-- Email Status -->
-                        <div class="form-group">
+
                             <label class="col-sm-2 control-label"  for='emailstatus'><?php eT("Email Status"); ?>:</label>
                             <div class="col-sm-4">
                                 <input class='form-control' type='text' maxlength='320' size='50' id='emailstatus' name='emailstatus' placeholder='OK' value="<?php if (isset($emailstatus)){echo $emailstatus;}else{echo "OK";}?>" />
                             </div>
-                        </div>
+
                     </div>
 
 
@@ -321,7 +321,7 @@
                                     id="validfrom"
                                     type="text"
                                     value="<?php echo isset($validfrom) ? $validfrom : ''?>"
-                                    name="remind-date"
+                                    name="validfrom"
                                     data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:MM"
                                     data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>"
                                 >
@@ -338,7 +338,7 @@
                                         id="validuntil"
                                         type="text"
                                         value="<?php echo isset($validuntil) ? $validuntil : ''?>"
-                                        name="remind-date"
+                                        name="validuntil"
                                         data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:MM"
                                         data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>"
                                     >

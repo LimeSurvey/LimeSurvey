@@ -1970,7 +1970,7 @@ h3,.h3 {
 }
 
 #token-grid .name {
-    min-width: 200px;
+    min-width: 190px;
 }
 
 .scrolling-wrapper
@@ -1986,4 +1986,9 @@ h3,.h3 {
 .blank_button span
 {
     max-width: 12px;
+}
+
+#edittoken .tab-content #general .form-group .col-sm-4 .col-sm-4, #edittoken .tab-content #general .form-group .col-sm-4 .col-sm-8 
+{
+    padding: 0;
 }
