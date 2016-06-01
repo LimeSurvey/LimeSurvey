@@ -2402,7 +2402,7 @@ function do_multiplechoice_withcomments($ia)
             $value = '';
         }
 
-        $sRows .= doRender('/survey/questions/multiplechoice_with_comments/rows/answer_row', array(
+        $sRows .= doRender('/survey/questions/multiplechoice_with_comments/rows/answer_row_other', array(
             'liclasses'                     => 'other question-item answer-item checkbox-text-item other-item',
             'liid'                          => 'javatbd'.$myfname,
             'kpclass'                       => $kpclass,
