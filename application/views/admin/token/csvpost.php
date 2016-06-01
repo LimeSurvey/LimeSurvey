@@ -60,7 +60,7 @@
 
                             <?php if (!empty($aInvalidFormatList)) { ?>
                                 <li>
-                                    <?php printf(gT("%s lines had a mismatching number of fields."), count($invalidformatlist)); ?>
+                                    <?php printf(gT("%s lines had a mismatching number of fields."), count($aInvalidFormatList)); ?>
                                     [<a href='#' onclick='$("#invalidformatlist").toggle();'><?php eT("List"); ?></a>]
                                     <div class='badtokenlist' id='invalidformatlist' style='display: none;'>
                                         <ul class="list-unstyled">
