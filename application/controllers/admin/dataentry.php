@@ -886,7 +886,7 @@ class dataentry extends Survey_Common_Action
                             $thisqid=$fname['qid'];
                             $currentvalues=array();
                             $myfname=$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid'];
-                            $aDataentryoutput .= '<div id="question'.$thisqid.'" class="ranking-answers"><ul class="answers-list">';
+                            $aDataentryoutput .= '<div id="question'.$thisqid.'" class="ranking-answers"><ul class="answers-list select-list">';
                             while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid']==$thisqid)
                             {
                                 //Let's get all the existing values into an array
@@ -941,6 +941,7 @@ class dataentry extends Survey_Common_Action
 
                             $this->registerScriptFile( 'SCRIPT_PATH', 'ranking.js');
                             $this->registerCssFile( 'PUBLIC', 'ranking.css' );
+                            $this->registerCssFile( 'PUBLIC', 'jquery-ui-custom.css' );
 
                             $aDataentryoutput .= "<script type='text/javascript'>\n"
                                 .  "  <!--\n"
