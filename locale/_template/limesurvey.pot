@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-06-02 10:50:53+00:00\n"
+"POT-Creation-Date: 2016-06-02 10:54:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16832,7 +16832,7 @@ msgid "Are you sure you want to delete the selected participants?"
 msgstr ""
 
 #: application/views/admin/token/massive_actions/_selector.php:60
-msgid "This will add all those participants to central database."
+msgid "This will add the selected participants to the central participant database (CPDB)."
 msgstr ""
 
 #: application/views/admin/token/remind.php:92
