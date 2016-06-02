@@ -1338,18 +1338,6 @@ class Survey_Common_Action extends CAction
     {
         $oAdminTheme = AdminTheme::getInstance();
         $oAdminTheme->registerScriptFile( $cPATH, $sFile );
-        /*
-        if (!YII_DEBUG)
-        {
-            $path = ($cPATH == 'ADMIN_SCRIPT_PATH')?ADMIN_SCRIPT_PATH:SCRIPT_PATH;                                  // We get the wanted constant
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $path . $sFile ));     // We publish the asset
-        }
-        else
-        {
-            $url = ($cPATH == 'ADMIN_SCRIPT_PATH')?Yii::app()->getConfig('adminscripts'):Yii::app()->getConfig('generalscripts');   // We get the wanted url defined in config
-            App()->getClientScript()->registerScriptFile( $url . $sFile );                                                          // We publish the script
-        }
-        */
     }
 
     /**
@@ -1362,19 +1350,6 @@ class Survey_Common_Action extends CAction
     {
         $oAdminTheme = AdminTheme::getInstance();
         $oAdminTheme->registerCssFile( $sPath, $sFile );
-        /*
-        if (!YII_DEBUG)
-        {
-            $path = ($sPath == 'PUBLIC')?dirname(Yii::app()->request->scriptFile).'/styles-public/':ADMIN_CSS_PATH;                             // We get the wanted constant
-            App()->getClientScript()->registerCssFile(  App()->getAssetManager()->publish($path.$sFile) );                         // We publish the asset
-        }
-        else
-        {
-            $url = ($sPath == 'PUBLIC')?Yii::app()->getConfig('publicstyleurl'):Yii::app()->getConfig('adminstyleurl').'/css/';     // We get the wanted url defined in config
-            App()->getClientScript()->registerCssFile( $url.$sFile );                                                               // We publish the css file
-
-        }
-        */
     }
 
     protected function _filterImportedResources($extractdir, $destdir)

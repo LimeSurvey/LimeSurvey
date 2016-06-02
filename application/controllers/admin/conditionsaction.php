@@ -1143,7 +1143,7 @@ class conditionsaction extends Survey_Common_Action {
         $aViewUrls = array();
 
         $oQuestion = Question::model()->find('qid=:qid', array(':qid'=>$qid));
-        $aData['oQuestion']=$oQuestion;        
+        $aData['oQuestion']=$oQuestion;
 
         $aData['surveyid'] = $iSurveyID;
         $aData['qid'] = $qid;
@@ -1619,7 +1619,8 @@ class conditionsaction extends Survey_Common_Action {
             if (isset($conditionsList) && is_array($conditionsList))
             {
                 //TIBO
-                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'jquery/jquery.multiselect.min.js');
+                $this->registerScriptFile( 'SCRIPT_PATH', 'jquery.multiselect.min.js');
+                $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'checkgroup.js');
 
                 // TODO
                 $aViewUrls['output'] .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( { autoOpen: true, noneSelectedText: '".gT("No questions selected")."', checkAllText: '".gT("Check all")."', uncheckAllText: '".gT("Uncheck all")."', selectedText: '# ".gT("selected")."', beforeclose: function(){ return false;},height: 200 } ); });</script>";

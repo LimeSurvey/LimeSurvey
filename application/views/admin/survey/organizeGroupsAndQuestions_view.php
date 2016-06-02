@@ -1,6 +1,6 @@
 <?php
     App()->getClientScript()->registerPackage('jquery-nestedSortable');
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'organize.js');
+    $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'organize.js');
     App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . 'organize.css');
 ?>
 

@@ -812,8 +812,7 @@ class statistics extends Survey_Common_Action {
      */
     protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
     {
-        $switch = Yii::app()->getBaseUrl(true).'/application/extensions/yiiwheels/widgets/switch/assets/js/bootstrap-switch.min.js ';
-        App()->getClientScript()->registerScriptFile( $switch );
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'bootstrap-switch.min.js');
 
         $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']), array('simpleStatistics', 'admin/statistics/sa/index') );
 

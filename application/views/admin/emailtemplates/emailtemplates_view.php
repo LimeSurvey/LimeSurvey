@@ -1,6 +1,7 @@
 <?php
     $surveyinfo = getSurveyInfo($surveyid);
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'emailtemplates.js');
+
+    $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'emailtemplates.js');
     App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . 'popup-dialog.css');
 
     $count=0;

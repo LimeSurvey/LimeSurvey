@@ -462,7 +462,7 @@ class RegisterController extends LSYii_Controller {
         if(empty(App()->clientScript->scripts)){
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('jquery-touch-punch');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");            
             useFirebug();
             $this->render('/register/display',$aViewData);
         }else{

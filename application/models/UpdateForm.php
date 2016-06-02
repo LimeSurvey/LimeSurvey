@@ -377,17 +377,17 @@ class UpdateForm extends CFormModel
         Template::model()->forceAssets();
         AdminTheme::forceAssets();
 
-        // Clear asset directory, but not the directory itself not the index.html at the root ^^
+        // Delete all the content in the asset directory, but not the directory itself nor the index.html file at its root ^^
         $sAssetsDir = Yii::app()->getConfig('tempdir') . '/assets/';
         $dir = dir($sAssetsDir);
         while (false !== $entry = $dir->read())
         {
-            if ($entry == '.' || $entry == '..' ||  $entry == 'index.html' )  {
+            if ($entry == '.' || $entry == '..' ||  $entry == 'index.html' )
+            {
                 continue;
             }
             rmdirr($sAssetsDir . DIRECTORY_SEPARATOR . $entry);
         }
-
     }
 
 
