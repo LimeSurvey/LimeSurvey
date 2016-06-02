@@ -1,51 +1,79 @@
-<?php if (isset($secerror))
-    {?>
-    <span class='error'><?php echo $secerror;?></span><br />
-    <?php
-} ?>
-<div id="wrapper">
-    <p id="tokenmessage">
-        <?php eT("This is a controlled survey. You need a valid token to participate.");?><br />
-        <?php eT("If you have been issued a token, please enter it in the box below and click continue."); ?>
-    </p>
-    <script type='text/javascript'>var focus_element='#token';</script>
-    <?php echo CHtml::form(array("/survey/index/sid/{$surveyid}"), 'post', array('id'=>'tokenform'));?>
-        <ul>
-            <li>
-                <label for='token'><?php eT("Token");?></label><input class='text <?php echo $kpclass?>' id='token' type='text' name='token' />";
-
-                <input type='hidden' name='sid' value='<?php echo $surveyid;?>' id='sid' />
-                <input type='hidden' name='lang' value='<?php echo $templang;?>' id='lang' />
-                <?php
-                    if ($newtest)
-                    { ?>
-                    <input type='hidden' name='newtest' value='Y' id='newtest' />
-                    <?php
-                    }
-
-                    // If this is a direct Reload previous answers URL, then add hidden fields
-                    if (isset($loadall) && isset($scid) && isset($loadname) && isset($loadpass))
-                    {?>
-                    <input type='hidden' name='loadall' value='<?php echo htmlspecialchars($loadall);?>' id='loadall' />
-                    <input type='hidden' name='scid' value='<?php echo $scid;?>' id='scid' />
-                    <input type='hidden' name='loadname' value='<?php echo htmlspecialchars($loadname);?>' id='loadname' />
-                    <input type='hidden' name='loadpass' value='<?php echo htmlspecialchars($loadpass);?>' id='loadpass' />
-                    <?php
-                    }
+<div class="tokenmessage-wrapper">
+    <?php if (isset($secerror)): ?>
+        <span class='error'>$secerror</span><br/>
+    <?php endif; ?>
+    <script type='text/javascript'>var focus_element = '#token';</script>
+    <div class="row">
+        <div class="col-sm-12">
+            <p id="tokenmessage">
+                <?php eT("This is a controlled survey. You need a valid token to participate."); ?><br/>
+                <?php eT("If you have been issued a token, please enter it in the box below and click continue."); ?>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <?php echo CHtml::beginForm(array("/survey/index/sid/.$iSurveyId."), 'post', array(
+            'id' => 'tokenform',
+            'class' => 'col-xs-12 col-sm-6'
+        )); ?>
+        <div class="row form-group">
+            <div class="col-xs-12 col-sm-6">
+                <?php echo CHtml::label(eT("Token"), 'token', array(
+                    'class' => 'control-label ' + '$sKpClass'));
                 ?>
-            </li>
-            <?php
-                if ($bCaptchaEnabled)
-                {?>
-                <li>
-                    <label for='captchaimage'><?php eT("Security question");?></label>
-                    <img id='captchaimage' src='<?php echo Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)?>' alt='captcha' />
-                    <input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
-                </li>
-                <?php
-            }?>
-            <li>
-                <input class='submit' type='submit' value='<?php eT("Continue");?>' />
-            </li>
-        </ul>
-    </form></div>";
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <?php echo CHtml::textField('token', '', array(
+                    'class' => 'text form-control ' + '$sKpClass',
+                    'id' => 'token'))
+                ?>
+                <?php echo CHtml::hiddenField('sid', $iSurveyId, array('id' => 'sid')); ?>
+                <?php echo CHtml::hiddenField('lang', $sLangCode, array('id' => 'lang')); ?>
+
+                <?php if ($bNewTest): ?>
+                    <?php echo CHtml::hiddenField('lang', $sLangCode, array('id' => 'lang')); ?>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php
+        if ($bDirectReload) : ?>
+            <?php echo CHtml::hiddenField('loadall', $iSurveyId, array('id' => 'loadall')); ?>
+            <?php echo CHtml::hiddenField('scid', $sCid, array('id' => 'scid')); ?>
+            <?php echo CHtml::hiddenField('loadname', $Loadname, array('id' => 'loadname')); ?>
+            <?php echo CHtml::hiddenField('loadpass', $sLoadpass, array('id' => 'loadpass')); ?>
+        <?php endif; ?>
+
+        <?php if ($bCaptchaEnabled): ?>
+        <div class="row form-group">
+            <div class="col-xs-12 col-sm-6">
+                <?php echo CHtml::label(eT("Security question"), 'captchafield', array(
+                    'class' => 'col-sm-6 control-label captchaimage' + $sKpClass));
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="row form-group">
+                    <div class="col-xs-6">
+                        <?php echo CHtml::image($bCaptchaImgSrc, 'DORE', array(
+                            'class' => 'col-sm-6 control-label ' + $sKpClass,
+                            'id' => 'captchaimage',
+                            'alt' => 'captcha'
+                        )); ?></div>
+                    <div class="col-xs-6">
+                        <?php echo CHtml::textField('loadsecurity', '', array(
+                            'id' => 'captchafield',
+                            'class' => 'text form-control ' + '$sKpClass',
+                            'size' => 5,
+                            'maxlength' => 3
+                        )) ?>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
+        <!-- Submit area -->
+        <div class="row form-group">
+            <?php echo CHtml::submitButton(gT("Continue"), array('class' => 'btn btn-default button submit pull-right')); ?>
+        </div>
+        <?php echo CHtml::endForm(); ?>
+    </div>
+</div>
