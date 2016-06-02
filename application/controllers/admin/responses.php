@@ -1547,7 +1547,7 @@ class responses extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction='', $aViewUrls = array(), $aData = array())
     {
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'browse.js');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . 'browse.css');// Don't find the way to register a css file in /styles/ (global css)
+        $this->registerCssFile( 'PUBLIC', 'browse.css' );
 
         $iSurveyId = $aData['iSurveyId'];
         $aData['display']['menu_bars'] = false;

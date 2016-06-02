@@ -1630,8 +1630,8 @@ class ExpressionManager {
         }
         if($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
         {
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "expressions.css" );
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "expression.js");
+            $this->registerCssFile( 'PUBLIC', 'expressions.css' );
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'expression.js');            
         }
         $sClass='em-expression';
         $sClass.=($bHaveError)?" em-haveerror":"";
