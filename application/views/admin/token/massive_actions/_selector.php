@@ -16,9 +16,9 @@
             data-keepopen="no"
             data-sid="<?php echo $_GET['surveyid']?>"
             data-action="delete"
-            data-action-title="<?php eT('Delete tokens'); ?>"
+            data-action-title="<?php eT('Delete survey participants'); ?>"
             data-modal-warning-title="<?php eT('Warning');?>"
-            data-modal-warning-text="<?php eT('Are you sure you want to delete all those tokens?');?>">
+            data-modal-warning-text="<?php eT('Are you sure you want to delete the selected participants?');?>">
                 <span class="text-danger glyphicon glyphicon-trash"></span>
                 <?php eT('Delete');?>
             </a>
