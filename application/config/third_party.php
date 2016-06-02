@@ -8,7 +8,7 @@ return array(
 
     // jQuery
     'jquery' => array(
-        'baseUrl' => 'third_party/jquery/',
+        'basePath' => 'third_party.jquery',
         'js' => array(
             'jquery-2.2.3.min.js'
         ),
@@ -31,7 +31,7 @@ return array(
 
     'fontawesome' => array(
         //'basePath' => 'third_party.bootstrap', // Need fix third_party alias
-        'baseUrl' => 'third_party/fontawesome/',
+        'basePath' => 'third_party.fontawesome',
         'css'=> array(
             'css/font-awesome.min.css',
         ),
@@ -39,7 +39,7 @@ return array(
 
     // jQuery UI
     'jqueryui' => array(
-        'baseUrl' => 'third_party/jqueryui/',
+        'basePath' => 'third_party.jqueryui',
         'js' => array(
             'js/jquery-ui-1.11.4.min.js'
         ),
@@ -53,7 +53,7 @@ return array(
 
     // jQgrid
     'jqgrid' => array(
-        'baseUrl' => 'third_party/jqgrid/',
+        'basePath' => 'third_party.jqgrid',
         'js' => array(
             'js/jquery.jqGrid.min.js',
             'js/i18n/grid.locale-en.js',
@@ -69,7 +69,7 @@ return array(
     ),
 
     'jqgrid.addons' => array(
-        'baseUrl' => 'third_party/jqgrid/plugins/',
+        'basePath' => 'third_party.jqgrid.plugins',
         'js' => array(
             'grid.addons.js'
         ),
@@ -81,7 +81,7 @@ return array(
 
     // jquery bindWithDelay
     'jquery-bindWithDelay' => array(
-        'baseUrl' => 'third_party/jquery-bindWithDelay',
+        'basePath' => 'third_party.jquery-bindWithDelay',
         'js' => array(
             'bindWithDelay.js'
         ),
@@ -92,7 +92,7 @@ return array(
 
     // jQuery Cookie
     'jquery-cookie' => array(
-        'baseUrl' => 'third_party/jquery-cookie',
+        'basePath' => 'third_party.jquery-cookie',
         'js' => array(
             'jquery.cookie.js'
         ),
@@ -103,7 +103,7 @@ return array(
 
     // jQuery Superfish
     'jquery-superfish' => array(
-        'baseUrl' => 'third_party/jquery-superfish',
+        'basePath' => 'third_party.jquery-superfish',
         'js' => array(
             'js/superfish.js',
             'js/hoverIntent.js'
@@ -118,7 +118,7 @@ return array(
 
     // jQuery json
     'jquery-json' => array(
-        'baseUrl' => 'third_party/jquery-json',
+        'basePath' => 'third_party.jquery-json',
         'js' => array(
             'jquery.json-2.4.min.js'
         ),
@@ -129,7 +129,7 @@ return array(
 
     // jQuery blockUI
     'jquery-blockUI' => array(
-        'baseUrl' => 'third_party/jquery-blockui',
+        'basePath' => 'third_party.jquery-json',
         'js' => array(
             'jquery.blockUI.js'
         ),
@@ -140,7 +140,7 @@ return array(
 
     // qTip2
     'qTip2' => array(
-        'baseUrl' => 'third_party/qTip2',
+        'basePath' => 'third_party.qTip2',
         'js' => array(
             'dist/jquery.qtip.min.js'
         ),
@@ -155,7 +155,7 @@ return array(
 
     // jQuery Table Sorter
     'jquery-tablesorter' => array(
-        'baseUrl' => 'third_party/jquery-tablesorter',
+        'basePath' => 'third_party.jquery-tablesorter',
         'js' => array(
             'jquery.tablesorter.min.js'
         ),
@@ -166,7 +166,7 @@ return array(
 
     // jQuery NestedSortable
     'jquery-nestedSortable' => array(
-        'baseUrl' => 'third_party/jquery-nestedSortable',
+        'basePath' => 'third_party.jquery-nestedSortable',
         'js' => array(
             'jquery.mjs.nestedSortable.js'
         ),
@@ -177,7 +177,7 @@ return array(
 
     // Bootstrap Multiselect
     'bootstrap-multiselect' => array(
-        'baseUrl' => 'third_party/bootstrap-multiselect',
+        'basePath' => 'third_party.bootstrap-multiselect',
         'js' => array(
             'js/bootstrap-multiselect.js',
         ),
@@ -191,7 +191,7 @@ return array(
 
     // Ace
     'ace' => array(
-        'baseUrl' => 'third_party/ace',
+        'basePath' => 'third_party.ace',
         'js' => array(
             'ace.js'
         ),
@@ -202,7 +202,7 @@ return array(
 
     // jQuery Ace
      'jquery-ace' => array(
-        'baseUrl' => 'third_party/jquery-ace',
+         'basePath' => 'third_party.jquery-ace',
         'js' => array(
             'jquery.ace.js',
         ),
@@ -213,7 +213,7 @@ return array(
 
     // jQuery selectboxes
     'jquery-selectboxes' => array(
-        'baseUrl' => 'third_party/jquery-selectboxes/selectboxes',
+        'basePath' => 'third_party.jquery-selectboxes.selectboxes',
         'js' => array(
             'jquery.selectboxes.js'
         ),
@@ -224,7 +224,7 @@ return array(
 
     // jQuery actual
     'jquery-actual' => array(
-        'baseUrl' => 'third_party/jquery-actual/',
+        'basePath' => 'third_party.jquery-actual',
         'js' => array(
             'jquery.actual.min.js'
         ),
@@ -235,7 +235,7 @@ return array(
 
     // jQuery touch punch
     'jquery-touch-punch' => array(
-        'baseUrl' => 'third_party/jquery-touch-punch/',
+        'basePath' => 'third_party.jquery-touch-punch',
         'js' => array(
             'jquery.ui.touch-punch.min.js'
         ),
@@ -244,17 +244,9 @@ return array(
         )
     ),
 
-    // select2
-    'select2' => array(
-        'baseUrl' => 'styles/limebootstrap/assets/',
-        'js' => array('scripts/select2.js'),
-        'depends' => array(
-        ),
-    ),
-
     // leaflet, needed for short text question with map (OSM)
     'leaflet' => array(
-        'baseUrl' => 'third_party/leaflet/',
+        'basePath' => 'third_party.leaflet',
         'js' => array(
             'leaflet.js'
         ),

@@ -30,6 +30,9 @@ $internalConfig = array(
     'defaultController' => 'surveys',
 
     'aliases' => array(
+        // Third party path
+        'third_party' => realpath(__DIR__ . '/../../third_party'),
+
         // yiistrap configuration
         'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
         'questiontypes' => realpath(__DIR__ . '/../extensions/questionTypes'),
