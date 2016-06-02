@@ -1,7 +1,8 @@
 <?php
     App()->getClientScript()->registerPackage('jquery-nestedSortable');
-    $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'organize.js');
-    $this->registerCssFile( 'PUBLIC', 'organize.css' );
+    $oAdminTheme = AdminTheme::getInstance();
+    $oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'organize.js');    
+    $oAdminTheme->registerCssFile( 'PUBLIC', 'organize.css' );
 ?>
 
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(true); ?>'>

@@ -1630,8 +1630,9 @@ class ExpressionManager {
         }
         if($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
         {
-            $this->registerCssFile( 'PUBLIC', 'expressions.css' );
-            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'expression.js');            
+            $oAdminTheme = AdminTheme::getInstance();
+            $oAdminTheme->registerCssFile( 'PUBLIC', 'expressions.css' );
+            $oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'expression.js');
         }
         $sClass='em-expression';
         $sClass.=($bHaveError)?" em-haveerror":"";

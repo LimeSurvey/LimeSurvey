@@ -7,7 +7,8 @@
         <?php
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('jquery-superfish');
-            $this->registerCssFile( 'PUBLIC', 'jquery-ui.css' );
+            $oAdminTheme = AdminTheme::getInstance();
+            $oAdminTheme->registerCssFile( 'PUBLIC', 'jquery-ui.css' );
         ?>
         <script type="text/javascript" src="<?php echo Yii::app()->getConfig('sCKEditorURL') . '/ckeditor.js'; ?>"></script>
     </head>

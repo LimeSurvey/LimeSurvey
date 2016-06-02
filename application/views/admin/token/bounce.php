@@ -108,7 +108,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- buttons -->
                     <div class="buttons control-group  hidden">
                         <button name="save" value="save" class="btn" type="submit">Save bounce settings</button>
@@ -123,5 +123,6 @@
 </div> <!-- Side body -->
 
 <?php
-    $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokenbounce.js');
+    $oAdminTheme = AdminTheme::getInstance();
+    $oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'tokenbounce.js');
 ?>

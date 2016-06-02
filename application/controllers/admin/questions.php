@@ -81,13 +81,17 @@ class questions extends Survey_Common_Action
         $aData['baselang'] = $baselang;
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $iSurveyID, $baselang);
         $DisplayArray = array();
+
         foreach ($aAttributesWithValues as $aAttribute)
         {
             if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default']) || ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default']))
             {
                 if ($aAttribute['inputtype'] == 'singleselect')
                 {
-                    $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
+                    if(isset($aAttribute['options'][$aAttribute['value']]))
+                    {
+                        $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
+                    }
                 }
                 $DisplayArray[] = $aAttribute;
             }

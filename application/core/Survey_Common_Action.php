@@ -626,7 +626,8 @@ class Survey_Common_Action extends CAction
                     {
                         if ($aAttribute['inputtype'] == 'singleselect')
                         {
-                            $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
+                            if(isset($aAttribute['options'][$aAttribute['value']]))
+                                $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
                         }
                         $DisplayArray[] = $aAttribute;
                     }
