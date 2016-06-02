@@ -57,7 +57,7 @@
                         <!-- Custom attibutes -->
                         <li role="presentation" class="">
                             <a data-toggle="tab" href="#custom" aria-expanded="false">
-                                <?php eT('custom attributes'); ?>
+                                <?php eT('Additional attributes'); ?>
                             </a>
                         </li>
                     </ul>
