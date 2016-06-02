@@ -246,7 +246,6 @@ class AdminTheme extends CFormModel
         }
         else
         {
-
             App()->getClientScript()->registerScriptFile( $url . $sFile );                                                          // We publish the script
         }
     }
@@ -281,10 +280,10 @@ class AdminTheme extends CFormModel
 
         // Touch all the admin themes
         $standardTemplatesPath = Yii::app()->getConfig("styledir");
-        $this->touchSubDirectories($standardTemplatesPath);
+        self::touchSubDirectories($standardTemplatesPath);
 
         //Touch all the assets folders of extensions and third party
-        $otherAssets = $this->getOtherAssets();
+        $otherAssets = self::getOtherAssets();
 
         $sRootDir = App()->getConfig("rootdir");
         foreach($otherAssets as $otherAsset )
@@ -292,33 +291,35 @@ class AdminTheme extends CFormModel
             $sDirToTouch = $sRootDir . DIRECTORY_SEPARATOR . $otherAsset;
             if ( is_dir($sDirToTouch))
             {
-                touch($sDirToTouch);
+                if (is_writable($sDirToTouch))
+                    touch($sDirToTouch);
             }
         }
 
 
         // Touch all the root folders of third party
         $sPath = $sRootDir . DIRECTORY_SEPARATOR . 'third_party';
-        $this->touchSubDirectories($sPath);
+        self::touchSubDirectories($sPath);
 
         //Touch all the root folders of extensions
         $sPath = $sRootDir . DIRECTORY_SEPARATOR . 'application'. DIRECTORY_SEPARATOR .'extensions';
-        $this->touchSubDirectories($sPath);
+        self::touchSubDirectories($sPath);
     }
 
-    private function touchSubDirectories( $sPath )
+    static function touchSubDirectories( $sPath )
     {
         $Resource = opendir($sPath);
         while ($Item = readdir($Resource))
         {
             if (is_dir($sPath . DIRECTORY_SEPARATOR . $Item) && $Item != "." && $Item != "..")
             {
-                touch($sPath . DIRECTORY_SEPARATOR . $Item);
+                if (is_writable($sPath . DIRECTORY_SEPARATOR . $Item))
+                    touch($sPath . DIRECTORY_SEPARATOR . $Item);
             }
         }
     }
 
-    private function getOtherAssets()
+    static function getOtherAssets()
     {
         return array(
             // Extension assets
