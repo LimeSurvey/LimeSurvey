@@ -57,7 +57,7 @@
             data-action="addCPDB"
             data-fill-session-and-redirect="true"
             data-modal-warning-title="<?php eT('Add participants to central database');?>"
-            data-modal-warning-text="<?php eT('This will add all those participants to central database.');?> <?php eT('Continue?');?>">
+            data-modal-warning-text="<?php eT('This will add the selected participants to the central participant database (CPDB).');?> <?php eT('Continue?');?>">
             <span class="ui-icon ui-add-to-cpdb-link" ></span>
             <?php eT('Add participants to central database');?>
             </a>
