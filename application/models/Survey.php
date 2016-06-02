@@ -954,7 +954,7 @@ class Survey extends LSActiveRecord
         // Rem : the addCondition reflect Permission::hasPermission
         if(!Permission::model()->hasGlobalPermission("surveys",'read'))
         {
-            $criteria->with='permissions';
+            $criteria->with=array('permissions', 'correct_relation_defaultlanguage' );
             $criteria->addCondition( " ( owner_id=".Yii::app()->user->id."  ) OR (permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid=".Yii::app()->user->id." )" );
         }
 
@@ -962,7 +962,7 @@ class Survey extends LSActiveRecord
         // Search filter
         $criteria2 = new CDbCriteria;
         $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.sid::varchar' : 't.sid');
-        $criteria2->with=array('owner');
+        $criteria2->with=array('owner', 'correct_relation_defaultlanguage');
         $criteria2->compare($sid_reference, $this->searched_value, true, 'OR');
         $criteria2->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
         $criteria2->compare('t.admin', $this->searched_value, true, 'OR');
@@ -1000,7 +1000,7 @@ class Survey extends LSActiveRecord
             ),
         ));
 
-        $dataProvider->setTotalItemCount(count($this->findAll($criteria)));
+        //$dataProvider->setTotalItemCount(count($this->findAll($criteria)));
 
         return $dataProvider;
     }
