@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-06-02 10:54:11+00:00\n"
+"POT-Creation-Date: 2016-06-02 14:03:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8243,7 +8243,7 @@ msgid "Poorly terminated expression - expected a constant or variable"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:600
-#: application/helpers/expressions/em_core_helper.php:1711
+#: application/helpers/expressions/em_core_helper.php:1717
 msgid "Undefined variable"
 msgstr ""
 
@@ -8268,7 +8268,7 @@ msgid "Extra token found after expressions"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:779
-#: application/helpers/expressions/em_core_helper.php:1704
+#: application/helpers/expressions/em_core_helper.php:1710
 msgid "Undefined function"
 msgstr ""
 
@@ -8284,35 +8284,35 @@ msgstr ""
 msgid "Expected right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1695
+#: application/helpers/expressions/em_core_helper.php:1701
 msgid "Extra right parentheses detected"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1716
+#: application/helpers/expressions/em_core_helper.php:1722
 msgid "Unsupported syntax"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1724
+#: application/helpers/expressions/em_core_helper.php:1730
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2104
+#: application/helpers/expressions/em_core_helper.php:2110
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2109
+#: application/helpers/expressions/em_core_helper.php:2115
 msgid "Function does not support %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2110
+#: application/helpers/expressions/em_core_helper.php:2116
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2355
+#: application/helpers/expressions/em_core_helper.php:2361
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2944
+#: application/helpers/expressions/em_core_helper.php:2950
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -9766,7 +9766,7 @@ msgstr ""
 msgid "Section"
 msgstr ""
 
-#: application/models/AdminTheme.php:340
+#: application/models/AdminTheme.php:410
 msgid "This is the LimeSurvey admin interface. Start to build your survey from here."
 msgstr ""
 
