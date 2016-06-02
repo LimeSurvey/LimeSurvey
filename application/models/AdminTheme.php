@@ -278,18 +278,87 @@ class AdminTheme extends CFormModel
     {
         // Don't touch symlinked assets because it won't work
         if (App()->getAssetManager()->linkAssets) return;
+
+        // Touch all the admin themes
         $standardTemplatesPath = Yii::app()->getConfig("styledir");
-        $Resource = opendir($standardTemplatesPath);
-        // TODO : getThemeList ?
+        $this->touchSubDirectories($standardTemplatesPath);
+
+        //Touch all the assets folders of extensions and third party
+        $otherAssets = $this->getOtherAssets();
+
+        $sRootDir = App()->getConfig("rootdir");
+        foreach($otherAssets as $otherAsset )
+        {
+            $sDirToTouch = $sRootDir . DIRECTORY_SEPARATOR . $otherAsset;
+            if ( is_dir($sDirToTouch))
+            {
+                touch($sDirToTouch);
+            }
+        }
+
+
+        // Touch all the root folders of third party
+        $sPath = $sRootDir . DIRECTORY_SEPARATOR . 'third_party';
+        $this->touchSubDirectories($sPath);
+
+        //Touch all the root folders of extensions
+        $sPath = $sRootDir . DIRECTORY_SEPARATOR . 'application'. DIRECTORY_SEPARATOR .'extensions';
+        $this->touchSubDirectories($sPath);
+    }
+
+    private function touchSubDirectories( $sPath )
+    {
+        $Resource = opendir($sPath);
         while ($Item = readdir($Resource))
         {
-            if (is_dir($standardTemplatesPath . DIRECTORY_SEPARATOR . $Item) && $Item != "." && $Item != "..")
+            if (is_dir($sPath . DIRECTORY_SEPARATOR . $Item) && $Item != "." && $Item != "..")
             {
-                touch($standardTemplatesPath . DIRECTORY_SEPARATOR . $Item);
+                touch($sPath . DIRECTORY_SEPARATOR . $Item);
             }
         }
     }
 
+    private function getOtherAssets()
+    {
+        return array(
+            // Extension assets
+            'application/extensions/yiiwheels/assets',
+            'application/extensions/yiiwheels/widgets/box/assets',
+            'application/extensions/yiiwheels/widgets/grid/assets',
+            'application/extensions/yiiwheels/widgets/formhelpers/assets',
+            'application/extensions/yiiwheels/widgets/highcharts/assets',
+            'application/extensions/yiiwheels/widgets/maskinput/assets',
+            'application/extensions/yiiwheels/widgets/redactor/assets',
+            'application/extensions/yiiwheels/widgets/switch/assets',
+            'application/extensions/yiiwheels/widgets/fineuploader/assets',
+            'application/extensions/yiiwheels/widgets/datetimepicker/assets',
+            'application/extensions/yiiwheels/widgets/timeago/assets',
+            'application/extensions/yiiwheels/widgets/sparklines/assets',
+            'application/extensions/yiiwheels/widgets/datepicker/assets',
+            'application/extensions/yiiwheels/widgets/multiselect/assets',
+            'application/extensions/yiiwheels/widgets/gallery/assets',
+            'application/extensions/yiiwheels/widgets/select2/assets',
+            'application/extensions/yiiwheels/widgets/ace/assets',
+            'application/extensions/yiiwheels/widgets/modal/assets',
+            'application/extensions/yiiwheels/widgets/maskmoney/assets',
+            'application/extensions/yiiwheels/widgets/rangeslider/assets',
+            'application/extensions/yiiwheels/widgets/fileupload/assets',
+            'application/extensions/yiiwheels/widgets/typeahead/assets',
+            'application/extensions/yiiwheels/widgets/timepicker/assets',
+            'application/extensions/yiiwheels/widgets/html5editor/assets',
+            'application/extensions/yiiwheels/widgets/daterangepicker/assets',
+            'application/extensions/bootstrap/assets',
+            'application/extensions/LimeScript/assets',
+            'application/extensions/SettingsWidget/assets',
+            'application/extensions/FlashMessage/assets',
+            'application/extensions/admin/survey/question/PositionWidget/assets',
+            //'application/extensions/bootstrap/', we'll touch all the subdirectories of extensions
+
+            // Third party assets
+            'third_party/jquery-tablesorter/tests/assets',
+            'third_party/jquery-tablesorter/docs/assets',
+        );
+    }
 
     /**
      * Return an array containing the configuration object of all templates in a given directory
@@ -321,7 +390,7 @@ class AdminTheme extends CFormModel
     private function defineConstants()
     {
         // Define images url
-        if(!YII_DEBUG || $this->use_asset_manager)
+        if (!YII_DEBUG || $this->use_asset_manager)
         {
             define('LOGO_URL', App()->getAssetManager()->publish( $this->path . '/images/logo.png'));
         }
