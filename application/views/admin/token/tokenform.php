@@ -166,7 +166,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label"  for='email'><?php eT("Email"); ?>:</label>
                         <div class="col-sm-4">
-                            <input class='form-control' type='email' multiple='multiple' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email)){echo $email;} ?>" />
+                            <input class='form-control' type='text' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email)){echo $email;} ?>" />
                         </div>
 
                         <!-- Email Status -->

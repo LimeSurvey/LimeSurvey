@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
- 
+
 class LSYii_EmailIDNAValidator extends CValidator {
 
     public $allowEmpty=false;
@@ -20,20 +20,20 @@ class LSYii_EmailIDNAValidator extends CValidator {
 
     public function validateAttribute($object,$attribute){
 
-        if ($object->$attribute=='' && $this->allowEmpty) 
+        if ($object->$attribute=='' && $this->allowEmpty)
         {
              return;
         }
-        
+
         if ($this->allowMultiple)
         {
-            $aEmailAdresses=explode(';',$object->$attribute);
+            $aEmailAdresses = preg_split( "/(,|;)/", $object->$attribute );
         }
         else
         {
             $aEmailAdresses=array($object->$attribute);
         }
-        
+
         foreach ($aEmailAdresses as $sEmailAddress)
         {
             if (!validateEmailAddress($sEmailAddress))
@@ -41,9 +41,9 @@ class LSYii_EmailIDNAValidator extends CValidator {
                 $this->addError($object, $attribute, gT('Invalid email address.'));
                 return;
             }
-            
+
         }
-        return; 
+        return;
     }
-    
+
 }

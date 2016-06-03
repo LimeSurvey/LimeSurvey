@@ -811,7 +811,7 @@ class TokenDynamic extends LSActiveRecord
         if (Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update'))
         {
             // $sEditUrl     = App()->createUrl("/admin/tokens/sa/edit/iSurveyId/".self::$sid."/iTokenId/$this->tid");
-            $button .= '<a class="btn btn-default btn-xs edit-token" href="#" data-sid="'.self::$sid.'" data-tid="'.$this->tid.'" data-url="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit this token').'"><span class="icon-edit" ></span></a>';
+            $button .= '<a class="btn btn-default btn-xs edit-token" href="#" data-sid="'.self::$sid.'" data-tid="'.$this->tid.'" data-url="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit this survey participant').'"><span class="icon-edit" ></span></a>';
         }
         else
         {
