@@ -968,7 +968,8 @@ class templates extends Survey_Common_Action
         $extension = $file_datas[0];
 
         // The file name is now based on the index of the oTemplate files
-        $file_index = $file_datas[1];
+        $file_index = (isset($file_datas[1])) ? $file_datas[1] : '0';
+
         switch($extension)
         {
             case 'css':
