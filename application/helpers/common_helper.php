@@ -245,9 +245,9 @@ function getSurveyList($returnarray=false, $surveyid=false)
         {
 
             $surveylstitle=flattenText($sv['surveyls_title']);
-            if (strlen($surveylstitle)>45)
+            if (strlen($surveylstitle)>70)
             {
-                $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle,ENT_QUOTES,'UTF-8'), 0, 45, 'UTF-8'))."...";
+                $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle,ENT_QUOTES,'UTF-8'), 0, 70, 'UTF-8'))."...";
             }
 
             if($sv['active']!='Y')
