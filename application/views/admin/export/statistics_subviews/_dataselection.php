@@ -42,7 +42,7 @@
         foreach ($survlangs as $survlang)
         {
             $language_options .= "\t<option value=\"{$survlang}\"";
-            if ($sStatisticsLanguage == $survlang)
+            if ( $survlang == $surveyinfo['language'])
             {
                 $language_options .= " selected=\"selected\" " ;
             }

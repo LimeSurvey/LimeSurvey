@@ -7,9 +7,9 @@ $(document).on('submit',"#addnewsurvey",function(){
 });
 $(document).ready(function(){
 
-	$('#template').on('change keyup', function(event){
-		templatechange($(this).val());
-	});
+    $('#template').on('change keyup', function(event){
+        templatechange($(this).val());
+    });
 
     $("[data-copy]").each(function(){
         $(this).html($("#"+$(this).data('copy')).html());
@@ -79,6 +79,7 @@ $(document).ready(function(){
     $('#btnSaveParams').click(saveParameter);
     $('#addnewsurvey').submit(PostParameterGrid);
     $('#globalsetting').submit(PostParameterGrid);  // This is the name of survey settings update form
+    
     $( "#tabs" ).bind( "tabsactivate", function(event, ui) {
         if (ui.newTab.index() > 4)    // Hide on import and copy tab, otherwise show
         {
