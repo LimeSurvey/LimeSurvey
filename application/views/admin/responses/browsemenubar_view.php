@@ -36,31 +36,6 @@
                     </ul>
                 </div>
                 <?php endif;?>
-
-
-                <!-- Display Last 50 Responses -->
-                <?php if (count($tmp_survlangs) < 2): ?>
-                    <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/start/0/limit/50/order/desc"); ?>' role="button">
-                        <span class="icon-viewlast text-success"></span>
-                        <?php eT("Last 50 responses"); ?>
-                    </a>
-                <?php else:?>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="icon-viewlast text-success"></span>
-                        <?php eT("Last 50 responses");?> <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <?php foreach ($tmp_survlangs as $tmp_lang):?>
-                                <li>
-                                    <a href="<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/start/0/limit/50/order/desc/browselang/$tmp_lang"); ?>" accesskey='b'>
-                                        <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
-                                    </a>
-                                </li>
-                        <?php endforeach;?>
-                    </ul>
-                </div>
-                <?php endif;?>
             <?php endif;?>
 
 

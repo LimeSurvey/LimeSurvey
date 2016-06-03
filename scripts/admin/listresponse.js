@@ -65,7 +65,7 @@ $(function() {
         sortable : true,
         hidegrid : false,
         sortname : 'id',
-        sortorder : 'asc',
+        sortorder : 'desc',
         viewrecords : true,
         rowList : [ 10, 25, 50, 100, 250, 500, 1000 ],
         multiselect : true,
