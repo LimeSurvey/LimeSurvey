@@ -8590,12 +8590,7 @@ EOD;
                                 // Handle Arabic numerals
                                 // TODO: Make a wrapper class around date converter, which constructor takes to-lang and from-lang
                                 $lang = $_SESSION['LEMlang'];
-                                if ($lang == 'ar')
-                                {
-                                    $standard = array("0","1","2","3","4","5","6","7","8","9");
-                                    $eastern_arabic_symbols = array("٠","١","٢","٣","٤","٥","٦","٧","٨","٩");
-                                    $value = str_replace($eastern_arabic_symbols, $standard, $value);
-                                }
+                                $value = self::convertNonLatinNumerics($value, $lang);
 
                                 $value=trim($value);
                                 if ($value!="" && $value!="INVALID")
@@ -10203,6 +10198,34 @@ EOD;
             Yii::app()->user->setStateKeyPrefix('frontend' . $surveyid);
             Yii::app()->user->setFlash($type, $message);
             Yii::app()->user->setStateKeyPrefix($originalPrefix);
+        }
+
+        /**
+         * Convert non-latin numerics in string to latin numerics
+         * Used for datepicker (Hindi, Arabic numbers)
+         *
+         * @param string str
+         * @param string lang
+         * @return string
+         */
+        public static function convertNonLatinNumerics($str, $lang)
+        {
+            $result = $str;
+
+            $standard = array("0","1","2","3","4","5","6","7","8","9");
+
+            if ($lang == 'ar')
+            {
+                $eastern_arabic_symbols = array("٠","١","٢","٣","٤","٥","٦","٧","٨","٩");
+                $result = str_replace($eastern_arabic_symbols, $standard, $str);
+            }
+            else if ($lang == 'hi')
+            {
+                $hindi_symbols = array("०","१","२","३","४","५","६","७","८","९");
+                $result = str_replace($hindi_symbols, $standard, $str);
+            }
+
+            return $result;
         }
 
     }
