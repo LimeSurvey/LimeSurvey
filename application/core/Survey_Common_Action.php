@@ -882,6 +882,7 @@ class Survey_Common_Action extends CAction
                 $aForbiddenWordsInUrl[]='editlocalsettings';
                 $aForbiddenWordsInUrl[]='setsurveysecurity';
                 $aForbiddenWordsInUrl[]='importsurveyresources';
+                $aForbiddenWordsInUrl[]='newquestion';                
                 $aForbiddenWordsInUrl[]='add';
                 $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl), $aForbiddenWordsInUrl );
             }
