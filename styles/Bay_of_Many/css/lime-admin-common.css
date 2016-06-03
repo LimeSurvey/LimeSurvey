@@ -1335,9 +1335,6 @@ input:focus, textarea:focus {
   overflow: hidden;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12); }
 
-[aria-hidden=true] {
-  display: none;
-  visibility: hidden; }
 
 .modal-22 {
   position: absolute;
@@ -1928,6 +1925,11 @@ h3,.h3 {
     background-color: #f5f5f5;
 }
 
+
+#token-grid .table .filters > td .filter-container {
+    padding: 0px;
+}
+
 #token-grid table.table {
     width: none;
     max-width: none;
@@ -1942,7 +1944,7 @@ h3,.h3 {
 }
 
 #token-grid table thead tr th {
-    white-space: nowrap;
+    /*white-space: nowrap;*/
 }
 
 #token-grid table tr.odd .blank_button
@@ -1964,6 +1966,10 @@ h3,.h3 {
     background-color: #eee;
 }
 
+#token-grid .name {
+    min-width: 150px;
+}
+
 .scrolling-wrapper
 {
     overflow-x: scroll;
@@ -1977,4 +1983,14 @@ h3,.h3 {
 .blank_button span
 {
     max-width: 12px;
+}
+
+#edittoken .tab-content #general .form-group .col-sm-4 .col-sm-4, #edittoken .tab-content #general .form-group .col-sm-4 .col-sm-8
+{
+    padding: 0;
+}
+
+div[id^="alertmod_"]
+{
+    display: none;
 }
