@@ -755,6 +755,11 @@ td.answer-item.text-center
     padding-left: 39px;
 }
 
+table.array-no-dropdown  td.answer-item.text-center
+{
+    padding-left: 45px;
+}
+
 .table-5-point-array td.answer-item.text-center
 {
     padding-left: 54px;
@@ -933,4 +938,10 @@ label, th {
     -ms-hyphens: auto;
     -o-hyphens: auto;
     hyphens: auto;
+}
+
+.xdebug-var-dump {
+    z-index: 10000;
+    position: relative;
+    top: 10px;
 }

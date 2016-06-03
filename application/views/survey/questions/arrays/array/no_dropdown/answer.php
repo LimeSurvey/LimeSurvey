@@ -15,7 +15,7 @@
 
 <!-- answer -->
 <div class="no-more-tables no-more-tables-array-no-dropdown">
-    <table class="table table-condensed question subquestion-list questions-list <?php echo $extraclass; ?>">
+    <table class="array-no-dropdown table table-condensed question subquestion-list questions-list <?php echo $extraclass; ?>">
         <colgroup class="col-responses">
             <col class="col-answers"  style='width: <?php echo $answerwidth; ?>%;' />
             <?php
