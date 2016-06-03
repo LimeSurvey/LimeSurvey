@@ -945,3 +945,8 @@ label, th {
     position: relative;
     top: 10px;
 }
+
+.list-unstyled.radio-list
+{
+    padding-left: 15px;
+}
