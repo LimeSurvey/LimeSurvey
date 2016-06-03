@@ -10219,6 +10219,12 @@ EOD;
                 $eastern_arabic_symbols = array("٠","١","٢","٣","٤","٥","٦","٧","٨","٩");
                 $result = str_replace($eastern_arabic_symbols, $standard, $str);
             }
+            else if ($lang == 'fa')
+            {
+                // NOTE: NOT the same UTF-8 letters as array above (Arabic)
+                $extended_arabic_indic = array("۰","۱","۲","۳","۴","۵","۶","۷","۸","۹");
+                $result = str_replace($extended_arabic_indic, $standard, $str);
+            }
             else if ($lang == 'hi')
             {
                 $hindi_symbols = array("०","१","२","३","४","५","६","७","८","९");
