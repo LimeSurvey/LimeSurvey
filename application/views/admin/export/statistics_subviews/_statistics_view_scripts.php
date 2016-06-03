@@ -11,7 +11,8 @@
 </script>
 
 <?php
-    $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'Chart.min.js');
+    $oAdminTheme = AdminTheme::getInstance();
+    $oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'Chart.min.js');
 ?>
 
 <script>
