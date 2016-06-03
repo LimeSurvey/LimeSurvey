@@ -1990,7 +1990,7 @@ h3,.h3 {
     padding: 0;
 }
 
-#alertmod_urlparams
+div[id^="alertmod_"]
 {
     display: none;
 }
