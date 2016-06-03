@@ -8586,6 +8586,17 @@ EOD;
                         switch($type) // fix value before set it in $_SESSION : the data is reset when show it again to user.trying to save in DB : date only, but think it must be leave like it and filter oinly when save in DB
                         {
                             case 'D': //DATE
+
+                                // Handle Arabic numerals
+                                // TODO: Make a wrapper class around date converter, which constructor takes to-lang and from-lang
+                                $lang = $_SESSION['LEMlang'];
+                                if ($lang == 'ar')
+                                {
+                                    $standard = array("0","1","2","3","4","5","6","7","8","9");
+                                    $eastern_arabic_symbols = array("٠","١","٢","٣","٤","٥","٦","٧","٨","٩");
+                                    $value = str_replace($eastern_arabic_symbols, $standard, $value);
+                                }
+
                                 $value=trim($value);
                                 if ($value!="" && $value!="INVALID")
                                 {
