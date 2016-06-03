@@ -1554,16 +1554,24 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
             case "|": //File upload
                 if (substr($sFieldCode, -9) != 'filecount') {
                     //Show the filename, size, title and comment -- no link!
-                    $files = json_decode($sValue);
+                    $files = json_decode($sValue,true);
                     $sValue = '';
                     if (is_array($files)) {
                         foreach ($files as $file) {
-                            $sValue .= rawurldecode($file->name) .
-                            ' (' . round($file->size) . 'KB) ' .
-                            strip_tags($file->title);
-                            if (trim(strip_tags($file->comment))!="")
+                            if (!isset($file['title']))
                             {
-                                $sValue .=' - ' . strip_tags($file->comment);
+                                $file['title']='';
+                            }
+                            if (!isset($file['comment']))
+                            {
+                                $file['comment']='';
+                            }
+                            $sValue .= rawurldecode($file['name']) .
+                            ' (' . round($file['size']) . 'KB) ' .
+                            strip_tags($file['title']);
+                            if (trim(strip_tags($file['comment']))!="")
+                            {
+                                $sValue .=' - ' . strip_tags($file['comment']);
                             }
 
                         }

@@ -868,8 +868,16 @@ class responses extends Survey_Common_Action
                     {
                         if (isset($aFilesInfo[$iFileIndex]))
                         {
-                            $aSurveyEntry[] = htmlspecialchars($aFilesInfo[$iFileIndex]['title'],ENT_QUOTES, 'UTF-8');
-                            $aSurveyEntry[] = htmlspecialchars($aFilesInfo[$iFileIndex]['comment'],ENT_QUOTES, 'UTF-8');
+                            if ($aQuestionAttributes['show_title'])
+                            {
+                                if (!isset($aFilesInfo[$iFileIndex]['title'])) $aFilesInfo[$iFileIndex]['title']='';
+                                $aSurveyEntry[] = htmlspecialchars($aFilesInfo[$iFileIndex]['title'],ENT_QUOTES, 'UTF-8');
+                            }
+                            if ($aQuestionAttributes['show_comment'])
+                            {
+                                if (!isset($aFilesInfo[$iFileIndex]['comment'])) $aFilesInfo[$iFileIndex]['comment']='';
+                                $aSurveyEntry[] = htmlspecialchars($aFilesInfo[$iFileIndex]['comment'],ENT_QUOTES, 'UTF-8');
+                            }
                             $aSurveyEntry[] = CHtml::link(rawurldecode($aFilesInfo[$iFileIndex]['name']), $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$row['id'],"sFileName"=>$aFilesInfo[$iFileIndex]['name'])) );
                             $aSurveyEntry[] = sprintf('%s Mb',round($aFilesInfo[$iFileIndex]['size']/1000,2));
                         }
