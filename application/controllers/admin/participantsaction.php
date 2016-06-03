@@ -869,7 +869,7 @@ class participantsaction extends Survey_Common_Action
             // add attribute values
             foreach($row as $key=>$attvalue)
             {
-                if(preg_match('/^a\d+$/', $key))
+                if(preg_match('/^a\d+$/', $key) )
                 {
                     $aRowToAdd['cell'][] = $attvalue;
                 }
@@ -1098,7 +1098,7 @@ class participantsaction extends Survey_Common_Action
      */
     public function editAttributevalue()
     {
-        if (Yii::app()->request->getPost('oper') == "edit" && (Yii::app()->request->getPost('attvalue') || Yii::app()->request->getPost('attvalue')=="0"))
+        if (Yii::app()->request->getPost('oper') == "edit" && isset($_POST['attvalue']))
         {
             $pid = explode('_',Yii::app()->request->getPost('participant_id'));
             $iAttributeId =  Yii::app()->request->getPost('attid');
