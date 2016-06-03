@@ -35,6 +35,28 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.50+ (build 160602) to 2.50+ (build 160603) June 3, 2016
+-Fixed issue #11038: Change of attribute content from <some content> to <blank/nothing> doesn't stick (LouisGac)
+-Fixed issue #11218: Statistics general filters does not remember base language of the survey (LouisGac)
+-Fixed issue #11254: wrong default language in statistics expert mode (LouisGac)
+-Fixed issue #11273: Theme permissions still show restricted themes in Survey quick actions (LouisGac)
+-Fixed issue #11274: PHP notice after template import (LouisGac)
+-Fixed issue #11287: Cannot Delete Users From User Groups Unless Having Superadministrator Permission (LouisGac)
+-Fixed issue #11298: Endless loop. From survey list, add question (+ icon in right part of the screen) -> Import question -> Close -> Close (LouisGac)
+-Fixed issue #11324: Sorting of "last 50" answers is wrong (LouisGac)
+-Fixed issue #11326: Copy surveys: dropdown menu is not wide enough to show the whole title of the source survey (LouisGac)
+-Fixed issue #11327: Number of avtive surveys for non admin users (LouisGac)
+-Fixed issue #11328: Unable to select mandatory date field if the survey is viewed in Arabic Language (Olle Haerstedt)
+-Fixed issue #11331: Statistics show error (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+
+
 Changes from 2.50+ (build 160529) to 2.50+ (build 160602) June 2, 2016
 -New feature: Edit participant (former token) information in popup window, revamped browsing (LouisGac)
 -Fixed issue #10299: template preview not found on Survey quick actions (Bert Hankes)
