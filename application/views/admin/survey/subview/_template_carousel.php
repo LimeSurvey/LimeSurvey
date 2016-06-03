@@ -16,6 +16,7 @@
                 <h4 class="panel-title"><?php eT('Select your template:'); ?></h4>
 
                 <?php foreach($templates as $key=>$template):?>
+                    <?php if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $key) == 1 || $surveyinfo['template']==htmlspecialchars($key) ): ?>
                     <div class="item text-center <?php if($key==$surveyinfo['template']){echo ' active ';}else{echo ' inactive ';}?>" id="template-big-<?php echo $key;?>">
                         <img class="img-responsive imgSelectTemplate" src="<?php echo $template['preview']; ?>" alt="<?php echo $key;?>">
                             <?php if($key==$surveyinfo['template']):?>
@@ -36,6 +37,7 @@
                                 </button>
                             <?php endif;?>
                     </div>
+                <?php endif;?>
                 <?php endforeach;?>
             </div>
         </div>
@@ -45,9 +47,11 @@
                     <div class="jcarousel">
                         <ul >
                             <?php foreach($templates as $key=>$template):?>
+                                <?php if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $key) == 1 || $surveyinfo['template']==htmlspecialchars($key) ): ?>
                                 <li class="template-miniature <?php if($key==$surveyinfo['template']){echo ' active';}?>" data-big="#template-big-<?php echo $key;?>">
                                     <img src="<?php echo $template['preview']; ?>" alt="<?php echo $key;?>"  >
                                 </li>
+                            <?php endif; ?>
                             <?php endforeach;?>
                         </ul>
                     </div>

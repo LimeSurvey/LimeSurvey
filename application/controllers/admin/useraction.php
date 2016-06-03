@@ -551,29 +551,36 @@ class UserAction extends Survey_Common_Action
             $aBasePermissions=$aFilteredPermissions;
         }
 
-        if ($oUser && (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','update') &&  Yii::app()->session['loginID'] != $iUserID) )
+        if(isset($oUser))
         {
-            // Only the original superadmin (UID 1) may create superadmins
-            if (Yii::app()->session['loginID']!=1)
+            if ( $oUser  && (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','update') &&  Yii::app()->session['loginID'] != $iUserID) )
             {
-                unset($aBasePermissions['superadmin']);
+                // Only the original superadmin (UID 1) may create superadmins
+                if (Yii::app()->session['loginID']!=1)
+                {
+                    unset($aBasePermissions['superadmin']);
+                }
+
+                $aData = array();
+                $aData['aBasePermissions'] = $aBasePermissions;
+                $aData['oUser'] = $oUser;
+
+                App()->getClientScript()->registerPackage('jquery-tablesorter');
+                $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'userpermissions.js');
+
+                $aData['fullpagebar']['savebutton']['form'] = 'savepermissions';
+                $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';  // Close button
+
+                $this->_renderWrappedTemplate('user', 'setuserpermissions', $aData);
             }
-
-            $aData = array();
-            $aData['aBasePermissions'] = $aBasePermissions;
-            $aData['oUser'] = $oUser;
-
-            App()->getClientScript()->registerPackage('jquery-tablesorter');
-            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'userpermissions.js');
-
-            $aData['fullpagebar']['savebutton']['form'] = 'savepermissions';
-            $aData['fullpagebar']['closebutton']['url'] = 'admin/user/sa/index';  // Close button
-
-            $this->_renderWrappedTemplate('user', 'setuserpermissions', $aData);
+            else
+            {
+                Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+                $this->getController()->redirect(array("admin/user/sa/index"));
+            }
         }
         else
         {
-            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
     }
