@@ -79,11 +79,7 @@
     <div class="form-group">
         <label class="col-sm-3 control-label"  for='owner_id'><?php  eT("Survey owner:"); ?></label>
         <div class="col-sm-9">
-            <select class="form-control" id='owner_id' name='owner_id'>
-                <?php foreach ($users as $user): ?>
-                    <option value="<?php echo $user['uid']; ?>" <?php if ($user['uid'] === $esrow['owner_id']) { echo "selected"; } ?>><?php echo $user['username']; ?></option>
-                <?php endforeach; ?>
-            </select>
+            <?php echo CHtml::dropDownList('owner_id', $esrow['owner_id'],$users,array('class'=>"form-control")); ?>
         </div>
     </div>
 

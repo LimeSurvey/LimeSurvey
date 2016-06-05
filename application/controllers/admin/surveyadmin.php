@@ -755,67 +755,6 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-    * This get the userlist in surveylist screen.
-    *
-    * @access public
-    * @return void
-    */
-    public function ajaxgetusers()
-    {
-        header('Content-type: application/json');
-        $result = getUserList();
-        $aUsers = array();
-        if (count($result) > 0)
-        {
-            foreach ($result as $rows)
-                $aUsers[$rows['user']]=$rows['uid'];
-        }
-        ksort($aUsers);
-        $ajaxoutput = ls_json_encode($aUsers) . "\n";
-        echo $ajaxoutput;
-    }
-
-    /**
-    * This function change the owner of a survey.
-    *
-    * @access public
-    * @param int $newowner
-    * @param int $iSurveyID
-    * @return void
-    */
-    public function ajaxowneredit()
-    {
-        header('Content-type: application/json');
-        $intNewOwner = sanitize_int(Yii::app()->request->getPost("newowner"));
-        $intSurveyId = sanitize_int(Yii::app()->request->getPost("surveyid"));
-        $owner_id = Yii::app()->session['loginID'];
-        $query_condition = 'sid=:sid';
-        $params[':sid']=$intSurveyId;
-        if (!Permission::model()->hasGlobalPermission('superadmin','create'))
-        {
-            $query_condition .= ' AND owner_id=:uid';
-            $params[':uid']=$owner_id;
-        }
-
-        $result = Survey::model()->updateAll(array('owner_id'=>$intNewOwner), $query_condition, $params);
-
-        $result = Survey::model()->with('owner')->findAllByAttributes(array('sid' => $intSurveyId, 'owner_id' => $intNewOwner));
-
-        $intRecordCount = count($result);
-
-        $aUsers = array(
-            'record_count' => $intRecordCount,
-        );
-
-        foreach ($result as $row)
-            $aUsers['newowner'] = $row->owner->users_name;
-
-        $ajaxoutput = ls_json_encode($aUsers) . "\n";
-
-        echo $ajaxoutput;
-    }
-
-    /**
     * Returns surveys in json format
     *
     * @access public
@@ -1503,12 +1442,10 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['users'] = array();
         foreach ($users as $user)
         {
-            $aData['users'][] = array(
-                'username' => $user['user'],
-                'uid' => $user['uid'],
-            );
+            $aData['users'][$user['uid']] = $user['user'];
         }
-
+        // Sort users by name
+        asort($aData['users']);
         $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
         $beforeSurveySettings->set('survey', $iSurveyID);
         App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
