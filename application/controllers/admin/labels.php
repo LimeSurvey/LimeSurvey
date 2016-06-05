@@ -136,6 +136,11 @@ class labels extends Survey_Common_Action
             $aPathInfo = pathinfo($_FILES['the_file']['name']);
             $sExtension = !empty($aPathInfo['extension']) ? $aPathInfo['extension'] : '';
 
+            if ($_FILES['the_file']['error']==1 || $_FILES['the_file']['error']==2)
+            {
+                $this->getController()->error(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize()/1024/1024));
+            }
+
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
                 $this->getController()->error(sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir')));
 
