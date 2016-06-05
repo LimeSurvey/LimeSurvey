@@ -107,7 +107,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                 { ?>
 
                     <?php echo CHtml::form(array('admin/templates/sa/uploadfile'), 'post', array('id'=>'importtemplatefile', 'name'=>'importtemplatefile', 'enctype'=>'multipart/form-data')); ?>
-                    <?php eT("Upload a file:"); ?>
+                    <?php printf(gT("Upload a file (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
                     <br>
                     <input name='upload_file' id="upload_file" type="file" required="required"/>
                     <input type='submit' value='<?php eT("Upload"); ?>' class='btn btn-default'
@@ -147,7 +147,8 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                         <code>background-image: url('../files/yourpicture.png');</code><br/><br/>
                         <?php eT("To place the logo anywhere in a .pstpl file: ");?><br/>
                         <code>{SITELOGO}</code><br/>
-                        <?php eT("This will generate a responsive image containing the logo file.");?><br/>
+                        <?php eT("This will generate a responsive image containing the logo file.");?><br/><br>
+
                     </div>
 
                     <div class="modal-footer">

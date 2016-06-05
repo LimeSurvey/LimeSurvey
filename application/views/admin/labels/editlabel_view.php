@@ -105,27 +105,27 @@
                     <div id='neweditlblset1' class="tab-pane fade in" >
                         <?php echo CHtml::form(array("admin/labels/sa/import"), 'post',array('enctype'=>'multipart/form-data', 'class'=>'form-horizontal','id'=>'importlabels','name'=>"importlabels")); ?>
                                 <div class="form-group">
-                                    <label  class="col-sm-2 control-label" for='the_file'>
-                                        <?php eT("Select label set file (*.lsl):"); ?>
+                                    <label  class="col-sm-3 control-label" for='the_file'>
+                                    <?php echo gT("Select label set file (*.lsl):").'<br>'.sprintf(gT("(Maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024); ?>
                                     </label>
                                     <input id='the_file' name='the_file' type='file'/>
                                 </div>
                                 <div class="form-group">
-                                    <label  class="col-sm-2 control-label" for='checkforduplicates'>
+                                    <label  class="col-sm-3 control-label" for='checkforduplicates'>
                                         <?php eT("Don't import if label set already exists:"); ?>
                                     </label>
                                     <input name='checkforduplicates' id='checkforduplicates' type='checkbox' checked='checked' />
                                 </div>
 
                                 <div class="form-group">
-                                    <label  class="col-sm-2 control-label" for='translinksfields'>
+                                    <label  class="col-sm-3 control-label" for='translinksfields'>
                                         <?php eT("Convert resources links?"); ?>
                                     </label>
                                     <input name='translinksfields' id='translinksfields' type='checkbox' checked='checked' />
                                 </div>
 
                                 <div class="form-group">
-                                    <div class="col-sm-offset-1">
+                                    <div class="col-sm-offset-2">
                                         <input type='submit' class='btn btn-default' value='<?php eT("Import label set(s)"); ?>' />
                                         <input type='hidden' name='action' value='importlabels' />
                                     </div>

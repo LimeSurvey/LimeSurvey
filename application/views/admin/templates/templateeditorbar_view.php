@@ -244,6 +244,7 @@
                   <div  class="form-group">
                       <label for='the_file'><?php eT("Select template ZIP file:") ?></label>
                       <input id='the_file' name='the_file' type="file" />
+                      <?php printf(gT('(Maximum file size: %01.2f MB)'),getMaximumFileUploadSize()/1024/1024); ?>
                   </div>
           </div>
           <div class="modal-footer">
