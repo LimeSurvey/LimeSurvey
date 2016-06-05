@@ -1547,22 +1547,23 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _tabPublicationAccess($esrow)
     {
-        $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+        $aDateFormatDetails = getDateFormatData(Yii::app()->session['dateformat']);
         $startdate = '';
         if ($esrow['startdate'])
         {
             Yii::app()->loadLibrary('Date_Time_Converter');
-            $datetimeobj = new date_time_converter($esrow["startdate"],"Y-m-d H:i:s"); //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
-            $startdate = $datetimeobj->convert("Y-m-d H:i"); //$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+            $datetimeobj = new Date_Time_Converter($esrow["startdate"],"Y-m-d H:i:s"); //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
+            $startdate = $datetimeobj->convert($aDateFormatDetails['phpdate'].' H:i');
         }
 
         $expires = '';
         if ($esrow['expires'])
         {
             Yii::app()->loadLibrary('Date_Time_Converter');
-            $datetimeobj = new date_time_converter($esrow['expires'], "Y-m-d H:i:s"); //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
-            $expires = $datetimeobj->convert("Y-m-d H:i");
+            $datetimeobj = new Date_Time_Converter($esrow['expires'], "Y-m-d H:i:s"); //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
+            $expires = $datetimeobj->convert($aDateFormatDetails['phpdate'].' H:i');
         }
+        $aData['dateformatdetails']= $aDateFormatDetails;
         $aData['esrow'] = $esrow;
         $aData['startdate'] = $startdate;
         $aData['expires'] = $expires;
