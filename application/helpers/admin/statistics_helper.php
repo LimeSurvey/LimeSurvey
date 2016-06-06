@@ -1585,14 +1585,15 @@ class statistics_helper {
                     if ( $qtype == "O")
                     {
                         //add "comment"
-                        $alist[]=array(gT("Comments"),gT("Comments"),$fielddata['fieldname'].'comment');
+                        $alist[]=array(gT("Comments"),gT("Comments"),$fielddata['fieldname'].'comment','is_comment');
+                        //
                     }
 
             }    //end switch question type
 
             //moved because it's better to have "no answer" at the end of the list instead of the beginning
             //put data into array
-            $alist[]=array("", gT("No answer"));
+            $alist[]=array("", gT("No answer"), false, 'is_no_answer');
 
         }
 
@@ -2443,6 +2444,7 @@ class statistics_helper {
         }
         //loop though the array which contains all answer data
         $ColumnName_RM=array();
+        //var_dump($outputs['alist']); die();
         foreach ($outputs['alist'] as $al)
         {
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
@@ -2803,6 +2805,11 @@ class statistics_helper {
             //put absolute data into array
             $grawdata[]=$row;
 
+            if(! ( in_array( 'is_comment', $al) || in_array( 'is_no_answer', $al) ) )
+            {
+                $grawdata_percents[]=$row;
+            }
+            //var_dump($grawdata); die();
             //put question title and code into array
             $label[]=$fname;
 
@@ -2839,23 +2846,29 @@ class statistics_helper {
                 $lbl[$flatLabel] = $row;
             }
 
+
+
             // For Graph labels
             switch($_POST['graph_labels'])
             {
                 case 'qtext':
-                    $aGraphLabels[] = $flatLabel;
+                    $aGraphLabels[] = $sFlatLabel = $flatLabel;
                 break;
 
                 case 'both':
-                    $aGraphLabels[] = $al[0].': '.$flatLabel;
+                    $aGraphLabels[] = $sFlatLabel = $al[0].': '.$flatLabel;
                 break;
 
                 default:
-                    $aGraphLabels[] = $al[0];
+                    $aGraphLabels[] = $sFlatLabel = $al[0];
                 break;
             }
 
 
+            if(! ( in_array( 'is_comment', $al) || in_array( 'is_no_answer', $al) ) )
+            {
+                $aGraphLabelsPercent[] = $sFlatLabel;
+            }
 
         }    //end foreach -> loop through answer data
 
@@ -3342,9 +3355,18 @@ class statistics_helper {
             //Clear extraline
             unset($extraline);
 
+
+            // Convert grawdata_percent to percent
+            $pTotal = array_sum($grawdata_percents);
+            foreach($grawdata_percents as $key => $data)
+            {
+                $grawdata_percents[$key] = ($data/$pTotal)*100;
+            }
+
             ///// HERE RENDER statisticsoutput_answer
             $aData['label']                = $label;
             $aData['grawdata']             = $grawdata;
+            $aData['grawdata_percent']     = $grawdata_percents;
             $aData['gdata']                = $gdata;
 
             $aData['extraline']            = (isset($extraline))?$extraline:false;
@@ -3697,13 +3719,23 @@ class statistics_helper {
 
                 // Labels for graphs
                 $iMaxLabelLength = 0;
-                foreach($aGraphLabels as $key => $label)
+
+                foreach ($aGraphLabels as $key => $label)
                 {
                     $cleanLabel = $label;
                     $cleanLabel = viewHelper::flatEllipsizeText($cleanLabel, true, 20);
                     $graph_labels[$key] = $cleanLabel;
                     $iMaxLabelLength = (strlen( $cleanLabel ) > $iMaxLabelLength)?strlen( $cleanLabel ):$iMaxLabelLength;
                 }
+
+                foreach ($aGraphLabelsPercent as $key => $label)
+                {
+                    $cleanLabel = $label;
+                    $cleanLabel = viewHelper::flatEllipsizeText($cleanLabel, true, 20);
+                    $graph_labels_percent[$key] = $cleanLabel;
+                }
+
+
 
                 // Labels for legend
                 foreach($labels as $key => $label)
@@ -3719,6 +3751,7 @@ class statistics_helper {
                 $aData['rt'] = $rt;
                 $aData['qqid'] = $qqid;
                 $aData['graph_labels'] = $graph_labels;
+                $aData['graph_labels_percent'] = $graph_labels_percent;
                 $aData['labels'] = $labels;
                 //$aData['COLORS_FOR_SURVEY'] = COLORS_FOR_SURVEY;
                 $aData['charttype'] = (isset($charttype))?$charttype:'Bar';
