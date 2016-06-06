@@ -3358,10 +3358,24 @@ class statistics_helper {
 
 
             // Convert grawdata_percent to percent
-            $pTotal = array_sum($grawdata_percents);
-            foreach($grawdata_percents as $key => $data)
+
+            if (isset($grawdata_percents))
             {
-                $grawdata_percents[$key] = ($data/$pTotal)*100;
+                $pTotal = array_sum($grawdata_percents);
+                if ( $pTotal > 0)
+                {
+                    foreach($grawdata_percents as $key => $data)
+                    {
+                        $grawdata_percents[$key] = ($data/$pTotal)*100;
+                    }
+
+                }
+            }
+            else
+            {
+                $grawdata_percents = array();
+                $aGraphLabelsPercent = array();
+                $lblPercent = array();
             }
 
             ///// HERE RENDER statisticsoutput_answer
@@ -3724,6 +3738,8 @@ class statistics_helper {
 
                 // Labels for graphs
                 $iMaxLabelLength = 0;
+
+                $labels_percent = array();
 
                 foreach ($aGraphLabels as $key => $label)
                 {

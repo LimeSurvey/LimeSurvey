@@ -127,6 +127,7 @@
     <?php endif;?>
     </td>
 </tr>
+
 <script>
     var labels_<?php echo $qqid; ?>=<?php echo json_encode($graph_labels); // the array of labels ?>;
     var grawdata_<?php echo $qqid;?>=<?php echo json_encode($grawdata); // the datas to generate the graph ?>;
