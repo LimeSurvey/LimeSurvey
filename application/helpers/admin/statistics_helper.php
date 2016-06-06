@@ -3366,7 +3366,7 @@ class statistics_helper {
                 {
                     foreach($grawdata_percents as $key => $data)
                     {
-                        $grawdata_percents[$key] = ($data/$pTotal)*100;
+                        $grawdata_percents[$key] = round(($data/$pTotal)*100, 2);
                     }
 
                 }

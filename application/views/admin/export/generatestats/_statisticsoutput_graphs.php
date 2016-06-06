@@ -28,8 +28,8 @@
             >
 
             <?php if (array_sum($grawdata_percent)<1):?>
-                <div class="stat-no-answer text-center" id="stat-no-answer-<?php echo $qqid; ?>" style="position: relative; top: 300px;" >
-                    <?php eT('Nobody answered');?>
+                <div class="stat-no-answer text-center" id="stat-no-answer-<?php echo $qqid; ?>" style="position: relative; top: 300px; display: none;" >
+                    <?php eT('Not enough response data');?>
                 </div>
             <?php endif;?>
 
