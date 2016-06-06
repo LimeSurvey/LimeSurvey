@@ -1094,13 +1094,19 @@ class SurveyAdmin extends Survey_Common_Action
 
             if ($action == 'importsurvey')
             {
+
                 $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(30).'.'.$sExtension;
-                if (!in_array(strtolower($sExtension),array('lss','txt','tsv','lsa')))
+                if ($_FILES['the_file']['error']==1 || $_FILES['the_file']['error']==2)
+                {
+                    $aData['sErrorMessage']=sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize()/1024/1024).'<br>';
+                    $aData['bFailed'] = true;
+                }
+                elseif (!in_array(strtolower($sExtension),array('lss','txt','tsv','lsa')))
                 {
                     $aData['sErrorMessage'] = sprintf(gT("Import failed. You specified an invalid file type '%s'."), $sExtension);
                     $aData['bFailed'] = true;
                 }
-                elseif (!$aData['bFailed'] && !@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
+                elseif ($aData['bFailed'] || !@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
                 {
                     $aData['sErrorMessage'] = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
                     $aData['bFailed'] = true;
@@ -1184,12 +1190,10 @@ class SurveyAdmin extends Survey_Common_Action
             {
                 $aData['bFailed'] = true;
             }
-            if ($action == 'importsurvey' && isset($sFullFilepath))
+            if ($action == 'importsurvey' && isset($sFullFilepath) && file_exists($sFullFilepath))
             {
                 unlink($sFullFilepath);
             }
-
-
             if (!$aData['bFailed'])
             {
                 $aData['action'] = $action;

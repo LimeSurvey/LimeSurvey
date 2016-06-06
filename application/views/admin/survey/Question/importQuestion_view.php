@@ -15,11 +15,11 @@
                     echo '<br>'.sprintf(gT("(Maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024);?>
                     </label>
                     <div class="col-sm-3">
-                        <input name='the_file' id='the_file' type="file" required="required" accept=".lsq,.csv" />
+                        <input name='the_file' id='the_file' type="file" required="required" accept=".lsq" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for='the_file'><?php eT("Question group:"); ?></label>
+                    <label class="col-sm-2 control-label" for='the_file'><?php eT("Destination question group:"); ?></label>
                     <div class="col-sm-3">
                         <select name='gid' id='gid' class="form-control">
                             <?php echo getGroupList3($groupid, $surveyid); ?>
@@ -29,7 +29,13 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for='translinksfields'><?php eT("Convert resource links?"); ?></label>
                     <div class="col-sm-3">
-                        <input name='translinksfields' id='translinksfields' type='checkbox' checked='checked'/>
+                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => 'translinksfields',
+                            'id'=>'translinksfields',
+                            'value' => 1,
+                            'onLabel'=>gT('On'),
+                            'offLabel' => gT('Off')));
+                        ?>
                     </div>
                 </div>
                 <p>

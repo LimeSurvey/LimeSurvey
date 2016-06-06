@@ -17,7 +17,7 @@
                     echo '<br>'.sprintf(gT("(Maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024);
                     ?></label>
                         <div class="col-sm-3">
-                           <input id='the_file' name="the_file" type="file"  />
+                           <input id='the_file' name="the_file" type="file" accept='.lsg' />
                         </div>
                 </div>
 
@@ -25,7 +25,13 @@
                 <div class="form-group">
                     <label for='translinksfields' class="col-sm-2 control-label"><?php eT("Convert resource links?"); ?></label>
                     <div class="col-sm-10">
-                        <input id='translinksfields' name="translinksfields" type="checkbox" checked="checked" />
+                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => 'translinksfields',
+                            'id'=>'translinksfields',
+                            'value' => 1,
+                            'onLabel'=>gT('On'),
+                            'offLabel' => gT('Off')));
+                        ?>
                     </div>
                 </div>
 

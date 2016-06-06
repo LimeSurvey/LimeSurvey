@@ -11,10 +11,10 @@
             <!-- Select file -->
             <div class='form-group '>
                 <label class='control-label col-sm-3' for='the_file'>
-                    <?php printf(gT("Select survey structure file (*.lss, *.csv, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024); ?>
+                    <?php printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024); ?>
                 </label>
                 <div class='col-sm-4'>
-                    <input id='the_file' name="the_file" type="file" />
+                    <input id='the_file' name="the_file" type="file" accept='.lss,.lsa,.tsv,.txt'/>
                 </div>
             </div>
 

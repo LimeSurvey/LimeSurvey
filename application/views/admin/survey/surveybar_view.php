@@ -606,7 +606,13 @@
                 <!-- Save -->
                 <a class="btn btn-success" href="#" role="button" id="save-button" >
                     <span class="glyphicon glyphicon-ok"></span>
-                    <?php eT("Save");?>
+                    <?php if(isset($surveybar['savebutton']['text']))
+                    {
+                        echo $surveybar['savebutton']['text'];
+                    }
+                    else{
+                        eT("Save");
+                    }?>
                 </a>
 
                 <!-- Save and close -->

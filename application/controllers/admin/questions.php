@@ -152,6 +152,7 @@ class questions extends Survey_Common_Action
             $aData['sidemenu']['questiongroups'] = true;
             $aData['surveybar']['closebutton']['url'] = '/admin/survey/sa/listquestiongroups/surveyid/'.$iSurveyID;  // Close button
             $aData['surveybar']['savebutton']['form'] = true;
+            $aData['surveybar']['savebutton']['text'] = gt('Import');
             $aData['surveyid'] = $surveyid;
             $aData['groupid'] = $groupid;
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
@@ -186,9 +187,16 @@ class questions extends Survey_Common_Action
         {
             $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
             $sExtension = pathinfo($_FILES['the_file']['name'], PATHINFO_EXTENSION);
+            $fatalerror='';
 
-            if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
-                $fatalerror = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
+            if ($_FILES['the_file']['error']==1 || $_FILES['the_file']['error']==2)
+            {
+                $fatalerror=sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize()/1024/1024).'<br>';
+            }
+            elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
+            {
+                $fatalerror = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir')).'<br>';
+            }
 
             // validate that we have a SID and GID
             if (!$surveyid)
@@ -197,14 +205,13 @@ class questions extends Survey_Common_Action
             if (!$gid)
                 $fatalerror .= gT("No GID (Group) has been provided. Cannot import question");
 
-            if (isset($fatalerror))
+            if ($fatalerror!='')
             {
                 unlink($sFullFilepath);
-                $message = $fatalerror;
-                $message .= '<p>
-                                <a class="btn btn-default btn-lg"
-                                   href="'.$this->getController()->createUrl('admin/survey/sa/listquestions/surveyid/').'/'.$surveyid.'">'
-                                   .gT("Return to question list").'</a></p>';
+                $message = '<p>'.$fatalerror.'</p>
+                <a class="btn btn-default btn-lg"
+                href="'.$this->getController()->createUrl('admin/survey/sa/listquestions/surveyid/').'/'.$surveyid.'">'
+                .gT("Return to question list").'</a></p>';
                 $this->_renderWrappedTemplate('super', 'messagebox', array('title'=>gT('Error'), 'message'=>$message));
                 die();
             }

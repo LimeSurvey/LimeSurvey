@@ -1128,31 +1128,28 @@ class participantsaction extends Survey_Common_Action
         $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
         $aPathinfo = pathinfo($_FILES['the_file']['name']);
         $sExtension = $aPathinfo['extension'];
-        if (strtolower($sExtension)=='csv')
+        if ($_FILES['the_file']['error']==1 || $_FILES['the_file']['error']==2)
+        {
+            Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize()/1024/1024),'error');
+            Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
+            exit;
+        }
+        elseif (strtolower($sExtension)=='csv')
         {
             $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
             $filterblankemails = Yii::app()->request->getPost('filterbea');
         }
         else
         {
-            $templateData = array();
-            $templateData['errorinupload']['error'] = gT("This is not a .csv file.");
-            $templateData['aAttributes'] = ParticipantAttributeName::model()->getAllAttributes();
-            $templateData['aGlobalErrors'] = array();
-            //  $errorinupload = array('error' => $this->upload->display_errors());
-            //  Yii::app()->session['summary'] = array('errorinupload' => $errorinupload);
-            $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'),$templateData);
+            Yii::app()->setFlashMessage(gT("This is not a .csv file."),'error');
+            Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
             exit;
         }
-
-
         if (!$bMoveFileResult)
         {
-            $templateData = array();
-            $templateData['error_msg'] = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
-            $errorinupload = array('error' => $this->upload->display_errors());
-            Yii::app()->session['summary'] = array('errorinupload' => $errorinupload);
-            $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'),array('aAttributes' => ParticipantAttributeName::model()->getAllAttributes()));
+            Yii::app()->setFlashMessage(sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir')),'error');
+            Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
+            exit;
         }
         else
         {
