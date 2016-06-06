@@ -17,7 +17,7 @@
         <?php if($security_update_available):?>
             <div class="alert alert-warning alert-dismissible alert-security-update" role="alert" id="update-alert" data-url-notification-state="<?php echo $urlUpdateNotificationState; ?>">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-                <strong>Security Update !</strong> a security update is available. <a href="<?php echo $urlUpdate; ?>"><?php eT('Click here to use ComfortUpdate.');?></a>
+                <strong><?php eT('Security update!');?></strong> <?php eT('A security update is available.');?> <a href="<?php echo $urlUpdate; ?>"><?php eT('Click here to use ComfortUpdate.');?></a>
             </div>
         <?php elseif(Yii::app()->session['unstable_update']):?>
         <div id="update-alert" data-url-notification-state="<?php echo $urlUpdateNotificationState; ?>" class="alert alert-info alert-dismissible unstable-update" role="alert" >
