@@ -48,7 +48,7 @@ class labels extends Survey_Common_Action
         if(!Permission::model()->hasGlobalPermission('labelsets','edit'))
         {
             Yii::app()->session['flashmessage'] =gT('Access denied!');
-            $this->getController()->redirect($this->createUrl("/admin"));
+            $this->getController()->redirect(App()->createUrl("/admin"));
         }
         $lid = returnGlobal('lid');
         if (!empty($lid))
@@ -123,7 +123,7 @@ class labels extends Survey_Common_Action
         if(!Permission::model()->hasGlobalPermission('labelsets','import'))
         {
             Yii::app()->session['flashmessage'] =gT('Access denied!');
-            $this->getController()->redirect($this->createUrl("/admin"));
+            $this->getController()->redirect(App()->createUrl("/admin"));
         }
         $action = returnGlobal('action');
         $aViewUrls = array();
@@ -138,11 +138,15 @@ class labels extends Survey_Common_Action
 
             if ($_FILES['the_file']['error']==1 || $_FILES['the_file']['error']==2)
             {
-                $this->getController()->error(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize()/1024/1024));
+                Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize()/1024/1024),'error');
+                $this->getController()->redirect(App()->createUrl("/admin/labels/sa/newlabelset"));
             }
 
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
-                $this->getController()->error(sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir')));
+            {
+                Yii::app()->setFlashMessage(sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir')),'error');
+                $this->getController()->redirect(App()->createUrl("/admin/labels/sa/newlabelset"));
+            }
 
             $options['checkforduplicates'] = 'off';
             if ($_POST['checkforduplicates']==1)
@@ -361,7 +365,7 @@ class labels extends Survey_Common_Action
         if(!Permission::model()->hasGlobalPermission('labelsets','read'))
         {
             Yii::app()->session['flashmessage'] =gT('Access denied!');
-            $this->getController()->redirect($this->createUrl("/admin"));
+            $this->getController()->redirect(App()->createUrl("/admin"));
         }
         $action = returnGlobal('action');
         Yii::app()->loadHelper('admin/label');
