@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-06-06 12:40:58+00:00\n"
+"POT-Creation-Date: 2016-06-06 12:58:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11496,7 +11496,7 @@ msgid "Export data"
 msgstr ""
 
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:32
-msgid "Nobody answered"
+msgid "Not enough response data"
 msgstr ""
 
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:101
