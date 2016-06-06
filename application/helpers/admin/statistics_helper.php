@@ -3374,8 +3374,6 @@ class statistics_helper {
             else
             {
                 $grawdata_percents = array();
-                $aGraphLabelsPercent = array();
-                $lblPercent = array();
             }
 
             ///// HERE RENDER statisticsoutput_answer
@@ -3715,8 +3713,15 @@ class statistics_helper {
                              foreach($lbl as $name => $lb)
                                    $labels[] = $name;
 
-                             foreach($lblPercent as  $name => $lb)
-                                $labels_percent[] = $name;
+                             if ( isset($lblPercent)  )
+                             {
+                                 foreach($lblPercent as  $name => $lb)
+                                    $labels_percent[] = $name;
+                             }
+                             else
+                             {
+                                 $labels_percent = array();
+                             }
 
                             break;
                         default:
@@ -3739,8 +3744,6 @@ class statistics_helper {
                 // Labels for graphs
                 $iMaxLabelLength = 0;
 
-                $labels_percent = array();
-
                 foreach ($aGraphLabels as $key => $label)
                 {
                     $cleanLabel = $label;
@@ -3749,11 +3752,18 @@ class statistics_helper {
                     $iMaxLabelLength = (strlen( $cleanLabel ) > $iMaxLabelLength)?strlen( $cleanLabel ):$iMaxLabelLength;
                 }
 
-                foreach ($aGraphLabelsPercent as $key => $label)
+                if( isset($aGraphLabelsPercent))
                 {
-                    $cleanLabel = $label;
-                    $cleanLabel = viewHelper::flatEllipsizeText($cleanLabel, true, 20);
-                    $graph_labels_percent[$key] = $cleanLabel;
+                    foreach ($aGraphLabelsPercent as $key => $label)
+                    {
+                        $cleanLabel = $label;
+                        $cleanLabel = viewHelper::flatEllipsizeText($cleanLabel, true, 20);
+                        $graph_labels_percent[$key] = $cleanLabel;
+                    }
+                }
+                else
+                {
+                    $graph_labels_percent = array();
                 }
 
 

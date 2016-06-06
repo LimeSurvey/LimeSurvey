@@ -100,6 +100,7 @@ function init_chart_js_graph_with_datasets($type,$qid)
 
     $('#legend-no-percent-'+$qid).show();
     $('#legend-percent-'+$qid).hide();
+    $('#stat-no-answer-'+$qid).hide();
 
     if (typeof chartjs != "undefined") {
         if (typeof chartjs[$qid] != "undefined") {
@@ -151,6 +152,7 @@ function init_chart_js_graph_with_datas($type,$qid)
 
     $('#legend-no-percent-'+$qid).hide();
     $('#legend-percent-'+$qid).show();
+    $('#stat-no-answer-'+$qid).show();
 
     $.each($labels, function($i, $label) {
         $colori = (parseInt($i)+$color);
