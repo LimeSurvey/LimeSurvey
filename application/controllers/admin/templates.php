@@ -102,6 +102,7 @@ class templates extends Survey_Common_Action
             die('No permission');
         }
 
+        Yii::app()->loadHelper('admin/template');
         $lid = returnGlobal('lid');
         $action = returnGlobal('action');
 
@@ -115,9 +116,14 @@ class templates extends Survey_Common_Action
 
             Yii::app()->loadLibrary('admin.pclzip');
 
+            if ($_FILES['the_file']['error']==1 || $_FILES['the_file']['error']==2)
+            {
+                Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize()/1024/1024),'error');
+                $this->getController()->redirect(array("admin/templates/sa/upload"));
+            }
+
             $zip = new PclZip($_FILES['the_file']['tmp_name']);
 
-            // Create temporary directory so that if dangerous content is unzipped it would be unaccessible
             $sNewDirectoryName=sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME ));
             $destdir = Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
 
@@ -140,26 +146,42 @@ class templates extends Survey_Common_Action
 
             if (is_file($_FILES['the_file']['tmp_name']))
             {
-                $aExtractResult=$zip->extract(PCLZIP_OPT_PATH, $destdir);
+                $aExtractResult=$zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
                 if ($aExtractResult===0)
                 {
                     Yii::app()->user->setFlash('error',gT("This file is not a valid ZIP file archive. Import failed."));
+                    rmdirr($destdir);
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }
                 else
                 {
-
+                    // Successfully unpacked
                     foreach($aExtractResult as $sFile)
                     {
-                        $aImportedFilesInfo[] = Array(
-                            "filename" => $sFile['stored_filename'],
-                            "status" => gT("OK"),
-                            'is_folder' => $sFile['folder']
-                        );
+                        if ($sFile['status']=='skipped')
+                        {
+                            $aErrorFilesInfo[] = array(
+                                "filename" => $sFile['stored_filename'],
+                            );
+                        }
+                        else
+                        {
+                            $aImportedFilesInfo[] = array(
+                                "filename" => $sFile['stored_filename'],
+                                "status" => gT("OK"),
+                                'is_folder' => $sFile['folder']
+                            );
+                        }
+                    }
+                    if (!Template::checkIfTemplateExists($sNewDirectoryName))
+                    {
+                        Yii::app()->user->setFlash('error',gT("This ZIP archive did not contain a template. Import failed."));
+                        rmdirr($destdir);
+                        $this->getController()->redirect(array("admin/templates/sa/upload"));
                     }
                 }
 
-                if (count($aErrorFilesInfo) == 0 && count($aImportedFilesInfo) == 0)
+                if (count($aImportedFilesInfo) == 0)
                 {
                     Yii::app()->user->setFlash('error',gT("This ZIP archive contains no valid template files. Import failed."));
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
@@ -167,8 +189,8 @@ class templates extends Survey_Common_Action
             }
             else
             {
-                Yii::app()->user->setFlash('error',sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
-
+                Yii::app()->user->setFlash('error',sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('usertemplaterootdir')));
+                rmdirr($destdir);
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
             }
 
