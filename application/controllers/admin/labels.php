@@ -145,9 +145,10 @@ class labels extends Survey_Common_Action
                 $this->getController()->error(sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir')));
 
             $options['checkforduplicates'] = 'off';
-            if (isset($_POST['checkforduplicates']))
-                $options['checkforduplicates'] = $_POST['checkforduplicates'];
-
+            if ($_POST['checkforduplicates']==1)
+            {
+                $options['checkforduplicates'] = 'on';
+            }
             if (strtolower($sExtension) == 'lsl')
                 $aImportResults = XMLImportLabelsets($sFullFilepath, $options);
             else
