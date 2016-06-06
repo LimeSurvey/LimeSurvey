@@ -98,6 +98,9 @@ function init_chart_js_graph_with_datasets($type,$qid)
     var $grawdata = eval("grawdata_"+$qid);
     var $color    = $canva.data('color');
 
+    $('#legend-no-percent-'+$qid).show();
+    $('#legend-percent-'+$qid).hide();
+
     if (typeof chartjs != "undefined") {
         if (typeof chartjs[$qid] != "undefined") {
             window.chartjs[$qid].destroy();
@@ -146,6 +149,9 @@ function init_chart_js_graph_with_datas($type,$qid)
     var $grawdata = eval("grawdata_percent_"+$qid);
     var $chartDef = new Array();
 
+    $('#legend-no-percent-'+$qid).hide();
+    $('#legend-percent-'+$qid).show();
+
     $.each($labels, function($i, $label) {
         $colori = (parseInt($i)+$color);
         $chartDef[$i] = {
@@ -156,6 +162,10 @@ function init_chart_js_graph_with_datas($type,$qid)
         };
     });
 
+    var $options = {
+        tooltipTemplate: "<%if (label){%><%=label %>: <%}%><%= value + '%' %>",
+    };
+
     if (typeof chartjs != "undefined") {
         if (typeof chartjs[$qid] != "undefined") {
             window.chartjs[$qid].destroy();
@@ -163,7 +173,8 @@ function init_chart_js_graph_with_datas($type,$qid)
     }
 
     window.chartjs[$qid] = new Chart($canvas)[$type](
-        $chartDef
+        $chartDef,
+        $options
     );
 }
 

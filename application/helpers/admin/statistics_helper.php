@@ -2868,6 +2868,7 @@ class statistics_helper {
             if(! ( in_array( 'is_comment', $al) || in_array( 'is_no_answer', $al) ) )
             {
                 $aGraphLabelsPercent[] = $sFlatLabel;
+                $lblPercent[$flatLabel] = $lbl[$flatLabel];
             }
 
         }    //end foreach -> loop through answer data
@@ -3699,6 +3700,10 @@ class statistics_helper {
                              $labels = array();
                              foreach($lbl as $name => $lb)
                                    $labels[] = $name;
+
+                             foreach($lblPercent as  $name => $lb)
+                                $labels_percent[] = $name;
+
                             break;
                         default:
                             break;
@@ -3736,14 +3741,6 @@ class statistics_helper {
                 }
 
 
-
-                // Labels for legend
-                foreach($labels as $key => $label)
-                {
-                    $cleanLabel = $label;
-                    $labels[$key] = $cleanLabel;
-                }
-
                 $iCanvaHeight = $iMaxLabelLength * 3;
                 $aData['iCanvaHeight'] = ($iCanvaHeight > 150)?$iCanvaHeight:150;
 
@@ -3751,7 +3748,7 @@ class statistics_helper {
                 $aData['rt'] = $rt;
                 $aData['qqid'] = $qqid;
                 $aData['graph_labels'] = $graph_labels;
-                $aData['graph_labels_percent'] = $graph_labels_percent;
+                $aData['graph_labels_percent'] = $labels_percent;
                 $aData['labels'] = $labels;
                 //$aData['COLORS_FOR_SURVEY'] = COLORS_FOR_SURVEY;
                 $aData['charttype'] = (isset($charttype))?$charttype:'Bar';
