@@ -32,9 +32,9 @@ function doFileUpload(){
             previewblock += "<span class='file-name'>"+decodeURIComponent(json[i-1].name)+"</span>";
             previewblock += "</div>";
             
+            previewblock +="<div class='file-info'><fieldset>";
             if ($('#'+fieldname+'_show_title').val() == 1 || $('#'+fieldname+'_show_comment').val() == 1)
             {
-                previewblock +="<div class='file-info'><fieldset>";
                 if($('#'+fieldname+'_show_title').val() == 1)
                 {
                     previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='"+fieldname+"_title_"+i+"'>"+uploadLang.titleFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='" + escapeHtml(json[i-1].title)+ "' id='"+fieldname+"_title_"+i+"' /></div></div>";
@@ -44,9 +44,9 @@ function doFileUpload(){
                     previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='"+fieldname+"_comment_"+i+"'>"+uploadLang.commentFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='" + escapeHtml(json[i-1].comment) + "' id='"+fieldname+"_comment_"+i+"' /></div></div>";
                 }
 
-                previewblock += "<div class='form-group'><div class='col-xs-4'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\""+fieldname+"\", "+i+")'><span class='fa fa-trash'></span>&nbsp;"+uploadLang.deleteFile+"</a></div></div>";
-                previewblock += "</fieldset></div>";
             }
+            previewblock += "<div class='form-group'><div class='col-xs-4'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\""+fieldname+"\", "+i+")'><span class='fa fa-trash'></span>&nbsp;"+uploadLang.deleteFile+"</a></div></div>";
+            previewblock += "</fieldset></div>";
 
             previewblock += "<input type='hidden' id='"+fieldname+"_size_"    +i+"' value="+json[i-1].size+" />"+
                     "<input type='hidden' id='"+fieldname+"_name_"    +i+"' value="+json[i-1].name+" />"+
@@ -157,9 +157,9 @@ function doFileUpload(){
                 previewblock += "<span class='file-name'>"+decodeURIComponent(metadata.name)+"<span>";
                 previewblock += "</div>";
 
+                previewblock +="<div class='file-info'><fieldset>";
                 if ($('#'+fieldname+'_show_title').val() == 1 || $('#'+fieldname+'_show_comment').val() == 1)
                 {
-                    previewblock +="<div class='file-info'><fieldset>";
                     if($('#'+fieldname+'_show_title').val() == 1)
                     {
                         previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='"+fieldname+"_title_"+count+"'>"+uploadLang.titleFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='' id='"+fieldname+"_title_"+count+"' /></div></div>";
@@ -168,9 +168,9 @@ function doFileUpload(){
                     {
                         previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='"+fieldname+"_comment_"+count+"'>"+uploadLang.commentFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='' id='"+fieldname+"_comment_"+count+"' /></div></div>";
                     }
-                    previewblock += "<div class='form-group'><div class='col-xs-4'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\""+fieldname+"\", "+count+")'><span class='fa fa-trash'></span>&nbsp;"+uploadLang.deleteFile+"</a></div></div>";
-                    previewblock += "</fieldset></div>";
                 }
+                previewblock += "<div class='form-group'><div class='col-xs-4'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\""+fieldname+"\", "+count+")'><span class='fa fa-trash'></span>&nbsp;"+uploadLang.deleteFile+"</a></div></div>";
+                previewblock += "</fieldset></div>";
 
                 previewblock += "<input type='hidden' id='"+fieldname+"_size_"+count+"' value="+metadata.size+" />"+
                                 "<input type='hidden' id='"+fieldname+"_file_index_"+count+"' value="+metadata.file_index+" />"+
