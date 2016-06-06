@@ -35,6 +35,32 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.50+ (build 160603) to 2.50+ (build 160606) June 6, 2016
+-Fixed issue #11144: Response view shifted when file upload question is used and description/title attribute is disabled (Carsten Schmitz)
+-Fixed issue #11155: Survey start and end dates are loaded into the form incorrectly (Carsten Schmitz)
+-Fixed issue #11174: Config menu is shown without content to user without config permissions (LouisGac)
+-Fixed issue #11309: Email separator demikolon or comma not allowed in survey participants edition (Carsten Schmitz)
+-Fixed issue #11321: Mandatory question not working ( array, drop down presentation ) (LouisGac)
+-Fixed issue #11323: Radio buttons at array questions are not aligned properly (LouisGac)
+-Fixed issue #11342: Owner list is not sorted alphabetically (Carsten Schmitz)
+-Fixed issue #11343: Pie graph in statistics showing count for comments (LouisGac)
+-Fixed issue #8958: Unable to reinstall with another dbPrefix (Carsten Schmitz)
+-Fixed issue #9498: Error message when try to import a big LSA file can be an error (Carsten Schmitz)
+-Fixed issue #9498: Wrong error message when trying to import a file that is too big (Carsten Schmitz)
+-Fixed issue: [security] Disallowed files can be uploaded in template editor (Carsten Schmitz)
+-Fixed issue: Unstyled error in label sets if no permissions (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: German by c_schmitz
+#Updated translation: Hungarian by tdombos, pszilard
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Persian by  moohebat, blackeve, ardalan, ehsan, delarammahdaviii, ahadzadeh
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Spanish (Spain) by ecocitizen, aesteban, larjona
+
 Changes from 2.50+ (build 160602) to 2.50+ (build 160603) June 3, 2016
 -Fixed issue #11038: Change of attribute content from <some content> to <blank/nothing> doesn't stick (LouisGac)
 -Fixed issue #11218: Statistics general filters does not remember base language of the survey (LouisGac)
