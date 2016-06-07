@@ -181,6 +181,7 @@
                                                     'assessment_value'  => $row->assessment_value,
                                                     'sortorder'         => $row->sortorder,
                                                     'answer'            => $row->answer,
+                                                    'oldCode'   => true,
                                                 ));?>
 
                                             <?php endif; ?>

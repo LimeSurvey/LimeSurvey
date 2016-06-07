@@ -887,16 +887,15 @@ class questions extends Survey_Common_Action
     public function getSubquestionRowForAllLanguages($surveyid, $gid, $qid, $codes, $scale_id, $type, $languages, $position, $assessmentvisible='')
     {
         $languages = explode ( ';', json_decode($languages));
-        //var_dump($languages ); die();
-        $html = array();
-        $first = true;
+        $html      = array();
+        $first     = true;
+        $qid = 'new'.rand ( 0 , 99999 );
         foreach($languages as $language)
         {
             $html[$language] = $this->getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible);
             $first = false;
         }
 
-        //echo htmlentities(json_encode($html));
         echo json_encode($html);
     }
 
@@ -911,11 +910,10 @@ class questions extends Survey_Common_Action
         $stringCodes = json_decode($codes); // All the codes of the displayed subquestions
 
         // TODO: calcul correct value
-        $oldCode = false;
+        $oldCode  = false;
         $position = $position;
         $scale_id = $scale_id ;
 
-        $qid = 'new'.rand ( 0 , 99999 );
 
         // We get the numerical part of each code and we store them in Arrays
         // One array is to store the pure numerical values (so we can search in it for the greates value, and increment it)

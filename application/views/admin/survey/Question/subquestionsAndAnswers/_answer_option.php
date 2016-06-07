@@ -33,6 +33,8 @@
 
         <!-- Code (title) -->
         <td  class="code-title" style="vertical-align: middle;">
+
+            <?php if($oldCode): ?>
             <input
                 type='hidden'
                 class='oldcode code-title'
@@ -40,6 +42,7 @@
                 name='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                 value="<?php echo $title; ?>"
             />
+            <?php endif; ?>
 
             <input
                 type='text'

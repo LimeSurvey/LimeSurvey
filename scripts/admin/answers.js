@@ -15,12 +15,7 @@ $(document).ready(function(){
     $('input[name=savelabeloption]:radio').click(setlabel);
     flag = [false, false];
     $('#btnsave').click(savelabel);
-    //updaterowproperties();
-
-    updateanswercount();
-
-
-
+    updaterowproperties();
 
 
     $(document).on("click", '.btnaddanswer', addinput);
@@ -74,111 +69,16 @@ function deleteinput()
     updaterowproperties();
 }
 
-/*
-function addinput()
-{
-    var x;
-    classes=$(this).parent().parent().attr('class').split(' ');
-    console.log($(this).parent().parent().attr('class'));
-    for (x in classes)
-        {
-        if (classes[x].substr(0,3)=='row'){
-            position=classes[x].substr(4);
-        }
-    }
-    info=$(this).closest('table').attr('id').split("_");
-    language=info[1];
-    scale_id=info[2];
-    newposition=Number(position)+1;
-    languages=langs.split(';');
-
-    sNextCode=getNextCode($(this).parent().parent().find('.code').val());
-
-    for (x in languages)
-        {
-        tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
-        if (assessmentvisible)
-            {
-            assessment_style='';
-            assessment_type='text';
-        }
-        else
-            {
-            assessment_style='style="display:none;"';
-            assessment_type='hidden';
-        }
-        if (x==0) {
-            inserthtml=
-            '<tr class="row_'+newposition+'" style="display:none;">'+
-            '   <td>'+
-            '       <span class="glyphicon glyphicon-move"></span>'+
-            '   </td>'+
-            '   <td>'+
-            '       <input class="code first-in-answersjs form-control input-lg" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="20" required value="'+htmlspecialchars(sNextCode)+'" />'+
-            '   </td>'+
-            '   <td '+assessment_style+'>'+
-            '       <input class="assessment" type="'+assessment_type+'" maxlength="5" size="5" value="1"/>'+
-            '   </td>'+
-            '   <td>'+
-            '           <input type="text" size="20" class="answer first-inanswerjs form-control input-lg" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />'+
-            '   </td>'+
-            '   <td>'+
-            '           <a class="editorLink">'+
-            '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
-            '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-            '           </a>'+
-            '       <span class="btnaddanswer icon-add text-success"></span>'+
-            '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
-            '   </td>'+
-            '</tr>'
-        }
-        else
-            {
-            inserthtml=
-            '<tr class="row_'+newposition+'" style="display:none;">'+
-            '   <td>&nbsp;</td>'+
-            '   <td>'+htmlspecialchars(sNextCode)+'</td>'+
-
-            '   <td>'+
-            '           <input type="text" size="20" class="answer second-in-answerjs form-control input-lg" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />'+
-            '   </td>'+
-            '   <td>'+
-            '           <a class="editorLink">'+
-            '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
-            '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-            '           </a>'+
-            '   </td>'+
-            '</tr>'
-        }
-        tablerow.after(inserthtml);
-        tablerow.next().find('.btnaddanswer').click(addinput);
-        tablerow.next().find('.btndelanswer').click(deleteinput);
-        tablerow.next().find('.answer').focus(function(){
-            if ($(this).val()==newansweroption_text)
-                {
-                $(this).val('');
-            }
-        });
-        tablerow.next().find('.code').blur(updatecodes);
-    }
-    $('.row_'+newposition).fadeIn('slow');
-    $('.row_'+newposition).show(); //Workaround : IE does not show with fadeIn only
-
-    $('.tab-page:first .answertable tbody').sortable('refresh');
-    updaterowproperties();
-}
-*/
-
 
 /**
  * add input : the ajax way
  */
 function addinput()
 {
+    console.log('addinput');
     $that                  = $(this);                            // The "add" button
 
     $currentRow            = $that.parents('.row-container');    // The row containing the "add" button
-    console.log($currentRow.attr('id'));
     $currentTable          = $that.parents('.answertable');
     $commonId              = $currentRow.data('common-id');      // The common id of this row in the other languages
     $elDatas               = $('#add-input-javascript-datas');   // This hidden element  on the page contains various datas for this function
@@ -227,7 +127,7 @@ function addinput()
             $.each($arrayOfHtml, function(lang, htmlRow){
                 $elRowToUpdate = $('#row_'+lang+'_'+$commonId);                 // The row for the current language
                 console.log('#row_'+lang+'_'+$commonId);
-                console.log($elRowToUpdate);
+                console.log($elRowToUpdate.attr('id'));
                 $elRowToUpdate.after(htmlRow);                                  // We insert the HTML of the new row after this one
             });
 
@@ -281,15 +181,6 @@ function aftermove(event,ui)
     updaterowproperties();
 }
 
-function updateanswercount()
-{
-    $elDatas  = $('#add-input-javascript-datas');
-    scale_id  = $elDatas.data('scale-id');
-    rownumber = ($('tr').length );
-    $('#answercount_'+scale_id).val(rownumber);
-    //console.log('#answercount_'+scale_id);
-    //console.log($('#answercount_'+scale_id).val());
-}
 
 // This function adjust the alternating table rows and renames/renumbers IDs and names
 // if the list has really changed
@@ -307,10 +198,12 @@ function updaterowproperties()
         var rownumber=1;
         $(this).children('tr').each(function(){
 
-            $(this).attr('class','');//see http://bugs.jqueryui.com/ticket/9015
+            $(this).removeClass();
             if (highlight){
                 $(this).addClass('highlight');
             }
+
+            $(this).addClass('row-container');
             $(this).addClass('row_'+rownumber);
             $(this).find('.oldcode').attr('id','oldcode_'+rownumber+'_'+scale_id);
             $(this).find('.oldcode').attr('name','oldcode_'+rownumber+'_'+scale_id);
@@ -322,12 +215,6 @@ function updaterowproperties()
             $(this).find('.assessment').attr('name','assessment_'+rownumber+'_'+scale_id);
 
             // Newly inserted row editor button
-            $(this).find('.editorLink').attr('href','javascript:start_popup_editor(\'answer_'+language+'_'+rownumber+'_'+scale_id+'\',\'[Answer:]('+language+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')');
-            $(this).find('.editorLink').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_ctrl');
-            $(this).find('.btneditanswerena').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrlena');
-            $(this).find('.btneditanswerena').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrlena');
-            $(this).find('.btneditanswerdis').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrldis');
-            $(this).find('.btneditanswerdis').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrldis');
             highlight=!highlight;
             rownumber++;
         })
@@ -394,7 +281,7 @@ function checkForDuplicateCodes()
     }
     else
     {
-        updateanswercount();
+        updaterowproperties();
         return true;
     }
 }
