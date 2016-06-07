@@ -946,7 +946,10 @@ label, th {
     top: 10px;
 }
 
-.list-unstyled.radio-list
-{
+.list-unstyled.radio-list {
     padding-left: 15px;
+}
+
+div.yes-no .btn-group label {
+  white-space:normal;
 }
