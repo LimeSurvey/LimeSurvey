@@ -4,7 +4,7 @@ $(document).ready(function(){
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
         update:aftermove,
         distance:3});
-    $('#editanswersform').submit(checkForDuplicateCodes)
+    $('#editanswersform').submit(checkForDuplicateCodes);
     $('#btnlsreplace').click(transferlabels);
     $('#btnlsinsert').click(transferlabels);
     $('#labelsets').click(lspreview);
@@ -15,7 +15,13 @@ $(document).ready(function(){
     $('input[name=savelabeloption]:radio').click(setlabel);
     flag = [false, false];
     $('#btnsave').click(savelabel);
-    updaterowproperties();
+    //updaterowproperties();
+
+    updateanswercount();
+
+
+
+
 
     $(document).on("click", '.btnaddanswer', addinput);
     $(document).on("click", '.btndelanswer', deleteinput);
@@ -68,7 +74,7 @@ function deleteinput()
     updaterowproperties();
 }
 
-/**/
+/*
 function addinput()
 {
     var x;
@@ -161,23 +167,23 @@ function addinput()
     $('.tab-page:first .answertable tbody').sortable('refresh');
     updaterowproperties();
 }
-
+*/
 
 
 /**
  * add input : the ajax way
-
+ */
 function addinput()
 {
     $that                  = $(this);                            // The "add" button
 
     $currentRow            = $that.parents('.row-container');    // The row containing the "add" button
+    console.log($currentRow.attr('id'));
     $currentTable          = $that.parents('.answertable');
     $commonId              = $currentRow.data('common-id');      // The common id of this row in the other languages
     $elDatas               = $('#add-input-javascript-datas');   // This hidden element  on the page contains various datas for this function
     $url                   = $elDatas.data('url');               // Url for the request
     $errormessage          = $elDatas.data('errormessage');     // the error message if the AJAX request failed
-
     $languages             = JSON.stringify(langs);              // The languages
 
     // We get all the subquestion codes currently displayed
@@ -215,15 +221,19 @@ function addinput()
 
             $arrayOfHtml = JSON.parse(arrayofhtml);                             // Convert the JSON to a javascript object
 
+            //console.log($arrayOfHtml);
+
             // We insert each row for each language
             $.each($arrayOfHtml, function(lang, htmlRow){
                 $elRowToUpdate = $('#row_'+lang+'_'+$commonId);                 // The row for the current language
+                console.log('#row_'+lang+'_'+$commonId);
+                console.log($elRowToUpdate);
                 $elRowToUpdate.after(htmlRow);                                  // We insert the HTML of the new row after this one
             });
 
             $('#answercount_'+$scaleId).val($position+2);
-            console.log($scaleId);
-            console.log($position);
+            //console.log('scale: '+$scaleId);
+            //console.log('position: '+$position);
 
         },
         error :  function(html, statut){
@@ -232,7 +242,8 @@ function addinput()
         }
     });
 }
-*/
+
+
 function aftermove(event,ui)
 {
     // But first we have change the sortorder in translations, too
@@ -268,6 +279,16 @@ function aftermove(event,ui)
         }
     }
     updaterowproperties();
+}
+
+function updateanswercount()
+{
+    $elDatas  = $('#add-input-javascript-datas');
+    scale_id  = $elDatas.data('scale-id');
+    rownumber = ($('tr').length );
+    $('#answercount_'+scale_id).val(rownumber);
+    //console.log('#answercount_'+scale_id);
+    //console.log($('#answercount_'+scale_id).val());
 }
 
 // This function adjust the alternating table rows and renames/renumbers IDs and names
@@ -373,6 +394,7 @@ function checkForDuplicateCodes()
     }
     else
     {
+        updateanswercount();
         return true;
     }
 }

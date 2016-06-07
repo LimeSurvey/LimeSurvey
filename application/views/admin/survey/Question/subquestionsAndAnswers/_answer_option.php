@@ -36,17 +36,17 @@
             <input
                 type='hidden'
                 class='oldcode code-title'
-                id='oldcode_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
-                name='oldcode_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
+                id='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>'
+                name='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                 value="<?php echo $title; ?>"
             />
 
             <input
                 type='text'
                 class="code form-control input-lg"
-                id='code_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
+                id='code_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                 class='code code-title'
-                name='code_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
+                name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                 value="<?php echo $title; ?>"
                 maxlength='20' size='20'
                 pattern='<?php echo $sPattern; ?>'
