@@ -608,6 +608,7 @@ function transferlabels()
                 });
             }
             $('.tab-page:first .answertable tbody').sortable('refresh');
+            $('#labelsetbrowserModal').modal('hide');
             updaterowproperties();
 
     }}
