@@ -911,7 +911,7 @@
 
         if($this->group_name != '')
         {
-            $criteria->addCondition("groups.group_name = '$this->group_name'");
+            $criteria->compare('groups.group_name', $this->group_name, true, 'AND');
         }
 
         $dataProvider=new CActiveDataProvider('Question', array(
