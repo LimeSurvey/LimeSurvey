@@ -433,7 +433,7 @@
 
                                       <!-- queXMLPDF -->
                                       <li>
-                                          <a href='<?php echo $this->createUrl("admin/export/quexml/surveyid/$surveyid");?>' >
+                                          <a href='<?php echo $this->createUrl("admin/export/sa/quexml/surveyid/$surveyid");?>' >
                                               <span class="icon-export" ></span>
                                               <?php eT("queXML PDF export");?>
                                           </a>

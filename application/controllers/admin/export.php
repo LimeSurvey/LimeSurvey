@@ -1184,7 +1184,7 @@ class export extends Survey_Common_Action {
         {
             setGlobalSetting($s,'');
         }
-        $this->getController()->redirect($this->getController()->createUrl("/admin/export/quexml/surveyid/{$iSurveyID}"));
+        $this->getController()->redirect($this->getController()->createUrl("/admin/export/sa/quexml/surveyid/{$iSurveyID}"));
     }
 
     /**
