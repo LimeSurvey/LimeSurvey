@@ -2094,15 +2094,16 @@ function checkCompletedQuota($surveyid,$return=false)
     // Add the navigator with Previous button if quota allow modification.
     if ($sAction == "2")
     {
-        $sQuotaStep= isset($_SESSION['survey_'.$surveyid]['step'])?$_SESSION['survey_'.$surveyid]['step']:0; // Surely not needed
+        $sQuotaStep = isset($_SESSION['survey_'.$surveyid]['step'])?$_SESSION['survey_'.$surveyid]['step']:0; // Surely not needed
         $sNavigator = CHtml::htmlButton(gT("Previous"),array('type'=>'submit','id'=>"moveprevbtn",'value'=>$sQuotaStep,'name'=>'move','accesskey'=>'p','class'=>"submit button btn btn-default"));
         //$sNavigator .= " ".CHtml::htmlButton(gT("Submit"),array('type'=>'submit','id'=>"movesubmit",'value'=>"movesubmit",'name'=>"movesubmit",'accesskey'=>'l','class'=>"submit button"));
         $sHtmlQuotaMessage.= CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','class'=>'survey-form-container QuotaMessage'));
-        $sHtmlQuotaMessage.= templatereplace(file_get_contents($sTemplateViewPath."/navigator.pstpl"),array('NAVIGATOR'=>$sNavigator,'SAVE'=>''),$aDataReplacement);
+        $sHtmlQuotaMessage.= templatereplace(file_get_contents($sTemplateViewPath."/navigator.pstpl"),array('MOVEPREVBUTTON'=>$sNavigator,'SAVE'=>''),$aDataReplacement);
         $sHtmlQuotaMessage.= CHtml::hiddenField('sid',$surveyid);
         $sHtmlQuotaMessage.= CHtml::hiddenField('token',$sClientToken);// Did we really need it ?
         $sHtmlQuotaMessage.= CHtml::endForm();
     }
+
     $sHtmlQuotaMessage.= "</div>\n";
     // Add the plugin message before default message
     $sHtmlQuotaMessage = implode("\n", $blocks) ."\n". $sHtmlQuotaMessage;
