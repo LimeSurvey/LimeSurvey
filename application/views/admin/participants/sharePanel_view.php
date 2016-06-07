@@ -41,9 +41,8 @@
     var sOperator12= '<?php eT("does not end with",'js');?>';
     var sOperator13= '<?php eT("contains",'js');?>';
     var sOperator14= '<?php eT("does not contain",'js');?>';
-    
-    
-
+    var sOperator15= '<?php eT("is null",'js');?>';
+    var sOperator16= '<?php eT("is not null",'js');?>';
 </script>
 
 <div class="col-lg-12 list-surveys">
@@ -55,8 +54,8 @@
     <tr><td>&nbsp;</td></tr>
 </table>
 <div id="pager">
-</div>            
+</div>
         </div>
     </div>
-</div>            
+</div>
 
