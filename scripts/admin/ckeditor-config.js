@@ -26,7 +26,7 @@ CKEDITOR.editorConfig = function( config )
         ['Save','Createlimereplacementfields'],
         ['Cut','Copy','Paste','PasteText','PasteFromWord'],
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat','Source'],
-        ['Image','Youtube','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
+        ['Image','Video','Youtube','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
         '/',
         ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
         ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
@@ -43,7 +43,7 @@ CKEDITOR.editorConfig = function( config )
         ['Maximize','Createlimereplacementfields'],
         ['Cut','Copy','Paste','PasteText','PasteFromWord'],
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat','Source'],
-        ['Image','Youtube','Flash'],['Table','HorizontalRule','Smiley','SpecialChar'],
+        ['Image','Video','Youtube','Flash'],['Table','HorizontalRule','Smiley','SpecialChar'],
         ['Bold','Italic','Underline','Strike'],['Subscript','Superscript'],
         ['NumberedList','BulletedList'],['Outdent','Indent','Blockquote','CreateDiv'],
         ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
@@ -63,7 +63,7 @@ CKEDITOR.editorConfig = function( config )
         ['Link','Unlink','Image'],
         ['Source']
     ];
-   config.extraPlugins = "xml,ajax,limereplacementfields,codemirror,youtube";
+   config.extraPlugins = "xml,ajax,limereplacementfields,codemirror,youtube,video";
 };
 
 (function () {
