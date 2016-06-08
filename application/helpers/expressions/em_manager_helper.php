@@ -3177,7 +3177,7 @@
                             'atmost_1' => $this->gT("Please fill in at most one answer"),
                             '1' => $this->gT("Please fill in at most one answer"),
                             'n' => $this->gT("Please fill in %s answers"),
-                            'between' => $this->gT("Please fill in between %s and %s answers")
+                            'between' => $this->gT("Please fill in from %s to %s answers.")
                         );
                     }
                     else
@@ -3189,7 +3189,7 @@
                             'atmost_1' => $this->gT("Please select at most one answer"),
                             '1' => $this->gT("Please select one answer"),
                             'n' => $this->gT("Please select %s answers"),
-                            'between' => $this->gT("Please select between %s and %s answers")
+                            'between' => $this->gT("Please select from %s to %s answers.")
                         );
                     }
                     $qtips['num_answers']=
