@@ -114,26 +114,6 @@ $(document).ready(function()
     // It's OK to keep tables on pads.
     if($(window).width() < 768)
     {
-        if($('.no-more-tables, .array-by-columns-table').length > 0)
-        {
-            $('.no-more-tables, .array-by-columns-table').find('td').each(function(){
-                $that = $(this);
-                $input = $that.find('input');
-                if($input.is(':checkbox') || $that.hasClass('radio'))
-                {
-                    $that.find('.hide').removeClass('hide');
-                }
-                else
-                {
-                    // TODO: Remove this logic for screen reader
-                    // Only used for array dual scale
-                    $label = $that.data('title');
-                    $that.find('label').prepend($label);
-                }
-
-            });
-        }
-
         // Brutally remake the array-by-columns question type to divs,
         // because you can't wrap table columns
         $('.array-by-columns-table').each(function() {

@@ -64,7 +64,7 @@
              so final user can add paragraph, div, or whatever he wants in the subquestion text
              This field is related to the input thanks to attribute aria-labelledby
         -->
-        <div class="hide label-text" id="label-cbox_<?php echo $myfname2;?>">
+        <div class="visible-xs-block label-text" id="label-cbox_<?php echo $myfname2;?>">
             <?php echo $dataTitle;?>
         </div>
 

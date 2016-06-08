@@ -55,7 +55,7 @@
                                 onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
                             />
                         <label for="answer<?php echo $aQuestions[$i]['myfname']; ?>-<?php echo $ansrow['code']; ?>">
-                            <span class="hide label-text"><?php echo $ansrow['answer'];?></span>
+                            <span class="visible-xs-block label-text"><?php echo $ansrow['answer'];?></span>
                         </label>
                     </td>
                 <?php endforeach; ?>

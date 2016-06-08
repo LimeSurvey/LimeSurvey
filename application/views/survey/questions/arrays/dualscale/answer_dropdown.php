@@ -76,7 +76,7 @@
             <?php foreach ($aSubQuestions as $ansrow): ?>
                 <!-- <tr> -->
                 <?php echo $ansrow['htmltbody2']; ?>
-                    
+
                     <!-- Answer text (actual question) -->
 
                     <th class="answertext">
@@ -90,19 +90,19 @@
                                 <?php echo $ansrow['question']; ?>
                             <?php endif; ?>
 
-                            <input 
-                                type="hidden" 
-                                disabled="disabled" 
-                                name="java<?php echo $ansrow['myfid0']; ?>" 
-                                id="java<?php echo $ansrow['myfid0']; ?>" 
-                                value="<?php echo $ansrow['sActualAnswer0']; ?>" 
+                            <input
+                                type="hidden"
+                                disabled="disabled"
+                                name="java<?php echo $ansrow['myfid0']; ?>"
+                                id="java<?php echo $ansrow['myfid0']; ?>"
+                                value="<?php echo $ansrow['sActualAnswer0']; ?>"
                             />
-                            <input 
-                                type="hidden" 
-                                disabled="disabled" 
-                                name="java<?php echo $ansrow['myfid1']; ?>" 
-                                id="java<?php echo $ansrow['myfid1']; ?>" 
-                                value="<?php echo $ansrow['sActualAnswer1']; ?>" 
+                            <input
+                                type="hidden"
+                                disabled="disabled"
+                                name="java<?php echo $ansrow['myfid1']; ?>"
+                                id="java<?php echo $ansrow['myfid1']; ?>"
+                                value="<?php echo $ansrow['sActualAnswer1']; ?>"
                             />
 
                         </label>
@@ -119,12 +119,12 @@
                     <!-- First dropdown -->
 
                     <td class="answer-item dropdown-item">
-                        <select 
-                            class='form-control' 
-                            name="<?php echo $ansrow['myfname0']; ?>" 
+                        <select
+                            class='form-control'
+                            name="<?php echo $ansrow['myfname0']; ?>"
                             id="answer<?php echo $ansrow['myfid0']; ?>"
                         >
-                        
+
                             <!-- Please choose... -->
                             <?php if ($ansrow['sActualAnswer0'] == ''): ?>
                                 <option value="" <?php echo SELECTED; ?> >
@@ -134,7 +134,7 @@
 
                             <!-- First label set -->
                             <?php foreach ($labels0 as $lrow): ?>
-                                <option 
+                                <option
                                     value="<?php echo $lrow['code']; ?>"
                                     <?php if ($ansrow['sActualAnswer0'] == $lrow['code']): echo SELECTED; endif; ?>
                                 >
@@ -174,7 +174,7 @@
                     <!-- Second dropdown -->
 
                     <td class="answer-item dropdown-item">
-                        <label class="hide read" for="answer<?php echo $ansrow['myfid1']; ?>">
+                        <label class="visible-xs-block read" for="answer<?php echo $ansrow['myfid1']; ?>">
                             <?php echo $ansrow['question']; ?>
                         </label>
 
@@ -187,7 +187,7 @@
 
                             <!-- Second label set -->
                             <?php foreach ($labels1 as $lrow): ?>
-                                <option 
+                                <option
                                     value="<?php echo $lrow['code']; ?>"
                                     <?php if ($ansrow['sActualAnswer1'] == $lrow['code']): echo SELECTED; endif; ?>
                                 >

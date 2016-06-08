@@ -58,7 +58,7 @@
              The label text is provided inside a div,
              To respect the global HTML flow of other question types
         -->
-        <div class="hide label-text" id="label-answer<?php echo $myfname;?>-I">
+        <div class="visible-xs-block label-text" id="label-answer<?php echo $myfname;?>-I">
             <?php eT("Increase"); ?>
         </div>
     </td>
@@ -80,7 +80,7 @@
              The label text is provided inside a div,
              To respect the global HTML flow of other question types
         -->
-        <div class="hide label-text" id="label-answer<?php echo $myfname; ?>-S">
+        <div class="visible-xs-block label-text" id="label-answer<?php echo $myfname; ?>-S">
             <?php eT("Same");?>
         </div>
     </td>
@@ -102,7 +102,7 @@
              The label text is provided inside a div,
              To respect the global HTML flow of other question types
         -->
-        <div class="hide label-text" id="label-answer<?php echo $myfname;?>-D">
+        <div class="visible-xs-block label-text" id="label-answer<?php echo $myfname;?>-D">
             <?php eT("Decrease"); ?>
         </div>
     </td>
@@ -125,7 +125,7 @@
                  The label text is provided inside a div,
                  To respect the global HTML flow of other question types
             -->
-            <div class="hide label-text" id="labelanswer<?php echo $myfname;?>-">
+            <div class="visible-xs-block label-text" id="labelanswer<?php echo $myfname;?>-">
                 <?php eT("No answer");?>
             </div>
         </td>

@@ -147,14 +147,14 @@
                             <?php echo $labelcode0_checked[$ansrow['title']][$ld]; ?>
                         />
                         <label for="answer<?php echo $ansrow['myfid0']; ?>-<?php echo $ld; ?>">
-                            <span class="hide label-text"><?php echo $ld;?></span>
+                            <span class="visible-xs-block label-text"><?php echo $ld;?></span>
                         </label>
                     </td>
                 <?php endforeach; ?>
 
                 <?php if (count($labelans1) > 0):  // if second label set is used ?>
                     <td class="dual_scale_separator information-item">
-                        <?php if ($shownoanswer): // No answer for accessibility and no javascript (but hide hide even with no js: need reworking) ?>
+                        <?php if ($shownoanswer): // No answer for accessibility and no javascript (but visible-xs-block visible-xs-block even with no js: need reworking) ?>
                             <label for='answer<?php echo $ansrow['myfid0']; ?>-'>
                                 <input
                                     class='radio jshide read'
@@ -183,7 +183,7 @@
                                 <?php echo $labelcode1_checked[$ansrow['title']][$ld]; ?>
                             />
                             <label for="answer<?php echo $ansrow['myfid1']; ?>-<?php echo $ld; ?>">
-                                <span class="hide label-text"><?php echo $ld;?></span>
+                                <span class="visible-xs-block label-text"><?php echo $ld;?></span>
                             </label>
                         </td>
                     <?php endforeach; ?>
@@ -209,7 +209,7 @@
                                     <?php echo $myfname1_notset; ?>
                                 />
                             <label for='answer<?php echo $ansrow['myfid1']; ?>-'>
-                                <span class="hide label-text"><?php eT("No answer"); ?></span>
+                                <span class="visible-xs-block label-text"><?php eT("No answer"); ?></span>
                             </label>
                         <?php else: ?>
                                 <input
@@ -221,7 +221,7 @@
                                     <?php echo $myfname0_notset; ?>
                                 />
                             <label for='answer<?php echo $ansrow['myfid0']; ?>-'>
-                                <span class="hide label-text"><?php eT("No answer"); ?></span>
+                                <span class="visible-xs-block label-text"><?php eT("No answer"); ?></span>
                             </label>
                         <?php endif; ?>
                     </td>
