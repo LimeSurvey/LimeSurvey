@@ -534,7 +534,7 @@ class responses extends Survey_Common_Action
             'index'=>'startlanguage',
             'sorttype'=>'string',
             'sortable'=>true,
-            'width'=>'50',
+            'width'=>'150',
             'resizable' => true,// Strangely : don't work
             'align'=>'left',
             'title'=>viewHelper::getFieldText($fields['startlanguage']),
