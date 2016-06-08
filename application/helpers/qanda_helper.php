@@ -5194,7 +5194,7 @@ function do_array_multiflexi($ia)
     $minrepeatheadings          = Yii::app()->getConfig("minrepeatheadings");
     $extraclass                 = "";
     $answertypeclass            = "";
-    $caption                    = gT("An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. ");
+    $caption                    = gT("An array of subquestions on each cell. The subquestion texts are in the table header and concern the line header.");
     $checkconditionFunction     = "fixnum_checkconditions";
     $defaultvaluescript         = '';
     $qquery                     = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
@@ -5261,21 +5261,21 @@ function do_array_multiflexi($ia)
         $maxvalue            =  1;
         $checkboxlayout      =  true;
         $answertypeclass     =  " checkbox";
-        $caption            .= gT("Check or uncheck the answer for each subquestion. ");
+        $caption            .= gT("Please check the matching combinations.");
         $textAlignment       = 'center';
     }
     elseif ($aQuestionAttributes['input_boxes']!=0 )
     {
-        $inputboxlayout      = true;
+        $inputboxlayout      =  true;
         $answertypeclass    .= " numeric-item text";
         $extraclass         .= " numberonly";
-        $caption            .= gT("Each answers are a number. ");
+        $caption            .= gT("Please enter only numbers.");
         $textAlignment       = 'right';
     }
     else
     {
         $answertypeclass     = " dropdown";
-        $caption            .= gT("Select the answer for each subquestion. ");
+        $caption            .= gT("Please select an answer for each combination. ");
     }
 
     if (ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
