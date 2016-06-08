@@ -42,7 +42,7 @@
     </th>
 
     <!-- Increase -->
-    <td data-title='<?php eT("Increase"); ?>' class="answer_cell_I answer-item radio-item radio text-center">
+    <td class="answer_cell_I answer-item radio-item radio text-center">
         <input
             class="radio"
             type="radio"
@@ -64,7 +64,7 @@
     </td>
 
     <!-- Same -->
-    <td data-title='<?php eT("Same");?>' class="answer_cell_S answer-item radio-item  radio text-center">
+    <td class="answer_cell_S answer-item radio-item  radio text-center">
         <input
             class="radio"
             type="radio"
@@ -86,7 +86,7 @@
     </td>
 
     <!-- Decrease -->
-    <td data-title='<?php eT("Decrease"); ?>' class="answer_cell_D answer-item radio-item radio  text-center">
+    <td class="answer_cell_D answer-item radio-item radio  text-center">
         <input
             class="radio"
             type="radio"
@@ -109,7 +109,7 @@
 
     <!-- No Answer -->
     <?php if($no_answer):?>
-        <td data-title='<?php eT("No answer");?>' class="answer-item radio-item noanswer-item radio text-center">
+        <td class="answer-item radio-item noanswer-item radio text-center">
             <input
                 class="radio"
                 type="radio"

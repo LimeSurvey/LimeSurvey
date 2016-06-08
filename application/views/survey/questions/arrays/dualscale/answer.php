@@ -137,7 +137,7 @@
                     <?php if ($j === 0 && $leftheader != ''): ?>
                         <td class='visible-xs'><em><?php echo $leftheader; ?></em></td>
                     <?php endif; ?>
-                    <td data-title='<?php echo $ld; ?>' class="answer_cell_1_<?php echo $ld; ?> answer-item <?php echo $answertypeclass; ?>-item text-center radio">
+                    <td class="answer_cell_1_<?php echo $ld; ?> answer-item <?php echo $answertypeclass; ?>-item text-center radio">
                         <input
                             class="radio"
                             type="radio"
@@ -153,7 +153,7 @@
                 <?php endforeach; ?>
 
                 <?php if (count($labelans1) > 0):  // if second label set is used ?>
-                    <td data-title='' class="dual_scale_separator information-item">
+                    <td class="dual_scale_separator information-item">
                         <?php if ($shownoanswer): // No answer for accessibility and no javascript (but hide hide even with no js: need reworking) ?>
                             <label for='answer<?php echo $ansrow['myfid0']; ?>-'>
                                 <input
@@ -173,7 +173,7 @@
                         <?php if ($k === 0 && $rightheader != ''): ?>
                             <td class='visible-xs'><em><?php echo $rightheader; ?></em></td>
                         <?php endif; ?>
-                        <td data-title='<?php echo $labelans1[$k]; ?>' class="answer_cell_2_<?php echo $ld; ?> answer-item radio-item text-center radio">
+                        <td class="answer_cell_2_<?php echo $ld; ?> answer-item radio-item text-center radio">
                             <input
                                 class="radio"
                                 type="radio"
@@ -198,7 +198,7 @@
 
                 <!-- No answer column -->
                 <?php if ($shownoanswer): ?>
-                    <td  data-title='<?php eT("No answer"); ?>' class="dual_scale_no_answer answer-item radio-item noanswer-item text-center radio">
+                    <td class="dual_scale_no_answer answer-item radio-item noanswer-item text-center radio">
                         <?php if (count($labelans1) > 0): ?>
                                 <input
                                     class='radio'
@@ -213,7 +213,6 @@
                             </label>
                         <?php else: ?>
                                 <input
-                                    data-title='<?php eT("No answer"); ?>'
                                     class='radio'
                                     type='radio'
                                     name='<?php echo $ansrow['myfname0']; ?>'

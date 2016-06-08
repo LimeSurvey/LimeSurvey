@@ -118,7 +118,6 @@ $(document).ready(function()
         {
             $('.no-more-tables, .array-by-columns-table').find('td').each(function(){
                 $that = $(this);
-                $label = $that.data('title');
                 $input = $that.find('input');
                 if($input.is(':checkbox') || $that.hasClass('radio'))
                 {
@@ -127,7 +126,8 @@ $(document).ready(function()
                 else
                 {
                     // TODO: Remove this logic for screen reader
-                    // Only used for array dual scale and array columns now.
+                    // Only used for array dual scale
+                    $label = $that.data('title');
                     $that.find('label').prepend($label);
                 }
 

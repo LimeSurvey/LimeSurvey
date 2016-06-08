@@ -11,7 +11,7 @@
 ?>
 
 <!-- answer_td -->
-<td data-title='<?php echo $label;?>' class="answer-cell-3 answer_cell_<?php echo $ld;?> answer-item radio-item text-center radio">
+<td class="answer-cell-3 answer_cell_<?php echo $ld;?> answer-item radio-item text-center radio">
     <input
         class="radio"
         type="radio"

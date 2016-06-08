@@ -31,7 +31,7 @@
     </th>
 
     <!-- Yes -->
-    <td data-title='<?php eT("Yes"); ?>' class="answer_cell_Y answer-item radio-item text-center radio">
+    <td class="answer_cell_Y answer-item radio-item text-center radio">
         <input
             class="radio"
             type="radio"
@@ -53,7 +53,7 @@
     </td>
 
     <!-- Uncertain -->
-    <td data-title='<?php eT("Uncertain");?>' class="answer_cell_U answer-item radio-item text-center radio">
+    <td class="answer_cell_U answer-item radio-item text-center radio">
         <input
             class="radio"
             type="radio"
@@ -75,7 +75,7 @@
     </td>
 
     <!-- No -->
-    <td data-title='<?php eT("No"); ?>' class="answer_cell_N answer-item radio-item text-center radio">
+    <td class="answer_cell_N answer-item radio-item text-center radio">
         <input
             class="radio"
             type="radio"
@@ -98,7 +98,7 @@
 
     <!-- No Answer -->
     <?php if($no_answer):?>
-        <td data-title='<?php eT("No answer");?>' class="answer-item radio-item noanswer-item text-center radio">
+        <td class="answer-item radio-item noanswer-item text-center radio">
             <input
                 class="radio"
                 type="radio"

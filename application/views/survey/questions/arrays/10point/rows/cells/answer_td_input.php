@@ -10,7 +10,7 @@
 ?>
 
 <!-- answer_td_input -->
-<td data-title='<?php echo $i;?>' class="answer-cell-1 answer_cell_<?php echo $i;?> answer-item radio-item radio text-center">
+<td class="answer-cell-1 answer_cell_<?php echo $i;?> answer-item radio-item radio text-center">
     <input
         class="radio"
         type="radio"

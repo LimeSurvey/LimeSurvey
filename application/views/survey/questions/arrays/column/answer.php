@@ -44,15 +44,15 @@
                     <?php echo $ansrow['answer']; ?>
                 </th>
                 <?php foreach ($anscode as $i => $ld): ?>
-                    <td data-title='<?php echo $ansrow['answer']; ?>' class="answer-cell-7 answer_cell_<?php echo $ld; ?> answer-item radio-item text-center radio">
-                            <input 
-                                class="radio" 
-                                type="radio" 
-                                name="<?php echo $aQuestions[$i]['myfname']; ?>" 
+                    <td class="answer-cell-7 answer_cell_<?php echo $ld; ?> answer-item radio-item text-center radio">
+                            <input
+                                class="radio"
+                                type="radio"
+                                name="<?php echo $aQuestions[$i]['myfname']; ?>"
                                 value="<?php echo $ansrow['code']; ?>"
                                 id="answer<?php echo $aQuestions[$i]['myfname']; ?>-<?php echo $ansrow['code']; ?>"
                                 <?php echo $checked[$ansrow['code']][$ld]; ?>
-                                onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)" 
+                                onclick="<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
                             />
                         <label for="answer<?php echo $aQuestions[$i]['myfname']; ?>-<?php echo $ansrow['code']; ?>">
                             <span class="hide label-text"><?php echo $ansrow['answer'];?></span>
@@ -66,10 +66,10 @@
 </table>
 
 <?php foreach ($anscode as $i => $ld): ?>
-    <input 
-        type="hidden" 
-        name="java<?php echo $aQuestions[$i]['myfname']; ?>" 
-        id="java<?php echo $aQuestions[$i]['myfname']; ?>" 
+    <input
+        type="hidden"
+        name="java<?php echo $aQuestions[$i]['myfname']; ?>"
+        id="java<?php echo $aQuestions[$i]['myfname']; ?>"
         value="<?php echo $aQuestions[$i]['myfname_value']; ?>"
     />
 <?php endforeach; ?>

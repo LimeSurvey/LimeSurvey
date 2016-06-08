@@ -79,7 +79,11 @@ function replaceColumnWithDiv(that) {
     $(that).replaceWith(newHtml);
 }
 
-$(document).ready(function(){
+
+
+
+$(document).ready(function()
+{
 
     // Scroll to first error
     if($(".input-error").length > 0) {
@@ -114,7 +118,6 @@ $(document).ready(function(){
         {
             $('.no-more-tables, .array-by-columns-table').find('td').each(function(){
                 $that = $(this);
-                $label = $that.data('title');
                 $input = $that.find('input');
                 if($input.is(':checkbox') || $that.hasClass('radio'))
                 {
@@ -124,6 +127,7 @@ $(document).ready(function(){
                 {
                     // TODO: Remove this logic for screen reader
                     // Only used for array dual scale and array columns now.
+                    $label = $that.data('title');
                     $that.find('label').prepend($label);
                 }
 
@@ -310,6 +314,7 @@ window.alert = function(message, title) {
     }
     $("#bootstrap-alert-box-modal .modal-header h4").text(title || "");
     $("#bootstrap-alert-box-modal .modal-body p").text(message || "");
+
     $(document).ready(function()
     {
         $("#bootstrap-alert-box-modal").modal('show');

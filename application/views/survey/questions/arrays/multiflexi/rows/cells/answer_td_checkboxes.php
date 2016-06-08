@@ -14,7 +14,7 @@
 ?>
 
 <!-- answer_td_checkboxes -->
-<td data-title="<?php echo $dataTitle;?>" class="answer-cell-6 answer_cell_<?php echo $ld; ?> question-item answer-item <?php echo $answertypeclass;?>-item checkbox-item checkbox text-center">
+<td class="answer-cell-6 answer_cell_<?php echo $ld; ?> question-item answer-item <?php echo $answertypeclass;?>-item checkbox-item checkbox text-center">
 
     <input
         type="hidden"
