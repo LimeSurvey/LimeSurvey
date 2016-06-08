@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-06-08 06:54:36+00:00\n"
+"POT-Creation-Date: 2016-06-08 21:47:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1356,7 +1356,6 @@ msgstr ""
 #: application/views/admin/token/tokenform.php:106
 #: application/views/admin/token/tokenform.php:217
 #: application/views/admin/token/tokenform.php:254
-#: application/views/survey/questions/arrays/yesnouncertain/rows/answer_row.php:34
 #: application/views/survey/questions/arrays/yesnouncertain/rows/answer_row.php:51
 #: application/views/survey/questions/arrays/yesnouncertain/rows/cells/thead.php:8
 #: application/views/survey/questions/yesno/buttons/item.php:31
@@ -1494,7 +1493,6 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1334
 #: application/views/admin/dataentry/content_view.php:695
 #: application/views/admin/export/statistics_subviews/_question.php:449
-#: application/views/survey/questions/arrays/yesnouncertain/rows/answer_row.php:56
 #: application/views/survey/questions/arrays/yesnouncertain/rows/answer_row.php:73
 #: application/views/survey/questions/arrays/yesnouncertain/rows/cells/thead.php:9
 msgid "Uncertain"
@@ -1599,7 +1597,6 @@ msgstr ""
 #: application/views/admin/token/tokenform.php:107
 #: application/views/admin/token/tokenform.php:218
 #: application/views/admin/token/tokenform.php:255
-#: application/views/survey/questions/arrays/yesnouncertain/rows/answer_row.php:78
 #: application/views/survey/questions/arrays/yesnouncertain/rows/answer_row.php:95
 #: application/views/survey/questions/arrays/yesnouncertain/rows/cells/thead.php:10
 #: application/views/survey/questions/yesno/buttons/item.php:45
@@ -1620,7 +1617,6 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1352
 #: application/views/admin/dataentry/content_view.php:719
 #: application/views/admin/export/statistics_subviews/_question.php:487
-#: application/views/survey/questions/arrays/increasesamedecrease/rows/answer_row.php:45
 #: application/views/survey/questions/arrays/increasesamedecrease/rows/answer_row.php:62
 #: application/views/survey/questions/arrays/increasesamedecrease/rows/cells/thead.php:8
 msgid "Increase"
@@ -1639,7 +1635,6 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1353
 #: application/views/admin/dataentry/content_view.php:720
 #: application/views/admin/export/statistics_subviews/_question.php:492
-#: application/views/survey/questions/arrays/increasesamedecrease/rows/answer_row.php:67
 #: application/views/survey/questions/arrays/increasesamedecrease/rows/answer_row.php:84
 #: application/views/survey/questions/arrays/increasesamedecrease/rows/cells/thead.php:9
 msgid "Same"
@@ -1658,7 +1653,6 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1354
 #: application/views/admin/dataentry/content_view.php:721
 #: application/views/admin/export/statistics_subviews/_question.php:497
-#: application/views/survey/questions/arrays/increasesamedecrease/rows/answer_row.php:89
 #: application/views/survey/questions/arrays/increasesamedecrease/rows/answer_row.php:106
 #: application/views/survey/questions/arrays/increasesamedecrease/rows/cells/thead.php:10
 msgid "Decrease"
@@ -1702,17 +1696,13 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1808
 #: application/views/admin/dataentry/content_view.php:41
 #: application/views/admin/templates/templateeditor_question_answer_view.php:165
-#: application/views/survey/questions/arrays/dualscale/answer.php:201
 #: application/views/survey/questions/arrays/dualscale/answer.php:212
-#: application/views/survey/questions/arrays/dualscale/answer.php:216
-#: application/views/survey/questions/arrays/dualscale/answer.php:225
+#: application/views/survey/questions/arrays/dualscale/answer.php:224
 #: application/views/survey/questions/arrays/dualscale/answer_dropdown.php:149
 #: application/views/survey/questions/arrays/dualscale/answer_dropdown.php:202
 #: application/views/survey/questions/arrays/dualscale/answer_header.php:36
-#: application/views/survey/questions/arrays/increasesamedecrease/rows/answer_row.php:112
 #: application/views/survey/questions/arrays/increasesamedecrease/rows/answer_row.php:129
 #: application/views/survey/questions/arrays/increasesamedecrease/rows/cells/thead.php:12
-#: application/views/survey/questions/arrays/yesnouncertain/rows/answer_row.php:101
 #: application/views/survey/questions/arrays/yesnouncertain/rows/answer_row.php:117
 #: application/views/survey/questions/arrays/yesnouncertain/rows/cells/thead.php:12
 #: application/views/survey/questions/gender/buttons/answer.php:38
