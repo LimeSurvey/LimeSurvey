@@ -1769,7 +1769,7 @@ class remotecontrol_handle
                                 break;
                         }
                     } else if ('subquestions' === $sFieldName) {
-                        if ($aQuestionData['type'] == 'Q') {
+                        if ($aQuestionData['type'] == 'Q' || $aQuestionData['type'] == 'F') {
                             $oAnswers = Question::model()->findAllByAttributes(array('parent_qid' => $oQuestion->qid, 'language' => $sLanguage), array('order' => 'question_order'));
                             foreach ($oAnswers as $oAnswer) {
                                 if (isset($sValue[$oAnswer['title']])) {
@@ -1802,7 +1802,7 @@ class remotecontrol_handle
                         $oQuestion->setAttribute($sFieldName,$sValue);
                     }
                     // For this type of question we need to add a subquestion that does absolutely nothing -_-
-                    if (('type' ===$sFieldName) && ('F' === $oQuestion->type)) {
+                    if (('type' ===$sFieldName) && ('F' === $oQuestion->type) && (!array_key_exists('subquestions', $aQuestionData))) {
                         $oSubQuestion             = new Question;
                         $oSubQuestion->parent_qid = $oQuestion->qid;
                         $oSubQuestion->sid        = $oQuestion->sid;
