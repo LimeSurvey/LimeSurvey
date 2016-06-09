@@ -37,6 +37,7 @@ class ExcelWriter extends Writer
         parent::init($survey, $sLanguageCode, $oOptions);
 
         $this->workbook = new XLSXWriter();
+        $this->workbook->setTempDir(Yii::app()->getConfig('tempdir'));
         $worksheetName = $survey->languageSettings['surveyls_title'];
         $worksheetName=substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$worksheetName),0,31); // Remove invalid characters
         $this->currentSheet = $worksheetName;

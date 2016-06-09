@@ -21,6 +21,7 @@ class XLSXWriter
 	protected $cell_types = array();//contains friendly format like datetime
 
 	protected $current_sheet = '';
+	protected $temp_dir = NULL;
 
 	public function __construct()
 	{
@@ -42,10 +43,16 @@ class XLSXWriter
 			}
 		}
 	}
-
+	
+	public function setTempDir($dir)
+	{
+		$this->temp_dir = $dir;
+	}
+	
 	protected function tempFilename()
 	{
-		$filename = tempnam(sys_get_temp_dir(), "xlsx_writer_");
+		$temp_dir = is_null($this->temp_dir) ? sys_get_temp_dir() : $this->temp_dir;
+		$filename = tempnam($temp_dir, "xlsx_writer_");
 		$this->temp_files[] = $filename;
 		return $filename;
 	}
