@@ -172,7 +172,7 @@
                 ),
                 'itemsCssClass' =>'table-striped',
                 //'htmlOptions'=>array('style'=>'cursor: pointer;'),
-                'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
+                'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
                 //'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/survey/sa/view/surveyid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                 'ajaxUpdate' => true,
                 'afterAjaxUpdate' => 'doToolTip',
