@@ -25,8 +25,9 @@ class Survey extends LSActiveRecord
      * @var array
      */
     protected $findByPkCache = array();
-    /* Set some setting not by default database */
+    /* Default settings for new survey */
     public $format = 'G';
+    public $htmlemail='Y';
 
     /**
      * init to set default
