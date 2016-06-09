@@ -67,7 +67,7 @@
             return array(
 
                 'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
-                'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language'),
+                'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language', 'together' => true),
 
                 // Seriously ????
                 //'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"),
@@ -870,44 +870,44 @@
         $sort = new CSort();
         $sort->attributes = array(
           'question_id'=>array(
-            'asc'=>'qid',
-            'desc'=>'qid desc',
+            'asc'=>'t.qid asc',
+            'desc'=>'t.qid desc',
           ),
           'question_order'=>array(
-            'asc'=>'question_order',
-            'desc'=>'question_order desc',
+            'asc'=>'t.question_order asc',
+            'desc'=>'t.question_order desc',
           ),
           'title'=>array(
-            'asc'=>'title',
-            'desc'=>'title desc',
+            'asc'=>'t.title asc',
+            'desc'=>'t.title desc',
           ),
           'question'=>array(
-            'asc'=>'question',
-            'desc'=>'question desc',
+            'asc'=>'t.question asc',
+            'desc'=>'t.question desc',
           ),
 
           'group'=>array(
-            'asc'=>'groups.group_name',
+            'asc'=>'groups.group_name asc',
             'desc'=>'groups.group_name desc',
           ),
         );
+        $sort->defaultOrder = array('t.question_order' => CSort::SORT_ASC, 'groups.group_order' => CSort::SORT_ASC);
 
         $criteria = new CDbCriteria;
-        $criteria->together = true;
         $criteria->with=array('groups');
-        $criteria->condition="t.sid=:surveyid AND t.language=:language AND parent_qid=0";
-        $criteria->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
+        $criteria->compare("t.sid", $this->sid, false, 'AND' );
+        $criteria->compare("t.language", $this->language, false, 'AND' );
+        $criteria->compare("t.parent_qid", 0, false, 'AND' );
 
         $criteria2 = new CDbCriteria;
-        $criteria2->compare('title', $this->title, true, 'OR');
-        $criteria2->compare('question', $this->title, true, 'OR');
-        $criteria2->compare('type', $this->title, true, 'OR');
+        $criteria2->compare('t.title', $this->title, true, 'OR');
+        $criteria2->compare('t.question', $this->title, true, 'OR');
+        $criteria2->compare('t.type', $this->title, true, 'OR');
 
         $qid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.qid::varchar' : 't.qid');
         $criteria2->compare($qid_reference, $this->title, true, 'OR');
 
         $criteria->mergeWith($criteria2, 'AND');
-        $criteria->order = 'group_order ASC,question_order ASC';
 
         if($this->group_name != '')
         {
