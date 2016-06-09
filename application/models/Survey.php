@@ -143,11 +143,11 @@ class Survey extends LSActiveRecord
         return array(
 
             'permissions'     => array(self::HAS_MANY, 'Permission', array( 'entity_id'=> 'sid'  ), 'together' => true ), //
-            'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language'),
+            'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language', 'together' => true),
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
-            'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid')),
-            'owner' => array(self::BELONGS_TO, 'User', 'owner_id'),
-            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid'),
+            'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid'), 'together' => true),
+            'owner' => array(self::BELONGS_TO, 'User', 'owner_id', 'together' => true),
+            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'together' => true),
         );
     }
 
@@ -908,38 +908,40 @@ class Survey extends LSActiveRecord
     public function search()
     {
         $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+
         $sort = new CSort();
         $sort->attributes = array(
           'survey_id'=>array(
-            'asc'=>'sid',
-            'desc'=>'sid desc',
+            'asc'=>'t.sid asc',
+            'desc'=>'t.sid desc',
           ),
           'title'=>array(
-            'asc'=>'correct_relation_defaultlanguage.surveyls_title',
+            'asc'=>'correct_relation_defaultlanguage.surveyls_title asc',
             'desc'=>'correct_relation_defaultlanguage.surveyls_title desc',
           ),
 
           'creation_date'=>array(
-            'asc'=>'datecreated',
-            'desc'=>'datecreated desc',
+            'asc'=>'t.datecreated asc',
+            'desc'=>'t.datecreated desc',
           ),
 
           'owner'=>array(
-            'asc'=>'owner.users_name',
+            'asc'=>'owner.users_name asc',
             'desc'=>'owner.users_name desc',
           ),
 
           'anonymized_responses'=>array(
-            'asc'=>'anonymized',
-            'desc'=>'anonymized desc',
+            'asc'=>'t.anonymized asc',
+            'desc'=>'t.anonymized desc',
           ),
 
           'running'=>array(
-            'asc'=>'active asc, expires asc',
-            'desc'=>'active desc, expires desc',
+            'asc'=>'t.active asc, t.expires asc',
+            'desc'=>'t.active desc, t.expires desc',
           ),
 
         );
+        $sort->defaultOrder = array('t.datecreated' => CSort::SORT_DESC);
 
         $criteria = new CDbCriteria;
         $criteria->together = true;
