@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-06-08 21:53:30+00:00\n"
+"POT-Creation-Date: 2016-06-09 14:07:29+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1688,8 +1688,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4545
 #: application/helpers/qanda_helper.php:4629
 #: application/helpers/qanda_helper.php:4765
-#: application/helpers/qanda_helper.php:5604
-#: application/helpers/qanda_helper.php:5605
+#: application/helpers/qanda_helper.php:5613
+#: application/helpers/qanda_helper.php:5614
 #: application/helpers/userstatistics_helper.php:718
 #: application/helpers/userstatistics_helper.php:757
 #: application/helpers/userstatistics_helper.php:1588
@@ -8938,7 +8938,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4229
 #: application/helpers/qanda_helper.php:4340
 #: application/helpers/qanda_helper.php:4515
-#: application/helpers/qanda_helper.php:5835
+#: application/helpers/qanda_helper.php:5844
 msgid "The last cell are for no answer. "
 msgstr ""
 
@@ -9020,27 +9020,27 @@ msgstr ""
 msgid "Please select an answer for each combination. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5579
+#: application/helpers/qanda_helper.php:5588
 msgid "An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5705
+#: application/helpers/qanda_helper.php:5714
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5711
-#: application/helpers/qanda_helper.php:6140
+#: application/helpers/qanda_helper.php:5720
+#: application/helpers/qanda_helper.php:6149
 #: application/views/survey/questions/arrays/array/dropdown/empty.php:3
 #: application/views/survey/questions/arrays/multiflexi/empty_error.php:2
 #: application/views/survey/questions/arrays/texts/empty_error.php:2
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5764
+#: application/helpers/qanda_helper.php:5773
 msgid "An array with sub-question on each line, with 2 answers to provide on each line. You have to select the answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5772
+#: application/helpers/qanda_helper.php:5781
 msgid "An array with sub-question on each line, with 2 answers to provide on each line. The answers are contained in the table header. "
 msgstr ""
 
