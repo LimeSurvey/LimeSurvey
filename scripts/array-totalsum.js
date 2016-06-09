@@ -53,6 +53,9 @@ function formatValue(sValue)
 
 function normalizeValue(aValue)
 {
+    var numRegex;
+    var sRadix;
+
     sRadix=LSvar.sLEMradix;
     if (sRadix=='.')
     {
