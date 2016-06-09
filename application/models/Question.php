@@ -891,7 +891,8 @@
             'desc'=>'groups.group_name desc',
           ),
         );
-        $sort->defaultOrder = array('t.question_order' => CSort::SORT_ASC, 'groups.group_order' => CSort::SORT_ASC);
+        //$sort->defaultOrder = array('t.question_order' => CSort::SORT_ASC, 'groups.group_order' => CSort::SORT_ASC);
+        $sort->defaultOrder = array('question_order' => CSort::SORT_ASC );
 
         $criteria = new CDbCriteria;
         $criteria->with=array('groups');
@@ -907,12 +908,13 @@
         $qid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.qid::varchar' : 't.qid');
         $criteria2->compare($qid_reference, $this->title, true, 'OR');
 
-        $criteria->mergeWith($criteria2, 'AND');
 
         if($this->group_name != '')
         {
             $criteria->compare('groups.group_name', $this->group_name, true, 'AND');
         }
+
+        $criteria->mergeWith($criteria2, 'AND');
 
         $dataProvider=new CActiveDataProvider('Question', array(
             'criteria'=>$criteria,

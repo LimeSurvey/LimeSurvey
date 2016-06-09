@@ -941,7 +941,7 @@ class Survey extends LSActiveRecord
           ),
 
         );
-        $sort->defaultOrder = array('t.datecreated' => CSort::SORT_DESC);
+        $sort->defaultOrder = array('creation_date' => CSort::SORT_DESC);
 
         $criteria = new CDbCriteria;
         $aWithRelations = array('correct_relation_defaultlanguage');
