@@ -944,32 +944,23 @@ class Survey extends LSActiveRecord
         $sort->defaultOrder = array('t.datecreated' => CSort::SORT_DESC);
 
         $criteria = new CDbCriteria;
-        $criteria->together = true;
-        $criteria->with='correct_relation_defaultlanguage';
-
-        // Permission
-        // Rem : the addCondition reflect Permission::hasPermission
-        if(!Permission::model()->hasGlobalPermission("surveys",'read'))
-        {
-            $criteria->with=array('permissions', 'correct_relation_defaultlanguage' );
-            $criteria->addCondition( " ( owner_id=".Yii::app()->user->id."  ) OR (permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid=".Yii::app()->user->id." )" );
-        }
-
+        $aWithRelations = array('correct_relation_defaultlanguage');
 
         // Search filter
-        $criteria2 = new CDbCriteria;
         $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.sid::varchar' : 't.sid');
-        $criteria2->with=array('owner', 'correct_relation_defaultlanguage');
-        $criteria2->compare($sid_reference, $this->searched_value, true, 'OR');
-        $criteria2->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
-        $criteria2->compare('t.admin', $this->searched_value, true, 'OR');
+        $aWithRelations[] = 'owner';
+        $criteria->compare($sid_reference, $this->searched_value, true);
+        $criteria->compare('t.admin', $this->searched_value, true, 'OR');
+        $criteria->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
+
+
 
         // Active filter
         if(isset($this->active))
         {
             if($this->active == 'N' || $this->active == "Y")
             {
-                $criteria->addCondition("t.active='$this->active'");
+                $criteria->compare("t.active", $this->active, false);
             }
             else
             {
@@ -987,7 +978,25 @@ class Survey extends LSActiveRecord
             }
         }
 
-        $criteria->mergeWith($criteria2, 'AND');
+
+        $criteria->with=$aWithRelations;
+
+        // Permission
+        // Note: reflect Permission::hasPermission
+        if(!Permission::model()->hasGlobalPermission("surveys",'read'))
+        {
+            $criteriaPerm = new CDbCriteria;
+            $criteriaPerm->with=array('permissions');
+            $criteriaPerm->compare('permissions.permission', 'survey', false);
+            $criteriaPerm->compare('permissions.entity', 'survey', false);
+            $criteriaPerm->compare('permissions.uid', Yii::app()->user->id, false);
+
+            $criteriaOwner = new CDbCriteria;
+            $criteriaOwner->compare('t.owner_id', Yii::app()->user->id, false);
+
+            $criteriaOwner->mergeWith($criteriaPerm, 'OR');
+            $criteria->mergeWith($criteriaPerm, 'AND');
+        }
 
         $dataProvider=new CActiveDataProvider('Survey', array(
             'sort'=>$sort,
