@@ -5463,6 +5463,15 @@ function do_array_multiflexi($ia)
                 $myfname2   = $myfname."_$ld";
                 $value      = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]))?$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]:'';
 
+                // Possibly replace '.' with ','
+                $surveyId = Yii::app()->getConfig('surveyID');
+                $surveyLabel = 'survey_' . $surveyId;
+                $fieldnameIsNumeric = isset($_SESSION[$surveyLabel][$myfname2])
+                    && is_numeric($_SESSION[$surveyLabel][$myfname2]);
+                if($fieldnameIsNumeric) {
+                    $value = str_replace('.',$sSeparator, $_SESSION[$surveyLabel][$myfname2]);
+                }
+
                 if ($checkboxlayout == false)
                 {
 
