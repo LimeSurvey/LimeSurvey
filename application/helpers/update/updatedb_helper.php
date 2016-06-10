@@ -1427,10 +1427,12 @@ function db_upgrade_all($iOldDBVersion) {
 function upgradeTokenTables256()
 {
     $surveyidresult = dbGetTablesLike("tokens%");
+    $oDB = Yii::app()->getDb();
     if ($surveyidresult)
     {
         foreach ( $surveyidresult as $sTableName )
         {
+            try { setTransactionBookmark(); $oDB->createCommand()->dropIndex("idx_lime_{$sTableName}_efl",$sTableName); } catch(Exception $e) { rollBackToTransactionBookmark();}
             alterColumn($sTableName, 'email', "text");
             alterColumn($sTableName, 'firstname', "string(150)");
             alterColumn($sTableName, 'lastname', "string(150)");
