@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2016-06-09 14:07:29+00:00\n"
+"POT-Creation-Date: 2016-06-10 07:37:31+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4096,8 +4096,8 @@ msgid "Hint when response is not valid"
 msgstr ""
 
 #: application/controllers/admin/templates.php:1193
-#: application/helpers/frontend_helper.php:1705
-#: application/helpers/frontend_helper.php:2098
+#: application/helpers/frontend_helper.php:1718
+#: application/helpers/frontend_helper.php:2111
 #: application/views/admin/templates/templateeditor_navigator_view.php:5
 #: application/views/installer/dbconfig_view.php:62
 #: application/views/installer/dbsettings_view.php:12
@@ -4109,7 +4109,7 @@ msgstr ""
 
 #: application/controllers/admin/templates.php:1194
 #: application/controllers/admin/templates.php:1204
-#: application/helpers/frontend_helper.php:1720
+#: application/helpers/frontend_helper.php:1733
 #: application/views/admin/participants/displayParticipants_view.php:134
 #: application/views/admin/quotas/newanswer_view.php:29
 #: application/views/admin/quotas/newanswertwo_view.php:35
@@ -4956,7 +4956,7 @@ msgstr ""
 #: application/controllers/survey/index.php:430
 #: application/helpers/frontend_helper.php:1064
 #: application/helpers/frontend_helper.php:1105
-#: application/helpers/frontend_helper.php:1295
+#: application/helpers/frontend_helper.php:1308
 msgid "For further information please contact %s"
 msgstr ""
 
@@ -5350,7 +5350,7 @@ msgstr ""
 #: application/helpers/SurveyRuntimeHelper.php:178
 #: application/helpers/SurveyRuntimeHelper.php:179
 #: application/helpers/SurveyRuntimeHelper.php:331
-#: application/helpers/frontend_helper.php:1717
+#: application/helpers/frontend_helper.php:1730
 #: application/helpers/replacements_helper.php:324
 #: application/views/admin/dataentry/active_html_view.php:72
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
@@ -8733,15 +8733,15 @@ msgstr ""
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1286
+#: application/helpers/frontend_helper.php:1299
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1289
+#: application/helpers/frontend_helper.php:1302
 msgid "There are no questions in this survey."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1292
+#: application/helpers/frontend_helper.php:1305
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
@@ -8927,11 +8927,11 @@ msgid "Click to set the location or drag and drop the pin. You may may also ente
 msgstr ""
 
 #: application/helpers/qanda_helper.php:3867
-msgid "An array with sub-question on each line. The answers are value from 1 to 5 and are contained in the table header. "
+msgid "A table with a subquestion on each row. The answer options are values from 1 to 5 and are contained in the table header."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4069
-msgid "An array with sub-question on each line. The answers are value from 1 to 10 and are contained in the table header. "
+msgid "A table with a subquestion on each row. The answers are values from 1 to 10 and are contained in the table header."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4088
@@ -8939,35 +8939,35 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4340
 #: application/helpers/qanda_helper.php:4515
 #: application/helpers/qanda_helper.php:5844
-msgid "The last cell are for no answer. "
+msgid "The last cell is for 'No answer'."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4216
-msgid "An array with sub-question on each line. The answers are yes, no, uncertain and are in the table header. "
+msgid "A table with a subquestion on each row. The answers are 'Yes', 'No', and 'Uncertain' and are in the table header."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4329
-msgid "An array with sub-question on each line. The answers are increase, same, decrease and are contained in the table header. "
+msgid "A table with a subquestion on each row. The answers are 'Increase', 'Same', 'Decrease' and are contained in the table header."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4452
-msgid "An array with sub-question on each line. You have to select your answer."
+msgid "A table with a subquestion on each row. You have to select your answer."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4457
-msgid "An array with sub-question on each line. The answers are contained in the table header. "
+msgid "A table with a subquestion on each row. The answer options are contained in the table header."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4510
-msgid "After answers, a cell give some information. "
+msgid "After the answer options a cell does give some information."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4819
-msgid "An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. "
+msgid "A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4880
-msgid "Each answer is a number. "
+msgid "Each answer may only be a number."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4888
@@ -8988,24 +8988,24 @@ msgid "Grand total"
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4897
-msgid "The last row shows the total for the column. "
+msgid "The last row shows the total for the column."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4911
-msgid "The last column shows the total for the row. "
+msgid "The last column shows the total for the row."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4930
-msgid "The last row shows the total for the column and the last column shows the total for the row. "
+msgid "The last row shows the total for the column and the last column shows the total for the row."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4993
 #: application/helpers/qanda_helper.php:5349
-msgid "The last cell give some information. "
+msgid "The last cell gives some information."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:5197
-msgid "An array of subquestions on each cell. The subquestion texts are in the table header and concern the line header."
+msgid "A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:5264
@@ -9017,11 +9017,11 @@ msgid "Please enter only numbers."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:5278
-msgid "Please select an answer for each combination. "
+msgid "Please select an answer for each combination."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:5588
-msgid "An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. "
+msgid "A table with subquestions on each column. The subquestions are on the column header, the answer options are in row headers."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:5714
@@ -9037,11 +9037,11 @@ msgid "Error: There are no answer options for this question and/or they don't ex
 msgstr ""
 
 #: application/helpers/qanda_helper.php:5773
-msgid "An array with sub-question on each line, with 2 answers to provide on each line. You have to select the answer."
+msgid "A table with a subquestion on each row, with two answers to provide on each line.  Please select the answers."
 msgstr ""
 
 #: application/helpers/qanda_helper.php:5781
-msgid "An array with sub-question on each line, with 2 answers to provide on each line. The answers are contained in the table header. "
+msgid "A table with a subquestion on each row, with two answers to provide on each row. The related answer options table header row."
 msgstr ""
 
 #: application/helpers/replacements_helper.php:281
@@ -9676,15 +9676,15 @@ msgstr ""
 msgid "Moving user templates to new location at %s..."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2733
+#: application/helpers/update/updatedb_helper.php:2735
 msgid "Some user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2735
+#: application/helpers/update/updatedb_helper.php:2737
 msgid "Template(s) to be verified :"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2741
+#: application/helpers/update/updatedb_helper.php:2743
 msgid "All %s user templates updated."
 msgstr ""
 
