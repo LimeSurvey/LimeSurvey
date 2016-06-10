@@ -5585,7 +5585,7 @@ function do_arraycolumns($ia)
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass = "";
     $checkconditionFunction = "checkconditions";
-    $caption=gT("A table with subquestions on each column. The subquestions are on the column header, the answer options are in row headers.");
+    $caption=gT("A table with subquestions on each column. The subquestions texts are on the column header, the answer options are in row headers.");
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
@@ -5778,7 +5778,7 @@ function do_array_dual($ia)
         $extraclass .=" radio-list";
         $answertypeclass .=" radio";
         $doDualScaleFunction="doDualScaleRadio";
-        $caption=gT("A table with a subquestion on each row, with two answers to provide on each row. The related answer options table header row.");
+        $caption=gT("A table with one subquestion on each row and two answers to provide on each row. The related answer options are in the top table header row.");
     }
     if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
     {
